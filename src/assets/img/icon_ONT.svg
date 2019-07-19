@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>ONT</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="我的账户-copy" transform="translate(-40.000000, -180.000000)">
+            <g id="ONT" transform="translate(40.000000, 180.000000)">
+                <circle id="椭圆形-copy-3" fill="#4D9AFD" cx="11" cy="11" r="11"></circle>
+                <path d="M9.16437926,14.7851339 C12.2019454,14.7851339 14.6643793,12.3227 14.6643793,9.28513388 L3.66437926,9.28513388 L1.40588851,9.29413953 C3.51506543,11.3660427 4.73853008,12.5895074 5.07628244,12.9645335 C6.08299709,14.0823472 7.54161586,14.7851339 9.16437926,14.7851339 Z" id="椭圆形" fill="#FFFFFF" transform="translate(8.035134, 12.035134) rotate(45.000000) translate(-8.035134, -12.035134) "></path>
+                <path d="M15.7613734,12.382128 C18.7989395,12.382128 21.2613734,9.91969413 21.2613734,6.88212801 L10.2613734,6.88212801 L8.00288263,6.89113365 C10.1120596,8.96303686 11.3355242,10.1865015 11.6732766,10.5615276 C12.6799912,11.6793414 14.13861,12.382128 15.7613734,12.382128 Z" id="椭圆形" fill="#FFFFFF" transform="translate(14.632128, 9.632128) scale(-1, -1) rotate(45.000000) translate(-14.632128, -9.632128) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

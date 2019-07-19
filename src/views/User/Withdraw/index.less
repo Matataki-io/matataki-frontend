@@ -1,0 +1,114 @@
+.withdraw {
+  background-color: #F1F1F1;
+  min-height: 100%;
+  padding-top: 45px;
+  display: flex;
+  flex-direction: column;
+}
+
+.withdraw-head {
+  margin-bottom: 10px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  &-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size:14px;
+    font-weight:700;
+    color:rgba(0,0,0,1);
+    img {
+      width: 26px;
+      margin-right: 10px;
+    }
+  }
+  &-amount {
+    font-size:16px;
+    font-weight:700;
+    color:rgba(0,0,0,1);
+  }
+}
+
+.withdraw-content {
+  margin-bottom: 10px;
+  background-color: #fff;
+  padding: 14px 20px;
+  &-list {
+    text-align: left;
+    margin-bottom: 14px;
+  }
+  &-title {
+    font-size:14px;
+    font-weight:700;
+    color:rgba(0,0,0,1);
+    span {
+      font-size: 12px;
+      font-weight: 400;
+      color:rgba(0,0,0,1);
+    }
+  }
+  .list-des {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid  rgba(217,217,217,.64);
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 6px 0;
+      font-size: 14px;
+      font-weight:700;
+      color:rgba(0,0,0,1);
+      background: transparent;
+      &::placeholder {
+        font-size:14px;
+        font-weight:500;
+        color:#B2B2B2;
+      }
+      &:disabled {
+        color:rgba(0,0,0,1);
+      }
+    }
+    span {
+      font-size:14px;
+      font-weight:700;
+      color:rgba(0,0,0,1);
+      padding: 6px 0;
+    }
+  }
+}
+
+.withdraw-des {
+  margin: 10px 20px 0;
+  text-align: left;
+  line-height: 1.5;
+  p {
+    font-size:12px;
+    font-weight:500;
+    color:rgba(0,0,0,.35);
+    padding: 2px 0;
+  }
+}
+
+.withdraw-button-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.withdraw-button {
+  font-size:16px;
+  font-weight:700;
+  color:rgba(255,255,255,1);
+  padding: 12px 0;
+  margin: 20px;
+  border-radius: 6px;
+  display: block;
+  background-color: #1C9CFE;
+  cursor: pointer;
+  text-align: center;
+}

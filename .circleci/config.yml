@@ -1,0 +1,91 @@
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10.15.3
+
+
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      # Define Environment Variable
+      - run:
+          name: Define Environment Variable at Runtime
+          command: |
+            echo 'export COMMIT_REF=$CIRCLE_SHA1' >> $BASH_ENV
+            source $BASH_ENV
+      # Download and cache dependencies
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}
+            - yarn-packages-master
+            - yarn-packages-
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules/
+        
+      # run builds!
+      - run: 
+          name: Build
+          command: yarn run build-prod
+
+      - store_artifacts:
+          path: ~/repo/dist
+
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: ~/repo/
+          paths:
+            - dist
+  deploy-staging:
+    <<: *defaults
+    steps:
+      - attach_workspace: 
+          at: ~/repo/dist
+      - run:
+          # I don't want to bother with Github Page Deployment again. 
+          # I am a front end hipster after all. ~_^
+          name: Deploy to Surge.sh
+          command: |
+            sudo npm i -g surge          
+            cd ./dist/dist/
+            mv ./index.html ./200.html
+            surge --project ./ --domain staging.smartsignature.io
+workflows:
+  version: 2
+  "Build test":
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - /master/
+                - /testing/
+  #暂定用 testing 分支的内容 未来可能开一个 staging 分支？
+  "Build and Deploy to staging":
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /testing/ 
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /testing/ 

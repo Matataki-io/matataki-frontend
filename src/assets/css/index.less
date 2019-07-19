@@ -1,0 +1,61 @@
+@import './tabs.less';
+@import './animation.css';
+html,body{
+  height: 100%;
+}
+.fontFamily {
+  font-family: "PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, 
+  "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal", 
+  "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", 
+  "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+}
+body {
+  background: #F0F0F0;
+  .fontFamily()
+}
+// 覆盖github markdown css
+.markdown-body {
+  .fontFamily()!important
+}
+/* 加载更多提示 */
+.loading-stat {
+  margin: 10px;
+  color: #999;
+  font-size: 13px;
+}
+
+/* max width 最大宽度 */
+.mw {
+  max-width: 750px;
+  // max-width: 375px;
+  margin: 0 auto;
+}
+/* 全局 markdown 文字加粗覆盖样式 
+因为导入的样式优先级低于了默认的样式 导致安卓机型 600 不加粗 
+使用 bolder 覆盖 */
+.markdown-body strong,
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+  font-weight: bolder !important;
+}
+
+/* modal居中，单独的全局css才能覆盖 */
+.modalCenter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ivu-modal{
+        top: 0;
+    }
+}
+.markdown-body {
+  ul {
+    list-style: disc;
+  }
+  ol {
+    list-style: decimal;
+  }
+}
+.ivu-modal-content {
+  border-radius: 10px;
+}

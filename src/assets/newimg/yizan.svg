@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="65px" height="29px" viewBox="0 0 65 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>yizan</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="标签栏_已投资" transform="translate(-215.000000, -11.000000)">
+            <g id="yizan" transform="translate(215.000000, 11.000000)">
+                <rect id="矩形-copy-5" stroke="#1C9CFE" x="0.5" y="0.5" width="64" height="28" rx="6"></rect>
+                <text id="已投资" font-family="PingFangSC-Medium, PingFang SC" font-size="12" font-weight="400" letter-spacing="1.5" fill="#1C9CFE">
+                    <tspan x="12" y="19">已投资</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

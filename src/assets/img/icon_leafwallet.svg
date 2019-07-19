@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>icon_leafwallet</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="11" cy="11" r="11"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_leafwallet">
+            <g id="椭圆形" fill="#14BD71" fill-rule="nonzero">
+                <g id="path-1-link">
+                    <circle id="path-1" cx="11" cy="11" r="11"></circle>
+                </g>
+            </g>
+            <g id="logo-Clipped">
+                <g>
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="path-1"></g>
+                    <image id="logo" mask="url(#mask-2)" x="5" y="4" width="12" height="13" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA8CAYAAADc1RI2AAAABGdBTUEAALGN5fIAKQAAA2BJREFUaAXlmktoE1EUhmdsfbTYoiD4QEEXCooUi7RdxEXFKuIjKqVduasrQcWNG9dScSN0pbjwgaAi1ldBcSFVBN8vgoqCuFCsoqJCqyjW+P2xVyfjZBI3beb0h5+ZuXMnOV/OnTsnN/E848pmsxVjjDMKb+pogJw1GiBbzI9W7sl7piEBXIuzZiFhq8ZPzEIC5uNTApTMZRKmCfio4JxMQQLViO84OLdNPCQgNbgNn3FQ4a0fR0nnOs6vxvPwdFyNy0VVBKKYpuGKuKAiIYFLc9EuvDDu4qScy4MEbiKBH8EbkgJQSpx/IAGcxAVXsIaoKeVqVwAroTqJzQEqW65A38y+2UJWlUEtgM/xFGxR/crkOmwVUEl7Lcj12jOsjCBNPAtjktQryBkxHZJ+6j0AjzTx2Psq8jc1W9mttQx5CcBV+LZVyIfANeMl+LzuSWvqBiiFv+M9grMEmYEn7ft+K9sv+BCejz3VrMU0SIc3uA9/LdZ5GM8LRDE9wz3ACdJjHh3PZj9u03FOml0L6Czt7VhlXyJErPX4Bs6TyMO6S0NTIqgIklircBqfwD/xPwoP12Nc10Hqc8OS3nM5XoO1VdGgJYdykZZitPwxE2uIFlTwEXKaXq0A6pNYxn4nbih4ZYJOOMinxLwYa5I5gDdiM3LDdQdEWgrR8kejGbohEEE+wD1Yw9UcIEyehutOtu+wni0mpUxew8dN0v2GGlBZtwBrFdqqcssfzVbphrgeK5N1xiHPaeL5DGRi6tP/TIjY5iiTVgH1eXRSwX10FY8arOk6QEuB/GYVUr8IpAB8q8xZWhkQj9SLmxygGixBvoKnA7cA+EFwTqp4ikkX9xfrNALn85Y/eP+rwP2IjENfHiM0SNtebOOHoAhANaloT4yIVxNoCq+MDJoTYfXREPtvisgXGuZGYhyLu/BFrJilrqgwou7JW4xtrRCUu8YR4JZSgtTs+inUUf8AMSVBvgwRNZD2yaG2RB8KUr/+BFXDwT5Ay/6+DAYdt6978jDejoOFQTvHswHdzfY+LsfnpNZdS1Ilk0wGmIP0VrUQlBa1uoMNSd132dsGgDJmUjlIsjkA3XJ82SKly6QHqIraFXgTfmEJVqvmkeI+XcSJeqyVvNgfVCJfYGQab5KsC+G3/gXOdPgvuUARQQAAAABJRU5ErkJggg=="></image>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

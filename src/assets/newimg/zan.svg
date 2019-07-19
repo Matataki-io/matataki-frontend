@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="65px" height="29px" viewBox="0 0 65 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>zan</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="文章详情" transform="translate(-215.000000, -2138.000000)">
+            <g id="zan" transform="translate(215.000000, 2138.000000)">
+                <rect id="矩形-copy-5" fill="#1C9CFE" x="0" y="0" width="65" height="29" rx="6"></rect>
+                <text id="投资-copy" font-family="PingFangSC-Medium, PingFang SC" font-size="12" font-weight="400" letter-spacing="1.5" fill="#FFFFFF">
+                    <tspan x="12" y="19">投资</tspan>
+                </text>
+                <g id="编组" transform="translate(41.000000, 8.000000)" stroke-linejoin="round">
+                    <polygon id="路径-2" stroke="#FFFFFF" fill="#FFFFFF" points="1.89506402 4 9.28330057 4 11 6.7842765 5.5 12 2.27318164e-13 6.7842765"></polygon>
+                    <polyline id="路径-3" stroke="#1C9CFE" stroke-linecap="round" points="3.46325684 7.55090332 5.50939941 9.39221191 7.55554199 7.55090332"></polyline>
+                    <path d="M5.5,0 L5.5,2.09313965" id="路径-4" stroke="#FFFFFF" stroke-linecap="round"></path>
+                    <path d="M2,2.09313965 L0.462646484,0.472412109" id="路径-5" stroke="#FFFFFF" stroke-linecap="round" transform="translate(1.231323, 1.282776) rotate(-345.000000) translate(-1.231323, -1.282776) "></path>
+                    <path d="M10.5373535,2.09313965 L9,0.472412109" id="路径-5备份" stroke="#FFFFFF" stroke-linecap="round" transform="translate(9.768677, 1.282776) scale(-1, 1) rotate(-345.000000) translate(-9.768677, -1.282776) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="14px" viewBox="0 0 13 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>zanshang</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="文章详情_上拉" transform="translate(-255.000000, -780.000000)">
+            <g id="zanshang" transform="translate(256.000000, 781.000000)">
+                <polygon id="路径-2" stroke="#FFFFFF" fill="#FFFFFF" points="1.89506402 4 9.28330057 4 11 6.7842765 5.5 12 2.27318164e-13 6.7842765"></polygon>
+                <polyline id="路径-3" stroke="#1C9CFE" stroke-linecap="round" points="3.46325684 7.55090332 5.50939941 9.39221191 7.55554199 7.55090332"></polyline>
+                <path d="M5.5,0 L5.5,2.09313965" id="路径-4" stroke="#FFFFFF" stroke-linecap="round"></path>
+                <path d="M2,2.09313965 L0.462646484,0.472412109" id="路径-5" stroke="#FFFFFF" stroke-linecap="round" transform="translate(1.231323, 1.282776) rotate(-345.000000) translate(-1.231323, -1.282776) "></path>
+                <path d="M10.5373535,2.09313965 L9,0.472412109" id="路径-5备份" stroke="#FFFFFF" stroke-linecap="round" transform="translate(9.768677, 1.282776) scale(-1, 1) rotate(-345.000000) translate(-9.768677, -1.282776) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

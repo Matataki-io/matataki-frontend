@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>information</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="右上角帮助按钮" transform="translate(-313.000000, -57.000000)" fill="#00B07E" fill-rule="nonzero">
+            <g id="information" transform="translate(313.000000, 57.000000)">
+                <path d="M7.7,4.9 L6.3,4.9 L6.3,3.50000001 L7.7,3.50000001 L7.7,4.9 Z M7.7,10.5 L6.3,10.5 L6.3,6.3 L7.7,6.3 L7.7,10.5 Z M7,1.39888101e-15 C3.13400675,2.09832151e-15 2.09832151e-15,3.13400675 0,7 C2.09832151e-15,10.8659932 3.13400675,14 7,14 C8.85651543,14 10.6369928,13.2625021 11.9497475,11.9497475 C13.2625021,10.6369928 14,8.85651543 14,7 C14,3.13400675 10.8659932,2.33146835e-16 7,1.39888101e-15 Z" id="形状"></path>
+            </g>
+        </g>
+    </g>
+</svg>

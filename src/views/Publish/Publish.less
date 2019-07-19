@@ -1,0 +1,232 @@
+.header-right-slot {
+  display: flex;
+  align-items: center;
+}
+.more {
+  width: 20px;
+  cursor: pointer;
+  position: relative;
+  text-align: right;
+  img {
+    width: 3px;
+  }
+
+  .dropdown {
+    position: absolute;
+    color: #fff;
+    top: 40px;
+    right: 0px;
+    cursor: pointer;
+    width: 64px;
+    text-align: center;
+    background:rgba(67,67,67,1);
+    box-shadow:0px 2px 4px 0px rgba(190,190,190,0.5);
+    border-radius:4px;
+    overflow: hidden;
+  }
+  .dropdown-item {
+      // margin: 0 20px;
+      padding: 10px 20px;
+      font-size: 12px;
+      color:rgba(255,255,255,1);
+      box-sizing: border-box;
+      position: relative;
+      &::after {
+        position: absolute;
+        content: '';
+        display: block;
+        bottom: 0;
+        left: 20px;
+        right: 20px;
+        height: 1px;
+        background-color: #b2b2b2;
+      }
+      &:nth-last-child(1)::after {
+        display: none;
+      }
+  }
+  .dropdown-item:hover {
+      background-color: #2f2f2f;
+  }
+
+}
+
+.send-button{
+    font-size: 14px;
+    font-weight: bolder;
+    color: #7D7D7D;
+    cursor: pointer;
+  }
+  .new-post {
+    padding-top: 45px;
+    min-height: 100%;
+    background: #fff;
+  }
+
+  .radio {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+  }
+  .edit-content {
+    /* margin: 10px; */
+  }
+
+  /* 编辑器层级大于modal 改变编辑器层级 */
+  .v-note-wrapper{
+    z-index: 9;
+  }
+  .fission{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 18px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eaeaea;
+    p {
+      color: #323233;
+      .question {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: #DBDBDB;
+        color: #ffffff;
+        display: inline-block;
+        line-height: 18px;
+        text-align: center;
+      }
+    }
+    .fission-num-slider{
+      max-width: 130px;
+      width: 70%;
+      margin: 0 20px 0 10px;
+      z-index: 99;
+    }
+    .fission-num-Input{
+      font-size: 16px;
+    }
+  }
+  .cover-container {
+    padding: 8px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    .cover-img {
+      width: 60%;
+      max-width: 500px;
+    }
+  }
+  .cover {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+     p {
+       color: #323233;
+       font-size: 14px;
+       line-height: 20px;
+       .cover-tip {
+         font-size: 12px;
+         line-height: 20px;
+         color: #B2B2B2;
+         margin-left: 10px;
+       }
+    }
+    .cover-upload{
+      .cover-add {
+        margin-top: 10px;
+      }
+    }
+  }
+  .tag {
+    p {
+      font-size: 14px;
+      color: #323233;
+      text-align: left;
+      padding: 14px 0 0 20px;
+    }
+    &-content {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      padding: 8px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+    }
+  }
+  .radio{
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    padding: 8px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    .save-type {
+      float: left;
+      text-align: left;
+    }
+  }
+
+  .is-original {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .edit-title {
+    width: 100%;
+    padding: 14px 10px;
+    border: none;
+    outline: none;
+    border-radius: 0;
+    background: transparent;
+    background-color: #fff;
+    color: #000;
+    border-top: 1px solid #f1f1f1;
+    box-sizing: border-box;
+    font-size: 26px;
+    font-weight: bold;
+    position: fixed;
+    top: 45px;
+    left: 0;
+    right: 0; 
+    z-index: 99;
+  }
+.my-checkbox {
+  height: 20px;
+  width: 20px;
+  border: 1px solid #1C9CFE;
+  border-radius: 4px;
+  &-active {
+    background-color: #1C9CFE;
+    height: 20px;
+    width: 20px;
+    padding: 2px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.my-radio {
+  height: 20px;
+  width: 20px;
+  border: 1px solid #1C9CFE;
+  border-radius: 50%;
+  box-sizing: border-box;
+  position: relative;
+  .radio-active {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background-color: #1C9CFE;
+  }
+}
