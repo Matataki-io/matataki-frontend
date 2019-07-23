@@ -63,6 +63,9 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+    },
+    styleResources: {
+      less: './assets/css/global.less'
     }
   },
   server: {

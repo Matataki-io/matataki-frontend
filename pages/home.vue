@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    home
+    <h1>home</h1>
     <button>登录</button>
     <BaseModalForSignIn />
   </div>
@@ -26,5 +26,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less' scoped>
+h1 {
+  color: @yellow;
+  //.subinfo-font();
+}
 </style>
