@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <h1>home</h1>
+    <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">{{tag.name}}</el-tag>
     <button>登录</button>
     <BaseModalForSignIn />
   </div>
@@ -13,7 +14,15 @@ export default {
     BaseModalForSignIn
   },
   data() {
-    return {}
+    return {
+      tags: [
+        { name: '标签一', type: '' },
+        { name: '标签二', type: 'success' },
+        { name: '标签三', type: 'info' },
+        { name: '标签四', type: 'warning' },
+        { name: '标签五', type: 'danger' }
+      ]
+    }
   },
   async mounted() {
     const data = await this.$axios.$get(

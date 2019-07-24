@@ -17,6 +17,7 @@
     "@scatterjs/core": "^2.7.31",
     "@scatterjs/eosjs": "^1.5.14",
     "cyanobridge": "^0.1.0",
+    "element-ui": "^2.10.1",
     "eosjs": "^16.0.9",
     "js-base64": "^2.5.1",
     "nuxt": "^2.0.0",
