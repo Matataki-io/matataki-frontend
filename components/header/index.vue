@@ -3,14 +3,16 @@
     <div class="home-head mw">
       <div class="head-flex">
         <a href="/"><img class="logo" src="@/assets/img/hone_logo.png" alt="logo"></a>
-        <a
+        <!-- nav -->
+        <nuxt-link
           v-for="(item, index) in nav"
           :key="index"
           class="nav"
           :class="nowIndex === index && 'active'"
-          href="javascript:void(0);"
-          @click="$emit('toggleNav', index)"
-        >{{ item }}</a>
+          :to="item.url"
+        >
+          {{ item.title }}
+        </nuxt-link>
       </div>
 
       <div class="head-flex">
@@ -40,10 +42,6 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'HomeHead',
   props: {
-    nav: {
-      type: Array,
-      default: () => ['文章', '商品']
-    },
     nowIndex: {
       type: Number,
       default: 0
@@ -51,6 +49,16 @@ export default {
   },
   data() {
     return {
+      nav: [
+        {
+          title: '文章',
+          url: '/'
+        },
+        {
+          title: '商品',
+          url: '/commodity'
+        }
+      ],
       avatar: ''
     }
   },

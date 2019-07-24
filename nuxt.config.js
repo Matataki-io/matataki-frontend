@@ -44,7 +44,8 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~/plugins/combined-inject.js',
-    '~/plugins/element-ui'
+    '~/plugins/element-ui',
+    '~/plugins/clampy.js'
   ],
   /*
   ** Nuxt.js modules

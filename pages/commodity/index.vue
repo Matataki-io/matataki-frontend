@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="commodity">
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">
       <template v-for="(item, index) in [1,2,3,4,5]">
@@ -7,24 +7,33 @@
           <recommendSlide :key="index" />
         </template>
         <template v-else>
-          <articleCard :key="index" :type-index="0" :card-type="'recommend-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'recommend-card'" />
         </template>
       </template>
     </div>
 
     <div class="container mw">
-      <div class="main article">
+      <div class="main commodity">
         <div class="main-nav">
-          <span class="active">最新发布</span>
-          <span>最新投资</span>
+          <span class="active">最新商品</span>
+          <span>最热商品</span>
         </div>
-        <articleCard :key="index" :type-index="0" :card-type="'article-card'" />
-        <articleCard :key="index" :type-index="0" :card-type="'article-card'" />
-        <articleCard :key="index" :type-index="0" :card-type="'article-card'" />
+        <div class="commodity-card-content">
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+          <articleCard :key="index" :type-index="1" :card-type="'commodity-card'" />
+        </div>
       </div>
-      <div class="tags article">
-        <span>文章标签</span>
-        <tags class="tags-container" :type-index="0" />
+      <div class="tags commodity">
+        <span>商品标签</span>
+        <tags class="tags-container" :type-index="1" />
       </div>
     </div>
 
@@ -35,7 +44,7 @@
 </template>
 
 <script>
-import recommendSlide from '~/components/recommendSlide/index.vue'
+import recommendSlide from '@/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import tags from '@/components/tags/index.vue'
 
