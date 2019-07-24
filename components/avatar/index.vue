@@ -7,7 +7,7 @@
     }"
   >
     <img v-if="src" :src="src" alt="avatar">
-    <svg-icon v-else icon-class="avatar" class="icon-avatar" />
+    <!-- <svg-icon v-else icon-class="avatar" class="icon-avatar" /> -->
   </div>
 </template>
 

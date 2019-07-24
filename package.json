@@ -17,6 +17,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@scatterjs/core": "^2.7.31",
     "@scatterjs/eosjs": "^1.5.14",
+    "axios": "^0.19.0",
     "cyanobridge": "^0.1.0",
     "element-ui": "^2.10.1",
     "eosjs": "^16.0.9",
@@ -24,7 +25,8 @@
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.0.0",
-    "ontology-dapi": "^0.4.9"
+    "ontology-dapi": "^0.4.9",
+    "vue-content-loader": "^0.2.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",

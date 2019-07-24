@@ -1,4 +1,4 @@
-export default function ({ $axios, redirect }) {
+export default function ({ $axios, redirect }, inject) {
   $axios.defaults.baseURL = process.env.VUE_APP_API
   $axios.setHeader('x-access-token', '123')
   $axios.onRequest((config) => {

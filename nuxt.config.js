@@ -45,7 +45,7 @@ export default {
     '~/plugins/axios',
     '~/plugins/combined-inject.js',
     '~/plugins/element-ui',
-    '~/plugins/clampy.js'
+    '~/plugins/vue_plugins.js'
   ],
   /*
   ** Nuxt.js modules

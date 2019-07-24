@@ -8,7 +8,7 @@
           v-for="(item, index) in nav"
           :key="index"
           class="nav"
-          :class="nowIndex === index && 'active'"
+          :class="$route.path === item.url && 'active'"
           :to="item.url"
         >
           {{ item.title }}
@@ -41,12 +41,6 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'HomeHead',
-  props: {
-    nowIndex: {
-      type: Number,
-      default: 0
-    }
-  },
   data() {
     return {
       nav: [

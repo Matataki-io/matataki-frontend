@@ -6,39 +6,42 @@
     </div>
     <div class="article-title">
       <h3 v-clampy="2">
-        LINK IDOL今日强势集结！区块链偶像风席卷全球，明日之星在此诞生！ LINK
-        IDOL今日强势集结！区块链偶像风席卷全球，明日之星在此诞生！ LINK
-        IDOL今日强势集结！区块链偶像风席卷全球，明日之星在此诞生！
+        {{ card && card.title }}
+        {{ card && (card.title || '') }}
       </h3>
     </div>
     <!-- 只有文章卡才会有内容 -->
     <p v-if="cardType === 'article-card'" v-clampy="3" class="content">
-      扎克伯格的大一统野心。这一次，facebook，终于超越，直接上了 it 的 3.0。 我去年年底开始说，大
-      app 整体转型上链，会把数字货币用户，从区区 2000 万，放大 100 倍，从而为数字货币市值会提升 100
-      的平方（10000 倍），感谢 facebook！可惜没机会成为一个节点。根据最新的新闻，GlobalCoin 只是…
-      的平方（10000 倍），感谢 facebook！可惜没机会成为一个节点。根据最新的新闻，GlobalCoin 只是…
-      的平方（10000 倍），感谢 facebook！可惜没机会成为一个节点。根据最新的新闻，GlobalCoin 只是…
-      的平方（10000 倍），感谢 facebook！可惜没机会成为一个节点。根据最新的新闻，GlobalCoin 只是…
+      {{ card && (card.title || '') }}
     </p>
     <div class="des">
       <span class="title">最新咨询</span>
       <span class="empty" />
       <!-- 文章卡阅读和投资 -->
       <template v-if="typeIndex === 0">
-        <span class="data">123阅读</span>
-        <span class="data">12投资</span>
+        <span class="data">
+          {{ card && (card.read === 0 ? 0 : card.read) }}
+          阅读</span>
+        <span class="data">
+          {{ card && (card.ups === 0 ? 0 : card.ups) }}
+          投资</span>
       </template>
       <!-- 商品卡销量和金额 -->
       <template v-else>
-        <span class="data">123销量</span>
-        <span class="data money">0.5EOS/份</span>
+        <span class="data">
+          {{ card && (card.sale === 0 ? 0 : card.sale) }}
+          销量</span>
+        <span class="data money">
+          {{ cardEosValue }}EOS/份</span>
       </template>
     </div>
     <div class="line" />
     <div class="info">
       <div class="author">
         <avatar class="avatar" :size="'30px'" :src="avatarImg" />
-        <span class="username">Andromeda</span>
+        <span class="username">
+          {{ card && (card.nickname || card.author || '') }}
+        </span>
       </div>
       <div class="date">
         1小时
@@ -50,6 +53,7 @@
 <script>
 
 import avatar from '@/components/avatar/index.vue'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   name: 'ArticleCard',
@@ -76,12 +80,17 @@ export default {
   },
   computed: {
     cover() {
-      // return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
-      return 'https://image.gcores.com/440e5a82-1c1b-47ff-9fa3-8a0bd7f55a76.jpg?x-oss-process=image/quality,q_90/resize,limit_1,m_lfit,w_3000,h_3000'
+      console.log(this.card)
+      if (!this.card) return ''
+      return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
     },
     avatarImg() {
-      // return this.card.avatar ? this.$backendAPI.getAvatarImage(this.card.avatar) : ''
-      return 'https://image.gcores.com/4d0a45bb-0802-4d78-b7ac-08c2613e650d.gif?x-oss-process=image/resize,limit_1,m_fill,w_88,h_88/bright,-20'
+      if (!this.card) return ''
+      return this.card.avatar ? this.$backendAPI.getAvatarImage(this.card.avatar) : ''
+    },
+    cardEosValue() {
+      if (!this.card) return 0
+      return precision(this.card.eosprice, 'eos')
     }
   }
 }
