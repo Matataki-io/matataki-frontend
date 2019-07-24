@@ -1,5 +1,5 @@
 /* eslint-disable */
-import request from './request'
+import request from '@/utils/request'
 import endpoint from './endpoint'
 
 export default {
