@@ -2,13 +2,9 @@
   <div class="home">
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">
-      <template v-for="(item, index) in [1,2,3,4,5]">
-        <template v-if="index === 0">
-          <recommendSlide :key="index" />
-        </template>
-        <template v-else>
-          <articleCard :key="index" :type-index="0" :card-type="'recommend-card'" />
-        </template>
+      <template v-for="(item, index) in recommendList">
+        <recommendSlide v-if="index === 0" :key="index" :card="item" /></recommendSlide>
+        <articleCard v-else :key="index" :type-index="0" :card-type="'recommend-card'" :card="item" />
       </template>
     </div>
 
@@ -18,19 +14,24 @@
           <span class="active">最新发布</span>
           <span>最新投资</span>
         </div>
-        <articleCard :key="index" :type-index="0" :card-type="'article-card'" />
-        <articleCard :key="index" :type-index="0" :card-type="'article-card'" />
-        <articleCard :key="index" :type-index="0" :card-type="'article-card'" />
+        <articleCard :type-index="0" :card-type="'article-card'" />
+        <articleCard :type-index="0" :card-type="'article-card'" />
+        <articleCard :type-index="0" :card-type="'article-card'" />
+        <articleCard :type-index="0" :card-type="'article-card'" />
+        <articleCard :type-index="0" :card-type="'article-card'" />
+        <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
+        <div class="load-more-button">
+          <button class="load-more">
+            查看更多
+          </button>
+        </div>
+        <!-- end -->
       </div>
       <div class="tags article">
         <span>文章标签</span>
         <tags class="tags-container" :type-index="0" />
       </div>
     </div>
-
-    <button class="load-more">
-      查看更多
-    </button>
   </div>
 </template>
 
@@ -38,6 +39,8 @@
 import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import tags from '@/components/tags/index.vue'
+
+import { test } from '@/api/async_api.js'
 
 export default {
   components: {
@@ -48,114 +51,35 @@ export default {
   data() {
     return {
       showSidebar: false,
-      nowIndex: 0
+      nowIndex: 0,
+      recommendList: []
+    }
+  },
+  async asyncData({ $axios }) {
+    const res = await test($axios, 'https://apitest.smartsignature.io/posts/recommend?channel=1')
+    console.log(111, res)
+    return { recommendList: res.data }
+  },
+  created() {
+    // this.postsRecommend(1)
+  },
+  methods: {
+    // 获取推荐文章或者商品
+    async postsRecommend(channel) {
+      await this.$backendAPI
+        .postsRecommend(channel)
+        .then((res) => {
+          if (res.status === 200 && res.data.code === 0) {
+            this.recommendList = res.data.data
+          } else {
+            console.log('获取推荐失败')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
 </script>
-
-<style lang="less" scoped>
-.home {
-  min-height: 100%;
-}
-
-.now-title {
-  font-size:20px;
-  font-weight:bold;
-  color:rgba(0,0,0,1);
-  text-align: left;
-  margin: 0 0 0 20px;
-  &.nav-hide {
-    padding-top: 50px;
-  }
-}
-
-.home-content {
-  padding: 60px 0 0 0;
-}
-
-// recommend
-.recommend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 60px;
-}
-
-.container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 80px;
-  .spanStyle{
-    font-size:24px;
-    color:rgba(0,0,0,1);
-    line-height:33px;
-    cursor: pointer;
-    transition: all .3s;
-  }
-  .main {
-    display: flex;
-    flex-direction: column;
-    &.article{
-      max-width: 787px;
-      flex: 0 0 787px;
-    }
-    &.commodity{
-      max-width: 890px;
-      flex: 0 0 890px;
-      .commodity-card-content {
-        display: flex;
-        flex-wrap: wrap;
-      }
-    }
-  }
-  .tags {
-    &.article{
-      max-width: 374px;
-      flex: 0 0 374px;
-    }
-    &.commodity{
-      max-width: 270px;
-      flex: 0 0 270px;
-    }
-    &-container {
-      margin-top: 40px;
-      background: #fff;
-      border-radius: 10px;
-      padding: 10px 20px;
-    }
-    span {
-      .spanStyle();
-      font-weight:600;
-    }
-  }
-
-  .main-nav {
-    span {
-      .spanStyle();
-      font-weight:400;
-      &:nth-of-type(1){
-        margin-right: 48px;
-      }
-      &.active {
-      font-weight:600;
-      }
-    }
-  }
-}
-
-.load-more {
-  width: 300px;
-  height: 60px;
-  background: #000000;
-  border-radius: 10px;
-  text-align: center;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 28px;
-  margin: 120px auto;
-  display: block;
-  cursor: pointer;
-}
-</style>
+<style lang="less" scoped src="./index.less"></style>

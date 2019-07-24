@@ -2,7 +2,7 @@
   <div class="slide">
     <img
       v-if="cover"
-      src="https://image.gcores.com/6aea3b43-cd75-4476-ba01-bbf7323f6376.jpg?x-oss-process=image/quality,q_90/resize,limit_1,m_lfit,w_1600"
+      :src="cover"
       alt="cover"
     >
   </div>
@@ -18,8 +18,7 @@ export default {
   },
   computed: {
     cover() {
-      // return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
-      return 1
+      return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
     }
   }
 }

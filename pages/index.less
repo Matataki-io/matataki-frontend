@@ -1,0 +1,108 @@
+// 这里是index commodity的style
+.home {
+  min-height: 100%;
+}
+
+.now-title {
+  font-size:20px;
+  font-weight:bold;
+  color:rgba(0,0,0,1);
+  text-align: left;
+  margin: 0 0 0 20px;
+  &.nav-hide {
+    padding-top: 50px;
+  }
+}
+
+.home-content {
+  .minHeight();
+}
+
+// recommend
+.recommend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+  .spanStyle{
+    font-size:24px;
+    color:rgba(0,0,0,1);
+    line-height:33px;
+    cursor: pointer;
+    transition: all .3s;
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+    &.article{
+      max-width: 787px;
+      flex: 0 0 787px;
+    }
+    &.commodity{
+      max-width: 890px;
+      flex: 0 0 890px;
+      .commodity-card-content {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+  .tags {
+    &.article{
+      max-width: 374px;
+      flex: 0 0 374px;
+    }
+    &.commodity{
+      max-width: 270px;
+      flex: 0 0 270px;
+    }
+    &-container {
+      margin-top: 40px;
+      background: #fff;
+      border-radius: @borderRadius10;
+      padding: 10px 20px;
+    }
+    span {
+      .spanStyle();
+      font-weight:600;
+    }
+  }
+
+  .main-nav {
+    span {
+      .spanStyle();
+      font-weight:400;
+      &:nth-of-type(1){
+        margin-right: 48px;
+      }
+      &.active {
+      font-weight:600;
+      }
+    }
+  }
+}
+
+.load-more-button {
+  display: flex;
+  justify-content: flex-end;
+}
+.load-more {
+  width: 300px;
+  height: 60px;
+  background: #000000;
+  border-radius: @borderRadius10;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  margin: 120px 0;
+  display: block;
+  cursor: pointer;
+}

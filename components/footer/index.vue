@@ -52,6 +52,7 @@ export default {}
       color: rgba(178, 178, 178, 1);
       line-height: 22px;
       margin-left: 40px;
+      text-decoration: none;
       &:hover {
         color: #fff;
       }
