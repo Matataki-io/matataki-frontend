@@ -33,7 +33,10 @@ export default {
   ** Global CSS
   */
   css: [
-    'element-ui/lib/theme-chalk/index.css'
+    'normalize.css',
+    'element-ui/lib/theme-chalk/index.css',
+    './assets/css/index.less'
+
   ],
   /*
   ** Plugins to load before mounting the App
@@ -49,8 +52,12 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/style-resources'
   ],
+  styleResources: {
+    less: './assets/css/global.less'
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -65,10 +72,8 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-    },
-    styleResources: {
-      less: './assets/css/global.less'
     }
+
   },
   server: {
     port: 8080, // default: 3000

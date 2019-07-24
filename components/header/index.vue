@@ -42,7 +42,7 @@ export default {
   props: {
     nav: {
       type: Array,
-      default: () => []
+      default: () => ['文章', '商品']
     },
     nowIndex: {
       type: Number,
@@ -96,6 +96,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  text-decoration: none;
   .head-flex {
     display: flex;
     justify-content: space-between;
@@ -132,6 +133,7 @@ export default {
     padding: 6px 12px;
     background: #000;
     border-radius: 6px;
+    text-decoration: none;
   }
   .nav {
     font-size: 20px;
@@ -141,6 +143,7 @@ export default {
     text-align: center;
     transition: all 0.18s ease-in-out;
     font-weight: 500;
+    text-decoration: none;
     &.active {
       color: rgba(0, 0, 0, 1);
     }

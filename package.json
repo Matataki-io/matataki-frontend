@@ -20,12 +20,14 @@
     "element-ui": "^2.10.1",
     "eosjs": "^16.0.9",
     "js-base64": "^2.5.1",
+    "normalize.css": "^8.0.1",
     "nuxt": "^2.0.0",
     "ontology-dapi": "^0.4.9"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
     "@nuxtjs/eslint-module": "^0.0.1",
+    "@nuxtjs/style-resources": "^0.1.2",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.15.1",
     "eslint-config-standard": ">=12.0.0",
