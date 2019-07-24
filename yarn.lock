@@ -630,12 +630,10 @@
 "@clampy-js/clampy@^1.0.9":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@clampy-js/clampy/-/clampy-1.0.10.tgz#8161e7a6460b47d67b5ffaad47f41a23f3964f2b"
-  integrity sha512-ua5oFDKJaYhGomr2KkjIE+J7Lmcc0nb9aMD/AMVLMSnxTRYzYNcHJNMvLeWSgUxK83EdgXqRCsrtDrDugdttEw==
 
 "@clampy-js/vue-clampy@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@clampy-js/vue-clampy/-/vue-clampy-1.0.6.tgz#c170868e9406f1255e1cee7304f31a9d90229a5e"
-  integrity sha512-dJxUB5qVPaX61Ov9yHVUfmTqwxS4SH69CxRsPdN4skZR5z+JcfAfj7nejEVWfQON5+ApKPKFnk+11SqI2/BKqA==
   dependencies:
     "@clampy-js/clampy" "^1.0.9"
     vue "^2.0.0"
@@ -4846,14 +4844,9 @@ lodash.uniqueid@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npm.taobao.org/lodash.uniqueid/download/lodash.uniqueid-4.0.1.tgz#3268f26a7c88e4f4b1758d679271814e31fa5b26"
 
-lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5:
+lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.15"
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-
-lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 long@~3:
   version "3.2.0"

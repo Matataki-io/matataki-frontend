@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <gHeader></gHeader>
     <img class="TitleImage" src="https://pic4.zhimg.com/696bec301f40b92640a01732136463e3_1200x500.jpg" alt="详解代理自动配置 PAC">
     <article>
       <header class="Post-Header">
@@ -23,22 +22,19 @@
         </div>
       </header>
     </article>
-    <div>footer</div>
   </div>
 </template>
 
 <script>
-import gHeader from '~/components/header/index.vue'
 export default {
   components: {
-    gHeader
   }
 }
 </script>
 
 <style lang="less" scoped>
 .main {
-  padding-bottom: 46px;
+  margin-top: 80px;
 }
 @width: 690px;
 .TitleImage {
