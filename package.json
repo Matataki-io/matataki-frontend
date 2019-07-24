@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@scatterjs/core": "^2.7.31",
     "@scatterjs/eosjs": "^1.5.14",
     "cyanobridge": "^0.1.0",
