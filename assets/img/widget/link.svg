@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="98px" height="98px" viewBox="0 0 98 98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>link</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="分享弹窗" transform="translate(-207.000000, -346.000000)">
+            <g id="link" transform="translate(207.500000, 346.000000)">
+                <circle id="椭圆形备份" fill="#FFFFFF" cx="48.75" cy="48.75" r="48.75"></circle>
+                <g id="icon_link" transform="translate(22.500000, 18.000000)">
+                    <g id="资源-2" transform="translate(9.000000, 11.000000)">
+                        <polygon id="路径" fill="#32C5FF" fill-rule="nonzero" points="22 29.5854036 24.3111407 38 37 4"></polygon>
+                        <path d="M24.1934426,6.91967213 L23.8065574,7.08032787" id="路径" stroke="#333333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <polyline id="路径" stroke="#333333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="27.4441237 5.25684228 40 0 23.1950515 40 19.7212371 20.2087614 17.1810309 19.7616504 12.9319588 19.0153694 0 16.7469384 19.7212371 8.48853456"></polyline>
+                        <path d="M28,12 L20,19" id="路径" stroke="#333333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                    <circle id="椭圆形备份-2" fill="#32C5FF" transform="translate(17.910714, 49.574510) rotate(4.000000) translate(-17.910714, -49.574510) " cx="17.9107137" cy="49.5745101" r="1.5"></circle>
+                    <circle id="椭圆形" fill="#32C5FF" transform="translate(9.549577, 39.600981) scale(-1, -1) rotate(4.000000) translate(-9.549577, -39.600981) " cx="9.54957692" cy="39.6009808" r="1.5"></circle>
+                    <circle id="椭圆形备份-3" fill="#1C9CFE" transform="translate(12.448596, 45.500000) scale(-1, -1) rotate(4.000000) translate(-12.448596, -45.500000) " cx="12.4485961" cy="45.5" r="1.5"></circle>
+                    <g id="编组" transform="translate(12.448596, 12.000000) rotate(35.000000) translate(-12.448596, -12.000000) translate(3.948596, 4.000000)" fill="#32C5FF">
+                        <rect id="矩形备份-2" transform="translate(8.730811, 13.449593) scale(-1, -1) rotate(-270.000000) translate(-8.730811, -13.449593) " x="6.23081084" y="11.9495935" width="5" height="3" rx="1.5"></rect>
+                        <rect id="矩形备份-2" transform="translate(3.500000, 9.649187) scale(-1, -1) rotate(-198.000000) translate(-3.500000, -9.649187) " x="1" y="8.14918694" width="5" height="3" rx="1.5"></rect>
+                        <rect id="矩形备份-2" transform="translate(5.497992, 3.500000) scale(-1, -1) rotate(-126.000000) translate(-5.497992, -3.500000) " x="2.99799195" y="2" width="5" height="3" rx="1.5"></rect>
+                        <rect id="矩形备份-2" transform="translate(11.963630, 3.500000) scale(-1, -1) rotate(-54.000000) translate(-11.963630, -3.500000) " x="9.46362973" y="2" width="5" height="3" rx="1.5"></rect>
+                        <rect id="矩形备份-2" transform="translate(13.961622, 9.649187) scale(-1, -1) rotate(18.000000) translate(-13.961622, -9.649187) " x="11.4616217" y="8.14918694" width="5" height="3" rx="1.5"></rect>
+                    </g>
+                    <rect id="矩形备份-2" fill="#32C5FF" transform="translate(19.167671, 39.801900) rotate(-221.000000) translate(-19.167671, -39.801900) " x="14.1676708" y="38.3019" width="10" height="3" rx="1.5"></rect>
+                    <rect id="矩形备份-3" fill="#32C5FF" transform="translate(13.819459, 35.772212) rotate(-221.000000) translate(-13.819459, -35.772212) " x="11.3194586" y="34.2722119" width="5" height="3" rx="1.5"></rect>
+                    <rect id="矩形备份-4" fill="#32C5FF" transform="translate(22.179996, 45.863280) rotate(-221.000000) translate(-22.179996, -45.863280) " x="19.6799958" y="44.3632798" width="5" height="3" rx="1.5"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
