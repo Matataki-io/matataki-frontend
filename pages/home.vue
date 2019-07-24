@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import BaseModalForSignIn from '@/components/BaseModalForSignIn'
+/* eslint-disable */
+import BaseModalForSignIn from "@/components/BaseModalForSignIn";
 export default {
   components: {
     BaseModalForSignIn
@@ -16,23 +17,23 @@ export default {
   data() {
     return {
       tags: [
-        { name: '标签一', type: '' },
-        { name: '标签二', type: 'success' },
-        { name: '标签三', type: 'info' },
-        { name: '标签四', type: 'warning' },
-        { name: '标签五', type: 'danger' }
+        { name: "标签一", type: "" },
+        { name: "标签二", type: "success" },
+        { name: "标签三", type: "info" },
+        { name: "标签四", type: "warning" },
+        { name: "标签五", type: "danger" }
       ]
-    }
+    };
   },
   async mounted() {
-    const data = await this.$axios.$get(
+    /* const data = await this.$axios.$get(
       `${this.$API.wx}?url=${window.location.url}`
-    )
-    console.log(data)
+    ) */
+    const data = await this.$API.wx(window.location.url)
+    console.log(data);
   },
-  methods: {
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang='less' scoped>

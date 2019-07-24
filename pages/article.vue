@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <div>header</div>
+  <div class="main">
     <img class="TitleImage" src="https://pic4.zhimg.com/696bec301f40b92640a01732136463e3_1200x500.jpg" alt="详解代理自动配置 PAC">
     <article>
       <header class="Post-Header">
@@ -23,7 +22,6 @@
         </div>
       </header>
     </article>
-    <div>footer</div>
   </div>
 </template>
 
@@ -35,6 +33,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.main {
+  margin-top: 80px;
+}
 @width: 690px;
 .TitleImage {
   display: block;

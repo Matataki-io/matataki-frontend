@@ -1,14 +1,11 @@
-const API = {
-  publish: '/publish',
-  edit: '/edit',
-  order: '/order',
-  support: '/support',
-  follow: '/follow',
-  unfollow: '/unfollow',
-  userStats: '/user/stats',
-  wx: '/wx/sign',
-  ifpsUpload: 'ipfs/upload',
-  sendPost: 'ipfs/addJSON',
-  auth: '/auth'
+/* eslint-disable */
+import request from './request'
+import endpoint from './endpoint'
+
+export default {
+  async wx(url) {
+    return request.get(
+      `${endpoint.wx}?url=${url}`
+    )
+  }
 }
-export default API
