@@ -40,6 +40,8 @@ import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import tags from '@/components/tags/index.vue'
 
+import { test } from '@/api/async_api.js'
+
 export default {
   components: {
     recommendSlide,
@@ -53,8 +55,13 @@ export default {
       recommendList: []
     }
   },
+  async asyncData({ $axios }) {
+    const res = await test($axios, 'https://apitest.smartsignature.io/posts/recommend?channel=1')
+    console.log(111, res)
+    return { recommendList: res.data }
+  },
   created() {
-    this.postsRecommend(1)
+    // this.postsRecommend(1)
   },
   methods: {
     // 获取推荐文章或者商品

@@ -6,7 +6,6 @@
     </div>
     <div class="article-title">
       <h3 v-clampy="2">
-        {{ card && card.title }}
         {{ card && (card.title || '') }}
       </h3>
     </div>

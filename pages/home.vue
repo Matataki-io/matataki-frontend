@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <h1>home</h1>
-    <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">{{tag.name}}</el-tag>
+    <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">
+      {{ tag.name }}
+    </el-tag>
     <button>登录</button>
     <BaseModalForSignIn />
   </div>
@@ -37,6 +39,9 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.container {
+  .minHeight();
+}
 h1 {
   color: @yellow;
   //.subinfo-font();

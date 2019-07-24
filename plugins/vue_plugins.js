@@ -2,6 +2,7 @@ import Vue from 'vue'
 import clampy from '@clampy-js/vue-clampy'
 import { ContentLoader } from 'vue-content-loader'
 Vue.use(clampy)
+
 Vue.component(ContentLoader)
 
 // directives 未使用
