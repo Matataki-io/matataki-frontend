@@ -20,6 +20,7 @@
         </div>
       </header>
     </article>
+    <CommentList :signId="article.id" :type="article.channel_id" class="commentlist"></CommentList>
   </div>
 </template>
 
@@ -29,6 +30,7 @@ import 'moment/locale/zh-cn'
 import { xssFilter } from '@/utils/xss'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
+import CommentList from '@/components/comment/List'
 export default {
   async asyncData({ $axios, route }) {
     const hashOrId = route.params.id
@@ -48,6 +50,7 @@ export default {
     }
   },
   components: {
+    CommentList
   },
   mounted() {
     this.setAvatar()
@@ -88,6 +91,10 @@ export default {
   margin-top: 80px;
 }
 @width: 690px;
+.commentlist {
+  width: @width;
+  margin: 0 auto;
+}
 .TitleImage {
   display: block;
   margin: 16px auto 0;
