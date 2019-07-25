@@ -1,4 +1,5 @@
 /* eslint-disable */
+import moment from 'moment'
 export default {
   setCookie(name, value, days = 1) {
     let d = new Date();
@@ -20,5 +21,15 @@ export default {
       let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
+  },
+  isNDaysAgo(n, time) {
+    const nowTime = moment()
+      .subtract(n, 'days')
+      .format('YYYY-MM-DD')
+    const timeFormat = moment(time).format('YYYY-MM-DD')
+    return moment(nowTime).isAfter(timeFormat)
+  },
+  isNull(v) {
+    return v === '' || v === null || v === undefined
   }
 };

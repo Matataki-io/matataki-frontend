@@ -4,7 +4,7 @@ export default function ({ $axios, redirect }, inject) {
     console.log('Making request to ' + config.url)
   })
   $axios.onResponse((res) => {
-    return res
+    return res.data
   })
   $axios.onError((error) => {
     const code = parseInt(error.response && error.response.status)

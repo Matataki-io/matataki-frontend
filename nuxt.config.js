@@ -45,7 +45,8 @@ export default {
     '~/plugins/axios',
     '~/plugins/combined-inject.js',
     '~/plugins/element-ui',
-    '~/plugins/vue_plugins.js'
+    '~/plugins/vue_plugins.js',
+    { src: '@/plugins/vue-mavon-editor', ssr: false }
   ],
   /*
   ** Nuxt.js modules

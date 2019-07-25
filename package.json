@@ -24,10 +24,14 @@
     "eosjs": "^16.0.9",
     "js-base64": "^2.5.1",
     "lodash": "^4.17.15",
+    "markdown-it": "^9.0.1",
+    "mavon-editor": "^2.7.5",
+    "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.0.0",
     "ontology-dapi": "^0.4.9",
-    "vue-content-loader": "^0.2.2"
+    "vue-content-loader": "^0.2.2",
+    "xss": "^1.0.6"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
