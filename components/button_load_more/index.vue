@@ -6,6 +6,10 @@
 <script>
 export default {
   props: {
+    typeIndex: {
+      type: Number,
+      required: true
+    },
     // 传进来的params
     params: {
       type: Object,
@@ -25,7 +29,7 @@ export default {
   },
   created() {
     this.getLoadMore(this.apiUrl, this.params)
-    console.log(this.params, this.apiUrl)
+    // console.log(this.params, this.apiUrl)
   },
   methods: {
     loadMore() {
@@ -36,9 +40,12 @@ export default {
       if (this.isLoadEnd) return
       params.page = this.page
       const getDataSuccess = (res) => {
-        console.log(res)
+        // console.log(res)
         if (res.data.length < 20) this.isLoadEnd = true
-        this.$emit('buttonLoadMore', res.data)
+        this.$emit('buttonLoadMore', {
+          index: this.typeIndex,
+          data: res.data
+        })
       }
       const getDataFail = message => message ? console.log(message) : console.log('获取数据失败')
 

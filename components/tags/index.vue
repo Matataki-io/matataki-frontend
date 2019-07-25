@@ -2,7 +2,6 @@
   <div
     ref="tags"
     class="tags"
-    :style="tagStyleObject"
     :class="[!navShow && 'fix', !navShow && (typeIndex === 0 ? 'article' : 'commodity')]"
   >
     <tag
@@ -28,8 +27,8 @@ export default {
       default: 0
     },
     tagCards: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => []
     }
   },
   data() {

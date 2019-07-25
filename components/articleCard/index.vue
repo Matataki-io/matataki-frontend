@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     cover() {
-      console.log(this.card)
+      // console.log(this.card)
       if (!this.card) return ''
       return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
     },
@@ -90,6 +90,7 @@ export default {
     },
     cardEosValue() {
       if (!this.card) return 0
+      if (!this.card.eosprice) return 0
       return precision(this.card.eosprice, 'eos')
     }
   }
