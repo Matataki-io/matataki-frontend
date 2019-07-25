@@ -78,7 +78,7 @@ export default {
     width: 334px;
   }
   &.commodity {
-    width: 270px;
+    width: 230px;
   }
 }
 .tag {

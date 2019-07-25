@@ -6,7 +6,7 @@
     <div class="tag-icon" :style="tagStyleObject">
       <img :src="comment" alt="icon">
     </div>
-    <span>{{ tag.name }}</span>
+    <span :class="typeIndex === 1 && 'left'">{{ tag.name }}</span>
     <div
       :style="tagStyleObjectBg"
       class="full"
@@ -83,6 +83,10 @@ span {
   line-height: 28px;
   flex: 1;
   z-index: 1;
+  &.left {
+    text-align: left;
+    padding-left: 10px;
+  }
 }
 .full {
   position: absolute;

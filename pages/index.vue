@@ -52,8 +52,6 @@ export default {
   },
   data() {
     return {
-      showSidebar: false,
-      nowIndex: 0,
       recommendList: [],
       articleCardData: {
         title: '最新发布',
