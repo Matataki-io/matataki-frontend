@@ -10,7 +10,8 @@ export const state = () => ({
   userInfo: {
     accessToken: null, // 僅為通過 signIn 的
     nickname: ''
-  }
+  },
+  loginModalShow: false
 })
 
 export const getters = {
@@ -75,6 +76,9 @@ export const mutations = {
     // only idProvider now
     if (config) state.userConfig.idProvider = config.idProvider
     else state.userConfig.idProvider = null
+  },
+  setLoginModal(state, show) {
+    state.loginModalShow = show
   }
 }
 

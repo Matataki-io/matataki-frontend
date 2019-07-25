@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="30%">
+  <el-dialog :visible.sync="showModal" width="30%" :modal="true">
     <section v-if="step === 1" class="step">
       <h1 class="step-title">选择授权方式</h1>
       <div class="btns">

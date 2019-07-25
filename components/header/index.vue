@@ -33,19 +33,14 @@
         >登录</a>
       </div>
     </div>
-    <BaseModalForSignIn v-model="loginModalShow"></BaseModalForSignIn>
   </header>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BaseModalForSignIn from '@/components/BaseModalForSignIn'
 
 export default {
   name: 'HomeHead',
-  components: {
-    BaseModalForSignIn
-  },
   data() {
     return {
       nav: [
@@ -58,8 +53,7 @@ export default {
           url: '/commodity'
         }
       ],
-      avatar: '',
-      loginModalShow: false
+      avatar: ''
     }
   },
   computed: {
@@ -81,7 +75,7 @@ export default {
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
     },
     login() {
-      this.loginModalShow = true
+      this.$store.commit('setLoginModal', true)
       this.$emit('login')
     }
   }
