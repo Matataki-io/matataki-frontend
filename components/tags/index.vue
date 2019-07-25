@@ -57,7 +57,7 @@ export default {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 
-      console.log(this.$refs.tags.offsetTop, scrollTop + 100, this.oldOffSetTop)
+      // console.log(this.$refs.tags.offsetTop, scrollTop + 100, this.oldOffSetTop)
       scrollTop + 100 > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
     },
     removeHandleScroll() {

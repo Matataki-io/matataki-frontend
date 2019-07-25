@@ -11,7 +11,7 @@
     <div class="container mw">
       <div class="main article">
         <div class="main-nav">
-          <span class="active">最新发布</span>
+          <span class="active">{{ articleCardData.title }}</span>
           <span>最新投资</span>
         </div>
         <articleCard :type-index="0" :card-type="'article-card'" />
@@ -21,9 +21,7 @@
         <articleCard :type-index="0" :card-type="'article-card'" />
         <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
         <div class="load-more-button">
-          <button class="load-more">
-            查看更多
-          </button>
+          <buttonLoadMore :params="articleCardData.params" :api-url="articleCardData.apiUrl" />
         </div>
         <!-- end -->
       </div>
@@ -39,6 +37,7 @@
 import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import tags from '@/components/tags/index.vue'
+import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { test } from '@/api/async_api.js'
 
@@ -46,19 +45,28 @@ export default {
   components: {
     recommendSlide,
     articleCard,
-    tags
+    tags,
+    buttonLoadMore
   },
   data() {
     return {
       showSidebar: false,
       nowIndex: 0,
-      recommendList: []
+      recommendList: [],
+      articleCardData: {
+        title: '最新发布',
+        params: {
+          channel: 1
+        },
+        apiUrl: 'homeTimeRanking',
+        articles: []
+      }
     }
   },
   async asyncData({ $axios }) {
     const res = await test($axios, 'https://apitest.smartsignature.io/posts/recommend?channel=1')
     console.log(111, res)
-    return { recommendList: res.data }
+    return { recommendList: res.data.data }
   },
   created() {
     // this.postsRecommend(1)
