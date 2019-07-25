@@ -1,22 +1,42 @@
 <template>
-  <div
+  <!-- 暂时用文章页代替跳转地址 -->
+  <n-link
+    :to=" {name: 'p-id', params: {id: tag.id}} "
+    tag="div"
     class="tag"
     :class="typeIndex === 0 ? 'article' : 'commodity'"
   >
     <div class="tag-icon" :style="tagStyleObject">
-      <img :src="comment" alt="icon">
+      <img :src="tagIcon" alt="icon">
     </div>
     <span :class="typeIndex === 1 && 'left'">{{ tag.name }}</span>
     <div
       :style="tagStyleObjectBg"
       class="full"
     />
-  </div>
+  </n-link>
+  <!-- 暂时用文章页代替跳转地址 end -->
 </template>
 
 <script>
 import tagColor from '@/utils/tagColor'
+import bibi from '@/assets/img/tags/bibi.svg'
+import brainHole from '@/assets/img/tags/brain_hole.svg'
 import comment from '@/assets/img/tags/comment.svg'
+import display from '@/assets/img/tags/display.svg'
+import evaluation from '@/assets/img/tags/evaluation.svg'
+import evidence from '@/assets/img/tags/evidence.svg'
+import hot from '@/assets/img/tags/hot.svg'
+import iCanNotSee from '@/assets/img/tags/i_can_not_see.svg'
+import knowledge from '@/assets/img/tags/knowledge.svg'
+import otherNot from '@/assets/img/tags/other_not.svg'
+import ss from '@/assets/img/tags/ss.svg'
+import technology from '@/assets/img/tags/technology.svg'
+
+import game from '@/assets/img/tags/game.svg'
+import ticket from '@/assets/img/tags/ticket.svg'
+import digitalAssets from '@/assets/img/tags/digitalAssets.svg'
+import tool from '@/assets/img/tags/tool.svg'
 
 export default {
   props: {
@@ -36,7 +56,37 @@ export default {
       tagStyleObjectBg: {}
     }
   },
-  computed: { },
+  computed: {
+    tagIcon() {
+      const iconId = {
+        1: comment,
+        2: brainHole,
+        3: otherNot,
+        4: bibi,
+        5: evidence,
+        6: knowledge,
+        7: hot,
+        8: display,
+        9: evaluation,
+        10: iCanNotSee,
+        11: technology,
+        12: ss,
+        13: technology,
+        14: technology,
+        15: technology,
+        16: technology,
+        17: technology,
+        18: technology,
+        19: technology,
+        20: technology,
+        101: ticket,
+        102: game,
+        103: digitalAssets,
+        104: tool
+      }
+      return iconId[this.tag.id]
+    }
+  },
   created() {
     this.tagStyleObject = {
       backgroundColor: tagColor()[this.tag.id] + 'c7'

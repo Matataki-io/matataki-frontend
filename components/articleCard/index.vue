@@ -1,6 +1,6 @@
 <template>
   <!-- 区分那种卡 -->
-  <nuxt-link :to="{path: '/article', params: card.id}" tag="div" class="article" :class="cardType">
+  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="article" :class="cardType">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
       <img v-else src="@/assets/img/article_bg.svg" alt="cover">
@@ -15,7 +15,16 @@
       {{ card && (card.short_content || '') }}
     </p>
     <div class="des">
-      <span class="title">最新咨询</span>
+      <!-- 暂时用文章页代替跳转地址 -->
+      <n-link
+        :to=" {name: 'p-id', params: {id: tagId}} "
+        tag="span"
+        class="title"
+      >
+        {{ tagName }}
+      </n-link>
+      <!-- 暂时用文章页代替跳转地址 end -->
+
       <span class="empty" />
       <!-- 文章卡阅读和投资 -->
       <template v-if="typeIndex === 0">
@@ -37,17 +46,23 @@
     </div>
     <div class="line" />
     <div class="info">
-      <div class="author">
+      <!-- 暂时用文章页代替跳转地址 -->
+      <n-link
+        :to=" {name: 'p-id', params: {id: Uid}} "
+        tag="div"
+        class="author"
+      >
         <avatar class="avatar" :size="'30px'" :src="avatarImg" />
         <span class="username">
           {{ card && (card.nickname || card.author || '') }}
         </span>
-      </div>
+      </n-link>
+      <!-- 暂时用文章页代替跳转地址 end -->
       <div class="date">
         1小时
       </div>
     </div>
-  </nuxt-link>
+  </n-link>
 </template>
 
 <script>
@@ -92,6 +107,15 @@ export default {
       if (!this.card) return 0
       if (!this.card.eosprice) return 0
       return precision(this.card.eosprice, 'eos')
+    },
+    tagName() {
+      return this.card && this.card.tags.length !== 0 ? this.card.tags[0].name : ''
+    },
+    tagId() {
+      return this.card && this.card.tags.length !== 0 ? this.card.tags[0].id : ''
+    },
+    Uid() {
+      return this.card && this.card.uid
     }
   }
 }

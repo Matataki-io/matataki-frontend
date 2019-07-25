@@ -77,5 +77,7 @@ export default {
   margin: 120px 0;
   display: block;
   cursor: pointer;
+  outline: none;
+  border: none;
 }
 </style>
