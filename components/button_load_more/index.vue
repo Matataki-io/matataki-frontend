@@ -1,6 +1,6 @@
 <template>
-  <button class="load-more">
-    查看更多
+  <button v-if="!isLoadEnd" class="load-more" @click="loadMore">
+    <slot>查看更多</slot>
   </button>
 </template>
 <script>
@@ -17,20 +17,39 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isLoadEnd: false,
+      page: 1 // 分页
+    }
+  },
   created() {
     this.getLoadMore(this.apiUrl, this.params)
+    console.log(this.params, this.apiUrl)
   },
   methods: {
+    loadMore() {
+      this.page++
+      this.getLoadMore(this.apiUrl, this.params)
+    },
     async getLoadMore(url, params) {
-      console.log(this.params, this.apiUrl)
+      if (this.isLoadEnd) return
+      params.page = this.page
+      const getDataSuccess = (res) => {
+        console.log(res)
+        if (res.data.length < 20) this.isLoadEnd = true
+        this.$emit('buttonLoadMore', res.data)
+      }
+      const getDataFail = message => message ? console.log(message) : console.log('获取数据失败')
+
       // 获取数据
       try {
         const res = await this.$backendAPI.getBackendData({ url, params }, false)
-        if (res.status === 200 && res.data.code === 0) console.log(1)
-        else console.log(2)
+        if (res.status === 200 && res.data.code === 0) getDataSuccess(res.data)
+        else getDataFail(res.data.message)
       } catch (error) {
         console.log(error)
-        console.log(2)
+        getDataFail()
       }
     }
   }

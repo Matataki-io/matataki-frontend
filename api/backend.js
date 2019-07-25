@@ -322,8 +322,12 @@ const API = {
     return axiosforApiServer.post('/login/github', { code })
   },
   // 获取可用标签列表
-  async getTags() {
-    return axiosforApiServer.get('/tag/tags')
+  async getTags(type) {
+    return axiosforApiServer.get('/tag/tags', {
+      params:{
+        type
+      }
+    })
   },
   // 文章转让
   async transferOwner(from, articleId, uid) {

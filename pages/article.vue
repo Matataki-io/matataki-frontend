@@ -3,7 +3,9 @@
     <img class="TitleImage" src="https://pic4.zhimg.com/696bec301f40b92640a01732136463e3_1200x500.jpg" alt="详解代理自动配置 PAC">
     <article>
       <header class="Post-Header">
-        <h1 class="Post-Title">详解代理自动配置 PAC</h1>
+        <h1 class="Post-Title">
+          详解代理自动配置 PAC
+        </h1>
         <div class="Post-Author">
           <div class="AuthorInfo">
             <img class="Avatar" width="38" height="38" src="https://pic3.zhimg.com/d0619db8314bf89a2f909627475cc774_xs.jpg" alt="Barret李靖">
@@ -34,7 +36,7 @@ export default {
 
 <style lang="less" scoped>
 .main {
-  margin-top: 80px;
+  .minHeight();
 }
 @width: 690px;
 .TitleImage {
