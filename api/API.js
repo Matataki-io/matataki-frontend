@@ -19,4 +19,9 @@ export default {
   async getUser(id) {
     return request.get(`/user/${id}`)
   },
+  async getComments(signid) {
+    return request.get('/comments', {
+      params: {signid}
+    })
+  }
 }
