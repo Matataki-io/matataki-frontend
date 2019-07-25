@@ -2,6 +2,7 @@ import https from 'https'
 import axios from 'axios'
 import { Base64 } from 'js-base64'
 import { toPrecision } from '@/utils/precisionConversion'
+import utils from '@/utils/utils'
 /* eslint-disable */
 // Doc : https://github.com/axios/axios
 
@@ -23,7 +24,8 @@ const axiosforApiServer = axios.create({
 // accessToken with localStorage
 export const accessTokenAPI = {
   get() {
-    const token = window.localStorage.getItem('ACCESS_TOKEN')
+    const token = utils.getCookie('ACCESS_TOKEN')
+    //const token = window.localStorage.getItem('ACCESS_TOKEN')
     if (token === 'null' || token === 'undefined') {
       this.rm()
       return this.get()
@@ -32,10 +34,12 @@ export const accessTokenAPI = {
   },
   set(token) {
     if (!token) this.rm()
-    else window.localStorage.setItem('ACCESS_TOKEN', token)
+    else utils.setCookie('ACCESS_TOKEN', token)
+    //window.localStorage.setItem('ACCESS_TOKEN', token)
   },
   rm() {
-    window.localStorage.removeItem('ACCESS_TOKEN')
+    utils.delCookie('ACCESS_TOKEN')
+    //window.localStorage.removeItem('ACCESS_TOKEN')
   },
   /*
    * 拆token，返回json对象

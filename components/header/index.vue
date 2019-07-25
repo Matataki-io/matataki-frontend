@@ -29,7 +29,7 @@
           v-else
           href="javascript:void(0);"
           class="home-head-notlogin"
-          @click="$emit('login')"
+          @click="login"
         >登录</a>
       </div>
     </div>
@@ -73,6 +73,10 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+    },
+    login() {
+      this.$store.commit('setLoginModal', true)
+      this.$emit('login')
     }
   }
 }

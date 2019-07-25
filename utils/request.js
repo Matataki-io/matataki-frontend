@@ -3,7 +3,7 @@
 
 import axios from "axios";
 import { Loading } from 'element-ui';
-import utils from '@/utils/utils'
+import utils from './utils'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
