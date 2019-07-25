@@ -197,7 +197,10 @@ export const actions = {
 
     // 成功後的處理
     commit('setAccessToken', accessToken)
-    localStorage.setItem('idProvider', state.userConfig.idProvider)
+    console.log('idProvider', state.userConfig.idProvider)
+
+    // localStorage.setItem('idProvider', state.userConfig.idProvider)
+    this.$utils.setCookie('idProvider', state.userConfig.idProvider)
     return state.userInfo.accessToken
   },
   /*
@@ -283,7 +286,8 @@ export const actions = {
     commit('setUserConfig')
     commit('setAccessToken')
     commit('setNickname')
-    localStorage.clear()
+    // localStorage.clear()
+    this.$utils.deleteAllCookies()
   },
   // data: { amount, toaddress, memo }
   async withdraw({ dispatch, getters }, data) {
