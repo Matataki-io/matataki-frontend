@@ -1,8 +1,9 @@
 <template>
   <!-- 区分那种卡 -->
-  <div class="article" :class="cardType">
+  <nuxt-link :to="{path: '/article', params: card.id}" tag="div" class="article" :class="cardType">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
+      <img v-else src="@/assets/img/article_bg.svg" alt="cover">
     </div>
     <div class="article-title">
       <h3 v-clampy="2">
@@ -11,7 +12,7 @@
     </div>
     <!-- 只有文章卡才会有内容 -->
     <p v-if="cardType === 'article-card'" v-clampy="3" class="content">
-      {{ card && (card.title || '') }}
+      {{ card && (card.short_content || '') }}
     </p>
     <div class="des">
       <span class="title">最新咨询</span>
@@ -46,7 +47,7 @@
         1小时
       </div>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -79,7 +80,7 @@ export default {
   },
   computed: {
     cover() {
-      console.log(this.card)
+      // console.log(this.card)
       if (!this.card) return ''
       return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
     },
@@ -89,6 +90,7 @@ export default {
     },
     cardEosValue() {
       if (!this.card) return 0
+      if (!this.card.eosprice) return 0
       return precision(this.card.eosprice, 'eos')
     }
   }
@@ -195,6 +197,7 @@ export default {
   line-height: 28px;
   margin: 20px 40px;
   cursor: pointer;
+  word-break: break-all;
 }
 
 .des {

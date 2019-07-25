@@ -3,7 +3,9 @@
     <img class="TitleImage" :src="cover" alt="">
     <article>
       <header class="Post-Header">
-        <h1 class="Post-Title">{{article.title}}</h1>
+        <h1 class="Post-Title">
+          {{ article.title }}
+        </h1>
         <div class="Post-Author">
           <div class="AuthorInfo">
             <img class="Avatar" width="38" height="38" :src="avatar" alt="">
@@ -15,12 +17,15 @@
           </div>
         </div>
         <div class="Post-RichTextContainer">
-          <div class="Post-RichText markdown-body" v-html="compiledMarkdown">
-          </div>
+          <div class="Post-RichText markdown-body" v-html="compiledMarkdown" />
         </div>
       </header>
     </article>
-    <CommentList :signId="article.id" :type="article.channel_id" class="commentlist"></CommentList>
+    <div class="p-w btns">
+      <InvestBtn></InvestBtn>
+      <ShareBtn></ShareBtn>
+    </div>
+    <CommentList :signId="article.id" :type="article.channel_id" class="p-w"></CommentList>
   </div>
 </template>
 
@@ -31,18 +36,9 @@ import { xssFilter } from '@/utils/xss'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import CommentList from '@/components/comment/List'
+import InvestBtn from '@/components/article/Invest'
+import ShareBtn from '@/components/article/Share'
 export default {
-  async asyncData({ $axios, route }) {
-    const hashOrId = route.params.id
-    // post hash获取; p id 短链接;
-    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios.get(`/${url}/${hashOrId}`)
-    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
-    return {
-      article: info.data,
-      post: content.data
-    }
-  },
   data() {
     return {
       avatar: null,
@@ -50,7 +46,9 @@ export default {
     }
   },
   components: {
-    CommentList
+    CommentList,
+    InvestBtn,
+    ShareBtn
   },
   mounted() {
     this.setAvatar()
@@ -82,18 +80,36 @@ export default {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
       return null
     }
+  },
+  async asyncData({ $axios, route }) {
+    const hashOrId = route.params.id
+    // post hash获取; p id 短链接;
+    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
+    const info = await $axios.get(`/${url}/${hashOrId}`)
+    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
+    return {
+      article: info.data,
+      post: content.data
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .main {
-  margin-top: 80px;
+  .minHeight();
 }
 @width: 690px;
-.commentlist {
+.p-w  {
   width: @width;
   margin: 0 auto;
+}
+.btns {
+  .flexCenter();
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 20px auto;
+  padding: 20px 0;
 }
 .TitleImage {
   display: block;
