@@ -1,11 +1,11 @@
 <template>
-  <div class="slide">
+  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="slide">
     <img
       v-if="cover"
       :src="cover"
       alt="cover"
     >
-  </div>
+  </n-link>
 </template>
 
 <script>

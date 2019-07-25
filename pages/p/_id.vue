@@ -3,7 +3,9 @@
     <img class="TitleImage" :src="cover" alt="">
     <article>
       <header class="Post-Header">
-        <h1 class="Post-Title">{{article.title}}</h1>
+        <h1 class="Post-Title">
+          {{ article.title }}
+        </h1>
         <div class="Post-Author">
           <div class="AuthorInfo">
             <img class="Avatar" width="38" height="38" :src="avatar" alt="">
@@ -15,12 +17,11 @@
           </div>
         </div>
         <div class="Post-RichTextContainer">
-          <div class="Post-RichText markdown-body" v-html="compiledMarkdown">
-          </div>
+          <div class="Post-RichText markdown-body" v-html="compiledMarkdown" />
         </div>
       </header>
     </article>
-    <CommentList :signId="article.id" :type="article.channel_id" class="commentlist"></CommentList>
+    <CommentList :sign-id="article.id" :type="article.channel_id" class="commentlist" />
   </div>
 </template>
 
@@ -32,36 +33,13 @@ import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import CommentList from '@/components/comment/List'
 export default {
-  async asyncData({ $axios, route }) {
-    const hashOrId = route.params.id
-    // post hash获取; p id 短链接;
-    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios.get(`/${url}/${hashOrId}`)
-    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
-    return {
-      article: info.data,
-      post: content.data
-    }
+  components: {
+    CommentList
   },
   data() {
     return {
       avatar: null,
       followed: false
-    }
-  },
-  components: {
-    CommentList
-  },
-  mounted() {
-    this.setAvatar()
-  },
-  methods: {
-    setAvatar() {
-      this.$API.getUser(this.article.uid).then((res) => {
-        const data = res.data
-        this.followed = data.is_follow
-        if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
-      })
     }
   },
   computed: {
@@ -82,13 +60,36 @@ export default {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
       return null
     }
+  },
+  async asyncData({ $axios, route }) {
+    const hashOrId = route.params.id
+    // post hash获取; p id 短链接;
+    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
+    const info = await $axios.get(`/${url}/${hashOrId}`)
+    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
+    return {
+      article: info.data,
+      post: content.data
+    }
+  },
+  mounted() {
+    this.setAvatar()
+  },
+  methods: {
+    setAvatar() {
+      this.$API.getUser(this.article.uid).then((res) => {
+        const data = res.data
+        this.followed = data.is_follow
+        if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
+      })
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .main {
-  margin-top: 80px;
+  .minHeight();
 }
 @width: 690px;
 .commentlist {
