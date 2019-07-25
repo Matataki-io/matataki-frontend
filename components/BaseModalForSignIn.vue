@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-dialog :visible.sync="showModal" width="30%">
     <section v-if="step === 1" class="step">
       <h1 class="step-title">选择授权方式</h1>
       <div class="btns">
@@ -54,7 +54,7 @@
       <div v-if="step === 1" class="arrow">
       </div>
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -75,14 +75,17 @@ import iconImtoken from '@/assets/img/icon_logo_imtoken.svg'
 export default {
   name: 'BaseModalForSignIn',
   props: {
-    showModal: {
+    value: {
       type: Boolean,
       default: false
     }
   },
   watch: {
-    showModal(newVal) {
-      this.showModaCopy = newVal
+    showModal(val) {
+      this.$emit('input', val)
+    },
+    value(val) {
+      this.showModal = val
     }
   },
   computed: {
@@ -150,7 +153,7 @@ export default {
           }
         ]
       },
-      showModaCopy: this.showModal,
+      showModal: false,
       modalLoading: false,
       modalText: {
         text: '选择授权方式'
@@ -236,11 +239,6 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
-    change(status) {
-      if (this.modalLoading) this.modalLoading = false
-      this.showModaCopy = status
-      this.$emit('changeInfo', status)
-    },
     async walletLogin(type) {
       this.modalLoading = true
       if (type === 'GitHub') {
@@ -249,7 +247,6 @@ export default {
       }
       await this.signInx(type)
       this.modalLoading = false
-      this.change(false)
     },
     async signInx(type) {
       try {
@@ -509,19 +506,5 @@ export default {
     align-items: center;
     background: rgba(0, 0, 0, 0.1);
   }
-}
-
-@media screen and (max-width: 400px) {
-  .info-content {
-    margin: 0 10px;
-    .modal-body {
-      margin: 0 4px;
-    }
-  }
-}
-</style>
-<style>
-.signupModal .ivu-modal-body {
-  padding: 0;
 }
 </style>

@@ -29,18 +29,23 @@
           v-else
           href="javascript:void(0);"
           class="home-head-notlogin"
-          @click="$emit('login')"
+          @click="login"
         >登录</a>
       </div>
     </div>
+    <BaseModalForSignIn v-model="loginModalShow"></BaseModalForSignIn>
   </header>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import BaseModalForSignIn from '@/components/BaseModalForSignIn'
 
 export default {
   name: 'HomeHead',
+  components: {
+    BaseModalForSignIn
+  },
   data() {
     return {
       nav: [
@@ -53,7 +58,8 @@ export default {
           url: '/commodity'
         }
       ],
-      avatar: ''
+      avatar: '',
+      loginModalShow: false
     }
   },
   computed: {
@@ -73,6 +79,10 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
+    },
+    login() {
+      this.loginModalShow = true
+      this.$emit('login')
     }
   }
 }
