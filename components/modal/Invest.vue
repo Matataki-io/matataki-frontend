@@ -36,7 +36,8 @@
 
 <script>
 /* eslint-disable */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { ontAddressVerify } from '@/utils/reg'
 const RewardStatus = {
   // 0=加载中,1=未打赏 2=已打赏, -1未登录
   NOT_LOGGINED: -1,
@@ -83,6 +84,18 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe'])
   },
   methods: {
+    ...mapActions(['makeShare', 'makeOrder']),
+    handleChange(amount) {
+      let amountValue = amount
+      const { idProvider } = this.currentUserInfo
+      if (idProvider === 'EOS') {
+        // 小数点后三位 如果后面需要解除限制修改正则  {0,3}
+        amountValue = amountValue.match(/^\d*(\.?\d{0,3})/g)[0] || null
+      } else if (idProvider === 'ONT') {
+        amountValue = amountValue.match(/^\d*/g)[0] || null
+      }
+      this.amount = amountValue
+    },
     investProduct() {
       this.support(() => {
         this.showModal = false
@@ -177,7 +190,7 @@ export default {
       } catch (error) {
         console.error(error)
         this.isSupported = RewardStatus.NOT_REWARD_YET
-        this.$message(`${action_text}失败，可能是由于网络故障或账户余额不足等原因。`)
+        this.$message.error(`${action_text}失败，可能是由于网络故障或账户余额不足等原因。`)
         done(false)
       }
     }
@@ -236,7 +249,6 @@ export default {
   }
 }
 .buy-product-modal {
-  padding: 20px;
   width: 320px;
   border-radius: 10px;
   color: #000;

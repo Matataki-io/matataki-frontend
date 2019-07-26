@@ -26,6 +26,9 @@ export default {
     }
   },
   methods: {
+  },
+  mounted() {
+    this.$store.dispatch('testLogin')
   }
 }
 </script>
