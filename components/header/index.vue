@@ -24,7 +24,7 @@
           @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
         />
 
-        <el-dropdown v-if="isLogined || true">
+        <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
             <img v-if="avatar" :src="avatar" alt="avatar">
           </div>
@@ -239,12 +239,22 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    &:nth-of-type(1) {
+      border-radius: 4px 4px 0 0;
+    }
+    &:nth-last-of-type(1) {
+      border-radius: 0 0 4px 4px;
+    }
   }
   .el-dropdown-menu__item--divided {
     margin-top: 0;
   }
   .el-dropdown-menu__item--divided:before {
     display: none;
+  }
+  .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover  {
+    background-color: @blue;
+    color: #fff;
   }
 }
 </style>
