@@ -4,7 +4,7 @@
     <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">
       {{ tag.name }}
     </el-tag>
-    <button>登录</button>
+    <button @click="getAccount">登录</button>
     <BaseModalForSignIn />
   </div>
 </template>
@@ -33,8 +33,16 @@ export default {
     ) */
     const data = await this.$API.wx(window.location.url)
     console.log(data);
+    console.log(this.$utils.getCookie('ACCESS_TOKEN'))
+    this.$store.dispatch('test')
   },
-  methods: {}
+  methods: {
+    getAccount() {
+      console.log(this.$store.state('test'));
+
+      this.$store.dispatch('test')
+    }
+  }
 };
 </script>
 

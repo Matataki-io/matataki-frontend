@@ -3,7 +3,9 @@ import { dappName, ontology } from '@/config';
 
 // https://github.com/backslash47/OEPs/blob/oep-dapp-api/OEP-6/OEP-6.mediawiki
 
-// const isAPP = /Edge|Firefox|Opera|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isAPP = () => {
+  return /Edge|Firefox|Opera|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
 // try...catch 放在 npm 包的使用入口的位置
 
 const toolkit = {
@@ -34,7 +36,7 @@ const API = {
   client: null,
   async setClient() {
     if (this.client) return;
-    if (isAPP) {
+    if (isAPP()) {
       const { client } = await import(/* webpackChunkName: "ontology-cyanobridge" */ 'cyanobridge');
       client.registerClient();
       this.client = client;
@@ -77,7 +79,7 @@ const API = {
     };
     try {
       let address = null;
-      if (isAPP) {
+      if (isAPP()) {
         const { result } = await client.api.asset.getAccount(params);
         address = result;
       } else {
@@ -103,7 +105,7 @@ const API = {
     };
     try {
       let signature = null;
-      if (isAPP) {
+      if (isAPP()) {
         const { result } = await client.api.message.login(params);
         const { publickey: publicKey, signature: data } = result;
         signature = { publicKey, data };
@@ -136,7 +138,7 @@ const API = {
       config,
     }
     try {
-      return isAPP
+      return isAPP()
         ? client.api.smartContract.invoke(params) // done
         : client.api.smartContract.invoke({
           scriptHash, operation, args, gasPrice, gasLimit, requireIdentity
