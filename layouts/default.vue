@@ -2,7 +2,7 @@
   <div class="app">
     <nuxt />
     <g-footer />
-    <el-backtop bottom="80" class="backtop">
+    <el-backtop :bottom="80" class="backtop">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"

@@ -24,9 +24,31 @@
           @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
         />
 
-        <div v-if="isLogined" class="home-head-avatar" @click="$emit('login')">
-          <img :src="avatar" alt="avatar">
-        </div>
+        <el-dropdown v-if="isLogined || true">
+          <div class="home-head-avatar" @click="$emit('login')">
+            <img v-if="avatar" :src="avatar" alt="avatar">
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item>
+              xiaotiandada
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              我的账户
+            </el-dropdown-item>
+            <el-dropdown-item>我的原创</el-dropdown-item>
+            <el-dropdown-item>我的投资</el-dropdown-item>
+            <el-dropdown-item>我的草稿</el-dropdown-item>
+            <el-dropdown-item>
+              购买记录
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              设置
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              退出
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <a
           v-else
           href="javascript:void(0);"
@@ -194,6 +216,35 @@ export default {
     &.active {
       color: rgba(0, 0, 0, 1);
     }
+  }
+}
+
+</style>
+
+<style lang="less">
+// 覆盖下拉框
+.user-dorpdown {
+  max-width: 140px;
+  box-sizing: border-box;
+  &.el-dropdown-menu {
+    padding: 0;
+  }
+  .el-dropdown-menu__item {
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #333;
+    line-height: 28px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .el-dropdown-menu__item--divided {
+    margin-top: 0;
+  }
+  .el-dropdown-menu__item--divided:before {
+    display: none;
   }
 }
 </style>
