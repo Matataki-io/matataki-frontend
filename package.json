@@ -34,6 +34,7 @@
     "nuxt": "^2.0.0",
     "ontology-dapi": "^0.4.9",
     "qrcode": "^1.4.1",
+    "vue-clipboard2": "^0.3.0",
     "vue-content-loader": "^0.2.2",
     "xss": "^1.0.6"
   },

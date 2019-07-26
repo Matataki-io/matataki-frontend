@@ -22,28 +22,17 @@
         </div>
         <section class="footer">
           <img src="@/assets/img/logo-word.svg" alt="SmartSignature" />
-          <canvas ref="qr" class="qrcode" width="55" height="55"></canvas>
+          <div ref="qr" class="qrcode"></div>
         </section>
       </div>
       <img v-else :src="downloadLink" alt="" style="width: 100%;" />
     </div>
-    <button v-if="canvas" class="save-btn" disabled>长按图片保存</button>
-    <button v-else class="save-btn" @click="toCanvas" >生成图片</button>
-    <!--<a
-      :class="['save-btn', { disabled: isAPP }]"
-      download="smartsignature.png"
-      :href="downloadLink"
-      :disabled="isAPP"
-      @click="close"
-      >{{ isAPP ? '长按图片保存' : '保存' }}
-    </a>-->
+    <button class="save-btn" @click="toCanvas" >生成图片</button>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-// import QRCode from 'qrcode'
-import html2canvas from 'html2canvas'
 
 export default {
   name: 'QRCodeDialog',
@@ -90,11 +79,8 @@ export default {
       this.$emit('change', false)
     },
     save() {
-      const loading = this.$toast.loading({
-        mask: true,
-        zIndex: 1200,
-        duration: 0,
-        message: `图片生成中...`
+      const loading = this.$loading({
+        text: `图片生成中...`
       })
       html2canvas(this.$refs.capture, {
         useCORS: true
@@ -106,7 +92,7 @@ export default {
         link.style.display = 'none'
         document.body.appendChild(link)
         link.click()
-        loading.clear()
+        loading.close()
       })
     },
     saveLocal(canvas) {
@@ -117,12 +103,8 @@ export default {
       link.click()
     },
     toCanvas() {
-      const loading = this.$toast.loading({
-        mask: true,
-        duration: 0,
-        forbidClick: true,
-        zIndex: 1200,
-        message: `图片生成中...`
+      const loading = this.$loading({
+        text: `图片生成中...`
       })
       html2canvas(this.$refs.capture, {
         useCORS: true,
@@ -131,19 +113,19 @@ export default {
       }).then(canvas => {
         this.canvas = canvas
         this.saveLocal(canvas)
-        loading.clear()
+        loading.close()
       }).catch((error) => {
         console.log(error);
-        loading.clear()
-        this.$toast('图片生成失败');
+        loading.close()
+        this.$message('图片生成失败')
       })
     },
     genQRCode() {
-      require('qrcode').toCanvas(this.$refs.qr, this.shareInfo.shareLink, { width: 55 }, error => {
-        if (error) console.error(error)
-        console.log('success!')
-        //this.toCanvas()
-      })
+      new QRCode(this.$refs.qr, {
+        text: this.shareInfo.shareLink,
+        width: 55,
+        height: 55,
+      });
     }
   }
 }
@@ -161,7 +143,7 @@ export default {
 }
 .outer {
   background: transparent;
-  margin-top: 150px;
+  overflow: auto;
 }
 .hide-article-box {
   width: 100%;
@@ -273,6 +255,8 @@ export default {
   }
   .qrcode {
     background: #ffffff;
+    width: 55px;
+    height: 55px;
   }
 }
 </style>
