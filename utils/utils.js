@@ -31,5 +31,11 @@ export default {
   },
   isNull(v) {
     return v === '' || v === null || v === undefined
+  },
+  sleep(time) {
+   return new Promise(resolve => setTimeout(resolve, time))
+  },
+  isEmptyArray(arr){
+    return Array.isArray(arr) && arr.length !== 0
   }
 };

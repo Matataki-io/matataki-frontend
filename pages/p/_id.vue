@@ -22,28 +22,90 @@
         </div>
       </header>
     </article>
-    <CommentList :sign-id="article.id" :type="article.channel_id" class="commentlist" />
+    <div class="p-w btns">
+      <div @click="invest">
+        <InvestBtn style="margin-right: 120px;width: 80px;"></InvestBtn>
+      </div>
+      <div @click="share">
+        <ShareBtn style="width: 80px;"></ShareBtn>
+      </div>
+    </div>
+    <CommentList :signId="article.id" :type="article.channel_id" class="p-w"></CommentList>
+    <div>
+      <div class="sidebar">
+        <div @click="invest">
+          <InvestBtn style="margin-bottom: 20px;width: 60px;"></InvestBtn>
+        </div>
+        <div @click="share">
+          <ShareBtn style="width: 60px;"></ShareBtn>
+        </div>
+      </div>
+    </div>
+    <InvestModal
+      v-model="investModalShow"
+      :article="{
+        ...article,
+        title: '投资文章'
+      }" />
+    <ShareModal
+      v-model="shareModalShow"
+      :article="{
+        ...article,
+        time: articleCreateTimeComputed,
+        content: compiledMarkdown,
+        avatar
+      }" />
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import 'moment/locale/zh-cn'
+import { mapGetters } from 'vuex'
 import { xssFilter } from '@/utils/xss'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import CommentList from '@/components/comment/List'
+import InvestBtn from '@/components/article/Invest'
+import ShareBtn from '@/components/article/Share'
+import InvestModal from '@/components/modal/Invest'
+import ShareModal from '@/components/modal/Share'
 export default {
-  components: {
-    CommentList
-  },
   data() {
     return {
       avatar: null,
-      followed: false
+      followed: false,
+      investModalShow: false,
+      shareModalShow: false
+    }
+  },
+  components: {
+    CommentList,
+    InvestBtn,
+    ShareBtn,
+    InvestModal,
+    ShareModal
+  },
+  mounted() {
+    this.setAvatar()
+  },
+  methods: {
+    invest() {
+      this.investModalShow = true
+    },
+    share() {
+      this.shareModalShow = true
+    },
+    setAvatar() {
+      this.$API.getUser(this.article.uid).then((res) => {
+        const data = res.data
+        this.followed = data.is_follow
+        if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
+      })
     }
   },
   computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     articleCreateTimeComputed() {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
@@ -72,18 +134,6 @@ export default {
       article: info.data,
       post: content.data
     }
-  },
-  mounted() {
-    this.setAvatar()
-  },
-  methods: {
-    setAvatar() {
-      this.$API.getUser(this.article.uid).then((res) => {
-        const data = res.data
-        this.followed = data.is_follow
-        if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
-      })
-    }
   }
 }
 </script>
@@ -93,9 +143,22 @@ export default {
   .minHeight();
 }
 @width: 690px;
-.commentlist {
+.p-w  {
   width: @width;
   margin: 0 auto;
+}
+.sidebar {
+  position: fixed;
+  right: calc((100vw - 958px)/2);
+  margin: auto;
+  bottom: 106px;
+}
+.btns {
+  .flexCenter();
+  border-top: 1px solid #DBDBDB;
+  border-bottom: 1px solid #DBDBDB;
+  margin: 40px auto;
+  padding: 40px 0;
 }
 .TitleImage {
   display: block;

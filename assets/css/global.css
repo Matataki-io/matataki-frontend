@@ -1,0 +1,33 @@
+.big-font {
+  font-size: 40px;
+  color: #000;
+}
+.title-font {
+  font-size: 24px;
+  color: #000;
+}
+.subtitle-font {
+  font-size: 20px;
+  color: #000;
+}
+.content-font {
+  font-size: 20px;
+  color: #000;
+}
+.info-font {
+  font-size: 16px;
+  color: #B2B2B2;
+}
+.subinfo-font {
+  font-size: 14px;
+  color: #B2B2B2;
+}
+.minHeight {
+  padding: 60px 0 0 0;
+  min-height: calc(-160%);
+}
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
