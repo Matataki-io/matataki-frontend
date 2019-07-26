@@ -22,28 +22,17 @@
         </div>
         <section class="footer">
           <img src="@/assets/img/logo-word.svg" alt="SmartSignature" />
-          <canvas ref="qr" class="qrcode" width="55" height="55"></canvas>
+          <div ref="qr" class="qrcode"></div>
         </section>
       </div>
       <img v-else :src="downloadLink" alt="" style="width: 100%;" />
     </div>
-    <button v-if="canvas" class="save-btn" disabled>长按图片保存</button>
-    <button v-else class="save-btn" @click="toCanvas" >生成图片</button>
-    <!--<a
-      :class="['save-btn', { disabled: isAPP }]"
-      download="smartsignature.png"
-      :href="downloadLink"
-      :disabled="isAPP"
-      @click="close"
-      >{{ isAPP ? '长按图片保存' : '保存' }}
-    </a>-->
+    <button class="save-btn" @click="toCanvas" >生成图片</button>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-// import QRCode from 'qrcode'
-// import html2canvas from 'html2canvas'
 
 export default {
   name: 'QRCodeDialog',
@@ -137,11 +126,6 @@ export default {
         width: 55,
         height: 55,
       });
-      /* QRCode.toCanvas(this.$refs.qr, this.shareInfo.shareLink, { width: 55 }, error => {
-        if (error) console.error(error)
-        console.log('success!')
-        //this.toCanvas()
-      }) */
     }
   }
 }
@@ -159,7 +143,7 @@ export default {
 }
 .outer {
   background: transparent;
-  margin-top: 150px;
+  overflow: auto;
 }
 .hide-article-box {
   width: 100%;
@@ -271,6 +255,8 @@ export default {
   }
   .qrcode {
     background: #ffffff;
+    width: 55px;
+    height: 55px;
   }
 }
 </style>
