@@ -20,6 +20,7 @@
         <svg-icon
           class="create"
           icon-class="write"
+          :style="customizeHeaderIconColorComputed"
           @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
         />
 
@@ -54,6 +55,11 @@ export default {
       type: String,
       default: '#b2b2b2'
     },
+    // 自定义头部Icon颜色
+    customizeHeaderIconColor: {
+      type: String,
+      default: '#000'
+    },
     // 自定义头部logo
     customizeHeaderLogo: {
       type: String,
@@ -85,6 +91,9 @@ export default {
     },
     customizeHeaderTextColorComputed() {
       return 'color: ' + this.customizeHeaderTextColor
+    },
+    customizeHeaderIconColorComputed() {
+      return 'color: ' + this.customizeHeaderIconColor
     },
     customizeHeaderLogoColorComputed() {
       if (this.customizeHeaderLogo === 'white') return homeLogoWhile

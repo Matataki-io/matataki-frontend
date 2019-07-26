@@ -1,6 +1,6 @@
 <template>
   <div class="tag-page">
-    <g-header customize-header-logo="white" :customize-header-bc="customizeHeaderBc" customize-header-text-color="#fff" />
+    <g-header customize-header-logo="white" :customize-header-bc="customizeHeaderBc" customize-header-text-color="#fff" customize-header-icon-color="#fff" />
     <div class="head" :style="tagStyleObject">
       <tag-icon :id="Number($route.params.id)" />
       <p class="head-title">
