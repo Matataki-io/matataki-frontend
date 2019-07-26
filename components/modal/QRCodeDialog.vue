@@ -43,7 +43,7 @@
 <script>
 /* eslint-disable */
 // import QRCode from 'qrcode'
-import html2canvas from 'html2canvas'
+// import html2canvas from 'html2canvas'
 
 export default {
   name: 'QRCodeDialog',
@@ -90,11 +90,8 @@ export default {
       this.$emit('change', false)
     },
     save() {
-      const loading = this.$toast.loading({
-        mask: true,
-        zIndex: 1200,
-        duration: 0,
-        message: `图片生成中...`
+      const loading = this.$loading({
+        text: `图片生成中...`
       })
       html2canvas(this.$refs.capture, {
         useCORS: true
@@ -106,7 +103,7 @@ export default {
         link.style.display = 'none'
         document.body.appendChild(link)
         link.click()
-        loading.clear()
+        loading.close()
       })
     },
     saveLocal(canvas) {
@@ -117,12 +114,8 @@ export default {
       link.click()
     },
     toCanvas() {
-      const loading = this.$toast.loading({
-        mask: true,
-        duration: 0,
-        forbidClick: true,
-        zIndex: 1200,
-        message: `图片生成中...`
+      const loading = this.$loading({
+        text: `图片生成中...`
       })
       html2canvas(this.$refs.capture, {
         useCORS: true,
@@ -131,19 +124,24 @@ export default {
       }).then(canvas => {
         this.canvas = canvas
         this.saveLocal(canvas)
-        loading.clear()
+        loading.close()
       }).catch((error) => {
         console.log(error);
-        loading.clear()
-        this.$toast('图片生成失败');
+        loading.close()
+        this.$message('图片生成失败')
       })
     },
     genQRCode() {
-      require('qrcode').toCanvas(this.$refs.qr, this.shareInfo.shareLink, { width: 55 }, error => {
+      new QRCode(this.$refs.qr, {
+        text: this.shareInfo.shareLink,
+        width: 55,
+        height: 55,
+      });
+      /* QRCode.toCanvas(this.$refs.qr, this.shareInfo.shareLink, { width: 55 }, error => {
         if (error) console.error(error)
         console.log('success!')
         //this.toCanvas()
-      })
+      }) */
     }
   }
 }

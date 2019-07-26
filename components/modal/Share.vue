@@ -71,7 +71,7 @@
       </div>
     </div>
     <div v-if="widgetModalStatus === 4">
-      <!-- <QRCodeDialog
+      <QRCodeDialog
         :share-info="{
           title: article.title,
           avatar: article.avatar,
@@ -80,7 +80,7 @@
           content: article.content,
           shareLink
         }"
-        @change="change" /> -->
+        @change="change" />
     </div>
   </el-dialog>
 </template>
@@ -89,12 +89,12 @@
 /* eslint-disable */
 import { mapGetters } from 'vuex'
 import { strTrim } from '@/utils/reg' // 开发用
-// import QRCodeDialog from './QRCodeDialog'
+import QRCodeDialog from './QRCodeDialog'
 import { urlAddress } from '@/api/backend'
 export default {
   name: 'ShareModal',
   components: {
-    // QRCodeDialog
+    QRCodeDialog
   },
   props: {
     article: Object,
@@ -177,16 +177,10 @@ export default {
     copyCode(code) {
       this.$copyText(code).then(
         () => {
-          this.$toast.success({
-            duration: 1000,
-            message: '复制成功'
-          })
+          this.$message.success('复制成功')
         },
         () => {
-          this.$toast.fail({
-            duration: 1000,
-            message: '复制失败'
-          })
+          this.$message.error('复制失败')
         }
       )
     },
