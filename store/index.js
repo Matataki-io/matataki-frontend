@@ -83,6 +83,12 @@ export const mutations = {
 }
 
 export const actions = {
+  testLogin({ commit }) {
+    const accessToken = this.$utils.getCookie('ACCESS_TOKEN')
+    const idProvider = this.$utils.getCookie('idProvider')
+    if (accessToken) commit('setAccessToken', accessToken)
+    if (idProvider) commit('setUserConfig', { idProvider })
+  },
   async accountCheck({
     dispatch,
     getters: {
