@@ -20,7 +20,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo'])
   },
-  async created() {
+  async mounted() {
     await this.getListData()
   },
   methods: {

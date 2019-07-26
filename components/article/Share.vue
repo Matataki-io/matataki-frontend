@@ -1,7 +1,9 @@
 <template>
   <div class="share">
-    <div class="share-outer">
-      <img src="@/assets/img/share.svg" alt="share">
+    <div class="container">
+      <div class="img-container">
+        <img src="@/assets/img/share.svg" alt="share">
+      </div>
     </div>
     <span class="text">分享文章</span>
   </div>
@@ -19,16 +21,31 @@ export default {
 <style scoped lang="less">
 .share {
   text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  span {
+    white-space: nowrap;
+  }
 }
-.share-outer {
-  width: 100px;
-  height: 100px;
+.container{
+  position: relative;
+  margin-bottom: 10px;
+  &:before {
+    content: " ";
+    display: block;
+    padding-top: 100%; /*利用padding来撑开*/
+  }
+}
+.img-container {
+  position: absolute;
+  top: 0; bottom: 0; right: 0; left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: #F1F1F1;
-  margin-bottom: 10px;
   .flexCenter();
   img {
-    width: 50px;
+    width: 40%;
     height: auto;
   }
 }
