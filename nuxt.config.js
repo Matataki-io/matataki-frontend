@@ -1,3 +1,4 @@
+import path from 'path'
 import env from './env'
 
 function genENV() {
@@ -7,6 +8,10 @@ function genENV() {
     result[item] = env[process.env.NODE_ENV][item]
   })
   return result
+}
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
 }
 
 export default {
@@ -57,8 +62,12 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/svg-sprite'
   ],
+  svgSprite: {
+    input: '~/icons/svg/'
+  },
   styleResources: {
     less: './assets/css/global.less'
   },
@@ -77,7 +86,6 @@ export default {
     */
     extend(config, ctx) {
     }
-
   },
   server: {
     port: 8080, // default: 3000

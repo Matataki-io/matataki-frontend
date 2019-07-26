@@ -17,7 +17,7 @@
     <div class="des">
       <!-- 暂时用文章页代替跳转地址 -->
       <n-link
-        :to=" {name: 'p-id', params: {id: tagId}} "
+        :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName}} "
         tag="span"
         class="title"
       >
@@ -52,7 +52,7 @@
         tag="div"
         class="author"
       >
-        <avatar class="avatar" :size="'30px'" :src="avatarImg" />
+        <!-- <avatar class="avatar" :size="'30px'" :src="avatarImg" /> -->
         <span class="username">
           {{ card && (card.nickname || card.author || '') }}
         </span>
@@ -67,13 +67,13 @@
 
 <script>
 
-import avatar from '@/components/avatar/index.vue'
+// import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
   name: 'ArticleCard',
   components: {
-    avatar
+    // avatar
   },
   props: {
     typeIndex: {
@@ -109,10 +109,10 @@ export default {
       return precision(this.card.eosprice, 'eos')
     },
     tagName() {
-      return this.card && this.card.tags.length !== 0 ? this.card.tags[0].name : ''
+      return this.card && (this.card.tags.length !== 0 ? this.card.tags[0].name : '')
     },
     tagId() {
-      return this.card && this.card.tags.length !== 0 ? this.card.tags[0].id : ''
+      return this.card && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
     },
     Uid() {
       return this.card && this.card.uid

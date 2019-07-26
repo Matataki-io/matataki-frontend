@@ -2,7 +2,7 @@
   <div class="tag-page">
     <g-header customize-header-logo="white" :customize-header-bc="customizeHeaderBc" customize-header-text-color="#fff" />
     <div class="head" :style="tagStyleObject">
-      <tag-icon :id="$route.params.id" />
+      <tag-icon :id="Number($route.params.id)" />
       <p class="head-title">
         {{ articleCardData[0].title }}
       </p>
@@ -141,7 +141,7 @@ export default {
     line-height:42px;
     text-align: center;
     padding: 0;
-    margin: 0;
+    margin: 10px 0 0;
   }
 }
 </style>
