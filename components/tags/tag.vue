@@ -71,20 +71,12 @@ export default {
         10: iCanNotSee,
         11: technology,
         12: ss,
-        13: technology,
-        14: technology,
-        15: technology,
-        16: technology,
-        17: technology,
-        18: technology,
-        19: technology,
-        20: technology,
         101: ticket,
         102: game,
         103: digitalAssets,
         104: tool
       }
-      return iconId[this.tag.id]
+      return iconId[this.tag.id] || technology
     }
   },
   created() {

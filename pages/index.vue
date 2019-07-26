@@ -51,7 +51,7 @@ import articleCard from '@/components/articleCard/index.vue'
 import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
-import { test } from '@/api/async_data_api.js'
+import { recommend } from '@/api/async_data_api.js'
 
 export default {
   components: {
@@ -88,30 +88,19 @@ export default {
     }
   },
   async asyncData({ $axios }) {
-    const res = await test($axios, '/posts/recommend?channel=1')
-    console.log(111, res)
-    return { recommendList: res.data }
+    try {
+      const res = await recommend($axios, 1)
+      // console.log(111, res)
+      return { recommendList: res.data }
+    } catch (error) {
+      console.log(error)
+      return { recommendList: [{}, {}, {}, {}, {}] }
+    }
   },
   created() {
-    // this.postsRecommend(1)
     this.getTags()
   },
   methods: {
-    // 获取推荐文章或者商品
-    async postsRecommend(channel) {
-      await this.$backendAPI
-        .postsRecommend(channel)
-        .then((res) => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.recommendList = res.data.data
-          } else {
-            console.log('获取推荐失败')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
     // 获取标签
     async getTags() {
       await this.$backendAPI

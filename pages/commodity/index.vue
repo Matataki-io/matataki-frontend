@@ -53,7 +53,7 @@ import articleCard from '@/components/articleCard/index.vue'
 import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
-import { test } from '@/api/async_data_api.js'
+import { recommend } from '@/api/async_data_api.js'
 
 export default {
   components: {
@@ -90,12 +90,16 @@ export default {
     }
   },
   async asyncData({ $axios }) {
-    const res = await test($axios, '/posts/recommend?channel=2')
-    // console.log(111, res)
-    return { recommendList: res.data }
+    try {
+      const res = await recommend($axios, 2)
+      // console.log(111, res)
+      return { recommendList: res.data }
+    } catch (error) {
+      console.log(error)
+      return { recommendList: [{}, {}, {}, {}, {}] }
+    }
   },
   created() {
-    // this.postsRecommend(1)
     this.getTags()
   },
   methods: {
