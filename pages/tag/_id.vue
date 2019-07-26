@@ -1,12 +1,11 @@
 <template>
-  <div class="home">
+  <div class="tag-page">
     <g-header />
-    <!-- 首页内容 轮播和推荐 -->
-    <div class="recommend mw">
-      <template v-for="(item, index) in recommendList">
-        <recommendSlide v-if="index === 0" :key="index" :card="item" /></recommendSlide>
-        <articleCard v-else :key="index" :type-index="0" :card-type="'recommend-card'" :card="item" />
-      </template>
+    <div class="head" :style="tagStyleObject">
+      <tag-icon :id="$route.params.id" />
+      <p class="head-title">
+        {{ articleCardData[0].title }}
+      </p>
     </div>
 
     <div class="container mw">
@@ -47,66 +46,52 @@
 </template>
 
 <script>
-
-import recommendSlide from '~/components/recommendSlide/index.vue'
-import articleCard from '@/components/articleCard/index.vue'
-import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
-
-import { recommend } from '@/api/async_data_api.js'
+import tags from '@/components/tags/index.vue'
+import articleCard from '@/components/articleCard/index.vue'
+import tagIcon from '@/components/tags/tagIcon.vue'
+import { tagColor } from '@/utils/tag'
 
 export default {
+  name: 'Tag',
   components: {
-    recommendSlide,
     articleCard,
     tags,
-    buttonLoadMore
+    buttonLoadMore,
+    tagIcon
   },
   data() {
     return {
       nowMainIndex: 0,
-      recommendList: [],
       articleCardData: [
         {
-          title: '最新发布',
+          title: this.$route.query.name,
           params: {
-            channel: 1,
+            tagid: this.$route.params.id,
             extra: 'short_content'
           },
-          apiUrl: 'homeTimeRanking',
-          articles: []
-        },
-        {
-          title: '最新投资',
-          params: {
-            channel: 1,
-            extra: 'short_content'
-          },
-          apiUrl: 'homeSupportsRanking',
+          apiUrl: 'getPostByTagById',
           articles: []
         }
       ],
-      tagCards: []
-    }
-  },
-  async asyncData({ $axios }) {
-    try {
-      const res = await recommend($axios, 1)
-      // console.log(111, res)
-      return { recommendList: res.data }
-    } catch (error) {
-      console.log(error)
-      return { recommendList: [{}, {}, {}, {}, {}] }
+      tagCards: [],
+      tagStyleObject: {}
+
     }
   },
   created() {
     this.getTags()
+    console.log(this.$route)
+    this.tagStyleObject = {
+      backgroundColor: tagColor()[this.$route.params.id]
+    }
   },
   methods: {
+
     // 获取标签
     async getTags() {
       await this.$backendAPI
-        .getTags('post')
+        .getTags()
         .then((res) => {
           if (res.status === 200 && res.data.code === 0) {
             this.tagCards = res.data.data
@@ -125,5 +110,35 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped src="./index.less"></style>
-<style lang="less" scoped src="./home_container.less"></style>
+
+<style lang="less" scoped>
+.tag-page{
+  .minHeight();
+}
+.head {
+  width: 100%;
+  height: 240px;
+  background-color: #eee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 120px;
+    display: block;
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+  }
+  &-title {
+    font-size:30px;
+    font-weight:500;
+    color:rgba(255,255,255,1);
+    line-height:42px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+}
+</style>
+<style lang="less" scoped src="../home_container.less"></style>

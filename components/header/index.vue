@@ -41,6 +41,9 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'HomeHead',
+  props: {
+
+  },
   data() {
     return {
       nav: [

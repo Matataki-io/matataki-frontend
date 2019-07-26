@@ -1,4 +1,5 @@
-export default () => {
+
+export const tagColor = () => {
   // tag id 对应相应的颜色, 全局统一
   const id = 200
   const color = [

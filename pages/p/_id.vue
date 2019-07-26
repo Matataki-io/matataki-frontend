@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <g-header />
     <img class="TitleImage" :src="cover" alt="">
     <article>
       <header class="Post-Header">

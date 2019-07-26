@@ -46,6 +46,7 @@ export default {
     '~/plugins/combined-inject.js',
     '~/plugins/element-ui',
     '~/plugins/vue_plugins.js',
+    '~/plugins/vue_components.js',
     { src: '@/plugins/vue-mavon-editor', ssr: false }
   ],
   /*

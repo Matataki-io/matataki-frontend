@@ -1,5 +1,6 @@
 <template>
   <div class="commodity">
+    <g-header />
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">
       <template v-for="(item, index) in recommendList">
@@ -141,3 +142,4 @@ export default {
 }
 </script>
 <style lang="less" scoped src="../index.less"></style>
+<style lang="less" scoped src="../home_container.less"></style>

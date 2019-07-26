@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    <g-header />
     <nuxt />
     <g-footer />
     <BaseModalForSignIn v-model="loginModalShow" />
@@ -8,13 +7,11 @@
 </template>
 
 <script>
-import header from '~/components/header/index.vue'
 import footer from '~/components/footer/index.vue'
 import BaseModalForSignIn from '@/components/BaseModalForSignIn'
 
 export default {
   components: {
-    gHeader: header,
     gFooter: footer,
     BaseModalForSignIn
   },
@@ -27,6 +24,8 @@ export default {
         this.$store.commit('setLoginModal', v)
       }
     }
+  },
+  methods: {
   }
 }
 </script>
