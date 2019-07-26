@@ -1,13 +1,14 @@
 <template>
-  <header class="header home-fixed">
+  <header class="header home-fixed" :style="customizeHeaderBcComputed">
     <div class="home-head mw">
       <div class="head-flex">
-        <a href="/"><img class="logo" src="@/assets/img/hone_logo.png" alt="logo"></a>
+        <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
         <nuxt-link
           v-for="(item, index) in nav"
           :key="index"
           class="nav"
+          :style="customizeHeaderTextColorComputed"
           :class="$route.path === item.url && 'active'"
           :to="item.url"
         >
@@ -38,11 +39,26 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
+import homeLogo from '@/assets/img/home_logo.png'
+import homeLogoWhile from '@/assets/img/home_logo_white.png'
 export default {
   name: 'HomeHead',
   props: {
-
+    // 自定义头部背景
+    customizeHeaderBc: {
+      type: String,
+      default: '#fff'
+    },
+    // 自定义头部文字颜色
+    customizeHeaderTextColor: {
+      type: String,
+      default: '#b2b2b2'
+    },
+    // 自定义头部logo
+    customizeHeaderLogo: {
+      type: String,
+      default: 'default'
+    }
   },
   data() {
     return {
@@ -60,7 +76,20 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+    customizeHeaderBcComputed() {
+      return {
+        backgroundColor: this.customizeHeaderBc,
+        border: '1px solid ' + this.customizeHeaderBc
+      }
+    },
+    customizeHeaderTextColorComputed() {
+      return 'color: ' + this.customizeHeaderTextColor
+    },
+    customizeHeaderLogoColorComputed() {
+      if (this.customizeHeaderLogo === 'white') return homeLogoWhile
+      else return homeLogo
+    }
   },
   watch: {
     isLogined(newState) {

@@ -1,6 +1,6 @@
 <template>
   <div class="tag-page">
-    <g-header />
+    <g-header customize-header-logo="white" :customize-header-bc="customizeHeaderBc" customize-header-text-color="#fff" />
     <div class="head" :style="tagStyleObject">
       <tag-icon :id="$route.params.id" />
       <p class="head-title">
@@ -38,7 +38,7 @@
         <!-- 空div控制内容 end -->
       </div>
       <div class="tags article">
-        <span>文章标签</span>
+        <span>更多标签</span>
         <tags class="tags-container" :type-index="0" :tag-cards="tagCards" />
       </div>
     </div>
@@ -79,6 +79,11 @@ export default {
 
     }
   },
+  computed: {
+    customizeHeaderBc() {
+      return tagColor()[this.$route.params.id]
+    }
+  },
   created() {
     this.getTags()
     console.log(this.$route)
@@ -87,7 +92,6 @@ export default {
     }
   },
   methods: {
-
     // 获取标签
     async getTags() {
       await this.$backendAPI

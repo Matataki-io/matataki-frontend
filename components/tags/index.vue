@@ -22,7 +22,7 @@ export default {
     tag
   },
   props: {
-    typeIndex: {
+    typeIndex: { // 通过 0 1 判断标签和布局类型
       type: Number,
       default: 0
     },

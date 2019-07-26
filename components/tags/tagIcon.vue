@@ -24,8 +24,8 @@ import tool from '@/assets/img/tags/tool.svg'
 export default {
   props: {
     id: {
-      type: Number,
-      default: 1
+      type: String,
+      default: '1'
     }
   },
   computed: {
