@@ -17,13 +17,11 @@
       </div>
 
       <div class="head-flex">
-        <!-- <svg-icon
+        <svg-icon
           class="create"
           icon-class="write"
           @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
-        /> -->
-
-        <svg-icon name="write" class="create" />
+        />
 
         <div v-if="isLogined" class="home-head-avatar" @click="$emit('login')">
           <img :src="avatar" alt="avatar">
