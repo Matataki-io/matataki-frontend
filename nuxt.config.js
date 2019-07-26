@@ -1,6 +1,6 @@
 import path from 'path'
+import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import env from './env'
-
 function genENV() {
   const keys = Object.keys(env.production)
   const result = {}
@@ -66,12 +66,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    '@nuxtjs/pwa',
-    '@nuxtjs/svg-sprite'
+    '@nuxtjs/pwa'
   ],
-  svgSprite: {
-    input: '~/icons/svg/'
-  },
   styleResources: {
     less: './assets/css/global.less'
   },
@@ -88,8 +84,30 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
-    }
+    extend(config, { isDev, isClient }) {
+      // set svg-sprite-loader
+      if (isDev && isClient) {
+        config.module.rules.forEach((rule) => {
+          if (~rule.test.source.indexOf('|svg')) {
+            rule.exclude = [resolve('icons/svg')]
+          }
+        })
+
+        config.module.rules.push({
+          test: /\.svg$/,
+          loader: 'svg-sprite-loader',
+          include: [resolve('icons/svg')], // include => 只处理指定的文件夹下的文件
+          options: {
+            symbolId: 'icon-[name]'
+          }
+        })
+        // console.log(config.module.rules)
+      // set svg-sprite-loader end
+      }
+    },
+    plugins: [
+      new SpriteLoaderPlugin() // set svg-sprite-loader
+    ]
   },
   server: {
     port: 8080, // default: 3000

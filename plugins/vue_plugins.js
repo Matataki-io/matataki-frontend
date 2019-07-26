@@ -3,7 +3,7 @@ import clampy from '@clampy-js/vue-clampy'
 import VueClipboard from 'vue-clipboard2'
 import { ContentLoader } from 'vue-content-loader'
 
-// import '@/icons/index.js'
+import '@/icons'
 Vue.use(clampy)
 Vue.use(VueClipboard)
 

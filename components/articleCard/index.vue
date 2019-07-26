@@ -109,10 +109,10 @@ export default {
       return precision(this.card.eosprice, 'eos')
     },
     tagName() {
-      return this.card && (this.card.tags.length !== 0 ? this.card.tags[0].name : '')
+      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].name : '')
     },
     tagId() {
-      return this.card && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
+      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
     },
     Uid() {
       return this.card && this.card.uid
