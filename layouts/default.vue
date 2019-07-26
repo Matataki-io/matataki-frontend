@@ -2,6 +2,12 @@
   <div class="app">
     <nuxt />
     <g-footer />
+    <el-backtop bottom="80" class="backtop">
+      <svg-icon
+        class="backtop-icon"
+        icon-class="backtop"
+      />
+    </el-backtop>
     <BaseModalForSignIn v-model="loginModalShow" />
   </div>
 </template>
@@ -25,14 +31,23 @@ export default {
       }
     }
   },
-  methods: {
-  },
   mounted() {
     this.$store.dispatch('testLogin')
+  },
+  methods: {
   }
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.app .backtop {
+  width: 50px;
+  height: 50px;
+  border-radius: @borderRadius10;
+  background: #000;
+  cursor: pointer;
+  &-icon {
+    color: #fff;
+  }
+}
 </style>
