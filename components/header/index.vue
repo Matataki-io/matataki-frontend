@@ -228,6 +228,7 @@ export default {
   box-sizing: border-box;
   &.el-dropdown-menu {
     padding: 0;
+    border: noen;
   }
   .el-dropdown-menu__item {
     font-size: 14px;
