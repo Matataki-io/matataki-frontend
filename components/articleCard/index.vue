@@ -313,6 +313,9 @@ export default {
   }
 }
 
+.commodity-card.tag .cover {
+  height: 187px;
+}
 // line
 .recommend-card .line {
   margin: 0 20px;
