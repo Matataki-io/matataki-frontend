@@ -4,12 +4,29 @@
     class="tags"
     :class="[!navShow && 'fix', !navShow && (typeIndex === 0 ? 'article' : 'commodity')]"
   >
-    <tag
-      v-for="(item, index) in tagCards"
-      :key="index"
-      :type-index="typeIndex"
-      :tag="item"
-    />
+    <template v-if="isMoreType">
+      <tag
+        v-for="(itemPost, indexPost) in tagCards[0]"
+        :key="indexPost"
+        :type-index="typeIndex"
+        :tag="itemPost"
+      />
+      <div class="line" />
+      <tag
+        v-for="(itemProduct, indexProduct) in tagCards[1]"
+        :key="indexProduct"
+        :type-index="typeIndex"
+        :tag="itemProduct"
+      />
+    </template>
+    <template v-else>
+      <tag
+        v-for="(item, index) in tagCards"
+        :key="index"
+        :type-index="typeIndex"
+        :tag="item"
+      />
+    </template>
   </div>
 </template>
 
@@ -29,6 +46,10 @@ export default {
     tagCards: {
       type: Array,
       default: () => []
+    },
+    isMoreType: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -103,5 +124,11 @@ export default {
     width: 100%;
     flex: 0 0 100%;
   }
+}
+.line {
+  width: 100%;
+  height: 1px;
+  background: #f7f7f7;
+  margin: 10px 0;
 }
 </style>

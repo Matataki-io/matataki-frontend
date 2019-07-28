@@ -12,23 +12,32 @@
       <div class="main article">
         <!-- 导航部分 -->
         <div class="main-nav">
-          <span
-            v-for="(itme, index) in articleCardData"
-            :key="index"
-            :class="nowMainIndex === index && 'active'"
-            @click="nowMainIndex = index"
-          >{{ itme.title }}</span>
+          <span class="active">{{ mainNavTitle }}</span>
         </div>
         <!-- 导航部分 end -->
         <!-- 空div控制内容 -->
         <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-          <articleCard
-            v-for="(itemChild, indexChild) in item.articles"
-            :key="indexChild"
-            :card="itemChild"
-            :type-index="0"
-            :card-type="'article-card'"
-          />
+          <template v-if="mainNavTypeIndex">
+            <div class="commodity-card-content">
+              <articleCard
+                v-for="(itemChild, indexChild) in item.articles"
+                :key="indexChild"
+                :card="itemChild"
+                :type-index="1"
+                :card-type="'commodity-card tag'"
+              />
+            </div>
+          </template>
+          <template v-else>
+            <articleCard
+              v-for="(itemChild, indexChild) in item.articles"
+              :key="indexChild"
+              :card="itemChild"
+              :type-index="mainNavTypeIndex"
+              :card-type="mainNavTypeCard"
+            />
+          </template>
+
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
           <div class="load-more-button">
             <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" @buttonLoadMore="buttonLoadMore" />
@@ -39,7 +48,7 @@
       </div>
       <div class="tags article">
         <span>更多标签</span>
-        <tags class="tags-container" :type-index="0" :tag-cards="tagCards" />
+        <tags class="tags-container" :type-index="0" :tag-cards="tagCards" :is-more-type="true" />
       </div>
     </div>
   </div>
@@ -75,13 +84,23 @@ export default {
         }
       ],
       tagCards: [],
-      tagStyleObject: {}
+      tagStyleObject: {},
+      tagType: 'product' // 文章 post 商品 product
 
     }
   },
   computed: {
     customizeHeaderBc() {
       return tagColor()[this.$route.params.id]
+    },
+    mainNavTitle() {
+      return this.tagType === 'post' ? '最新发布' : this.tagType === 'product' ? '最新商品' : '最新发布'
+    },
+    mainNavTypeIndex() {
+      return this.tagType === 'post' ? 0 : this.tagType === 'product' ? 1 : 0
+    },
+    mainNavTypeCard() {
+      return this.tagType === 'post' ? 'article-card' : this.tagType === 'product' ? 'commodity-card' : 'article-card'
     }
   },
   created() {
@@ -98,7 +117,25 @@ export default {
         .getTags()
         .then((res) => {
           if (res.status === 200 && res.data.code === 0) {
-            this.tagCards = res.data.data
+            // console.log(res.data.data)
+            const tagArr = res.data.data
+            const tagArrPost = []
+            const tagArrProduct = []
+
+            tagArr.map((i) => {
+              if (i.type === 'post') tagArrPost.push(i)
+              else if (i.type === 'product') tagArrProduct.push(i)
+            })
+
+            console.log(tagArrPost, tagArrProduct)
+
+            if (this.tagType === 'post') {
+              this.tagCards.push(tagArrPost)
+              this.tagCards.push(tagArrProduct)
+            } else if (this.tagType === 'product') {
+              this.tagCards.push(tagArrProduct)
+              this.tagCards.push(tagArrPost)
+            }
             // console.log(103, this.tagCards)
           } else console.log(res.data.message)
         })
@@ -143,6 +180,12 @@ export default {
     padding: 0;
     margin: 10px 0 0;
   }
+}
+
+// todo 需要优化调整
+.commodity-card-content {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
 <style lang="less" scoped src="../home_container.less"></style>

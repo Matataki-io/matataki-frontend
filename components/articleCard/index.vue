@@ -173,6 +173,20 @@ export default {
     width: 270px;
     flex: 0 0 270px;
     // height: 284px;
+    &.tag {
+      width: calc(50% - 20px);
+      flex: 0 0 calc(50% - 20px);
+      &:nth-child(even) {
+        margin-left: 20px !important;
+      }
+            &:nth-child(odd) {
+        margin-right: 20px !important;
+      }
+          &:nth-child(3n-1) {
+                margin-left: 0px;
+      margin-right: 0px;
+    }
+    }
     &:nth-child(3n-1) {
       margin-left: 40px;
       margin-right: 40px;
