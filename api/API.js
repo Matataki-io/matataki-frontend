@@ -23,5 +23,29 @@ export default {
     return request.get('/comments', {
       params: {signid}
     })
-  }
+  },
+  async getFans(uid, page = 1) {
+    return request.get('/fans', {
+      params: {
+        uid, page
+      }
+    })
+  },
+  async getFollows(uid, page = 1) {
+    return request.get('/follows', {
+      params: {
+        uid, page
+      }
+    })
+  },
+  async follow(uid) {
+    return request.post('/follow', {
+      data: { uid }
+    })
+  },
+  async unfollow(uid) {
+    return request.post('/unfollow', {
+      data: { uid }
+    })
+  },
 }
