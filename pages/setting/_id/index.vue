@@ -1,7 +1,7 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="user" />
+      <user-nav nav-list-url="setting" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="!showCard" class="card-container">
         <article-card-mini v-for="(item, index) in articleCardData.articles" :key="index" :card="item" class="card-container-block" />
@@ -62,7 +62,7 @@ export default {
       this.articleCardData.articles = []
       this.currentPage = i
       this.$router.push({
-        name: this.$route.name,
+        naem: this.$route.name,
         query: {
           page: i
         }

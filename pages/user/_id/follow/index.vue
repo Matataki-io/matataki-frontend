@@ -1,7 +1,7 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav />
+      <user-nav nav-list-url="user" />
       <div v-loading="!showCard" class="card-container">
         <fansCard v-for="(item, i) in fans.list" :key="i" class="fans-card" :card="item" @updateList="getFans"/>
       </div>
