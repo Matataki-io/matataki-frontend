@@ -29,15 +29,18 @@ export default {
 }
 .user-main {
   width: 890px;
-  height: 998px;
+  // height: 998px;
   background-color: #fff;
   padding: 40px;
+  border-radius: @borderRadius10;
   box-sizing: border-box;
+  margin-bottom: 120px;
 }
 
 .user-info {
   width: 270px;
   height: 396px;
+  border-radius: @borderRadius10;
   background-color: #fff;
 }
 </style>

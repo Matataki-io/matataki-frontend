@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       navList: [
-        { title: '原创', url: 'user-id-original' },
+        { title: '原创', url: 'user-id' },
         { title: '投资', url: 'user-id-investment' },
         { title: '关注', url: 'user-id-follow' },
         { title: '粉丝', url: 'user-id-fan' }

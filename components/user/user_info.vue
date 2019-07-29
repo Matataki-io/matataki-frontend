@@ -56,8 +56,8 @@ export default {
 
 .info {
   overflow: hidden;
-  border-radius: @borderRadius10;
   background-color: #fff;
+  border-radius: @borderRadius10;
 }
 .avatar {
     width: 60px !important;
@@ -103,23 +103,23 @@ export default {
     justify-content: center;
     align-items: center;
     .data {
-       margin: 20px 18px;
-    text-align: center;
+      margin: 20px 18px;
+      text-align: center;
       .num {
-font-size:24px;
-font-weight:600;
-color:rgba(28,156,254,1);
-line-height:33px;
-padding: 0;
-margin: 0;
+        font-size:24px;
+        font-weight:600;
+        color:rgba(28,156,254,1);
+        line-height:33px;
+        padding: 0;
+        margin: 0;
       }
       .title {
-font-size:14px;
-font-weight:400;
-color:rgba(0,0,0,1);
-line-height:17px;
-padding: 0;
-margin: 2px 0 0;
+        font-size:14px;
+        font-weight:400;
+        color:rgba(0,0,0,1);
+        line-height:17px;
+        padding: 0;
+        margin: 2px 0 0;
       }
     }
 }

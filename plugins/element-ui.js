@@ -9,7 +9,8 @@ import {
   Loading,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Pagination
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -20,7 +21,9 @@ Vue.use(Input)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Pagination)
 
+Vue.use(Loading.directive)
 Vue.prototype.$message = Message
 Vue.prototype.$loading = Loading.service
 // import Element from 'element-ui'
