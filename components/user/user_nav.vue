@@ -49,7 +49,7 @@ export default {
     margin-right: 50px;
     cursor: pointer;
     &.active {
-      font-weight:500;
+      font-weight:bold;
     }
     &:nth-last-child(1) {
       margin-right: 0;

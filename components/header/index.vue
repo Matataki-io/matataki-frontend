@@ -4,16 +4,17 @@
       <div class="head-flex">
         <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
-        <nuxt-link
+        <a
           v-for="(item, index) in nav"
           :key="index"
+          href="javascript:;"
           class="nav"
           :style="customizeHeaderTextColorComputed"
-          :class="$route.path === item.url && 'active'"
-          :to="item.url"
+          :class="$route.name === item.url && 'active'"
+          @click="togglePage(item.url)"
         >
           {{ item.title }}
-        </nuxt-link>
+        </a>
       </div>
 
       <div class="head-flex">
@@ -93,11 +94,11 @@ export default {
       nav: [
         {
           title: '文章',
-          url: '/'
+          url: 'index'
         },
         {
           title: '商品',
-          url: '/commodity'
+          url: 'commodity'
         }
       ],
       avatar: ''
@@ -130,6 +131,8 @@ export default {
   created() {
     const { isLogined, refreshUser } = this
     if (isLogined) refreshUser()
+
+    console.log(this.$route)
   },
   methods: {
     ...mapActions(['getCurrentUser']),
@@ -140,6 +143,11 @@ export default {
     login() {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
+    },
+    togglePage(url) {
+      this.$router.push({
+        name: url
+      })
     }
   }
 }
@@ -214,7 +222,7 @@ export default {
     font-weight: 500;
     text-decoration: none;
     &.active {
-      color: rgba(0, 0, 0, 1);
+      color: #000 !important;
     }
   }
 }
