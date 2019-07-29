@@ -31,6 +31,8 @@ export default {
   width: 890px;
   height: 998px;
   background-color: #fff;
+  padding: 40px;
+  box-sizing: border-box;
 }
 
 .user-info {
