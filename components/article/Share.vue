@@ -2,7 +2,7 @@
   <div class="share">
     <div class="container">
       <div class="img-container">
-        <img src="@/assets/img/share.svg" alt="share">
+        <svg-icon icon-class="share" class="icon" />
       </div>
     </div>
     <span class="text">分享文章</span>
@@ -44,9 +44,16 @@ export default {
   border-radius: 50%;
   background: #F1F1F1;
   .flexCenter();
-  img {
-    width: 40%;
-    height: auto;
+  .icon {
+    width: auto;
+    height: 40%;
+    color: @blue;
+  }
+  &:hover {
+    background: @blue;
+    .icon {
+      color: #ffffff;
+    }
   }
 }
 </style>

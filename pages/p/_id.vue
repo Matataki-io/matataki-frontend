@@ -7,38 +7,36 @@
         <h1 class="Post-Title">
           {{ article.title }}
         </h1>
-        <div class="Post-Author">
-          <div class="AuthorInfo">
-            <img class="Avatar" width="38" height="38" :src="avatar" alt="">
-            <div class="AuthorInfo-content">
-              <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
-              <span class="Post-Time">发布于{{ articleCreateTimeComputed }}</span>
-              <span class="View-Num">{{ article.read || 0 }}阅读</span>
-            </div>
-          </div>
-        </div>
+        <UserInfoHeader
+          :article="{
+            ...article,
+            avatar,
+            articleCreateTimeComputed,
+          }"/>
         <div class="Post-RichTextContainer">
           <div class="Post-RichText markdown-body" v-html="compiledMarkdown" />
         </div>
       </header>
     </article>
-    <div class="p-w btns">
-      <div @click="invest">
-        <InvestBtn style="margin-right: 120px;width: 80px;"></InvestBtn>
-      </div>
-      <div @click="share">
-        <ShareBtn style="width: 80px;"></ShareBtn>
-      </div>
-    </div>
-    <CommentList :signId="article.id" :type="article.channel_id" class="p-w"></CommentList>
-    <div>
-      <div class="sidebar">
+    <div class="p-w" style="margin-top: 20px;"><ArticleFooter :article="article" /></div>
+    <div class="p-w btns-container">
+      <div class="btns">
         <div @click="invest">
-          <InvestBtn style="margin-bottom: 20px;width: 60px;"></InvestBtn>
+          <InvestBtn style="margin-right: 120px;width: 80px;"></InvestBtn>
         </div>
         <div @click="share">
-          <ShareBtn style="width: 60px;"></ShareBtn>
+          <ShareBtn style="width: 80px;"></ShareBtn>
         </div>
+      </div>
+      <ArticleInfoFooter :article="article" />
+    </div>
+    <CommentList :signId="article.id" :type="article.channel_id" class="p-w"></CommentList>
+    <div class="sidebar">
+      <div @click="invest">
+        <InvestBtn style="margin-bottom: 20px;width: 60px;"></InvestBtn>
+      </div>
+      <div @click="share">
+        <ShareBtn style="width: 60px;"></ShareBtn>
       </div>
     </div>
     <InvestModal
@@ -68,6 +66,9 @@ import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import CommentList from '@/components/comment/List'
 import InvestBtn from '@/components/article/Invest'
 import ShareBtn from '@/components/article/Share'
+import UserInfoHeader from '@/components/article/UserInfoHeader'
+import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
+import ArticleFooter from '@/components/article/ArticleFooter'
 import InvestModal from '@/components/modal/Invest'
 import ShareModal from '@/components/modal/Share'
 export default {
@@ -79,12 +80,24 @@ export default {
       shareModalShow: false
     }
   },
+  head: {
+    script: [
+      {
+        type: 'text/javascript',
+        id: 'pocket-btn-js', // id 不知道作用 生成的 script 有id就带着好了
+        src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
+      }
+    ]
+  },
   components: {
     CommentList,
     InvestBtn,
     ShareBtn,
     InvestModal,
-    ShareModal
+    ShareModal,
+    UserInfoHeader,
+    ArticleInfoFooter,
+    ArticleFooter
   },
   mounted() {
     this.setAvatar()
@@ -153,12 +166,16 @@ export default {
   margin: auto;
   bottom: 106px;
 }
-.btns {
-  .flexCenter();
+.btns-container {
   border-top: 1px solid #DBDBDB;
   border-bottom: 1px solid #DBDBDB;
-  margin: 40px auto;
-  padding: 40px 0;
+  margin: 20px auto;
+  padding: 20px 0;
+  .flexCenter();
+  flex-direction: column;
+}
+.btns {
+  .flexCenter();
 }
 .TitleImage {
   display: block;
@@ -189,24 +206,5 @@ export default {
   line-height: 1.22;
   margin: 24px 0;
   word-wrap: break-word;
-}
-.Post-Author {
-  display: flex;
-  align-items: center;
-  .AuthorInfo {
-    flex: 1 1;
-    white-space: nowrap;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-}
-.AuthorInfo-content {
-  flex: 1 1;
-  margin-left: 14px;
-  overflow: hidden;
-}
-.Post-Time, .View-Num {
-  .info-font();
 }
 </style>
