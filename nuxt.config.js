@@ -1,5 +1,8 @@
 import path from 'path'
+import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+
 import env from './env'
 function genENV() {
   const keys = Object.keys(env.production)
@@ -106,7 +109,12 @@ export default {
       }
     },
     plugins: [
-      new SpriteLoaderPlugin() // set svg-sprite-loader
+      new SpriteLoaderPlugin(), // set svg-sprite-loader
+      new webpack.ContextReplacementPlugin(
+        /moment[/\\]locale$/,
+        /zh-cn/
+      )
+      // new BundleAnalyzerPlugin()
     ]
   },
   server: {

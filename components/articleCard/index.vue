@@ -1,4 +1,5 @@
 <template>
+  <!-- 适用于 首页, 商品页, 标签页 -->
   <!-- 区分那种卡 -->
   <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="article" :class="cardType">
     <div class="cover">
