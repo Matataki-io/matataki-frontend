@@ -18,11 +18,11 @@
     <div class="des">
       <!-- 暂时用文章页代替跳转地址 -->
       <n-link
-        :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName}} "
+        :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
         tag="span"
         class="title"
       >
-        {{ tagName }}
+        {{ tagName + tagType }}
       </n-link>
       <!-- 暂时用文章页代替跳转地址 end -->
 
@@ -114,6 +114,10 @@ export default {
     },
     tagId() {
       return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
+    },
+    tagType() {
+      console.log(this.card.tags[0], 111)
+      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].type : '')
     },
     Uid() {
       return this.card && this.card.uid

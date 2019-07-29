@@ -1,9 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav />
+      <user-nav nav-list-url="user" />
       <div class="fans-main">
-        <fansCard v-for="(item, i) in list" :key="i" class="fans-card" :card="item" @updateList="getFans"/>
+        <fansCard v-for="(item, i) in list" :key="i" class="fans-card" :card="item" @updateList="getFans" />
       </div>
     </template>
     <template slot="info">
