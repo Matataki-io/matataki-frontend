@@ -3,11 +3,11 @@
     <template slot="main">
       <user-nav nav-list-url="user" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
-      <div v-loading="isNotData || !showCard" class="card-container">
+      <div v-loading="!showCard" class="card-container">
         <article-card-mini v-for="(item, index) in articleCardData.articles" :key="index" :card="item" class="card-container-block" />
       </div>
       <user-pagination
-        v-show="isNotData || showCard"
+        v-show="!showCard"
         :current-page="currentPage"
         :params="articleCardData.params"
         :api-url="articleCardData.apiUrl"
@@ -46,8 +46,7 @@ export default {
         apiUrl: 'homeTimeRanking',
         articles: []
       },
-      currentPage: Number(this.$route.query.page) || 1,
-      isNotData: false
+      currentPage: Number(this.$route.query.page) || 1
     }
   },
   computed: {
@@ -58,7 +57,6 @@ export default {
   methods: {
     paginationData(data) {
       this.articleCardData.articles = data
-      if (data.length === 0) this.isNotData = true
     },
     togglePage(i) {
       this.articleCardData.articles = []
