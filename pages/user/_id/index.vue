@@ -62,7 +62,7 @@ export default {
       this.articleCardData.articles = []
       this.currentPage = i
       this.$router.push({
-        naem: this.$route.name,
+        name: this.$route.name,
         query: {
           page: i
         }
