@@ -3,7 +3,8 @@
     class="user-pagination"
     background
     layout="prev, pager, next"
-    :total="1000"
+    :total="total"
+    :page-size="pageSize"
     :current-page.sync="currentPageCopy"
     @prev-click="prevClick"
     @next-click="nextClick"
@@ -27,6 +28,14 @@ export default {
     apiUrl: {
       type: String,
       required: true
+    },
+    total: {
+      type: Number,
+      required: true
+    },
+    pageSize: {
+      type: Number,
+      default: 20
     }
   },
   data() {
@@ -51,7 +60,7 @@ export default {
     async currentPageData(url, params, page) {
       // console.log(url, params, page)
       params.page = page
-      const getDataSuccess = res => this.$emit('paginationData', res.data)
+      const getDataSuccess = res => this.$emit('paginationData', res)
       const getDataFail = message => message ? console.log(message) : console.log('获取数据失败')
 
       // 获取数据

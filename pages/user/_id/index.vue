@@ -11,6 +11,8 @@
         :current-page="currentPage"
         :params="articleCardData.params"
         :api-url="articleCardData.apiUrl"
+        :page-size="9"
+        :total="total"
         class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
@@ -47,17 +49,17 @@ export default {
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,
-      loading: false // 加载数据
+      loading: false, // 加载数据
+      total: 0
     }
   },
   computed: {
-    showCard() {
-      return this.articleCardData.articles.length !== 0
-    }
+
   },
   methods: {
-    paginationData(data) {
-      this.articleCardData.articles = data
+    paginationData(res) {
+      this.articleCardData.articles = res.data.list
+      this.total = res.data.count
       this.loading = false
     },
     togglePage(i) {

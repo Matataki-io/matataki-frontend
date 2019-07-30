@@ -2,11 +2,11 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="user" />
-      <div v-loading="!showCard" class="card-container">
-        <fansCard v-for="(item, i) in fans.list" :key="i" class="fans-card" :card="item" @updateList="getFans"/>
+      <div v-loading="loading" class="card-container">
+        <fansCard v-for="(item, i) in list" :key="i" class="fans-card" :card="item" @updateList="getFans" />
       </div>
       <user-pagination
-        v-show="showCard"
+        v-show="!loading"
         :current-page="currentPage"
         :params="params"
         :api-url="apiUrl"
@@ -38,28 +38,28 @@ export default {
   },
   data() {
     return {
-      fans: {},
       currentPage: Number(this.$route.query.page) || 1,
       apiUrl: 'fansList',
       params: {
         uid: this.$route.params.id
-        // pagesize: 20
       },
-      list: []
+      list: [],
+      total: 0,
+      loading: false
     }
+  },
+  computed: {
   },
   async mounted() {
   },
-  computed: {
-    showCard() {
-      return this.list.length !== 0
-    }
-  },
   methods: {
-    paginationData(data) {
-      this.list = data
+    paginationData(res) {
+      this.list = res.data.list
+      this.total = res.data.totalFollows
+      this.loading = false
     },
     togglePage(i) {
+      this.loading = true
       this.list = []
       this.currentPage = i
       this.$router.push({
