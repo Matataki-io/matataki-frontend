@@ -3,11 +3,11 @@
     <template slot="main">
       <user-nav nav-list-url="user" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
-      <div v-loading="!showCard" class="card-container">
+      <div v-loading="loading" class="card-container">
         <article-card-mini v-for="(item, index) in articleCardData.articles" :key="index" :card="item" class="card-container-block" />
       </div>
       <user-pagination
-        v-show="showCard"
+        v-show="!loading"
         :current-page="currentPage"
         :params="articleCardData.params"
         :api-url="articleCardData.apiUrl"
@@ -39,15 +39,16 @@ export default {
   data() {
     return {
       articleCardData: {
-        // todo 等待后端fix 开启pagesize
         params: {
+          // todo 等待后端fix 开启pagesize
           user: this.$route.params.id
           // pagesize: 9
         },
         apiUrl: 'userArticlesSupportedList',
         articles: []
       },
-      currentPage: Number(this.$route.query.page) || 1
+      currentPage: Number(this.$route.query.page) || 1,
+      loading: false // 加载数据
     }
   },
   computed: {
@@ -58,12 +59,13 @@ export default {
   methods: {
     paginationData(data) {
       this.articleCardData.articles = data
+      this.loading = false
     },
     togglePage(i) {
+      this.loading = true
       this.articleCardData.articles = []
       this.currentPage = i
       this.$router.push({
-        naem: this.$route.name,
         query: {
           page: i
         }
