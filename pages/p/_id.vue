@@ -12,34 +12,37 @@
             ...article,
             avatar,
             articleCreateTimeComputed,
-          }"/>
+          }"
+        />
         <div class="Post-RichTextContainer">
           <div class="Post-RichText markdown-body" v-html="compiledMarkdown" />
         </div>
       </header>
     </article>
-    <div class="p-w" style="margin-top: 20px;"><ArticleFooter :article="article" /></div>
+    <div class="p-w" style="margin-top: 20px;">
+      <ArticleFooter :article="article" />
+    </div>
     <div class="p-w btns-container">
       <div class="btns">
         <div @click="invest">
-          <InvestBtn style="margin-right: 120px;width: 80px;"></InvestBtn>
+          <InvestBtn style="margin-right: 120px;width: 80px;" />
         </div>
         <div @click="share">
-          <ShareBtn style="width: 80px;"></ShareBtn>
+          <ShareBtn style="width: 80px;" />
         </div>
       </div>
       <ArticleInfoFooter :article="article" />
     </div>
-    <div class="p-w tags-container">
-      {{article.tags}}
+    <div v-if="article.tags.length !== 0" class="p-w tags-container">
+      <tag v-for="(item, index) in article.tags" :key="index" :tag="item" />
     </div>
-    <CommentList :signId="article.id" :type="article.channel_id" class="p-w"></CommentList>
+    <CommentList :sign-id="article.id" :type="article.channel_id" class="p-w" />
     <div class="sidebar">
       <div @click="invest">
-        <InvestBtn style="margin-bottom: 20px;width: 60px;"></InvestBtn>
+        <InvestBtn style="margin-bottom: 20px;width: 60px;" />
       </div>
       <div @click="share">
-        <ShareBtn style="width: 60px;"></ShareBtn>
+        <ShareBtn style="width: 60px;" />
       </div>
     </div>
     <InvestModal
@@ -47,7 +50,8 @@
       :article="{
         ...article,
         title: '投资文章'
-      }" />
+      }"
+    />
     <ShareModal
       v-model="shareModalShow"
       :article="{
@@ -55,7 +59,8 @@
         time: articleCreateTimeComputed,
         content: compiledMarkdown,
         avatar
-      }" />
+      }"
+    />
   </div>
 </template>
 
@@ -74,7 +79,20 @@ import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
 import ArticleFooter from '@/components/article/ArticleFooter'
 import InvestModal from '@/components/modal/Invest'
 import ShareModal from '@/components/modal/Share'
+
+import tag from '@/components/tags/tag.vue'
 export default {
+  components: {
+    CommentList,
+    InvestBtn,
+    ShareBtn,
+    InvestModal,
+    ShareModal,
+    UserInfoHeader,
+    ArticleInfoFooter,
+    ArticleFooter,
+    tag
+  },
   data() {
     return {
       avatar: null,
@@ -91,16 +109,6 @@ export default {
         src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
       }
     ]
-  },
-  components: {
-    CommentList,
-    InvestBtn,
-    ShareBtn,
-    InvestModal,
-    ShareModal,
-    UserInfoHeader,
-    ArticleInfoFooter,
-    ArticleFooter
   },
   mounted() {
     this.setAvatar()
@@ -155,64 +163,3 @@ export default {
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
-.main {
-  .minHeight();
-}
-@width: 690px;
-.p-w  {
-  width: @width;
-  margin: 0 auto;
-}
-.tags-container {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid @gray;
-}
-.sidebar {
-  position: fixed;
-  right: calc((100vw - 958px)/2);
-  margin: auto;
-  bottom: 106px;
-}
-.btns-container {
-  border-top: 1px solid @gray;
-  border-bottom: 1px solid @gray;
-  margin: 20px auto;
-  padding: 20px 0;
-  .flexCenter();
-  flex-direction: column;
-}
-.btns {
-  .flexCenter();
-}
-.TitleImage {
-  display: block;
-  margin: 16px auto 0;
-  width: @width;
-}
-.Avatar {
-  background: #fff;
-  border-radius: 50%;
-  vertical-align: top;
-}
-.Post-Header {
-  overflow: hidden;
-  width: @width;
-  margin: 0 auto;
-}
-.Post-RichTextContainer {
-  width: @width;
-  margin: 0 auto;
-}
-.Post-RichText {
-  margin-top: 20px;
-}
-.Post-Title {
-  font-weight: 600;
-  font-synthesis: style;
-  font-size: 24px;
-  line-height: 1.22;
-  margin: 24px 0;
-  word-wrap: break-word;
-}
-</style>

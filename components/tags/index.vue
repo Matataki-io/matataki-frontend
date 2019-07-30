@@ -10,6 +10,7 @@
         :key="indexPost"
         :type-index="typeIndex"
         :tag="itemPost"
+        :class="typeIndex === 0 ? 'article' : 'commodity'"
       />
       <div class="line" />
       <tag
@@ -17,6 +18,7 @@
         :key="indexProduct"
         :type-index="typeIndex"
         :tag="itemProduct"
+        :class="typeIndex === 0 ? 'article' : 'commodity'"
       />
     </template>
     <template v-else>
@@ -25,6 +27,7 @@
         :key="index"
         :type-index="typeIndex"
         :tag="item"
+        :class="typeIndex === 0 ? 'article' : 'commodity'"
       />
     </template>
   </div>
@@ -102,14 +105,14 @@ export default {
   }
 }
 .tag {
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin: 10px 0;
-  box-sizing: border-box;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: all 0.3s;
+  // display: flex;
+  // align-items: center;
+  // position: relative;
+  // margin: 10px 0;
+  // box-sizing: border-box;
+  // cursor: pointer;
+  // border-radius: 10px;
+  // transition: all 0.3s;
   &.article {
     max-width: calc(50% - 6px);
     flex: calc(50% - 6px);

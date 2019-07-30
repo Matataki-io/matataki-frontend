@@ -4,7 +4,6 @@
     :to=" {name: 'tag-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
     tag="div"
     class="tag"
-    :class="typeIndex === 0 ? 'article' : 'commodity'"
   >
     <div class="tag-icon" :style="tagStyleObject">
       <tag-icon :id="tag.id" />
@@ -55,6 +54,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.tag {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 10px 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
 .tag:hover span {
   color: #fff;
 }
