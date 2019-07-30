@@ -116,7 +116,6 @@ export default {
       return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
     },
     tagType() {
-      console.log(this.card.tags[0], 111)
       return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].type : '')
     },
     Uid() {

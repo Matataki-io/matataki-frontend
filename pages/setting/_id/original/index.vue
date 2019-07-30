@@ -1,7 +1,7 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="user" />
+      <user-nav nav-list-url="setting" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="loading" class="card-container">
         <article-card-mini v-for="(item, index) in articleCardData.articles" :key="index" :card="item" class="card-container-block" />
@@ -11,8 +11,8 @@
         :current-page="currentPage"
         :params="articleCardData.params"
         :api-url="articleCardData.apiUrl"
-        :total="total"
         :page-size="9"
+        :total="total"
         class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
@@ -42,14 +42,15 @@ export default {
     return {
       articleCardData: {
         params: {
-          user: this.$route.params.id,
+          author: this.$route.params.id,
           pagesize: 9
         },
-        apiUrl: 'userArticlesSupportedList',
+        apiUrl: 'homeTimeRanking',
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,
-      loading: false // 加载数据
+      loading: false, // 加载数据
+      total: 0
     }
   },
   computed: {
