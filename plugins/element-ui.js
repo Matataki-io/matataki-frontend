@@ -11,7 +11,12 @@ import {
   DropdownMenu,
   DropdownItem,
   Pagination,
-  MessageBox
+  MessageBox,
+  Row,
+  Col,
+  Checkbox,
+  Slider,
+  Tooltip
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -23,6 +28,11 @@ Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Pagination)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Checkbox)
+Vue.use(Slider)
+Vue.use(Tooltip)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
