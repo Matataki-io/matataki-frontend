@@ -10,7 +10,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Pagination
+  Pagination,
+  MessageBox
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -26,6 +27,7 @@ Vue.use(Pagination)
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
 Vue.prototype.$loading = Loading.service
+Vue.prototype.$confirm = MessageBox.confirm
 // import Element from 'element-ui'
 // import locale from 'element-ui/lib/locale/lang/en'
 

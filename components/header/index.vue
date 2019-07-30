@@ -24,7 +24,6 @@
           :style="customizeHeaderIconColorComputed"
           @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
         />
-
         <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
             <img v-if="avatar" :src="avatar" alt="avatar">
@@ -56,6 +55,7 @@
           class="home-head-notlogin"
           @click="login"
         >登录</a>
+        <slot name="more" />
       </div>
     </div>
   </header>
@@ -105,7 +105,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     customizeHeaderBcComputed() {
       return {
         backgroundColor: this.customizeHeaderBc,
