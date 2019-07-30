@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <g-header />
+    <g-header @delete="del" @transfer="transfer" @edit="edit" />
     <img class="TitleImage" :src="cover" alt="">
     <article>
       <header class="Post-Header">
@@ -106,6 +106,33 @@ export default {
     this.setAvatar()
   },
   methods: {
+    del() {
+      this.$confirm('确定删除文章吗？', '确认信息', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$message({
+            type: 'info',
+            message: '保存修改'
+          })
+        })
+        .catch((action) => {
+          this.$message({
+            type: 'info',
+            message: action === 'cancel'
+              ? '放弃保存并离开页面'
+              : '停留在当前页面'
+          })
+        })
+    },
+    transfer() {
+
+    },
+    edit() {
+
+    },
     invest() {
       this.investModalShow = true
     },
