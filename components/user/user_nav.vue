@@ -30,8 +30,8 @@ export default {
         { title: '我的账户', url: 'setting-id' },
         { title: '我的原创', url: 'setting-id-original' },
         { title: '我的投资', url: 'setting-id-investment' },
-        { title: '我的草稿', url: 'setting-id-fan' },
-        { title: '购买记录', url: 'setting-id-fan' },
+        { title: '我的草稿', url: 'setting-id-draft' },
+        { title: '购买记录', url: 'setting-id-buy' },
         { title: '设置', url: 'setting-id-fan' }
       ]
     }

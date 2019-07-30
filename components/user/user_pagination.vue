@@ -36,6 +36,10 @@ export default {
     pageSize: {
       type: Number,
       default: 20
+    },
+    needAccessToken: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -65,7 +69,7 @@ export default {
 
       // 获取数据
       try {
-        const res = await this.$backendAPI.getBackendData({ url, params }, false)
+        const res = await this.$backendAPI.getBackendData({ url, params }, this.needAccessToken)
         if (res.status === 200 && res.data.code === 0) getDataSuccess(res.data)
         else getDataFail(res.data.message)
       } catch (error) { getDataFail() }

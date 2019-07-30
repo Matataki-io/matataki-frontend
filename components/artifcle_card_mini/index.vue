@@ -10,6 +10,7 @@
     </h3>
     <p class="date">
       {{ time }}
+      <a v-if="isDraftCard" class="del" href="javascript:;" @click="$emit('del', index)">删除</a>
     </p>
   </div>
 </template>
@@ -22,6 +23,14 @@ export default {
     card: {
       type: Object,
       default: () => {}
+    },
+    isDraftCard: {
+      type: Boolean,
+      default: false
+    },
+    index: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -72,5 +81,18 @@ export default {
   line-height:22px;
   padding: 0;
   margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .del {
+    width: 67px;
+    background: #000;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 4px 0;
+    cursor: pointer;
+    border-radius: @borderRadius6;
+  }
 }
 </style>
