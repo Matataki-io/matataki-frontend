@@ -1,6 +1,19 @@
 <template>
   <div class="main">
-    <g-header @delete="del" @transfer="transfer" @edit="edit" />
+    <g-header>
+      <template slot="more">
+        <el-dropdown trigger="click" @command="handleMoreAction">
+          <div class="artilce-more">
+            <i class="el-icon-more"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item command="edit">编辑</el-dropdown-item>
+            <el-dropdown-item command="transfer">转让</el-dropdown-item>
+            <el-dropdown-item command="del">删除</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </template>
+    </g-header>
     <img class="TitleImage" :src="cover" alt="">
     <article>
       <header class="Post-Header">
@@ -61,6 +74,11 @@
         avatar
       }"
     />
+    <article-transfer
+      v-model="transferModal"
+      :article-id="article.id"
+      :from="'article'"
+    />
   </div>
 </template>
 
@@ -79,6 +97,7 @@ import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
 import ArticleFooter from '@/components/article/ArticleFooter'
 import InvestModal from '@/components/modal/Invest'
 import ShareModal from '@/components/modal/Share'
+import articleTransfer from '@/components/articleTransfer'
 
 import tag from '@/components/tags/tag.vue'
 export default {
@@ -91,6 +110,7 @@ export default {
     UserInfoHeader,
     ArticleInfoFooter,
     ArticleFooter,
+    articleTransfer,
     tag
   },
   data() {
@@ -98,7 +118,8 @@ export default {
       avatar: null,
       followed: false,
       investModalShow: false,
-      shareModalShow: false
+      shareModalShow: false,
+      transferModal: false
     }
   },
   head: {
@@ -114,32 +135,45 @@ export default {
     this.setAvatar()
   },
   methods: {
+    handleMoreAction(command) {
+      this[command]()
+    },
     del() {
+      const delSuccess = async () => {
+        this.$message({ duration: 2000, message: '删除成功,三秒后自动跳转到首页' })
+        await this.$utils.sleep(3000)
+        this.$router.push({ name: 'home' })
+      }
+      const fail = (err) => {
+        this.$message.error('删除失败')
+        console.log('error', err)
+      }
+      const delArticleFunc = async (id) => {
+        if (!id) return fail('没有id')
+        try {
+          const response = await this.$backendAPI.delArticle({ id })
+          if (response.status === 200 && response.data.code === 0) delSuccess()
+          else fail(response.data.message)
+        } catch (error) {
+          return fail(error)
+        }
+      }
       this.$confirm('确定删除文章吗？', '确认信息', {
         distinguishCancelAndClose: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       })
         .then(() => {
-          this.$message({
-            type: 'info',
-            message: '保存修改'
-          })
+          delArticleFunc(this.article.id)
         })
-        .catch((action) => {
-          this.$message({
-            type: 'info',
-            message: action === 'cancel'
-              ? '放弃保存并离开页面'
-              : '停留在当前页面'
-          })
-        })
+        .catch((action) => {})
     },
     transfer() {
-
+      this.transferModal = true
     },
     edit() {
-
+      // TODO
+      console.log('edit')
     },
     invest() {
       this.investModalShow = true

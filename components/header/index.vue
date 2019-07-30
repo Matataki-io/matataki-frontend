@@ -24,49 +24,38 @@
           :style="customizeHeaderIconColorComputed"
           @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
         />
-        <template v-if="isLogined">
-          <el-dropdown>
-            <div class="home-head-avatar" @click="$emit('login')">
-              <img v-if="avatar" :src="avatar" alt="avatar">
-            </div>
-            <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-              <el-dropdown-item>
-                xiaotiandada
-              </el-dropdown-item>
-              <el-dropdown-item divided>
-                我的账户
-              </el-dropdown-item>
-              <el-dropdown-item>我的原创</el-dropdown-item>
-              <el-dropdown-item>我的投资</el-dropdown-item>
-              <el-dropdown-item>我的草稿</el-dropdown-item>
-              <el-dropdown-item>
-                购买记录
-              </el-dropdown-item>
-              <el-dropdown-item divided>
-                设置
-              </el-dropdown-item>
-              <el-dropdown-item divided>
-                退出
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <el-dropdown trigger="click">
-            <div class="artilce-more">
-              <i class="el-icon-more"></i>
-            </div>
-            <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-              <el-dropdown-item @click="$emit('edit')">编辑</el-dropdown-item>
-              <el-dropdown-item @click="$emit('transfer')">转让</el-dropdown-item>
-              <el-dropdown-item @click="$emit('delete')">删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
+        <el-dropdown v-if="isLogined">
+          <div class="home-head-avatar" @click="$emit('login')">
+            <img v-if="avatar" :src="avatar" alt="avatar">
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item>
+              xiaotiandada
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              我的账户
+            </el-dropdown-item>
+            <el-dropdown-item>我的原创</el-dropdown-item>
+            <el-dropdown-item>我的投资</el-dropdown-item>
+            <el-dropdown-item>我的草稿</el-dropdown-item>
+            <el-dropdown-item>
+              购买记录
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              设置
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              退出
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <a
           v-else
           href="javascript:void(0);"
           class="home-head-notlogin"
           @click="login"
         >登录</a>
+        <slot name="more" />
       </div>
     </div>
   </header>
@@ -165,22 +154,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.artilce-more {
-  height: 60px;
-  width:60px;
-  margin-left: 10px;
-  .flexCenter();
-  i {
-    font-size: 1.5rem;
-    color: #000000;
-  }
-  &:hover {
-    background: @blue;
-    i {
-      color: #ffffff;
-    }
-  }
-}
 .header {
   width: 100%;
   background: #fff;
