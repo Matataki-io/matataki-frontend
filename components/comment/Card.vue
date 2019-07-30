@@ -82,7 +82,7 @@ export default {
 
 .comment-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 .comment-head {
   font-size: 14px;

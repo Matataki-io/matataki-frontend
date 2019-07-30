@@ -30,6 +30,9 @@
       </div>
       <ArticleInfoFooter :article="article" />
     </div>
+    <div class="p-w tags-container">
+      {{article.tags}}
+    </div>
     <CommentList :signId="article.id" :type="article.channel_id" class="p-w"></CommentList>
     <div class="sidebar">
       <div @click="invest">
@@ -151,7 +154,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scoped src="./index.less"></style>
 .main {
   .minHeight();
 }
@@ -160,6 +163,11 @@ export default {
   width: @width;
   margin: 0 auto;
 }
+.tags-container {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid @gray;
+}
 .sidebar {
   position: fixed;
   right: calc((100vw - 958px)/2);
@@ -167,8 +175,8 @@ export default {
   bottom: 106px;
 }
 .btns-container {
-  border-top: 1px solid #DBDBDB;
-  border-bottom: 1px solid #DBDBDB;
+  border-top: 1px solid @gray;
+  border-bottom: 1px solid @gray;
   margin: 20px auto;
   padding: 20px 0;
   .flexCenter();
