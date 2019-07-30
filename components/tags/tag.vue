@@ -1,7 +1,7 @@
 <template>
   <!-- 暂时用文章页代替跳转地址 -->
   <n-link
-    :to=" {name: 'p-id', params: {id: tag.id}} "
+    :to=" {name: 'tag-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
     tag="div"
     class="tag"
     :class="typeIndex === 0 ? 'article' : 'commodity'"

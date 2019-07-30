@@ -85,7 +85,7 @@ export default {
       ],
       tagCards: [],
       tagStyleObject: {},
-      tagType: 'product' // 文章 post 商品 product
+      tagType: this.$route.query.type || 'post' // 文章 post 商品 product
 
     }
   },

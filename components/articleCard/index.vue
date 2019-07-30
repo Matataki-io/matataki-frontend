@@ -22,7 +22,7 @@
         tag="span"
         class="title"
       >
-        {{ tagName + tagType }}
+        {{ tagName }}
       </n-link>
       <!-- 暂时用文章页代替跳转地址 end -->
 
