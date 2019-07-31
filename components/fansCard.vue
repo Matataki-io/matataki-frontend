@@ -12,14 +12,14 @@
     <button
       v-if="!card.is_follow"
       class="fllow-btn btn-base"
-      @click.stop="followOrUnfollowUser({ id: card.uid, type: 1 })"
+      @click.stop="followOrUnfollowUser({ id: card.id, type: 1 })"
     >
       <i class="el-icon-plus" /> <span class="btn-text">关注</span>
     </button>
     <button
       v-else
       class="fllowed-btn btn-base"
-      @click.stop="followOrUnfollowUser({ id: card.uid, type: 0 })"
+      @click.stop="followOrUnfollowUser({ id: card.id, type: 0 })"
     >
       <span />
     </button>
@@ -63,13 +63,11 @@ export default {
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
           this.$message.success(`${message}成功`)
+          this.$emit('updateList')
           this.card.is_follow = type === 1
         } else {
           throw new Error(`${message}失败`)
         }
-        this.$message.success(`${message}成功`)
-        this.card.is_follow = type === 1
-        this.$emit('updateList')
       } catch (error) {
         this.$message.error(`${message}失败`)
       }

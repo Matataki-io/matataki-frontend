@@ -3,7 +3,14 @@
     <template slot="main">
       <user-nav nav-list-url="user" />
       <div v-loading="loading" class="card-container">
-        <fansCard v-for="(item, i) in list" :key="i" class="fans-card" :card="item" @updateList="getFans" />
+        <fansCard
+          v-for="(item, i) in list"
+          :key="i"
+          class="fans-card"
+          :card="{
+            ...item,
+            id: item.uid }"
+          @updateList="updateList" />
       </div>
       <user-pagination
         v-show="!loading"
@@ -68,6 +75,10 @@ export default {
           page: i
         }
       })
+    },
+    async updateList() {
+      const data = await this.$API.getFans(this.$route.params.id, this.currentPage)
+      this.paginationData(data)
     }
   }
 }
