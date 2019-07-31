@@ -18,7 +18,8 @@ import {
   Slider,
   Tooltip,
   Button,
-  Switch
+  Switch,
+  InputNumber
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -37,6 +38,7 @@ Vue.use(Slider)
 Vue.use(Tooltip)
 Vue.use(Button)
 Vue.use(Switch)
+Vue.use(InputNumber)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
