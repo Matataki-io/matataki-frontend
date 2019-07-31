@@ -2,7 +2,7 @@
   <div class="app">
     <nuxt />
     <g-footer />
-    <el-backtop :bottom="80" class="backtop">
+    <el-backtop :bottom="80" class="backtop" v-if="!hideBackTop">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
@@ -29,6 +29,10 @@ export default {
       set(v) {
         this.$store.commit('setLoginModal', v)
       }
+    },
+    hideBackTop() {
+      // 如果是发布页面隐藏小火箭
+      return this.$route.name === 'publish' || this.$route.name === 'p-id'
     }
   },
   mounted() {

@@ -39,13 +39,15 @@ export default {
     })
   },
   async follow(uid) {
-    return request.post('/follow', {
-      data: { uid }
-    })
+    return request.post('/follow', { uid })
   },
   async unfollow(uid) {
-    return request.post('/unfollow', {
-      data: { uid }
-    })
+    return request.post('/unfollow', { uid })
+  },
+  async getMyUserData () {
+    return request.get('/user/stats')
+  },
+  async getUser({ id }) {
+    return request.get(`/user/${id}`)
   },
 }

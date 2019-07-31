@@ -1,21 +1,20 @@
 <template>
   <div class="info">
     <div class="cover">
-      <img v-if="false" src="" alt="cover">
-      <img v-else src="@/assets/img/article_bg.svg" alt="cover">
+      <img src="@/assets/img/article_bg.svg" alt="cover">
     </div>
-    <avatar class="avatar" />
+    <avatar class="avatar" :src="userInfo.avatar" />
     <h3 class="author">
-      xiaotiandada
+      {{ userInfo.name }}
     </h3>
     <p class="des">
-      我身体的70%是由电子乐组成的我身体的70%是由电子乐组成的。。
+      {{ userInfo.introduction || '暂无' }}
     </p>
     <div class="line" />
     <div class="follow-fan">
       <div class="data">
         <p class="num">
-          120
+          {{ userInfo.follows || 0 }}
         </p>
         <p class="title">
           关注
@@ -23,25 +22,45 @@
       </div>
       <div class="data">
         <p class="num">
-          120
+          {{ userInfo.fans || 0 }}
         </p>
         <p class="title">
-          关注
+          粉丝
         </p>
       </div>
     </div>
     <div class="line" />
-    <button class="button">
-      关注
+    <button
+      class="button"
+      @click="followOrUnfollowUser({
+        id: $route.params.id,
+        type: userInfo.followed ? 0 : 1
+      })">
+      {{ userInfo.followed ? '取消关注' : '关注' }}
     </button>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 export default {
   components: {
     avatar
+  },
+  computed: {
+    ...mapState({
+      userInfo: state => state.user.userInfo
+    })
+  },
+  mounted() {
+    this.refreshUser({ id: this.$route.params.id })
+  },
+  methods: {
+    ...mapActions('user', [
+      'refreshUser',
+      'followOrUnfollowUser'
+    ])
   }
 }
 </script>

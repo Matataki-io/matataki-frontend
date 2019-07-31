@@ -24,7 +24,7 @@ let loadingInstance = null;
 _axios.interceptors.request.use(
   (config) => {
     loadingInstance = Loading.service();
-    if (utils.getCookie('x-access-token')) config.headers['x-access-token'] = utils.getCookie('x-access-token');
+    if (utils.getCookie('ACCESS_TOKEN')) config.headers['x-access-token'] = utils.getCookie('ACCESS_TOKEN');
     return config;
   },
   (error) => {
