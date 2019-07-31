@@ -4,7 +4,7 @@
       <user-nav nav-list-url="setting" />
       <userNavType nav-list-url="setting" />
       <template v-if="viewStatus === 0">
-        <assets :assets="assets" type="EOS" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
+        <assets :assets="assets" type="ONT" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
         <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
         <div v-loading="loading" class="card-container">
           <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />
@@ -23,7 +23,7 @@
         />
       </template>
       <template v-else>
-        <withdraw class="withdraw" @toggleWithdraw="status => viewStatus = status" />
+        <withdraw type="ONT" class="withdraw" @toggleWithdraw="status => viewStatus = status" />
       </template>
     </template>
     <template slot="info">
@@ -57,7 +57,7 @@ export default {
     return {
       articleCardData: {
         params: {
-          symbol: (this.$route.query.type || 'eos').toUpperCase(),
+          symbol: (this.$route.query.type || 'ONT').toUpperCase(),
           pagesize: 9
         },
         apiUrl: 'assetList',
@@ -92,7 +92,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped src="../index.less">
+<style lang="less" scoped src="../../index.less">
 </style>
 
 <style>
