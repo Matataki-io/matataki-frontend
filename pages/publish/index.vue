@@ -471,6 +471,8 @@ export default {
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
       console.log('sendThePost mode :', editorMode, saveType)
+      // 发布文章需要先登录
+      // await this.$store.dispatch('signIn', {})
       if (editorMode === 'create' && saveType === 'public') {
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })

@@ -91,12 +91,13 @@ export const actions = {
   },
   async accountCheck({
     dispatch,
-    getters: {
-      currentUserInfo: { accessToken, idProvider }
-    }
+    state,
+    getters
   }) {
     console.log('account check start...')
-    return dispatch('signIn', { idProvider, accessToken })
+    if (state[`${getters.prefixOfType}`].account === null) {
+      return dispatch('signIn', {})
+    }
   },
   async getAuth({ dispatch }, { name = null, oldAccessToken = null }) {
     let newAccessToken = oldAccessToken
@@ -121,6 +122,7 @@ export const actions = {
   // output: { publicKey, signature, username }
   async getSignature({ dispatch, getters }, data = { mode: null, rawSignData: null }) {
     // console.debug(getters.currentUserInfo, data.mode, data.rawSignData);
+    await dispatch('accountCheck')
     const { currentUserInfo, prefixOfType } = getters
     const { idProvider } = currentUserInfo
     return { idProvider, ...(await dispatch(`${prefixOfType}/getSignature`, data)) }
@@ -149,7 +151,11 @@ export const actions = {
       'accessToken:',
       accessToken
     )
-
+    // 从cookie中取....
+    const idProviderInCookie = this.$utils.getCookie('idProvider')
+    if (!idProvider && idProviderInCookie) {
+      idProvider = idProviderInCookie
+    }
     if (!idProvider) throw new Error('did not choice idProvider')
     commit('setUserConfig', { idProvider })
 
