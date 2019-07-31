@@ -15,14 +15,12 @@
     </FileUpload>
 
     <!-- 编辑图片 modal -->
-    <Modal
-      v-model="modal"
-      width="400"
-      class-name="img-upload-modal"
-      closable
-      :mask-closable="false"
-    >
-      <div slot="header" class="modal-header">
+    <el-dialog
+      :visible.sync="modal"
+      width="400px"
+      :lock-scroll="false"
+      custom-class="img-upload-modal">
+      <div slot="title" class="modal-header">
         <p class="modal-header-title">编辑图像</p>
         <p class="modal-header-subtitle">调整图像寸和位置</p>
       </div>
@@ -30,17 +28,15 @@
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
         <img v-if="files.length && modal" ref="editImage" :src="files[0].url" />
       </div>
-      <Button
+      <el-button
         slot="footer"
-        class="save-button"
         type="primary"
-        size="large"
-        :loading="modalLoading"
+        class="save-button"
         @click.prevent="uploadButton"
       >
         {{ buttonText }}
-      </Button>
-    </Modal>
+      </el-button>
+    </el-dialog>
   </div>
 </template>
 

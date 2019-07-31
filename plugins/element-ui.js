@@ -16,7 +16,8 @@ import {
   Col,
   Checkbox,
   Slider,
-  Tooltip
+  Tooltip,
+  Button
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -33,6 +34,7 @@ Vue.use(Col)
 Vue.use(Checkbox)
 Vue.use(Slider)
 Vue.use(Tooltip)
+Vue.use(Button)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

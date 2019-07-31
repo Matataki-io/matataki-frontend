@@ -301,13 +301,13 @@ export default {
 
           this.setTag(data.data)
         } else {
-          this.$toast({ duration: 1000, message: data.message })
-          this.$router.push({ name: 'home' })
+          this.$message.success(data.message)
+          this.$router.push({ path: '/' })
         }
       } catch (error) {
         console.error(error)
-        this.$toast({ duration: 1000, message: '获取文章信息发生错误' })
-        this.$router.push({ name: 'home' })
+        this.$message.error('获取文章信息发生错误')
+        this.$router.push({ path: '/' })
       }
       // 设置文章内容
       const { data } = articleData.data
@@ -333,7 +333,7 @@ export default {
     },
     // 跳转页面
     jumpToArticle(hash) {
-      this.$router.push({ name: 'p', params: { hash } })
+      this.$router.push({ path: `/p/${hash}` })
     },
     // 成功提示
     async success(hash) {
@@ -400,7 +400,7 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const response = await this.$backendAPI.createDraft(article)
       if (response.data.msg !== 'success') this.failed('失败请重试')
-      this.$toast.success({ duration: 1000, message: '保存成功' })
+      this.$message.success('保存成功')
       this.$router.go(-1)
     },
     // 编辑文章
@@ -436,7 +436,7 @@ export default {
       try {
         const response = await this.$backendAPI.updateDraft(article)
         if (response.data.msg !== 'success') this.failed('失败请重试')
-        this.$toast({ duration: 1000, message: '草稿更新成功' })
+        this.$message('草稿更新成功')
         this.$navigation.cleanRoutes() // 清除路由记录
         this.$router.go(-1)
       } catch (error) {
@@ -624,7 +624,7 @@ export default {
     // 离开页面
     leavePage() {
       if (this.modalMode === 'back') this.$router.go(-1)
-      else if (this.modalMode === 'home') this.$router.push({ name: 'home' })
+      else if (this.modalMode === 'home') this.$router.push({ path: '/' })
       else this.$router.go(-1)
     },
     // 获取标签

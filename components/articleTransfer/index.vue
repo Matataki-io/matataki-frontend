@@ -104,7 +104,7 @@ export default {
         if (res.status === 200 && res.data.code === 0) {
           this.$toast({ duration: 1000, position: 'bottom', message: '转让成功,自动返回首页' })
           this.change(false)
-          this.$router.push({ name: 'home' })
+          this.$router.push({ path: '/' })
         } else {
           this.$toast({ duration: 1000, position: 'bottom', message: '对方未开启转让权限' })
         }
