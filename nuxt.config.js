@@ -88,6 +88,9 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, { isDev, isClient }) {
+      if (isDev) {
+        config.devtool = isClient ? 'source-map' : 'inline-source-map'
+      }
       // set svg-sprite-loader
       if (isDev && isClient) {
         config.module.rules.forEach((rule) => {

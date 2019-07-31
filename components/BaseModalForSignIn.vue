@@ -251,10 +251,12 @@ export default {
     async signInx(type) {
       try {
         await this.signIn({ idProvider: type })
+        this.$store.commit('setLoginModal', false)
         this.$backendAPI.accessToken = this.currentUserInfo.accessToken
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
+          this.$store.commit('setLoginModal', false)
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
         } catch (err) {
           console.log('signInx 错误', err)

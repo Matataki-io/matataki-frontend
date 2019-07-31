@@ -172,6 +172,8 @@ export default {
       }
 
       let sponsor = await toSponsor(this.getInvite)
+      // 需要先登录
+      // await this.$store.dispatch('signIn', {})
       try {
         this.isSupported = RewardStatus.LOADING
         // 如果是ONT true 如果是 EOS或者其他 false
