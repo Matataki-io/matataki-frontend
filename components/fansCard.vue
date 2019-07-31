@@ -1,21 +1,27 @@
 <template>
   <div class="fans-card">
-    <avatar class="avatar" :src="avatar"/>
+    <avatar class="avatar" :src="avatar" />
     <div class="fans-info">
-      <p class="name" :title="name">{{ name }} </p>
-      <p class="fans">{{ card.fans }}粉丝</p>
+      <p class="name" :title="name">
+        {{ name }}
+      </p>
+      <p class="fans">
+        {{ card.fans }}粉丝
+      </p>
     </div>
     <button
-      class="fllow-btn btn-base"
       v-if="!card.is_follow"
-      @click.stop="followOrUnfollowUser({ id, type: 1, index, indexList })">
-      <i class="el-icon-plus"></i> <span class="btn-text">关注</span>
+      class="fllow-btn btn-base"
+      @click.stop="followOrUnfollowUser({ id, type: 1, index, indexList })"
+    >
+      <i class="el-icon-plus" /> <span class="btn-text">关注</span>
     </button>
     <button
-      class="fllowed-btn btn-base"
       v-else
-      @click.stop="followOrUnfollowUser({ id, type: 0, index, indexList })">
-      <span></span>
+      class="fllowed-btn btn-base"
+      @click.stop="followOrUnfollowUser({ id, type: 0, index, indexList })"
+    >
+      <span />
     </button>
   </div>
 </template>

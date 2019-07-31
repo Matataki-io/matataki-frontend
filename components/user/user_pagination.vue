@@ -100,4 +100,7 @@ export default {
 .user-pagination.el-pagination.is-background .el-pager li:not(.disabled):hover {
   color: #000;
 }
+.user-pagination.el-pagination.is-background .el-pager li:not(.disabled):hover.active {
+  color: #fff;
+}
 </style>
