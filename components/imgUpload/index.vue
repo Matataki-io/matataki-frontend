@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="img-uplaod">
     <!-- 上传图片 -->
     <FileUpload
       ref="upload"
@@ -19,14 +19,19 @@
       :visible.sync="modal"
       width="400px"
       :lock-scroll="false"
-      custom-class="img-upload-modal">
+      custom-class="img-upload-modal"
+    >
       <div slot="title" class="modal-header">
-        <p class="modal-header-title">编辑图像</p>
-        <p class="modal-header-subtitle">调整图像寸和位置</p>
+        <p class="modal-header-title">
+          编辑图像
+        </p>
+        <p class="modal-header-subtitle">
+          调整图像寸和位置
+        </p>
       </div>
       <div class="modal-content" :style="computedStyleContent">
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
-        <img v-if="files.length && modal" ref="editImage" :src="files[0].url" />
+        <img v-if="files.length && modal" ref="editImage" :src="files[0].url">
       </div>
       <el-button
         slot="footer"
@@ -264,4 +269,14 @@ export default {
 
 <style lang="less" src="./index.less">
 // 覆盖图像上传modal样式 无法使用scoped
+</style>
+
+<style lang="less">
+.img-uplaod .file-uploads .file-uploads-html4 input, .file-uploads.file-uploads-html5 label {
+  cursor: pointer;
+}
+.img-uplaod .file-uploads {
+  width: 100%;
+  height: 100%;
+}
 </style>

@@ -17,7 +17,8 @@ import {
   Checkbox,
   Slider,
   Tooltip,
-  Button
+  Button,
+  Switch
 } from 'element-ui'
 
 Vue.use(Tag)
@@ -35,6 +36,7 @@ Vue.use(Checkbox)
 Vue.use(Slider)
 Vue.use(Tooltip)
 Vue.use(Button)
+Vue.use(Switch)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
