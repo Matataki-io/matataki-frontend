@@ -72,31 +72,6 @@ export default {
           page: i
         }
       })
-    },
-    del(i) {
-      // 删除草稿
-      const asyncSuccessDel = async (id, index) => {
-        try {
-          const res = await this.$backendAPI.delDraft({ id })
-          if (res.status === 200 && res.data.code === 0) {
-            this.articleCardData.articles.splice(index, 1) // 前端手动删除一下数据
-            this.$message({ type: 'success', message: '删除成功!' })
-          } else {
-            this.$message.error('删除错误')
-          }
-        } catch (error) {
-          this.$message.error('删除错误')
-        }
-      }
-
-      console.log(i)
-      this.$confirm('是否删除草稿？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        asyncSuccessDel(this.articleCardData.articles[i].id, i)
-      })
     }
   }
 }

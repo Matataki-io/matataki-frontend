@@ -10,6 +10,7 @@
         :current-page="currentPage"
         :params="params"
         :api-url="apiUrl"
+        :total="total"
         class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
@@ -55,7 +56,7 @@ export default {
   methods: {
     paginationData(res) {
       this.list = res.data.list
-      this.total = res.data.totalFollows
+      this.total = res.data.totalFans
       this.loading = false
     },
     togglePage(i) {
