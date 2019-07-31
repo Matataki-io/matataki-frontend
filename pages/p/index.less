@@ -81,3 +81,59 @@
   margin: 24px 0;
   word-wrap: break-word;
 }
+.article-btn {
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  span {
+    white-space: nowrap;
+  }
+  .icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    background: #F1F1F1;
+    .flexCenter();
+    .icon {
+      width: auto;
+      height: 40%;
+    }
+    &.blue {
+      .icon {
+        color: @blue;
+      }
+      &:hover {
+        background: @blue;
+        .icon {
+          color: #ffffff;
+        }
+      }
+    }
+    &.yellow {
+      .icon {
+        color: @yellow;
+      }
+      &:hover {
+        background: @yellow;
+        .icon {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+.btns {
+  .article-btn .icon-container {
+    width: 80px;
+    height: 80px;
+  }
+  .article-btn + .article-btn {
+    margin-left: 100px;
+  }
+}
+.sidebar {
+  .article-btn + .article-btn {
+    margin-top: 40px;
+  }
+}

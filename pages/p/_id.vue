@@ -37,11 +37,23 @@
     </div>
     <div class="p-w btns-container">
       <div class="btns">
-        <div @click="invest">
-          <InvestBtn style="margin-right: 120px;width: 80px;" />
+        <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
+          <div class="icon-container yellow">
+            <svg-icon icon-class="purchase" class="icon" />
+          </div>
+          <span>购买商品</span>
         </div>
-        <div @click="share">
-          <ShareBtn style="width: 80px;" />
+        <div class="article-btn" @click="invest">
+          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+            <svg-icon icon-class="invest" class="icon" />
+          </div>
+          <span>{{ isProduct ? '投资商品' : '投资文章' }}</span>
+        </div>
+        <div class="article-btn" @click="share">
+          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+            <svg-icon icon-class="purchase" class="icon" />
+          </div>
+          <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
         </div>
       </div>
       <ArticleInfoFooter :article="article" />
@@ -51,11 +63,23 @@
     </div>
     <CommentList :sign-id="article.id" :type="article.channel_id" class="p-w" />
     <div class="sidebar">
-      <div @click="invest">
-        <InvestBtn style="margin-bottom: 20px;width: 60px;" />
+      <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
+        <div class="icon-container yellow">
+          <svg-icon icon-class="purchase" class="icon" />
+        </div>
+        <span>购买商品</span>
       </div>
-      <div @click="share">
-        <ShareBtn style="width: 60px;" />
+      <div class="article-btn" @click="invest">
+        <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+          <svg-icon icon-class="invest" class="icon" />
+        </div>
+        <span>{{ isProduct ? '投资商品' : '投资文章' }}</span>
+      </div>
+      <div class="article-btn" @click="share">
+        <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+          <svg-icon icon-class="purchase" class="icon" />
+        </div>
+        <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
       </div>
     </div>
     <InvestModal
@@ -74,6 +98,13 @@
         avatar
       }"
     />
+    <PurchaseModal
+      v-model="purchaseModalShow"
+      :article="{
+        ...article,
+        cover
+      }"
+    />
     <article-transfer
       v-model="transferModal"
       :article-id="article.id"
@@ -90,12 +121,11 @@ import { xssFilter } from '@/utils/xss'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import CommentList from '@/components/comment/List'
-import InvestBtn from '@/components/article/Invest'
-import ShareBtn from '@/components/article/Share'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
 import ArticleFooter from '@/components/article/ArticleFooter'
 import InvestModal from '@/components/modal/Invest'
+import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 
@@ -103,10 +133,9 @@ import tag from '@/components/tags/tag.vue'
 export default {
   components: {
     CommentList,
-    InvestBtn,
-    ShareBtn,
     InvestModal,
     ShareModal,
+    PurchaseModal,
     UserInfoHeader,
     ArticleInfoFooter,
     ArticleFooter,
@@ -119,7 +148,8 @@ export default {
       followed: false,
       investModalShow: false,
       shareModalShow: false,
-      transferModal: false
+      transferModal: false,
+      purchaseModalShow: false
     }
   },
   head: {
@@ -207,6 +237,9 @@ export default {
     cover() {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
       return null
+    },
+    isProduct() {
+      return this.article.channel_id === 2
     }
   },
   async asyncData({ $axios, route }) {
