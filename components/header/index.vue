@@ -22,7 +22,7 @@
           class="create"
           icon-class="write"
           :style="customizeHeaderIconColorComputed"
-          @click="$router.push({ name: 'Publish', params: { id: 'create' } })"
+          @click="$router.push({ name: 'publish', params: { id: 'create' } })"
         />
         <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
