@@ -16,9 +16,6 @@ export default {
   getImg(hash) {
     return `${process.env.ssImgAddress}${hash}`
   },
-  async getUser(id) {
-    return request.get(`/user/${id}`)
-  },
   async getComments(signid) {
     return request.get('/comments', {
       params: {signid}

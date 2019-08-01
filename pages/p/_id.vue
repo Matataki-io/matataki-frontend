@@ -175,7 +175,8 @@ export default {
     handleScroll() {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      scrollTop > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
+      const clientHeight = document.body.clientHeight
+      scrollTop + clientHeight - 100 > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
     },
     handleMoreAction(command) {
       this[command]()
@@ -224,7 +225,7 @@ export default {
       this.shareModalShow = true
     },
     setAvatar() {
-      this.$API.getUser(this.article.uid).then((res) => {
+      this.$API.getUser({ id: this.article.uid }).then((res) => {
         const data = res.data
         this.followed = data.is_follow
         if (data.avatar) this.avatar = this.$API.getImg(data.avatar)

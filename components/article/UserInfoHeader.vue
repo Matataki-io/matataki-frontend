@@ -1,7 +1,7 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <img class="Avatar" width="38" height="38" :src="article.avatar" alt="">
+      <img class="Avatar" :src="article.avatar" alt="avatar" :onerror="defaultAvatar">
       <div class="AuthorInfo-content">
         <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
         <span class="Post-Time">发布于{{ article.articleCreateTimeComputed }}</span>
@@ -21,7 +21,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`
+    }
   },
   components: {}
 }
@@ -32,6 +34,8 @@ export default {
   background: #fff;
   border-radius: 50%;
   vertical-align: top;
+  height: 38px;
+  width: 38px;
 }
 .Post-Author {
   display: flex;
