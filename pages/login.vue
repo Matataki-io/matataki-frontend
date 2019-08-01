@@ -14,7 +14,7 @@ export default {
     const { path, query } = this.$route
     const { code, from } = query
     const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
-    const APP_URL = process.env.VUE_APP_PC_URL
+    const APP_URL = process.env.VUE_APP_URL
     const scope = 'read:public_repo,read:user'
     // 跳转到移动端的登录页面，添加上pc参数，标志来自pc端
     const redirectUri = `${APP_URL}/login/github?from=pc` // 範例值
