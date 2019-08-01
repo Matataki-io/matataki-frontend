@@ -80,7 +80,7 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     product() {
       const { article } = this
-      if (article.channel_id === 2) {
+      if (article.channel_id === 2 && !this.$utils.isNull(article.prices)) {
         return {
           eosPrice: article.prices[0].price / 10 ** article.prices[0].decimals,
           ontPrice: article.prices[1].price / 10 ** article.prices[1].decimals,

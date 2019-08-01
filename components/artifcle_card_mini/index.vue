@@ -2,15 +2,14 @@
   <!-- 卡片适用于 个人主页设置页 -->
   <div class="card">
     <div class="cover">
-      <img v-if="cover" :src="cover" alt="cover">
-      <img v-else src="@/assets/img/article_bg.svg" alt="cover">
+      <img :src="cover" alt="cover" :onerror="defaultCover">
     </div>
     <h3 v-clampy="2" class="title">
       {{ card && card.title }}
     </h3>
     <p class="date">
       {{ time }}
-      <a v-if="isDraftCard" class="del" href="javascript:;" @click="$emit('del', index)">删除</a>
+      <a v-if="isDraftCard" class="del" href="javascript:;" @click.stop="$emit('del', index)">删除</a>
     </p>
   </div>
 </template>
@@ -31,6 +30,11 @@ export default {
     index: {
       type: Number,
       default: 0
+    }
+  },
+  data() {
+    return {
+      defaultCover: `this.src="${require('@/assets/img/article_bg.svg')}"`
     }
   },
   computed: {

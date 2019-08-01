@@ -4,7 +4,15 @@
       <user-nav nav-list-url="setting" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="loading" class="card-container">
-        <article-card-mini v-for="(item, index) in articleCardData.articles" :key="index" :card="item" class="card-container-block" />
+        <n-link
+          v-for="(item, index) in articleCardData.articles"
+          :key="index"
+          :to="{
+            name: 'p-id',
+            params: { id: item.id }
+          }">
+          <article-card-mini :card="item" class="card-container-block" />
+        </n-link>
       </div>
       <user-pagination
         v-show="!loading"

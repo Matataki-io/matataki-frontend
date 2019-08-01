@@ -30,7 +30,7 @@ export default {
     return moment(nowTime).isAfter(timeFormat)
   },
   isNull(v) {
-    return v === '' || v === null || v === undefined
+    return v === '' || v === null || v === undefined || JSON.stringify(v) === '{}' || JSON.stringify(v) === '[]';
   },
   sleep(time) {
    return new Promise(resolve => setTimeout(resolve, time))

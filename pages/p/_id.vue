@@ -36,7 +36,7 @@
       <ArticleFooter :article="article" />
     </div>
     <div class="p-w btns-container">
-      <div class="btns">
+      <div class="btns" ref="actionBtns">
         <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
@@ -62,7 +62,7 @@
       <tag v-for="(item, index) in article.tags" :key="index" :tag="item" />
     </div>
     <CommentList :sign-id="article.id" :type="article.channel_id" class="p-w" />
-    <div class="sidebar">
+    <div class="sidebar" v-show="navShow">
       <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
         <div class="icon-container yellow">
           <svg-icon icon-class="purchase" class="icon" />
@@ -149,7 +149,9 @@ export default {
       investModalShow: false,
       shareModalShow: false,
       transferModal: false,
-      purchaseModalShow: false
+      purchaseModalShow: false,
+      oldOffSetTop: 0,
+      navShow: true
     }
   },
   head: {
@@ -163,8 +165,18 @@ export default {
   },
   mounted() {
     this.setAvatar()
+    this.oldOffSetTop = this.$refs.actionBtns.offsetTop
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    handleScroll() {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      scrollTop > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
+    },
     handleMoreAction(command) {
       this[command]()
     },
