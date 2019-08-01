@@ -7,10 +7,12 @@
           v-for="(item, i) in list"
           :key="i"
           class="fans-card"
+          type="follow"
           :card="{
             ...item,
             id: item.fuid }"
-          @updateList="updateList" />
+          @updateList="updateList"
+        />
       </div>
       <user-pagination
         v-show="!loading"

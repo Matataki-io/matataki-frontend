@@ -1,32 +1,36 @@
 <template>
   <div class="fans-card">
-    <avatar class="avatar" :src="avatar" />
+    <n-link :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
+      <avatar class="avatar" :src="avatar" />
+    </n-link>
     <div class="fans-info">
-      <p class="name" :title="name">
+      <n-link tag="p" class="name" :title="name" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
         {{ name }}
-      </p>
+      </n-link>
       <p class="fans">
         {{ card.fans }}粉丝
       </p>
     </div>
-    <button
-      v-if="!card.is_follow"
-      class="fllow-btn btn-base"
-      @click.stop="followOrUnfollowUser({ id: card.id, type: 1 })"
-    >
-      <i class="el-icon-plus" /> <span class="btn-text">关注</span>
-    </button>
-    <button
-      v-else
-      class="fllowed-btn btn-base"
-      @click.stop="followOrUnfollowUser({ id: card.id, type: 0 })"
-    >
-      <span />
-    </button>
+    <template v-if="!isMe(type==='follow' ? card.fuid : card.uid)">
+      <button
+        v-if=" !card.is_follow"
+        class="fllow-btn btn-base"
+        @click.stop="followOrUnfollowUser({ id: card.id, type: 1 })"
+      >
+        <i class="el-icon-plus" /> <span class="btn-text">关注</span>
+      </button>
+      <button
+        v-else
+        class="fllowed-btn btn-base"
+        @click.stop="followOrUnfollowUser({ id: card.id, type: 0 })"
+      >
+        <span />
+      </button>
+    </template>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 export default {
   name: 'FansCard',
@@ -38,10 +42,14 @@ export default {
       type: Object,
       default: () => ({
       })
+    },
+    type: {
+      type: String,
+      required: true
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     name() {
       return this.card.nickname || this.card.followed
     },
@@ -122,6 +130,7 @@ p {
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;
+      cursor: pointer;
     }
     .fans {
       font-size: 12px;
