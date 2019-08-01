@@ -35,7 +35,8 @@
       @click="followOrUnfollowUser({
         id: $route.params.id,
         type: userInfo.followed ? 0 : 1
-      })">
+      })"
+>
       {{ userInfo.followed ? '取消关注' : '关注' }}
     </button>
   </div>
@@ -113,7 +114,7 @@ export default {
     color: #000000;
     line-height: 17px;
     width: 70%;
-    text-align: left;
+    text-align: center;
     margin: 10px auto 20px;
 }
 

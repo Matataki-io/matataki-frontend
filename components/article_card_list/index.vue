@@ -140,6 +140,9 @@ export default {
   overflow: hidden;
   transition: all 0.3s;
   margin-top: 14px;
+  &:nth-child(1) {
+    margin-top: 40px;
+  }
   &-title {
     height: 56px;
     margin: 20px 0;
