@@ -10,7 +10,8 @@
           :card="{
             ...item,
             id: item.uid }"
-          @updateList="updateList" />
+          @updateList="updateList"
+/>
       </div>
       <user-pagination
         v-show="!loading"
@@ -86,7 +87,7 @@ export default {
 
 <style lang="less" scoped>
 .fans-card {
-  margin-bottom: 40px;
+  margin-top: 40px;
   &:nth-child(odd) {
     margin-right: 30px;
   }
