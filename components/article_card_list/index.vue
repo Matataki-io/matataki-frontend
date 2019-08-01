@@ -10,7 +10,7 @@
       <div class="info">
         <!-- 暂时用文章页代替跳转地址 -->
         <n-link
-          :to=" {name: 'p-id', params: {id: Uid}} "
+          :to=" {name: 'user-id', params: {id: Uid}} "
           tag="div"
           class="author"
         >
@@ -69,7 +69,7 @@ export default {
   props: {
     card: {
       type: Object,
-      default: () => {}
+      required: true
     }
   },
   computed: {
@@ -126,6 +126,7 @@ export default {
   flex: 1;
   height: 148px;
   padding: 0 0 0 20px;
+  overflow: hidden;
 }
 .article {
   width: 100%;
@@ -172,6 +173,7 @@ export default {
   cursor: pointer;
   overflow: hidden;
   width: 296px;
+  flex: 0 0 296px;
   height: 148px;
   background: rgba(0,0,0,0.05);
   border-radius: @borderRadius6;

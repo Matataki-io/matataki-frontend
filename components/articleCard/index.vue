@@ -50,7 +50,7 @@
     <div class="info">
       <!-- 暂时用文章页代替跳转地址 -->
       <n-link
-        :to=" {name: 'p-id', params: {id: Uid}} "
+        :to=" {name: 'user-id', params: {id: Uid}} "
         tag="div"
         class="author"
       >
