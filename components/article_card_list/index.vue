@@ -106,6 +106,7 @@ export default {
       return this.card && this.card.uid
     },
     dateCard() {
+      if (!this.card) return ''
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
