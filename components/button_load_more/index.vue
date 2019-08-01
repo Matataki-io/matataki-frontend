@@ -65,7 +65,7 @@ export default {
 
 <style lang="less" scoped>
 .load-more {
-  width: 300px;
+  width: 240px;
   height: 60px;
   background: #000000;
   border-radius: @borderRadius10;
