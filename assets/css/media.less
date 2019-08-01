@@ -1,0 +1,40 @@
+@media screen and (max-width: 1200px) {
+  .home-head {
+    padding: 0 40px;
+  }
+  .recommend {
+    .slide {
+      max-width: 100% !important;
+      width: 100%;
+      flex: 0 1 auto !important;
+      margin: 40px !important;
+    }
+    .article.recommend-card {
+      max-width: calc(50% - 60px) !important;
+      flex: 0 0 calc(50% - 60px) !important;
+      margin: 20px;
+      height: 394px !important;
+      &:nth-child(even) {
+        margin: 0 20px 40px 40px;
+      }
+      &:nth-child(odd) {
+        margin: 0 40px 40px 20px;
+      }
+    }
+  }
+
+  .container .main {
+    max-width: calc(70% - 80px) !important;
+    flex: 1 !important;
+    margin: 0 40px 0 40px;
+  }
+
+  .container .tags {
+    max-width: 100% !important;
+    flex: 0 0 30% !important;
+    margin-right: 40px !important;
+  }
+  .fix.article {
+    width: auto !important;
+  }
+}
