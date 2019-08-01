@@ -9,13 +9,17 @@
           <a class="href" href="#">用户协议</a>
           <a class="href" href="#">关于我们</a>
           <a class="href" href="#">智能公告牌</a>
-          <div class="icon">
+          <div class="icon wechat-icon">
             <div class="wechat">
               <img src="@/assets/img/code.png" alt="code">
             </div>
           </div>
-          <div class="icon" />
-          <div class="icon" />
+          <a target="_blank" href="https://github.com/smart-signature/smart-signature-future">
+            <div class="icon github-icon" />
+          </a>
+          <a target="_blank" href="https://t.me/smartsignature_io">
+            <div class="icon telegram-icon" />
+          </a>
         </div>
         <p class="copyright">
           Copyright © 2018-2019 ANDOROMEDA TECH.ltd
@@ -94,7 +98,7 @@ export default {}
       &:hover .wechat {
         display: block;
       }
-      &:nth-of-type(1) {
+      &.wechat-icon {
         width: 28px;
         height: 23px;
         position: relative;
@@ -103,7 +107,7 @@ export default {}
           background-image: url('../../assets/img/footer_wechat_active.svg');
         }
       }
-      &:nth-of-type(2) {
+      &.github-icon {
         width: 22px;
         height: 24px;
         background-image: url('../../assets/img/footer_github.svg');
@@ -111,7 +115,7 @@ export default {}
           background-image: url('../../assets/img/footer_github_active.svg');
         }
       }
-      &:nth-of-type(3) {
+      &.telegram-icon{
         width: 25px;
         height: 21px;
         background-image: url('../../assets/img/footer_telegram.svg');
