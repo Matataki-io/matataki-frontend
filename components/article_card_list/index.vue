@@ -1,7 +1,7 @@
 <template>
   <!-- 适用于 首页, 商品页, 标签页 -->
   <!-- 区分那种卡 -->
-  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="article">
+  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" tag="div" class="article">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
       <img v-else src="@/assets/img/article_bg.svg" alt="cover">
