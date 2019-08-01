@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  components: {},
   props: {
     article: {
       type: Object,
@@ -24,8 +25,7 @@ export default {
     return {
       defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`
     }
-  },
-  components: {}
+  }
 }
 </script>
 

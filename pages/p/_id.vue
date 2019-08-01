@@ -154,14 +154,20 @@ export default {
       navShow: true
     }
   },
-  head: {
-    script: [
-      {
-        type: 'text/javascript',
-        id: 'pocket-btn-js', // id 不知道作用 生成的 script 有id就带着好了
-        src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
-      }
-    ]
+  head() {
+    return {
+      script: [
+        {
+          type: 'text/javascript',
+          id: 'pocket-btn-js', // id 不知道作用 生成的 script 有id就带着好了
+          src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
+        }
+      ],
+      title: this.article.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.post.content }
+      ]
+    }
   },
   mounted() {
     this.setAvatar()

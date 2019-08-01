@@ -168,7 +168,7 @@ export default {
     },
     btnsignOut() {
       if (confirm('确定退出吗?')) {
-        this.signOut()
+        this.$utils.deleteAllCookies()
         window.location.reload()
       }
     }

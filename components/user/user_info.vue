@@ -29,21 +29,25 @@
         </p>
       </div>
     </div>
-    <div class="line" />
+    <div
+      v-if="!isMe($route.params.id)"
+      class="line"
+    />
     <button
+      v-if="!isMe($route.params.id)"
       class="button"
       @click="followOrUnfollowUser({
         id: $route.params.id,
         type: userInfo.followed ? 0 : 1
       })"
->
+    >
       {{ userInfo.followed ? '取消关注' : '关注' }}
     </button>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 export default {
   components: {
@@ -52,7 +56,8 @@ export default {
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
-    })
+    }),
+    ...mapGetters(['isMe'])
   },
   mounted() {
     this.refreshUser({ id: this.$route.params.id })
