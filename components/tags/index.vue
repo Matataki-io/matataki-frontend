@@ -74,6 +74,10 @@ export default {
   methods: {
     addHandleScroll() {
       window.addEventListener('scroll', throttle(this.handleScroll, 150))
+      window.addEventListener('resize', throttle(this.setOffSetTop, 150))
+    },
+    setOffSetTop() {
+      this.oldOffSetTop = this.$refs.tags.offsetTop
     },
     handleScroll() {
       const scrollTop =
