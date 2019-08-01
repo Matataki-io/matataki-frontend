@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  components: {},
   props: {
     article: {
       type: Object,
@@ -22,8 +23,7 @@ export default {
   },
   data() {
     return {}
-  },
-  components: {}
+  }
 }
 </script>
 
