@@ -4,9 +4,9 @@ html,body{
   height: 100%;
 }
 .fontFamily {
-  font-family: "PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, 
-  "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal", 
-  "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", 
+  font-family: "PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial,
+  "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal",
+  "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei",
   "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
 *{
@@ -38,8 +38,8 @@ body {
   width: 100%;
   margin: 0 auto;
 }
-/* 全局 markdown 文字加粗覆盖样式 
-因为导入的样式优先级低于了默认的样式 导致安卓机型 600 不加粗 
+/* 全局 markdown 文字加粗覆盖样式
+因为导入的样式优先级低于了默认的样式 导致安卓机型 600 不加粗
 使用 bolder 覆盖 */
 .markdown-body strong,
 .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
@@ -66,4 +66,21 @@ body {
 }
 .ivu-modal-content {
   border-radius: 10px;
+}
+.more-icon {
+  width: 60px;
+  height: 60px;
+  .flexCenter();
+  cursor: pointer;
+  margin-left: 10px;
+  background: #ffffff;
+  .icon {
+    font-size: 2rem;
+  }
+  &:hover {
+    background: @blue;
+    .icon {
+      color: #ffffff;
+    }
+  }
 }

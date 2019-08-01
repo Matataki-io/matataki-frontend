@@ -60,6 +60,7 @@
   .new-post {
     padding-top: 60px;
     min-height: 100%;
+    box-sizing: border-box;
     background: #fff;
   }
 
@@ -69,9 +70,6 @@
     flex-direction: column;
     justify-content: center;
     padding: 10px;
-  }
-  .edit-content {
-    /* margin: 10px; */
   }
 
   /* 编辑器层级大于modal 改变编辑器层级 */
@@ -96,6 +94,7 @@
         display: inline-block;
         line-height: 18px;
         text-align: center;
+        cursor: pointer;
       }
     }
     .fission-num-slider{
@@ -173,9 +172,8 @@
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: 12px 20px;
+    padding: 12px 0;
     font-size: 14px;
-    border-bottom: 1px solid #eee;
   }
 
   .edit-title {
