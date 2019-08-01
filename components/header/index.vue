@@ -30,7 +30,9 @@
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item>
-              {{ currentUserInfo.nickname || currentUserInfo.name }}
+              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                {{ currentUserInfo.nickname || currentUserInfo.name }}
+              </n-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
               <n-link class="link" :to="{name: 'setting-id', params:{id: currentUserInfo.id}}">
