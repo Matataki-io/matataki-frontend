@@ -1,8 +1,8 @@
 <template>
   <div class="app">
     <nuxt />
-    <g-footer v-show="!hideFooter"/>
-    <el-backtop :bottom="80" class="backtop" v-if="!hideBackTop">
+    <g-footer v-show="!hideFooter" />
+    <el-backtop v-if="!hideBackTop" :bottom="80" class="backtop">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
@@ -39,7 +39,27 @@ export default {
       return this.$route.name === 'publish'
     }
   },
+  created() {
+
+  },
   mounted() {
+    const isPC = () => {
+      const userAgentInfo = navigator.userAgent
+      const Agents = ['Android', 'iPhone',
+        'SymbianOS', 'Windows Phone',
+        'iPad', 'iPod']
+      let flag = true
+      for (let v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+          flag = false
+          break
+        }
+      }
+      return flag
+    }
+
+    if (!isPC()) window.location.href = process.env.VUE_APP_URL
+
     this.$store.dispatch('testLogin')
   },
   methods: {
