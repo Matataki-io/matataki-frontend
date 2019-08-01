@@ -3,8 +3,8 @@
     <g-header>
       <template slot="more">
         <el-dropdown trigger="click" @command="handleMoreAction">
-          <div class="artilce-more">
-            <i class="el-icon-more"></i>
+          <div class="more-icon">
+            <svg-icon class="icon" icon-class="more" />
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item command="edit">编辑</el-dropdown-item>

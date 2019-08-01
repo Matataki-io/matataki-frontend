@@ -112,6 +112,7 @@ export default {
   border: none;
   border-radius: 0;
   width: 80px;
+  font-size: 18px;
 }
 .header {
   width: 100%;

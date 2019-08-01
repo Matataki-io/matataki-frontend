@@ -1,6 +1,15 @@
 <template>
   <div class="new-post" @click.stop="transferButton = false">
-    <postArticleHeader @postArticle="postArticle" />
+    <postArticleHeader @postArticle="postArticle" >
+      <el-dropdown slot="more" trigger="click" @command="handleMoreAction" v-if="isShowTransfer">
+        <div class="more-icon">
+          <svg-icon class="icon" icon-class="more" />
+        </div>
+        <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+          <el-dropdown-item command="transfer">转让</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </postArticleHeader>
     <div class="edit-content">
       <input
         v-model="title"
@@ -86,22 +95,12 @@
         />
       </div>
     </div>
-    <!-- <modal-prompt
-      :show-modal="showModal"
-      :modal-text="modalText"
-      @changeInfo="changeInfo"
-      @modalCancel="modalCancel"
+    <article-transfer
+      v-if="isShowTransfer"
+      v-model="transferModal"
+      :article-id="$route.params.id"
+      :from="$route.query.from"
     />
-    <BaseModalForSignIn :show-modal="showSignInModal" @changeInfo="changeInfo2" />
-    <Prompt
-      v-model="prompt"
-      :content="{
-        title: '是否保存为草稿？',
-        confirmText: '保存草稿',
-        cancelText: '不保存'
-      }"
-      @confirm="createDraft(saveInfo)"
-    /> -->
   </div>
 </template>
 
@@ -116,13 +115,15 @@ import { strTrim } from '@/utils/reg'
 import imgUpload from '@/components/imgUpload' // 图片上传
 import tagCard from '@/components/tagCard'
 import postArticleHeader from '@/components/header/postArticleHeader'
+import articleTransfer from '@/components/articleTransfer'
 
 export default {
   name: 'NewPost',
   components: {
     imgUpload,
     tagCard,
-    postArticleHeader
+    postArticleHeader,
+    articleTransfer
   },
   data: () => ({
     prompt: false,
@@ -260,6 +261,12 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    handleMoreAction(command) {
+      this[command]()
+    },
+    transfer() {
+      this.transferModal = true
+    },
     postArticle(saveType) {
       this.saveType = saveType
       this.sendThePost()
