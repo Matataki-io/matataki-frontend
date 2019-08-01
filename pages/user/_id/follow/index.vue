@@ -86,7 +86,7 @@ export default {
 
 <style lang="less" scoped>
 .fans-card {
-  margin-bottom: 40px;
+  margin-top: 40px;
   &:nth-child(odd) {
     margin-right: 30px;
   }
