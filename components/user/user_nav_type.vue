@@ -5,7 +5,7 @@
       v-for="(item, index) in typeIcon"
       :key="index"
       href="javascript:;"
-      :class="$route.name === item.url && 'active'"
+      :class="[$route.name === item.url && 'active', item.url === '' && 'disabled']"
       @click="toggleNav(item.url)"
     >
       <img
@@ -30,9 +30,9 @@ export default {
       typeIcon: [ // todo 完善路由
         { icon: iconEOS, title: 'EOS', url: 'setting-id' },
         { icon: iconONT, title: 'ONT', url: 'setting-id-ont' },
-        { icon: iconETH, title: 'ETH', url: 'setting-id-investment' },
-        { icon: iconBTC, title: 'BTC', url: 'setting-id-draft' },
-        { icon: iconRMB, title: 'RMB', url: 'setting-id-buy' }
+        { icon: iconETH, title: 'ETH', url: '' },
+        { icon: iconBTC, title: 'BTC', url: '' },
+        { icon: iconRMB, title: 'RMB', url: '' }
       ]
     }
   },
@@ -44,6 +44,7 @@ export default {
   methods: {
     toggleNav(url) {
       if (url === this.$route.name) return
+      if (!url) return
       this.$router.push({
         name: url,
         params: {
@@ -72,6 +73,9 @@ export default {
     text-align: center;
     &.active {
       font-weight:bold;
+    }
+    &.disabled {
+      filter: opacity(0.5);
     }
     img {
       width: 60px;
