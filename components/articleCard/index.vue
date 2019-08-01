@@ -21,6 +21,7 @@
         :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
         tag="span"
         class="title"
+        :style="tagStyle"
       >
         {{ tagName }}
       </n-link>
@@ -53,28 +54,30 @@
         tag="div"
         class="author"
       >
-        <!-- <avatar class="avatar" :size="'30px'" :src="avatarImg" /> -->
+        <avatar class="avatar" :size="'30px'" :src="avatarImg" />
         <span class="username">
           {{ card && (card.nickname || card.author || '') }}
         </span>
       </n-link>
       <!-- 暂时用文章页代替跳转地址 end -->
       <div class="date">
-        1小时
+        {{ dateCard }}
       </div>
     </div>
   </n-link>
 </template>
 
 <script>
-
-// import avatar from '@/components/avatar/index.vue'
+import moment from 'moment'
+import { isNDaysAgo } from '@/utils/momentFun'
+import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
+import { tagColor } from '@/utils/tag'
 
 export default {
   name: 'ArticleCard',
   components: {
-    // avatar
+    avatar
   },
   props: {
     typeIndex: {
@@ -95,6 +98,12 @@ export default {
     }
   },
   computed: {
+    tagStyle() {
+      const id = this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
+      return {
+        color: tagColor()[id]
+      }
+    },
     cover() {
       // console.log(this.card)
       if (!this.card) return ''
@@ -120,6 +129,10 @@ export default {
     },
     Uid() {
       return this.card && this.card.uid
+    },
+    dateCard() {
+      const time = moment(this.card.create_time)
+      return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
   }
 }
@@ -265,7 +278,7 @@ export default {
   align-items: center;
   .date {
     text-align: right;
-    flex: 0 0 60px;
+    flex: 0 0 120px;
     font-weight: 400;
     color: #b2b2b2;
   }
@@ -380,7 +393,6 @@ export default {
 .recommend-card .info {
   margin: 20px 20px 0 20px;
   .date {
-    flex: 0 0 60px;
     font-size: 16px;
     line-height: 20px;
   }
@@ -388,7 +400,6 @@ export default {
 .article-card .info {
   margin: 0 40px 40px 40px;
   .date {
-    flex: 0 0 150px;
     font-size: 20px;
     line-height: 28px;
   }
@@ -396,7 +407,6 @@ export default {
 .commodity-card .info {
   margin: 0 12px 12px 12px;
   .date {
-    flex: 0 0 80px;
     font-size: 14px;
     line-height: 28px;
   }

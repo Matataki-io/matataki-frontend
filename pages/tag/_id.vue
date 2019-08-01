@@ -29,12 +29,10 @@
             </div>
           </template>
           <template v-else>
-            <articleCard
+            <articleCardList
               v-for="(itemChild, indexChild) in item.articles"
               :key="indexChild"
               :card="itemChild"
-              :type-index="mainNavTypeIndex"
-              :card-type="mainNavTypeCard"
             />
           </template>
 
@@ -58,6 +56,8 @@
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import tags from '@/components/tags/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
+import articleCardList from '@/components/article_card_list/index.vue'
+
 import tagIcon from '@/components/tags/tagIcon.vue'
 import { tagColor } from '@/utils/tag'
 
@@ -65,6 +65,7 @@ export default {
   name: 'Tag',
   components: {
     articleCard,
+    articleCardList,
     tags,
     buttonLoadMore,
     tagIcon

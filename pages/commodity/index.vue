@@ -24,12 +24,10 @@
         <!-- 空div控制内容 -->
         <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
           <div class="commodity-card-content">
-            <articleCard
+            <articleCardList
               v-for="(itemChild, indexChild) in item.articles"
               :key="indexChild"
               :card="itemChild"
-              :type-index="1"
-              :card-type="'commodity-card'"
             />
           </div>
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
@@ -51,6 +49,7 @@
 <script>
 import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
+import articleCardList from '@/components/article_card_list/index.vue'
 import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
@@ -60,6 +59,7 @@ export default {
   components: {
     recommendSlide,
     articleCard,
+    articleCardList,
     tags,
     buttonLoadMore
   },
