@@ -49,9 +49,11 @@
     </section>
     <div class="footer-arrow" @click="step === 1 ? (step = 2) : (step = 1)">
       <div v-if="step === 2" class="arrow">
+        <i class="el-icon-arrow-left"></i>
       </div>
       <span>{{ step === 1 ? '查看支持的钱包' : '返回登录' }}</span>
       <div v-if="step === 1" class="arrow">
+        <i class="el-icon-arrow-right"></i>
       </div>
     </div>
   </el-dialog>
@@ -242,7 +244,7 @@ export default {
     async walletLogin(type) {
       this.modalLoading = true
       if (type === 'GitHub') {
-        this.$router.push({ name: 'Login' })
+        this.$router.push({ name: 'login' })
         return
       }
       await this.signInx(type)
