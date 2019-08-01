@@ -107,14 +107,11 @@ export default {
 .publish-btn {
   .btn-base();
   height: 60px;
-  color: #000;
+  color: #fff;
+  background: @blue;
   border: none;
   border-radius: 0;
   width: 80px;
-  &:hover {
-    color: #fff;
-    background: @blue;
-  }
 }
 .header {
   width: 100%;

@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal">确认为原创</el-checkbox>
+      <el-checkbox v-model="isOriginal" class="is-original">确认为原创</el-checkbox>
     </div>
     <div class="tag">
       <p>选择标签</p>
