@@ -30,22 +30,39 @@
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item>
-              xiaotiandada
+              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                {{ currentUserInfo.nickname || currentUserInfo.name }}
+              </n-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
-              我的账户
+              <n-link class="link" :to="{name: 'setting-id', params:{id: currentUserInfo.id}}">
+                我的账户
+              </n-link>
             </el-dropdown-item>
-            <el-dropdown-item>我的原创</el-dropdown-item>
-            <el-dropdown-item>我的投资</el-dropdown-item>
-            <el-dropdown-item>我的草稿</el-dropdown-item>
             <el-dropdown-item>
-              购买记录
+              <n-link class="link" :to="{name: 'setting-id-original', params:{id: currentUserInfo.id}}">
+                我的原创
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <n-link class="link" :to="{name: 'setting-id-investment', params:{id: currentUserInfo.id}}">
+                我的投资
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <n-link class="link" :to="{name: 'setting-id-draft', params:{id: currentUserInfo.id}}">
+                我的草稿
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <n-link class="link" :to="{name: 'setting-id-buy', params:{id: currentUserInfo.id}}">
+                购买记录
+              </n-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
-              设置
-            </el-dropdown-item>
-            <el-dropdown-item divided>
-              退出
+              <div class="link" @click="btnsignOut">
+                退出
+              </div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -135,7 +152,7 @@ export default {
     console.log(this.$route)
   },
   methods: {
-    ...mapActions(['getCurrentUser']),
+    ...mapActions(['getCurrentUser', 'signOut']),
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)
@@ -148,6 +165,12 @@ export default {
       this.$router.push({
         name: url
       })
+    },
+    btnsignOut() {
+      if (confirm('确定退出吗?')) {
+        this.signOut()
+        window.location.reload()
+      }
     }
   }
 }
@@ -232,7 +255,7 @@ export default {
 <style lang="less">
 // 覆盖下拉框
 .user-dorpdown {
-  max-width: 140px;
+  max-width: 150px;
   box-sizing: border-box;
   &.el-dropdown-menu {
     padding: 0;
@@ -264,6 +287,16 @@ export default {
   .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover  {
     background-color: @blue;
     color: #fff;
+    .link {
+      color: #fff;
+    }
   }
+}
+</style>
+<style lang="less" scoped>
+.link {
+  display: block;
+  text-decoration: none;
+  color: #333;
 }
 </style>

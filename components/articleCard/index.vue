@@ -1,7 +1,7 @@
 <template>
   <!-- 适用于 首页, 商品页, 标签页 -->
   <!-- 区分那种卡 -->
-  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="article" :class="cardType">
+  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" tag="div" class="article" :class="cardType">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
       <img v-else src="@/assets/img/article_bg.svg" alt="cover">
@@ -50,7 +50,7 @@
     <div class="info">
       <!-- 暂时用文章页代替跳转地址 -->
       <n-link
-        :to=" {name: 'p-id', params: {id: Uid}} "
+        :to=" {name: 'user-id', params: {id: Uid}} "
         tag="div"
         class="author"
       >
@@ -131,6 +131,7 @@ export default {
       return this.card && this.card.uid
     },
     dateCard() {
+      if (!this.card) return ''
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }

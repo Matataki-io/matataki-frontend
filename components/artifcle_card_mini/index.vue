@@ -40,6 +40,7 @@ export default {
       return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
     },
     time() {
+      if (!this.card) return ''
       const time = this.moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }

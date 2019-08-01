@@ -1,7 +1,7 @@
 <template>
   <!-- 适用于 首页, 商品页, 标签页 -->
   <!-- 区分那种卡 -->
-  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="article">
+  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" tag="div" class="article">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
       <img v-else src="@/assets/img/article_bg.svg" alt="cover">
@@ -10,7 +10,7 @@
       <div class="info">
         <!-- 暂时用文章页代替跳转地址 -->
         <n-link
-          :to=" {name: 'p-id', params: {id: Uid}} "
+          :to=" {name: 'user-id', params: {id: Uid}} "
           tag="div"
           class="author"
         >
@@ -69,7 +69,7 @@ export default {
   props: {
     card: {
       type: Object,
-      default: () => {}
+      required: true
     }
   },
   computed: {
@@ -106,6 +106,7 @@ export default {
       return this.card && this.card.uid
     },
     dateCard() {
+      if (!this.card) return ''
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
@@ -126,6 +127,7 @@ export default {
   flex: 1;
   height: 148px;
   padding: 0 0 0 20px;
+  overflow: hidden;
 }
 .article {
   width: 100%;
@@ -139,6 +141,9 @@ export default {
   overflow: hidden;
   transition: all 0.3s;
   margin-top: 14px;
+  &:nth-child(1) {
+    margin-top: 40px;
+  }
   &-title {
     height: 56px;
     margin: 20px 0;
@@ -172,6 +177,7 @@ export default {
   cursor: pointer;
   overflow: hidden;
   width: 296px;
+  flex: 0 0 296px;
   height: 148px;
   background: rgba(0,0,0,0.05);
   border-radius: @borderRadius6;
