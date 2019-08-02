@@ -165,7 +165,7 @@ export default {
       ],
       title: this.article.title,
       meta: [
-        { hid: 'description', name: 'description', content: this.post.content }
+        { hid: 'description', name: 'description', content: this.article.short_content }
       ]
     }
   },
