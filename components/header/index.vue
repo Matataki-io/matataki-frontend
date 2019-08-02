@@ -310,5 +310,8 @@ export default {
   display: block;
   text-decoration: none;
   color: #333;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
