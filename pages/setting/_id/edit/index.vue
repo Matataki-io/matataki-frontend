@@ -58,7 +58,7 @@
         </div>
         <div class="line" />
         <div class="list center">
-          <span class="title">接受文章转让</span>
+          <span class="title">接受他人文章权限移交</span>
           <el-switch
             v-model="isTransfer"
             active-color="#1c9cfe"
