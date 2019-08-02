@@ -180,8 +180,10 @@ export default {
     },
     btnsignOut() {
       if (confirm('确定退出吗?')) {
-        this.$utils.deleteAllCookies()
-        window.location.reload()
+        this.$utils.delCookie('ACCESS_TOKEN')
+        // this.$utils.deleteAllCookies()
+        this.$router.push('/')
+        // window.location.reload()
       }
     }
   }

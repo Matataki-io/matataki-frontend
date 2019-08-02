@@ -246,7 +246,7 @@ export default {
     this.getTags()
   },
   beforeRouteLeave(to, from, next) {
-    if (this.changed()) next()
+    if (this.changed()) return next()
     if (window.confirm('文章尚未保存，是否确认退出？')) {
       next()
     } else {
@@ -403,12 +403,10 @@ export default {
         throw error
       }
     },
-    confirmSaveDraft() {
-      this.createDraft(this.saveInfo)
-    },
     // 创建草稿
     async createDraft(article) {
       // 设置文章标签 🏷️
+      this.allowLeave = true
       article.tags = this.setArticleTag(this.tagCards)
       const response = await this.$backendAPI.createDraft(article)
       if (response.data.code !== 0) this.failed('失败请重试')
