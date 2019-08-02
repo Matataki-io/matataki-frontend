@@ -22,7 +22,7 @@
           class="create"
           icon-class="write"
           :style="customizeHeaderIconColorComputed"
-          @click="$router.push({ name: 'publish', params: { id: 'create' } })"
+          @click="writeP"
         />
         <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
@@ -158,6 +158,13 @@ export default {
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
+    writeP() {
+      if (this.isLogined) this.$router.push({ name: 'publish', params: { id: 'create' } })
+      else {
+        this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
+        this.login()
+      }
+    },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$backendAPI.getAvatarImage(avatar)

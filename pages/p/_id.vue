@@ -191,7 +191,7 @@ export default {
       const delSuccess = async () => {
         this.$message({ duration: 2000, message: '删除成功,三秒后自动跳转到首页' })
         await this.$utils.sleep(3000)
-        this.$router.push({ name: 'home' })
+        this.$router.push('/')
       }
       const fail = (err) => {
         this.$message.error('删除失败')
