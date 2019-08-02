@@ -90,7 +90,7 @@ export default {
 .fans-card {
   margin-top: 40px;
   &:nth-child(odd) {
-    margin-right: 30px;
+    // margin-right: 30px;
   }
 }
 </style>

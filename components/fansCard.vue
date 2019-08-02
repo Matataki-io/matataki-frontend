@@ -102,6 +102,9 @@ p {
   cursor: pointer;
 }
 .fans-card {
+  width: 50%;
+  flex: 0 0 50%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   // align-items: center;
