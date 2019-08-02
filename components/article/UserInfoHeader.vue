@@ -1,9 +1,11 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <img class="Avatar" :src="article.avatar" alt="avatar" :onerror="defaultAvatar">
+      <img class="Avatar" @click="$router.push(`/user/${article.uid}`)" :src="article.avatar" alt="avatar" :onerror="defaultAvatar">
       <div class="AuthorInfo-content">
-        <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
+        <router-link :to="`/user/${article.uid}`">
+          <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
+        </router-link>
         <span class="Post-Time">发布于{{ article.articleCreateTimeComputed }}</span>
         <span class="View-Num">
           <svg-icon class="icon" icon-class="read" />

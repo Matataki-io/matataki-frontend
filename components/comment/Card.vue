@@ -3,12 +3,12 @@
     <div class="comment-info">
       <div
         class="comment-avatar"
-        @click="$router.push({ name: 'User', params: { id: comment.id } })"
+        @click="$router.push(`/user/${comment.id}`)"
       >
         <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
       </div>
       <div class="comment-head">
-        <router-link class="comment-author" :to="{ name: 'User', params: { id: comment.id } }">
+        <router-link class="comment-author" :to="`/user/${comment.id}`">
           {{ comment.nickname || comment.username }}
         </router-link>
         {{ action }}
