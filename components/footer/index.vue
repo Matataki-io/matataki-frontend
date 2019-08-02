@@ -11,7 +11,18 @@
           <a class="href" target="_blank" href="http://www.smartsignature.io/p/616">智能公告牌</a>
           <div class="icon wechat-icon">
             <div class="wechat">
-              <img src="@/assets/img/code.png" alt="code">
+              <div class="wechat-img">
+                <img src="@/assets/img/wechat-group.png" alt="code">
+                <p class="wechat-title">
+                  扫码进群
+                </p>
+              </div>
+              <div class="wechat-img">
+                <img src="@/assets/img/wechat-public.png" alt="code">
+                <p class="wechat-title">
+                  关注公众号
+                </p>
+              </div>
             </div>
           </div>
           <a target="_blank" href="https://github.com/smart-signature/smart-signature-future">
@@ -70,15 +81,27 @@ export default {}
       cursor: pointer;
       .wechat {
         display: none;
+        justify-content: space-between;
+        align-items: center;
         position: absolute;
-        top: -190px;
-        left: -74px;
-        width: 170px;
+        top: -200px;
+        left: -146px;
+        width: 310px;
         background: #fff;
         border-radius: 6px;
         padding: 14px;
         box-sizing: border-box;
         box-shadow: 0 0 10px rgba(0,0,0,.1);
+        &-img {
+          text-align: center;
+        }
+        &-title {
+          padding: 0;
+          margin: 0;
+          font-size: 14px;
+          line-height: 1.5;
+          color: #000;
+        }
         &::after {
           position: absolute;
           bottom: -20px;
@@ -92,11 +115,13 @@ export default {}
           border-color: #fff transparent transparent;
         }
         img {
-          width: 100%;
+          border: 1px solid #eee;
+          width: 130px;
+          box-sizing: border-box;
         }
       }
       &:hover .wechat {
-        display: block;
+        display: flex;
       }
       &.wechat-icon {
         width: 28px;
