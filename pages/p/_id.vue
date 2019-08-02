@@ -2,7 +2,7 @@
   <div class="main">
     <g-header>
       <template slot="more">
-        <el-dropdown trigger="click" @command="handleMoreAction">
+        <el-dropdown trigger="click" @command="handleMoreAction" v-if="isMe()">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="article-btn" @click="share">
           <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-            <svg-icon icon-class="purchase" class="icon" />
+            <svg-icon icon-class="share" class="icon" />
           </div>
           <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
         </div>
@@ -77,7 +77,7 @@
       </div>
       <div class="article-btn" @click="share">
         <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-          <svg-icon icon-class="purchase" class="icon" />
+          <svg-icon icon-class="share" class="icon" />
         </div>
         <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
       </div>
