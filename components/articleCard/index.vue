@@ -94,7 +94,7 @@ export default {
     },
     card: {
       type: Object,
-      default: () => {}
+      required: true
     }
   },
   computed: {
