@@ -406,9 +406,11 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       const response = await this.$backendAPI.createDraft(article)
-      if (response.data.msg !== 'success') this.failed('失败请重试')
-      this.$message.success('保存成功')
-      this.$router.go(-1)
+      if (response.data.code !== 0) this.failed('失败请重试')
+      else {
+        this.$message.success('保存成功')
+        this.$router.push(`/setting/${this.currentUserInfo.id}/draft`)
+      }
     },
     // 编辑文章
     async editArticle(article) {
@@ -494,14 +496,13 @@ export default {
         })
       } else if (editorMode === 'create' && saveType === 'draft') {
         // 发布到草稿箱
-        this.prompt = true
-        this.saveInfo = {
+        this.createDraft({
           title,
           content,
           fissionFactor,
           cover,
           isOriginal
-        }
+        })
       } else if (editorMode === 'edit') {
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })

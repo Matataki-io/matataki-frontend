@@ -93,6 +93,9 @@ export default {
           stock: 0
         }
       }
+    },
+    signId() {
+      return this.article.id
     }
   },
   methods: {
@@ -125,14 +128,19 @@ export default {
         return { id: null, username: idOrName }
       }
       this.isSupported = RewardStatus.LOADING
-      let sponsor = await toSponsor(this.getInvite)
-      await this.makeOrder({ amount, num, signId, sponsor, comment })
-      loading.close()
-      this.isSupported = RewardStatus.NOT_REWARD_YET
-      this.isRequest = true
-      this.buyProductModal = false
-      this.buySuccessModal = true
-    },
+      try {
+        let sponsor = await toSponsor(this.getInvite)
+        await this.makeOrder({ amount, num, signId, sponsor, comment })
+        loading.close()
+        this.$message.success('购买成功')
+        this.isSupported = RewardStatus.NOT_REWARD_YET
+        this.showModal = false
+      } catch (error) {
+        loading.close()
+        this.$message.error('购买失败')
+        this.showModal = false
+      }
+    }
   }
 }
 </script>

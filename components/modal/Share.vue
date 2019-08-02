@@ -115,13 +115,26 @@ export default {
       widgetModalStatus: 0,
       oldWidgetModalStatus: 0,
       widgetContent: '',
-      widgetContentIframe: '',
-      clipboard: '',
-      shareLink: ''
+      widgetContentIframe: ''
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe'])
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    clipboard() {
+      const { article, currentUserInfo } = this
+      const { protocol, host } = window.location
+      // console.debug(this.article);
+      const articleUrl = `${protocol}//${host}/article/${article.id}`
+      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
+      return `《${article.title}》by ${article.username} \n${shareLink}\n投资好文，分享有收益 ！`
+    },
+    shareLink() {
+      const { currentUserInfo } = this
+      const { protocol, host } = window.location
+      // console.debug(this.article);
+      const articleUrl = `${protocol}//${host}/article/${article.id}`
+      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
+    }
   },
   watch: {
     showModal(val) {
@@ -150,18 +163,8 @@ export default {
     }
   },
   mounted() {
-    this.getClipboard()
   },
   methods: {
-    getClipboard() {
-      const { article, currentUserInfo } = this
-      const { protocol, host } = window.location
-      // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/article/${article.id}`
-      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
-      this.clipboard = `《${article.title}》by ${article.username} \n${shareLink}\n投资好文，分享有收益 ！`
-      this.shareLink = shareLink
-    },
     createWidget() {
       this.widgetModalStatus = 1
     },
