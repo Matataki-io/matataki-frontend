@@ -104,7 +104,7 @@ p {
 .fans-card {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  // align-items: center;
   justify-content: flex-start;
   .avatar {
     width: 60px !important;
