@@ -1,10 +1,10 @@
 <template>
   <div class="fans-card">
-    <n-link :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
+    <n-link target="_blank" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
       <avatar class="avatar" :src="avatar" />
     </n-link>
     <div class="fans-info">
-      <n-link tag="p" class="name" :title="name" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
+      <n-link target="_blank" class="name" :title="name" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
         {{ name }}
       </n-link>
       <p class="fans">

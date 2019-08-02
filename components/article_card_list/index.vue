@@ -1,7 +1,7 @@
 <template>
   <!-- 适用于 首页, 商品页, 标签页 -->
   <!-- 区分那种卡 -->
-  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" tag="div" class="article">
+  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank" class="article">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
       <img v-else src="@/assets/img/article_bg.svg" alt="cover">
@@ -10,8 +10,8 @@
       <div class="info">
         <!-- 暂时用文章页代替跳转地址 -->
         <n-link
+          target="_blank"
           :to=" {name: 'user-id', params: {id: Uid}} "
-          tag="div"
           class="author"
         >
           <avatar class="avatar" :size="'30px'" :src="avatarImg" />
@@ -41,7 +41,7 @@
         <!-- 暂时用文章页代替跳转地址 -->
         <n-link
           :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
-          tag="span"
+          target="_blank"
           class="title"
           :style="tagStyle"
         >
@@ -141,6 +141,8 @@ export default {
   overflow: hidden;
   transition: all 0.3s;
   margin-top: 14px;
+  text-decoration: none;
+
   &:nth-child(1) {
     margin-top: 40px;
   }
@@ -181,6 +183,8 @@ export default {
   height: 148px;
   background: rgba(0,0,0,0.05);
   border-radius: @borderRadius6;
+  transform: rotate(0deg);
+
   img {
     .imgObjectFitCover();
     transition: all 0.3s;

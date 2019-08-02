@@ -1,5 +1,5 @@
 <template>
-  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="slide">
+  <n-link target="_blank" :to="{name: 'p-id', params: {id: card.id}}" class="slide">
     <img
       v-if="cover"
       :src="cover"
@@ -37,6 +37,7 @@ export default {
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s;
+  transform: rotate(0deg);
   &:hover {
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
   }

@@ -2,7 +2,7 @@
   <!-- 暂时用文章页代替跳转地址 -->
   <n-link
     :to=" {name: 'tag-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
-    tag="div"
+    target="_blank"
     class="tag"
   >
     <div class="tag-icon" :style="tagStyleObject">

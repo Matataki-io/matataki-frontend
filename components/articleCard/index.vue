@@ -1,7 +1,7 @@
 <template>
   <!-- 适用于 首页, 商品页, 标签页 -->
   <!-- 区分那种卡 -->
-  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" tag="div" class="article" :class="cardType">
+  <n-link target="_blank" :to="{name: 'p-id', params: {id: card && card.id}}" class="article" :class="cardType">
     <div class="cover">
       <img v-if="cover" :src="cover" alt="cover">
       <img v-else src="@/assets/img/article_bg.svg" alt="cover">
@@ -19,7 +19,7 @@
       <!-- 暂时用文章页代替跳转地址 -->
       <n-link
         :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
-        tag="span"
+        target="_blank"
         class="title"
         :style="tagStyle"
       >
@@ -51,7 +51,7 @@
       <!-- 暂时用文章页代替跳转地址 -->
       <n-link
         :to=" {name: 'user-id', params: {id: Uid}} "
-        tag="div"
+        target="_blank"
         class="author"
       >
         <avatar class="avatar" :size="'30px'" :src="avatarImg" />
@@ -135,6 +135,8 @@ export default {
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
+  },
+  methods: {
   }
 }
 </script>
@@ -161,6 +163,9 @@ export default {
   margin-top: 40px;
   overflow: hidden;
   transition: all 0.3s;
+  transform: rotate(0deg);
+  text-decoration: none;
+
   &.recommend-card {
     max-width: 373px;
     flex: 0 0 373px;

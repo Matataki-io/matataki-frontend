@@ -2,15 +2,16 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="setting" />
-      <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="loading" class="card-container">
         <n-link
           v-for="(item, index) in articleCardData.articles"
           :key="index"
+          target="_blank"
           :to="{
             name: 'p-id',
             params: { id: item.id }
-          }">
+          }"
+        >
           <article-card-mini :card="item" class="card-container-block" />
         </n-link>
       </div>
