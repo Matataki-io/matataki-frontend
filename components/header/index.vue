@@ -183,7 +183,7 @@ export default {
         this.$utils.delCookie('ACCESS_TOKEN')
         // this.$utils.deleteAllCookies()
         this.$router.push('/')
-        // window.location.reload()
+        window.location.reload()
       }
     }
   }
