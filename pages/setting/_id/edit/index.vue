@@ -130,13 +130,14 @@ export default {
     }
   },
   created() {
-    this.refreshUser()
-    this.getMyUserData()
   },
   mounted() {
+    this.getMyUserData()
   },
   methods: {
-    ...mapActions(['getCurrentUser']),
+    ...mapActions('user', [
+      'refreshUser'
+    ]),
     // 检测
     detection(val, type) {
       if (type === 'username') return val !== (this.userData.nickname || this.userData.username)
@@ -170,7 +171,18 @@ export default {
       }
       return canSetProfile
     },
-    async refreshUser() {
+    setAvatarImage(hash) {
+      if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
+    },
+    // 完成上传
+    doneImageUpload(res) {
+      console.log(res)
+      this.imgUploadDone += Date.now()
+      this.refreshUser({ id: this.$route.params.id })
+      this.getMyUserData()
+    },
+    // 获取用户信息 - 转让状态
+    async getMyUserData() {
       const setUser = data => {
         console.log(data)
         this.userData = data
@@ -179,24 +191,12 @@ export default {
         this.introduction = data.introduction
         this.setAvatarImage(data.avatar)
       }
-
-      setUser(await this.getCurrentUser())
-    },
-    setAvatarImage(hash) {
-      if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
-    },
-    // 完成上传
-    doneImageUpload(res) {
-      console.log(res)
-      this.refreshUser()
-      this.imgUploadDone += Date.now()
-    },
-    // 获取用户信息 - 转让状态
-    async getMyUserData() {
       try {
-        const res = await this.$backendAPI.getMyUserData()
-        if (res.status === 200 && res.data.code === 0) this.isTransfer = !!res.data.data.accept
-        else console.log('获取转让状态失败')
+        const res = await this.$API.getMyUserData()
+        if (res.code === 0) {
+          setUser(res.data)
+          this.isTransfer = !!res.data.accept
+        } else console.log('获取转让状态失败')
       } catch (error) {
         console.log(`获取转让状态失败${error}`)
       }
@@ -249,6 +249,7 @@ export default {
               message: '修改信息成功',
               type: 'success'
             })
+            this.refreshUser({ id: this.$route.params.id })
           } else this.$message.error('修改信息失败')
         })
         .catch(error => {
