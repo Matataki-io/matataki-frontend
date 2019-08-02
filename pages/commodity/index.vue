@@ -28,6 +28,7 @@
               v-for="(itemChild, indexChild) in item.articles"
               :key="indexChild"
               :card="itemChild"
+              type="product"
             />
           </div>
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
