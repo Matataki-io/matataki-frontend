@@ -1,30 +1,34 @@
 <template>
   <el-dialog :visible.sync="showModal" width="350px" :modal="true">
     <section v-if="step === 1" class="step">
-      <h1 class="step-title">选择授权方式</h1>
+      <h1 class="step-title">
+        选择授权方式
+      </h1>
       <div class="btns">
         <button class="btn-base bg-black" @click="walletLogin('EOS')">
           <div class="eos-logo">
-            <img src="@/assets/img/eos_icon.svg" alt="EOS" />
+            <img src="@/assets/img/eos_icon.svg" alt="EOS">
           </div>
           <span>EOS 登录</span>
         </button>
         <button class="btn-base bg-blue" @click="walletLogin('ONT')">
-          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT" />
+          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
           <span>ONT 登录</span>
         </button>
         <button class="btn-base bg-purple" @click="walletLogin('GitHub')">
-          <img src="@/assets/img/github.png" alt="github" />
+          <img src="@/assets/img/github.png" alt="github">
           <span>Github 登录</span>
         </button>
         <div class="guide">
-          <a href="https://smartsignature.io/article/515">EOS登录指南</a>
-          <a href="https://smartsignature.io/article/516">ONT登录指南</a>
+          <a target="_blank" href="https://www.smartsignature.io/p/515">EOS登录指南</a>
+          <a target="_blank" href="https://www.smartsignature.io/p/516">ONT登录指南</a>
         </div>
       </div>
     </section>
     <section v-if="step === 2" class="step">
-      <h1 class="step-title">EOS钱包</h1>
+      <h1 class="step-title">
+        EOS钱包
+      </h1>
       <div class="wallet">
         <a
           v-for="(itemWallet, indexWallet) in wallet.eos"
@@ -32,10 +36,12 @@
           :href="itemWallet.href"
           target="_blank"
         >
-          <img :src="itemWallet.url" :alt="itemWallet.alt" />
+          <img :src="itemWallet.url" :alt="itemWallet.alt">
         </a>
       </div>
-      <h1 class="step-title">ONT钱包</h1>
+      <h1 class="step-title">
+        ONT钱包
+      </h1>
       <div class="wallet">
         <a
           v-for="(itemWallet, indexWallet) in wallet.ont"
@@ -43,17 +49,17 @@
           :href="itemWallet.href"
           target="_blank"
         >
-          <img :src="itemWallet.url" :alt="itemWallet.alt" />
+          <img :src="itemWallet.url" :alt="itemWallet.alt">
         </a>
       </div>
     </section>
     <div class="footer-arrow" @click="step === 1 ? (step = 2) : (step = 1)">
       <div v-if="step === 2" class="arrow">
-        <i class="el-icon-arrow-left"></i>
+        <i class="el-icon-arrow-left" />
       </div>
       <span>{{ step === 1 ? '查看支持的钱包' : '返回登录' }}</span>
       <div v-if="step === 1" class="arrow">
-        <i class="el-icon-arrow-right"></i>
+        <i class="el-icon-arrow-right" />
       </div>
     </div>
   </el-dialog>
@@ -205,7 +211,7 @@ export default {
           ],
           doc: {
             title: '《如何使用EOS登录》',
-            href: 'https://smartsignature.io/article/515'
+            href: 'https://www.smartsignature.io/p/515'
           }
         },
         {
@@ -233,7 +239,7 @@ export default {
           ],
           doc: {
             title: '《如何使用ONT登录》',
-            href: 'https://smartsignature.io/article/516'
+            href: 'https://www.smartsignature.io/p/516'
           }
         }
       ]
