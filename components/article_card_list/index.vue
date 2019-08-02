@@ -35,7 +35,7 @@
           {{ card && (card.read === 0 ? 0 : card.read) }}
           浏览</span>
         <span class="data">
-          {{ card && (card.ups === 0 ? 0 : card.ups) }}
+          {{ card && (type === 'product' ? card.sale || 0 : card.ups || 0) }}
           投资</span>
         <span class="empty" />
         <!-- 暂时用文章页代替跳转地址 -->
@@ -70,6 +70,10 @@ export default {
     card: {
       type: Object,
       required: true
+    },
+    type: {
+      type: String,
+      default: 'article'
     }
   },
   computed: {
