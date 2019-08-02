@@ -53,14 +53,13 @@
       <p class="widget-title">widget预览</p>
       <div class="widget-review-content" v-html="widgetContentIframe"></div>
       <p class="widget-review-des">复制下面的代码并黏贴到您的网站来展示</p>
-      <van-field
+      <el-input
         id="codeIframe"
         v-model="widgetContentIframe"
         class="widget-textarea"
         type="textarea"
         placeholder=""
-        rows="4"
-        autosize
+        :rows="4"
         @focus="selectValue($event)"
       />
       <div class="widget-footer">
