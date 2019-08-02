@@ -38,7 +38,7 @@
                 : { color: '#000000' }
           "
         >{{ totalShareIncome }}</span>
-        <span class="total-list-title">创作收益</span>
+        <span class="total-list-title">投资收益</span>
       </div>
       <div class="total-list-block">
         <span
@@ -51,7 +51,7 @@
                 : { color: '#000000' }
           "
         >{{ totalShareExpenses }}</span>
-        <span class="total-list-title">创作收益</span>
+        <span class="total-list-title">投资支出</span>
       </div>
     </div>
     <div class="line" />
