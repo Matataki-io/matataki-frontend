@@ -141,6 +141,7 @@ export default {
   overflow: hidden;
   transition: all 0.3s;
   margin-top: 14px;
+
   &:nth-child(1) {
     margin-top: 40px;
   }
@@ -181,6 +182,8 @@ export default {
   height: 148px;
   background: rgba(0,0,0,0.05);
   border-radius: @borderRadius6;
+  transform: rotate(0deg);
+
   img {
     .imgObjectFitCover();
     transition: all 0.3s;

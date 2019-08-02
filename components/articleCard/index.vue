@@ -161,6 +161,8 @@ export default {
   margin-top: 40px;
   overflow: hidden;
   transition: all 0.3s;
+  transform: rotate(0deg);
+
   &.recommend-card {
     max-width: 373px;
     flex: 0 0 373px;

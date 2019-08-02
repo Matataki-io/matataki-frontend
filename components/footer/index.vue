@@ -4,11 +4,11 @@
       <img class="logo" src="@/assets/img/footer_logo.png" alt="logo">
       <div class="content">
         <div class="nav">
-          <a class="href" href="#">使用手册</a>
-          <a class="href" href="#">隐私政策</a>
-          <a class="href" href="#">用户协议</a>
-          <a class="href" href="#">关于我们</a>
-          <a class="href" href="#">智能公告牌</a>
+          <a class="href" target="_blank" href="http://www.smartsignature.io/p/616">使用手册</a>
+          <a class="href" target="_blank" href="#">隐私政策</a>
+          <a class="href" target="_blank" href="#">用户协议</a>
+          <a class="href" target="_blank" href="https://github.com/smart-signature/smart-signature-future">关于我们</a>
+          <a class="href" target="_blank" href="http://www.smartsignature.io/p/616">智能公告牌</a>
           <div class="icon wechat-icon">
             <div class="wechat">
               <img src="@/assets/img/code.png" alt="code">
