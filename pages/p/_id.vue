@@ -174,6 +174,7 @@ export default {
     this.oldOffSetTop = this.$refs.actionBtns.offsetTop
     try {
       await this.$backendAPI.addReadAmount({ articlehash: this.article.hash }) // 增加文章阅读量
+      console.log('增加文章阅读量')
     } catch (error) {
       console.error('addReadAmount :', error)
     }
