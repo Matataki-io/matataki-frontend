@@ -69,9 +69,9 @@ export default {
 
       // 获取数据
       try {
-        const res = await this.$backendAPI.getBackendData({ url, params }, this.needAccessToken)
-        if (res.status === 200 && res.data.code === 0) getDataSuccess(res.data)
-        else getDataFail(res.data.message)
+        const res = await this.$API.getBackendData({ url, params }, this.needAccessToken)
+        if (res.code === 0) getDataSuccess(res)
+        else getDataFail(res.message)
       } catch (error) { getDataFail() }
     },
     togglePage(i) {
