@@ -1,6 +1,6 @@
 <template>
   <div class="new-post" @click.stop="transferButton = false">
-    <postArticleHeader @postArticle="postArticle">
+    <postArticleHeader @postArticle="postArticle" :editorMode="editorMode">
       <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
         <div class="more-icon">
           <svg-icon class="icon" icon-class="more" />

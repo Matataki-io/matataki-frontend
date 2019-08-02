@@ -169,9 +169,14 @@ export default {
       ]
     }
   },
-  mounted() {
+  async mounted() {
     this.setAvatar()
     this.oldOffSetTop = this.$refs.actionBtns.offsetTop
+    try {
+      await this.$backendAPI.addReadAmount({ articlehash: this.article.hash }) // 增加文章阅读量
+    } catch (error) {
+      console.error('addReadAmount :', error)
+    }
     window.addEventListener('scroll', this.handleScroll)
   },
   destroyed() {

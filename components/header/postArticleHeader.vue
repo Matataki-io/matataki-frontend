@@ -10,7 +10,7 @@
           <button class="publish-btn">发布</button>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item command="public">公开发布</el-dropdown-item>
-            <el-dropdown-item command="draft">保存到草稿箱</el-dropdown-item>
+            <el-dropdown-item command="draft" v-if="this.editorMode !== 'edit'">保存到草稿箱</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <slot name="more" />
@@ -45,6 +45,10 @@ export default {
     customizeHeaderLogo: {
       type: String,
       default: 'default'
+    },
+    editorMode: {
+      type: String,
+      default: 'create'
     }
   },
   data() {
