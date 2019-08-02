@@ -7,7 +7,7 @@
         <!-- target="_blank" documetn error -->
         <n-link
           v-for="(item, index) in articleCardData.articles"
-          :key="index"
+          :key="item.id"
           :to="{
             name: 'publish',
             params: { id: item.id },
