@@ -36,7 +36,7 @@
           浏览</span>
         <span class="data">
           {{ card && (type === 'product' ? card.sale || 0 : card.ups || 0) }}
-          投资</span>
+          {{ type === 'product' ? '销量' : '投资' }}</span>
         <span class="empty" />
         <!-- 暂时用文章页代替跳转地址 -->
         <n-link

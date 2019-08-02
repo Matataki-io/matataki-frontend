@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>投资队列 {{ comments.length }}</h2>
+    <h2>{{ type === 2 ? '支持队列' : '投资队列' {{ comments.length }}</h2>
     <template v-if="comments.length !== 0" >
       <CommentCard v-for="(item, index) in comments" :key="index" :comment="item" :type="type" />
     </template>
@@ -22,7 +22,7 @@ export default {
       required: true
     },
     type: {
-      type: Number,
+      type: Number, // 2是商品 1是文章
       required: true
     }
   },
