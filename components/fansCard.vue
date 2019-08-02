@@ -51,7 +51,8 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     name() {
-      return this.card.nickname || this.card.followed
+      if (this.type === 'follow') return this.card.nickname || this.card.followed
+      else return this.card.nickname || this.card.username
     },
     avatar() {
       if (this.card.avatar) return this.$API.getImg(this.card.avatar)
@@ -102,6 +103,9 @@ p {
   cursor: pointer;
 }
 .fans-card {
+  width: 50%;
+  flex: 0 0 50%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   // align-items: center;

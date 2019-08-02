@@ -5,7 +5,9 @@
       <div class="AuthorInfo-content">
         <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
         <span class="Post-Time">发布于{{ article.articleCreateTimeComputed }}</span>
-        <span class="View-Num">{{ article.read || 0 }}阅读</span>
+        <span class="View-Num">
+          <svg-icon class="icon" icon-class="read" />
+          {{ article.read || 0 }}</span>
       </div>
     </div>
   </div>
@@ -37,6 +39,10 @@ export default {
   height: 38px;
   width: 38px;
 }
+.AuthorInfo-content {
+  display: flex;
+  align-items: center;
+}
 .Post-Author {
   display: flex;
   align-items: center;
@@ -46,6 +52,31 @@ export default {
     overflow: hidden;
     display: flex;
     align-items: center;
+  }
+  .AuthorInfo-name {
+    margin-left: 14px;
+    font-size:18px;
+    font-weight:500;
+    color:rgba(0,0,0,1);
+    line-height:33px;
+  }
+}
+.Post-Time {
+  margin-left: 18px;
+  font-weight:400;
+  color:rgba(178,178,178,1);
+  line-height:33px;
+}
+.View-Num {
+  font-weight:400;
+  color:rgba(178,178,178,1);
+  line-height:33px;
+  margin-left: 18px;
+  display: flex;
+  align-items: center;
+  .icon {
+    font-size: 22px;
+    margin-right: 6px;
   }
 }
 .Post-Time, .View-Num {
