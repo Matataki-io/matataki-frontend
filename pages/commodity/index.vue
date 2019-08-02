@@ -39,7 +39,7 @@
         <!-- 空div控制内容 end -->
       </div>
       <div class="tags commodity">
-        <span>文章标签</span>
+        <span>商品标签</span>
         <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
       </div>
     </div>

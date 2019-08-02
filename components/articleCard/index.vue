@@ -362,7 +362,7 @@ export default {
     font-size: 16px;
     line-height: 20px;
     &:nth-of-type(3) {
-      margin-right: 20px;
+      margin-left: 20px;
     }
   }
 }
@@ -390,7 +390,7 @@ export default {
     font-size: 14px;
     line-height: 17px;
     &:nth-of-type(3) {
-      margin-right: 10px;
+      margin-left: 10px;
     }
   }
 }

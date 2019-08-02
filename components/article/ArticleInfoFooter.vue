@@ -18,12 +18,16 @@
 <script>
 import { precision } from '@/utils/precisionConversion'
 export default {
+  components: {},
   props: {
     article: {
       type: Object,
       default: () => ({
       })
     }
+  },
+  data() {
+    return {}
   },
   computed: {
     totalSupportedAmount() {
@@ -35,11 +39,7 @@ export default {
     getDisplayedFissionFactor() {
       return this.article.fission_factor / 1000
     }
-  },
-  data() {
-    return {}
-  },
-  components: {}
+  }
 }
 </script>
 
@@ -47,10 +47,11 @@ export default {
 .article-info {
   margin-top: 40px;
   padding: 15px 40px;
-  border: 1px solid @gray;
+  border: 1px solid #dbdbdb;
   border-radius: 40px;
+  box-sizing: border-box;
   font-size: 16px;
-  width: 400px;
+  width: 490px;
   .flexCenter();
   .info1 {
     margin-right: 40px;
