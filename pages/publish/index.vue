@@ -247,9 +247,9 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) next()
-    else {
-      this.showModal = true
-      this.modalMode = 'back'
+    if (window.confirm('文章尚未保存，是否确认退出？')) {
+      next()
+    } else {
       next(false)
     }
   },
