@@ -1,5 +1,5 @@
 <template>
-  <n-link :to="{name: 'p-id', params: {id: card.id}}" tag="div" class="slide">
+  <n-link target="_blank" :to="{name: 'p-id', params: {id: card.id}}" class="slide">
     <img
       v-if="cover"
       :src="cover"
