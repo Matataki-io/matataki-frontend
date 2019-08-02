@@ -95,7 +95,7 @@ export default {
         config.devtool = isClient ? 'source-map' : 'inline-source-map'
       }
       // set svg-sprite-loader
-      if (isDev && isClient) {
+      if (isClient) {
         config.module.rules.forEach((rule) => {
           if (~rule.test.source.indexOf('|svg')) {
             rule.exclude = [resolve('icons/svg')]

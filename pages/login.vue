@@ -28,7 +28,7 @@ export default {
         })
         .catch(() => {})
         .then(() => {
-          this.$router.push(from)
+          this.$router.push('/')
         })
     }
   },

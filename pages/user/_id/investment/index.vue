@@ -59,7 +59,8 @@ export default {
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,
-      loading: false // 加载数据
+      loading: false, // 加载数据
+      total: 0
     }
   },
   computed: {
