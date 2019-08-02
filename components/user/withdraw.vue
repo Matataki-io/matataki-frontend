@@ -186,7 +186,7 @@ export default {
         })
         .catch(error => {
           console.error(error)
-          this.$toast.fail({ duration: 1000, message: '获取数据失败' })
+          this.$message.error({ duration: 1000, message: '获取数据失败' })
         })
     },
     writeAddres() {

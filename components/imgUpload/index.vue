@@ -162,7 +162,7 @@ export default {
       if (newFile && !oldFile) {
         // 过滤不是图片后缀的文件
         if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-          this.$toast.fail({
+          this.$message.error({
             duration: 1000,
             message: '请选择图片'
           })
@@ -172,7 +172,7 @@ export default {
       // 限定最大字节
       const maxSize = (size) => {
         if (newFile.file.size >= 0 && newFile.file.size > 1024 * 1024 * size) {
-          this.$toast.fail({
+          this.$message.error({
             duration: 1000,
             message: '图片过大'
           })
@@ -195,7 +195,7 @@ export default {
             },
             error(err) {
               console.log(err)
-              this.$toast.fail({
+              this.$message.error({
                 duration: 1000,
                 message: '自动压缩图片失败'
               })
@@ -250,7 +250,7 @@ export default {
         })
       } else {
         this.modalLoading = false
-        this.$toast.fail({
+        this.$message.error({
           duration: 1000,
           message: '上传图片失败'
         })
