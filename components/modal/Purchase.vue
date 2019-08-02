@@ -96,7 +96,7 @@ export default {
     },
     signId() {
       return this.article.id
-    },
+    }
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
@@ -140,7 +140,7 @@ export default {
         this.$message.error('购买失败')
         this.showModal = false
       }
-    },
+    }
   }
 }
 </script>

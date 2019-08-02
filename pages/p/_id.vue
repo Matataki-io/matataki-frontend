@@ -2,7 +2,7 @@
   <div class="main">
     <g-header>
       <template slot="more">
-        <el-dropdown trigger="click" @command="handleMoreAction" v-if="isMe()">
+        <el-dropdown trigger="click" @command="handleMoreAction" v-if="isMe(article.uid)">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
