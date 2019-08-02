@@ -1,12 +1,14 @@
 <template>
   <div class="new-post" @click.stop="transferButton = false">
-    <postArticleHeader @postArticle="postArticle" >
-      <el-dropdown slot="more" trigger="click" @command="handleMoreAction" v-if="isShowTransfer">
+    <postArticleHeader @postArticle="postArticle">
+      <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
         <div class="more-icon">
           <svg-icon class="icon" icon-class="more" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-          <el-dropdown-item command="transfer">转让</el-dropdown-item>
+          <el-dropdown-item command="transfer">
+            转让
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </postArticleHeader>
@@ -17,7 +19,7 @@
         placeholder="请输入你的文章标题..."
         size="large"
         clearable
-      />
+      >
       <no-ssr>
         <mavon-editor
           ref="md"
@@ -38,18 +40,19 @@
             class="item"
             effect="light"
             content="决定每名投资者的收益上限 = 投资金额 * 裂变系数 裂变系数越大投资者的收益预期越高"
-            placement="top-start">
+            placement="top-start"
+          >
             <span class="question">?</span>
           </el-tooltip>
         </p>
         <div v-if="editorMode !== 'edit'" class="fission-num-slider">
           <el-slider
-            class="fission-num-slider2"
             v-model="fissionNum"
+            class="fission-num-slider2"
             :min="1"
             :max="2"
-            :step="0.1">
-          </el-slider>
+            :step="0.1"
+          />
         </div>
         <div class="fission-num-Input">
           {{ fissionNum }}
@@ -57,7 +60,7 @@
       </div>
       <div class="cover-container">
         <div v-show="cover">
-          <img class="cover-img" :src="coverEditor" alt="cover" />
+          <img class="cover-img" :src="coverEditor" alt="cover">
         </div>
         <div class="cover">
           <p>图文封面 <span class="cover-tip">请上传宽高2:1尺寸的图片</span></p>
@@ -69,7 +72,7 @@
             :update-type="'artileCover'"
             @doneImageUpload="doneImageUpload"
           >
-            <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add" />
+            <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add">
           </img-upload>
           <img
             v-show="cover"
@@ -77,12 +80,14 @@
             src="@/assets/img/del.svg"
             alt="remove"
             @click.prevent="removeCover"
-          />
+          >
         </div>
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" class="is-original">确认为原创</el-checkbox>
+      <el-checkbox v-model="isOriginal" class="is-original">
+        确认为原创
+      </el-checkbox>
     </div>
     <div class="tag">
       <p>选择标签</p>
@@ -642,10 +647,16 @@ export default {
       await this.$backendAPI
         .getTags()
         .then(res => {
+          console.log(649, res)
           if (res.status === 200 && res.data.code === 0) {
             const { data } = res.data
-            data.map(i => (i.status = false))
-            this.tagCards = data
+            // 过滤商品标签 id <= 100
+            const filterId = i => i.id <= 100
+            const filterTag = data.filter(filterId)
+            // 过滤商品标签 id <= 100
+
+            filterTag.map(i => (i.status = false))
+            this.tagCards = filterTag
           } else console.log(res.data.message)
         })
         .catch(err => {
