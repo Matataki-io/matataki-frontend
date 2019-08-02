@@ -1,16 +1,19 @@
 <template>
   <el-dialog :visible.sync="showModal" width="375px" :lock-scroll="false" @close="change">
     <div v-if="widgetModalStatus === 0" class="widget-writecontent">
-      <p class="widget-title">转让文章的ownership</p>
+      <p class="widget-title">
+        转让文章的ownership
+      </p>
       <div class="widget-input-container">
         <el-input
           v-model="transferUsername"
           class="widget-input"
           placeholder="请输入想要转让的用户名"
-          @change="changeTransferId" />
+          @change="changeTransferId"
+        />
         <div v-if="resultUser" class="widget-input-user" @click="continueUser">
           <div class="widget-input-avater">
-            <img v-lazy="userAvatar" :src="userAvatar" alt="avatar" />
+            <img :src="userAvatar" alt="avatar">
           </div>
           <span>{{ searchUsernameInfo.nickname || searchUsernameInfo.username }}</span>
         </div>
@@ -23,20 +26,23 @@
           href="javascript:;"
           :class="[!buttonStatus && 'gray']"
           @click="transferArticle"
-          >转让文章</a
-        >
+        >转让文章</a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-help">
-      <p class="widget-help-title">什么是文章权限转移</p>
+      <p class="widget-help-title">
+        什么是文章权限转移
+      </p>
       <p class="widget-help-content">
         使用此功能可以将文章的署名权和收益权转移给另一名用户。接受权限转移的选项默认为关闭状态，需要在设置中手动开启。可转移对象为已发表文章和草稿箱中的文章。请勿滥用此功能！
       </p>
-      <br />
-      <p class="widget-help-title">转移步骤</p>
+      <br>
+      <p class="widget-help-title">
+        转移步骤
+      </p>
       <p class="widget-help-content">
-        1.在搜索框中完整输入对方昵称<br />
-        2.请仔细核对被转移账户的信息<br />
+        1.在搜索框中完整输入对方昵称<br>
+        2.请仔细核对被转移账户的信息<br>
         3.核对后点击“转让文章”来移交权限
       </p>
       <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
@@ -102,15 +108,25 @@ export default {
           transferUsername
         )
         if (res.status === 200 && res.data.code === 0) {
-          this.$toast({ duration: 1000, position: 'bottom', message: '转让成功,自动返回首页' })
+          this.$message({
+            message: '转让成功,自动返回首页',
+            type: 'success'
+          })
+
           this.change(false)
-          this.$router.push({ path: '/' })
+          this.$router.push({ name: 'index' })
         } else {
-          this.$toast({ duration: 1000, position: 'bottom', message: '对方未开启转让权限' })
+          this.$message({
+            message: '对方未开启转让权限',
+            type: 'warning'
+          })
         }
       } catch (error) {
         console.log(error)
-        this.$toast({ duration: 1000, position: 'bottom', message: '对方未开启转让权限' })
+        this.$message({
+          message: '对方未开启转让权限',
+          type: 'warning'
+        })
       }
     },
     resetStatus() {
