@@ -22,13 +22,11 @@
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-writecontent">
       <p class="widget-title">创建widget</p>
-      <van-field
+      <el-input
         v-model="widgetContent"
-        class="widget-textarea"
         type="textarea"
         placeholder="添加简介(选填)"
-        rows="4"
-        autosize
+        :rows="2"
       />
       <div class="widget-footer">
         <a class="help" href="javascript:;" @click="reviewHelp">如何使用widget？</a>
@@ -134,6 +132,9 @@ export default {
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/article/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
+    },
+    id() {
+      return this.article.id
     }
   },
   watch: {
