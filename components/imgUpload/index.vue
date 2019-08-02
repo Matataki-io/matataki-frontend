@@ -2,6 +2,7 @@
   <div class="img-uplaod">
     <!-- 上传图片 -->
     <FileUpload
+      v-if="isShowFileUpload"
       ref="upload"
       v-model="files"
       extensions="gif,jpg,jpeg,png,webp"
@@ -53,7 +54,9 @@ import { ifpsUpload } from '@/api/ipfs'
 
 export default {
   name: 'ImgUpload',
-  components: { FileUpload: VueUploadComponent },
+  components: {
+    FileUpload: VueUploadComponent
+  },
   props: {
     // 按钮文字
     buttonText: {
@@ -84,6 +87,8 @@ export default {
   },
   data() {
     return {
+      // eslint-disable-next-line no-undef
+      isShowFileUpload: false,
       files: [], // 文件数据
       modal: false, // modal 框显示和隐藏
       modalLoading: false, // modal button loading
@@ -140,6 +145,9 @@ export default {
       this.modal = false
       this.modalLoading = false
     }
+  },
+  mounted() {
+    this.isShowFileUpload = true
   },
   methods: {
     /**

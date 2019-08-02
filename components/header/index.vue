@@ -60,6 +60,11 @@
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
+              <n-link target="_blank" class="link" :to="{name: 'setting-id-edit', params:{id: currentUserInfo.id}}">
+                设置
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item divided>
               <div class="link" @click="btnsignOut">
                 退出
               </div>
