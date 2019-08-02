@@ -77,7 +77,7 @@ export default {
           articles: []
         },
         {
-          title: '最新投资',
+          title: '最多投资',
           params: {
             channel: 1,
             extra: 'short_content'
