@@ -221,8 +221,11 @@ export default {
       this.transferModal = true
     },
     edit() {
-      // TODO
-      console.log('edit')
+      this.$router.push({
+        name: 'publish',
+        params: { id: this.article.id },
+        query: { from: 'edit', hash: this.article.hash }
+      })
     },
     invest() {
       this.investModalShow = true
