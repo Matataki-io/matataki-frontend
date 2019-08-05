@@ -3,25 +3,27 @@
     <div v-if="widgetModalStatus === 0" class="widget-content-button">
       <div class="widget-button" @click="createWidget">
         <div class="widget-button-img">
-          <img src="@/assets/img/widget/widget.svg" alt="widget" />
+          <img src="@/assets/img/widget/widget.svg" alt="widget">
         </div>
         <p>创建widget</p>
       </div>
       <div class="widget-button" @click="widgetModalStatus = 4">
         <div class="widget-button-img">
-          <img src="@/assets/img/widget/share.svg" alt="widget" />
+          <img src="@/assets/img/widget/share.svg" alt="widget">
         </div>
         <p>生成长图</p>
       </div>
       <div class="widget-button" @click="copyCode(clipboard)">
         <div class="widget-button-img">
-          <img src="@/assets/img/widget/link.svg" alt="link" />
+          <img src="@/assets/img/widget/link.svg" alt="link">
         </div>
         <p>复制邀请链接</p>
       </div>
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-writecontent">
-      <p class="widget-title">创建widget</p>
+      <p class="widget-title">
+        创建widget
+      </p>
       <el-input
         v-model="widgetContent"
         type="textarea"
@@ -34,25 +36,33 @@
       </div>
     </div>
     <div v-if="widgetModalStatus === 2" class="widget-help">
-      <p class="widget-help-title">什么是文章widget</p>
+      <p class="widget-help-title">
+        什么是文章widget
+      </p>
       <p class="widget-help-content">
         widget功能可以为当前文章生成一个精美的展示卡片。您可以将widget代码复制到智能签名的文章编辑器中，这样就可以在您的文章中插入精美的文章展示卡片。当然，您展示的文章卡片同样也会具有邀请链接的功能。
       </p>
-      <br />
-      <p class="widget-help-title">操作步骤</p>
+      <br>
+      <p class="widget-help-title">
+        操作步骤
+      </p>
       <p class="widget-help-content">
-        1.你可以选择自定义展示卡片上的简介内容<br />
-        2.点击“创建widget”按钮获取代码<br />
-        3.点击“复制代码”按钮获取widget代码<br />
-        4.粘贴代码到智能签名编辑器中即可展示<br />
+        1.你可以选择自定义展示卡片上的简介内容<br>
+        2.点击“创建widget”按钮获取代码<br>
+        3.点击“复制代码”按钮获取widget代码<br>
+        4.粘贴代码到智能签名编辑器中即可展示<br>
       </p>
 
       <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
     </div>
     <div v-if="widgetModalStatus === 3" class="widget-review">
-      <p class="widget-title">widget预览</p>
-      <div class="widget-review-content" v-html="widgetContentIframe"></div>
-      <p class="widget-review-des">复制下面的代码并黏贴到您的网站来展示</p>
+      <p class="widget-title">
+        widget预览
+      </p>
+      <div class="widget-review-content" v-html="widgetContentIframe" />
+      <p class="widget-review-des">
+        复制下面的代码并黏贴到您的网站来展示
+      </p>
       <el-input
         id="codeIframe"
         v-model="widgetContentIframe"
@@ -77,7 +87,8 @@
           content: article.content,
           shareLink
         }"
-        @change="change" />
+        @change="change"
+      />
     </div>
   </el-dialog>
 </template>
@@ -121,7 +132,7 @@ export default {
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/article/${article.id}`
+      const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
       return `《${article.title}》by ${article.username} \n${shareLink}\n投资好文，分享有收益 ！`
     },
@@ -129,7 +140,7 @@ export default {
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/article/${article.id}`
+      const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
       return shareLink
     },
