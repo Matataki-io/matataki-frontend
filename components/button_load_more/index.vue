@@ -19,17 +19,24 @@ export default {
     apiUrl: {
       type: String,
       required: true
+    },
+    // 是否自动请求
+    isAtuoRequest: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
     return {
       isLoadEnd: false,
-      page: 1 // 分页
+      page: this.params.page || 1 // 分页
     }
   },
   created() {
-    this.getLoadMore(this.apiUrl, this.params)
-    // console.log(this.params, this.apiUrl)
+    if (this.isAtuoRequest) {
+      this.getLoadMore(this.apiUrl, this.params)
+      // console.log(this.isAtuoRequest, this.params, this.apiUrl)
+    }
   },
   methods: {
     loadMore() {
@@ -40,8 +47,9 @@ export default {
       if (this.isLoadEnd) return
       params.page = this.page
       const getDataSuccess = (res) => {
-        // console.log(res)
-        if (res.data.length < 20) this.isLoadEnd = true
+        if ((res.data && res.data.list && res.data.list.length < 20) || (res.data.length === 0)) {
+          this.isLoadEnd = true
+        }
         this.$emit('buttonLoadMore', {
           index: this.typeIndex,
           data: res.data

@@ -33,7 +33,7 @@
           </div>
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
           <div class="load-more-button">
-            <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" @buttonLoadMore="buttonLoadMore" />
+            <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
           </div>
           <!-- end -->
         </div>
@@ -54,7 +54,7 @@ import articleCardList from '@/components/article_card_list/index.vue'
 import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
-import { recommend } from '@/api/async_data_api.js'
+import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
 
 export default {
   components: {
@@ -68,6 +68,7 @@ export default {
     return {
       nowMainIndex: 0,
       recommendList: [],
+      initData: [],
       articleCardData: [
         {
           title: '最新商品',
@@ -76,7 +77,8 @@ export default {
             extra: 'short_content'
           },
           apiUrl: 'homeTimeRanking',
-          articles: []
+          articles: [],
+          isAtuoRequest: false
         },
         {
           title: '最热商品',
@@ -85,59 +87,51 @@ export default {
             extra: 'short_content'
           },
           apiUrl: 'homeSupportsRanking',
-          articles: []
+          articles: [],
+          isAtuoRequest: true
         }
       ],
       tagCards: []
     }
   },
   async asyncData({ $axios }) {
+    const initData = Object.create(null)
     try {
+      // 推荐
       const res = await recommend($axios, 2)
-      // console.log(111, res)
-      return { recommendList: res.data }
+      if (res.code === 0) initData.recommend = res.data
+      else initData.recommend = [{}, {}, {}, {}, {}]
+
+      // 内容列表
+      const params = {
+        channel: 2,
+        extra: 'short_content'
+      }
+      const resPagination = await paginationData($axios, 'homeTimeRanking', params)
+      if (resPagination.code === 0) initData.paginationData = resPagination.data.list
+      else initData.paginationData = []
+
+      // tags
+      const resTag = await getTags($axios, 'product')
+      if (resTag.code === 0) initData.tags = resTag.data
+      else initData.tags = []
+
+      return { initData }
     } catch (error) {
       console.log(error)
-      return { recommendList: [{}, {}, {}, {}, {}] }
-    }
+      return { initData }
+    };
   },
   created() {
-    this.getTags()
+    this.recommendList = this.initData.recommend
+    this.articleCardData[0].articles = this.initData.paginationData
+    this.tagCards = this.initData.tags
   },
   methods: {
-    // 获取推荐文章或者商品
-    async postsRecommend(channel) {
-      await this.$backendAPI
-        .postsRecommend(channel)
-        .then((res) => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.recommendList = res.data.data
-          } else {
-            console.log('获取推荐失败')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    // 获取标签
-    async getTags() {
-      await this.$backendAPI
-        .getTags('product')
-        .then((res) => {
-          if (res.status === 200 && res.data.code === 0) {
-            this.tagCards = res.data.data
-            // console.log(103, this.tagCards)
-          } else console.log(res.data.message)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
-      // console.log(res)
-      this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data.list)
+      console.log(res)
+      if (res.data && res.data.list && res.data.list.length !== 0) this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data.list)
     }
   }
 }

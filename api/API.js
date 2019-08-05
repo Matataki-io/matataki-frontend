@@ -1,6 +1,7 @@
 /* eslint-disable */
 import request from '@/utils/request'
 import endpoint from './endpoint'
+import { paginationUrl } from './pagination_url'
 
 export default {
   async wx(url) {
@@ -50,29 +51,7 @@ export default {
   // BasePull 分页组件
   async getBackendData({ url, params }) {
     // 分页组件接口地址
-    const pullApiUrl = {
-      // home
-      homeTimeRanking: 'posts/timeRanking',
-      homeSupportsRanking: 'posts/supportsRanking',
-      homeAmountRankingEOS: 'posts/amountRanking',
-      homeAmountRankingONT: 'posts/amountRanking',
-      // article comments
-      commentsList: 'comments',
-      // followlist
-      followsList: 'follows',
-      fansList: 'fans',
-      // asset
-      assetList: 'tokens',
-      // user articles
-      // 原创文章-使用 homeTimeRanking 接口 地址一样
-      userArticlesSupportedList: 'posts/supported',
-      // draftbox
-      draftboxList: 'drafts',
-      // tag by id
-      getPostByTagById: 'posts/getPostByTag',
-      // buy
-      buyHistory: 'order/products'
-    }
+    const pullApiUrl = paginationUrl
     return request.get(pullApiUrl[url], { params, showLoading: false })
   },
 }
