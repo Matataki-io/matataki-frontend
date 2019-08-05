@@ -229,6 +229,7 @@ export default {
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
   }
   &-title {
+    overflow: hidden;
     h3 {
       font-size: 20px;
       font-weight: 600;
