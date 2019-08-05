@@ -11,7 +11,7 @@
       </h1>
       <div class="invest-info">
         <div class="info-item">
-          <span class="info-number">{{ article.fission_factor }}</span>
+          <span class="info-number">{{ article.fission_factor / 1000 }}</span>
           <span class="info-subtitle">裂变系数</span>
         </div>
         <div class="info-item">
