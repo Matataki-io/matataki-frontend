@@ -9,7 +9,7 @@ export default {
       `${endpoint.wx}?url=${url}`
     )
   },
-  async getArticleInfo(hashOrId) {
+  getArticleInfo(hashOrId) {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
     return request.get(`/${url}/${hashOrId}`)

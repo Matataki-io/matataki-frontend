@@ -2,14 +2,20 @@
   <div class="main">
     <g-header>
       <template slot="more">
-        <el-dropdown trigger="click" @command="handleMoreAction" v-if="isMe(article.uid)">
+        <el-dropdown v-if="isMe(article.uid)" trigger="click" @command="handleMoreAction">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-            <el-dropdown-item command="edit">编辑</el-dropdown-item>
-            <el-dropdown-item command="transfer">转让</el-dropdown-item>
-            <el-dropdown-item command="del">删除</el-dropdown-item>
+            <el-dropdown-item command="edit">
+              编辑
+            </el-dropdown-item>
+            <el-dropdown-item command="transfer">
+              转让
+            </el-dropdown-item>
+            <el-dropdown-item command="del">
+              删除
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </template>
@@ -36,7 +42,7 @@
       <ArticleFooter :article="article" />
     </div>
     <div class="p-w btns-container">
-      <div class="btns" ref="actionBtns">
+      <div ref="actionBtns" class="btns">
         <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
@@ -47,7 +53,7 @@
           <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
             <svg-icon icon-class="invest" class="icon" />
           </div>
-          <span>{{ isProduct ? '投资商品' : '投资文章' }}</span>
+          <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
         </div>
         <div class="article-btn" @click="share">
           <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
@@ -62,7 +68,7 @@
       <tag v-for="(item, index) in article.tags" :key="index" :tag="item" />
     </div>
     <CommentList :sign-id="article.id" :type="article.channel_id" class="p-w" />
-    <div class="sidebar" v-show="navShow">
+    <div v-show="navShow" class="sidebar">
       <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
         <div class="icon-container yellow">
           <svg-icon icon-class="purchase" class="icon" />
@@ -73,7 +79,7 @@
         <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
           <svg-icon icon-class="invest" class="icon" />
         </div>
-        <span>{{ isProduct ? '投资商品' : '投资文章' }}</span>
+        <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
       </div>
       <div class="article-btn" @click="share">
         <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
@@ -151,7 +157,8 @@ export default {
       transferModal: false,
       purchaseModalShow: false,
       oldOffSetTop: 0,
-      navShow: true
+      navShow: true,
+      isSupport: false // 是否赞赏, 重新通过token请求文章数据
     }
   },
   head() {
@@ -159,7 +166,7 @@ export default {
       script: [
         {
           type: 'text/javascript',
-          id: 'pocket-btn-js', // id 不知道作用 生成的 script 有id就带着好了
+          id: 'pocket-btn-js',
           src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
         }
       ],
@@ -168,6 +175,46 @@ export default {
         { hid: 'description', name: 'description', content: this.article.short_content }
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    articleCreateTimeComputed() {
+      const { create_time: createTime } = this.article
+      const time = moment(createTime)
+      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    compiledMarkdown() {
+      // MarkdownIt 实例
+      const markdownIt = require('markdown-it')({
+        html: true,
+        breaks: true
+      })
+      return markdownIt.render(xssFilter(this.post.content))
+    },
+    cover() {
+      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      return null
+    },
+    isProduct() {
+      return this.article.channel_id === 2
+    }
+  },
+
+  async asyncData({ $axios, route }) {
+    const hashOrId = route.params.id
+    // post hash获取; p id 短链接;
+    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
+    const info = await $axios.get(`/${url}/${hashOrId}`)
+    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
+    return {
+      article: info.data,
+      post: content.data
+    }
+  },
+
+  created() {
+    console.log(this.article)
+    this.getSupportStatus(this.$route)
   },
   async mounted() {
     this.setAvatar()
@@ -213,7 +260,7 @@ export default {
           return fail(error)
         }
       }
-      this.$confirm('确定删除文章吗？', '确认信息', {
+      this.$confirm('该文章已上传至 IPFS 永久保存, 本次操作仅删除智能签名中的显示.', '确认信息', {
         distinguishCancelAndClose: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消'
@@ -234,6 +281,7 @@ export default {
       })
     },
     invest() {
+      if (this.isSupport) return
       this.investModalShow = true
     },
     share() {
@@ -245,42 +293,19 @@ export default {
         this.followed = data.is_follow
         if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
       })
-    }
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
-    articleCreateTimeComputed() {
-      const { create_time: createTime } = this.article
-      const time = moment(createTime)
-      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
-    compiledMarkdown() {
-      // MarkdownIt 实例
-      const markdownIt = require('markdown-it')({
-        html: true,
-        breaks: true
-      })
-      return markdownIt.render(xssFilter(this.post.content))
-    },
-    cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
-      return null
-    },
-    isProduct() {
-      return this.article.channel_id === 2
-    }
-  },
-  async asyncData({ $axios, route }) {
-    const hashOrId = route.params.id
-    // post hash获取; p id 短链接;
-    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios.get(`/${url}/${hashOrId}`)
-    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
-    return {
-      article: info.data,
-      post: content.data
+    // 获取是否赞赏状态
+    async getSupportStatus(route) {
+      try {
+        const res = await this.$API.getArticleInfo(route.params.id)
+        // console.log(297, res)
+        if (res.code === 0) this.isSupport = res.data.is_support
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
+
 }
 </script>
 
