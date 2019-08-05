@@ -15,14 +15,6 @@
         >
           {{ item.title }}
         </a>
-        <a
-          href="https://wj.qq.com/s2/4206369/e337"
-          target="_blank"
-          class="nav active"
-          :style="customizeHeaderTextColorComputed"
-        >
-          反馈
-        </a>
       </div>
 
       <div class="head-flex">

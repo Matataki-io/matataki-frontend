@@ -2,7 +2,13 @@
   <div class="app">
     <nuxt />
     <g-footer v-show="!hideFooter" />
-    <el-backtop v-if="!hideBackTop" :bottom="80" class="backtop">
+    <a class="feedback" href="https://wj.qq.com/s2/4206369/e337" target="_blank" title="反馈">
+      <svg-icon
+        class="icon-feedback"
+        icon-class="feedback"
+      />
+    </a>
+    <el-backtop :bottom="140" class="backtop">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
@@ -78,6 +84,26 @@ export default {
   cursor: pointer;
   &-icon {
     color: #fff;
+  }
+}
+.feedback {
+  border-radius: @borderRadius10;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  background: #000;
+  cursor: pointer;
+  bottom: 200px;
+  right: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s;
+  .icon-feedback {
+    font-size: 30px;
   }
 }
 </style>
