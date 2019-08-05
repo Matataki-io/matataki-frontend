@@ -19,6 +19,7 @@
     <el-dialog
       :visible.sync="modal"
       width="400px"
+      :close-on-click-modal="false"
       :lock-scroll="false"
       custom-class="img-upload-modal"
     >
