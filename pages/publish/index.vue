@@ -1,6 +1,6 @@
 <template>
   <div class="new-post" @click.stop="transferButton = false">
-    <postArticleHeader @postArticle="postArticle" :editorMode="editorMode">
+    <postArticleHeader :editor-mode="editorMode" @postArticle="postArticle">
       <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
         <div class="more-icon">
           <svg-icon class="icon" icon-class="more" />
@@ -447,10 +447,10 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       try {
         const response = await this.$backendAPI.updateDraft(article)
-        if (response.data.msg !== 'success') this.failed('失败请重试')
-        this.$message('草稿更新成功')
-        this.$navigation.cleanRoutes() // 清除路由记录
-        this.$router.go(-1)
+        if (response.status === 200 && response.data.code === 0) {
+          this.$message('草稿更新成功')
+          this.$router.go(-1)
+        } else this.failed('失败请重试')
       } catch (error) {
         this.failed('失败请重试')
       }
