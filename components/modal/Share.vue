@@ -126,11 +126,12 @@ export default {
       return `《${article.title}》by ${article.username} \n${shareLink}\n投资好文，分享有收益 ！`
     },
     shareLink() {
-      const { currentUserInfo } = this
+      const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/article/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
+      return shareLink
     },
     id() {
       return this.article.id
