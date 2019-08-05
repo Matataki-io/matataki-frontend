@@ -2,18 +2,18 @@
   <div class="app">
     <nuxt />
     <g-footer v-show="!hideFooter" />
-    <a class="feedback" href="https://wj.qq.com/s2/4206369/e337" target="_blank" title="反馈">
-      <svg-icon
-        class="icon-feedback"
-        icon-class="feedback"
-      />
-    </a>
     <el-backtop :bottom="140" class="backtop">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
       />
     </el-backtop>
+    <a class="feedback" href="https://wj.qq.com/s2/4206369/e337" target="_blank" title="反馈">
+      <svg-icon
+        class="icon-feedback"
+        icon-class="feedback"
+      />
+    </a>
     <BaseModalForSignIn v-model="loginModalShow" />
   </div>
 </template>
@@ -99,7 +99,7 @@ export default {
   color: #fff;
   background: #000;
   cursor: pointer;
-  bottom: 200px;
+  bottom: 80px;
   right: 40px;
   text-align: center;
   display: flex;
