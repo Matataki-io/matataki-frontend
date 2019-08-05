@@ -18,29 +18,29 @@ export default {
     return `${process.env.ssImgAddress}${hash}`
   },
   async getComments(signid) {
-    return request.get('/comments', {
+    return request.get('/comment/comments', {
       params: {signid}
     })
   },
   async getFans(uid, page = 1) {
-    return request.get('/fans', {
+    return request.get('/follow/fans', {
       params: {
         uid, page
       }
     })
   },
   async getFollows(uid, page = 1) {
-    return request.get('/follows', {
+    return request.get('/follow/follows', {
       params: {
         uid, page
       }
     })
   },
   async follow(uid) {
-    return request.post('/follow', { uid })
+    return request.post('/follow/follow', { uid })
   },
   async unfollow(uid) {
-    return request.post('/unfollow', { uid })
+    return request.post('/follow/unfollow', { uid })
   },
   async getMyUserData () {
     return request.get('/user/stats')

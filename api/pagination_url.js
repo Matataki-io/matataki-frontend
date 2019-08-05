@@ -5,17 +5,17 @@ export const paginationUrl = {
   homeAmountRankingEOS: 'posts/amountRanking',
   homeAmountRankingONT: 'posts/amountRanking',
   // article comments
-  commentsList: 'comments',
+  commentsList: 'comment/comments',
   // followlist
-  followsList: 'follows',
-  fansList: 'fans',
+  followsList: 'follow/follows',
+  fansList: 'follow/fans',
   // asset
-  assetList: 'tokens',
+  assetList: 'user/tokens',
   // user articles
   // 原创文章-使用 homeTimeRanking 接口 地址一样
   userArticlesSupportedList: 'posts/supported',
   // draftbox
-  draftboxList: 'drafts',
+  draftboxList: 'draft/drafts',
   // tag by id
   getPostByTagById: 'posts/getPostByTag',
   // buy
