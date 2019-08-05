@@ -1,7 +1,14 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false">
+  <el-dialog
+    :close-on-click-modal="false"
+    :visible.sync="showModal"
+    width="400px"
+    :lock-scroll="false"
+  >
     <div class="buy-product-modal">
-      <h1 class="title">{{ article.title }}</h1>
+      <h1 class="title">
+        {{ article.title }}
+      </h1>
       <div class="invest-info">
         <div class="info-item">
           <span class="info-number">{{ article.fission_factor }}</span>
@@ -20,15 +27,19 @@
         v-model="amount"
         :placeholder="`请输入投资金额`"
         class="comment-container"
-        @input="handleChange(amount)" />
+        @input="handleChange(amount)"
+      />
       <el-input
+        v-model="comment"
         type="textarea"
         class="comment-container"
         :rows="4"
         placeholder="请输入您的留言"
-        v-model="comment" />
+      />
       <div class="invest-container">
-        <div class="invest-btn" @click="investProduct">投资</div>
+        <div class="invest-btn" @click="investProduct">
+          投资
+        </div>
       </div>
     </div>
   </el-dialog>
