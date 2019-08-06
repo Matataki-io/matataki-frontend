@@ -145,7 +145,7 @@ const API = {
     )
   },
   async getArticleDatafromIPFS(hash) {
-    return axios.get(`${apiServer}/ipfs/catJSON/${hash}`)
+    return axios.get(`${apiServer}/post/ipfs/${hash}`)
   },
   // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
   async getArticleInfo(hashOrId) {
