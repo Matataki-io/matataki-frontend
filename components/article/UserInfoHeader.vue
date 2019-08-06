@@ -1,7 +1,7 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <img class="Avatar" @click="$router.push(`/user/${article.uid}`)" :src="article.avatar" alt="avatar" :onerror="defaultAvatar">
+      <avatar class="Avatar" :size="'38px'" :src="article.avatar" @click="$router.push(`/user/${article.uid}`)"/>
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`">
           <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
@@ -16,8 +16,11 @@
 </template>
 
 <script>
+import avatar from '@/components/avatar/index.vue'
 export default {
-  components: {},
+  components: {
+    avatar
+  },
   props: {
     article: {
       type: Object,

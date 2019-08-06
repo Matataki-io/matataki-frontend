@@ -172,7 +172,20 @@ export default {
       ],
       title: this.article.title,
       meta: [
-        { hid: 'description', name: 'description', content: this.article.short_content }
+        { hid: 'description', name: 'description', content: this.article.short_content },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', property: 'twitter:title', content: this.article.title },
+        { hid: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
+        { hid: 'twitter:url', property: 'twitter:url', content: 'http://www.smartsignature.io' },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
+        { hid: 'og:title', property: 'og:title', content: this.article.title },
+        { hid: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', property: 'og:url', content: 'http://www.smartsignature.io' },
+        { hid: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
+        { hid: 'og:description', property: 'og:description', content: this.article.short_content }
       ]
     }
   },
