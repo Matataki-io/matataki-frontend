@@ -13,17 +13,17 @@
     <div class="line" />
     <div class="follow-fan">
       <div class="data">
-        <p class="num">
+        <n-link class="num" tag="p" :to="{name: 'user-id-follow', params: {id: nowId}}">
           {{ userInfo.follows || 0 }}
-        </p>
+        </n-link>
         <p class="title">
           关注
         </p>
       </div>
       <div class="data">
-        <p class="num">
+        <n-link class="num" tag="p" :to="{name: 'user-id-fan', params: {id: nowId}}">
           {{ userInfo.fans || 0 }}
-        </p>
+        </n-link>
         <p class="title">
           粉丝
         </p>
@@ -33,7 +33,7 @@
     <template v-if="!isSetting">
       <!-- 个人主页 -->
       <div
-        v-if="!isMe($route.params.id)"
+        v-if="!isMe(nowId)"
         class="line"
       />
       <button
@@ -69,7 +69,11 @@ export default {
     ...mapState({
       userInfo: state => state.user.userInfo
     }),
-    ...mapGetters(['isMe', 'currentUserInfo'])
+    ...mapGetters(['isMe', 'currentUserInfo']),
+    nowId() {
+      if (this.isSetting) return this.currentUserInfo.id
+      else return this.$route.params.id
+    }
   },
   watch: {
     currentUserInfo() {
@@ -157,6 +161,7 @@ export default {
         line-height:33px;
         padding: 0;
         margin: 0;
+        cursor: pointer;
       }
       .title {
         font-size:14px;
@@ -171,15 +176,15 @@ export default {
 
 .button {
   background-color: @black;
-border-radius:@borderRadius6;
-    width: 190px;
-    height: 40px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #ffffff;
-    line-height: 22px;
-    margin: 20px auto 40px;
-    text-align: center;
-    display: block;
+  border-radius:@borderRadius6;
+  width: 190px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 22px;
+  margin: 20px auto 40px;
+  text-align: center;
+  display: block;
 }
 </style>
