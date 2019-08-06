@@ -8,7 +8,7 @@ const API = {
   userStats: '/user/stats',
   wx: '/wx/sign',
   ifpsUpload: 'ipfs/upload',
-  sendPost: 'ipfs/addJSON',
+  sendPost: 'post/ipfs',
   auth: '/login/auth'
 }
 export default API
