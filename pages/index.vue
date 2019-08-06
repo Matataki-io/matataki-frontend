@@ -129,7 +129,7 @@ export default {
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
-      this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data.list)
+      if (res.data && res.data.list && res.data.list.length !== 0) this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data.list)
     }
   }
 }
