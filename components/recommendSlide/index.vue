@@ -33,7 +33,7 @@ export default {
   background: #fff;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-top: 40px;
+  margin-top: 30px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s;

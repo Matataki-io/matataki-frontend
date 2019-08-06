@@ -120,7 +120,7 @@ export default {
         },
         {
           title: '商品',
-          url: 'commodity'
+          url: 'shop'
         }
       ],
       avatar: ''

@@ -54,7 +54,7 @@
         target="_blank"
         class="author"
       >
-        <avatar class="avatar" :size="'30px'" :src="avatarImg" />
+        <avatar class="avatar" :size="'28px'" :src="avatarImg" />
         <span class="username">
           {{ card && (card.nickname || card.author || '') }}
         </span>
@@ -160,7 +160,7 @@ export default {
   background: #fff;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-top: 40px;
+  margin-top: 30px;
   overflow: hidden;
   transition: all 0.3s;
   transform: rotate(0deg);
@@ -174,14 +174,14 @@ export default {
       height: 56px;
       margin: 20px;
       h3 {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 600;
         line-height: 28px;
+        color: #333;
       }
     }
   }
   &.article-card {
-    margin-top: 40px;
     .article-title {
       margin: 47px 40px 0 40px;
       h3 {
@@ -192,7 +192,6 @@ export default {
     }
   }
   &.commodity-card {
-    margin-top: 40px;
     width: 270px;
     flex: 0 0 270px;
     // height: 284px;
@@ -202,11 +201,11 @@ export default {
       &:nth-child(even) {
         margin-left: 20px !important;
       }
-            &:nth-child(odd) {
+        &:nth-child(odd) {
         margin-right: 20px !important;
       }
-          &:nth-child(3n-1) {
-                margin-left: 0px;
+      &:nth-child(3n-1) {
+      margin-left: 0px;
       margin-right: 0px;
     }
     }
@@ -296,7 +295,7 @@ export default {
   align-items: center;
   overflow: hidden;
   .avatar {
-    flex: 0 0 30px;
+    flex: 0 0 28px;
   }
   .username {
     font-weight: 500;
@@ -355,12 +354,12 @@ export default {
 .recommend-card .des {
   margin: 0 20px 20px 20px;
   .title {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
   }
 
   .data {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     &:nth-of-type(3) {
       margin-left: 20px;
@@ -400,7 +399,7 @@ export default {
 .recommend-card .info {
   margin: 20px 20px 0 20px;
   .date {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
   }
 }
@@ -421,7 +420,7 @@ export default {
 
 // author
 .recommend-card .author .username {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 20px;
 }
 .article-card .author .username {
