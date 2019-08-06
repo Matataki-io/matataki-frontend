@@ -1,6 +1,8 @@
 import Vue from 'vue'
 
 import {
+  Row,
+  Col,
   Tag,
   Dialog,
   Backtop,
@@ -12,8 +14,6 @@ import {
   DropdownItem,
   Pagination,
   MessageBox,
-  Row,
-  Col,
   Checkbox,
   Slider,
   Tooltip,
@@ -21,6 +21,9 @@ import {
   Switch,
   InputNumber
 } from 'element-ui'
+
+Vue.use(Row)
+Vue.use(Col)
 
 Vue.use(Tag)
 Vue.use(Dialog)
@@ -31,8 +34,6 @@ Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Pagination)
-Vue.use(Row)
-Vue.use(Col)
 Vue.use(Checkbox)
 Vue.use(Slider)
 Vue.use(Tooltip)
