@@ -1,7 +1,7 @@
 <template>
-  <button v-if="!isLoadEnd" class="load-more" @click="loadMore">
+  <el-button v-if="!isLoadEnd" :loading="loading" class="load-more" @click="loadMore">
     <slot>查看更多</slot>
-  </button>
+  </el-button>
 </template>
 <script>
 export default {
@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       isLoadEnd: false,
       page: this.params.page || 1 // 分页
     }
@@ -59,12 +60,15 @@ export default {
 
       // 获取数据
       try {
+        this.loading = true
         const res = await this.$backendAPI.getBackendData({ url, params }, false)
         if (res.status === 200 && res.data.code === 0) getDataSuccess(res.data)
         else getDataFail(res.data.message)
+        this.loading = false
       } catch (error) {
         console.log(error)
         getDataFail()
+        this.loading = false
       }
     }
   }
