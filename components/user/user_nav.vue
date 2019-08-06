@@ -27,12 +27,12 @@ export default {
         { title: '粉丝', url: 'user-id-fan' }
       ],
       setting: [ // todo 完善路由
-        { title: '我的账户', url: 'setting-id' },
-        { title: '我的原创', url: 'setting-id-original' },
-        { title: '我的投资', url: 'setting-id-investment' },
-        { title: '我的草稿', url: 'setting-id-draft' },
-        { title: '购买记录', url: 'setting-id-buy' },
-        { title: '设置', url: 'setting-id-edit' }
+        { title: '我的账户', url: 'user-setting' },
+        { title: '我的原创', url: 'user-setting-original' },
+        { title: '我的投资', url: 'user-setting-investment' },
+        { title: '我的草稿', url: 'user-setting-draft' },
+        { title: '购买记录', url: 'user-setting-buy' },
+        { title: '设置', url: 'user-setting-edit' }
       ]
     }
   },

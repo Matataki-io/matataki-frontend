@@ -20,7 +20,7 @@
       />
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>
@@ -43,7 +43,6 @@ export default {
     return {
       articleCardData: {
         params: {
-          user: this.$route.params.id,
           pagesize: 3
         },
         apiUrl: 'buyHistory',

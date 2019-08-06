@@ -27,7 +27,7 @@
       </template>
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>
@@ -92,8 +92,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped src="../index.less">
-</style>
+<style lang="less" scoped src="./index.less"></style>
 
 <style>
 .assets-margin {

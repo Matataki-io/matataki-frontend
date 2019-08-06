@@ -28,12 +28,13 @@
       />
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
@@ -51,10 +52,10 @@ export default {
     return {
       articleCardData: {
         params: {
-          user: this.$route.params.id,
-          pagesize: 9
+          // author: 65,
+          // pagesize: 9
         },
-        apiUrl: 'userArticlesSupportedList',
+        apiUrl: 'homeTimeRanking',
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -63,7 +64,26 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters(['currentUserInfo'])
+  },
+  watch: {
+    // 如果有id, 这句不会执行 需要下面的create执行
+    currentUserInfo() {
+      // console.log(this.currentUserInfo)
+      this.articleCardData.params = {
+        author: this.currentUserInfo.id,
+        pagesize: 9
+      }
+    }
+  },
+  created() {
+    // 如果有id 执行这里, 上面的 watch不会执行
+    if (this.currentUserInfo.id) {
+      this.articleCardData.params = {
+        author: this.currentUserInfo.id,
+        pagesize: 9
+      }
+    }
   },
   methods: {
     paginationData(res) {

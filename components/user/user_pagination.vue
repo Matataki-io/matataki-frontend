@@ -53,6 +53,9 @@ export default {
   watch: {
     currentPage(newVal) {
       this.currentPageData(this.apiUrl, this.params, newVal)
+    },
+    params(newVal) {
+      this.currentPageData(this.apiUrl, this.params, this.currentPage)
     }
   },
   created() {
@@ -63,6 +66,7 @@ export default {
     totalPage() {},
     async currentPageData(url, params, page) {
       // console.log(url, params, page)
+      if (Object.keys(params).length === 0) return
       params.page = page
       const getDataSuccess = res => this.$emit('paginationData', res)
       const getDataFail = message => message ? console.log(message) : console.log('获取数据失败')

@@ -28,8 +28,8 @@ export default {
   data() {
     return {
       typeIcon: [ // todo 完善路由
-        { icon: iconEOS, title: 'EOS', url: 'setting-id' },
-        { icon: iconONT, title: 'ONT', url: 'setting-id-ont' },
+        { icon: iconEOS, title: 'EOS', url: 'user-setting' },
+        { icon: iconONT, title: 'ONT', url: 'user-setting-ont' },
         { icon: iconETH, title: 'ETH', url: '' },
         { icon: iconBTC, title: 'BTC', url: '' },
         { icon: iconRMB, title: 'RMB', url: '' }
