@@ -23,7 +23,7 @@ export default {
     // 是否自动请求
     isAtuoRequest: {
       type: Boolean,
-      required: true
+      default: true
     }
   },
   data() {
