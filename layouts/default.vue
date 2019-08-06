@@ -107,6 +107,7 @@ export default {
   align-items: center;
   justify-content: center;
   transition: all .3s;
+  z-index: 99;
   .icon-feedback {
     font-size: 30px;
   }
