@@ -186,6 +186,7 @@ export default {
         { hid: 'og:url', property: 'og:url', content: 'http://www.smartsignature.io' },
         { hid: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
         { hid: 'og:description', property: 'og:description', content: this.article.short_content }
+        /* end */
       ]
     }
   },
