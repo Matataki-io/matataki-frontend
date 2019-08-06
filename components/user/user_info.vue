@@ -29,38 +29,55 @@
         </p>
       </div>
     </div>
-    <div
-      v-if="!isMe($route.params.id)"
-      class="line"
-    />
-    <button
-      v-if="!isMe($route.params.id)"
-      class="button"
-      @click="followOrUnfollowUser({
-        id: $route.params.id,
-        type: userInfo.followed ? 0 : 1
-      })"
-    >
-      {{ userInfo.followed ? '取消关注' : '关注' }}
-    </button>
+    <!-- 如果是设置页面不显示 -->
+    <template v-if="!isSetting">
+      <!-- 个人主页 -->
+      <div
+        v-if="!isMe($route.params.id)"
+        class="line"
+      />
+      <button
+        v-if="!isMe($route.params.id)"
+        class="button"
+        @click="followOrUnfollowUser({
+          id: $route.params.id,
+          type: userInfo.followed ? 0 : 1
+        })"
+      >
+        {{ userInfo.followed ? '取消关注' : '关注' }}
+      </button>
+    </template>
+    <!-- 如果是设置页面不显示 end -->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
+
 export default {
   components: {
     avatar
+  },
+  props: {
+    isSetting: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
     }),
-    ...mapGetters(['isMe'])
+    ...mapGetters(['isMe', 'currentUserInfo'])
+  },
+  watch: {
+    currentUserInfo() {
+      if (this.isSetting) this.refreshUser({ id: this.currentUserInfo.id })
+    }
   },
   mounted() {
-    this.refreshUser({ id: this.$route.params.id })
+    if (!this.isSetting) this.refreshUser({ id: this.$route.params.id })
   },
   methods: {
     ...mapActions('user', [

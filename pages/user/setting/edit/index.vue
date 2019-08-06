@@ -71,7 +71,7 @@
       </div>
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>

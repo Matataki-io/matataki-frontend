@@ -2,25 +2,17 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="setting" />
-      <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="loading" class="card-container">
-        <!-- target="_blank" documetn error -->
         <n-link
           v-for="(item, index) in articleCardData.articles"
-          :key="item.id"
+          :key="index"
+          target="_blank"
           :to="{
-            name: 'publish',
-            params: { id: item.id },
-            query: { from: 'draft' }
+            name: 'p-id',
+            params: { id: item.id }
           }"
         >
-          <article-card-mini
-            :is-draft-card="true"
-            :index="index"
-            :card="item"
-            class="card-container-block"
-            @del="del"
-          />
+          <article-card-mini :card="item" class="card-container-block" />
         </n-link>
       </div>
       <user-pagination
@@ -31,18 +23,18 @@
         :page-size="9"
         :total="total"
         class="pagination"
-        :need-access-token="true"
         @paginationData="paginationData"
         @togglePage="togglePage"
       />
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
@@ -60,10 +52,10 @@ export default {
     return {
       articleCardData: {
         params: {
-          user: this.$route.params.id,
-          pagesize: 9
+          // user: this.$route.params.id,
+          // pagesize: 9
         },
-        apiUrl: 'draftboxList',
+        apiUrl: 'userArticlesSupportedList',
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -72,7 +64,26 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters(['currentUserInfo'])
+  },
+  watch: {
+    // 如果有id, 这句不会执行 需要下面的create执行
+    currentUserInfo() {
+      // console.log(this.currentUserInfo)
+      this.articleCardData.params = {
+        user: this.currentUserInfo.id,
+        pagesize: 9
+      }
+    }
+  },
+  created() {
+    // 如果有id 执行这里, 上面的 watch不会执行
+    if (this.currentUserInfo.id) {
+      this.articleCardData.params = {
+        user: this.currentUserInfo.id,
+        pagesize: 9
+      }
+    }
   },
   methods: {
     paginationData(res) {
@@ -88,31 +99,6 @@ export default {
         query: {
           page: i
         }
-      })
-    },
-    del(i) {
-      // 删除草稿
-      const asyncSuccessDel = async (id, index) => {
-        try {
-          const res = await this.$backendAPI.delDraft({ id })
-          if (res.status === 200 && res.data.code === 0) {
-            this.articleCardData.articles.splice(index, 1) // 前端手动删除一下数据
-            this.$message({ type: 'success', message: '删除成功!' })
-          } else {
-            this.$message.error('删除错误')
-          }
-        } catch (error) {
-          this.$message.error('删除错误')
-        }
-      }
-
-      console.log(i)
-      this.$confirm('是否删除草稿？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        asyncSuccessDel(this.articleCardData.articles[i].id, i)
       })
     }
   }

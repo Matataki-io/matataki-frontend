@@ -2,17 +2,25 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="setting" />
+      <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="loading" class="card-container">
+        <!-- target="_blank" documetn error -->
         <n-link
           v-for="(item, index) in articleCardData.articles"
-          :key="index"
-          target="_blank"
+          :key="item.id"
           :to="{
-            name: 'p-id',
-            params: { id: item.id }
+            name: 'publish',
+            params: { id: item.id },
+            query: { from: 'draft' }
           }"
         >
-          <article-card-mini :card="item" class="card-container-block" />
+          <article-card-mini
+            :is-draft-card="true"
+            :index="index"
+            :card="item"
+            class="card-container-block"
+            @del="del"
+          />
         </n-link>
       </div>
       <user-pagination
@@ -23,12 +31,13 @@
         :page-size="9"
         :total="total"
         class="pagination"
+        :need-access-token="true"
         @paginationData="paginationData"
         @togglePage="togglePage"
       />
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>
@@ -51,10 +60,9 @@ export default {
     return {
       articleCardData: {
         params: {
-          author: this.$route.params.id,
           pagesize: 9
         },
-        apiUrl: 'homeTimeRanking',
+        apiUrl: 'draftboxList',
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -79,6 +87,31 @@ export default {
         query: {
           page: i
         }
+      })
+    },
+    del(i) {
+      // 删除草稿
+      const asyncSuccessDel = async (id, index) => {
+        try {
+          const res = await this.$backendAPI.delDraft({ id })
+          if (res.status === 200 && res.data.code === 0) {
+            this.articleCardData.articles.splice(index, 1) // 前端手动删除一下数据
+            this.$message({ type: 'success', message: '删除成功!' })
+          } else {
+            this.$message.error('删除错误')
+          }
+        } catch (error) {
+          this.$message.error('删除错误')
+        }
+      }
+
+      console.log(i)
+      this.$confirm('是否删除草稿？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        asyncSuccessDel(this.articleCardData.articles[i].id, i)
       })
     }
   }
