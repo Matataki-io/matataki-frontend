@@ -95,12 +95,12 @@ const API = {
     })
   },
   async publishArticle({ article, signature }) {
-    return this.sendArticle('/publish', article, signature)
+    return this.sendArticle('/post/publish', article, signature)
   },
   async editArticle({ article, signature }) {
     console.log(article, signature)
 
-    return this.sendArticle('/edit', article, signature)
+    return this.sendArticle('/post/edit', article, signature)
   },
   async reportOrder(order) {
     const data = {
@@ -112,7 +112,7 @@ const API = {
     data.amount = toPrecision(data.amount, idProvider)
     delete data.idProvider
     delete data.sponsor
-    return this.accessBackend({ method: 'POST', url: '/order', data })
+    return this.accessBackend({ method: 'POST', url: '/order/order', data })
   },
   async reportShare(share) {
     const data = {
@@ -124,7 +124,7 @@ const API = {
     data.amount = toPrecision(data.amount, idProvider)
     delete data.idProvider
     delete data.sponsor
-    return this.accessBackend({ method: 'POST', url: '/support', data })
+    return this.accessBackend({ method: 'POST', url: '/support/support', data })
   },
 
   /*
@@ -132,7 +132,7 @@ const API = {
    */
   async auth({ idProvider, publicKey: publickey, signature: sign, username }) {
     return axiosforApiServer.post(
-      '/auth',
+      '/login/auth',
       {
         platform: idProvider.toLowerCase(),
         publickey,
@@ -145,7 +145,7 @@ const API = {
     )
   },
   async getArticleDatafromIPFS(hash) {
-    return axios.get(`${apiServer}/ipfs/catJSON/${hash}`)
+    return axios.get(`${apiServer}/post/ipfs/${hash}`)
   },
   // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
   async getArticleInfo(hashOrId) {
@@ -157,14 +157,14 @@ const API = {
   async follow({ id }) {
     return this.accessBackend({
       method: 'POST',
-      url: '/follow',
+      url: '/follow/follow',
       data: { uid: id }
     })
   },
   async unfollow({ id }) {
     return this.accessBackend({
       method: 'POST',
-      url: '/unfollow',
+      url: '/follow/unfollow',
       data: { uid: id }
     })
   },
@@ -232,17 +232,17 @@ const API = {
       homeAmountRankingEOS: 'posts/amountRanking',
       homeAmountRankingONT: 'posts/amountRanking',
       // article comments
-      commentsList: 'comments',
+      commentsList: 'comment/comments',
       // followlist
-      followsList: 'follows',
-      fansList: 'fans',
+      followsList: 'follow/follows',
+      fansList: 'follow/fans',
       // asset
-      assetList: 'tokens',
+      assetList: 'user/tokens',
       // user articles
       // 原创文章-使用 homeTimeRanking 接口 地址一样
       userArticlesSupportedList: 'posts/supported',
       // draftbox
-      draftboxList: 'drafts',
+      draftboxList: 'draft/drafts',
       // tag by id
       getPostByTagById: 'posts/getPostByTag',
       // buy
@@ -305,7 +305,7 @@ const API = {
   },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
-    return this.accessBackend({ url: '/balance' })
+    return this.accessBackend({ url: '/user/balance' })
   },
   async withdraw(rawData) {
     const data = { ...rawData, platform: rawData.tokenName.toLowerCase() }
@@ -347,7 +347,7 @@ const API = {
   },
   // 通过用户名搜索
   async searchUsername(username) {
-    return axiosforApiServer.get('/search', {
+    return axiosforApiServer.get('/user/search', {
       params: {
         q: username
       }

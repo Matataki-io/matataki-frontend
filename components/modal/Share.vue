@@ -1,24 +1,27 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" @close="change">
-    <div v-if="widgetModalStatus === 0" class="widget-content-button">
-      <div class="widget-button" @click="createWidget">
-        <div class="widget-button-img">
-          <img src="@/assets/img/widget/widget.svg" alt="widget">
+  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" @close="change" custom-class="gray-bg">
+    <div v-if="widgetModalStatus === 0">
+      <div class="widget-content-button">
+        <div class="widget-button" @click="createWidget">
+          <div class="widget-button-img">
+            <img src="@/assets/img/widget/widget.svg" alt="widget">
+          </div>
+          <p>创建widget</p>
         </div>
-        <p>创建widget</p>
-      </div>
-      <div class="widget-button" @click="widgetModalStatus = 4">
-        <div class="widget-button-img">
-          <img src="@/assets/img/widget/share.svg" alt="widget">
+        <div class="widget-button" @click="widgetModalStatus = 4">
+          <div class="widget-button-img">
+            <img src="@/assets/img/widget/share.svg" alt="widget">
+          </div>
+          <p>生成长图</p>
         </div>
-        <p>生成长图</p>
-      </div>
-      <div class="widget-button" @click="copyCode(clipboard)">
-        <div class="widget-button-img">
-          <img src="@/assets/img/widget/link.svg" alt="link">
+        <div class="widget-button" @click="copyCode(clipboard)">
+          <div class="widget-button-img">
+            <img src="@/assets/img/widget/link.svg" alt="link">
+          </div>
+          <p>复制邀请链接</p>
         </div>
-        <p>复制邀请链接</p>
       </div>
+      <SocialShare :article="article" v-if="socialShow"/>
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-writecontent">
       <p class="widget-title">
@@ -98,11 +101,13 @@
 import { mapGetters } from 'vuex'
 import { strTrim } from '@/utils/reg' // 开发用
 import QRCodeDialog from './QRCodeDialog'
+import SocialShare from './SocialShare'
 import { urlAddress } from '@/api/backend'
 export default {
   name: 'ShareModal',
   components: {
-    QRCodeDialog
+    QRCodeDialog,
+    SocialShare
   },
   props: {
     article: Object,
@@ -123,7 +128,8 @@ export default {
       widgetModalStatus: 0,
       oldWidgetModalStatus: 0,
       widgetContent: '',
-      widgetContentIframe: ''
+      widgetContentIframe: '',
+      socialShow: false
     }
   },
   computed: {
@@ -175,6 +181,7 @@ export default {
     }
   },
   mounted() {
+    this.socialShow = true
   },
   methods: {
     createWidget() {
@@ -216,159 +223,5 @@ export default {
 }
 </script>
 
-<style lang="less">
-/*样式覆盖*/
-.widget {
-  &.gray .ivu-modal-content {
-    background-color: #f1f1f1;
-  }
-  &.white .ivu-modal-content {
-    background-color: #fff;
-  }
-  &.transparent .ivu-modal-content {
-    background-color: transparent;
-    box-shadow: none;
-  }
-}
-.widget-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .ivu-modal {
-    top: 0;
-  }
-}
-</style>
-<style scoped lang="less">
-.widget-content-button {
-  display: flex;
-  padding: 50px 0;
-  .widget-button {
-    flex: 1;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 0 8px;
-    cursor: pointer;
-    &-img {
-      width: 80px;
-      height: 80px;
-      background-color: #fff;
-      border-radius: 50%;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-    p {
-      margin: 10px 0 0 0;
-      padding: 0;
-      font-size:12px;
-      font-weight:400;
-      color:rgba(51,51,51,1);
-    }
-  }
-}
-
-.widget-writecontent {
-  padding: 4px;
-  &-title {
-    font-size:16px;
-    font-weight:600;
-    color:rgba(0,0,0,1);
-    margin: 0 0 10px 0;
-  }
-}
-
-.widget-help {
-  padding: 4px 24px;
-  &-title {
-    font-size:16px;
-    font-weight:600;
-    color:rgba(0,0,0,1);
-    text-align: center;
-  }
-  &-content {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(45,45,45,1);
-    margin-top: 10px;
-    text-align: justify;
-  }
-  &-button {
-    margin-top: 20px;
-    padding: 4px 22px;
-    border-radius: 4px;
-    font-size:12px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    background-color: #2B2B2B;
-    text-align: center;
-    cursor: pointer;
-    float: right;
-  }
-  &::after{
-    display: block;
-    content: '';
-    clear: both;
-    width: 0;
-    height: 0;
-  }
-}
-
-.widget-review {
-  padding: 4px;
-  &-content {
-    height: 188px;
-    overflow: auto;
-  }
-  &-des {
-    font-size:12px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
-    margin-bottom: 10px;
-  }
-}
-
-
-// 公用输入框
-.widget-textarea {
-  background: #F1F1F1;
-  min-width: 275px;
-  border-radius: 8px;
-}
-
-// 公用标题
-.widget-title {
-  font-size:16px;
-  font-weight:600;
-  color:rgba(0,0,0,1);
-  margin: 0 0 10px 0;
-}
-// 公用footer
-.widget-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 20px;
-  .help {
-    font-size:12px;
-    font-weight:500;
-    color: #1C9CFE;
-    cursor: pointer;
-  }
-  .create {
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size:12px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    background-color: #2B2B2B;
-    text-align: center;
-    cursor: pointer;
-  }
-}
+<style src="./share.less" scoped lang="less">
 </style>
