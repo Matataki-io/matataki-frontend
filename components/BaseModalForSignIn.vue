@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="350px" :modal="true">
+  <el-dialog :visible.sync="showModal" width="320px" :modal="true" custom-class="my-dialog">
     <section v-if="step === 1" class="step">
       <h1 class="step-title">
         选择授权方式
@@ -285,8 +285,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom-left-radius: 0.375rem;
-  border-bottom-right-radius: 0.375rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   color: #b2b2b2;
@@ -307,7 +307,7 @@ export default {
 }
 .step {
   text-align: center;
-  padding: 20px 0;
+  padding-bottom: 20px;
   width: 300px;
   display: flex;
   flex-direction: column;
