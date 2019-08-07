@@ -19,7 +19,9 @@ import {
   Tooltip,
   Button,
   Switch,
-  InputNumber
+  InputNumber,
+  Form,
+  FormItem
 } from 'element-ui'
 
 Vue.use(Row)
@@ -40,6 +42,8 @@ Vue.use(Tooltip)
 Vue.use(Button)
 Vue.use(Switch)
 Vue.use(InputNumber)
+Vue.use(Form)
+Vue.use(FormItem)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
