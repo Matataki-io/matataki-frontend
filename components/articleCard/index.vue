@@ -1,70 +1,75 @@
 <template>
-  <!-- 适用于 首页, 商品页, 标签页 -->
-  <!-- 区分那种卡 -->
-  <n-link target="_blank" :to="{name: 'p-id', params: {id: card && card.id}}" class="article" :class="cardType">
-    <div class="cover">
-      <img v-if="cover" :src="cover" alt="cover">
-      <img v-else src="@/assets/img/article_bg.svg" alt="cover">
-    </div>
-    <div class="article-title">
-      <h3 v-clampy="2">
-        {{ card && (card.title || '') }}
-      </h3>
-    </div>
-    <!-- 只有文章卡才会有内容 -->
-    <p v-if="cardType === 'article-card'" v-clampy="3" class="content">
-      {{ card && (card.short_content || '') }}
-    </p>
-    <div class="des">
-      <!-- 暂时用文章页代替跳转地址 -->
-      <n-link
-        :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
-        target="_blank"
-        class="title"
-        :style="tagStyle"
-      >
-        {{ tagName }}
-      </n-link>
-      <!-- 暂时用文章页代替跳转地址 end -->
-
-      <span class="empty" />
-      <!-- 文章卡阅读和投资 -->
-      <template v-if="typeIndex === 0">
-        <span class="data">
-          {{ card && (card.read === 0 ? 0 : card.read) }}
-          阅读</span>
-        <span class="data">
-          {{ card && (card.ups === 0 ? 0 : card.ups) }}
-          投资</span>
-      </template>
-      <!-- 商品卡销量和金额 -->
-      <template v-else>
-        <span class="data">
-          {{ card && (card.sale === 0 ? 0 : card.sale) }}
-          销量</span>
-        <span class="data money">
-          {{ cardEosValue }}EOS/份</span>
-      </template>
-    </div>
-    <div class="line" />
-    <div class="info">
-      <!-- 暂时用文章页代替跳转地址 -->
-      <n-link
-        :to=" {name: 'user-id', params: {id: Uid}} "
-        target="_blank"
-        class="author"
-      >
-        <avatar class="avatar" :size="'28px'" :src="avatarImg" />
-        <span class="username">
-          {{ card && (card.nickname || card.author || '') }}
-        </span>
-      </n-link>
-      <!-- 暂时用文章页代替跳转地址 end -->
-      <div class="date">
-        {{ dateCard }}
+  <div class="article" :class="cardType">
+    <!-- 适用于 首页, 商品页, 标签页 -->
+    <!-- 区分那种卡 -->
+    <n-link target="_blank" :to="{name: 'p-id', params: {id: card && card.id}}">
+      <div class="cover">
+        <img v-if="cover" :src="cover" alt="cover">
+        <img v-else src="@/assets/img/article_bg.svg" alt="cover">
       </div>
-    </div>
-  </n-link>
+      <div class="article-title">
+        <h3 v-clampy="2">
+          {{ card && (card.title || '') }}
+        </h3>
+      </div>
+      <!-- 只有文章卡才会有内容 -->
+      <p v-if="cardType === 'article-card'" v-clampy="3" class="content">
+        {{ card && (card.short_content || '') }}
+      </p>
+      <div class="des">
+        <!-- 暂时用文章页代替跳转地址 -->
+        <n-link
+          :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
+          target="_blank"
+          class="title"
+          :style="tagStyle"
+        >
+          {{ tagName }}
+        </n-link>
+        <!-- 暂时用文章页代替跳转地址 end -->
+
+        <span class="empty" />
+        <!-- 文章卡阅读和投资 -->
+        <template v-if="typeIndex === 0">
+          <span class="data">
+            {{ card && (card.read === 0 ? 0 : card.read) }}
+            阅读</span>
+          <span class="data">
+            {{ card && (card.ups === 0 ? 0 : card.ups) }}
+            投资</span>
+        </template>
+        <!-- 商品卡销量和金额 -->
+        <template v-else>
+          <span class="data">
+            {{ card && (card.sale === 0 ? 0 : card.sale) }}
+            销量
+          </span>
+          <span class="data money">
+            {{ cardEosValue }}EOS/份
+          </span>
+        </template>
+      </div>
+      <div class="line" />
+      <div class="info">
+        <!-- 暂时用文章页代替跳转地址 -->
+        <n-link
+          :to=" {name: 'user-id', params: {id: Uid}} "
+          target="_blank"
+          class="author"
+        >
+          <avatar class="avatar" :size="'28px'" :src="avatarImg" />
+          <span class="username">
+            {{ card && (card.nickname || card.author || '') }}
+          </span>
+        </n-link>
+        <!-- 暂时用文章页代替跳转地址 end -->
+        <div class="date">
+          {{ dateCard }}
+        </div>
+      </div>
+    </n-link>
+    <div style="width: 0;" />
+  </div>
 </template>
 
 <script>
