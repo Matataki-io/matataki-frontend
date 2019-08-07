@@ -73,8 +73,8 @@ export default {
   opacity: 1;
 }
 .tag-icon {
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,15 +83,14 @@ export default {
   z-index: 1;
   transition: all .2s;
   img {
-  width: 76%;
-  height: 76%;
+  width: 70%;
+  height: 70%;
   object-fit: contain;
   }
 }
 span {
   text-align: center;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
   color: rgba(0, 0, 0, 1);
   line-height: 28px;
   flex: 1;
@@ -106,7 +105,7 @@ span {
   top: 0;
   right: 0;
   bottom: 0;
-  left: 60px;
+  left: 54px;
   border-radius: 0 @borderRadius10 @borderRadius10 0;
   opacity: 0;
   transition: all .2s;
