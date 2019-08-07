@@ -3,48 +3,62 @@
     <g-header />
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">
-      <template v-for="(item, index) in recommendList">
-        <recommendSlide v-if="index === 0" :key="index" :card="item" /></recommendSlide>
-        <articleCard v-else :key="index" :type-index="1" :card-type="'recommend-card'" :card="item" />
-      </template>
+      <el-row>
+        <template v-for="(item, index) in recommendList">
+          <el-col v-if="index === 0" :key="index" :span="16">
+            <recommendSlide :card="item" />
+          </el-col>
+          <el-col v-else :key="index" :span="8">
+            <articleCard :type-index="0" card-type="recommend-card" :card="item" />
+          </el-col>
+        </template>
+      </el-row>
     </div>
 
-    <div class="container mw">
-      <div class="main commodity">
-        <!-- 导航部分 -->
-        <div class="main-nav">
-          <span
-            v-for="(itme, index) in articleCardData"
-            :key="index"
-            :class="nowMainIndex === index && 'active'"
-            @click="nowMainIndex = index"
-          >{{ itme.title }}</span>
-        </div>
-        <!-- 导航部分 end -->
-        <!-- 空div控制内容 -->
-        <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-          <div class="commodity-card-content">
-            <articleCard
-              v-for="(itemChild, indexChild) in item.articles"
-              :key="indexChild"
-              :card="itemChild"
-              card-type="commodity-card"
-              :type-index="1"
-            />
+    <el-row class="container mw">
+      <el-col :span="18">
+        <div class="main commodity">
+          <!-- 导航部分 -->
+          <div class="main-nav">
+            <span
+              v-for="(itme, index) in articleCardData"
+              :key="index"
+              :class="nowMainIndex === index && 'active'"
+              @click="nowMainIndex = index"
+            >{{ itme.title }}</span>
           </div>
-          <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
-          <div class="load-more-button">
-            <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
-          </div>
+          <!-- 导航部分 end -->
+          <!-- 空div控制内容 -->
+          <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
+            <div class="commodity-card-content">
+              <el-col
+                v-for="(itemChild, indexChild) in item.articles"
+                :key="indexChild"
+                :span="8"
+              >
+                <articleCard
+                  :card="itemChild"
+                  card-type="commodity-card"
+                  :type-index="1"
+                />
+              </el-col>
+            </div>
+            <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
+            <div class="load-more-button">
+              <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
+            </div>
           <!-- end -->
-        </div>
+          </div>
         <!-- 空div控制内容 end -->
-      </div>
-      <div class="tags commodity">
-        <span>商品标签</span>
-        <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
-      </div>
-    </div>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="tags commodity">
+          <span>商品标签</span>
+          <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -57,6 +71,7 @@ import buttonLoadMore from '@/components/button_load_more/index.vue'
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
 
 export default {
+  transition: 'page',
   components: {
     recommendSlide,
     articleCard,
