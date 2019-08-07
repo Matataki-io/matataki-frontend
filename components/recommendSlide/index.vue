@@ -27,13 +27,13 @@ export default {
 <style lang="less" scoped>
 .slide {
   display: flex;
-  max-width: 787px;
-  flex: 0 0 787px;
+  // max-width: 787px;
+  // flex: 0 0 787px;
   height: 394px;
   background: #fff;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-top: 30px;
+  margin-top: 20px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s;

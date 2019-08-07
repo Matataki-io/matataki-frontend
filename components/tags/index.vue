@@ -2,7 +2,7 @@
   <div
     ref="tags"
     class="tags"
-    :class="[!navShow && 'fix', !navShow && (typeIndex === 0 ? 'article' : 'commodity')]"
+    :class="[typeIndex === 0 ? 'article' : 'commodity']"
   >
     <template v-if="isMoreType">
       <tag
@@ -99,8 +99,8 @@ export default {
   flex-wrap: wrap;
 }
 .fix {
-  position: fixed;
-  top: 60px;
+  // position: sticky;
+  // top: 60px;
   &.article {
     width: 334px;
   }

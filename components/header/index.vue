@@ -1,6 +1,6 @@
 <template>
   <header class="header home-fixed" :style="customizeHeaderBcComputed">
-    <div class="home-head mw">
+    <div class="home-head">
       <div class="head-flex">
         <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
@@ -205,6 +205,10 @@ export default {
   z-index: 99;
 }
 .home-head {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+
   height: 60px;
   display: flex;
   justify-content: space-between;
