@@ -68,7 +68,7 @@
         </div>
       </div>
     </n-link>
-    <div style="width: 0;" />
+    <div style="width: 0;height: 0;" />
   </div>
 </template>
 

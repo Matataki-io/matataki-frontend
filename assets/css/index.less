@@ -99,3 +99,21 @@ a {
   background-color: #F1F1F1;
 }
 
+
+
+// tag position sticky
+.stickyTop (@top: 0) {
+  top: @top
+}
+.position-sticky {
+  position: sticky;
+  &.top0 {
+    .stickyTop();
+  }
+  &.top20 {
+    .stickyTop(20px);
+  }
+  &.top70 {
+    .stickyTop(70px);
+  }
+}

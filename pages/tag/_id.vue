@@ -8,47 +8,44 @@
       </p>
     </div>
 
-    <div class="container mw">
-      <div class="main article">
+    <el-row class="container mw">
+      <el-col :span="mainNavTypeIndex === 0 ? 16 : 18" class="main article not-padding">
         <!-- 导航部分 -->
-        <div class="main-nav">
+        <div class="main-nav padding-10">
           <span class="active">{{ mainNavTitle }}</span>
         </div>
         <!-- 导航部分 end -->
         <!-- 空div控制内容 -->
-        <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-          <template v-if="mainNavTypeIndex">
-            <div class="commodity-card-content">
+        <div v-for="(item, index) in articleCardData" :key="index">
+          <el-row>
+            <el-col
+              v-for="(itemChild, indexChild) in item.articles"
+              :key="indexChild"
+              :span="mainNavTypeIndex === 0 ? 24 : 8"
+            >
               <articleCard
-                v-for="(itemChild, indexChild) in item.articles"
-                :key="indexChild"
+                v-if="mainNavTypeIndex"
                 :card="itemChild"
                 :type-index="1"
                 :card-type="'commodity-card tag'"
               />
-            </div>
-          </template>
-          <template v-else>
-            <articleCardList
-              v-for="(itemChild, indexChild) in item.articles"
-              :key="indexChild"
-              :card="itemChild"
-            />
-          </template>
-
+              <articleCardList v-else :card="itemChild" />
+            </el-col>
+          </el-row>
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
           <div class="load-more-button">
             <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" @buttonLoadMore="buttonLoadMore" />
           </div>
-        <!-- end -->
         </div>
-        <!-- 空div控制内容 end -->
-      </div>
-      <div class="tags article">
+        <!-- end -->
+      </el-col>
+      <!-- 空div控制内容 end -->
+
+      <el-col :span="mainNavTypeIndex === 0 ? 8 : 6" class="tags article">
         <span>更多标签</span>
-        <tags class="tags-container" :type-index="0" :tag-cards="tagCards" :is-more-type="true" />
-      </div>
-    </div>
+        <tags class="tags-container position-sticky top70" :type-index="mainNavTypeIndex" :tag-cards="tagCards" />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -119,25 +116,27 @@ export default {
         .then((res) => {
           if (res.status === 200 && res.data.code === 0) {
             // console.log(res.data.data)
-            const tagArr = res.data.data
-            const tagArrPost = []
-            const tagArrProduct = []
+            // const tagArr = res.data.data
+            // const tagArrPost = []
+            // const tagArrProduct = []
 
-            tagArr.map((i) => {
-              if (i.type === 'post') tagArrPost.push(i)
-              else if (i.type === 'product') tagArrProduct.push(i)
-            })
+            // tagArr.map((i) => {
+            //   if (i.type === 'post') tagArrPost.push(i)
+            //   else if (i.type === 'product') tagArrProduct.push(i)
+            // })
 
-            console.log(tagArrPost, tagArrProduct)
+            // console.log(tagArrPost, tagArrProduct)
 
-            if (this.tagType === 'post') {
-              this.tagCards.push(tagArrPost)
-              this.tagCards.push(tagArrProduct)
-            } else if (this.tagType === 'product') {
-              this.tagCards.push(tagArrProduct)
-              this.tagCards.push(tagArrPost)
-            }
+            // if (this.tagType === 'post') {
+            //   this.tagCards.push(tagArrPost)
+            //   this.tagCards.push(tagArrProduct)
+            // } else if (this.tagType === 'product') {
+            //   this.tagCards.push(tagArrProduct)
+            //   this.tagCards.push(tagArrPost)
+            // }
             // console.log(103, this.tagCards)
+
+            this.tagCards = res.data.data.filter(i => i.type === this.tagType)
           } else console.log(res.data.message)
         })
         .catch((err) => {

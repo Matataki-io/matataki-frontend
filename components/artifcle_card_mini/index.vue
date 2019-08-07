@@ -54,7 +54,7 @@ export default {
 
 <style lang="less" scoped>
 .card {
-  width: 256px;
+  // width: 256px;
 }
 
 .cover {

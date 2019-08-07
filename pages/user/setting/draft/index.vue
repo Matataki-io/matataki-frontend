@@ -3,26 +3,31 @@
     <template slot="main">
       <user-nav nav-list-url="setting" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
-      <div v-loading="loading" class="card-container">
-        <!-- target="_blank" documetn error -->
-        <n-link
+
+      <el-row v-loading="loading" class="card-container">
+        <el-col
           v-for="(item, index) in articleCardData.articles"
           :key="item.id"
-          :to="{
-            name: 'publish',
-            params: { id: item.id },
-            query: { from: 'draft' }
-          }"
+          :span="8"
         >
-          <article-card-mini
-            :is-draft-card="true"
-            :index="index"
-            :card="item"
-            class="card-container-block"
-            @del="del"
-          />
-        </n-link>
-      </div>
+          <n-link
+            :to="{
+              name: 'publish',
+              params: { id: item.id },
+              query: { from: 'draft' }
+            }"
+          >
+            <article-card-mini
+              :is-draft-card="true"
+              :index="index"
+              :card="item"
+              class="card-container-block"
+              @del="del"
+            />
+          </n-link>
+        </el-col>
+      </el-row>
+
       <user-pagination
         v-show="!loading"
         :current-page="currentPage"

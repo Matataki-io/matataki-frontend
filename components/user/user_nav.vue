@@ -57,6 +57,8 @@ export default {
 
 <style lang="less" scoped>
 .nav {
+  padding-left: 10px;
+  padding-right: 10px;
   a {
     font-size:20px;
     font-weight:400;

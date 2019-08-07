@@ -1,14 +1,18 @@
 <template>
-  <div class="user">
+  <div class="user user-layout">
     <g-header />
-    <div class="user-container mw">
-      <div class="user-main">
-        <slot name="main" />
-      </div>
-      <div class="user-info">
-        <slot name="info" />
-      </div>
-    </div>
+    <el-row class="user-container mw">
+      <el-col :span="18">
+        <div class="user-main">
+          <slot name="main" />
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="user-info position-sticky top70">
+          <slot name="info" />
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -25,10 +29,10 @@ export default {
 .user-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .user-main {
-  width: 890px;
+  // width: 890px;
   // height: 998px;
   background-color: #fff;
   padding: 40px;
@@ -38,7 +42,7 @@ export default {
 }
 
 .user-info {
-  width: 270px;
+  // width: 270px;
   height: 396px;
   border-radius: @borderRadius10;
   background-color: #fff;

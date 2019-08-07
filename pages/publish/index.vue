@@ -412,7 +412,7 @@ export default {
       if (response.data.code !== 0) this.failed('失败请重试')
       else {
         this.$message.success('保存成功')
-        this.$router.push(`/setting/${this.currentUserInfo.id}/draft`)
+        this.$router.push(`/user/setting/draft`)
       }
     },
     // 编辑文章

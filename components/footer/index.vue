@@ -47,12 +47,15 @@ export default {}
 <style lang="less" scoped>
 .footer {
     background: #333333;
-    padding: 52px 0;
+    padding-top: 52px;
+    padding-bottom: 52px;
+    box-sizing: border-box;
   &-content {
     height: 100%;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    box-sizing: border-box;
   }
 }
 

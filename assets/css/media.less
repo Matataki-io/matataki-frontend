@@ -78,7 +78,9 @@
 
 // 最小宽度
 @media (max-width: 1200px) {
-  .mw {
+  .mw,
+  .footer,
+  .tag-page .head {
     width: 1200px !important;
   }
 }
@@ -87,9 +89,17 @@
   padding-left: 10px;
   padding-right: 10px;
 }
+.footer .footer-content,
 .recommend .el-col,
 .home-head,
-.container .el-col {
+.padding-10,
+.container .el-col,
+.user-layout .el-col {
   .paddingLeftRight()
+}
+
+.not-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 // 最小宽度 end

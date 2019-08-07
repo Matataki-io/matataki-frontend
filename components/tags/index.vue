@@ -1,36 +1,13 @@
 <template>
-  <div
-    ref="tags"
-    class="tags"
-    :class="[typeIndex === 0 ? 'article' : 'commodity']"
-  >
-    <template v-if="isMoreType">
-      <tag
-        v-for="(itemPost, indexPost) in tagCards[0]"
-        :key="indexPost"
-        :type-index="typeIndex"
-        :tag="itemPost"
-        :class="typeIndex === 0 ? 'article' : 'commodity'"
-      />
-      <div class="line" />
-      <tag
-        v-for="(itemProduct, indexProduct) in tagCards[1]"
-        :key="indexProduct"
-        :type-index="typeIndex"
-        :tag="itemProduct"
-        :class="typeIndex === 0 ? 'article' : 'commodity'"
-      />
-    </template>
-    <template v-else>
-      <tag
-        v-for="(item, index) in tagCards"
-        :key="index"
-        :type-index="typeIndex"
-        :tag="item"
-        :class="typeIndex === 0 ? 'article' : 'commodity'"
-      />
-    </template>
-  </div>
+  <el-row>
+    <el-col
+      v-for="(item, index) in tagCards"
+      :key="index"
+      :span="typeIndex === 0 ? 12 : 24"
+    >
+      <tag :type-index="typeIndex" :tag="item" />
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -42,100 +19,49 @@ export default {
     tag
   },
   props: {
-    typeIndex: { // 通过 0 1 判断标签和布局类型
+    typeIndex: { // 通过 0 1 判断标签和布局类型  0 => 12 1 => 24
       type: Number,
       default: 0
     },
     tagCards: {
       type: Array,
       default: () => []
-    },
-    isMoreType: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
     return {
-      navShow: true,
-      oldOffSetTop: 0
+      // navShow: true,
+      // oldOffSetTop: 0
     }
   },
   computed: { },
   created() {
   },
-  mounted() {
-    this.oldOffSetTop = this.$refs.tags.offsetTop
-    this.addHandleScroll()
-  },
-  destroyed() {
-    this.removeHandleScroll()
-  },
+  // mounted() {
+  //   this.oldOffSetTop = this.$refs.tags.offsetTop
+  //   this.addHandleScroll()
+  // },
+  // destroyed() {
+  //   this.removeHandleScroll()
+  // },
   methods: {
-    addHandleScroll() {
-      window.addEventListener('scroll', throttle(this.handleScroll, 150))
-      window.addEventListener('resize', throttle(this.setOffSetTop, 150))
-    },
-    setOffSetTop() {
-      this.oldOffSetTop = this.$refs.tags.offsetTop
-    },
-    handleScroll() {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    // addHandleScroll() {
+    //   window.addEventListener('scroll', throttle(this.handleScroll, 150))
+    //   window.addEventListener('resize', throttle(this.setOffSetTop, 150))
+    // },
+    // setOffSetTop() {
+    //   this.oldOffSetTop = this.$refs.tags.offsetTop
+    // },
+    // handleScroll() {
+    //   const scrollTop =
+    //     window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 
-      // console.log(this.$refs.tags.offsetTop, scrollTop + 100, this.oldOffSetTop)
-      scrollTop + 100 > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
-    },
-    removeHandleScroll() {
-      window.removeEventListener('scroll', this.handleScroll)
-    }
+    //   // console.log(this.$refs.tags.offsetTop, scrollTop + 100, this.oldOffSetTop)
+    //   scrollTop + 100 > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
+    // },
+    // removeHandleScroll() {
+    //   window.removeEventListener('scroll', this.handleScroll)
+    // }
   }
 }
 </script>
-
-<style lang="less" scoped>
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-}
-.fix {
-  // position: sticky;
-  // top: 60px;
-  &.article {
-    width: 334px;
-  }
-  &.commodity {
-    width: 230px;
-  }
-}
-.tag {
-  // display: flex;
-  // align-items: center;
-  // position: relative;
-  // margin: 10px 0;
-  // box-sizing: border-box;
-  // cursor: pointer;
-  // border-radius: 10px;
-  // transition: all 0.3s;
-  &.article {
-    max-width: calc(50% - 6px);
-    flex: calc(50% - 6px);
-    &:nth-child(even) {
-      margin-left: 6px;
-    }
-    &:nth-child(odd) {
-      margin-right: 6px;
-    }
-  }
-  &.commodity {
-    width: 100%;
-    flex: 0 0 100%;
-  }
-}
-.line {
-  width: 100%;
-  height: 1px;
-  background: #f7f7f7;
-  margin: 10px 0;
-}
-</style>

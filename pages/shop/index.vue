@@ -16,10 +16,10 @@
     </div>
 
     <el-row class="container mw">
-      <el-col :span="18">
+      <el-col class="not-padding" :span="18">
         <div class="main commodity">
           <!-- 导航部分 -->
-          <div class="main-nav">
+          <div class="main-nav padding-10">
             <span
               v-for="(itme, index) in articleCardData"
               :key="index"
@@ -30,7 +30,7 @@
           <!-- 导航部分 end -->
           <!-- 空div控制内容 -->
           <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-            <div class="commodity-card-content">
+            <div style="overflow: hidden;">
               <el-col
                 v-for="(itemChild, indexChild) in item.articles"
                 :key="indexChild"
@@ -53,7 +53,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="tags commodity">
+        <div class="tags commodity position-sticky top20">
           <span>商品标签</span>
           <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
         </div>

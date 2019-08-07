@@ -25,13 +25,13 @@ export default {
     tagIcon
   },
   props: {
-    tag: {
-      type: Object,
-      default: () => {}
-    },
     typeIndex: {
       type: Number,
       default: 0
+    },
+    tag: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {

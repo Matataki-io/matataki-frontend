@@ -3,19 +3,24 @@
     <template slot="main">
       <user-nav nav-list-url="user" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
-      <div v-loading="loading" class="card-container">
-        <n-link
+      <el-row v-loading="loading" class="card-container">
+        <el-col
           v-for="(item, index) in articleCardData.articles"
           :key="index"
-          target="_blank"
-          :to="{
-            name: 'p-id',
-            params: { id: item.id }
-          }"
+          :span="8"
         >
-          <article-card-mini :card="item" class="card-container-block" />
-        </n-link>
-      </div>
+          <n-link
+            target="_blank"
+            :to="{
+              name: 'p-id',
+              params: { id: item.id }
+            }"
+          >
+            <article-card-mini :card="item" class="card-container-block" />
+          </n-link>
+        </el-col>
+      </el-row>
+
       <user-pagination
         v-show="!loading"
         :current-page="currentPage"

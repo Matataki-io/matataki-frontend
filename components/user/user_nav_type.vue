@@ -60,6 +60,8 @@ export default {
 .nav {
   display: flex;
   margin-top: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
   a {
     font-size:20px;
     font-weight:400;

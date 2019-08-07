@@ -148,7 +148,7 @@ export default {
   text-decoration: none;
 
   &:nth-child(1) {
-    margin-top: 40px;
+    margin-top: 20px;
   }
   &-title {
     height: 56px;
