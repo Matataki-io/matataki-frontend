@@ -81,9 +81,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.app {
-  .minHeight();
-}
 .app .backtop {
   width: 50px;
   height: 50px;
