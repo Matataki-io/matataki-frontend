@@ -14,18 +14,18 @@
         icon-class="feedback"
       />
     </a>
-    <BaseModalForSignIn v-model="loginModalShow" />
+    <AuthModal v-model="loginModalShow" />
   </div>
 </template>
 
 <script>
 import footer from '~/components/footer/index.vue'
-import BaseModalForSignIn from '@/components/BaseModalForSignIn'
+import AuthModal from '@/components/Auth/auth'
 
 export default {
   components: {
     gFooter: footer,
-    BaseModalForSignIn
+    AuthModal
   },
   computed: {
     loginModalShow: {

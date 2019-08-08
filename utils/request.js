@@ -23,8 +23,10 @@ let loadingInstance = null;
 
 _axios.interceptors.request.use(
   (config) => {
-    console.log('user request interceptors', config, config.showLoading)
-    loadingInstance = Loading.service();
+    console.log('user request interceptors', config, config.noLoading)
+    if (!config.noLoading) {
+      loadingInstance = Loading.service();
+    }
     if (utils.getCookie('ACCESS_TOKEN')) config.headers['x-access-token'] = utils.getCookie('ACCESS_TOKEN');
     return config;
   },

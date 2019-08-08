@@ -2,6 +2,7 @@
 import request from '@/utils/request'
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
+import { sha256 } from 'js-sha256'
 
 export default {
   async wx(url) {
@@ -52,6 +53,28 @@ export default {
   async getBackendData({ url, params }) {
     // 分页组件接口地址
     const pullApiUrl = paginationUrl
-    return request.get(pullApiUrl[url], { params, showLoading: false })
+    return request({
+      url: pullApiUrl[url],
+      method: 'get',
+      params,
+      noLoading: true
+    })
+  },
+  async getCaptcha(email) {
+    return request.get('/login/captcha', { params: {email} })
+  },
+  async verifyEmail(email) {
+    return request({
+      url: '/login/verify',
+      method: 'get',
+      params: { email },
+      noLoading: true
+    })
+  },
+  async register({email,password,captcha}) {
+    return request.post('/login/regist', { email, password, captcha: captcha.toString() })
+  },
+  async login({username, password}) {
+    return request.post('/login/account', { username, password })
   },
 }

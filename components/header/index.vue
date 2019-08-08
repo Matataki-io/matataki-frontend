@@ -26,7 +26,7 @@
         />
         <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
-            <img v-if="avatar" :src="avatar" alt="avatar">
+            <avatar :size="'30px'" :src="avatar"/>
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item>
@@ -87,8 +87,12 @@
 import { mapGetters, mapActions } from 'vuex'
 import homeLogo from '@/assets/img/home_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
+import avatar from '@/components/avatar/index.vue'
 export default {
   name: 'HomeHead',
+  components: {
+    avatar
+  },
   props: {
     // 自定义头部背景
     customizeHeaderBc: {

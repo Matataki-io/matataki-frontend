@@ -28,6 +28,7 @@
     "eosjs": "^16.0.9",
     "html2canvas": "^1.0.0-rc.3",
     "js-base64": "^2.5.1",
+    "js-sha256": "^0.9.0",
     "lodash": "^4.17.15",
     "markdown-it": "^9.0.1",
     "mavon-editor": "^2.7.5",

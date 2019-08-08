@@ -1,0 +1,123 @@
+.footer-arrow {
+  cursor: pointer;
+  width: 100%;
+  background: #f1f1f1;
+  padding: 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #b2b2b2;
+  .arrow {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #b2b2b2;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    i {
+      font-size: 8px;
+    }
+  }
+}
+.auth-main {
+  padding: 0 20px 30px 20px;
+  width: 300px;
+  height: 360px;
+  margin: auto;
+  .loginRegister {
+    height: 300px;
+  }
+  .auth-title-container {
+    margin-bottom: 30px;
+    .auth-title {
+      font-size: 20px;
+      color: #000000;
+      line-height: 30px;
+      cursor: pointer;
+      &.active {
+        font-weight: 700;
+      }
+      +.auth-title {
+        margin-left: 30px;
+      }
+    }
+  }
+  .bottom-tip {
+    font-size: 14px;
+    float: right;
+    line-height: 20px;
+    margin-top: 10px;
+  }
+  .oauth-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    .oauth-title {
+      font-size: 16px;
+      color: #000000;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    .oauth {
+      .flexCenter();
+      .oauth-bg {
+        cursor: pointer;
+        .flexCenter();
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        padding: 6px;
+        img {
+          width: 20px;
+        }
+        +.oauth-bg {
+          margin-left: 30px;
+        }
+      }
+    }
+  }
+  .register {
+    .code-contaniner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      button {
+        margin-left: 20px;
+        width: 120px;
+        text-align: center;
+      }
+    }
+  }
+}
+.btn-base {
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  width: 300px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bg-black {
+  background: #000000;
+}
+.bg-gray {
+  background: #333333;
+}
+.bg-blue {
+  background: #4d9afd;
+}
+.bg-purple {
+  background: #882592;
+}
