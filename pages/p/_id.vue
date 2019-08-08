@@ -20,7 +20,9 @@
         </el-dropdown>
       </template>
     </g-header>
-    <img class="TitleImage" :src="cover" alt="">
+    <div v-if="cover" class="TitleImage">
+      <img :src="cover" alt="cover">
+    </div>
     <article>
       <header class="Post-Header">
         <h1 class="Post-Title">
@@ -34,7 +36,7 @@
           }"
         />
         <div class="Post-RichTextContainer">
-          <div class="Post-RichText markdown-body" v-html="compiledMarkdown" />
+          <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
         </div>
       </header>
     </article>
