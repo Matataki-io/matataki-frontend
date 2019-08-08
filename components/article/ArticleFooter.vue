@@ -6,8 +6,10 @@
         class="copy-hash"
         alt="hash"
         @click="copyText(getCopyIpfsHash)"
-      />
-      <span>IPFS Hash: {{ article.hash || 'Loading...' }}</span>
+      >
+      <n-link target="_blank" :to="{name: 'ipfs-hash', params: {hash: article.hash}}">
+        IPFS Hash: {{ article.hash || 'Loading...' }}
+      </n-link>
     </div>
 
     <div class="decoration">
@@ -16,7 +18,8 @@
         data-pocket-count="horizontal"
         class="pocket-btn"
         data-lang="en"
-      ></a>
+      />
+
       <span class="is-original">
         本文发布于智能签名
         <template v-if="isOriginal">
@@ -30,11 +33,23 @@
 <script>
 import { precision } from '@/utils/precisionConversion'
 export default {
+  components: {},
   props: {
     article: {
       type: Object,
       default: () => ({
       })
+    }
+  },
+  data() {
+    return {}
+  },
+  computed: {
+    getCopyIpfsHash() {
+      return `${this.article.hash}`
+    },
+    isOriginal() {
+      return Boolean(this.article.is_original)
     }
   },
   methods: {
@@ -49,19 +64,7 @@ export default {
         }
       )
     }
-  },
-  computed: {
-    getCopyIpfsHash() {
-      return `${this.article.hash}`
-    },
-    isOriginal() {
-      return Boolean(this.article.is_original)
-    }
-  },
-  data() {
-    return {}
-  },
-  components: {}
+  }
 }
 </script>
 

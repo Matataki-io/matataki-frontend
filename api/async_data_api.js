@@ -10,3 +10,7 @@ export const paginationData = (axios, url, params) => axios.get(paginationUrl[ur
 
 // 获取可用标签列表
 export const getTags = (axios, type) => axios.get('/tag/tags', { params: { type } })
+
+// 获取ipfs数据
+export const ipfsData = (axios, hash) => axios.get(`/post/ipfs/${hash}`)
+export const ipfsArticleData = (axios, hash) => axios.get(`/post/${hash}`)

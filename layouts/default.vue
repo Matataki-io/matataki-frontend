@@ -44,6 +44,7 @@ export default {
       // 如果是发布页面隐藏小火箭
       return this.$route.name === 'publish'
     }
+
   },
   created() {
 
