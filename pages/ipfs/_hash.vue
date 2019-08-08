@@ -125,4 +125,7 @@ figure {
   margin-top: 20px;
   margin-bottom: 24px;
 }
+.ipfs article * {
+  max-width: 100%;
+}
 </style>
