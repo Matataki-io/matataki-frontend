@@ -56,8 +56,8 @@ export default {
     return request({
       url: pullApiUrl[url],
       method: 'get',
-      params,
-      noLoading: true
+      noLoading: true,
+      params
     })
   },
   async getCaptcha(email) {

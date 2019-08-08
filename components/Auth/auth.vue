@@ -74,6 +74,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { idProvider } from './icon.js'
 import Wallet from './wallet'
@@ -85,17 +86,24 @@ export default {
     Wallet
   },
   data() {
-    const checkEmail = (rule, value, callback) => {
+    const checkEmail = async (rule, value, callback) => {
       if (value === '') {
         return callback(new Error('请输入邮箱地址'))
       } else {
-        callback()
-        /* const res = await this.$API.verifyEmail(value)
-        if (res.code !== 0) {
-          callback()
+        const res = await this.$API.verifyEmail(value)
+        if (this.isLogin) {
+          if (res.data) {
+            callback()
+          } else {
+            callback(new Error('邮箱尚未注册'))
+          }
         } else {
-          callback(new Error('邮箱已注册'))
-        } */
+          if (res.data) {
+            callback(new Error('邮箱已被注册'))
+          } else {
+            callback()
+          }
+        }
       }
     }
     const validatePass2 = (rule, value, callback) => {
