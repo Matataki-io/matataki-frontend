@@ -13,6 +13,8 @@
       </template>
     </el-row>
 
+    <banner />
+
     <el-row class="container mw">
       <el-col :span="16">
         <div class="main article">
@@ -61,6 +63,7 @@ import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
+import banner from '@/components/banner/index.vue'
 
 export default {
   transition: 'page',
@@ -69,7 +72,8 @@ export default {
     articleCard,
     articleCardList,
     tags,
-    buttonLoadMore
+    buttonLoadMore,
+    banner
   },
   data() {
     return {
