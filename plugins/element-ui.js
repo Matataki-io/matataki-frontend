@@ -21,7 +21,8 @@ import {
   Switch,
   InputNumber,
   Form,
-  FormItem
+  FormItem,
+  Icon
 } from 'element-ui'
 
 Vue.use(Row)
@@ -44,6 +45,7 @@ Vue.use(Switch)
 Vue.use(InputNumber)
 Vue.use(Form)
 Vue.use(FormItem)
+Vue.use(Icon)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
