@@ -179,6 +179,7 @@ export default {
         { hid: 'twitter:title', property: 'twitter:title', content: this.article.title },
         { hid: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
         { hid: 'twitter:url', property: 'twitter:url', content: 'http://www.smartsignature.io' },
+        { hid: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
         { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
         { hid: 'og:title', property: 'og:title', content: this.article.title },
