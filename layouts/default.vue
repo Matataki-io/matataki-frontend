@@ -2,7 +2,7 @@
   <div class="app">
     <nuxt />
     <g-footer v-show="!hideFooter" />
-    <el-backtop :bottom="140" class="backtop">
+    <el-backtop :bottom="66" class="backtop">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
@@ -82,12 +82,13 @@ export default {
 
 <style lang="less" scoped>
 .app .backtop {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: @borderRadius10;
   background: #000;
   cursor: pointer;
   z-index: 99;
+  font-size: 18px;
   &-icon {
     color: #fff;
   }
@@ -95,12 +96,12 @@ export default {
 .feedback {
   border-radius: @borderRadius10;
   position: fixed;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   color: #fff;
   background: #000;
   cursor: pointer;
-  bottom: 80px;
+  bottom: 20px;
   right: 40px;
   text-align: center;
   display: flex;
@@ -110,7 +111,7 @@ export default {
   transition: all .3s;
   z-index: 99;
   .icon-feedback {
-    font-size: 30px;
+    font-size: 20px;
   }
 }
 </style>
