@@ -48,12 +48,13 @@ export default {
       if (value === '') {
         return callback(new Error('请输入邮箱地址'))
       } else {
-        const res = await this.$API.verifyEmail(value)
-        if (res.data) {
-          callback()
-        } else {
-          callback(new Error('邮箱尚未注册'))
-        }
+        // const res = await this.$API.verifyEmail(value)
+        // if (res.data) {
+        //   callback()
+        // } else {
+        //   callback(new Error('邮箱尚未注册'))
+        // }
+        callback()
       }
     }
     return {
