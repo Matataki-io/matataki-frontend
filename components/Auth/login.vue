@@ -117,7 +117,7 @@ export default {
               this.$message.success('登录成功')
               this.$emit('hide')
             } else {
-              this.$message.error(`登录失败，${res.message}`)
+              this.$message.error(`登录失败，账号或密码错误`)
             }
           } catch (error) {
             this.$message.error('登录失败，请联系管理员')
