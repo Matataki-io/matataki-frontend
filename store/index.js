@@ -74,6 +74,13 @@ export const mutations = {
   },
   setUserConfig(state, config = null) {
     // only idProvider now
+    if (config) {
+      this.$utils.setCookie('idProvider', config.idProvider)
+      state.userConfig.idProvider = config.idProvider
+    } else {
+      this.utils.delCookie('idProvider')
+      state.userConfig.idProvider = null
+    }
     if (config) state.userConfig.idProvider = config.idProvider
     else state.userConfig.idProvider = null
   },
