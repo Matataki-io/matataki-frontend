@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
-          <el-input v-model.number="registerForm.smscode" placeholder="请输入邮箱验证码" autocomplete="off" />
+          <el-input v-model="registerForm.smscode" placeholder="请输入邮箱验证码" autocomplete="off" />
           <el-button type="primary" :loading="loading" :disabled="!!timer || loading" @click="sendCode">
             {{ timer ? `${count}S` : `获取邮箱验证码` }}
           </el-button>
@@ -59,7 +59,7 @@ export default {
       if (!value) {
         return callback(new Error('请输入验证码'))
       }
-      if (!Number.isInteger(value)) {
+      if (!Number.isInteger(Number(value))) {
         callback(new Error('请输入数字值'))
       } else if (value.toString().length !== 6) {
         callback(new Error('请输入6位数字'))
