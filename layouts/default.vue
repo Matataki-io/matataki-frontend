@@ -20,7 +20,7 @@
 
 <script>
 import footer from '~/components/footer/index.vue'
-import AuthModal from '@/components/Auth/auth'
+import AuthModal from '@/components/Auth/index.vue'
 
 export default {
   components: {

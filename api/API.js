@@ -2,7 +2,6 @@
 import request from '@/utils/request'
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
-import { sha256 } from 'js-sha256'
 
 export default {
   async wx(url) {
@@ -61,7 +60,7 @@ export default {
     })
   },
   async getCaptcha(email) {
-    return request.get('/login/captcha', { params: {email} })
+    return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
   async verifyEmail(email) {
     return request({
