@@ -310,7 +310,9 @@ export const actions = {
   },
   // data: { amount, toaddress, memo }
   async withdraw({ dispatch, getters }, data) {
-    await dispatch('accountCheck')
+    if (!this.$publishMethods.invalidId(getters.currentUserInfo.idProvider)){
+      await dispatch('accountCheck')
+    }
     console.debug(data)
     // 根据传进来的mode判断提现什么币
     if (data.tokenName === 'EOS') {
@@ -325,7 +327,7 @@ export const actions = {
     data.amount *= 10000 // 前端统一*10000
 
     const { amount, contract, symbol, toaddress, tokenName } = data
-    if (getters.currentUserInfo.idProvider !== 'GitHub') {
+    if (!this.$publishMethods.invalidId(getters.currentUserInfo.idProvider)) {
       data.signature = await dispatch('getSignature', {
         mode: 'withdraw',
         rawSignData: [toaddress, contract, symbol, amount],

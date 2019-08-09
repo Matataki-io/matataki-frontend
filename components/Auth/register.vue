@@ -1,23 +1,27 @@
 <template>
   <section class="register">
-    <el-form :model="registerForm" :rules="registerRules" ref="registerForm" class="ss-form">
+    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input type="" v-model="registerForm.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="registerForm.email" type="" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="registerForm.password" placeholder="请设置密码" show-password></el-input>
+        <el-input v-model="registerForm.password" type="password" placeholder="请设置密码" show-password />
       </el-form-item>
       <el-form-item prop="repassword">
-        <el-input type="password" v-model="registerForm.repassword" placeholder="请再次设置密码" show-password></el-input>
+        <el-input v-model="registerForm.repassword" type="password" placeholder="请再次设置密码" show-password />
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
-          <el-input v-model.number="registerForm.smscode" placeholder="请输入验证码" autocomplete="off"></el-input>
-          <el-button type="primary" :loading="loading" :disabled="!!timer || loading" @click="sendCode">{{ timer ? `${count}S` : `获取验证码` }}</el-button>
+          <el-input v-model.number="registerForm.smscode" placeholder="请输入邮箱验证码" autocomplete="off" />
+          <el-button type="primary" :loading="loading" :disabled="!!timer || loading" @click="sendCode">
+            {{ timer ? `${count}S` : `获取邮箱验证码` }}
+          </el-button>
         </div>
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitRegisterForm">注册</el-button>
+        <el-button type="primary" @click="submitRegisterForm">
+          注册
+        </el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -164,8 +168,8 @@ export default {
     align-items: center;
     justify-content: space-between;
     button {
-      margin-left: 20px;
-      width: 120px;
+      margin-left: 10px;
+      // width: 120px;
       text-align: center;
     }
   }

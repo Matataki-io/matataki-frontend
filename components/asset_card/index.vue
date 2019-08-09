@@ -13,6 +13,7 @@
       <span v-if="!isWithdraw" class="card-title">{{ assetTitle }}</span>
       <span v-else class="card-title">
         <div
+          v-if="asset.toaddress"
           class="copy-list"
           @click="copyInfo(asset.toaddress)"
         >
@@ -23,6 +24,7 @@
           </div>
         </div>
         <div
+          v-if="asset.trx"
           class="copy-list"
           @click="copyInfo(asset.trx)"
         >

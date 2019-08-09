@@ -5,7 +5,7 @@
         class="comment-avatar"
         @click="$router.push(`/user/${comment.id}`)"
       >
-        <img :src="avatar" alt="avatar" :onerror="defaultAvatar" />
+        <img :src="avatar" alt="avatar" :onerror="defaultAvatar">
       </div>
       <div class="comment-head">
         <router-link class="comment-author" :to="`/user/${comment.id}`">
@@ -13,10 +13,14 @@
         </router-link>
         {{ action }}
         <span class="comment-quantity">{{ amount }}</span>
-        <p class="comment-timestamp">{{ friendlyDate }}</p>
+        <p class="comment-timestamp">
+          {{ friendlyDate }}
+        </p>
       </div>
     </div>
-    <p class="comment-message">{{ displayMessage }}</p>
+    <p class="comment-message">
+      {{ displayMessage }}
+    </p>
   </div>
 </template>
 
@@ -121,11 +125,13 @@ export default {
   letter-spacing: 1px;
 }
 .comment-timestamp {
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 400;
   color: #b2b2b2;
   line-height: 17px;
   letter-spacing: 1px;
+  padding: 0;
+  margin: 6px 0;
 }
 .comment-message {
   color: rgba(0, 0, 0, 1);

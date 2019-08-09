@@ -49,7 +49,10 @@ _axios.interceptors.response.use(
       // 超时处理
       if (error.message.includes('timeout')) {
         Message.closeAll()
-        Message('请求超时')
+        Message({
+          message: '请求超时',
+          type: 'error'
+        })
         loadingInstance.close()
       }
       return Promise.reject(error);
