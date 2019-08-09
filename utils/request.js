@@ -2,7 +2,7 @@
 "use strict";
 
 import axios from "axios";
-import { Loading } from 'element-ui';
+import { Loading, Message } from 'element-ui';
 import utils from './utils'
 
 // Full config:  https://github.com/axios/axios#request-config
@@ -16,16 +16,18 @@ import utils from './utils'
 
 const _axios = axios.create({
   baseURL: process.env.VUE_APP_API,
+  timeout: 20000,
   headers: {},
 });
 
 let loadingInstance = null;
-
 _axios.interceptors.request.use(
   (config) => {
     console.log('user request interceptors', config, config.noLoading)
     if (!config.noLoading) {
-      loadingInstance = Loading.service();
+      loadingInstance = Loading.service({
+        background: 'rgba(0, 0, 0, 0.6)'
+      });
     }
     if (utils.getCookie('ACCESS_TOKEN')) config.headers['x-access-token'] = utils.getCookie('ACCESS_TOKEN');
     return config;
@@ -43,6 +45,13 @@ _axios.interceptors.response.use(
       return response.data;
     },
     (error) => {
+      console.log(error.message)
+      // 超时处理
+      if (error.message.includes('timeout')) {
+        Message.closeAll()
+        Message('请求超时')
+        loadingInstance.close()
+      }
       return Promise.reject(error);
     }
 );
