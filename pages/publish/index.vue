@@ -361,8 +361,8 @@ export default {
         content,
         desc: 'whatever'
       })
-      console.log(data)
-      if (data.code !== 0) this.failed('1st step : send post to ipfs failed')
+      // console.log(data)
+      if (data.code !== 0) this.failed('文章发布ipfs失败')
       return data
     },
     // 文章标签 tag
@@ -459,10 +459,7 @@ export default {
     // 发布||修改按钮
     async sendThePost() {
       // 没有登陆 点击发布按钮都提示登陆  编辑获取内容的时候会被前面的func拦截并返回home page
-      if (!this.isLogined) {
-        this.$store.commit('setLoginModal', true)
-        return
-      }
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed('标题或正文不能为空')
@@ -550,8 +547,6 @@ export default {
       }
     },
     $imgAdd(pos, imgfile) {
-      // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
-      // 不要在页面组件写具体实现，谢谢合作 - Frank
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
       // 不要在页面组件写具体实现，谢谢合作 - Frank
       if (imgfile.type === 'image/gif') {
