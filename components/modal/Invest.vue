@@ -86,7 +86,7 @@ export default {
   data() {
     return {
       showModal: false,
-      amount: 0,
+      amount: '',
       comment: ''
     }
   },

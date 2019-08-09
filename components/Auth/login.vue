@@ -1,21 +1,25 @@
 <template>
   <section class="login">
-    <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="ss-form">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input v-model="loginForm.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="loginForm.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
+        <el-input v-model="loginForm.password" type="password" placeholder="请输入密码" show-password />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitLoginForm">登录</el-button>
+        <el-button type="primary" @click="submitLoginForm">
+          登录
+        </el-button>
         <div class="bottom-tip">
           <a href="javascript:void(0);">忘记密码</a> | <a href="javascript:void(0);" @click="switchRegister">注册</a>
         </div>
       </el-form-item>
     </el-form>
     <div class="oauth-box">
-      <h1 class="oauth-title">第三方账号登录</h1>
+      <h1 class="oauth-title">
+        第三方账号登录
+      </h1>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
           <img src="@/assets/img/eos_icon.svg" alt="EOS">
@@ -108,7 +112,7 @@ export default {
             })
             if (res.code === 0) {
               this.$store.commit('setAccessToken', res.data)
-              this.$store.commit('setUserConfig', { idProvider: 'email' })
+              this.$store.commit('setUserConfig', { idProvider: 'Email' })
               this.$message.success('登录成功')
               this.$emit('hide')
             } else {

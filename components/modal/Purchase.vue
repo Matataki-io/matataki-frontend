@@ -1,9 +1,11 @@
 <template>
   <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false">
     <div class="buy-product-modal">
-      <h1 class="title">购买商品</h1>
+      <h1 class="title">
+        购买商品
+      </h1>
       <div class="info-container">
-        <img :src="article.cover" alt="cover" class="cover" />
+        <img :src="article.cover" alt="cover" class="cover">
         <div class="info-inner">
           <div class="product-price">
             <span class="ont-price">
@@ -17,20 +19,22 @@
           </div>
           <div class="product-amount">
             <span>数量</span>
-            <el-input-number size="mini" v-model="productNumber" disabled></el-input-number>
+            <el-input-number v-model="productNumber" size="mini" disabled />
           </div>
         </div>
       </div>
       <el-input
+        v-model="comment"
         type="textarea"
         class="comment-container"
         :rows="4"
         placeholder="输入推荐语…"
-        v-model="comment"
       />
       <div class="buy-container">
         <span class="storage">库存还有剩{{ product.stock }}份</span>
-        <div class="buy-btn" @click="buyProduct">购买</div>
+        <div class="buy-btn" @click="buyProduct">
+          购买
+        </div>
       </div>
     </div>
   </el-dialog>

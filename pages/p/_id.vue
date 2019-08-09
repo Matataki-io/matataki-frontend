@@ -45,7 +45,7 @@
     </div>
     <div class="p-w btns-container">
       <div ref="actionBtns" class="btns">
-        <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
+        <div v-if="isProduct" class="article-btn" @click="buy">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
@@ -71,7 +71,7 @@
     </div>
     <CommentList :sign-id="article.id" :type="article.channel_id" class="p-w" />
     <div v-show="navShow" class="sidebar">
-      <div v-if="isProduct" class="article-btn" @click="purchaseModalShow = true">
+      <div v-if="isProduct" class="article-btn" @click="buy">
         <div class="icon-container yellow">
           <svg-icon icon-class="purchase" class="icon" />
         </div>
@@ -138,6 +138,7 @@ import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 
 import tag from '@/components/tags/tag.vue'
+import { ipfsData } from '@/api/async_data_api.js'
 export default {
   components: {
     CommentList,
@@ -222,7 +223,7 @@ export default {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
     const info = await $axios.get(`/${url}/${hashOrId}`)
-    const content = await $axios.get(`/ipfs/catJSON/${info.data.hash}`)
+    const content = await ipfsData($axios, info.data.hash)
     return {
       article: info.data,
       post: content.data
@@ -230,7 +231,7 @@ export default {
   },
 
   created() {
-    console.log(this.article)
+    // console.log(this.article)
     this.getSupportStatus(this.$route)
   },
   async mounted() {
@@ -238,7 +239,6 @@ export default {
     this.oldOffSetTop = this.$refs.actionBtns.offsetTop
     try {
       await this.$backendAPI.addReadAmount({ articlehash: this.article.hash }) // 增加文章阅读量
-      console.log('增加文章阅读量')
     } catch (error) {
       console.error('addReadAmount :', error)
     }
@@ -297,9 +297,28 @@ export default {
         query: { from: 'edit', hash: this.article.hash }
       })
     },
+    detection() {
+      if (this.isSupport) {
+        this.$message.success('已投资')
+        return false
+      }
+      if (!this.isLogined) {
+        this.$message.warning('登陆后即可投资')
+        return false
+      }
+      // email github 无法赞赏
+      const { idProvider } = this.currentUserInfo
+      if (this.$publishMethods.invalidId(idProvider)) {
+        this.$message.warning(`${idProvider}账号暂不支持`)
+        return false
+      }
+      return true
+    },
     invest() {
-      if (this.isSupport) return
-      this.investModalShow = true
+      if (this.detection()) { this.investModalShow = true }
+    },
+    buy() {
+      if (this.detection()) { this.purchaseModalShow = true }
     },
     share() {
       this.shareModalShow = true
