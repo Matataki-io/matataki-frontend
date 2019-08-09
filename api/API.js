@@ -1,4 +1,5 @@
 /* eslint-disable */
+import qs from 'qs'
 import request from '@/utils/request'
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
@@ -76,4 +77,18 @@ export default {
   async login({username, password}) {
     return request.post('/login/account', { username, password })
   },
+  async sendPost({ title, author, desc, content }) {
+    const stringifyData = qs.stringify({
+      'data[title]': title,
+      'data[author]': author,
+      'data[desc]': desc,
+      'data[content]': content
+    })
+    return request({
+      method: 'post',
+      url: `/post/ipfs`,
+      data: stringifyData,
+      config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    })
+  }
 }

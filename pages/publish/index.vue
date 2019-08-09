@@ -355,7 +355,7 @@ export default {
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
-      const { data } = await sendPost({
+      const data = await this.$API.sendPost({
         title,
         author,
         content,
@@ -384,7 +384,7 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
-        if (this.currentUserInfo.idProvider !== 'GitHub') {
+        if (this.currentUserInfo.idProvider === 'ONT' || this.currentUserInfo.idProvider === 'EOS') {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
         try {
