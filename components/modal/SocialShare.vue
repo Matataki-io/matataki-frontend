@@ -38,6 +38,7 @@
 
 <script>
 /* eslint-disable */
+import { mapGetters } from 'vuex'
 export default {
   name: 'SocialShare',
   props: {
@@ -49,6 +50,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
     socialLink() {
       const title = this.article.title
       const link = encodeURIComponent(window.location.href)
@@ -57,6 +59,11 @@ export default {
         facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
         twitter: `https://twitter.com/intent/tweet?text=${link}`
       }
+    },
+    shareLink() {
+      let url = `${process.env.WX_SHARE_HOST}/article/${this.$route.params.id}`
+      if (this.isLogined) url += `?invite=${this.currentUserInfo.id}`
+      return url
     }
   },
   mounted() {
@@ -65,7 +72,7 @@ export default {
   methods: {
     genQRCode() {
       new QRCode(this.$refs.wxqr, {
-        text: `${process.env.WX_SHARE_HOST}/article/${this.$route.params.id}`,
+        text: this.shareLink,
         width: 120,
         height: 120,
       });
