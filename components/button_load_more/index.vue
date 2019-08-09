@@ -77,19 +77,18 @@ export default {
 
 <style lang="less" scoped>
 .load-more {
-  width: 240px;
-  height: 60px;
   background: #000000;
-  border-radius: @borderRadius10;
   text-align: center;
   color: #fff;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 28px;
-  margin: 120px 0;
+  font-size: 18px;
+  font-weight: 400;
+  margin:60px 0;
   display: block;
   cursor: pointer;
   outline: none;
   border: none;
+  width: 190px;
+  height: 48px;
+  border-radius: 4px;
 }
 </style>
