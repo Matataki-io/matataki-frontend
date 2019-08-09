@@ -27,7 +27,7 @@
       </template>
     </template>
     <template slot="info">
-      <userInfo />
+      <userInfo :is-setting="true" />
     </template>
   </userLayout>
 </template>
@@ -75,7 +75,7 @@ export default {
       console.log(res)
       this.articleCardData.articles = res.data.logs
       this.assets = res.data
-      this.total = res.data.count
+      this.total = res.data.count || 0
       this.loading = false
     },
     togglePage(i) {
