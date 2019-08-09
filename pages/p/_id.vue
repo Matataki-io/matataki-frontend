@@ -297,6 +297,7 @@ export default {
         query: { from: 'edit', hash: this.article.hash }
       })
     },
+    // 检测能否投资
     detection() {
       if (this.isSupport) {
         this.$message.success('已投资')
