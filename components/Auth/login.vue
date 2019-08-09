@@ -23,13 +23,13 @@
       </h1>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
-          <img src="@/assets/img/eos_icon.svg" alt="EOS">
+          <svg-icon class="eos" icon-class="eos_login" />
         </div>
         <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
           <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
         </div>
         <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
-          <img src="@/assets/img/github.png" alt="github">
+          <svg-icon class="github" icon-class="github" />
         </div>
       </div>
     </div>
@@ -155,6 +155,12 @@ export default {
     font-weight: 400;
   }
   .oauth {
+    .eos {
+      font-size: 24px;
+    }
+    .github {
+      font-size: 22px;
+    }
     .flexCenter();
     .oauth-bg {
       cursor: pointer;
@@ -176,7 +182,7 @@ export default {
   background: #000000;
 }
 .bg-gray {
-  background: #333333;
+  background: #333;
 }
 .bg-blue {
   background: #4d9afd;
