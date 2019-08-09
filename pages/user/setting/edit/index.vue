@@ -187,8 +187,8 @@ export default {
         console.log(data)
         this.userData = data
         this.username = data.nickname || data.username
-        this.email = data.email
-        this.introduction = data.introduction
+        this.email = data.email || ''
+        this.introduction = data.introduction || ''
         this.setAvatarImage(data.avatar)
       }
       try {
