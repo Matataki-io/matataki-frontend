@@ -151,7 +151,6 @@ export default {
     isOriginal: false, // 是否原创
     imgUploadDone: 0,
     showModal: false, // 弹框显示
-    showSignInModal: false,
     modalText: {
       text: ['文章尚未保存，是否退出？'], // 退出
       button: ['再想想', '退出']
@@ -385,19 +384,12 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
-        if (this.currentUserInfo.idProvider === 'ONT' || this.currentUserInfo.idProvider === 'EOS') {
+        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
-        try {
-          const response = await this.$backendAPI.publishArticle({ article, signature })
-          if (response.data.code !== 0) throw new Error(response.data.message)
-          success(response.data.data)
-          console.log(response)
-          return 'success'
-        } catch (error) {
-          this.showSignInModal = this.$errorHandling.isNoToken(error)
-          throw error
-        }
+        const response = await this.$backendAPI.publishArticle({ article, signature })
+        if (response.data.code !== 0) throw new Error(response.data.message)
+        success(response.data.data)
       } catch (error) {
         console.error(error)
         failed(error)
@@ -422,7 +414,7 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       let signature = null
-      if (this.currentUserInfo.idProvider !== 'GitHub') {
+      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$backendAPI.editArticle({ article, signature })
@@ -432,8 +424,7 @@ export default {
     // 删除草稿
     async delDraft(id) {
       if (!id) {
-        this.failed('自动删除草稿失败,请手动删除')
-        return
+        return this.failed('自动删除草稿失败,请手动删除')
       }
       try {
         const response = await this.$backendAPI.delDraft({ id })
@@ -620,9 +611,6 @@ export default {
     // 关闭modal
     changeInfo(status) {
       this.showModal = status
-    },
-    changeInfo2(status) {
-      this.showSignInModal = status
     },
     // modal 同意
     modalCancel() {
