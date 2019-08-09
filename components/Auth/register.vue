@@ -146,7 +146,7 @@ export default {
               this.$emit('switch')
               this.isLogin = true
             } else {
-              this.$message.error('注册失败，请重试')
+              this.$message.error(res.message)
             }
           } catch (error) {
             this.$message.error('注册失败，请重试')
