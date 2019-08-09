@@ -65,7 +65,7 @@ export default {
   methods: {
     paginationData(res) {
       this.list = res.data.list
-      this.total = res.data.totalFans
+      this.total = res.data.totalFans || 0
       this.loading = false
     },
     togglePage(i) {

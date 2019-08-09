@@ -81,7 +81,7 @@ export default {
   methods: {
     paginationData(res) {
       this.articleCardData.articles = res.data.list
-      this.total = res.data.count
+      this.total = res.data.count || 0
       this.loading = false
     },
     togglePage(i) {

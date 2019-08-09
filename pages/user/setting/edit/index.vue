@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
@@ -104,7 +104,7 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters(['currentUserInfo'])
   },
   watch: {
     username(newVal) {
@@ -178,7 +178,7 @@ export default {
     doneImageUpload(res) {
       console.log(res)
       this.imgUploadDone += Date.now()
-      this.refreshUser({ id: this.$route.params.id })
+      this.refreshUser({ id: this.currentUserInfo.id })
       this.getMyUserData()
     },
     // 获取用户信息 - 转让状态
@@ -249,7 +249,7 @@ export default {
               message: '修改信息成功',
               type: 'success'
             })
-            this.refreshUser({ id: this.$route.params.id })
+            this.refreshUser({ id: this.currentUserInfo.id })
           } else this.$message.error('修改信息失败')
         })
         .catch(error => {

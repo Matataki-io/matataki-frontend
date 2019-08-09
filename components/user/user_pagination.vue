@@ -98,6 +98,9 @@ export default {
 </script>
 
 <style lang="less">
+.user-pagination {
+  text-align: center;
+}
 .user-pagination.el-pagination.is-background .el-pager li:not(.disabled).active {
   background-color: #000;
 }
