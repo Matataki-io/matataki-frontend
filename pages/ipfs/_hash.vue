@@ -13,10 +13,13 @@
           {{ articleIpfs.author }}
         </n-link>
         <time itemprop="datePublished" :datetime="articleData.create_time">{{ articleCreateTime }}</time>
-        <span itemprops="provider" itemscope="" itemtype="http://schema.org/Organization">
+        <span itemprops="provider" itemscope="" itemtype="https://www.smartsignature.io/">
           from <span itemprops="name">智能签名 Smart Signature</span>
-          <meta itemprops="url" content="https://matters.news">
+          <meta itemprops="url" content="https://www.smartsignature.io/">
         </span>
+        <p itemprops="hash">
+          {{ articleData.hash }}
+        </p>
       </figure>
     </header>
     <article itemprop="articleBody" v-html="compiledMarkdown" />
@@ -112,6 +115,10 @@ figure {
     color: #b3b3b3;
     padding-left: 6px;
     padding-right: 6px;
+  }
+  p {
+    color: #b3b3b3;
+    font-size: 14px;
   }
 }
 
