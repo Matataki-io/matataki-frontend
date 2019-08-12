@@ -2,12 +2,12 @@
   <div class="app">
     <nuxt />
     <g-footer v-show="!hideFooter" />
-    <el-backtop :bottom="66" class="backtop">
+    <back-to-top class="backtop" :visibility-height="300" :back-position="50" transition-name="fade">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
       />
-    </el-backtop>
+    </back-to-top>
     <a class="feedback" href="https://wj.qq.com/s2/4206369/e337" target="_blank" title="反馈">
       <svg-icon
         class="icon-feedback"
@@ -21,11 +21,12 @@
 <script>
 import footer from '~/components/footer/index.vue'
 import AuthModal from '@/components/Auth/index.vue'
-
+import BackToTop from '@/components/BackToTop'
 export default {
   components: {
     gFooter: footer,
-    AuthModal
+    AuthModal,
+    BackToTop
   },
   computed: {
     loginModalShow: {
@@ -83,13 +84,20 @@ export default {
 
 <style lang="less" scoped>
 .app .backtop {
+  border-radius: @borderRadius10;
   width: 40px;
   height: 40px;
-  border-radius: @borderRadius10;
   background: #000;
   cursor: pointer;
   z-index: 99;
   font-size: 18px;
+  position: fixed;
+  right: 40px;
+  bottom: 64px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &-icon {
     color: #fff;
   }

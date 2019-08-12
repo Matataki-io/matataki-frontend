@@ -20,7 +20,7 @@ export default {
 
 <style lang="less" scoped>
 .error {
-  min-height: calc(100% - 189px);
+  min-height: calc(100% - 180px);
   display: flex;
   flex-direction: column;
   align-items: center;
