@@ -348,9 +348,8 @@ export default {
       this.$router.push({ path: `/p/${hash}` })
     },
     // 成功提示
-    async success(hash) {
-      this.$message.success('发送成功,3秒后跳转到你发表的文章')
-      await this.$utils.sleep(3000) // 休眠三秒
+    success(hash) {
+      this.$message.success('发送成功,自动跳转到你发表的文章')
       this.jumpToArticle(hash)
     },
     // 发送文章到ipfs

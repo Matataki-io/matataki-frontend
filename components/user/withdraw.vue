@@ -217,6 +217,7 @@ export default {
                 message: '已发起提现请求,请耐心等待提现金额到',
                 type: 'success'
               })
+              this.$emit('withdrawDone')
               this.getBalance(this.type)
             } else this.$message.error(res.data.message)
           })

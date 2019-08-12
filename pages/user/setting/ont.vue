@@ -23,7 +23,7 @@
         />
       </template>
       <template v-else>
-        <withdraw type="ONT" class="withdraw" @toggleWithdraw="status => viewStatus = status" />
+        <withdraw type="ONT" class="withdraw" @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" />
       </template>
     </template>
     <template slot="info">
