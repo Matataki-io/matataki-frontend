@@ -139,6 +139,7 @@ export default {
         this.$message.success('购买成功')
         this.isSupported = RewardStatus.NOT_REWARD_YET
         this.showModal = false
+        this.$emit('purchaseDone')
       } catch (error) {
         loading.close()
         this.$message.error('购买失败')

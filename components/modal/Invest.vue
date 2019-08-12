@@ -197,8 +197,7 @@ export default {
         await this.makeShare({ amount, signId, sponsor, comment })
         this.isSupported = RewardStatus.REWARDED // 按钮状态
         this.$message.success(`${action_text}成功！`)
-        this.isRequest = true // 自动请求
-        this.supportModal = false // 关闭dialog
+        this.$emit('investDone')
         done()
       } catch (error) {
         console.error(error)

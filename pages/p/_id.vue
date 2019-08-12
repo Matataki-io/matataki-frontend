@@ -69,7 +69,7 @@
     <div v-if="article.tags.length !== 0" class="p-w tags-container">
       <tag v-for="(item, index) in article.tags" :key="index" :tag="item" />
     </div>
-    <CommentList :sign-id="article.id" :type="article.channel_id" class="p-w" />
+    <CommentList :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
     <div v-show="navShow" class="sidebar">
       <div v-if="isProduct" class="article-btn" @click="buy">
         <div class="icon-container yellow">
@@ -96,6 +96,7 @@
         ...article,
         title: '投资文章'
       }"
+      @investDone="payDone"
     />
     <ShareModal
       v-model="shareModalShow"
@@ -112,6 +113,7 @@
         ...article,
         cover
       }"
+      @purchaseDone="payDone"
     />
     <article-transfer
       v-model="transferModal"
@@ -161,7 +163,8 @@ export default {
       purchaseModalShow: false,
       oldOffSetTop: 0,
       navShow: true,
-      isSupport: false // 是否赞赏, 重新通过token请求文章数据
+      isSupport: false, // 是否赞赏, 重新通过token请求文章数据
+      commentRequest: 0
     }
   },
   head() {
@@ -340,6 +343,11 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    payDone() {
+      setTimeout(() => {
+        this.commentRequest = Date.now()
+      }, 3000)
     }
   }
 

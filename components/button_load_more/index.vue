@@ -24,6 +24,14 @@ export default {
     isAtuoRequest: {
       type: Boolean,
       default: true
+    },
+    returnType: {
+      type: String,
+      default: 'Object'
+    },
+    commentRequest: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -31,6 +39,11 @@ export default {
       loading: false,
       isLoadEnd: false,
       page: this.params.page || 1 // 分页
+    }
+  },
+  watch: {
+    commentRequest() {
+      this.reload()
     }
   },
   created() {
@@ -44,16 +57,25 @@ export default {
       this.page++
       this.getLoadMore(this.apiUrl, this.params)
     },
-    async getLoadMore(url, params) {
+    async getLoadMore(url, params, isEmpty = false) {
       if (this.isLoadEnd) return
       params.page = this.page
       const getDataSuccess = (res) => {
-        if ((res.data && res.data.list && res.data.list.length < 20) || (res.data.length === 0)) {
+        // 判断是否加载完成
+        console.log(this.returnType)
+        if ((this.returnType === 'Object')) {
+          if (res.data && res.data.length === 0) { // 没有内容 返回 array 处理
+            this.isLoadEnd = true
+          } else if (res.data && res.data.list && res.data.list.length < 20) {
+            this.isLoadEnd = true
+          }
+        } else if ((this.returnType === 'Array') && (res.data && res.data.length < 20)) {
           this.isLoadEnd = true
         }
         this.$emit('buttonLoadMore', {
           index: this.typeIndex,
-          data: res.data
+          data: res.data,
+          isEmpty: isEmpty
         })
       }
       const getDataFail = message => message ? console.log(message) : console.log('获取数据失败')
@@ -70,6 +92,12 @@ export default {
         getDataFail()
         this.loading = false
       }
+    },
+    reload() {
+      this.page = 1
+      this.loading = false
+      this.isLoadEnd = false
+      this.getLoadMore(this.apiUrl, this.params, true)
     }
   }
 }
