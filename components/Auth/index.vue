@@ -1,13 +1,20 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="380px" :modal="true" custom-class="my-dialog" :close-on-click-modal="false">
+  <el-dialog
+    :visible.sync="showModal"
+    width="380px"
+    :modal="true"
+    custom-class="my-dialog"
+    :close-on-click-modal="false"
+    @closed="() => {step = 1; isLogin = true}"
+  >
     <section v-show="step === 1" class="auth-main">
       <div class="auth-title-container">
         <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">登录</span>
         <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">注册</span>
       </div>
       <div class="loginRegister">
-        <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false"/>
-        <Register v-show="!isLogin" @switch="isLogin = true"/>
+        <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false" />
+        <Register v-show="!isLogin" @switch="isLogin = true" />
       </div>
     </section>
     <Wallet v-show="step === 2" />
