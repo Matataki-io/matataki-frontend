@@ -105,6 +105,7 @@
       v-model="transferModal"
       :article-id="$route.params.id"
       :from="$route.query.from"
+      @toggleDone="allowLeave = true"
     />
   </div>
 </template>

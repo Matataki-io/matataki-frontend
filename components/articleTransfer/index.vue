@@ -114,6 +114,7 @@ export default {
           })
 
           this.change(false)
+          this.$emit('toggleDone')
           this.$router.push({ name: 'index' })
         } else {
           this.$message({
