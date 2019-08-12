@@ -3,31 +3,33 @@
     <div ref="container" :class="{ 'white-bg': !canvas }">
       <div v-if="!canvas" ref="capture" class="container">
         <section class="header">
-          <img src="@/assets/img/smartsignature.svg" alt="SmartSignature" />
+          <img src="@/assets/img/smartsignature.svg" alt="SmartSignature">
           <h1>投资好文，分享有收益</h1>
         </section>
         <section class="content-container">
           <h1>{{ shareInfo.title }}</h1>
           <div class="desc">
             <div class="user">
-              <img class="avatar" :src="shareInfo.avatar" alt="" :onerror="defaultAvatar" />
+              <img class="avatar" :src="shareInfo.avatar" alt="" :onerror="defaultAvatar">
               <span class="name">{{ shareInfo.name }}</span>
             </div>
             <span class="time">{{ shareInfo.time }}</span>
           </div>
-          <div class="content markdown-body" v-html="htmlStr"></div>
+          <div class="content markdown-body" v-html="htmlStr" />
         </section>
         <div class="hide-article-box">
           <span>—— 扫描二维码 免费读全文 ——</span>
         </div>
         <section class="footer">
-          <img src="@/assets/img/logo-word.svg" alt="SmartSignature" />
-          <div ref="qr" class="qrcode"></div>
+          <img src="@/assets/img/logo-word.svg" alt="SmartSignature">
+          <div ref="qr" class="qrcode" />
         </section>
       </div>
-      <img v-else :src="downloadLink" alt="" style="width: 100%;" />
+      <img v-else :src="downloadLink" alt="" style="width: 100%;">
     </div>
-    <button class="save-btn" @click="toCanvas" >生成图片</button>
+    <button class="save-btn" @click="toCanvas">
+      生成图片
+    </button>
   </div>
 </template>
 
@@ -78,27 +80,10 @@ export default {
     close() {
       this.$emit('change', false)
     },
-    save() {
-      const loading = this.$loading({
-        text: `图片生成中...`
-      })
-      html2canvas(this.$refs.capture, {
-        useCORS: true
-      }).then(canvas => {
-        let link = document.createElement('a')
-        link.href = canvas.toDataURL()
-        link.setAttribute('download', 'smartsignature.png')
-        //this.$refs.container.append(canvas);
-        link.style.display = 'none'
-        document.body.appendChild(link)
-        link.click()
-        loading.close()
-      })
-    },
     saveLocal(canvas) {
       let link = document.createElement('a')
       link.href = canvas.toDataURL()
-      link.setAttribute('download', 'smartsignature.png')
+      link.setAttribute('download', `${this.shareInfo.title}.png`)
       link.style.display = 'none'
       link.click()
     },
