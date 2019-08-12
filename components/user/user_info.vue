@@ -82,6 +82,7 @@ export default {
   },
   mounted() {
     if (!this.isSetting) this.refreshUser({ id: this.$route.params.id })
+    else if (this.currentUserInfo.id) this.refreshUser({ id: this.currentUserInfo.id })
   },
   methods: {
     ...mapActions('user', [
