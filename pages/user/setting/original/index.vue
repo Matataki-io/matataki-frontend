@@ -3,21 +3,23 @@
     <template slot="main">
       <user-nav nav-list-url="setting" />
       <el-row v-loading="loading" class="card-container">
-        <el-col
-          v-for="(item, index) in articleCardData.articles"
-          :key="index"
-          :span="8"
-        >
-          <n-link
-            target="_blank"
-            :to="{
-              name: 'p-id',
-              params: { id: item.id }
-            }"
+        <no-content-prompt :list="articleCardData.articles">
+          <el-col
+            v-for="(item, index) in articleCardData.articles"
+            :key="index"
+            :span="8"
           >
-            <article-card-mini :card="item" class="card-container-block" />
-          </n-link>
-        </el-col>
+            <n-link
+              target="_blank"
+              :to="{
+                name: 'p-id',
+                params: { id: item.id }
+              }"
+            >
+              <article-card-mini :card="item" class="card-container-block" />
+            </n-link>
+          </el-col>
+        </no-content-prompt>
       </el-row>
       <user-pagination
         v-show="!loading"
@@ -44,6 +46,7 @@ import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import articleCardMini from '@/components/artifcle_card_mini/index.vue'
+
 export default {
   components: {
     userLayout,

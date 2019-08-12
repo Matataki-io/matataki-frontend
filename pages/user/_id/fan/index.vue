@@ -2,7 +2,7 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="user" />
-      <div v-loading="loading" class="card-container">
+      <no-content-prompt v-loading="loading" :list="list" class="card-container">
         <fansCard
           v-for="(item, i) in list"
           :key="i"
@@ -13,7 +13,7 @@
             id: item.uid }"
           @updateList="updateList"
         />
-      </div>
+      </no-content-prompt>
       <user-pagination
         v-show="!loading"
         :current-page="currentPage"

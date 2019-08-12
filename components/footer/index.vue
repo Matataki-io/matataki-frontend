@@ -56,6 +56,7 @@ export default {}
 
 <style lang="less" scoped>
 .footer {
+    height: 180px;
     background: #333333;
     padding-top: 52px;
     padding-bottom: 52px;

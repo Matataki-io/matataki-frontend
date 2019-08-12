@@ -5,21 +5,23 @@
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
 
       <el-row v-loading="loading" class="card-container">
-        <el-col
-          v-for="(item, index) in articleCardData.articles"
-          :key="index"
-          :span="8"
-        >
-          <n-link
-            target="_blank"
-            :to="{
-              name: 'p-id',
-              params: { id: item.id }
-            }"
+        <no-content-prompt :list="articleCardData.articles">
+          <el-col
+            v-for="(item, index) in articleCardData.articles"
+            :key="index"
+            :span="8"
           >
-            <article-card-mini :card="item" class="card-container-block" />
-          </n-link>
-        </el-col>
+            <n-link
+              target="_blank"
+              :to="{
+                name: 'p-id',
+                params: { id: item.id }
+              }"
+            >
+              <article-card-mini :card="item" class="card-container-block" />
+            </n-link>
+          </el-col>
+        </no-content-prompt>
       </el-row>
 
       <user-pagination

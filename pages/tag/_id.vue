@@ -18,25 +18,28 @@
         <!-- 空div控制内容 -->
         <div v-for="(item, index) in articleCardData" :key="index">
           <el-row>
-            <el-col
-              v-for="(itemChild, indexChild) in item.articles"
-              :key="indexChild"
-              :span="mainNavTypeIndex === 0 ? 24 : 8"
-            >
-              <articleCard
-                v-if="mainNavTypeIndex"
-                :card="itemChild"
-                :type-index="1"
-                :card-type="'commodity-card tag'"
-              />
-              <articleCardList v-else :card="itemChild" />
-            </el-col>
+            <no-content-prompt :list="item.articles">
+              <el-col
+                v-for="(itemChild, indexChild) in item.articles"
+                :key="indexChild"
+                :span="mainNavTypeIndex === 0 ? 24 : 8"
+              >
+                <articleCard
+                  v-if="mainNavTypeIndex"
+                  :card="itemChild"
+                  :type-index="1"
+                  :card-type="'commodity-card tag'"
+                />
+                <articleCardList v-else :card="itemChild" />
+              </el-col>
+            </no-content-prompt>
           </el-row>
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
           <div class="load-more-button">
             <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" @buttonLoadMore="buttonLoadMore" />
           </div>
         </div>
+
         <!-- end -->
       </el-col>
       <!-- 空div控制内容 end -->

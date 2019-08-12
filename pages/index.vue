@@ -29,18 +29,21 @@
           </div>
           <!-- 导航部分 end -->
           <!-- 空div控制内容 -->
-          <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-            <articleCardList
-              v-for="(itemChild, indexChild) in item.articles"
-              :key="indexChild"
-              :card="itemChild"
-            />
-            <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
-            <div class="load-more-button">
-              <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
-            </div>
+          <no-content-prompt :list="articleCardData">
+            <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
+              <articleCardList
+                v-for="(itemChild, indexChild) in item.articles"
+                :key="indexChild"
+                :card="itemChild"
+              />
+              <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
+              <div class="load-more-button">
+                <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
+              </div>
             <!-- end -->
-          </div>
+            </div>
+          </no-content-prompt>
+
         <!-- 空div控制内容 end -->
         </div>
       </el-col>

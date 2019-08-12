@@ -4,7 +4,9 @@
       <user-nav nav-list-url="setting" />
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
       <div v-loading="loading" class="card-container">
-        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
+        <no-content-prompt :list="articleCardData.articles">
+          <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
+        </no-content-prompt>
       </div>
       <user-pagination
         v-show="!loading"
@@ -31,6 +33,7 @@ import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import buy from '@/components/buy_card/index.vue'
+
 export default {
   components: {
     userLayout,

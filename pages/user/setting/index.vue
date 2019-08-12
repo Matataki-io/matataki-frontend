@@ -7,7 +7,9 @@
         <assets :assets="assets" type="EOS" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
         <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
         <div v-loading="loading" class="card-container">
-          <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />
+          <no-content-prompt :list="articleCardData.articles">
+            <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />
+          </no-content-prompt>
         </div>
         <user-pagination
           v-show="!loading"

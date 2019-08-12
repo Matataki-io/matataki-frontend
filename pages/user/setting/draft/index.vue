@@ -5,27 +5,29 @@
       <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
 
       <el-row v-loading="loading" class="card-container">
-        <el-col
-          v-for="(item, index) in articleCardData.articles"
-          :key="item.id"
-          :span="8"
-        >
-          <n-link
-            :to="{
-              name: 'publish',
-              params: { id: item.id },
-              query: { from: 'draft' }
-            }"
+        <no-content-prompt :list="articleCardData.articles">
+          <el-col
+            v-for="(item, index) in articleCardData.articles"
+            :key="item.id"
+            :span="8"
           >
-            <article-card-mini
-              :is-draft-card="true"
-              :index="index"
-              :card="item"
-              class="card-container-block"
-              @del="del"
-            />
-          </n-link>
-        </el-col>
+            <n-link
+              :to="{
+                name: 'publish',
+                params: { id: item.id },
+                query: { from: 'draft' }
+              }"
+            >
+              <article-card-mini
+                :is-draft-card="true"
+                :index="index"
+                :card="item"
+                class="card-container-block"
+                @del="del"
+              />
+            </n-link>
+          </el-col>
+        </no-content-prompt>
       </el-row>
 
       <user-pagination
@@ -53,6 +55,7 @@ import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import articleCardMini from '@/components/artifcle_card_mini/index.vue'
+
 export default {
   components: {
     userLayout,
