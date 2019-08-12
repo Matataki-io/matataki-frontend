@@ -39,6 +39,7 @@
         slot="footer"
         type="primary"
         class="save-button"
+        :loading="modalLoading"
         @click.prevent="uploadButton"
       >
         {{ buttonText }}
