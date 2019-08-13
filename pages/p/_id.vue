@@ -180,12 +180,12 @@ export default {
       meta: [
         { hid: 'description', name: 'description', content: this.article.short_content },
         /* <!--  Meta for Twitter Card --> */
-        { hid: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', property: 'twitter:title', content: this.article.title },
-        { hid: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
-        { hid: 'twitter:url', property: 'twitter:url', content: 'http://www.smartsignature.io' },
-        { hid: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
+        { hid: 'twitter:description', name: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: 'http://www.smartsignature.io' },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
         { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
         { hid: 'og:title', property: 'og:title', content: this.article.title },
