@@ -51,11 +51,16 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
+    cover() {
+      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      return 'http://ssimg.frontenduse.top/image/2019/07/15/fe217e00671f5062951cc1ebad79fa1d.png'
+    },
     socialLink() {
       const title = this.article.title
       const link = encodeURIComponent(window.location.href)
+      const pic = this.cover
       return {
-        weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&searchPic=false&style=simple`,
+        weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
         twitter: `https://twitter.com/intent/tweet?text=${link}`
       }
