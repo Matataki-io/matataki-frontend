@@ -1,7 +1,7 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="setting" />
+      <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <template v-if="viewStatus === 0">
         <assets :assets="assets" type="ONT" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />

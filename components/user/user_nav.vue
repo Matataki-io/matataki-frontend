@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     navListUrl: {
@@ -21,24 +22,29 @@ export default {
   data() {
     return {
       user: [
-        { title: '原创', url: 'user-id' },
-        { title: '投资', url: 'user-id-investment' },
-        { title: '关注', url: 'user-id-follow' },
-        { title: '粉丝', url: 'user-id-fan' }
+        // self 只有自己才能看
+        { title: '原创', url: 'user-id', self: false },
+        { title: '投资', url: 'user-id-investment', self: false },
+        { title: '草稿', url: 'user-id-draft', self: true },
+        { title: '粉丝', url: 'user-id-fan', self: false },
+        { title: '关注', url: 'user-id-follow', self: false },
+        { title: '购买', url: 'user-id-buy', self: true }
       ],
       setting: [ // todo 完善路由
-        { title: '我的账户', url: 'user-setting' },
-        { title: '我的原创', url: 'user-setting-original' },
-        { title: '我的投资', url: 'user-setting-investment' },
-        { title: '我的草稿', url: 'user-setting-draft' },
-        { title: '购买记录', url: 'user-setting-buy' },
-        { title: '设置', url: 'user-setting-edit' }
+        { title: '账户设置', url: 'user-setting', self: false }
+      ],
+      account: [ // todo 完善路由
+        { title: '我的账户', url: 'user-account', self: false },
+        { title: '我的积分', url: 'user-account-integral', self: false }
       ]
     }
   },
   computed: {
+    ...mapGetters(['isMe']),
     navList() {
-      return this[this.navListUrl]
+      const isMe = this.isMe(this.$route.params.id)
+      if (isMe) return this[this.navListUrl]
+      else return this[this.navListUrl].filter(i => !i.self)
     }
   },
   methods: {

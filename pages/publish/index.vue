@@ -405,7 +405,12 @@ export default {
       if (response.data.code !== 0) this.failed('失败请重试')
       else {
         this.$message.success('保存成功')
-        this.$router.push(`/user/setting/draft`)
+        this.$router.push({
+          name: 'user-id-draft',
+          params: {
+            id: this.currentUserInfo.id
+          }
+        })
       }
     },
     // 编辑文章

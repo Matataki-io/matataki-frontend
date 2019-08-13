@@ -26,45 +26,28 @@
         />
         <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
-            <avatar :size="'30px'" :src="avatar"/>
+            <avatar :size="'30px'" :src="avatar" />
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
-                {{ currentUserInfo.nickname || currentUserInfo.name }}
-              </n-link>
+              {{ currentUserInfo.nickname || currentUserInfo.name }}
             </el-dropdown-item>
             <el-dropdown-item divided>
-              <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
+              <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
                 我的账户
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-setting-original', params:{id: currentUserInfo.id}}">
-                我的原创
+              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                我的主页
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-setting-investment', params:{id: currentUserInfo.id}}">
-                我的投资
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-setting-draft', params:{id: currentUserInfo.id}}">
-                我的草稿
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-setting-buy', params:{id: currentUserInfo.id}}">
-                购买记录
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item divided>
-              <n-link class="link" :to="{name: 'user-setting-edit', params:{id: currentUserInfo.id}}">
+              <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
                 设置
               </n-link>
             </el-dropdown-item>
-            <el-dropdown-item divided>
+            <el-dropdown-item>
               <div class="link" @click="btnsignOut">
                 退出
               </div>
