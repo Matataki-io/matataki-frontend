@@ -1,55 +1,58 @@
 <template>
-  <!-- 适用于 首页, 商品页, 标签页 -->
-  <!-- 区分那种卡 -->
-  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank" class="article">
-    <div class="cover">
-      <img v-if="cover" :src="cover" alt="cover">
-      <img v-else src="@/assets/img/article_bg.svg" alt="cover">
-    </div>
-    <div class="container">
-      <div class="info">
-        <!-- 暂时用文章页代替跳转地址 -->
-        <n-link
-          target="_blank"
-          :to=" {name: 'user-id', params: {id: Uid}} "
-          class="author"
-        >
-          <avatar class="avatar" :size="'30px'" :src="avatarImg" />
-          <span class="username">
-            {{ card && (card.nickname || card.author || '') }}
-          </span>
-        </n-link>
+  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank">
+    <div class="article">
+      <!-- 适用于 首页, 商品页, 标签页 -->
+      <!-- 区分那种卡 -->
+      <div class="cover">
+        <img v-if="cover" :src="cover" alt="cover">
+        <img v-else src="@/assets/img/article_bg.svg" alt="cover">
+      </div>
+      <div class="container">
+        <div class="info">
+          <!-- 暂时用文章页代替跳转地址 -->
+          <n-link
+            target="_blank"
+            :to=" {name: 'user-id', params: {id: Uid}} "
+            class="author"
+          >
+            <avatar class="avatar" :size="'30px'" :src="avatarImg" />
+            <span class="username">
+              {{ card && (card.nickname || card.author || '') }}
+            </span>
+          </n-link>
+          <!-- 暂时用文章页代替跳转地址 end -->
+          <div class="date">
+            {{ dateCard }}
+          </div>
+        </div>
+        <div class="article-title">
+          <h3 v-clampy="2">
+            {{ card && (card.title || '') }}
+          </h3>
+        </div>
+        <div class="des">
+          <!-- 文章卡阅读和投资 -->
+          <span class="data">
+            {{ card && (card.read === 0 ? 0 : card.read) }}
+            浏览</span>
+          <span class="data">
+            {{ card && (type === 'product' ? card.sale || 0 : card.ups || 0) }}
+            {{ type === 'product' ? '销量' : '投资' }}</span>
+          <span class="empty" />
+          <!-- 暂时用文章页代替跳转地址 -->
+          <n-link
+            :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
+            target="_blank"
+            class="title"
+            :style="tagStyle"
+          >
+            {{ tagName }}
+          </n-link>
         <!-- 暂时用文章页代替跳转地址 end -->
-        <div class="date">
-          {{ dateCard }}
         </div>
       </div>
-      <div class="article-title">
-        <h3 v-clampy="2">
-          {{ card && (card.title || '') }}
-        </h3>
-      </div>
-      <div class="des">
-        <!-- 文章卡阅读和投资 -->
-        <span class="data">
-          {{ card && (card.read === 0 ? 0 : card.read) }}
-          浏览</span>
-        <span class="data">
-          {{ card && (type === 'product' ? card.sale || 0 : card.ups || 0) }}
-          {{ type === 'product' ? '销量' : '投资' }}</span>
-        <span class="empty" />
-        <!-- 暂时用文章页代替跳转地址 -->
-        <n-link
-          :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
-          target="_blank"
-          class="title"
-          :style="tagStyle"
-        >
-          {{ tagName }}
-        </n-link>
-        <!-- 暂时用文章页代替跳转地址 end -->
-      </div>
     </div>
+    <div style="width: 0;height: 0;" />
   </n-link>
 </template>
 
