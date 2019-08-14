@@ -103,8 +103,8 @@
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" class="is-original">
-        确认为原创
+      <el-checkbox v-model="isOriginal" class="is-original" @change="statementVisible = true ">
+        原创
       </el-checkbox>
     </div>
     <div class="tag">
@@ -126,6 +126,7 @@
       @toggleDone="allowLeave = true"
     />
     <articleImport :visible="importVisible" @close="importVisible = false" @importArticle="importArticle" />
+    <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
 
@@ -142,6 +143,7 @@ import tagCard from '@/components/tagCard'
 import articleTransfer from '@/components/articleTransfer'
 
 import articleImport from '@/components/article_import/index.vue'
+import statement from '@/components/statement/index.vue'
 
 export default {
   name: 'NewPost',
@@ -149,7 +151,8 @@ export default {
     imgUpload,
     tagCard,
     articleTransfer,
-    articleImport
+    articleImport,
+    statement
   },
   data: () => ({
     prompt: false,
@@ -183,7 +186,8 @@ export default {
     transferModal: false, // 转让弹框
     allowLeave: false, // 允许离开
     saveInfo: {},
-    importVisible: false // 导入
+    importVisible: false, // 导入
+    statementVisible: false // 原创声明
   }),
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -695,6 +699,11 @@ export default {
       this.markdownData = data.content
       this.title = data.title
       this.cover = data.cover
+    },
+    closeStatement(val) {
+      console.log(val)
+      this.isOriginal = val
+      this.statementVisible = false
     }
   }
 }
