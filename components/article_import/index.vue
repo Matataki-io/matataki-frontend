@@ -11,14 +11,6 @@
     <p class="des">
       目前支持：链闻、橙皮书、微信文章
     </p>
-    <div class="checkbox">
-      <el-checkbox v-model="checkedSelf">
-        我是原作者
-      </el-checkbox>
-      <el-checkbox v-model="checkedAuthorize">
-        我已有授权
-      </el-checkbox>
-    </div>
     <p class="des">
       我确认本人是该内容的合法权利人。如果以上信息不完全属实，本人将承担由此产生的一切法律责任。
     </p>
@@ -29,7 +21,7 @@
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button :loading="loading" type="primary" @click="importFunc">确 定</el-button>
+      <el-button :loading="loading" type="primary" :disabled="!statement" @click="importFunc">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -47,8 +39,6 @@ export default {
     return {
       dialogVisible: this.visible,
       url: '',
-      checkedSelf: true,
-      checkedAuthorize: true,
       statement: false,
       loading: false
     }
@@ -88,14 +78,14 @@ export default {
 }
 
 .import {
-  .checkbox {
-    margin-bottom: 20px;
-  }
   .des {
     font-size:14px;
     font-weight:400;
     color:rgba(178,178,178,1);
     line-height: 1.5;
+    &:nth-of-type(1) {
+      margin-bottom: 30px;
+    }
   }
 }
 </style>

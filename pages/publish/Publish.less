@@ -56,13 +56,15 @@
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 60px;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 99;
   border-top: 1px solid #f1f1f1;
   background-color: #fff;
   box-sizing: border-box;
+  height: 60px;
+  padding: 0 10px;
   .edit-title {
     flex: 1;
     padding: 14px 10px;
@@ -73,8 +75,10 @@
     font-size: 26px;
     font-weight: bold;
   }
+  .import-button {
+    margin-right: 10px;
+  }
 }
-
 .send-button{
     font-size: 14px;
     font-weight: bolder;
@@ -82,7 +86,6 @@
     cursor: pointer;
   }
   .new-post {
-    padding-top: 60px;
     min-height: 100%;
     box-sizing: border-box;
     background: #fff;
@@ -164,11 +167,13 @@
     }
   }
   .tag {
+    display: flex;
+    align-items: center;
     p {
       font-size: 14px;
       color: #323233;
       text-align: left;
-      padding: 14px 0 0 20px;
+      padding: 0 0 0 20px;
     }
     &-content {
       display: flex;

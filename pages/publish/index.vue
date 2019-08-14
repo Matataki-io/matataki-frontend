@@ -1,17 +1,5 @@
 <template>
   <div class="new-post" @click.stop="transferButton = false">
-    <postArticleHeader :editor-mode="editorMode" @postArticle="postArticle">
-      <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
-        <div class="more-icon">
-          <svg-icon class="icon" icon-class="more" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-          <el-dropdown-item command="transfer">
-            转让
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </postArticleHeader>
     <div class="edit-content">
       <div class="edit-head">
         <input
@@ -21,9 +9,34 @@
           size="large"
           clearable
         >
-        <el-button icon="el-icon-download" @click="importVisible = true">
+        <el-button class="import-button" icon="el-icon-download" @click="importVisible = true">
           导入文章
         </el-button>
+
+        <el-dropdown trigger="click" @command="postArticle">
+          <el-button type="primary" icon="el-icon-s-promotion">
+            发布
+          </el-button>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item command="public">
+              公开发布
+            </el-dropdown-item>
+            <el-dropdown-item v-if="editorMode !== 'edit'" command="draft">
+              保存到草稿箱
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
+          <div class="more-icon">
+            <svg-icon class="icon" icon-class="more" />
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item command="transfer">
+              转让
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <no-ssr>
         <mavon-editor
@@ -126,7 +139,6 @@ import { strTrim } from '@/utils/reg'
 
 import imgUpload from '@/components/imgUpload' // 图片上传
 import tagCard from '@/components/tagCard'
-import postArticleHeader from '@/components/header/postArticleHeader'
 import articleTransfer from '@/components/articleTransfer'
 
 import articleImport from '@/components/article_import/index.vue'
@@ -136,7 +148,6 @@ export default {
   components: {
     imgUpload,
     tagCard,
-    postArticleHeader,
     articleTransfer,
     articleImport
   },
@@ -149,7 +160,7 @@ export default {
     toolbars: {},
     screenWidth: 1000,
     mavonStyle: {
-      minHeight: `400px`
+      minHeight: `800px`
     },
     fissionNum: 2,
     cover: '',
@@ -283,6 +294,7 @@ export default {
       this.transferModal = true
     },
     postArticle(saveType) {
+      console.log(saveType)
       this.saveType = saveType
       this.sendThePost()
     },
@@ -704,7 +716,7 @@ export default {
 // 工具栏
 .editor .v-note-op {
   position: fixed;
-  top: 118px;
+  // top: 118px;
   left: 0;
   right: 0;
   border-top: 1px solid #eee !important;

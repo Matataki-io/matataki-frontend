@@ -6,13 +6,6 @@
       </div>
 
       <div class="head-flex">
-        <el-dropdown trigger="click" @command="handleMoreAction">
-          <button class="publish-btn">发布</button>
-          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-            <el-dropdown-item command="public">公开发布</el-dropdown-item>
-            <el-dropdown-item command="draft" v-if="this.editorMode !== 'edit'">保存到草稿箱</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
         <slot name="more" />
       </div>
     </div>
@@ -45,10 +38,6 @@ export default {
     customizeHeaderLogo: {
       type: String,
       default: 'default'
-    },
-    editorMode: {
-      type: String,
-      default: 'create'
     }
   },
   data() {
@@ -94,14 +83,6 @@ export default {
     login() {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
-    },
-    togglePage(url) {
-      this.$router.push({
-        name: url
-      })
-    },
-    handleMoreAction(command) {
-      this.$emit('postArticle', command)
     }
   }
 }
