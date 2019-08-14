@@ -62,6 +62,13 @@ export default {
       return moment(this.asset.create_time).format('MMMDo HH:mm')
     },
     assetAmount() {
+      const pointTypes = {
+        reading: '+', // 用户阅读
+        beread: '+', // 读者的文章被阅读
+        publish: '+', // 发布文章
+        readingNew: '+', // 用户阅读新文章，额外获得的
+        bereadNew: '+' // 读者的新文章被阅读，额外获得的
+      }
       const switchType = {
         support_expenses: '',
         buy_expenses: '',
@@ -71,9 +78,10 @@ export default {
         author_supported_income: '+',
         withdraw: '',
         buyad: '',
-        earn: '+'
+        earn: '+',
+        ...pointTypes
       }
-      return switchType[this.asset.type] + precision(this.asset.amount, this.asset.symbol)
+      return switchType[this.asset.type] + precision(this.asset.amount, this.asset.symbol) || ''
     },
     assetColor() {
       const switchType = {
@@ -87,7 +95,7 @@ export default {
         buyad: '#44D7B6',
         earn: '#FB6877'
       }
-      return switchType[this.asset.type]
+      return switchType[this.asset.type] || '#FB6877'
     },
     assetTitle() {
       const { title, type } = this.asset
@@ -110,6 +118,13 @@ export default {
         4: '提现审核中',
         5: '提现审核失败'
       }
+      const pointTypes = {
+        reading: '获取SS积分', // 用户阅读
+        beread: '获取SS积分', // 读者的文章被阅读
+        publish: '获取SS积分', // 发布文章
+        readingNew: '获取SS积分', // 用户阅读新文章，额外获得的
+        bereadNew: '获取SS积分' // 读者的新文章被阅读，额外获得的
+      }
       const switchType = {
         withdraw: switchStatus[status],
         support_expenses: '投资支出',
@@ -119,7 +134,8 @@ export default {
         author_sale_income: '销售收入',
         author_supported_income: '被投资收入',
         buyad: '公告牌支出',
-        earn: '公告牌收入'
+        earn: '公告牌收入',
+        ...pointTypes
       }
       return switchType[type]
     },

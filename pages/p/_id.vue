@@ -89,6 +89,7 @@
         </div>
         <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
       </div>
+      <CoinBtn v-if="!isProduct" @like="like" @dislike="dislike" :time="timeCount"/>
     </div>
     <InvestModal
       v-model="investModalShow"
@@ -138,6 +139,7 @@ import InvestModal from '@/components/modal/Invest'
 import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
+import CoinBtn from '@/components/article/CoinBtn'
 
 import tag from '@/components/tags/tag.vue'
 import { ipfsData } from '@/api/async_data_api.js'
@@ -151,7 +153,8 @@ export default {
     ArticleInfoFooter,
     ArticleFooter,
     articleTransfer,
-    tag
+    tag,
+    CoinBtn
   },
   data() {
     return {
@@ -164,7 +167,10 @@ export default {
       oldOffSetTop: 0,
       navShow: true,
       isSupport: false, // 是否赞赏, 重新通过token请求文章数据
-      commentRequest: 0
+      commentRequest: 0,
+      timer: null,
+      timeCount: 0,
+      likedOrDisLiked: false
     }
   },
   head() {
@@ -246,11 +252,47 @@ export default {
       console.error('addReadAmount :', error)
     }
     window.addEventListener('scroll', this.handleScroll)
+    this.handleFocus()
+    this.postBackendReading()
+    if (!document.hidden) this.reading()
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    like() {
+      clearInterval(this.timer)
+      this.likedOrDisLiked = true
+      this.$API.like(this.article.id, this.timeCount)
+    },
+    dislike() {
+      clearInterval(this.timer)
+      this.likedOrDisLiked = true
+      this.$API.dislike(this.article.id, this.timeCount)
+    },
+    postBackendReading() {
+      this.$API.reading(this.article.id)
+    },
+    reading() {
+      if (this.timer === null && !this.likedOrDisLiked) {
+        this.timer = setInterval(() => {
+          this.timeCount++
+          console.log('计时', this.timeCount)
+        }, 1000)
+      }
+    },
+    handleFocus() {
+      window.onfocus = () => {
+        console.log('页面激活')
+        clearInterval(this.timer)
+        this.reading()
+      }
+      window.onblur = () => {
+        console.log('页面隐藏')
+        clearInterval(this.timer)
+        this.timer = null
+      }
+    },
     handleScroll() {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop

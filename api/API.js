@@ -90,5 +90,17 @@ export default {
       data: stringifyData,
       config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     })
+  },
+  async reading(id) {
+    return request.post(`/posts/${id}/reading`, {}, { noLoading: true })
+  },
+  async like(id, time) {
+    return request.post(`/posts/${id}/like`, { time })
+  },
+  async dislike(id, time) {
+    return request.post(`/posts/${id}/dislike`, { time })
+  },
+  async myPoints(params) {
+    return request.get(`/user/points`, { params })
   }
 }

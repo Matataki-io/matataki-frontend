@@ -19,5 +19,7 @@ export const paginationUrl = {
   // tag by id
   getPostByTagById: 'posts/getPostByTag',
   // buy
-  buyHistory: 'order/products'
+  buyHistory: 'order/products',
+  // 用户积分日志
+  userPoint: 'user/points'
 }
