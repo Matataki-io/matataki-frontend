@@ -51,6 +51,30 @@
 
 }
 
+.edit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border-top: 1px solid #f1f1f1;
+  background-color: #fff;
+  box-sizing: border-box;
+  .edit-title {
+    flex: 1;
+    padding: 14px 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #000;
+    font-size: 26px;
+    font-weight: bold;
+  }
+}
+
 .send-button{
     font-size: 14px;
     font-weight: bolder;
@@ -177,25 +201,7 @@
     font-size: 14px;
   }
 
-  .edit-title {
-    width: 100%;
-    padding: 14px 10px;
-    border: none;
-    outline: none;
-    border-radius: 0;
-    background: transparent;
-    background-color: #fff;
-    color: #000;
-    border-top: 1px solid #f1f1f1;
-    box-sizing: border-box;
-    font-size: 26px;
-    font-weight: bold;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    z-index: 99;
-  }
+
 .my-checkbox {
   height: 20px;
   width: 20px;

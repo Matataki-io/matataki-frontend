@@ -90,5 +90,13 @@ export default {
       data: stringifyData,
       config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     })
-  }
+  },
+  importArticle(url) {
+    return request({
+      method: 'post',
+      url: '/posts/importer',
+      data:{ url },
+      timeout: 40000,
+    })
+  },
 }

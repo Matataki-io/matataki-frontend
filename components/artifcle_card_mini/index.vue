@@ -78,6 +78,7 @@ export default {
   padding: 0;
   margin: 20px 0 10px 0;
   min-height: 56px;
+  overflow: hidden;
 }
 .date {
   font-size:16px;

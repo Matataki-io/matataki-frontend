@@ -13,13 +13,18 @@
       </el-dropdown>
     </postArticleHeader>
     <div class="edit-content">
-      <input
-        v-model="title"
-        class="edit-title"
-        placeholder="请输入你的文章标题..."
-        size="large"
-        clearable
-      >
+      <div class="edit-head">
+        <input
+          v-model="title"
+          class="edit-title"
+          placeholder="请输入文章标题..."
+          size="large"
+          clearable
+        >
+        <el-button icon="el-icon-download" @click="importVisible = true">
+          导入文章
+        </el-button>
+      </div>
       <no-ssr>
         <mavon-editor
           ref="md"
@@ -107,6 +112,7 @@
       :from="$route.query.from"
       @toggleDone="allowLeave = true"
     />
+    <articleImport :visible="importVisible" @close="importVisible = false" @importArticle="importArticle" />
   </div>
 </template>
 
@@ -123,13 +129,16 @@ import tagCard from '@/components/tagCard'
 import postArticleHeader from '@/components/header/postArticleHeader'
 import articleTransfer from '@/components/articleTransfer'
 
+import articleImport from '@/components/article_import/index.vue'
+
 export default {
   name: 'NewPost',
   components: {
     imgUpload,
     tagCard,
     postArticleHeader,
-    articleTransfer
+    articleTransfer,
+    articleImport
   },
   data: () => ({
     prompt: false,
@@ -162,7 +171,8 @@ export default {
     transferButton: false, // 转让按钮
     transferModal: false, // 转让弹框
     allowLeave: false, // 允许离开
-    saveInfo: {}
+    saveInfo: {},
+    importVisible: false // 导入
   }),
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -667,6 +677,12 @@ export default {
         })
       })
       this.tagCards = tagCardsCopy
+    },
+    // 导入文章数据
+    importArticle(data) {
+      this.markdownData = data.content
+      this.title = data.title
+      this.cover = data.cover
     }
   }
 }
