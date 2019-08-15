@@ -14,13 +14,13 @@
       <div class="btns-container">
         <div class="btn-outer">
           <button class="great-cointainer" @click="like" :disabled="clicked">
-            <svg-icon icon-class="great" />
+            <svg-icon icon-class="great-solid" />
           </button>
           <span>推荐</span>
         </div>
         <div class="btn-outer bullshit-outer">
           <button class="bullshit-cointainer" @click="dislike" :disabled="clicked">
-            <svg-icon icon-class="bullshit" />
+            <svg-icon icon-class="bullshit-solid" />
           </button>
           <span>不推荐</span>
         </div>
@@ -117,26 +117,28 @@ export default {
     text-align: center;
     border-radius: 50%;
     box-sizing: border-box;
-    border: 1px solid @blue;
     margin-bottom: 10px;
     .flexCenter();
     cursor: pointer;
     user-select: none;
+    background: #F1F1F1;
+    color: @blue;
+    border: none;
     span {
       margin-left: 3px;
     }
+    &:hover {
+      background: @blue;
+      color: #fff;
+    }
   }
   .great-cointainer {
-    background: @blue;
-    color: #fff;
     .btn-base();
   }
   .bullshit-outer {
     margin-left: 100px;
   }
   .bullshit-cointainer {
-    background: transparent;
-    color: @blue;
     .btn-base();
   }
 }

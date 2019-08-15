@@ -284,7 +284,6 @@ export default {
     this.handleFocus()
     this.postBackendReading()
     if (!document.hidden) this.reading()
-    this.feedbackShow = true
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)

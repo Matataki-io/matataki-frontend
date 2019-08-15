@@ -27,8 +27,8 @@
         </button>
       </div>
       <p>已阅读{{readTime}}</p>
-      <!-- <p>已阅读5分钟 +10 SS积分</p> -->
-      <!-- <p>新内容 +5 SS积分</p> -->
+      <p class="tip">* 阅读5分钟 +10 SS积分</p>
+      <p class="tip">* 新内容 +5 SS积分</p>
     </div>
   </div>
 </template>
@@ -78,10 +78,13 @@ export default {
       return this.type !== 'title'
     },
     readPoint() {
+      if (this.time >= 150) {
+        return 10
+      }
       if (this.clicked) {
         return 0
       } else {
-        return Math.floor(this.time / 30)
+        return Math.floor(this.time / 30) * 2
       }
     },
     readTime() {
@@ -206,5 +209,9 @@ export default {
 }
 .hidden {
   visibility: hidden;
+}
+.tip {
+  color: #ccc;
+  font-style:italic;
 }
 </style>
