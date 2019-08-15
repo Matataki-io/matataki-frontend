@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="coin-btn">
-      <div class="info-container">
+      <!-- <div class="info-container">
         <div :class="['crycle', {'clickStyle': clicked}]">
           <span class="solid-icon" v-show="!clicked">+ 0</span>
           <svg-icon v-show="type==='great'" icon-class="great-solid" class="solid-icon" />
@@ -10,16 +10,20 @@
         <div>
           <span class="title">评价领取SS积分</span>
         </div>
-      </div>
+      </div> -->
       <div class="btns-container">
-        <button class="great-cointainer" @click="like" :disabled="clicked">
-          <svg-icon icon-class="great" />
+        <div class="btn-outer">
+          <button class="great-cointainer" @click="like" :disabled="clicked">
+            <svg-icon icon-class="great" />
+          </button>
           <span>推荐</span>
-        </button>
-        <button class="bullshit-cointainer" @click="dislike" :disabled="clicked">
-          <svg-icon icon-class="bullshit" />
+        </div>
+        <div class="btn-outer bullshit-outer">
+          <button class="bullshit-cointainer" @click="dislike" :disabled="clicked">
+            <svg-icon icon-class="bullshit" />
+          </button>
           <span>不推荐</span>
-        </button>
+        </div>
       </div>
     </div>
     <div class="article-info">
@@ -101,20 +105,21 @@ export default {
 .solid-icon {
   font-size: 30px;
 }
+.btn-outer {
+  text-align: center;
+}
 .btns-container {
   .flexCenter();
-  flex-direction: column;
-  margin-left: 80px;
-  margin-bottom: 30px;
   .btn-base {
-    width: 100px;
-    font-size: 14px;
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
     text-align: center;
-    border-radius: 100px;
+    border-radius: 50%;
     box-sizing: border-box;
     border: 1px solid @blue;
+    margin-bottom: 10px;
     .flexCenter();
-    height: 30px;
     cursor: pointer;
     user-select: none;
     span {
@@ -126,11 +131,13 @@ export default {
     color: #fff;
     .btn-base();
   }
+  .bullshit-outer {
+    margin-left: 100px;
+  }
   .bullshit-cointainer {
     background: transparent;
     color: @blue;
     .btn-base();
-    margin-top: 20px;
   }
 }
 .info-container {
@@ -184,7 +191,7 @@ export default {
   width: 400px;
   .flexCenter();
   .info1 {
-    margin-right: 40px;
+    text-align: center;
   }
   .info2, .info1 {
     .flexCenter();
