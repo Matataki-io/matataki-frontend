@@ -1,11 +1,18 @@
 <template>
   <div class="coin-btn" @mouseenter="enterBtn" @mouseleave="leaveBtn">
-    <div :class="['crycle', {'clickStyle': clicked || showTip}]">
+    <Progress :p="time">
+      <template slot="text">
+        <span v-show="!clicked" class="center-text">+ {{readPoint}}</span>
+        <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" />
+        <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" />
+      </template>
+    </Progress>
+    <!-- <div :class="['crycle', {'clickStyle': clicked || showTip}]">
       <span v-show="!clicked">+ 0</span>
       <svg-icon v-show="type==='great'" icon-class="great-solid" />
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
-    </div>
-    <div :class="{'hidden': showTip && !clicked}">
+    </div> -->
+    <div :class="['title-container', {'hidden': showTip && !clicked}]">
       <span class="title">SS积分</span>
     </div>
     <div class="like-btn" v-show="showTip && !clicked">
@@ -27,7 +34,11 @@
 </template>
 
 <script>
+import Progress from './Progress'
 export default {
+  components: {
+    Progress
+  },
   props: {
     time: {
       type: Number,
@@ -66,6 +77,13 @@ export default {
     clicked() {
       return this.type !== 'title'
     },
+    readPoint() {
+      if (this.clicked) {
+        return 0
+      } else {
+        return Math.floor(this.time / 30)
+      }
+    },
     readTime() {
       const time = this.time
       if (time < 60) {
@@ -98,6 +116,17 @@ export default {
 </script>
 
 <style scoped lang="less">
+.center-text {
+  color: #1C9CFE;
+  font-size: 18px;
+}
+.center-icon {
+  color: #1C9CFE;
+  font-size: 20px;
+}
+.title-container {
+  margin-top: 10px;
+}
 .like-btn {
   position: absolute;
   top: 30px;
