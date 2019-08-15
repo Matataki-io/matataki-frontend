@@ -184,13 +184,13 @@ export default {
         { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
         { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
         { hid: 'twitter:description', name: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `http://www.smartsignature.io/p/${this.article.id}` },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
         { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
         { hid: 'og:title', property: 'og:title', content: this.article.title },
         { hid: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', property: 'og:url', content: `http://www.smartsignature.io/p/${this.article.id}` },
+        { hid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
         { hid: 'og:description', property: 'og:description', content: this.article.short_content }
         /* end */

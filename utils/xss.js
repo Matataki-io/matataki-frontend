@@ -36,11 +36,19 @@ export const xssFilter = html => {
   ]
   whiteList.span = ['class', 'style']
   whiteList.p = ['class', 'style']
-  whiteList.a = ['class', 'style', 'href', 'data-url']
+  let aTag = ['class', 'style', 'href', 'data-url', 'target']
+  whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
   whiteList.img.push('style')
   whiteList.div.push('align')
   whiteList.div.push('style')
+
+  let brTag = ['style']
+  let strongTag = ['style']
+  let h2Tag = ['style']
+  whiteList.br.push(...brTag)
+  whiteList.strong.push(...strongTag)
+  whiteList.h2.push(...h2Tag)
 
   const options = {
     whiteList,
@@ -58,5 +66,6 @@ export const xssFilter = html => {
     }
   }
   const myxss = new xss.FilterXSS(options)
+
   return myxss.process(html)
 }
