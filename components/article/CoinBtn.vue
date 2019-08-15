@@ -77,6 +77,7 @@ export default {
     clicked() {
       return this.type !== 'title'
     },
+    // 阅读积分
     readPoint() {
       if (this.time >= 150) {
         return 10
