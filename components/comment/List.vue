@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item, index) in articleCardData" :key="index">
+    <div v-for="(item, index) in articleCardData" :key="index" class="comment">
       <h2>{{ type === 2 ? '支持队列' : '投资队列' }} {{ item.articles.length }}</h2>
       <no-content-prompt :list="item.articles">
         <CommentCard v-for="(itemChild, indexChild) in item.articles" :key="indexChild" :comment="itemChild" :type="type" />
@@ -90,5 +90,8 @@ export default {
     height: auto;
     width: auto;
     margin: 20px auto;
+}
+.comment {
+  margin-bottom: 40px;
 }
 </style>

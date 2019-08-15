@@ -65,9 +65,9 @@
             @change="changeTransfer"
           />
         </div>
-        <button class="save" :class="setProfile && 'active'" @click="save">
+        <el-button :loading="loading" class="save" :class="setProfile && 'active'" @click="save">
           保存
-        </button>
+        </el-button>
       </div>
     </template>
     <template slot="info">
@@ -100,7 +100,8 @@ export default {
       isTransfer: true,
       avatar: '',
       setProfile: false, // 是否编辑信息
-      imgUploadDone: 0 // 图片是否上传完成
+      imgUploadDone: 0, // 图片是否上传完成
+      loading: false
     }
   },
   computed: {
@@ -196,9 +197,9 @@ export default {
         if (res.code === 0) {
           setUser(res.data)
           this.isTransfer = !!res.data.accept
-        } else console.log('获取转让状态失败')
+        } else console.log('获取用户信息失败')
       } catch (error) {
-        console.log(`获取转让状态失败${error}`)
+        console.log(`获取用户信息失败${error}`)
       }
     },
     // 改变转让状态
@@ -238,8 +239,8 @@ export default {
         if (this.email === this.userData.email) delete requestData.email
         return requestData
       }
-      await console.log(filterRequestData())
-
+      // await console.log(filterRequestData())
+      this.loading = true
       await this.$backendAPI
         .setProfile(filterRequestData())
         .then(res => {
@@ -250,10 +251,14 @@ export default {
               type: 'success'
             })
             this.refreshUser({ id: this.currentUserInfo.id })
+            this.getMyUserData()
           } else this.$message.error('修改信息失败')
         })
         .catch(error => {
           console.log(`修改信息失败 catch error ${error}`)
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
   }

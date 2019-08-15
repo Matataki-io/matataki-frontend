@@ -71,37 +71,38 @@ const API = {
     }
     return axiosforApiServer(config)
   },
-  async sendArticle(
-    url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags },
-    signature = null
-  ) {
-    return this.accessBackend({
-      method: 'POST',
-      url,
-      data: {
-        author,
-        cover,
-        fissionFactor,
-        hash,
-        platform: 'need',
-        publickey: signature ? signature.publicKey : null,
-        sign: signature ? signature.signature : null,
-        signId,
-        title,
-        is_original: isOriginal,
-        tags
-      }
-    })
-  },
-  async publishArticle({ article, signature }) {
-    return this.sendArticle('/post/publish', article, signature)
-  },
-  async editArticle({ article, signature }) {
-    console.log(article, signature)
+  // 迁移到 API
+  // async sendArticle(
+  //   url,
+  //   { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags },
+  //   signature = null
+  // ) {
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url,
+  //     data: {
+  //       author,
+  //       cover,
+  //       fissionFactor,
+  //       hash,
+  //       platform: 'need',
+  //       publickey: signature ? signature.publicKey : null,
+  //       sign: signature ? signature.signature : null,
+  //       signId,
+  //       title,
+  //       is_original: isOriginal,
+  //       tags
+  //     }
+  //   })
+  // },
+  // async publishArticle({ article, signature }) {
+  //   return this.sendArticle('/post/publish', article, signature)
+  // },
+  // async editArticle({ article, signature }) {
+  //   console.log(article, signature)
 
-    return this.sendArticle('/post/edit', article, signature)
-  },
+  //   return this.sendArticle('/post/edit', article, signature)
+  // },
   async reportOrder(order) {
     const data = {
       ...order,
@@ -208,20 +209,20 @@ const API = {
   getAvatarImage(hash) {
     return `${ssImgAddress}${hash}`
   },
-  // 上传图片
-  async uploadImage(type, data) {
-    const url = {
-      avatar: '/user/uploadAvatar',
-      artileCover: '/post/uploadImage'
-    }
-    const formdata = new FormData()
-    formdata.append('image', data)
-    return this.accessBackend({
-      method: 'POST',
-      url: url[type],
-      data: formdata
-    })
-  },
+  // 上传图片 迁移到 API
+  // async uploadImage(type, data) {
+  //   const url = {
+  //     avatar: '/user/uploadAvatar',
+  //     artileCover: '/post/uploadImage'
+  //   }
+  //   const formdata = new FormData()
+  //   formdata.append('image', data)
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url: url[type],
+  //     data: formdata
+  //   })
+  // },
   // BasePull 分页组件
   async getBackendData({ url, params }, needAccessToken = false) {
     // 分页组件接口地址
@@ -253,35 +254,36 @@ const API = {
       ? axiosforApiServer.get(pullApiUrl[url], { params })
       : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
   },
-  async createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        title,
-        content,
-        cover,
-        fissionFactor,
-        isOriginal,
-        tags
-      }
-    })
-  },
-  async updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        id,
-        title,
-        content,
-        cover,
-        fissionFactor,
-        isOriginal,
-        tags
-      }
-    })
-  },
+  // 迁移API
+  // async createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url: '/draft/save',
+  //     data: {
+  //       title,
+  //       content,
+  //       cover,
+  //       fissionFactor,
+  //       isOriginal,
+  //       tags
+  //     }
+  //   })
+  // },
+  // async updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url: '/draft/save',
+  //     data: {
+  //       id,
+  //       title,
+  //       content,
+  //       cover,
+  //       fissionFactor,
+  //       isOriginal,
+  //       tags
+  //     }
+  //   })
+  // },
   async delDraft({ id }) {
     return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
   },

@@ -103,8 +103,8 @@
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" class="is-original" @change="statementVisible = true ">
-        原创
+      <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
+        我声明此文章为原创
       </el-checkbox>
     </div>
     <div class="tag">
@@ -413,9 +413,9 @@ export default {
         if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
-        const response = await this.$backendAPI.publishArticle({ article, signature })
-        if (response.data.code !== 0) throw new Error(response.data.message)
-        success(response.data.data)
+        const response = await this.$API.publishArticle({ article, signature })
+        if (response.code !== 0) throw new Error(response.message)
+        success(response.data)
       } catch (error) {
         console.error(error)
         failed(error)
@@ -427,8 +427,8 @@ export default {
       // 设置文章标签 🏷️
       this.allowLeave = true
       article.tags = this.setArticleTag(this.tagCards)
-      const response = await this.$backendAPI.createDraft(article)
-      if (response.data.code !== 0) this.failed('失败请重试')
+      const response = await this.$API.createDraft(article)
+      if (response.code !== 0) this.failed('失败请重试')
       else {
         this.$message.success('保存成功')
         this.$router.push({
@@ -448,8 +448,8 @@ export default {
       if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
-      const response = await this.$backendAPI.editArticle({ article, signature })
-      if (response.status === 200 && response.data.code === 0) this.success(response.data.data)
+      const response = await this.$API.editArticle({ article, signature })
+      if (response.code === 0) this.success(response.data)
       else this.failed('失败请重试')
     },
     // 删除草稿
@@ -469,8 +469,8 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       try {
-        const response = await this.$backendAPI.updateDraft(article)
-        if (response.status === 200 && response.data.code === 0) {
+        const response = await this.$API.updateDraft(article)
+        if (response.code === 0) {
           this.$message('草稿更新成功')
           this.$router.go(-1)
         } else this.failed('失败请重试')
@@ -700,11 +700,14 @@ export default {
       this.title = data.title
       this.cover = data.cover
     },
+    // 关闭原创声明框
     closeStatement(val) {
       console.log(val)
       this.isOriginal = val
       this.statementVisible = false
-    }
+    },
+    // 原创改变 true 才显示原创声明
+    originalChange(val) { if (val) this.statementVisible = true }
   }
 }
 </script>
