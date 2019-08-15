@@ -23,8 +23,8 @@
     <div v-if="cover" class="TitleImage">
       <img :src="cover" alt="cover">
     </div>
-    <article>
-      <header class="Post-Header">
+    <article class="Post-Header">
+      <header>
         <h1 class="Post-Title">
           {{ article.title }}
         </h1>
@@ -35,14 +35,11 @@
             articleCreateTimeComputed,
           }"
         />
-        <div class="Post-RichTextContainer">
-          <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
-        </div>
       </header>
+
+      <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
+      <ArticleFooter style="margin-top: 20px;" :article="article" />
     </article>
-    <div class="p-w" style="margin-top: 20px;">
-      <ArticleFooter :article="article" />
-    </div>
     <div class="p-w btns-container">
       <div>
         <div ref="actionBtns" class="btns">
@@ -74,7 +71,8 @@
           :time="timeCount"
           :token="ssToken"
           @like="like"
-          @dislike="dislike"/>
+          @dislike="dislike"
+        />
       </div>
     </div>
     <div v-if="article.tags.length !== 0" class="p-w tags-container">
@@ -106,7 +104,8 @@
         :time="timeCount"
         :token="ssToken"
         @like="like"
-        @dislike="dislike"/>
+        @dislike="dislike"
+      />
     </div>
     <InvestModal
       v-model="investModalShow"
@@ -216,13 +215,13 @@ export default {
         { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
         { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
         { hid: 'twitter:description', name: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `http://www.smartsignature.io/p/${this.article.id}` },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
         { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
         { hid: 'og:title', property: 'og:title', content: this.article.title },
         { hid: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', property: 'og:url', content: `http://www.smartsignature.io/p/${this.article.id}` },
+        { hid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
         { hid: 'og:description', property: 'og:description', content: this.article.short_content }
         /* end */
