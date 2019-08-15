@@ -23,8 +23,8 @@
     <div v-if="cover" class="TitleImage">
       <img :src="cover" alt="cover">
     </div>
-    <article>
-      <header class="Post-Header">
+    <article class="Post-Header">
+      <header>
         <h1 class="Post-Title">
           {{ article.title }}
         </h1>
@@ -35,14 +35,11 @@
             articleCreateTimeComputed,
           }"
         />
-        <div class="Post-RichTextContainer">
-          <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
-        </div>
       </header>
+
+      <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
+      <ArticleFooter style="margin-top: 20px;" :article="article" />
     </article>
-    <div class="p-w" style="margin-top: 20px;">
-      <ArticleFooter :article="article" />
-    </div>
     <div class="p-w btns-container">
       <div>
         <div ref="actionBtns" class="btns">
@@ -74,7 +71,8 @@
           :time="timeCount"
           :token="ssToken"
           @like="like"
-          @dislike="dislike"/>
+          @dislike="dislike"
+        />
       </div>
     </div>
     <div v-if="article.tags.length !== 0" class="p-w tags-container">
@@ -106,7 +104,8 @@
         :time="timeCount"
         :token="ssToken"
         @like="like"
-        @dislike="dislike"/>
+        @dislike="dislike"
+      />
     </div>
     <InvestModal
       v-model="investModalShow"
