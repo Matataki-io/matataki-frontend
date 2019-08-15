@@ -104,7 +104,7 @@
     </div>
     <div class="cover-container">
       <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
-        确认原创
+        我声明此文章为原创
       </el-checkbox>
     </div>
     <div class="tag">

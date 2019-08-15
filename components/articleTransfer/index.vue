@@ -9,7 +9,6 @@
           v-model="transferUsername"
           class="widget-input"
           placeholder="请输入想要转让的用户名"
-          @change="changeTransferId"
         />
         <div v-if="resultUser" class="widget-input-user" @click="continueUser">
           <div class="widget-input-avater">
@@ -89,6 +88,9 @@ export default {
     },
     value(val) {
       this.showModal = val
+    },
+    transferUsername() {
+      this.changeTransferId()
     }
   },
   methods: {
