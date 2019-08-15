@@ -1,14 +1,16 @@
 <template>
-  <div class="coin-btn" @mouseenter="enterBtn" @mouseleave="leaveBtn">
-    <div :class="['crycle', {'clickStyle': clicked || showTip}]">
-      <span v-show="!clicked">+ 0</span>
-      <svg-icon v-show="type==='great'" icon-class="great-solid" />
-      <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
-    </div>
-    <div :class="{'hidden': showTip && !clicked}">
-      <span class="title">SS积分</span>
-    </div>
-    <div class="like-btn" v-show="showTip && !clicked">
+  <div>
+    <div class="coin-btn">
+      <div class="info-container">
+        <div :class="['crycle', {'clickStyle': clicked}]">
+          <span class="solid-icon" v-show="!clicked">+ 0</span>
+          <svg-icon v-show="type==='great'" icon-class="great-solid" class="solid-icon" />
+          <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="solid-icon" />
+        </div>
+        <div>
+          <span class="title">评价领取SS积分</span>
+        </div>
+      </div>
       <div class="btns-container">
         <button class="great-cointainer" @click="like" :disabled="clicked">
           <svg-icon icon-class="great" />
@@ -19,9 +21,14 @@
           <span>不推荐</span>
         </button>
       </div>
-      <p>已阅读{{readTime}}</p>
-      <!-- <p>已阅读5分钟 +10 SS积分</p> -->
-      <!-- <p>新内容 +5 SS积分</p> -->
+    </div>
+    <div class="article-info">
+      <div class="info1">
+        <span>已阅读{{readTime}}</span>
+      </div>
+      <!-- <div class="info2">
+        <span>新内容 +5</span>
+      </div> -->
     </div>
   </div>
 </template>
@@ -49,8 +56,7 @@ export default {
   },
   data() {
     return {
-      type: 'title',
-      showTip: false
+      type: 'title'
     }
   },
   watch: {
@@ -86,39 +92,25 @@ export default {
     dislike() {
       this.type = 'bullshit'
       this.$emit('dislike')
-    },
-    enterBtn() {
-      this.showTip = true
-    },
-    leaveBtn() {
-      this.showTip = false
     }
   }
 }
 </script>
 
 <style scoped lang="less">
-.like-btn {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  padding: 10px 36px;
-  background: #ddd;
-  z-index: 99;
-  font-size: 14px;
-  border-radius: 6px;
-  p {
-    color: #000;
-    margin: 10px 0;
-  }
-  .btns-container {
-    .flexCenter();
-  }
+.solid-icon {
+  font-size: 30px;
+}
+.btns-container {
+  .flexCenter();
+  flex-direction: column;
+  margin-left: 80px;
+  margin-bottom: 30px;
   .btn-base {
-    width: 75px;
+    width: 100px;
     font-size: 14px;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 100px;
     box-sizing: border-box;
     border: 1px solid @blue;
     .flexCenter();
@@ -138,18 +130,22 @@ export default {
     background: transparent;
     color: @blue;
     .btn-base();
-    margin-left: 10px;
+    margin-top: 20px;
   }
+}
+.info-container {
+  .flexCenter();
+  flex-direction: column;
+  text-align: center;
 }
 .coin-btn {
   .flexCenter();
-  flex-direction: column;
   position: relative;
 }
 .crycle {
   z-index: 100;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 60%;
   box-sizing: border-box;
   border: 4px solid @blue;
@@ -177,5 +173,28 @@ export default {
 }
 .hidden {
   visibility: hidden;
+}
+.article-info {
+  margin-top: 40px;
+  padding: 15px 40px;
+  border: 1px solid #dbdbdb;
+  border-radius: 40px;
+  box-sizing: border-box;
+  font-size: 16px;
+  width: 400px;
+  .flexCenter();
+  .info1 {
+    margin-right: 40px;
+  }
+  .info2, .info1 {
+    .flexCenter();
+    img {
+      margin: 0 5px 0 10px;
+    }
+    .num {
+      color:  @blue;
+      font-weight: 700;
+    }
+  }
 }
 </style>

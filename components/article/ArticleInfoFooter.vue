@@ -51,7 +51,7 @@ export default {
   border-radius: 40px;
   box-sizing: border-box;
   font-size: 16px;
-  width: 490px;
+  width: 400px;
   .flexCenter();
   .info1 {
     margin-right: 40px;

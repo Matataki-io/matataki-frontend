@@ -62,16 +62,14 @@ export default {
       params.page = this.page
       const getDataSuccess = (res) => {
         // 判断是否加载完成
-        console.log(this.returnType)
-        if ((this.returnType === 'Object')) {
-          if (res.data && res.data.length === 0) { // 没有内容 返回 array 处理
-            this.isLoadEnd = true
-          } else if (res.data && res.data.list && res.data.list.length < 20) {
-            this.isLoadEnd = true
-          }
+        if ((this.returnType === 'Object') && (res.data && res.data.list && res.data.list.length < 20)) {
+          this.isLoadEnd = true
+          // console.log(this.returnType)
         } else if ((this.returnType === 'Array') && (res.data && res.data.length < 20)) {
           this.isLoadEnd = true
+          // console.log(this.returnType)
         }
+
         this.$emit('buttonLoadMore', {
           index: this.typeIndex,
           data: res.data,

@@ -102,5 +102,13 @@ export default {
   },
   async myPoints(params) {
     return request.get(`/user/points`, { params })
-  }
+  },
+  importArticle(url) {
+    return request({
+      method: 'post',
+      url: '/posts/importer',
+      data:{ url },
+      timeout: 40000,
+    })
+  },
 }

@@ -34,7 +34,7 @@ export default {
         { title: '账户设置', url: 'user-setting', self: false }
       ],
       account: [ // todo 完善路由
-        { title: '我的账户', url: 'user-account', self: false },
+        { title: '我的钱包', url: 'user-account', self: false },
         { title: '我的积分', url: 'user-account-integral', self: false }
       ]
     }

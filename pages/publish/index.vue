@@ -1,25 +1,43 @@
 <template>
   <div class="new-post" @click.stop="transferButton = false">
-    <postArticleHeader :editor-mode="editorMode" @postArticle="postArticle">
-      <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
-        <div class="more-icon">
-          <svg-icon class="icon" icon-class="more" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-          <el-dropdown-item command="transfer">
-            转让
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </postArticleHeader>
     <div class="edit-content">
-      <input
-        v-model="title"
-        class="edit-title"
-        placeholder="请输入你的文章标题..."
-        size="large"
-        clearable
-      >
+      <div class="edit-head">
+        <input
+          v-model="title"
+          class="edit-title"
+          placeholder="请输入文章标题..."
+          size="large"
+          clearable
+        >
+        <el-button class="import-button" icon="el-icon-download" @click="importVisible = true">
+          导入文章
+        </el-button>
+
+        <el-dropdown trigger="click" @command="postArticle">
+          <el-button type="primary" icon="el-icon-s-promotion">
+            发布
+          </el-button>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item command="public">
+              公开发布
+            </el-dropdown-item>
+            <el-dropdown-item v-if="editorMode !== 'edit'" command="draft">
+              保存到草稿箱
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
+          <div class="more-icon">
+            <svg-icon class="icon" icon-class="more" />
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item command="transfer">
+              转让
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
       <no-ssr>
         <mavon-editor
           ref="md"
@@ -85,8 +103,8 @@
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" class="is-original">
-        确认为原创
+      <el-checkbox v-model="isOriginal" class="is-original" @change="statementVisible = true ">
+        原创
       </el-checkbox>
     </div>
     <div class="tag">
@@ -107,6 +125,8 @@
       :from="$route.query.from"
       @toggleDone="allowLeave = true"
     />
+    <articleImport :visible="importVisible" @close="importVisible = false" @importArticle="importArticle" />
+    <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
 
@@ -120,16 +140,19 @@ import { strTrim } from '@/utils/reg'
 
 import imgUpload from '@/components/imgUpload' // 图片上传
 import tagCard from '@/components/tagCard'
-import postArticleHeader from '@/components/header/postArticleHeader'
 import articleTransfer from '@/components/articleTransfer'
+
+import articleImport from '@/components/article_import/index.vue'
+import statement from '@/components/statement/index.vue'
 
 export default {
   name: 'NewPost',
   components: {
     imgUpload,
     tagCard,
-    postArticleHeader,
-    articleTransfer
+    articleTransfer,
+    articleImport,
+    statement
   },
   data: () => ({
     prompt: false,
@@ -140,7 +163,7 @@ export default {
     toolbars: {},
     screenWidth: 1000,
     mavonStyle: {
-      minHeight: `400px`
+      minHeight: `800px`
     },
     fissionNum: 2,
     cover: '',
@@ -162,7 +185,9 @@ export default {
     transferButton: false, // 转让按钮
     transferModal: false, // 转让弹框
     allowLeave: false, // 允许离开
-    saveInfo: {}
+    saveInfo: {},
+    importVisible: false, // 导入
+    statementVisible: false // 原创声明
   }),
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -273,6 +298,7 @@ export default {
       this.transferModal = true
     },
     postArticle(saveType) {
+      console.log(saveType)
       this.saveType = saveType
       this.sendThePost()
     },
@@ -667,6 +693,17 @@ export default {
         })
       })
       this.tagCards = tagCardsCopy
+    },
+    // 导入文章数据
+    importArticle(data) {
+      this.markdownData = data.content
+      this.title = data.title
+      this.cover = data.cover
+    },
+    closeStatement(val) {
+      console.log(val)
+      this.isOriginal = val
+      this.statementVisible = false
     }
   }
 }
@@ -688,7 +725,7 @@ export default {
 // 工具栏
 .editor .v-note-op {
   position: fixed;
-  top: 118px;
+  // top: 118px;
   left: 0;
   right: 0;
   border-top: 1px solid #eee !important;

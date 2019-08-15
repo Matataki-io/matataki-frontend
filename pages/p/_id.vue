@@ -44,27 +44,38 @@
       <ArticleFooter :article="article" />
     </div>
     <div class="p-w btns-container">
-      <div ref="actionBtns" class="btns">
-        <div v-if="isProduct" class="article-btn" @click="buy">
-          <div class="icon-container yellow">
-            <svg-icon icon-class="purchase" class="icon" />
+      <div>
+        <div ref="actionBtns" class="btns">
+          <div v-if="isProduct" class="article-btn" @click="buy">
+            <div class="icon-container yellow">
+              <svg-icon icon-class="purchase" class="icon" />
+            </div>
+            <span>购买商品</span>
           </div>
-          <span>购买商品</span>
-        </div>
-        <div class="article-btn" @click="invest">
-          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-            <svg-icon icon-class="invest" class="icon" />
+          <div class="article-btn" @click="invest">
+            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+              <svg-icon icon-class="invest" class="icon" />
+            </div>
+            <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
           </div>
-          <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
-        </div>
-        <div class="article-btn" @click="share">
-          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-            <svg-icon icon-class="share" class="icon" />
+          <div class="article-btn" @click="share">
+            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+              <svg-icon icon-class="share" class="icon" />
+            </div>
+            <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
           </div>
-          <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
         </div>
+        <ArticleInfoFooter :article="article" />
       </div>
-      <ArticleInfoFooter :article="article" />
+      <div>
+        <TokenFooter
+          v-if="!isProduct"
+          v-model="tokenType"
+          :time="timeCount"
+          :token="ssToken"
+          @like="like"
+          @dislike="dislike"/>
+      </div>
     </div>
     <div v-if="article.tags.length !== 0" class="p-w tags-container">
       <tag v-for="(item, index) in article.tags" :key="index" :tag="item" />
@@ -89,7 +100,13 @@
         </div>
         <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
       </div>
-      <CoinBtn v-if="!isProduct" @like="like" @dislike="dislike" :time="timeCount"/>
+      <CoinBtn
+        v-if="!isProduct"
+        v-model="tokenType"
+        :time="timeCount"
+        :token="ssToken"
+        @like="like"
+        @dislike="dislike"/>
     </div>
     <InvestModal
       v-model="investModalShow"
@@ -140,6 +157,7 @@ import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 import CoinBtn from '@/components/article/CoinBtn'
+import TokenFooter from '@/components/article/TokenFooter'
 
 import tag from '@/components/tags/tag.vue'
 import { ipfsData } from '@/api/async_data_api.js'
@@ -154,7 +172,8 @@ export default {
     ArticleFooter,
     articleTransfer,
     tag,
-    CoinBtn
+    CoinBtn,
+    TokenFooter
   },
   data() {
     return {
@@ -170,7 +189,14 @@ export default {
       commentRequest: 0,
       timer: null,
       timeCount: 0,
-      likedOrDisLiked: false
+      likedOrDisLiked: false,
+      tokenType: 'title',
+      ssToken: {
+        points: [],
+        dislikes: 0,
+        likes: 0,
+        is_liked: 0
+      }
     }
   },
   head() {
@@ -380,8 +406,15 @@ export default {
     async getSupportStatus(route) {
       try {
         const res = await this.$API.getArticleInfo(route.params.id)
-        // console.log(297, res)
-        if (res.code === 0) this.isSupport = res.data.is_support
+        if (res.code === 0) {
+          this.isSupport = res.data.is_support
+          this.ssToken = {
+            points: res.data.is_liked, // 用户是否喜欢了这篇文章
+            dislikes: res.data.points, // 用户获得的积分
+            likes: res.data.likes, // 文章被赞次数
+            is_liked: res.data.dislikes // 文章被喷次数
+          }
+        }
       } catch (error) {
         console.log(error)
       }
