@@ -16,7 +16,7 @@
     </p>
     <div class="statement">
       <el-checkbox v-model="statement">
-        我已阅读并同意该责任声明
+        我已阅读并同意该声明
       </el-checkbox>
     </div>
     <span slot="footer" class="dialog-footer">
