@@ -158,9 +158,11 @@ export default {
   .oauth {
     .eos {
       font-size: 24px;
+      color: #fff;
     }
     .github {
       font-size: 22px;
+      color: #fff;
     }
     .flexCenter();
     .oauth-bg {
