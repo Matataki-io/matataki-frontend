@@ -74,6 +74,7 @@ export default {
   z-index: 200;
   background: #F1F1F1;
   border-radius: 50%;
+  cursor: pointer;
 }
 .progress-text {
   font-size: 16px;

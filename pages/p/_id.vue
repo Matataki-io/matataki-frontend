@@ -137,6 +137,7 @@
       :article-id="article.id"
       :from="'article'"
     />
+    <FeedbackModal v-model="feedbackShow" />
   </div>
 </template>
 
@@ -157,6 +158,7 @@ import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 import CoinBtn from '@/components/article/CoinBtn'
 import TokenFooter from '@/components/article/TokenFooter'
+import FeedbackModal from '@/components/article/Feedback'
 
 import tag from '@/components/tags/tag.vue'
 import { ipfsData } from '@/api/async_data_api.js'
@@ -172,7 +174,8 @@ export default {
     articleTransfer,
     tag,
     CoinBtn,
-    TokenFooter
+    TokenFooter,
+    FeedbackModal
   },
   data() {
     return {
@@ -195,7 +198,8 @@ export default {
         dislikes: 0,
         likes: 0,
         is_liked: 0
-      }
+      },
+      feedbackShow: false
     }
   },
   head() {
@@ -280,6 +284,7 @@ export default {
     this.handleFocus()
     this.postBackendReading()
     if (!document.hidden) this.reading()
+    this.feedbackShow = true
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
