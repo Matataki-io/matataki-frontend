@@ -1,9 +1,10 @@
 /* eslint-disable */
 import qs from 'qs'
 import request from '@/utils/request'
+import utils from '@/utils/utils'
+
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
-
 export default {
   async wx(url) {
     return request.get(
@@ -49,9 +50,11 @@ export default {
   async getUser({ id }) {
     return request.get(`/user/${id}`)
   },
-  // BasePull 分页组件
+  /**
+   * BasePull 分页组件
+   * @param {Object} param params参数
+   */
   async getBackendData({ url, params }) {
-    // 分页组件接口地址
     const pullApiUrl = paginationUrl
     return request({
       url: pullApiUrl[url],
@@ -103,12 +106,79 @@ export default {
   async myPoints(params) {
     return request.get(`/user/points`, { params })
   },
+  /**
+   * 文章导入
+   * @param {String} url 导入地址
+   */
   importArticle(url) {
     return request({
       method: 'post',
       url: '/posts/importer',
       data:{ url },
       timeout: 40000,
+    })
+  },
+  /**
+   * 发布文章接口 通用方法 私有方法
+   * @param {String} url 接口地址
+   * @param {Object} param1 文章参数
+   * @param {String || null} signature 签名
+   */
+  _sendArticle(
+    url,
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags },
+    signature = null
+  ) {
+    // 账号类型
+    let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
+    return request({
+      method: 'POST',
+      url,
+      data: {
+        author,
+        cover,
+        fissionFactor,
+        hash,
+        platform: idProvider,
+        publickey: signature ? signature.publicKey : null,
+        sign: signature ? signature.signature : null,
+        signId,
+        title,
+        is_original: isOriginal,
+        tags
+      }
+    })
+  },
+  /**
+   * 发布文章
+   * @param {Object} params 参数, 签名 非钱包用户需要签名
+   */
+  publishArticle({ article, signature }) {
+    return this._sendArticle('/post/publish', article, signature)
+  },
+  /**
+   * 编辑文章
+   * @param {Object} params 参数, 签名 非钱包用户需要签名
+   */
+  editArticle({ article, signature }) {
+    return this._sendArticle('/post/edit', article, signature)
+  },
+  /**
+   * 上传图片
+   * @param {String} type 上传类型
+   * @param {Object} data 上传数据
+   */
+  uploadImage(type, data) {
+    const url = {
+      avatar: '/user/uploadAvatar',
+      artileCover: '/post/uploadImage'
+    }
+    const formdata = new FormData()
+    formdata.append('image', data)
+    return request({
+      method: 'POST',
+      url: url[type],
+      data: formdata
     })
   },
 }

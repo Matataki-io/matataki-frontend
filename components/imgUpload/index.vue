@@ -244,11 +244,11 @@ export default {
         file = new File([arr], oldFile.name, { type: oldFile.type })
       }
       // console.log(this.files[0]);
-      const res = await this.$backendAPI.uploadImage(this.updateType, file)
-      if (res.status === 200 && res.data.code === 0) {
+      const res = await this.$API.uploadImage(this.updateType, file)
+      if (res.code === 0) {
         this.$emit('doneImageUpload', {
           type: this.updateType,
-          data: res.data
+          data: res
         })
       } else {
         this.modalLoading = false
