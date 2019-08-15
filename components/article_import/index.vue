@@ -10,8 +10,6 @@
     <el-input v-model="url" placeholder="请输入文章网址链接，包含http(s)://" />
     <p class="des gray">
       目前支持：链闻、橙皮书、微信文章。
-      <br>
-      导入后，您的标题、内容以及封面将会被替换!
     </p>
     <p class="des" />
     <p class="des">
