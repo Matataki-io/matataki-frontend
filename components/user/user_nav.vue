@@ -23,7 +23,7 @@ export default {
     return {
       user: [
         // self 只有自己才能看
-        { title: '原创', url: 'user-id', self: false },
+        { title: '创作', url: 'user-id', self: false },
         { title: '投资', url: 'user-id-investment', self: false },
         { title: '草稿', url: 'user-id-draft', self: true },
         { title: '粉丝', url: 'user-id-fan', self: false },
@@ -34,8 +34,8 @@ export default {
         { title: '账户设置', url: 'user-setting', self: false }
       ],
       account: [ // todo 完善路由
-        { title: '我的钱包', url: 'user-account', self: false },
-        { title: '我的积分', url: 'user-account-integral', self: false }
+        { title: '钱包', url: 'user-account', self: false },
+        { title: '积分', url: 'user-account-integral', self: false }
       ]
     }
   },
