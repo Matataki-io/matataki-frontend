@@ -254,35 +254,36 @@ const API = {
       ? axiosforApiServer.get(pullApiUrl[url], { params })
       : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
   },
-  async createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        title,
-        content,
-        cover,
-        fissionFactor,
-        isOriginal,
-        tags
-      }
-    })
-  },
-  async updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/draft/save',
-      data: {
-        id,
-        title,
-        content,
-        cover,
-        fissionFactor,
-        isOriginal,
-        tags
-      }
-    })
-  },
+  // 迁移API
+  // async createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url: '/draft/save',
+  //     data: {
+  //       title,
+  //       content,
+  //       cover,
+  //       fissionFactor,
+  //       isOriginal,
+  //       tags
+  //     }
+  //   })
+  // },
+  // async updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url: '/draft/save',
+  //     data: {
+  //       id,
+  //       title,
+  //       content,
+  //       cover,
+  //       fissionFactor,
+  //       isOriginal,
+  //       tags
+  //     }
+  //   })
+  // },
   async delDraft({ id }) {
     return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
   },

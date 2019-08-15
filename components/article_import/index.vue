@@ -8,15 +8,18 @@
     @close="$emit('close')"
   >
     <el-input v-model="url" placeholder="请输入文章网址链接，包含http(s)://" />
-    <p class="des">
-      目前支持：链闻、橙皮书、微信文章
+    <p class="des gray">
+      目前支持：链闻、橙皮书、微信文章。
+      <br>
+      导入后，您的标题、内容以及封面将会被替换!
     </p>
+    <p class="des" />
     <p class="des">
-      我确认本人是该内容的合法权利人。如果以上信息不完全属实，本人将承担由此产生的一切法律责任。
+      如若在本平台发表的内容发声侵权行为，SS官方有权下架该作品，并保留向侵权作者追究法律责任的权利。
     </p>
     <div class="statement">
       <el-checkbox v-model="statement">
-        我已阅读并同意该声明
+        我同意
       </el-checkbox>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -63,6 +66,8 @@ export default {
           message: '导入成功',
           type: 'success'
         })
+        const templateLink = `<br />来源链接：[${url}](${url})`
+        res.data.content += templateLink
         this.$emit('importArticle', res.data)
       } else this.$message.error('导入失败,目前只支持: 链闻、橙皮书、微信文章')
       this.loading = false
@@ -81,8 +86,11 @@ export default {
   .des {
     font-size:14px;
     font-weight:400;
-    color:rgba(178,178,178,1);
+    color: #565656;
     line-height: 1.5;
+    &.gray {
+      color: #6f6f6f;
+    }
     &:nth-of-type(1) {
       margin-bottom: 30px;
     }

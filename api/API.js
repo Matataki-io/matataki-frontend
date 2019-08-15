@@ -163,6 +163,37 @@ export default {
   editArticle({ article, signature }) {
     return this._sendArticle('/post/edit', article, signature)
   },
+  // 创建草稿
+  createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
+    return request({
+      method: 'POST',
+      url: '/draft/save',
+      data: {
+        title,
+        content,
+        cover,
+        fissionFactor,
+        isOriginal,
+        tags
+      }
+    })
+  },
+  // 更新草稿
+  updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
+    return request({
+      method: 'POST',
+      url: '/draft/save',
+      data: {
+        id,
+        title,
+        content,
+        cover,
+        fissionFactor,
+        isOriginal,
+        tags
+      }
+    })
+  },
   /**
    * 上传图片
    * @param {String} type 上传类型

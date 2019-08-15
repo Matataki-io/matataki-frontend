@@ -427,8 +427,8 @@ export default {
       // 设置文章标签 🏷️
       this.allowLeave = true
       article.tags = this.setArticleTag(this.tagCards)
-      const response = await this.$backendAPI.createDraft(article)
-      if (response.data.code !== 0) this.failed('失败请重试')
+      const response = await this.$API.createDraft(article)
+      if (response.code !== 0) this.failed('失败请重试')
       else {
         this.$message.success('保存成功')
         this.$router.push({
@@ -469,8 +469,8 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       try {
-        const response = await this.$backendAPI.updateDraft(article)
-        if (response.status === 200 && response.data.code === 0) {
+        const response = await this.$API.updateDraft(article)
+        if (response.code === 0) {
           this.$message('草稿更新成功')
           this.$router.go(-1)
         } else this.failed('失败请重试')
