@@ -10,7 +10,6 @@
     <p class="des">
       {{ userInfo.introduction || '暂无' }}
     </p>
-    <div class="line" />
     <div class="follow-fan">
       <div class="data">
         <n-link class="num" tag="p" :to="{name: 'user-id-follow', params: {id: nowId}}">
@@ -32,10 +31,6 @@
     <!-- 如果是设置页面不显示 -->
     <template v-if="!isSetting">
       <!-- 个人主页 -->
-      <div
-        v-if="!isMe(nowId)"
-        class="line"
-      />
       <button
         v-if="!isMe($route.params.id)"
         class="button"
@@ -145,7 +140,7 @@ export default {
     line-height: 17px;
     width: 70%;
     text-align: center;
-    margin: 10px auto 20px;
+    margin: 10px auto;
 }
 
 .follow-fan {

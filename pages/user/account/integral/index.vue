@@ -6,7 +6,9 @@
         <no-content-prompt :list="pointLog.list">
           <div class="point-card">
             <span class="title">剩余SS积分</span>
-            <h1 class="point-pricing">{{amount}}</h1>
+            <h1 class="point-pricing">
+              {{ amount }}
+            </h1>
           </div>
           <assetCard v-for="(item, index) in pointLog.list" :key="index" :asset="item" />
         </no-content-prompt>
