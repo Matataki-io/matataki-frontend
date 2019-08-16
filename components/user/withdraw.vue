@@ -53,14 +53,6 @@ export default {
       default: 'EOS'
     }
   },
-  computed: {
-    ...mapGetters(['currentUserInfo'])
-  },
-  watch: {
-    currentUserInfo() {
-      this.writeAddres()
-    }
-  },
   data() {
     return {
       eosWithdraw: {
@@ -147,6 +139,15 @@ export default {
       withdrawData: null
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo'])
+  },
+  watch: {
+    currentUserInfo() {
+      this.writeAddres()
+    }
+  },
+
   created() {
     if (this.type === 'EOS') this.withdrawData = this.eosWithdraw
     else if (this.type === 'ONT') this.withdrawData = this.ontWithdraw

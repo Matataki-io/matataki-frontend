@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="login"></div>
+  <div class="login" />
 </template>
 
 <script>

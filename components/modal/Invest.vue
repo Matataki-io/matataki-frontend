@@ -4,6 +4,7 @@
     :visible.sync="showModal"
     width="400px"
     :lock-scroll="false"
+    custom-class="br10"
   >
     <div class="buy-product-modal">
       <h1 class="title">

@@ -7,30 +7,36 @@
       </div> -->
       <a :href="socialLink.weibo" target="_blank">
         <div class="share-btn">
-          <svg-icon class="share-icon" icon-class="weibo" />
+          <div class="share-bg">
+            <svg-icon class="share-icon weibo" icon-class="weibo" />
+          </div>
           <p>微博</p>
         </div>
       </a>
       <a :href="socialLink.facebook" target="_blank">
         <div class="share-btn">
-          <svg-icon class="share-icon" icon-class="facebook" />
+          <div class="share-bg">
+            <svg-icon class="share-icon facebook" icon-class="facebook" />
+          </div>
           <p>Facebook</p>
         </div>
       </a>
       <a :href="socialLink.twitter" target="_blank">
         <div class="share-btn">
-          <svg-icon class="share-icon" icon-class="twitter" />
+          <div class="share-bg">
+            <svg-icon class="share-icon twitter" icon-class="twitter" />
+          </div>
           <p>Twitter</p>
         </div>
       </a>
     </div>
     <div class="wx-share">
       <div class="qrcode-container">
-        <div ref="wxqr" class="qrcode"></div>
+        <div ref="wxqr" class="qrcode" />
       </div>
-      <p>
+      <p class="code">
         <span>扫一扫，分享到微信</span>
-        <svg-icon icon-class="weixin" />
+        <svg-icon class="icon" icon-class="weixin" />
       </p>
     </div>
   </div>
@@ -120,5 +126,34 @@ p {
   font-size: 14px;
   font-weight: 400;
   color: #000000;
+}
+.share-bg {
+  width: 70px;
+  height: 70px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .share-icon {
+    width: 50%;
+  }
+  .weibo {
+    color: #FF5722;
+  }
+  .facebook {
+    color: #3C5999;
+  }
+  .twitter {
+    color: #00ACED;
+  }
+}
+.code {
+  margin-top: 30px;
+  .icon {
+    color: #24DB5A;
+    font-size: 22px;
+    margin-left: 4px;
+  }
 }
 </style>

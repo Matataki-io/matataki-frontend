@@ -13,13 +13,13 @@
       </div> -->
       <div class="btns-container">
         <div class="btn-outer">
-          <button :class="['great-cointainer', {'actived':  type === 'great'}]" @click="like" :disabled="clicked">
+          <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
             <svg-icon icon-class="great-solid" />
           </button>
           <span>推荐</span>
         </div>
         <div class="btn-outer bullshit-outer">
-          <button :class="['bullshit-cointainer', {'actived':  type === 'bullshit'}]" @click="dislike" :disabled="clicked">
+          <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
             <svg-icon icon-class="bullshit-solid" />
           </button>
           <span>不推荐</span>
@@ -109,6 +109,14 @@ export default {
         }
       }
       return result
+    }
+  },
+  watch: {
+    type(val) {
+      this.$emit('input', val)
+    },
+    value(val) {
+      this.type = val
     }
   },
   methods: {

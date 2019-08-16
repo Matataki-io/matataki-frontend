@@ -4,6 +4,7 @@
     :visible.sync="dialogVisible"
     width="600px"
     center
+    custom-class="br10"
   >
     <div class="text-content">
       <p>

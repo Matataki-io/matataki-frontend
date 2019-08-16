@@ -2,7 +2,7 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="user" />
-      <no-content-prompt v-loading="loading" :list="list" class="card-container">
+      <no-content-prompt v-loading="loading" :list="list" class="card-container flex">
         <fansCard
           v-for="(item, i) in list"
           :key="i"

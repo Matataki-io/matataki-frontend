@@ -1,8 +1,12 @@
 <template>
   <div class="about mw">
     <div class="about-card">
-      <h1 class="about-title">{{ items.title }}</h1>
-      <p class="about-detail">{{ items.detail }}</p>
+      <h1 class="about-title">
+        {{ items.title }}
+      </h1>
+      <p class="about-detail">
+        {{ items.detail }}
+      </p>
       <div v-for="(item, idx) in items.content" :key="idx" class="about-content">
         <h3>{{ item.title }}</h3>
         <p v-for="(itemChild, idxChild) in item.detail" :key="idxChild">
@@ -16,12 +20,12 @@
 <script>
 import items from '../assets/QuestionAndAnswer.json'
 export default {
+  components: {},
   data() {
     return {
       items
     }
-  },
-  components: {}
+  }
 }
 </script>
 

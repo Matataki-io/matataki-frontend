@@ -21,7 +21,7 @@
       width="400px"
       :close-on-click-modal="false"
       :lock-scroll="false"
-      custom-class="img-upload-modal"
+      custom-class="img-upload-modal br10"
     >
       <div slot="title" class="modal-header">
         <p class="modal-header-title">

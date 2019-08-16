@@ -9,7 +9,8 @@
           size="large"
           clearable
         >
-        <el-button class="import-button" icon="el-icon-download" @click="importVisible = true">
+        <el-button class="import-button" @click="importVisible = true">
+          <svg-icon class="import-icon" icon-class="import" />
           导入文章
         </el-button>
 

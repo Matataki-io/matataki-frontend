@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" @close="change" custom-class="gray-bg">
+  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" custom-class="gray-bg br10" @close="change">
     <div v-if="widgetModalStatus === 0">
       <div class="widget-content-button">
         <div class="widget-button" @click="createWidget">
@@ -21,7 +21,7 @@
           <p>复制邀请链接</p>
         </div>
       </div>
-      <SocialShare :article="article" v-if="socialShow"/>
+      <SocialShare v-if="socialShow" :article="article" />
     </div>
     <div v-if="widgetModalStatus === 1" class="widget-writecontent">
       <p class="widget-title">

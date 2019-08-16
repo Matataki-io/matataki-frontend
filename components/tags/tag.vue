@@ -1,5 +1,4 @@
 <template>
-  <!-- 暂时用文章页代替跳转地址 -->
   <n-link
     :to=" {name: 'tag-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
     class="tag"
@@ -13,7 +12,6 @@
       class="full"
     />
   </n-link>
-  <!-- 暂时用文章页代替跳转地址 end -->
 </template>
 
 <script>
