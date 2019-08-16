@@ -1,47 +1,49 @@
 <template>
-  <div class="coin-btn" @mouseenter="enterBtn" @mouseleave="leaveBtn">
-    <Progress :p="time" :clicked="clicked">
-      <template slot="text">
-        <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
-        <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" />
-        <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" />
-      </template>
-    </Progress>
+  <div class="coin-btn">
+    <div  @mouseenter="enterBtn" @mouseleave="leaveBtn">
+      <Progress :p="time" :clicked="clicked">
+        <template slot="text">
+          <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
+          <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" />
+          <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" />
+        </template>
+      </Progress>
+      <div v-show="showTip" class="like-btn" >
+        <div v-if="!clicked" class="btns-container">
+          <button class="great-cointainer" :disabled="clicked" @click="like">
+            <svg-icon icon-class="great" />
+            <span>推荐</span>
+          </button>
+          <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
+            <svg-icon icon-class="bullshit" />
+            <span>不推荐</span>
+          </button>
+        </div>
+        <p v-if="!clicked">
+          已阅读{{ readTime }}
+        </p>
+        <template v-else>
+          <p v-for="(item, i) in pointArr" :key="i">
+            {{ item.text }} +{{ item.amount }}SS积分
+          </p>
+        </template>
+        <div class="tip-container">
+          <p class="tip">
+            * 阅读2分30秒 +10SS积分
+          </p>
+          <p class="tip">
+            * 新内容 +5SS积分
+          </p>
+        </div>
+      </div>
+    </div>
     <!-- <div :class="['crycle', {'clickStyle': clicked || showTip}]">
       <span v-show="!clicked">+ 0</span>
       <svg-icon v-show="type==='great'" icon-class="great-solid" />
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <span class="title">{{ clicked ? `+${allPoints}SS积分` : 'SS积分' }}</span>
-    </div>
-    <div v-show="showTip" class="like-btn">
-      <div v-if="!clicked" class="btns-container">
-        <button class="great-cointainer" :disabled="clicked" @click="like">
-          <svg-icon icon-class="great" />
-          <span>推荐</span>
-        </button>
-        <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
-          <svg-icon icon-class="bullshit" />
-          <span>不推荐</span>
-        </button>
-      </div>
-      <p v-if="!clicked">
-        已阅读{{ readTime }}
-      </p>
-      <template v-else>
-        <p v-for="(item, i) in pointArr" :key="i">
-          {{ item.text }} +{{ item.amount }}SS积分
-        </p>
-      </template>
-      <div class="tip-container">
-        <p class="tip">
-          * 阅读2分30秒 +10SS积分
-        </p>
-        <p class="tip">
-          * 新内容 +5SS积分
-        </p>
-      </div>
+      <a class="title" href="/user/account/integral" target="_blank">{{ clicked ? `+${allPoints}SS积分` : 'SS积分' }}</a>
     </div>
   </div>
 </template>
