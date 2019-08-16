@@ -14,6 +14,8 @@
 
 <script>
 export default {
+  // nuxt 默认提供模版
+  // eslint-disable-next-line vue/require-prop-types
   props: ['error']
 }
 </script>

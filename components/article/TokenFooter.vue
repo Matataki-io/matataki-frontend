@@ -13,13 +13,13 @@
       </div> -->
       <div class="btns-container">
         <div class="btn-outer">
-          <button class="great-cointainer" @click="like" :disabled="clicked">
+          <button class="great-cointainer" :disabled="clicked" @click="like">
             <svg-icon icon-class="great-solid" />
           </button>
           <span>推荐</span>
         </div>
         <div class="btn-outer bullshit-outer">
-          <button class="bullshit-cointainer" @click="dislike" :disabled="clicked">
+          <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
             <svg-icon icon-class="bullshit-solid" />
           </button>
           <span>不推荐</span>
@@ -28,7 +28,7 @@
     </div>
     <div class="article-info">
       <div class="info1">
-        <span>已阅读{{readTime}}</span>
+        <span>已阅读{{ readTime }}</span>
       </div>
       <!-- <div class="info2">
         <span>新内容 +5</span>
@@ -63,14 +63,6 @@ export default {
       type: 'title'
     }
   },
-  watch: {
-    type(val) {
-      this.$emit('input', val)
-    },
-    value(val) {
-      this.type = val
-    }
-  },
   computed: {
     // 是否被点击过
     clicked() {
@@ -86,6 +78,14 @@ export default {
         if (s !== 0) return `${m}分钟${s}秒`
         else return `${m}分钟`
       }
+    }
+  },
+  watch: {
+    type(val) {
+      this.$emit('input', val)
+    },
+    value(val) {
+      this.type = val
     }
   },
   methods: {

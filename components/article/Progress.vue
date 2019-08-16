@@ -32,7 +32,7 @@
       </svg>
     </div>
     <div class="progress-text">
-      <slot name="text"></slot>
+      <slot name="text" />
     </div>
   </div>
 </template>
@@ -50,7 +50,6 @@ export default {
       circle: 60
     }
   },
-  watch: {},
   computed: {
     strokeDasharray() {
       if (this.p === 0) {
@@ -62,6 +61,7 @@ export default {
       }
     }
   },
+  watch: {},
   methods: {}
 }
 </script>

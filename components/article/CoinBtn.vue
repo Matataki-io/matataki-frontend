@@ -2,7 +2,7 @@
   <div class="coin-btn" @mouseenter="enterBtn" @mouseleave="leaveBtn">
     <Progress :p="time">
       <template slot="text">
-        <span v-show="!clicked" class="center-text">+ {{readPoint}}</span>
+        <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
         <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" />
         <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" />
       </template>
@@ -15,20 +15,24 @@
     <div :class="['title-container', {'hidden': showTip && !clicked}]">
       <span class="title">SS积分</span>
     </div>
-    <div class="like-btn" v-show="showTip && !clicked">
+    <div v-show="showTip && !clicked" class="like-btn">
       <div class="btns-container">
-        <button class="great-cointainer" @click="like" :disabled="clicked">
+        <button class="great-cointainer" :disabled="clicked" @click="like">
           <svg-icon icon-class="great" />
           <span>推荐</span>
         </button>
-        <button class="bullshit-cointainer" @click="dislike" :disabled="clicked">
+        <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
           <svg-icon icon-class="bullshit" />
           <span>不推荐</span>
         </button>
       </div>
-      <p>已阅读{{readTime}}</p>
-      <p class="tip">* 阅读5分钟 +10 SS积分</p>
-      <p class="tip">* 新内容 +5 SS积分</p>
+      <p>已阅读{{ readTime }}</p>
+      <p class="tip">
+        * 阅读5分钟 +10 SS积分
+      </p>
+      <p class="tip">
+        * 新内容 +5 SS积分
+      </p>
     </div>
   </div>
 </template>
@@ -64,14 +68,6 @@ export default {
       showTip: false
     }
   },
-  watch: {
-    type(val) {
-      this.$emit('input', val)
-    },
-    value(val) {
-      this.type = val
-    }
-  },
   computed: {
     // 是否被点击过
     clicked() {
@@ -98,6 +94,14 @@ export default {
         if (s !== 0) return `${m}分钟${s}秒`
         else return `${m}分钟`
       }
+    }
+  },
+  watch: {
+    type(val) {
+      this.$emit('input', val)
+    },
+    value(val) {
+      this.type = val
     }
   },
   methods: {

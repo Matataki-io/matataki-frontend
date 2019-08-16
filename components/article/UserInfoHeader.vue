@@ -1,7 +1,7 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <avatar class="Avatar" :size="'38px'" :src="article.avatar" @click="$router.push(`/user/${article.uid}`)"/>
+      <avatar class="Avatar" :size="'38px'" :src="article.avatar" @click="$router.push(`/user/${article.uid}`)" />
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`">
           <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
