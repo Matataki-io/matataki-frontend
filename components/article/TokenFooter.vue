@@ -38,9 +38,6 @@
           <span>新文章 + {{p.reading_new}}SS积分</span>
         </div>
       </template>
-      <!-- <div class="info2">
-        <span>新内容 +5</span>
-      </div> -->
     </div>
   </div>
 </template>
