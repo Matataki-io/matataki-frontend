@@ -287,6 +287,13 @@ export default {
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
   },
+  watch: {
+    timeCount(v) {
+      if (v >= 150) {
+        clearInterval(this.timer)
+      }
+    }
+  },
   methods: {
     like() {
       clearInterval(this.timer)
