@@ -66,8 +66,8 @@ export default {
         reading: '+', // 用户阅读
         beread: '+', // 读者的文章被阅读
         publish: '+', // 发布文章
-        readingNew: '+', // 用户阅读新文章，额外获得的
-        bereadNew: '+' // 读者的新文章被阅读，额外获得的
+        reading_new: '+', // 用户阅读新文章，额外获得的
+        beread_new: '+' // 读者的新文章被阅读，额外获得的
       }
       const switchType = {
         support_expenses: '',
@@ -122,8 +122,8 @@ export default {
         reading: '获取SS积分', // 用户阅读
         beread: '获取SS积分', // 读者的文章被阅读
         publish: '获取SS积分', // 发布文章
-        readingNew: '获取SS积分', // 用户阅读新文章，额外获得的
-        bereadNew: '获取SS积分' // 读者的新文章被阅读，额外获得的
+        reading_new: '获取SS积分', // 用户阅读新文章，额外获得的
+        beread_new: '获取SS积分' // 读者的新文章被阅读，额外获得的
       }
       const switchType = {
         withdraw: switchStatus[status],

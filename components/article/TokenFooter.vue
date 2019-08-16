@@ -13,13 +13,13 @@
       </div> -->
       <div class="btns-container">
         <div class="btn-outer">
-          <button class="great-cointainer" :disabled="clicked" @click="like">
+          <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
             <svg-icon icon-class="great-solid" />
           </button>
           <span>推荐</span>
         </div>
         <div class="btn-outer bullshit-outer">
-          <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
+          <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
             <svg-icon icon-class="bullshit-solid" />
           </button>
           <span>不推荐</span>
@@ -44,10 +44,6 @@ export default {
       type: Number,
       default: 0
     },
-    value: {
-      type: String,
-      default: 'title'
-    },
     token: {
       type: Object,
       default: () => ({
@@ -59,14 +55,24 @@ export default {
     }
   },
   data() {
-    return {
-      type: 'title'
-    }
+    return {}
   },
   computed: {
     // 是否被点击过
     clicked() {
       return this.type !== 'title'
+    },
+    type() {
+      if (parseInt(this.token.is_liked) === 0) {
+        return 'title'
+      }
+      if (parseInt(this.token.is_liked) === 1) {
+        return 'great'
+      }
+      if (parseInt(this.token.is_liked) === 2) {
+        return 'bullshit'
+      }
+      return 'title'
     },
     readTime() {
       const time = this.time
@@ -127,7 +133,11 @@ export default {
     span {
       margin-left: 3px;
     }
-    &:hover {
+    &:hover:enabled {
+      background: @blue;
+      color: #fff;
+    }
+    &.actived {
       background: @blue;
       color: #fff;
     }

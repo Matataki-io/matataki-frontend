@@ -43,6 +43,10 @@ export default {
     p: {
       type: Number,
       default: 0
+    },
+    clicked: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -52,6 +56,9 @@ export default {
   },
   computed: {
     strokeDasharray() {
+      if (this.clicked) {
+        return 300
+      }
       if (this.p === 0) {
         return 0
       } else if (this.p % this.circle === 0) {

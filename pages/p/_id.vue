@@ -191,13 +191,12 @@ export default {
       commentRequest: 0,
       timer: null,
       timeCount: 0,
-      likedOrDisLiked: false,
       tokenType: 'title',
       ssToken: {
         points: [],
         dislikes: 0,
         likes: 0,
-        is_liked: 0
+        is_liked: 3
       },
       feedbackShow: false
     }
@@ -253,6 +252,9 @@ export default {
     },
     isProduct() {
       return this.article.channel_id === 2
+    },
+    likedOrDisLiked() {
+      return parseInt(this.ssToken.is_liked) !== 0
     }
   },
 
@@ -412,10 +414,10 @@ export default {
         if (res.code === 0) {
           this.isSupport = res.data.is_support
           this.ssToken = {
-            points: res.data.is_liked, // 用户是否喜欢了这篇文章
-            dislikes: res.data.points, // 用户获得的积分
+            points: res.data.points, // 用户是否喜欢了这篇文章
+            dislikes: res.data.dislikes, // 用户获得的积分
             likes: res.data.likes, // 文章被赞次数
-            is_liked: res.data.dislikes // 文章被喷次数
+            is_liked: res.data.is_liked // 文章被喷次数
           }
         }
       } catch (error) {

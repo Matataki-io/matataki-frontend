@@ -1,6 +1,6 @@
 <template>
   <div class="coin-btn" @mouseenter="enterBtn" @mouseleave="leaveBtn">
-    <Progress :p="time">
+    <Progress :p="time" :clicked="clicked">
       <template slot="text">
         <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
         <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" />
@@ -15,8 +15,8 @@
     <div :class="['title-container', {'hidden': showTip && !clicked}]">
       <span class="title">SS积分</span>
     </div>
-    <div v-show="showTip && !clicked" class="like-btn">
-      <div class="btns-container">
+    <div v-show="showTip" class="like-btn">
+      <div v-if="!clicked" class="btns-container">
         <button class="great-cointainer" :disabled="clicked" @click="like">
           <svg-icon icon-class="great" />
           <span>推荐</span>
@@ -26,13 +26,22 @@
           <span>不推荐</span>
         </button>
       </div>
-      <p>已阅读{{ readTime }}</p>
-      <p class="tip">
-        * 阅读5分钟 +10 SS积分
+      <p v-if="!clicked">
+        已阅读{{ readTime }}
       </p>
-      <p class="tip">
-        * 新内容 +5 SS积分
-      </p>
+      <template v-else>
+        <p v-for="(item, i) in pointArr" :key="i">
+          {{ item.text }} +{{ item.amount }}SS积分
+        </p>
+      </template>
+      <div class="tip-container">
+        <p class="tip">
+          * 阅读2分30秒 +10SS积分
+        </p>
+        <p class="tip">
+          * 新内容 +5SS积分
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -48,10 +57,6 @@ export default {
       type: Number,
       default: 0
     },
-    value: {
-      type: String,
-      default: 'title'
-    },
     token: {
       type: Object,
       default: () => ({
@@ -64,7 +69,6 @@ export default {
   },
   data() {
     return {
-      type: 'title',
       showTip: false
     }
   },
@@ -72,6 +76,41 @@ export default {
     // 是否被点击过
     clicked() {
       return this.type !== 'title'
+    },
+    type() {
+      if (parseInt(this.token.is_liked) === 0) {
+        return 'title'
+      }
+      if (parseInt(this.token.is_liked) === 1) {
+        return 'great'
+      }
+      if (parseInt(this.token.is_liked) === 2) {
+        return 'bullshit'
+      }
+      return 'title'
+    },
+    pointArr() {
+      const { points } = this.token
+      const pointTypes = {
+        reading: '用户阅读', // 用户阅读
+        // beread: '+', // 读者的文章被阅读
+        // publish: '+', // 发布文章
+        reading_new: '阅读新文章', // 用户阅读新文章，额外获得的
+        // beread_new: '+', // 读者的新文章被阅读，额外获得的
+        like: '用户阅读', // 读者的新文章被阅读，额外获得的
+        dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
+      }
+      const result = []
+      points.forEach(item => {
+        const { type, amount } = item
+        if (pointTypes[type]) {
+          result.push({
+            text: pointTypes[type],
+            amount
+          })
+        }
+      })
+      return result
     },
     // 阅读积分
     readPoint() {
@@ -136,17 +175,27 @@ export default {
   margin-top: 10px;
 }
 .like-btn {
+  min-width: 200px;
   position: absolute;
   top: 30px;
   left: 30px;
   padding: 10px 36px;
-  background: #ddd;
+  background: #F1F1F1;
   z-index: 99;
   font-size: 14px;
   border-radius: 6px;
   p {
     color: #000;
     margin: 10px 0;
+  }
+  .tip-container {
+    margin-top: 20px;
+    .tip {
+      color: #B2B2B2;
+      font-style:italic;
+      font-size: 12px;
+      margin: 0;
+    }
   }
   .btns-container {
     .flexCenter();
@@ -214,9 +263,5 @@ export default {
 }
 .hidden {
   visibility: hidden;
-}
-.tip {
-  color: #ccc;
-  font-style:italic;
 }
 </style>
