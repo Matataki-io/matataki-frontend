@@ -286,6 +286,7 @@ export default {
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
+    clearInterval(this.timer)
   },
   watch: {
     timeCount(v) {
