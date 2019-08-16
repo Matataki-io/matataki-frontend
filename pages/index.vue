@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      nowMainIndex: 0,
+      nowMainIndex: 1,
       recommendList: [],
       initData: [],
       articleCardData: [
@@ -95,12 +95,12 @@ export default {
           isAtuoRequest: false
         },
         {
-          title: '最多投资',
+          title: '热门文章',
           params: {
             channel: 1,
             extra: 'short_content'
           },
-          apiUrl: 'homeSupportsRanking',
+          apiUrl: 'homeScoreRanking',
           articles: [],
           isAtuoRequest: true
         }

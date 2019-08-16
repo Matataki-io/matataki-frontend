@@ -2,6 +2,7 @@ export const paginationUrl = {
   // home
   homeTimeRanking: 'posts/timeRanking',
   homeSupportsRanking: 'posts/supportsRanking',
+  homeScoreRanking: 'posts/scoreRanking',
   homeAmountRankingEOS: 'posts/amountRanking',
   homeAmountRankingONT: 'posts/amountRanking',
   // article comments
