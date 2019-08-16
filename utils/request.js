@@ -42,6 +42,13 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
     (response) => {
       if(loadingInstance) loadingInstance.close();
+      if(response.status === 429) {
+        Message.closeAll()
+        Message({
+          message: '发文频繁，请稍后重试',
+          type: 'error'
+        })
+      }
       return response.data;
     },
     (error) => {
@@ -53,8 +60,15 @@ _axios.interceptors.response.use(
           message: '请求超时',
           type: 'error'
         })
-        loadingInstance.close()
       }
+      if (error.message.includes('Network Error')) {
+        Message.closeAll()
+        Message({
+          message: '网络错误',
+          type: 'error'
+        })
+      }
+      loadingInstance.close()
       return Promise.reject(error);
     }
 );
