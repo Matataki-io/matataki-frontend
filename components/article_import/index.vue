@@ -4,7 +4,7 @@
     width="460px"
     :show-close="false"
     :close-on-click-modal="false"
-    class="import"
+    custom-class="import br10"
     @close="$emit('close')"
   >
     <el-input v-model="url" placeholder="请输入文章网址链接，包含http(s)://" />

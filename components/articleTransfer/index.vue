@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="375px" :lock-scroll="false" @close="change">
+  <el-dialog :visible.sync="showModal" width="375px" :lock-scroll="false" custom-class="br10" @close="change">
     <div v-if="widgetModalStatus === 0" class="widget-writecontent">
       <p class="widget-title">
         转让文章的ownership

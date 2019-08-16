@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false">
+  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" custom-class="br10">
     <div class="buy-product-modal">
       <h1 class="title">
         购买商品

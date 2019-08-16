@@ -4,7 +4,7 @@
     width="400px"
     :show-close="false"
     :lock-scroll="false"
-    custom-class="my-dialog"
+    custom-class="my-dialog br10"
   >
     <div class="feedback-outer">
       <img :src="fbImg" alt="" class="icon">
@@ -12,7 +12,9 @@
         <p>阅读新文章</p>
         <p>已获得5个SS积分</p>
       </div>
-      <p class="bottom-tip">阅读3天内发表的新文章可额外获得5个SS积分</p>
+      <p class="bottom-tip">
+        阅读3天内发表的新文章可额外获得5个SS积分
+      </p>
     </div>
   </el-dialog>
 </template>

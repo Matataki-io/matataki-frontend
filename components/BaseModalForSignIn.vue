@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="320px" :modal="true" custom-class="my-dialog">
+  <el-dialog :visible.sync="showModal" width="320px" :modal="true" custom-class="my-dialog br10">
     <section v-if="step === 1" class="step">
       <h1 class="step-title">
         选择授权方式

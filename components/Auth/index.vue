@@ -3,7 +3,7 @@
     :visible.sync="showModal"
     width="380px"
     :modal="true"
-    custom-class="my-dialog"
+    custom-class="my-dialog br10"
     :close-on-click-modal="false"
     @closed="() => {step = 1; isLogin = true}"
   >
