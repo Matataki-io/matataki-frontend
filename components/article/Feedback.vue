@@ -8,9 +8,11 @@
   >
     <div class="feedback-outer">
       <img :src="fbImg" alt="" class="icon">
-      <div class="feedback-title">
-        <p>阅读新文章</p>
-        <p>已获得5个SS积分</p>
+      <div class="feedback-title" v-if="p.reading > 0">
+        <p>阅读文章，获得{{p.reading}}个SS积分</p>
+      </div>
+      <div class="feedback-title" v-if="p.reading_new > 0">
+        <p>阅读新文章，获得{{p.reading_new}}个SS积分</p>
       </div>
       <p class="bottom-tip">阅读3天内发表的新文章可额外获得5个SS积分</p>
     </div>
@@ -29,6 +31,12 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    points: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -38,7 +46,24 @@ export default {
   },
   computed: {
     fbImg() {
-      return newImg
+      return completedImg
+    },
+    p() {
+      const { points } = this
+      const l = points.length
+      let result = {
+        reading_new: 0,
+        reading: 0
+      }
+      for(let i = 0;i < l;i++) {
+        if (points[i].type === 'reading_new') {
+          result.reading_new = points[i].amount
+        }
+        if (points[i].type === 'reading_dislike' || points[i].type === 'reading_like') {
+          result.reading = points[i].amount
+        }
+      }
+      return result
     }
   },
   watch: {

@@ -12,8 +12,8 @@
       <svg-icon v-show="type==='great'" icon-class="great-solid" />
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
-    <div :class="['title-container', {'hidden': showTip && !clicked}]">
-      <span class="title">SS积分</span>
+    <div :class="['title-container', {'hidden': showTip}]">
+      <span class="title">{{ clicked ? `+${allPoints}SS积分` : 'SS积分' }}</span>
     </div>
     <div class="like-btn" v-show="showTip">
       <div class="btns-container" v-if="!clicked">
@@ -75,10 +75,10 @@ export default {
       if (parseInt(this.token.is_liked) === 0) {
         return 'title'
       }
-      if (parseInt(this.token.is_liked) === 1) {
+      if (parseInt(this.token.is_liked) === 2) {
         return 'great'
       }
-      if (parseInt(this.token.is_liked) === 2) {
+      if (parseInt(this.token.is_liked) === 1) {
         return 'bullshit'
       }
       return 'title'
@@ -86,13 +86,13 @@ export default {
     pointArr() {
       const { points } = this.token
       const pointTypes = {
-        reading: '用户阅读', // 用户阅读
+        // reading: '用户阅读', // 用户阅读
         // beread: '+', // 读者的文章被阅读
         // publish: '+', // 发布文章
         reading_new: '阅读新文章', // 用户阅读新文章，额外获得的
         // beread_new: '+', // 读者的新文章被阅读，额外获得的
-        like: '用户阅读', // 读者的新文章被阅读，额外获得的
-        dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
+        reading_like: '用户阅读', // 读者的新文章被阅读，额外获得的
+        reading_dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
       }
       const result = []
       points.forEach(item => {
@@ -103,6 +103,14 @@ export default {
             amount
           })
         }
+      })
+      return result
+    },
+    allPoints() {
+      const { points } = this.token
+      let result = 0
+      points.forEach(item => {
+        result += item.amount
       })
       return result
     },
@@ -131,11 +139,13 @@ export default {
   },
   methods: {
     like() {
-      this.type = 'great'
+      this.token.is_liked = 2
+      this.showTip = false
       this.$emit('like')
     },
     dislike() {
-      this.type = 'bullshit'
+      this.token.is_liked = 1
+      this.showTip = false
       this.$emit('dislike')
     },
     enterBtn() {

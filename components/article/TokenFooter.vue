@@ -27,9 +27,17 @@
       </div>
     </div>
     <div class="article-info">
-      <div class="info1">
+      <div class="info1" v-if="!clicked">
         <span>已阅读{{readTime}}</span>
       </div>
+      <template v-else>
+        <div class="info1" v-if="p.reading > 0">
+          <span>阅读 + {{p.reading}}SS积分</span>
+        </div>
+        <div class="info1" v-if="p.reading_new > 0">
+          <span>新文章 + {{p.reading_new}}SS积分</span>
+        </div>
+      </template>
       <!-- <div class="info2">
         <span>新内容 +5</span>
       </div> -->
@@ -66,10 +74,10 @@ export default {
       if (parseInt(this.token.is_liked) === 0) {
         return 'title'
       }
-      if (parseInt(this.token.is_liked) === 1) {
+      if (parseInt(this.token.is_liked) === 2) {
         return 'great'
       }
-      if (parseInt(this.token.is_liked) === 2) {
+      if (parseInt(this.token.is_liked) === 1) {
         return 'bullshit'
       }
       return 'title'
@@ -84,6 +92,23 @@ export default {
         if (s !== 0) return `${m}分钟${s}秒`
         else return `${m}分钟`
       }
+    },
+    p() {
+      const { points } = this.token
+      const l = points.length
+      const result = {
+        reading_new: 0,
+        reading: 0
+      }
+      for (let i = 0; i < l; i++) {
+        if (points[i].type === 'reading_new') {
+          result.reading_new = points[i].amount
+        }
+        if (points[i].type === 'reading_dislike' || points[i].type === 'reading_like') {
+          result.reading = points[i].amount
+        }
+      }
+      return result
     }
   },
   methods: {
@@ -196,6 +221,9 @@ export default {
   .flexCenter();
   .info1 {
     text-align: center;
+  }
+  .info1+.info1 {
+    margin-left: 20px;
   }
   .info2, .info1 {
     .flexCenter();

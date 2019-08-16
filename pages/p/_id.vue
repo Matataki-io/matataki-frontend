@@ -67,7 +67,6 @@
       <div>
         <TokenFooter
           v-if="!isProduct"
-          v-model="tokenType"
           :time="timeCount"
           :token="ssToken"
           @like="like"
@@ -100,7 +99,6 @@
       </div>
       <CoinBtn
         v-if="!isProduct"
-        v-model="tokenType"
         :time="timeCount"
         :token="ssToken"
         @like="like"
@@ -137,7 +135,7 @@
       :article-id="article.id"
       :from="'article'"
     />
-    <FeedbackModal v-model="feedbackShow" />
+    <FeedbackModal v-model="feedbackShow" :points="ssToken.points"/>
   </div>
 </template>
 
@@ -191,7 +189,6 @@ export default {
       commentRequest: 0,
       timer: null,
       timeCount: 0,
-      tokenType: 'title',
       ssToken: {
         points: [],
         dislikes: 0,
@@ -293,13 +290,23 @@ export default {
   methods: {
     like() {
       clearInterval(this.timer)
-      this.likedOrDisLiked = true
-      this.$API.like(this.article.id, this.timeCount)
+      this.ssToken.is_liked = 2
+      this.$API.like(this.article.id, this.timeCount).then(res => {
+        if (res.code === 0) {
+          this.ssToken.points = res.data
+          this.feedbackShow = true
+        }
+      })
     },
     dislike() {
       clearInterval(this.timer)
-      this.likedOrDisLiked = true
-      this.$API.dislike(this.article.id, this.timeCount)
+      this.ssToken.is_liked = 1
+      this.$API.dislike(this.article.id, this.timeCount).then(res => {
+        if (res.code === 0) {
+          this.ssToken.points = res.data
+          this.feedbackShow = true
+        }
+      })
     },
     postBackendReading() {
       this.$API.reading(this.article.id)

@@ -67,7 +67,9 @@ export default {
         beread: '+', // 读者的文章被阅读
         publish: '+', // 发布文章
         reading_new: '+', // 用户阅读新文章，额外获得的
-        beread_new: '+' // 读者的新文章被阅读，额外获得的
+        beread_new: '+', // 读者的新文章被阅读，额外获得的
+        reading_like: '+',
+        reading_dislike: '+'
       }
       const switchType = {
         support_expenses: '',
@@ -119,11 +121,13 @@ export default {
         5: '提现审核失败'
       }
       const pointTypes = {
-        reading: '获取SS积分', // 用户阅读
-        beread: '获取SS积分', // 读者的文章被阅读
-        publish: '获取SS积分', // 发布文章
-        reading_new: '获取SS积分', // 用户阅读新文章，额外获得的
-        beread_new: '获取SS积分' // 读者的新文章被阅读，额外获得的
+        reading: '阅读获取SS积分', // 用户阅读
+        beread: '文章被阅读获取SS积分', // 读者的文章被阅读
+        publish: '发布文章获取SS积分', // 发布文章
+        reading_new: '阅读新文章获取SS积分', // 用户阅读新文章，额外获得的
+        beread_new: '新文章被阅读获取SS积分', // 读者的新文章被阅读，额外获得的
+        reading_like: '阅读获取SS积分',
+        reading_dislike: '阅读获取SS积分'
       }
       const switchType = {
         withdraw: switchStatus[status],
