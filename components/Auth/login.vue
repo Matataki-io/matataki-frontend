@@ -21,6 +21,7 @@
       <h1 class="oauth-title">
         第三方账号登录
       </h1>
+      <p class="warning-tip">不同帐号内容不互通</p>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
           <svg-icon class="eos" icon-class="eos_login" />
@@ -152,6 +153,12 @@ export default {
   .oauth-title {
     font-size: 16px;
     color: #000000;
+    margin-bottom: 0;
+    font-weight: 400;
+  }
+  .warning-tip {
+    font-size: 14px;
+    color: #FB6877;
     margin-bottom: 20px;
     font-weight: 400;
   }
