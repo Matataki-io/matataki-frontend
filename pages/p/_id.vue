@@ -336,6 +336,7 @@ export default {
       }
     },
     handleFocus() {
+      // https://github.com/hehongwei44/my-blog/issues/184
       window.onfocus = () => {
         console.log('页面激活')
         clearInterval(this.timer)

@@ -375,8 +375,8 @@ export default {
       this.$router.push({ path: `/p/${hash}` })
     },
     // 成功提示
-    success(hash) {
-      this.$message.success('发送成功,自动跳转到你发表的文章')
+    success(hash, msg = '发送成功,自动跳转到你发表的文章') {
+      this.$message.success(msg)
       this.jumpToArticle(hash)
     },
     // 发送文章到ipfs
@@ -416,7 +416,7 @@ export default {
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
-        success(response.data)
+        success(response.data, '发文成功，奖励10 SS积分')
       } catch (error) {
         console.error(error)
         failed(error)
