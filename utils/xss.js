@@ -46,9 +46,21 @@ export const xssFilter = html => {
   let brTag = ['style']
   let strongTag = ['style']
   let h2Tag = ['style']
+  let svgTag = ['svg', 'x', 'y', 'viewbox', 'width', 'style', 'g', 'line', 'xmlns']
+  let lineTag = ['style', 'x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'stroke-width', 'stroke-miterlimit']
+  let gTag = ['style']
+  let ulTag = ['style']
+  let polygonTag = ['style', 'fill' ,'points']
   whiteList.br.push(...brTag)
   whiteList.strong.push(...strongTag)
   whiteList.h2.push(...h2Tag)
+
+  whiteList.svg = [...svgTag]
+  whiteList.g = [...gTag]
+  whiteList.polygon = [...polygonTag]
+  whiteList.line = [...lineTag]
+  whiteList.ul.push(...ulTag)
+
 
   const options = {
     whiteList,
