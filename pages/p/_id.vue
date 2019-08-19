@@ -193,7 +193,7 @@ export default {
         points: [],
         dislikes: 0,
         likes: 0,
-        is_liked: 3
+        is_liked: 0
       },
       feedbackShow: false
     }
@@ -286,25 +286,41 @@ export default {
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
+    clearInterval(this.timer)
+  },
+  watch: {
+    timeCount(v) {
+      if (v >= 150) {
+        clearInterval(this.timer)
+      }
+    }
   },
   methods: {
     like() {
-      clearInterval(this.timer)
-      this.ssToken.is_liked = 2
       this.$API.like(this.article.id, this.timeCount).then(res => {
         if (res.code === 0) {
+          clearInterval(this.timer)
+          this.ssToken.is_liked = 2
           this.ssToken.points = res.data
           this.feedbackShow = true
+        }
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
         }
       })
     },
     dislike() {
-      clearInterval(this.timer)
-      this.ssToken.is_liked = 1
       this.$API.dislike(this.article.id, this.timeCount).then(res => {
         if (res.code === 0) {
+          clearInterval(this.timer)
+          this.ssToken.is_liked = 1
           this.ssToken.points = res.data
           this.feedbackShow = true
+        }
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
         }
       })
     },
@@ -421,10 +437,10 @@ export default {
         if (res.code === 0) {
           this.isSupport = res.data.is_support
           this.ssToken = {
-            points: res.data.points, // 用户是否喜欢了这篇文章
+            points: res.data.points || [], // 用户是否喜欢了这篇文章
             dislikes: res.data.dislikes, // 用户获得的积分
             likes: res.data.likes, // 文章被赞次数
-            is_liked: res.data.is_liked // 文章被喷次数
+            is_liked: res.data.is_liked || 0 // 文章被喷次数
           }
         }
       } catch (error) {

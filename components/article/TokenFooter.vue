@@ -118,11 +118,9 @@ export default {
   },
   methods: {
     like() {
-      this.type = 'great'
       this.$emit('like')
     },
     dislike() {
-      this.type = 'bullshit'
       this.$emit('dislike')
     }
   }

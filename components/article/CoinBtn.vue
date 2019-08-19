@@ -23,7 +23,7 @@
           已阅读{{ readTime }}
         </p>
         <template v-else>
-          <p v-for="(item, i) in pointArr" :key="i">
+          <p v-for="(item, i) in points.arr" :key="i">
             {{ item.text }} +{{ item.amount }}SS积分
           </p>
         </template>
@@ -43,7 +43,7 @@
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <a class="title" href="/user/account/integral" target="_blank">{{ clicked ? `+${allPoints}SS积分` : 'SS积分' }}</a>
+      <a class="title" href="/user/account/integral" target="_blank">{{ clicked ? `+${points.all}SS积分` : 'SS积分' }}</a>
     </div>
   </div>
 </template>
@@ -91,7 +91,7 @@ export default {
       }
       return 'title'
     },
-    pointArr() {
+    points() {
       const { points } = this.token
       const pointTypes = {
         // reading: '用户阅读', // 用户阅读
@@ -102,25 +102,22 @@ export default {
         reading_like: '用户阅读', // 读者的新文章被阅读，额外获得的
         reading_dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
       }
-      const result = []
+      const arr = []
+      let all = 0
       points.forEach(item => {
         const { type, amount } = item
         if (pointTypes[type]) {
-          result.push({
+          all += amount
+          arr.push({
             text: pointTypes[type],
             amount
           })
         }
       })
-      return result
-    },
-    allPoints() {
-      const { points } = this.token
-      let result = 0
-      points.forEach(item => {
-        result += item.amount
-      })
-      return result
+      return {
+        all,
+        arr
+      }
     },
     // 阅读积分
     readPoint() {
@@ -155,12 +152,10 @@ export default {
   },
   methods: {
     like() {
-      this.token.is_liked = 2
       this.showTip = false
       this.$emit('like')
     },
     dislike() {
-      this.token.is_liked = 1
       this.showTip = false
       this.$emit('dislike')
     },
