@@ -7,7 +7,7 @@
     }"
   >
     <template v-if="imgStatus">
-      <img v-if="src" :src="src + 1" alt="avatar" @onerror="() => imgStatus = false">
+      <img v-if="src" :src="src" alt="avatar" @onerror="() => imgStatus = false">
       <svg-icon v-else icon-class="avatar" class="icon-avatar" />
     </template>
     <svg-icon v-else icon-class="crack" class="icon-crack" />
@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      imaStatus: true
+      imgStatus: true
     }
   }
 }
