@@ -6,8 +6,11 @@
       height: size
     }"
   >
-    <img v-if="src" :src="src" alt="avatar">
-    <svg-icon v-else icon-class="avatar" class="icon-avatar" />
+    <template v-if="imgStatus">
+      <img v-if="src" :src="src + 1" alt="avatar" @onerror="() => imgStatus = false">
+      <svg-icon v-else icon-class="avatar" class="icon-avatar" />
+    </template>
+    <svg-icon v-else icon-class="crack" class="icon-crack" />
   </div>
 </template>
 
@@ -23,6 +26,11 @@ export default {
       type: String,
       default: '1rem'
     }
+  },
+  data() {
+    return {
+      imaStatus: true
+    }
   }
 }
 </script>
@@ -37,12 +45,21 @@ export default {
   overflow: hidden;
   border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   img {
     .imgObjectFitCover();
   }
   .icon-avatar {
     .imgObjectFitCover();
     color: #c1c4cc;
+  }
+  .icon-crack {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    color: #5d5d5d;
   }
 }
 </style>

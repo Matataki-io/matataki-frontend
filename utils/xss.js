@@ -50,6 +50,8 @@ export const xssFilter = html => {
 
 
 
+
+
   const options = {
     whiteList,
     // eslint-disable-next-line no-unused-vars
