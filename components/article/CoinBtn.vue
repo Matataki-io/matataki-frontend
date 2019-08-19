@@ -152,12 +152,10 @@ export default {
   },
   methods: {
     like() {
-      this.token.is_liked = 2
       this.showTip = false
       this.$emit('like')
     },
     dislike() {
-      this.token.is_liked = 1
       this.showTip = false
       this.$emit('dislike')
     },
