@@ -19,21 +19,6 @@ export const xssFilter = html => {
     'scrolling'
   ]
   whiteList.embed = ['src', 'allowFullScreen', 'quality', 'width', 'height', 'align', 'type']
-  whiteList.section = [
-    'class',
-    'style',
-    'data-color',
-    'data-bgless',
-    'data-bglessp',
-    'data-custom',
-    'data-brushtype',
-    'data-width',
-    'data-role',
-    'data-autoskip',
-    'data-ratio',
-    'data-id',
-    'data-tools'
-  ]
   whiteList.span = ['class', 'style']
   whiteList.p = ['class', 'style']
   let aTag = ['class', 'style', 'href', 'data-url', 'target']
@@ -51,6 +36,7 @@ export const xssFilter = html => {
   let gTag = ['style']
   let ulTag = ['style']
   let polygonTag = ['style', 'fill' ,'points']
+  let sectionTag = ['style']
   whiteList.br.push(...brTag)
   whiteList.strong.push(...strongTag)
   whiteList.h2.push(...h2Tag)
@@ -60,6 +46,8 @@ export const xssFilter = html => {
   whiteList.polygon = [...polygonTag]
   whiteList.line = [...lineTag]
   whiteList.ul.push(...ulTag)
+  whiteList.section = [...sectionTag]
+
 
 
   const options = {
