@@ -23,7 +23,7 @@ const _axios = axios.create({
 let loadingInstance = null;
 _axios.interceptors.request.use(
   (config) => {
-    console.log('user request interceptors', config, config.noLoading)
+    // console.log('user request interceptors', config, config.noLoading)
     if (!config.noLoading) {
       loadingInstance = Loading.service({
         background: 'rgba(0, 0, 0, 0.6)'
@@ -45,6 +45,7 @@ _axios.interceptors.response.use(
       return response.data;
     },
     (error) => {
+      loadingInstance.close()
       console.log(error.message)
       // 超时处理
       if (error.message.includes('timeout')) {
