@@ -46,7 +46,7 @@ export const xssFilter = html => {
   whiteList.polygon = [...polygonTag]
   whiteList.line = [...lineTag]
   whiteList.ul.push(...ulTag)
-  whiteList.section = [...sectionTag]
+  whiteList.section.push(...sectionTag)
 
 
 
