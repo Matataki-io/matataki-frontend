@@ -18,6 +18,18 @@
       </div>
 
       <div class="head-flex">
+        <div class="search">
+          <input type="text" class="input" @focus="searchFcous = true" @blur="searchFcous = false">
+          <svg-icon
+            class="icon-search"
+            icon-class="search"
+          />
+          <ul v-if="searchFcous" class="search-list">
+            <li v-for="item in 20" :key="item">
+              <a href="#">智能签名智能签名智能签名智能签名智能签名智能签名{{ item }}</a>
+            </li>
+          </ul>
+        </div>
         <svg-icon
           class="create"
           icon-class="write"
@@ -110,7 +122,8 @@ export default {
           url: 'shop'
         }
       ],
-      avatar: ''
+      avatar: '',
+      searchFcous: false
     }
   },
   computed: {
@@ -214,7 +227,7 @@ export default {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    margin-right: 40px;
+    margin: 0 40px;
     color: #000;
   }
   &-avatar {
@@ -255,6 +268,64 @@ export default {
   }
 }
 
+.search {
+  position: relative;
+  width:248px;
+  background:rgba(241,241,241,1);
+  border-radius:4px;
+  display: flex;
+  box-sizing: border-box;
+  .input {
+    flex: 1;
+    padding: 11px 40px 11px 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+
+    font-size:14px;
+    color:rgba(0,0,0,1);
+  }
+  .icon-search {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    cursor: pointer;
+  }
+}
+.search-list {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background: #fff;
+  width: 100%;
+  max-height: 280px;
+  background: rgba(255,255,255,1);
+  box-shadow: 0px 4px 16px 0px rgba(0,0,0,0.16);
+  border-radius: 4px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  li {
+    list-style: none;
+    &:hover {
+      background-color: #f1f1f1;
+    }
+    a {
+      font-size: 14px;
+      color: #000;
+      display: block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+      letter-spacing: 1px;
+      padding: 14px 10px;
+    }
+  }
+}
 </style>
 
 <style lang="less">
