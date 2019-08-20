@@ -32,11 +32,13 @@
           </ul>
         </div>
         <svg-icon
+          v-if="isLogined"
           class="create"
           icon-class="write"
           :style="customizeHeaderIconColorComputed"
           @click="writeP"
         />
+        <span v-else class="integral">首次登录领100SS积分</span>
         <el-dropdown v-if="isLogined">
           <div class="home-head-avatar" @click="$emit('login')">
             <avatar :size="'30px'" :src="avatar" />
@@ -345,6 +347,13 @@ export default {
       padding: 14px 10px;
     }
   }
+}
+
+.integral {
+  font-size:16px;
+  font-weight:500;
+  color:rgba(28,156,254,1);
+  margin: 0 20px;
 }
 </style>
 
