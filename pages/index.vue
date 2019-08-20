@@ -80,20 +80,10 @@ export default {
   },
   data() {
     return {
-      nowMainIndex: 1,
+      nowMainIndex: 0,
       recommendList: [],
       initData: [],
       articleCardData: [
-        {
-          title: '最新发布',
-          params: {
-            channel: 1,
-            extra: 'short_content'
-          },
-          apiUrl: 'homeTimeRanking',
-          articles: [],
-          isAtuoRequest: false
-        },
         {
           title: '热门文章',
           params: {
@@ -101,6 +91,16 @@ export default {
             extra: 'short_content'
           },
           apiUrl: 'homeScoreRanking',
+          articles: [],
+          isAtuoRequest: false
+        },
+        {
+          title: '最新发布',
+          params: {
+            channel: 1,
+            extra: 'short_content'
+          },
+          apiUrl: 'homeTimeRanking',
           articles: [],
           isAtuoRequest: true
         }
@@ -121,7 +121,7 @@ export default {
         channel: 1,
         extra: 'short_content'
       }
-      const resPagination = await paginationData($axios, 'homeTimeRanking', params)
+      const resPagination = await paginationData($axios, 'homeScoreRanking', params)
       if (resPagination.code === 0) initData.paginationData = resPagination.data.list
       else initData.paginationData = []
 

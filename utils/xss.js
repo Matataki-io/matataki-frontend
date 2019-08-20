@@ -7,6 +7,7 @@ export const xssFilter = html => {
   const { whiteList } = xss
 
   xss.cssFilter.options.whiteList['justify-content'] = true
+  xss.cssFilter.options.whiteList['flex'] = true
 
   whiteList.iframe = [
     'id',
