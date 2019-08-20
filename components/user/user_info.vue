@@ -3,9 +3,15 @@
     <div class="cover">
       <img src="@/assets/img/article_bg.svg" alt="cover">
     </div>
-    <avatar class="avatar" :src="userInfo.avatar" />
+    <div class="avatar-content">
+      <avatar class="avatar" :src="userInfo.avatar" />
+      <div class="info-type" :class="iconType">
+        <svg-icon title="账号类型" class="icon-type" :icon-class="iconType" />
+      </div>
+    </div>
     <h3 class="author">
       {{ userInfo.name }}
+      <svg-icon class="icon-edit" icon-class="edit" @click="jumpTo" />
     </h3>
     <p class="des">
       {{ userInfo.introduction || '暂无' }}
@@ -60,6 +66,11 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      iconType: ''
+    }
+  },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
@@ -73,17 +84,25 @@ export default {
   watch: {
     currentUserInfo() {
       if (this.isSetting) this.refreshUser({ id: this.currentUserInfo.id })
+      this.iconType = (this.currentUserInfo.idProvider).toLocaleLowerCase()
     }
   },
+
   mounted() {
     if (!this.isSetting) this.refreshUser({ id: this.$route.params.id })
     else if (this.currentUserInfo.id) this.refreshUser({ id: this.currentUserInfo.id })
+    if (this.currentUserInfo.idProvider) this.iconType = (this.currentUserInfo.idProvider).toLocaleLowerCase()
   },
   methods: {
     ...mapActions('user', [
       'refreshUser',
       'followOrUnfollowUser'
-    ])
+    ]),
+    jumpTo() {
+      this.$router.push({
+        name: 'user-setting'
+      })
+    }
   }
 }
 </script>
@@ -104,10 +123,45 @@ export default {
 .avatar {
     width: 60px !important;
     height: 60px !important;
-    margin: -30px auto;
     background: #eee;
     z-index: 1;
     position: relative;
+}
+.avatar-content {
+  width: 60px !important;
+  height: 60px !important;
+  margin: -30px auto;
+  position: relative;
+  .info-type {
+    position: absolute;
+    right: -4px;
+    bottom: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+    .icon-type {
+      color: #fff;
+      width: 60%;
+      height: 60%;
+    }
+    &.email {
+      background-color: #F7B500;
+    }
+    &.eos {
+      background-color: #333;
+    }
+    &.ont {
+      background-color: #4d9afd;
+    }
+    &.github {
+      background-color: #882592;
+    }
+  }
 }
 .cover {
   width: 100%;
@@ -124,12 +178,18 @@ export default {
     font-size: 20px;
     font-weight: 500;
     color: #000000;
-    line-height: 28px;
-    margin: 40px auto 0;
+    margin: 46px auto 0;
     width: 90%;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
+    .icon-edit {
+      position: absolute;
+      margin-left: 6px;
+      cursor: pointer;
+      color: #B2B2B2;
+    }
 }
 .des {
     padding: 0;
