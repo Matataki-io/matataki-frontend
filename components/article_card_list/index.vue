@@ -1,58 +1,63 @@
 <template>
   <n-link :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank">
-    <div class="article">
-      <!-- 适用于 首页, 商品页, 标签页 -->
-      <!-- 区分那种卡 -->
-      <div class="cover">
-        <img v-if="cover" :src="cover" alt="cover">
-        <img v-else src="@/assets/img/article_bg.svg" alt="cover">
-      </div>
-      <div class="container">
-        <div class="info">
-          <!-- 暂时用文章页代替跳转地址 -->
-          <n-link
-            target="_blank"
-            :to=" {name: 'user-id', params: {id: Uid}} "
-            class="author"
-          >
-            <avatar class="avatar" :size="'30px'" :src="avatarImg" />
-            <span class="username">
-              {{ card && (card.nickname || card.author || '') }}
-            </span>
-          </n-link>
-          <!-- 暂时用文章页代替跳转地址 end -->
-          <div class="date">
-            {{ dateCard }}
+    <div class="bg">
+      <div class="article">
+        <!-- 适用于 首页, 商品页, 标签页 -->
+        <!-- 区分那种卡 -->
+        <div class="cover">
+          <img v-if="cover" :src="cover" alt="cover">
+          <img v-else src="@/assets/img/article_bg.svg" alt="cover">
+        </div>
+        <div class="container">
+          <div class="info">
+            <!-- 暂时用文章页代替跳转地址 -->
+            <n-link
+              target="_blank"
+              :to=" {name: 'user-id', params: {id: Uid}} "
+              class="author"
+            >
+              <avatar class="avatar" :size="'30px'" :src="avatarImg" />
+              <span class="username">
+                {{ card && (card.nickname || card.author || '') }}
+              </span>
+            </n-link>
+            <!-- 暂时用文章页代替跳转地址 end -->
+            <div class="date">
+              {{ dateCard }}
+            </div>
+          </div>
+          <div class="article-title">
+            <h3 v-clampy="2">
+              {{ card && (card.title || '') }}
+            </h3>
+          </div>
+          <div class="des">
+            <!-- 文章卡阅读和投资 -->
+            <span class="data">
+              {{ card && (card.read === 0 ? 0 : card.read) }}
+              浏览</span>
+            <span class="data">
+              {{ card && card.ups || 0 }}
+              {{ '投资' }}</span>
+            <span class="empty" />
+            <!-- 暂时用文章页代替跳转地址 -->
+            <n-link
+              :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
+              target="_blank"
+              class="title"
+              :style="tagStyle"
+            >
+              {{ tagName }}
+            </n-link>
+            <!-- 暂时用文章页代替跳转地址 end -->
           </div>
         </div>
-        <div class="article-title">
-          <h3 v-clampy="2">
-            {{ card && (card.title || '') }}
-          </h3>
-        </div>
-        <div class="des">
-          <!-- 文章卡阅读和投资 -->
-          <span class="data">
-            {{ card && (card.read === 0 ? 0 : card.read) }}
-            浏览</span>
-          <span class="data">
-            {{ card && (type === 'product' ? card.sale || 0 : card.ups || 0) }}
-            {{ type === 'product' ? '销量' : '投资' }}</span>
-          <span class="empty" />
-          <!-- 暂时用文章页代替跳转地址 -->
-          <n-link
-            :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
-            target="_blank"
-            class="title"
-            :style="tagStyle"
-          >
-            {{ tagName }}
-          </n-link>
-        <!-- 暂时用文章页代替跳转地址 end -->
-        </div>
       </div>
+      <div v-if="isSearchCad" class="content-text">
+        {{ card && card.short_content }}
+      </div>
+      <div style="width: 0;height: 0;" />
     </div>
-    <div style="width: 0;height: 0;" />
   </n-link>
 </template>
 
@@ -70,13 +75,15 @@ export default {
     avatar
   },
   props: {
+    // 卡片数据
     card: {
       type: Object,
       required: true
     },
-    type: {
-      type: String,
-      default: 'article'
+    // 是否为搜索卡
+    isSearchCad: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -130,6 +137,17 @@ export default {
 .empty {
   flex: 1;
 }
+
+.bg {
+  width: 100%;
+  background: #fff;
+  transition: all 0.3s;
+  border-radius: 10px;
+  &:hover {
+    transform: translate(0, -4px);
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+  }
+}
 .container {
   flex: 1;
   height: 148px;
@@ -141,12 +159,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
   box-sizing: border-box;
-  border-radius: 10px;
   padding: 20px;
   overflow: hidden;
-  transition: all 0.3s;
   margin-top: 14px;
   text-decoration: none;
 
@@ -165,10 +180,7 @@ export default {
       line-height:28px;
     }
   }
-  &:hover {
-    transform: translate(0, -4px);
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
-  }
+
   &-title {
     h3 {
       font-size: 20px;
@@ -265,6 +277,14 @@ export default {
     font-size: 18px;
     color: #000000;
   }
+}
+
+.content-text {
+  padding: 0 20px 20px;
+  font-size:16px;
+  font-weight:400;
+  color: #333;
+  line-height:22px;
 }
 
 </style>

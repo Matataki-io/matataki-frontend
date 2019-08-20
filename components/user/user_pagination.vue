@@ -40,6 +40,11 @@ export default {
     needAccessToken: {
       type: Boolean,
       default: false
+    },
+    // 刷新
+    reload: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -56,6 +61,11 @@ export default {
     },
     params(newVal) {
       this.currentPageData(this.apiUrl, this.params, this.currentPage)
+    },
+    // 刷新 改变当前页数和重新请求
+    reload() {
+      this.currentPageCopy = this.currentPage
+      this.reloadFunc()
     }
   },
   created() {
@@ -92,6 +102,10 @@ export default {
     currentChange(i) {
       console.log('currentChange', i)
       this.togglePage(i)
+    },
+    // 刷新方法
+    reloadFunc() {
+      this.currentPageData(this.apiUrl, this.params, this.currentPage)
     }
   }
 }

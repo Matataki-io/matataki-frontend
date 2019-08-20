@@ -19,10 +19,11 @@
 
       <div class="head-flex">
         <div class="search">
-          <input type="text" class="input" @focus="searchFcous = true" @blur="searchFcous = false">
+          <input v-model="searchInput" type="text" class="input" @focus="searchFcous = true" @blur="searchFcous = false">
           <svg-icon
             class="icon-search"
             icon-class="search"
+            @click="jutmpToSearch"
           />
           <ul v-if="searchFcous" class="search-list">
             <li v-for="item in 20" :key="item">
@@ -83,6 +84,9 @@ import { mapGetters, mapActions } from 'vuex'
 import homeLogo from '@/assets/img/home_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
+
+import { strTrim } from '@/utils/reg'
+
 export default {
   name: 'HomeHead',
   components: {
@@ -108,6 +112,11 @@ export default {
     customizeHeaderLogo: {
       type: String,
       default: 'default'
+    },
+    // 搜索内容
+    searchQueryVal: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -123,7 +132,8 @@ export default {
         }
       ],
       avatar: '',
-      searchFcous: false
+      searchFcous: false,
+      searchInput: this.searchQueryVal
     }
   },
   computed: {
@@ -185,6 +195,16 @@ export default {
         this.$router.push('/')
         window.location.reload()
       }
+    },
+    jutmpToSearch() {
+      if (!strTrim(this.searchInput)) return this.$message.warning('搜索内容不能为空')
+      this.$router.push({
+        name: 'search',
+        query: {
+          q: strTrim(this.searchInput)
+        }
+      })
+      this.$emit('search', strTrim(this.searchInput))
     }
   }
 }
