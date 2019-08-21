@@ -92,13 +92,13 @@ export default {
       }
     },
     paginationData(res) {
+      this.articleCardData[0].articles = []
       this.articleCardData[0].articles = res.data.list
       this.total = res.data.count
       this.loading = false
     },
     togglePage(i) {
       this.loading = true
-      this.articleCardData[0].articles = []
       this.currentPage = i
       this.$router.push({
         query: {

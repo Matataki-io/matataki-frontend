@@ -288,7 +288,8 @@ export default {
   font-size:16px;
   font-weight:400;
   color: #333;
-  line-height:22px;
+  line-height: 1.5;
+  letter-spacing: 1px;
   overflow: hidden;
   word-break: break-all;
 }

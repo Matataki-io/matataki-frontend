@@ -195,6 +195,9 @@ export default {
     // 监听提示状态
     popoverVisible(newVal) {
       this.visible = newVal
+    },
+    searchQueryVal(newVal) {
+      this.searchInput = newVal
     }
   },
   created() {
