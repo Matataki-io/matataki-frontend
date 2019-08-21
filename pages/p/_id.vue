@@ -236,11 +236,14 @@ export default {
         is_liked: 0
       },
       feedbackShow: false,
+      // 三个引导提示的状态
       visiblePopover: {
         visible: false,
         visible1: false,
         visible2: false
-      }
+      },
+      timerShare: null, // 分享计时器
+      timeCountShare: 0 // 分享计时
     }
   },
   head() {
@@ -301,11 +304,14 @@ export default {
   },
   watch: {
     timeCount(v) {
-      if (v >= 60 && !store.get('shareVisible')) {
-        this.visiblePopover.visible1 = true
-      }
       if (v >= 150) {
         clearInterval(this.timer)
+      }
+    },
+    timeCountShare(v) {
+      if (v >= 60 && !store.get('shareVisible')) {
+        this.visiblePopover.visible1 = true
+        clearInterval(this.timerShare)
       }
     }
   },
@@ -343,13 +349,22 @@ export default {
     this.$nextTick(() => {
       // undefined false 显示
       if (!store.get('likeVisible')) this.visiblePopover.visible = true
+      this.shareCount()
     })
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
     clearInterval(this.timer)
+    clearInterval(this.timerShare)
   },
   methods: {
+    shareCount() {
+      this.timerShare = setInterval(() => {
+        this.timeCountShare++
+        // console.log(this.timeCountShare)
+      }, 1000)
+    },
+    // 提示点击确定后
     poopverDone(visible) {
       // likeVisible shareVisible userVisible
       if (visible === 'visible') {
