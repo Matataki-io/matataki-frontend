@@ -25,16 +25,16 @@
             class="input"
             @keyup.enter="jutmpToSearch"
             @focus="searchFcous = true"
-            @blur="searchFcous = false"
+            @blur="inputBlur"
           >
           <svg-icon
             class="icon-search"
             icon-class="search"
-            @click="jutmpToSearch"
+            @click.stop="jutmpToSearch"
           />
-          <ul v-if="searchFcous" class="search-list">
-            <li v-for="item in 20" :key="item">
-              <a href="#">智能签名智能签名智能签名智能签名智能签名智能签名{{ item }}</a>
+          <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
+            <li v-for="(item, index) in searchRecommendList" :key="index" @click.stop="jutmpToSearchRecommend(item.word)">
+              <a href="javascript:;">{{ item.word }}</a>
             </li>
           </ul>
         </div>
@@ -166,7 +166,8 @@ export default {
       avatar: '',
       searchFcous: false,
       searchInput: this.searchQueryVal,
-      visible: this.popoverVisible
+      visible: this.popoverVisible,
+      searchRecommendList: []
     }
   },
   computed: {
@@ -204,6 +205,9 @@ export default {
     const { isLogined, refreshUser } = this
     if (isLogined) refreshUser()
   },
+  mounted() {
+    this.getRecommend()
+  },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
     writeP() {
@@ -234,6 +238,7 @@ export default {
         window.location.reload()
       }
     },
+    // 跳转搜索
     jutmpToSearch() {
       if (!strTrim(this.searchInput)) return this.$message.warning('搜索内容不能为空')
       this.$router.push({
@@ -243,6 +248,25 @@ export default {
         }
       })
       this.$emit('search', strTrim(this.searchInput))
+    },
+    // 推荐跳转
+    jutmpToSearchRecommend(word) {
+      this.searchInput = word
+      this.jutmpToSearch()
+    },
+    // 失去焦点
+    inputBlur() {
+      setTimeout(() => {
+        this.searchFcous = false
+      }, 150)
+    },
+    // 获得推荐
+    async getRecommend() {
+      await this.$API.searchRecommend({ area: 1 })
+        .then(res => {
+          if (res.code === 0) this.searchRecommendList = res.data
+        })
+        .catch(err => { console.log(err) })
     }
   }
 }
