@@ -19,7 +19,14 @@
 
       <div class="head-flex">
         <div class="search">
-          <input v-model="searchInput" type="text" class="input" @focus="searchFcous = true" @blur="searchFcous = false">
+          <input
+            v-model="searchInput"
+            type="text"
+            class="input"
+            @keyup.enter="jutmpToSearch"
+            @focus="searchFcous = true"
+            @blur="searchFcous = false"
+          >
           <svg-icon
             class="icon-search"
             icon-class="search"

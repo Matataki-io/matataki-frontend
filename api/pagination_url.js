@@ -22,5 +22,7 @@ export const paginationUrl = {
   // buy
   buyHistory: 'order/products',
   // 用户积分日志
-  userPoint: 'user/points'
+  userPoint: 'user/points',
+  // 搜索文章
+  searchArticleList: 'posts/search'
 }

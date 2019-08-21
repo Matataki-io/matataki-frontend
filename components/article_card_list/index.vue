@@ -27,9 +27,7 @@
             </div>
           </div>
           <div class="article-title">
-            <h3 v-clampy="2">
-              {{ card && (card.title || '') }}
-            </h3>
+            <h3 v-clampy="2" class="search-res" v-html="xssTitle" />
           </div>
           <div class="des">
             <!-- 文章卡阅读和投资 -->
@@ -53,11 +51,9 @@
           </div>
         </div>
       </div>
-      <div v-if="isSearchCad" class="content-text">
-        {{ card && card.short_content }}
-      </div>
-      <div style="width: 0;height: 0;" />
+      <div v-if="isSearchCad" class="content-text search-res" v-html="xssContent" />
     </div>
+    <div style="width: 0;height: 0;" />
   </n-link>
 </template>
 
@@ -68,6 +64,7 @@ import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { tagColor } from '@/utils/tag'
+import { xssFilter } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
@@ -87,6 +84,12 @@ export default {
     }
   },
   computed: {
+    xssTitle() {
+      return xssFilter(this.card.title)
+    },
+    xssContent() {
+      return xssFilter(this.card.short_content)
+    },
     tagStyle() {
       const id = this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
       return {
@@ -148,6 +151,7 @@ export default {
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
   }
 }
+
 .container {
   flex: 1;
   height: 148px;
@@ -285,6 +289,17 @@ export default {
   font-weight:400;
   color: #333;
   line-height:22px;
+  overflow: hidden;
+  word-break: break-all;
 }
 
+</style>
+
+<style>
+.search-res em {
+  font-size: 20px;
+  font-weight: 500;
+  font-style: inherit;
+  color: #1C9CFE;
+}
 </style>

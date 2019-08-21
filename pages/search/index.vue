@@ -1,32 +1,35 @@
 <template>
   <div class="search">
     <g-header :search-query-val="searchQueryVal" @search="search" />
-    <div v-if="searchQueryValLen" class="search-container">
+    <div class="search-container">
       <p class="search-title">
         <span>{{ searchQueryVal }}</span>的搜索结果
       </p>
-      <articleCardList
-        v-for="(item, index) in articleCardData[0].articles"
-        :key="index"
-        :card="item"
-        :is-search-cad="true"
-      />
-      <div v-loading="loading" class="pagination">
-        <user-pagination
-          :current-page="currentPage"
-          :params="articleCardData[0].params"
-          :api-url="articleCardData[0].apiUrl"
-          :page-size="9"
-          :total="total"
-          :reload="reload"
-          @paginationData="paginationData"
-          @togglePage="togglePage"
+
+      <template v-show="searchQueryValLen">
+        <articleCardList
+          v-for="(item, index) in articleCardData[0].articles"
+          :key="index"
+          :card="item"
+          :is-search-cad="true"
         />
-      </div>
+        <div v-loading="loading" class="pagination">
+          <user-pagination
+            :current-page="currentPage"
+            :params="articleCardData[0].params"
+            :api-url="articleCardData[0].apiUrl"
+            :page-size="9"
+            :total="total"
+            :reload="reload"
+            @paginationData="paginationData"
+            @togglePage="togglePage"
+          />
+        </div>
+      </template>
+      <p v-show="!searchQueryValLen" class="not-val">
+        暂无搜索结果
+      </p>
     </div>
-    <p v-else class="not-val">
-      请输入搜索内容
-    </p>
   </div>
 </template>
 
@@ -45,12 +48,8 @@ export default {
       searchQueryVal: '',
       articleCardData: [
         {
-          params: {
-            channel: 1,
-            pagesize: 9,
-            extra: 'short_content'
-          },
-          apiUrl: 'homeScoreRanking',
+          params: { },
+          apiUrl: 'searchArticleList',
           articles: [],
           isAtuoRequest: false
         }
@@ -63,10 +62,12 @@ export default {
   },
   computed: {
     searchQueryValLen() {
-      return strTrim(this.$route.query.q).length !== 0
+      return this.articleCardData[0].articles.length !== 0
     }
   },
   created() {
+  },
+  mounted() {
     this.query()
   },
   methods: {
@@ -74,11 +75,21 @@ export default {
     search(val) {
       this.searchQueryVal = val
       this.currentPage = 1
+
+      this.articleCardData[0].params.word = this.searchQueryVal
+
       this.reload = Date.now()
     },
     query() {
-      if (!strTrim(this.$route.query.q)) this.$message.warning('搜索内容不能为空')
-      else this.searchQueryVal = strTrim(this.$route.query.q)
+      if (!strTrim(this.$route.query.q)) return this.$message.warning('搜索内容不能为空')
+      this.searchQueryVal = strTrim(this.$route.query.q)
+
+      this.articleCardData[0].params = {
+        channel: 1,
+        type: 'post',
+        pagesize: 9,
+        word: this.searchQueryVal
+      }
     },
     paginationData(res) {
       this.articleCardData[0].articles = res.data.list
@@ -87,7 +98,7 @@ export default {
     },
     togglePage(i) {
       this.loading = true
-      this.articleCardData.articles = []
+      this.articleCardData[0].articles = []
       this.currentPage = i
       this.$router.push({
         query: {
