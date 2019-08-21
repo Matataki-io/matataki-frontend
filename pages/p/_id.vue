@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <g-header>
+    <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')">
       <template slot="more">
         <el-dropdown v-if="isMe(article.uid)" trigger="click" @command="handleMoreAction">
           <div class="more-icon">
@@ -91,20 +91,57 @@
         </div>
         <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
       </div>
-      <div class="article-btn" @click="share">
-        <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-          <svg-icon icon-class="share" class="icon" />
-        </div>
-        <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
+      <div
+        class="article-btn"
+        @click="share"
+      >
+        <el-popover
+          v-model="visiblePopover.visible1"
+          placement="right"
+          width="300"
+          trigger="manual"
+        >
+          <p>点击右侧「分享文章」按钮可以随时分享给你的好友哦～</p>
+          <div style="text-align: right; margin: 0">
+            <el-button type="primary" size="mini" @click="poopverDone('visible1')">
+              知道了
+            </el-button>
+          </div>
+
+          <div
+            slot="reference"
+          >
+            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+              <svg-icon icon-class="share" class="icon" />
+            </div>
+            <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
+          </div>
+        </el-popover>
       </div>
-      <CoinBtn
-        v-if="!isProduct"
-        :time="timeCount"
-        :token="ssToken"
-        @like="like"
-        @dislike="dislike"
-      />
+
+      <el-popover
+        v-model="visiblePopover.visible"
+        placement="right"
+        width="300"
+        trigger="manual"
+      >
+        <p>阅读文章后请指向右侧图标并点击「推荐」或者「不推荐」，可以领取积分！</p>
+        <div style="text-align: right; margin: 0">
+          <el-button type="primary" size="mini" @click="poopverDone('visible')">
+            知道了
+          </el-button>
+        </div>
+        <CoinBtn
+          v-if="!isProduct"
+          slot="reference"
+          :time="timeCount"
+          :token="ssToken"
+          @like="like"
+          @dislike="dislike"
+        />
+      </el-popover>
     </div>
+
     <InvestModal
       v-model="investModalShow"
       :article="{
@@ -135,7 +172,8 @@
       :article-id="article.id"
       :from="'article'"
     />
-    <FeedbackModal v-model="feedbackShow" :points="ssToken.points"/>
+
+    <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
   </div>
 </template>
 
@@ -160,6 +198,8 @@ import FeedbackModal from '@/components/article/Feedback'
 
 import tag from '@/components/tags/tag.vue'
 import { ipfsData } from '@/api/async_data_api.js'
+
+import store from '@/utils/localStorage.js'
 export default {
   components: {
     CommentList,
@@ -195,7 +235,12 @@ export default {
         likes: 0,
         is_liked: 0
       },
-      feedbackShow: false
+      feedbackShow: false,
+      visiblePopover: {
+        visible: false,
+        visible1: false,
+        visible2: false
+      }
     }
   },
   head() {
@@ -254,6 +299,16 @@ export default {
       return parseInt(this.ssToken.is_liked) !== 0
     }
   },
+  watch: {
+    timeCount(v) {
+      if (v >= 60 && !store.get('shareVisible')) {
+        this.visiblePopover.visible1 = true
+      }
+      if (v >= 150) {
+        clearInterval(this.timer)
+      }
+    }
+  },
 
   async asyncData({ $axios, route }) {
     const hashOrId = route.params.id
@@ -283,20 +338,38 @@ export default {
     this.handleFocus()
     this.postBackendReading()
     if (!document.hidden) this.reading()
+
+    // dom加载完提示 推荐/不推荐
+    this.$nextTick(() => {
+      // undefined false 显示
+      if (!store.get('likeVisible')) this.visiblePopover.visible = true
+    })
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
     clearInterval(this.timer)
   },
-  watch: {
-    timeCount(v) {
-      if (v >= 150) {
-        clearInterval(this.timer)
-      }
-    }
-  },
   methods: {
+    poopverDone(visible) {
+      // likeVisible shareVisible userVisible
+      if (visible === 'visible') {
+        store.set('likeVisible', true)
+        this.visiblePopover.visible = false
+      } else if (visible === 'visible1') {
+        store.set('shareVisible', true)
+        this.visiblePopover.visible1 = false
+      } else if (visible === 'visible2') {
+        store.set('userVisible', true)
+        this.visiblePopover.visible2 = false
+      }
+    },
+    // 推荐或不推荐显示 用户popover提示
+    showUserPopover() {
+      if (!store.get('userVisible')) this.visiblePopover.visible2 = true
+    },
+    // 推荐
     like() {
+      this.showUserPopover()
       this.$API.like(this.article.id, this.timeCount).then(res => {
         if (res.code === 0) {
           clearInterval(this.timer)
@@ -310,7 +383,9 @@ export default {
         }
       })
     },
+    // 不推荐
     dislike() {
+      this.showUserPopover()
       this.$API.dislike(this.article.id, this.timeCount).then(res => {
         if (res.code === 0) {
           clearInterval(this.timer)

@@ -16,6 +16,7 @@ import {
   MessageBox,
   Checkbox,
   Slider,
+  Popover,
   Tooltip,
   Button,
   Switch,
@@ -39,6 +40,7 @@ Vue.use(DropdownItem)
 Vue.use(Pagination)
 Vue.use(Checkbox)
 Vue.use(Slider)
+Vue.use(Popover)
 Vue.use(Tooltip)
 Vue.use(Button)
 Vue.use(Switch)

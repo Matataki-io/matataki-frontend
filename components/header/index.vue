@@ -39,36 +39,54 @@
           @click="writeP"
         />
         <span v-else class="integral">新用户登录领100SS积分</span>
-        <el-dropdown v-if="isLogined">
-          <div class="home-head-avatar" @click="$emit('login')">
-            <avatar :size="'30px'" :src="avatar" />
+        <el-popover
+          v-if="isLogined"
+          v-model="visible"
+          placement="bottom"
+          width="300"
+          trigger="manual"
+        >
+          <p>请用鼠标指向用户头像并点击「我的账户」前往积分页面查看积分详情。</p>
+          <div style="text-align: right; margin: 0">
+            <el-button type="primary" size="mini" @click="$emit('popoverVisible', false)">
+              知道了
+            </el-button>
           </div>
-          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-            <el-dropdown-item>
-              {{ currentUserInfo.nickname || currentUserInfo.name }}
-            </el-dropdown-item>
-            <el-dropdown-item divided>
-              <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
-                我的账户
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
-                我的主页
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
-                设置
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div class="link" @click="btnsignOut">
-                退出
-              </div>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+
+          <el-dropdown
+            slot="reference"
+          >
+            <div class="home-head-avatar" @click="$emit('login')">
+              <avatar :size="'30px'" :src="avatar" />
+            </div>
+            <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+              <el-dropdown-item>
+                {{ currentUserInfo.nickname || currentUserInfo.name }}
+              </el-dropdown-item>
+              <el-dropdown-item divided>
+                <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
+                  我的账户
+                </n-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                  我的主页
+                </n-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
+                  设置
+                </n-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div class="link" @click="btnsignOut">
+                  退出
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-popover>
+
         <a
           v-else
           href="javascript:void(0);"
@@ -119,6 +137,11 @@ export default {
     searchQueryVal: {
       type: String,
       default: ''
+    },
+    // 用户提示
+    popoverVisible: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -135,7 +158,8 @@ export default {
       ],
       avatar: '',
       searchFcous: false,
-      searchInput: this.searchQueryVal
+      searchInput: this.searchQueryVal,
+      visible: this.popoverVisible
     }
   },
   computed: {
@@ -160,13 +184,15 @@ export default {
   watch: {
     isLogined(newState) {
       if (newState) this.refreshUser()
+    },
+    // 监听提示状态
+    popoverVisible(newVal) {
+      this.visible = newVal
     }
   },
   created() {
     const { isLogined, refreshUser } = this
     if (isLogined) refreshUser()
-
-    console.log(this.$route)
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
