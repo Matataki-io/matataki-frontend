@@ -214,7 +214,6 @@ export default {
   },
   // 搜索推荐
   searchRecommend(params){
-    // todo 等后端修改命名
-    return request('/search/recommand', params)
+    return request('/search/recommend', params)
   }
 }
