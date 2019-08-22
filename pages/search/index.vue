@@ -8,8 +8,8 @@
 
       <template v-show="searchQueryValLen">
         <articleCardList
-          v-for="(item, index) in articleCardData[0].articles"
-          :key="index"
+          v-for="item in articleCardData[0].articles"
+          :key="item.id"
           :card="item"
           :is-search-cad="true"
         />
