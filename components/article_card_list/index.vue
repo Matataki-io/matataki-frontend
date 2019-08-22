@@ -43,7 +43,6 @@
               :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
               target="_blank"
               class="title"
-              :style="tagStyle"
             >
               {{ tagName }}
             </n-link>
@@ -89,12 +88,6 @@ export default {
     },
     xssContent() {
       return xssFilter(this.card.short_content)
-    },
-    tagStyle() {
-      const id = this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
-      return {
-        color: tagColor()[id]
-      }
     },
     cover() {
       // console.log(this.card)
@@ -237,7 +230,7 @@ export default {
     cursor: pointer;
     font-size:16px;
     font-weight:500;
-    color:rgba(251,104,119,1);
+    color: #1C9CFE;
     line-height:22px;
   }
   .data {

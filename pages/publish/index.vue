@@ -140,7 +140,7 @@ import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
 import imgUpload from '@/components/imgUpload' // 图片上传
-import tagCard from '@/components/tagCard'
+import tagCard from '@/components/tag_card'
 import articleTransfer from '@/components/articleTransfer'
 
 import articleImport from '@/components/article_import/index.vue'

@@ -55,7 +55,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="tags commodity position-sticky top20">
+        <div class="tags commodity position-sticky top80">
           <span>商品标签</span>
           <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
         </div>

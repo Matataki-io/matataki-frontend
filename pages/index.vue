@@ -48,7 +48,7 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="tags article  position-sticky top20">
+        <div class="tags article  position-sticky top80">
           <span>文章标签</span>
           <tags class="tags-container" :type-index="0" :tag-cards="tagCards" />
         </div>

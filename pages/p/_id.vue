@@ -74,8 +74,14 @@
         />
       </div>
     </div>
-    <div v-if="article.tags.length !== 0" class="p-w tags-container">
-      <tag v-for="(item, index) in article.tags" :key="index" :tag="item" />
+    <div v-if="article.tags.length !== 0" class="p-w">
+      <n-link
+        v-for="(item, index) in article.tags"
+        :key="index"
+        class="tag-card"
+        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}">
+        {{ item.name }}
+      </n-link>
     </div>
     <CommentList :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
     <div v-show="navShow" class="sidebar">
@@ -196,7 +202,6 @@ import CoinBtn from '@/components/article/CoinBtn'
 import TokenFooter from '@/components/article/TokenFooter'
 import FeedbackModal from '@/components/article/Feedback'
 
-import tag from '@/components/tags/tag.vue'
 import { ipfsData } from '@/api/async_data_api.js'
 
 import store from '@/utils/localStorage.js'
@@ -210,7 +215,6 @@ export default {
     ArticleInfoFooter,
     ArticleFooter,
     articleTransfer,
-    tag,
     CoinBtn,
     TokenFooter,
     FeedbackModal

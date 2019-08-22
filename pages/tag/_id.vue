@@ -1,18 +1,11 @@
 <template>
   <div class="tag-page">
-    <g-header customize-header-logo="white" :customize-header-bc="customizeHeaderBc" customize-header-text-color="#fff" customize-header-icon-color="#fff" />
-    <div class="head" :style="tagStyleObject">
-      <tag-icon :id="Number($route.params.id)" />
-      <p class="head-title">
-        {{ articleCardData[0].title }}
-      </p>
-    </div>
-
-    <el-row class="container mw">
+    <g-header />
+    <el-row class="container mw mt40">
       <el-col :span="mainNavTypeIndex === 0 ? 16 : 18" class="main article not-padding">
         <!-- 导航部分 -->
         <div class="main-nav padding-10">
-          <span class="active">{{ mainNavTitle }}</span>
+          <span class="active">包含<em>{{ articleCardData[0].title }}</em>标签的文章</span>
         </div>
         <!-- 导航部分 end -->
         <!-- 空div控制内容 -->
@@ -45,8 +38,10 @@
       <!-- 空div控制内容 end -->
 
       <el-col :span="mainNavTypeIndex === 0 ? 8 : 6" class="tags article">
-        <span>更多标签</span>
-        <tags class="tags-container position-sticky top70" :type-index="mainNavTypeIndex" :tag-cards="tagCards" />
+        <div class="position-sticky top80">
+          <span>更多标签</span>
+          <tags class="tags-container" :type-index="mainNavTypeIndex" :tag-cards="tagCards" />
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -58,17 +53,13 @@ import tags from '@/components/tags/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import articleCardList from '@/components/article_card_list/index.vue'
 
-import tagIcon from '@/components/tags/tagIcon.vue'
-import { tagColor } from '@/utils/tag'
-
 export default {
   name: 'Tag',
   components: {
     articleCard,
     articleCardList,
     tags,
-    buttonLoadMore,
-    tagIcon
+    buttonLoadMore
   },
   data() {
     return {
@@ -85,18 +76,11 @@ export default {
         }
       ],
       tagCards: [],
-      tagStyleObject: {},
       tagType: this.$route.query.type || 'post' // 文章 post 商品 product
 
     }
   },
   computed: {
-    customizeHeaderBc() {
-      return tagColor()[this.$route.params.id]
-    },
-    mainNavTitle() {
-      return this.tagType === 'post' ? '最新发布' : this.tagType === 'product' ? '最新商品' : '最新发布'
-    },
     mainNavTypeIndex() {
       return this.tagType === 'post' ? 0 : this.tagType === 'product' ? 1 : 0
     },
@@ -106,10 +90,6 @@ export default {
   },
   created() {
     this.getTags()
-    console.log(this.$route)
-    this.tagStyleObject = {
-      backgroundColor: tagColor()[this.$route.params.id]
-    }
   },
   methods: {
     // 获取标签
@@ -159,36 +139,9 @@ export default {
 .tag-page{
   .minHeight();
 }
-.head {
-  width: 100%;
-  height: 240px;
-  background-color: #eee;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  img {
-    width: 120px;
-    display: block;
-    padding: 0;
-    margin: 0 auto;
-    text-align: center;
-  }
-  &-title {
-    font-size:30px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    line-height:42px;
-    text-align: center;
-    padding: 0;
-    margin: 10px 0 0;
-  }
+.mt40 {
+  margin-top: 40px !important;
 }
 
-// todo 需要优化调整
-.commodity-card-content {
-  display: flex;
-  flex-wrap: wrap;
-}
 </style>
 <style lang="less" scoped src="../home_container.less"></style>

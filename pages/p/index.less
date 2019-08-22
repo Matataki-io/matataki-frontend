@@ -22,18 +22,7 @@
     }
   }
 }
-.tags-container {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #D8D8D8;
-  display: flex;
-  flex-wrap: wrap;
-  .tag {
-    max-width: 160px;
-    flex: 0 0 160px;
-    margin-right: 10px;
-  }
-}
+
 .sidebar {
   position: fixed;
   left: calc((100vw - 1118px)/2);
@@ -142,5 +131,22 @@
 .sidebar {
   .article-btn + .article-btn {
     margin: 40px 0;
+  }
+}
+
+
+.tag-card {
+  display: inline-block;
+  background:rgba(230,244,255,1);
+  border-radius:20px;
+  font-size:16px;
+  color:rgba(28,156,254,1);
+  padding: 8px 16px;
+  margin: 10px 0;
+  text-align: center;
+  transition: all .18s;
+  &:hover {
+    background-color: #1C9CFE;
+    color: #fff;
   }
 }

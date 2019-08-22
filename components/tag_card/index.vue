@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import tagColor from '@/utils/tagColor'
 
 export default {
   name: 'TagColor',
@@ -21,12 +20,10 @@ export default {
   },
   data() {
     return {
-      tagColors: {},
       tagStyleObject: {
         // 默认的颜色
         color: '#fff',
-        backgroundColor: '#fff',
-        border: '1px solid #fff'
+        backgroundColor: '#fff'
       },
       tagCardCopy: Object.assign({}, this.tagCard)
     }
@@ -43,7 +40,6 @@ export default {
     }
   },
   created() {
-    this.tagColors = tagColor()
     // console.log(this.tagCard)
     // 初始化根据模式设置
     this.setStyle(!this.tagMode)
@@ -51,15 +47,13 @@ export default {
   methods: {
     // status: true 选中状态 false 默认状态
     setStyle(status = false) {
-      const getTagColor = this.tagColors[this.tagCardCopy.id]
       if (status) {
         this.tagStyleObject.color = '#fff'
-        this.tagStyleObject.backgroundColor = getTagColor
+        this.tagStyleObject.backgroundColor = '#1c9cfe'
       } else {
-        this.tagStyleObject.color = getTagColor
-        this.tagStyleObject.backgroundColor = '#fff'
+        this.tagStyleObject.color = '#1c9cfe'
+        this.tagStyleObject.backgroundColor = '#e6f4ff'
       }
-      this.tagStyleObject.border = `1px solid ${getTagColor}`
     },
     // 切换状态
     toggleTagStatus(status) {
@@ -82,4 +76,17 @@ export default {
 }
 </script>
 
-<style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less">
+.tag-card {
+  display: inline-block;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin: 5px;
+  box-sizing: border-box;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 400 !important;
+}
+</style>
