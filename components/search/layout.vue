@@ -184,8 +184,6 @@ export default {
     },
     updateList() {
       this.reload = Date.now()
-      // const data = await this.$API.getFans(this.$route.params.id, this.currentPage)
-      // this.paginationData(data)
     }
   }
 }

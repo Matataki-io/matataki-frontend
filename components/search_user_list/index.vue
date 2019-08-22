@@ -17,7 +17,8 @@
       </p>
     </div>
     <template v-if="!isMe(card.id)">
-      <el-button class="follow" @click.stop="followOrUnFollow">
+      <el-button :class="!card.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+        <i v-if="!card.is_follow" class="el-icon-plus" />
         {{ followBtnText }}
       </el-button>
     </template>
@@ -132,7 +133,10 @@ export default {
 }
 
 .follow {
-  position: relative;
-  z-index: 1;
+  &.black {
+    background: #333;
+    color: #fff;
+    border: 1px solid #333;
+  }
 }
 </style>
