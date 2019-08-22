@@ -1,5 +1,5 @@
 <template>
-  <searchLayout :params="params" api-url-path="searchArticleList" />
+  <searchLayout :params="params" api-url-path="searchUserList" />
 </template>
 
 <script>
@@ -10,10 +10,7 @@ export default {
   },
   data() {
     return {
-      params: {
-        channel: 1,
-        type: 'post'
-      }
+      params: { }
     }
   }
 }

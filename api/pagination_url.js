@@ -24,5 +24,7 @@ export const paginationUrl = {
   // 用户积分日志
   userPoint: 'user/points',
   // 搜索文章
-  searchArticleList: 'posts/search'
+  searchArticleList: 'posts/search',
+  // 搜索用户
+  searchUserList: 'users/search'
 }

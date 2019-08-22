@@ -78,7 +78,7 @@ export default {
     // 得到总页数
     totalPage() {},
     async currentPageData(url, params, page) {
-      console.log(url, params, page)
+      // console.log(url, params, page)
       if (Object.keys(params).length === 0) return
       params.page = page
       const getDataSuccess = res => this.$emit('paginationData', res)

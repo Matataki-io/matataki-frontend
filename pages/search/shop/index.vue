@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       params: {
-        channel: 1,
+        channel: 2,
         type: 'post'
       }
     }
