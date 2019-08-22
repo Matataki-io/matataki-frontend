@@ -41,6 +41,7 @@
             :is-search-cad="true"
           />
         </template>
+        <!-- 商品 -->
         <el-row v-else-if="$route.name === 'search-shop'" class="search-card">
           <el-col
             v-for="item in articleCardData[0].articles"
@@ -55,16 +56,15 @@
             />
           </el-col>
         </el-row>
-        <!-- 商品 -->
-        <template v-else-if="$route.name === 'search-user'">
+        <div v-else-if="$route.name === 'search-user'" class="search-list">
           <!-- 用户 -->
-          <articleCardList
+          <searchUserList
             v-for="item in articleCardData[0].articles"
             :key="item.id"
             :card="item"
-            :is-search-cad="true"
+            @updateList="updateList"
           />
-        </template>
+        </div>
 
         <div v-loading="loading" class="pagination">
           <user-pagination
@@ -90,12 +90,14 @@
 import { strTrim } from '@/utils/reg'
 import articleCardList from '@/components/article_card_list/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
+import searchUserList from '@/components/search_user_list/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 
 export default {
   components: {
     articleCardList,
     articleCard,
+    searchUserList,
     userPagination
   },
   props: {
@@ -179,6 +181,11 @@ export default {
           page: i
         }
       })
+    },
+    updateList() {
+      this.reload = Date.now()
+      // const data = await this.$API.getFans(this.$route.params.id, this.currentPage)
+      // this.paginationData(data)
     }
   }
 }
