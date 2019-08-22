@@ -299,8 +299,8 @@ export default {
 <style>
 .search-res em {
   font-size: 20px;
-  font-weight: 500;
-  font-style: inherit;
+  font-weight: bold;
+  font-style: normal;
   color: #1C9CFE;
 }
 </style>

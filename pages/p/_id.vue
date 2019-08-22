@@ -101,7 +101,7 @@
           width="300"
           trigger="manual"
         >
-          <p>点击右侧「分享文章」按钮可以随时分享给你的好友哦～</p>
+          <p>点击左侧「分享文章」按钮可以随时分享给你的好友哦～</p>
           <div style="text-align: right; margin: 0">
             <el-button type="primary" size="mini" @click="poopverDone('visible1')">
               知道了
@@ -125,7 +125,7 @@
         width="300"
         trigger="manual"
       >
-        <p>阅读文章后请指向右侧图标并点击「推荐」或者「不推荐」，可以领取积分！</p>
+        <p>阅读文章后请指向左侧图标并点击「推荐」或者「不推荐」，可以领取积分！</p>
         <div style="text-align: right; margin: 0">
           <el-button type="primary" size="mini" @click="poopverDone('visible')">
             知道了

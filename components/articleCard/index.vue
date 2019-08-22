@@ -159,8 +159,8 @@ export default {
 <style>
 .article-title h3 em {
   font-size: 18px;
-  font-weight: 500;
-  font-style: inherit;
+  font-weight: bold;
+  font-style: normal;
   color: #1C9CFE;
 }
 </style>

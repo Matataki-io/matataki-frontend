@@ -176,7 +176,7 @@ export default {
 
 .author {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: bold;
     color: #000000;
     margin: 46px auto 0;
     width: 90%;
@@ -236,7 +236,7 @@ export default {
   width: 190px;
   height: 40px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
   color: #ffffff;
   line-height: 22px;
   margin: 20px auto 40px;

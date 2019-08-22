@@ -329,7 +329,7 @@ export default {
   }
   &-notlogin {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: bold;
     color: #ffffff;
     letter-spacing: 2px;
     padding: 6px 12px;
@@ -344,7 +344,7 @@ export default {
     position: relative;
     text-align: center;
     transition: all 0.18s ease-in-out;
-    font-weight: 500;
+    font-weight: bold;
     text-decoration: none;
     &.active {
       color: #000 !important;

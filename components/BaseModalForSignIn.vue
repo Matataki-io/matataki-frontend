@@ -392,7 +392,7 @@ export default {
   &-title {
     text-align: center;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: bold;
     color: rgba(0, 0, 0, 0.7);
     margin: 20px 0 48px;
   }
