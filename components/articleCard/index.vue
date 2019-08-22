@@ -8,9 +8,7 @@
         <img v-else src="@/assets/img/article_bg.svg" alt="cover">
       </div>
       <div class="article-title">
-        <h3 v-clampy="2">
-          {{ card && (card.title || '') }}
-        </h3>
+        <h3 v-clampy="2" v-html="cardTitle" />
       </div>
       <!-- 只有文章卡才会有内容 -->
       <p v-if="cardType === 'article-card'" v-clampy="3" class="content">
@@ -78,6 +76,7 @@ import { isNDaysAgo } from '@/utils/momentFun'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { tagColor } from '@/utils/tag'
+import { xssFilter } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
@@ -143,6 +142,9 @@ export default {
       if (!this.card) return ''
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    cardTitle() {
+      return xssFilter(this.card && this.card.title)
     }
   },
   mounted() {
@@ -153,3 +155,12 @@ export default {
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style>
+.article-title h3 em {
+  font-size: 18px;
+  font-weight: 500;
+  font-style: inherit;
+  color: #1C9CFE;
+}
+</style>

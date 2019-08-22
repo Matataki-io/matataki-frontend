@@ -140,3 +140,10 @@ export default {
   }
 }
 </style>
+
+<style>
+.user-title em {
+  font-size: 20px;
+  font-style: inherit;
+}
+</style>

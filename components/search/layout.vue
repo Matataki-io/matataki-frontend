@@ -6,12 +6,11 @@
         <p class="search-title">
           <span>{{ searchQueryVal }}</span>的搜索结果
         </p>
-
         <el-dropdown>
           <el-button>
             {{ nowSearch }}<i class="el-icon-arrow-down el-icon--right" />
           </el-button>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot="dropdown" class="search-dropdown">
             <el-dropdown-item>
               <n-link :to="{name: 'search', query: {q: $route.query.q}}">
                 文章
@@ -31,7 +30,7 @@
         </el-dropdown>
       </div>
 
-      <template v-show="searchQueryValLen">
+      <div v-show="searchQueryValLen">
         <!-- 文章 -->
         <template v-if="$route.name === 'search'">
           <articleCardList
@@ -78,7 +77,7 @@
             @togglePage="togglePage"
           />
         </div>
-      </template>
+      </div>
       <p v-show="!searchQueryValLen" class="not-val">
         暂无搜索结果
       </p>
