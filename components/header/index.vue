@@ -241,8 +241,10 @@ export default {
     // 跳转搜索
     jutmpToSearch() {
       if (!strTrim(this.searchInput)) return this.$message.warning('搜索内容不能为空')
+
+      const name = this.$route.name
       this.$router.push({
-        name: 'search',
+        name: name === 'search-shop' || name === 'search-user' ? name : 'search',
         query: {
           q: strTrim(this.searchInput)
         }
