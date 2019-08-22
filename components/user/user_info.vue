@@ -10,9 +10,10 @@
       </div>
     </div>
     <h3 class="author">
-      {{ userInfo.name }}
-      <svg-icon class="icon-edit" icon-class="edit" @click="jumpTo" />
+      {{ userTitle }}
+      <svg-icon v-if="isMe($route.params.id)" class="icon-edit" icon-class="edit" @click="jumpTo" />
     </h3>
+
     <p class="des">
       {{ userInfo.introduction || '暂无' }}
     </p>
@@ -79,6 +80,9 @@ export default {
     nowId() {
       if (this.isSetting) return this.currentUserInfo.id
       else return this.$route.params.id
+    },
+    userTitle() {
+      return this.userInfo && this.userInfo.name && this.userInfo.name.slice(0, 10)
     }
   },
   watch: {
@@ -179,17 +183,17 @@ export default {
     font-weight: bold;
     color: #000000;
     margin: 46px auto 0;
-    width: 90%;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+    width: 80%;
     .icon-edit {
       position: absolute;
       margin-left: 6px;
       cursor: pointer;
       color: #B2B2B2;
-    }
+  }
 }
 .des {
     padding: 0;
@@ -198,7 +202,7 @@ export default {
     font-weight: 400;
     color: #000000;
     line-height: 17px;
-    width: 70%;
+    width: 80%;
     text-align: center;
     margin: 10px auto;
 }
