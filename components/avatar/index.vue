@@ -6,11 +6,12 @@
       height: size
     }"
   >
-    <template v-if="imgStatus">
-      <img v-if="src" :src="src" alt="avatar" @onerror="() => imgStatus = false">
-      <svg-icon v-else icon-class="avatar" class="icon-avatar" />
-    </template>
-    <svg-icon v-else icon-class="crack" class="icon-crack" />
+    <el-image v-if="src" :src="src" alt="avatar">
+      <div slot="error" class="image-slot">
+        <i class="el-icon-picture-outline" />
+      </div>
+    </el-image>
+    <svg-icon v-else icon-class="avatar" class="icon-avatar" />
   </div>
 </template>
 
@@ -29,7 +30,6 @@ export default {
   },
   data() {
     return {
-      imgStatus: true
     }
   }
 }
@@ -61,5 +61,13 @@ export default {
     object-fit: cover;
     color: #5d5d5d;
   }
+}
+
+</style>
+
+<style>
+.g-avatar .el-icon-picture-outline {
+  font-size: 18px;
+  color: #848484;
 }
 </style>

@@ -35,7 +35,7 @@ export default {
       ],
       account: [ // todo 完善路由
         { title: '钱包', url: 'user-account', self: false },
-        { title: '积分', url: 'user-account-integral', self: false }
+        { title: '积分', url: 'user-account-points', self: false }
       ]
     }
   },

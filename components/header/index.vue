@@ -39,9 +39,7 @@
           </ul>
         </div>
 
-        <n-link :to="{name: 'user-account-integral'}">
-          <img class="integral-icon" src="@/assets/img/integral.svg" alt="integral">
-        </n-link>
+        <img class="integral-icon" src="@/assets/img/integral.svg" alt="integral" @click="jumpAccount">
         <!-- v-if="isLogined" -->
         <svg-icon
           class="create"
@@ -273,6 +271,13 @@ export default {
           if (res.code === 0) this.searchRecommendList = res.data
         })
         .catch(err => { console.log(err) })
+    },
+    jumpAccount() {
+      if (this.isLogined) this.$router.push({ name: 'user-account-points' })
+      else {
+        this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
+        this.login()
+      }
     }
   }
 }

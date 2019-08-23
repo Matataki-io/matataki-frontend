@@ -1,6 +1,6 @@
 <template>
   <div class="coin-btn">
-    <div  @mouseenter="enterBtn" @mouseleave="leaveBtn">
+    <div @mouseenter="enterBtn" @mouseleave="leaveBtn">
       <Progress :p="time" :clicked="clicked">
         <template slot="text">
           <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
@@ -8,7 +8,7 @@
           <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" />
         </template>
       </Progress>
-      <div v-show="showTip" class="like-btn" >
+      <div v-show="showTip" class="like-btn">
         <div v-if="!clicked" class="btns-container">
           <button class="great-cointainer" :disabled="clicked" @click="like">
             <svg-icon icon-class="great" />
@@ -43,7 +43,7 @@
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <a class="title" href="/user/account/integral" target="_blank">{{ clicked ? `+${points.all}SS积分` : 'SS积分' }}</a>
+      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all}SS积分` : 'SS积分' }}</a>
     </div>
   </div>
 </template>
