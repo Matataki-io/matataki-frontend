@@ -5,7 +5,7 @@
       <el-col :span="mainNavTypeIndex === 0 ? 16 : 18" class="main article not-padding">
         <!-- 导航部分 -->
         <div class="main-nav padding-10">
-          <span class="active">包含<em>{{ articleCardData[0].title }}</em>标签的文章</span>
+          <span class="active">包含<em>{{ articleCardData[0].title }}</em>标签的{{ tagType === 'product' ? '商品' : '文章' }}</span>
         </div>
         <!-- 导航部分 end -->
         <!-- 空div控制内容 -->

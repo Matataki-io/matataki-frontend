@@ -27,15 +27,15 @@
       </div>
     </div>
     <div class="article-info">
-      <div class="info1" v-if="!clicked">
-        <span>已阅读{{readTime}}</span>
+      <div v-if="!clicked" class="info1">
+        <span>已阅读{{ readTime }}</span>
       </div>
       <template v-else>
-        <div class="info1" v-if="p.reading > 0">
-          <span>阅读 + {{p.reading}}SS积分</span>
+        <div v-if="p.reading > 0" class="info1">
+          <span>阅读 + {{ p.reading }}SS积分</span>
         </div>
-        <div class="info1" v-if="p.reading_new > 0">
-          <span>新文章 + {{p.reading_new}}SS积分</span>
+        <div v-if="p.reading_new > 0" class="info1">
+          <span>新文章 + {{ p.reading_new }}SS积分</span>
         </div>
       </template>
     </div>
@@ -215,7 +215,7 @@ export default {
 }
 .article-info {
   margin-top: 40px;
-  padding: 15px 40px;
+  padding: 15px 0;
   border: 1px solid #dbdbdb;
   border-radius: 40px;
   box-sizing: border-box;

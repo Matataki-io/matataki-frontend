@@ -215,5 +215,9 @@ export default {
   // 搜索推荐
   searchRecommend(params){
     return request('/search/recommend', params)
+  },
+  // 推荐作者||用户
+  usersRecommend(params){
+    return request('/users/recommend', params)
   }
 }

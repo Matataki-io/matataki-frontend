@@ -38,6 +38,11 @@
             </li>
           </ul>
         </div>
+
+        <n-link :to="{name: 'user-account-integral'}">
+          <img class="integral-icon" src="@/assets/img/integral.svg" alt="integral">
+        </n-link>
+
         <svg-icon
           v-if="isLogined"
           class="create"
@@ -416,6 +421,11 @@ export default {
   font-weight:500;
   color:rgba(28,156,254,1);
   margin: 0 20px;
+}
+.integral-icon {
+  width: 26px;
+  margin-left: 40px;
+  cursor: pointer;
 }
 </style>
 

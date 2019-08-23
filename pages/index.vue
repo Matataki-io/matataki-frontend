@@ -52,6 +52,21 @@
           <span>文章标签</span>
           <tags class="tags-container" :type-index="0" :tag-cards="tagCards" />
         </div>
+
+        <div v-if="usersRecommendList.length !== 0" class="recommend-author position-sticky top380">
+          <div class="ra-head">
+            <span class="ra-head-title">推荐作者</span>
+            <span class="ra-head-random" @click="usersrecommend">
+              <div class="change">
+                <svg-icon class="change-icon" icon-class="change" />
+              </div>
+              <span>换一换</span>
+            </span>
+          </div>
+          <div class="ra-content">
+            <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" @updateList="updateList" />
+          </div>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -67,6 +82,7 @@ import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
 import banner from '@/components/banner/index.vue'
+import RAList from '@/components/recommend_author_list'
 
 export default {
   transition: 'page',
@@ -76,7 +92,9 @@ export default {
     articleCardList,
     tags,
     buttonLoadMore,
-    banner
+    banner,
+    RAList
+
   },
   data() {
     return {
@@ -105,7 +123,8 @@ export default {
           isAtuoRequest: true
         }
       ],
-      tagCards: []
+      tagCards: [],
+      usersRecommendList: []
     }
   },
   async asyncData({ $axios }) {
@@ -141,7 +160,26 @@ export default {
     this.articleCardData[0].articles = this.initData.paginationData
     this.tagCards = this.initData.tags
   },
+  mounted() {
+    this.usersrecommend()
+  },
   methods: {
+    // 获取推荐作者
+    usersrecommend() {
+      const params = {
+        amount: 3
+      }
+      this.$API.usersRecommend(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.usersRecommendList = res.data
+          } else {
+            console.log(`获取推荐用户失败${res.code}, ${res.message}`)
+          }
+        }).catch(err => {
+          console.log(`获取推荐用户失败${err}`)
+        })
+    },
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)

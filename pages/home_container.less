@@ -43,7 +43,7 @@
     }
     span {
       .spanStyle();
-      font-weight:600;
+      font-weight:bold;
     }
   }
 
@@ -60,8 +60,48 @@
       em {
         font-size: 20px;
         font-style: normal;
-        color: #1C9CFE;
+        color: @blue;
       }
+    }
+  }
+
+  .recommend-author {
+    .ra-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .change {
+        width: 20px;
+        height: 20px;
+        background: @blue;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 6px;
+        &-icon {
+          width: 72%;
+        }
+      }
+      .ra-head-title {
+        .spanStyle();
+        font-weight: bold;
+      }
+      .ra-head-random {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size:16px;
+        font-weight:bold;
+        color:@blue;
+        cursor: pointer;
+      }
+    }
+    .ra-content {
+      background:rgba(255,255,255,1);
+      border-radius: @borderRadius10;
+      padding: 10px 20px;
+      margin-top: 20px;
     }
   }
 }
