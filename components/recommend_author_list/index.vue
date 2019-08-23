@@ -1,7 +1,11 @@
 <template>
   <div class="ra-list">
-    <avatar :src="avatarSrc" size="44px" />
-    <span>{{ card && card.nickname || card.username }}</span>
+    <n-link :to="{name: 'user-id', params: {id: card.id}}">
+      <avatar :src="avatarSrc" size="44px" />
+    </n-link>
+    <n-link class="name" :to="{name: 'user-id', params: {id: card.id}}">
+      {{ card && card.nickname || card.username }}
+    </n-link>
     <template v-if="!isMe(card.id)">
       <el-button size="small" :class="!card.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
         <i v-if="!card.is_follow" class="el-icon-plus" />
@@ -78,7 +82,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
-  span {
+  .name {
     font-size:16px;
     letter-spacing: 1px;
     color:#333;

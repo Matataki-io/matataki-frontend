@@ -66,7 +66,7 @@
             </span>
           </div>
           <div class="ra-content">
-            <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" @updateList="updateList" />
+            <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
           </div>
         </div>
       </el-col>
@@ -76,6 +76,7 @@
 
 <script>
 
+import throttle from 'lodash/throttle'
 import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import articleCardList from '@/components/article_card_list/index.vue'
@@ -136,7 +137,8 @@ export default {
         }
       ],
       tagCards: [],
-      usersRecommendList: []
+      usersRecommendList: [],
+      usersLoading: false
     }
   },
   async asyncData({ $axios }) {
@@ -177,7 +179,9 @@ export default {
   },
   methods: {
     // 获取推荐作者
-    async usersrecommend() {
+    usersrecommend: throttle(async function () {
+      console.log(11)
+      this.usersLoading = true
       const params = {
         amount: 3
       }
@@ -190,8 +194,12 @@ export default {
           }
         }).catch(err => {
           console.log(`获取推荐用户失败${err}`)
+        }).finally(() => {
+          setTimeout(() => {
+            this.usersLoading = false
+          }, 300)
         })
-    },
+    }, 800),
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
@@ -202,3 +210,18 @@ export default {
 </script>
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped src="./home_container.less"></style>
+
+<style lang="less" scoped>
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 0.8s ease-in-out infinite;
+}
+</style>
