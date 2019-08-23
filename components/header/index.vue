@@ -42,9 +42,8 @@
         <n-link :to="{name: 'user-account-integral'}">
           <img class="integral-icon" src="@/assets/img/integral.svg" alt="integral">
         </n-link>
-
+        <!-- v-if="isLogined" -->
         <svg-icon
-          v-if="isLogined"
           class="create"
           icon-class="write"
           :style="customizeHeaderIconColorComputed"
