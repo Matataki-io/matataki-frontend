@@ -50,7 +50,7 @@
           :style="customizeHeaderIconColorComputed"
           @click="writeP"
         />
-        <span v-else class="integral">新用户登录领100SS积分</span>
+        <!-- <span v-else class="integral">新用户登录领100SS积分</span> -->
         <el-popover
           v-if="isLogined"
           v-model="visible"
@@ -316,7 +316,7 @@ export default {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    margin: 0 40px;
+    margin: 0 40px 0 0;
     color: #000;
   }
   &-avatar {
@@ -425,6 +425,7 @@ export default {
 .integral-icon {
   width: 26px;
   margin-left: 40px;
+  margin-right: 40px;
   cursor: pointer;
 }
 </style>
