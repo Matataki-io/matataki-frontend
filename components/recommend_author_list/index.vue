@@ -1,9 +1,9 @@
 <template>
   <div class="ra-list">
-    <n-link :to="{name: 'user-id', params: {id: card.id}}">
+    <n-link target="_blank" :to="{name: 'user-id', params: {id: card.id}}">
       <avatar :src="avatarSrc" size="44px" />
     </n-link>
-    <n-link class="name" :to="{name: 'user-id', params: {id: card.id}}">
+    <n-link target="_blank" class="name" :to="{name: 'user-id', params: {id: card.id}}">
       {{ card && card.nickname || card.username }}
     </n-link>
     <template v-if="!isMe(card.id)">

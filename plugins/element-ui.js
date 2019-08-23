@@ -23,7 +23,8 @@ import {
   InputNumber,
   Form,
   FormItem,
-  Icon
+  Icon,
+  Image
 } from 'element-ui'
 
 Vue.use(Row)
@@ -48,6 +49,7 @@ Vue.use(InputNumber)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Icon)
+Vue.use(Image)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

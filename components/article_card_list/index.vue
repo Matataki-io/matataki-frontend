@@ -5,7 +5,7 @@
         <!-- 适用于 首页, 商品页, 标签页 -->
         <!-- 区分那种卡 -->
         <div class="cover">
-          <img v-if="cover" :src="cover" alt="cover">
+          <el-image v-if="cover" class="img-lazy" :src="cover" lazy alt="cover" />
           <img v-else src="@/assets/img/article_bg.svg" alt="cover">
         </div>
         <div class="container">
@@ -201,7 +201,7 @@ export default {
   border-radius: @borderRadius6;
   transform: rotate(0deg);
 
-  img {
+  .img-lazy {
     .imgObjectFitCover();
     transition: all 0.3s;
     &:hover {

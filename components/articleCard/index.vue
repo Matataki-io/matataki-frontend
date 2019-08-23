@@ -4,7 +4,7 @@
     <!-- 区分那种卡 -->
     <n-link target="_blank" :to="{name: 'p-id', params: {id: card && card.id}}">
       <div class="cover">
-        <img v-if="cover" :src="cover" alt="cover">
+        <el-image v-if="cover" class="img-lazy" :src="cover" alt="cover" lazy />
         <img v-else src="@/assets/img/article_bg.svg" alt="cover">
       </div>
       <div class="article-title">
