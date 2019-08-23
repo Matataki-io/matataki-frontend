@@ -180,7 +180,6 @@ export default {
   methods: {
     // 获取推荐作者
     usersrecommend: throttle(async function () {
-      console.log(11)
       this.usersLoading = true
       const params = {
         amount: 3
