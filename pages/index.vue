@@ -31,11 +31,13 @@
           <!-- 空div控制内容 -->
           <no-content-prompt :list="articleCardData">
             <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-              <articleCardList
-                v-for="(itemChild, indexChild) in item.articles"
-                :key="indexChild"
-                :card="itemChild"
-              />
+              <no-content-prompt prompt="暂无关注内容" :list="item.articles">
+                <articleCardList
+                  v-for="(itemChild, indexChild) in item.articles"
+                  :key="indexChild"
+                  :card="itemChild"
+                />
+              </no-content-prompt>
               <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
               <div class="load-more-button">
                 <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
@@ -58,7 +60,7 @@
             <span class="ra-head-title">推荐作者</span>
             <span class="ra-head-random" @click="usersrecommend">
               <div class="change">
-                <svg-icon class="change-icon" icon-class="change" />
+                <svg-icon class="change-icon" :class="usersLoading && 'rotate'" icon-class="change" />
               </div>
               <span>换一换</span>
             </span>
@@ -121,10 +123,21 @@ export default {
           apiUrl: 'homeTimeRanking',
           articles: [],
           isAtuoRequest: true
+        },
+        {
+          title: '我的关注',
+          params: {
+            channel: 1,
+            extra: 'short_content'
+          },
+          apiUrl: 'followedPosts',
+          articles: [],
+          isAtuoRequest: true
         }
       ],
       tagCards: [],
-      usersRecommendList: []
+      usersRecommendList: [],
+      usersLoading: true
     }
   },
   async asyncData({ $axios }) {
@@ -190,3 +203,17 @@ export default {
 </script>
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped src="./home_container.less"></style>
+
+<style lang="less" scoped>
+// @keyframes animation-rotate {
+//   0% {
+//     transform: rotate(0);
+//   }
+//   100% {
+//     transform: rotate(360deg);
+//   }
+// }
+// .rotate {
+//   animation: animation-rotate infinite;
+// }
+</style>

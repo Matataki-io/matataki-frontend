@@ -26,7 +26,7 @@ _axios.interceptors.request.use(
     // console.log('user request interceptors', config, config.noLoading)
     if (!config.noLoading) {
       loadingInstance = Loading.service({
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.1)'
       });
     }
     if (utils.getCookie('ACCESS_TOKEN')) config.headers['x-access-token'] = utils.getCookie('ACCESS_TOKEN');
