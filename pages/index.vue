@@ -136,8 +136,7 @@ export default {
         }
       ],
       tagCards: [],
-      usersRecommendList: [],
-      usersLoading: true
+      usersRecommendList: []
     }
   },
   async asyncData({ $axios }) {
@@ -178,11 +177,11 @@ export default {
   },
   methods: {
     // 获取推荐作者
-    usersrecommend() {
+    async usersrecommend() {
       const params = {
         amount: 3
       }
-      this.$API.usersRecommend(params)
+      await this.$API.usersRecommend(params)
         .then(res => {
           if (res.code === 0) {
             this.usersRecommendList = res.data
@@ -203,17 +202,3 @@ export default {
 </script>
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped src="./home_container.less"></style>
-
-<style lang="less" scoped>
-// @keyframes animation-rotate {
-//   0% {
-//     transform: rotate(0);
-//   }
-//   100% {
-//     transform: rotate(360deg);
-//   }
-// }
-// .rotate {
-//   animation: animation-rotate infinite;
-// }
-</style>
