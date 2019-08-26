@@ -31,7 +31,7 @@
           <!-- 空div控制内容 -->
           <no-content-prompt :list="articleCardData">
             <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-              <no-content-prompt prompt="暂无关注内容" :list="item.articles">
+              <no-content-prompt :prompt="promptComputed(index)" :list="item.articles">
                 <articleCardList
                   v-for="(itemChild, indexChild) in item.articles"
                   :key="indexChild"
@@ -141,6 +141,7 @@ export default {
       usersLoading: false
     }
   },
+  computed: {},
   async asyncData({ $axios }) {
     const initData = Object.create(null)
     try {
@@ -203,6 +204,9 @@ export default {
     buttonLoadMore(res) {
       // console.log(res)
       if (res.data && res.data.list && res.data.list.length !== 0) this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data.list)
+    },
+    promptComputed(index) {
+      return index === 2 ? '暂无关注内容' : '暂无文章'
     }
   }
 }
