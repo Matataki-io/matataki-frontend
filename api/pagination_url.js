@@ -27,6 +27,6 @@ export const paginationUrl = {
   searchArticleList: 'posts/search',
   // 搜索用户
   searchUserList: 'users/search',
-  // 搜索已经关注用户的文章
+  // 已经关注用户的文章
   followedPosts: 'posts/followedPosts'
 }
