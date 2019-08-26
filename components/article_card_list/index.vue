@@ -50,7 +50,8 @@
           </div>
         </div>
       </div>
-      <div v-if="isSearchCad" class="content-text search-res" v-html="xssContent" />
+      <!-- 文章卡片内容 -->
+      <div v-if="isSearchCad" v-clampy="4" class="content-text search-res" v-html="xssContent" />
     </div>
     <div style="width: 0;height: 0;" />
   </n-link>
@@ -139,6 +140,9 @@ export default {
   background: #fff;
   transition: all 0.3s;
   border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-sizing: border-box;
   &:hover {
     transform: translate(0, -4px);
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
@@ -157,14 +161,9 @@ export default {
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 20px;
   overflow: hidden;
-  margin-top: 14px;
   text-decoration: none;
 
-  &:nth-child(1) {
-    margin-top: 20px;
-  }
   &-title {
     height: 56px;
     margin: 20px 0;
@@ -277,7 +276,7 @@ export default {
 }
 
 .content-text {
-  padding: 0 20px 20px;
+  margin-top: 20px;
   font-size:16px;
   font-weight:400;
   color: #333;
@@ -291,7 +290,7 @@ export default {
 
 <style>
 .search-res em {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   font-style: normal;
   color: #1C9CFE;
