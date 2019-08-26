@@ -12,11 +12,19 @@
           {{ article.read || 0 }}</span>
       </div>
     </div>
+    <template v-if="!isMe(article.uid)">
+      <el-button size="small" :class="!info.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+        <i v-if="!info.is_follow" class="el-icon-plus" />
+        {{ followBtnText }}
+      </el-button>
+    </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
+
 export default {
   components: {
     avatar
@@ -24,13 +32,68 @@ export default {
   props: {
     article: {
       type: Object,
-      default: () => ({
-      })
+      required: true
     }
   },
   data() {
     return {
-      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`
+      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,
+      info: {
+        is_follow: 0 // 默认值
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined', 'isMe']),
+    followBtnText() {
+      return this.info.is_follow ? '已关注' : '关注'
+    }
+  },
+  mounted() {
+    // 完成获取用户信息
+    this.getUserInfo(this.article.uid)
+  },
+  methods: {
+    // 主要获取关注状态
+    getUserInfo(id) {
+      this.$API.getUser({ id }).then(res => {
+        if (res.code === 0) this.info.is_follow = res.data.is_follow
+      }).catch(err => {
+        console.log(`获取关注状态失败${err}`)
+      })
+    },
+    followOrUnFollow() {
+      if (this.info.is_follow) {
+        this.$confirm('确定取消关注?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.followOrUnfollowUser(this.article.uid, 0)
+        })
+      } else {
+        this.followOrUnfollowUser(this.article.uid, 1)
+      }
+    },
+    async followOrUnfollowUser(id, type) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      const message = type === 1 ? '关注' : '取消关注'
+      try {
+        let res = null
+        if (type === 1) res = await this.$API.follow(id)
+        else res = await this.$API.unfollow(id)
+        if (res.code === 0) {
+          this.$message.success(`${message}成功`)
+          // this.$emit('updateList')
+          this.info.is_follow = type === 1
+          // 在获取一次防止出错
+          this.getUserInfo(this.article.uid)
+        } else {
+          this.$message.error(`${message}失败`)
+        }
+      } catch (error) {
+        this.$message.error(`${message}失败`)
+      }
     }
   }
 }
@@ -86,5 +149,12 @@ export default {
 }
 .Post-Time, .View-Num {
   .info-font();
+}
+.follow {
+  &.black {
+    background: #333;
+    color: #fff;
+    border: 1px solid #333;
+  }
 }
 </style>
