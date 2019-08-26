@@ -6,7 +6,7 @@
       height: size
     }"
   >
-    <el-image v-if="src" :src="src" alt="avatar">
+    <el-image v-if="src" :src="src" class="img-lazy" alt="avatar">
       <div slot="error" class="image-slot">
         <i class="el-icon-picture-outline" />
       </div>
@@ -40,6 +40,10 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.img-lazy {
+  width: 100%;
+  height: 100%;
 }
 .g-avatar {
   overflow: hidden;

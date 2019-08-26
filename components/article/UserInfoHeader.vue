@@ -84,7 +84,6 @@ export default {
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
           this.$message.success(`${message}成功`)
-          // this.$emit('updateList')
           this.info.is_follow = type === 1
           // 在获取一次防止出错
           this.getUserInfo(this.article.uid)

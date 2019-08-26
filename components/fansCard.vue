@@ -11,21 +11,11 @@
         {{ card.fans }}粉丝
       </p>
     </div>
-    <template v-if="!isMe(type==='follow' ? card.fuid : card.uid)">
-      <button
-        v-if=" !card.is_follow"
-        class="fllow-btn btn-base"
-        @click.stop="followOrUnfollowUser({ id: card.id, type: 1 })"
-      >
-        <i class="el-icon-plus" /> <span class="btn-text">关注</span>
-      </button>
-      <button
-        v-else
-        class="fllowed-btn btn-base"
-        @click.stop="followOrUnfollowUser({ id: card.id, type: 0 })"
-      >
-        <span />
-      </button>
+    <template v-if="!isMe(card.id)">
+      <el-button size="small" :class="!cardCopy.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+        <i v-if="!cardCopy.is_follow" class="el-icon-plus" />
+        {{ followBtnText }}
+      </el-button>
     </template>
   </div>
 </template>
@@ -40,12 +30,16 @@ export default {
   props: {
     card: {
       type: Object,
-      default: () => ({
-      })
+      required: true
     },
     type: {
       type: String,
       required: true
+    }
+  },
+  data() {
+    return {
+      cardCopy: this.card
     }
   },
   computed: {
@@ -57,14 +51,27 @@ export default {
     avatar() {
       if (this.card.avatar) return this.$API.getImg(this.card.avatar)
       return ''
+    },
+    followBtnText() {
+      return this.cardCopy.is_follow ? '已关注' : '关注'
     }
   },
   methods: {
-    async followOrUnfollowUser({ id, type, index, indexList }) {
-      if (!this.isLogined) {
-        this.$store.commit('setLoginModal', true)
-        return
+    followOrUnFollow() {
+      if (this.cardCopy.is_follow) {
+        this.$confirm('确定取消关注?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.followOrUnfollowUser(this.card.id, 0)
+        })
+      } else {
+        this.followOrUnfollowUser(this.card.id, 1)
       }
+    },
+    async followOrUnfollowUser(id, type) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       const message = type === 1 ? '关注' : '取消关注'
       try {
         let res = null
@@ -72,10 +79,9 @@ export default {
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
           this.$message.success(`${message}成功`)
-          this.$emit('updateList')
-          this.card.is_follow = type === 1
+          this.cardCopy.is_follow = type === 1
         } else {
-          throw new Error(`${message}失败`)
+          this.$message.error(`${message}失败`)
         }
       } catch (error) {
         this.$message.error(`${message}失败`)
@@ -90,26 +96,23 @@ p {
   margin: 0;
   padding: 0;
 }
-.btn-base {
-  border-radius: 6px;
-  border: 1px solid #000;
-  background: transparent;
-  color: #ffffff;
-  width: 106px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+
 .fans-card {
+  height: 60px;
   width: 50%;
   flex: 0 0 50%;
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  // align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 30px;
+  &:nth-child(even){
+    padding-left: 10px;
+  }
+  &:nth-child(odd){
+    padding-right: 10px;
+  }
   .avatar {
     width: 60px !important;
     height: 60px !important;
@@ -118,54 +121,40 @@ p {
     position: relative;
   }
   .fans-info {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 20px;
+    margin-left: 14px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 200px;
-    margin: 0 10px;
+    justify-content: center;
     .name {
       font-size: 16px;
       color: #000;
       line-height: 22px;
-      font-weight: 700;
       margin-bottom: 5px;
-      width: 200px;
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;
       cursor: pointer;
     }
     .fans {
-      font-size: 12px;
+      font-size: 14px;
       color: @gray;
       line-height: 17px;
       white-space: nowrap;
     }
   }
-  .fllowed-btn {
-    background: #fff;
-    color: #000;
-    span::after {
-      content: '已关注'
-    }
-    &:hover {
-      border-color: @gray;
-      background: @gray;
-      color: #fff;
-      span::after {
-        content: '取消关注'
-      }
-    }
-  }
-  .fllow-btn {
-    background: #000;
+
+}
+
+.follow {
+  &.black {
+    background: #333;
     color: #fff;
-    .btn-text {
-      margin-left: 10px;
-      font-size: 16px;
-      line-height: 22px;
-    }
+    border: 1px solid #333;
   }
 }
 </style>

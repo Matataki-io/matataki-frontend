@@ -62,8 +62,6 @@ export default {
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
           this.$message.success(`${message}成功`)
-          // this.$emit('updateList')
-          // 如果再获取一次的话 数据会被随机
           this.card.is_follow = type === 1
         } else {
           this.$message.error(`${message}失败`)
