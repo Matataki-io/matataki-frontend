@@ -50,7 +50,7 @@
       <div class="info">
         <!-- 暂时用文章页代替跳转地址 -->
         <n-link
-          :to=" {name: 'user-id', params: {id: Uid}} "
+          :to=" {name: 'user-id', params: {id: uid}} "
           target="_blank"
           class="author"
         >
@@ -128,7 +128,7 @@ export default {
     tagType() {
       return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].type : '')
     },
-    Uid() {
+    uid() {
       return this.card && this.card.uid
     },
     dateCard() {
