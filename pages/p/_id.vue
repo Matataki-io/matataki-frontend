@@ -36,6 +36,7 @@
           }"
         />
       </header>
+      <articleIpfs :hash="article.hash" />
 
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
       <ArticleFooter style="margin-top: 20px;" :article="article" />
@@ -79,7 +80,8 @@
         v-for="(item, index) in article.tags"
         :key="index"
         class="tag-card"
-        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}">
+        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
+      >
         {{ item.name }}
       </n-link>
     </div>
@@ -194,6 +196,7 @@ import CommentList from '@/components/comment/List'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
 import ArticleFooter from '@/components/article/ArticleFooter'
+import articleIpfs from '@/components/article/article_ipfs'
 import InvestModal from '@/components/modal/Invest'
 import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
@@ -214,6 +217,7 @@ export default {
     UserInfoHeader,
     ArticleInfoFooter,
     ArticleFooter,
+    articleIpfs,
     articleTransfer,
     CoinBtn,
     TokenFooter,
@@ -252,13 +256,6 @@ export default {
   },
   head() {
     return {
-      script: [
-        {
-          type: 'text/javascript',
-          id: 'pocket-btn-js',
-          src: 'https://widgets.getpocket.com/v1/j/btn.js?v=1'
-        }
-      ],
       title: this.article.title,
       meta: [
         { hid: 'description', name: 'description', content: this.article.short_content },
