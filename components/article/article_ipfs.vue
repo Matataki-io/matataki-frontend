@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { precision } from '@/utils/precisionConversion'
 export default {
   components: {},
   props: {
