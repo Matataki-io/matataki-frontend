@@ -110,7 +110,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import homeLogo from '@/assets/img/home_logo.png'
+// import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
+import homeLogo from '@/assets/img/m_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
 
@@ -136,11 +137,6 @@ export default {
     customizeHeaderIconColor: {
       type: String,
       default: '#000'
-    },
-    // 自定义头部logo
-    customizeHeaderLogo: {
-      type: String,
-      default: 'default'
     },
     // 搜索内容
     searchQueryVal: {
@@ -314,7 +310,7 @@ export default {
     align-items: center;
   }
   .logo {
-    width: 114px;
+    width: 205px;
   }
   .create {
     width: 24px;
