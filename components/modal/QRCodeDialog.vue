@@ -23,7 +23,7 @@
         <div class="hide-article-box">
           —— 扫描二维码 阅读领积分 ——
         </div>
-        <section class="footer">
+        <section class="footer-share">
           <div class="flex">
             <img class="logo" src="@/assets/img/share_logo.png" alt="logo">
             <div ref="qr" class="qrcode" />
@@ -259,20 +259,8 @@ export default {
     margin: 0;
   }
 }
-.desc {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-}
-.user {
-  display: flex;
-  align-items: center;
-  max-width: 70%;
-}
 
-
-.footer {
+.footer-share {
   box-sizing: border-box;
   padding: 0 0 40px;
   .flex {
