@@ -1,6 +1,7 @@
 <template>
   <div class="commodity">
     <g-header />
+    <banner-matataki />
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">
       <el-row>
@@ -14,7 +15,7 @@
         </template>
       </el-row>
     </div>
-    <banner />
+    <!-- <banner /> -->
     <el-row class="container mw">
       <el-col class="not-padding" :span="18">
         <div class="main commodity">
@@ -71,7 +72,8 @@ import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
-import banner from '@/components/banner/index.vue'
+// import banner from '@/components/banner/index.vue'
+import bannerMatataki from '@/components/banner/banner_matataki.vue'
 
 export default {
   transition: 'page',
@@ -80,7 +82,8 @@ export default {
     articleCard,
     tags,
     buttonLoadMore,
-    banner
+    // banner,
+    bannerMatataki
   },
   data() {
     return {

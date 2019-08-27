@@ -1,6 +1,8 @@
 <template>
   <div class="home">
     <g-header />
+    <banner-matataki />
+
     <!-- 首页内容 轮播和推荐 -->
     <el-row class="recommend mw">
       <template v-for="(item, index) in recommendList">
@@ -13,7 +15,7 @@
       </template>
     </el-row>
 
-    <banner />
+    <!-- <banner /> -->
 
     <el-row class="container mw">
       <el-col :span="16">
@@ -84,7 +86,8 @@ import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
-import banner from '@/components/banner/index.vue'
+// import banner from '@/components/banner/index.vue'
+import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import RAList from '@/components/recommend_author_list'
 
 export default {
@@ -95,7 +98,8 @@ export default {
     articleCardList,
     tags,
     buttonLoadMore,
-    banner,
+    // banner,
+    bannerMatataki,
     RAList
 
   },
