@@ -149,11 +149,30 @@ export default {
 
 <style lang="less" scoped src="./index.less"></style>
 
-<style>
+<style lang="less">
 .article-title h3 em {
   font-size: 18px;
   font-weight: bold;
   font-style: normal;
   color: #1C9CFE;
 }
+
+.recommend-card .cover {
+  img {
+    transition: all 0.3s;
+    &:hover {
+      transform: scale(1.04);
+    }
+  }
+}
+.article-card .cover,
+.commodity-card .cover {
+  img {
+    transition: all 0.3s;
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}
+
 </style>

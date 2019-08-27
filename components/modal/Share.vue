@@ -1,6 +1,14 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" custom-class="gray-bg br10" @close="change">
-    <div v-if="widgetModalStatus === 0">
+  <el-dialog
+    :visible.sync="showModal"
+    width="400px"
+    :lock-scroll="false"
+    custom-class="gray-bg br10 p-share"
+    :show-close="false"
+    center
+    @close="change"
+  >
+    <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
         <div class="widget-button" @click="createWidget">
           <div class="widget-button-img">
@@ -23,7 +31,7 @@
       </div>
       <SocialShare v-if="socialShow" :article="article" />
     </div>
-    <div v-if="widgetModalStatus === 1" class="widget-writecontent">
+    <div v-if="widgetModalStatus === 1" class="padding1 widget-writecontent">
       <p class="widget-title">
         创建widget
       </p>
@@ -31,14 +39,14 @@
         v-model="widgetContent"
         type="textarea"
         placeholder="添加简介(选填)"
-        :rows="2"
+        :rows="4"
       />
       <div class="widget-footer">
         <a class="help" href="javascript:;" @click="reviewHelp">如何使用widget？</a>
         <a class="create" href="javascript:;" @click="createWidgetContent">创建widget</a>
       </div>
     </div>
-    <div v-if="widgetModalStatus === 2" class="widget-help">
+    <div v-if="widgetModalStatus === 2" class="padding1 widget-help">
       <p class="widget-help-title">
         什么是文章widget
       </p>
@@ -58,7 +66,7 @@
 
       <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
     </div>
-    <div v-if="widgetModalStatus === 3" class="widget-review">
+    <div v-if="widgetModalStatus === 3" class="padding1 widget-review">
       <p class="widget-title">
         widget预览
       </p>
@@ -80,7 +88,7 @@
         <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">复制代码</a>
       </div>
     </div>
-    <div v-if="widgetModalStatus === 4">
+    <div v-if="widgetModalStatus === 4" class="padding2">
       <QRCodeDialog
         :share-info="{
           title: article.title,
@@ -88,7 +96,8 @@
           name: article.nickname || article.author,
           time: article.time,
           content: article.content,
-          shareLink
+          shareLink,
+          cover
         }"
         @change="change"
       />
@@ -152,7 +161,11 @@ export default {
     },
     id() {
       return this.article.id
-    }
+    },
+    cover() {
+      if (!this.article) return ''
+      return this.article.cover ? this.$API.getImg(this.article.cover) : ''
+    },
   },
   watch: {
     showModal(val) {
@@ -224,4 +237,12 @@ export default {
 </script>
 
 <style src="./share.less" scoped lang="less">
+</style>
+
+
+<style lang="less">
+.p-share .el-dialog__header,
+.p-share .el-dialog__body {
+  padding: 0;
+}
 </style>

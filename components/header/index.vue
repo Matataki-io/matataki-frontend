@@ -23,6 +23,7 @@
             v-model="searchInput"
             type="text"
             class="input"
+            placeholder="请输入搜索内容"
             @keyup.enter="jutmpToSearch"
             @focus="searchFcous = true"
             @blur="inputBlur"

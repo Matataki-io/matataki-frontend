@@ -107,7 +107,7 @@ export default {
 }
 .wx-share {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 60px;
   .flexCenter();
   flex-direction: column;
   .qrcode {
