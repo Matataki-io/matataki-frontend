@@ -40,7 +40,7 @@
           </ul>
         </div>
 
-        <integral @jumpAccount="jumpAccount" />
+        <point />
 
         <!-- v-if="isLogined" -->
         <svg-icon
@@ -113,7 +113,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
-import integral from './integral'
+import point from './point'
 import homeLogo from '@/assets/img/m_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
@@ -124,7 +124,7 @@ export default {
   name: 'HomeHead',
   components: {
     avatar,
-    integral
+    point
   },
   props: {
     // 自定义头部背景
@@ -235,9 +235,15 @@ export default {
     btnsignOut() {
       if (confirm('确定退出吗?')) {
         this.$utils.delCookie('ACCESS_TOKEN')
+        this.$utils.delCookie('idProvider')
+        window.localStorage.clear()
         // this.$utils.deleteAllCookies()
-        this.$router.push('/')
-        window.location.reload()
+        this.$router.push({
+          name: 'index'
+        })
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
       }
     },
     // 跳转搜索
@@ -271,14 +277,8 @@ export default {
           if (res.code === 0) this.searchRecommendList = res.data
         })
         .catch(err => { console.log(err) })
-    },
-    jumpAccount() {
-      if (this.isLogined) this.$router.push({ name: 'user-account-points' })
-      else {
-        this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
-        this.login()
-      }
     }
+
   }
 }
 </script>

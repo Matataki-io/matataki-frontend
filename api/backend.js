@@ -132,14 +132,18 @@ const API = {
    * 根据用户名，公钥，客户端签名请求access_token
    */
   async auth({ idProvider, publicKey: publickey, signature: sign, username }) {
+    let params = {
+      platform: idProvider.toLowerCase(),
+      publickey,
+      sign,
+      username
+    }
+    // 推荐人id
+    let referral = utils.getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
     return axiosforApiServer.post(
       '/login/auth',
-      {
-        platform: idProvider.toLowerCase(),
-        publickey,
-        sign,
-        username
-      },
+      params,
       {
         headers: { Authorization: 'Basic bXlfYXBwOm15X3NlY3JldA==' }
       }
@@ -322,7 +326,13 @@ const API = {
     return this.accessBackend({ method: 'POST', url: '/user/withdraw', data })
   },
   async loginGitHub(code) {
-    return axiosforApiServer.post('/login/github', { code })
+    let params = { code }
+
+    // 推荐人id
+    let referral = utils.getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+
+    return axiosforApiServer.post('/login/github', { params })
   },
   // 获取可用标签列表
   async getTags(type) {

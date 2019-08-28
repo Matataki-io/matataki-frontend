@@ -1,7 +1,7 @@
 <template>
   <el-dropdown>
     <span class="el-dropdown-link">
-      <svg-icon class="integral" icon-class="integral" @click="emit('jumpAccount')" />
+      <svg-icon class="integral" icon-class="integral" @click="jumpAccount" />
     </span>
     <el-dropdown-menu slot="dropdown">
       <!-- <el-dropdown-item></el-dropdown-item> -->
@@ -9,14 +9,14 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">我的积分</span>
-            <span class="integral-num">1980</span>
+            <span class="integral-num">0</span>
           </div>
         </div>
 
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">完善资料设置</span>
-            <el-button size="mini" class="integral-btn">
+            <el-button size="mini" class="integral-btn" @click="profile">
               <svg-icon class="box" icon-class="box" />
               领取
             </el-button>
@@ -29,7 +29,7 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">老用户回馈</span>
-            <el-button size="mini" class="integral-btn">
+            <el-button size="mini" class="integral-btn" @click="feedback">
               <svg-icon class="box" icon-class="box" />
               领取
             </el-button>
@@ -42,7 +42,7 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">荣誉勋章</span>
-            <el-button size="mini" class="integral-btn">
+            <el-button size="mini" class="integral-btn" @click="medal">
               <svg-icon class="box" icon-class="box" />
               领取
             </el-button>
@@ -57,7 +57,7 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">每日签到有奖</span>
-            <el-button size="mini" class="integral-btn">
+            <el-button size="mini" class="integral-btn" @click="check">
               <svg-icon class="checkin" icon-class="checkin" />
               签到
             </el-button>
@@ -71,12 +71,12 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">友情好友有奖</span>
-            <el-button size="mini" class="integral-btn">
+            <el-button size="mini" class="integral-btn" @click="copyLink(referralLink)">
               复制链接
             </el-button>
           </div>
           <div class="integral-link">
-            http://wwwtest.smartsignature.io?referral=123123
+            {{ referralLink }}
           </div>
           <p class="integral-des">
             每成功邀请一名好友注册可得100积分，好友获得积分你也可以获得1/10，好友每发一篇文章你可以获得10积分
@@ -88,8 +88,8 @@
             <span class="integral-title">每日发文奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="50" :show-text="false" :stroke-width="10" />
-            10/20
+            <el-progress class="progress" :percentage="percentagePost" :show-text="false" :stroke-width="10" />
+            {{ percentagePostText }}
           </div>
           <p class="integral-des">
             每日发文前2篇皆可获得10积分奖励
@@ -101,8 +101,8 @@
             <span class="integral-title">每日阅读奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="50" :show-text="false" :stroke-width="10" />
-            10/100
+            <el-progress class="progress" :percentage="percentageRead" :show-text="false" :stroke-width="10" />
+            {{ percentageReadText }}
           </div>
           <p class="integral-des">
             每日阅读评价文章最高可得100积分奖励
@@ -112,6 +112,76 @@
     </el-dropdown-menu>
   </el-dropdown>
 </template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  data() {
+    return {
+      percentagePost: 50,
+      percentageRead: 10
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    referralLink() {
+      if (process.browser) {
+        if (this.currentUserInfo && this.currentUserInfo.id) return `${window.location.origin}?referral=${this.currentUserInfo.id}`
+        else return `${window.location.origin}`
+      } else return ''
+    },
+    percentagePostText() {
+      if (this.percentagePost > 100) return '20/20'
+      else return this.percentagePost / 5 + '/20'
+    },
+    percentageReadText() {
+      if (this.percentageRead > 100) return '100/100'
+      else return this.percentagePost + '/100'
+    }
+  },
+  methods: {
+    isLoginFunc() {
+      if (!this.isLogined) {
+        this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      return true
+    },
+    jumpAccount() {
+      if (!this.isLoginFunc()) return
+      if (this.isLogined) this.$router.push({ name: 'user-account-points' })
+    },
+    profile() {
+      if (!this.isLoginFunc()) return
+      console.log('领取资料设置积分')
+    },
+    feedback() {
+      if (!this.isLoginFunc()) return
+      console.log('领取老用户回馈积分')
+    },
+    medal() {
+      if (!this.isLoginFunc()) return
+      console.log('领取资荣誉勋章')
+    },
+    check() {
+      if (!this.isLoginFunc()) return
+      console.log('领取每日签到有奖积分')
+    },
+    copyLink(text) {
+      this.$copyText(text).then(
+        () => {
+          this.$message.success('复制成功')
+        },
+        () => {
+          this.$message.error('复制失败')
+        }
+      )
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .integral {

@@ -74,8 +74,8 @@ export default {
       noLoading: true
     })
   },
-  async register({email,password,captcha}) {
-    return request.post('/login/regist', { email, password, captcha: captcha.toString() })
+  async register({email,password,captcha, referral}) {
+    return request.post('/login/regist', { email, password, captcha: captcha.toString(), referral })
   },
   async login({username, password}) {
     return request.post('/login/account', { username, password })

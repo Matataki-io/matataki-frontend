@@ -17,11 +17,16 @@
         </div>
       </el-form-item>
     </el-form>
+    <p v-if="referral" class="referral">
+      已经获得邀请
+    </p>
     <div class="oauth-box">
       <h1 class="oauth-title">
         第三方账号登录
       </h1>
-      <p class="warning-tip">不同帐号内容不互通</p>
+      <p class="warning-tip">
+        不同帐号内容不互通
+      </p>
       <div class="oauth">
         <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
           <svg-icon class="eos" icon-class="eos_login" />
@@ -73,11 +78,18 @@ export default {
           { min: 8, max: 16, message: '密码长度在 8 到 16 个字符', trigger: 'blur' }
         ]
       },
+      referral: false
     }
   },
   computed: {
     ...mapState(['userConfig']),
     ...mapGetters(['currentUserInfo'])
+  },
+  mounted(){
+    if (process.browser) {
+      this.isReferral()
+      this.getReferral()
+    }
   },
   methods: {
     ...mapActions(['signIn']),
@@ -132,6 +144,25 @@ export default {
     },
     switchRegister() {
       this.$emit('switch')
+    },
+    // 是否有推荐
+    isReferral() {
+      let search = window.location.search.slice(1)
+      let searchArr = search.split('&')
+      let searchFilter = searchArr.filter((i) => i.includes('referral='))
+      // 有邀请id
+      if (searchFilter.length !== 0) this.$utils.setCookie('referral', searchFilter[0].slice(9))
+      else { // 如果没有邀请连接
+        // 检查是否有邀请id 有则删除
+        let referral = this.$utils.getCookie('referral')
+        if (referral) this.$utils.delCookie('referral')
+      }
+      // console.log(this.referral)
+    },
+    // 得到邀请状态
+    getReferral() {
+      let referral = this.$utils.getCookie('referral')
+      if (referral) this.referral = true
     }
   }
 }
@@ -199,5 +230,9 @@ export default {
 }
 .bg-purple {
   background: #882592;
+}
+
+.referral {
+  text-align: center;
 }
 </style>

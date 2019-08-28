@@ -135,12 +135,16 @@ export default {
     submitRegisterForm() {
       this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
+          let params = {
+            email: this.registerForm.email,
+            captcha: this.registerForm.smscode,
+            password: this.registerForm.password
+          }
+          // 检查是否有邀请id
+          let referral = this.$utils.getCookie('referral')
+          if (referral) Object.assign(params, { referral: referral })
           try {
-            const res = await this.$API.register({
-              email: this.registerForm.email,
-              captcha: this.registerForm.smscode,
-              password: this.registerForm.password
-            })
+            const res = await this.$API.register(params)
             if (res.code === 0) {
               this.$message.success('注册成功，请登录')
               this.$emit('switch')

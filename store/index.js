@@ -112,10 +112,10 @@ export const actions = {
     const { exp, iss } = accessTokenAPI.disassemble(newAccessToken)
     if (!iss || iss !== name || exp < new Date().getTime()) {
       try {
-        console.log('Retake authtoken...')
+        // console.log('Retake authtoken...')
         const sg = await dispatch('getSignatureOfAuth', { name });
-        console.log(sg);
-        console.log(backendAPI);
+        // console.log(sg);
+        // console.log(backendAPI);
         const { data } = await backendAPI.auth(sg)
         // this.$axios.$post(this.$API.auth, await dispatch('getSignatureOfAuth', { name }))
         newAccessToken = data
