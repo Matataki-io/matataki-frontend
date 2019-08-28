@@ -24,6 +24,7 @@
         </el-button>
       </el-form-item>
     </el-form>
+    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请">
   </section>
 </template>
 
@@ -90,7 +91,11 @@ export default {
         repassword: { validator: validatePass2, trigger: 'blur' },
         smscode: { validator: checkCode, trigger: 'blur' }
       },
+      referral: false
     }
+  },
+    mounted(){
+    if (process.browser) this.getReferral()
   },
   methods: {
     sendCode() {
@@ -161,6 +166,11 @@ export default {
         }
       })
     },
+    // 得到邀请状态
+    getReferral() {
+      let referral = this.$utils.getCookie('referral')
+      if (referral) this.referral = true
+    }
   }
 }
 </script>
@@ -177,5 +187,12 @@ export default {
       text-align: center;
     }
   }
+}
+
+.referral {
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 0;
 }
 </style>
