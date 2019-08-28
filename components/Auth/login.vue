@@ -12,14 +12,12 @@
           登录
         </el-button>
         <div class="bottom-tip">
+          <span class="red">首次登录领100积分！</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
           <a href="javascript:void(0);" @click="switchRegister">注册</a>
         </div>
       </el-form-item>
     </el-form>
-    <p v-if="referral" class="referral">
-      已经获得邀请
-    </p>
     <div class="oauth-box">
       <h1 class="oauth-title">
         第三方账号登录
@@ -39,6 +37,7 @@
         </div>
       </div>
     </div>
+    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请">
   </section>
 </template>
 
@@ -170,10 +169,17 @@ export default {
 
 <style lang="less" scoped>
 .bottom-tip {
+  width: 100%;
   font-size: 14px;
   float: right;
   line-height: 20px;
   margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .red {
+    color:#FB6877;
+  }
 }
 .oauth-box {
   display: flex;
@@ -190,7 +196,7 @@ export default {
   .warning-tip {
     font-size: 14px;
     color: #FB6877;
-    margin-bottom: 20px;
+    margin: 14px 0 22px;
     font-weight: 400;
   }
   .oauth {
@@ -233,6 +239,9 @@ export default {
 }
 
 .referral {
-  text-align: center;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 0;
 }
 </style>

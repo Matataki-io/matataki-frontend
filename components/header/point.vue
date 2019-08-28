@@ -212,8 +212,8 @@ export default {
 }
 .integral-title {
   font-size:16px;
-  font-weight:500;
-  color: #333;
+  font-weight: bold;
+  color: #000;
 }
 .integral-des {
   font-size:12px;
