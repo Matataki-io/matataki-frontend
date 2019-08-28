@@ -40,7 +40,8 @@
           </ul>
         </div>
 
-        <img class="integral-icon" src="@/assets/img/integral.svg" alt="integral" @click="jumpAccount">
+        <integral @jumpAccount="jumpAccount" />
+
         <!-- v-if="isLogined" -->
         <svg-icon
           class="create"
@@ -112,6 +113,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
+import integral from './integral'
 import homeLogo from '@/assets/img/m_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
@@ -121,7 +123,8 @@ import { strTrim } from '@/utils/reg'
 export default {
   name: 'HomeHead',
   components: {
-    avatar
+    avatar,
+    integral
   },
   props: {
     // 自定义头部背景
@@ -417,18 +420,6 @@ export default {
   }
 }
 
-.integral {
-  font-size:16px;
-  font-weight:500;
-  color:rgba(28,156,254,1);
-  margin: 0 20px;
-}
-.integral-icon {
-  width: 26px;
-  margin-left: 40px;
-  margin-right: 40px;
-  cursor: pointer;
-}
 </style>
 
 <style lang="less">
