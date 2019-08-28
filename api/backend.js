@@ -332,7 +332,7 @@ const API = {
     let referral = utils.getCookie('referral')
     if (referral) Object.assign(params, { referral: referral })
 
-    return axiosforApiServer.post('/login/github', { params })
+    return axiosforApiServer.post('/login/github', params)
   },
   // 获取可用标签列表
   async getTags(type) {
