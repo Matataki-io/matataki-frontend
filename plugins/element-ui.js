@@ -25,7 +25,9 @@ import {
   FormItem,
   Icon,
   Image,
-  Progress
+  Progress,
+  Table,
+  TableColumn
 } from 'element-ui'
 
 Vue.use(Row)
@@ -52,6 +54,8 @@ Vue.use(FormItem)
 Vue.use(Icon)
 Vue.use(Image)
 Vue.use(Progress)
+Vue.use(Table)
+Vue.use(TableColumn)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
