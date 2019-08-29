@@ -68,7 +68,7 @@
 
         <div class="integral-list">
           <div class="flex">
-            <span class="integral-title">友情好友有奖</span>
+            <span class="integral-title">邀请好友有奖</span>
             <el-button size="mini" class="integral-btn" @click="copyLink(referralLink)">
               复制链接
             </el-button>
