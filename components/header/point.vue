@@ -86,8 +86,8 @@
             <span class="integral-title">每日发文奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="pointStatus.publish && (pointStatus.publish.today * 5)" :show-text="false" :stroke-width="10" />
-            {{ pointStatus.publish && pointStatus.publish.today + '/' + pointStatus.publish.max }}
+            <el-progress class="progress" :percentage="pointStatusPostNum" :show-text="false" :stroke-width="10" />
+            {{ pointStatusPost }}
           </div>
           <p class="integral-des">
             每日发文前2篇皆可获得10积分奖励
@@ -99,8 +99,8 @@
             <span class="integral-title">每日阅读奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="pointStatus.read && pointStatus.read.today" :show-text="false" :stroke-width="10" />
-            {{ pointStatus.read && pointStatus.read.today + '/' + pointStatus.read.max }}
+            <el-progress class="progress" :percentage="pointStatusReadNum" :show-text="false" :stroke-width="10" />
+            {{ pointStatusRead }}
           </div>
           <p class="integral-des">
             每日阅读评价文章最高可得100积分奖励
@@ -128,6 +128,22 @@ export default {
         if (this.currentUserInfo && this.currentUserInfo.id) return `${window.location.origin}?referral=${this.currentUserInfo.id}`
         else return `${window.location.origin}`
       } else return ''
+    },
+    pointStatusPost() {
+      if (this.pointStatus.publish) return this.pointStatus.publish.today + '/' + this.pointStatus.publish.max
+      else return '0/20'
+    },
+    pointStatusRead() {
+      if (this.pointStatus.publish) return this.pointStatus.read.today + '/' + this.pointStatus.read.max
+      else return '0/100'
+    },
+    pointStatusPostNum() {
+      if (this.pointStatus.publish) return this.pointStatus.publish.today * 5
+      else return 0
+    },
+    pointStatusReadNum() {
+      if (this.pointStatus.read) return this.pointStatus.read.today
+      else return 0
     }
   },
   created() {},
