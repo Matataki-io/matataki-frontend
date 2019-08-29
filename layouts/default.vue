@@ -42,8 +42,8 @@ export default {
       return this.$route.name === 'publish' || this.$route.name === 'p-id'
     },
     hideFooter() {
-      // 如果是发布页面隐藏小火箭
-      return this.$route.name === 'publish'
+      // 发布页面 GitHub登陆
+      return this.$route.name === 'publish' || this.$route.name === 'login'
     }
 
   },

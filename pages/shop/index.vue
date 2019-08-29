@@ -94,8 +94,7 @@ export default {
         {
           title: '最新商品',
           params: {
-            channel: 2,
-            extra: 'short_content'
+            channel: 2
           },
           apiUrl: 'homeTimeRanking',
           articles: [],
@@ -104,8 +103,7 @@ export default {
         {
           title: '最热商品',
           params: {
-            channel: 2,
-            extra: 'short_content'
+            channel: 2
           },
           apiUrl: 'homeSupportsRanking',
           articles: [],

@@ -12,11 +12,11 @@
         <div v-if="!clicked" class="btns-container">
           <button class="great-cointainer" :disabled="clicked" @click="like">
             <svg-icon icon-class="great" />
-            <span>推荐</span>
+            <span>推荐<em class="like">{{ article && article.likes }}</em></span>
           </button>
           <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
             <svg-icon icon-class="bullshit" />
-            <span>不推荐</span>
+            <span>不推荐<em class="like">{{ article && article.dislikes }}</em></span>
           </button>
         </div>
         <p v-if="!clicked">
@@ -67,6 +67,10 @@ export default {
         likes: 0,
         is_liked: 0
       })
+    },
+    article: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -208,7 +212,6 @@ export default {
     .flexCenter();
   }
   .btn-base {
-    width: 75px;
     font-size: 14px;
     text-align: center;
     border-radius: 6px;
@@ -270,5 +273,11 @@ export default {
 }
 .hidden {
   visibility: hidden;
+}
+
+.like {
+  font-size:16px;
+  font-style: normal;
+  margin-left: 4px;
 }
 </style>

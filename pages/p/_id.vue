@@ -70,6 +70,7 @@
           v-if="!isProduct"
           :time="timeCount"
           :token="ssToken"
+          :article="article"
           @like="like"
           @dislike="dislike"
         />
@@ -144,6 +145,7 @@
           slot="reference"
           :time="timeCount"
           :token="ssToken"
+          :article="article"
           @like="like"
           @dislike="dislike"
         />
@@ -251,7 +253,8 @@ export default {
         visible2: false
       },
       timerShare: null, // 分享计时器
-      timeCountShare: 0 // 分享计时
+      timeCountShare: 0, // 分享计时
+      article: Object.create(null)
     }
   },
   head() {
@@ -383,6 +386,12 @@ export default {
     showUserPopover() {
       if (!store.get('userVisible')) this.visiblePopover.visible2 = true
     },
+    async getArticleInfoFunc() {
+      await this.$API.getArticleInfo(this.$route.params.id)
+        .then(res => {
+          if (res.code === 0) this.article = res.data
+        })
+    },
     // 推荐
     like() {
       this.showUserPopover()
@@ -392,6 +401,8 @@ export default {
           this.ssToken.is_liked = 2
           this.ssToken.points = res.data
           this.feedbackShow = true
+
+          this.getArticleInfoFunc() // 更新文章信息
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -408,6 +419,8 @@ export default {
           this.ssToken.is_liked = 1
           this.ssToken.points = res.data
           this.feedbackShow = true
+
+          this.getArticleInfoFunc() // 更新文章信息
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -530,9 +543,9 @@ export default {
           this.isSupport = res.data.is_support
           this.ssToken = {
             points: res.data.points || [], // 用户是否喜欢了这篇文章
-            dislikes: res.data.dislikes, // 用户获得的积分
-            likes: res.data.likes, // 文章被赞次数
-            is_liked: res.data.is_liked || 0 // 文章被喷次数
+            dislikes: res.data.dislikes,
+            likes: res.data.likes,
+            is_liked: res.data.is_liked || 0 // is_liked：0：没有操作过，1：不推荐，2：推荐
           }
         }
       } catch (error) {

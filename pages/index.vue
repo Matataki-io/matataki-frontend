@@ -112,8 +112,7 @@ export default {
         {
           title: '热门文章',
           params: {
-            channel: 1,
-            extra: 'short_content'
+            channel: 1
           },
           apiUrl: 'homeScoreRanking',
           articles: [],
@@ -122,8 +121,7 @@ export default {
         {
           title: '最新发布',
           params: {
-            channel: 1,
-            extra: 'short_content'
+            channel: 1
           },
           apiUrl: 'homeTimeRanking',
           articles: [],
@@ -132,8 +130,7 @@ export default {
         {
           title: '我的关注',
           params: {
-            channel: 1,
-            extra: 'short_content'
+            channel: 1
           },
           apiUrl: 'followedPosts',
           articles: [],

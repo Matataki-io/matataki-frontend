@@ -16,13 +16,13 @@
           <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
             <svg-icon icon-class="great-solid" />
           </button>
-          <span>推荐</span>
+          <span>推荐 <em class="like">{{ article && article.likes }}</em></span>
         </div>
         <div class="btn-outer bullshit-outer">
           <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
             <svg-icon icon-class="bullshit-solid" />
           </button>
-          <span>不推荐</span>
+          <span>不推荐 <em class="like">{{ article && article.dislikes }}</em></span>
         </div>
       </div>
     </div>
@@ -57,6 +57,10 @@ export default {
         likes: 0,
         is_liked: 0
       })
+    },
+    article: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -65,6 +69,7 @@ export default {
   computed: {
     // 是否被点击过
     clicked() {
+      console.log(this.article)
       return this.type !== 'title'
     },
     type() {
@@ -238,5 +243,12 @@ export default {
       font-weight: 700;
     }
   }
+}
+
+.like {
+  font-size:16px;
+  color: #1C9CFE;
+  font-style: normal;
+  margin-left: 4px;
 }
 </style>
