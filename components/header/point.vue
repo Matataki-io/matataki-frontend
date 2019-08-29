@@ -1,19 +1,17 @@
 <template>
-  <el-dropdown>
-    <span class="el-dropdown-link">
-      <svg-icon class="integral" icon-class="integral" @click="jumpAccount" />
-    </span>
+  <el-dropdown @visible-change="getPointStatus">
+    <svg-icon class="integral" icon-class="integral" @click="jumpAccount" />
     <el-dropdown-menu slot="dropdown">
       <!-- <el-dropdown-item></el-dropdown-item> -->
       <div class="integral-container">
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">我的积分</span>
-            <span class="integral-num">0</span>
+            <span class="integral-num">{{ pointStatus.amount }}</span>
           </div>
         </div>
 
-        <div class="integral-list">
+        <div v-if="!pointStatus.profile" class="integral-list">
           <div class="flex">
             <span class="integral-title">完善资料设置</span>
             <el-button size="mini" class="integral-btn" @click="profile">
@@ -26,7 +24,7 @@
           </p>
         </div>
 
-        <div class="integral-list">
+        <div v-if="!pointStatus.login" class="integral-list">
           <div class="flex">
             <span class="integral-title">老用户回馈</span>
             <el-button size="mini" class="integral-btn" @click="feedback">
@@ -39,7 +37,7 @@
           </p>
         </div>
 
-        <div class="integral-list">
+        <!-- <div class="integral-list">
           <div class="flex">
             <span class="integral-title">荣誉勋章</span>
             <el-button size="mini" class="integral-btn" @click="medal">
@@ -50,11 +48,11 @@
           <p class="integral-des">
             前1000名用户回馈，领取后会显示在个人主页中
           </p>
-        </div>
+        </div> -->
 
         <div class="line" />
 
-        <div class="integral-list">
+        <!-- <div class="integral-list">
           <div class="flex">
             <span class="integral-title">每日签到有奖</span>
             <el-button size="mini" class="integral-btn" @click="check">
@@ -66,7 +64,7 @@
             每日签到随机获得5～10积分，连续签到
             可得更多积分
           </p>
-        </div>
+        </div> -->
 
         <div class="integral-list">
           <div class="flex">
@@ -88,8 +86,8 @@
             <span class="integral-title">每日发文奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="percentagePost" :show-text="false" :stroke-width="10" />
-            {{ percentagePostText }}
+            <el-progress class="progress" :percentage="pointStatus.publish && (pointStatus.publish.today * 5)" :show-text="false" :stroke-width="10" />
+            {{ pointStatus.publish && pointStatus.publish.today + '/' + pointStatus.publish.max }}
           </div>
           <p class="integral-des">
             每日发文前2篇皆可获得10积分奖励
@@ -101,8 +99,8 @@
             <span class="integral-title">每日阅读奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="percentageRead" :show-text="false" :stroke-width="10" />
-            {{ percentageReadText }}
+            <el-progress class="progress" :percentage="pointStatus.read && pointStatus.read.today" :show-text="false" :stroke-width="10" />
+            {{ pointStatus.read && pointStatus.read.today + '/' + pointStatus.read.max }}
           </div>
           <p class="integral-des">
             每日阅读评价文章最高可得100积分奖励
@@ -115,12 +113,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import debounce from 'lodash/debounce'
 
 export default {
   data() {
     return {
-      percentagePost: 50,
-      percentageRead: 10
+      pointStatus: Object.create(null)
     }
   },
   computed: {
@@ -130,17 +128,27 @@ export default {
         if (this.currentUserInfo && this.currentUserInfo.id) return `${window.location.origin}?referral=${this.currentUserInfo.id}`
         else return `${window.location.origin}`
       } else return ''
-    },
-    percentagePostText() {
-      if (this.percentagePost > 100) return '20/20'
-      else return this.percentagePost / 5 + '/20'
-    },
-    percentageReadText() {
-      if (this.percentageRead > 100) return '100/100'
-      else return this.percentagePost + '/100'
     }
   },
+  created() {},
+  mounted() {
+    // 默认查询一次
+    this.getUserPointStatus()
+  },
   methods: {
+    getPointStatus(status) {
+      // 显示的时候查询数据 保证数据更新
+      if (status) this.getUserPointStatus()
+    },
+    // 防抖防止不必要的调用
+    getUserPointStatus: debounce(async function () {
+      await this.$API.userPointStatus()
+        .then(res => {
+          if (res.code === 0) this.pointStatus = res.data
+          else console.log(res.message)
+        })
+        .catch(err => console.log(err))
+    }, 1000),
     isLoginFunc() {
       if (!this.isLogined) {
         this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
@@ -155,20 +163,42 @@ export default {
     },
     profile() {
       if (!this.isLoginFunc()) return
-      console.log('领取资料设置积分')
+      // console.log('领取资料设置积分')
+      this.$API.userClaimTaskPoint({
+        type: 'profile'
+      }).then(res => {
+        if (res.code === 0) {
+          this.$message.success({ message: '领取成功' })
+          this.getUserPointStatus()
+        } else this.$message.error({ message: `领取失败,${res.message}` })
+      }).catch(err => {
+        console.log('领取设置资料积分失败', err)
+        this.$message.error({ message: '领取失败' })
+      })
     },
     feedback() {
       if (!this.isLoginFunc()) return
-      console.log('领取老用户回馈积分')
+      // console.log('领取老用户回馈积分')
+      this.$API.userClaimTaskPoint({
+        type: 'login'
+      }).then(res => {
+        if (res.code === 0) {
+          this.$message.success({ message: '领取成功' })
+          this.getUserPointStatus()
+        } else this.$message.error({ message: `领取失败,${res.message}` })
+      }).catch(err => {
+        console.log('领取老用户回馈积分失败', err)
+        this.$message.error({ message: '领取失败' })
+      })
     },
-    medal() {
-      if (!this.isLoginFunc()) return
-      console.log('领取资荣誉勋章')
-    },
-    check() {
-      if (!this.isLoginFunc()) return
-      console.log('领取每日签到有奖积分')
-    },
+    // medal() {
+    //   if (!this.isLoginFunc()) return
+    //   console.log('领取资荣誉勋章')
+    // },
+    // check() {
+    //   if (!this.isLoginFunc()) return
+    //   console.log('领取每日签到有奖积分')
+    // },
     copyLink(text) {
       this.$copyText(text).then(
         () => {
@@ -200,7 +230,7 @@ export default {
   width: 256px;
   padding: 0 20px;
   overflow: auto;
-  max-height: 560px;
+  max-height: 600px;
 }
 .integral-list {
   margin: 20px 0;
@@ -238,7 +268,7 @@ export default {
   border-radius:6px;
   font-size:14px;
   color:rgba(178,178,178,1);
-  padding: 10px;
+  padding: 4px 6px;
   margin: 10px 0;
   line-height: 1.5;
 }

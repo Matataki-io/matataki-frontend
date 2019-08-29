@@ -127,7 +127,8 @@ export default {
         reading_new: '阅读新文章获取SS积分', // 用户阅读新文章，额外获得的
         beread_new: '新文章被阅读获取SS积分', // 读者的新文章被阅读，额外获得的
         reading_like: '阅读获取SS积分',
-        reading_dislike: '阅读获取SS积分'
+        reading_dislike: '阅读获取SS积分',
+        login: '回馈奖励'
       }
       const switchType = {
         withdraw: switchStatus[status],

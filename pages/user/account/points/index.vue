@@ -10,7 +10,7 @@
               {{ amount }}
             </h1>
           </div>
-          <assetCard v-for="(item, index) in pointLog.list" :key="index" :asset="item" />
+          <pointCard v-for="(item, index) in pointLog.list" :key="index" :asset="item" />
         </no-content-prompt>
       </div>
       <user-pagination
@@ -36,7 +36,7 @@
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
-import assetCard from '@/components/asset_card/index.vue'
+import pointCard from '@/components/point_card/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 
 export default {
@@ -44,7 +44,7 @@ export default {
     userLayout,
     userInfo,
     userNav,
-    assetCard,
+    pointCard,
     userPagination
   },
   data() {

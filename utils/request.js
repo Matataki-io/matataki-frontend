@@ -20,15 +20,15 @@ const _axios = axios.create({
   headers: {},
 });
 
-let loadingInstance = null;
+// let loadingInstance = null;
 _axios.interceptors.request.use(
   (config) => {
     // console.log('user request interceptors', config, config.noLoading)
-    if (!config.noLoading) {
-      loadingInstance = Loading.service({
-        background: 'rgba(0, 0, 0, 0.1)'
-      });
-    }
+    // if (!config.noLoading) {
+      // loadingInstance = Loading.service({
+      //   background: 'rgba(0, 0, 0, 0.1)'
+      // });
+    // }
     if (utils.getCookie('ACCESS_TOKEN')) config.headers['x-access-token'] = utils.getCookie('ACCESS_TOKEN');
     return config;
   },
@@ -41,7 +41,7 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
     (response) => {
-      if(loadingInstance) loadingInstance.close();
+      // if(loadingInstance) loadingInstance.close();
       if(response.status === 429) {
         Message.closeAll()
         Message({
@@ -52,8 +52,13 @@ _axios.interceptors.response.use(
       return response.data;
     },
     (error) => {
-      loadingInstance.close()
+      // loadingInstance.close()
       console.log(error.message)
+
+      if (error.message.includes('status code 401')) {
+        console.log('未授权')
+      }
+
       // 超时处理
       if (error.message.includes('timeout')) {
         Message.closeAll()
@@ -69,7 +74,7 @@ _axios.interceptors.response.use(
           type: 'error'
         })
       }
-      loadingInstance.close()
+      // loadingInstance.close()
       return Promise.reject(error);
     }
 );
