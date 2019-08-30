@@ -19,7 +19,7 @@
             开始阅读
           </el-button>
           <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo('publish')">
-            立即创造
+            立即创作
           </el-button>
         </div>
         <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="home-head-img" src="@/assets/img/home/home_head.png" alt="matataki">
@@ -51,6 +51,7 @@
           <p class="home-text-content">
             区块链与数字版权保护能够完美地结合，解决盗版横行的现状。首先在确权环节，现有机制下的专利申请流程耗时长、效率低下。区块链的分布式账本和时间戳技术使全网对知识产权所属权迅速达成共识成为可能，理论上可实现及时确权。不对称加密技术保证了版权的唯一性，时间戳技术保证了版权归属方，版权主可以方便快捷地完成确权这一流程，解决了传统确权机制低效的问题。
           </p>
+          <a class="read-more" href="http://www.miit.gov.cn/n1146290/n1146402/n1146445/c6180238/part/6180297.pdf">阅读更多 >>></a>
         </div>
         <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head1.png" alt="matataki">
       </div>
@@ -323,7 +324,8 @@ export default {
     background-color: @purpleDark;;
     border-color: @purpleDark;;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 24px;
+    font-size: 18px;
     &:hover {
       opacity: .9;
     }

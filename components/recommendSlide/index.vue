@@ -64,7 +64,7 @@ export default {
     color: #fff;
     font-size: 22px;
     line-height: 1.5;
-    padding: 14px 20px;
+    padding: 16px 20px;
     font-weight: bold;
   }
 }
