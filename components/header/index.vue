@@ -59,7 +59,7 @@
         >
           <p>请用鼠标指向用户头像并点击「我的账户」前往积分页面查看积分详情。</p>
           <div style="text-align: right; margin: 0">
-            <el-button type="primary" size="mini" @click="$emit('popoverVisible', false)">
+            <el-button class="el-button--purple" type="primary" size="mini" @click="$emit('popoverVisible', false)">
               知道了
             </el-button>
           </div>
@@ -158,15 +158,11 @@ export default {
       nav: [
         {
           title: '文章',
-          url: 'index'
+          url: 'article'
         },
         {
           title: '商品',
           url: 'shop'
-        },
-        {
-          title: '关于',
-          url: 'about'
         }
       ],
       avatar: '',

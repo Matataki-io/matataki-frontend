@@ -117,7 +117,7 @@ export default {
 
           this.change(false)
           this.$emit('toggleDone')
-          this.$router.push({ name: 'index' })
+          this.$router.push({ name: 'article' })
         } else {
           this.$message({
             message: '对方未开启转让权限',

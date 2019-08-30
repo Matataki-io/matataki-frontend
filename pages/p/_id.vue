@@ -112,7 +112,7 @@
         >
           <p>点击左侧「分享文章」按钮可以随时分享给你的好友哦～</p>
           <div style="text-align: right; margin: 0">
-            <el-button type="primary" size="mini" @click="poopverDone('visible1')">
+            <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
               知道了
             </el-button>
           </div>
@@ -136,7 +136,7 @@
       >
         <p>阅读文章后请指向左侧图标并点击「推荐」或者「不推荐」，可以领取积分！</p>
         <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini" @click="poopverDone('visible')">
+          <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
             知道了
           </el-button>
         </div>
@@ -465,7 +465,7 @@ export default {
       const delSuccess = async () => {
         this.$message({ duration: 2000, message: '删除成功,三秒后自动跳转到首页' })
         await this.$utils.sleep(3000)
-        this.$router.push('/')
+        this.$router.push('/article')
       }
       const fail = (err) => {
         this.$message.error('删除失败')

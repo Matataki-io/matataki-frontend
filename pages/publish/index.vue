@@ -15,7 +15,7 @@
         </el-button>
 
         <el-dropdown trigger="click" @command="postArticle">
-          <el-button type="primary" icon="el-icon-s-promotion">
+          <el-button type="primary" class="el-button--purple" icon="el-icon-s-promotion">
             发布
           </el-button>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
@@ -341,12 +341,12 @@ export default {
           this.setTag(data.data)
         } else {
           this.$message.success(data.message)
-          this.$router.push({ path: '/' })
+          this.$router.push({ path: '/article' })
         }
       } catch (error) {
         console.error(error)
         this.$message.error('获取文章信息发生错误')
-        this.$router.push({ path: '/' })
+        this.$router.push({ path: '/article' })
       }
       // 设置文章内容
       const { data } = articleData.data
