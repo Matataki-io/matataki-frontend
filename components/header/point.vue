@@ -13,14 +13,14 @@
 
         <div v-if="!pointStatus.profile" class="integral-list">
           <div class="flex">
-            <span class="integral-title">完善资料设置</span>
+            <span class="integral-title">完善个人资料</span>
             <el-button size="mini" class="integral-btn" @click="profile">
               <svg-icon class="box" icon-class="box" />
               领取
             </el-button>
           </div>
           <p class="integral-des">
-            完善个人资料即可领取50积分
+            前往设置页上传头像+设置昵称即可领取50积分
           </p>
         </div>
 
@@ -33,7 +33,7 @@
             </el-button>
           </div>
           <p class="integral-des">
-            感谢老用户的支持，点击领取500积分
+            感谢8月30日前注册的老用户支持，点击领取1000积分
           </p>
         </div>
 
@@ -69,7 +69,7 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">邀请好友有奖</span>
-            <el-button size="mini" class="integral-btn" @click="copyLink(referralLink)">
+            <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
               复制链接
             </el-button>
           </div>
@@ -77,7 +77,11 @@
             {{ referralLink }}
           </div>
           <p class="integral-des">
-            每成功邀请一名好友注册可得100积分，好友获得积分你也可以获得1/10，好友每发一篇文章你可以获得10积分
+            每成功邀请一名好友注册可得666积分
+            <br>
+            好友发文你可以获得额外20积分
+            <br>
+            好友阅读获得积分你可得额外1/4
           </p>
         </div>
 
@@ -90,7 +94,7 @@
             {{ pointStatusPost }}
           </div>
           <p class="integral-des">
-            每日发文前2篇皆可获得10积分奖励
+            每日发文最高可得300积分奖励
           </p>
         </div>
 
@@ -129,16 +133,22 @@ export default {
         else return `${window.location.origin}`
       } else return ''
     },
+    referralLink1() {
+      if (process.browser) {
+        if (this.currentUserInfo && this.currentUserInfo.id) return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}?referral=${this.currentUserInfo.id}`
+        else return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}`
+      } else return ''
+    },
     pointStatusPost() {
       if (this.pointStatus.publish) return this.pointStatus.publish.today + '/' + this.pointStatus.publish.max
-      else return '0/20'
+      else return '0/300'
     },
     pointStatusRead() {
       if (this.pointStatus.publish) return this.pointStatus.read.today + '/' + this.pointStatus.read.max
       else return '0/100'
     },
     pointStatusPostNum() {
-      if (this.pointStatus.publish) return this.pointStatus.publish.today * 5
+      if (this.pointStatus.publish) return this.pointStatus.publish.today / 3
       else return 0
     },
     pointStatusReadNum() {

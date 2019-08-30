@@ -148,8 +148,8 @@ export default {
       const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/p/${article.id}`
-      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.username} \n${shareLink}\n投资好文，分享有收益 ！`
+      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
+      return `《${article.title}》by ${article.username} \n${shareLink}\n瞬MATATAKI，发布瞬间，灵感永存 \n 点击链接首次登入可领取额外500积分奖励！`
     },
     shareLink() {
       const { article, currentUserInfo } = this

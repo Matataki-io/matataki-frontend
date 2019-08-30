@@ -40,7 +40,20 @@
           </ul>
         </div>
 
-        <point />
+        <el-popover
+          v-model="visible"
+          placement="bottom"
+          width="300"
+          trigger="manual"
+        >
+          <p>点击小星星即可查看积分的获取记录</p>
+          <div style="text-align: right; margin: 0">
+            <el-button class="el-button--purple" type="primary" size="mini" @click="$emit('popoverVisible', false)">
+              知道了
+            </el-button>
+          </div>
+          <point slot="reference" />
+        </el-popover>
 
         <!-- v-if="isLogined" -->
         <svg-icon
@@ -50,54 +63,39 @@
           @click="writeP"
         />
         <!-- <span v-else class="integral">新用户登录领100积分</span> -->
-        <el-popover
+
+        <el-dropdown
           v-if="isLogined"
-          v-model="visible"
-          placement="bottom"
-          width="300"
-          trigger="manual"
         >
-          <p>请用鼠标指向用户头像并点击「我的账户」前往积分页面查看积分详情。</p>
-          <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" size="mini" @click="$emit('popoverVisible', false)">
-              知道了
-            </el-button>
+          <div class="home-head-avatar" @click="$emit('login')">
+            <avatar :size="'30px'" :src="avatar" />
           </div>
-
-          <el-dropdown
-            slot="reference"
-          >
-            <div class="home-head-avatar" @click="$emit('login')">
-              <avatar :size="'30px'" :src="avatar" />
-            </div>
-            <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-              <el-dropdown-item>
-                {{ currentUserInfo.nickname || currentUserInfo.name }}
-              </el-dropdown-item>
-              <el-dropdown-item divided>
-                <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
-                  我的账户
-                </n-link>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
-                  我的主页
-                </n-link>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
-                  设置
-                </n-link>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <div class="link" @click="btnsignOut">
-                  退出
-                </div>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-popover>
-
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <el-dropdown-item>
+              {{ currentUserInfo.nickname || currentUserInfo.name }}
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
+                我的账户
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                我的主页
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
+                设置
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <div class="link" @click="btnsignOut">
+                退出
+              </div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <a
           v-else
           href="javascript:void(0);"

@@ -110,7 +110,7 @@
           width="300"
           trigger="manual"
         >
-          <p>点击左侧「分享文章」按钮可以随时分享给你的好友哦～</p>
+          <p>点击“分享文章”按钮与朋友共享好文章~</p>
           <div style="text-align: right; margin: 0">
             <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
               知道了
@@ -134,7 +134,7 @@
         width="300"
         trigger="manual"
       >
-        <p>阅读文章后请指向左侧图标并点击「推荐」或者「不推荐」，可以领取积分！</p>
+        <p>指向此图标后，选择“推荐”或“不推荐”，即可领取阅读积分奖励！</p>
         <div style="text-align: right; margin: 0">
           <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
             知道了
@@ -568,8 +568,10 @@ export default {
         console.log('阅读新文章增加积分')
         this.$API.postsIdReadnew(this.article.id, this.timeCount)
           .then(res => {
-            if (res.code === 0) console.log('阅读新文章增加积分成功')
-            else console.log('阅读新文章增加积分失败')
+            if (res.code === 0) {
+              this.$message.success(`阅读新文章，成功领取5积分阅读后评价成功可领取更多积分奖励！`)
+              console.log('阅读新文章增加积分成功')
+            } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
       }
     }
