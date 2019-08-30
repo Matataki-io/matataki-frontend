@@ -5,7 +5,7 @@
       <div v-loading="loading" class="card-container">
         <no-content-prompt :list="pointLog.list">
           <div class="point-card">
-            <span class="title">剩余SS积分</span>
+            <span class="title">剩余积分</span>
             <h1 class="point-pricing">
               {{ amount }}
             </h1>

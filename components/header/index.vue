@@ -49,7 +49,7 @@
           :style="customizeHeaderIconColorComputed"
           @click="writeP"
         />
-        <!-- <span v-else class="integral">新用户登录领100SS积分</span> -->
+        <!-- <span v-else class="integral">新用户登录领100积分</span> -->
         <el-popover
           v-if="isLogined"
           v-model="visible"

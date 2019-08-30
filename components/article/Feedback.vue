@@ -8,14 +8,14 @@
   >
     <div class="feedback-outer">
       <img :src="fbImg" alt="" class="icon">
-      <div class="feedback-title" v-if="p.reading > 0">
-        <p>阅读文章，获得{{p.reading}}个SS积分</p>
+      <div v-if="p.reading > 0" class="feedback-title">
+        <p>阅读文章，获得{{ p.reading }}个积分</p>
       </div>
-      <div class="feedback-title" v-if="p.reading_new > 0">
-        <p>阅读新文章，获得{{p.reading_new}}个SS积分</p>
+      <div v-if="p.reading_new > 0" class="feedback-title">
+        <p>阅读新文章，获得{{ p.reading_new }}个积分</p>
       </div>
       <p class="bottom-tip">
-        阅读3天内发表的新文章可额外获得5个SS积分
+        阅读3天内发表的新文章可额外获得5个积分
       </p>
     </div>
   </el-dialog>

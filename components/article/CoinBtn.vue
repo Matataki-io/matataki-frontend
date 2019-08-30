@@ -24,15 +24,15 @@
         </p>
         <template v-else>
           <p v-for="(item, i) in points.arr" :key="i">
-            {{ item.text }} +{{ item.amount }}SS积分
+            {{ item.text }} +{{ item.amount }}积分
           </p>
         </template>
         <div class="tip-container">
           <p class="tip">
-            * 阅读2分30秒 +10SS积分
+            * 阅读2分30秒 +10积分
           </p>
           <p class="tip">
-            * 新内容 +5SS积分
+            * 新内容 +5积分
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all}SS积分` : 'SS积分' }}</a>
+      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all}积分` : '积分' }}</a>
     </div>
   </div>
 </template>

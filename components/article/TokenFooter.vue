@@ -8,7 +8,7 @@
           <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="solid-icon" />
         </div>
         <div>
-          <span class="title">评价领取SS积分</span>
+          <span class="title">评价领取积分</span>
         </div>
       </div> -->
       <div class="btns-container">
@@ -32,10 +32,10 @@
       </div>
       <template v-else>
         <div v-if="p.reading > 0" class="info1">
-          <span>阅读 + {{ p.reading }}SS积分</span>
+          <span>阅读 + {{ p.reading }}积分</span>
         </div>
         <div v-if="p.reading_new > 0" class="info1">
-          <span>新文章 + {{ p.reading_new }}SS积分</span>
+          <span>新文章 + {{ p.reading_new }}积分</span>
         </div>
       </template>
     </div>
