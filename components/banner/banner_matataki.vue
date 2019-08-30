@@ -1,9 +1,9 @@
 <template>
   <div class="banner-container mw">
     <div class="banner">
-      <div class="banner-logo">
+      <n-link :to="{name: 'home'}" class="banner-logo">
         <img class="logo" src="@/assets/img/matataki_logo.png" alt="logo">
-      </div>
+      </n-link>
       <div class="banner-data">
         <div class="data">
           <p class="data-title">
