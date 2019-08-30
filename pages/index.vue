@@ -16,10 +16,10 @@
           </p>
 
           <el-button class="home-btn" icon="el-icon-reading" @click="jumpTo('article')">
-            阅读
+            开始阅读
           </el-button>
           <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo('publish')">
-            创造
+            立即创造
           </el-button>
         </div>
         <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="home-head-img" src="@/assets/img/home/home_head.png" alt="matataki">
