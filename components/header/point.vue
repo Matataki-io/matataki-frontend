@@ -86,7 +86,7 @@
             <span class="integral-title">每日发文奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="pointStatusPostNum" :show-text="false" :stroke-width="10" />
+            <el-progress class="progress" color="#542DE0" :percentage="pointStatusPostNum" :show-text="false" :stroke-width="10" />
             {{ pointStatusPost }}
           </div>
           <p class="integral-des">
@@ -99,7 +99,7 @@
             <span class="integral-title">每日阅读奖励</span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" :percentage="pointStatusReadNum" :show-text="false" :stroke-width="10" />
+            <el-progress class="progress" color="#542DE0" :percentage="pointStatusReadNum" :show-text="false" :stroke-width="10" />
             {{ pointStatusRead }}
           </div>
           <p class="integral-des">

@@ -254,7 +254,8 @@ export default {
       },
       timerShare: null, // 分享计时器
       timeCountShare: 0, // 分享计时
-      article: Object.create(null)
+      article: Object.create(null),
+      postsIdReadnewStatus: false // 新文章阅读是否上报
     }
   },
   head() {
@@ -308,6 +309,10 @@ export default {
   },
   watch: {
     timeCount(v) {
+      if (!this.postsIdReadnewStatus && v >= 30) {
+        this.postsIdReadnew()
+        this.postsIdReadnewStatus = true
+      }
       if (v >= 150) {
         clearInterval(this.timer)
       }
@@ -556,6 +561,17 @@ export default {
       setTimeout(() => {
         this.commentRequest = Date.now()
       }, 3000)
+    },
+    postsIdReadnew() {
+      const isNDaysAgo = this.$utils.isNDaysAgo(3, this.article.create_time)
+      if (this.article.is_readnew !== 1 && !isNDaysAgo) {
+        console.log('阅读新文章增加积分')
+        this.$API.postsIdReadnew(this.article.id, this.timeCount)
+          .then(res => {
+            if (res.code === 0) console.log('阅读新文章增加积分成功')
+            else console.log('阅读新文章增加积分失败')
+          }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
+      }
     }
   }
 

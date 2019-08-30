@@ -236,4 +236,8 @@ export default {
   postsStats() {
     return request('/posts/stats')
   },
+  // 阅读获取积分
+  postsIdReadnew(id, time) {
+    return request.post(`/posts/${id}/readnew`, { time })
+  },
 }
