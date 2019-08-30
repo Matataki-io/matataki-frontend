@@ -59,7 +59,7 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
-      return 'http://ssimg.frontenduse.top/image/2019/07/15/fe217e00671f5062951cc1ebad79fa1d.png'
+      return 'https://ssimg.frontenduse.top/avatar/2019/08/30/342dbeab684873f771141e223d7dc8f4.png'
     },
     socialLink() {
       const title = this.article.title
