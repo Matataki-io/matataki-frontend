@@ -18,7 +18,7 @@
       </div>
       <div>
         <div>
-          <img class="logo" src="@/assets/img/footer_logo.png" alt="logo">
+          <img class="logo" src="@/assets/img/footer_logo1.png" alt="logo">
           <div class="icon wechat-icon">
             <div class="wechat">
               <div class="wechat-img">
@@ -71,7 +71,7 @@ export default {}
 }
 
 .logo {
-  width: 152px;
+  width: 178px;
 }
 .content {
   .nav {
