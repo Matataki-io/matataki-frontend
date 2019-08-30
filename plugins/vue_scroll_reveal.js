@@ -5,5 +5,6 @@ import Vue from 'vue'
 Vue.use(VueScrollReveal, {
   class: 'v-scroll-reveal',
   duration: 800,
-  mobile: false
+  mobile: false,
+  reset: false
 })

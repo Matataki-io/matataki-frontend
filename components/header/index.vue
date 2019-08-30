@@ -163,6 +163,10 @@ export default {
         {
           title: '商品',
           url: 'shop'
+        },
+        {
+          title: '关于',
+          url: 'about'
         }
       ],
       avatar: '',

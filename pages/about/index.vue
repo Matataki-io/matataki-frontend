@@ -3,7 +3,10 @@
     <g-header />
     <div class="home-head">
       <div class="mw flex">
-        <div v-scroll-reveal.reset="{ distance: '20px'}" class="head-text ">
+        <div
+          v-scroll-reveal="{ distance: '20px'}"
+          class="head-text "
+        >
           <img class="home-head-logo" src="@/assets/img/home/home_logo.png" alt="matataki">
           <p class="home-head-des">
             一个永久存储和版权记录的内容平台
@@ -12,14 +15,14 @@
             瞬MATATAKI是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。
           </p>
         </div>
-        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="home-head-img" src="@/assets/img/home/home_head.png" alt="matataki">
+        <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="home-head-img" src="@/assets/img/home/home_head.png" alt="matataki">
       </div>
       <div class="skew effect-bg" />
     </div>
     <div class="home-effect">
       <el-row class="mw effect">
         <el-col v-for="(item, index) in effectList" :key="index" :span="8">
-          <div v-scroll-reveal.reset="{distance: '20px', delay: index * 200}" class="effect-block">
+          <div v-scroll-reveal="{distance: '20px', delay: index * 200}" class="effect-block">
             <h3 class="effect-title">
               {{ item.title }}
             </h3>
@@ -34,7 +37,7 @@
         </el-col>
       </el-row>
       <div class="mw flex recording">
-        <div v-scroll-reveal.reset="{ distance: '20px'}" class="home-text">
+        <div v-scroll-reveal="{ distance: '20px'}" class="home-text">
           <h3 class="home-text-title">
             版权永久记录，时间戳高效确权
           </h3>
@@ -42,7 +45,7 @@
             区块链与数字版权保护能够完美地结合，解决盗版横行的现状。首先在确权环节，现有机制下的专利申请流程耗时长、效率低下。区块链的分布式账本和时间戳技术使全网对知识产权所属权迅速达成共识成为可能，理论上可实现及时确权。不对称加密技术保证了版权的唯一性，时间戳技术保证了版权归属方，版权主可以方便快捷地完成确权这一流程，解决了传统确权机制低效的问题。
           </p>
         </div>
-        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head1.png" alt="matataki">
+        <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head1.png" alt="matataki">
       </div>
     </div>
     <div class="home-block ipfs">
@@ -50,7 +53,7 @@
         <div class="skew effect-bg top" />
       </div>
       <div class="mw flex">
-        <div v-scroll-reveal.reset="{ distance: '20px'}" class="home-text ipfs">
+        <div v-scroll-reveal="{ distance: '20px'}" class="home-text ipfs">
           <h3 class="home-text-title">
             IPFS存储内容，永久记录不删除
           </h3>
@@ -59,15 +62,15 @@
           </p>
           <a class="read-more" href="http://www.ipfs.cn/news/info-100533.html">阅读更多 >>></a>
         </div>
-        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head2.png" alt="matataki">
+        <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head2.png" alt="matataki">
       </div>
       <div class="skew point-bg" />
     </div>
     <div class="home-block flex point">
       <div class="mw flex">
-        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head3.png" alt="matataki">
+        <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head3.png" alt="matataki">
 
-        <div v-scroll-reveal.reset="{ distance: '20px'}" class="home-text point">
+        <div v-scroll-reveal="{ distance: '20px'}" class="home-text point">
           <h3 class="home-text-title">
             平台积分奖励，与生态共建者共赢
           </h3>
@@ -93,7 +96,7 @@
       </div>
       <el-row class="mw flex stage">
         <el-col v-for="(item, index) in stageList" :key="index" :span="8">
-          <div v-scroll-reveal.reset="{distance: '20px', delay: index*200}" class="stage-block">
+          <div v-scroll-reveal="{distance: '20px', delay: index*200}" class="stage-block">
             <img class="stage-img" :src="item.img" alt="stage">
             <h3 class="stage-title">
               {{ item.title }}

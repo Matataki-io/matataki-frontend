@@ -1,12 +1,12 @@
 <template>
   <div class="banner-container mw">
     <div class="banner">
-      <n-link :to="{name: 'home'}" class="banner-logo">
+      <n-link :to="{name: 'about'}" class="banner-logo">
         <img class="logo" src="@/assets/img/matataki_logo.png" alt="logo">
 
-        <n-link :to="{name: 'home'}" class="banner-more">
+        <!-- <n-link :to="{name: 'about'}" class="banner-more">
           了解更多 >
-        </n-link>
+        </n-link> -->
       </n-link>
       <div class="banner-data">
         <div class="data">
@@ -110,10 +110,10 @@
   }
 }
 
-.banner-more {
-  font-size: 14px;
-  margin: 8px 0 0;
-  text-decoration: underline;
-  color: #542de0;
-}
+// .banner-more {
+//   font-size: 14px;
+//   margin: 8px 0 0;
+//   text-decoration: underline;
+//   color: #542de0;
+// }
 </style>
