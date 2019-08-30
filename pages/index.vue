@@ -93,7 +93,7 @@
             <br>
             因为你们付出的传播力帮助我们更好得被众人所知，你们付出的传播力将推动世界变得更加美好！
           </p>
-          <a class="read-more" href="#">阅读更多 >>></a>
+          <a class="read-more" href="https://www.smartsignature.io/p/781">阅读更多 >>></a>
         </div>
       </div>
     </div>

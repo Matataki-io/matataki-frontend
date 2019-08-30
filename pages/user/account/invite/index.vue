@@ -44,6 +44,9 @@
           </el-table-column> -->
         </el-table>
       </div>
+      <p class="invite-des">
+        注：未激活者阅读5篇文章并作出评价后即可完成激活，激活后您即可领取额外600积分。
+      </p>
       <user-pagination
         v-show="!loading"
         :current-page="currentPage"
@@ -164,6 +167,13 @@ export default {
   font-size: 16px;
   font-weight: bold;
   color:rgba(251,104,119,1);
+}
+.invite-des {
+  font-size:14px;
+  font-weight:400;
+  color:rgba(178,178,178,1);
+  line-height:20px;
+  margin: 0 10px 20px;
 }
 </style>
 

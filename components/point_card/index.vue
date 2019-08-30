@@ -41,12 +41,18 @@ export default {
     assetType() {
       const { status, type } = this.asset
       const pointTypes = {
-        beread: '文章被阅读获取SS积分', // 读者的文章被阅读
-        publish: '发布文章获取SS积分', // 发布文章
-        read_new: '阅读新文章获取SS积分', // 用户阅读新文章，额外获得的
-        beread_new: '新文章被阅读获取SS积分', // 读者的新文章被阅读，额外获得的
-        read_like: '阅读获取SS积分',
-        read_dislike: '阅读获取SS积分',
+        read: '阅读文章奖励积分',
+        read_like: '阅读文章奖励积分',
+        read_dislike: '阅读文章奖励积分',
+        read_referral: '被邀请者阅读文章奖励积分',
+        beread: '文章被阅读奖励积分',
+        read_new: '阅读新文章奖励积分',
+        beread_new: '新文章被阅读奖励积分',
+        publish: '发布文章奖励积分',
+        publish_referral: '被邀请者发布文章奖励积分',
+        reg_inviter: '邀请的用户注册奖励积分',
+        reg_invitee: '被邀请注册奖励积分',
+        reg_invite_finished: '邀请的用户已激活奖励积分',
         login: '回馈奖励',
         profile: '完善资料积分'
       }
