@@ -11,19 +11,17 @@
           <el-table-column
             prop="username"
             label="我邀请的用户"
-            width="336"
           >
             <template slot-scope="scope">
-              <div class="invite-block">
-                <avatar :src="scope.row.avatar" size="30px" />
+              <n-link class="invite-block" :to="{name: 'user-id', params: {id: scope.row.id}}">
+                <avatar :src="cover(scope.row.avatar)" size="30px" />
                 <span class="username">{{ scope.row.username }}</span>
-              </div>
+              </n-link>
             </template>
           </el-table-column>
           <el-table-column
             prop="create_time"
             label="注册时间"
-            width="336"
           >
             <template slot-scope="scope">
               <div class="invite-block">
@@ -104,6 +102,9 @@ export default {
   methods: {
     createTime(time) {
       return moment(time).format('MMMDo HH:mm')
+    },
+    cover(cover) {
+      return cover ? this.$API.getImg(cover) : ''
     },
     paginationData(res) {
       console.log(res)
