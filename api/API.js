@@ -231,5 +231,9 @@ export default {
       url: '/user/claimTaskPoint',
       data: data
     })
-  }
+  },
+  // 获取首页统计数据
+  postsStats() {
+    return request('/posts/stats')
+  },
 }

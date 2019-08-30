@@ -10,7 +10,7 @@
             生态共建者数
           </p>
           <p class="data-num">
-            1234
+            {{ postsStats.users || 0 }}
           </p>
         </div>
         <div class="data">
@@ -18,7 +18,7 @@
             文章确权数
           </p>
           <p class="data-num">
-            12321
+            {{ postsStats.articles || 0 }}
           </p>
         </div>
         <div class="data">
@@ -26,7 +26,7 @@
             已发放积分
           </p>
           <p class="data-num">
-            132921
+            {{ postsStats.points || 0 }}
           </p>
         </div>
       </div>
@@ -37,6 +37,26 @@
   </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      postsStats: Object.create(null)
+    }
+  },
+  mounted() {
+    this.getPostsStats()
+  },
+  methods: {
+    getPostsStats() {
+      this.$API.postsStats().then(res => {
+        if (res.code === 0) this.postsStats = res.data
+      }).catch(err => console.log(`获得统计次数${err}`))
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .banner-container {
