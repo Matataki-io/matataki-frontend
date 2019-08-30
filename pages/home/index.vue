@@ -3,29 +3,23 @@
     <g-header />
     <div class="home-head">
       <div class="mw flex">
-        <div class="head-text">
+        <div v-scroll-reveal.reset="{ distance: '20px'}" class="head-text ">
           <img class="home-head-logo" src="@/assets/img/home/home_logo.png" alt="matataki">
-          <p class="home-text-des">
-            瞬MATATAKI的名字来源于圣斗士星矢的仙女座瞬
+          <p class="home-head-des">
+            一个永久存储和版权记录的内容平台
           </p>
           <p class="home-text-des">
-            瞬MATATAKI的名字来源于圣斗士星矢的仙女座瞬
-          </p>
-          <p class="home-text-des">
-            瞬MATATAKI的名字来源于圣斗士星矢的仙女座瞬
-          </p>
-          <p class="home-text-des">
-            瞬MATATAKI的名字来源于圣斗士星矢的仙女座瞬
+            瞬MATATAKI是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。
           </p>
         </div>
-        <img class="home-head-img" src="@/assets/img/home/home_head.png" alt="matataki">
+        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="home-head-img" src="@/assets/img/home/home_head.png" alt="matataki">
       </div>
       <div class="skew effect-bg" />
     </div>
     <div class="home-effect">
       <el-row class="mw effect">
         <el-col v-for="(item, index) in effectList" :key="index" :span="8">
-          <div class="effect-block">
+          <div v-scroll-reveal.reset="{distance: '20px', delay: index * 200}" class="effect-block">
             <h3 class="effect-title">
               {{ item.title }}
             </h3>
@@ -40,15 +34,15 @@
         </el-col>
       </el-row>
       <div class="mw flex recording">
-        <div class="home-text">
+        <div v-scroll-reveal.reset="{ distance: '20px'}" class="home-text">
           <h3 class="home-text-title">
-            内容上链和版权记录
+            版权永久记录，时间戳高效确权
           </h3>
           <p class="home-text-content">
-            工信部：区块链与数字版权保护能够完美地结合，解决盗版横行的现状。首先在确权环节，现有机制下的专利申请流程耗时长、效率低下。区块链的分布式账本和时间戳技术使全网对知识产权所属权迅速达成共识成为可能，理论上可实现及时确权。不对称加密技术保证了版权的唯一性，时间戳技术保证了版权归属方，版权主可以方便快捷地完成确权这一流程，解决了传统确权机制低效的问题。
+            区块链与数字版权保护能够完美地结合，解决盗版横行的现状。首先在确权环节，现有机制下的专利申请流程耗时长、效率低下。区块链的分布式账本和时间戳技术使全网对知识产权所属权迅速达成共识成为可能，理论上可实现及时确权。不对称加密技术保证了版权的唯一性，时间戳技术保证了版权归属方，版权主可以方便快捷地完成确权这一流程，解决了传统确权机制低效的问题。
           </p>
         </div>
-        <img class="effect-flex-img" src="@/assets/img/home/home_head1.png" alt="matataki">
+        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head1.png" alt="matataki">
       </div>
     </div>
     <div class="home-block ipfs">
@@ -56,34 +50,38 @@
         <div class="skew effect-bg top" />
       </div>
       <div class="mw flex">
-        <div class="home-text ipfs">
+        <div v-scroll-reveal.reset="{ distance: '20px'}" class="home-text ipfs">
           <h3 class="home-text-title">
-            IPFS分布式存储<br>
-            不用担心文件被删除
+            IPFS存储内容，永久记录不删除
           </h3>
           <p class="home-text-content">
-            数据采用IPFS协议分布式存储，每个文件只存在独一无二的一份，减少存储资源浪费，降低存储成本，实现平台资源永不丢失，网站永不关停，保障用户权益永久有效。
-            <br>
-            <br>
-            凯文凯利：次级单位之间彼此高度连接,点对点间的影响通过网络形成了非线性因果关系.一个分布式的复杂网络所具有的弹性是极强的。
+            IPFS（InterPlanetary File System）中文名叫星际文件系统，是一种基于内容寻址、版本化、点对点的超媒体传输协议，集合了P2P网络技术、BitTorrent传输技术、Git版本控制、自证明文件系统等技术，允许网络中的参与者互相存储、索取和传输可验证的数据。而且IPFS协议上的数据可永久保存在Web上，不再删除数据。不再依赖主干网络的分布式网络，可以有效抵御黑客对中心化服务器的攻击，用户数据和隐私可以得到更好的保护。
           </p>
-          <a class="read-more" href="#">阅读更多 >>></a>
+          <a class="read-more" href="http://www.ipfs.cn/news/info-100533.html">阅读更多 >>></a>
         </div>
-        <img class="effect-flex-img" src="@/assets/img/home/home_head2.png" alt="matataki">
+        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head2.png" alt="matataki">
       </div>
       <div class="skew point-bg" />
     </div>
     <div class="home-block flex point">
       <div class="mw flex">
-        <img class="effect-flex-img" src="@/assets/img/home/home_head3.png" alt="matataki">
+        <img v-scroll-reveal.reset="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head3.png" alt="matataki">
 
-        <div class="home-text point">
+        <div v-scroll-reveal.reset="{ distance: '20px'}" class="home-text point">
           <h3 class="home-text-title">
-            积分奖励<br>
-            让生态共建者共赢
+            平台积分奖励，与生态共建者共赢
           </h3>
           <p class="home-text-content">
-            每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，每个参与瞬MATATAKI生态建设的共建者都有所付出，
+            瞬MATATAKI将回馈所有参与生态建设的共建者！
+            <br>
+            <br>
+            因为你们付出的注意力帮助我们更好得判断内容质量，你们付出的注意力将直接帮助其他探索者节省时间！
+            <br>
+            <br>
+            因为你们付出的创作力帮助我们更好的发展壮大，你们付出的创作力将直接帮助每一位探索者进步！
+            <br>
+            <br>
+            因为你们付出的传播力帮助我们更好得被众人所知，你们付出的传播力将推动世界变得更加美好！
           </p>
           <a class="read-more" href="#">阅读更多 >>></a>
         </div>
@@ -95,7 +93,7 @@
       </div>
       <el-row class="mw flex stage">
         <el-col v-for="(item, index) in stageList" :key="index" :span="8">
-          <div class="stage-block">
+          <div v-scroll-reveal.reset="{distance: '20px', delay: index*200}" class="stage-block">
             <img class="stage-img" :src="item.img" alt="stage">
             <h3 class="stage-title">
               {{ item.title }}
@@ -128,39 +126,39 @@ export default {
       effectList: [
         {
           title: '行业痛点',
-          subtitle: '存证困难',
+          subtitle: '激励手段不明确',
           img: effect1,
-          des: '在数据、隐私这块“新大陆”上，面对来势汹汹的巨头“牛仔”，不要做眼巴巴看着自己地盘被圈、或是把自己的地盘廉价卖出换来几颗好看彩珠的“原住民”。什么是好看的彩珠？就是免费的、新潮的、便利的但同时才收集你个人偏好、数据乃至隐私的网络服务。'
+          des: '传统创作平台的积分激励手段让参与者感觉自己就是局外人，虽然为平台做出了贡献，可是乏公开透明的机制，无法规避平台暗箱操作，可能出现积分失效、积分增发、积分无法流通交易等问题。'
         },
         {
           title: '行业痛点',
-          subtitle: '版权无法被保护',
+          subtitle: '权益难以被保障',
           img: effect2,
-          des: '在数据、隐私这块“新大陆”上，面对来势汹汹的巨头“牛仔”，不要做眼巴巴看着自己地盘被圈、或是把自己的地盘廉价卖出换来几颗好看彩珠的“原住民”。什么是好看的彩珠？就是免费的、新潮的、便利的但同时才收集你个人偏好、数据乃至隐私的网络服务。'
+          des: '作者创作的内容以及创作行为的数据存在平台数据库，缺乏信任可被随意删改，因此难以证明内容的版权。一旦需要进行法律维权则缺乏有效证据。'
         },
         {
           title: '行业痛点',
-          subtitle: '随时被删号',
+          subtitle: '平台掌握所有权',
           img: effect3,
-          des: '在数据、隐私这块“新大陆”上，面对来势汹汹的巨头“牛仔”，不要做眼巴巴看着自己地盘被圈、或是把自己的地盘廉价卖出换来几颗好看彩珠的“原住民”。什么是好看的彩珠？就是免费的、新潮的、便利的但同时才收集你个人偏好、数据乃至隐私的网络服务。'
+          des: '写作爱好者将自己的文笔记录在创作平台、社交网络、微信公众号中。但是这些平台可以对你的内容自由删改，对你的账号随意封禁，网站也可能会停运。'
         },
         {
           title: '特征',
-          subtitle: '内容上链',
+          subtitle: '运用IPFS技术',
           img: effect4,
-          des: '在数据、隐私这块“新大陆”上，面对来势汹汹的巨头“牛仔”，不要做眼巴巴看着自己地盘被圈、或是把自己的地盘廉价卖出换来几颗好看彩珠的“原住民”。什么是好看的彩珠？就是免费的、新潮的、便利的但同时才收集你个人偏好、数据乃至隐私的网络服务。'
+          des: '瞬MATATAKI采用了星际文件系统（IPFS）协议，每个文件只存在独一无二的一份，减少存储资源浪费，降低存储成本，实现平台资源永不丢失，网站永不关停，保障用户权益永久有效。'
         },
         {
           title: '特征',
-          subtitle: '版权记录',
+          subtitle: '支持区块链账号',
           img: effect5,
-          des: '在数据、隐私这块“新大陆”上，面对来势汹汹的巨头“牛仔”，不要做眼巴巴看着自己地盘被圈、或是把自己的地盘廉价卖出换来几颗好看彩珠的“原住民”。什么是好看的彩珠？就是免费的、新潮的、便利的但同时才收集你个人偏好、数据乃至隐私的网络服务。'
+          des: '支持使用EOS、本体等主流公链的去中心化账号登入，平台无法触碰用户私钥。使用IPFS技术记录内容修改操作，任何人包括平台都无法篡改。'
         },
         {
           title: '特征',
-          subtitle: '永久储存',
+          subtitle: '积分激励系统',
           img: effect6,
-          des: '在数据、隐私这块“新大陆”上，面对来势汹汹的巨头“牛仔”，不要做眼巴巴看着自己地盘被圈、或是把自己的地盘廉价卖出换来几颗好看彩珠的“原住民”。什么是好看的彩珠？就是免费的、新潮的、便利的但同时才收集你个人偏好、数据乃至隐私的网络服务。'
+          des: '冷启动阶段专注于满足用户需求和验证商业模式，通过注意力挖矿和劳动力挖矿获得积分，用积分形式代在产品内部流转。正式启动后按比例映射为生态Token，并给予用户诸多平台权益。'
         }
       ],
       stageList: [
@@ -181,6 +179,10 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+  },
+  methods: {
   }
 }
 </script>

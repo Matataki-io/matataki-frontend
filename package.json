@@ -40,6 +40,7 @@
     "qs": "^6.7.0",
     "vue-clipboard2": "^0.3.0",
     "vue-content-loader": "^0.2.2",
+    "vue-scroll-reveal": "^1.0.11",
     "vue-upload-component": "^2.8.20",
     "xss": "^1.0.6"
   },

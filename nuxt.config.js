@@ -66,7 +66,8 @@ export default {
     '~/plugins/element-ui',
     '~/plugins/vue_plugins.js',
     '~/plugins/vue_components.js',
-    { src: '@/plugins/vue-mavon-editor', ssr: false }
+    { src: '@/plugins/vue-mavon-editor', ssr: false },
+    { src: '~/plugins/vue_scroll_reveal.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules
