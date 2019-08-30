@@ -3,6 +3,10 @@
     <div class="banner">
       <n-link :to="{name: 'home'}" class="banner-logo">
         <img class="logo" src="@/assets/img/matataki_logo.png" alt="logo">
+
+        <n-link :to="{name: 'home'}" class="banner-more">
+          了解更多 >
+        </n-link>
       </n-link>
       <div class="banner-data">
         <div class="data">
@@ -104,5 +108,12 @@
   img {
     height: 84%;
   }
+}
+
+.banner-more {
+  font-size: 14px;
+  margin: 8px 0 0;
+  text-decoration: underline;
+  color: #542de0;
 }
 </style>
