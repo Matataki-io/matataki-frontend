@@ -459,7 +459,7 @@ export default {
     display: none;
   }
   .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover  {
-    background-color: @blue;
+    background-color: @purpleDark;
     color: #fff;
     .link {
       color: #fff;

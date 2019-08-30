@@ -229,7 +229,7 @@ export default {
     cursor: pointer;
     font-size:16px;
     font-weight:500;
-    color: #1C9CFE;
+    color: @purpleDark;
     line-height:22px;
   }
   .data {
@@ -293,6 +293,6 @@ export default {
   font-size: 16px;
   font-weight: bold;
   font-style: normal;
-  color: #1C9CFE;
+  color: @purpleDark;
 }
 </style>

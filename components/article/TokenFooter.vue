@@ -153,17 +153,17 @@ export default {
     cursor: pointer;
     user-select: none;
     background: #F1F1F1;
-    color: @blue;
+    color: @purpleDark;
     border: none;
     span {
       margin-left: 3px;
     }
     &:hover:enabled {
-      background: @blue;
+      background: @purpleDark;
       color: #fff;
     }
     &.actived {
-      background: @blue;
+      background: @purpleDark;
       color: #fff;
     }
   }
@@ -192,16 +192,16 @@ export default {
   height: 80px;
   border-radius: 60%;
   box-sizing: border-box;
-  border: 4px solid @blue;
+  border: 4px solid @purpleDark;
   background: #F1F1F1;
-  color: @blue;
+  color: @purpleDark;
   font-size: 20px;
   font-weight: 700;
   .flexCenter();
   margin-bottom: 10px;
   cursor: pointer;
   &:hover {
-    background: @blue;
+    background: @purpleDark;
     color: #fff;
   }
 }
@@ -212,7 +212,7 @@ export default {
   line-height: 20px;
 }
 .clickStyle {
-  background: @blue;
+  background: @purpleDark;
   color: #fff;
 }
 .hidden {
@@ -239,7 +239,7 @@ export default {
       margin: 0 5px 0 10px;
     }
     .num {
-      color:  @blue;
+      color:  @purpleDark;
       font-weight: 700;
     }
   }
@@ -247,7 +247,7 @@ export default {
 
 .like {
   font-size:16px;
-  color: #1C9CFE;
+  color: @purpleDark;
   font-style: normal;
   margin-left: 4px;
 }

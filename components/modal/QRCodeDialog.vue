@@ -173,7 +173,7 @@ export default {
   position: absolute;
   font-size: 14px;
   text-decoration: underline;
-  color: #1c9cfe;
+  color: @purpleDark;
   border-radius: 4px;
   border: none;
   display: flex;

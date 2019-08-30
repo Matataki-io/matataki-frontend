@@ -106,7 +106,7 @@ export default {
   .des {
     font-size:16px;
     font-weight:400;
-    color:rgba(28,156,254,1);
+    color: @purpleDark;
     line-height:22px;
   }
 }
@@ -187,7 +187,7 @@ export default {
   .copy-button {
     width: 60px;
     height: 20px;
-    background: #1C9CFE;
+    background: @purpleDark;
     border-radius: 20px;
     color: #fff;
     font-size: 14px;

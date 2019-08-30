@@ -62,7 +62,7 @@ export default {
       margin: 0 5px 0 10px;
     }
     .num {
-      color:  @blue;
+      color:  @purpleDark;
       font-weight: 700;
     }
   }

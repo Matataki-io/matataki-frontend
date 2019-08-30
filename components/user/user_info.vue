@@ -217,7 +217,7 @@ export default {
       .num {
         font-size:24px;
         font-weight:600;
-        color:rgba(28,156,254,1);
+        color:@purpleDark;
         line-height:33px;
         padding: 0;
         margin: 0;

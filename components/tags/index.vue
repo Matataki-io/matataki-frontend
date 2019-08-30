@@ -37,16 +37,16 @@ export default {
 <style lang="less" scoped>
   .tag-card {
     display: block;
-    background:rgba(230,244,255,1);
+    background: @purpleLight;
     border-radius:20px;
     font-size:16px;
-    color:rgba(28,156,254,1);
+    color: @purpleDark;
     padding: 8px 0;
     margin: 10px 0;
     text-align: center;
     transition: all .18s;
     &:hover {
-      background-color: #1C9CFE;
+      background-color: @purpleDark;
       color: #fff;
     }
   }

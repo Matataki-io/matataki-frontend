@@ -224,7 +224,7 @@ export default {
     .info-number {
       font-weight: 700;
       font-size: 30px;
-      color: #1C9CFE;
+      color: @purpleDark;
       line-height: 30px;
       &:after {
         content: ' ';

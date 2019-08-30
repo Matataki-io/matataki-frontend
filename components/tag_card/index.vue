@@ -49,10 +49,10 @@ export default {
     setStyle(status = false) {
       if (status) {
         this.tagStyleObject.color = '#fff'
-        this.tagStyleObject.backgroundColor = '#1c9cfe'
+        this.tagStyleObject.backgroundColor = '#542DE0'
       } else {
-        this.tagStyleObject.color = '#1c9cfe'
-        this.tagStyleObject.backgroundColor = '#e6f4ff'
+        this.tagStyleObject.color = '#542DE0'
+        this.tagStyleObject.backgroundColor = '#ebe6ff'
       }
     },
     // 切换状态

@@ -154,7 +154,7 @@ export default {
   font-size: 18px;
   font-weight: bold;
   font-style: normal;
-  color: #1C9CFE;
+  color: @purpleDark;
 }
 
 .recommend-card .cover {

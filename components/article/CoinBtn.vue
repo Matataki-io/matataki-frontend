@@ -175,11 +175,11 @@ export default {
 
 <style scoped lang="less">
 .center-text {
-  color: #1C9CFE;
+  color: @purpleDark;
   font-size: 18px;
 }
 .center-icon {
-  color: #1C9CFE;
+  color: @purpleDark;
   font-size: 20px;
 }
 .title-container {
@@ -216,7 +216,7 @@ export default {
     text-align: center;
     border-radius: 6px;
     box-sizing: border-box;
-    border: 1px solid @blue;
+    border: 1px solid @purpleDark;
     .flexCenter();
     height: 30px;
     cursor: pointer;
@@ -226,13 +226,13 @@ export default {
     }
   }
   .great-cointainer {
-    background: @blue;
+    background: @purpleDark;
     color: #fff;
     .btn-base();
   }
   .bullshit-cointainer {
     background: transparent;
-    color: @blue;
+    color: @purpleDark;
     .btn-base();
     margin-left: 10px;
   }
@@ -248,16 +248,16 @@ export default {
   height: 60px;
   border-radius: 60%;
   box-sizing: border-box;
-  border: 4px solid @blue;
+  border: 4px solid @purpleDark;
   background: #F1F1F1;
-  color: @blue;
+  color: @purpleDark;
   font-size: 20px;
   font-weight: 700;
   .flexCenter();
   margin-bottom: 10px;
   cursor: pointer;
   &:hover {
-    background: @blue;
+    background: @purpleDark;
     color: #fff;
   }
 }
@@ -268,7 +268,7 @@ export default {
   line-height: 20px;
 }
 .clickStyle {
-  background: @blue;
+  background: @purpleDark;
   color: #fff;
 }
 .hidden {

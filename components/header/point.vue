@@ -272,7 +272,7 @@ export default {
 
 .integral-num {
   font-size:24px;
-  color:rgba(28,156,254,1);
+  color:@purpleDark;
   font-weight: bold;
 }
 

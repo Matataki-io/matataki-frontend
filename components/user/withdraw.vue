@@ -320,7 +320,7 @@ export default {
   margin: 20px;
   border-radius: 6px;
   display: block;
-  background-color: #1C9CFE;
+  background-color: @purpleDark;
   cursor: pointer;
   text-align: center;
 }
@@ -328,7 +328,7 @@ export default {
 .with {
   width:300px;
   height:40px;
-  background:@blue;
+  background:@purpleDark;
   border-radius: @borderRadius6;
   color: #fff;
   border: none;
