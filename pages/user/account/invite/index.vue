@@ -5,9 +5,8 @@
       <div v-loading="loading" class="card-container invite">
         <div class="line" />
         <el-table
-          :data="tableData"
+          :data="pointLog.list"
           style="width: 100%"
-          :default-sort="{prop: 'date', order: 'descending'}"
         >
           <el-table-column
             prop="username"
@@ -22,22 +21,19 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="date"
+            prop="create_time"
             label="注册时间"
-            sortable
             width="336"
-            :formatter="formatterDate"
           >
             <template slot-scope="scope">
               <div class="invite-block">
-                <span class="time">{{ scope.row.date }}</span>
+                <span class="time">{{ createTime(scope.row.create_time) }}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             prop="point"
             label="为我产生的收益"
-            sortable
             :formatter="formatterPoint"
           >
             <template slot-scope="scope">
@@ -45,7 +41,7 @@
                 <span class="point">+{{ scope.row.point }}</span>
               </div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
       <user-pagination
@@ -68,6 +64,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
@@ -88,7 +86,7 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'userPoint',
+        apiUrl: 'userInvitees',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -97,51 +95,16 @@ export default {
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0,
-      tableData: [
-        {
-          avatar: 'https://ssimg.frontenduse.top/avatar/2019/08/05/556b873d9a171b8ef08992919fc4bb49.jpeg',
-          username: 'xiaotiandada',
-          date: '2019-09-06',
-          point: '500'
-        },
-        {
-          avatar: 'https://ssimg.frontenduse.top/avatar/2019/08/05/556b873d9a171b8ef08992919fc4bb49.jpeg',
-          username: 'xiaotiandada',
-          date: '2019-09-19',
-          point: '540'
-        },
-        {
-          avatar: 'https://ssimg.frontenduse.top/avatar/2019/08/05/556b873d9a171b8ef08992919fc4bb49.jpeg',
-          username: 'xiaotiandada',
-          date: '2019-01-09',
-          point: '123'
-        },
-        {
-          avatar: 'https://ssimg.frontenduse.top/avatar/2019/08/05/556b873d9a171b8ef08992919fc4bb49.jpeg',
-          username: 'xiaotiandada',
-          date: '2019-09-03',
-          point: '432'
-        },
-        {
-          avatar: 'https://ssimg.frontenduse.top/avatar/2019/08/05/556b873d9a171b8ef08992919fc4bb49.jpeg',
-          username: 'xiaotiandada',
-          date: '2019-02-09',
-          point: '1'
-        },
-        {
-          avatar: 'https://ssimg.frontenduse.top/avatar/2019/08/05/556b873d9a171b8ef08992919fc4bb49.jpeg',
-          username: 'xiaotiandada',
-          date: '2019-04-11',
-          point: '123123'
-        }
-      ]
+      amount: 0
     }
   },
   methods: {
+    createTime(time) {
+      return moment(time).format('MMMDo HH:mm')
+    },
     paginationData(res) {
       console.log(res)
-      this.pointLog.list = res.data.logs
+      this.pointLog.list = res.data.list
       this.assets = res.data
       this.total = res.data.count || 0
       this.amount = res.data.amount || 0
