@@ -270,7 +270,7 @@ export default {
         { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
+        { hid: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
         { hid: 'og:title', property: 'og:title', content: this.article.title },
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
@@ -481,7 +481,7 @@ export default {
           return fail(error)
         }
       }
-      this.$confirm('该文章已上传至 IPFS 永久保存, 本次操作仅删除智能签名中的显示.', '确认信息', {
+      this.$confirm('该文章已上传至 IPFS 永久保存, 本次操作仅删除瞬MATATAKI中的显示.', '确认信息', {
         distinguishCancelAndClose: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消'

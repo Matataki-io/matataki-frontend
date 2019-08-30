@@ -86,7 +86,7 @@ export default {
           },
           {
             title: '手续费',
-            titleDes: '(限时由智能签名官方支付)',
+            titleDes: '(限时由瞬MATATAKI官方支付)',
             placeholder: '输入或长按黏贴地址',
             value: 0,
             des: 'EOS',
@@ -123,7 +123,7 @@ export default {
           },
           {
             title: '手续费',
-            titleDes: '(限时由智能签名官方支付)',
+            titleDes: '(限时由瞬MATATAKI官方支付)',
             placeholder: '输入或长按黏贴地址',
             value: 0.01,
             des: 'ONG',

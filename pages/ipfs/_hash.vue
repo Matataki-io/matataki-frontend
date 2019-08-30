@@ -14,7 +14,7 @@
         </n-link>
         <time itemprop="datePublished" :datetime="articleData.create_time">{{ articleCreateTime }}</time>
         <span itemprops="provider" itemscope="" itemtype="https://www.smartsignature.io/">
-          from <span itemprops="name">智能签名 Smart Signature</span>
+          from <span itemprops="name">瞬MATATAKI</span>
           <meta itemprops="url" content="https://www.smartsignature.io/">
         </span>
         <p itemprops="hash">
@@ -50,7 +50,7 @@ export default {
         { hid: 'twitter:title', property: 'twitter:title', content: this.articleIpfs.author + ':' + this.articleData.title },
         { hid: 'twitter:description', property: 'twitter:description', content: this.articleData.short_content },
         /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', property: 'og:site_name', content: '智能签名' },
+        { hid: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
         { hid: 'og:title', property: 'og:title', content: this.articleIpfs.author + ':' + this.articleData.title },
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:description', property: 'og:description', content: this.articleData.short_content }

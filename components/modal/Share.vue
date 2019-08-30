@@ -51,7 +51,7 @@
         什么是文章widget
       </p>
       <p class="widget-help-content">
-        widget功能可以为当前文章生成一个精美的展示卡片。您可以将widget代码复制到智能签名的文章编辑器中，这样就可以在您的文章中插入精美的文章展示卡片。当然，您展示的文章卡片同样也会具有邀请链接的功能。
+        widget功能可以为当前文章生成一个精美的展示卡片。您可以将widget代码复制到瞬MATATAKI的文章编辑器中，这样就可以在您的文章中插入精美的文章展示卡片。当然，您展示的文章卡片同样也会具有邀请链接的功能。
       </p>
       <br>
       <p class="widget-help-title">
@@ -61,7 +61,7 @@
         1.你可以选择自定义展示卡片上的简介内容<br>
         2.点击“创建widget”按钮获取代码<br>
         3.点击“复制代码”按钮获取widget代码<br>
-        4.粘贴代码到智能签名编辑器中即可展示<br>
+        4.粘贴代码到瞬MATATAKI编辑器中即可展示<br>
       </p>
 
       <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
