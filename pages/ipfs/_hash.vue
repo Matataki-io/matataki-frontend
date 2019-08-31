@@ -13,9 +13,9 @@
           {{ articleIpfs.author }}
         </n-link>
         <time itemprop="datePublished" :datetime="articleData.create_time">{{ articleCreateTime }}</time>
-        <span itemprops="provider" itemscope="" itemtype="https://www.smartsignature.io/">
+        <span itemprops="provider" itemscope="" itemtype="https://www.matataki.io/">
           from <span itemprops="name">瞬MATATAKI</span>
-          <meta itemprops="url" content="https://www.smartsignature.io/">
+          <meta itemprops="url" content="https://www.matataki.io/">
         </span>
         <p itemprops="hash">
           {{ articleData.hash }}

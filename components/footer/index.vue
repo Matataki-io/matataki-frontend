@@ -3,11 +3,11 @@
     <div class="mw footer-content">
       <div class="content">
         <div class="nav">
-          <a class="href" target="_blank" href="https://www.smartsignature.io/p/782">使用手册</a>
+          <a class="href" target="_blank" href="https://www.matataki.io/p/782">使用手册</a>
           <a class="href" href="javascript:;">隐私政策</a>
           <a class="href" href="javascript:;">用户协议</a>
           <a class="href" target="_blank" href="https://github.com/smart-signature/smart-signature-future">关于我们</a>
-          <a class="href" target="_blank" href="http://www.smartsignature.io/p/616">智能公告牌</a>
+          <a class="href" target="_blank" href="http://www.matataki.io/p/616">智能公告牌</a>
         </div>
         <p class="link">
           友情链接:

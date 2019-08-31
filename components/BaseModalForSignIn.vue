@@ -20,8 +20,8 @@
           <span>Github 登录</span>
         </button>
         <div class="guide">
-          <a target="_blank" href="https://www.smartsignature.io/p/515">EOS登录指南</a>
-          <a target="_blank" href="https://www.smartsignature.io/p/516">ONT登录指南</a>
+          <a target="_blank" href="https://www.matataki.io/p/515">EOS登录指南</a>
+          <a target="_blank" href="https://www.matataki.io/p/516">ONT登录指南</a>
         </div>
       </div>
     </section>
@@ -211,7 +211,7 @@ export default {
           ],
           doc: {
             title: '《如何使用EOS登录》',
-            href: 'https://www.smartsignature.io/p/515'
+            href: 'https://www.matataki.io/p/515'
           }
         },
         {
@@ -239,7 +239,7 @@ export default {
           ],
           doc: {
             title: '《如何使用ONT登录》',
-            href: 'https://www.smartsignature.io/p/516'
+            href: 'https://www.matataki.io/p/516'
           }
         }
       ]
