@@ -73,7 +73,7 @@ export default {
     },
     shareLink() {
       let url = `${process.env.WX_SHARE_HOST}/article/${this.$route.params.id}`
-      if (this.isLogined) url += `?invite=${this.currentUserInfo.id}`
+      if (this.isLogined) url += `?invite=${this.currentUserInfo.id}&referral=${this.currentUserInfo.id}`
       return url
     }
   },
