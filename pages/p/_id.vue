@@ -569,7 +569,7 @@ export default {
         this.$API.postsIdReadnew(this.article.id, this.timeCount)
           .then(res => {
             if (res.code === 0) {
-              this.$message.success(`阅读新文章，成功领取5积分阅读后评价成功可领取更多积分奖励！`)
+              this.$message.success('阅读新文章奖励5积分, 评价后可领取更多积分!')
               console.log('阅读新文章增加积分成功')
             } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
