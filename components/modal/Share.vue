@@ -152,6 +152,7 @@ export default {
       return `《${article.title}》by ${article.username} \n${shareLink}\n瞬MATATAKI，发布瞬间，灵感永存 \n 点击链接首次登入可领取额外500积分奖励！`
     },
     shareLink() {
+      // 应产品需求 这里改为移动端的链接
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
@@ -180,14 +181,14 @@ export default {
       // 如果显示创建widget 但是没有内容
       if (newVal === 3 && !this.widgetContent) {
         let invite = this.currentUserInfo.id
-        invite = invite ? `&invite=${invite}` : ''
+        invite = invite ? `&invite=${invite}&referral=${invite}` : ''
         this.widgetContentIframe = `<iframe width="100%" height="180" src='${urlAddress}/widget/?id=${this.id}${invite}' frameborder=0></iframe>`
       }
     },
     widgetContent(newVal) {
       let content = ''
       let invite = this.currentUserInfo.id
-      invite = invite ? `&invite=${invite}` : ''
+      invite = invite ? `&invite=${invite}&referral=${invite}` : ''
       // 去前后空格防止空内容
       if (strTrim(newVal)) content = `&content=${newVal}`
       this.widgetContentIframe = `<iframe width="100%" height="180" src='${urlAddress}/widget/?id=${this.id}${content}${invite}' frameborder=0></iframe>`
