@@ -196,7 +196,7 @@ export default {
 }
 
 .header {
-  height: 240px;
+  height: 200px;
   background-color: @purpleDark;
   position: relative;
   overflow: hidden;
@@ -221,7 +221,7 @@ export default {
     font-size:20px;
     color: #fff;
     padding: 0;
-    margin: 80px auto 0;
+    margin: 60px auto 0;
     line-height: 1.5;
     letter-spacing: 1px;
     z-index: 10;
@@ -235,6 +235,7 @@ export default {
     left: 0;
     z-index: 0;
     background-size: cover;
+    background-position: center;
   }
   .full {
     position: absolute;
