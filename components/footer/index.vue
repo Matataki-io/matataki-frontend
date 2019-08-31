@@ -14,6 +14,8 @@
           <a href="http://linkidol.pro/" target="_blank">链接偶像</a>
           |
           <a href="https://orange.xyz/" target="_blank">橙皮书</a>
+          |
+          <a href="https://eosvote.com/" target="_blank">EOSvote</a>
         </p>
       </div>
       <div>
