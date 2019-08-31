@@ -24,7 +24,7 @@
         </p>
         <template v-else>
           <p v-for="(item, i) in points.arr" :key="i">
-            {{ item.text }} +{{ item.amount }}积分
+            {{ (item.text + item.amount) || 0 }}积分
           </p>
         </template>
         <div class="tip-container">
@@ -101,10 +101,10 @@ export default {
         // reading: '用户阅读', // 用户阅读
         // beread: '+', // 读者的文章被阅读
         // publish: '+', // 发布文章
-        reading_new: '阅读新文章', // 用户阅读新文章，额外获得的
+        read_new: '阅读新文章', // 用户阅读新文章，额外获得的
         // beread_new: '+', // 读者的新文章被阅读，额外获得的
-        reading_like: '用户阅读', // 读者的新文章被阅读，额外获得的
-        reading_dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
+        read_like: '用户阅读', // 读者的新文章被阅读，额外获得的
+        read_dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
       }
       const arr = []
       let all = 0

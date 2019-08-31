@@ -37,6 +37,7 @@
         <div v-if="p.reading_new > 0" class="info1">
           <span>新文章 + {{ p.reading_new }}积分</span>
         </div>
+        <div />
       </template>
     </div>
   </div>
@@ -103,10 +104,10 @@ export default {
         reading: 0
       }
       for (let i = 0; i < l; i++) {
-        if (points[i].type === 'reading_new') {
+        if (points[i].type === 'read_new') {
           result.reading_new = points[i].amount
         }
-        if (points[i].type === 'reading_dislike' || points[i].type === 'reading_like') {
+        if (points[i].type === 'read_dislike' || points[i].type === 'read_like') {
           result.reading = points[i].amount
         }
       }
