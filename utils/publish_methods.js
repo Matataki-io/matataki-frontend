@@ -2,7 +2,7 @@ export default {
 // 无法赞赏的账号类型
 /**
  *
- * @param {String} id 登陆类型
+ * @param {String} id 登录类型
  */
   invalidId(id) {
     const lowerId = id.toLocaleLowerCase()

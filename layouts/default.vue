@@ -42,7 +42,7 @@ export default {
       return this.$route.name === 'publish' || this.$route.name === 'p-id'
     },
     hideFooter() {
-      // 发布页面 GitHub登陆
+      // 发布页面 GitHub登录
       return this.$route.name === 'publish' || this.$route.name === 'login'
     }
 

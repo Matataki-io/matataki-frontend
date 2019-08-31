@@ -481,7 +481,7 @@ export default {
     },
     // 发布||修改按钮
     async sendThePost() {
-      // 没有登陆 点击发布按钮都提示登陆  编辑获取内容的时候会被前面的func拦截并返回home page
+      // 没有登录 点击发布按钮都提示登录  编辑获取内容的时候会被前面的func拦截并返回home page
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
       // 标题或内容为空时

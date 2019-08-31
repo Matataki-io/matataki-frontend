@@ -104,16 +104,16 @@ export default {
         await this.signIn({ idProvider: type })
         this.$store.commit('setLoginModal', false)
         this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-        window.location.reload() // 登陆完成刷新一次
+        window.location.reload() // 登录完成刷新一次
       } catch (error) {
         try {
           await this.signIn({ idProvider: type })
           this.$store.commit('setLoginModal', false)
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-          window.location.reload() // 登陆完成刷新一次
+          window.location.reload() // 登录完成刷新一次
         } catch (err) {
           console.log('signInx 错误', err)
-          this.$message.error('登陆失败')
+          this.$message.error('登录失败')
         }
       }
     },
@@ -131,7 +131,7 @@ export default {
               this.$store.commit('setUserConfig', { idProvider: 'Email' })
               this.$message.success('登录成功')
               this.$emit('hide')
-              window.location.reload() // 登陆完成刷新一次
+              window.location.reload() // 登录完成刷新一次
             } else {
               this.$message.error(`登录失败，账号或密码错误`)
             }

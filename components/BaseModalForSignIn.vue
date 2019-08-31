@@ -268,7 +268,7 @@ export default {
           this.$backendAPI.accessToken = this.currentUserInfo.accessToken
         } catch (err) {
           console.log('signInx 错误', err)
-          this.$message.error('登陆失败')
+          this.$message.error('登录失败')
         }
       }
     }

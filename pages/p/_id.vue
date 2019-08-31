@@ -513,7 +513,7 @@ export default {
         return false
       }
       if (!this.isLogined) {
-        this.$message.warning('登陆后即可投资')
+        this.$message.warning('登录后即可投资')
         return false
       }
       // email github 无法赞赏

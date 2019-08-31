@@ -96,7 +96,7 @@ export const actions = {
       ;[signData] = rawSignData
       memo = 'Auth'
     } else if (mode === 'withdraw') {
-      // 如果是EOS登陆提现ONT
+      // 如果是EOS登录提现ONT
       if (tokenName === 'ONT') {
         // 字符串切割 ont 提现地址和合约切割
         const strSlice = str => [str.slice(0, 12), str.slice(12, 24), str.slice(24, 36)]
