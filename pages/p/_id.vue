@@ -405,7 +405,8 @@ export default {
           clearInterval(this.timer)
           this.ssToken.is_liked = 2
           this.ssToken.points = res.data
-          this.feedbackShow = true
+          // this.feedbackShow = true
+          this.$message.success('评价成功，阅读积分奖励已领取')
 
           this.getArticleInfoFunc() // 更新文章信息
         }
@@ -423,7 +424,8 @@ export default {
           clearInterval(this.timer)
           this.ssToken.is_liked = 1
           this.ssToken.points = res.data
-          this.feedbackShow = true
+          // this.feedbackShow = true
+          this.$message.success('评价成功，阅读积分奖励已领取')
 
           this.getArticleInfoFunc() // 更新文章信息
         }

@@ -63,7 +63,8 @@ export default {
     },
     socialLink() {
       const title = this.article.title
-      const link = encodeURIComponent(window.location.href)
+      let link = encodeURIComponent(window.location.href)
+      if (this.isLogined) link += `/?referral=${this.currentUserInfo.id}`
       const pic = this.cover
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,

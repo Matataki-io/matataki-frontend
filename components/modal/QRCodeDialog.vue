@@ -120,7 +120,9 @@ export default {
       html2canvas(this.$refs.capture, {
         useCORS: true,
         scrollX: 0,
-        scrollY: 0
+        scrollY: 0,
+        width: this.$refs.capture.clientWidth,
+        height: this.$refs.capture.clientHeight,
       }).then(canvas => {
         this.canvas = canvas
         this.saveLocal(canvas)
