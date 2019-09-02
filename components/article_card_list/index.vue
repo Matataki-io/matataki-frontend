@@ -288,9 +288,8 @@ export default {
 
 </style>
 
-<style>
+<style lang="less">
 .search-res em {
-  font-size: 16px;
   font-weight: bold;
   font-style: normal;
   color: @purpleDark;
