@@ -123,7 +123,8 @@ figure {
 }
 
 </style>
-<style>
+<style lang="less">
+
 .ipfs article p {
   line-height: 1.8;
   font-size: 18px;

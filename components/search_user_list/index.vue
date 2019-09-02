@@ -141,7 +141,8 @@ export default {
 }
 </style>
 
-<style>
+<style lang="less">
+
 .user-title em {
   font-size: 20px;
   font-style: inherit;

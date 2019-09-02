@@ -72,7 +72,7 @@ export default {
 
 </style>
 
-<style>
+<style lang="less">
 .g-avatar .el-icon-picture-outline {
   font-size: 18px;
   color: #848484;
