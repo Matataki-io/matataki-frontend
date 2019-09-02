@@ -14,9 +14,11 @@
           <p class="home-text-des">
             瞬MATATAKI是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。
           </p>
-          <el-button class="home-btn" icon="el-icon-reading" @click="jumpTo('article')">
-            开始阅读
-          </el-button>
+          <n-link :to="{name: 'article'}" style="margin-right: 10px;">
+            <el-button class="home-btn" icon="el-icon-reading">
+              开始阅读
+            </el-button>
+          </n-link>
           <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo('publish')">
             立即创作
           </el-button>
