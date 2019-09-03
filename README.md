@@ -1,6 +1,6 @@
-# smart signatrue pc
+# matataki pc
 
-smart signatrue
+matataki
 Sign it if you mean it. Let's Buidl! 🏄
 
 ## Build Setup

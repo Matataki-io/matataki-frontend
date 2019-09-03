@@ -1,8 +1,8 @@
 {
-  "name": "smart-signatrue",
+  "name": "matataki",
   "version": "1.0.0",
-  "description": "smart signatrue",
-  "author": "smart signatrue",
+  "description": "matataki",
+  "author": "matataki",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
