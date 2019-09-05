@@ -254,4 +254,11 @@ export default {
   postsIdReadnew(id, time) {
     return request.post(`/posts/${id}/readnew`, { time })
   },
+  registerGT() {
+    return request({
+      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
+      method: 'get',
+      dataType: "json",
+    })
+  }
 }
