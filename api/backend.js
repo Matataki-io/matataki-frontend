@@ -325,7 +325,7 @@ const API = {
     delete data.signature
     return this.accessBackend({ method: 'POST', url: '/user/withdraw', data })
   },
-  async loginGitHub(code) {
+  loginGitHub(code) {
     let params = { code }
 
     // 推荐人id
@@ -335,7 +335,7 @@ const API = {
     return axiosforApiServer.post('/login/github', params)
   },
   // 获取可用标签列表
-  async getTags(type) {
+  getTags(type) {
     return axiosforApiServer.get('/tag/tags', {
       params:{
         type
