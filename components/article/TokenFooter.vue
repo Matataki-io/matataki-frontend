@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="coin-btn">
-      <!-- <div class="info-container">
+    <!-- <div class="info-container">
         <div :class="['crycle', {'clickStyle': clicked}]">
           <span class="solid-icon" v-show="!clicked">+ 0</span>
           <svg-icon v-show="type==='great'" icon-class="great-solid" class="solid-icon" />
@@ -11,19 +10,19 @@
           <span class="title">评价领取积分</span>
         </div>
       </div> -->
-      <div class="btns-container">
-        <div class="btn-outer">
-          <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
-            <svg-icon icon-class="great-solid" />
-          </button>
-          <span>推荐 <em class="like">{{ article && article.likes }}</em></span>
-        </div>
-        <div class="btn-outer bullshit-outer">
-          <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
-            <svg-icon icon-class="bullshit-solid" />
-          </button>
-          <span>不推荐 <em class="like">{{ article && article.dislikes }}</em></span>
-        </div>
+    <div class="btns-container">
+      <slot />
+      <div class="btn-outer">
+        <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
+          <svg-icon icon-class="great-solid" />
+        </button>
+        <span>推荐 <em class="like">{{ article && article.likes }}</em></span>
+      </div>
+      <div class="btn-outer">
+        <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
+          <svg-icon icon-class="bullshit-solid" />
+        </button>
+        <span>不推荐 <em class="like">{{ article && article.dislikes }}</em></span>
       </div>
     </div>
     <div class="article-info">
@@ -141,7 +140,9 @@ export default {
   text-align: center;
 }
 .btns-container {
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   .btn-base {
     width: 80px;
     height: 80px;
@@ -171,9 +172,6 @@ export default {
   .great-cointainer {
     .btn-base();
   }
-  .bullshit-outer {
-    margin-left: 100px;
-  }
   .bullshit-cointainer {
     .btn-base();
   }
@@ -182,10 +180,6 @@ export default {
   .flexCenter();
   flex-direction: column;
   text-align: center;
-}
-.coin-btn {
-  .flexCenter();
-  position: relative;
 }
 .crycle {
   z-index: 100;

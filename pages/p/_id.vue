@@ -42,30 +42,33 @@
       <ArticleFooter style="margin-top: 20px;" :article="article" />
     </article>
     <div class="p-w btns-container">
-      <div>
-        <div ref="actionBtns" class="btns">
-          <div v-if="isProduct" class="article-btn" @click="buy">
-            <div class="icon-container yellow">
-              <svg-icon icon-class="purchase" class="icon" />
-            </div>
-            <span>购买商品</span>
+      <!-- 文章 -->
+      <!-- 推荐 不推荐 分享 -->
+
+      <!-- 商品 -->
+
+      <!-- 投资 购买 分享 -->
+
+      <div ref="actionBtns" class="btns">
+        <div v-if="isProduct" class="article-btn" @click="share">
+          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+            <svg-icon icon-class="share" class="icon" />
           </div>
-          <div class="article-btn" @click="invest">
-            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-              <svg-icon icon-class="invest" class="icon" />
-            </div>
-            <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
-          </div>
-          <div class="article-btn" @click="share">
-            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-              <svg-icon icon-class="share" class="icon" />
-            </div>
-            <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
-          </div>
+          <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
         </div>
-        <ArticleInfoFooter :article="article" />
-      </div>
-      <div>
+        <div v-if="isProduct" class="article-btn" @click="buy">
+          <div class="icon-container yellow">
+            <svg-icon icon-class="purchase" class="icon" />
+          </div>
+          <span>购买商品</span>
+        </div>
+        <div v-if="isProduct" class="article-btn" @click="invest">
+          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+            <svg-icon icon-class="invest" class="icon" />
+          </div>
+          <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
+        </div>
+
         <TokenFooter
           v-if="!isProduct"
           :time="timeCount"
@@ -73,13 +76,23 @@
           :article="article"
           @like="like"
           @dislike="dislike"
-        />
+        >
+          <div class="article-btn" @click="share">
+            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+              <svg-icon icon-class="share" class="icon" />
+            </div>
+            <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
+          </div>
+        </TokenFooter>
       </div>
+      <ArticleInfoFooter v-if="isProduct" class="product" :article="article" />
     </div>
+
     <div v-if="article.tags.length !== 0" class="p-w">
       <n-link
         v-for="(item, index) in article.tags"
         :key="index"
+        style="margin-right: 10px;"
         class="tag-card"
         :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
       >
