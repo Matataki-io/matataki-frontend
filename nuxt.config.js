@@ -27,11 +27,11 @@ export default {
     title: '瞬MATATAKI',
     meta: [
       // { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
-      { hid: 'og:title', name: 'og:title', content: '瞬MATATAKI' },
-      { hid: 'og:site_name', name: 'og:site_name', content: '瞬MATATAKI' },
+      { hid: 'og:title', name: 'og:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
+      { hid: 'og:site_name', name: 'og:site_name', content: '瞬MATATAKI—发布瞬间，灵感永存' },
       { hid: 'og:image', name: 'og:image', content: 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png' },
-      { hid: 'og:description', name: 'og:description', content: '发布瞬间 灵感永存' },
-      { hid: 'description', name: 'description', content: '瞬MATATAKI - 由仙女座科技公司开发的促进优质内容裂变传播的工具，凭借经验丰富的区块链应用和智能合约设计开发能力，为用户提供旨在为创作者和分享者创造价值，为接收者发现价值。' },
+      { hid: 'og:description', name: 'og:description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
+      { hid: 'description', name: 'description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
       { hid: 'keywords', name: 'keywords', content: '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS' }
     ],
     link: [
