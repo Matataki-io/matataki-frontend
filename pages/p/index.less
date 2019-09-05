@@ -33,11 +33,16 @@
   border-bottom: 1px solid #D8D8D8;
   margin: 20px auto;
   padding: 40px 0;
-  .flexCenter();
-  justify-content: space-between;
+}
+.product {
+  margin-left: auto;
+  margin-right: auto;
 }
 .btns {
-  .flexCenter();
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .TitleImage {
   display: block;
@@ -120,12 +125,10 @@
   }
 }
 .btns {
+  margin: 0 auto;
   .article-btn .icon-container {
     width: 80px;
     height: 80px;
-  }
-  .article-btn + .article-btn {
-    margin-left: 100px;
   }
 }
 .sidebar {

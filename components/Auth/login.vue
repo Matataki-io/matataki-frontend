@@ -96,8 +96,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userConfig']),
+    ...mapState(['userConfig', 'loginModalShow']),
     ...mapGetters(['currentUserInfo'])
+  },
+  watch: {
+    // 登录框关闭 隐藏loading
+    loginModalShow(newVal) {
+      if (!newVal) this.loading = false
+    }
   },
   mounted(){
     if (process.browser) {
@@ -137,22 +143,18 @@ export default {
       }
     },
     async vntLogin() {
-      // TODO 优化 还有很多没考虑
       this.loading = true
       try {
         let res = await this.$store.dispatch('vnt/login')
-        if (res) {
-          await this.$store.commit('setUserConfig', { idProvider: 'Vnt' })
-          this.$message.success('登录成功')
-          this.loading = false
-          await this.$store.commit('setLoginModal', false)
-          window.location.reload() // 登录完成刷新一次
-        } else {
-          this.$message.success('登录失败')
-        }
+        this.loading = false
+        this.$message.closeAll()
+        this.$message.success(res)
+        await this.$store.commit('setLoginModal', false)
+        window.location.reload()
       } catch (error) {
         this.loading = false
-        this.$message.success('登录失败')
+        this.$message.closeAll()
+        this.$message.error(error.toString())
       }
     },
     // 登录提交
