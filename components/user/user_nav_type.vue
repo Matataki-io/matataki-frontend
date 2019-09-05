@@ -19,6 +19,7 @@
 <script>
 import iconEOS from '@/assets/img/icon_EOS.svg'
 import iconONT from '@/assets/img/icon_ONT.svg'
+import iconVNT from '@/assets/img/icon_VNT.svg'
 import iconETH from '@/assets/img/icon_ETH.svg'
 import iconBTC from '@/assets/img/icon_BTC.svg'
 import iconRMB from '@/assets/img/icon_RMB.svg'
@@ -30,6 +31,7 @@ export default {
       typeIcon: [ // todo 完善路由
         { icon: iconEOS, title: 'EOS', url: 'user-account' },
         { icon: iconONT, title: 'ONT', url: 'user-account-ont' },
+        { icon: iconVNT, title: 'VNT', url: 'user-account-vnt' },
         { icon: iconETH, title: 'ETH', url: '' },
         { icon: iconBTC, title: 'BTC', url: '' },
         { icon: iconRMB, title: 'RMB', url: '' }

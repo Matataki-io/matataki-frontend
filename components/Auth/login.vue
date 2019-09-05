@@ -1,5 +1,5 @@
 <template>
-  <section class="login">
+  <section v-loading="loading" class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
       <el-form-item prop="email">
         <el-input v-model="loginForm.email" placeholder="请输入邮箱" />
@@ -26,15 +26,29 @@
         不同帐号内容不互通
       </p>
       <div class="oauth">
-        <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
-          <svg-icon class="eos" icon-class="eos_login" />
-        </div>
-        <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
-          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
-        </div>
-        <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
-          <svg-icon class="github" icon-class="github" />
-        </div>
+        <el-tooltip class="item" effect="dark" content="VNT登录" placement="top">
+          <div class="oauth-bg bg-blue1" @click="walletLogin('Vnt')">
+            <svg-icon class="vnt" icon-class="vnt" />
+          </div>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="EOS登录" placement="top">
+          <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
+            <svg-icon class="eos" icon-class="eos_login" />
+          </div>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="ONT登录" placement="top">
+          <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
+            <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
+          </div>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="GitHub登录" placement="top">
+          <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
+            <svg-icon class="github" icon-class="github" />
+          </div>
+        </el-tooltip>
       </div>
     </div>
     <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请">
@@ -77,7 +91,8 @@ export default {
           { min: 8, max: 16, message: '密码长度在 8 到 16 个字符', trigger: 'blur' }
         ]
       },
-      referral: false
+      referral: false,
+      loading: false
     }
   },
   computed: {
@@ -92,12 +107,16 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
+    ...mapActions('vnt', [
+      'login',
+    ]),
     async walletLogin(type) {
       if (type === 'GitHub') {
         this.$router.push({ name: 'login' })
         return
-      }
-      await this.signInx(type)
+      } else if (type === 'Vnt') {
+        this.vntLogin()
+      } else await this.signInx(type)
     },
     async signInx(type) {
       try {
@@ -115,6 +134,25 @@ export default {
           console.log('signInx 错误', err)
           this.$message.error('登录失败')
         }
+      }
+    },
+    async vntLogin() {
+      // TODO 优化 还有很多没考虑
+      this.loading = true
+      try {
+        let res = await this.$store.dispatch('vnt/login')
+        if (res) {
+          await this.$store.commit('setUserConfig', { idProvider: 'Vnt' })
+          this.$message.success('登录成功')
+          this.loading = false
+          await this.$store.commit('setLoginModal', false)
+          window.location.reload() // 登录完成刷新一次
+        } else {
+          this.$message.success('登录失败')
+        }
+      } catch (error) {
+        this.loading = false
+        this.$message.success('登录失败')
       }
     },
     // 登录提交
@@ -203,6 +241,11 @@ export default {
     font-weight: 400;
   }
   .oauth {
+    .vnt {
+      font-size: 24px;
+      padding-top: 2px;
+      color: #fff;
+    }
     .eos {
       font-size: 24px;
       color: #fff;
@@ -236,6 +279,9 @@ export default {
 }
 .bg-blue {
   background: #4d9afd;
+}
+.bg-blue1 {
+  background: #3289ff;
 }
 .bg-purple {
   background: #882592;

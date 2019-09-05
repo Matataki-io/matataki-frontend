@@ -6,6 +6,20 @@ import utils from '@/utils/utils'
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
 export default {
+  /**
+   * 获取token
+   * @param {Object} params idProvider publickey(toLowerCase) sign username
+   */
+  auth(params) {
+    // 推荐人id
+    let referral = utils.getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+
+    return request.post(
+      `/login/auth`,
+      params
+    )
+  },
   async wx(url) {
     return request.get(
       `${endpoint.wx}?url=${url}`

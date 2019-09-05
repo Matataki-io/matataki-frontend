@@ -116,9 +116,13 @@ export const actions = {
         const sg = await dispatch('getSignatureOfAuth', { name });
         // console.log(sg);
         // console.log(backendAPI);
-        const { data } = await backendAPI.auth(sg)
-        // this.$axios.$post(this.$API.auth, await dispatch('getSignatureOfAuth', { name }))
-        newAccessToken = data
+        const res = await backendAPI.auth(sg)
+        if (res.status === 200 && res.data.code === 0) {
+          // this.$axios.$post(this.$API.auth, await dispatch('getSignatureOfAuth', { name }))
+          newAccessToken = res.data.data
+        } else {
+          throw '获取token失败'
+        }
       } catch (error) {
         console.warn('取得 access token 出錯', error)
         throw error
