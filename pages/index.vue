@@ -113,6 +113,9 @@
             <p class="stage-des">
               {{ item.des }}
             </p>
+            <p class="stage-des">
+              {{ item.des1 }}
+            </p>
           </div>
         </el-col>
       </el-row>
@@ -178,16 +181,19 @@ export default {
         {
           title: '阶段1',
           des: '建立内容分享和永久存储的平台',
+          des1: '打造IPFS内容生态入口',
           img: stage1
         },
         {
           title: '阶段2',
           des: '建立版权保护系统与非法行为抗争',
+          des1: '打造安全的区块链内容生态',
           img: stage2
         },
         {
           title: '阶段3',
           des: '建立人类知识共享和创新的平台',
+          des1: '打造区块链永存知识数据库',
           img: stage3
         }
       ]
