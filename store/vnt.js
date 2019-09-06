@@ -90,7 +90,8 @@ export const actions = {
           return false
         }
       }
-      if (!getNetwork()) return
+      // TODO 由于不去区分网络 开放账号
+      // if (!getNetwork()) return
 
       // 登录
       const login = () => {

@@ -84,12 +84,16 @@ export default {
     product() {
       const { article } = this
       if (article.channel_id === 2 && !this.$utils.isNull(article.prices)) {
-        return {
+        let price = {
           eosPrice: article.prices[0].price / 10 ** article.prices[0].decimals,
           ontPrice: article.prices[1].price / 10 ** article.prices[1].decimals,
-          vntPrice: article.prices[2].price / 10 ** article.prices[2].decimals,
           stock: article.prices[0].stock_quantity
         }
+        // VNT 拦截 price 防止报错
+        if (article.prices[2]) {
+          price.vntPrice = article.prices[2].price / 10 ** article.prices[2].decimals
+        }
+        return price
       } else {
         return {
           eosPrice: 0,
@@ -109,6 +113,10 @@ export default {
       'sendTransaction',
     ]),
     async buyProduct() {
+
+      // TODO 没有配置商品价格的vnt不支持购买
+      if (!this.article.prices[2]) return this.$message.error(`该商品暂不支持Vnt购买`);
+
       const loading = this.$loading({
         text: `购买中...`
       })
