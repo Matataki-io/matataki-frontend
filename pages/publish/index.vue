@@ -412,7 +412,8 @@ export default {
         const { author, hash } = article
         let signature = null
         if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
+          // 单独处理 同下
+          if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
@@ -447,7 +448,8 @@ export default {
       const { author, hash } = article
       let signature = null
       if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        signature = await this.getSignatureOfArticle({ author, hash })
+        // 单独处理 同上
+        if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) this.success(response.data)
@@ -785,4 +787,5 @@ export default {
     margin-right: 1px !important;
   }
 }
+
 </style>
