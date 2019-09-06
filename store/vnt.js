@@ -49,15 +49,25 @@ export const actions = {
       const getNetwork = async () => {
         try {
           const networkId = await networkUrl()
-          const dev = process.env.NODE_ENV === 'development'
-          if (!dev && networkId === 2) reject(new Error('钱包测试网不能登陆, 请切换'))
-          else if (dev && networkId === 1) reject(new Error('钱包主网不能登陆, 请切换'))
-          else if (networkId === -1) reject(new Error('获取网络失败, 请重试'))
+          const dev = process.env.NODE === 'development'
+          if (!dev && networkId === 2) {
+            reject(new Error('钱包测试网不能登陆, 请切换'))
+            return false
+          } else if (dev && networkId === 1) {
+            reject(new Error('钱包主网不能登陆, 请切换'))
+            return false
+          } else if (networkId === -1) {
+            reject(new Error('获取网络失败, 请重试'))
+            return false
+          } else {
+            return true
+          }
         } catch (error) {
           reject(new Error('获取当前网络失败'))
+          return false
         }
       }
-      getNetwork()
+      if (!getNetwork()) return
 
       // 登录
       const login = () => {

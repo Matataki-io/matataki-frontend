@@ -1,5 +1,6 @@
 module.exports = {
   development: {
+    NODE: 'development',
     VUE_APP_API: 'https://apitest.smartsignature.io',
     VUE_APP_URL: 'https://test.smartsignature.io',
     VUE_APP_SIGNATURE_CONTRACT: 'dragonquest2',
@@ -10,6 +11,7 @@ module.exports = {
     WX_SHARE_HOST: 'https://sstest.frontenduse.top'
   },
   production: {
+    NODE: 'production',
     VUE_APP_API: 'https://api.smartsignature.io',
     VUE_APP_URL: 'https://matataki.io',
     VUE_APP_SIGNATURE_CONTRACT: 'signature.bp',
