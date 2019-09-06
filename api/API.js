@@ -77,7 +77,13 @@ export default {
       params
     })
   },
-  async getCaptcha(email) {
+  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request.post(`/login/captcha?email=${email}`, {
+      geetest_challenge,
+      geetest_validate,
+      geetest_seccode
+    }, { noLoading: true })
+
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
   async verifyEmail(email) {

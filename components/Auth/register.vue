@@ -125,9 +125,13 @@ export default {
         });
       })
     },
-    confirmSendCode() {
+    confirmSendCode(gt) {
       this.loading = true
-      this.$API.getCaptcha(this.registerForm.email).then(res => {
+      this.$API.getCaptcha(this.registerForm.email, {
+        geetest_challenge: gt.geetest_challenge,
+        geetest_validate: gt.geetest_validate,
+        geetest_seccode: gt.geetest_seccode
+      }).then(res => {
         if (res.code === 0) {
           this.countDown()
           this.$message.success('验证码发送成功，5分钟内使用有效')
