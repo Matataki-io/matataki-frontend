@@ -15,6 +15,9 @@ export const mutations = {
     state.balances = data
   }
 }
+// 授权 方法
+const requestAuthorization = callback =>
+  window.vnt.requestAuthorization(callback)
 
 export const actions = {
   login({ commit }) {
@@ -97,10 +100,6 @@ export const actions = {
           }
           loginAuth(coinbase, coinbaseBalance)
         }
-
-        // 授权 方法
-        const requestAuthorization = callback =>
-          window.vnt.requestAuthorization(callback)
 
         if (window.vnt.isConnected()) {
           // console.log('已连接')
