@@ -19,6 +19,29 @@ export const mutations = {
 const requestAuthorization = callback =>
   window.vnt.requestAuthorization(callback)
 
+// 获取账号
+const getCoinbase = () => {
+  try {
+    return window.vnt.core.coinbase
+  } catch (error) {
+    console.log('coinbase error', error)
+    return false
+  }
+}
+// 获取账号 余额
+const getBalance = coinbase => {
+  try {
+    const balance = window.vnt.core.getBalance(coinbase)
+    return new BigNumber(balance).times(10 ** -18).toString()
+  } catch (error) {
+    console.log('balance error', error)
+    return false
+  }
+}
+
+// TODO 网络切换
+// TODO 钱包登出
+
 export const actions = {
   login({ commit }) {
     // TODO 优化
@@ -92,22 +115,11 @@ export const actions = {
 
         // 获取账号 余额
         const getCoinbaseBalance = () => {
-          let coinbase = ''
-          let balance = 0
-          let coinbaseBalance = 0
-          try {
-            coinbase = window.vnt.core.coinbase
-          } catch (error) {
-            console.log('coinbase error', error)
-            reject(new Error('获取钱包信息失败请重试'))
-          }
-          try {
-            balance = window.vnt.core.getBalance(coinbase)
-            coinbaseBalance = new BigNumber(balance).times(10 ** -18).toString()
-          } catch (error) {
-            reject(new Error('获取余额失败请重新登录'))
-            console.log('balance error', error)
-          }
+          const coinbase = getCoinbase()
+          if (!coinbase) return reject(new Error('获取钱包账户名称失败'))
+          const coinbaseBalance = getBalance(coinbase)
+          if (!coinbaseBalance) return reject(new Error('获取钱包账户余额失败'))
+
           loginAuth(coinbase, coinbaseBalance)
         }
 
@@ -137,6 +149,58 @@ export const actions = {
         reject(error)
       }
       resolve()
+    })
+  },
+  // 转账
+  sendTransaction({ commit }, { data, value }) {
+    return new Promise((resolve, reject) => {
+      const transaction = coinbase => {
+        window.vnt.core.sendTransaction(
+          {
+            from: coinbase,
+            to: process.env.VUE_APP_VNT_CONTRACT,
+            gasPrice: window.vnt.toHex(window.vnt.core.gasPrice.toString(10)),
+            gasLimit: window.vnt.toHex(4000000),
+            data: window.vnt.toHex(data),
+            value: window.vnt.toWei(value)
+          },
+          (err, result) => {
+            if (err) {
+              if ((err.toString()).includes('insufficient')) {
+                console.log('余额不足', err)
+                reject(new Error('余额不足'))
+              } else if ((err.toString().includes('user denied'))) {
+                console.log('拒绝转账', err)
+                reject(new Error('拒绝转账'))
+              } else {
+                console.log('转账失败', err)
+                reject(new Error('转账失败'))
+              }
+            } else {
+              console.log('转账成功', result)
+              resolve(result)
+            }
+          }
+        )
+      }
+
+      const send = () => {
+        const coinbase = getCoinbase()
+        if (!coinbase) return reject(new Error('获取钱包账户名称失败'))
+        transaction(coinbase)
+      }
+
+      if (window.vnt.isConnected()) {
+        // console.log('已连接')
+        send()
+      } else {
+        // console.log('没有连接,请授权解锁')
+        requestAuthorization((err, res) => {
+          if (err) reject(new Error('取消了授权或者失败'))
+          else if (!res) reject(new Error('取消了授权或者失败'))
+          else send()
+        })
+      }
     })
   }
 

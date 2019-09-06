@@ -5,6 +5,7 @@ import utils from '@/utils/utils'
 
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
+
 export default {
   /**
    * 获取token
@@ -253,5 +254,49 @@ export default {
   // 阅读获取积分
   postsIdReadnew(id, time) {
     return request.post(`/posts/${id}/readnew`, { time })
+  },
+  // 购买商品 可能会有区分 暂未合并
+  reportOrder(data) {
+    let address = { // 缺地址
+      'eos': '',
+      'ont': '',
+      'vnt': process.env.VUE_APP_VNT_CONTRACT
+    }
+    // 平台类型
+    let idProvider = utils.getCookie('idProvider').toLocaleLowerCase()
+    let contract = address[idProvider] // 合约地址
+
+    Object.assign(data, {
+      contract: contract,
+      platform: idProvider,
+      symbol: idProvider.toUpperCase()
+    })
+    return request({ method: 'POST', url: '/order/order', data })
+  },
+  // 赞赏 可能会有区分 暂未合并
+  support(data) {
+    let address = { // 缺地址
+      'eos': '',
+      'ont': '',
+      'vnt': process.env.VUE_APP_VNT_CONTRACT
+    }
+    // 平台类型
+    let idProvider = utils.getCookie('idProvider').toLocaleLowerCase()
+    let contract = address[idProvider] // 合约地址
+
+    Object.assign(data, {
+      contract: contract,
+      platform: idProvider,
+      symbol: idProvider.toUpperCase()
+    })
+    return request({ method: 'POST', url: '/support/support', data })
+  },
+  // 提交订单hash
+  orderSaveHash(data) {
+    return request({ method: 'POST', url: '/order/saveTxhash', data })
+  },
+  // 提交订单hash
+  supportSaveHash(data) {
+    return request({ method: 'POST', url: '/support/saveTxhash', data })
   },
 }

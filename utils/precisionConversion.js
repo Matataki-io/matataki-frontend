@@ -1,8 +1,7 @@
-/* eslint-disable consistent-return */
-/* eslint-disable import/prefer-default-export */
 // precision 精度
 const EOS = 10000
 const ONT = 10000
+const VNT = 10000
 
 /**
  *
@@ -13,6 +12,7 @@ export const precision = (amount, symbol = '') => {
   const symbolLower = symbol.toLowerCase()
   if (symbolLower === 'eos') return amount / EOS
   if (symbolLower === 'ont') return amount / ONT
+  if (symbolLower === 'vnt') return amount / VNT
   return amount
 }
 /**
@@ -24,4 +24,5 @@ export const toPrecision = (amount, symbol) => {
   const symbolLower = symbol.toLowerCase()
   if (symbolLower === 'eos') return amount * EOS
   if (symbolLower === 'ont') return amount * ONT
+  if (symbolLower === 'vnt') return amount * VNT
 }

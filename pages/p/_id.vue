@@ -544,8 +544,8 @@ export default {
       })
     },
     // 检测能否投资
-    detection() {
-      if (this.isSupport) {
+    detection(buy = false) {
+      if (this.isSupport && !buy) {
         this.$message.success('已投资')
         return false
       }
@@ -565,7 +565,7 @@ export default {
       if (this.detection()) { this.investModalShow = true }
     },
     buy() {
-      if (this.detection()) { this.purchaseModalShow = true }
+      if (this.detection(true)) this.purchaseModalShow = true
     },
     share() {
       this.shareModalShow = true

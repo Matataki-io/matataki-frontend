@@ -8,13 +8,17 @@
         <img :src="article.cover" alt="cover" class="cover">
         <div class="info-inner">
           <div class="product-price">
-            <span class="ont-price">
+            <span class="type-price">
               <svg-icon icon-class="ont" />
               <span>{{ product.ontPrice }}</span>
             </span>
-            <span class="eos-price">
+            <span class="type-price">
               <svg-icon icon-class="eos" />
               <span>{{ product.eosPrice }}</span>
+            </span>
+            <span class="type-price">
+              <svg-icon icon-class="vnt" />
+              <span>{{ product.vntPrice }}</span>
             </span>
           </div>
           <div class="product-amount">
@@ -44,13 +48,8 @@
 /* eslint-disable */
 import { mapActions, mapGetters } from 'vuex'
 import { ontAddressVerify } from '@/utils/reg'
-const RewardStatus = {
-  // 0=加载中,1=未打赏 2=已打赏, -1未登录
-  NOT_LOGGINED: -1,
-  LOADING: 0,
-  NOT_REWARD_YET: 1,
-  REWARDED: 2
-}
+import { toPrecision } from '@/utils/precisionConversion'
+
 export default {
   name: 'PurchaseModal',
   props: {
@@ -88,12 +87,14 @@ export default {
         return {
           eosPrice: article.prices[0].price / 10 ** article.prices[0].decimals,
           ontPrice: article.prices[1].price / 10 ** article.prices[1].decimals,
+          vntPrice: article.prices[2].price / 10 ** article.prices[2].decimals,
           stock: article.prices[0].stock_quantity
         }
       } else {
         return {
           eosPrice: 0,
           ontPrice: 0,
+          vntPrice: 0,
           stock: 0
         }
       }
@@ -104,19 +105,24 @@ export default {
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
+        ...mapActions('vnt', [
+      'sendTransaction',
+    ]),
     async buyProduct() {
       const loading = this.$loading({
         text: `购买中...`
       })
       const { comment, signId, product } = this
-      const { idProvider } = this.currentUserInfo
-      if (idProvider === 'GitHub') return
+      let idProviderLower = this.currentUserInfo.idProvider.toLocaleLowerCase()
+      if (idProviderLower === 'GitHub') return
       const num = this.productNumber
       const amount =
-        idProvider === 'ONT'
+        idProviderLower === 'ont'
           ? num * product.ontPrice
-          : idProvider === 'EOS'
+          : idProviderLower === 'eos'
           ? num * product.eosPrice
+          : idProviderLower === 'vnt'
+          ? num * product.vntPrice
           : 0
       const toSponsor = async idOrName => {
         if (!idOrName) return { id: null, username: null }
@@ -131,20 +137,90 @@ export default {
         }
         return { id: null, username: idOrName }
       }
-      this.isSupported = RewardStatus.LOADING
-      try {
         let sponsor = await toSponsor(this.getInvite)
-        await this.makeOrder({ amount, num, signId, sponsor, comment })
-        loading.close()
-        this.$message.success('购买成功')
-        this.isSupported = RewardStatus.NOT_REWARD_YET
-        this.showModal = false
-        this.$emit('purchaseDone')
-      } catch (error) {
-        loading.close()
-        this.$message.error('购买失败')
-        this.showModal = false
-      }
+        if (this.currentUserInfo.idProvider.toLocaleLowerCase() === 'vnt') { // vnt 交易
+        if (amount < 1)
+        return this.$message.error(`Vnt购买最低不能小于1Vnt`)
+          const faild = error => {
+            loading.close()
+            this.$message.closeAll()
+            this.$message.error(error.toString())
+          }
+          try {
+            let orderId = -1
+            // 提交订单hash
+            const postOrderHah = async hash => {
+              let params = {
+                orderId: orderId,
+                txhash: hash,
+              }
+              await this.$API.orderSaveHash(params)
+                .then(res => {
+                  if (res.code === 0) {
+                    loading.close()
+                    this.$message.closeAll()
+                    this.$message.success('购买成功')
+                    this.showModal = false
+                  } else {
+                    console.log('购买商品失败 提交hash')
+                    reject(new Error('购买商品失败'))
+                  }
+                })
+                .catch(err => {
+                  console.log('购买商品失败 提交hash err')
+                    reject(new Error('购买商品失败'))
+                })
+            }
+            // 转账
+            const transaction = async () => {
+              let data = { // 交易数据
+                data: `oid:${orderId}`,
+                value: amount
+              }
+              try {
+                let res = await this.$store.dispatch('vnt/sendTransaction', data)
+                postOrderHah(res)
+              } catch (error) {
+                faild(error)
+              }
+            }
+
+            let params = {
+              signId: signId,
+              amount: toPrecision(amount, idProviderLower),
+              num: num,
+              comment: comment
+            }
+            if (sponsor.id) {
+              Object.assign(params, {
+                referrer: sponsor.id,
+              })
+            }
+            await this.$API.reportOrder(params)
+              .then(res => {
+                if (res.code === 0) {
+                  orderId = res.data.orderId
+                  transaction()
+                }
+                else faild('购买商品失败 创建订单失败')
+              }).catch(err => {
+                faild('购买商品失败')
+              })
+          } catch (error) {
+            faild(error)
+          }
+        } else { // other 交易
+          try {
+            await this.makeOrder({ amount, num, signId, sponsor, comment })
+            this.$message.success('购买成功')
+            this.showModal = false
+            this.$emit('purchaseDone')
+          } catch (error) {
+            loading.close()
+            this.$message.error('购买失败')
+            this.showModal = false
+          }
+        }
     }
   }
 }
@@ -227,36 +303,37 @@ export default {
       flex-direction: column;
       align-items: flex-end;
       justify-content: space-between;
+      flex: 1;
       .product-price {
         color: #F7B500;
         font-size: 18px;
-        font-weight: 700;
+        font-weight: bold;
         line-height: 28px;
         display: flex;
         align-items: center;
         margin-bottom: 15px;
-        .ont-price {
+        justify-content: space-between;
+        width: 90%;
+        .type-price {
           display: flex;
           align-items: center;
-          margin-right: 10px;
-          img {
-            margin-right: 5px;
+          justify-content: space-between;
+          color:#f7b500;
+          &:nth-of-type(2) {
+            margin: 0 4px;
           }
-        }
-        .eos-price {
-          display: flex;
-          align-items: center;
-          img {
-            margin-right: 5px;
+          span {
+            margin-left: 4px;
           }
         }
       }
       .product-amount {
-        font-size: 14px;
+        width: 90%;
+        font-size: 16px;
         display: flex;
         align-items: center;
-        >span {
-          margin-right: 10px;
+        span {
+          margin-right: 8px;
         }
       }
     }

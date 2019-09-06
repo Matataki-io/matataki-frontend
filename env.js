@@ -6,6 +6,7 @@ module.exports = {
     VUE_APP_SIGNATURE_CONTRACT: 'dragonquest2',
     VUE_APP_SCRIPT_HASH: '36df9722fc0ff5fa3979f2a844a012cabe1d4c56',
     VUE_APP_GITHUB_CLIENT_ID: '889e6eafa77e2e87a08c',
+    VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://wwwtest.smartsignature.io',
     WX_SHARE_HOST: 'https://sstest.frontenduse.top'
@@ -17,6 +18,7 @@ module.exports = {
     VUE_APP_SIGNATURE_CONTRACT: 'signature.bp',
     VUE_APP_SCRIPT_HASH: '36df9722fc0ff5fa3979f2a844a012cabe1d4c56',
     VUE_APP_GITHUB_CLIENT_ID: '21cc5341ef03f40cd5a4',
+    VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://www.matataki.io',
     WX_SHARE_HOST: 'https://smartsignature.frontenduse.top'
