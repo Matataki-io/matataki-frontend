@@ -88,7 +88,7 @@
       <ArticleInfoFooter v-if="isProduct" class="product" :article="article" />
     </div>
 
-    <div v-if="article.tags.length !== 0" class="p-w">
+    <div v-if="article.tags.length !== 0" class="p-w" style="margin-bottom: 20px;">
       <n-link
         v-for="(item, index) in article.tags"
         :key="index"
@@ -99,7 +99,7 @@
         {{ item.name }}
       </n-link>
     </div>
-    <CommentList :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
+    <CommentList v-if="isProduct" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
     <div v-show="navShow" class="sidebar">
       <div v-if="isProduct" class="article-btn" @click="buy">
         <div class="icon-container yellow">

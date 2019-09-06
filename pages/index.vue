@@ -12,7 +12,7 @@
             一个永久存储和版权确权的内容平台
           </p>
           <p class="home-text-des">
-            瞬MATATAKI是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。
+            瞬MATATAKI 是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询；使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络；致力于回归更加开放去中心化的互联网。
           </p>
           <n-link :to="{name: 'article'}" style="margin-right: 10px;">
             <el-button class="home-btn" icon="el-icon-reading">
@@ -52,7 +52,7 @@
           <p class="home-text-content">
             区块链与数字版权保护能够完美地结合，解决盗版横行的现状。首先在确权环节，现有机制下的专利申请流程耗时长、效率低下。区块链的分布式账本和时间戳技术使全网对知识产权所属权迅速达成共识成为可能，理论上可实现及时确权。不对称加密技术保证了版权的唯一性，时间戳技术保证了版权归属方，版权主可以方便快捷地完成确权这一流程，解决了传统确权机制低效的问题。
           </p>
-          <a target="_blank" class="read-more" href="http://www.miit.gov.cn/n1146290/n1146402/n1146445/c6180238/part/6180297.pdf">阅读更多 >>></a>
+          <a target="_blank" class="read-more" href="https://www.matataki.io/p/806">阅读更多 >>></a>
         </div>
         <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head1.png" alt="matataki">
       </div>
@@ -69,7 +69,7 @@
           <p class="home-text-content">
             IPFS（InterPlanetary File System）中文名叫星际文件系统，是一种基于内容寻址、版本化、点对点的超媒体传输协议，集合了P2P网络技术、BitTorrent传输技术、Git版本控制、自证明文件系统等技术，允许网络中的参与者互相存储、索取和传输可验证的数据。而且IPFS协议上的数据可永久保存在Web上，不再删除数据。不再依赖主干网络的分布式网络，可以有效抵御黑客对中心化服务器的攻击，用户数据和隐私可以得到更好的保护。
           </p>
-          <a target="_blank" class="read-more" href="http://www.ipfs.cn/news/info-100533.html">阅读更多 >>></a>
+          <a target="_blank" class="read-more" href="https://www.matataki.io/p/807">阅读更多 >>></a>
         </div>
         <img v-scroll-reveal="{ distance: '20px', delay: 300}" class="effect-flex-img" src="@/assets/img/home/home_head2.png" alt="matataki">
       </div>
