@@ -107,7 +107,7 @@
         </div>
         <span>购买商品</span>
       </div>
-      <div class="article-btn" @click="invest">
+      <div v-if="isProduct" class="article-btn" @click="invest">
         <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
           <svg-icon icon-class="invest" class="icon" />
         </div>
@@ -133,7 +133,10 @@
           <div
             slot="reference"
           >
-            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+            <div
+              class="icon-container blue"
+              :class="isProduct ? 'yellow' : 'blue'"
+            >
               <svg-icon icon-class="share" class="icon" />
             </div>
             <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
@@ -156,6 +159,7 @@
         <CoinBtn
           v-if="!isProduct"
           slot="reference"
+          style="margin-top: 40px;"
           :time="timeCount"
           :token="ssToken"
           :article="article"
@@ -268,7 +272,8 @@ export default {
       timerShare: null, // 分享计时器
       timeCountShare: 0, // 分享计时
       article: Object.create(null),
-      postsIdReadnewStatus: false // 新文章阅读是否上报
+      postsIdReadnewStatus: false, // 新文章阅读是否上报
+      isReading: false // read接口是否请求完毕
     }
   },
   head() {
@@ -364,8 +369,10 @@ export default {
     }
     window.addEventListener('scroll', this.handleScroll)
     this.handleFocus()
-    this.postBackendReading()
-    if (!document.hidden) this.reading()
+    // if (!document.hidden) {
+    //   this.reading()
+    //   console.log('????')
+    // }
 
     // dom加载完提示 推荐/不推荐
     this.$nextTick(() => {
@@ -448,8 +455,19 @@ export default {
         }
       })
     },
-    postBackendReading() {
-      this.$API.reading(this.article.id)
+    async postBackendReading(article) {
+      // 阅读接口请求完毕才开始计时
+      // 如果推荐/不推荐过 不进行调用
+      if (parseInt(article.is_liked) === 1 || parseInt(article.is_liked) === 2) return
+      await this.$API.reading(this.article.id)
+        .then(res => {
+          if (res.code === 0) {
+            this.isReading = true
+            console.log('reading done')
+          }
+        }).catch(err => {
+          console.log('文章 reading err', err)
+        })
     },
     reading() {
       if (this.timer === null && !this.likedOrDisLiked) {
@@ -464,7 +482,7 @@ export default {
       window.onfocus = () => {
         console.log('页面激活')
         clearInterval(this.timer)
-        this.reading()
+        if (this.isReading) this.reading()
       }
       window.onblur = () => {
         console.log('页面隐藏')
@@ -567,6 +585,7 @@ export default {
             likes: res.data.likes,
             is_liked: res.data.is_liked || 0 // is_liked：0：没有操作过，1：不推荐，2：推荐
           }
+          this.postBackendReading(res.data)
         }
       } catch (error) {
         console.log(error)
