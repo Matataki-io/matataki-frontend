@@ -78,7 +78,13 @@ export default {
       params
     })
   },
-  async getCaptcha(email) {
+  async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request.post(`/login/captcha?email=${email}`, {
+      geetest_challenge,
+      geetest_validate,
+      geetest_seccode
+    }, { noLoading: true })
+
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
   async verifyEmail(email) {
@@ -299,4 +305,11 @@ export default {
   supportSaveHash(data) {
     return request({ method: 'POST', url: '/support/saveTxhash', data })
   },
+  registerGT() {
+    return request({
+      url:`/gt/register-slide?t=${(new Date()).getTime()}`,
+      method: 'get',
+      dataType: "json",
+    })
+  }
 }

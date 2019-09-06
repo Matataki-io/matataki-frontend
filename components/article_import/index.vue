@@ -9,7 +9,7 @@
   >
     <el-input v-model="url" placeholder="请输入文章网址链接，包含http(s)://" />
     <p class="des gray">
-      目前支持：链闻、橙皮书、微信文章。
+      目前支持：链闻、橙皮书、微信、简书文章。
     </p>
     <p class="des" />
     <p class="des">
