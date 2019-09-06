@@ -146,6 +146,7 @@ export default {
       this.loading = true
       try {
         let res = await this.$store.dispatch('vnt/login')
+        this.$store.commit('setUserConfig', { idProvider: 'Vnt' })
         this.loading = false
         this.$message.closeAll()
         this.$message.success(res)
