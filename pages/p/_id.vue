@@ -429,6 +429,8 @@ export default {
           this.$message.success('评价成功，阅读积分奖励已领取')
 
           this.getArticleInfoFunc() // 更新文章信息
+        } else {
+          this.$message.error('推荐, 失败')
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -448,6 +450,8 @@ export default {
           this.$message.success('评价成功，阅读积分奖励已领取')
 
           this.getArticleInfoFunc() // 更新文章信息
+        } else {
+          this.$message.error('不推荐, 失败')
         }
       }).catch((error) => {
         if (error.response.status === 401) {
