@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="info">
     <!-- <div class="info-container">
         <div :class="['crycle', {'clickStyle': clicked}]">
           <span class="solid-icon" v-show="!clicked">+ 0</span>
@@ -25,7 +25,7 @@
         <span>不推荐 <em class="like">{{ article && article.dislikes }}</em></span>
       </div>
     </div>
-    <div class="article-info">
+    <div v-if="token.points.length !== 0 || !clicked" class="article-info">
       <div v-if="!clicked" class="info1">
         <span>已阅读{{ readTime }}</span>
       </div>
@@ -36,7 +36,6 @@
         <div v-if="p.reading_new > 0" class="info1">
           <span>新文章 + {{ p.reading_new }}积分</span>
         </div>
-        <div />
       </template>
     </div>
   </div>
@@ -133,6 +132,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+.info {
+  width: 400px;
+}
 .solid-icon {
   font-size: 30px;
 }
