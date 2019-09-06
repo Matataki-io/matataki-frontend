@@ -85,14 +85,26 @@ export default {
       const { article } = this
       if (article.channel_id === 2 && !this.$utils.isNull(article.prices)) {
         let price = {
-          eosPrice: article.prices[0].price / 10 ** article.prices[0].decimals,
-          ontPrice: article.prices[1].price / 10 ** article.prices[1].decimals,
-          stock: article.prices[0].stock_quantity
+          eosPrice: 0,
+          ontPrice: 0,
+          vntPrice: 0,
+          stock: 0
         }
-        // VNT 拦截 price 防止报错
-        if (article.prices[2]) {
-          price.vntPrice = article.prices[2].price / 10 ** article.prices[2].decimals
+
+        if (article.prices[0]) {
+          price.stock = article.prices[0].stock_quantity
         }
+
+        article.prices.map((i, index) => {
+          if (i.platform.toLocaleLowerCase() === 'eos'){
+           price.eosPrice = article.prices[index].price / 10 ** article.prices[index].decimals
+          } else if (i.platform.toLocaleLowerCase() === 'ont'){
+          price.ontPrice = article.prices[index].price / 10 ** article.prices[index].decimals
+          }
+          else if (i.platform.toLocaleLowerCase() === 'vnt'){
+            price.vntPrice = article.prices[index].price / 10 ** article.prices[index].decimals
+          }
+        })
         return price
       } else {
         return {
@@ -114,8 +126,18 @@ export default {
     ]),
     async buyProduct() {
 
-      // TODO 没有配置商品价格的vnt不支持购买
-      if (!this.article.prices[2]) return this.$message.error(`该商品暂不支持Vnt购买`);
+      // TODO 没有配置商品价格的 不支持购买
+      if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'eos') {
+        if (this.product.eosPrice <= 0) return this.$message.error(`该商品暂不支持Eos购买`);
+      }
+      else if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'ont') {
+        if (this.product.ontPrice <= 0) return this.$message.error(`该商品暂不支持Ont购买`);
+      }
+      else if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'vnt') {
+        if (this.product.vntPrice <= 0) return this.$message.error(`该商品暂不支持Vnt购买`);
+      }
+
+      console.log(this.product)
 
       const loading = this.$loading({
         text: `购买中...`
