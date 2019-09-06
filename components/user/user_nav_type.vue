@@ -31,7 +31,7 @@ export default {
       typeIcon: [ // todo 完善路由
         { icon: iconEOS, title: 'EOS', url: 'user-account' },
         { icon: iconONT, title: 'ONT', url: 'user-account-ont' },
-        { icon: iconVNT, title: 'VNT', url: 'user-account-vnt' },
+        { icon: iconVNT, title: 'VNT', url: '' },
         { icon: iconETH, title: 'ETH', url: '' },
         { icon: iconBTC, title: 'BTC', url: '' },
         { icon: iconRMB, title: 'RMB', url: '' }

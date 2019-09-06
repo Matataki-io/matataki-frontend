@@ -370,8 +370,8 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
     this.handleFocus()
     // if (!document.hidden) {
+    //   console.log(1111)
     //   this.reading()
-    //   console.log('????')
     // }
 
     // dom加载完提示 推荐/不推荐
@@ -467,6 +467,7 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.isReading = true
+            this.reading()
             console.log('reading done')
           }
         }).catch(err => {
