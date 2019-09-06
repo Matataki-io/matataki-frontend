@@ -34,9 +34,9 @@
             <span class="data">
               {{ card && (card.read === 0 ? 0 : card.read) }}
               浏览</span>
-            <span class="data">
+            <!-- <span class="data">
               {{ card && card.ups || 0 }}
-              {{ '投资' }}</span>
+              投资</span> -->
             <span class="empty" />
             <!-- 暂时用文章页代替跳转地址 -->
             <n-link
