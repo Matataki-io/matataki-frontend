@@ -7,7 +7,7 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">我的积分</span>
-            <span class="integral-num">{{ pointStatus.amount }}</span>
+            <span class="integral-num">{{ pointStatus.amount || 0 }}</span>
           </div>
         </div>
 
@@ -143,11 +143,11 @@ export default {
     },
     pointStatusPost() {
       if (this.pointStatus.publish) return this.pointStatus.publish.today + '/' + this.pointStatus.publish.max
-      else return '0/300'
+      else return `0/${this.$point.publishDailyMax}`
     },
     pointStatusRead() {
       if (this.pointStatus.publish) return this.pointStatus.read.today + '/' + this.pointStatus.read.max
-      else return '0/100'
+      else return `0/${this.$point.readDailyMax}`
     },
     pointStatusPostNum() {
       if (this.pointStatus.publish) return this.pointStatus.publish.today / 3
