@@ -285,7 +285,7 @@ export default {
         { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
         { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
         { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
-        { hid: 'twitter:description', name: 'twitter:description', property: 'twitter:description', content: this.article.short_content },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
         { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
@@ -294,7 +294,7 @@ export default {
         { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
-        { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.article.short_content }
+        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
       ]
     }
