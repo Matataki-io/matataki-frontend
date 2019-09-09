@@ -15,7 +15,7 @@
         <p>阅读新文章，获得{{ p.reading_new }}个积分</p>
       </div>
       <p class="bottom-tip">
-        阅读3天内发表的新文章可额外获得5个积分
+        阅读3天内发表的新文章可额外获得{{ $point.readNew }}个积分
       </p>
     </div>
   </el-dialog>

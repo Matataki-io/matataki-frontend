@@ -149,7 +149,7 @@ export default {
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.username} \n${shareLink}\n瞬MATATAKI，发布瞬间，灵感永存 \n 点击链接首次登入可领取额外500积分奖励！`
+      return `《${article.title}》by ${article.username} \n${shareLink}\n瞬MATATAKI，发布瞬间，灵感永存 \n 点击链接首次登入可领取额外${this.$point.regInvitee}积分奖励！`
     },
     shareLink() {
       // 应产品需求 这里改为移动端的链接

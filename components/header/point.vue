@@ -20,20 +20,22 @@
             </el-button>
           </div>
           <p class="integral-des">
-            前往设置页上传头像+设置昵称即可领取50积分
+            前往设置页上传头像+设置昵称即可领取{{ $point.profile }}积分
           </p>
         </div>
 
         <div v-if="!pointStatus.login" class="integral-list">
           <div class="flex">
-            <span class="integral-title">老用户回馈</span>
+            <span class="integral-title">用户回馈</span>
             <el-button size="mini" class="integral-btn" @click="feedback">
               <svg-icon class="box" icon-class="box" />
               领取
             </el-button>
           </div>
           <p class="integral-des">
-            感谢8月30日前注册的老用户支持，点击领取1000积分
+            感谢8月30日前注册的老用户支持，点击领取{{ $point.loginOld }}积分
+            <br>
+            新用户点击领取{{ $point.loginNew }}积分
           </p>
         </div>
 
@@ -77,11 +79,11 @@
             {{ referralLink }}
           </div>
           <p class="integral-des">
-            每成功邀请一名好友注册可得666积分
+            每成功邀请一名好友注册可得{{ $point.regInviteFinished + $point.regInviter }}积分
             <br>
-            好友发文你可以获得额外20积分
+            好友发文你可以获得额外{{ $point.publishReferral }}积分
             <br>
-            好友阅读获得积分你可得额外1/4
+            好友阅读获得积分你可得额外1/{{ 1 / $point.readReferralRate }}
           </p>
         </div>
 
@@ -94,7 +96,7 @@
             {{ pointStatusPost }}
           </div>
           <p class="integral-des">
-            每日发文最高可得300积分奖励
+            每日发文最高可得{{ $point.publishDailyMax }}积分奖励
           </p>
         </div>
 
@@ -107,7 +109,7 @@
             {{ pointStatusRead }}
           </div>
           <p class="integral-des">
-            每日阅读评价文章最高可得100积分奖励
+            每日阅读评价文章最高可得{{ $point.readDailyMax }}积分奖励
           </p>
         </div>
       </div>

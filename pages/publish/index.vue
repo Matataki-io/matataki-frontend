@@ -417,7 +417,7 @@ export default {
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
-        success(response.data, '发文成功，奖励100 积分')
+        success(response.data, `发文成功，奖励${this.$point.publish} 积分`)
       } catch (error) {
         console.error(error)
         failed(error)

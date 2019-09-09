@@ -29,10 +29,10 @@
         </template>
         <div class="tip-container">
           <p class="tip">
-            * 阅读2分30秒 +10积分
+            * 阅读2分30秒 +{{ $point.readOnceMax }}积分
           </p>
           <p class="tip">
-            * 新内容 +5积分
+            * 新内容 +{{ $point.readNew }}积分
           </p>
         </div>
       </div>

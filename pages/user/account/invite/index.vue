@@ -43,7 +43,7 @@
         </el-table>
       </div>
       <p class="invite-des">
-        注：未激活者阅读5篇文章并作出评价后即可完成激活，激活后您即可领取额外600积分。
+        注：未激活者阅读5篇文章并作出评价后即可完成激活，激活后您即可领取额外{{ $point.regInviteFinished }}积分。
       </p>
       <user-pagination
         v-show="!loading"

@@ -12,7 +12,7 @@
           登录
         </el-button>
         <div class="bottom-tip">
-          <span class="red">首次登录领100积分！</span>
+          <span class="red">首次登录领{{ $point.loginNew }}积分！</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
           <a href="javascript:void(0);" @click="switchRegister">注册</a>
         </div>
