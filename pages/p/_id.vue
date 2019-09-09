@@ -288,13 +288,13 @@ export default {
         { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
         /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', property: 'og:title', content: this.article.title },
-        { hid: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
-        { hid: 'og:description', property: 'og:description', content: this.article.short_content },
-        { hid: 'description', name: 'description', content: this.article.short_content }
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
+        { hid: 'og:description', name: 'og:description', property: 'og:description', content: this.article.short_content },
+        { hid: 'description', name: 'description', property: 'description', content: this.article.short_content }
         /* end */
       ]
     }
