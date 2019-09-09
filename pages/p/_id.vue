@@ -280,7 +280,6 @@ export default {
     return {
       title: this.article.title,
       meta: [
-        { hid: 'description', name: 'description', content: this.article.short_content },
         /* <!--  Meta for Twitter Card --> */
         { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
         { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
@@ -294,7 +293,8 @@ export default {
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
         { hid: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
-        { hid: 'og:description', property: 'og:description', content: this.article.short_content }
+        { hid: 'og:description', property: 'og:description', content: this.article.short_content },
+        { hid: 'description', name: 'description', content: this.article.short_content }
         /* end */
       ]
     }
