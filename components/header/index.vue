@@ -4,17 +4,16 @@
       <div class="head-flex">
         <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
-        <a
+        <n-link
           v-for="(item, index) in nav"
           :key="index"
-          href="javascript:;"
           class="nav"
           :style="customizeHeaderTextColorComputed"
           :class="$route.name === item.url && 'active'"
-          @click="togglePage(item.url)"
+          :to="{name: item.url}"
         >
           {{ item.title }}
-        </a>
+        </n-link>
       </div>
 
       <div class="head-flex">
@@ -224,11 +223,6 @@ export default {
     login() {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
-    },
-    togglePage(url) {
-      this.$router.push({
-        name: url
-      })
     },
     btnsignOut() {
       if (confirm('确定退出吗?')) {
