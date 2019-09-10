@@ -280,7 +280,7 @@ export default {
     return {
       title: this.article.title,
       meta: [
-        { hid: 'description', name: 'description', property: 'description', content: this.article.short_content },
+        { hid: 'description', name: 'description', content: this.article.short_content },
         /* <!--  Meta for Twitter Card --> */
         { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
         { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
