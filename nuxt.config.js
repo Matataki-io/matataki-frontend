@@ -33,13 +33,13 @@ export default {
       /* <!--  Meta for Twitter Card --> */
       { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
       { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '瞬MATATAKI—发布瞬间，灵感永存' },
-      { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
+      { hid: 'twitter:title', property: 'twitter:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
       { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png' },
       { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
       /* <!--  Meta for OpenGraph --> */
       { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'website' },
       { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI—发布瞬间，灵感永存' },
-      { hid: 'og:title', name: 'og:title', property: 'og:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
+      { hid: 'og:title', property: 'og:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
       { hid: 'og:image', name: 'og:image', property: 'og:image', content: 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png' },
       { hid: 'og:description', name: 'description', property: 'og:description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
       { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' }
