@@ -8,12 +8,15 @@
         icon-class="backtop"
       />
     </back-to-top>
-    <a class="feedback" href="https://wj.qq.com/s2/4206369/e337" target="_blank" title="反馈">
-      <svg-icon
-        class="icon-feedback"
-        icon-class="feedback"
-      />
-    </a>
+    <el-tooltip class="item" effect="dark" content="吐个槽?" placement="left">
+      <a class="feedback" href="https://support.qq.com/product/84254" target="_blank" title="反馈">
+        <svg-icon
+          class="icon-feedback"
+          icon-class="tgc"
+        />
+      </a>
+    </el-tooltip>
+
     <AuthModal v-model="loginModalShow" />
   </div>
 </template>
@@ -84,31 +87,36 @@ export default {
 
 <style lang="less" scoped>
 .app .backtop {
-  border-radius: @borderRadius10;
-  width: 40px;
-  height: 40px;
-  background: #000;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background: @purpleDark;
   cursor: pointer;
   z-index: 99;
   font-size: 18px;
   position: fixed;
   right: 40px;
-  bottom: 64px;
+  bottom: 80px;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
+  &:hover {
+    opacity: 0.9;
+  }
+
   &-icon {
     color: #fff;
   }
 }
 .feedback {
-  border-radius: @borderRadius10;
+  border-radius: 50%;
   position: fixed;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   color: #fff;
-  background: #000;
+  background: @purpleDark;
   cursor: pointer;
   bottom: 20px;
   right: 40px;
@@ -119,8 +127,13 @@ export default {
   justify-content: center;
   transition: all .3s;
   z-index: 99;
+  // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
+    &:hover {
+    opacity: 0.9;
+  }
   .icon-feedback {
-    font-size: 20px;
+    font-size: 30px;
+    color: #fff;
   }
 }
 </style>
