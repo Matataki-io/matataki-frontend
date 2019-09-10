@@ -177,6 +177,16 @@ export default {
             this.$message.error(error.toString())
           }
           try {
+            try {
+              let coinbase = await this.$store.dispatch('vnt/coinbase')
+              if (coinbase !== this.currentUserInfo.name) {
+                faild('登陆的Vnt账号与支付账号不相同')
+                return
+              }
+            } catch (error) {
+              faild(error)
+            }
+
             let orderId = -1
             // 提交订单hash
             const postOrderHah = async hash => {

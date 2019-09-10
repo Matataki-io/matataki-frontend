@@ -203,6 +203,28 @@ export const actions = {
         })
       }
     })
+  },
+  coinbase() {
+    return new Promise((resolve, reject) => {
+      // 获取账号 余额
+      const getCoinbaseBalance = () => {
+        const coinbase = getCoinbase()
+        if (!coinbase) return reject(new Error('获取钱包账户名称失败'))
+        else return resolve(coinbase)
+      }
+
+      if (window.vnt.isConnected()) {
+      // console.log('已连接')
+        return getCoinbaseBalance()
+      } else {
+      // console.log('没有连接,请授权解锁')
+        requestAuthorization((err, res) => {
+          if (err) reject(new Error('取消了授权或者失败'))
+          else if (!res) reject(new Error('取消了授权或者失败'))
+          else return getCoinbaseBalance()
+        })
+      }
+    })
   }
 
 }
