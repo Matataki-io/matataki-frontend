@@ -52,17 +52,17 @@
           @imgAdd="$imgAdd"
         />
       </no-ssr>
-      <div class="set-item fl ac">
+      <div v-if="editorMode !== 'edit'" class="set-item fl ac">
         <span class="set-title">
           评论价格
         </span>
-        <span class="set-des">用户需要向您支付对应的积分才可评论(0-20)</span>
+        <span class="set-des">用户需要向您支付对应的积分才可评论(1-20)</span>
         <el-input-number
           v-model="commentPayPoint"
           style="width: 86px"
           controls-position="right"
           class="price-point"
-          :min="0"
+          :min="1"
           :max="20"
           size="mini"
           label="评论价格"
