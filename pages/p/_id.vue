@@ -99,7 +99,14 @@
         {{ item.name }}
       </n-link>
     </div>
-    <CommentList v-if="isProduct" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
+
+    <!-- 内容居中 -->
+    <div class="p-w">
+      <!-- 评论内容 -->
+      <commentInput :article="article" />
+      <CommentList v-if="isProduct" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
+    </div>
+
     <div v-show="navShow" class="sidebar">
       <div v-if="isProduct" class="article-btn" @click="buy">
         <div class="icon-container yellow">
@@ -167,6 +174,13 @@
           @dislike="dislike"
         />
       </el-popover>
+
+      <div class="comment fl ac fdc">
+        <div class="comment-block">
+          <svg-icon icon-class="comment" class="comment-icon" />
+        </div>
+        <span>评论</span>
+      </div>
     </div>
 
     <InvestModal
@@ -223,7 +237,7 @@ import articleTransfer from '@/components/articleTransfer'
 import CoinBtn from '@/components/article/CoinBtn'
 import TokenFooter from '@/components/article/TokenFooter'
 import FeedbackModal from '@/components/article/Feedback'
-
+import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
 
 import store from '@/utils/localStorage.js'
@@ -240,7 +254,8 @@ export default {
     articleTransfer,
     CoinBtn,
     TokenFooter,
-    FeedbackModal
+    FeedbackModal,
+    commentInput
   },
   data() {
     return {
@@ -273,7 +288,8 @@ export default {
       timeCountShare: 0, // 分享计时
       article: Object.create(null),
       postsIdReadnewStatus: false, // 新文章阅读是否上报
-      isReading: false // read接口是否请求完毕
+      isReading: false, // read接口是否请求完毕
+      comment: '' //评论内容
     }
   },
   head() {
@@ -317,6 +333,10 @@ export default {
     cover() {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
       return null
+    },
+    avatarSrc() {
+      if (this.currentUserInfo.avatar) return this.$API.getImg(this.currentUserInfo.avatar)
+      return ''
     },
     isProduct() {
       return this.article.channel_id === 2

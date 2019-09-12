@@ -52,6 +52,23 @@
           @imgAdd="$imgAdd"
         />
       </no-ssr>
+      <div class="set-item fl ac">
+        <span class="set-title">
+          评论价格
+        </span>
+        <span class="set-des">用户需要向您支付对应的积分才可评论</span>
+        <div>
+          <el-input-number
+            v-model="commentPayPoint"
+            class="price-point"
+            :min="1"
+            :max="20"
+            size="mini"
+            label="评论价格"
+            @change="handleChange"
+          />
+        </div>
+      </div>
       <div v-if="editorMode !== 'edit'" class="fission">
         <p>
           裂变系数
@@ -188,7 +205,8 @@ export default {
     allowLeave: false, // 允许离开
     saveInfo: {},
     importVisible: false, // 导入
-    statementVisible: false // 原创声明
+    statementVisible: false, // 原创声明
+    commentPayPoint: 1
   }),
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
@@ -407,6 +425,8 @@ export default {
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      // 设置积分
+      article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this
       try {
         const { author, hash } = article
@@ -710,7 +730,10 @@ export default {
       this.statementVisible = false
     },
     // 原创改变 true 才显示原创声明
-    originalChange(val) { if (val) this.statementVisible = true }
+    originalChange(val) { if (val) this.statementVisible = true },
+    handleChange(value) {
+      console.log(value)
+    }
   }
 }
 </script>
@@ -787,5 +810,13 @@ export default {
     margin-right: 1px !important;
   }
 }
-
+// 覆盖裂变系数
+.fission {
+  .el-slider__bar {
+    background-color: @purpleDark;
+  }
+  .el-slider__button {
+    border-color: @purpleDark;
+  }
+}
 </style>

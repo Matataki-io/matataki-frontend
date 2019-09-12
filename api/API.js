@@ -147,7 +147,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint },
     signature = null
   ) {
     // 账号类型
@@ -166,7 +166,8 @@ export default {
         signId,
         title,
         is_original: isOriginal,
-        tags
+        tags,
+        commentPayPoint
       }
     })
   },
@@ -213,6 +214,14 @@ export default {
         isOriginal,
         tags
       }
+    })
+  },
+  // 提交积分评论
+  postPointComment(data) {
+    return request({
+      method: 'POST',
+      url: '/comment/comment',
+      data: data
     })
   },
   /**
