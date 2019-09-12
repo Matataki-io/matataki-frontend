@@ -66,6 +66,7 @@
           :max="20"
           size="mini"
           label="评论价格"
+          step-strictly
           @change="handleChange"
         />
         <span class="input-number">积分</span>
