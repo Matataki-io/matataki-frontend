@@ -26,6 +26,7 @@ import footer from '~/components/footer/index.vue'
 import AuthModal from '@/components/Auth/index.vue'
 import BackToTop from '@/components/BackToTop'
 export default {
+  name: 'Default',
   components: {
     gFooter: footer,
     AuthModal,
