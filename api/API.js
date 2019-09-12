@@ -195,7 +195,7 @@ export default {
         content,
         cover,
         fissionFactor,
-        isOriginal,
+        is_original: isOriginal,
         tags,
         commentPayPoint
       }
@@ -212,7 +212,7 @@ export default {
         content,
         cover,
         fissionFactor,
-        isOriginal,
+        is_original: isOriginal,
         tags,
         commentPayPoint
       }

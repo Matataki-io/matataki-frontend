@@ -453,6 +453,8 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
+      // 设置是否原创
+      article.isOriginal = this.isOriginal ? 1 : 0
       const response = await this.$API.createDraft(article)
       if (response.code !== 0) this.failed('失败请重试')
       else {
@@ -497,6 +499,8 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
+      // 设置是否原创
+      article.isOriginal = this.isOriginal ? 1 : 0
       try {
         const response = await this.$API.updateDraft(article)
         if (response.code === 0) {
