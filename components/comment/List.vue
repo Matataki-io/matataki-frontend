@@ -1,7 +1,7 @@
 <template>
   <div class="comment-container">
     <h2 class="comment-title">
-      {{ type === 2 ? '支持队列' : '评论' }} {{ articleCardData.articles.length }}
+      {{ type === 2 ? '支持队列' : '评论' }} {{ articleCardData.commentLength }}
     </h2>
     <no-content-prompt :list="articleCardData.articles">
       <template v-if="type === 2">
@@ -16,7 +16,6 @@
       :type-index="0"
       :params="articleCardData.params"
       :api-url="articleCardData.apiUrl"
-      return-type="Array"
       :comment-request="commentRequest"
       @buttonLoadMore="buttonLoadMore"
     >
@@ -55,7 +54,8 @@ export default {
           signid: this.signId
         },
         apiUrl: 'commentsList',
-        articles: []
+        articles: [],
+        commentLength: 0
       }
     }
   },
@@ -73,13 +73,15 @@ export default {
     // },
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
-      // console.log(res)
-      if (res.data && res.data.length !== 0) {
+      console.log(res)
+      if (res.data && res.data.list && res.data.list.length !== 0) {
         if (res.isEmpty) {
-          this.articleCardData.articles = res.data
+          this.articleCardData.articles = res.data.list
+          this.articleCardData.commentLength = res.data.count
         } else {
-          this.articleCardData.articles = this.articleCardData.articles.concat(res.data)
+          this.articleCardData.articles = this.articleCardData.articles.concat(res.data.list)
         }
+        this.articleCardData.commentLength = res.data.count
       }
     }
   }
