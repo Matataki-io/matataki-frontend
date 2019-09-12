@@ -1,14 +1,14 @@
 <template>
   <div class="comment">
     <div class="comment-info">
-      <div
+      <n-link
         class="comment-avatar"
-        @click="$router.push(`/user/${comment.id}`)"
+        :to="{name: 'user-id', params: {id : comment.uid}}"
       >
-        <img :src="avatar" alt="avatar" :onerror="defaultAvatar">
-      </div>
+        <avatar :src="avatar" size="30px" /></avatar>
+      </n-link>
       <div class="comment-head">
-        <router-link class="comment-author" :to="`/user/${comment.id}`">
+        <router-link class="comment-author" :to="`/user/${comment.uid}`">
           {{ comment.nickname || comment.username }}
         </router-link>
         {{ action }}
@@ -27,13 +27,16 @@
 <script>
 import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
+import avatar from '@/components/avatar/index'
 
 export default {
   name: 'CommentCard',
+  components: {
+    avatar
+  },
   props: ['comment', 'type'],
   data() {
     return {
-      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`
     }
   },
   computed: {

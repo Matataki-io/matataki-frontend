@@ -3,12 +3,12 @@
     <div class="comment-info">
       <n-link
         class="comment-avatar"
-        :to="{name: 'user-id', params: {id : comment.id}}"
+        :to="{name: 'user-id', params: {id : comment.uid}}"
       >
         <avatar :src="avatar" size="30px" /></avatar>
       </n-link>
       <div>
-        <router-link class="comment-author" :to="`/user/${comment.id}`">
+        <router-link class="comment-author" :to="`/user/${comment.uid}`">
           {{ comment.nickname || comment.username }}
           <span>
             {{ friendlyDate }}
