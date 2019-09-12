@@ -68,7 +68,7 @@
           label="评论价格"
           @change="handleChange"
         />
-        <span class="input-number">/积分</span>
+        <span class="input-number">积分</span>
       </div>
       <!-- <div v-if="editorMode !== 'edit'" class="fission">
         <p>
