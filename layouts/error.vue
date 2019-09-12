@@ -1,23 +1,19 @@
 <template>
   <div class="error">
-    <!-- ⚠️ 404页面不存在 -->
-    <notPage v-if="error.statusCode==404" />
-    <h2 v-else>
-      ❗ 500服务器错误
-    </h2>
-    <!-- <nuxt-link class="link" to="/">
-      回到主页
-    </nuxt-link> -->
+    <notPage v-if="error.statusCode !=404" />
+    <errorPage v-else />
   </div>
 </template>
 
 <script>
 import notPage from '@/components/404'
+import errorPage from '@/components/500'
 export default {
   layout: 'empty',
   name: 'Error',
   components: {
-    notPage
+    notPage,
+    errorPage
   },
   // nuxt 默认提供模版
   // eslint-disable-next-line vue/require-prop-types

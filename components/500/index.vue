@@ -1,15 +1,9 @@
 <template>
   <div class="container">
     <div class="brick" />
-    <div class="number">
-      <div class="four" />
-      <div class="zero">
-        <div class="nail" />
-      </div>
-      <div class="four" />
-    </div>
+    <img class="error-gif" src="@/assets/img/500/01.gif" alt="error">
     <div class="info">
-      <p>找不到您想访问的页面.</p>
+      <p>服务器丢失了...</p>
       <a href="/" class="btn">返回首页</a>
       <a href="https://support.qq.com/product/84254" target="_blank" class="btn">立即吐槽</a>
     </div>
@@ -64,93 +58,13 @@
     background-position: center;
 }
 
-.number{
+.error-gif {
     position: relative;
-    z-index: 100;
-    text-align: center;
-    margin-top: 79px;
+    z-index: 999;
+    display: block;
+    margin: 0 auto 80px;
+    transform: scale(1.8);
 }
-
-.number .four{
-    width: 230px;
-    height: 292px;
-    display: inline-block;
-    background-image: url("../../assets/img/404/four.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    z-index: 19;
-    position: relative;
-}
-
-.number .zero{
-    width: 230px;
-    height: 292px;
-    display: inline-block;
-    background-image: url("../../assets/img/404/zero.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: 0px 20px;
-    position: relative;
-    z-index: 18;
-    -moz-animation: 4s ease 0s normal none infinite zero;
-    -moz-transform-origin: center top;
-    -webkit-animation:zero 4s infinite ease-in-out;
-    -webkit-transform-origin:top;
-    -o-animation: 4s ease 0s normal none infinite zero;
-    -o-transform-origin: center top;
-    -o-animation:zero 4s infinite ease-in-out;
-    -o-transform-origin:top;
-    -ms-animation: 4s ease 0s normal none infinite zero;
-    -ms-transform-origin: center top;
-    -ms-animation:zero 4s infinite ease-in-out;
-    -ms-transform-origin:top;
-    animation: 4s ease 0s normal none infinite zero;
-    transform-origin: center top;
-    animation:zero 4s infinite ease-in-out;
-    transform-origin:top;
-}
-
-.number .zero .nail{
-    width: 30px;
-    height: 50px;
-    top: 6px;
-    left: 115px;
-    background-image: url("../../assets/img/404/nail.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    position: absolute;
-}
-
-@-moz-keyframes zero {
-    0%{-moz-transform:rotate(-2deg)}
-    50%{-moz-transform:rotate(2deg)}
-    100%{-moz-transform:rotate(-2deg)}
-}
-
-@-webkit-keyframes zero {
-    0%{-webkit-transform:rotate(-2deg)}
-    50%{-webkit-transform:rotate(2deg)}
-    100%{-webkit-transform:rotate(-2deg)}
-}
-
-@-o-keyframes zero {
-    0%{-o-transform:rotate(-2deg)}
-    50%{-o-transform:rotate(2deg)}
-    100%{-o-transform:rotate(-2deg)}
-}
-
-@-ms-keyframes zero {
-    0%{-ms-transform:rotate(-2deg)}
-    50%{-ms-transform:rotate(2deg)}
-    100%{-ms-transform:rotate(-2deg)}
-}
-
-@keyframes zero {
-    0%{transform:rotate(-2deg)}
-    50%{transform:rotate(2deg)}
-    100%{transform:rotate(-2deg)}
-}
-
 .info{
     position: relative;
     z-index: 999;
