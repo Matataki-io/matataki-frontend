@@ -7,7 +7,9 @@
         type="textarea"
         :autosize="{ minRows: 4}"
         placeholder="请输入评论内容"
-        @keyup.ctrl.enter.native="postCommentKeyup"
+        maxlength="500"
+        show-word-limit
+        @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac jfe">
         <span class="btn-des">{{ article.comment_pay_point }}积分/条</span>
@@ -68,15 +70,16 @@ export default {
     postComment() {
       if (!this.islogin()) return
       if (!strTrim(this.comment)) return this.$message.error('评论内容不能为空')
-      console.log('评论内容')
       const data = {
-        id: this.article.id,
+        signId: this.article.id,
         comment: strTrim(this.comment)
       }
       this.$API.postPointComment(data)
         .then(res => {
           if (res.code === 0) {
             this.$message.success('评论成功')
+            this.comment = ''
+            this.$emit('doneComment')
           } else this.$message.error(res.message)
         })
         .catch(e => {
@@ -86,7 +89,9 @@ export default {
     },
     postCommentKeyup(e) {
       // TODO 组合键调用方法 Ctrl or ⌘ + Enter
-      // this.postComment()
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 13) {
+        this.postComment()
+      }
     }
   }
 }
@@ -95,7 +100,7 @@ export default {
 <style lang="less" scoped>
 .comment-input {
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   .avatar {
     margin-right: 20px;
   }
@@ -105,7 +110,7 @@ export default {
   .btn-des {
     font-size:14px;
     font-weight:400;
-    color:#000;
+    color:#9a9a9a;
     line-height:20px;
     margin-right: 10px;
   }

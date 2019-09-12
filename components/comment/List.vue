@@ -1,32 +1,38 @@
 <template>
-  <div>
-    <div v-for="(item, index) in articleCardData" :key="index" class="comment">
-      <h2>{{ type === 2 ? '支持队列' : '投资队列' }} {{ item.articles.length }}</h2>
-      <no-content-prompt :list="item.articles">
-        <CommentCard v-for="(itemChild, indexChild) in item.articles" :key="indexChild" :comment="itemChild" :type="type" />
-      </no-content-prompt>
-      <buttonLoadMore
-        class="comment-button"
-        :type-index="0"
-        :params="item.params"
-        :api-url="item.apiUrl"
-        return-type="Array"
-        :comment-request="commentRequest"
-        @buttonLoadMore="buttonLoadMore"
-      >
-        查看更多>
-      </buttonLoadMore>
-    </div>
+  <div class="comment-container">
+    <h2 class="comment-title">
+      {{ type === 2 ? '支持队列' : '评论' }} {{ articleCardData.articles.length }}
+    </h2>
+    <no-content-prompt :list="articleCardData.articles">
+      <template v-if="type === 2">
+        <CommentCard v-for="(itemChild, indexChild) in articleCardData.articles" :key="indexChild" :comment="itemChild" :type="type" />
+      </template>
+      <template v-else>
+        <articleCard v-for="(itemChild, indexChild) in articleCardData.articles" :key="indexChild" :comment="itemChild" :type="type" />
+      </template>
+    </no-content-prompt>
+    <buttonLoadMore
+      button-type="article-comment"
+      :type-index="0"
+      :params="articleCardData.params"
+      :api-url="articleCardData.apiUrl"
+      return-type="Array"
+      :comment-request="commentRequest"
+      @buttonLoadMore="buttonLoadMore"
+    >
+      查看更多>
+    </buttonLoadMore>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import CommentCard from './Card'
+import articleCard from './article_card'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 export default {
-  components: { CommentCard, buttonLoadMore },
+  components: { CommentCard, buttonLoadMore, articleCard },
   props: {
     signId: {
       type: Number,
@@ -44,15 +50,13 @@ export default {
   data() {
     return {
       // comments: [],
-      articleCardData: [
-        {
-          params: {
-            signid: this.signId
-          },
-          apiUrl: 'commentsList',
-          articles: []
-        }
-      ]
+      articleCardData: {
+        params: {
+          signid: this.signId
+        },
+        apiUrl: 'commentsList',
+        articles: []
+      }
     }
   },
   computed: {
@@ -72,9 +76,9 @@ export default {
       // console.log(res)
       if (res.data && res.data.length !== 0) {
         if (res.isEmpty) {
-          this.articleCardData[res.index].articles = res.data
+          this.articleCardData.articles = res.data
         } else {
-          this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data)
+          this.articleCardData.articles = this.articleCardData.articles.concat(res.data)
         }
       }
     }
@@ -83,15 +87,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.comment-button {
-    background: transparent;
-    color: #333;
-    font-size: 16px;
-    height: auto;
-    width: auto;
-    margin: 20px auto;
+.comment-title {
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
 }
-.comment {
+
+.comment-container {
   margin-bottom: 40px;
 }
 </style>

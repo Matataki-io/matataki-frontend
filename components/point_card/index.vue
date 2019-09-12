@@ -54,7 +54,9 @@ export default {
         reg_invitee: '被邀请注册奖励积分',
         reg_invite_finished: '邀请的用户已激活奖励积分',
         login: '回馈奖励',
-        profile: '完善资料积分'
+        profile: '完善资料积分',
+        comment_pay: '评论支付',
+        comment_income: '被评论收入'
       }
       return pointTypes[type]
     }

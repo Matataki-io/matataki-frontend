@@ -1,5 +1,5 @@
 <template>
-  <el-button v-if="!isLoadEnd" :loading="loading" class="load-more" @click="loadMore">
+  <el-button v-if="!isLoadEnd" :loading="loading" :class="buttonType" class="load-more" @click="loadMore">
     <slot>查看更多</slot>
   </el-button>
 </template>
@@ -32,6 +32,10 @@ export default {
     commentRequest: {
       type: Number,
       default: 0
+    },
+    buttonType: {
+      type: String,
+      default: 'btn'
     }
   },
   data() {
@@ -103,18 +107,30 @@ export default {
 
 <style lang="less" scoped>
 .load-more {
-  background: #000000;
   text-align: center;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 400;
-  margin:60px 0;
   display: block;
-  cursor: pointer;
   outline: none;
   border: none;
-  width: 190px;
-  height: 48px;
-  border-radius: 4px;
+  font-weight: 400;
+  cursor: pointer;
+  &.btn {
+    font-size: 18px;
+    width: 190px;
+    height: 48px;
+    border-radius: 4px;
+    background: #000000;
+    color: #fff;
+    margin:60px 0;
+  }
+  &.article-comment {
+    background: transparent;
+    color: #333;
+    font-size: 16px;
+    height: auto;
+    width: auto;
+    margin: 20px auto;
+    padding: 0;
+    text-decoration: underline;
+  }
 }
 </style>

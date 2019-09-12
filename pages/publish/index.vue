@@ -56,20 +56,21 @@
         <span class="set-title">
           评论价格
         </span>
-        <span class="set-des">用户需要向您支付对应的积分才可评论</span>
-        <div>
-          <el-input-number
-            v-model="commentPayPoint"
-            class="price-point"
-            :min="1"
-            :max="20"
-            size="mini"
-            label="评论价格"
-            @change="handleChange"
-          />
-        </div>
+        <span class="set-des">用户需要向您支付对应的积分才可评论(0-20)</span>
+        <el-input-number
+          v-model="commentPayPoint"
+          style="width: 86px"
+          controls-position="right"
+          class="price-point"
+          :min="0"
+          :max="20"
+          size="mini"
+          label="评论价格"
+          @change="handleChange"
+        />
+        <span class="input-number">/积分</span>
       </div>
-      <div v-if="editorMode !== 'edit'" class="fission">
+      <!-- <div v-if="editorMode !== 'edit'" class="fission">
         <p>
           裂变系数
           <el-tooltip
@@ -93,7 +94,7 @@
         <div class="fission-num-Input">
           {{ fissionNum }}
         </div>
-      </div>
+      </div> -->
       <div class="cover-container">
         <div v-show="cover">
           <img class="cover-img" :src="coverEditor" alt="cover">

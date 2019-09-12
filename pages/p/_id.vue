@@ -103,8 +103,8 @@
     <!-- 内容居中 -->
     <div class="p-w">
       <!-- 评论内容 -->
-      <commentInput :article="article" />
-      <CommentList v-if="isProduct" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" class="p-w" />
+      <commentInput v-if="!isProduct" :article="article" @doneComment="commentRequest = Date.now()" />
+      <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" />
     </div>
 
     <div v-show="navShow" class="sidebar">
@@ -120,6 +120,17 @@
         </div>
         <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
       </div>
+
+      <div
+        v-if="!isProduct"
+        class="comment fl ac fdc"
+      >
+        <div class="comment-block">
+          <svg-icon icon-class="comment" class="comment-icon" />
+        </div>
+        <span>评论</span>
+      </div>
+
       <div
         class="article-btn"
         @click="share"
@@ -174,13 +185,6 @@
           @dislike="dislike"
         />
       </el-popover>
-
-      <div class="comment fl ac fdc">
-        <div class="comment-block">
-          <svg-icon icon-class="comment" class="comment-icon" />
-        </div>
-        <span>评论</span>
-      </div>
     </div>
 
     <InvestModal
