@@ -186,7 +186,7 @@ export default {
     return this._sendArticle('/post/edit', article, signature)
   },
   // 创建草稿
-  createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
+  createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
     return request({
       method: 'POST',
       url: '/draft/save',
@@ -196,12 +196,13 @@ export default {
         cover,
         fissionFactor,
         isOriginal,
-        tags
+        tags,
+        commentPayPoint
       }
     })
   },
   // 更新草稿
-  updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
+  updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
     return request({
       method: 'POST',
       url: '/draft/save',
@@ -212,7 +213,8 @@ export default {
         cover,
         fissionFactor,
         isOriginal,
-        tags
+        tags,
+        commentPayPoint
       }
     })
   },
