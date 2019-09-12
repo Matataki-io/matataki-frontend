@@ -121,7 +121,7 @@
         <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
       </div>
 
-      <div
+      <!-- <div
         v-if="!isProduct"
         class="comment fl ac fdc"
       >
@@ -129,7 +129,7 @@
           <svg-icon icon-class="comment" class="comment-icon" />
         </div>
         <span>评论</span>
-      </div>
+      </div> -->
 
       <div
         class="article-btn"
