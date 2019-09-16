@@ -67,7 +67,6 @@
           size="mini"
           label="评论价格"
           step-strictly
-          @change="handleChange"
         />
         <span class="input-number">积分</span>
       </div>
@@ -690,7 +689,7 @@ export default {
       await this.$backendAPI
         .getTags()
         .then(res => {
-          console.log(649, res)
+          // console.log(649, res)
           if (res.status === 200 && res.data.code === 0) {
             const { data } = res.data
             // 过滤商品标签 id <= 100
@@ -737,10 +736,7 @@ export default {
       this.statementVisible = false
     },
     // 原创改变 true 才显示原创声明
-    originalChange(val) { if (val) this.statementVisible = true },
-    handleChange(value) {
-      console.log(value)
-    }
+    originalChange(val) { if (val) this.statementVisible = true }
   }
 }
 </script>
