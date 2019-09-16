@@ -33,6 +33,7 @@
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.15",
     "markdown-it": "^9.0.1",
+    "markdown-it-footnote": "^3.0.2",
     "mavon-editor": "^2.7.5",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",

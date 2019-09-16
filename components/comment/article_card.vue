@@ -32,7 +32,12 @@ export default {
   components: {
     avatar
   },
-  props: ['comment', 'type'],
+  props: {
+    comment: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
     }

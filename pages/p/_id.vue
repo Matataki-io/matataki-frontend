@@ -331,7 +331,7 @@ export default {
       const markdownIt = require('markdown-it')({
         html: true,
         breaks: true
-      })
+      }).use(require('markdown-it-footnote'))
       return markdownIt.render(xssFilter(this.post.content))
     },
     cover() {
