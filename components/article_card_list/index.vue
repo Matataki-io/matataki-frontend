@@ -51,7 +51,7 @@
         </div>
       </div>
       <!-- 文章卡片内容 -->
-      <div v-if="isSearchCad" v-clampy="4" class="content-text search-res" v-html="xssContent" />
+      <div v-if="isSearchCard" v-clampy="4" class="content-text search-res" v-html="xssContent" />
     </div>
     <div style="width: 0;height: 0;" />
   </n-link>
@@ -78,7 +78,7 @@ export default {
       required: true
     },
     // 是否为搜索卡
-    isSearchCad: {
+    isSearchCard: {
       type: Boolean,
       default: false
     }

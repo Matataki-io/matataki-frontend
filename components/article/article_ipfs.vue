@@ -1,6 +1,14 @@
 <template>
   <div class="article-ipfs">
-    <p>本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。</p>
+    <p>
+      本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。
+      <el-tooltip class="item" effect="dark" content="「HASH」是一篇作品上传到 IPFS 后生成的独一无二的 ID，通过HASH可在 IPFS 不同节点访问作品內容。" placement="top-start">
+        <svg-icon
+          class="help-icon"
+          icon-class="help"
+        />
+      </el-tooltip>
+    </p>
     <div class="ipfs-hash">
       <svg-icon
         class="copy-hash"
@@ -92,5 +100,9 @@ export default {
       color:@purpleDark;
     }
   }
+}
+.help-icon {
+  color: #b2b2b2;
+  cursor: pointer;
 }
 </style>

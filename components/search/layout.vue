@@ -37,7 +37,7 @@
             v-for="item in articleCardData[0].articles"
             :key="item.id"
             :card="item"
-            :is-search-cad="true"
+            :is-search-card="true"
           />
         </template>
         <!-- 商品 -->
@@ -51,7 +51,7 @@
               card-type="commodity-card"
               :type-index="1"
               :card="item"
-              :is-search-cad="true"
+              :is-search-card="true"
             />
           </el-col>
         </el-row>
