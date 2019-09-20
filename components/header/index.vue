@@ -1,5 +1,6 @@
 <template>
-  <header class="header home-fixed" :style="customizeHeaderBcComputed">
+  <!-- :style="customizeHeaderBcComputed" -->
+  <header class="header home-fixed">
     <div class="home-head">
       <div class="head-flex">
         <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
@@ -102,7 +103,7 @@
           @click="login"
         >登录</a>
         <slot name="more" />
-        <language />
+        <!-- <language /> -->
       </div>
     </div>
   </header>
@@ -112,7 +113,7 @@
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
 import point from './point'
-import language from './language'
+// import language from './language'
 import homeLogo from '@/assets/img/m_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
@@ -123,15 +124,15 @@ export default {
   name: 'HomeHead',
   components: {
     avatar,
-    point,
-    language
+    point
+    // language
   },
   props: {
     // 自定义头部背景
-    customizeHeaderBc: {
-      type: String,
-      default: '#fff'
-    },
+    // customizeHeaderBc: {
+    //   type: String,
+    //   default: '#fff'
+    // },
     // 自定义头部文字颜色
     customizeHeaderTextColor: {
       type: String,
@@ -174,12 +175,12 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
-    customizeHeaderBcComputed() {
-      return {
-        backgroundColor: this.customizeHeaderBc,
-        border: '1px solid ' + this.customizeHeaderBc
-      }
-    },
+    // customizeHeaderBcComputed() {
+    //   return {
+    //     backgroundColor: this.customizeHeaderBc,
+    //     border: '1px solid ' + this.customizeHeaderBc
+    //   }
+    // },
     customizeHeaderTextColorComputed() {
       return 'color: ' + this.customizeHeaderTextColor
     },
@@ -281,6 +282,7 @@ export default {
 <style lang="less" scoped>
 .header {
   width: 100%;
+  height: 60px;
   background: #fff;
   border-bottom: 1px solid #f1f1f1;
   box-sizing: border-box;
@@ -295,9 +297,9 @@ export default {
 .home-head {
   max-width: 1200px;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
 
-  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;

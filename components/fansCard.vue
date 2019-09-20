@@ -98,21 +98,16 @@ p {
 }
 
 .fans-card {
-  height: 60px;
-  width: 50%;
-  flex: 0 0 50%;
+  width: 100%;
+  flex: 0 0 10%;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  margin-top: 30px;
-  &:nth-child(even){
-    padding-left: 10px;
-  }
-  &:nth-child(odd){
-    padding-right: 10px;
-  }
+  background-color: #fff;
+  border-bottom: 1px solid #ececec;
+  padding: 20px;
   .avatar {
     width: 60px !important;
     height: 60px !important;

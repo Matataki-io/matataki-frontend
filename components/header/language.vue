@@ -33,6 +33,7 @@ export default {
   methods: {
     toggleLanguage(lang) {
       this.$i18n.locale = lang
+      this.$store.commit('i18n/SET_LANG', lang)
     }
   }
 }
