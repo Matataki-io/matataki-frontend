@@ -69,6 +69,9 @@ export default {
     './assets/css/index.less'
 
   ],
+  router: {
+    middleware: 'i18n'
+  },
   /*
   ** Plugins to load before mounting the App
   */
@@ -83,6 +86,9 @@ export default {
     { src: '@/plugins/vue-mavon-editor', ssr: false },
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false }
   ],
+  generate: {
+    routes: ['/en/test', '/zh/test']
+  },
   /*
   ** Nuxt.js modules
   */

@@ -258,9 +258,9 @@ export default {
     stageDes32: '打造区块链永存知识数据库'
   },
   home: {
-    navHome: '首页',
-    navArticle: '文章',
-    navShop: '商品',
+    navHome: 'Home',
+    navArticle: 'Article',
+    navShop: 'Shop',
     articleNavHot: '最热',
     articleNavHotTitle: '最热文章',
     articleNavNow: '最新',
