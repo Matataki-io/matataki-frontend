@@ -322,5 +322,11 @@ export default {
       method: 'get',
       dataType: "json",
     })
+  },
+  wxlogin(code) {
+    return request.post('/wx/login', { code })
+  },
+  wxpay(total, title) {
+    return request.post('/wx/pay', { total, title })
   }
 }
