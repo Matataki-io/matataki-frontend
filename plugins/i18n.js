@@ -5,15 +5,21 @@ import en from '../locale/en'
 
 Vue.use(VueI18n)
 
-// 准备翻译的语言环境信息
-const messages = {
-  zh: zh,
-  en: en
-}
 // TODO 本地存储 语言状态 优化
-// 通过选项创建 VueI18n 实例
-const i18n = new VueI18n({
-  locale: 'zh', // 设置地区
-  messages // 设置地区信息
-})
-export default i18n
+export default ({ app }) => {
+  // Set the i18n instance on app
+  // This way we can use it globally in our components through this.$i18n
+  app.i18n = new VueI18n({
+    // Set the initial locale
+    locale: 'zh',
+
+    // Set the fallback locale in case the current locale can't be found
+    fallbackLocale: 'en',
+
+    // Associate each locale to a content file
+    messages: {
+      zh: zh,
+      en: en
+    }
+  })
+}

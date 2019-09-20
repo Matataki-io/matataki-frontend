@@ -4,8 +4,16 @@
       {{ language }}<i class="el-icon-arrow-down el-icon--right" />
     </span>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item>中文</el-dropdown-item>
-      <el-dropdown-item>English</el-dropdown-item>
+      <el-dropdown-item>
+        <span @click="toggleLanguage('zh')">
+          中文
+        </span>
+      </el-dropdown-item>
+      <el-dropdown-item>
+        <span @click="toggleLanguage('en')">
+          English
+        </span>
+      </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -19,9 +27,12 @@ export default {
   },
   computed: {
     language() {
-      console.log(this.$i18n)
-      // return this.$i18n.locale === 'zh' ? '中文' : 'English'
-      return '中文'
+      return this.$i18n.locale === 'zh' ? '中文' : 'English'
+    }
+  },
+  methods: {
+    toggleLanguage(lang) {
+      this.$i18n.locale = lang
     }
   }
 }
