@@ -27,7 +27,11 @@ import {
   Image,
   Progress,
   Table,
-  TableColumn
+  TableColumn,
+  Tabs,
+  TabPane,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Row)
@@ -56,6 +60,10 @@ Vue.use(Image)
 Vue.use(Progress)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Select)
+Vue.use(Option)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
