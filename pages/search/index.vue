@@ -1,20 +1,4 @@
-<template>
-  <searchLayout :params="params" api-url-path="searchArticleList" />
-</template>
-
 <script>
-import searchLayout from '@/components/search/layout'
-export default {
-  components: {
-    searchLayout
-  },
-  data() {
-    return {
-      params: {
-        channel: 1,
-        type: 'post'
-      }
-    }
-  }
-}
+import SearchIndex from '~/pages/_lang/search/index'
+export default SearchIndex
 </script>

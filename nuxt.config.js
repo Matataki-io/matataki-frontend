@@ -87,7 +87,9 @@ export default {
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false }
   ],
   generate: {
-    routes: ['/en/test', '/zh/test']
+    routes: [
+      '/', '/en'
+    ]
   },
   /*
   ** Nuxt.js modules

@@ -11,7 +11,9 @@ export const state = () => ({
     accessToken: null, // 僅為通過 signIn 的
     nickname: ''
   },
-  loginModalShow: false
+  loginModalShow: false,
+  locales: ['zh', 'en'],
+  locale: 'zh'
 })
 
 export const getters = {
@@ -86,6 +88,11 @@ export const mutations = {
   },
   setLoginModal(state, show) {
     state.loginModalShow = show
+  },
+  SET_LANG(state, locale) {
+    if (state.locales.includes(locale)) {
+      state.locale = locale
+    }
   }
 }
 

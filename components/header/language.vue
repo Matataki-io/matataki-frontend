@@ -27,13 +27,24 @@ export default {
   },
   computed: {
     language() {
+      console.log(this.$route)
       return this.$i18n.locale === 'zh' ? '中文' : 'English'
     }
   },
   methods: {
     toggleLanguage(lang) {
-      this.$i18n.locale = lang
-      this.$store.commit('i18n/SET_LANG', lang)
+      // this.$i18n.locale = lang
+      if (lang === 'zh') {
+        this.$router.replace({
+          // eslint-disable-next-line no-useless-escape
+          path: this.$route.fullPath.replace(/^\/[^\/]+/, '')
+        })
+      } else {
+        this.$router.replace({
+          path: '/en' + this.$route.fullPath
+        })
+      }
+      this.$store.commit('SET_LANG', lang)
     }
   }
 }
@@ -42,5 +53,8 @@ export default {
 <style lang="less" scoped>
 .language {
   margin-left: 16px;
+  span {
+    display: block;
+  }
 }
 </style>
