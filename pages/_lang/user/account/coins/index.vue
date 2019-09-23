@@ -30,55 +30,7 @@ export default {
   },
   data() {
     return {
-      isPublishCoins: true,
-      pointLog: {
-        params: {
-          pagesize: 10
-        },
-        apiUrl: 'userInvitees',
-        list: []
-      },
-      currentPage: Number(this.$route.query.page) || 1,
-      loading: false, // 加载数据
-      total: 0,
-      assets: {
-      },
-      viewStatus: 0, // 0 1
-      amount: 0
-    }
-  },
-  methods: {
-    createTime(time) {
-      return moment(time).format('MMMDo HH:mm')
-    },
-    cover(cover) {
-      return cover ? this.$API.getImg(cover) : ''
-    },
-    paginationData(res) {
-      console.log(res)
-      this.pointLog.list = res.data.list
-      this.assets = res.data
-      this.total = res.data.count || 0
-      this.amount = res.data.amount || 0
-      this.loading = false
-    },
-    togglePage(i) {
-      this.loading = true
-      this.pointLog.list = []
-      this.currentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
-      })
-    },
-    formatterDate(row, column) {
-      console.log(row, column)
-      return row.date + 1
-    },
-    formatterPoint(row, column) {
-      console.log(row, column)
-      return row.point + 11
+      isPublishCoins: true
     }
   }
 }

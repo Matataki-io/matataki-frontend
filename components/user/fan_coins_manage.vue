@@ -2,127 +2,200 @@
   <div class="coins-publish">
     <div class="fl ac coins-head">
       <h1>
-        申请发行粉丝币
+        粉丝币名称
       </h1>
-      <el-tooltip effect="dark" content="如何发行你的粉丝币?" placement="top-start">
+      <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
       </el-tooltip>
-      <a class="help-link" target="_blank" href="">如何发行你的粉丝币?</a>
+      <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a>
     </div>
 
-    <el-form ref="form" :rules="rules" class="input-form" :model="form" label-width="80px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" class="input" placeholder="请输入粉丝币名称" />
-      </el-form-item>
-      <el-form-item label="简称" prop="abbreviation">
-        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币简称" />
-      </el-form-item>
-      <el-form-item label="图标" prop="coinsIcon">
-        <el-input v-model="form.coinsIcon" style="display: none;" class="input" />
-        <img-upload
-          v-show="!coinsCover"
-          :img-upload-done="imgUploadDone"
-          update-type="coins"
-          class="coins-upload-content"
-          @doneImageUpload="doneImageUpload"
-        >
-          <div slot="uploadButton" class="coins-upload">
-            <i class="el-icon-plus add" />
-          </div>
-        </img-upload>
-        <div
-          v-show="coinsCover"
-          class="coina-cover"
-        >
-          <el-image
-            lazy
-            :src="coinsCover"
-            fit="cover"
-          />
-          <div class="cover-full" @click="removeCoinsIcon">
-            <i class="el-icon-delete remove" />
-          </div>
+    <div class="fl ac coins-info">
+      <div class="fl ac jsb info-block">
+        <div class="info-data">
+          <p class="info-data-number">
+            2000<sub>枚</sub>
+          </p>
+          <p class="info-data-title">
+            印发总量
+          </p>
         </div>
-      </el-form-item>
-      <el-form-item label="发行数量" prop="number">
-        <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-checkbox v-model="form.agree">
-          我声明粉丝币为本人自愿发行，由本人承担一切法律责任
-        </el-checkbox>
-        <el-button :disabled="!form.agree" type="primary" class="publish-btn" @click="submitForm('form')">
-          发币
+        <div class="info-data">
+          <p class="info-data-number">
+            300<sub>枚</sub>
+          </p>
+          <p class="info-data-title">
+            待售量
+          </p>
+        </div>
+        <div class="info-data">
+          <p class="info-data-number">
+            2000<sub>枚</sub>
+          </p>
+          <p class="info-data-title">
+            资金池
+          </p>
+        </div>
+      </div>
+      <div class="info-line" />
+      <div class="fl ac jsb info-block">
+        <div class="info-data">
+          <p class="info-data-number">
+            1000<sub>枚</sub>
+          </p>
+          <p class="info-data-title">
+            持仓总量
+          </p>
+        </div>
+        <div class="info-data">
+          <p class="info-data-number">
+            0.25<sub>元</sub>
+          </p>
+          <p class="info-data-title">
+            现价
+          </p>
+        </div>
+        <div class="info-data">
+          <p class="info-data-number">
+            0.1<sub>元</sub>
+          </p>
+          <p class="info-data-title">
+            发行价
+          </p>
+        </div>
+      </div>
+      <div class="fl fdc info-btn">
+        <el-button class="info-button" size="small" @click="addCoins">
+          增发
         </el-button>
-      </el-form-item>
-    </el-form>
+        <el-button class="info-button" size="small">
+          交易
+        </el-button>
+      </div>
+    </div>
+
+    <div v-loading="loading" class="card-container coins">
+      <el-table
+        :data="pointLog.list"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="username"
+          label="持仓者"
+        >
+          <template slot-scope="scope">
+            <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.id}}">
+              <avatar :src="cover(scope.row.avatar)" size="30px" />
+              <span class="username">{{ scope.row.username }}</span>
+            </n-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="create_time"
+          label="持仓/枚"
+        >
+          <template slot-scope="scope">
+            <div class="invite-block">
+              <span class="time">{{ createTime(scope.row.create_time) }}</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <user-pagination
+      v-show="!loading"
+      :current-page="currentPage"
+      :params="pointLog.params"
+      :api-url="pointLog.apiUrl"
+      :page-size="10"
+      :total="total"
+      :need-access-token="true"
+      class="pagination"
+      @paginationData="paginationData"
+      @togglePage="togglePage"
+    />
   </div>
 </template>
 
 <script>
-import imgUpload from '@/components/imgUpload/index.vue'
+import { mapGetters } from 'vuex'
+import moment from 'moment'
+import userPagination from '@/components/user/user_pagination.vue'
+import avatar from '@/components/avatar/index.vue'
 
 export default {
   components: {
-    imgUpload
+    userPagination,
+    avatar
   },
   data() {
     return {
-      form: {
-        name: '',
-        abbreviation: '',
-        number: '',
-        coinsIcon: '',
-        agree: false
+      pointLog: {
+        params: {
+          pagesize: 10
+        },
+        apiUrl: 'userInvitees',
+        list: []
       },
-      rules: {
-        name: [
-          { required: true, message: '请输入粉丝币名称', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ],
-        abbreviation: [
-          { required: true, message: '请输入粉丝币简称', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ],
-        coinsIcon: [
-          { required: true, message: '请输上传图标' }
-        ],
-        number: [
-          { required: true, message: '请输入首次发行数量', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ]
+      currentPage: Number(this.$route.query.page) || 1,
+      loading: false, // 加载数据
+      total: 0,
+      assets: {
       },
-      imgUploadDone: 0 // 图片是否上传完成
+      viewStatus: 0, // 0 1
+      amount: 0
     }
   },
   computed: {
-    coinsCover() {
-      return this.form.coinsIcon ? this.$backendAPI.getAvatarImage(this.form.coinsIcon) : ''
-    }
+    ...mapGetters(['isLogined'])
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+    addCoins() {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      this.$prompt('请输入邮箱', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        this.$message({
+          type: 'success',
+          message: '你增发了: ' + value
+        })
+      })
+    },
+    createTime(time) {
+      return moment(time).format('MMMDo HH:mm')
+    },
+    cover(cover) {
+      return cover ? this.$API.getImg(cover) : ''
+    },
+    paginationData(res) {
+      console.log(res)
+      this.pointLog.list = res.data.list
+      this.assets = res.data
+      this.total = res.data.count || 0
+      this.amount = res.data.amount || 0
+      this.loading = false
+    },
+    togglePage(i) {
+      this.loading = true
+      this.pointLog.list = []
+      this.currentPage = i
+      this.$router.push({
+        query: {
+          page: i
         }
       })
     },
-    // 完成上传
-    doneImageUpload(res) {
-      console.log(res)
-      this.form.coinsIcon = res.data.data.cover
-      this.imgUploadDone += Date.now()
+    formatterDate(row, column) {
+      console.log(row, column)
+      return row.date + 1
     },
-    removeCoinsIcon() {
-      this.form.coinsIcon = ''
+    formatterPoint(row, column) {
+      console.log(row, column)
+      return row.point + 11
     }
   }
 }
@@ -154,67 +227,84 @@ export default {
     text-decoration: underline;
   }
 }
-.coina-cover {
-  width: 90px;
-  height: 90px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 4px;
-  box-sizing: border-box;
-  background: #ececec;
-  &:hover .cover-full {
-    display: flex;
-  }
-  .cover-full {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.5);
-    // display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    display: none;
-    .remove {
-      font-size: 26px;
-      color: #fff;
+
+.coins-info {
+  border-bottom: 1px solid #ececec;
+  padding: 0 0 20px;
+}
+.info-line {
+  width:1px;
+  height:40px;
+  background: #dbdbdb;
+  margin: 0 40px;
+}
+.info-block {
+  flex: 1;
+  .info-data {
+    text-align: center;
+    &-number {
+      font-size:24px;
+      font-weight:bold;
+      color:rgba(84,45,224,1);
+      line-height:28px;
+      padding: 0;
+      margin: 0;
+      sub {
+        bottom: 0;
+        font-size: 70%;
+      }
+    }
+    &-title {
+      font-size:14px;
+      color:rgba(0,0,0,1);
+      line-height:20px;
+      padding: 0;
+      margin: 0;
     }
   }
 }
-.coins-upload-content {
-  width: 90px;
-  height: 90px;
-  overflow: hidden;
+.info-btn {
+  margin-left: 40px;
+  .info-button {
+    margin: 4px 0;
+  }
 }
-.coins-upload {
-  width: 90px;
-  height: 90px;
+
+</style>
+
+<style lang="less" scoped>
+
+.invite-block.avatar{
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
-  .add {
-    font-size: 26px;
-    color: #8c939d;
-  }
 }
-.input-form {
-  margin-top: 30px;
-  .input {
-    width: 400px;
-  }
+.username {
+  margin-left: 10px;
+  font-size: 16px;
+  color:#333;
 }
-.publish-btn {
-  display: block;
-  width: 100px;
-  // background: @purpleDark;
-  // border-color: @purpleDark;
+.time {
+  font-size: 16px;
+  color:#333;
+}
+.point {
+  font-size: 16px;
+  font-weight: bold;
+  color:rgba(251,104,119,1);
+}
+</style>
+
+<style lang="less">
+.coins {
+  .el-table th>.cell {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+  }
+  .el-table td, .el-table th.is-leaf {
+    border-bottom: none;
+  }
+  .el-table::before {
+    height: 0;
+  }
 }
 </style>

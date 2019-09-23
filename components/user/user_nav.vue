@@ -38,7 +38,7 @@ export default {
         { title: '钱包', url: 'user-account', self: false },
         { title: '积分', url: 'user-account-points', self: false },
         { title: '邀请', url: 'user-account-invite', self: false },
-        { title: '买入粉丝币', url: 'user-account-invite', self: false },
+        { title: '买入粉丝币', url: 'user-account-buycoins', self: false },
         { title: '我的粉丝币', url: 'user-account-coins', self: false }
       ]
     }
