@@ -159,11 +159,11 @@ export default {
     return {
       nav: [
         {
-          title: this.$t('home.article'),
+          title: this.$t('home.navArticle'),
           url: 'article'
         },
         {
-          title: this.$t('home.shop'),
+          title: this.$t('home.navShop'),
           url: 'shop'
         }
       ],

@@ -13,6 +13,7 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    'vue/no-v-html': 0, // 使用 v-html 前要确保 xss 过滤了
     'no-console': 0,
     'no-unused-vars': 0,
     'spaced-comment': 'off',

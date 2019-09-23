@@ -140,7 +140,7 @@
     <article-transfer
       v-if="isShowTransfer"
       v-model="transferModal"
-      :article-id="$route.params.id"
+      :article-id="Number($route.params.id)"
       :from="$route.query.from"
       @toggleDone="allowLeave = true"
     />

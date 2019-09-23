@@ -60,8 +60,14 @@ export default {
       type: Boolean,
       default: false
     },
-    articleId: [String, Number],
-    from: String
+    articleId: {
+      type: Number,
+      required: true
+    },
+    from: {
+      type: String,
+      required: true
+    }
   },
   data() {
     return {

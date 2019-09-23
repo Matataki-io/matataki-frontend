@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
+import zh from '~/locale/zh'
+import en from '~/locale/en'
+
 Vue.use(VueI18n)
 
 export default ({ app, store }) => {
@@ -10,8 +13,8 @@ export default ({ app, store }) => {
     locale: store.state.locale,
     fallbackLocale: 'zh',
     messages: {
-      zh: require('~/locale/zh.json'),
-      en: require('~/locale/en.json')
+      zh: zh,
+      en: en
     }
   })
 

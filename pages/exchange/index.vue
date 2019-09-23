@@ -4,10 +4,14 @@
     <div class="p-w">
       <el-tabs type="border-card">
         <el-tab-pane label="兑换">
-          <Swap></Swap>
+          <Swap />
         </el-tab-pane>
-        <el-tab-pane label="发送">发送</el-tab-pane>
-        <el-tab-pane label="资金池">资金池</el-tab-pane>
+        <el-tab-pane label="发送">
+          发送
+        </el-tab-pane>
+        <el-tab-pane label="资金池">
+          资金池
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>

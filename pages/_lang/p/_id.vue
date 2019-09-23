@@ -38,6 +38,7 @@
       </header>
       <articleIpfs :hash="article.hash" />
 
+      // eslint-disable-next-line vue/no-v-html
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
       <ArticleFooter style="margin-top: 20px;" :article="article" />
     </article>
@@ -214,8 +215,8 @@
     />
     <article-transfer
       v-model="transferModal"
-      :article-id="article.id"
-      :from="'article'"
+      :article-id="Number(article.id)"
+      from="article"
     />
 
     <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
