@@ -24,7 +24,7 @@
             <span class="follow-title">粉丝</span>
           </div>
         </div>
-        <followBtn :id="$route.params.id" class="follow" />
+        <followBtn :id="Number($route.params.id)" class="follow" />
       </div>
     </div>
     <div class="article">
