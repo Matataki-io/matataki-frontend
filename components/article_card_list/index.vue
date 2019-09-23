@@ -1,5 +1,5 @@
 <template>
-  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank">
+  <n-link class="card" :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank">
     <div class="bg">
       <div class="article">
         <!-- 适用于 首页, 商品页, 标签页 -->
@@ -126,6 +126,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.card {
+  display: block;
+  margin-bottom: 20px;
+}
 .imgObjectFitCover {
   width: 100%;
   height: 100%;
