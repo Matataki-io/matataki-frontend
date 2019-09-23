@@ -10,7 +10,7 @@
         <img v-if="buyCover" :src="buyCover" alt="cover">
       </div>
       <div class="info">
-        <p v-clampy="2" class="title">
+        <p class="title">
           {{ buy && buy.title }}
         </p>
         <p class="money">
@@ -85,9 +85,9 @@ export default {
   width: 100%;
   background: #fff;
   border-radius: 4px;
-  padding: 40px 0;
+  padding: 20px;
   margin: 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ececec;
   &:nth-last-of-type(1) {
     border: none;
   }
@@ -98,16 +98,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   .date {
-    font-size:16px;
+    font-size: 14px;
     font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:22px;
+    color: #333;
   }
   .des {
     font-size:16px;
-    font-weight:400;
     color: @purpleDark;
-    line-height:22px;
   }
 }
 
@@ -115,17 +112,17 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0 0 0;
-    padding: 0 0 20px 0;
+    margin: 10px 0 0 0;
+    padding: 0 0 10px 0;
   .cover {
-    flex: 0 0 242px;
+    flex: 0 0 120px;
     overflow: hidden;
-    width:242px;
-    height:120px;
-    background: #eee;
-    border: 1px solid #f1f1f1;
+    width:120px;
+    height:60px;
+    background: #ececec;
+    border: 1px solid #ececec;
     box-sizing: border-box;
-    border-radius: @borderRadius6;
+    border-radius: 4px;
     img {
       width: 100%;
       height: 100%;
@@ -134,26 +131,26 @@ export default {
   }
   .info {
     flex: 1;
-    height: 120px;
+    height: 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 0 0 0 10px;
     overflow: hidden;
     .title {
-      font-size:20px;
-      font-weight:500;
+      font-size: 18px;
       color:rgba(0,0,0,1);
       line-height:18px;
       padding: 0;
-      margin: 0 0 0 10px;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .money {
       width: 100%;
-      font-size:16px;
-      font-weight:400;
+      font-size: 14px;
       color:rgba(0,0,0,1);
-      line-height:22px;
       text-align: right;
     }
   }
@@ -164,18 +161,16 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 30px;
-    margin: 20px 0 0;
+    padding: 4px 10px;
+    margin: 0;
     box-sizing: border-box;
     cursor: pointer;
   span {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    font-size:16px;
-    font-weight:400;
+    font-size: 14px;
     color:rgba(178,178,178,1);
-    line-height:22px;
   }
   .icon {
     width: 14px;
@@ -191,7 +186,6 @@ export default {
     border-radius: 20px;
     color: #fff;
     font-size: 14px;
-    line-height: 17px;
     display: flex;
     align-items: center;
     justify-content: center;

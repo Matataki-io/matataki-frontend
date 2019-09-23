@@ -1,16 +1,18 @@
 <template>
   <!-- 卡片适用于 个人主页设置页 -->
   <div class="card fl ac jsb">
-    <div class="fl">
+    <div class="fl content">
       <div class="cover">
         <img :src="cover" alt="cover" :onerror="defaultCover">
       </div>
-      <h3 class="title">
-        {{ card && card.title }}
-      </h3>
-      <p class="date">
-        {{ time }}
-      </p>
+      <div class="fl jc fdc info">
+        <h3 class="title">
+          {{ card && card.title }}
+        </h3>
+        <p class="date">
+          {{ time }}
+        </p>
+      </div>
     </div>
     <a class="del" href="javascript:;" @click.stop="$emit('del', index)">删除</a>
   </div>
@@ -55,11 +57,21 @@ export default {
   background: #fff;
   border-bottom: 1px solid #ececec;
   padding: 20px;
+  .content {
+    flex: 1;
+    overflow: hidden;
+  }
+  .info {
+    overflow: hidden;
+    margin-left: 10px;
+    margin-right: 10px;
+    flex: 1;
+  }
 }
 
 .cover {
-  width: 200px;
-  height: 100px;
+  width: 120px;
+  height: 60px;
   background:rgba(0,0,0,0.05);
   border-radius: @borderRadius6;
   overflow: hidden;
@@ -76,8 +88,10 @@ export default {
   color:rgba(0,0,0,1);
   line-height:28px;
   padding: 0;
-  margin: 20px 0 10px 0;
+  margin: 0;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .date {
   font-size:16px;
@@ -86,18 +100,15 @@ export default {
   line-height:22px;
   padding: 0;
   margin: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
-  .del {
-    width: 67px;
-    background: #000;
-    text-align: center;
-    color: #fff;
-    text-decoration: none;
-    padding: 4px 0;
-    cursor: pointer;
-    border-radius: @borderRadius6;
-  }
+.del {
+  width: 66px;
+  background: #000;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 0;
+  cursor: pointer;
+  border-radius: @borderRadius6;
+}
 </style>

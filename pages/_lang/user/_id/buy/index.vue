@@ -1,44 +1,33 @@
+
 <template>
-  <userLayout>
-    <template slot="main">
-      <user-nav nav-list-url="user" />
-      <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
-      <div v-loading="loading" class="card-container">
-        <no-content-prompt :list="articleCardData.articles">
-          <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
-        </no-content-prompt>
-      </div>
-      <user-pagination
-        v-show="!loading"
-        :current-page="currentPage"
-        :params="articleCardData.params"
-        :api-url="articleCardData.apiUrl"
-        :page-size="3"
-        :total="total"
-        class="pagination"
-        :need-access-token="true"
-        @paginationData="paginationData"
-        @togglePage="togglePage"
-      />
-    </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
-    </template>
-  </userLayout>
+  <userPage>
+    <div slot="list" v-loading="loading">
+      <no-content-prompt :list="articleCardData.articles">
+        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
+        <user-pagination
+          v-show="!loading"
+          :current-page="currentPage"
+          :params="articleCardData.params"
+          :api-url="articleCardData.apiUrl"
+          :page-size="articleCardData.params.pagesize"
+          :total="total"
+          class="pagination"
+          @paginationData="paginationData"
+          @togglePage="togglePage"
+        />
+      </no-content-prompt>
+    </div>
+  </userPage>
 </template>
 
 <script>
-import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import userPage from '@/components/user/user_page.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import buy from '@/components/buy_card/index.vue'
 
 export default {
   components: {
-    userLayout,
-    userInfo,
-    userNav,
+    userPage,
     userPagination,
     buy
   },
@@ -46,7 +35,7 @@ export default {
     return {
       articleCardData: {
         params: {
-          pagesize: 3
+          pagesize: 20
         },
         apiUrl: 'buyHistory',
         articles: []
@@ -55,9 +44,6 @@ export default {
       loading: false, // 加载数据
       total: 0
     }
-  },
-  computed: {
-
   },
   methods: {
     paginationData(res) {
@@ -79,5 +65,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped src="../../index.less">
+<style scoped>
+.pagination {
+  padding: 40px 5px;
+}
 </style>
