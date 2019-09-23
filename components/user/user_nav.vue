@@ -1,12 +1,13 @@
 <template>
   <nav class="nav">
-    <a
+    <router-link
       v-for="(item, index) in navList"
       :key="index"
-      href="javascript:;"
       :class="$route.name === item.url && 'active'"
-      @click="toggleNav(item.url)"
-    >{{ item.title }}</a>
+      :to="{name: item.url}"
+    >
+      {{ item.title }}
+    </router-link>
   </nav>
 </template>
 
@@ -36,27 +37,19 @@ export default {
       account: [ // todo 完善路由
         { title: '钱包', url: 'user-account', self: false },
         { title: '积分', url: 'user-account-points', self: false },
-        { title: '邀请', url: 'user-account-invite', self: false }
+        { title: '邀请', url: 'user-account-invite', self: false },
+        { title: '买入粉丝币', url: 'user-account-invite', self: false },
+        { title: '我的粉丝币', url: 'user-account-coins', self: false }
       ]
     }
   },
   computed: {
     ...mapGetters(['isMe']),
     navList() {
+      // TODO 之前个人主页和我的账户是同一页面 需要params id 现在可以考虑移除这个判断
       const isMe = this.isMe(this.$route.params.id)
       if (isMe) return this[this.navListUrl]
       else return this[this.navListUrl].filter(i => !i.self)
-    }
-  },
-  methods: {
-    toggleNav(url) {
-      if (url === this.$route.name) return
-      this.$router.push({
-        name: url,
-        params: {
-          id: this.$route.params.id
-        }
-      })
     }
   }
 }
@@ -69,13 +62,14 @@ export default {
   a {
     font-size:20px;
     font-weight:400;
-    color:rgba(0,0,0,1);
     line-height:33px;
     text-decoration: none;
-    margin-right: 50px;
+    margin-right: 40px;
+    color: #333;
     cursor: pointer;
     &.active {
       font-weight:bold;
+      color:rgba(0,0,0,1);
     }
     &:nth-last-child(1) {
       margin-right: 0;

@@ -24,7 +24,19 @@
             <span class="follow-title">粉丝</span>
           </div>
         </div>
-        <followBtn :id="Number($route.params.id)" class="follow" />
+        <fanCoinsBtn :id="Number($route.params.id)" class="fans-coins-btn" />
+        <followBtn v-if="!isMe(Number($route.params.id))" :id="Number($route.params.id)" class="follow" />
+        <router-link
+          v-else
+          :to="{name: 'user-setting'}"
+        >
+          <el-button
+            size="small"
+            class="follow"
+          >
+            编辑资料
+          </el-button>
+        </router-link>
       </div>
     </div>
     <div class="article">
@@ -39,29 +51,28 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import userPageNav from './user_page_nav'
 import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
+import fanCoinsBtn from '@/components/user/fan_coins_btn.vue'
 export default {
   components: {
     avatar,
     followBtn,
-    userPageNav
+    userPageNav,
+    fanCoinsBtn
   },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
     }),
-    ...mapGetters(['isMe', 'currentUserInfo'])
+    ...mapGetters(['isMe'])
   },
 
   watch: {
-    currentUserInfo() {
-      this.refreshUser({ id: this.$route.params.id })
-    }
   },
   created() {
     if (!this.$route.params.id) this.$router.go(-1)
   },
   mounted() {
-    if (this.currentUserInfo.id) this.refreshUser({ id: this.$route.params.id })
+    this.refreshUser({ id: this.$route.params.id })
   },
   methods: {
     ...mapActions('user', [
@@ -145,6 +156,11 @@ export default {
     position: absolute;
     right: 0;
     bottom: 20px;
+  }
+  .fans-coins-btn {
+    position: absolute;
+    right: 0;
+    bottom: 60px;
   }
 }
 

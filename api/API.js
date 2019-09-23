@@ -234,7 +234,8 @@ export default {
   uploadImage(type, data) {
     const url = {
       avatar: '/user/uploadAvatar',
-      artileCover: '/post/uploadImage'
+      artileCover: '/post/uploadImage',
+      coins: '/post/uploadImage',
     }
     const formdata = new FormData()
     formdata.append('image', data)
