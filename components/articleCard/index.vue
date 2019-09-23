@@ -123,7 +123,7 @@ export default {
       return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].name : '')
     },
     tagId() {
-      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : '')
+      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : 0)
     },
     tagType() {
       return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].type : '')
