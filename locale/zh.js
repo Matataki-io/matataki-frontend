@@ -162,7 +162,7 @@ export default {
     read_like: '用户阅读',
     read_dislike: '用户阅读',
     commentDoneMessage: '评价成功，阅读积分奖励已领取',
-    readNew: '阅读新文章奖励{}积分, 评价后可领取更多积分!',
+    readNew: '阅读新文章奖励{0}积分, 评价后可领取更多积分!',
     readNewFail: '阅读新文章增加积分失败'
   },
   assetCard: {
@@ -367,12 +367,12 @@ export default {
     soldOut: '售罄',
     buyPlaceholder: '输入推荐语...',
     buyShop: '购买商品',
-    remainingStock: '库存还有剩{}份',
+    remainingStock: '库存还有剩{0}份',
     buyDone: '购买成功！',
     buyDoneDes: '请去“购买记录”页面查看已购商品！',
     investArticle: '投资文章',
     investShop: '投资商品',
-    shopAmounts: '{}份商品',
+    shopAmounts: '{0}份商品',
     commentPlaceholder: '请输入您的留言',
     commentPointPlaceholder: '请输入评论内容',
     commentPointBtn: '评论',
@@ -383,8 +383,8 @@ export default {
     commentNotContent: '用户没有留下评论',
     investmentPlaceholder: '请输入{}投资金额',
     loginInvest: '登陆后即可投资',
-    account: '{}账号暂不支持',
-    accountInvest: '{}账号暂不支持投资功能',
+    account: '{0}账号暂不支持',
+    accountInvest: '{0}账号暂不支持投资功能',
     minMoney: '请输入正确的金额 最小{}金额为 {} {}',
     sponsorFail: '{}失败，可能是由于网络故障或账户余额不足等原因。',
     deleteArticle: '删除成功,自动跳转到首页',
@@ -433,7 +433,10 @@ export default {
     sweepCodeView: '扫描二维码 免费读全文',
     pressImgSave: '长按图片保存',
     createImg: '生成图片',
-    createFail: '图片生成失败'
+    createFail: '图片生成失败',
+    sharePopover: '点击“分享文章”按钮与朋友共享好文章',
+    likePopover: '指向此图标后，选择“推荐”或“不推荐”，即可领取阅读积分奖励！',
+    confirmPopover: '知道了'
   },
   invite: {
     headerTitle: '我的邀请',

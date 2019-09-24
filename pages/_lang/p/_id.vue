@@ -8,13 +8,13 @@
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item command="edit">
-              编辑
+              {{ $t('edit') }}
             </el-dropdown-item>
             <el-dropdown-item command="transfer">
-              转让
+              {{ $t('transfer') }}
             </el-dropdown-item>
             <el-dropdown-item command="del">
-              删除
+              {{ $t('delete') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -38,7 +38,6 @@
       </header>
       <articleIpfs :hash="article.hash" />
 
-      // eslint-disable-next-line vue/no-v-html
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
       <ArticleFooter style="margin-top: 20px;" :article="article" />
     </article>
@@ -55,19 +54,19 @@
           <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
             <svg-icon icon-class="share" class="icon" />
           </div>
-          <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
+          <span> {{ $t('share') }}</span>
         </div>
         <div v-if="isProduct" class="article-btn" @click="buy">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
-          <span>购买商品</span>
+          <span>{{ $t('p.buyShop') }}</span>
         </div>
         <div v-if="isProduct" class="article-btn" @click="invest">
           <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
             <svg-icon icon-class="invest" class="icon" />
           </div>
-          <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
+          <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
         </div>
 
         <TokenFooter
@@ -82,7 +81,7 @@
             <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
               <svg-icon icon-class="share" class="icon" />
             </div>
-            <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
+            <span>{{ $t('share') }}</span>
           </div>
         </TokenFooter>
       </div>
@@ -113,13 +112,13 @@
         <div class="icon-container yellow">
           <svg-icon icon-class="purchase" class="icon" />
         </div>
-        <span>购买商品</span>
+        <span>{{ $t('p.buyShop') }}</span>
       </div>
       <div v-if="isProduct" class="article-btn" @click="invest">
         <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
           <svg-icon icon-class="invest" class="icon" />
         </div>
-        <span>{{ isProduct ? (isSupport ? '已投资' : '投资商品') : (isSupport ? '已投资' : '投资文章') }}</span>
+        <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
       </div>
 
       <!-- <div
@@ -142,10 +141,10 @@
           width="300"
           trigger="manual"
         >
-          <p>点击“分享文章”按钮与朋友共享好文章~</p>
+          <p>{{ $t('p.sharePopover') }}</p>
           <div style="text-align: right; margin: 0">
             <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
-              知道了
+              {{ $t('p.confirmPopover') }}
             </el-button>
           </div>
 
@@ -158,7 +157,7 @@
             >
               <svg-icon icon-class="share" class="icon" />
             </div>
-            <span>{{ isProduct ? '分享商品' : '分享文章' }}</span>
+            <span>{{ $t('share') }}</span>
           </div>
         </el-popover>
       </div>
@@ -169,10 +168,10 @@
         width="300"
         trigger="manual"
       >
-        <p>指向此图标后，选择“推荐”或“不推荐”，即可领取阅读积分奖励！</p>
+        <p>{{ $t('p.likePopover') }}</p>
         <div style="text-align: right; margin: 0">
           <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
-            知道了
+            {{ $t('p.confirmPopover') }}
           </el-button>
         </div>
         <CoinBtn
@@ -192,7 +191,7 @@
       v-model="investModalShow"
       :article="{
         ...article,
-        title: '投资文章'
+        title: $t('p.investArticle')
       }"
       @investDone="payDone"
     />
@@ -451,11 +450,11 @@ export default {
           this.ssToken.is_liked = 2
           this.ssToken.points = res.data
           // this.feedbackShow = true
-          this.$message.success('评价成功，阅读积分奖励已领取')
+          this.$message.success(this.$t('articleFooter.commentDoneMessage'))
 
           this.getArticleInfoFunc() // 更新文章信息
         } else {
-          this.$message.error('推荐, 失败')
+          this.$message.error(`${this.$t('articleFooter.like')},${this.$t('error.fail')}`)
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -472,11 +471,11 @@ export default {
           this.ssToken.is_liked = 1
           this.ssToken.points = res.data
           // this.feedbackShow = true
-          this.$message.success('评价成功，阅读积分奖励已领取')
+          this.$message.success(this.$t('articleFooter.commentDoneMessage'))
 
           this.getArticleInfoFunc() // 更新文章信息
         } else {
-          this.$message.error('不推荐, 失败')
+          this.$message.error(`${this.$t('articleFooter.unlike')},${this.$t('error.fail')}`)
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -493,29 +492,29 @@ export default {
           if (res.code === 0) {
             this.isReading = true
             this.reading()
-            console.log('reading done')
+            // console.log('reading done')
           }
         }).catch(err => {
-          console.log('文章 reading err', err)
+          console.log('article reading err', err)
         })
     },
     reading() {
       if (this.timer === null && !this.likedOrDisLiked) {
         this.timer = setInterval(() => {
           this.timeCount++
-          console.log('计时', this.timeCount)
+          // console.log('计时', this.timeCount)
         }, 1000)
       }
     },
     handleFocus() {
       // https://github.com/hehongwei44/my-blog/issues/184
       window.onfocus = () => {
-        console.log('页面激活')
+        // console.log('页面激活')
         clearInterval(this.timer)
         if (this.isReading) this.reading()
       }
       window.onblur = () => {
-        console.log('页面隐藏')
+        // console.log('页面隐藏')
         clearInterval(this.timer)
         this.timer = null
       }
@@ -530,17 +529,16 @@ export default {
       this[command]()
     },
     del() {
-      const delSuccess = async () => {
-        this.$message({ duration: 2000, message: '删除成功,三秒后自动跳转到首页' })
-        await this.$utils.sleep(3000)
+      const delSuccess = () => {
+        this.$message({ duration: 2000, message: this.$t('p.deleteArticle') })
         this.$router.push('/article')
       }
       const fail = (err) => {
-        this.$message.error('删除失败')
+        this.$message.error(this.$t('p.deleteFail'))
         console.log('error', err)
       }
       const delArticleFunc = async (id) => {
-        if (!id) return fail('没有id')
+        if (!id) return fail(this.$t('p.noId'))
         try {
           const response = await this.$backendAPI.delArticle({ id })
           if (response.status === 200 && response.data.code === 0) delSuccess()
@@ -549,10 +547,10 @@ export default {
           return fail(error)
         }
       }
-      this.$confirm('该文章已上传至 IPFS 永久保存, 本次操作仅删除瞬MATATAKI中的显示.', '确认信息', {
+      this.$confirm(this.$t('p.ipfsPrompt'), this.$t('promptTitle'), {
         distinguishCancelAndClose: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel')
       })
         .then(() => {
           delArticleFunc(this.article.id)
@@ -572,17 +570,17 @@ export default {
     // 检测能否投资
     detection(buy = false) {
       if (this.isSupport && !buy) {
-        this.$message.success('已投资')
+        this.$message.success(this.$t('p.invested'))
         return false
       }
       if (!this.isLogined) {
-        this.$message.warning('登录后即可投资')
+        this.$store.commit('setLoginModal', true)
         return false
       }
       // email github 无法赞赏
       const { idProvider } = this.currentUserInfo
       if (this.$publishMethods.invalidId(idProvider)) {
-        this.$message.warning(`${idProvider}账号暂不支持`)
+        this.$message.warning(`${this.$t('p.account', [idProvider])}`)
         return false
       }
       return true
@@ -629,12 +627,12 @@ export default {
     postsIdReadnew() {
       const isNDaysAgo = this.$utils.isNDaysAgo(3, this.article.create_time)
       if (this.article.is_readnew !== 1 && !isNDaysAgo) {
-        console.log('阅读新文章增加积分')
+        // console.log('阅读新文章增加积分')
         this.$API.postsIdReadnew(this.article.id, this.timeCount)
           .then(res => {
             if (res.code === 0) {
-              this.$message.success(`阅读新文章奖励${this.$point.readNew}积分, 评价后可领取更多积分!`)
-              console.log('阅读新文章增加积分成功')
+              this.$message.success(this.$t('articleFooter.readNew', [this.$point.readNew]))
+              // console.log('阅读新文章增加积分成功')
             } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
       }
