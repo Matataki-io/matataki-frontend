@@ -6,36 +6,36 @@
       <div class="integral-container">
         <div class="integral-list">
           <div class="flex">
-            <span class="integral-title">我的积分</span>
+            <span class="integral-title">{{ $t('point.title') }}</span>
             <span class="integral-num">{{ pointStatus.amount || 0 }}</span>
           </div>
         </div>
 
         <div v-if="!pointStatus.profile" class="integral-list">
           <div class="flex">
-            <span class="integral-title">完善个人资料</span>
+            <span class="integral-title">{{ $t('point.completeProfile') }}</span>
             <el-button size="mini" class="integral-btn" @click="profile">
               <svg-icon class="box" icon-class="box" />
-              领取
+              {{ $t('point.receive') }}
             </el-button>
           </div>
           <p class="integral-des">
-            前往设置页上传头像+设置昵称即可领取{{ $point.profile }}积分
+            {{ $t('point.uploadAvatar', [$point.profile]) }}
           </p>
         </div>
 
         <div v-if="!pointStatus.login" class="integral-list">
           <div class="flex">
-            <span class="integral-title">用户回馈</span>
+            <span class="integral-title">{{ $t('point.feedback') }}</span>
             <el-button size="mini" class="integral-btn" @click="feedback">
               <svg-icon class="box" icon-class="box" />
-              领取
+              {{ $t('point.receive') }}
             </el-button>
           </div>
           <p class="integral-des">
-            感谢8月30日前注册的老用户支持，点击领取{{ $point.loginOld }}积分
+            {{ $t('point.oldUser', [$point.loginOld]) }}
             <br>
-            新用户点击领取{{ $point.loginNew }}积分
+            {{ $t('point.newUser', [$point.loginNew]) }}
           </p>
         </div>
 
@@ -70,46 +70,50 @@
 
         <div class="integral-list">
           <div class="flex">
-            <span class="integral-title">邀请好友有奖</span>
+            <span class="integral-title">{{ $t('point.invite') }}</span>
             <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
-              复制链接
+              {{ $t('point.copyLink') }}
             </el-button>
           </div>
           <div class="integral-link">
             {{ referralLink }}
           </div>
           <p class="integral-des">
-            每成功邀请一名好友注册可得{{ $point.regInviteFinished + $point.regInviter }}积分
+            {{ $t('point.inviteDes1', [$point.regInviteFinished + $point.regInviter]) }}
             <br>
-            好友发文你可以获得额外{{ $point.publishReferral }}积分
+            {{ $t('point.inviteDes2', [$point.publishReferral]) }}
             <br>
-            好友阅读获得积分你可得额外1/{{ 1 / $point.readReferralRate }}
+            {{ $t('point.inviteDes3', [1 / $point.readReferralRate]) }}
           </p>
         </div>
 
         <div class="integral-list">
           <div class="flex">
-            <span class="integral-title">每日发文奖励</span>
+            <span class="integral-title">
+              {{ $t('point.dailyPublishPoint') }}
+            </span>
           </div>
           <div class="integral-progress">
             <el-progress class="progress" color="#542DE0" :percentage="pointStatusPostNum" :show-text="false" :stroke-width="10" />
             {{ pointStatusPost }}
           </div>
           <p class="integral-des">
-            每日发文最高可得{{ $point.publishDailyMax }}积分奖励
+            {{ $t('point.dailyPublishPointDes', [$point.publishDailyMax]) }}
           </p>
         </div>
 
         <div class="integral-list">
           <div class="flex">
-            <span class="integral-title">每日阅读奖励</span>
+            <span class="integral-title">
+              {{ $t('point.dailyReadPoint') }}
+            </span>
           </div>
           <div class="integral-progress">
             <el-progress class="progress" color="#542DE0" :percentage="pointStatusReadNum" :show-text="false" :stroke-width="10" />
             {{ pointStatusRead }}
           </div>
           <p class="integral-des">
-            每日阅读评价文章最高可得{{ $point.readDailyMax }}积分奖励
+            {{ $t('point.dailyReadPointDes', [$point.readDailyMax]) }}
           </p>
         </div>
       </div>
@@ -137,8 +141,8 @@ export default {
     },
     referralLink1() {
       if (process.browser) {
-        if (this.currentUserInfo && this.currentUserInfo.id) return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}?referral=${this.currentUserInfo.id}`
-        else return `瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。${window.location.origin}`
+        if (this.currentUserInfo && this.currentUserInfo.id) return `${this.$t('referral')}${window.location.origin}?referral=${this.currentUserInfo.id}`
+        else return `${this.$t('referral')}${window.location.origin}`
       } else return ''
     },
     pointStatusPost() {
@@ -179,7 +183,7 @@ export default {
     }, 1000),
     isLoginFunc() {
       if (!this.isLogined) {
-        this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
+        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
         this.$store.commit('setLoginModal', true)
         return false
       }
@@ -196,12 +200,12 @@ export default {
         type: 'profile'
       }).then(res => {
         if (res.code === 0) {
-          this.$message.success({ message: '领取成功' })
+          this.$message.success({ message: this.$t('point.receiveSuccess') })
           this.getUserPointStatus()
-        } else this.$message.error({ message: `领取失败,${res.message}` })
+        } else this.$message.error({ message: `${this.$t('point.receiveFail')},${res.message}` })
       }).catch(err => {
-        console.log('领取设置资料积分失败', err)
-        this.$message.error({ message: '领取失败' })
+        console.log(this.$t('point.receiveProfileFail'), err)
+        this.$message.error({ message: this.$t('point.receiveFail') })
       })
     },
     feedback() {
@@ -211,12 +215,12 @@ export default {
         type: 'login'
       }).then(res => {
         if (res.code === 0) {
-          this.$message.success({ message: '领取成功' })
+          this.$message.success({ message: this.$t('point.receiveSuccess') })
           this.getUserPointStatus()
-        } else this.$message.error({ message: `领取失败,${res.message}` })
+        } else this.$message.error({ message: `${this.$t('point.receiveFail')},${res.message}` })
       }).catch(err => {
-        console.log('领取老用户回馈积分失败', err)
-        this.$message.error({ message: '领取失败' })
+        console.log(this.$t('point.receiveFeedbackFail'), err)
+        this.$message.error({ message: this.$t('point.receiveFail') })
       })
     },
     // medal() {
@@ -230,10 +234,10 @@ export default {
     copyLink(text) {
       this.$copyText(text).then(
         () => {
-          this.$message.success('复制成功')
+          this.$message.success(this.$t('success.copy'))
         },
         () => {
-          this.$message.error('复制失败')
+          this.$message.error(this.$t('error.copy'))
         }
       )
     }

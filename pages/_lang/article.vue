@@ -53,18 +53,18 @@
       </el-col>
       <el-col :span="8">
         <div class="tags article  position-sticky top80">
-          <span>文章标签</span>
+          <span>{{ $t('home.articleTagTitle') }}</span>
           <tags class="tags-container" :type-index="0" :tag-cards="tagCards" />
         </div>
 
         <div v-if="usersRecommendList.length !== 0" class="recommend-author position-sticky top380">
           <div class="ra-head">
-            <span class="ra-head-title">推荐作者</span>
+            <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
             <span class="ra-head-random" @click="usersrecommend">
               <div class="change">
                 <svg-icon class="change-icon" :class="usersLoading && 'rotate'" icon-class="change" />
               </div>
-              <span>换一换</span>
+              <span>{{ $t('home.random') }}</span>
             </span>
           </div>
           <div class="ra-content">
@@ -110,7 +110,7 @@ export default {
       initData: [],
       articleCardData: [
         {
-          title: '热门文章',
+          title: this.$t('home.articleNavHotTitle'),
           params: {
             channel: 1
           },
@@ -119,7 +119,7 @@ export default {
           isAtuoRequest: false
         },
         {
-          title: '最新发布',
+          title: this.$t('home.articleNavNowTitle'),
           params: {
             channel: 1
           },
@@ -128,7 +128,7 @@ export default {
           isAtuoRequest: true
         },
         {
-          title: '我的关注',
+          title: this.$t('home.articleNavFollowTitle'),
           params: {
             channel: 1
           },
@@ -207,7 +207,7 @@ export default {
       if (res.data && res.data.list && res.data.list.length !== 0) this.articleCardData[res.index].articles = this.articleCardData[res.index].articles.concat(res.data.list)
     },
     promptComputed(index) {
-      return index === 2 ? '暂无关注内容' : '暂无文章'
+      return index === 2 ? this.$t('notFollowContent') : this.$t('notArticle')
     }
   }
 }

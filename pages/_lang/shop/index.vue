@@ -57,7 +57,7 @@
       </el-col>
       <el-col :span="6">
         <div class="tags commodity position-sticky top80">
-          <span>商品标签</span>
+          <span>{{ $t('home.shopTagTitle') }}</span>
           <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
         </div>
       </el-col>
@@ -92,7 +92,7 @@ export default {
       initData: [],
       articleCardData: [
         {
-          title: '最新商品',
+          title: this.$t('home.shopNavNowTitle'),
           params: {
             channel: 2
           },
@@ -101,7 +101,7 @@ export default {
           isAtuoRequest: false
         },
         {
-          title: '最热商品',
+          title: this.$t('home.shopNavHotTitle'),
           params: {
             channel: 2
           },
