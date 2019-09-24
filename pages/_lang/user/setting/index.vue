@@ -4,7 +4,7 @@
       <user-nav nav-list-url="setting" />
       <div class="set-main">
         <div class="list center">
-          <span class="title">修改头像</span>
+          <span class="title">{{ $t('user.updateAvatar') }}</span>
           <img-upload
             class="avatar"
             :img-upload-done="imgUploadDone"
@@ -14,18 +14,20 @@
             <div slot="uploadButton" class="user-avatar">
               <div class="edit">
                 <i class="el-icon-camera" />
-                修改头像
+                {{ $t('user.updateAvatar') }}
               </div>
               <img v-if="avatar" slot="description" :src="avatar" alt="avatar">
             </div>
           </img-upload>
         </div>
         <div class="list center">
-          <span class="title">修改昵称</span>
+          <span class="title">
+            {{ $t('user.updateUsername') }}
+          </span>
           <div class="input">
             <el-input
               v-model="username"
-              placeholder="请输入昵称"
+              :placeholder="$t('rule.username')"
               maxlength="12"
               show-word-limit
               clearable
@@ -33,18 +35,18 @@
           </div>
         </div>
         <div class="list center">
-          <span class="title">修改邮箱</span>
+          <span class="title"> {{ $t('user.updateEmail') }}</span>
           <div class="input">
             <el-input
               v-model="email"
-              placeholder="请输入邮箱"
+              :placeholder="$t('rule.loginEmailMessage')"
               show-word-limit
               clearable
             />
           </div>
         </div>
         <div class="list">
-          <span class="title">修改简介</span>
+          <span class="title">{{ $t('user.updateProfile') }}</span>
           <div class="input">
             <el-input
               v-model="introduction"
@@ -52,13 +54,13 @@
               :rows="4"
               maxlength="20"
               show-word-limit
-              placeholder="请输入内容"
+              :placeholder="$t('rule.content')"
             />
           </div>
         </div>
         <div class="line" />
         <div class="list center">
-          <span class="title">接受他人文章权限移交</span>
+          <span class="title">{{ $t('user.transfer') }}</span>
           <el-switch
             v-model="isTransfer"
             active-color="#542DE0"
@@ -66,7 +68,7 @@
           />
         </div>
         <el-button :loading="loading" class="save" :class="setProfile && 'active'" @click="save">
-          保存
+          {{ $t('save') }}
         </el-button>
       </div>
     </template>
@@ -161,13 +163,13 @@ export default {
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       let canSetProfile = true
       if (!reg.test(this.username)) {
-        this.$message.error('昵称长度为1-12位,中文、英文、数字但不包括下划线等符号')
+        this.$message.error(this.$t('rule.strEnglishNumber', ['1-12']))
         canSetProfile = false
       } else if (this.introduction.length > 20) {
-        this.$message.error('简介不能超过20个字符')
+        this.$message.error(this.$t('rule.profileNotExceedStr', [20]))
         canSetProfile = false
       } else if (this.email !== '' && !regEmail.test(this.email)) {
-        this.$message.error('请输入正确的邮件地址')
+        this.$message.error(this.$t('rule.emailMessage'))
         canSetProfile = false
       }
       return canSetProfile
@@ -210,17 +212,17 @@ export default {
         const res = await this.$backendAPI.setProfile({ accept })
         if (res.status === 200 && res.data.code === 0) {
           this.$message({
-            message: '修改成功',
+            message: this.$t('success.success'),
             type: 'success'
           })
         } else {
-          this.$message.error('修改失败')
+          this.$message.error(this.$t('error.fail'))
           this.articleTransfer = !status
         }
       } catch (error) {
         this.articleTransfer = !status
         console.log(`转让状态错误${error}`)
-        this.$message.error('修改失败')
+        this.$message.error(this.$t('error.fail'))
       }
     },
     // 保存按钮
@@ -247,12 +249,12 @@ export default {
           console.log(res)
           if (res.status === 200 && res.data.code === 0) {
             this.$message({
-              message: '修改信息成功',
+              message: this.$t('success.success'),
               type: 'success'
             })
             this.refreshUser({ id: this.currentUserInfo.id })
             this.getMyUserData()
-          } else this.$message.error('修改信息失败')
+          } else this.$message.error(this.$t('error.fail'))
         })
         .catch(error => {
           console.log(`修改信息失败 catch error ${error}`)

@@ -40,6 +40,7 @@ export default {
   articleUtil: '篇', //公用名称
   referral:
     '瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。',
+  save: '保存',
   success: {
     success: '成功',
     copy: '复制成功',
@@ -82,7 +83,7 @@ export default {
     inputNumber: '请输入数字值',
     inputLengthNumber: '请输入6位数字',
     passwordMessage: '请输入密码',
-    passwordLengthMessage: '密码长度在 8 到 16 个字符',
+    passwordLengthMessage: '密码长度在 {0} 到 {1} 个字符',
     setPassword: '请设置密码',
     setPasswordAgain: '请再次设置密码',
     inputPasswordAgain: '请再次输入密码',
@@ -90,7 +91,9 @@ export default {
     pleaseDoneRule: '请先完成校验',
     notExceedStr: '不能超过{0}位字符',
     profileNotExceedStr: '简介不能超过{0}位字符',
-    strEnglishNumber: '{}位字符,包含中文、英文、数字'
+    strEnglishNumber: '{0}位字符,包含中文、英文、数字',
+    username: '请输入昵称',
+    content: '请输入内容'
   },
   // components
   auth: {
@@ -162,7 +165,7 @@ export default {
     read_like: '用户阅读',
     read_dislike: '用户阅读',
     commentDoneMessage: '评价成功，阅读积分奖励已领取',
-    readNew: '阅读新文章奖励{}积分, 评价后可领取更多积分!',
+    readNew: '阅读新文章奖励{0}积分, 评价后可领取更多积分!',
     readNewFail: '阅读新文章增加积分失败'
   },
   assetCard: {
@@ -286,6 +289,7 @@ export default {
     bannerArticles: '文章确权数',
     bannerPoint: '已发放积分',
     articleTagTitle: '文章标签',
+    shopTagTitle: '商品标签',
     recommendAuthor: '推荐作者',
     random: '换一换'
   },
@@ -328,13 +332,15 @@ export default {
     tagTitle: '选择标签',
     public: '公开发布',
     draft: '保存到草稿箱',
-    original: '确认为原创',
+    original: '我声明此文章为原创',
     draftTitle: '是否保存为草稿？',
     draftText: '保存草稿',
     draftCancel: '不保存',
     modalTextText: '文章尚未保存，是否退出？',
     modalTextButton1: '再想想',
-    modalTextButton2: '退出'
+    modalTextButton2: '退出',
+    importArticle: '导入文章',
+    publishArticleSuccess: '发文成功，奖励{0}积分'
   },
   search: {
     hot: '热门搜索',
@@ -366,12 +372,12 @@ export default {
     soldOut: '售罄',
     buyPlaceholder: '输入推荐语...',
     buyShop: '购买商品',
-    remainingStock: '库存还有剩{}份',
+    remainingStock: '库存还有剩{0}份',
     buyDone: '购买成功！',
     buyDoneDes: '请去“购买记录”页面查看已购商品！',
     investArticle: '投资文章',
     investShop: '投资商品',
-    shopAmounts: '{}份商品',
+    shopAmounts: '{0}份商品',
     commentPlaceholder: '请输入您的留言',
     commentPointPlaceholder: '请输入评论内容',
     commentPointBtn: '评论',
@@ -380,12 +386,12 @@ export default {
     commentSuccess: '评论成功',
     commentFail: '评论失败',
     commentNotContent: '用户没有留下评论',
-    investmentPlaceholder: '请输入{}投资金额',
+    investmentPlaceholder: '请输入{0}投资金额',
     loginInvest: '登陆后即可投资',
-    account: '{}账号暂不支持',
-    accountInvest: '{}账号暂不支持投资功能',
-    minMoney: '请输入正确的金额 最小{}金额为 {} {}',
-    sponsorFail: '{}失败，可能是由于网络故障或账户余额不足等原因。',
+    account: '{0}账号暂不支持',
+    accountInvest: '{0}账号暂不支持投资功能',
+    minMoney: '请输入正确的金额 最小{0}金额为 {1} {2}',
+    sponsorFail: '{0}失败，可能是由于网络故障或账户余额不足等原因。',
     deleteArticle: '删除成功,自动跳转到首页',
     deleteFail: '删除失败',
     noId: '没有ID',
@@ -408,7 +414,7 @@ export default {
     publishMatataki: '本文发布于瞬matataki',
     publishMatatakOriginal: '未经授权禁止转载',
     publishMatatakiUser:
-      '免责声明：本文由用户「{}」上传发布，内容为作者独立观点。不代表瞬Matataki立场，不构成投资建议，请谨慎对待。',
+      '免责声明：本文由用户「{0}」上传发布，内容为作者独立观点。不代表瞬Matataki立场，不构成投资建议，请谨慎对待。',
     ipfsTitle: '本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。',
     ipfsContent:
       '「HASH」是一篇作品上传到 IPFS 后生成的独一无二的 ID，通过HASH可在 IPFS 不同节点访问作品內容。',
@@ -432,25 +438,33 @@ export default {
     sweepCodeView: '扫描二维码 免费读全文',
     pressImgSave: '长按图片保存',
     createImg: '生成图片',
-    createFail: '图片生成失败'
+    createFail: '图片生成失败',
+    sharePopover: '点击“分享文章”按钮与朋友共享好文章',
+    likePopover: '指向此图标后，选择“推荐”或“不推荐”，即可领取阅读积分奖励！',
+    confirmPopover: '知道了'
   },
   invite: {
     headerTitle: '我的邀请',
     invited: '已邀请',
     copyLink: '复制链接',
-    des1: '每成功邀请一名好友注册可得{}积分',
-    des2: '好友发文你可以获得额外{}积分',
-    des3: '好友阅读获得积分你可得额外1{}',
-    des4: '注：未激活者阅读{}篇文章并作出评价后即可完成激活，激活后您即可领取额外{}积分。',
+    des1: '每成功邀请一名好友注册可得{0}积分',
+    des2: '好友发文你可以获得额外{0}积分',
+    des3: '好友阅读获得积分你可得额外1{0}',
+    des4: '注：未激活者阅读{0}篇文章并作出评价后即可完成激活，激活后您即可领取额外{0}积分。',
     loginViewList: '登录查看邀请列表'
   },
   tag: {
-    now: '最新'
+    now: '最新',
+    moreTag: '更多标签',
+    contain: '包含',
+    tags: '标签的',
+    article: '文章',
+    shop: '商品'
   },
   user: {
     title: '个人中心',
     accountTitle: '账户资产',
-    accountLen: '已绑定{}个账户',
+    accountLen: '已绑定{0}个账户',
     originalArticle: '原创文章',
     investmentArticle: '投资文章',
     draftArticle: '草稿箱',
@@ -474,7 +488,12 @@ export default {
     buyHistory: '购买记录',
     transactionComplete: '交易已完成',
     unitPrice: '单价',
-    totalPrice: '总价'
+    totalPrice: '总价',
+    // setting page
+    updateAvatar: '修改头像',
+    updateUsername: '修改昵称',
+    updateEmail: '修改邮箱',
+    updateProfile: '修改简介'
   },
   withdraw: {
     title: '提现',
@@ -496,7 +515,7 @@ export default {
     ontDes3: '请务必确认电脑及浏览器安全，防止信息被篡改或泄露。',
     notBalance: '没有可以提现的余额',
     notAddress: '请输入提现地址',
-    withdrawMinBalance: '提现{}不能小于{}',
+    withdrawMinBalance: '提现{0}不能小于{1}',
     success: '已发起提现请求,请耐心等待提现金额到账',
     fail: '提现失败',
     prompt: '确认提现?',

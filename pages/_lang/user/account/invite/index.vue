@@ -10,7 +10,7 @@
         >
           <el-table-column
             prop="username"
-            label="我邀请的用户"
+            :label="$t('user.inviteUser')"
           >
             <template slot-scope="scope">
               <n-link class="invite-block" :to="{name: 'user-id', params: {id: scope.row.id}}">
@@ -21,7 +21,7 @@
           </el-table-column>
           <el-table-column
             prop="create_time"
-            label="注册时间"
+            :label="$t('user.registeredDate')"
           >
             <template slot-scope="scope">
               <div class="invite-block">
@@ -43,7 +43,7 @@
         </el-table>
       </div>
       <p class="invite-des">
-        注：未激活者阅读5篇文章并作出评价后即可完成激活，激活后您即可领取额外{{ $point.regInviteFinished }}积分。
+        {{ $t('user.inviteRule', [ $point.regInviteFinished ]) }}
       </p>
       <user-pagination
         v-show="!loading"

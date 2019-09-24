@@ -12,7 +12,7 @@
         >
           <el-table-column
             prop="name"
-            label="粉丝币"
+            :label="$t('user.coins')"
           >
             <template slot-scope="scope">
               <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.id}}">
@@ -24,7 +24,7 @@
           </el-table-column>
           <el-table-column
             prop="total_supply"
-            label="买入价/元"
+            :label="$t('user.buyCoins')"
           >
             <template slot-scope="scope">
               <span class="username">{{ scope.row.total_supply }}jia</span>
@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column
             prop="total_supply"
-            label="持仓/枚"
+            :label="$t('user.positionCoins')"
           >
             <template slot-scope="scope">
               <span class="username">{{ scope.row.total_supply }}</span>
@@ -46,7 +46,7 @@
             <template>
               <div class="invite-block btn">
                 <el-button size="small">
-                  交易
+                  {{ $t('transaction') }}
                 </el-button>
               </div>
             </template>
