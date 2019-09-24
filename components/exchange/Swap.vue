@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$API.wxpay(this.form.input, 'daodaobi').then((res) => {
+      this.$API.wxpay(this.form.input, 'daodaobi', 'buy_token').then((res) => {
         this.order = res
         this.orderShow = true
       })

@@ -327,7 +327,7 @@ export default {
   wxlogin(code) {
     return request.post('/wx/login', { code })
   },
-  wxpay(total, title) {
-    return request.post('/wx/pay', { total, title })
+  wxpay(total, title, type) {
+    return request.post('/wx/pay', { total, title, type })
   }
 }
