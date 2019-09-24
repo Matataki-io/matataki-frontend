@@ -11,34 +11,31 @@
           style="width: 100%"
         >
           <el-table-column
-            prop="username"
+            prop="name"
             label="粉丝币"
           >
             <template slot-scope="scope">
               <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.id}}">
                 <avatar :src="cover(scope.row.avatar)" size="30px" />
-                <span class="username">{{ scope.row.username }}</span>
+                jia
+                <span class="username">{{ scope.row.name }} - {{ scope.row.symbol }}</span>
               </n-link>
             </template>
           </el-table-column>
           <el-table-column
-            prop="username"
+            prop="total_supply"
             label="买入价/元"
           >
             <template slot-scope="scope">
-              <n-link class="invite-block" :to="{name: 'user-id', params: {id: scope.row.id}}">
-                <span class="username">{{ scope.row.username }}</span>
-              </n-link>
+              <span class="username">{{ scope.row.total_supply }}jia</span>
             </template>
           </el-table-column>
           <el-table-column
-            prop="username"
+            prop="total_supply"
             label="持仓/枚"
           >
             <template slot-scope="scope">
-              <n-link class="invite-block" :to="{name: 'user-id', params: {id: scope.row.id}}">
-                <span class="username">{{ scope.row.username }}</span>
-              </n-link>
+              <span class="username">{{ scope.row.total_supply }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -98,7 +95,7 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'userInvitees',
+        apiUrl: 'tokenTokenList',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -134,14 +131,6 @@ export default {
           page: i
         }
       })
-    },
-    formatterDate(row, column) {
-      console.log(row, column)
-      return row.date + 1
-    },
-    formatterPoint(row, column) {
-      console.log(row, column)
-      return row.point + 11
     }
   }
 }
@@ -179,6 +168,9 @@ export default {
   color:rgba(178,178,178,1);
   line-height:20px;
   margin: 0 10px 20px;
+}
+.pagination {
+  margin-top: 40px;
 }
 </style>
 

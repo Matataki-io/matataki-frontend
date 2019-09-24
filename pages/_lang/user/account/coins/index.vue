@@ -2,8 +2,8 @@
   <userLayout>
     <template slot="main">
       <user-nav nav-list-url="account" />
-      <fanCoinsPublish v-if="!isPublishCoins" />
-      <fanCoinsManage v-else />
+      <fanCoinsPublish v-if="!isPublishCoins" @publishToken="isPublishCoins = true" />
+      <fanCoinsManage v-else @notToken="isPublishCoins = false" />
     </template>
     <template slot="info">
       <userInfo :is-setting="true" />
@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      isPublishCoins: false
+      isPublishCoins: true
     }
   }
 }

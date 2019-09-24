@@ -113,6 +113,7 @@ export default {
       await this.$API.minetokenMint(data)
         .then(res => {
           if (res.code === 0) {
+            this.$emit('publishToken')
             this.$message.success(res.message)
           } else {
             this.$message.error(res.message)
@@ -243,4 +244,5 @@ export default {
   // background: @purpleDark;
   // border-color: @purpleDark;
 }
+
 </style>
