@@ -1,6 +1,95 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="80px">
+    <div class="kvFQhz">
+      <div class="iNUelT">
+        <div class="OpDFW">
+          <div class="jUAxZT">
+            <span>输入</span>
+          </div>
+          <div>余额：0.084</div>
+        </div>
+        <div class="jbRmQG">
+          <input
+            class="gcotIA"
+            type="number"
+            min="0"
+            step="0.000000000000000001"
+            placeholder="0.0"
+            value="0.01"
+          />
+          <button class="iAoRgd" @click="tlShow = true;currentClick = 'inputToken'">
+            <span class="rTZzf">
+              {{ form.inputToken.symbol || '请选择'}}
+              <i class="el-icon-arrow-down"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="hYLPFg">
+      <div class="exKIZr"></div>
+      <div class="haryqg">
+        <i class="el-icon-bottom gHgbDu"></i>
+      </div>
+      <div class="jJSpkX"></div>
+    </div>
+    <div class="kvFQhz">
+      <div class="iNUelT">
+        <div class="OpDFW">
+          <div class="jUAxZT">
+            <span>输入</span>
+          </div>
+          <div>余额：0.084</div>
+        </div>
+        <div class="jbRmQG">
+          <input
+            class="gcotIA"
+            type="number"
+            min="0"
+            step="0.000000000000000001"
+            placeholder="0.0"
+            value="0.01"
+          />
+          <button class="iAoRgd" @click="tlShow = true;currentClick = 'outputToken'">
+            <span class="rTZzf">
+              {{ form.outputToken.symbol || '请选择'}}
+              <i class="el-icon-arrow-down"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="hYLPFg">
+      <div class="exKIZr"></div>
+      <div class="lfiYXW">
+        <span class="sc-hORach icyNSS">兑换率</span><span>1 BAT = 0.0009 ETH</span>
+      </div>
+    </div>
+    <div class="mHVYT">
+      <span class="fZbbbs">余额不足</span>
+      <i class="el-icon-arrow-down"></i>
+    </div>
+    <div class="iUPTxf">
+      <div class="hRyusy">
+        <div>你正在出售
+          <span class="iDChvK">
+            <span class="jbXIaP">1 ETH</span>
+          </span> for at least
+          <span class="iDChvK">
+            <span class="jbXIaP">1026.3265 BAT</span>
+          </span>
+        </div>
+        <div class="sc-bsbRJL kxtVAF">Expected price slippage
+          <span class="iDChvK">
+            <span class="jbXIaP">0.04%</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="hGStes">
+      <button disabled="" class="jBltiI">兑换</button>
+    </div>
+    <!-- <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="输入">
         <el-input-number v-model="form.input" :step="0.01" :min="0"></el-input-number>
         <el-select v-model="form.inputToken" filterable placeholder="选择通证">
@@ -24,55 +113,336 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">兑换</el-button>
+        <el-button type="primary" @click="onSubmit('buy_token')">购买</el-button>
+        <el-button type="primary" @click="onSubmit('sale_token')">卖出</el-button>
       </el-form-item>
-    </el-form>
-    <OrderModal v-model="orderShow" :order="order"></OrderModal>
+    </el-form>-->
+    <OrderModal v-model="orderShow" :order="{...order,...form}"></OrderModal>
+    <TokenListModal v-model="tlShow" @selectToken="selectToken"></TokenListModal>
   </div>
 </template>
 
 <script>
 import OrderModal from './OrderModal'
+import TokenListModal from './TokenList'
 export default {
   components: {
-    OrderModal
+    OrderModal,
+    TokenListModal
   },
   data() {
     return {
+      tlShow: false,
+      currentClick: '',
       orderShow: false,
       form: {
         input: '',
-        inputToken: '',
+        inputToken: {},
         output: '',
-        outputToken: ''
+        outputToken: {}
       },
-      options: [{
-        value: 'RMB',
-        label: 'RMB'
-      }, {
-        value: 'ETH',
-        label: 'ETH'
-      }, {
-        value: 'BAT',
-        label: 'BAT'
-      }],
+      options: [
+        {
+          value: 0,
+          label: 'CNY'
+        }
+      ],
       order: {}
     }
   },
-  async asyncData() {
-  },
-  created() {
+  async asyncData() {},
+  mounted() {
   },
   methods: {
-    onSubmit() {
-      this.$API.wxpay(this.form.input, 'daodaobi', 'buy_token').then((res) => {
-        this.order = res
-        this.orderShow = true
-      })
+    selectToken(token) {
+      this.form[this.currentClick] = token
+    },
+    onSubmit(type) {
+      this.$API
+        .wxpay({
+          total: this.form.input,
+          title: '购买Token',
+          type, // type类型见typeOptions：add，buy_token，sale_token
+          token_id: this.form.outputToken.id,
+          token_amount: this.form.output,
+          limit_value: 0
+        })
+        .then(res => {
+          this.order = res
+          this.orderShow = true
+        })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.icyNSS {
+    width: 0px;
+    color: rgb(196, 196, 196);
+    flex: 1 1 auto;
+}
+.lfiYXW {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(196, 196, 196);
+    font-size: 0.75rem;
+    flex-flow: row nowrap;
+    padding: 0.5rem 1rem;
+}
+.gHgbDu {
+    color: rgb(123, 123, 123);
+    width: 0.625rem;
+    height: 0.625rem;
+    position: relative;
+    cursor: pointer;
+    padding: 0.875rem;
+}
+.exKIZr {
+    content: "";
+    position: absolute;
+    top: -0.5rem;
+    left: 0px;
+    height: 1rem;
+    width: 100%;
+    background-color: rgb(41, 44, 47);
+}
+.jJSpkX {
+    position: absolute;
+    top: 80%;
+    left: 0px;
+    height: 1rem;
+    width: 100%;
+    background-color: rgb(41, 44, 47);
+}
+.haryqg {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-flow: row nowrap;
+}
+.hYLPFg {
+    position: relative;
+    background-color: rgb(41, 44, 47);
+    width: calc(100% - 1rem);
+    margin: 0px auto;
+    border-radius: 0.625rem;
+}
+.kvFQhz {
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 8px 0px;
+  position: relative;
+  background-color: rgb(32, 33, 36);
+  z-index: 1;
+  flex-flow: column nowrap;
+  border-radius: 1.25rem;
+}
+.iNUelT {
+  background-color: rgb(32, 33, 36);
+  border-radius: 1.25rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(51, 51, 51);
+  border-image: initial;
+}
+.iNUelT:focus-within {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #542DE0;
+  border-image: initial;
+}
+.OpDFW {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  color: rgb(196, 196, 196);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  flex-flow: row nowrap;
+  padding: 0.75rem 1rem;
+}
+.jUAxZT {
+  width: 0px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.jbRmQG {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-flow: row nowrap;
+  padding: 0.25rem 0.85rem 0.75rem;
+}
+.gcotIA {
+  color: rgb(255, 255, 255);
+  width: 0px;
+  font-size: 1.5rem;
+  background-color: rgb(32, 33, 36);
+  outline: none;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  flex: 1 1 auto;
+}
+input {
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  color: initial;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: start;
+  -webkit-appearance: textfield;
+  background-color: white;
+  -webkit-rtl-ordering: logical;
+  cursor: text;
+  margin: 0em;
+  font: 400 13.3333px Arial;
+  padding: 1px 0px;
+  border-width: 2px;
+  border-style: inset;
+  border-color: initial;
+  border-image: initial;
+}
+input:focus {
+  outline-offset: -2px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+.iAoRgd {
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 1rem;
+  color: rgb(255, 255, 255);
+  height: 2rem;
+  background-color: rgb(41, 44, 47);
+  cursor: pointer;
+  user-select: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(51, 51, 51);
+  border-image: initial;
+  border-radius: 2.5rem;
+  outline: none;
+}
+button {
+  -webkit-appearance: button;
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  color: buttontext;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: center;
+  align-items: flex-start;
+  cursor: default;
+  background-color: buttonface;
+  box-sizing: border-box;
+  margin: 0em;
+  font: 400 13.3333px Arial;
+  padding: 1px 6px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: buttonface;
+  border-image: initial;
+}
+.rTZzf {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+.mHVYT {
+  display: flex;
+  color: #fff;
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  cursor: pointer;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-flow: row nowrap;
+}
+.fZbbbs {
+  margin-right: 12px;
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  color: rgb(255, 104, 113);
+}
+
+.iUPTxf {
+  background-color: rgb(41, 44, 47);
+  font-size: 0.75rem;
+  color: white;
+  border-radius: 1rem;
+  margin: 1rem 0.5rem 0px;
+}
+.hRyusy {
+  padding: 1.25rem 1.25rem 1rem;
+}
+.iDChvK {
+  background-color: rgb(31, 34, 36);
+  padding: 0.125rem 0.3rem 0.1rem;
+  border-radius: 12px;
+  font-variant: tabular-nums;
+}
+.kxtVAF {
+  padding-top: 0.5rem;
+}
+
+.iwJyTs {
+  background-color: rgb(31, 34, 36);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+}
+
+.hGStes {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.jBltiI:disabled {
+  background-color: rgb(41, 44, 47);
+  color: rgb(115, 115, 115);
+  cursor: auto;
+}
+.hGStes button {
+  max-width: 20rem;
+}
+.jBltiI {
+  cursor: pointer;
+  user-select: none;
+  font-size: 1rem;
+  background-color: #542DE0;
+  color: rgb(255, 255, 255);
+  width: 100%;
+  padding: 1rem 2rem;
+  border-radius: 3rem;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  outline: none;
+}
 </style>

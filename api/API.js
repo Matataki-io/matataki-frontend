@@ -327,7 +327,18 @@ export default {
   wxlogin(code) {
     return request.post('/wx/login', { code })
   },
-  wxpay(total, title, type) {
-    return request.post('/wx/pay', { total, title, type })
+  wxpay({ total, title, type, token_id, token_amount, limit_value }) {
+    return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value })
+  },
+  allToken(page = 1, pagesize = 10) {
+    return request({
+      url: '/token/all',
+      method: 'get',
+      noLoading: true,
+      params: {
+        page,
+        pagesize
+      }
+    })
   }
 }
