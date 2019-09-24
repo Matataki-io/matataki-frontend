@@ -340,5 +340,36 @@ export default {
         pagesize
       }
     })
-  }
+  },
+  /**
+   * 创建我的token
+   * // TODO 有字段后可移除注释
+   * @param {Objject} data name symbol decimals // icon 暂无
+   */
+  minetokenCreate(data) {
+    return request({
+      method: 'POST',
+      url: '/minetoken/create',
+      data: data
+    })
+  },
+  /**
+   * 发行我的token
+   * @param {Object} data amount
+   */
+  minetokenMint(data) {
+    return request({
+      method: 'POST',
+      url: '/minetoken/mint',
+      data: data
+    })
+  },
+  /**
+   * 获取token详情
+   * 请求头：x-access-token
+   * 用户发行了token，data为对象，没有发行token，data为null
+   */
+  tokenDetail() {
+    return request.get('/token/detail')
+  },
 }

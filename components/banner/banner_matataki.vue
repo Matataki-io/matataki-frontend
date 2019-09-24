@@ -7,7 +7,7 @@
       <div class="banner-data">
         <div class="data">
           <p class="data-title">
-            生态共建者数
+            {{ $t('home.bannerUser') }}
           </p>
           <p class="data-num">
             {{ postsStats.users || 0 }}
@@ -15,7 +15,7 @@
         </div>
         <div class="data">
           <p class="data-title">
-            文章确权数
+            {{ $t('home.bannerArticles') }}
           </p>
           <p class="data-num">
             {{ postsStats.articles || 0 }}
@@ -23,7 +23,7 @@
         </div>
         <div class="data">
           <p class="data-title">
-            已发放积分
+            {{ $t('home.bannerPoint') }}
           </p>
           <p class="data-num">
             {{ postsStats.points || 0 }}
@@ -52,7 +52,7 @@ export default {
     getPostsStats() {
       this.$API.postsStats().then(res => {
         if (res.code === 0) this.postsStats = res.data
-      }).catch(err => console.log(`获得统计次数${err}`))
+      }).catch(err => console.log(`${err}`))
     }
   }
 }

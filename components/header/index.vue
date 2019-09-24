@@ -23,7 +23,7 @@
             v-model="searchInput"
             type="text"
             class="input"
-            placeholder="请输入搜索内容"
+            :placeholder="$t('home.searchPlaceholder')"
             @keyup.enter="jutmpToSearch"
             @focus="searchFcous = true"
             @blur="inputBlur"
@@ -46,10 +46,10 @@
           width="300"
           trigger="manual"
         >
-          <p>点击小星星即可查看积分的获取记录</p>
+          <p>{{ $t('home.pointPopover') }}</p>
           <div style="text-align: right; margin: 0">
             <el-button class="el-button--purple" type="primary" size="mini" @click="$emit('popoverVisible', false)">
-              知道了
+              {{ $t('home.pointPopoverConfirm') }}
             </el-button>
           </div>
           <point slot="reference" />
@@ -77,22 +77,22 @@
             </el-dropdown-item>
             <el-dropdown-item divided>
               <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
-                我的账户
+                {{ $t('home.account') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
-                我的主页
+                {{ $t('home.homePage') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link class="link" :to="{name: 'user-setting', params:{id: currentUserInfo.id}}">
-                设置
+                {{ $t('home.setting') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <div class="link" @click="btnsignOut">
-                退出
+                {{ $t('logout') }}
               </div>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -102,7 +102,7 @@
           href="javascript:void(0);"
           class="home-head-notlogin"
           @click="login"
-        >登录</a>
+        >{{ $t('login') }}</a>
         <slot name="more" />
         <language />
       </div>
@@ -217,7 +217,7 @@ export default {
     writeP() {
       if (this.isLogined) this.$router.push({ name: 'publish', params: { id: 'create' } })
       else {
-        this.$message({ message: '请先登录', type: 'info', customClass: 'zindex-3000' })
+        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
         this.login()
       }
     },
@@ -230,7 +230,7 @@ export default {
       this.$emit('login')
     },
     btnsignOut() {
-      if (confirm('确定退出吗?')) {
+      if (confirm(this.$t('warning.confirmLogout'))) {
         this.$utils.delCookie('ACCESS_TOKEN')
         this.$utils.delCookie('idProvider')
         window.localStorage.clear()
@@ -245,7 +245,7 @@ export default {
     },
     // 跳转搜索
     jutmpToSearch() {
-      if (!strTrim(this.searchInput)) return this.$message.warning('搜索内容不能为空')
+      if (!strTrim(this.searchInput)) return this.$message.warning(this.$t('warning.searchContent'))
 
       const name = this.$route.name
       this.$router.push({

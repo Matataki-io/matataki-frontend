@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="user-page">
     <g-header />
     <div class="banner">
       <img src="@/assets/img/user_banner.png" alt="banner">
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user {
+.user-page {
   .minHeight();
 }
 .banner {

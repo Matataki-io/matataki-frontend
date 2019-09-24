@@ -1,8 +1,8 @@
 <template>
-  <div class="coins-publish">
+  <div v-if="isPublishCoins" class="coins-publish">
     <div class="fl ac coins-head">
       <h1>
-        粉丝币名称
+        {{ tokenDetailData.name }}-{{ tokenDetailData.symbol }}
       </h1>
       <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
         <svg-icon
@@ -17,7 +17,7 @@
       <div class="fl ac jsb info-block">
         <div class="info-data">
           <p class="info-data-number">
-            2000<sub>枚</sub>
+            {{ tokenDetailData.total_supply }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
             印发总量
@@ -28,7 +28,7 @@
             300<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            待售量
+            待售量jia
           </p>
         </div>
         <div class="info-data">
@@ -36,7 +36,7 @@
             2000<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            资金池
+            资金池jia
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@
             1000<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            持仓总量
+            持仓总量jia
           </p>
         </div>
         <div class="info-data">
@@ -55,7 +55,7 @@
             0.25<sub>元</sub>
           </p>
           <p class="info-data-title">
-            现价
+            现价jia
           </p>
         </div>
         <div class="info-data">
@@ -63,7 +63,7 @@
             0.1<sub>元</sub>
           </p>
           <p class="info-data-title">
-            发行价
+            发行价jia
           </p>
         </div>
       </div>
@@ -89,7 +89,7 @@
           <template slot-scope="scope">
             <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.id}}">
               <avatar :src="cover(scope.row.avatar)" size="30px" />
-              <span class="username">{{ scope.row.username }}</span>
+              <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
             </n-link>
           </template>
         </el-table-column>
@@ -99,7 +99,7 @@
         >
           <template slot-scope="scope">
             <div class="invite-block">
-              <span class="time">{{ createTime(scope.row.create_time) }}</span>
+              <span class="time">{{ scope.row.amount }}</span>
             </div>
           </template>
         </el-table-column>
@@ -131,13 +131,16 @@ export default {
     userPagination,
     avatar
   },
+
   data() {
     return {
+      isPublishCoins: false,
+      tokenDetailData: Object.create(null),
       pointLog: {
         params: {
           pagesize: 10
         },
-        apiUrl: 'userInvitees',
+        apiUrl: 'tokenUserList',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -152,17 +155,50 @@ export default {
   computed: {
     ...mapGetters(['isLogined'])
   },
+  created() {
+    this.tokenDetail()
+    // 根据token判断是否有币 如果有显示当前页面并且调用list
+    // 否则修改界面显示
+  },
+  mounted() {},
   methods: {
+    async tokenDetail() {
+      await this.$API.tokenDetail().then(res => {
+        if (res.code === 0) {
+          if (res.data) {
+            this.isPublishCoins = true
+            this.tokenDetailData = res.data
+          } else {
+            this.$emit('notToken')
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    async minetokenMint(amount) {
+      const data = {
+        amount: amount
+      }
+      await this.$API.minetokenMint(data)
+        .then(res => {
+          if (res.code === 0) {
+            this.tokenDetail()
+            this.$message.success(res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+    },
     addCoins() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      this.$prompt('请输入邮箱', '提示', {
+      this.$prompt('增发数量', '提示', {
+        inputPattern: /^[0-9]*$/,
+        inputErrorMessage: '请输入数字',
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
-        this.$message({
-          type: 'success',
-          message: '你增发了: ' + value
-        })
+        if (Number(value) > 0) this.minetokenMint(Number(value))
       })
     },
     createTime(time) {
@@ -188,14 +224,6 @@ export default {
           page: i
         }
       })
-    },
-    formatterDate(row, column) {
-      console.log(row, column)
-      return row.date + 1
-    },
-    formatterPoint(row, column) {
-      console.log(row, column)
-      return row.point + 11
     }
   }
 }
@@ -268,6 +296,10 @@ export default {
   .info-button {
     margin: 4px 0;
   }
+}
+
+.pagination {
+  margin-top: 40px;
 }
 
 </style>

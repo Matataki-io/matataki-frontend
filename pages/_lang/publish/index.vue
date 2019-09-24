@@ -11,19 +11,19 @@
         >
         <el-button class="import-button" @click="importVisible = true">
           <svg-icon class="import-icon" icon-class="import" />
-          导入文章
+          {{ $t('publish.importArticle') }}
         </el-button>
 
         <el-dropdown trigger="click" @command="postArticle">
           <el-button type="primary" class="el-button--purple" icon="el-icon-s-promotion">
-            发布
+            {{ $t('publish.sendBtnText') }}
           </el-button>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item command="public">
-              公开发布
+              {{ $t('publish.public') }}
             </el-dropdown-item>
             <el-dropdown-item v-if="editorMode !== 'edit'" command="draft">
-              保存到草稿箱
+              {{ $t('publish.draft') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -34,7 +34,7 @@
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item command="transfer">
-              转让
+              {{ $t('publish.transfer') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -48,15 +48,17 @@
           :box-shadow="false"
           :autofocus="false"
           :style="mavonStyle"
-          placeholder="请输入 Markdown 格式的文字开始编辑"
+          :placeholder="$t('publish.contentPlaceholder')"
           @imgAdd="$imgAdd"
         />
       </no-ssr>
       <div v-if="editorMode !== 'edit'" class="set-item fl ac">
         <span class="set-title">
-          评论价格
+          {{ $t('publish.commentTitle') }}
         </span>
-        <span class="set-des">用户需要向您支付对应的积分才可评论(1-20)</span>
+        <span class="set-des">
+          {{ $t('publish.commentContent') }}
+        </span>
         <el-input-number
           v-model="commentPayPoint"
           style="width: 86px"
@@ -68,7 +70,9 @@
           label="评论价格"
           step-strictly
         />
-        <span class="input-number">积分</span>
+        <span class="input-number">
+          {{ $t('publish.point') }}
+        </span>
       </div>
       <!-- <div v-if="editorMode !== 'edit'" class="fission">
         <p>
@@ -100,7 +104,12 @@
           <img class="cover-img" :src="coverEditor" alt="cover">
         </div>
         <div class="cover">
-          <p>图文封面 <span class="cover-tip">请上传宽高2:1尺寸的图片</span></p>
+          <p>
+            {{ $t('publish.coverTitle') }}
+            <span class="cover-tip">
+              {{ $t('publish.coverDes') }}
+            </span>
+          </p>
           <img-upload
             v-show="!cover"
             :img-upload-done="imgUploadDone"
@@ -123,11 +132,13 @@
     </div>
     <div class="cover-container">
       <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
-        我声明此文章为原创
+        {{ $t('publish.original') }}
       </el-checkbox>
     </div>
     <div class="tag">
-      <p>选择标签</p>
+      <p>
+        {{ $t('publish.tagTitle') }}
+      </p>
       <div class="tag-content">
         <tag-card
           v-for="(item, index) in tagCards"
@@ -173,42 +184,44 @@ export default {
     articleImport,
     statement
   },
-  data: () => ({
-    prompt: false,
-    title: '',
-    author: '',
-    markdownData: '',
-    fissionFactor: 2000,
-    toolbars: {},
-    screenWidth: 1000,
-    mavonStyle: {
-      minHeight: `800px`
-    },
-    fissionNum: 2,
-    cover: '',
-    signature: '',
-    signId: '',
-    id: '',
-    editorMode: 'create', // 默认是创建文章
-    saveType: 'public', // 发布文章模式， 公开 || 草稿
-    isOriginal: false, // 是否原创
-    imgUploadDone: 0,
-    showModal: false, // 弹框显示
-    modalText: {
-      text: ['文章尚未保存，是否退出？'], // 退出
-      button: ['再想想', '退出']
-    },
-    modalMode: null, // header 判断点击的 back 还是 home
-    tagCards: [], // 文章标签
-    articleData: {}, // 文章数据
-    transferButton: false, // 转让按钮
-    transferModal: false, // 转让弹框
-    allowLeave: false, // 允许离开
-    saveInfo: {},
-    importVisible: false, // 导入
-    statementVisible: false, // 原创声明
-    commentPayPoint: 1
-  }),
+  data() {
+    return {
+      prompt: false,
+      title: '',
+      author: '',
+      markdownData: '',
+      fissionFactor: 2000,
+      toolbars: {},
+      screenWidth: 1000,
+      mavonStyle: {
+        minHeight: `800px`
+      },
+      fissionNum: 2,
+      cover: '',
+      signature: '',
+      signId: '',
+      id: '',
+      editorMode: 'create', // 默认是创建文章
+      saveType: 'public', // 发布文章模式， 公开 || 草稿
+      isOriginal: false, // 是否原创
+      imgUploadDone: 0,
+      showModal: false, // 弹框显示
+      modalText: {
+        text: [this.$t('publish.modalTextText')], // 退出
+        button: [this.$t('publish.modalTextButton1'), this.$t('publish.modalTextButton2')]
+      },
+      modalMode: null, // header 判断点击的 back 还是 home
+      tagCards: [], // 文章标签
+      articleData: {}, // 文章数据
+      transferButton: false, // 转让按钮
+      transferModal: false, // 转让弹框
+      allowLeave: false, // 允许离开
+      saveInfo: {},
+      importVisible: false, // 导入
+      statementVisible: false, // 原创声明
+      commentPayPoint: 1
+    }
+  },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     isShowEditorMode() {
@@ -216,35 +229,35 @@ export default {
       return !!(this.editorMode === 'create' || this.editorMode === 'draft')
     },
     editorText() {
-      let text = '文章'
+      let text = this.$t('publish.editorText')
       if (this.editorMode === 'create') {
         // 发布文章
-        text = '文章发布'
+        text = this.$t('publish.editorTextArticlePublic')
       }
       if (this.editorMode === 'edit') {
         // 编辑文章
-        text = '编辑文章'
+        text = this.$t('publish.editorTextArticleEditor')
       } else if (this.editorMode === 'draft') {
         // 草稿箱
-        text = '编辑草稿'
+        text = this.$t('publish.editorTextDraftEditor')
       }
       return text
     },
     sendBtnText() {
-      let text = '发布'
+      let text = this.$t('publish.sendBtnText')
       if (this.editorMode === 'create') {
         // 发布文章
-        text = '发布'
+        text = this.$t('publish.sendBtnText')
       }
       if (this.editorMode === 'edit') {
         // 编辑文章
-        text = '修改'
+        text = this.$t('publish.sendBtnTextEditor')
       } else if (this.editorMode === 'draft' && this.saveType === 'public') {
         // 草稿箱  发布
-        text = '发布'
+        text = this.$t('publish.sendBtnText')
       } else if (this.editorMode === 'draft' && this.saveType === 'draft') {
         // 草稿箱 修改
-        text = '修改'
+        text = this.$t('publish.sendBtnTextEditor')
       }
       return text
     },
@@ -292,7 +305,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
-    if (window.confirm('文章尚未保存，是否确认退出？')) {
+    if (window.confirm(this.$t('publish.modalTextText'))) {
       next()
     } else {
       next(false)
@@ -364,7 +377,7 @@ export default {
         }
       } catch (error) {
         console.error(error)
-        this.$message.error('获取文章信息发生错误')
+        this.$message.error(this.$t('error.getArticleInfoError'))
         this.$router.push({ path: '/article' })
       }
       // 设置文章内容
@@ -395,7 +408,7 @@ export default {
       this.$router.push({ path: `/p/${hash}` })
     },
     // 成功提示
-    success(hash, msg = '发送成功,自动跳转到你发表的文章') {
+    success(hash, msg = this.$t('success.public')) {
       this.$message.success(msg)
       this.jumpToArticle(hash)
     },
@@ -408,7 +421,7 @@ export default {
         desc: 'whatever'
       })
       // console.log(data)
-      if (data.code !== 0) this.failed('文章发布ipfs失败')
+      if (data.code !== 0) this.failed(this.$t('error.sendPostIpfsFail'))
       return data
     },
     // 文章标签 tag
@@ -439,7 +452,7 @@ export default {
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
-        success(response.data, `发文成功，奖励${this.$point.publish} 积分`)
+        success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
       } catch (error) {
         console.error(error)
         failed(error)
@@ -454,9 +467,9 @@ export default {
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const response = await this.$API.createDraft(article)
-      if (response.code !== 0) this.failed('失败请重试')
+      if (response.code !== 0) this.failed(this.$t('error.failTry'))
       else {
-        this.$message.success('保存成功')
+        this.$message.success(this.$t('success.save'))
         this.$router.push({
           name: 'user-id-draft',
           params: {
@@ -477,18 +490,18 @@ export default {
       }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) this.success(response.data)
-      else this.failed('失败请重试')
+      else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
     async delDraft(id) {
       if (!id) {
-        return this.failed('自动删除草稿失败,请手动删除')
+        return this.failed(this.$t('error.deleteDraft'))
       }
       try {
         const response = await this.$backendAPI.delDraft({ id })
-        if (response.status !== 200) this.failed('自动删除草稿失败,请手动删除')
+        if (response.status !== 200) this.failed(this.$t('error.deleteDraft'))
       } catch (error) {
-        this.failed('自动删除草稿失败,请手动删除')
+        this.failed(this.$t('error.deleteDraft'))
       }
     },
     // 更新草稿
@@ -500,11 +513,11 @@ export default {
       try {
         const response = await this.$API.updateDraft(article)
         if (response.code === 0) {
-          this.$message('草稿更新成功')
+          this.$message(this.$t('success.draftUpdate'))
           this.$router.go(-1)
-        } else this.failed('失败请重试')
+        } else this.failed(this.$t('error.failTry'))
       } catch (error) {
-        this.failed('失败请重试')
+        this.failed(this.$t('error.failTry'))
       }
     },
     // 发布||修改按钮
@@ -513,9 +526,9 @@ export default {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
       // 标题或内容为空时
-      if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed('标题或正文不能为空')
+      if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed(this.$t('warning.titleOrContent'))
 
-      if (this.saveType === 'public' && !this.cover) return this.failed('请上传封面')
+      if (this.saveType === 'public' && !this.cover) return this.failed(this.$t('warning.cover'))
 
       if (this.fissionFactor === '') this.fissionFactor = 2 // 用户不填写裂变系数则默认为2
 

@@ -89,7 +89,7 @@ export default {
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
         ],
         coinsIcon: [
-          { required: true, message: '请输上传图标' }
+          // { required: true, message: '请输上传图标' }
         ],
         number: [
           { required: true, message: '请输入首次发行数量', trigger: 'blur' },
@@ -105,14 +105,41 @@ export default {
     }
   },
   methods: {
+    async minetokenMint() {
+      const { number } = this.form
+      const data = {
+        amount: number
+      }
+      await this.$API.minetokenMint(data)
+        .then(res => {
+          if (res.code === 0) {
+            this.$emit('publishToken')
+            this.$message.success(res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+    },
+    async minetokenCreate() {
+      const { name, abbreviation } = this.form
+      const data = {
+        name: name,
+        symbol: abbreviation,
+        decimals: 100
+      }
+      await this.$API.minetokenCreate(data)
+        .then(res => {
+          if (res.code === 0) {
+            this.minetokenMint()
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+        if (valid) this.minetokenCreate()
+        else return false
       })
     },
     // 完成上传
@@ -217,4 +244,5 @@ export default {
   // background: @purpleDark;
   // border-color: @purpleDark;
 }
+
 </style>

@@ -30,5 +30,9 @@ export const paginationUrl = {
   // 已经关注用户的文章
   followedPosts: 'posts/followedPosts',
   // 邀请列表，没有统计数据
-  userInvitees: 'user/invitees'
+  userInvitees: 'user/invitees',
+  // 获取token的持仓用户列表
+  tokenUserList: '/token/userlist',
+  // 获取用户的持仓token列表
+  tokenTokenList: '/token/tokenlist'
 }
