@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      isPublishCoins: true
+      isPublishCoins: false
     }
   }
 }
