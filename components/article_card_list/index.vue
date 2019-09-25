@@ -33,7 +33,7 @@
             <!-- 文章卡阅读和投资 -->
             <span class="data">
               {{ card && (card.read === 0 ? 0 : card.read) }}
-              浏览</span>
+              {{ $t('articleCard.read') }}</span>
             <!-- <span class="data">
               {{ card && card.ups || 0 }}
               投资</span> -->

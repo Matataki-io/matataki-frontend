@@ -12,16 +12,16 @@
           <!-- {{ userInfo }} -->
         </h1>
         <p class="profile">
-          {{ userInfo.introduction || '暂无' }}
+          {{ userInfo.introduction || $t('not') }}
         </p>
         <div class="fl jc">
           <div class="fl fdc ac follow-block">
             <span class="follow-number">{{ userInfo.follows || 0 }}</span>
-            <span class="follow-title">关注</span>
+            <span class="follow-title">{{ $t('follow') }}</span>
           </div>
           <div class="fl fdc ac follow-block">
             <span class="follow-number">{{ userInfo.fans || 0 }}</span>
-            <span class="follow-title">粉丝</span>
+            <span class="follow-title">{{ $t('fans') }}</span>
           </div>
         </div>
         <fanCoinsBtn :id="Number($route.params.id)" class="fans-coins-btn" />
@@ -34,7 +34,7 @@
             size="small"
             class="follow"
           >
-            编辑资料
+            {{ $t('user.editProfile') }}
           </el-button>
         </router-link>
       </div>

@@ -9,8 +9,10 @@
   >
     <section v-show="step === 1" class="auth-main">
       <div class="auth-title-container">
-        <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">登录</span>
-        <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">注册</span>
+        <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">
+          {{ $t('login') }}</span>
+        <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">
+          {{ $t('registered') }}</span>
       </div>
       <div class="loginRegister">
         <Login v-show="isLogin" @switch="isLogin = false" @hide="showModal = false" />
@@ -22,7 +24,7 @@
       <div v-if="step === 2" class="arrow">
         <i class="el-icon-arrow-left" />
       </div>
-      <span>{{ step === 1 ? '查看支持的钱包' : '返回登录' }}</span>
+      <span>{{ step === 1 ? $t('auth.viewWallet') : $t('auth.backLogin') }}</span>
       <div v-if="step === 1" class="arrow">
         <i class="el-icon-arrow-right" />
       </div>

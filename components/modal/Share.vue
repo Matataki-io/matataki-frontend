@@ -14,26 +14,26 @@
           <div class="widget-button-img">
             <img src="@/assets/img/widget/widget.svg" alt="widget">
           </div>
-          <p>创建widget</p>
+          <p>{{ $t('p.createWidget') }}</p>
         </div>
         <div class="widget-button" @click="widgetModalStatus = 4">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/share.svg" alt="widget">
           </div>
-          <p>生成长图</p>
+          <p>{{ $t('p.createLongImg') }}</p>
         </div>
         <div class="widget-button" @click="copyCode(clipboard)">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/link.svg" alt="link">
           </div>
-          <p>复制邀请链接</p>
+          <p>{{ $t('p.copyInviteLink') }}</p>
         </div>
       </div>
       <SocialShare v-if="socialShow" :article="article" />
     </div>
     <div v-if="widgetModalStatus === 1" class="padding1 widget-writecontent">
       <p class="widget-title">
-        创建widget
+        {{ $t('p.createWidget') }}
       </p>
       <el-input
         v-model="widgetContent"
@@ -42,37 +42,43 @@
         :rows="4"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">如何使用widget？</a>
-        <a class="create" href="javascript:;" @click="createWidgetContent">创建widget</a>
+        <a class="help" href="javascript:;" @click="reviewHelp">
+          {{ $t('p.widgetHelp') }}
+        </a>
+        <a class="create" href="javascript:;" @click="createWidgetContent">
+          {{ $t('p.createWidget') }}
+        </a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 2" class="padding1 widget-help">
       <p class="widget-help-title">
-        什么是文章widget
+        {{ $t('p.articleWidgetHelp') }}
       </p>
       <p class="widget-help-content">
-        widget功能可以为当前文章生成一个精美的展示卡片。您可以将widget代码复制到瞬MATATAKI的文章编辑器中，这样就可以在您的文章中插入精美的文章展示卡片。当然，您展示的文章卡片同样也会具有邀请链接的功能。
+        {{ $t('p.articleWidgetContent') }}
       </p>
       <br>
       <p class="widget-help-title">
-        操作步骤
+        {{ $t('p.stepTitle') }}
       </p>
       <p class="widget-help-content">
-        1.你可以选择自定义展示卡片上的简介内容<br>
-        2.点击“创建widget”按钮获取代码<br>
-        3.点击“复制代码”按钮获取widget代码<br>
-        4.粘贴代码到瞬MATATAKI编辑器中即可展示<br>
+        1.{{ $t('p.stepContent1') }}<br>
+        2.{{ $t('p.stepContent2') }}<br>
+        3.{{ $t('p.stepContent3') }}<br>
+        4.{{ $t('p.stepContent4') }}<br>
       </p>
 
-      <a class="widget-help-button" href="javascript:;" @click="backPage">知道了</a>
+      <a class="widget-help-button" href="javascript:;" @click="backPage">
+        {{ $t('p.confirmPopover') }}
+      </a>
     </div>
     <div v-if="widgetModalStatus === 3" class="padding1 widget-review">
       <p class="widget-title">
-        widget预览
+        {{ $t('p.widgetView') }}
       </p>
       <div class="widget-review-content" v-html="widgetContentIframe" />
       <p class="widget-review-des">
-        复制下面的代码并黏贴到您的网站来展示
+        {{ $t('p.widgetCopyDes') }}
       </p>
       <el-input
         id="codeIframe"
@@ -84,8 +90,12 @@
         @focus="selectValue($event)"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">如何使用widget？</a>
-        <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">复制代码</a>
+        <a class="help" href="javascript:;" @click="reviewHelp">
+          {{ $t('p.widgetHelp') }}
+        </a>
+        <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">
+          {{ $t('p.copyCode') }}
+        </a>
       </div>
     </div>
     <div v-if="widgetModalStatus === 4" class="padding2">
@@ -149,7 +159,7 @@ export default {
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.username} \n${shareLink}\n瞬MATATAKI，发布瞬间，灵感永存 \n 点击链接首次登入可领取额外${this.$point.regInvitee}积分奖励！`
+      return `《${article.title}》by ${article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
     shareLink() {
       // 应产品需求 这里改为移动端的链接
@@ -215,10 +225,10 @@ export default {
     copyCode(code) {
       this.$copyText(code).then(
         () => {
-          this.$message.success('复制成功')
+          this.$message.success(this.$t('success.copy'))
         },
         () => {
-          this.$message.error('复制失败')
+          this.$message.error(this.$t('error.copy'))
         }
       )
     },

@@ -2,17 +2,17 @@
   <section v-loading="loading" class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input v-model="loginForm.email" placeholder="请输入邮箱" />
+        <el-input v-model="loginForm.email" :placeholder="$t('rule.loginEmailMessage')" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" placeholder="请输入密码" show-password />
+        <el-input v-model="loginForm.password" type="password" :placeholder="$t('rule.passwordMessage')" show-password />
       </el-form-item>
       <el-form-item class="ss-btn">
         <el-button type="primary" @click="submitLoginForm">
-          登录
+          {{ $t('login') }}
         </el-button>
         <div class="bottom-tip">
-          <span class="red">首次登录领{{ $point.loginNew }}积分！</span>
+          <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
           <a href="javascript:void(0);" @click="switchRegister">注册</a>
         </div>
@@ -20,38 +20,38 @@
     </el-form>
     <div class="oauth-box">
       <h1 class="oauth-title">
-        第三方账号登录
+        {{ $t('auth.otherAccount') }}
       </h1>
       <p class="warning-tip">
-        不同帐号内容不互通
+        {{ $t('auth.loginWarning') }}
       </p>
       <div class="oauth">
-        <el-tooltip class="item" effect="dark" content="VNT登录" placement="top">
+        <el-tooltip class="item" effect="dark" :content="$t('auth.vntTitle')" placement="top">
           <div class="oauth-bg bg-blue1" @click="walletLogin('Vnt')">
             <svg-icon class="vnt" icon-class="vnt" />
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" content="EOS登录" placement="top">
+        <el-tooltip class="item" effect="dark" :content="$t('auth.eosTitle')" placement="top">
           <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
             <svg-icon class="eos" icon-class="eos_login" />
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" content="ONT登录" placement="top">
+        <el-tooltip class="item" effect="dark" :content="$t('auth.ontType')" placement="top">
           <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
             <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" content="GitHub登录" placement="top">
+        <el-tooltip class="item" effect="dark" :content="$t('auth.githubTitle')" placement="top">
           <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
             <svg-icon class="github" icon-class="github" />
           </div>
         </el-tooltip>
       </div>
     </div>
-    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="已邀请">
+    <img v-if="referral" class="referral" src="@/assets/img/invite.png" :alt="$t('auth.invite')">
   </section>
 </template>
 
@@ -65,7 +65,7 @@ export default {
   data() {
     const checkEmail = async (rule, value, callback) => {
       if (value === '') {
-        return callback(new Error('请输入邮箱地址'))
+        return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
         // const res = await this.$API.verifyEmail(value)
         // if (res.data) {
@@ -84,11 +84,11 @@ export default {
       loginRules: {
         email: [
           { validator: checkEmail, trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          { type: 'email', message: this.$t('rule.emailMessage'), trigger: ['blur', 'change'] }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 8, max: 16, message: '密码长度在 8 到 16 个字符', trigger: 'blur' }
+          { required: true, message: this.$t('rule.passwordMessage'), trigger: 'blur' },
+          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage', [8, 16]), trigger: 'blur' }
         ]
       },
       referral: false,
@@ -138,7 +138,7 @@ export default {
           window.location.reload() // 登录完成刷新一次
         } catch (err) {
           console.log('signInx 错误', err)
-          this.$message.error('登录失败')
+          this.$message.error(this.$t('error.loginFail'))
         }
       }
     },
@@ -170,17 +170,17 @@ export default {
             if (res.code === 0) {
               this.$store.commit('setAccessToken', res.data)
               this.$store.commit('setUserConfig', { idProvider: 'Email' })
-              this.$message.success('登录成功')
+              this.$message.success(this.$t('success.loginSuccess'))
               this.$emit('hide')
               window.location.reload() // 登录完成刷新一次
             } else {
-              this.$message.error(`登录失败，账号或密码错误`)
+              this.$message.error(this.$t('error.loginFailPasswordOrAccount'))
             }
           } catch (error) {
-            this.$message.error('登录失败，请联系管理员')
+            this.$message.error(this.$t('error.loginFail'))
           }
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })

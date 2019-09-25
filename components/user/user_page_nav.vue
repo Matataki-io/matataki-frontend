@@ -18,12 +18,12 @@ export default {
     return {
       user: [
         // self 只有自己才能看
-        { title: '创作', url: 'user-id', self: false },
-        { title: '投资', url: 'user-id-investment', self: false },
-        { title: '草稿', url: 'user-id-draft', self: true },
-        { title: '粉丝', url: 'user-id-fan', self: false },
-        { title: '关注', url: 'user-id-follow', self: false },
-        { title: '购买', url: 'user-id-buy', self: true }
+        { title: this.$t('user.creation'), url: 'user-id', self: false },
+        { title: this.$t('user.investment'), url: 'user-id-investment', self: false },
+        { title: this.$t('user.draft'), url: 'user-id-draft', self: true },
+        { title: this.$t('user.fan'), url: 'user-id-fan', self: false },
+        { title: this.$t('user.follow'), url: 'user-id-follow', self: false },
+        { title: this.$t('user.buy'), url: 'user-id-buy', self: true }
       ]
     }
   },

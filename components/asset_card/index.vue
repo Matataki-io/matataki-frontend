@@ -115,39 +115,39 @@ export default {
       // type=其他：只有2，表示成功
       const { status, type } = this.asset
       const switchStatus = {
-        0: '提现待处理',
-        1: '提现待确认',
-        2: '提现成功',
-        3: '提现失败',
-        4: '提现审核中',
-        5: '提现审核失败'
+        0: this.$t('assetCard.0'),
+        1: this.$t('assetCard.1'),
+        2: this.$t('assetCard.2'),
+        3: this.$t('assetCard.3'),
+        4: this.$t('assetCard.4'),
+        5: this.$t('assetCard.5')
       }
-      const pointTypes = {
-        reading: '阅读获取积分', // 用户阅读
-        beread: '文章被阅读获取积分', // 读者的文章被阅读
-        publish: '发布文章获取积分', // 发布文章
-        reading_new: '阅读新文章获取积分', // 用户阅读新文章，额外获得的
-        beread_new: '新文章被阅读获取积分', // 读者的新文章被阅读，额外获得的
-        reading_like: '阅读获取积分',
-        reading_dislike: '阅读获取积分',
-        login: '回馈奖励'
-      }
+      // const pointTypes = {
+      //   reading: '阅读获取积分', // 用户阅读
+      //   beread: '文章被阅读获取积分', // 读者的文章被阅读
+      //   publish: '发布文章获取积分', // 发布文章
+      //   reading_new: '阅读新文章获取积分', // 用户阅读新文章，额外获得的
+      //   beread_new: '新文章被阅读获取积分', // 读者的新文章被阅读，额外获得的
+      //   reading_like: '阅读获取积分',
+      //   reading_dislike: '阅读获取积分',
+      //   login: '回馈奖励'
+      // }
       const switchType = {
         withdraw: switchStatus[status],
-        support_expenses: '投资支出',
-        buy_expenses: '购买支出',
-        fission_income: '投资裂变收入',
-        referral_income: '推荐收入',
-        author_sale_income: '销售收入',
-        author_supported_income: '被投资收入',
-        buyad: '公告牌支出',
-        earn: '公告牌收入',
+        support_expenses: this.$t('assetCard.support_expenses'),
+        buy_expenses: this.$t('assetCard.buy_expenses'),
+        fission_income: this.$t('assetCard.fission_income'),
+        referral_income: this.$t('assetCard.referral_income'),
+        author_sale_income: this.$t('assetCard.author_sale_income'),
+        author_supported_income: this.$t('assetCard.author_supported_income'),
+        buyad: this.$t('assetCard.buyad'),
+        earn: this.$t('assetCard.earn'),
         // 人民币
-        recharge: '充值',
-        transfer_out: '转出资产',
-        transfer_in: '转入资产',
+        recharge: this.$t('assetCard.recharge'),
+        transfer_out: this.$t('assetCard.transfer_out'),
+        transfer_in: this.$t('assetCard.transfer_in')
 
-        ...pointTypes
+        // ...pointTypes
       }
       return switchType[type]
     },

@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" custom-class="br10">
     <div class="buy-product-modal">
       <h1 class="title">
-        购买商品
+        {{ $t('p.buyShop') }}
       </h1>
       <div class="info-container">
         <img :src="article.cover" alt="cover" class="cover">
@@ -22,7 +22,9 @@
             </span>
           </div>
           <div class="product-amount">
-            <span>数量</span>
+            <span>
+              {{ $t('p.amount') }}
+            </span>
             <el-input-number v-model="productNumber" size="mini" disabled />
           </div>
         </div>
@@ -32,12 +34,14 @@
         type="textarea"
         class="comment-container"
         :rows="4"
-        placeholder="输入推荐语…"
+        :placeholder="$t('p.buyPlaceholder')"
       />
       <div class="buy-container">
-        <span class="storage">库存还有剩{{ product.stock }}份</span>
+        <span class="storage">
+          {{ $t('p.remainingStock', [product.stock ]) }}
+        </span>
         <div class="buy-btn" @click="buyProduct">
-          购买
+          {{ $t('p.buy') }}
         </div>
       </div>
     </div>
@@ -59,8 +63,7 @@ export default {
     },
     article: {
       type: Object,
-      default: () => ({
-      })
+      required: true
     }
   },
   watch: {
@@ -128,19 +131,19 @@ export default {
 
       // TODO 没有配置商品价格的 不支持购买
       if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'eos') {
-        if (this.product.eosPrice <= 0) return this.$message.error(`该商品暂不支持Eos购买`);
+        if (this.product.eosPrice <= 0) return this.$message.error(this.$t('p.shopNotBuy', ['EOS']));
       }
       else if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'ont') {
-        if (this.product.ontPrice <= 0) return this.$message.error(`该商品暂不支持Ont购买`);
+        if (this.product.ontPrice <= 0) return this.$message.error(this.$t('p.shopNotBuy', ['Ont']));
       }
       else if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'vnt') {
-        if (this.product.vntPrice <= 0) return this.$message.error(`该商品暂不支持Vnt购买`);
+        if (this.product.vntPrice <= 0) return this.$message.error(this.$t('p.shopNotBuy', ['Vnt']));
       }
 
       console.log(this.product)
 
       const loading = this.$loading({
-        text: `购买中...`
+        text: `${this.$t('p.buying')}...`
       })
       const { comment, signId, product } = this
       let idProviderLower = this.currentUserInfo.idProvider.toLocaleLowerCase()
@@ -170,7 +173,7 @@ export default {
         let sponsor = await toSponsor(this.getInvite)
         if (this.currentUserInfo.idProvider.toLocaleLowerCase() === 'vnt') { // vnt 交易
         if (amount < 1)
-        return this.$message.error(`Vnt购买最低不能小于1Vnt`)
+        return this.$message.error(this.$t('p.vntBuyMinMoney'))
           const faild = error => {
             loading.close()
             this.$message.closeAll()
@@ -180,7 +183,7 @@ export default {
             try {
               let coinbase = await this.$store.dispatch('vnt/coinbase')
               if (coinbase !== this.currentUserInfo.name) {
-                faild('登陆的Vnt账号与支付账号不相同')
+                faild(this.$t('p.vntBuyAccount'))
                 return
               }
             } catch (error) {
@@ -199,16 +202,16 @@ export default {
                   if (res.code === 0) {
                     loading.close()
                     this.$message.closeAll()
-                    this.$message.success('购买成功')
+                    this.$message.success(this.$t('p.buyDone'))
                     this.showModal = false
                   } else {
                     console.log('购买商品失败 提交hash')
-                    reject(new Error('购买商品失败'))
+                    reject(new Error(this.$t('p.buyFail')))
                   }
                 })
                 .catch(err => {
                   console.log('购买商品失败 提交hash err')
-                    reject(new Error('购买商品失败'))
+                    reject(new Error(this.$t('p.buyFail')))
                 })
             }
             // 转账
@@ -242,9 +245,9 @@ export default {
                   orderId = res.data.orderId
                   transaction()
                 }
-                else faild('购买商品失败 创建订单失败')
+                else faild(this.$t('p.buyFail')) // '购买商品失败 创建订单失败'
               }).catch(err => {
-                faild('购买商品失败')
+                faild(this.$t('p.buyFail'))
               })
           } catch (error) {
             faild(error)
@@ -252,12 +255,12 @@ export default {
         } else { // other 交易
           try {
             await this.makeOrder({ amount, num, signId, sponsor, comment })
-            this.$message.success('购买成功')
+            this.$message.success(this.$t('p.buyDone'))
             this.showModal = false
             this.$emit('purchaseDone')
           } catch (error) {
             loading.close()
-            this.$message.error('购买失败')
+            this.$message.error(this.$t('p.buyFail'))
             this.showModal = false
           }
         }

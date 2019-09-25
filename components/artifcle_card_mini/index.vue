@@ -9,7 +9,9 @@
     </h3>
     <p class="date">
       {{ time }}
-      <a v-if="isDraftCard" class="del" href="javascript:;" @click.stop="$emit('del', index)">删除</a>
+      <a v-if="isDraftCard" class="del" href="javascript:;" @click.stop="$emit('del', index)">
+        {{ $t('delete') }}
+      </a>
     </p>
   </div>
 </template>

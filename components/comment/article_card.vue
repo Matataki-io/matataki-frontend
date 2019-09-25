@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     displayMessage() {
-      return this.comment.comment !== '' ? this.comment.comment : '用户没有留下评论'
+      return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
     },
     friendlyDate() {
       const time = moment(this.comment.create_time)

@@ -30,19 +30,20 @@
         <template v-if="typeIndex === 0">
           <span class="data">
             {{ card && (card.read === 0 ? 0 : card.read) }}
-            阅读</span>
+            {{ $t('articleCard.read') }}</span>
           <span class="data">
             {{ card && (card.ups === 0 ? 0 : card.ups) }}
-            投资</span>
+            {{ $t('articleCard.investment') }}</span>
         </template>
         <!-- 商品卡销量和金额 -->
         <template v-else>
           <span class="data">
             {{ card && (card.sale === 0 ? 0 : card.sale) }}
-            销量
+            {{ $t('articleCard.sale') }}
           </span>
           <span class="data money">
-            {{ cardEosValue }}EOS/份
+            {{ cardEosValue }}
+            {{ $t('articleCard.saleUnit') }}
           </span>
         </template>
       </div>

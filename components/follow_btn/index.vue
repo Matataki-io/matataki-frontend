@@ -7,7 +7,7 @@
     @click.stop="followOrUnFollow"
   >
     <i v-if="!userInfo.followed" class="el-icon-plus" />
-    {{ userInfo.followed ? '取消关注' : '关注' }}
+    {{ userInfo.followed ? $t('unFollow') : $t('follow') }}
   </el-button>
 </template>
 
@@ -42,9 +42,9 @@ export default {
     ]),
     followOrUnFollow() {
       if (this.userInfo.followed) {
-        this.$confirm('确定取消关注?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('p.confirmUnFollowMessage'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           type: 'warning'
         }).then(() => this.followOrUnfollowUser({
           id: this.id,

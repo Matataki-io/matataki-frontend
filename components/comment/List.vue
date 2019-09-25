@@ -1,7 +1,7 @@
 <template>
   <div class="comment-container">
     <h2 class="comment-title">
-      {{ type === 2 ? '支持队列' : '评论' }} {{ articleCardData.commentLength }}
+      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ articleCardData.commentLength }}
     </h2>
     <no-content-prompt :list="articleCardData.articles">
       <template v-if="type === 2">
@@ -19,7 +19,7 @@
       :comment-request="commentRequest"
       @buttonLoadMore="buttonLoadMore"
     >
-      查看更多>
+      {{ $t('viewMore') }}
     </buttonLoadMore>
   </div>
 </template>

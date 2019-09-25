@@ -1,5 +1,6 @@
 export default {
   readMore: '阅读更多',
+  viewMore: '查看更多',
   not: '暂无',
   notContent: '暂无内容',
   notProfile: '暂无简介',
@@ -52,7 +53,7 @@ export default {
     loginSuccess: '登录成功',
     public: '发送成功,自动转到你发布的文章',
     draftUpdate: '草稿更新成功',
-    codeSendSuccess: '验证码发送成功，5分钟内使用有效',
+    codeSendSuccess: '验证码发送成功，{0}分钟内使用有效',
     registeredSuccess: '注册成功，请登录'
   },
   error: {
@@ -85,7 +86,7 @@ export default {
     emailHasBeenRegistered: '邮箱已被注册',
     emailCode: '请输入邮箱验证码',
     inputNumber: '请输入数字值',
-    inputLengthNumber: '请输入6位数字',
+    inputLengthNumber: '请输入{0}位数字',
     passwordMessage: '请输入密码',
     passwordLengthMessage: '密码长度在 {0} 到 {1} 个字符',
     setPassword: '请设置密码',
@@ -108,15 +109,17 @@ export default {
     eosDoc: '《如何使用EOS登录》',
     ontTitle: 'ONT登录',
     ontType: 'ONT',
+    vntTitle: 'VNT登录',
+    githubTitle: 'GitHub登录',
     ontDoc: '《如何使用ONT登录》',
     invite: '已邀请', //img
     viewWallet: '查看支持的钱包',
     backLogin: '返回登录',
-    firstLogin: '首次登录领100积分！',
+    firstLogin: '首次登录领{0}积分！',
     pcLoginViewPointDetail: '在PC版登陆后查看积分详情',
     otherAccount: '第三方账号登录',
     loginWarning: '不同帐号内容不互通',
-    getEmailCode: '获取验证码'
+    getEmailCode: '获取邮箱验证码'
   },
   imgUpload: {
     btn: '上传按钮',
@@ -158,6 +161,7 @@ export default {
   articleCard: {
     read: '浏览',
     sale: '销量',
+    investment: '投资',
     saleUnit: 'EOS/份'
   },
   articleFooter: {
@@ -186,7 +190,10 @@ export default {
     author_sale_income: '销售收入',
     author_supported_income: '被投资收入',
     buyad: '公告牌支出',
-    earn: '公告牌收入'
+    earn: '公告牌收入',
+    recharge: '充值',
+    transfer_out: '转出资产',
+    transfer_in: '转入资产'
   },
   // components end
   point: {
@@ -344,7 +351,17 @@ export default {
     modalTextButton1: '再想想',
     modalTextButton2: '退出',
     importArticle: '导入文章',
-    publishArticleSuccess: '发文成功，奖励{0}积分'
+    publishArticleSuccess: '发文成功，奖励{0}积分',
+    // statement
+    statement: '勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：',
+    statement1: '1.歪曲、篡改、抄袭、剽窃他人创作而产生的作品，',
+    statement2: '2.文章主要篇幅为诸如“法律、法规，国家机关的决议、决定、命令和其他具有立法、行政、司法性质的文件、时事新闻、历法、通用数表、通用表格和公式”等的公共内容；',
+    statement3: '3.转发他人作品形成的内容，',
+    statement4: '4.大篇幅引用他人内容或文章主要内容为他人作品，如书摘、文摘、报摘等；',
+    statement5: '5.文章主体系整合、汇编他人作品内容',
+    statement6: '6.通过其他侵犯著作权或其他权益方式形成的内容。',
+    statement7: '在取得原作者或权利人同意后，对作品进行改编、翻译再创作的，视同原创。',
+    statement8: '瞬MATATAKI鼓励用户发布原创文章，勾选本原创声明的文章会展示原创标识。但本原创声明仅是您对文章内容原创性的单方承诺，并不表示瞬MATATAKI认可了文章的原创性。若您在勾选本原创声明后，文章被证明并非独立原创，瞬MATATAKI将按照平台规范删除等。'
   },
   search: {
     hot: '热门搜索',
@@ -352,8 +369,10 @@ export default {
     btn: '搜索',
     optionText11: '文章',
     optionText12: '商品',
-    optionText13: '作者',
-    optionText21: '默认'
+    optionText13: '用户',
+    optionText21: '默认',
+    result: '的搜索结果',
+    notResult: '暂无搜索结果'
   },
   p: {
     amount: '数量',
@@ -366,6 +385,7 @@ export default {
     fissionCoefficient: '裂变系数',
     fissionRebate: '裂变返利',
     recommendedRebate: '推荐返利',
+    investmentAmountPlaceholder: '请输入投资金额',
     investment: '投资',
     investing: '投资中',
     invested: '已投资',
@@ -378,6 +398,7 @@ export default {
     buyShop: '购买商品',
     remainingStock: '库存还有剩{0}份',
     buyDone: '购买成功！',
+    buyFail: '购买失败',
     buyDoneDes: '请去“购买记录”页面查看已购商品！',
     investArticle: '投资文章',
     investShop: '投资商品',
@@ -441,11 +462,15 @@ export default {
     copyCode: '复制代码',
     sweepCodeView: '扫描二维码 免费读全文',
     pressImgSave: '长按图片保存',
+    downloadImg: '生成并下载图片',
     createImg: '生成图片',
     createFail: '图片生成失败',
     sharePopover: '点击“分享文章”按钮与朋友共享好文章',
     likePopover: '指向此图标后，选择“推荐”或“不推荐”，即可领取阅读积分奖励！',
     confirmPopover: '知道了',
+    clipboardText1: '瞬MATATAKI，发布瞬间，灵感永存',
+    clipboardText2: '点击链接首次登入可领取额外',
+    clipboardText3: '积分奖励！',
     // coinBtn
     like: '推荐',
     unlike: '不推荐',
@@ -464,7 +489,23 @@ export default {
     readThreeDaysNewArticlePoint: '阅读3天内发表的新文章可额外获得{}个积分',
     // tokenFooter
     readAddPoint: '阅读 + {}积分',
-    newAddPoint: '新文章 + {}积分'
+    newAddPoint: '新文章 + {}积分',
+    // userInfoHeader
+    confirmUnFollowMessage: '确定取消关注?',
+    // article import
+    importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
+    importDes2: '如若在本平台发表的内容发声侵权行为，SS官方有权下架该作品，并保留向侵权作者追究法律责任的权利。',
+    importAgree: '我同意',
+    importAddressError: '请输入正确的地址',
+    importAddress: '来源链接：',
+    importSuccess: '导入成功',
+    importError: '导入失败,目前只支持: 链闻、橙皮书、微信文章',
+    // purchase
+    shopNotBuy: '该商品暂不支持{0}购买',
+    vntBuyMinMoney: 'Vnt购买最低不能小于1Vnt',
+    vntBuyAccount: '登陆的Vnt账号与支付账号不相同',
+    shareWeibo: '微博',
+    shareWechat: '扫一扫，分享到微信'
   },
   invite: {
     headerTitle: '我的邀请',
@@ -525,7 +566,25 @@ export default {
     // buycoins
     coins: '粉丝币',
     buyCoins: '买入价/元',
-    positionCoins: '持仓/枚'
+    positionCoins: '持仓/枚',
+    // coins
+    manageCoins: '管理粉丝币',
+    transactionCoins: '交易粉丝币',
+    // user info
+    accountType: '账号类型',
+    // user nav
+    creation: '创作',
+    draft: '草稿',
+    fan: '粉丝',
+    follow: '关注',
+    buy: '购买',
+    setting: '账户设置',
+    wallet: '钱包',
+    point: '积分',
+    invite: '邀请',
+    buycoins: '买入粉丝币',
+    selfcoins: '我的粉丝币',
+    editProfile: '编辑资料'
   },
   withdraw: {
     title: '提现',
@@ -558,6 +617,21 @@ export default {
     createIncome: '创作收益',
     supportIncome: '投资收益',
     supportExpenditure: '投资支出',
-    assetList: '资产明细'
+    assetList: '资产明细',
+    balance: '钱包余额'
+  },
+  footer: {
+    hellpbook: '使用手册',
+    point: '平台积分',
+    privacyPolicy: '隐私政策',
+    userAgreement: '用户协议',
+    about: '关于我们',
+    billboard: '智能公告牌',
+    link: '友情链接',
+    linkidol: '链接偶像',
+    orange: '橙皮书',
+    eosvote: 'EOSvote',
+    scanCode: '扫码进群',
+    follow: '关注公众号'
   }
 }

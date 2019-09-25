@@ -1,6 +1,6 @@
 <template>
   <el-button v-if="!isLoadEnd" :loading="loading" :class="buttonType" class="load-more" @click="loadMore">
-    <slot>查看更多</slot>
+    <slot>{{ $t('viewMore') }}</slot>
   </el-button>
 </template>
 <script>

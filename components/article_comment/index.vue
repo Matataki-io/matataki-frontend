@@ -6,15 +6,15 @@
         v-model="comment"
         type="textarea"
         :autosize="{ minRows: 4}"
-        placeholder="请输入评论内容"
+        :placeholder="$t('p.commentPointPlaceholder')"
         maxlength="500"
         show-word-limit
         @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac jfe">
-        <span class="btn-des">{{ article.comment_pay_point }}积分/条</span>
+        <span class="btn-des">{{ article.comment_pay_point }}{{ $t('p.commentPointDes') }}</span>
         <el-button size="small" class="btn" @click="postComment">
-          评论
+          {{ $t('p.commentPointBtn') }}
         </el-button>
       </div>
     </div>
@@ -68,7 +68,7 @@ export default {
     },
     postComment() {
       if (!this.islogin()) return
-      if (!(this.comment).trim()) return this.$message.error('评论内容不能为空')
+      if (!(this.comment).trim()) return this.$message.error(this.$t('p.commentContent'))
       const data = {
         signId: this.article.id,
         comment: (this.comment).trim()
@@ -76,14 +76,14 @@ export default {
       this.$API.postPointComment(data)
         .then(res => {
           if (res.code === 0) {
-            this.$message.success('评论成功')
+            this.$message.success(this.$t('p.commentSuccess'))
             this.comment = ''
             this.$emit('doneComment')
           } else this.$message.error(res.message)
         })
         .catch(e => {
           console.log('评论失败', e)
-          this.$message.error('评论失败')
+          this.$message.error(this.$t('p.commentFail'))
         })
     },
     postCommentKeyup(e) {

@@ -21,7 +21,7 @@
           <p v-clampy="8" class="markdown-body" v-html="htmlStr" />
         </div>
         <div class="hide-article-box">
-          —— 扫描二维码 阅读领积分 ——
+          —— {{ $t('p.sweepCodeView') }} ——
         </div>
         <section class="footer-share">
           <div class="flex">
@@ -34,7 +34,7 @@
       <img v-else :src="downloadLink" alt="" style="width: 100%;">
     </div>
     <a href="javascript:;" class="save-btn" @click="toCanvas">
-      生成并下载图片
+      {{ $t('p.downloadImg') }}
     </a>
   </div>
 </template>
@@ -50,9 +50,7 @@ export default {
   props: {
     shareInfo: {
       type: Object,
-      default: () => {
-        return {}
-      }
+      required: true
     }
   },
   components: {
@@ -110,7 +108,7 @@ export default {
     },
     toCanvas() {
       const loading = this.$loading({
-        text: `图片生成中...`
+        text: `${this.$t('p.createImg')}...`
       })
       if (this.canvas) {
         document.querySelector('#downloadImg').click()
@@ -130,7 +128,7 @@ export default {
       }).catch((error) => {
         console.log(error);
         loading.close()
-        this.$message('图片生成失败')
+        this.$message(this.$t('p.createFail'))
       })
     },
     genQRCode() {

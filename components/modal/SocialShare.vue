@@ -10,7 +10,7 @@
           <div class="share-bg">
             <svg-icon class="share-icon weibo" icon-class="weibo" />
           </div>
-          <p>微博</p>
+          <p>{{ $t('p.shareWeibo') }}</p>
         </div>
       </a>
       <a :href="socialLink.facebook" target="_blank">
@@ -35,7 +35,7 @@
         <div ref="wxqr" class="qrcode" />
       </div>
       <p class="code">
-        <span>扫一扫，分享到微信</span>
+        <span>{{ $t('p.shareWechat') }}</span>
         <svg-icon class="icon" icon-class="weixin" />
       </p>
     </div>

@@ -6,7 +6,7 @@
         <router-link :to="`/user/${article.uid}`">
           <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
         </router-link>
-        <span class="Post-Time">发布于{{ article.articleCreateTimeComputed }}</span>
+        <span class="Post-Time">{{ $t('p.publishFrom') }}{{ article.articleCreateTimeComputed }}</span>
         <span class="View-Num">
           <svg-icon class="icon" icon-class="read" />
           {{ article.read || 0 }}</span>
@@ -46,7 +46,7 @@ export default {
   computed: {
     ...mapGetters(['isLogined', 'isMe']),
     followBtnText() {
-      return this.info.is_follow ? '已关注' : '关注'
+      return this.info.is_follow ? this.$t('following') : this.$t('follow')
     }
   },
   mounted() {
@@ -64,9 +64,9 @@ export default {
     },
     followOrUnFollow() {
       if (this.info.is_follow) {
-        this.$confirm('确定取消关注?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('p.confirmUnFollowMessage'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           type: 'warning'
         }).then(() => {
           this.followOrUnfollowUser(this.article.uid, 0)
@@ -77,21 +77,21 @@ export default {
     },
     async followOrUnfollowUser(id, type) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      const message = type === 1 ? '关注' : '取消关注'
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
       try {
         let res = null
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
-          this.$message.success(`${message}成功`)
+          this.$message.success(`${message}${this.$t('success.success')}`)
           this.info.is_follow = type === 1
           // 在获取一次防止出错
           this.getUserInfo(this.article.uid)
         } else {
-          this.$message.error(`${message}失败`)
+          this.$message.error(`${message}${this.$t('error.fail')}`)
         }
       } catch (error) {
-        this.$message.error(`${message}失败`)
+        this.$message.error(`${message}${this.$t('error.fail')}`)
       }
     }
   }

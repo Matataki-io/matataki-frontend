@@ -3,11 +3,13 @@
     <div class="line" />
     <div class="total">
       <div class="total-left">
-        <span class="total-title">待提现</span>
+        <span class="total-title">
+          {{ $t('withdraw.pendingCash') }}
+        </span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
       <el-button class="btn" :disabled="type === 'CNY'" @click="$emit('toggleWithdraw', 1)">
-        提现
+        {{ $t('withdraw.title') }}
       </el-button>
     </div>
     <div class="line" />
@@ -23,7 +25,9 @@
                 : { color: '#000000' }
           "
         >{{ totalSignIncome }}</span>
-        <span class="total-list-title">创作收益</span>
+        <span class="total-list-title">
+          {{ $t('withdraw.createIncome') }}
+        </span>
       </div>
       <div class="total-list-block">
         <span
@@ -36,7 +40,9 @@
                 : { color: '#000000' }
           "
         >{{ totalShareIncome }}</span>
-        <span class="total-list-title">投资收益</span>
+        <span class="total-list-title">
+          {{ $t('withdraw.supportIncome') }}
+        </span>
       </div>
       <div class="total-list-block">
         <span
@@ -49,7 +55,9 @@
                 : { color: '#000000' }
           "
         >{{ totalShareExpenses }}</span>
-        <span class="total-list-title">投资支出</span>
+        <span class="total-list-title">
+          {{ $t('withdraw.supportExpenditure') }}
+        </span>
       </div>
     </div>
     <div class="line" />

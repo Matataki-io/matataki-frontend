@@ -14,20 +14,20 @@
       <div class="invest-info">
         <div class="info-item">
           <span class="info-number">{{ article.fission_factor / 1000 }}</span>
-          <span class="info-subtitle">裂变系数</span>
+          <span class="info-subtitle">{{ $t('p.fissionCoefficient') }}</span>
         </div>
         <div class="info-item">
           <span class="info-number percent">{{ article.fission_rate }}</span>
-          <span class="info-subtitle">裂变返利</span>
+          <span class="info-subtitle">{{ $t('p.fissionRebate') }}</span>
         </div>
         <div class="info-item">
           <span class="info-number percent">{{ article.referral_rate }}</span>
-          <span class="info-subtitle">推荐返利</span>
+          <span class="info-subtitle">{{ $t('p.recommendedRebate') }}</span>
         </div>
       </div>
       <el-input
         v-model="amount"
-        :placeholder="`请输入投资金额`"
+        :placeholder="$t('p.investmentAmountPlaceholder')"
         class="comment-container"
         @input="handleChange(amount)"
       />
@@ -36,11 +36,11 @@
         type="textarea"
         class="comment-container"
         :rows="4"
-        placeholder="请输入您的留言"
+        :placeholder="$t('p.commentPlaceholder')"
       />
       <div class="invest-container">
         <div class="invest-btn" @click="investProduct">
-          投资
+          {{ $t('p.investment') }}
         </div>
       </div>
     </div>
@@ -112,14 +112,14 @@ export default {
       })
     },
     async support(done) {
-      let action_text = '投资'
+      let action_text = this.$t('p.investment')
       const { article, comment } = this
       const signId = this.article.id
       const { idProvider } = this.currentUserInfo
       let idProviderLower = this.currentUserInfo.idProvider.toLocaleLowerCase()
 
 
-      if (this.$publishMethods.invalidId(idProvider)) return this.$message.warning(`${idProvider}账号暂不支持`)
+      if (this.$publishMethods.invalidId(idProvider)) return this.$message.warning(this.$t('p.account', [idProvider]))
 
       // 默认 ‘’ 转成了 NAN
       const amount = this.amount === '' ? 0 : parseFloat(this.amount)
@@ -144,7 +144,7 @@ export default {
       checkPricesMatch = checkPrices(
         amount,
         minimumAmount(idProvider),
-        `请输入正确的金额 最小${action_text}金额为 ${minimumAmount(idProvider)} ${idProvider}`
+        this.$t('p.minMoney', [action_text, minimumAmount(idProvider), idProvider])
       )
       if (!checkPricesMatch) return
 
@@ -210,7 +210,7 @@ export default {
             try {
               let coinbase = await this.$store.dispatch('vnt/coinbase')
               if (coinbase !== this.currentUserInfo.name) {
-                faild('登陆的Vnt账号与支付账号不相同')
+                faild(this.$t('p.vntBuyAccount'))
                 return
               }
             } catch (error) {
@@ -229,16 +229,16 @@ export default {
                   if (res.code === 0) {
                     this.loading = false
                     this.$message.closeAll()
-                    this.$message.success('购买成功')
+                    this.$message.success(this.$t('p.buyDone'))
                     this.showModal = false
                   } else {
                     console.log('购买商品失败 提交hash')
-                    reject(new Error('购买商品失败'))
+                    reject(new Error(this.$t('p.buyFail')))
                   }
                 })
                 .catch(err => {
                   console.log('购买商品失败 提交hash err')
-                    reject(new Error('购买商品失败'))
+                    reject(new Error(this.$t('p.buyFail')))
                 })
             }
 
@@ -258,9 +258,9 @@ export default {
                   if (res.code === 0) {
                     postOrderHah(res.data.supportId)
                   }
-                  else faild('购买商品失败 创建订单失败')
+                  else faild(this.$t('p.buyFail')) //购买商品失败 创建订单失败
                 }).catch(err => {
-                  faild('购买商品失败')
+                  faild(this.$t('p.buyFail'))
                 })
             }
             // 转账
@@ -286,7 +286,7 @@ export default {
         } else {
           this.loading = false
           await this.makeShare({ amount, signId, sponsor, comment })
-          this.$message.success(`${action_text}成功！`)
+          this.$message.success(`${action_text}${this.$t('success.success')}`)
           this.$emit('investDone')
           done()
         }
@@ -295,7 +295,7 @@ export default {
       } catch (error) {
         this.loading = false
         console.error(error)
-        this.$message.error(`${action_text}失败，可能是由于网络故障或账户余额不足等原因。`)
+        this.$message.error(this.$t('p.sponsorFail', [action_text]))
         done(false)
       }
     }

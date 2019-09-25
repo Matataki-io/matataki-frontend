@@ -26,7 +26,7 @@ export default {
   computed: {
     ...mapGetters(['isMe', 'isLogined']),
     fanCoinsBtn() {
-      return this.isMe(this.id) ? '管理粉丝币' : '交易粉丝币'
+      return this.isMe(this.id) ? this.$t('user.manageCoins') : this.$t('user.transactionCoins')
     }
   },
   methods: {

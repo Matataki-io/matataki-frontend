@@ -41,22 +41,22 @@ export default {
     assetType() {
       const { status, type } = this.asset
       const pointTypes = {
-        read: '阅读文章奖励积分',
-        read_like: '阅读文章奖励积分',
-        read_dislike: '阅读文章奖励积分',
-        read_referral: '被邀请者阅读文章奖励积分',
-        beread: '文章被阅读奖励积分',
-        read_new: '阅读新文章奖励积分',
-        beread_new: '新文章被阅读奖励积分',
-        publish: '发布文章奖励积分',
-        publish_referral: '被邀请者发布文章奖励积分',
-        reg_inviter: '邀请的用户注册奖励积分',
-        reg_invitee: '被邀请注册奖励积分',
-        reg_invite_finished: '邀请的用户已激活奖励积分',
-        login: '回馈奖励',
-        profile: '完善资料积分',
-        comment_pay: '评论支付',
-        comment_income: '被评论收入'
+        read: this.$t('pointCard.read'),
+        read_like: this.$t('pointCard.read_like'),
+        read_dislike: this.$t('pointCard.read_dislike'),
+        read_referral: this.$t('pointCard.read_referral'),
+        beread: this.$t('pointCard.beread'),
+        read_new: this.$t('pointCard.read_new'),
+        beread_new: this.$t('pointCard.beread_new'),
+        publish: this.$t('pointCard.publish'),
+        publish_referral: this.$t('pointCard.publish_referral'),
+        reg_inviter: this.$t('pointCard.reg_inviter'),
+        reg_invitee: this.$t('pointCard.reg_invitee'),
+        reg_invite_finished: this.$t('pointCard.reg_invite_finished'),
+        login: this.$t('pointCard.login'),
+        profile: this.$t('pointCard.profile'),
+        comment_pay: this.$t('pointCard.comment_pay'),
+        comment_income: this.$t('pointCard.comment_income')
       }
       return pointTypes[type]
     }

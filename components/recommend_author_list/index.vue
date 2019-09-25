@@ -36,15 +36,15 @@ export default {
       return ''
     },
     followBtnText() {
-      return this.card.is_follow ? '已关注' : '关注'
+      return this.card.is_follow ? this.$t('following') : this.$t('follow')
     }
   },
   methods: {
     followOrUnFollow() {
       if (this.card.is_follow) {
-        this.$confirm('确定取消关注?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('p.confirmUnFollowMessage'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           type: 'warning'
         }).then(() => {
           this.followOrUnfollowUser(this.card.id, 0)
@@ -55,19 +55,20 @@ export default {
     },
     async followOrUnfollowUser(id, type) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      const message = type === 1 ? '关注' : '取消关注'
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
+
       try {
         let res = null
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
-          this.$message.success(`${message}成功`)
+          this.$message.success(`${message}${this.$t('success.success')}`)
           this.card.is_follow = type === 1
         } else {
-          this.$message.error(`${message}失败`)
+          this.$message.error(`${message}${this.$t('error.fail')}`)
         }
       } catch (error) {
-        this.$message.error(`${message}失败`)
+        this.$message.error(`${message}${this.$t('error.fail')}`)
       }
     }
   }

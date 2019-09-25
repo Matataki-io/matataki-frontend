@@ -1,30 +1,35 @@
 <template>
-  <div class="buy-block" @click="jumpPage(buy && buy.sign_id)">
+  <div class="buy-block">
     <div class="head">
       <span class="date">{{ buyTime }}</span>
-      <span class="des">交易已完成</span>
+      <span class="des">
+        {{ $t('user.transactionComplete') }}
+      </span>
     </div>
 
     <div class="container">
-      <div class="cover">
+      <div class="cover" @click.stop="jumpPage(buy && buy.sign_id)">
         <img v-if="buyCover" :src="buyCover" alt="cover">
       </div>
       <div class="info">
-        <p class="title">
+        <p class="title" @click.stop="jumpPage(buy && buy.sign_id)">
           {{ buy && buy.title }}
         </p>
         <p class="money">
-          单价{{ buyPrice }}{{ buy && buy.symbol }}&nbsp;&nbsp;总价{{ buyAmount }}{{ buy && buy.symbol }}
+          {{ $t('user.unitPrice') }}
+          {{ buyPrice }}
+          {{ buy && buy.symbol }}
+          &nbsp;&nbsp;
+          {{ $t('user.totalPrice') }}
+          {{ buyAmount }}
+          {{ buy && buy.symbol }}
         </p>
       </div>
     </div>
 
-    <div v-for="(item, index) in buy && buy.digital_copy" :key="index" class="copy" @click.stop="copyText(item)">
+    <div v-for="(item, index) in buy && buy.digital_copy" :key="index" class="copy">
       <span>{{ item }}</span>
-      <div class="copy-button">
-        <svg-icon class="icon" icon-class="copy" />
-        复制
-      </div>
+      <svg-icon class="copy-button" icon-class="copy" @click.stop="copyText(item)" />
     </div>
   </div>
 </template>
@@ -64,12 +69,12 @@ export default {
       this.$copyText(text).then(
         () => {
           this.$message({
-            message: '复制成功',
+            message: this.$t('success.copy'),
             type: 'success'
           })
         },
         () => {
-          this.$message.error('复制失败')
+          this.$message.error(this.$t('error.copy'))
         }
       )
     },
@@ -123,6 +128,7 @@ export default {
     border: 1px solid #ececec;
     box-sizing: border-box;
     border-radius: 4px;
+    cursor: pointer;
     img {
       width: 100%;
       height: 100%;
@@ -146,6 +152,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      cursor: pointer;
     }
     .money {
       width: 100%;
@@ -160,36 +167,23 @@ export default {
     border-radius: 50px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 4px 10px;
+    padding: 8px 10px;
     margin: 0;
     box-sizing: border-box;
-    cursor: pointer;
-  span {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     font-size: 14px;
-    color:rgba(178,178,178,1);
-  }
-  .icon {
-    width: 14px;
-    height: 14px;
-    color: #fff;
-    flex: 0 0 14px;
-    margin-right: 4px;
-  }
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 14px;
+      color:rgba(178,178,178,1);
+    }
+
   .copy-button {
-    width: 60px;
-    height: 20px;
-    background: @purpleDark;
-    border-radius: 20px;
-    color: #fff;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
+    color:rgba(178,178,178,1);
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
   }
 }
 </style>

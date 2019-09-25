@@ -4,7 +4,8 @@
     <div class="search-container">
       <div class="search-head">
         <p class="search-title">
-          <span>{{ searchQueryVal }}</span>的搜索结果
+          <span>{{ searchQueryVal }}</span>
+          {{ $t('search.result') }}
         </p>
         <el-dropdown>
           <el-button>
@@ -13,17 +14,17 @@
           <el-dropdown-menu slot="dropdown" class="search-dropdown">
             <el-dropdown-item>
               <n-link :to="{name: 'search', query: {q: $route.query.q}}">
-                文章
+                {{ $t('search.optionText11') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link :to="{name: 'search-shop', query: {q: $route.query.q}}">
-                商品
+                {{ $t('search.optionText12') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link :to="{name: 'search-user', query: {q: $route.query.q}}">
-                作者
+                {{ $t('search.optionText13') }}
               </n-link>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -79,7 +80,7 @@
         </div>
       </div>
       <p v-show="!searchQueryValLen" class="not-val">
-        暂无搜索结果
+        {{ $t('search.notResult') }}
       </p>
     </div>
   </div>
@@ -132,9 +133,9 @@ export default {
     },
     // 当前搜索属于什么页面
     nowSearch() {
-      if (this.$route.name === 'search-shop') return '商品'
-      else if (this.$route.name === 'search-user') return '用户'
-      else return '文章'
+      if (this.$route.name === 'search-shop') return this.$t('search.optionText12')
+      else if (this.$route.name === 'search-user') return this.$t('search.optionText13')
+      else return this.$t('search.optionText11')
     }
   },
   created() {
@@ -153,7 +154,7 @@ export default {
       this.reload = Date.now()
     },
     query() {
-      if (!strTrim(this.$route.query.q)) return this.$message.warning('搜索内容不能为空')
+      if (!strTrim(this.$route.query.q)) return this.$message.warning(this.$t('warning.searchContent'))
       this.searchQueryVal = strTrim(this.$route.query.q)
 
       const params = {

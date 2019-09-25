@@ -3,20 +3,38 @@
     <div class="mw footer-content">
       <div class="content">
         <div class="nav">
-          <a class="href" target="_blank" href="https://www.matataki.io/p/782">使用手册</a>
-          <a class="href" target="_blank" href="https://www.matataki.io/p/781">平台积分</a>
-          <a class="href" href="javascript:;">隐私政策</a>
-          <a class="href" href="javascript:;">用户协议</a>
-          <a class="href" target="_blank" href="https://github.com/smart-signature/MATATAKI_FE">关于我们</a>
-          <a class="href" target="_blank" href="http://www.matataki.io/p/616">智能公告牌</a>
+          <a class="href" target="_blank" href="https://www.matataki.io/p/782">
+            {{ $t('footer.hellpbook') }}
+          </a>
+          <a class="href" target="_blank" href="https://www.matataki.io/p/781">
+            {{ $t('footer.point') }}
+          </a>
+          <a class="href" href="javascript:;">
+            {{ $t('footer.privacyPolicy') }}
+          </a>
+          <a class="href" href="javascript:;">
+            {{ $t('footer.userAgreement') }}
+          </a>
+          <a class="href" target="_blank" href="https://github.com/smart-signature/MATATAKI_FE">
+            {{ $t('footer.about') }}
+          </a>
+          <a class="href" target="_blank" href="http://www.matataki.io/p/616">
+            {{ $t('footer.billboard') }}
+          </a>
         </div>
         <p class="link">
-          友情链接:
-          <a href="http://linkidol.pro/" target="_blank">链接偶像</a>
+          {{ $t('footer.link') }}:
+          <a href="http://linkidol.pro/" target="_blank">
+            {{ $t('footer.linkidol') }}
+          </a>
           |
-          <a href="https://orange.xyz/" target="_blank">橙皮书</a>
+          <a href="https://orange.xyz/" target="_blank">
+            {{ $t('footer.orange') }}
+          </a>
           |
-          <a href="https://eosvote.com/" target="_blank">EOSvote</a>
+          <a href="https://eosvote.com/" target="_blank">
+            {{ $t('footer.eosvote') }}
+          </a>
         </p>
       </div>
       <div>
@@ -27,13 +45,13 @@
               <div class="wechat-img">
                 <img src="@/assets/img/wechat-group.png" alt="code">
                 <p class="wechat-title">
-                  扫码进群
+                  {{ $t('footer.scanCode') }}
                 </p>
               </div>
               <div class="wechat-img">
                 <img src="@/assets/img/wechat-public.png" alt="code">
                 <p class="wechat-title">
-                  关注公众号
+                  {{ $t('footer.follow') }}
                 </p>
               </div>
             </div>

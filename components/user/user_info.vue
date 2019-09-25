@@ -6,7 +6,7 @@
     <div class="avatar-content">
       <avatar class="avatar" :src="userInfo.avatar" />
       <div v-if="isMe($route.params.id)" class="info-type" :class="iconType">
-        <svg-icon title="账号类型" class="icon-type" :icon-class="iconType" />
+        <svg-icon :title="$t('user.accountType')" class="icon-type" :icon-class="iconType" />
       </div>
     </div>
     <h3 class="author">
@@ -15,7 +15,7 @@
     </h3>
 
     <p class="des">
-      {{ userInfo.introduction || '暂无' }}
+      {{ userInfo.introduction || $t('not') }}
     </p>
     <div class="follow-fan">
       <div class="data">
@@ -23,7 +23,7 @@
           {{ userInfo.follows || 0 }}
         </n-link>
         <p class="title">
-          关注
+          {{ $t('follow') }}
         </p>
       </div>
       <div class="data">
@@ -31,7 +31,7 @@
           {{ userInfo.fans || 0 }}
         </n-link>
         <p class="title">
-          粉丝
+          {{ $t('fans') }}
         </p>
       </div>
     </div>
@@ -46,7 +46,7 @@
           type: userInfo.followed ? 0 : 1
         })"
       >
-        {{ userInfo.followed ? '取消关注' : '关注' }}
+        {{ userInfo.followed ? $t('unFollow') : $t('follow') }}
       </button>
     </template>
     <!-- 如果是设置页面不显示 end -->

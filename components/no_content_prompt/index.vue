@@ -24,7 +24,9 @@ export default {
     },
     prompt: {
       type: String,
-      default: '暂无内容'
+      default: function () {
+        return this.$t('notContent')
+      }
     }
   },
   computed: {

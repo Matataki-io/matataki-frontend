@@ -14,7 +14,7 @@
         </p>
       </div>
     </div>
-    <a class="del" href="javascript:;" @click.stop="$emit('del', index)">删除</a>
+    <a class="del" href="javascript:;" @click.stop="$emit('del', index)">{{ $t('delete') }}</a>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <section class="step">
     <h1 class="step-title">
-      EOS钱包
+      {{ $t('auth.eosWallet') }}
     </h1>
     <div class="wallet">
       <a
@@ -14,7 +14,7 @@
       </a>
     </div>
     <h1 class="step-title">
-      ONT钱包
+      {{ $t('auth.ontWallet') }}
     </h1>
     <div class="wallet">
       <a

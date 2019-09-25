@@ -9,20 +9,24 @@
   >
     <el-input v-model="url" placeholder="请输入文章网址链接，包含http(s)://" />
     <p class="des gray">
-      目前支持：链闻、橙皮书、微信、简书文章。
+      {{ $t('p.importDes1') }}
     </p>
     <p class="des" />
     <p class="des">
-      如若在本平台发表的内容发声侵权行为，SS官方有权下架该作品，并保留向侵权作者追究法律责任的权利。
+      {{ $t('p.importDes2') }}
     </p>
     <div class="statement">
       <el-checkbox v-model="statement">
-        我同意
+        {{ $t('p.importAgree') }}
       </el-checkbox>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="closeDialog">取 消</el-button>
-      <el-button :loading="loading" type="primary" :disabled="!statement" @click="importFunc">确 定</el-button>
+      <el-button @click="closeDialog">
+        {{ $t('cancel') }}
+      </el-button>
+      <el-button :loading="loading" type="primary" :disabled="!statement" @click="importFunc">
+        {{ $t('confirm') }}
+      </el-button>
     </span>
   </el-dialog>
 </template>
@@ -55,19 +59,16 @@ export default {
     },
     async importFunc() {
       const url = strTrim(this.url)
-      if (!internetUrl(url)) return this.$message.error('请输入正确的地址')
+      if (!internetUrl(url)) return this.$message.error(this.$t('p.importAddressError'))
       this.loading = true
       const res = await this.$API.importArticle(url)
       // console.log(res)
       if (res.code === 0) {
-        this.$message({
-          message: '导入成功',
-          type: 'success'
-        })
-        const templateLink = `<br />来源链接：[${url}](${url})`
+        this.$message.success(this.$t('p.importSuccess'))
+        const templateLink = `<br />${this.$t('p.importAddress')}[${url}](${url})`
         res.data.content += templateLink
         this.$emit('importArticle', res.data)
-      } else this.$message.error('导入失败,目前只支持: 链闻、橙皮书、微信文章')
+      } else this.$message.error(this.$t('p.importError'))
       this.loading = false
       this.closeDialog()
     }
