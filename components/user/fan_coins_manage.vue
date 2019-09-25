@@ -2,7 +2,7 @@
   <div v-if="isPublishCoins" class="coins-publish">
     <div class="fl ac coins-head">
       <h1>
-        {{ tokenDetailData.token.name }}-{{ tokenDetailData.token.symbol }}
+        {{ tokenDetailData.token.symbol }}
       </h1>
       <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
         <svg-icon
@@ -17,7 +17,7 @@
       <div class="fl ac jsb info-block">
         <div class="info-data">
           <p class="info-data-number">
-            {{ tokenDetailData.token.total_supply }}<sub>枚</sub>
+            {{ totalAmount }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
             印发总量
@@ -99,7 +99,7 @@
         >
           <template slot-scope="scope">
             <div class="invite-block">
-              <span class="time">{{ scope.row.amount }}</span>
+              <span class="time">{{ tokenAmount(scope.row.amount) }}</span>
             </div>
           </template>
         </el-table-column>
@@ -125,6 +125,7 @@ import { mapGetters } from 'vuex'
 import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
+import { precision, toPrecision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -153,7 +154,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined'])
+    ...mapGetters(['isLogined']),
+    totalAmount() {
+      return this.tokenDetailData.token ? precision(this.tokenDetailData.token.total_supply, 'CNY', this.tokenDetailData.token.decimals) : 0
+    }
   },
   created() {
     this.tokenDetail()
@@ -178,7 +182,7 @@ export default {
     },
     async minetokenMint(amount) {
       const data = {
-        amount: amount
+        amount: toPrecision(amount, 'CNY', this.tokenDetailData.token.decimals)
       }
       await this.$API.minetokenMint(data)
         .then(res => {
@@ -206,6 +210,9 @@ export default {
     },
     cover(cover) {
       return cover ? this.$API.getImg(cover) : ''
+    },
+    tokenAmount(amount) {
+      return precision(amount, 'CNY', this.tokenDetailData.token.decimals)
     },
     paginationData(res) {
       console.log(res)

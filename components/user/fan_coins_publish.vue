@@ -65,6 +65,7 @@
 
 <script>
 import imgUpload from '@/components/imgUpload/index.vue'
+import { toPrecision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -108,7 +109,7 @@ export default {
     async minetokenMint() {
       const { number } = this.form
       const data = {
-        amount: number
+        amount: toPrecision(number, 'CNY')
       }
       await this.$API.minetokenMint(data)
         .then(res => {
