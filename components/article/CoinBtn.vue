@@ -24,15 +24,19 @@
         </p>
         <template v-else>
           <p v-for="(item, i) in points.arr" :key="i">
-            {{ (item.text + item.amount) || 0 }}积分
+            {{ (item.text + item.amount) || 0 }}{{ $t('p.point') }}
           </p>
         </template>
         <div class="tip-container">
           <p class="tip">
-            * 阅读2分30秒 +{{ $point.readOnceMax }}积分
+            {{ $t('p.readPoint') }}
+            {{ $point.readOnceMax }}
+            {{ $t('p.point') }}
           </p>
           <p class="tip">
-            * 新内容 +{{ $point.readNew }}积分
+            {{ $t('p.newPoint') }}
+            {{ $point.readNew }}
+            {{ $t('p.point') }}
           </p>
         </div>
       </div>
@@ -101,10 +105,10 @@ export default {
         // reading: '用户阅读', // 用户阅读
         // beread: '+', // 读者的文章被阅读
         // publish: '+', // 发布文章
-        read_new: '阅读新文章', // 用户阅读新文章，额外获得的
+        read_new: this.$t('p.read_new'), // 用户阅读新文章，额外获得的
         // beread_new: '+', // 读者的新文章被阅读，额外获得的
-        read_like: '用户阅读', // 读者的新文章被阅读，额外获得的
-        read_dislike: '用户阅读' // 读者的新文章被阅读，额外获得的
+        read_like: this.$t('p.read_like'), // 读者的新文章被阅读，额外获得的
+        read_dislike: this.$t('p.read_dislike') // 读者的新文章被阅读，额外获得的
       }
       const arr = []
       let all = 0
@@ -137,12 +141,12 @@ export default {
     readTime() {
       const time = this.time
       if (time < 60) {
-        return `${time}秒`
+        return `${time}${this.$t('p.second')}`
       } else {
         const m = Math.floor(time / 60)
         const s = time - m * 60
-        if (s !== 0) return `${m}分钟${s}秒`
-        else return `${m}分钟`
+        if (s !== 0) return `${m}${this.$t('p.minute')}${s}${this.$t('p.second')}`
+        else return `${m}${this.$t('p.minute')}`
       }
     }
   },
@@ -200,12 +204,11 @@ export default {
     margin: 10px 0;
   }
   .tip-container {
-    margin-top: 20px;
     .tip {
-      color: #B2B2B2;
-      font-style:italic;
-      font-size: 12px;
+      color: #696969;
+      font-size: 14px;
       margin: 0;
+      line-height: 1.5;
     }
   }
   .btns-container {

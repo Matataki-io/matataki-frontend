@@ -29,6 +29,9 @@ export default {
   view: '查看',
   promptTitle: '提示',
   backHome: '回到首页',
+  feedback: '立即吐槽',
+  notPage: '找不到您想访问的页面.',
+  serverError: '服务器丢失了...',
   close: '关闭',
   confirm: '确定',
   cancel: '取消',
@@ -442,7 +445,26 @@ export default {
     createFail: '图片生成失败',
     sharePopover: '点击“分享文章”按钮与朋友共享好文章',
     likePopover: '指向此图标后，选择“推荐”或“不推荐”，即可领取阅读积分奖励！',
-    confirmPopover: '知道了'
+    confirmPopover: '知道了',
+    // coinBtn
+    like: '推荐',
+    unlike: '不推荐',
+    reads: '已阅读',
+    point: '积分',
+    readPoint: '* 阅读2分30秒 +',
+    newPoint: '* 新内容 +',
+    read_new: '阅读新文章',
+    read_like: '推荐',
+    read_dislike: '不推荐',
+    minute: '分钟',
+    second: '秒',
+    // feedback
+    readArticlePoint: '阅读文章，获得{}个积分',
+    readNewArticleNPoint: '阅读新文章，获得{}个积分',
+    readThreeDaysNewArticlePoint: '阅读3天内发表的新文章可额外获得{}个积分',
+    // tokenFooter
+    readAddPoint: '阅读 + {}积分',
+    newAddPoint: '新文章 + {}积分'
   },
   invite: {
     headerTitle: '我的邀请',

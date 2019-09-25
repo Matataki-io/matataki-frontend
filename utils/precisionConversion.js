@@ -2,6 +2,7 @@
 const EOS = 10000
 const ONT = 10000
 const VNT = 10000
+const CNY = 10000
 
 /**
  *
@@ -13,6 +14,7 @@ export const precision = (amount, symbol = '') => {
   if (symbolLower === 'eos') return amount / EOS
   if (symbolLower === 'ont') return amount / ONT
   if (symbolLower === 'vnt') return amount / VNT
+  if (symbolLower === 'cny') return amount / CNY
   return amount
 }
 /**
@@ -25,4 +27,5 @@ export const toPrecision = (amount, symbol) => {
   if (symbolLower === 'eos') return amount * EOS
   if (symbolLower === 'ont') return amount * ONT
   if (symbolLower === 'vnt') return amount * VNT
+  if (symbolLower === 'cny') return amount * CNY
 }

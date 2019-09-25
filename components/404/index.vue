@@ -9,9 +9,9 @@
       <div class="four" />
     </div>
     <div class="info">
-      <p>找不到您想访问的页面.</p>
-      <a href="/" class="btn">返回首页</a>
-      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">立即吐槽</a>
+      <p>{{ $t('notPage') }}</p>
+      <a href="/" class="btn">{{ $t('backHome') }}</a>
+      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">{{ $t('feedback') }}</a>
     </div>
   </div>
 </template>
