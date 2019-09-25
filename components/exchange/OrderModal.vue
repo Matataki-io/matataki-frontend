@@ -11,22 +11,23 @@
       <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
       <table class="order-table">
         <tbody>
-          <tr><td class="order-key">交易账号：</td><td>Nickanme123</td></tr>
-          <tr><td class="order-key">交易内容：</td><td>DDT</td></tr>
-          <tr><td class="order-key">交易数量：</td><td>200个</td></tr>
-          <tr><td class="order-key">创建时间：</td><td>2019-06-08 10:00:00</td></tr>
-          <tr><td class="order-key">订单编号：</td><td>#DDT12312312321</td></tr>
-          <tr><td class="order-key">交易金额：</td><td>￥ 10.00</td></tr>
+          <tr><td class="order-key">交易账号：</td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td></tr>
+          <tr><td class="order-key">交易内容：</td><td>{{ order.outputToken.symbol }}</td></tr>
+          <tr><td class="order-key">交易数量：</td><td>{{ order.output }}</td></tr>
+          <tr><td class="order-key">创建时间：</td><td>{{ friendlyTime }}</td></tr>
+          <tr><td class="order-key">订单编号：</td><td>{{ order.trade_no }}</td></tr>
+          <tr><td class="order-key">交易金额：</td><td>￥ {{ input }}</td></tr>
         </tbody>
       </table>
       <button @click="genQRCode" v-if="notClick">生成支付二维码</button>
-      <div ref="qr" class="qrcode" />
+      <div v-show="!notClick" ref="qr" class="qrcode" />
     </div>
   </el-dialog>
 </template>
 
 <script>
 /* eslint-disable */
+import { mapGetters } from 'vuex'
 export default {
   name: 'OrderModal',
   props: {
@@ -41,7 +42,23 @@ export default {
       })
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo']),
+    friendlyTime() {
+      return this.moment(parseInt(this.order.timeStamp) * 1000).format('YYYY-MM-DD HH:mm:ss')
+    },
+    input() {
+      if (this.order.input) {
+        return parseFloat(this.order.input).toFixed(2)
+      } else {
+        return 0
+      }
+    }
+  },
   watch: {
+    order() {
+      this.notClick = true
+    },
     showModal(val) {
       this.$emit('input', val)
     },
