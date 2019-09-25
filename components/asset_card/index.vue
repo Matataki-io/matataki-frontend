@@ -18,10 +18,7 @@
           @click="copyInfo(asset.toaddress)"
         >
           {{ asset.toaddress }}
-          <div class="copy">
-            <svg-icon class="icon" icon-class="copy" />
-            复制
-          </div>
+          <svg-icon class="icon" icon-class="copy" />
         </div>
         <div
           v-if="asset.trx"
@@ -29,10 +26,7 @@
           @click="copyInfo(asset.trx)"
         >
           {{ asset.trx }}
-          <div class="copy">
-            <svg-icon class="icon" icon-class="copy" />
-            复制
-          </div>
+          <svg-icon class="icon" icon-class="copy" />
         </div>
       </span>
     </div>
@@ -69,7 +63,11 @@ export default {
         reading_new: '+', // 用户阅读新文章，额外获得的
         beread_new: '+', // 读者的新文章被阅读，额外获得的
         reading_like: '+',
-        reading_dislike: '+'
+        reading_dislike: '+',
+        // 人民币
+        recharge: '',
+        transfer_out: '',
+        transfer_in: ''
       }
       const switchType = {
         support_expenses: '',
@@ -95,7 +93,11 @@ export default {
         author_supported_income: '#FB6877',
         withdraw: '#000000',
         buyad: '#44D7B6',
-        earn: '#FB6877'
+        earn: '#FB6877',
+        // 人民币
+        recharge: '#FB6877',
+        transfer_out: '#44D7B6',
+        transfer_in: '#FB6877'
       }
       return switchType[this.asset.type] || '#FB6877'
     },
@@ -140,6 +142,11 @@ export default {
         author_supported_income: '被投资收入',
         buyad: '公告牌支出',
         earn: '公告牌收入',
+        // 人民币
+        recharge: '充值',
+        transfer_out: '转出资产',
+        transfer_in: '转入资产',
+
         ...pointTypes
       }
       return switchType[type]
@@ -153,13 +160,10 @@ export default {
     copyInfo(copyText) {
       this.$copyText(copyText).then(
         () => {
-          this.$message({
-            message: '复制成功',
-            type: 'success'
-          })
+          this.$message.success(this.$t('success.copy'))
         },
         () => {
-          this.$message.error('复制失败')
+          this.$message.error(this.$t('error.copy'))
         }
       )
     }
@@ -169,30 +173,28 @@ export default {
 
 <style scoped lang="less">
 .card {
-  margin: 10px 0;
   box-sizing: border-box;
   background-color: #fff;
-  padding: 16px 20px;
+  padding: 20px 10px;
   display: flex;
   flex-direction: column;
   position: relative;
   text-align: left;
   width: 100%;
-  border-bottom: 1px solid #DBDBDB;
+  border-bottom: 1px solid #ececec;
   &:nth-last-of-type(1) {
     border: none;
   }
   &-pricing {
     padding: 0;
     margin: 0;
-    font-size:20px;
-    font-weight:500;
+    font-weight: bold;
+    font-size: 22px;
     color:rgba(0,0,0,1);
     line-height:28px;
   }
   &-type {
-    font-size:18px;
-    font-weight:400;
+    font-size: 16px;
     color:rgba(0,0,0,1);
     line-height:28px;
   }
@@ -200,17 +202,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
     width: 100%;
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
   &-title {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:22px;
+    font-size: 14px;
+    color:#333;
+    line-height: 1.5;
     &-info {
       margin: 0 6px 0 0;
     }
@@ -219,8 +216,7 @@ export default {
     }
   }
   &-date {
-    font-size:16px;
-    font-weight:400;
+    font-size: 14px;
     color:rgba(178,178,178,1);
     line-height:22px;
   }
@@ -229,20 +225,11 @@ export default {
 .copy-list {
   display: flex;
   align-items: center;
-  .copy {
-    border-radius: 20px;
-    margin-left: 6px;
-    background: #dbdbdb;
-    color: #fff;
-    padding: 2px 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
+  .icon {
+    margin-left: 10px;
+    color: #2d2d2d;
     cursor: pointer;
-    .icon {
-      margin-right: 4px;
-    }
+    font-size: 16px;
   }
 }
 </style>

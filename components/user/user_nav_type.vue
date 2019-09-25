@@ -31,10 +31,10 @@ export default {
       typeIcon: [ // todo 完善路由
         { icon: iconEOS, title: 'EOS', url: 'user-account' },
         { icon: iconONT, title: 'ONT', url: 'user-account-ont' },
+        { icon: iconRMB, title: 'RMB', url: 'user-account-cny' },
         { icon: iconVNT, title: 'VNT', url: '' },
         { icon: iconETH, title: 'ETH', url: '' },
-        { icon: iconBTC, title: 'BTC', url: '' },
-        { icon: iconRMB, title: 'RMB', url: '' }
+        { icon: iconBTC, title: 'BTC', url: '' }
       ]
     }
   },
@@ -67,7 +67,6 @@ export default {
   a {
     font-size:20px;
     font-weight:400;
-    color:rgba(0,0,0,1);
     line-height:33px;
     text-decoration: none;
     margin-right: 60px;
@@ -75,7 +74,9 @@ export default {
     display: flex;
     flex-direction: column;
     text-align: center;
+    color: #333;
     &.active {
+      color:rgba(0,0,0);
       font-weight:bold;
     }
     &.disabled {

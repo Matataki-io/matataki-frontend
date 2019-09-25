@@ -6,11 +6,9 @@
         <span class="total-title">待提现</span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
-      <div>
-        <button @click="$emit('toggleWithdraw', 1)">
-          提现
-        </button>
-      </div>
+      <el-button class="btn" :disabled="type === 'CNY'" @click="$emit('toggleWithdraw', 1)">
+        提现
+      </el-button>
     </div>
     <div class="line" />
     <div class="total-list">
@@ -69,7 +67,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'EOS'
+      required: true
     }
   },
   computed: {
@@ -99,49 +97,45 @@ export default {
 
 <style lang="less" scoped>
 .flexCenter{
-      display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .line {
   width: 100%;
   height: 1px;
-  background-color: #DBDBDB;
+  background-color: #ececec;
 }
-.withdraw {}
+.withdraw {
+  padding: 0 10px;
+}
 .total {
   .flexCenter();
   &-left {
     display: flex;
     flex-direction: column;
-    padding: 40px 0;
+    padding: 20px 0;
   }
   &-title {
-    font-size:20px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:28px;
+    font-size: 18px;
+    color: #333;
+    line-height: 1;
   }
   &-money {
-    font-size:36px;
+    font-size:40px;
     color:rgba(0,0,0,1);
-    line-height:56px;
+    margin-top: 10px;
   }
-  button {
-    width:90px;
-    height:40px;
-    background:rgba(0,0,0,1);
-    border-radius: @borderRadius6;
+  .btn:not([disabled]) {
+    background: #000;
+    border-color: #000;
     color: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
   }
 }
 
 .total-list {
   .flexCenter();
-  padding: 40px 0;
+  padding: 20px 0;
   &-block {
     display: flex;
     flex-direction: column;
@@ -152,23 +146,21 @@ export default {
       content: '';
       position: absolute;
       left: 0;
-      top: 16px;
+      top: 20px;
       display: block;
       width: 1px;
       height: 30px;
-      background-color: #979797;
+      background-color: #ececec;
     }
   }
   &-money {
-    font-size: 40px;
+    font-size: 30px;
     color: rgba(251,104,119,1);
-    line-height: 56px;
+    margin: 4px 0;
   }
   &-title {
-    font-size:18px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:28px;
+    font-size: 14px;
+    color:#333;
   }
 }
 </style>
