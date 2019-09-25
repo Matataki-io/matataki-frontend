@@ -266,7 +266,8 @@ export default {
           token_id: outputToken.id,
           token_amount: toDecimal(output, outputToken.decimals),
           limit_value: toDecimal(this.limitValue, outputToken.decimals),
-          decimals: outputToken.decimals
+          decimals: outputToken.decimals,
+          min_liquidity: toDecimal(this.youMintTokenAmount, outputToken.decimals)
         })
         .then(res => {
           this.order = res
