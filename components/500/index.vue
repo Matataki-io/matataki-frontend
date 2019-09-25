@@ -3,9 +3,9 @@
     <div class="brick" />
     <img class="error-gif" src="@/assets/img/500/01.gif" alt="error">
     <div class="info">
-      <p>服务器丢失了...</p>
-      <a href="/" class="btn">返回首页</a>
-      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">立即吐槽</a>
+      <p>{{ $t('serverError') }}</p>
+      <a href="/" class="btn">{{ $t('backHome') }}</a>
+      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">{{ $t('feedback') }}</a>
     </div>
   </div>
 </template>

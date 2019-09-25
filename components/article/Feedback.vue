@@ -9,13 +9,17 @@
     <div class="feedback-outer">
       <img :src="fbImg" alt="" class="icon">
       <div v-if="p.reading > 0" class="feedback-title">
-        <p>阅读文章，获得{{ p.reading }}个积分</p>
+        <p>
+          {{ $t('p.readArticlePoint', [p.reading]) }}
+        </p>
       </div>
       <div v-if="p.reading_new > 0" class="feedback-title">
-        <p>阅读新文章，获得{{ p.reading_new }}个积分</p>
+        <p>
+          {{ $t('p.readNewArticleNPoint', [p.reading_new]) }}
+        </p>
       </div>
       <p class="bottom-tip">
-        阅读3天内发表的新文章可额外获得{{ $point.readNew }}个积分
+        {{ $t('p.readThreeDaysNewArticlePoint', [$point.readNew]) }}
       </p>
     </div>
   </el-dialog>

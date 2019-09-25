@@ -1,8 +1,8 @@
 <template>
   <div class="article-ipfs">
     <p>
-      本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。
-      <el-tooltip class="item" effect="dark" content="「HASH」是一篇作品上传到 IPFS 后生成的独一无二的 ID，通过HASH可在 IPFS 不同节点访问作品內容。" placement="top-start">
+      {{ $t('p.ipfsTitle') }}
+      <el-tooltip class="item" effect="dark" :content="$t('p.ipfsContent')" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
@@ -10,14 +10,14 @@
       </el-tooltip>
     </p>
     <div class="ipfs-hash">
+      <n-link class="ipfs" target="_blank" :to="{name: 'ipfs-hash', params: {hash: hash}}">
+        IPFS Hash: {{ hash || 'Loading...' }}
+      </n-link>
       <svg-icon
         class="copy-hash"
         icon-class="copy"
         @click="copyText(getCopyIpfsHash)"
       />
-      <n-link class="ipfs" target="_blank" :to="{name: 'ipfs-hash', params: {hash: hash}}">
-        IPFS Hash: {{ hash || 'Loading...' }}
-      </n-link>
     </div>
     <img class="ipfs-img" src="@/assets/img/ipfs.png" alt="ipfs">
   </div>
@@ -45,10 +45,10 @@ export default {
     copyText(getCopyIpfsHash) {
       this.$copyText(getCopyIpfsHash).then(
         () => {
-          this.$message.success('复制成功')
+          this.$message.success(this.$t('success.copy'))
         },
         () => {
-          this.$message.error('复制失败')
+          this.$message.error(this.$t('error.copy'))
         }
       )
     }
