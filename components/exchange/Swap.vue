@@ -6,7 +6,7 @@
           <div class="jUAxZT">
             <span>输入</span>
           </div>
-          <div>余额：0.084</div>
+          <!-- <div>余额：0.084</div> -->
         </div>
         <div class="jbRmQG">
           <input
@@ -15,9 +15,11 @@
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
-            value="0.01"
+            @input="inputChange"
+            @blur="inputBlur"
+            :value="form.input"
           />
-          <!-- @click="tlShow = true;currentClick = 'inputToken'" -->
+          <!-- @click="tlShow = true;field = 'inputToken'" -->
           <button class="iAoRgd" >
             <span class="rTZzf">
               {{ form.inputToken.symbol || '请选择'}}
@@ -40,7 +42,7 @@
           <div class="jUAxZT">
             <span>输出</span>
           </div>
-          <div>余额：0.084</div>
+          <!-- <div>余额：0.084</div> -->
         </div>
         <div class="jbRmQG">
           <input
@@ -49,9 +51,11 @@
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
-            value="0.01"
+            readonly="readonly"
+            @input="outputChange"
+            :value="form.output"
           />
-          <button class="iAoRgd" @click="tlShow = true;currentClick = 'outputToken'">
+          <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
               {{ form.outputToken.symbol || '请选择'}}
               <i class="el-icon-arrow-down"></i>
@@ -63,61 +67,35 @@
     <div class="hYLPFg">
       <div class="exKIZr"></div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">兑换率</span><span>1 BAT = 0.0009 ETH</span>
+        <span class="sc-hORach icyNSS">兑换率</span>
+        <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{form.outputToken.symbol}}</span>
+        <span v-else> - </span>
       </div>
     </div>
-    <div class="mHVYT">
-      <span class="fZbbbs">余额不足</span>
-      <i class="el-icon-arrow-down"></i>
+    <div class="mHVYT" @click="detailShow = !detailShow" >
+      <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
+      <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
     </div>
-    <div class="iUPTxf">
+    <div class="iUPTxf" v-show="detailShow">
       <div class="hRyusy">
         <div>你正在出售
           <span class="iDChvK">
-            <span class="jbXIaP">1 ETH</span>
-          </span> for at least
+            <span class="jbXIaP">{{form.input}} CNY</span>
+          </span> 最少获得≈
           <span class="iDChvK">
-            <span class="jbXIaP">1026.3265 BAT</span>
+            <span class="jbXIaP">{{limitValue}} {{form.outputToken.symbol}}</span>
           </span>
         </div>
-        <div class="sc-bsbRJL kxtVAF">固定预期利率
+        <div class="sc-bsbRJL kxtVAF">预期价格滑落
           <span class="iDChvK">
-            <span class="jbXIaP">1%</span>
+            <span class="jbXIaP">{{ priceSlippage * 100 }}%</span>
           </span>
         </div>
       </div>
     </div>
     <div class="hGStes">
-      <button disabled class="jBltiI">兑换</button>
+      <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">兑换</button>
     </div>
-    <!-- <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="输入">
-        <el-input-number v-model="form.input" :step="0.01" :min="0"></el-input-number>
-        <el-select v-model="form.inputToken" filterable placeholder="选择通证">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="输出">
-        <el-input-number v-model="form.output" :step="0.01" :min="0"></el-input-number>
-        <el-select v-model="form.outputToken" filterable placeholder="选择通证">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit('buy_token')">购买</el-button>
-        <el-button type="primary" @click="onSubmit('sale_token')">卖出</el-button>
-      </el-form-item>
-    </el-form>-->
     <OrderModal v-model="orderShow" :order="{...order,...form}"></OrderModal>
     <TokenListModal v-model="tlShow" @selectToken="selectToken"></TokenListModal>
   </div>
@@ -126,6 +104,10 @@
 <script>
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
+import utils from '@/utils/utils'
+const INPUT = 'inputToken'
+const OUTPUT = 'outputToken'
+
 export default {
   components: {
     OrderModal,
@@ -133,8 +115,9 @@ export default {
   },
   data() {
     return {
+      detailShow: false,
       tlShow: false,
-      currentClick: '',
+      field: '', // INPUT OUTPUT
       orderShow: false,
       form: {
         input: '',
@@ -148,25 +131,92 @@ export default {
           label: 'CNY'
         }
       ],
-      order: {}
+      order: {},
+      priceSlippage: 0.01
     }
   },
   async asyncData() {},
   mounted() {
   },
-  methods: {
-    selectToken(token) {
-      this.form[this.currentClick] = token
+  computed: {
+    btnDisabled() {
+      const { input, output, outputToken } = this.form
+      if (utils.isNull(input) || utils.isNull(outputToken) || utils.isNull(output)) {
+        return true
+      }
+      return false
     },
-    onSubmit(type) {
+    limitValue() {
+      const { output } = this.form
+      if (!utils.isNull(output)) {
+        return (parseFloat(output) * (1 - this.priceSlippage)).toFixed(4)
+      }
+      return '-'
+    },
+    exchangeRate() {
+      const { input, output } = this.form
+      if (!utils.isNull(input) && !utils.isNull(output)) {
+        return ((1 / input) * output).toFixed(4)
+      }
+      return ''
+    }
+  },
+  methods: {
+    inputBlur(e) {
+      const value = e.target.value
+      const { input, outputToken } = this.form
+      if (!utils.isNull(input) && !utils.isNull(outputToken)) {
+        this.$API.getTokenAmount(outputToken.id, input).then((res) => {
+          if (res.code === 0) {
+            this.form.output = res.data
+          }
+        })
+      }
+    },
+    isEmptyObj(obj) {
+      return Object.keys(obj).length === 0
+    },
+    inputChange(e) {
+      const value = e.target.value
+      this.form.input = value
+    },
+    outputChange(e) {
+      const value = e.target.value
+      const { input, outputToken } = this.form
+      if (utils.isNull(input) || utils.isNull(outputToken)) {
+        this.form.output = value
+      }
+    },
+    selectToken(token) {
+      this.form[this.field] = token
+      if (this.field === OUTPUT) {
+        if (!utils.isNull(this.form.input)) {
+          this.$API.getTokenAmount(token.id, this.form.input).then((res) => {
+            if (res.code === 0) {
+              this.form.output = res.data
+            } else {
+              this.$message.error('暂无交易对')
+              this.form.output = ''
+            }
+          })
+        }
+      }
+    },
+    decimalTransfer(v, decimal) {
+      return parseFloat(v) * Math.pow(10, decimal)
+    },
+    onSubmit() {
+      const { input, output, outputToken } = this.form
+      const { decimalTransfer } = this
       this.$API
         .wxpay({
-          total: this.form.input,
-          title: '购买Token',
-          type, // type类型见typeOptions：add，buy_token，sale_token
-          token_id: this.form.outputToken.id,
-          token_amount: this.form.output,
-          limit_value: 0
+          total: decimalTransfer(input, outputToken.decimals), // 单位yuan
+          title: `购买${outputToken.symbol}`,
+          type: 'buy_token', // type类型见typeOptions：add，buy_token，sale_token
+          token_id: outputToken.id,
+          token_amount: decimalTransfer(output, outputToken.decimals),
+          limit_value: decimalTransfer(this.limitValue, outputToken.decimals),
+          decimals: outputToken.decimals
         })
         .then(res => {
           this.order = res

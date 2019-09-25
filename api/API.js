@@ -327,8 +327,8 @@ export default {
   wxlogin(code) {
     return request.post('/wx/login', { code })
   },
-  wxpay({ total, title, type, token_id, token_amount, limit_value }) {
-    return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value })
+  wxpay({ total, title, type, token_id, token_amount, limit_value, decimals }) {
+    return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals })
   },
   allToken(page = 1, pagesize = 10) {
     return request({
@@ -372,4 +372,50 @@ export default {
   tokenDetail() {
     return request.get('/token/detail')
   },
+  // -------------------------------- exchange API --------------------------------
+  getCnyAmount(tokenId, amount) {
+    return request({
+      method: 'get',
+      url: '/exchange/cnyAmount',
+      params: {
+        tokenId, amount
+      }
+    })
+  },
+  getTokenAmount(tokenId, amount) {
+    return request({
+      method: 'get',
+      url: '/exchange/tokenAmount',
+      params: {
+        tokenId, amount
+      }
+    })
+  },
+  getCurrentPoolSize(tokenId) {
+    return request({
+      method: 'get',
+      url: '/exchange/currentPoolSize',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getYourPoolSize(tokenId) {
+    return request({
+      method: 'get',
+      url: '/exchange/userPoolSize',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getYourMintToken(tokenId, amount) {
+    return request({
+      method: 'get',
+      url: '/exchange/userMintToken',
+      params: {
+        tokenId, amount
+      }
+    })
+  }
 }
