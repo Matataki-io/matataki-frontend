@@ -16,25 +16,25 @@
         <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
           <svg-icon icon-class="great-solid" />
         </button>
-        <span>推荐 <em class="like">{{ article && article.likes }}</em></span>
+        <span>{{ $t('p.like') }}<em class="like">{{ article && article.likes }}</em></span>
       </div>
       <div class="btn-outer">
         <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
           <svg-icon icon-class="bullshit-solid" />
         </button>
-        <span>不推荐 <em class="like">{{ article && article.dislikes }}</em></span>
+        <span>{{ $t('p.unlike') }} <em class="like">{{ article && article.dislikes }}</em></span>
       </div>
     </div>
     <div v-if="token.points.length !== 0 || !clicked" class="article-info">
       <div v-if="!clicked" class="info1">
-        <span>已阅读{{ readTime }}</span>
+        <span>{{ $t('p.reads') }}{{ readTime }}</span>
       </div>
       <template v-else>
         <div v-if="p.reading > 0" class="info1">
-          <span>阅读 + {{ p.reading }}积分</span>
+          <span>{{ $t('p.readAddPoint', [p.reading]) }}</span>
         </div>
         <div v-if="p.reading_new > 0" class="info1">
-          <span>新文章 + {{ p.reading_new }}积分</span>
+          <span>{{ $t('p.newAddPoint', [p.reading_new]) }}</span>
         </div>
       </template>
     </div>
@@ -90,8 +90,8 @@ export default {
       } else {
         const m = Math.floor(time / 60)
         const s = time - m * 60
-        if (s !== 0) return `${m}分钟${s}秒`
-        else return `${m}分钟`
+        if (s !== 0) return `${m}${this.$t('p.minute')}${s}${this.$t('p.second')}`
+        else return `${m}${this.$t('p.minute')}`
       }
     },
     p() {

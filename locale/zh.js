@@ -461,7 +461,10 @@ export default {
     // feedback
     readArticlePoint: '阅读文章，获得{}个积分',
     readNewArticleNPoint: '阅读新文章，获得{}个积分',
-    readThreeDaysNewArticlePoint: '阅读3天内发表的新文章可额外获得{}个积分'
+    readThreeDaysNewArticlePoint: '阅读3天内发表的新文章可额外获得{}个积分',
+    // tokenFooter
+    readAddPoint: '阅读 + {}积分',
+    newAddPoint: '新文章 + {}积分'
   },
   invite: {
     headerTitle: '我的邀请',
