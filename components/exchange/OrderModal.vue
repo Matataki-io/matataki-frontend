@@ -78,6 +78,7 @@ export default {
     } */
   },
   methods: {
+    // 生成二维码
     genQRCode() {
       this.notClick = false
       new QRCode(this.$refs.qr, {
