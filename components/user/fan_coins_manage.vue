@@ -2,7 +2,7 @@
   <div v-if="isPublishCoins" class="coins-publish">
     <div class="fl ac coins-head">
       <h1>
-        {{ tokenDetailData.name }}-{{ tokenDetailData.symbol }}
+        {{ tokenDetailData.token.name }}-{{ tokenDetailData.token.symbol }}
       </h1>
       <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
         <svg-icon
@@ -17,7 +17,7 @@
       <div class="fl ac jsb info-block">
         <div class="info-data">
           <p class="info-data-number">
-            {{ tokenDetailData.total_supply }}<sub>枚</sub>
+            {{ tokenDetailData.token.total_supply }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
             印发总量
