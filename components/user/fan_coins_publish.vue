@@ -48,7 +48,7 @@
         </div>
       </el-form-item>
       <el-form-item label="发行数量" prop="number">
-        <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量" />
+        <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量(最多发行1亿)" />
       </el-form-item>
 
       <el-form-item>
@@ -93,7 +93,7 @@ export default {
         ],
         number: [
           { required: true, message: '请输入首次发行数量', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          { min: 1, max: 9, message: '首次发行数量一亿', trigger: 'blur' }
         ]
       },
       imgUploadDone: 0 // 图片是否上传完成
