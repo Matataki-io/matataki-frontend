@@ -7,10 +7,10 @@
           <Swap />
         </el-tab-pane>
         <el-tab-pane label="发送">
-          发送
+          <span style="color: white;">敬请期待！</span>
         </el-tab-pane>
         <el-tab-pane label="资金池">
-          资金池
+          <Pool />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -19,9 +19,11 @@
 
 <script>
 import Swap from '@/components/exchange/Swap'
+import Pool from '@/components/exchange/Pool'
 export default {
   components: {
-    Swap
+    Swap,
+    Pool
   },
   data() {
     return {

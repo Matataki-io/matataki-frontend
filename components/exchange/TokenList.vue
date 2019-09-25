@@ -87,7 +87,7 @@ export default {
     line-height: 24px;
     font-size: 18px;
     color: #ffffff;
-}
+  }
 }
 </style>
 <style scoped lang="less">

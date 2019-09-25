@@ -1,10 +1,17 @@
 <template>
   <div>
+    <div class="hYLPFg">
+      <div class="caRvnP" @click="psShow = true">
+          <span class="gclSjj">添加流动金</span>
+          <i class="el-icon-arrow-down"></i>
+      </div>
+      <div class="jJSpkX"></div>
+    </div>
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>输入</span>
+            <span>存入</span>
           </div>
           <div>余额：0.084</div>
         </div>
@@ -17,11 +24,10 @@
             placeholder="0.0"
             value="0.01"
           />
-          <!-- @click="tlShow = true;currentClick = 'inputToken'" -->
-          <button class="iAoRgd" >
+          <button class="iAoRgd" @click="tlShow = true;currentClick = 'inputToken'">
             <span class="rTZzf">
               {{ form.inputToken.symbol || '请选择'}}
-              <!-- <i class="el-icon-arrow-down"></i> -->
+              <i class="el-icon-arrow-down"></i>
             </span>
           </button>
         </div>
@@ -30,7 +36,7 @@
     <div class="hYLPFg">
       <div class="exKIZr"></div>
       <div class="haryqg">
-        <i class="el-icon-bottom gHgbDu"></i>
+        <i class="el-icon-plus gHgbDu"></i>
       </div>
       <div class="jJSpkX"></div>
     </div>
@@ -38,7 +44,7 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>输出</span>
+            <span>存入</span>
           </div>
           <div>余额：0.084</div>
         </div>
@@ -63,11 +69,17 @@
     <div class="hYLPFg">
       <div class="exKIZr"></div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">兑换率</span><span>1 BAT = 0.0009 ETH</span>
+        <span class="sc-hORach icyNSS">兑换率</span><span>-</span>
+      </div>
+      <div class="lfiYXW">
+        <span class="sc-hORach icyNSS">当前资金池大小</span><span>-</span>
+      </div>
+      <div class="lfiYXW">
+        <span class="sc-hORach icyNSS">你的资金池份额（%）</span><span>-</span>
       </div>
     </div>
     <div class="mHVYT">
-      <span class="fZbbbs">余额不足</span>
+      <span class="fZbbbs">选取通证继续</span>
       <i class="el-icon-arrow-down"></i>
     </div>
     <div class="iUPTxf">
@@ -88,57 +100,33 @@
       </div>
     </div>
     <div class="hGStes">
-      <button disabled class="jBltiI">兑换</button>
+      <button disabled class="jBltiI">添加流动金</button>
     </div>
-    <!-- <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="输入">
-        <el-input-number v-model="form.input" :step="0.01" :min="0"></el-input-number>
-        <el-select v-model="form.inputToken" filterable placeholder="选择通证">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="输出">
-        <el-input-number v-model="form.output" :step="0.01" :min="0"></el-input-number>
-        <el-select v-model="form.outputToken" filterable placeholder="选择通证">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit('buy_token')">购买</el-button>
-        <el-button type="primary" @click="onSubmit('sale_token')">卖出</el-button>
-      </el-form-item>
-    </el-form>-->
     <OrderModal v-model="orderShow" :order="{...order,...form}"></OrderModal>
     <TokenListModal v-model="tlShow" @selectToken="selectToken"></TokenListModal>
+    <PoolSelectModal v-model="psShow"></PoolSelectModal>
   </div>
 </template>
 
 <script>
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
+import PoolSelectModal from './PoolSelect'
 export default {
   components: {
     OrderModal,
-    TokenListModal
+    TokenListModal,
+    PoolSelectModal
   },
   data() {
     return {
+      psShow: false,
       tlShow: false,
       currentClick: '',
       orderShow: false,
       form: {
         input: '',
-        inputToken: { symbol: 'CNY' },
+        inputToken: {},
         output: '',
         outputToken: {}
       },
@@ -176,5 +164,4 @@ export default {
   }
 }
 </script>
-
 <style lang="less" scoped src="./index.less"></style>
