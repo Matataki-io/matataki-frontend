@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="原创声明"
+    :title="$t('publish.originalStatement')"
     :visible.sync="dialogVisible"
     width="600px"
     center

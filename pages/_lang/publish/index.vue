@@ -5,7 +5,7 @@
         <input
           v-model="title"
           class="edit-title"
-          placeholder="请输入文章标题..."
+          :placeholder="$t('publish.titlePlaceholder')"
           size="large"
           clearable
         >

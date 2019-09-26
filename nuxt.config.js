@@ -4,6 +4,7 @@ import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 import env from './env'
+// import I18N from './plugins/i18n.js'
 function genENV() {
   const keys = Object.keys(env.production)
   const result = {}
@@ -70,7 +71,7 @@ export default {
 
   ],
   router: {
-    middleware: 'i18n'
+    // middleware: 'lang'
   },
   /*
   ** Plugins to load before mounting the App
@@ -87,9 +88,9 @@ export default {
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false }
   ],
   generate: {
-    routes: [
-      '/', '/en'
-    ]
+    // routes: [
+    //   '/', '/en'
+    // ]
   },
   /*
   ** Nuxt.js modules
@@ -100,6 +101,7 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxtjs/pwa'
+    // ['nuxt-i18n', I18N]
   ],
   styleResources: {
     less: './assets/css/global.less'
@@ -114,6 +116,8 @@ export default {
   ** Build configuration
   */
   build: {
+    // CSS提取
+    extractCSS: true,
     /*
     ** You can extend webpack config here
     */

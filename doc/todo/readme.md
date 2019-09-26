@@ -6,6 +6,6 @@
 - [ ] 评论mac 支持command + enter (目前是control+enter)
 
 
+
 // 国际化
-fan_coins_manage
-fan_coins_publish
+切换语言后 源码里面并没有换过来是一个优化的点!!! 感觉目前的方式不太好 by xiaotian
