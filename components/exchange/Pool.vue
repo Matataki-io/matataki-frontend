@@ -209,7 +209,7 @@ export default {
       const { input, outputToken } = this.form
       if (!utils.isNull(input) && !utils.isNull(outputToken)) {
         // 获取输出token的数量
-        this.getTokenAmount(outputToken.id, input)
+        this.getTokenAmount(outputToken, input)
         // 获取你能挖到的数量
         this.getYourMintToken(outputToken.id, input)
       }
@@ -232,14 +232,14 @@ export default {
         this.getCurrentPoolSize(token.id)
         if (!utils.isNull(inputAmount)) {
           // 获取输出token的数量
-          this.getTokenAmount(token.id, inputAmount)
+          this.getTokenAmount(token, inputAmount)
           // 获取你能挖到的数量
           this.getYourMintToken(token.id, inputAmount)
         }
       }
     },
-    getTokenAmount(id, amount) {
-      this.$API.getTokenAmount(id, amount).then((res) => {
+    getTokenAmount(token, amount) {
+      this.$API.getTokenAmount(token.id, this.toDecimal(amount, token.decimals)).then((res) => {
         if (res.code === 0) {
           this.outputReadOnly = true
           this.form.output = res.data

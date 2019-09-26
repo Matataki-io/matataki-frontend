@@ -166,7 +166,8 @@ export default {
       const value = e.target.value
       const { input, outputToken } = this.form
       if (!utils.isNull(input) && !utils.isNull(outputToken)) {
-        this.$API.getTokenAmount(outputToken.id, input).then((res) => {
+        const amount = this.toDecimal(input, outputToken.decimals)
+        this.$API.getTokenAmount(outputToken.id, amount).then((res) => {
           if (res.code === 0) {
             this.form.output = res.data
           }
@@ -191,7 +192,8 @@ export default {
       this.form[this.field] = token
       if (this.field === OUTPUT) {
         if (!utils.isNull(this.form.input)) {
-          this.$API.getTokenAmount(token.id, this.form.input).then((res) => {
+          const amount = this.toDecimal(this.form.input, token.decimals)
+          this.$API.getTokenAmount(token.id, amount).then((res) => {
             if (res.code === 0) {
               this.form.output = res.data
             } else {
@@ -202,20 +204,20 @@ export default {
         }
       }
     },
-    decimalTransfer(v, decimal) {
+    toDecimal(v, decimal) {
       return parseFloat(v) * Math.pow(10, decimal)
     },
     onSubmit() {
       const { input, output, outputToken } = this.form
-      const { decimalTransfer } = this
+      const { toDecimal } = this
       this.$API
         .wxpay({
-          total: decimalTransfer(input, outputToken.decimals), // 单位yuan
+          total: toDecimal(input, outputToken.decimals), // 单位yuan
           title: `购买${outputToken.symbol}`,
           type: 'buy_token', // type类型见typeOptions：add，buy_token，sale_token
           token_id: outputToken.id,
-          token_amount: decimalTransfer(output, outputToken.decimals),
-          limit_value: decimalTransfer(this.limitValue, outputToken.decimals),
+          token_amount: toDecimal(output, outputToken.decimals),
+          limit_value: toDecimal(this.limitValue, outputToken.decimals),
           decimals: outputToken.decimals
         })
         .then(res => {
