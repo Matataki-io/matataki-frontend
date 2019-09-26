@@ -373,24 +373,6 @@ export default {
     return request.get('/token/detail')
   },
   // -------------------------------- exchange API --------------------------------
-  getCnyAmount(tokenId, amount) {
-    return request({
-      method: 'get',
-      url: '/exchange/cnyAmount',
-      params: {
-        tokenId, amount
-      }
-    })
-  },
-  getTokenAmount(tokenId, amount) {
-    return request({
-      method: 'get',
-      url: '/exchange/tokenAmount',
-      params: {
-        tokenId, amount
-      }
-    })
-  },
   getCurrentPoolSize(tokenId) {
     return request({
       method: 'get',
@@ -415,6 +397,43 @@ export default {
       url: '/exchange/userMintToken',
       params: {
         tokenId, amount
+      }
+    })
+  },
+  getOrderStatus(tradeNo) {
+    return request({
+      method: 'get',
+      url: '/exchange/notify',
+      params: {
+        trade_no: tradeNo
+      }
+    })
+  },
+  getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
+    return request({
+      method: 'get',
+      url: '/exchange/outputAmount',
+      params: {
+        inputTokenId, outputTokenId, inputAmount
+      }
+    })
+  },
+  getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+    return request({
+      method: 'get',
+      url: '/exchange/inputAmount',
+      params: {
+        inputTokenId, outputTokenId, outputAmount
+      }
+    })
+  },
+  // token 换 token / cny接口
+  swap({inputTokenId, outputTokenId, inputAmount, minValue}) {
+    return request({
+      method: 'post',
+      url: '/exchange/swap',
+      data: {
+        inputTokenId, outputTokenId, inputAmount, minValue
       }
     })
   }

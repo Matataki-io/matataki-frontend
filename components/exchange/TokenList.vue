@@ -32,6 +32,7 @@
 
 <script>
 /* eslint-disable */
+import { CNY } from './consts.js'
 export default {
   name: 'TokenListModal',
   props: {
@@ -67,7 +68,10 @@ export default {
     getAllToken() {
       this.$API.allToken().then(res => {
         console.log(res)
-        this.tokenList = res.data.list
+        this.tokenList = [
+          CNY,
+          ...res.data.list
+        ]
       })
     },
   }
