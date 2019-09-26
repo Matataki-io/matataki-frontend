@@ -5,12 +5,12 @@
     </span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item>
-        <span @click="toggleLanguage('zh')">
+        <span @click="changeLanguage('zh')">
           中文
         </span>
       </el-dropdown-item>
       <el-dropdown-item>
-        <span @click="toggleLanguage('en')">
+        <span @click="changeLanguage('en')">
           English
         </span>
       </el-dropdown-item>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
+
 export default {
   data() {
     return {
@@ -27,24 +29,15 @@ export default {
   },
   computed: {
     language() {
-      console.log(this.$route)
+      // console.log(this.$route)
       return this.$i18n.locale === 'zh' ? '中文' : 'English'
     }
   },
   methods: {
-    toggleLanguage(lang) {
-      // this.$i18n.locale = lang
-      if (lang === 'zh') {
-        this.$router.replace({
-          // eslint-disable-next-line no-useless-escape
-          path: this.$route.fullPath.replace(/^\/[^\/]+/, '')
-        })
-      } else {
-        this.$router.replace({
-          path: '/en' + this.$route.fullPath
-        })
-      }
-      this.$store.commit('SET_LANG', lang)
+    changeLanguage(lang) {
+      Cookies.set('language', lang)
+
+      this.$i18n.locale = lang
     }
   }
 }

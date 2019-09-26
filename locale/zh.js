@@ -352,7 +352,9 @@ export default {
     modalTextButton2: '退出',
     importArticle: '导入文章',
     publishArticleSuccess: '发文成功，奖励{0}积分',
+    importInput: '请输入文章网址链接，包含http(s)://',
     // statement
+    originalStatement: '原创声明',
     statement: '勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：',
     statement1: '1.歪曲、篡改、抄袭、剽窃他人创作而产生的作品，',
     statement2: '2.文章主要篇幅为诸如“法律、法规，国家机关的决议、决定、命令和其他具有立法、行政、司法性质的文件、时事新闻、历法、通用数表、通用表格和公式”等的公共内容；',

@@ -7,7 +7,7 @@
     custom-class="import br10"
     @close="$emit('close')"
   >
-    <el-input v-model="url" placeholder="请输入文章网址链接，包含http(s)://" />
+    <el-input v-model="url" :placeholder="$t('publish.importInput')" />
     <p class="des gray">
       {{ $t('p.importDes1') }}
     </p>

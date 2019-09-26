@@ -139,7 +139,13 @@ import stage3 from '@/assets/img/home/stage3.png'
 export default {
   data() {
     return {
-      effectList: [
+
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined']),
+    effectList() {
+      return [
         {
           title: this.$t('about.painPoint'),
           subtitle: this.$t('about.painPointTitle1'),
@@ -176,8 +182,10 @@ export default {
           img: effect5,
           des: this.$t('about.programDes3')
         }
-      ],
-      stageList: [
+      ]
+    },
+    stageList() {
+      return [
         {
           title: this.$t('about.stageTitle1'),
           des: this.$t('about.stageDes11'),
@@ -198,9 +206,6 @@ export default {
         }
       ]
     }
-  },
-  computed: {
-    ...mapGetters(['isLogined'])
   },
   mounted() {
   },

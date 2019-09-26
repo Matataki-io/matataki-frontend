@@ -157,16 +157,7 @@ export default {
   },
   data() {
     return {
-      nav: [
-        {
-          title: this.$t('home.navArticle'),
-          url: 'article'
-        },
-        {
-          title: this.$t('home.navShop'),
-          url: 'shop'
-        }
-      ],
+
       avatar: '',
       searchFcous: false,
       searchInput: this.searchQueryVal,
@@ -176,6 +167,18 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    nav() {
+      return [
+        {
+          title: this.$t('home.navArticle'),
+          url: 'article'
+        },
+        {
+          title: this.$t('home.navShop'),
+          url: 'shop'
+        }
+      ]
+    },
     // customizeHeaderBcComputed() {
     //   return {
     //     backgroundColor: this.customizeHeaderBc,
