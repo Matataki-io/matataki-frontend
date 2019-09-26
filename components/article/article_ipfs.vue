@@ -58,14 +58,13 @@ export default {
 
 <style scoped lang="less">
 .article-ipfs {
-  height:94px;
   background:rgba(241,241,241,1);
   border-radius:6px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   margin: 20px 0 0;
-  padding: 20px;
+  padding: 20px 140px 20px 20px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
