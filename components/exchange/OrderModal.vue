@@ -19,17 +19,20 @@
           <tr><td class="order-key">交易金额：</td><td>￥ {{ input }}</td></tr>
         </tbody>
       </table>
-      <button @click="genQRCode" v-if="notClick">生成支付二维码</button>
-      <div v-show="!notClick" ref="qr" class="qrcode" />
+      <!-- <button @click="genQRCode" v-if="notClick">生成支付二维码</button> -->
+      <!-- <div ref="qr" class="qrcode" /> -->
+      <QRCode :payLink="order.code_url"></QRCode>
     </div>
   </el-dialog>
 </template>
 
 <script>
 /* eslint-disable */
+import QRCode from './Qrcode'
 import { mapGetters } from 'vuex'
 export default {
   name: 'OrderModal',
+  components: {QRCode},
   props: {
     value: {
       type: Boolean,
@@ -81,11 +84,18 @@ export default {
     // 生成二维码
     genQRCode() {
       this.notClick = false
-      new QRCode(this.$refs.qr, {
+      if (process.client) {
+        require('qrcode').toCanvas(this.$refs.qr, {
+          text: this.order.code_url,
+          width: 80,
+          height: 80
+        })
+      }
+      /* new QRCode(this.$refs.qr, {
         text: this.order.code_url,
         width: 80,
         height: 80
-      })
+      }) */
     }
   }
 }
@@ -104,11 +114,6 @@ export default {
         color: #666;
       }
     }
-  }
-  .qrcode {
-    background: #ffffff;
-    width: 80px;
-    height: 80px;
   }
 }
 </style>
