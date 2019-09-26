@@ -22,29 +22,36 @@ export default {
   },
   data() {
     return {
-      user: [
-        // self 只有自己才能看
+
+    }
+  },
+  computed: {
+    ...mapGetters(['isMe']),
+    user() {
+      return [
+      // self 只有自己才能看
         { title: this.$t('user.creation'), url: 'user-id', self: false },
         { title: this.$t('user.investment'), url: 'user-id-investment', self: false },
         { title: this.$t('user.draft'), url: 'user-id-draft', self: true },
         { title: this.$t('user.fan'), url: 'user-id-fan', self: false },
         { title: this.$t('user.follow'), url: 'user-id-follow', self: false },
         { title: this.$t('user.buy'), url: 'user-id-buy', self: true }
-      ],
-      setting: [ // todo 完善路由
+      ]
+    },
+    setting() {
+      return [ // todo 完善路由
         { title: this.$t('user.setting'), url: 'user-setting', self: false }
-      ],
-      account: [ // todo 完善路由
+      ]
+    },
+    account() {
+      return [ // todo 完善路由
         { title: this.$t('user.wallet'), url: 'user-account', self: false },
         { title: this.$t('user.point'), url: 'user-account-points', self: false },
         { title: this.$t('user.invite'), url: 'user-account-invite', self: false },
         { title: this.$t('user.buycoins'), url: 'user-account-buycoins', self: false },
         { title: this.$t('user.selfcoins'), url: 'user-account-coins', self: false }
       ]
-    }
-  },
-  computed: {
-    ...mapGetters(['isMe']),
+    },
     navList() {
       // TODO 之前个人主页和我的账户是同一页面 需要params id 现在可以考虑移除这个判断
       const isMe = this.isMe(this.$route.params.id)
