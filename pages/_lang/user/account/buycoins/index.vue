@@ -15,10 +15,10 @@
             :label="$t('user.coins')"
           >
             <template slot-scope="scope">
-              <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.id}}">
+              <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
                 <avatar :src="cover(scope.row.avatar)" size="30px" />
                 jia
-                <span class="username">{{ scope.row.name }} - {{ scope.row.symbol }}</span>
+                <span class="username">{{ scope.row.symbol }}</span>
               </n-link>
             </template>
           </el-table-column>
@@ -35,7 +35,7 @@
             :label="$t('user.positionCoins')"
           >
             <template slot-scope="scope">
-              <span class="username">{{ scope.row.total_supply }}</span>
+              <span class="username">{{ tokenAmount(scope.row.total_supply, scope.row.decimals) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -79,6 +79,7 @@ import avatar from '@/components/avatar/index.vue'
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -113,6 +114,10 @@ export default {
     },
     cover(cover) {
       return cover ? this.$API.getImg(cover) : ''
+    },
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     paginationData(res) {
       console.log(res)

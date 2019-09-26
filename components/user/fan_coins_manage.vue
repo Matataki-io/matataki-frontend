@@ -87,7 +87,7 @@
           label="持仓者"
         >
           <template slot-scope="scope">
-            <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.id}}">
+            <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
               <avatar :src="cover(scope.row.avatar)" size="30px" />
               <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
             </n-link>
@@ -126,6 +126,7 @@ import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
+import { testDecimal } from '@/utils/reg'
 
 export default {
   components: {
@@ -156,7 +157,10 @@ export default {
   computed: {
     ...mapGetters(['isLogined']),
     totalAmount() {
-      return this.tokenDetailData.token ? precision(this.tokenDetailData.token.total_supply, 'CNY', this.tokenDetailData.token.decimals) : 0
+      if (this.tokenDetailData.token) {
+        const tokenamount = precision(this.tokenDetailData.token.total_supply, 'CNY', this.tokenDetailData.token.decimals)
+        return this.$publishMethods.formatDecimal(tokenamount, 4)
+      } else return 0
     }
   },
   created() {
@@ -196,12 +200,13 @@ export default {
     },
     addCoins() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      this.$prompt('增发数量', '提示', {
-        inputPattern: /^[0-9]*$/,
-        inputErrorMessage: '请输入数字',
+      this.$prompt('增发数量(总量最多发行一亿)', '提示', {
+        inputPattern: /^\d{0,9}$/,
+        inputErrorMessage: '请输入数字(总量最多发行一亿)',
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
+        if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message.warning('发行总量不能超过一亿')
         if (Number(value) > 0) this.minetokenMint(Number(value))
       })
     },
@@ -212,7 +217,8 @@ export default {
       return cover ? this.$API.getImg(cover) : ''
     },
     tokenAmount(amount) {
-      return precision(amount, 'CNY', this.tokenDetailData.token.decimals)
+      const tokenamount = precision(amount, 'CNY', this.tokenDetailData.token.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     paginationData(res) {
       console.log(res)
