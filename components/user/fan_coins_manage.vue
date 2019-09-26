@@ -71,9 +71,11 @@
         <el-button class="info-button" size="small" @click="addCoins">
           增发
         </el-button>
-        <el-button class="info-button" size="small">
-          交易
-        </el-button>
+        <router-link :to="{name: 'exchange'}">
+          <el-button class="info-button" size="small">
+            交易
+          </el-button>
+        </router-link>
       </div>
     </div>
 

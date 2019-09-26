@@ -45,9 +45,11 @@
           >
             <template>
               <div class="invite-block btn">
-                <el-button size="small">
-                  {{ $t('transaction') }}
-                </el-button>
+                <router-link :to="{name: 'exchange'}">
+                  <el-button class="info-button" size="small">
+                    {{ $t('transaction') }}
+                  </el-button>
+                </router-link>
               </div>
             </template>
           </el-table-column>
