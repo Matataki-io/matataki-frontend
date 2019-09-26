@@ -36,9 +36,13 @@ export default {
     fanCoins() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (this.isMe(this.id)) {
-
+        this.$router.push({
+          name: 'user-account-coins'
+        })
       } else {
-
+        this.$router.push({
+          name: 'exchange'
+        })
       }
     }
   }
