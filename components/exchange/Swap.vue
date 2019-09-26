@@ -19,11 +19,10 @@
             @blur="inputBlur"
             :value="form.input"
           />
-          <!-- @click="tlShow = true;field = 'inputToken'" -->
-          <button class="iAoRgd" >
+          <button class="iAoRgd" @click="tlShow = true;field = 'inputToken'">
             <span class="rTZzf">
               {{ form.inputToken.symbol || '请选择'}}
-              <!-- <i class="el-icon-arrow-down"></i> -->
+              <i class="el-icon-arrow-down"></i>
             </span>
           </button>
         </div>
@@ -49,10 +48,10 @@
             class="gcotIA"
             type="number"
             min="0"
-            step="0.000000000000000001"
+            step="0.0001"
             placeholder="0.0"
-            readonly="readonly"
             @input="outputChange"
+            @blur="outputBlur"
             :value="form.output"
           />
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
@@ -68,7 +67,7 @@
       <div class="exKIZr"></div>
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">兑换率</span>
-        <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{form.outputToken.symbol}}</span>
+        <span v-if="exchangeRate">1 {{form.inputToken.symbol}} = {{ exchangeRate }} {{form.outputToken.symbol}}</span>
         <span v-else> - </span>
       </div>
     </div>
@@ -80,7 +79,7 @@
       <div class="hRyusy">
         <div>你正在出售
           <span class="iDChvK">
-            <span class="jbXIaP">{{form.input}} CNY</span>
+            <span class="jbXIaP">{{form.input}} {{form.inputToken.symbol}}</span>
           </span> 最少获得≈
           <span class="iDChvK">
             <span class="jbXIaP">{{limitValue}} {{form.outputToken.symbol}}</span>
@@ -104,9 +103,8 @@
 <script>
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
+import { CNY, INPUT, OUTPUT } from './consts.js'
 import utils from '@/utils/utils'
-const INPUT = 'inputToken'
-const OUTPUT = 'outputToken'
 
 export default {
   components: {
@@ -121,16 +119,10 @@ export default {
       orderShow: false,
       form: {
         input: '',
-        inputToken: { symbol: 'CNY' },
+        inputToken: CNY,
         output: '',
         outputToken: {}
       },
-      options: [
-        {
-          value: 0,
-          label: 'CNY'
-        }
-      ],
       order: {},
       priceSlippage: 0.01
     }
@@ -164,66 +156,105 @@ export default {
   methods: {
     inputBlur(e) {
       const value = e.target.value
-      const { input, outputToken } = this.form
-      if (!utils.isNull(input) && !utils.isNull(outputToken)) {
-        const amount = this.toDecimal(input, outputToken.decimals)
-        this.$API.getTokenAmount(outputToken.id, amount).then((res) => {
-          if (res.code === 0) {
-            this.form.output = res.data
-          }
-        })
+      const { input, inputToken, outputToken } = this.form
+      if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
+        this.getOutputAmount(inputToken.id, outputToken.id, input)
       }
     },
-    isEmptyObj(obj) {
-      return Object.keys(obj).length === 0
+    outputBlur(e) {
+      const value = e.target.value
+      const { inputToken, output, outputToken } = this.form
+      if (!utils.isNull(inputToken) && !utils.isNull(output) && !utils.isNull(outputToken)) {
+        this.getInputAmount(inputToken.id, outputToken.id, output)
+      }
     },
     inputChange(e) {
       const value = e.target.value
       this.form.input = value
+      if (!utils.isNull(this.form.outputToken)) {
+        this.form.output = ''
+      }
     },
     outputChange(e) {
       const value = e.target.value
-      const { input, outputToken } = this.form
-      if (utils.isNull(input) || utils.isNull(outputToken)) {
-        this.form.output = value
+      this.form.output = value
+      if (!utils.isNull(this.form.outputToken)) {
+        this.form.input = ''
       }
     },
     selectToken(token) {
       this.form[this.field] = token
-      if (this.field === OUTPUT) {
-        if (!utils.isNull(this.form.input)) {
-          const amount = this.toDecimal(this.form.input, token.decimals)
-          this.$API.getTokenAmount(token.id, amount).then((res) => {
-            if (res.code === 0) {
-              this.form.output = res.data
-            } else {
-              this.$message.error('暂无交易对')
-              this.form.output = ''
-            }
-          })
-        }
+      const { input, inputToken, output, outputToken } = this.form
+      console.log(input, inputToken.symbol, output, outputToken.symbol)
+      if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
+        this.getOutputAmount(inputToken.id, outputToken.id, input)
+        return
+      }
+      if (!utils.isNull(output) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
+        this.getInputAmount(inputToken.id, outputToken.id, output)
       }
     },
-    toDecimal(v, decimal) {
-      return parseFloat(v) * Math.pow(10, decimal)
-    },
     onSubmit() {
-      const { input, output, outputToken } = this.form
-      const { toDecimal } = this
-      this.$API
-        .wxpay({
-          total: toDecimal(input, outputToken.decimals), // 单位yuan
-          title: `购买${outputToken.symbol}`,
-          type: 'buy_token', // type类型见typeOptions：add，buy_token，sale_token
-          token_id: outputToken.id,
-          token_amount: toDecimal(output, outputToken.decimals),
-          limit_value: toDecimal(this.limitValue, outputToken.decimals),
-          decimals: outputToken.decimals
+      const { input, inputToken, output, outputToken } = this.form
+      // 输入是人名币
+      if (inputToken.isCNY) {
+        this.$API
+          .wxpay({
+            total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
+            title: `购买${outputToken.symbol}`,
+            type: 'buy_token', // type类型见typeOptions：add，buy_token，sale_token
+            token_id: outputToken.id,
+            token_amount: utils.toDecimal(output, outputToken.decimals),
+            limit_value: utils.toDecimal(this.limitValue, outputToken.decimals),
+            decimals: outputToken.decimals
+          })
+          .then(res => {
+            this.order = res
+            this.orderShow = true
+          })
+      } else {
+        // 输入不是人名币
+        this.$API.swap({
+          inputTokenId: inputToken.id,
+          outputTokenId: outputToken.id,
+          inputAmount: utils.toDecimal(output, 4),
+          minValue: utils.toDecimal(this.limitValue, 4)
+        }).then(res => {
+          if (res.code === 0) {
+            this.$alert('跳转到我的持仓查看？', '兑换成功', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('请重新兑换', '兑换失败', {
+              confirmButtonText: '确定'
+            })
+          }
         })
-        .then(res => {
-          this.order = res
-          this.orderShow = true
-        })
+      }
+    },
+    getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
+      const deciaml = 4
+      const _inputAmount = utils.toDecimal(inputAmount, deciaml)
+      this.$API.getOutputAmount(inputTokenId, outputTokenId, _inputAmount).then((res) => {
+        if (res.code === 0) {
+          this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+        } else {
+          this.$message.error('暂无交易对')
+          this.form.output = ''
+        }
+      })
+    },
+    getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+      const deciaml = 4
+      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+        if (res.code === 0) {
+          this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+        } else {
+          this.$message.error('暂无交易对')
+          this.form.input = ''
+        }
+      })
     }
   }
 }

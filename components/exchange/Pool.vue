@@ -132,9 +132,8 @@
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
 import PoolSelectModal from './PoolSelect'
+import { CNY, INPUT, OUTPUT } from './consts.js'
 import utils from '@/utils/utils'
-const INPUT = 'inputToken'
-const OUTPUT = 'outputToken'
 
 export default {
   components: {
@@ -151,16 +150,10 @@ export default {
       orderShow: false,
       form: {
         input: '',
-        inputToken: { symbol: 'CNY' },
+        inputToken: CNY,
         output: '',
         outputToken: {}
       },
-      options: [
-        {
-          value: 0,
-          label: 'CNY'
-        }
-      ],
       order: {},
       priceSlippage: 0.02,
       outputReadOnly: true,
@@ -206,10 +199,10 @@ export default {
   methods: {
     inputBlur(e) {
       const value = e.target.value
-      const { input, outputToken } = this.form
+      const { input, inputToken, outputToken } = this.form
       if (!utils.isNull(input) && !utils.isNull(outputToken)) {
         // 获取输出token的数量
-        this.getTokenAmount(outputToken, input)
+        this.getOutputAmount(inputToken.id, outputToken.id, input)
         // 获取你能挖到的数量
         this.getYourMintToken(outputToken.id, input)
       }
@@ -225,49 +218,44 @@ export default {
     selectToken(token) {
       this.form[this.field] = token
       if (this.field === OUTPUT) {
-        const inputAmount = this.form.input
+        const { inputToken, input } = this.form
         // 获取个人占比
         this.getYourPoolSize(token.id)
         // 获取总池子大小
         this.getCurrentPoolSize(token.id)
-        if (!utils.isNull(inputAmount)) {
+        if (!utils.isNull(input)) {
           // 获取输出token的数量
-          this.getTokenAmount(token, inputAmount)
+          this.getOutputAmount(inputToken.id, token.id, input)
           // 获取你能挖到的数量
-          this.getYourMintToken(token.id, inputAmount)
+          this.getYourMintToken(token.id, input)
         }
       }
     },
-    getTokenAmount(token, amount) {
-      this.$API.getTokenAmount(token.id, this.toDecimal(amount, token.decimals)).then((res) => {
+    getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
+      const deciaml = 4
+      const _inputAmount = utils.toDecimal(inputAmount, deciaml)
+      this.$API.getOutputAmount(inputTokenId, outputTokenId, _inputAmount).then((res) => {
         if (res.code === 0) {
           this.outputReadOnly = true
-          this.form.output = res.data
+          this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
         } else {
           this.form.output = ''
           this.outputReadOnly = false
         }
       })
     },
-    toDecimal(v, decimal) {
-      return parseFloat(v) * Math.pow(10, decimal)
-    },
-    fromDecimal(v, decimal) {
-      return (parseFloat(v) / Math.pow(10, decimal)).toFixed(4)
-    },
     onSubmit() {
       const { input, output, outputToken } = this.form
-      const { toDecimal } = this
       this.$API
         .wxpay({
-          total: toDecimal(input, outputToken.decimals), // 单位yuan
+          total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
           title: `添加流动金`,
           type: 'add', // type类型见typeOptions：add，buy_token，sale_token
           token_id: outputToken.id,
-          token_amount: toDecimal(output, outputToken.decimals),
-          limit_value: toDecimal(this.limitValue, outputToken.decimals),
+          token_amount: utils.toDecimal(output, outputToken.decimals),
+          limit_value: utils.toDecimal(this.limitValue, outputToken.decimals),
           decimals: outputToken.decimals,
-          min_liquidity: toDecimal(this.youMintTokenAmount, outputToken.decimals)
+          min_liquidity: utils.toDecimal(this.youMintTokenAmount, outputToken.decimals)
         })
         .then(res => {
           this.order = res
@@ -290,13 +278,12 @@ export default {
     },
     getYourMintToken(tokenId, amountBefore) {
       const { outputToken } = this.form
-      const { fromDecimal, toDecimal } = this
       // 转换之后
       console.log(amountBefore, outputToken.decimals)
-      const amount = toDecimal(amountBefore, outputToken.decimals)
+      const amount = utils.toDecimal(amountBefore, outputToken.decimals)
       this.$API.getYourMintToken(tokenId, amount).then(res => {
         if (res.code === 0) {
-          this.youMintTokenAmount = fromDecimal(res.data, outputToken.decimals)
+          this.youMintTokenAmount = utils.fromDecimal(res.data, outputToken.decimals)
         }
       })
     }
