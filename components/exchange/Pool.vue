@@ -108,11 +108,11 @@
         <span v-else> - </span>
       </div>
     </div>
-    <div class="mHVYT" @click="detailShow = !detailShow" >
+    <div class="mHVYT" @click="detailShow = !detailShow" v-if="!isDelete">
       <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
       <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
     </div>
-    <div class="iUPTxf" v-show="detailShow">
+    <div class="iUPTxf" v-show="detailShow" v-if="!isDelete">
       <div class="hRyusy">
         <div>你正在添加
           <span class="iDChvK">
