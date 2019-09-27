@@ -48,7 +48,7 @@
                   class="info-button"
                   style="margin-right: 10px;"
                   size="small"
-                  @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals) )"
+                  @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
                 >
                   {{ $t('gift') }}
                 </el-button>
@@ -64,6 +64,7 @@
       </div>
       <user-pagination
         v-show="!loading"
+        :reload="reload"
         :current-page="currentPage"
         :params="pointLog.params"
         :api-url="pointLog.apiUrl"
@@ -137,7 +138,7 @@ import avatar from '@/components/avatar/index.vue'
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
-import { precision } from '@/utils/precisionConversion'
+import { precision, toPrecision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -161,6 +162,7 @@ export default {
       loading: false, // 加载数据
       transferLoading: false,
       total: 0,
+      reload: 0,
       assets: {
       },
       viewStatus: 0, // 0 1
@@ -211,12 +213,13 @@ export default {
       const data = {
         tokenId: this.form.tokenId,
         to: this.form.userId,
-        amount: this.form.tokens
+        amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
       }
       this.$API.transferMinetoken(data)
         .then(res => {
           if (res.code === 0) {
             this.$message.success(res.message)
+            this.reload = Date.now()
           } else {
             this.$message.error(res.message)
           }
@@ -246,6 +249,7 @@ export default {
       this.form.useravatar = ''
       this.form.userId = ''
       this.form.tokenId = ''
+      this.form.decimals = ''
       this.form.tokens = 1
       this.form.max = 99999999
       this.$refs.form.resetFields()
@@ -262,10 +266,11 @@ export default {
       this.form.userId = ''
       this.form.useravatar = ''
     },
-    showGift(symbol, tokenId, amount) {
-      console.log(Math.floor(Number(amount)))
+    showGift(symbol, tokenId, amount, decimals) {
+      // console.log(Math.floor(Number(amount)))
       this.form.tokenname = symbol
       this.form.tokenId = tokenId
+      this.form.decimals = decimals
       this.form.max = Math.floor(Number(amount))
       this.giftDialog = true
     },
