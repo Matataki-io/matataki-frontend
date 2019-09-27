@@ -229,7 +229,7 @@ export default {
         this.$API.swap({
           inputTokenId: inputToken.id,
           outputTokenId: outputToken.id,
-          inputAmount: utils.toDecimal(output, 4),
+          inputAmount: utils.toDecimal(input, 4),
           minValue: utils.toDecimal(this.limitValue, 4)
         }).then(res => {
           if (res.code === 0) {

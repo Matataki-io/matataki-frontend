@@ -16,7 +16,27 @@
           </div>
           <!-- <div>余额：0.084</div> -->
         </div>
-        <div class="jbRmQG">
+        <!--------------------- 删除流动金代码开始 ---------------------->
+        <div class="jbRmQG" v-if="isDelete">
+          <div></div>
+          <input
+            class="gcotIA"
+            type="number"
+            min="0"
+            step="0.000000000000000001"
+            placeholder="0.0"
+            @input="outputChange"
+            :value="form.output"
+          />
+          <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
+            <span class="rTZzf">
+              {{ form.outputToken.symbol || '请选择'}}
+              <i class="el-icon-arrow-down"></i>
+            </span>
+          </button>
+        </div>
+        <!--------------------- 删除流动金代码结束 ---------------------->
+        <div class="jbRmQG" v-else>
           <input
             class="gcotIA"
             type="number"
@@ -26,15 +46,7 @@
             @input="inputChange"
             :value="form.input"
           />
-          <!--------------------- 删除流动金代码开始 ---------------------->
-          <button class="iAoRgd" v-if="isDelete" @click="tlShow = true;field = 'inputToken'">
-            <span class="rTZzf">
-              {{ form.inputToken.symbol || '请选择'}}
-              <i class="el-icon-arrow-down"></i>
-            </span>
-          </button>
-          <!--------------------- 删除流动金代码结束 ---------------------->
-          <button class="iAoRgd" v-else>
+          <button class="iAoRgd">
             <span class="rTZzf">
               {{ form.inputToken.symbol || '请选择'}}
               <!-- <i class="el-icon-arrow-down"></i> -->
@@ -65,7 +77,7 @@
           <template v-if="outputPoolSize.cny_amount !== 0">
             <div class="kroqsf">{{ outputPoolSize.cny_amount.toFixed(4) }} CNY</div>
             <div class="jlBXmz"> + </div>
-            <div class="kroqsf">{{ outputPoolSize.token_amount.toFixed(4) }} {{ form.inputToken.symbol }}</div>
+            <div class="kroqsf">{{ outputPoolSize.token_amount.toFixed(4) }} {{ form.outputToken.symbol }}</div>
           </template>
         </div>
         <!--------------------- 删除流动金代码结束 ---------------------->
@@ -103,8 +115,8 @@
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">你的资金池份额</span>
-        <span v-if="form.outputToken.symbol">{{youtPoolSize.cny_amount}} CNY + {{youtPoolSize.token_amount}} {{form.outputToken.symbol}}</span>
+        <span class="sc-hORach icyNSS">你的资金池份额 （{{yourPoolSize.your_supply}}）</span>
+        <span v-if="form.outputToken.symbol">{{yourPoolSize.cny_amount}} CNY + {{yourPoolSize.token_amount}} {{form.outputToken.symbol}}</span>
         <span v-else> - </span>
       </div>
     </div>
@@ -181,9 +193,10 @@ export default {
         token_amount: 0,
         total_supply: 0
       },
-      youtPoolSize: {
+      yourPoolSize: {
         cny_amount: 0,
-        token_amount: 0
+        token_amount: 0,
+        your_supply: 0
       },
       youMintTokenAmount: 0,
       poolSelected: {
@@ -216,7 +229,10 @@ export default {
       // 删除流动金的情况
       /* eslint-disable */
       if (this.isDelete) {
-        if (utils.isNull(input) || utils.isNull(inputToken) || outputPoolSize.cny_amount === 0 || outputPoolSize.token_amount === 0) {
+        if (this.yourPoolSize.cny_amount === 0 || this.yourPoolSize.cny_amount < this.outputPoolSize.cny_amount) {
+          return true
+        }
+        if (utils.isNull(output) || utils.isNull(outputToken) || outputPoolSize.cny_amount === 0 || outputPoolSize.token_amount === 0) {
           return true
         }
       } else {
@@ -262,15 +278,6 @@ export default {
     inputChange: debounce(function (e) {
       const value = e.target.value
       this.form.input = value
-      /*---------------------- 删除流动金逻辑开始 ---------------------*/
-      if (this.isDelete) {
-        const { input, inputToken } = this.form
-        if (!utils.isNull(input) && !utils.isNull(inputToken)) {
-          this.getOutputPoolSize(inputToken.id, input)
-        }
-        return
-      }
-      /*---------------------- 删除流动金逻辑结束 ---------------------*/
       const { input, inputToken, outputToken } = this.form
       if (!utils.isNull(input) && !utils.isNull(outputToken)) {
         // 获取输出token的数量
@@ -282,29 +289,38 @@ export default {
     outputChange(e) {
       const value = e.target.value
       this.form.output = value
-    },
-    selectToken(token) {
-      this.form[this.field] = token
       /*---------------------- 删除流动金逻辑开始 ---------------------*/
-      if (this.field === INPUT && this.isDelete) {
-        const { input } = this.form
-        if (!utils.isNull(input)) {
-          this.getOutputPoolSize(token.id, input)
+      if (this.isDelete) {
+        const { output, outputToken } = this.form
+        if (!utils.isNull(output) && !utils.isNull(outputToken)) {
+          this.getOutputPoolSize(output, outputToken.id)
         }
         return
       }
       /*---------------------- 删除流动金逻辑结束 ---------------------*/
+    },
+    selectToken(token) {
+      this.form[this.field] = token
+      // 获取个人占比
+      this.getYourPoolSize(token.id)
+      // 获取总池子大小
+      this.getCurrentPoolSize(token.id)
       if (this.field === OUTPUT) {
-        const { inputToken, input } = this.form
-        // 获取个人占比
-        this.getYourPoolSize(token.id)
-        // 获取总池子大小
-        this.getCurrentPoolSize(token.id)
-        if (!utils.isNull(input)) {
-          // 获取输出token的数量
-          this.getOutputAmount(inputToken.id, token.id, input)
-          // 获取你能挖到的数量
-          this.getYourMintToken(token.id, input)
+        if (this.isDelete) {
+           /*---------------------- 删除流动金逻辑开始 ---------------------*/
+          const { output } = this.form
+          if (!utils.isNull(output)) {
+            this.getOutputPoolSize(output, token.id)
+          }
+          /*---------------------- 删除流动金逻辑结束 ---------------------*/
+        } else {
+          const { inputToken, input } = this.form
+          if (!utils.isNull(input)) {
+            // 获取输出token的数量
+            this.getOutputAmount(inputToken.id, token.id, input)
+            // 获取你能挖到的数量
+            this.getYourMintToken(token.id, input)
+          }
         }
       }
     },
@@ -349,14 +365,22 @@ export default {
     getCurrentPoolSize(tokenId) {
       this.$API.getCurrentPoolSize(tokenId).then(res => {
         if (res.code === 0) {
-          this.currentPoolSize = res.data
+          this.currentPoolSize = {
+            cny_amount: utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: utils.fromDecimal(res.data.total_supply, 4)
+          }
         }
       })
     },
     getYourPoolSize(tokenId) {
       this.$API.getYourPoolSize(tokenId).then(res => {
         if (res.code === 0) {
-          this.youtPoolSize = res.data
+          this.yourPoolSize = {
+            cny_amount: utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: utils.fromDecimal(res.data.token_amount, 4),
+            your_supply: utils.fromDecimal(res.data.your_supply || 0, 4)
+          }
         }
       })
     },
@@ -375,7 +399,10 @@ export default {
       const amount = utils.toDecimal(amountBefore, 4)
       this.$API.getOutputPoolSize(amount, tokenId).then(res => {
         if (res.code === 0) {
-          this.outputPoolSize = res.data
+          this.outputPoolSize = {
+            cny_amount: utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: utils.fromDecimal(res.data.token_amount, 4)
+          }
         } else {
           this.outputPoolSize = {
             cny_amount: 0,
@@ -385,12 +412,12 @@ export default {
       })
     },
     removeLiquidity() {
-      const { input, inputToken } = this.form
-      const minCny = utils.toDecimal(this.calLimitValue(this.outputPoolSize.cny_amount), inputToken.decimals)
-      const minTokens = utils.toDecimal(this.calLimitValue(this.outputPoolSize.token_amount), inputToken.decimals)
+      const { output, outputToken } = this.form
+      const minCny = utils.toDecimal(this.calLimitValue(this.outputPoolSize.cny_amount), 4)
+      const minTokens = utils.toDecimal(this.calLimitValue(this.outputPoolSize.token_amount), 4)
       this.$API.removeLiquidity({
-        tokenId: inputToken.id,
-        amount: utils.toDecimal(input, inputToken.decimals),
+        tokenId: outputToken.id,
+        amount: utils.toDecimal(output, outputToken.decimals),
         min_cny: minCny,
         min_tokens: minTokens
       }).then(res => {

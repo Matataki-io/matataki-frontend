@@ -38,10 +38,10 @@ export default {
   isEmptyArray(arr){
     return Array.isArray(arr) && arr.length !== 0
   },
-  toDecimal(v, decimal) {
+  toDecimal(v, decimal = 4) {
     return parseFloat(v) * Math.pow(10, decimal)
   },
-  fromDecimal(v, decimal) {
-    return (parseFloat(v) / Math.pow(10, decimal)).toFixed(4)
+  fromDecimal(v, decimal = 4) {
+    return (parseFloat(v) / Math.pow(10, decimal))
   }
 };
