@@ -599,7 +599,7 @@ export default {
     wallet: 'wallet',
     point: 'integration',
     invite: 'Invite',
-    buycoins: 'Buy fan coins',
+    buycoins: 'Holding fan coins',
     selfcoins: 'My fan coins',
     editProfile: 'Edit Profile' },
   withdraw: { title: 'cash out',

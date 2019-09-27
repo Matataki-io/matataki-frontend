@@ -15,6 +15,15 @@
         >
           {{ item.title }}
         </n-link>
+
+        <router-link
+          class="nav active exchange"
+          :to="{name: 'exchange'}"
+        >
+          Lab
+          <sup style="color: orange;">beta</sup>
+          <!-- <span class="new">new</span> -->
+        </router-link>
       </div>
 
       <div class="head-flex">
@@ -424,6 +433,7 @@ export default {
 </style>
 
 <style lang="less">
+
 // 覆盖下拉框
 .user-dorpdown {
   max-width: 150px;
