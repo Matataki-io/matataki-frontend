@@ -330,14 +330,15 @@ export default {
   wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0 }) {
     return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity })
   },
-  allToken(page = 1, pagesize = 10) {
+  allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
       url: '/token/all',
       method: 'get',
       noLoading: true,
       params: {
         page,
-        pagesize
+        pagesize,
+        search
       }
     })
   },
@@ -373,24 +374,6 @@ export default {
     return request.get('/token/minetoken')
   },
   // -------------------------------- exchange API --------------------------------
-  getCnyAmount(tokenId, amount) {
-    return request({
-      method: 'get',
-      url: '/exchange/cnyAmount',
-      params: {
-        tokenId, amount
-      }
-    })
-  },
-  getTokenAmount(tokenId, amount) {
-    return request({
-      method: 'get',
-      url: '/exchange/tokenAmount',
-      params: {
-        tokenId, amount
-      }
-    })
-  },
   getCurrentPoolSize(tokenId) {
     return request({
       method: 'get',
@@ -415,6 +398,61 @@ export default {
       url: '/exchange/userMintToken',
       params: {
         tokenId, amount
+      }
+    })
+  },
+  getOrderStatus(tradeNo) {
+    return request({
+      method: 'get',
+      url: '/exchange/notify',
+      params: {
+        trade_no: tradeNo
+      }
+    })
+  },
+  getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
+    return request({
+      method: 'get',
+      url: '/exchange/outputAmount',
+      params: {
+        inputTokenId, outputTokenId, inputAmount
+      }
+    })
+  },
+  getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+    return request({
+      method: 'get',
+      url: '/exchange/inputAmount',
+      params: {
+        inputTokenId, outputTokenId, outputAmount
+      }
+    })
+  },
+  // token 换 token / cny接口
+  swap({inputTokenId, outputTokenId, inputAmount, minValue}) {
+    return request({
+      method: 'post',
+      url: '/exchange/swap',
+      data: {
+        inputTokenId, outputTokenId, inputAmount, minValue
+      }
+    })
+  },
+  getOutputPoolSize(amount, tokenId) {
+    return request({
+      method: 'get',
+      url: '/exchange/outputPoolSize',
+      params: {
+        amount, tokenId
+      }
+    })
+  },
+  removeLiquidity({ tokenId, amount, min_cny, min_tokens }) {
+    return request({
+      method: 'post',
+      url: '/exchange/removeLiquidity',
+      data: {
+        tokenId, amount, min_cny, min_tokens
       }
     })
   }

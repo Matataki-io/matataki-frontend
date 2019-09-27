@@ -2,9 +2,10 @@
   <el-dialog
     :close-on-click-modal="false"
     :visible.sync="showModal"
-    width="400px"
+    width="500px"
     :lock-scroll="false"
     custom-class="br10"
+    :before-close="handleClose"
   >
     <div class="container">
       <img src="@/assets/img/m_logo.png" alt="logo">
@@ -19,17 +20,20 @@
           <tr><td class="order-key">交易金额：</td><td>￥ {{ input }}</td></tr>
         </tbody>
       </table>
-      <button @click="genQRCode" v-if="notClick">生成支付二维码</button>
-      <div v-show="!notClick" ref="qr" class="qrcode" />
+      <QRCode :payLink="order.code_url"></QRCode>
     </div>
   </el-dialog>
 </template>
 
 <script>
 /* eslint-disable */
+import QRCode from './Qrcode'
 import { mapGetters } from 'vuex'
+import utils from '@/utils/utils'
+const interval = 5000
 export default {
   name: 'OrderModal',
+  components: {QRCode},
   props: {
     value: {
       type: Boolean,
@@ -38,7 +42,8 @@ export default {
     order: {
       type: Object,
       default: () => ({
-        code_url: 'weixin://wxpay/bizpayurl?pr=xPK7OBM'
+        code_url: 'weixin://wxpay/bizpayurl?pr=xPK7OBM',
+        trade_no: ''
       })
     }
   },
@@ -56,8 +61,16 @@ export default {
     }
   },
   watch: {
-    order() {
-      this.notClick = true
+    'order.trade_no': {
+      handler(v) {
+        if (!utils.isNull(v)) {
+          clearInterval(this.timer)
+          this.timer = setInterval(() => {
+            this.getOrderStatus(v)
+          }, interval)
+        }
+      },
+      deep: true
     },
     showModal(val) {
       this.$emit('input', val)
@@ -69,22 +82,34 @@ export default {
   data() {
     return {
       showModal: false,
-      notClick: true
+      timer: null
     }
   },
   mounted() {
-    /* if (process.client) {
-      this.genQRCode()
-    } */
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   },
   methods: {
-    // 生成二维码
-    genQRCode() {
-      this.notClick = false
-      new QRCode(this.$refs.qr, {
-        text: this.order.code_url,
-        width: 80,
-        height: 80
+    handleClose() {
+      clearInterval(this.timer)
+      this.showModal = false
+    },
+    getOrderStatus(tradeNo) {
+      this.$API.getOrderStatus(tradeNo).then(res => {
+        if (res.code === 0) {
+          if (res.data === 6 || res.data === 9) {
+            this.successNotice('支付成功')
+            clearInterval(this.timer)
+          }
+        }
+      })
+    },
+    successNotice(text) {
+      this.$message.success({
+        message: text,
+        duration: 0,
+        showClose: true
       })
     }
   }
@@ -104,11 +129,6 @@ export default {
         color: #666;
       }
     }
-  }
-  .qrcode {
-    background: #ffffff;
-    width: 80px;
-    height: 80px;
   }
 }
 </style>
