@@ -12,22 +12,21 @@
         >
           <el-table-column
             prop="name"
-            :label="$t('user.coins')"
+            :label="$t('user.username')"
           >
             <template slot-scope="scope">
               <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
                 <avatar :src="cover(scope.row.avatar)" size="30px" />
-                jia
-                <span class="username">{{ scope.row.symbol }}</span>
+                <span class="username">{{ scope.row.username }}</span>
               </n-link>
             </template>
           </el-table-column>
           <el-table-column
             prop="total_supply"
-            :label="$t('user.buyCoins')"
+            :label="$t('user.tokenName')"
           >
             <template slot-scope="scope">
-              <span class="username">{{ scope.row.total_supply }}jia</span>
+              <span class="scope">{{ scope.row.symbol }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -35,7 +34,7 @@
             :label="$t('user.positionCoins')"
           >
             <template slot-scope="scope">
-              <span class="username">{{ tokenAmount(scope.row.total_supply, scope.row.decimals) }}</span>
+              <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -160,6 +159,10 @@ export default {
 }
 .username {
   margin-left: 10px;
+  font-size: 16px;
+  color:#333;
+}
+.scope {
   font-size: 16px;
   color:#333;
 }

@@ -1,10 +1,14 @@
 <template>
-  <el-dropdown @visible-change="getPointStatus">
-    <svg-icon
-      class="integral-icon"
-      icon-class="integral"
-      @click.stop="jumpAccount"
-    />
+  <el-dropdown
+    @visible-change="getPointStatus"
+  >
+    <span>
+      <svg-icon
+        class="integral-icon"
+        icon-class="integral"
+        @click.stop="jumpAccount"
+      />
+    </span>
     <el-dropdown-menu slot="dropdown">
       <!-- <el-dropdown-item></el-dropdown-item> -->
       <div class="integral-container">

@@ -583,8 +583,8 @@ export default {
     registeredDate: 'registration time',
     inviteRule:
    'Note: Inactive users can complete the activation after reading 5 articles and making an evaluation. After activation, you will receive additional {0} points. ',
-    coins: 'fan coins',
-    buyCoins: 'Buy price/yuan',
+    username: 'username',
+    tokenName: 'token name',
     positionCoins: 'position/piece',
     manageCoins: 'Manage Fan Coins',
     transactionCoins: 'Trade Fan Coin',
