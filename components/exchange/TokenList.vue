@@ -78,7 +78,7 @@ export default {
       showModal: false,
       tokenList: [],
       page: 1,
-      pagesize: 4,
+      pagesize: 10,
       count: 0,
       loading: false
     }
