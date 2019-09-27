@@ -330,14 +330,15 @@ export default {
   wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0 }) {
     return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity })
   },
-  allToken(page = 1, pagesize = 10) {
+  allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
       url: '/token/all',
       method: 'get',
       noLoading: true,
       params: {
         page,
-        pagesize
+        pagesize,
+        search
       }
     })
   },
