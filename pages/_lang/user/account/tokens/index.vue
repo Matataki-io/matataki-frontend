@@ -42,9 +42,14 @@
             label=""
             width="160"
           >
-            <template>
+            <template slot-scope="scope">
               <div class="invite-block btn">
-                <el-button class="info-button" style="margin-right: 10px;" size="small" @click="giftDialog = true">
+                <el-button
+                  class="info-button"
+                  style="margin-right: 10px;"
+                  size="small"
+                  @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals) )"
+                >
                   {{ $t('gift') }}
                 </el-button>
                 <router-link :to="{name: 'exchange'}">
@@ -75,23 +80,37 @@
         width="600px"
         :before-close="giftDialogClose"
       >
-        <el-form ref="form" :model="form" :rules="rules" label-width="60px" class="gift-form">
-          <el-form-item label="币名" prop="tokenname">
+        <el-form
+          ref="form"
+          v-loading="transferLoading"
+          :model="form"
+          label-width="60px"
+          class="gift-form"
+        >
+          <el-form-item label="币名">
             <p class="tokenname">
               {{ form.tokenname }}
             </p>
           </el-form-item>
-          <el-form-item label="用户" prop="name">
+          <el-form-item label="用户">
             <el-input v-model="form.username" placeholder="请输入内容" size="medium">
-              <el-button slot="append" icon="el-icon-search" />
+              <el-button slot="append" icon="el-icon-search" @click="searchUser" />
             </el-input>
           </el-form-item>
-          <el-form-item label="数量" prop="name">
+          <el-form-item v-if="form.useravatar" label="" prop="">
+            <div class="avatar-content">
+              <avatar class="gift-avatar" :src="form.useravatar" size="60px" />
+              <div class="gift-ful" @click="closeUser">
+                <i class="el-icon-close" />
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="数量" prop="">
             <el-input-number
               v-model="form.tokens"
               size="small"
               :min="1"
-              :max="10"
+              :max="form.max"
             />
           </el-form-item>
           <el-form-item>
@@ -140,6 +159,7 @@ export default {
       },
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
+      transferLoading: false,
       total: 0,
       assets: {
       },
@@ -147,20 +167,13 @@ export default {
       amount: 0,
       giftDialog: false,
       form: {
-        tokenname: 'XTD',
+        tokenname: '',
         username: '',
+        useravatar: '',
         userId: '',
+        tokenId: '',
         tokens: 1,
         max: 99999999 // 默认最大
-      },
-      rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
-        ]
       }
     }
   },
@@ -193,14 +206,35 @@ export default {
         }
       })
     },
+    transferMinetoken() {
+      this.transferLoading = true
+      const data = {
+        tokenId: this.form.tokenId,
+        to: this.form.userId,
+        amount: this.form.tokens
+      }
+      this.$API.transferMinetoken(data)
+        .then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('赠送token失败')
+        }).finally(() => {
+          this.transferLoading = false
+        })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+          if (this.form.userId && this.form.tokenId) this.transferMinetoken()
+          else {
+            this.$message.warning('请选择用户')
+          }
+        } else return false
       })
     },
     resetForm(formName) {
@@ -209,8 +243,10 @@ export default {
     formEmpty() {
       this.form.tokenname = ''
       this.form.username = ''
+      this.form.useravatar = ''
       this.form.userId = ''
-      this.form.tokennumber = 1
+      this.form.tokenId = ''
+      this.form.tokens = 1
       this.form.max = 99999999
       this.$refs.form.resetFields()
     },
@@ -221,6 +257,30 @@ export default {
     formClose() {
       this.giftDialog = false
       this.formEmpty()
+    },
+    closeUser() {
+      this.form.userId = ''
+      this.form.useravatar = ''
+    },
+    showGift(symbol, tokenId, amount) {
+      console.log(Math.floor(Number(amount)))
+      this.form.tokenname = symbol
+      this.form.tokenId = tokenId
+      this.form.max = Math.floor(Number(amount))
+      this.giftDialog = true
+    },
+    async searchUser() {
+      if (!this.form.username.trim()) return this.$message.warning('用户名不能为空')
+      await this.$API.searchUsername(this.form.username.trim())
+        .then(res => {
+          if (res.code === 0) {
+            console.log(res)
+            this.form.useravatar = res.data.avatar ? this.$backendAPI.getAvatarImage(res.data.avatar) : ''
+            this.form.userId = res.data.id
+          } else return this.$message.warning(res.message)
+        }).catch(err => {
+          console.log(err)
+        })
     }
   }
 }
@@ -272,6 +332,33 @@ export default {
   .tokenname {
     padding: 0;
     margin: 0;
+  }
+}
+.gift-avatar {
+  border: 1px solid #ececec;
+}
+.avatar-content {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+  &:hover .gift-ful {
+    display: flex;
+  }
+  .gift-ful {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 26px;
   }
 }
 </style>

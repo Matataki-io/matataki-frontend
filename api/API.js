@@ -245,6 +245,14 @@ export default {
       data: formdata
     })
   },
+  // 通过用户名搜索
+  searchUsername(username) {
+      return request.get('/user/search', {
+        params: {
+          q: username
+        }
+      })
+    },
   // 搜索推荐
   searchRecommend(params){
     return request('/search/recommend', params)
@@ -362,6 +370,17 @@ export default {
     return request({
       method: 'POST',
       url: '/minetoken/mint',
+      data: data
+    })
+  },
+  /**
+   * 转移token
+   * @param {*} data tokenId to amount
+   */
+  transferMinetoken(data) {
+    return request({
+      method: 'POST',
+      url: '/minetoken/transfer',
       data: data
     })
   },
