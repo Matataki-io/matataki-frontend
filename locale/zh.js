@@ -336,7 +336,7 @@ export default {
     titlePlaceholder: '请输入你的文章标题...',
     contentPlaceholder: '请输入 Markdown 格式的文字开始编辑',
     commentTitle: '评论价格',
-    commentContent: '用户需要向您支付对应的积分才可评论(1-20)',
+    commentContent: '用户需要向您支付对应的积分才可评论(1-99999)',
     point: '积分',
     coverTitle: '图文封面',
     coverDes: '请上传宽高2:1尺寸的图片',

@@ -337,7 +337,7 @@ export default {
     contentPlaceholder: 'Please enter the text in Markdown format to start editing',
     commentTitle: 'Comment price',
     commentContent:
-     'Users need to pay you the corresponding points before they can comment (1-20)',
+     'Users need to pay you the corresponding points before they can comment (1-99999)',
     point: 'integration',
     coverTitle: 'text cover',
     coverDes: 'Please upload a picture with a width of 2:1 size',

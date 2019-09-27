@@ -370,7 +370,7 @@ export default {
    * 用户发行了token，data为对象，没有发行token，data为null
    */
   tokenDetail() {
-    return request.get('/token/detail')
+    return request.get('/token/minetoken')
   },
   // -------------------------------- exchange API --------------------------------
   getCurrentPoolSize(tokenId) {

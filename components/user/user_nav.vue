@@ -48,8 +48,8 @@ export default {
         { title: this.$t('user.wallet'), url: 'user-account', self: false },
         { title: this.$t('user.point'), url: 'user-account-points', self: false },
         { title: this.$t('user.invite'), url: 'user-account-invite', self: false },
-        { title: this.$t('user.buycoins'), url: 'user-account-buycoins', self: false },
-        { title: this.$t('user.selfcoins'), url: 'user-account-coins', self: false }
+        { title: this.$t('user.buycoins'), url: 'user-account-tokens', self: false },
+        { title: this.$t('user.selfcoins'), url: 'user-account-minetoken', self: false }
       ]
     },
     navList() {
