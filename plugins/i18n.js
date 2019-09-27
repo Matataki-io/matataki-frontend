@@ -39,7 +39,8 @@ export default ({ app, store }) => {
   // This way we can use it globaly in our components
   app.i18n = new VueI18n({
     // Set the initial locale (here, based on our store's initial value)
-    locale: Cookies.get('language') || 'zh',
+    // locale: Cookies.get('language') || 'zh',
+    locale: 'zh',
 
     // Set the fallback locale in case the current lovcale can't be found
     fallbackLocale: 'en',

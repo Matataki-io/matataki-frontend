@@ -104,7 +104,7 @@
           @click="login"
         >{{ $t('login') }}</a>
         <slot name="more" />
-        <language />
+        <!-- <language /> -->
       </div>
     </div>
   </header>
@@ -114,7 +114,7 @@
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
 import point from './point'
-import language from './language'
+// import language from './language'
 import homeLogo from '@/assets/img/m_logo.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
@@ -125,8 +125,8 @@ export default {
   name: 'HomeHead',
   components: {
     avatar,
-    point,
-    language
+    point
+    // language
   },
   props: {
     // 自定义头部背景
