@@ -436,5 +436,23 @@ export default {
         inputTokenId, outputTokenId, inputAmount, minValue
       }
     })
+  },
+  getOutputPoolSize(amount, tokenId) {
+    return request({
+      method: 'get',
+      url: '/exchange/outputPoolSize',
+      params: {
+        amount, tokenId
+      }
+    })
+  },
+  removeLiquidity({ tokenId, amount, min_cny, min_tokens }) {
+    return request({
+      method: 'post',
+      url: '/exchange/removeLiquidity',
+      data: {
+        tokenId, amount, min_cny, min_tokens
+      }
+    })
   }
 }

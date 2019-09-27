@@ -2,7 +2,7 @@
   <div>
     <div class="hYLPFg">
       <div class="caRvnP" @click="psShow = true">
-          <span class="gclSjj">添加流动金</span>
+          <span class="gclSjj">{{ poolSelected.text }}</span>
           <i class="el-icon-arrow-down"></i>
       </div>
       <div class="jJSpkX"></div>
@@ -12,7 +12,7 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>存入</span>
+            <span>{{ isDelete ? '资金池通证' : '存入' }}</span>
           </div>
           <!-- <div>余额：0.084</div> -->
         </div>
@@ -24,11 +24,17 @@
             step="0.000000000000000001"
             placeholder="0.0"
             @input="inputChange"
-            @blur="inputBlur"
             :value="form.input"
           />
-          <!-- @click="tlShow = true;field = 'inputToken'" -->
-          <button class="iAoRgd" >
+          <!--------------------- 删除流动金代码开始 ---------------------->
+          <button class="iAoRgd" v-if="isDelete" @click="tlShow = true;field = 'inputToken'">
+            <span class="rTZzf">
+              {{ form.inputToken.symbol || '请选择'}}
+              <i class="el-icon-arrow-down"></i>
+            </span>
+          </button>
+          <!--------------------- 删除流动金代码结束 ---------------------->
+          <button class="iAoRgd" v-else>
             <span class="rTZzf">
               {{ form.inputToken.symbol || '请选择'}}
               <!-- <i class="el-icon-arrow-down"></i> -->
@@ -40,7 +46,8 @@
     <div class="hYLPFg">
       <div class="exKIZr"></div>
       <div class="haryqg">
-        <i class="el-icon-plus gHgbDu"></i>
+        <i class="el-icon-bottom gHgbDu" v-if="isDelete"></i>
+        <i class="el-icon-plus gHgbDu" v-else></i>
       </div>
       <div class="jJSpkX"></div>
     </div>
@@ -49,11 +56,21 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>存入</span>
+            <span>{{ isDelete ? '输出（估计）' : '存入' }}</span>
           </div>
           <!-- <div>余额：0.084</div> -->
         </div>
-        <div class="jbRmQG">
+        <!--------------------- 删除流动金代码开始 ---------------------->
+        <div class="cHbrWc" v-if="isDelete">
+          <template v-if="outputPoolSize.cny_amount !== 0">
+            <div class="kroqsf">{{ outputPoolSize.cny_amount.toFixed(4) }} CNY</div>
+            <div class="jlBXmz"> + </div>
+            <div class="kroqsf">{{ outputPoolSize.token_amount.toFixed(4) }} {{ form.inputToken.symbol }}</div>
+          </template>
+        </div>
+        <!--------------------- 删除流动金代码结束 ---------------------->
+        <div class="jbRmQG" v-else>
+          <div></div>
           <input
             class="gcotIA"
             type="number"
@@ -120,15 +137,16 @@
     </div>
     <!-- 提交 -->
     <div class="hGStes">
-      <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">添加流动金</button>
+      <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">{{ poolSelected.text }}</button>
     </div>
     <OrderModal v-model="orderShow" :order="{...order,...form}"></OrderModal>
     <TokenListModal v-model="tlShow" @selectToken="selectToken"></TokenListModal>
-    <PoolSelectModal v-model="psShow"></PoolSelectModal>
+    <PoolSelectModal v-model="psShow" @selectPool="selectPool"></PoolSelectModal>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
 import PoolSelectModal from './PoolSelect'
@@ -167,17 +185,44 @@ export default {
         cny_amount: 0,
         token_amount: 0
       },
-      youMintTokenAmount: 0
+      youMintTokenAmount: 0,
+      poolSelected: {
+        id: 0,
+        text: '添加流动金'
+      },
+      outputPoolSize: {
+        cny_amount: 0,
+        token_amount: 0
+      }
     }
   },
   async asyncData() {},
   mounted() {
   },
   computed: {
-    btnDisabled() {
-      const { input, output, outputToken } = this.form
-      if (utils.isNull(input) || utils.isNull(outputToken) || utils.isNull(output)) {
+    // 是否是删除流动金
+    isDelete() {
+      // 添加流动金
+      if (this.poolSelected.id === 0) {
+        return false
+      } else {
+      // 删除流动金
         return true
+      }
+    },
+    btnDisabled() {
+      const { input, inputToken, output, outputToken } = this.form
+      const { outputPoolSize } = this
+      // 删除流动金的情况
+      /* eslint-disable */
+      if (this.isDelete) {
+        if (utils.isNull(input) || utils.isNull(inputToken) || outputPoolSize.cny_amount === 0 || outputPoolSize.token_amount === 0) {
+          return true
+        }
+      } else {
+        if (utils.isNull(input) || utils.isNull(outputToken) || utils.isNull(output)) {
+          return true
+        }
       }
       return false
     },
@@ -197,8 +242,35 @@ export default {
     }
   },
   methods: {
-    inputBlur(e) {
+    calLimitValue(v) {
+      return parseFloat(v) * (1 - this.priceSlippage)
+    },
+    selectPool(val) {
+      // 修改form，重置
+      this.form = {
+        input: '',
+        inputToken: CNY,
+        output: '',
+        outputToken: {}
+      }
+      this.outputPoolSize = {
+        cny_amount: 0,
+        token_amount: 0
+      }
+      this.poolSelected = val
+    },
+    inputChange: debounce(function (e) {
       const value = e.target.value
+      this.form.input = value
+      /*---------------------- 删除流动金逻辑开始 ---------------------*/
+      if (this.isDelete) {
+        const { input, inputToken } = this.form
+        if (!utils.isNull(input) && !utils.isNull(inputToken)) {
+          this.getOutputPoolSize(inputToken.id, input)
+        }
+        return
+      }
+      /*---------------------- 删除流动金逻辑结束 ---------------------*/
       const { input, inputToken, outputToken } = this.form
       if (!utils.isNull(input) && !utils.isNull(outputToken)) {
         // 获取输出token的数量
@@ -206,17 +278,22 @@ export default {
         // 获取你能挖到的数量
         this.getYourMintToken(outputToken.id, input)
       }
-    },
-    inputChange(e) {
-      const value = e.target.value
-      this.form.input = value
-    },
+    }, 500),
     outputChange(e) {
       const value = e.target.value
       this.form.output = value
     },
     selectToken(token) {
       this.form[this.field] = token
+      /*---------------------- 删除流动金逻辑开始 ---------------------*/
+      if (this.field === INPUT && this.isDelete) {
+        const { input } = this.form
+        if (!utils.isNull(input)) {
+          this.getOutputPoolSize(token.id, input)
+        }
+        return
+      }
+      /*---------------------- 删除流动金逻辑结束 ---------------------*/
       if (this.field === OUTPUT) {
         const { inputToken, input } = this.form
         // 获取个人占比
@@ -245,6 +322,13 @@ export default {
       })
     },
     onSubmit() {
+      if (this.isDelete) {
+        this.removeLiquidity()
+      } else {
+        this.addLiquidity()
+      }
+    },
+    addLiquidity() {
       const { input, output, outputToken } = this.form
       this.$API
         .wxpay({
@@ -285,6 +369,50 @@ export default {
         if (res.code === 0) {
           this.youMintTokenAmount = utils.fromDecimal(res.data, outputToken.decimals)
         }
+      })
+    },
+    getOutputPoolSize(amountBefore, tokenId) {
+      const amount = utils.toDecimal(amountBefore, 4)
+      this.$API.getOutputPoolSize(amount, tokenId).then(res => {
+        if (res.code === 0) {
+          this.outputPoolSize = res.data
+        } else {
+          this.outputPoolSize = {
+            cny_amount: 0,
+            token_amount: 0
+          }
+        }
+      })
+    },
+    removeLiquidity() {
+      const { input, inputToken } = this.form
+      const minCny = utils.toDecimal(this.calLimitValue(this.outputPoolSize.cny_amount), inputToken.decimals)
+      const minTokens = utils.toDecimal(this.calLimitValue(this.outputPoolSize.token_amount), inputToken.decimals)
+      this.$API.removeLiquidity({
+        tokenId: inputToken.id,
+        amount: utils.toDecimal(input, inputToken.decimals),
+        min_cny: minCny,
+        min_tokens: minTokens
+      }).then(res => {
+        if (res.code === 0) {
+          this.successNotice('流动金删除成功')
+        } else {
+          this.errorNotice('流动金删除失败')
+        }
+      })
+    },
+    successNotice(text) {
+      this.$message.success({
+        message: text,
+        duration: 0,
+        showClose: true
+      })
+    },
+    errorNotice(text) {
+      this.$message.error({
+        message: '流动金删除失败',
+        duration: 0,
+        showClose: true
       })
     }
   }

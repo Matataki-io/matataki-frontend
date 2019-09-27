@@ -7,9 +7,7 @@
     custom-class="br10 black-theme-dialog"
   >
     <div class="container">
-      <button aria-current="page" class="cwefbr MODE">添加流动金</button>
-      <button class="cwefbr">删除流动金</button>
-      <button class="cwefbr">创建交易所</button>
+      <button v-for="(item, i) in poolOptions" :key="item.id" :class="[ 'cwefbr', i === currentPool ? 'MODE' : '']" @click="selectPool(i)">{{ item.text }}</button>
     </div>
   </el-dialog>
 </template>
@@ -22,6 +20,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    selected: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -37,11 +39,28 @@ export default {
   data() {
     return {
       showModal: false,
+      currentPool: 0,
+      poolOptions: [
+        {
+          id: 0,
+          text: '添加流动金'
+        },{
+          id: 1,
+          text: '删除流动金'
+        }
+      ]
     }
   },
   mounted() {
   },
   methods: {
+    selectPool(i) {
+      this.showModal = false
+      if (this.currentPool !== i) {
+        this.currentPool = i
+        this.$emit('selectPool', this.poolOptions[i])
+      }
+    }
   }
 }
 </script>
