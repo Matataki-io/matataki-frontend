@@ -191,7 +191,7 @@ export default {
     async tokenDetail() {
       await this.$API.tokenDetail().then(res => {
         if (res.code === 0) {
-          if (res.data) {
+          if (res.data.token) {
             this.isPublishCoins = true
             this.tokenDetailData = res.data
           } else {
