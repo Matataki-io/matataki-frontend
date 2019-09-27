@@ -99,10 +99,17 @@ export default {
       this.$API.getOrderStatus(tradeNo).then(res => {
         if (res.code === 0) {
           if (res.data === 6 || res.data === 9) {
-            this.$message.success('支付成功')
+            this.successNotice('支付成功')
             clearInterval(this.timer)
           }
         }
+      })
+    },
+    successNotice(text) {
+      this.$message.success({
+        message: text,
+        duration: 0,
+        showClose: true
       })
     }
   }

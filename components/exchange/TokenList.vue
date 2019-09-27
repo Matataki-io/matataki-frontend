@@ -5,14 +5,15 @@
     :visible.sync="showModal"
     width="600px"
     :lock-scroll="false"
+    :before-close="handleClose"
     custom-class="br10 black-theme-dialog"
   >
     <div class="container">
       <div class="sc-uJMKN csvLqB">
         <div class="search-box"><i class="el-icon-search"></i></div>
-        <input type="text" placeholder="搜索通证或粘贴地址" class="dHtVAe">
+        <input type="text" placeholder="搜索通证或粘贴地址" class="dHtVAe" v-model="search" @keyup.enter="searchToken">
       </div>
-      <div class="cotdDw">
+      <div class="cotdDw" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)">
         <div class="sc-jnlKLf hDyKIS" v-for="item in tokenList" :key="item.id" @click="selectToken(item)">
           <div class="sc-fYxtnH cjqFX">
             <div class="sc-tilXH egNEUM">
@@ -24,6 +25,12 @@
             <div class="sc-ktHwxA etGoql"> - </div>
             <div class="sc-cIShpX eAstpp"></div>
           </div>
+        </div>
+        <div v-if="tokenList.length <= 0" class="noData">😭暂无内容</div>
+        <div class="loadmore" v-if="showLoadMore">
+          <span @click="loadMore">
+          加载更多<i class="el-icon-arrow-down"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -42,6 +49,14 @@ export default {
     }
   },
   computed: {
+    showLoadMore() {
+      const { page, pagesize, count } = this
+      if (page * pagesize > count) {
+        return false
+      } else {
+        return true
+      }
+    }
   },
   watch: {
     showModal(val) {
@@ -49,29 +64,68 @@ export default {
     },
     value(val) {
       this.showModal = val
+    },
+    search(v) {
+      if (v === '') {
+        this.page = 1
+        this.getAllToken()
+      }
     }
   },
   data() {
     return {
+      search: '',
       showModal: false,
-      tokenList: []
+      tokenList: [],
+      page: 1,
+      pagesize: 4,
+      count: 0,
+      loading: false
     }
   },
   mounted() {
     this.getAllToken()
   },
   methods: {
+    handleClose() {
+      this.search = ''
+      this.showModal = false
+    },
+    searchToken() {
+      this.page = 1
+      this.getAllToken()
+    },
+    loadMore() {
+      this.page = this.page + 1
+      this.getAllToken()
+    },
     selectToken(token) {
       this.showModal = false
       this.$emit('selectToken', token)
     },
     getAllToken() {
-      this.$API.allToken().then(res => {
-        console.log(res)
-        this.tokenList = [
-          CNY,
-          ...res.data.list
-        ]
+      const { page, pagesize, search } = this
+      this.loading = true
+      this.$API.allToken({ page, pagesize, search }).then(res => {
+        this.loading = false
+        if (search === '') {
+          if (page === 1) {
+            this.count = res.data.count
+            this.tokenList = [
+              CNY,
+              ...res.data.list
+            ]
+          } else {
+            this.tokenList.push(...res.data.list)
+          }
+        } else {
+          if (page === 1) {
+            this.count = res.data.count
+            this.tokenList = res.data.list
+          } else {
+            this.tokenList.push(...res.data.list)
+          }
+        }
       })
     },
   }
@@ -201,6 +255,19 @@ export default {
     border-style: inset;
     border-color: initial;
     border-image: initial;
+  }
+  .loadmore {
+    text-align: center;
+    color: #409EFF;
+    padding: 1rem;
+    span {
+      cursor: pointer;
+    }
+  }
+  .noData {
+    text-align: center;
+    margin-top: 15vh;
+    font-size: 1.2rem;
   }
 }
 </style>

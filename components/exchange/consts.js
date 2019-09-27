@@ -1,7 +1,7 @@
 export const CNY = {
   decimals: 4,
   id: 0,
-  name: '人名币',
+  name: '人民币',
   symbol: 'CNY',
   isCNY: true
 }
