@@ -98,8 +98,12 @@ export default {
     getOrderStatus(tradeNo) {
       this.$API.getOrderStatus(tradeNo).then(res => {
         if (res.code === 0) {
+          if (res.data === 7 || res.data === 8) {
+            this.errorNotice('交易失败，等待退款')
+            clearInterval(this.timer)
+          }
           if (res.data === 6 || res.data === 9) {
-            this.successNotice('支付成功')
+            this.successNotice('交易成功')
             clearInterval(this.timer)
           }
         }
@@ -107,6 +111,13 @@ export default {
     },
     successNotice(text) {
       this.$message.success({
+        message: text,
+        duration: 0,
+        showClose: true
+      })
+    },
+    errorNotice(text) {
+      this.$message.error({
         message: text,
         duration: 0,
         showClose: true
