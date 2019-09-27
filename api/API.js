@@ -448,12 +448,12 @@ export default {
     })
   },
   // token 换 token / cny接口
-  swap({inputTokenId, outputTokenId, inputAmount, minValue}) {
+  swap({inputTokenId, outputTokenId, amount, limitValue, base}) {
     return request({
       method: 'post',
       url: '/exchange/swap',
       data: {
-        inputTokenId, outputTokenId, inputAmount, minValue
+        inputTokenId, outputTokenId, amount, limitValue, base
       }
     })
   },

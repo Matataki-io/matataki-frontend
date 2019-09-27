@@ -226,20 +226,18 @@ export default {
           })
       } else {
         // 输入不是人民币
+        const amount = this.base === 'input' ? input : output
         this.$API.swap({
           inputTokenId: inputToken.id,
           outputTokenId: outputToken.id,
-          inputAmount: utils.toDecimal(input, 4),
-          minValue: utils.toDecimal(this.limitValue, 4)
+          amount: utils.toDecimal(amount, 4),
+          limitValue: utils.toDecimal(this.limitValue, 4),
+          base: this.base
         }).then(res => {
           if (res.code === 0) {
-            this.$alert('跳转到我的持仓查看？', '兑换成功', {
-              confirmButtonText: '确定'
-            })
+            this.successNotice('兑换成功')
           } else {
-            this.$alert('请重新兑换', '兑换失败', {
-              confirmButtonText: '确定'
-            })
+            this.successNotice('兑换失败')
           }
         })
       }
@@ -266,6 +264,20 @@ export default {
           this.$message.error('暂无交易对')
           this.form.input = ''
         }
+      })
+    },
+    successNotice(text) {
+      this.$message.success({
+        message: text,
+        duration: 0,
+        showClose: true
+      })
+    },
+    errorNotice(text) {
+      this.$message.error({
+        message: text,
+        duration: 0,
+        showClose: true
       })
     }
   }

@@ -437,7 +437,7 @@ export default {
     },
     errorNotice(text) {
       this.$message.error({
-        message: '流动金删除失败',
+        message: text,
         duration: 0,
         showClose: true
       })
