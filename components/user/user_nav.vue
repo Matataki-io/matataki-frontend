@@ -1,13 +1,17 @@
 <template>
   <nav class="nav">
-    <router-link
+    <template
       v-for="(item, index) in navList"
-      :key="index"
-      :class="$route.name === item.url && 'active'"
-      :to="{name: item.url}"
     >
-      {{ item.title }}
-    </router-link>
+      <router-link
+        v-if="item.url !== 'user-account-minetoken' || tokens"
+        :key="index"
+        :class="$route.name === item.url && 'active'"
+        :to="{name: item.url}"
+      >
+        {{ item.title }}
+      </router-link>
+    </template>
   </nav>
 </template>
 
@@ -22,7 +26,7 @@ export default {
   },
   data() {
     return {
-
+      tokens: false
     }
   },
   computed: {
@@ -58,6 +62,18 @@ export default {
       if (isMe) return this[this.navListUrl]
       else return this[this.navListUrl].filter(i => !i.self)
     }
+  },
+  created() {
+    this.getMyUserData()
+  },
+  methods: {
+    async getMyUserData() {
+      const res = await this.$API.getMyUserData().then(res => {
+        if (res.code === 0 && res.data.level > 0) this.tokens = true
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>
@@ -67,11 +83,10 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   a {
-    font-size:20px;
-    font-weight:400;
+    font-size: 18px;
     line-height:33px;
     text-decoration: none;
-    margin-right: 40px;
+    margin-right: 20px;
     color: #333;
     cursor: pointer;
     &.active {

@@ -15,9 +15,9 @@
             :label="$t('user.username')"
           >
             <template slot-scope="scope">
-              <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+              <n-link class="invite-block author" :to="{name: 'user-id', params: {id: scope.row.uid}}">
                 <avatar :src="cover(scope.row.avatar)" size="30px" />
-                <span class="username">{{ scope.row.username }}</span>
+                <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
               </n-link>
             </template>
           </el-table-column>
@@ -153,7 +153,7 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-.invite-block.avatar{
+.invite-block.author{
   display: flex;
   align-items: center;
 }
@@ -161,6 +161,7 @@ export default {
   margin-left: 10px;
   font-size: 16px;
   color:#333;
+  flex: 1;
 }
 .scope {
   font-size: 16px;

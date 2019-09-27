@@ -25,45 +25,34 @@
         </div>
         <div class="info-data">
           <p class="info-data-number">
-            300<sub>枚</sub>
+            {{ tokenReserve }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            待售量jia
+            待售量
           </p>
         </div>
         <div class="info-data">
           <p class="info-data-number">
-            2000<sub>枚</sub>
+            {{ cnyReserve }}<sub>元</sub>
           </p>
           <p class="info-data-title">
-            资金池jia
-          </p>
-        </div>
-      </div>
-      <div class="info-line" />
-      <div class="fl ac jsb info-block">
-        <div class="info-data">
-          <p class="info-data-number">
-            1000<sub>枚</sub>
-          </p>
-          <p class="info-data-title">
-            持仓总量jia
+            资金池
           </p>
         </div>
         <div class="info-data">
           <p class="info-data-number">
-            0.25<sub>元</sub>
+            {{ balance }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            现价jia
+            持仓总量
           </p>
         </div>
         <div class="info-data">
           <p class="info-data-number">
-            0.1<sub>元</sub>
+            {{ nowPrice }}<sub>元</sub>
           </p>
           <p class="info-data-title">
-            发行价jia
+            现价
           </p>
         </div>
       </div>
@@ -98,6 +87,7 @@
         <el-table-column
           prop="create_time"
           label="持仓/枚"
+          width="200"
         >
           <template slot-scope="scope">
             <div class="invite-block">
@@ -163,7 +153,33 @@ export default {
         const tokenamount = precision(this.tokenDetailData.token.total_supply, 'CNY', this.tokenDetailData.token.decimals)
         return this.$publishMethods.formatDecimal(tokenamount, 4)
       } else return 0
+    },
+    tokenReserve() {
+      if (this.tokenDetailData.exchange) {
+        const tokenamount = precision(this.tokenDetailData.exchange.token_reserve, 'CNY', this.tokenDetailData.token.decimals)
+        return this.$publishMethods.formatDecimal(tokenamount, 4)
+      } else return 0
+    },
+    cnyReserve() {
+      if (this.tokenDetailData.exchange) {
+        const tokenamount = precision(this.tokenDetailData.exchange.cny_reserve, 'CNY', this.tokenDetailData.token.decimals)
+        return this.$publishMethods.formatDecimal(tokenamount, 4)
+      } else return 0
+    },
+    balance() {
+      if (this.tokenDetailData.token) {
+        const tokenamount = precision(this.tokenDetailData.token.balance, 'CNY', this.tokenDetailData.token.decimals)
+        return this.$publishMethods.formatDecimal(tokenamount, 4)
+      } else return 0
+    },
+    nowPrice() {
+      if (this.tokenDetailData.exchange) {
+        const price = this.tokenDetailData.exchange.cny_reserve / this.tokenDetailData.exchange.token_reserve
+        const formatDecimal = this.$publishMethods.formatDecimal(price, 2)
+        return Number(formatDecimal) < 0.01 ? '<0.01' : formatDecimal
+      } else return 0
     }
+
   },
   created() {
     this.tokenDetail()
@@ -329,6 +345,7 @@ export default {
   margin-left: 10px;
   font-size: 16px;
   color:#333;
+  flex: 1;
 }
 .time {
   font-size: 16px;

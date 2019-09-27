@@ -1,10 +1,10 @@
 <template>
   <div class="user-page">
     <g-header />
-    <div class="banner">
+    <div class="banner user-page-banner">
       <img src="@/assets/img/user_banner.png" alt="banner">
     </div>
-    <div class="user-info">
+    <div class="user-info user-page-info">
       <div class="user-info-center">
         <avatar :src="userInfo.avatar" size="100px" class="avatar" />
         <h1 class="username">
@@ -39,7 +39,7 @@
         </router-link>
       </div>
     </div>
-    <div class="article">
+    <div class="article user-page-content">
       <userPageNav />
       <slot name="list" />
     </div>
@@ -79,6 +79,7 @@ export default {
       'refreshUser',
       'followOrUnfollowUser'
     ])
+
   }
 
 }
@@ -91,6 +92,7 @@ export default {
 .banner {
   height: 290px;
   background-color: #C8D7FF;
+  box-sizing: border-box;
   img {
     height: 100%;
     display: block;
@@ -107,9 +109,10 @@ export default {
     width: 766px;
     height: 100%;
     margin: 0 auto;
-    padding-top: 1px;
+    padding: 1px 10px 0;
     text-align: center;
     position: relative;
+    box-sizing: border-box;
   }
   .avatar {
     border: 4px solid #fff;
@@ -154,12 +157,12 @@ export default {
   }
   .follow {
     position: absolute;
-    right: 0;
+    right: 10px;
     bottom: 20px;
   }
   .fans-coins-btn {
     position: absolute;
-    right: 0;
+    right: 10px;
     bottom: 60px;
   }
 }
@@ -168,5 +171,7 @@ export default {
   width: 766px;
   height: 100%;
   margin: 0 auto;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 </style>

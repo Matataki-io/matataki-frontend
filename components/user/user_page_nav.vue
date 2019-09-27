@@ -46,11 +46,10 @@ export default {
   text-align: center;
   padding: 20px 0 10px;
   a {
-    font-size:20px;
-    font-weight:400;
+    font-size: 18px;
     line-height:33px;
     text-decoration: none;
-    margin: 0 20px;
+    margin: 0 10px;
     cursor: pointer;
     color: #333;
     &.active {

@@ -66,10 +66,9 @@ export default {
   padding-right: 10px;
   a {
     font-size: 18px;
-    font-weight:400;
     line-height:33px;
     text-decoration: none;
-    margin-right: 40px;
+    margin-right: 30px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
