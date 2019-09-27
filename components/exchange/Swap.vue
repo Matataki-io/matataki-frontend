@@ -214,7 +214,7 @@ export default {
           .wxpay({
             total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
             title: `购买${outputToken.symbol}`,
-            type: 'buy_token', // type类型见typeOptions：add，buy_token，sale_token
+            type: this.base === 'input' ? 'buy_token_input' : 'buy_token_output', // type类型见typeOptions：add，buy_token_input，buy_token_output
             token_id: outputToken.id,
             token_amount: utils.toDecimal(output, outputToken.decimals),
             limit_value: utils.toDecimal(this.limitValue, outputToken.decimals),
