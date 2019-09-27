@@ -1,6 +1,10 @@
 <template>
   <el-dropdown @visible-change="getPointStatus">
-    <svg-icon class="integral" icon-class="integral" @click="jumpAccount" />
+    <svg-icon
+      class="integral-icon"
+      icon-class="integral"
+      @click.stop="jumpAccount"
+    />
     <el-dropdown-menu slot="dropdown">
       <!-- <el-dropdown-item></el-dropdown-item> -->
       <div class="integral-container">
@@ -246,11 +250,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.integral {
+.integral-icon {
   width: 26px;
   height: 26px;
   margin: 0 40px;
   cursor: pointer;
+  color: #000;
 }
 
 .line {

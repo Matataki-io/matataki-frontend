@@ -61,15 +61,15 @@ export default {
 <style lang="less" scoped>
 .nav {
   display: flex;
-  margin-top: 40px;
+  margin-top: 30px;
   padding-left: 10px;
   padding-right: 10px;
   a {
-    font-size:20px;
+    font-size: 18px;
     font-weight:400;
     line-height:33px;
     text-decoration: none;
-    margin-right: 60px;
+    margin-right: 40px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -83,14 +83,13 @@ export default {
       filter: opacity(0.5);
     }
     img {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
     }
     span {
-    font-size:20px;
+    font-size: 16px;
     color:rgba(0,0,0,1);
-    line-height:28px;
-    margin-top: 10px;
+    margin-top: 6px;
     }
     &:nth-last-child(1) {
       margin-right: 0;
