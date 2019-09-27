@@ -208,6 +208,11 @@ export default {
     },
     onSubmit() {
       const { input, inputToken, output, outputToken } = this.form
+      const loading = this.$loading({
+        lock: false,
+        text: '提交中',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
       // 输入是人民币
       if (inputToken.isCNY) {
         this.$API
@@ -221,6 +226,7 @@ export default {
             decimals: outputToken.decimals
           })
           .then(res => {
+            loading.close()
             this.order = res
             this.orderShow = true
           })
@@ -234,6 +240,7 @@ export default {
           limitValue: utils.toDecimal(this.limitValue, 4),
           base: this.base
         }).then(res => {
+          loading.close()
           if (res.code === 0) {
             this.successNotice('兑换成功')
           } else {
