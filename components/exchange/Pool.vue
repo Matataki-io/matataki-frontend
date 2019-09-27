@@ -115,7 +115,7 @@
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">你的资金池份额</span>
+        <span class="sc-hORach icyNSS">你的资金池份额 （{{yourPoolSize.your_supply}}）</span>
         <span v-if="form.outputToken.symbol">{{yourPoolSize.cny_amount}} CNY + {{yourPoolSize.token_amount}} {{form.outputToken.symbol}}</span>
         <span v-else> - </span>
       </div>
@@ -195,7 +195,8 @@ export default {
       },
       yourPoolSize: {
         cny_amount: 0,
-        token_amount: 0
+        token_amount: 0,
+        your_supply: 0
       },
       youMintTokenAmount: 0,
       poolSelected: {
@@ -366,7 +367,8 @@ export default {
         if (res.code === 0) {
           this.currentPoolSize = {
             cny_amount: utils.fromDecimal(res.data.cny_amount, 4),
-            token_amount: utils.fromDecimal(res.data.token_amount, 4)
+            token_amount: utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: utils.fromDecimal(res.data.total_supply, 4)
           }
         }
       })
@@ -376,7 +378,8 @@ export default {
         if (res.code === 0) {
           this.yourPoolSize = {
             cny_amount: utils.fromDecimal(res.data.cny_amount, 4),
-            token_amount: utils.fromDecimal(res.data.token_amount, 4)
+            token_amount: utils.fromDecimal(res.data.token_amount, 4),
+            your_supply: utils.fromDecimal(res.data.your_supply || 0, 4)
           }
         }
       })
