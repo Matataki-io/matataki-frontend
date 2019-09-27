@@ -94,7 +94,7 @@
             </p>
           </el-form-item>
           <el-form-item label="用户">
-            <el-input v-model="form.username" placeholder="请输入内容" size="medium">
+            <el-input v-model="form.username" placeholder="请输入内容" size="medium" @keyup.enter.native="searchUser">
               <el-button slot="append" icon="el-icon-search" @click="searchUser" />
             </el-input>
           </el-form-item>
@@ -276,6 +276,7 @@ export default {
     },
     async searchUser() {
       if (!this.form.username.trim()) return this.$message.warning('用户名不能为空')
+      this.transferLoading = true
       await this.$API.searchUsername(this.form.username.trim())
         .then(res => {
           if (res.code === 0) {
@@ -285,6 +286,8 @@ export default {
           } else return this.$message.warning(res.message)
         }).catch(err => {
           console.log(err)
+        }).finally(() => {
+          this.transferLoading = false
         })
     }
   }
