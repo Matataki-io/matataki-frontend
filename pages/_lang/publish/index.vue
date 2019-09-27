@@ -61,11 +61,11 @@
         </span>
         <el-input-number
           v-model="commentPayPoint"
-          style="width: 86px"
+          style="width: 110px"
           controls-position="right"
           class="price-point"
           :min="1"
-          :max="20"
+          :max="99999"
           size="mini"
           label="评论价格"
           step-strictly
