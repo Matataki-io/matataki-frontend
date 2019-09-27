@@ -585,7 +585,7 @@ export default {
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
-    buycoins: '买入粉丝币',
+    buycoins: '持有粉丝币',
     selfcoins: '我的粉丝币',
     editProfile: '编辑资料'
   },
