@@ -46,6 +46,7 @@ export default {
     '瞬MATATAKI，永久存储和版权记录的内容平台。行业领先的去中心化应用，创作者的安全港湾。注册登入即可领取额外500积分。',
   save: '保存',
   transaction: '交易',
+  gift: '赠送',
   success: {
     success: '成功',
     copy: '复制成功',

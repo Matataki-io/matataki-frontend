@@ -45,6 +45,7 @@ export default {
   referral: 'Instantaneous MATATAKI, a content platform for permanent storage and copyright records. Industry-leading decentralized applications, the creator\'s safe haven. Sign up to receive an additional 500 points. ',
   save: 'save',
   transaction: 'transaction',
+  gift: 'gift',
   success: {
     success: 'success',
     copy: 'Copy success',

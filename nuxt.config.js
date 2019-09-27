@@ -117,7 +117,7 @@ export default {
   */
   build: {
     // CSS提取
-    extractCSS: true,
+    // extractCSS: true,
     /*
     ** You can extend webpack config here
     */

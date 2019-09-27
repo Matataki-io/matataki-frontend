@@ -40,10 +40,13 @@
           <el-table-column
             prop="create_time"
             label=""
-            width="100"
+            width="160"
           >
             <template>
               <div class="invite-block btn">
+                <el-button class="info-button" style="margin-right: 10px;" size="small" @click="giftDialog = true">
+                  {{ $t('gift') }}
+                </el-button>
                 <router-link :to="{name: 'exchange'}">
                   <el-button class="info-button" size="small">
                     {{ $t('transaction') }}
@@ -66,6 +69,41 @@
         @paginationData="paginationData"
         @togglePage="togglePage"
       />
+      <el-dialog
+        title="提示"
+        :visible.sync="giftDialog"
+        width="600px"
+        :before-close="giftDialogClose"
+      >
+        <el-form ref="form" :model="form" :rules="rules" label-width="60px" class="gift-form">
+          <el-form-item label="币名" prop="tokenname">
+            <p class="tokenname">
+              {{ form.tokenname }}
+            </p>
+          </el-form-item>
+          <el-form-item label="用户" prop="name">
+            <el-input v-model="form.username" placeholder="请输入内容" size="medium">
+              <el-button slot="append" icon="el-icon-search" />
+            </el-input>
+          </el-form-item>
+          <el-form-item label="数量" prop="name">
+            <el-input-number
+              v-model="form.tokens"
+              size="small"
+              :min="1"
+              :max="10"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="small" @click="submitForm('form')">
+              确定
+            </el-button>
+            <el-button size="small" @click="formClose">
+              取消
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </template>
     <template slot="info">
       <userInfo :is-setting="true" />
@@ -106,7 +144,24 @@ export default {
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0
+      amount: 0,
+      giftDialog: false,
+      form: {
+        tokenname: 'XTD',
+        username: '',
+        userId: '',
+        tokens: 1,
+        max: 99999999 // 默认最大
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        region: [
+          { required: true, message: '请选择活动区域', trigger: 'change' }
+        ]
+      }
     }
   },
   methods: {
@@ -137,6 +192,35 @@ export default {
           page: i
         }
       })
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    },
+    formEmpty() {
+      this.form.tokenname = ''
+      this.form.username = ''
+      this.form.userId = ''
+      this.form.tokennumber = 1
+      this.form.max = 99999999
+      this.$refs.form.resetFields()
+    },
+    giftDialogClose(done) {
+      this.formEmpty()
+      done()
+    },
+    formClose() {
+      this.giftDialog = false
+      this.formEmpty()
     }
   }
 }
@@ -182,6 +266,13 @@ export default {
 }
 .pagination {
   margin-top: 40px;
+}
+.gift-form {
+  margin: 0 40px 0 20px;
+  .tokenname {
+    padding: 0;
+    margin: 0;
+  }
 }
 </style>
 
