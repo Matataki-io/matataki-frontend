@@ -176,7 +176,7 @@ export default {
       if (this.tokenDetailData.exchange) {
         const price = this.tokenDetailData.exchange.cny_reserve / this.tokenDetailData.exchange.token_reserve
         const formatDecimal = this.$publishMethods.formatDecimal(price, 2)
-        return Number(formatDecimal) < 0.01 ? '<0.01' : formatDecimal
+        return isNaN(formatDecimal) ? 0 : Number(formatDecimal) < 0.01 ? '<0.01' : formatDecimal
       } else return 0
     }
 
