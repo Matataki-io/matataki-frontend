@@ -191,7 +191,6 @@ export default {
     },
     inputChange: debounce(function (e) {
       const value = e.target.value
-      console.log(value)
       this.form.input = value
       this.base = 'input'
       this.form.output = ''
@@ -202,7 +201,6 @@ export default {
     }, 500),
     outputChange: debounce(function (e) {
       const value = e.target.value
-      console.log(value)
       this.form.output = value
       this.base = 'output'
       this.form.input = ''
@@ -218,7 +216,6 @@ export default {
         this.form[this.field === INPUT ? 'output' : 'input'] = ''
       }
       const { input, inputToken, output, outputToken } = this.form
-      console.log(input, inputToken.symbol, output, outputToken.symbol)
       if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
         this.getOutputAmount(inputToken.id, outputToken.id, input)
         return

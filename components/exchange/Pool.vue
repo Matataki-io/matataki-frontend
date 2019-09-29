@@ -407,7 +407,6 @@ export default {
     getYourMintToken(tokenId, amountBefore) {
       const { outputToken } = this.form
       // 转换之后
-      console.log(amountBefore, outputToken.decimals)
       const amount = utils.toDecimal(amountBefore, outputToken.decimals)
       this.$API.getYourMintToken(tokenId, amount).then(res => {
         if (res.code === 0) {
