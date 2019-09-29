@@ -39,9 +39,11 @@
         </router-link>
       </div>
     </div>
-    <div class="article user-page-content">
+    <div class="user-page-content">
       <userPageNav />
-      <slot name="list" />
+      <div class="article">
+        <slot name="list" />
+      </div>
     </div>
   </div>
 </template>
