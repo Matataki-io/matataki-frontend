@@ -245,7 +245,7 @@ export default {
     limitValue() {
       const { output } = this.form
       if (!utils.isNull(output)) {
-        return (parseFloat(output) * (1 - this.priceSlippage)).toFixed(4)
+        return (parseFloat(output) / (1 - this.priceSlippage)).toFixed(4)
       }
       return '-'
     },
@@ -327,7 +327,7 @@ export default {
     getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
       const deciaml = 4
       const _inputAmount = utils.toDecimal(inputAmount, deciaml)
-      this.$API.getOutputAmount(inputTokenId, outputTokenId, _inputAmount).then((res) => {
+      this.$API.getPoolCnyToTokenPrice(inputTokenId, outputTokenId, _inputAmount).then((res) => {
         if (res.code === 0) {
           this.outputReadOnly = true
           this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)

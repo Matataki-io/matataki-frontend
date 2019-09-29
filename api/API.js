@@ -474,5 +474,14 @@ export default {
         tokenId, amount, min_cny, min_tokens
       }
     })
+  },
+  getPoolCnyToTokenPrice(inputTokenId, outputTokenId, inputAmount) {
+    return request({
+      method: 'get',
+      url: '/exchange/poolCnyToTokenPrice',
+      params: {
+        outputTokenId, inputAmount
+      }
+    })
   }
 }
