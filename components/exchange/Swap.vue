@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
@@ -139,6 +140,7 @@ export default {
   mounted() {
   },
   computed: {
+    ...mapGetters(['isLogined']),
     btnDisabled() {
       const { input, output, outputToken } = this.form
       if (utils.isNull(input) || utils.isNull(outputToken) || utils.isNull(output)) {
@@ -172,6 +174,14 @@ export default {
     }
   },
   methods: {
+    checkLogin() {
+      if (!this.isLogined) {
+        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      return true
+    },
     inputChange: debounce(function (e) {
       const value = e.target.value
       console.log(value)
@@ -207,6 +217,7 @@ export default {
       }
     },
     onSubmit() {
+      if (!this.checkLogin()) return
       const { input, inputToken, output, outputToken } = this.form
       const loading = this.$loading({
         lock: false,

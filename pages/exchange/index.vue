@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Swap from '@/components/exchange/Swap'
 import Pool from '@/components/exchange/Pool'
 export default {
@@ -31,9 +32,24 @@ export default {
   },
   async asyncData({ $axios }) {
   },
+  computed: {
+    ...mapGetters(['isLogined'])
+  },
   created() {
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.checkLogin()
+    })
+  },
   methods: {
+    checkLogin() {
+      if (!this.isLogined) {
+        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+    }
   }
 }
 </script>

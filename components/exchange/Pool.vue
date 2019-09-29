@@ -158,6 +158,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
@@ -211,8 +212,10 @@ export default {
   },
   async asyncData() {},
   mounted() {
+    // this.checkLogin()
   },
   computed: {
+    ...mapGetters(['isLogined']),
     // 是否是删除流动金
     isDelete() {
       // 添加流动金
@@ -258,6 +261,14 @@ export default {
     }
   },
   methods: {
+    checkLogin() {
+      if (!this.isLogined) {
+        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      return true
+    },
     calLimitValue(v) {
       return parseFloat(v) * (1 - this.priceSlippage)
     },
@@ -338,6 +349,7 @@ export default {
       })
     },
     onSubmit() {
+      if (!this.checkLogin()) return
       if (this.isDelete) {
         this.removeLiquidity()
       } else {
