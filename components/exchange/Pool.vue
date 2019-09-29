@@ -27,6 +27,7 @@
             placeholder="0.0"
             @input="outputChange"
             :value="form.output"
+            @keypress="isNumber"
           />
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
@@ -45,6 +46,7 @@
             placeholder="0.0"
             @input="inputChange"
             :value="form.input"
+            @keypress="isNumber"
           />
           <button class="iAoRgd">
             <span class="rTZzf">
@@ -92,6 +94,7 @@
             :readonly="outputReadOnly"
             @input="outputChange"
             :value="form.output"
+            @keypress="isNumber"
           />
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
@@ -152,7 +155,7 @@
       <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">{{ poolSelected.text }}</button>
     </div>
     <OrderModal v-model="orderShow" :order="{...order,...form}"></OrderModal>
-    <TokenListModal v-model="tlShow" @selectToken="selectToken"></TokenListModal>
+    <TokenListModal v-model="tlShow" @selectToken="selectToken" :addon="false"></TokenListModal>
     <PoolSelectModal v-model="psShow" @selectPool="selectPool"></PoolSelectModal>
   </div>
 </template>
@@ -261,6 +264,11 @@ export default {
     }
   },
   methods: {
+    isNumber(event) {
+      if (!/\d/.test(event.key) && event.key !== '.') {
+        return event.preventDefault()
+      }
+    },
     checkLogin() {
       if (!this.isLogined) {
         this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })

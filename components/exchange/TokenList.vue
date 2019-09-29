@@ -46,6 +46,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    addon: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -111,10 +115,16 @@ export default {
         if (search === '') {
           if (page === 1) {
             this.count = res.data.count
-            this.tokenList = [
-              CNY,
-              ...res.data.list
-            ]
+            let list = []
+            if (this.addon) {
+              list = [
+                CNY,
+                ...res.data.list
+              ]
+            } else {
+              list = res.data.list
+            }
+            this.tokenList = list
           } else {
             this.tokenList.push(...res.data.list)
           }

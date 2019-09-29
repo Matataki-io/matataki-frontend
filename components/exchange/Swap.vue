@@ -17,6 +17,7 @@
             placeholder="0.0"
             @input="inputChange"
             :value="form.input"
+            @keypress="isNumber"
           />
           <button class="iAoRgd" @click="tlShow = true;field = 'inputToken'">
             <span class="rTZzf">
@@ -51,6 +52,7 @@
             placeholder="0.0"
             @input="outputChange"
             :value="form.output"
+            @keypress="isNumber"
           />
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
@@ -174,6 +176,11 @@ export default {
     }
   },
   methods: {
+    isNumber(event) {
+      if (!/\d/.test(event.key) && event.key !== '.') {
+        return event.preventDefault()
+      }
+    },
     checkLogin() {
       if (!this.isLogined) {
         this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
@@ -206,6 +213,10 @@ export default {
     }, 500),
     selectToken(token) {
       this.form[this.field] = token
+      if (this.form[INPUT] === this.form[OUTPUT]) {
+        this.form[this.field === INPUT ? OUTPUT : INPUT] = ''
+        this.form[this.field === INPUT ? 'output' : 'input'] = ''
+      }
       const { input, inputToken, output, outputToken } = this.form
       console.log(input, inputToken.symbol, output, outputToken.symbol)
       if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
