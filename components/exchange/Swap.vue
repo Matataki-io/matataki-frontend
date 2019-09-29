@@ -256,7 +256,7 @@ export default {
         if (res.code === 0) {
           this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
         } else {
-          this.$message.error('暂无交易对')
+          this.$message.error(res.message)
           this.form.output = ''
         }
       })
@@ -268,7 +268,7 @@ export default {
         if (res.code === 0) {
           this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
         } else {
-          this.$message.error('暂无交易对')
+          this.$message.error(res.message)
           this.form.input = ''
         }
       })
