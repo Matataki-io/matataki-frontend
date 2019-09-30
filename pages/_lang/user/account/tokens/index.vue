@@ -12,7 +12,7 @@
         >
           <el-table-column
             prop="total_supply"
-            :label="$t('user.tokenName')"
+            label="粉丝币"
           >
             <template slot-scope="scope">
               <div class="fl ac">
@@ -100,7 +100,7 @@
           label-width="70px"
           class="gift-form"
         >
-          <el-form-item label="符号">
+          <el-form-item label="粉丝币">
             <p class="tokenname">
               {{ form.tokenname }}
             </p>

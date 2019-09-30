@@ -17,8 +17,8 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" class="input" placeholder="请输入粉丝币名称" />
       </el-form-item>
-      <el-form-item label="符号" prop="abbreviation">
-        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币符号(发行后不可修改)" />
+      <el-form-item label="缩写" prop="abbreviation">
+        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币缩写(发行后不可修改)" />
       </el-form-item>
       <el-form-item label="图标" prop="coinsIcon">
         <el-input v-model="form.coinsIcon" style="display: none;" class="input" />
@@ -76,7 +76,7 @@ export default {
       const reg = /^[A-Z]+$/
       const res = reg.test(this.form.abbreviation)
       if (!res) {
-        callback(new Error('粉丝币符号仅限大写英文字符'))
+        callback(new Error('粉丝币缩写仅限大写英文字符'))
       } else {
         callback()
       }
@@ -95,7 +95,7 @@ export default {
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
         ],
         abbreviation: [
-          { required: true, message: '请输入粉丝币符号', trigger: 'blur' },
+          { required: true, message: '请输入粉丝币缩写', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
