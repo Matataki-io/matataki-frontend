@@ -10,3 +10,4 @@ export function setCookie(key, val) {
 
 export function removeCookie(key) {
   return Cookies.remove(key)
+}
