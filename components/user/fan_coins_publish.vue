@@ -20,7 +20,7 @@
       <el-form-item label="符号" prop="abbreviation">
         <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币符号(发行后不可修改)" />
       </el-form-item>
-      <!-- <el-form-item label="图标" prop="coinsIcon">
+      <el-form-item label="图标" prop="coinsIcon">
         <el-input v-model="form.coinsIcon" style="display: none;" class="input" />
         <img-upload
           v-show="!coinsCover"
@@ -38,7 +38,6 @@
           class="coina-cover"
         >
           <el-image
-            lazy
             :src="coinsCover"
             fit="cover"
           />
@@ -46,7 +45,7 @@
             <i class="el-icon-delete remove" />
           </div>
         </div>
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item label="发行数量" prop="number">
         <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量(最多发行1亿)" />
       </el-form-item>
@@ -64,12 +63,12 @@
 </template>
 
 <script>
-// import imgUpload from '@/components/imgUpload/index.vue'
+import imgUpload from '@/components/imgUpload/index.vue'
 import { toPrecision } from '@/utils/precisionConversion'
 
 export default {
   components: {
-    // imgUpload
+    imgUpload
   },
   data() {
     const checkSymbol = (rule, value, callback) => {
@@ -100,7 +99,7 @@ export default {
           { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
         coinsIcon: [
-          // { required: true, message: '请输上传图标' }
+          { required: true, message: '请输上传图标' }
         ],
         number: [
           { required: true, message: '请输入首次发行数量', trigger: 'blur' },
@@ -132,11 +131,12 @@ export default {
         })
     },
     async minetokenCreate() {
-      const { name, abbreviation } = this.form
+      const { name, abbreviation, coinsIcon } = this.form
       const data = {
         name: name,
         symbol: abbreviation,
-        decimals: 100
+        decimals: 100,
+        logo: coinsIcon
       }
       await this.$API.minetokenCreate(data)
         .then(res => {

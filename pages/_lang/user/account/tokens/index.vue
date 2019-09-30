@@ -15,7 +15,10 @@
             :label="$t('user.tokenName')"
           >
             <template slot-scope="scope">
-              <span class="scope">{{ scope.row.symbol }}</span>
+              <div class="fl ac">
+                <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
+                <span class="scope">{{ scope.row.symbol }}</span>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -32,7 +35,7 @@
           >
             <template slot-scope="scope">
               <n-link class="invite-block author" :to="{name: 'user-id', params: {id: scope.row.uid}}">
-                <avatar :src="cover(scope.row.avatar)" size="30px" />
+                <!-- <avatar :src="cover(scope.row.avatar)" size="30px" /> -->
                 <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
               </n-link>
             </template>
@@ -319,7 +322,7 @@ export default {
   align-items: center;
 }
 .username {
-  margin-left: 10px;
+  // margin-left: 10px;
   font-size: 16px;
   color:#333;
   flex: 1;

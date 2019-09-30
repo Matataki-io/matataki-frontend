@@ -1,12 +1,15 @@
 <template>
   <div v-if="isPublishCoins" class="coins-publish">
     <div class="fl ac coins-head">
-      <h1>
-        {{ tokenDetailData.token.symbol }}
-        ({{
-          tokenDetailData.token.name
-        }})
-      </h1>
+      <div class="fl ac">
+        <avatar :src="tokenCover" size="30px" style="margin-right: 10px;" />
+        <h1>
+          {{ tokenDetailData.token.symbol }}
+          ({{
+            tokenDetailData.token.name
+          }})
+        </h1>
+      </div>
       <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
@@ -47,7 +50,7 @@
             {{ balance }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            持仓总量
+            我的持仓总量
           </p>
         </div>
         <div class="info-data">
@@ -181,8 +184,13 @@ export default {
         const formatDecimal = this.$publishMethods.formatDecimal(price, 2)
         return isNaN(formatDecimal) ? 0 : Number(formatDecimal) < 0.01 ? '<0.01' : formatDecimal
       } else return 0
+    },
+    tokenCover() {
+      if (this.tokenDetailData.token) {
+        const logo = this.tokenDetailData.token.logo
+        return logo ? this.$API.getImg(logo) : ''
+      } else return ''
     }
-
   },
   created() {
     this.tokenDetail()
