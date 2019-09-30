@@ -40,6 +40,7 @@
           <el-image
             :src="coinsCover"
             fit="cover"
+            class="tokens-image"
           />
           <div class="cover-full" @click="removeCoinsIcon">
             <i class="el-icon-delete remove" />
@@ -200,6 +201,7 @@ export default {
   border-radius: 4px;
   box-sizing: border-box;
   background: #ececec;
+  border: 1px solid #ececec;
   &:hover .cover-full {
     display: flex;
   }
@@ -254,6 +256,11 @@ export default {
   width: 100px;
   // background: @purpleDark;
   // border-color: @purpleDark;
+}
+
+.tokens-image {
+  width: 100%;
+  height: 100%;
 }
 
 </style>
