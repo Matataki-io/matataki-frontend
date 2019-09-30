@@ -33,7 +33,11 @@
           </a>
           |
           <a href="https://eosvote.com/" target="_blank">
-            {{ $t('footer.eosvote') }}
+            EOSvote
+          </a>
+          |
+          <a href="https://www.defi.wtf" target="_blank">
+            DeFi.wtf
           </a>
         </p>
       </div>

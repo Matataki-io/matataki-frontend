@@ -3,14 +3,17 @@
     <div class="fl ac coins-head">
       <h1>
         {{ tokenDetailData.token.symbol }}
+        ({{
+          tokenDetailData.token.name
+        }})
       </h1>
-      <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
+      <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
-      </el-tooltip>
-      <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a>
+      </el-tooltip> -->
+      <!-- <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a> -->
     </div>
 
     <div class="fl ac coins-info">
@@ -20,7 +23,7 @@
             {{ totalAmount }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            印发总量
+            发行总量
           </p>
         </div>
         <div class="info-data">
@@ -28,7 +31,7 @@
             {{ tokenReserve }}<sub>枚</sub>
           </p>
           <p class="info-data-title">
-            待售量
+            流通量
           </p>
         </div>
         <div class="info-data">
@@ -86,7 +89,7 @@
         </el-table-column>
         <el-table-column
           prop="create_time"
-          label="持仓/枚"
+          label="持仓量"
           width="200"
         >
           <template slot-scope="scope">

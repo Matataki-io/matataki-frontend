@@ -9,11 +9,11 @@
           中文
         </span>
       </el-dropdown-item>
-      <el-dropdown-item>
+      <!-- <el-dropdown-item>
         <span @click="changeLanguage('en')">
           English
         </span>
-      </el-dropdown-item>
+      </el-dropdown-item> -->
     </el-dropdown-menu>
   </el-dropdown>
 </template>

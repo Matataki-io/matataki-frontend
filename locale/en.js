@@ -287,7 +287,6 @@ export default {
     pointPopover: 'Click on the little star to see the score of the score',
     pointPopoverConfirm: 'know it',
     account: 'my account',
-    homePage: 'My homepage',
     setting: 'Settings',
     articleNavHot: 'The hottest',
     articleNavHotTitle: 'The hottest article',
@@ -599,8 +598,8 @@ export default {
     wallet: 'wallet',
     point: 'integration',
     invite: 'Invite',
-    buycoins: 'Holding fan coins',
-    selfcoins: 'My fan coins',
+    buycoins: 'Fan coins held',
+    selfcoins: 'Fan coins issued',
     editProfile: 'Edit Profile' },
   withdraw: { title: 'cash out',
     address: 'cash address',
@@ -650,7 +649,6 @@ export default {
     link: 'Friendly link',
     linkidol: 'Link Idol',
     orange: 'Orange Book',
-    eosvote: 'EOSvote',
     scanCode: 'scan code into group',
     follow: 'Follow the public number'
   }

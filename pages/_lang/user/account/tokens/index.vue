@@ -11,8 +11,24 @@
           style="width: 100%"
         >
           <el-table-column
+            prop="total_supply"
+            :label="$t('user.tokenName')"
+          >
+            <template slot-scope="scope">
+              <span class="scope">{{ scope.row.symbol }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="total_supply"
+            label="名称"
+          >
+            <template slot-scope="scope">
+              <span class="scope">{{ scope.row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="name"
-            :label="$t('user.username')"
+            label="发币者"
           >
             <template slot-scope="scope">
               <n-link class="invite-block author" :to="{name: 'user-id', params: {id: scope.row.uid}}">
@@ -21,14 +37,7 @@
               </n-link>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="total_supply"
-            :label="$t('user.tokenName')"
-          >
-            <template slot-scope="scope">
-              <span class="scope">{{ scope.row.symbol }}</span>
-            </template>
-          </el-table-column>
+
           <el-table-column
             prop="total_supply"
             :label="$t('user.positionCoins')"
@@ -76,7 +85,7 @@
         @togglePage="togglePage"
       />
       <el-dialog
-        title="提示"
+        title="赠送粉丝币"
         :visible.sync="giftDialog"
         width="600px"
         :before-close="giftDialogClose"
@@ -85,20 +94,20 @@
           ref="form"
           v-loading="transferLoading"
           :model="form"
-          label-width="60px"
+          label-width="70px"
           class="gift-form"
         >
-          <el-form-item label="币名">
+          <el-form-item label="符号">
             <p class="tokenname">
               {{ form.tokenname }}
             </p>
           </el-form-item>
-          <el-form-item label="用户">
-            <el-input v-model="form.username" placeholder="请输入内容" size="medium" @keyup.enter.native="searchUser">
+          <el-form-item label="接受对象">
+            <el-input v-model="form.username" placeholder="请输入赠送的对象" size="medium" @keyup.enter.native="searchUser">
               <el-button slot="append" icon="el-icon-search" @click="searchUser" />
             </el-input>
           </el-form-item>
-          <el-form-item v-if="form.useravatar" label="" prop="">
+          <el-form-item v-if="form.userId" label="" prop="">
             <div class="avatar-content">
               <avatar class="gift-avatar" :src="form.useravatar" size="60px" />
               <div class="gift-ful" @click="closeUser">
@@ -106,7 +115,7 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="数量" prop="">
+          <el-form-item label="发送数量" prop="">
             <el-input-number
               v-model="form.tokens"
               size="small"

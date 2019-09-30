@@ -97,7 +97,7 @@ export default {
   font-size: 18px;
   position: fixed;
   right: 40px;
-  bottom: 80px;
+  bottom: 186px;
   color: #fff;
   display: flex;
   align-items: center;
@@ -119,7 +119,7 @@ export default {
   color: #fff;
   background: @purpleDark;
   cursor: pointer;
-  bottom: 20px;
+  bottom: 126px;
   right: 40px;
   text-align: center;
   display: flex;

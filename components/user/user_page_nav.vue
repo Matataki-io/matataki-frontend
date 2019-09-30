@@ -43,7 +43,9 @@ export default {
 
 <style lang="less" scoped>
 .nav {
-  text-align: center;
+  width: 766px;
+  // text-align: center;
+  margin: 0 auto;
   padding: 20px 0 10px;
   a {
     font-size: 18px;

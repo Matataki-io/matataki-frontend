@@ -17,10 +17,10 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" class="input" placeholder="请输入粉丝币名称" />
       </el-form-item>
-      <el-form-item label="简称" prop="abbreviation">
-        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币简称" />
+      <el-form-item label="符号" prop="abbreviation">
+        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币符号" />
       </el-form-item>
-      <el-form-item label="图标" prop="coinsIcon">
+      <!-- <el-form-item label="图标" prop="coinsIcon">
         <el-input v-model="form.coinsIcon" style="display: none;" class="input" />
         <img-upload
           v-show="!coinsCover"
@@ -46,7 +46,7 @@
             <i class="el-icon-delete remove" />
           </div>
         </div>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="发行数量" prop="number">
         <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量(最多发行1亿)" />
       </el-form-item>
@@ -64,12 +64,12 @@
 </template>
 
 <script>
-import imgUpload from '@/components/imgUpload/index.vue'
+// import imgUpload from '@/components/imgUpload/index.vue'
 import { toPrecision } from '@/utils/precisionConversion'
 
 export default {
   components: {
-    imgUpload
+    // imgUpload
   },
   data() {
     return {
@@ -83,18 +83,18 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入粉丝币名称', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
         ],
         abbreviation: [
-          { required: true, message: '请输入粉丝币简称', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          { required: true, message: '请输入粉丝币符号', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
         ],
         coinsIcon: [
           // { required: true, message: '请输上传图标' }
         ],
         number: [
           { required: true, message: '请输入首次发行数量', trigger: 'blur' },
-          { min: 1, max: 9, message: '首次发行数量一亿', trigger: 'blur' }
+          { min: 1, max: 9, message: '首次发行数量一亿', trigger: ['blur', 'change'] }
         ]
       },
       imgUploadDone: 0 // 图片是否上传完成

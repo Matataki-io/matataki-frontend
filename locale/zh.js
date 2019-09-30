@@ -282,7 +282,6 @@ export default {
     pointPopover: '点击小星星即可查看积分的获取记录',
     pointPopoverConfirm: '知道了',
     account: '我的账户',
-    homePage: '我的主页',
     setting: '设置',
     articleNavHot: '最热',
     articleNavHotTitle: '最热文章',
@@ -567,9 +566,9 @@ export default {
     registeredDate: '注册时间',
     inviteRule: '注：未激活者阅读5篇文章并作出评价后即可完成激活，激活后您即可领取额外{0}积分。',
     // buycoins
-    username: '用户',
-    tokenName: '币名',
-    positionCoins: '持仓/枚',
+    username: '发币者',
+    tokenName: '符号',
+    positionCoins: '持仓量',
     // coins
     manageCoins: '管理粉丝币',
     transactionCoins: '交易粉丝币',
@@ -585,8 +584,8 @@ export default {
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
-    buycoins: '持有粉丝币',
-    selfcoins: '我的粉丝币',
+    buycoins: '持有的粉丝币',
+    selfcoins: '发行的粉丝币',
     editProfile: '编辑资料'
   },
   withdraw: {
@@ -633,7 +632,6 @@ export default {
     link: '友情链接',
     linkidol: '链接偶像',
     orange: '橙皮书',
-    eosvote: 'EOSvote',
     scanCode: '扫码进群',
     follow: '关注公众号'
   }
