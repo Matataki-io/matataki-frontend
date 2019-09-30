@@ -16,6 +16,7 @@
       <div class="cotdDw" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)">
         <div class="sc-jnlKLf hDyKIS" v-for="item in tokenList" :key="item.id" @click="selectToken(item)">
           <div class="sc-fYxtnH cjqFX">
+            <div class="favMUS"><img v-if="item.logo" :src="getImg(item.logo)" alt="logo"></div>
             <div class="sc-tilXH egNEUM">
               <span id="symbol">{{ item.symbol }}</span>
               <div class="sc-hEsumM iHXZgD">{{ item.name }}</div>
@@ -91,6 +92,9 @@ export default {
     this.getAllToken()
   },
   methods: {
+    getImg(url) {
+      return this.$API.getImg(url)
+    },
     handleClose() {
       this.search = ''
       this.showModal = false
@@ -160,6 +164,14 @@ export default {
 </style>
 <style scoped lang="less">
 .container {
+  .favMUS {
+    width: 2rem;
+    height: 2rem;
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+  }
   .hDyKIS:hover {
     background-color: rgb(64, 64, 64);
   }
