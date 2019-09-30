@@ -7,9 +7,8 @@
           v-for="(item, index) in articleCardData.articles"
           :key="item.id"
           :to="{
-            name: 'publish',
-            params: { id: item.id },
-            query: { from: 'draft' }
+            name: 'publish-type-id',
+            params: { type: 'draft', id: item.id },
           }"
         >
           <draftArticleCardMini

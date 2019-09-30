@@ -218,6 +218,9 @@ export default {
       }
     })
   },
+  getDraft({ id }) {
+    return request({ url: `/draft/${id}` })
+  },
   // 提交积分评论
   postPointComment(data) {
     return request({
