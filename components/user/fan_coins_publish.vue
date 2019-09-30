@@ -18,7 +18,7 @@
         <el-input v-model="form.name" class="input" placeholder="请输入粉丝币名称" />
       </el-form-item>
       <el-form-item label="符号" prop="abbreviation">
-        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币符号" />
+        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币符号(发行后不可修改)" />
       </el-form-item>
       <!-- <el-form-item label="图标" prop="coinsIcon">
         <el-input v-model="form.coinsIcon" style="display: none;" class="input" />
@@ -72,6 +72,15 @@ export default {
     // imgUpload
   },
   data() {
+    const checkSymbol = (rule, value, callback) => {
+      const reg = /^[A-Z]+$/
+      const res = reg.test(this.form.abbreviation)
+      if (!res) {
+        callback(new Error('粉丝币符号为英文字符'))
+      } else {
+        callback()
+      }
+    }
     return {
       form: {
         name: '',
@@ -87,7 +96,8 @@ export default {
         ],
         abbreviation: [
           { required: true, message: '请输入粉丝币符号', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
+          { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
         coinsIcon: [
           // { required: true, message: '请输上传图标' }
