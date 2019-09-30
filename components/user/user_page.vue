@@ -10,7 +10,7 @@
         <h1 class="username">
           {{ userInfo.name }}
           <!-- {{ userInfo }} -->
-          <el-tooltip
+          <!-- <el-tooltip
             v-if="seedUser"
             class="item"
             effect="dark"
@@ -21,7 +21,7 @@
               class="seeduser"
               icon-class="seeduser"
             />
-          </el-tooltip>
+          </el-tooltip> -->
         </h1>
 
         <p class="profile">
