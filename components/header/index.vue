@@ -227,11 +227,8 @@ export default {
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
     writeP() {
-      if (this.isLogined) this.$router.push({ name: 'publish', params: { id: 'create' } })
-      else {
-        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
-        this.login()
-      }
+      if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+      else this.login()
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()

@@ -562,9 +562,9 @@ export default {
     },
     edit() {
       this.$router.push({
-        name: 'publish',
-        params: { id: this.article.id },
-        query: { from: 'edit', hash: this.article.hash }
+        name: 'publish-type-id',
+        params: { type: 'edit', id: this.article.id },
+        query: { hash: this.article.hash }
       })
     },
     // 检测能否投资

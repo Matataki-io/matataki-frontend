@@ -212,7 +212,7 @@ export default {
   methods: {
     jumpTo(name) {
       if (name === 'publish') {
-        if (this.isLogined) this.$router.push({ name: 'publish', params: { id: 'create' } })
+        if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
         else {
           this.$store.commit('setLoginModal', true)
         }
