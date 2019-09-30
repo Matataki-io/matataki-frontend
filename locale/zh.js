@@ -496,7 +496,7 @@ export default {
     confirmUnFollowMessage: '确定取消关注?',
     // article import
     importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
-    importDes2: '如若在本平台发表的内容发声侵权行为，SS官方有权下架该作品，并保留向侵权作者追究法律责任的权利。',
+    importDes2: '如若在本平台发表的内容发声侵权行为，官方有权下架该作品，并保留向侵权作者追究法律责任的权利。',
     importAgree: '我同意',
     importAddressError: '请输入正确的地址',
     importAddress: '来源链接：',

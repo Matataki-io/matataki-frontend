@@ -515,7 +515,7 @@ export default {
     importDes1:
      'Current support: Chain Wen, Orange Book, WeChat, Jane Book. ',
     importDes2:
-     'If the content published on this platform is infringing, SS official has the right to remove the work and reserve the right to pursue legal liability for the infringer. ',
+     'If the content published on this platform is infringing, official has the right to remove the work and reserve the right to pursue legal liability for the infringer. ',
     importAgree: 'I agree',
     importAddressError: 'Please enter the correct address',
     importAddress: 'Source link:',
