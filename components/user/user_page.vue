@@ -7,13 +7,20 @@
     <div class="user-info user-page-info">
       <div class="user-info-center">
         <avatar :src="userInfo.avatar" size="100px" class="avatar" />
-        <div class="fl ac jc">
+        <span class="fl ac jc">
           <h1 class="username">
             {{ userInfo.name }}
           <!-- {{ userInfo }} -->
           </h1>
-          <img v-if="seedUser" src="@/assets/img/seeduser.png" class="seeduser">
-        </div>
+          <el-tooltip class="item" effect="dark" content="种子用户" placement="top">
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
+            <img v-if="seedUser" src="@/assets/img/seeduser.png" class="seeduser">
+          </el-tooltip>
+        </span>
+
         <p class="profile">
           {{ userInfo.introduction || $t('not') }}
         </p>
