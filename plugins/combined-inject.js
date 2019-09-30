@@ -1,4 +1,5 @@
 import point from '../config/points.js'
+import userStatus from '../config/userStatus.js'
 import API from '@/api/API'
 import backendAPI from '@/api/backend'
 import endpoint from '@/api/endpoint'
@@ -12,4 +13,5 @@ export default ({ app }, inject) => {
   inject('utils', utils)
   inject('publishMethods', publishMethods)
   inject('point', point)
+  inject('userStatus', userStatus)
 }

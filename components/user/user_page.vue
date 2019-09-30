@@ -7,10 +7,13 @@
     <div class="user-info user-page-info">
       <div class="user-info-center">
         <avatar :src="userInfo.avatar" size="100px" class="avatar" />
-        <h1 class="username">
-          {{ userInfo.name }}
+        <div class="fl ac jc">
+          <h1 class="username">
+            {{ userInfo.name }}
           <!-- {{ userInfo }} -->
-        </h1>
+          </h1>
+          <img v-if="seedUser" src="@/assets/img/seeduser.png" class="seeduser">
+        </div>
         <p class="profile">
           {{ userInfo.introduction || $t('not') }}
         </p>
@@ -24,7 +27,7 @@
             <span class="follow-title">{{ $t('fans') }}</span>
           </div>
         </div>
-        <fanCoinsBtn :id="Number($route.params.id)" class="fans-coins-btn" />
+        <fanCoinsBtn :id="Number($route.params.id)" :token="token" class="fans-coins-btn" />
         <followBtn v-if="!isMe(Number($route.params.id))" :id="Number($route.params.id)" class="follow" />
         <router-link
           v-else
@@ -67,11 +70,15 @@ export default {
     }),
     ...mapGetters(['isMe'])
   },
-
-  watch: {
+  data() {
+    return {
+      token: false,
+      seedUser: false
+    }
   },
   created() {
     if (!this.$route.params.id) this.$router.go(-1)
+    this.getMyUserData()
   },
   mounted() {
     this.refreshUser({ id: this.$route.params.id })
@@ -80,7 +87,17 @@ export default {
     ...mapActions('user', [
       'refreshUser',
       'followOrUnfollowUser'
-    ])
+    ]),
+    async getMyUserData() {
+      const res = await this.$API.getMyUserData().then(res => {
+        const statusToken = (res.data.status & this.$userStatus.hasMineTokenPermission)
+        const statusSeedUser = (res.data.status & this.$userStatus.isSeedUser)
+        if (res.code === 0 && statusToken) this.token = true
+        if (res.code === 0 && statusSeedUser) this.seedUser = true
+      }).catch(err => {
+        console.log(err)
+      })
+    }
 
   }
 
@@ -128,7 +145,11 @@ export default {
     color: #000;
     line-height:33px;
     padding: 0;
-    margin: 10px 0 0;
+    margin: 0;
+  }
+  .seeduser {
+    height: 30px;
+    background: #fff;
   }
   .profile {
     font-size:16px;

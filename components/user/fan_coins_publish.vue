@@ -75,7 +75,7 @@ export default {
       const reg = /^[A-Z]+$/
       const res = reg.test(this.form.abbreviation)
       if (!res) {
-        callback(new Error('粉丝币符号为英文字符'))
+        callback(new Error('粉丝币符号仅限大写英文字符'))
       } else {
         callback()
       }

@@ -17,11 +17,14 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    token: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
     return {
-      tokens: false
     }
   },
   computed: {
@@ -31,12 +34,11 @@ export default {
     },
     showBtn() {
       if (this.isMe(this.id)) {
-        return this.tokens
+        return this.token
       } else return true
     }
   },
   created() {
-    this.getMyUserData()
   },
   methods: {
     ...mapActions('user', [
@@ -53,14 +55,8 @@ export default {
           name: 'exchange'
         })
       }
-    },
-    async getMyUserData() {
-      const res = await this.$API.getMyUserData().then(res => {
-        if (res.code === 0 && res.data.level > 0) this.tokens = true
-      }).catch(err => {
-        console.log(err)
-      })
     }
+
   }
 }
 </script>
