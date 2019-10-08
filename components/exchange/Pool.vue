@@ -2,10 +2,10 @@
   <div>
     <div class="hYLPFg">
       <div class="caRvnP" @click="psShow = true">
-          <span class="gclSjj">{{ poolSelected.text }}</span>
-          <i class="el-icon-arrow-down"></i>
+        <span class="gclSjj">{{ poolSelected.text }}</span>
+        <i class="el-icon-arrow-down" />
       </div>
-      <div class="jJSpkX"></div>
+      <div class="jJSpkX" />
     </div>
     <!-- 存入 -->
     <div class="kvFQhz">
@@ -17,40 +17,40 @@
           <!-- <div>余额：0.084</div> -->
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
-        <div class="jbRmQG" v-if="isDelete">
-          <div></div>
+        <div v-if="isDelete" class="jbRmQG">
+          <div />
           <input
             class="gcotIA"
             type="number"
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
-            @input="outputChange"
             :value="form.output"
+            @input="outputChange"
             @keypress="isNumber"
-          />
+          >
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '请选择'}}
-              <i class="el-icon-arrow-down"></i>
+              {{ form.outputToken.symbol || '请选择粉丝币' }}
+              <i class="el-icon-arrow-down" />
             </span>
           </button>
         </div>
         <!--------------------- 删除流动金代码结束 ---------------------->
-        <div class="jbRmQG" v-else>
+        <div v-else class="jbRmQG">
           <input
             class="gcotIA"
             type="number"
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
-            @input="inputChange"
             :value="form.input"
+            @input="inputChange"
             @keypress="isNumber"
-          />
+          >
           <button class="iAoRgd">
             <span class="rTZzf">
-              {{ form.inputToken.symbol || '请选择'}}
+              {{ form.inputToken.symbol || '请选择粉丝币' }}
               <!-- <i class="el-icon-arrow-down"></i> -->
             </span>
           </button>
@@ -58,12 +58,12 @@
       </div>
     </div>
     <div class="hYLPFg">
-      <div class="exKIZr"></div>
+      <div class="exKIZr" />
       <div class="haryqg">
-        <i class="el-icon-bottom gHgbDu" v-if="isDelete"></i>
-        <i class="el-icon-plus gHgbDu" v-else></i>
+        <i v-if="isDelete" class="el-icon-bottom gHgbDu" />
+        <i v-else class="el-icon-plus gHgbDu" />
       </div>
-      <div class="jJSpkX"></div>
+      <div class="jJSpkX" />
     </div>
     <!-- 存入 -->
     <div class="kvFQhz">
@@ -75,16 +75,22 @@
           <!-- <div>余额：0.084</div> -->
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
-        <div class="cHbrWc" v-if="isDelete">
+        <div v-if="isDelete" class="cHbrWc">
           <template v-if="outputPoolSize.cny_amount !== 0">
-            <div class="kroqsf">{{ outputPoolSize.cny_amount.toFixed(4) }} CNY</div>
-            <div class="jlBXmz"> + </div>
-            <div class="kroqsf">{{ outputPoolSize.token_amount.toFixed(4) }} {{ form.outputToken.symbol }}</div>
+            <div class="kroqsf">
+              {{ outputPoolSize.cny_amount.toFixed(4) }} CNY
+            </div>
+            <div class="jlBXmz">
+              +
+            </div>
+            <div class="kroqsf">
+              {{ outputPoolSize.token_amount.toFixed(4) }} {{ form.outputToken.symbol }}
+            </div>
           </template>
         </div>
         <!--------------------- 删除流动金代码结束 ---------------------->
-        <div class="jbRmQG" v-else>
-          <div></div>
+        <div v-else class="jbRmQG">
+          <div />
           <input
             class="gcotIA"
             type="number"
@@ -92,58 +98,61 @@
             step="0.000000000000000001"
             placeholder="0.0"
             :readonly="outputReadOnly"
-            @input="outputChange"
             :value="form.output"
+            @input="outputChange"
             @keypress="isNumber"
-          />
+          >
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '请选择'}}
-              <i class="el-icon-arrow-down"></i>
+              {{ form.outputToken.symbol || '请选择粉丝币' }}
+              <i class="el-icon-arrow-down" />
             </span>
           </button>
         </div>
       </div>
     </div>
     <div class="hYLPFg">
-      <div class="exKIZr"></div>
+      <div class="exKIZr" />
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">兑换率</span>
-        <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{form.outputToken.symbol}}</span>
+        <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">当前资金池大小</span>
-        <span v-if="form.outputToken.symbol">{{currentPoolSize.cny_amount}} CNY + {{currentPoolSize.token_amount}} {{form.outputToken.symbol}}</span>
+        <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} CNY + {{ currentPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">你的资金池份额 （{{yourPoolSize.your_supply}}）</span>
-        <span v-if="form.outputToken.symbol">{{yourPoolSize.cny_amount}} CNY + {{yourPoolSize.token_amount}} {{form.outputToken.symbol}}</span>
+        <span class="sc-hORach icyNSS">你的资金池份额 （{{ yourPoolSize.your_supply }}）</span>
+        <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} CNY + {{ yourPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
     </div>
-    <div class="mHVYT" @click="detailShow = !detailShow" v-if="!isDelete">
+    <div v-if="!isDelete" class="mHVYT" @click="detailShow = !detailShow">
       <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
-      <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
+      <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" />
     </div>
-    <div class="iUPTxf" v-show="detailShow" v-if="!isDelete">
+    <div v-show="detailShow" v-if="!isDelete" class="iUPTxf">
       <div class="hRyusy">
-        <div>你正在添加
+        <div>
+          你正在添加
           <span class="iDChvK">
-            <span class="jbXIaP">{{form.input}} CNY</span>
+            <span class="jbXIaP">{{ form.input }} CNY</span>
           </span> 和最多
           <span class="iDChvK">
-            <span class="jbXIaP">{{limitValue}} {{form.outputToken.symbol}}</span>
+            <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
           </span>到流动池中。
         </div>
-        <div class="sc-bsbRJL kxtVAF">你将会挖到
+        <div class="sc-bsbRJL kxtVAF">
+          你将会挖到
           <span class="iDChvK">
             <span class="jbXIaP"> {{ youMintTokenAmount }} </span>
           </span>
           liquidity tokens
         </div>
-        <div class="sc-bsbRJL kxtVAF">当前 liquidity tokens总量是
+        <div class="sc-bsbRJL kxtVAF">
+          当前 liquidity tokens总量是
           <span class="iDChvK">
             <span class="jbXIaP"> {{ currentPoolSize.total_supply || 0 }} </span>
           </span>
@@ -152,11 +161,13 @@
     </div>
     <!-- 提交 -->
     <div class="hGStes">
-      <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">{{ poolSelected.text }}</button>
+      <button :disabled="btnDisabled" class="jBltiI" @click="onSubmit">
+        {{ poolSelected.text }}
+      </button>
     </div>
-    <OrderModal v-model="orderShow" :order="{...order,...form}"></OrderModal>
-    <TokenListModal v-model="tlShow" @selectToken="selectToken" :addon="false"></TokenListModal>
-    <PoolSelectModal v-model="psShow" @selectPool="selectPool"></PoolSelectModal>
+    <OrderModal v-model="orderShow" :order="{...order,...form}" />
+    <TokenListModal v-model="tlShow" :addon="false" @selectToken="selectToken" />
+    <PoolSelectModal v-model="psShow" @selectPool="selectPool" />
   </div>
 </template>
 

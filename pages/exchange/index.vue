@@ -3,7 +3,7 @@
     <g-header />
     <div class="p-w">
       <el-tabs type="border-card">
-        <el-tab-pane label="兑换">
+        <el-tab-pane label="交易">
           <Swap />
         </el-tab-pane>
         <el-tab-pane label="发送">

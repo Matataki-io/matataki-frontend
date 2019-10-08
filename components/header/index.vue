@@ -16,13 +16,13 @@
           {{ item.title }}
         </n-link>
 
-        <!-- <router-link
+        <router-link
           class="nav active exchange"
           :to="{name: 'exchange'}"
         >
           Lab
           <sup style="color: orange;">beta</sup>
-        </router-link> -->
+        </router-link>
         <!-- <span class="new">new</span> -->
       </div>
 

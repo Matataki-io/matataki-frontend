@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="选择Token"
+    title="选择粉丝币"
     :close-on-click-modal="false"
     :visible.sync="showModal"
     width="600px"
@@ -10,27 +10,37 @@
   >
     <div class="container">
       <div class="sc-uJMKN csvLqB">
-        <div class="search-box"><i class="el-icon-search"></i></div>
-        <input type="text" placeholder="搜索通证或粘贴地址" class="dHtVAe" v-model="search" @keyup.enter="searchToken">
+        <div class="search-box">
+          <i class="el-icon-search" />
+        </div>
+        <input v-model="search" type="text" placeholder="搜索粉丝币" class="dHtVAe" @keyup.enter="searchToken">
       </div>
-      <div class="cotdDw" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)">
-        <div class="sc-jnlKLf hDyKIS" v-for="item in tokenList" :key="item.id" @click="selectToken(item)">
+      <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
+        <div v-for="item in tokenList" :key="item.id" class="sc-jnlKLf hDyKIS" @click="selectToken(item)">
           <div class="sc-fYxtnH cjqFX">
-            <div class="favMUS"><img v-if="item.logo" :src="getImg(item.logo)" alt="logo"></div>
+            <div class="favMUS">
+              <img v-if="item.logo" :src="getImg(item.logo)" alt="logo">
+            </div>
             <div class="sc-tilXH egNEUM">
               <span id="symbol">{{ item.symbol }}</span>
-              <div class="sc-hEsumM iHXZgD">{{ item.name }}</div>
+              <div class="sc-hEsumM iHXZgD">
+                {{ item.name }}
+              </div>
             </div>
           </div>
           <div class="sc-kafWEX bELmls">
-            <div class="sc-ktHwxA etGoql"> - </div>
-            <div class="sc-cIShpX eAstpp"></div>
+            <div class="sc-ktHwxA etGoql">
+              -
+            </div>
+            <div class="sc-cIShpX eAstpp" />
           </div>
         </div>
-        <div v-if="tokenList.length <= 0" class="noData">😭暂无内容</div>
-        <div class="loadmore" v-if="showLoadMore">
+        <div v-if="tokenList.length <= 0" class="noData">
+          😭暂无内容
+        </div>
+        <div v-if="showLoadMore" class="loadmore">
           <span @click="loadMore">
-          加载更多<i class="el-icon-arrow-down"></i>
+            加载更多<i class="el-icon-arrow-down" />
           </span>
         </div>
       </div>
