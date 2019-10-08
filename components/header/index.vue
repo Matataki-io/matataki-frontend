@@ -17,7 +17,8 @@
         </n-link>
 
         <router-link
-          class="nav active exchange"
+          class="nav exchange"
+          :class="$route.name === 'exchange' && 'active'"
           :to="{name: 'exchange'}"
         >
           Lab

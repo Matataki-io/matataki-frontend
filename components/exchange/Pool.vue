@@ -31,7 +31,7 @@
           >
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '请选择粉丝币' }}
+              {{ form.outputToken.symbol || '选择粉丝币' }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -50,7 +50,7 @@
           >
           <button class="iAoRgd">
             <span class="rTZzf">
-              {{ form.inputToken.symbol || '请选择粉丝币' }}
+              {{ form.inputToken.symbol || '选择粉丝币' }}
               <!-- <i class="el-icon-arrow-down"></i> -->
             </span>
           </button>
@@ -104,7 +104,7 @@
           >
           <button class="iAoRgd" @click="tlShow = true;field = 'outputToken'">
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '请选择粉丝币' }}
+              {{ form.outputToken.symbol || '选择粉丝币' }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
