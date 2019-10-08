@@ -80,7 +80,7 @@ export default {
 .tag-card {
   display: inline-block;
   font-size: 14px;
-  padding: 8px 16px;
+  padding: 6px 10px;
   border-radius: 20px;
   margin: 5px;
   box-sizing: border-box;

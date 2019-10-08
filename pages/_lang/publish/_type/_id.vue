@@ -94,9 +94,6 @@
         </div>
       </div> -->
       <div class="cover-container">
-        <div v-show="cover">
-          <img class="cover-img" :src="coverEditor" alt="cover">
-        </div>
         <div class="cover">
           <p>
             {{ $t('publish.coverTitle') }}
@@ -121,6 +118,9 @@
             alt="remove"
             @click.prevent="removeCover"
           >
+          <div v-show="cover">
+            <img class="cover-img" :src="coverEditor" alt="cover">
+          </div>
         </div>
       </div>
     </div>
