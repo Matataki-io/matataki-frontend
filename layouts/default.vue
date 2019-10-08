@@ -1,14 +1,14 @@
 <template>
   <div class="app">
     <nuxt />
-    <g-footer v-show="!hideFooter" />
-    <back-to-top class="backtop" :visibility-height="300" :back-position="50" transition-name="fade">
+    <g-footer v-if="!hideFooter" />
+    <back-to-top v-if="!hideBackTop" class="backtop" :visibility-height="300" :back-position="50" transition-name="fade">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
       />
     </back-to-top>
-    <el-tooltip class="item" effect="dark" content="吐个槽?" placement="left">
+    <el-tooltip v-if="!hideFeedback" class="item" effect="dark" content="吐个槽?" placement="left">
       <a class="feedback" href="https://support.qq.com/product/84254" target="_blank" title="反馈">
         <svg-icon
           class="icon-feedback"
@@ -42,12 +42,14 @@ export default {
       }
     },
     hideBackTop() {
-      // 如果是发布页面隐藏小火箭
-      return this.$route.name === 'publish' || this.$route.name === 'p-id'
+      return this.$route.name === 'publish-type-id'
     },
     hideFooter() {
       // 发布页面 GitHub登录
-      return this.$route.name === 'publish' || this.$route.name === 'login'
+      return this.$route.name === 'publish-type-id' || this.$route.name === 'login'
+    },
+    hideFeedback() {
+      return this.$route.name === 'publish-type-id'
     }
 
   },
