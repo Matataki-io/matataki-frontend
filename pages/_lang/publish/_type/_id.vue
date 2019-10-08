@@ -170,6 +170,7 @@ import articleImport from '@/components/article_import/index.vue'
 import statement from '@/components/statement/index.vue'
 
 import { getCookie } from '@/utils/cookie'
+
 export default {
   name: 'NewPost',
   components: {
@@ -754,13 +755,24 @@ export default {
 .v-note-wrapper .v-note-op {
   border: none !important;
 }
-.content-input-wrapper {
-  padding: 8px 10px 15px 10px !important;
+.editor .content-input-wrapper {
+  height: 100%;
+  background-color: #f8f9fa !important;
+  padding: 30px !important;
 }
+
 // 外层容器
 .editor {
-  margin-top: 60px;
+  margin-top: 59px;
+  .v-show-content {
+    padding: 30px !important;
+  }
+  .v-note-edit.divarea-wrapper {
+    overflow-y: auto !important;
+    border-right: 1px solid #ddd !important;
+  }
 }
+
 // 工具栏
 .editor .v-note-op {
   position: fixed;
@@ -773,7 +785,7 @@ export default {
 }
 // 内容
 .editor .v-note-panel {
-  padding-top: 40px;
+  padding-top: 44px;
   border-top: none !important;
   border-right: none !important;
   border-left: none !important;
@@ -820,13 +832,13 @@ export default {
     margin-right: 1px !important;
   }
 }
-// 覆盖裂变系数
-.fission {
-  .el-slider__bar {
-    background-color: @purpleDark;
-  }
-  .el-slider__button {
-    border-color: @purpleDark;
-  }
-}
+// // 覆盖裂变系数
+// .fission {
+//   .el-slider__bar {
+//     background-color: @purpleDark;
+//   }
+//   .el-slider__button {
+//     border-color: @purpleDark;
+//   }
+// }
 </style>

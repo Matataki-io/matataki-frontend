@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import mavonEditor from 'mavon-editor-matataki'
+import 'mavon-editor-matataki/dist/css/index.css'
 
 Vue.use(mavonEditor)

@@ -127,20 +127,21 @@ export default {
       }
       // set svg-sprite-loader
       if (isClient) {
-        config.module.rules.forEach((rule) => {
+        config.module.rules.forEach((rule) => { // 移除默认处理svg的配置
           if (~rule.test.source.indexOf('|svg')) {
             rule.exclude = [resolve('icons/svg')]
           }
         })
 
-        config.module.rules.push({
-          test: /\.svg$/,
-          loader: 'svg-sprite-loader',
-          include: [resolve('icons/svg')], // include => 只处理指定的文件夹下的文件
-          options: {
-            symbolId: 'icon-[name]'
-          }
-        })
+        config.module.rules.push(
+          { // 使用svg
+            test: /\.svg$/,
+            loader: 'svg-sprite-loader',
+            include: [resolve('icons/svg')], // include => 只处理指定的文件夹下的文件
+            options: {
+              symbolId: 'icon-[name]'
+            }
+          })
         // console.log(config.module.rules)
       // set svg-sprite-loader end
       }
