@@ -4,7 +4,7 @@
       <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <template v-if="viewStatus === 0">
-        <assets :assets="assets" type="ONT" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
+        <assets :assets="assets" type="EOS" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
         <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
         <div v-loading="loading" class="card-container">
           <no-content-prompt :list="articleCardData.articles">
@@ -25,7 +25,7 @@
         />
       </template>
       <template v-else>
-        <withdraw type="ONT" class="withdraw" @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" />
+        <withdraw class="withdraw" @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" />
       </template>
     </template>
     <template slot="info">
@@ -43,6 +43,7 @@ import userPagination from '@/components/user/user_pagination.vue'
 import assetCard from '@/components/asset_card/index.vue'
 import assets from '@/components/user/assets.vue'
 import withdraw from '@/components/user/withdraw.vue'
+
 export default {
   components: {
     userLayout,
@@ -58,7 +59,7 @@ export default {
     return {
       articleCardData: {
         params: {
-          symbol: (this.$route.query.type || 'ONT').toUpperCase(),
+          symbol: (this.$route.query.type || 'eos').toUpperCase(),
           pagesize: 9
         },
         apiUrl: 'assetList',
@@ -92,6 +93,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped src="../../index.less">
-</style>

@@ -29,9 +29,9 @@ export default {
   data() {
     return {
       typeIcon: [ // todo 完善路由
-        { icon: iconEOS, title: 'EOS', url: 'user-account' },
-        { icon: iconONT, title: 'ONT', url: 'user-account-ont' },
-        { icon: iconRMB, title: 'RMB', url: 'user-account-cny' },
+        { icon: iconEOS, title: 'EOS', url: 'account' },
+        { icon: iconONT, title: 'ONT', url: 'account-ont' },
+        { icon: iconRMB, title: 'RMB', url: 'account-cny' },
         { icon: iconVNT, title: 'VNT', url: '' },
         { icon: iconETH, title: 'ETH', url: '' },
         { icon: iconBTC, title: 'BTC', url: '' }

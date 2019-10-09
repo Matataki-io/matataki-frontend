@@ -1,4 +1,4 @@
 <script>
-import setting from '~/pages/_lang/setting/index'
-export default setting
+import Setting from '~/pages/_lang/setting/index'
+export default Setting
 </script>

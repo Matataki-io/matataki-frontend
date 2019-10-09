@@ -88,7 +88,7 @@
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-account', params:{id: currentUserInfo.id}}">
+              <n-link class="link" :to="{name: 'account', params:{id: currentUserInfo.id}}">
                 {{ $t('home.account') }}
               </n-link>
             </el-dropdown-item>
