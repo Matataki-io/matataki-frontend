@@ -52,13 +52,18 @@
           <el-table-column
             prop="create_time"
             label=""
-            width="160"
+            width="220"
           >
             <template slot-scope="scope">
               <div class="invite-block btn">
+                <router-link :to="{name: 'exchange'}">
+                  <el-button class="info-button" size="small">
+                    {{ $t('detail') }}
+                  </el-button>
+                </router-link>
                 <el-button
                   class="info-button"
-                  style="margin-right: 10px;"
+                  style="margin: 0 10px;"
                   size="small"
                   @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
                 >

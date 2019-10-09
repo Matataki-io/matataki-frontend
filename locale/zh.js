@@ -47,6 +47,7 @@ export default {
   save: '保存',
   transaction: '交易',
   gift: '赠送',
+  detail: '明细',
   success: {
     success: '成功',
     copy: '复制成功',

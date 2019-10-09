@@ -50,9 +50,9 @@ export default {
     account() {
       return [ // todo 完善路由
         { title: this.$t('user.wallet'), url: 'account', self: false },
-        { title: this.$t('user.point'), url: 'account-points', self: false },
-        { title: this.$t('user.invite'), url: 'account-invite', self: false },
-        { title: this.$t('user.buycoins'), url: 'account-tokens', self: false },
+        { title: this.$t('user.point'), url: 'points', self: false },
+        { title: this.$t('user.invite'), url: 'invite', self: false },
+        { title: this.$t('user.buycoins'), url: 'tokens', self: false },
         { title: this.$t('user.selfcoins'), url: 'account-minetoken', self: false }
       ]
     },
