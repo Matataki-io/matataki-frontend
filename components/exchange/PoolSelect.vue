@@ -7,7 +7,9 @@
     custom-class="br10 black-theme-dialog"
   >
     <div class="container">
-      <button v-for="(item, i) in poolOptions" :key="item.id" :class="[ 'cwefbr', i === currentPool ? 'MODE' : '']" @click="selectPool(i)">{{ item.text }}</button>
+      <button v-for="(item, i) in poolOptions" :key="item.id" :class="[ 'cwefbr', i === currentPool ? 'MODE' : '']" @click="selectPool(i)">
+        {{ item.text }}
+      </button>
     </div>
   </el-dialog>
 </template>

@@ -12,15 +12,39 @@
       <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
       <table class="order-table">
         <tbody>
-          <tr><td class="order-key">交易账号：</td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td></tr>
-          <tr><td class="order-key">交易内容：</td><td>{{ order.outputToken.symbol }}</td></tr>
-          <tr><td class="order-key">交易数量：</td><td>{{ order.output }}</td></tr>
-          <tr><td class="order-key">创建时间：</td><td>{{ friendlyTime }}</td></tr>
-          <tr><td class="order-key">订单编号：</td><td>{{ order.trade_no }}</td></tr>
-          <tr><td class="order-key">交易金额：</td><td>￥ {{ input }}</td></tr>
+          <tr>
+            <td class="order-key">
+              交易账号：
+            </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              交易内容：
+            </td><td>{{ order.outputToken.symbol }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              交易数量：
+            </td><td>{{ order.output }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              创建时间：
+            </td><td>{{ friendlyTime }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              订单编号：
+            </td><td>{{ order.trade_no }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              交易金额：
+            </td><td>￥ {{ input }}</td>
+          </tr>
         </tbody>
       </table>
-      <QRCode :payLink="order.code_url"></QRCode>
+      <QRCode :pay-link="order.code_url" />
     </div>
   </el-dialog>
 </template>

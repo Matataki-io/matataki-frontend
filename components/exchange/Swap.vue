@@ -143,9 +143,6 @@ export default {
       base: 'input' // input / output
     }
   },
-  async asyncData() {},
-  mounted() {
-  },
   computed: {
     ...mapGetters(['isLogined']),
     btnDisabled() {
@@ -180,6 +177,10 @@ export default {
       return ''
     }
   },
+  async asyncData() {},
+  mounted() {
+  },
+
   methods: {
     isNumber(event) {
       if (!/\d/.test(event.key) && event.key !== '.') {

@@ -224,10 +224,6 @@ export default {
       }
     }
   },
-  async asyncData() {},
-  mounted() {
-    // this.checkLogin()
-  },
   computed: {
     ...mapGetters(['isLogined']),
     // 是否是删除流动金
@@ -274,6 +270,11 @@ export default {
       return ''
     }
   },
+  async asyncData() {},
+  mounted() {
+    // this.checkLogin()
+  },
+
   methods: {
     isNumber(event) {
       if (!/\d/.test(event.key) && event.key !== '.') {

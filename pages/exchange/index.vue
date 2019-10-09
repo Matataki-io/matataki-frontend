@@ -30,11 +30,12 @@ export default {
     return {
     }
   },
-  async asyncData({ $axios }) {
-  },
   computed: {
     ...mapGetters(['isLogined'])
   },
+  async asyncData({ $axios }) {
+  },
+
   created() {
   },
   mounted() {

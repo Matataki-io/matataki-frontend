@@ -74,17 +74,17 @@ export default {
     userPageNav,
     fanCoinsBtn
   },
-  computed: {
-    ...mapState({
-      userInfo: state => state.user.userInfo
-    }),
-    ...mapGetters(['isMe'])
-  },
   data() {
     return {
       token: false,
       seedUser: false
     }
+  },
+  computed: {
+    ...mapState({
+      userInfo: state => state.user.userInfo
+    }),
+    ...mapGetters(['isMe'])
   },
   created() {
     if (!this.$route.params.id) this.$router.go(-1)
