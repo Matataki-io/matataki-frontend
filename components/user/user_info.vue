@@ -104,7 +104,7 @@ export default {
     ]),
     jumpTo() {
       this.$router.push({
-        name: 'user-setting'
+        name: 'setting'
       })
     }
   }

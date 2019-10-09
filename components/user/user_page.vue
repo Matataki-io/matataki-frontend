@@ -41,7 +41,7 @@
         <followBtn v-if="!isMe(Number($route.params.id))" :id="Number($route.params.id)" class="follow" />
         <router-link
           v-else
-          :to="{name: 'user-setting'}"
+          :to="{name: 'setting'}"
         >
           <el-button
             size="small"

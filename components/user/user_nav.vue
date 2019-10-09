@@ -44,7 +44,7 @@ export default {
     },
     setting() {
       return [ // todo 完善路由
-        { title: this.$t('user.setting'), url: 'user-setting', self: false }
+        { title: this.$t('user.setting'), url: 'setting', self: false }
       ]
     },
     account() {
