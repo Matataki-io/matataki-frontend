@@ -4,7 +4,7 @@
       v-for="(item, index) in navList"
     >
       <router-link
-        v-if="item.url !== 'account-minetoken' || tokens"
+        v-if="item.url !== 'minetoken' || tokens"
         :key="index"
         :class="$route.name === item.url && 'active'"
         :to="{name: item.url}"
@@ -53,7 +53,7 @@ export default {
         { title: this.$t('user.point'), url: 'points', self: false },
         { title: this.$t('user.invite'), url: 'invite', self: false },
         { title: this.$t('user.buycoins'), url: 'tokens', self: false },
-        { title: this.$t('user.selfcoins'), url: 'account-minetoken', self: false }
+        { title: this.$t('user.selfcoins'), url: 'minetoken', self: false }
       ]
     },
     navList() {

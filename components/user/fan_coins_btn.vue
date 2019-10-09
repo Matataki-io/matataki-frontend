@@ -48,7 +48,7 @@ export default {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (this.isMe(this.id)) {
         this.$router.push({
-          name: 'account-minetoken'
+          name: 'minetoken'
         })
       } else {
         this.$router.push({
