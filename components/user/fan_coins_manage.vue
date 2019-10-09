@@ -2,7 +2,7 @@
   <div v-if="isPublishCoins" class="coins-publish">
     <div class="fl ac coins-head">
       <div class="fl ac">
-        <avatar :src="tokenCover" size="30px" style="margin-right: 10px;" />
+        <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
         <h1>
           {{ tokenDetailData.token.symbol }}
           ({{
@@ -74,8 +74,14 @@
       </div>
     </div>
 
+    <div class="tokens-tab">
+      <mineTokensNav />
+    </div>
+
     <div v-loading="loading" class="card-container coins">
-      <el-table
+      <minetokenCard v-if="listType === 'details'" :list="pointLog.list" :decimals="tokenDetailData.token.decimals" />
+      <minetokenDetailCard v-for="item in pointLog.list" v-else :key="item.id" :asset="item" />
+      <!-- <el-table
         :data="pointLog.list"
         style="width: 100%"
       >
@@ -101,7 +107,7 @@
             </div>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
     </div>
     <user-pagination
       v-show="!loading"
@@ -122,16 +128,26 @@
 import { mapGetters } from 'vuex'
 import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
+import mineTokensNav from '@/components/user/mineTokens_nav.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { testDecimal } from '@/utils/reg'
-
+import minetokenCard from '@/components/user/minetoken_card'
+import minetokenDetailCard from '@/components/user/minetoken_detail_card'
 export default {
   components: {
     userPagination,
-    avatar
+    avatar,
+    mineTokensNav,
+    minetokenCard,
+    minetokenDetailCard
   },
-
+  props: {
+    listType: { // 持仓 明细 details detail
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       isPublishCoins: false,
@@ -242,13 +258,13 @@ export default {
     createTime(time) {
       return moment(time).format('MMMDo HH:mm')
     },
-    cover(cover) {
-      return cover ? this.$API.getImg(cover) : ''
-    },
-    tokenAmount(amount) {
-      const tokenamount = precision(amount, 'CNY', this.tokenDetailData.token.decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
-    },
+    // cover(cover) {
+    //   return cover ? this.$API.getImg(cover) : ''
+    // },
+    // tokenAmount(amount) {
+    //   const tokenamount = precision(amount, 'CNY', this.tokenDetailData.token.decimals)
+    //   return this.$publishMethods.formatDecimal(tokenamount, 4)
+    // },
     paginationData(res) {
       console.log(res)
       this.pointLog.list = res.data.list
@@ -299,7 +315,7 @@ export default {
 }
 
 .coins-info {
-  border-bottom: 1px solid #ececec;
+  // border-bottom: 1px solid #ececec;
   padding: 0 0 20px;
 }
 .info-line {
@@ -344,42 +360,9 @@ export default {
   margin-top: 40px;
 }
 
-</style>
-
-<style lang="less" scoped>
-
-.invite-block.avatar{
-  display: flex;
-  align-items: center;
-}
-.username {
-  margin-left: 10px;
-  font-size: 16px;
-  color:#333;
-  flex: 1;
-}
-.time {
-  font-size: 16px;
-  color:#333;
-}
-.point {
-  font-size: 16px;
-  font-weight: bold;
-  color:rgba(251,104,119,1);
-}
-</style>
-
-<style lang="less">
-.coins {
-  .el-table th>.cell {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-  }
-  .el-table td, .el-table th.is-leaf {
-    border-bottom: none;
-  }
-  .el-table::before {
-    height: 0;
-  }
+.tokens-tab {
+  padding: 20px 0;
+  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
 }
 </style>
