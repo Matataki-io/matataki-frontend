@@ -74,9 +74,9 @@
       </div>
     </div>
 
-    <div class="tokens-tab">
+    <!-- <div class="tokens-tab">
       <mineTokensNav />
-    </div>
+    </div> -->
 
     <div v-loading="loading" class="card-container coins">
       <minetokenCard v-if="listType === 'details'" :list="pointLog.list" :decimals="tokenDetailData.token.decimals" />
@@ -127,7 +127,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import mineTokensNav from '@/components/user/minetokens_nav.vue'
+// import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
@@ -138,7 +138,7 @@ export default {
   components: {
     userPagination,
     avatar,
-    mineTokensNav,
+    // mineTokensNav,
     minetokenCard,
     minetokenDetailCard
   },
@@ -315,7 +315,7 @@ export default {
 }
 
 .coins-info {
-  // border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
   padding: 0 0 20px;
 }
 .info-line {

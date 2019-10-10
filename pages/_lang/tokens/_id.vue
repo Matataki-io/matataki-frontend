@@ -72,7 +72,7 @@ export default {
   methods: {
     paginationData(res) {
       console.log(res)
-      this.pointLog.list = res.data.logs
+      this.pointLog.list = res.data.list
       this.assets = res.data
       this.total = res.data.count || 0
       this.amount = res.data.amount || 0

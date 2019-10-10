@@ -1,23 +1,24 @@
 <template>
   <div class="card">
-    <div class="card-info">
-      <span class="card-type">{{ assetType }}</span>
-      <h2 class="card-pricing" :style="{ color: `${assetColor}` }">
-        {{ assetAmount }}
-      </h2>
+    <div class="fl">
+      <span class="info">{{ friendlyDate }}</span>
+      <span class="info">{{ friendlyDate }}</span>
     </div>
-    <div class="card-info">
-      <span class="card-date">{{ friendlyDate }}</span>
-    </div>
-    <div class="card-info">
-      <span class="card-title">{{ asset.title || '' }}</span>
+    <div>
+      <h3 class="title">
+        1
+      </h3>
+      <div class="detail">
+        rmb123
+        <img src="" alt="">
+        rmb123
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
-// import { isNDaysAgo } from '@/common/methods';
 import { precision } from '@/utils/precisionConversion'
 
 export default {
@@ -61,68 +62,13 @@ export default {
       return pointTypes[type]
     }
   },
-  created() {},
+  created() {
+    console.log('asset', this.asset)
+  },
   methods: {}
 }
 </script>
 
 <style scoped lang="less">
-.card {
-  margin: 10px 0;
-  box-sizing: border-box;
-  background-color: #fff;
-  padding: 16px 20px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  text-align: left;
-  width: 100%;
-  border-top: 1px solid #DBDBDB;
-  // &:nth-last-of-type(1) {
-  //   border: none;
-  // }
-  &-pricing {
-    padding: 0;
-    margin: 0;
-    font-size:20px;
-    font-weight:500;
-    color:rgba(0,0,0,1);
-    line-height:28px;
-  }
-  &-type {
-    font-size:18px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:28px;
-  }
-  &-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  &-title {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:22px;
-    &-info {
-      margin: 0 6px 0 0;
-    }
-    .copy-hash {
-      width: 16px;
-    }
-  }
-  &-date {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
-    line-height:22px;
-  }
-}
-
+.card {}
 </style>
