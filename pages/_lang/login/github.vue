@@ -17,7 +17,8 @@ export default {
     const APP_URL = process.env.VUE_APP_URL
     const scope = 'read:public_repo,read:user'
     // 跳转到移动端的登录页面，添加上pc参数，标志来自pc端
-    const redirectUri = `${APP_URL}/login/github?from=pc` // 範例值
+    // const redirectUri = `${APP_URL}/login/github?from=pc` // 範例值
+    const redirectUri = `${APP_URL}/login/github`
     if (!code) {
       // 跳轉
       window.location = `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`

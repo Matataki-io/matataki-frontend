@@ -250,7 +250,7 @@ export default {
     async walletLogin(type) {
       this.modalLoading = true
       if (type === 'GitHub') {
-        this.$router.push({ name: 'login' })
+        this.$router.push({ name: 'login-github' })
         return
       }
       await this.signInx(type)

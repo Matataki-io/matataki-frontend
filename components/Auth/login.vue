@@ -118,7 +118,7 @@ export default {
     ]),
     async walletLogin(type) {
       if (type === 'GitHub') {
-        this.$router.push({ name: 'login' })
+        this.$router.push({ name: 'login-github' })
         return
       } else if (type === 'Vnt') {
         this.vntLogin()
