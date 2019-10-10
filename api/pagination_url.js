@@ -34,5 +34,9 @@ export const paginationUrl = {
   // 获取token的持仓用户列表
   tokenUserList: '/token/userlist',
   // 获取用户的持仓token列表
-  tokenTokenList: '/token/tokenlist'
+  tokenTokenList: '/token/tokenlist',
+  // 买入粉丝币-流水明细
+  tokenflow: '/token/tokenflow',
+  // 我的粉丝币-流水明细
+  usertokenflow: '/token/tokenflow'
 }

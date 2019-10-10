@@ -51,9 +51,10 @@ export default {
     return {
       pointLog: {
         params: {
+          tokenId: this.$route.params.id,
           pagesize: 10
         },
-        apiUrl: 'userPoint',
+        apiUrl: 'tokenflow',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
@@ -64,6 +65,9 @@ export default {
       viewStatus: 0, // 0 1
       amount: 0
     }
+  },
+  created() {
+    if (!this.$route.params.id) this.$router.go(-1)
   },
   methods: {
     paginationData(res) {
