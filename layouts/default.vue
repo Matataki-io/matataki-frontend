@@ -46,7 +46,7 @@ export default {
     },
     hideFooter() {
       // 发布页面 GitHub登录
-      return this.$route.name === 'publish-type-id' || this.$route.name === 'login'
+      return this.$route.name === 'publish-type-id' || this.$route.name === 'login-github'
     },
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
