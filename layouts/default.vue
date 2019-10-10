@@ -57,29 +57,29 @@ export default {
 
   },
   mounted() {
-    (function () {
-      const isPC = () => {
-        const userAgentInfo = navigator.userAgent
-        const Agents = ['Android', 'iPhone',
-          'SymbianOS', 'Windows Phone',
-          'iPad', 'iPod']
-        let flag = true
-        for (let v = 0; v < Agents.length; v++) {
-          if (userAgentInfo.indexOf(Agents[v]) > 0) {
-            flag = false
-            break
-          }
-        }
-        return flag
-      }
-      // 规则只匹配了 文章详情页面 其他直接使用 all
-      const pathname = window.location.pathname.includes('/p/')
-        ? '/article/' + window.location.pathname.slice(3)
-        : window.location.pathname === '/'
-          ? ''
-          : window.location.pathname
-      if (!isPC()) window.location.href = process.env.VUE_APP_URL + pathname
-    })()
+    // (function () {
+    //   const isPC = () => {
+    //     const userAgentInfo = navigator.userAgent
+    //     const Agents = ['Android', 'iPhone',
+    //       'SymbianOS', 'Windows Phone',
+    //       'iPad', 'iPod']
+    //     let flag = true
+    //     for (let v = 0; v < Agents.length; v++) {
+    //       if (userAgentInfo.indexOf(Agents[v]) > 0) {
+    //         flag = false
+    //         break
+    //       }
+    //     }
+    //     return flag
+    //   }
+    //   // 规则只匹配了 文章详情页面 其他直接使用 all
+    //   const pathname = window.location.pathname.includes('/p/')
+    //     ? '/article/' + window.location.pathname.slice(3)
+    //     : window.location.pathname === '/'
+    //       ? ''
+    //       : window.location.pathname
+    //   if (!isPC()) window.location.href = process.env.VUE_APP_URL + pathname
+    // })()
 
     this.$store.dispatch('testLogin')
   },
