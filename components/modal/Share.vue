@@ -165,10 +165,10 @@ export default {
       // 应产品需求 这里改为移动端的链接
 
       const { article, currentUserInfo } = this
-      // const { protocol, host } = window.location
+      const { protocol, host } = window.location
       // console.debug(this.article);
-      // const articleUrl = `${protocol}//${host}/p/${article.id}`
-      const articleUrl = `${process.env.WX_SHARE_HOST}/article/${article.id}`
+      const articleUrl = `${protocol}//${host}/p/${article.id}`
+      // const articleUrl = `${process.env.WX_SHARE_HOST}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
       return shareLink
     },
