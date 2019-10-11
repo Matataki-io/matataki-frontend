@@ -26,10 +26,25 @@ export default {
       `${endpoint.wx}?url=${url}`
     )
   },
+  // 获取当前用户的文章信息
+  getCurrentProfile(data) {
+    return request({
+      url: '/post/currentProfile',
+      method: 'post',
+      data: data
+    })
+  },
   getArticleInfo(hashOrId) {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
     return request.get(`/${url}/${hashOrId}`)
+  },
+  // 通过hash获取文章内容
+  getIfpsData(hash) {
+    return request.get(`/post/ipfs/${hash}`)
+  },
+  getMyPost(id) {
+    return request.get(`/mypost/${id}`)
   },
   getImg(hash) {
     return `${process.env.ssImgAddress}${hash}`
@@ -128,6 +143,12 @@ export default {
     return request.get(`/user/points`, { params })
   },
   /**
+   * 删除文章
+   */
+  delDraft({ id }) {
+    return request({ method: 'DELETE', url: `/draft/${id}` })
+  },
+  /**
    * 文章导入
    * @param {String} url 导入地址
    */
@@ -139,6 +160,14 @@ export default {
       timeout: 40000,
     })
   },
+  // 文章持币阅读
+  addMineTokens(data) {
+    return request({
+      method: 'post',
+      url: '/post/addMineTokens',
+      data: data,
+    })
+  },
   /**
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
@@ -147,7 +176,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent },
     signature = null
   ) {
     // 账号类型
@@ -167,7 +196,8 @@ export default {
         title,
         is_original: isOriginal,
         tags,
-        commentPayPoint
+        commentPayPoint,
+        shortContent
       }
     })
   },

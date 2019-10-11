@@ -31,7 +31,8 @@ import {
   Tabs,
   TabPane,
   Select,
-  Option
+  Option,
+  Divider
 } from 'element-ui'
 
 Vue.use(Row)
@@ -64,6 +65,7 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Divider)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

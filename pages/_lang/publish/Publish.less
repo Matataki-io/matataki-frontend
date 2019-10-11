@@ -10,7 +10,6 @@
   img {
     width: 3px;
   }
-
   .dropdown {
     position: absolute;
     color: #fff;
@@ -76,10 +75,65 @@
     font-weight: bold;
   }
   .import-button {
-    margin-right: 10px;
+    margin: 0 10px 0 8px;
+    padding: 4px 6px;
+    color: inherit;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid #868686;
+    border-radius: 2px;
+    color: #868686;
+    cursor: pointer;
     .import-icon {
-     color: #606266;
+      font-size: 14px;
     }
+  }
+}
+.post {
+  position: relative;
+  &-title {
+    font-size: 14px;
+    color: @purpleDark;
+    cursor: pointer;
+    margin: 0 0 0 16px;
+    outline: none;
+    user-select: none;
+  }
+  &.active {
+    .post-content {
+      display: block;
+    }
+    .create-bottom {
+      transform: rotate(180deg);
+    }
+  }
+}
+.post-content {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 300px;
+  // height: 300px;
+  padding: 20px;
+  box-sizing: border-box;
+
+  background-color: #FFF;
+  border: 1px solid #EBEEF5;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  h3 {
+    margin: 10px 0;
+    padding: 0;
+    white-space: nowrap;
+    color: #909090;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .post-btn {
+    display: block;
+    margin: 20px auto 0;
   }
 }
 .send-button{
@@ -296,3 +350,4 @@
   border-radius: 2px;
   color: #ddd;
 }
+

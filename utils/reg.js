@@ -20,3 +20,9 @@ export const testDecimal = (num, decimal = 1) => {
   const pattern = new RegExp('^[0-9]+(\.[0-9]{' + decimal + ',})$')
   return pattern.test(num)
 }
+
+// 提取两个字符之间的字符
+export const extractChar = (str, left, right) => {
+  const pattern = new RegExp(`(?<=${left}).*?(?=${right})`)
+  return str.match(pattern)
+}

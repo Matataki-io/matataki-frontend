@@ -1,5 +1,5 @@
 <template>
-  <div class="new-post" @click.stop="transferButton = false">
+  <div class="new-post" @click.stop="closeDropdown">
     <div class="edit-content">
       <div class="edit-head">
         <input
@@ -13,15 +13,50 @@
         <router-link class="save-draft" :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
           草稿
         </router-link>
-        <el-button class="import-button" @click="importVisible = true">
+        <div class="import-button" @click="importVisible = true">
           <svg-icon class="import-icon" icon-class="import" />
           {{ $t('publish.importArticle') }}
-        </el-button>
+        </div>
 
-        <!-- <el-dropdown trigger="click" @command="postArticle"> -->
-        <el-button type="primary" class="el-button--purple" icon="el-icon-s-promotion" @click="sendThePost">
-          {{ $t('publish.sendBtnText') }}
-        </el-button>
+        <div class="post" :class="readContent && 'active'">
+          <span class="post-title" @click.stop="readContent = !readContent">
+            {{ $t('publish.publish') }}
+            <i class="el-icon-caret-bottom create-bottom" />
+          </span>
+          <div class="post-content" @click.stop>
+            <h3>持币阅读</h3>
+            <el-checkbox v-model="readauThority" size="small">
+              设置阅读权限
+            </el-checkbox>
+            <div v-show="readauThority">
+              <h3>持币数量</h3>
+              <el-input v-model="readToken" size="small" placeholder="请输入内容" />
+              <h3>持币类型</h3>
+              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+                <el-option
+                  v-for="item in readSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol"
+                  :value="item.id"
+                />
+              </el-select>
+              <h3>内容摘要</h3>
+              <el-input
+                v-model="readSummary"
+                size="small"
+                type="textarea"
+                :autosize="{ minRows: 6, maxRows: 12}"
+                placeholder="请输入内容"
+                maxlength="300"
+                show-word-limit
+              />
+            </div>
+            <el-button plain size="small" class="post-btn" @click="sendThePost">
+              {{ $t('publish.identifyAndPublish') }}
+            </el-button>
+          </div>
+        </div>
+
         <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
@@ -170,6 +205,7 @@ import articleImport from '@/components/article_import/index.vue'
 import statement from '@/components/statement/index.vue'
 
 import { getCookie } from '@/utils/cookie'
+import { toPrecision, precision } from '@/utils/precisionConversion'
 
 export default {
   name: 'NewPost',
@@ -216,7 +252,13 @@ export default {
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
-      saveDraft: '文章自动保存至'
+      saveDraft: '文章自动保存至',
+      readContent: false,
+      readauThority: false,
+      readToken: 1,
+      readSelectOptions: [],
+      readSelectValue: '',
+      readSummary: ''
     }
   },
   computed: {
@@ -261,9 +303,6 @@ export default {
         if (!this.autoUpdateDfaftTags) return
         this.updateDraftWatch()
       }
-    },
-    isLogined(newVal) {
-      console.log(newVal)
     }
   },
   created() {
@@ -291,6 +330,8 @@ export default {
     this.getTags()
     this.resize()
     this.setToolBar(this.screenWidth)
+
+    this.getAllTokens()
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -373,31 +414,40 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$backendAPI.getArticleDatafromIPFS(hash)
-      try {
-        // 获取文章信息
-        const { data } = await this.$backendAPI.getMyPost(id)
-        if (data.code === 0) {
-          this.fissionNum = data.data.fission_factor / 1000
-          this.signature = data.data.sign
-          this.cover = data.data.cover
-          this.signId = data.data.id
-          this.isOriginal = Boolean(data.data.is_original)
+      const articleData = await this.$API.getIfpsData(hash)
+      console.log('articleData', articleData, hash, id)
+      // 获取文章信息
+      const res = await this.$API.getMyPost(id).then(res => {
+        if (res.code === 0) {
+          this.fissionNum = res.data.fission_factor / 1000
+          this.signature = res.data.sign
+          this.cover = res.data.cover
+          this.signId = res.data.id
+          this.isOriginal = Boolean(res.data.is_original)
 
-          this.setTag(data.data)
+          // 持币阅读
+          if (res.data.tokens && res.data.tokens.length !== 0) {
+            this.readauThority = true
+            this.readToken = precision(res.data.tokens[0].amount, 'cny', res.data.tokens[0].decimals)
+            this.readSummary = res.data.short_content
+            this.readSelectOptions = res.data.tokens
+            this.readSelectValue = res.data.tokens[0].id
+          }
+
+          this.setTag(res.data)
         } else {
-          this.$message.success(data.message)
+          this.$message.success(res.message)
           this.$router.push({ path: '/article' })
         }
-      } catch (error) {
-        console.error(error)
+      }).catch(err => {
+        console.error(err)
         this.$message.error(this.$t('error.getArticleInfoError'))
         this.$router.push({ path: '/article' })
-      }
+      })
+
       // 设置文章内容
-      const { data } = articleData.data
-      this.title = data.title
-      this.markdownData = data.content
+      this.title = articleData.data.title
+      this.markdownData = articleData.data.content
     },
     // 得到草稿箱内容 by id
     async getDraft(id) {
@@ -431,6 +481,46 @@ export default {
     success(hash, msg = this.$t('success.public')) {
       this.$message.success(msg)
       this.jumpToArticle(hash)
+    },
+    /**
+     * 获取所有token
+     */
+    async getAllTokens() {
+      const pagesize = 999
+      await this.$API.allToken({ pagesize }).then(res => {
+        if (res.code === 0) {
+          this.readSelectOptions = res.data.list
+        }
+      }).catch(err => console.log(err))
+    },
+    /**
+     * 文章持币阅读
+     */
+    async postMineTokens(id, type) {
+      // 获取当前选择的币种
+      const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+      // 目前只用上传一种数据格式
+      const tokenArr = [
+        {
+          tokenId: token[0].id,
+          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+        }
+      ]
+      console.log(token, tokenArr)
+      const data = {
+        signId: id,
+        tokens: tokenArr
+      }
+      await this.$API.addMineTokens(data)
+        .then(res => {
+          if (type === 'publish') {
+            // 删除草稿
+            this.delDraft(this.id).then(() => {
+              this.success(id, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
+            }).catch(() => { console.log('发布错误') })
+          } else this.success(id)
+        })
+        .catch(err => console.log(err))
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
@@ -472,7 +562,7 @@ export default {
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
-        success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
+        this.postMineTokens(response.data, 'publish')
       } catch (error) {
         console.error(error)
         failed(error)
@@ -513,7 +603,7 @@ export default {
         if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
-      if (response.code === 0) this.success(response.data)
+      if (response.code === 0) this.postMineTokens(response.data, 'edit')
       else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
@@ -522,7 +612,7 @@ export default {
         return this.failed(this.$t('error.deleteDraft'))
       }
       try {
-        const response = await this.$backendAPI.delDraft({ id })
+        const response = await this.$API.delDraft({ id })
         if (response.status !== 200) this.failed(this.$t('error.deleteDraft'))
       } catch (error) {
         this.failed(this.$t('error.deleteDraft'))
@@ -571,6 +661,12 @@ export default {
       const isOriginal = Number(this.isOriginal)
 
       if (type === 'draft') {
+        if (this.readauThority) {
+          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
         // console.log('sendPost result :', hash)
@@ -580,14 +676,9 @@ export default {
           hash,
           fissionFactor,
           cover,
-          isOriginal
+          isOriginal,
+          shortContent: this.readSummary
         })
-          .then(() => {
-            this.delDraft(this.id)
-          })
-          .catch(() => {
-            console.log('发布错误')
-          })
       } else if (type === 'edit') {
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })
@@ -599,7 +690,8 @@ export default {
           fissionFactor,
           signature: this.signature,
           cover,
-          isOriginal
+          isOriginal,
+          shortContent: this.readSummary
         })
       }
     },
@@ -744,7 +836,12 @@ export default {
       this.statementVisible = false
     },
     // 原创改变 true 才显示原创声明
-    originalChange(val) { if (val) this.statementVisible = true }
+    originalChange(val) { if (val) this.statementVisible = true },
+    closeDropdown() {
+      this.transferButton = false
+      this.readContent = false
+    }
+
   }
 }
 </script>

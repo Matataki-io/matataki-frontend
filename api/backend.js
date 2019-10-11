@@ -149,9 +149,9 @@ const API = {
       }
     )
   },
-  async getArticleDatafromIPFS(hash) {
-    return axios.get(`${apiServer}/post/ipfs/${hash}`)
-  },
+  // async getArticleDatafromIPFS(hash) {
+  //   return axios.get(`${apiServer}/post/ipfs/${hash}`)
+  // },
   // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
   async getArticleInfo(hashOrId) {
     const reg = /^[0-9]*$/
@@ -289,9 +289,9 @@ const API = {
   //     }
   //   })
   // },
-  async delDraft({ id }) {
-    return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
-  },
+  // async delDraft({ id }) {
+  //   return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
+  // },
   async getDraft({ id }) {
     return this.accessBackend({ url: `/draft/${id}` })
   },
@@ -307,9 +307,9 @@ const API = {
       }
     })
   },
-  async getMyPost(id) {
-    return this.accessBackend({ url: `/mypost/${id}` })
-  },
+  // async getMyPost(id) {
+  //   return this.accessBackend({ url: `/mypost/${id}` })
+  // },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })

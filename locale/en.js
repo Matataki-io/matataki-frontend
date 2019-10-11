@@ -331,6 +331,7 @@ export default {
     editorTextArticleEditor: 'Edit article',
     editorTextDraftEditor: 'Edit draft',
     sendBtnText: 'Publish',
+    identifyAndPublish: '确定并发布',
     sendBtnTextEditor: 'Modify',
     transfer: 'transfer',
     titlePlaceholder: 'Please enter your article title...',

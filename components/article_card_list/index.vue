@@ -174,6 +174,7 @@ export default {
   &-title {
     height: 56px;
     margin: 20px 0;
+    overflow: hidden;
     h3 {
       padding: 0;
       margin: 0;

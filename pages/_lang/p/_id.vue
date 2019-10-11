@@ -36,10 +36,42 @@
           }"
         />
       </header>
-      <articleIpfs :hash="article.hash" />
+      <!-- ipfs -->
+      <articleIpfs v-if="isTokenArticle" :hash="article.hash" />
 
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
-      <ArticleFooter style="margin-top: 20px;" :article="article" />
+      <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
+      <!-- 解锁按钮 -->
+      <div v-if="!isTokenArticle" class="lock">
+        <el-divider>
+          <i class="el-icon-lock lock-icon" />
+          <!-- <img class="lock-img" src="@/assets/img/lock.png" alt="lock"> -->
+        </el-divider>
+
+        <div class="lock-info fl ac jsb">
+          <div class="fl ac">
+            <img class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <div>
+              <h3 class="lock-info-title">
+                解锁全文的条件
+              </h3>
+              <p class="lock-info-des">
+                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
+                <!-- 不显示 - 号 -->
+                <span>还差{{ differenceToken.slice(1) }}枚{{ needTokenSymbol }}</span>
+              </p>
+            </div>
+          </div>
+
+          <router-link
+            :to="{name: 'exchange'}"
+          >
+            <el-button type="primary" size="small">
+              交易粉丝币
+            </el-button>
+          </router-link>
+        </div>
+      </div>
     </article>
     <div class="p-w btns-container">
       <!-- 文章 -->
@@ -87,8 +119,7 @@
       </div>
       <ArticleInfoFooter v-if="isProduct" class="product" :article="article" />
     </div>
-
-    <div v-if="article.tags.length !== 0" class="p-w" style="margin-bottom: 20px;">
+    <div v-if="isShowTags" class="p-w" style="margin-bottom: 20px;">
       <n-link
         v-for="(item, index) in article.tags"
         :key="index"
@@ -224,6 +255,7 @@
 
 <script>
 import moment from 'moment'
+import Cookies from 'js-cookie'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
 import { xssFilter } from '@/utils/xss'
@@ -243,8 +275,11 @@ import TokenFooter from '@/components/article/TokenFooter'
 import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
+import { extractChar } from '@/utils/reg'
+import { precision } from '@/utils/precisionConversion'
 
 import store from '@/utils/localStorage.js'
+
 export default {
   components: {
     CommentList,
@@ -291,9 +326,13 @@ export default {
       timerShare: null, // 分享计时器
       timeCountShare: 0, // 分享计时
       article: Object.create(null),
+      post: Object.create(null),
       postsIdReadnewStatus: false, // 新文章阅读是否上报
       isReading: false, // read接口是否请求完毕
-      comment: '' //评论内容
+      comment: '', //评论内容
+      currentProfile: Object.create(null),
+      differenceToken: '0',
+      showLock: false
     }
   },
   head() {
@@ -347,7 +386,33 @@ export default {
     },
     likedOrDisLiked() {
       return parseInt(this.ssToken.is_liked) !== 0
+    },
+    isShowTags() {
+      return this.article.tags && this.article.tags.length !== 0
+    },
+    // 是否为付费文章
+    isTokenArticle() {
+      // 付费文章
+      if (this.article.tokens.length !== 0) {
+        if (this.showLock) return true
+        else return false
+      } else { // 不付费
+        return true
+      }
+    },
+    // 需要多少粉丝币
+    needTokenAmount() {
+      if (this.article.tokens.length !== 0) {
+        return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
+      } else return 0
+    },
+    // 需要多少粉丝币名称
+    needTokenSymbol() {
+      if (this.article.tokens.length !== 0) {
+        return this.article.tokens[0].symbol
+      } else return ''
     }
+
   },
   watch: {
     timeCount(v) {
@@ -367,20 +432,47 @@ export default {
     }
   },
 
-  async asyncData({ $axios, route }) {
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    // console.log('accessToekn', accessToekn)
+
     const hashOrId = route.params.id
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios.get(`/${url}/${hashOrId}`)
-    const content = await ipfsData($axios, info.data.hash)
-    return {
-      article: info.data,
-      post: content.data
+    const info = await $axios({
+      url: `/${url}/${hashOrId}`,
+      methods: 'get',
+      headers: { 'x-access-token': accessToekn }
+    })
+    console.log('info', info)
+
+    // 判断是否为付费阅读文章
+    if (info.data.tokens && info.data.tokens.length !== 0) {
+      return {
+        article: info.data,
+        post: {
+          content: info.data.short_content
+        }
+      }
+    } else {
+      const content = await ipfsData($axios, info.data.hash)
+      return {
+        article: info.data,
+        post: content.data
+      }
     }
   },
 
   created() {
     // console.log(this.article)
+    this.getCurrentProfile()
     this.getSupportStatus(this.$route)
   },
   async mounted() {
@@ -411,6 +503,51 @@ export default {
     clearInterval(this.timerShare)
   },
   methods: {
+    // 获取用户在当前文章的属性
+    async getCurrentProfile() {
+      const data = {
+        id: this.$route.params.id
+      }
+
+      await this.$API.getCurrentProfile(data).then(res => {
+        console.log(res)
+        if (res.code === 0) {
+          console.log(res.code)
+          this.currentProfile = res.data
+          // Object.assign(this.article, this.currentProfile)
+          // console.log('article', this.article)
+          this.differenceTokenFunc()
+        } else if (res.code === 401) {
+          console.log(res.message)
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => console.log(err))
+    },
+    // 差多少token 变为字符界面显示截取 - 号
+    differenceTokenFunc() {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+        const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
+        const amount = tokenName.length !== 0 ? precision(tokenName[0].amount, 'CNY', tokenName[0].decimals) : 0
+        const amountToken = (amount - this.needTokenAmount)
+        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + amountToken
+      } else this.differenceToken = '0'
+
+      this.showLockFunc(this.differenceToken)
+    },
+    // 是否显示 Lock
+    showLockFunc(differenceToken) {
+      if (Number(differenceToken) <= 0) {
+        if (this.isMe(this.article.uid)) { // 自己的文章
+          this.showLock = true
+          this.getIfpsData()
+        } else this.showLock = false
+      } else {
+        this.showLock = true
+        this.getIfpsData()
+      }
+    },
+
     shareCount() {
       this.timerShare = setInterval(() => {
         this.timeCountShare++
@@ -434,6 +571,17 @@ export default {
     // 推荐或不推荐显示 用户popover提示
     showUserPopover() {
       if (!store.get('userVisible')) this.visiblePopover.visible2 = true
+    },
+    async getIfpsData() {
+      await this.$API.getIfpsData(this.article.hash)
+        .then(res => {
+          if (res.code === 0) {
+            console.log('567', res)
+            this.post.content = res.data.content
+          } else {
+            console.log(res.message)
+          }
+        })
     },
     async getArticleInfoFunc() {
       await this.$API.getArticleInfo(this.$route.params.id)
