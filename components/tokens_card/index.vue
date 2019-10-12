@@ -63,7 +63,7 @@ export default {
     }
   },
   created() {
-    console.log('asset', this.asset)
+    // console.log('asset', this.asset)
   },
   methods: {}
 }

@@ -459,7 +459,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    console.log('info', info)
+    // console.log('info', info)
 
     // 判断是否为付费阅读文章
     if (info.data.tokens && info.data.tokens.length !== 0) {
@@ -479,22 +479,15 @@ export default {
   },
 
   created() {
-    // console.log(this.article)
     this.getCurrentProfile()
-    this.getSupportStatus(this.$route)
   },
-  async mounted() {
+  mounted() {
     this.setAvatar()
     this.oldOffSetTop = this.$refs.actionBtns.offsetTop
-    try {
-      await this.$backendAPI.addReadAmount({ articlehash: this.article.hash }) // 增加文章阅读量
-    } catch (error) {
-      console.error('addReadAmount :', error)
-    }
+    this.addReadAmount()
     window.addEventListener('scroll', this.handleScroll)
     this.handleFocus()
     // if (!document.hidden) {
-    //   console.log(1111)
     //   this.reading()
     // }
 
@@ -511,6 +504,10 @@ export default {
     clearInterval(this.timerShare)
   },
   methods: {
+    // 增加文章阅读量
+    async addReadAmount() {
+      await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
+    },
     // 获取用户在当前文章的属性
     async getCurrentProfile() {
       const data = {
@@ -518,13 +515,14 @@ export default {
       }
 
       await this.$API.getCurrentProfile(data).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.code === 0) {
-          console.log(res.code)
           this.currentProfile = res.data
           // Object.assign(this.article, this.currentProfile)
           // console.log('article', this.article)
           this.differenceTokenFunc()
+
+          this.getSupportStatus(res.data)
         } else if (res.code === 401) {
           console.log(res.message)
         } else {
@@ -638,10 +636,10 @@ export default {
         }
       })
     },
-    async postBackendReading(article) {
+    async postBackendReading(res) {
       // 阅读接口请求完毕才开始计时
       // 如果推荐/不推荐过 不进行调用
-      if (parseInt(article.is_liked) === 1 || parseInt(article.is_liked) === 2) return
+      if (parseInt(res.is_liked) === 1 || parseInt(res.is_liked) === 2) return
       await this.$API.reading(this.article.id)
         .then(res => {
           if (res.code === 0) {
@@ -749,30 +747,25 @@ export default {
     share() {
       this.shareModalShow = true
     },
-    setAvatar() {
-      this.$API.getUser({ id: this.article.uid }).then((res) => {
-        const data = res.data
-        this.followed = data.is_follow
-        if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
+    async setAvatar() {
+      await this.$API.getUser({ id: this.article.uid }).then((res) => {
+        if (res.code === 0) {
+          const data = res.data
+          this.followed = data.is_follow
+          if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
+        }
       })
     },
     // 获取是否赞赏状态
-    async getSupportStatus(route) {
-      try {
-        const res = await this.$API.getArticleInfo(route.params.id)
-        if (res.code === 0) {
-          this.isSupport = res.data.is_support
-          this.ssToken = {
-            points: res.data.points || [], // 用户是否喜欢了这篇文章
-            dislikes: res.data.dislikes,
-            likes: res.data.likes,
-            is_liked: res.data.is_liked || 0 // is_liked：0：没有操作过，1：不推荐，2：推荐
-          }
-          this.postBackendReading(res.data)
-        }
-      } catch (error) {
-        console.log(error)
+    getSupportStatus(res) {
+      this.isSupport = res.is_support
+      this.ssToken = {
+        points: res.points || [], // 用户是否喜欢了这篇文章
+        dislikes: res.dislikes,
+        likes: res.likes,
+        is_liked: res.is_liked || 0 // is_liked：0：没有操作过，1：不推荐，2：推荐
       }
+      this.postBackendReading(res)
     },
     payDone() {
       setTimeout(() => {

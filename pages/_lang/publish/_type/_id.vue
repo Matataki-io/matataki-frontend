@@ -275,7 +275,7 @@ export default {
       this.setToolBar(val)
     },
     mavonStyle(newVal) {
-      console.log(newVal)
+      // console.log(newVal)
 
       this.mavonStyle = newVal
     },
@@ -368,7 +368,7 @@ export default {
       const { type, id } = this.$route.params
 
       if (type === 'draft' && id === 'create') {
-        console.log('创建草稿')
+        // console.log('创建草稿')
         this.autoCreateDraft({
           title,
           content,
@@ -377,7 +377,7 @@ export default {
           isOriginal
         })
       } else if (type === 'draft' && id !== 'create') {
-        console.log('更新草稿')
+        // console.log('更新草稿')
         // 草稿箱编辑 更新
         this.autoUpdateDraft({
           id: this.id,
@@ -415,7 +415,7 @@ export default {
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
       const articleData = await this.$API.getIfpsData(hash)
-      console.log('articleData', articleData, hash, id)
+      // console.log('articleData', articleData, hash, id)
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
         if (res.code === 0) {
@@ -833,7 +833,7 @@ export default {
     },
     // 关闭原创声明框
     closeStatement(val) {
-      console.log(val)
+      // console.log(val)
       this.isOriginal = val
       this.statementVisible = false
     },

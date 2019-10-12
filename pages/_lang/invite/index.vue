@@ -107,7 +107,7 @@ export default {
       return cover ? this.$API.getImg(cover) : ''
     },
     paginationData(res) {
-      console.log(res)
+      // console.log(res)
       this.pointLog.list = res.data.list
       this.assets = res.data
       this.total = res.data.count || 0
@@ -125,11 +125,11 @@ export default {
       })
     },
     formatterDate(row, column) {
-      console.log(row, column)
+      // console.log(row, column)
       return row.date + 1
     },
     formatterPoint(row, column) {
-      console.log(row, column)
+      // console.log(row, column)
       return row.point + 11
     }
   }

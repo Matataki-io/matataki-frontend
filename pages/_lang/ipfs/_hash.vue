@@ -86,7 +86,7 @@ export default {
     }
   },
   created() {
-    console.log(this.articleIpfs, this.articleData)
+    // console.log(this.articleIpfs, this.articleData)
   }
 }
 </script>

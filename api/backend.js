@@ -188,12 +188,12 @@ const API = {
     })
   },
   // be Used in Article Page
-  async addReadAmount({ articlehash }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: `/post/show/${articlehash}`
-    })
-  },
+  // async addReadAmount({ articlehash }) {
+  //   return this.accessBackend({
+  //     method: 'POST',
+  //     url: `/post/show/${articlehash}`
+  //   })
+  // },
   // 删除文章
   async delArticle({ id }) {
     return this.accessBackend({
@@ -344,7 +344,7 @@ const API = {
   },
   // 文章转让
   async transferOwner(from, articleId, uid) {
-    console.log(from, articleId, uid)
+    // console.log(from, articleId, uid)
     if (from === 'article')
       return this.accessBackend({
         method: 'POST',

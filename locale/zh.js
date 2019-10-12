@@ -488,12 +488,12 @@ export default {
     minute: '分钟',
     second: '秒',
     // feedback
-    readArticlePoint: '阅读文章，获得{}个积分',
-    readNewArticleNPoint: '阅读新文章，获得{}个积分',
-    readThreeDaysNewArticlePoint: '阅读3天内发表的新文章可额外获得{}个积分',
+    readArticlePoint: '阅读文章，获得{0}个积分',
+    readNewArticleNPoint: '阅读新文章，获得{0}个积分',
+    readThreeDaysNewArticlePoint: '阅读3天内发表的新文章可额外获得{0}个积分',
     // tokenFooter
-    readAddPoint: '阅读 + {}积分',
-    newAddPoint: '新文章 + {}积分',
+    readAddPoint: '阅读 + {0}积分',
+    newAddPoint: '新文章 + {0}积分',
     // userInfoHeader
     confirmUnFollowMessage: '确定取消关注?',
     // article import

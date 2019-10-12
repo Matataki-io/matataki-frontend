@@ -142,6 +142,13 @@ export default {
   async myPoints(params) {
     return request.get(`/user/points`, { params })
   },
+  // 增加阅读量
+  addReadAmount({ articlehash }) {
+    return request({
+      method: 'POST',
+      url: `/post/show/${articlehash}`
+    })
+  },
   /**
    * 删除文章
    */
