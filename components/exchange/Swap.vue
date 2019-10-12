@@ -288,9 +288,12 @@ export default {
         }).then(res => {
           loading.close()
           if (res.code === 0) {
-            this.successNotice('兑换成功')
+            this.successNotice('兑换成功，即将刷新页面')
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000)
           } else {
-            this.successNotice('兑换失败')
+            this.errorNotice('兑换失败，请刷新重试')
           }
         })
       }
@@ -328,14 +331,14 @@ export default {
     successNotice(text) {
       this.$message.success({
         message: text,
-        duration: 0,
+        duration: 4000,
         showClose: true
       })
     },
     errorNotice(text) {
       this.$message.error({
         message: text,
-        duration: 0,
+        duration: 4000,
         showClose: true
       })
     },

@@ -146,14 +146,14 @@ export default {
     successNotice(text) {
       this.$message.success({
         message: text,
-        duration: 0,
+        duration: 4000,
         showClose: true
       })
     },
     errorNotice(text) {
       this.$message.error({
         message: text,
-        duration: 0,
+        duration: 4000,
         showClose: true
       })
     }

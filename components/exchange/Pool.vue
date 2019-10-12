@@ -479,23 +479,26 @@ export default {
         min_tokens: minTokens
       }).then(res => {
         if (res.code === 0) {
-          this.successNotice('流动金删除成功')
+          this.successNotice('流动金删除成功，即将刷新页面')
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
         } else {
-          this.errorNotice('流动金删除失败')
+          this.errorNotice('流动金删除失败，请刷新重试')
         }
       })
     },
     successNotice(text) {
       this.$message.success({
         message: text,
-        duration: 0,
+        duration: 4000,
         showClose: true
       })
     },
     errorNotice(text) {
       this.$message.error({
         message: text,
-        duration: 0,
+        duration: 4000,
         showClose: true
       })
     },
