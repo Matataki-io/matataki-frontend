@@ -10,7 +10,6 @@
     <div class="container">
       <img src="@/assets/img/m_logo.png" alt="logo">
       <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
-      <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
       <table class="order-table">
         <tbody>
           <tr>
