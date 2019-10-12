@@ -537,7 +537,7 @@ export default {
     },
     // 是否显示 Lock
     showLockFunc(differenceToken) {
-      if (Number(differenceToken) <= 0) {
+      if (Number(differenceToken) < 0) {
         if (this.isMe(this.article.uid)) { // 自己的文章
           this.showLock = true
           this.getIfpsData()
@@ -576,7 +576,6 @@ export default {
       await this.$API.getIfpsData(this.article.hash)
         .then(res => {
           if (res.code === 0) {
-            console.log('567', res)
             this.post.content = res.data.content
           } else {
             console.log(res.message)
