@@ -36,7 +36,7 @@
                 <el-option
                   v-for="item in readSelectOptions"
                   :key="item.id"
-                  :label="item.symbol"
+                  :label="item.symbol + '-' + item.name"
                   :value="item.id"
                 />
               </el-select>
@@ -608,15 +608,14 @@ export default {
     },
     // 删除草稿
     async delDraft(id) {
-      if (!id) {
-        return this.failed(this.$t('error.deleteDraft'))
-      }
-      try {
-        const response = await this.$API.delDraft({ id })
-        if (response.status !== 200) this.failed(this.$t('error.deleteDraft'))
-      } catch (error) {
-        this.failed(this.$t('error.deleteDraft'))
-      }
+      if (!id) return this.failed(this.$t('error.deleteDraft'))
+      await this.$API.delDraft({ id })
+        .then(res => {
+          if (res.code !== 0) this.failed(this.$t('error.deleteDraft'))
+        }).catch(err => {
+          console.log(err)
+          this.failed(this.$t('error.deleteDraft'))
+        })
     },
     // 更新草稿
     async autoUpdateDraft(article) {

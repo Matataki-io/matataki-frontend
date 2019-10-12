@@ -79,8 +79,8 @@ export default {
       // 删除草稿
       const asyncSuccessDel = async (id, index) => {
         try {
-          const res = await this.$backendAPI.delDraft({ id })
-          if (res.status === 200 && res.data.code === 0) {
+          const res = await this.$API.delDraft({ id })
+          if (res.code === 0) {
             this.articleCardData.articles.splice(index, 1) // 前端手动删除一下数据
             this.$message({ type: 'success', message: '删除成功!' })
           } else {
