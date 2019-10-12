@@ -43,7 +43,7 @@
           <div class="jUAxZT">
             <span>输出</span>
           </div>
-          <div v-if="form.outputToken.symbol && form.inputToken.id !== 0">
+          <div v-if="form.outputToken.symbol && form.outputToken.id !== 0">
             余额：{{ balance.output }}
           </div>
         </div>
