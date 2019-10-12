@@ -37,15 +37,13 @@
         />
       </header>
       <!-- ipfs -->
-      <div v-if="!tokenArticle">
-        <articleIpfs v-if="isTokenArticle" :hash="article.hash" />
-      </div>
+      <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
 
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
       <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
       <!-- 解锁按钮 -->
       <div v-if="tokenArticle" class="lock">
-        <el-divider>
+        <el-divider v-if="!isTokenArticle">
           <i class="el-icon-lock lock-icon" />
         </el-divider>
 
@@ -552,7 +550,7 @@ export default {
         // 减之后 换算
         const amountToken = precision(amount - needTokenAmount, 'CNY', tokenName[0].decimals)
 
-        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + amountToken
+        this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
 
       this.showLockFunc(this.differenceToken)

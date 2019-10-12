@@ -9,7 +9,7 @@
         />
       </el-tooltip>
     </p>
-    <div class="ipfs-hash">
+    <div v-if="!isHide" class="ipfs-hash">
       <n-link class="ipfs" target="_blank" :to="{name: 'ipfs-hash', params: {hash: hash}}">
         IPFS Hash: {{ hash || 'Loading...' }}
       </n-link>
@@ -29,6 +29,10 @@ export default {
   props: {
     hash: {
       type: String,
+      required: true
+    },
+    isHide: {
+      type: Boolean,
       required: true
     }
   },
@@ -77,7 +81,7 @@ export default {
 }
 .ipfs-img {
   position: absolute;
-  width: 124px;
+  height: 50px;
   right: 0;
   bottom: 0;
 }
