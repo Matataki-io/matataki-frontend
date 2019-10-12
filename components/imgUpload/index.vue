@@ -261,7 +261,7 @@ export default {
           })
         }
 
-        console.log(file)
+        // console.log(file)
       } catch (error) {
         // 捕获错误 未登陆提示
         console.log(error)

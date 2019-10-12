@@ -179,7 +179,7 @@ export default {
     },
     // 完成上传
     doneImageUpload(res) {
-      console.log(res)
+      // console.log(res)
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.currentUserInfo.id })
       this.getMyUserData()
@@ -187,7 +187,7 @@ export default {
     // 获取用户信息 - 转让状态
     async getMyUserData() {
       const setUser = data => {
-        console.log(data)
+        // console.log(data)
         this.userData = data
         this.username = data.nickname || data.username
         this.email = data.email || ''
@@ -246,7 +246,7 @@ export default {
       await this.$backendAPI
         .setProfile(filterRequestData())
         .then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200 && res.data.code === 0) {
             this.$message({
               message: this.$t('success.success'),

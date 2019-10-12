@@ -86,7 +86,7 @@ export default {
   },
   mounted() {
     this.genQRCode()
-    console.log(this.isAPP)
+    // console.log(this.isAPP)
   },
   methods: {
     filterStr(str) {

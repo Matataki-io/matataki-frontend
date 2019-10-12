@@ -459,7 +459,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    console.log('info', info)
+    // console.log('info', info)
 
     // 判断是否为付费阅读文章
     if (info.data.tokens && info.data.tokens.length !== 0) {
@@ -488,7 +488,6 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
     this.handleFocus()
     // if (!document.hidden) {
-    //   console.log(1111)
     //   this.reading()
     // }
 
@@ -516,9 +515,8 @@ export default {
       }
 
       await this.$API.getCurrentProfile(data).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.code === 0) {
-          console.log(res.code)
           this.currentProfile = res.data
           // Object.assign(this.article, this.currentProfile)
           // console.log('article', this.article)
@@ -642,7 +640,7 @@ export default {
       // 阅读接口请求完毕才开始计时
       // 如果推荐/不推荐过 不进行调用
       if (parseInt(res.is_liked) === 1 || parseInt(res.is_liked) === 2) return
-      await this.$API.reading(this.res.id)
+      await this.$API.reading(this.article.id)
         .then(res => {
           if (res.code === 0) {
             this.isReading = true

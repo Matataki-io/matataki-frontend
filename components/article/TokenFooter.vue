@@ -68,7 +68,6 @@ export default {
   computed: {
     // 是否被点击过
     clicked() {
-      console.log(this.article)
       return this.type !== 'title'
     },
     type() {

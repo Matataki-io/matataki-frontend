@@ -344,7 +344,7 @@ const API = {
   },
   // 文章转让
   async transferOwner(from, articleId, uid) {
-    console.log(from, articleId, uid)
+    // console.log(from, articleId, uid)
     if (from === 'article')
       return this.accessBackend({
         method: 'POST',

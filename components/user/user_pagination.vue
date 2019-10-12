@@ -95,15 +95,15 @@ export default {
       this.$emit('togglePage', i)
     },
     prevClick(i) {
-      console.log('prevClick', i)
+      // console.log('prevClick', i)
       this.togglePage(i)
     },
     nextClick(i) {
-      console.log('nextClick', i)
+      // console.log('nextClick', i)
       this.togglePage(i)
     },
     currentChange(i) {
-      console.log('currentChange', i)
+      // console.log('currentChange', i)
       this.togglePage(i)
     },
     // 刷新方法

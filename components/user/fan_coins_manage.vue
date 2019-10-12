@@ -266,7 +266,7 @@ export default {
     //   return this.$publishMethods.formatDecimal(tokenamount, 4)
     // },
     paginationData(res) {
-      console.log(res)
+      // console.log(res)
       this.pointLog.list = res.data.list
       this.assets = res.data
       this.total = res.data.count || 0

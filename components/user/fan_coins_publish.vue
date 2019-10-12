@@ -156,7 +156,7 @@ export default {
     },
     // 完成上传
     doneImageUpload(res) {
-      console.log(res)
+      // console.log(res)
       this.form.coinsIcon = res.data.data.cover
       this.imgUploadDone += Date.now()
     },

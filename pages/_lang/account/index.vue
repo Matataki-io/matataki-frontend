@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     paginationData(res) {
-      console.log(res)
+      // console.log(res)
       this.articleCardData.articles = res.data.logs
       this.assets = res.data
       this.total = res.data.count || 0

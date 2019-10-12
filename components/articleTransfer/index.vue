@@ -155,9 +155,9 @@ export default {
         return
       }
       try {
-        console.log(this.transferUsername)
+        // console.log(this.transferUsername)
         const res = await this.$backendAPI.searchUsername(this.transferUsername)
-        console.log(res)
+        // console.log(res)
         if (res.status === 200 && res.data.code === 0) {
           this.setSearchUserInfo(res.data.data)
           this.resultUser = true

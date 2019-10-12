@@ -164,7 +164,7 @@ export default {
 
       this.articleCardData[0].params = Object.assign(params, this.params)
 
-      console.log(this.articleCardData[0].params)
+      // console.log(this.articleCardData[0].params)
     },
     paginationData(res) {
       this.articleCardData[0].articles = []

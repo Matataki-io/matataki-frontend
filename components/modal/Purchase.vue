@@ -140,7 +140,7 @@ export default {
         if (this.product.vntPrice <= 0) return this.$message.error(this.$t('p.shopNotBuy', ['Vnt']));
       }
 
-      console.log(this.product)
+      // console.log(this.product)
 
       const loading = this.$loading({
         text: `${this.$t('p.buying')}...`
