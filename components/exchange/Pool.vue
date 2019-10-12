@@ -14,7 +14,9 @@
           <div class="jUAxZT">
             <span>{{ isDelete ? '资金池通证' : '存入' }}</span>
           </div>
-          <!-- <div>余额：0.084</div> -->
+          <div v-if="isDelete && form.outputToken.symbol && form.outputToken.id !== 0">
+            余额：{{ balance.delete }}
+          </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
         <div v-if="isDelete" class="jbRmQG">
@@ -72,7 +74,9 @@
           <div class="jUAxZT">
             <span>{{ isDelete ? '输出（估计）' : '存入' }}</span>
           </div>
-          <!-- <div>余额：0.084</div> -->
+          <div v-if="form.outputToken.symbol && form.outputToken.id !== 0 && !isDelete">
+            余额：{{ balance.add }}
+          </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
         <div v-if="isDelete" class="cHbrWc">
@@ -221,6 +225,10 @@ export default {
       outputPoolSize: {
         cny_amount: 0,
         token_amount: 0
+      },
+      balance: {
+        add: 0, // 添加流动性余额
+        delete: 0 // 删除流动性余额
       }
     }
   },
@@ -239,6 +247,10 @@ export default {
     btnDisabled() {
       const { input, inputToken, output, outputToken } = this.form
       const { outputPoolSize } = this
+      // 检查余额情况
+      if (!this.checkBalance(false)) {
+        return true
+      }
       // 删除流动金的情况
       /* eslint-disable */
       if (this.isDelete) {
@@ -322,9 +334,10 @@ export default {
       this.form.output = value
       /*---------------------- 删除流动金逻辑开始 ---------------------*/
       if (this.isDelete) {
-        const { output, outputToken } = this.form
+        const { inputToken, output, outputToken } = this.form
         if (!utils.isNull(output) && !utils.isNull(outputToken)) {
           this.getOutputPoolSize(output, outputToken.id)
+          this.getInputAmount(inputToken.id, outputToken.id, output)
         }
         return
       }
@@ -337,11 +350,13 @@ export default {
       // 获取总池子大小
       this.getCurrentPoolSize(token.id)
       if (this.field === OUTPUT) {
+        this.getUserBalance(token.id, this.isDelete ? 'delete' : 'add')
         if (this.isDelete) {
            /*---------------------- 删除流动金逻辑开始 ---------------------*/
-          const { output } = this.form
+          const { inputToken, output } = this.form
           if (!utils.isNull(output)) {
             this.getOutputPoolSize(output, token.id)
+            this.getInputAmount(inputToken.id, token.id, output)
           }
           /*---------------------- 删除流动金逻辑结束 ---------------------*/
         } else {
@@ -355,6 +370,15 @@ export default {
         }
       }
     },
+    getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+      const deciaml = 4
+      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+        if (res.code === 0) {
+          this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+        }
+      })
+    },
     getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
       const deciaml = 4
       const _inputAmount = utils.toDecimal(inputAmount, deciaml)
@@ -362,6 +386,7 @@ export default {
         if (res.code === 0) {
           this.outputReadOnly = true
           this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+          this.checkBalance()
         } else {
           this.form.output = ''
           this.outputReadOnly = false
@@ -440,6 +465,7 @@ export default {
             token_amount: 0
           }
         }
+        this.checkBalance()
       })
     },
     removeLiquidity() {
@@ -472,6 +498,58 @@ export default {
         duration: 0,
         showClose: true
       })
+    },
+    // 获取用户余额
+    getUserBalance(tokenId, type) {
+      // RMB 不计算余额
+      if (tokenId === 0) {
+        this.balance[type] = 0
+        return
+      }
+      this.$API.getUserBalance(tokenId).then((res) => {
+        if (res.code === 0 && res.data) {
+          const deciaml = res.data.decimals
+          this.balance[type] = parseFloat(utils.fromDecimal(res.data.amount, deciaml))
+        }
+      })
+    },
+    // 检测余额
+    checkBalance(showError = true) {
+      // 添加流动性
+      if (!this.isDelete) {
+        const { output, outputToken } = this.form
+        // 添加流动性的余额
+        const addBalance = this.balance.add
+        // 输入币存在，且不是rmb
+        if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+          // 输入大于余额
+          if (parseFloat(output) > parseFloat(addBalance)) {
+            if (showError) {
+              this.$message.error({
+                message: '余额不足',
+                duration: 3000,
+                showClose: true
+              })
+            }
+            return false
+          }
+        }
+      } else { // 删除流动性
+        const { output, outputToken } = this.form
+        if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+          if (parseFloat(this.yourPoolSize.cny_amount) < parseFloat(this.outputPoolSize.cny_amount)) {
+            if (showError) {
+              this.$message.error({
+                message: '余额不足',
+                duration: 3000,
+                showClose: true
+              })
+            }
+            return false
+          }
+        }
+      }
+      return true
     }
   }
 }

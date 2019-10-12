@@ -523,5 +523,14 @@ export default {
         outputTokenId, inputAmount
       }
     })
+  },
+  getUserBalance(tokenId) {
+    return request({
+      method: 'get',
+      url: '/exchange/balance',
+      params: {
+        tokenId
+      }
+    })
   }
 }
