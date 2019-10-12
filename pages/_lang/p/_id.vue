@@ -45,7 +45,6 @@
       <div v-if="tokenArticle" class="lock">
         <el-divider>
           <i class="el-icon-lock lock-icon" />
-          <!-- <img class="lock-img" src="@/assets/img/lock.png" alt="lock"> -->
         </el-divider>
 
         <div class="lock-info fl ac jsb">
