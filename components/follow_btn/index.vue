@@ -48,11 +48,13 @@ export default {
           type: 'warning'
         }).then(() => this.followOrUnfollowUser({
           id: this.id,
-          type: 0 }))
+          type: 0
+        }))
       } else {
         this.followOrUnfollowUser({
           id: this.id,
-          type: 1 })
+          type: 1
+        })
       }
     }
   }
