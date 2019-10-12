@@ -322,9 +322,10 @@ export default {
       this.form.output = value
       /*---------------------- 删除流动金逻辑开始 ---------------------*/
       if (this.isDelete) {
-        const { output, outputToken } = this.form
+        const { inputToken, output, outputToken } = this.form
         if (!utils.isNull(output) && !utils.isNull(outputToken)) {
           this.getOutputPoolSize(output, outputToken.id)
+          this.getInputAmount(inputToken.id, outputToken.id, output)
         }
         return
       }
@@ -339,9 +340,10 @@ export default {
       if (this.field === OUTPUT) {
         if (this.isDelete) {
            /*---------------------- 删除流动金逻辑开始 ---------------------*/
-          const { output } = this.form
+          const { inputToken, output } = this.form
           if (!utils.isNull(output)) {
             this.getOutputPoolSize(output, token.id)
+            this.getInputAmount(inputToken.id, token.id, output)
           }
           /*---------------------- 删除流动金逻辑结束 ---------------------*/
         } else {
@@ -354,6 +356,15 @@ export default {
           }
         }
       }
+    },
+    getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+      const deciaml = 4
+      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+        if (res.code === 0) {
+          this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+        }
+      })
     },
     getOutputAmount(inputTokenId, outputTokenId, inputAmount) {
       const deciaml = 4

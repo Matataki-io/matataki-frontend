@@ -129,6 +129,7 @@ export default {
           if (res.data === 6 || res.data === 9) {
             this.successNotice('交易成功')
             clearInterval(this.timer)
+            window.location.reload()
           }
         }
       })

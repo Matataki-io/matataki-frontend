@@ -291,7 +291,12 @@ export default {
       const _outputAmount = utils.toDecimal(outputAmount, deciaml)
       this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
         if (res.code === 0) {
-          this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+          // rmb向上取整
+          if (inputTokenId === 0) {
+            this.form.input = parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
+          } else {
+            this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+          }
         } else {
           this.$message.error(res.message)
           this.form.input = ''

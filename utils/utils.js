@@ -43,5 +43,8 @@ export default {
   },
   fromDecimal(v, decimal = 4) {
     return (parseFloat(v) / Math.pow(10, decimal))
+  },
+  formatCNY(v) {
+    return Math.ceil((parseFloat(v) / 100)) / Math.pow(10, 2)
   }
 };
