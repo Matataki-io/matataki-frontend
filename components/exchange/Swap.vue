@@ -246,6 +246,14 @@ export default {
     onSubmit() {
       if (!this.checkLogin()) return
       const { input, inputToken, output, outputToken } = this.form
+      if (parseFloat(input) < 0.01 && inputToken.id === 0) {
+        this.$message.error({
+          message: '交易金额小于不得小于1分钱',
+          duration: 3000,
+          showClose: true
+        })
+        return
+      }
       const loading = this.$loading({
         lock: false,
         text: '提交中',
@@ -305,7 +313,7 @@ export default {
       this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
         if (res.code === 0) {
           // rmb向上取整
-          if (inputTokenId === 0) {
+          if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
             this.form.input = parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
           } else {
             this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)

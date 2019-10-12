@@ -40,7 +40,13 @@
           <tr>
             <td class="order-key">
               交易金额：
-            </td><td>￥ {{ input }}</td>
+            </td>
+            <td>
+              ￥ {{ input }}
+              <el-tooltip content="交易金额精度大于0.01元会自动进位支付，多余的金额会保留在您的人民币账户中。" placement="bottom" effect="light">
+                <i class="el-icon-question" />
+              </el-tooltip>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -123,13 +129,16 @@ export default {
       this.$API.getOrderStatus(tradeNo).then(res => {
         if (res.code === 0) {
           if (res.data === 7 || res.data === 8) {
-            this.errorNotice('交易失败，等待退款')
+            this.errorNotice('交易失败，等待退款，请重试')
             clearInterval(this.timer)
+            this.showModal = false
           }
           if (res.data === 6 || res.data === 9) {
-            this.successNotice('交易成功')
+            this.successNotice('交易成功，即将刷新页面')
             clearInterval(this.timer)
-            window.location.reload()
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000)
           }
         }
       })
