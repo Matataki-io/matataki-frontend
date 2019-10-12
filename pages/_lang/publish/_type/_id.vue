@@ -430,7 +430,7 @@ export default {
             this.readauThority = true
             this.readToken = precision(res.data.tokens[0].amount, 'cny', res.data.tokens[0].decimals)
             this.readSummary = res.data.short_content
-            this.readSelectOptions = res.data.tokens
+            // this.readSelectOptions = res.data.tokens
             this.readSelectValue = res.data.tokens[0].id
           }
 
@@ -497,16 +497,19 @@ export default {
      * 文章持币阅读
      */
     async postMineTokens(id, type) {
-      // 获取当前选择的币种
-      const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
-      // 目前只用上传一种数据格式
-      const tokenArr = [
-        {
-          tokenId: token[0].id,
-          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
-        }
-      ]
-      console.log(token, tokenArr)
+      let tokenArr = []
+      if (this.readauThority) { // 持币
+        // 获取当前选择的币种
+        const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [
+          {
+            tokenId: token[0].id,
+            amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+          }
+        ]
+      }
+
       const data = {
         signId: id,
         tokens: tokenArr
