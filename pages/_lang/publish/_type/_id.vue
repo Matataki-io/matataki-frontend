@@ -226,7 +226,7 @@ export default {
       toolbars: {},
       screenWidth: 1000,
       mavonStyle: {
-        minHeight: `800px`
+        minHeight: '800px'
       },
       fissionNum: 2,
       cover: '',
