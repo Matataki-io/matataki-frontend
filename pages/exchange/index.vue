@@ -6,9 +6,11 @@
         <el-tab-pane label="交易">
           <Swap />
         </el-tab-pane>
-        <el-tab-pane label="发送">
-          <span style="color: white;">敬请期待！</span>
-        </el-tab-pane>
+        <!-- <el-tab-pane label="赠送">
+          <div style="color: white;text-align: center;">
+            <a href="/tokens">跳转到我的粉丝币页面</a>
+          </div>
+        </el-tab-pane> -->
         <el-tab-pane label="资金池">
           <Pool />
         </el-tab-pane>
