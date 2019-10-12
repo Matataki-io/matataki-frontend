@@ -37,7 +37,9 @@
         />
       </header>
       <!-- ipfs -->
-      <articleIpfs v-if="isTokenArticle" :hash="article.hash" />
+      <div v-if="!tokenArticle">
+        <articleIpfs v-if="isTokenArticle" :hash="article.hash" />
+      </div>
 
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
       <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
@@ -59,7 +61,7 @@
               <p v-if="!isMe(article.uid)" class="lock-info-des">
                 持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
                 <!-- 不显示 - 号 -->
-                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }} {{ differenceToken.slice(1) }}枚{{ needTokenSymbol }}</span>
+                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
               </p>
               <p v-else class="lock-info-des">
                 自己发布的文章
@@ -531,7 +533,7 @@ export default {
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
-      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
         const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
         const amount = tokenName.length !== 0 ? precision(tokenName[0].amount, 'CNY', tokenName[0].decimals) : 0
         const amountToken = (amount - this.needTokenAmount)
