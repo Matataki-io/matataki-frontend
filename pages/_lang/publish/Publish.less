@@ -90,38 +90,30 @@
   }
 }
 .post {
-  position: relative;
-  &-title {
-    font-size: 14px;
-    color: @purpleDark;
-    cursor: pointer;
-    margin: 0 0 0 16px;
-    outline: none;
-    user-select: none;
-  }
-  &.active {
-    .post-content {
-      display: block;
-    }
-    .create-bottom {
-      transform: rotate(180deg);
-    }
-  }
+  font-size: 14px;
+  color: @purpleDark;
+  cursor: pointer;
+  margin: 0 0 0 8px;
+  outline: none;
+  padding: 4px 6px;
+  user-select: none;
+  border: 1px solid @purpleDark;
+  border-radius: 2px;
 }
 .post-content {
-  display: none;
-  position: absolute;
-  top: 30px;
-  right: 0;
-  width: 300px;
+  // display: none;
+  // position: absolute;
+  // top: 30px;
+  // right: 0;
+  // width: 300px;
   // height: 300px;
   padding: 20px;
   box-sizing: border-box;
 
   background-color: #FFF;
-  border: 1px solid #EBEEF5;
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  border-bottom: 1px solid #eaeaea;
+  // border-radius: 4px;
+  // box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   h3 {
     margin: 10px 0;
     padding: 0;

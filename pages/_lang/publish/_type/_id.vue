@@ -18,43 +18,8 @@
           {{ $t('publish.importArticle') }}
         </div>
 
-        <div class="post" :class="readContent && 'active'">
-          <span class="post-title" @click.stop="readContent = !readContent">
-            {{ $t('publish.publish') }}
-            <i class="el-icon-caret-bottom create-bottom" />
-          </span>
-          <div class="post-content" @click.stop>
-            <h3>持币阅读</h3>
-            <el-checkbox v-model="readauThority" size="small">
-              设置阅读权限
-            </el-checkbox>
-            <div v-show="readauThority">
-              <h3>持币数量</h3>
-              <el-input v-model="readToken" size="small" placeholder="请输入内容" />
-              <h3>持币类型</h3>
-              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
-                <el-option
-                  v-for="item in readSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-              <h3>内容摘要</h3>
-              <el-input
-                v-model="readSummary"
-                size="small"
-                type="textarea"
-                :autosize="{ minRows: 6, maxRows: 12}"
-                placeholder="请输入内容"
-                maxlength="300"
-                show-word-limit
-              />
-            </div>
-            <el-button plain size="small" class="post-btn" @click="sendThePost">
-              {{ $t('publish.identifyAndPublish') }}
-            </el-button>
-          </div>
+        <div class="post" @click="sendThePost">
+          {{ $t('publish.publish') }}
         </div>
 
         <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
@@ -81,6 +46,70 @@
           @imgAdd="$imgAdd"
         />
       </no-ssr>
+
+      <!-- 备份 -->
+      <!-- <div class="post-content">
+        <h3>持币阅读</h3>
+        <el-checkbox v-model="readauThority" size="small">
+          设置阅读权限
+        </el-checkbox>
+        <div v-show="readauThority">
+          <h3>持币数量</h3>
+          <el-input v-model="readToken" size="small" placeholder="请输入内容" />
+          <h3>持币类型</h3>
+          <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+            <el-option
+              v-for="item in readSelectOptions"
+              :key="item.id"
+              :label="item.symbol + '-' + item.name"
+              :value="item.id"
+            />
+          </el-select>
+          <h3>内容摘要</h3>
+          <el-input
+            v-model="readSummary"
+            size="small"
+            type="textarea"
+            :autosize="{ minRows: 6, maxRows: 12}"
+            placeholder="请输入内容"
+            maxlength="300"
+            show-word-limit
+          />
+        </div>
+        <el-button plain size="small" class="post-btn" @click="sendThePost">
+          {{ $t('publish.identifyAndPublish') }}
+        </el-button>
+      </div> -->
+
+      <div class="post-content">
+        <h3>持币阅读</h3>
+        <el-checkbox v-model="readauThority" size="small">
+          设置阅读权限
+        </el-checkbox>
+        <div v-show="readauThority">
+          <h3>持币数量</h3>
+          <el-input v-model="readToken" size="small" placeholder="请输入内容" />
+          <h3>持币类型</h3>
+          <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+            <el-option
+              v-for="item in readSelectOptions"
+              :key="item.id"
+              :label="item.symbol + '-' + item.name"
+              :value="item.id"
+            />
+          </el-select>
+          <h3>内容摘要</h3>
+          <el-input
+            v-model="readSummary"
+            size="small"
+            type="textarea"
+            :autosize="{ minRows: 6, maxRows: 12}"
+            placeholder="请输入内容"
+            maxlength="300"
+            show-word-limit
+          />
+        </div>
+      </div>
       <div v-if="$route.params.type !== 'edit'" class="set-item fl ac">
         <span class="set-title">
           {{ $t('publish.commentTitle') }}
