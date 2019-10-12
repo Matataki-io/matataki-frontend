@@ -82,7 +82,14 @@
       </div> -->
 
       <div class="post-content">
-        <h3>持币阅读</h3>
+        <h3>
+          持币阅读           <el-tooltip class="item" effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。目前为功能内测阶段，建议使用较低的限制条件。" placement="top-start">
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
+          </el-tooltip>
+        </h3>
         <el-checkbox v-model="readauThority" size="small">
           设置阅读权限
         </el-checkbox>

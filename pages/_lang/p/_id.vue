@@ -56,6 +56,12 @@
             <div>
               <h3 class="lock-info-title">
                 {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
+                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
+                  <svg-icon
+                    class="help-icon"
+                    icon-class="help"
+                  />
+                </el-tooltip>
               </h3>
 
               <p v-if="!isMe(article.uid)" class="lock-info-des">
