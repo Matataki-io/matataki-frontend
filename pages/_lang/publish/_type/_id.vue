@@ -516,12 +516,14 @@ export default {
       }
       await this.$API.addMineTokens(data)
         .then(res => {
-          if (type === 'publish') {
+          if (res.code === 0) {
+            if (type === 'publish') {
             // 删除草稿
-            this.delDraft(this.id).then(() => {
-              this.success(id, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
-            }).catch(() => { console.log('发布错误') })
-          } else this.success(id)
+              this.delDraft(this.id).then(() => {
+                this.success(id, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
+              }).catch(() => { console.log('发布错误') })
+            } else this.success(id)
+          } else this.failed('设置持币阅读失败')
         })
         .catch(err => console.log(err))
     },
@@ -682,6 +684,12 @@ export default {
           shortContent: this.readSummary
         })
       } else if (type === 'edit') {
+        if (this.readauThority) {
+          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })
         this.editArticle({
