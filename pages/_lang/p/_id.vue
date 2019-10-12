@@ -59,7 +59,7 @@
               <p v-if="!isMe(article.uid)" class="lock-info-des">
                 持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
                 <!-- 不显示 - 号 -->
-                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }} {{ differenceToken.slice(1) }}枚{{ needTokenSymbol }}</span>
+                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
               </p>
               <p v-else class="lock-info-des">
                 自己发布的文章
