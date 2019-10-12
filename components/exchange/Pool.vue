@@ -322,7 +322,6 @@ export default {
       const value = e.target.value
       this.form.input = value
       const { input, inputToken, outputToken } = this.form
-      this.checkBalance()
       if (!utils.isNull(input) && !utils.isNull(outputToken)) {
         // 获取输出token的数量
         this.getOutputAmount(inputToken.id, outputToken.id, input)
