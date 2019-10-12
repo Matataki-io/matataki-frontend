@@ -10,6 +10,7 @@
     <div class="container">
       <img src="@/assets/img/m_logo.png" alt="logo">
       <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
+      <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
       <table class="order-table">
         <tbody>
           <tr>
@@ -40,7 +41,13 @@
           <tr>
             <td class="order-key">
               交易金额：
-            </td><td>￥ {{ input }}</td>
+            </td>
+            <td>
+              ￥ {{ input }}
+              <el-tooltip content="交易金额精度大于0.01元会自动进位支付，多余的金额会保留在您的人民币账户中。" placement="bottom" effect="light">
+                <i class="el-icon-question" />
+              </el-tooltip>
+            </td>
           </tr>
         </tbody>
       </table>
