@@ -130,13 +130,16 @@ export default {
       this.$API.getOrderStatus(tradeNo).then(res => {
         if (res.code === 0) {
           if (res.data === 7 || res.data === 8) {
-            this.errorNotice('交易失败，等待退款')
+            this.errorNotice('交易失败，等待退款，请重试')
             clearInterval(this.timer)
+            this.showModal = false
           }
           if (res.data === 6 || res.data === 9) {
-            this.successNotice('交易成功')
+            this.successNotice('交易成功，即将刷新页面')
             clearInterval(this.timer)
-            window.location.reload()
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000)
           }
         }
       })
