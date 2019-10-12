@@ -506,12 +506,12 @@ export default {
     read_dislike: 'Not recommended',
     minute: 'minute',
     second: 'second',
-    readArticlePoint: 'Read articles, get {} points',
-    readNewArticleNPoint: 'Read new articles, get {} points',
+    readArticlePoint: 'Read articles, get {0} points',
+    readNewArticleNPoint: 'Read new articles, get {0} points',
     readThreeDaysNewArticlePoint:
-     'Reading new articles published within 3 days can get {} more points',
-    readAddPoint: 'read + {} points',
-    newAddPoint: 'new article + {} points',
+     'Reading new articles published within 3 days can get {0} more points',
+    readAddPoint: 'read + {0} points',
+    newAddPoint: 'new article + {0} points',
     confirmUnFollowMessage: 'Are you unfollow?',
     importDes1:
      'Current support: Chain Wen, Orange Book, WeChat, Jane Book. ',
