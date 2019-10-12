@@ -94,7 +94,7 @@
         <el-checkbox v-model="readauThority" size="small">
           设置阅读权限
         </el-checkbox>
-        <div v-show="readauThority">
+        <div v-show="readauThority" style="width: 300px;">
           <h3>持币数量</h3>
           <el-input v-model="readToken" size="small" placeholder="请输入内容" />
           <h3>持币类型</h3>
