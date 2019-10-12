@@ -6,7 +6,9 @@
           <div class="jUAxZT">
             <span>输入</span>
           </div>
-          <!-- <div>余额：0.084</div> -->
+          <div v-if="form.inputToken.symbol && form.inputToken.id !== 0">
+            余额：{{ balance.input }}
+          </div>
         </div>
         <div class="jbRmQG">
           <input
@@ -41,7 +43,9 @@
           <div class="jUAxZT">
             <span>输出</span>
           </div>
-          <!-- <div>余额：0.084</div> -->
+          <div v-if="form.outputToken.symbol && form.inputToken.id !== 0">
+            余额：{{ balance.output }}
+          </div>
         </div>
         <div class="jbRmQG">
           <input
@@ -140,14 +144,18 @@ export default {
       },
       order: {},
       priceSlippage: 0.01,
-      base: 'input' // input / output
+      base: 'input', // input / output
+      balance: {
+        input: 0,
+        output: 0
+      }
     }
   },
   computed: {
     ...mapGetters(['isLogined']),
     btnDisabled() {
       const { input, output, outputToken } = this.form
-      if (utils.isNull(input) || utils.isNull(outputToken) || utils.isNull(output)) {
+      if (utils.isNull(input) || utils.isNull(outputToken) || utils.isNull(output) || !this.checkBalance(false)) {
         return true
       }
       return false
@@ -201,6 +209,7 @@ export default {
       this.base = 'input'
       this.form.output = ''
       const { input, inputToken, outputToken } = this.form
+      this.checkBalance()
       if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
         this.getOutputAmount(inputToken.id, outputToken.id, input)
       }
@@ -217,10 +226,14 @@ export default {
     }, 500),
     selectToken(token) {
       this.form[this.field] = token
+      // 输入输出token不能相同
       if (this.form[INPUT] === this.form[OUTPUT]) {
         this.form[this.field === INPUT ? OUTPUT : INPUT] = ''
         this.form[this.field === INPUT ? 'output' : 'input'] = ''
+        this.balance[this.field === INPUT ? 'output' : 'input'] = 0
       }
+      // 获取用户余额
+      this.getUserBalance(token.id, this.field === INPUT ? 'input' : 'output')
       const { input, inputToken, output, outputToken } = this.form
       if (!utils.isNull(input) && !utils.isNull(inputToken) && !utils.isNull(outputToken)) {
         this.getOutputAmount(inputToken.id, outputToken.id, input)
@@ -297,6 +310,7 @@ export default {
           } else {
             this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
           }
+          this.checkBalance()
         } else {
           this.$message.error(res.message)
           this.form.input = ''
@@ -316,6 +330,42 @@ export default {
         duration: 0,
         showClose: true
       })
+    },
+    // 获取用户余额
+    getUserBalance(tokenId, type) {
+      // RMB 不计算余额
+      if (tokenId === 0) {
+        this.balance[type] = 0
+        return
+      }
+      this.$API.getUserBalance(tokenId).then((res) => {
+        if (res.code === 0 && res.data) {
+          const deciaml = res.data.decimals
+          this.balance[type] = parseFloat(utils.fromDecimal(res.data.amount, deciaml))
+          // 检查用户余额
+          this.checkBalance()
+        }
+      })
+    },
+    // 检测余额
+    checkBalance(showError = true) {
+      const { input, inputToken } = this.form
+      const inputBalance = this.balance.input
+      // 输入币存在，且不是rmb
+      if (!utils.isNull(inputToken) && inputToken.id !== 0) {
+        // 输入大于余额
+        if (parseFloat(input) > parseFloat(inputBalance)) {
+          if (showError) {
+            this.$message.error({
+              message: '余额不足',
+              duration: 3000,
+              showClose: true
+            })
+          }
+          return false
+        }
+      }
+      return true
     }
   }
 }
