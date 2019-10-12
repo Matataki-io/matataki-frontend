@@ -42,7 +42,7 @@
       <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
       <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
       <!-- 解锁按钮 -->
-      <div v-if="!isTokenArticle" class="lock">
+      <div v-if="tokenArticle" class="lock">
         <el-divider>
           <i class="el-icon-lock lock-icon" />
           <!-- <img class="lock-img" src="@/assets/img/lock.png" alt="lock"> -->
@@ -50,15 +50,20 @@
 
         <div class="lock-info fl ac jsb">
           <div class="fl ac">
-            <img class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
             <div>
               <h3 class="lock-info-title">
-                解锁全文的条件
+                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
               </h3>
-              <p class="lock-info-des">
+
+              <p v-if="!isMe(article.uid)" class="lock-info-des">
                 持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
                 <!-- 不显示 - 号 -->
-                <span>还差{{ differenceToken.slice(1) }}枚{{ needTokenSymbol }}</span>
+                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }} {{ differenceToken.slice(1) }}枚{{ needTokenSymbol }}</span>
+              </p>
+              <p v-else class="lock-info-des">
+                自己发布的文章
               </p>
             </div>
           </div>
@@ -390,7 +395,10 @@ export default {
     isShowTags() {
       return this.article.tags && this.article.tags.length !== 0
     },
+    tokenArticle() {
     // 是否为付费文章
+      return this.article.tokens.length !== 0
+    },
     isTokenArticle() {
       // 付费文章
       if (this.article.tokens.length !== 0) {
