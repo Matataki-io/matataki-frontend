@@ -20,69 +20,158 @@
         </el-dropdown>
       </template>
     </g-header>
-    <div v-if="cover" class="TitleImage">
-      <img :src="cover" alt="cover">
-    </div>
-    <article class="Post-Header">
-      <header>
-        <h1 class="Post-Title">
-          {{ article.title }}
-        </h1>
-        <UserInfoHeader
-          :article="{
-            ...article,
-            avatar,
-            articleCreateTimeComputed,
-          }"
-        />
-      </header>
-      <!-- ipfs -->
-      <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
 
-      <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
-      <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
-      <!-- 解锁按钮 -->
-      <div v-if="tokenArticle" class="lock">
-        <el-divider v-if="!isTokenArticle">
-          <i class="el-icon-lock lock-icon" />
-        </el-divider>
-
-        <div class="lock-info fl ac jsb">
-          <div class="fl ac">
-            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
-            <div>
-              <h3 class="lock-info-title">
-                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
-                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
-                  <svg-icon
-                    class="help-icon"
-                    icon-class="help"
-                  />
-                </el-tooltip>
-              </h3>
-
-              <p v-if="!isMe(article.uid)" class="lock-info-des">
-                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
-                <!-- 不显示 - 号 -->
-                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
-              </p>
-              <p v-else class="lock-info-des">
-                自己发布的文章
-              </p>
-            </div>
-          </div>
-
-          <router-link
-            :to="{name: 'exchange'}"
-          >
-            <el-button type="primary" size="small">
-              获取粉丝币
-            </el-button>
-          </router-link>
-        </div>
+    <div class="container">
+      <div v-if="cover" class="TitleImage">
+        <img :src="cover" alt="cover">
       </div>
-    </article>
+
+      <article class="Post-Header">
+        <header>
+          <h1 class="Post-Title">
+            {{ article.title }}
+          </h1>
+          <UserInfoHeader
+            :article="{
+              ...article,
+              avatar,
+              articleCreateTimeComputed,
+            }"
+          />
+        </header>
+        <!-- ipfs -->
+        <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
+
+        <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
+        <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
+        <!-- 解锁按钮 -->
+        <div v-if="tokenArticle" class="lock">
+          <el-divider v-if="!isTokenArticle">
+            <i class="el-icon-lock lock-icon" />
+          </el-divider>
+
+          <div class="lock-info fl ac jsb">
+            <div class="fl ac">
+              <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+              <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+              <div>
+                <h3 class="lock-info-title">
+                  {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
+                  <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
+                    <svg-icon
+                      class="help-icon"
+                      icon-class="help"
+                    />
+                  </el-tooltip>
+                </h3>
+
+                <p v-if="!isMe(article.uid)" class="lock-info-des">
+                  持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
+                  <!-- 不显示 - 号 -->
+                  <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                </p>
+                <p v-else class="lock-info-des">
+                  自己发布的文章
+                </p>
+              </div>
+            </div>
+
+            <router-link
+              :to="{name: 'exchange'}"
+            >
+              <el-button type="primary" size="small">
+                获取粉丝币
+              </el-button>
+            </router-link>
+          </div>
+        </div>
+      </article>
+
+      <!-- sidebar -->
+      <div v-show="navShow" class="sidebar">
+        <div v-if="isProduct" class="article-btn" @click="buy">
+          <div class="icon-container yellow">
+            <svg-icon icon-class="purchase" class="icon" />
+          </div>
+          <span>{{ $t('p.buyShop') }}</span>
+        </div>
+        <div v-if="isProduct" class="article-btn" @click="invest">
+          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+            <svg-icon icon-class="invest" class="icon" />
+          </div>
+          <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
+        </div>
+
+        <!-- <div
+        v-if="!isProduct"
+        class="comment fl ac fdc"
+      >
+        <div class="comment-block">
+          <svg-icon icon-class="comment" class="comment-icon" />
+        </div>
+        <span>评论</span>
+      </div> -->
+
+        <div
+          class="article-btn"
+          @click="share"
+        >
+          <el-popover
+            v-model="visiblePopover.visible1"
+            placement="right"
+            width="300"
+            trigger="manual"
+          >
+            <p>{{ $t('p.sharePopover') }}</p>
+            <div style="text-align: right; margin: 0">
+              <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
+                {{ $t('p.confirmPopover') }}
+              </el-button>
+            </div>
+
+            <div
+              slot="reference"
+            >
+              <div
+                class="icon-container blue"
+                :class="isProduct ? 'yellow' : 'blue'"
+              >
+                <svg-icon icon-class="share" class="icon" />
+              </div>
+              <span>{{ $t('share') }}</span>
+            </div>
+          </el-popover>
+        </div>
+
+        <el-popover
+          v-model="visiblePopover.visible"
+          placement="right"
+          width="300"
+          trigger="manual"
+        >
+          <p>{{ $t('p.likePopover') }}</p>
+          <div style="text-align: right; margin: 0">
+            <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
+              {{ $t('p.confirmPopover') }}
+            </el-button>
+          </div>
+          <div
+            slot="reference"
+          >
+            <CoinBtn
+              v-if="!isProduct"
+              style="margin-top: 40px;"
+              :time="timeCount"
+              :token="ssToken"
+              :article="article"
+              @like="like"
+              @dislike="dislike"
+            />
+          </div>
+        </el-popover>
+      </div>
+    </div>
+
     <div class="p-w btns-container">
       <!-- 文章 -->
       <!-- 推荐 不推荐 分享 -->
@@ -146,86 +235,6 @@
       <!-- 评论内容 -->
       <commentInput v-if="!isProduct" :article="article" @doneComment="commentRequest = Date.now()" />
       <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" />
-    </div>
-
-    <div v-show="navShow" class="sidebar">
-      <div v-if="isProduct" class="article-btn" @click="buy">
-        <div class="icon-container yellow">
-          <svg-icon icon-class="purchase" class="icon" />
-        </div>
-        <span>{{ $t('p.buyShop') }}</span>
-      </div>
-      <div v-if="isProduct" class="article-btn" @click="invest">
-        <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
-          <svg-icon icon-class="invest" class="icon" />
-        </div>
-        <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-      </div>
-
-      <!-- <div
-        v-if="!isProduct"
-        class="comment fl ac fdc"
-      >
-        <div class="comment-block">
-          <svg-icon icon-class="comment" class="comment-icon" />
-        </div>
-        <span>评论</span>
-      </div> -->
-
-      <div
-        class="article-btn"
-        @click="share"
-      >
-        <el-popover
-          v-model="visiblePopover.visible1"
-          placement="right"
-          width="300"
-          trigger="manual"
-        >
-          <p>{{ $t('p.sharePopover') }}</p>
-          <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
-              {{ $t('p.confirmPopover') }}
-            </el-button>
-          </div>
-
-          <div
-            slot="reference"
-          >
-            <div
-              class="icon-container blue"
-              :class="isProduct ? 'yellow' : 'blue'"
-            >
-              <svg-icon icon-class="share" class="icon" />
-            </div>
-            <span>{{ $t('share') }}</span>
-          </div>
-        </el-popover>
-      </div>
-
-      <el-popover
-        v-model="visiblePopover.visible"
-        placement="right"
-        width="300"
-        trigger="manual"
-      >
-        <p>{{ $t('p.likePopover') }}</p>
-        <div style="text-align: right; margin: 0">
-          <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
-            {{ $t('p.confirmPopover') }}
-          </el-button>
-        </div>
-        <CoinBtn
-          v-if="!isProduct"
-          slot="reference"
-          style="margin-top: 40px;"
-          :time="timeCount"
-          :token="ssToken"
-          :article="article"
-          @like="like"
-          @dislike="dislike"
-        />
-      </el-popover>
     </div>
 
     <InvestModal

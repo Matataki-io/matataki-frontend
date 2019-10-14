@@ -1,7 +1,16 @@
 .main {
   .minHeight();
 }
+
+
+
 @width: 850px;
+
+.container {
+  width: @width;
+  margin: 0 auto;
+  background: #fff;
+}
 .p-w  {
   width: @width;
   margin: 0 auto;
@@ -25,9 +34,9 @@
 
 .sidebar {
   position: fixed;
-  left: calc((100vw - 1118px)/2);
-  margin: auto;
+  // left: -1rem;
   top: 130px;
+  margin-left: -90px;
 }
 .btns-container {
   border-bottom: 1px solid #D8D8D8;

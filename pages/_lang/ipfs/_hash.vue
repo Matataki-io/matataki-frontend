@@ -2,7 +2,7 @@
   <main class="ipfs">
     <header>
       <h1 class="head-title">
-        {{ articleIpfs.title }}
+        {{ articleData.title }}
       </h1>
       <figure>
         <n-link
@@ -10,7 +10,7 @@
           target="_blank"
           itemprop="author"
         >
-          {{ articleIpfs.author }}
+          {{ articleData.author }}
         </n-link>
         <time itemprop="datePublished" :datetime="articleData.create_time">{{ articleCreateTime }}</time>
         <span itemprops="provider" itemscope="" itemtype="https://www.matataki.io/">
@@ -43,15 +43,15 @@ export default {
       title: this.articleData.title,
       meta: [
         { hid: 'description', name: 'description', content: this.articleData.short_content },
-        { hid: 'aritcle:author', name: 'aritcle:author', content: this.articleIpfs.author },
+        { hid: 'aritcle:author', name: 'aritcle:author', content: this.articleData.author },
         /* <!--  Meta for Twitter Card --> */
         { hid: 'twitter:card', property: 'twitter:card', content: 'summary' },
         { hid: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', property: 'twitter:title', content: this.articleIpfs.author + ':' + this.articleData.title },
+        { hid: 'twitter:title', property: 'twitter:title', content: this.articleData.author + ':' + this.articleData.title },
         { hid: 'twitter:description', property: 'twitter:description', content: this.articleData.short_content },
         /* <!--  Meta for OpenGraph --> */
         { hid: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', property: 'og:title', content: this.articleIpfs.author + ':' + this.articleData.title },
+        { hid: 'og:title', property: 'og:title', content: this.articleData.author + ':' + this.articleData.title },
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:description', property: 'og:description', content: this.articleData.short_content }
         /* end */
@@ -74,12 +74,21 @@ export default {
   async asyncData({ $axios, params }) {
     let articleIpfs = Object.create(null)
     let articleData = Object.create(null)
-    await ipfsData($axios, params.hash).then(res => {
-      if (res.code === 0) articleIpfs = res.data
-    })
     await ipfsArticleData($axios, params.hash).then(res => {
       if (res.code === 0) articleData = res.data
     })
+
+    if (articleData.tokens && articleData.tokens.length !== 0) {
+      articleIpfs.content = `
+      该文章为持币阅读文章,请返回原文查看
+      <a href="/article">立即跳转</a>
+      `
+    } else {
+      await ipfsData($axios, params.hash).then(res => {
+        if (res.code === 0) articleIpfs = res.data
+      })
+    }
+
     return {
       articleIpfs,
       articleData
