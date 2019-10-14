@@ -75,7 +75,7 @@ export default {
     shareLink() {
       const { protocol, host } = window.location
       // let url = `${process.env.WX_SHARE_HOST}/p/${this.$route.params.id}`
-      const url = `${protocol}//${host}/p/${this.$route.params.id}`
+      let url = `${protocol}//${host}/p/${this.$route.params.id}`
       if (this.isLogined) url += `?invite=${this.currentUserInfo.id}&referral=${this.currentUserInfo.id}`
       return url
     }
