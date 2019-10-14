@@ -22,7 +22,8 @@
         </p>
       </figure>
     </header>
-    <article itemprop="articleBody" v-html="compiledMarkdown" />
+    <article v-if="showContent" itemprop="articleBody" v-html="compiledMarkdown" />
+    <article v-else itemprop="articleBody" v-html="articleIpfs.content" />
   </main>
 </template>
 
@@ -35,7 +36,8 @@ export default {
   data() {
     return {
       articleIpfs: Object.create(null),
-      articleData: Object.create(null)
+      articleData: Object.create(null),
+      showContent: false
     }
   },
   head() {
@@ -80,18 +82,23 @@ export default {
 
     if (articleData.tokens && articleData.tokens.length !== 0) {
       articleIpfs.content = `
-      该文章为持币阅读文章,请返回原文查看
-      <a href="/article">立即跳转</a>
+      <p>该文章为持币阅读文章,请返回原文查看
+      <a href="/p/${articleData.id}">立即跳转</a></p>
       `
+      return {
+        articleIpfs,
+        articleData,
+        showContent: false
+      }
     } else {
       await ipfsData($axios, params.hash).then(res => {
         if (res.code === 0) articleIpfs = res.data
       })
-    }
-
-    return {
-      articleIpfs,
-      articleData
+      return {
+        articleIpfs,
+        articleData,
+        showContent: true
+      }
     }
   },
   created() {
