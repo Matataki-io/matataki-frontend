@@ -9,14 +9,80 @@
     custom-class="br10 black-theme-dialog"
   >
     <div class="container">
-      <div class="sc-uJMKN csvLqB">
+      <div class="csvLqB">
         <div class="search-box">
           <i class="el-icon-search" />
         </div>
         <input v-model="search" type="text" placeholder="搜索粉丝币" class="dHtVAe" @keyup.enter="searchToken">
       </div>
       <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
-        <div v-for="item in tokenList" :key="item.id" class="sc-jnlKLf hDyKIS" @click="selectToken(item)">
+        <el-table
+          :data="tokenList"
+          style="width: 100%">
+          <el-table-column
+            label="粉丝币">
+            <template slot-scope="scope">
+              <div class="sc-fYxtnH cjqFX">
+                <div class="favMUS">
+                  <img v-if="scope.row.logo" :src="getImg(scope.row.logo)" alt="logo">
+                </div>
+                <div class="sc-tilXH egNEUM">
+                  <span id="symbol">{{ scope.row.symbol }}</span>
+                  <div class="sc-hEsumM iHXZgD">
+                    {{ scope.row.name }}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="流通量">
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="发币者">
+          </el-table-column>
+          <el-table-column
+            label="">
+            <template slot-scope="scope">
+              <n-link :to="{name: 'user-id', params: {id: scope.row.id}}">
+                <el-button icon="el-icon-link" circle></el-button>
+              </n-link>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- <table>
+          <th>
+            <td>粉丝币</td>
+            <td>流通量</td>
+            <td>发币者</td>
+            <td></td>
+          </th>
+          <tbody>
+              <tr v-for="item in tokenList" :key="item.id">
+                <td>
+                  <div class="sc-fYxtnH cjqFX">
+                    <div class="favMUS">
+                      <img v-if="item.logo" :src="getImg(item.logo)" alt="logo">
+                    </div>
+                    <div class="sc-tilXH egNEUM">
+                      <span id="symbol">{{ item.symbol }}</span>
+                      <div class="sc-hEsumM iHXZgD">
+                        {{ item.name }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span>423,908</span>
+                </td>
+                <td>村朋克乐队...</td>
+                <td>  <el-button icon="el-icon-search" circle></el-button></td>
+              </tr>
+          </tbody>
+        </table> -->
+        <!-- <div v-for="item in tokenList" :key="item.id" class="sc-jnlKLf hDyKIS" @click="selectToken(item)">
           <div class="sc-fYxtnH cjqFX">
             <div class="favMUS">
               <img v-if="item.logo" :src="getImg(item.logo)" alt="logo">
@@ -34,10 +100,10 @@
             </div>
             <div class="sc-cIShpX eAstpp" />
           </div>
-        </div>
-        <div v-if="tokenList.length <= 0" class="noData">
+        </div> -->
+        <!-- <div v-if="tokenList.length <= 0" class="noData">
           😭暂无内容
-        </div>
+        </div> -->
         <div v-if="showLoadMore" class="loadmore">
           <span @click="loadMore">
             加载更多<i class="el-icon-arrow-down" />
@@ -158,21 +224,24 @@ export default {
 
 <style lang="less">
 .black-theme-dialog {
-  background-color: rgb(51, 54, 57);
+  background-color: #ffffff;
   .el-dialog__body {
     padding: 10px 0 0 0;
-    color: #606266;
+    color: #000000;
     font-size: 14px;
     word-break: break-all;
   }
   .el-dialog__title {
     line-height: 24px;
     font-size: 18px;
-    color: #ffffff;
+    color: #000000;
   }
 }
 </style>
 <style scoped lang="less">
+::placeholder {
+  color: #B2B2B2;
+}
 .container {
   .favMUS {
     width: 2rem;
@@ -183,9 +252,11 @@ export default {
     }
   }
   .hDyKIS:hover {
-    background-color: rgb(64, 64, 64);
+    background-color: @purpleLight;
   }
   .search-box {
+    font-size: 1.5rem;
+    color: #B2B2B2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -205,7 +276,7 @@ export default {
     user-select: none;
     flex-flow: row nowrap;
     padding: 1rem;
-    color: #fff;
+    color: #000000;
   }
 
   .cjqFX {
@@ -221,7 +292,7 @@ export default {
   }
 
   .iHXZgD {
-    color: rgb(123, 123, 123);
+    color: #B2B2B2;
   }
 
   .bELmls {
@@ -244,19 +315,19 @@ export default {
     display: flex;
     -webkit-box-pack: start;
     justify-content: flex-start;
-    background-color: rgb(41, 44, 47);
+    background-color: #F1F1F1;
     flex-flow: row nowrap;
     padding: 0.5rem 1.5rem;
   }
 
   .dHtVAe {
-    color: rgb(255, 255, 255);
+    color: #000000;
     font-size: 1rem;
     width: 0px;
     min-height: 2.5rem;
     text-align: left;
     padding-left: 1.6rem;
-    background-color: rgb(41, 44, 47);
+    background-color: #F1F1F1;
     outline: none;
     border-width: initial;
     border-style: none;

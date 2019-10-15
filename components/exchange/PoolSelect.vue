@@ -67,22 +67,6 @@ export default {
 }
 </script>
 
-<style lang="less">
-.black-theme-dialog {
-  background-color: rgb(32, 33, 36);
-  .el-dialog__body {
-    padding: 10px 0 0 0;
-    color: #606266;
-    font-size: 14px;
-    word-break: break-all;
-  }
-  .el-dialog__title {
-    line-height: 24px;
-    font-size: 18px;
-    color: #ffffff;
-  }
-}
-</style>
 <style scoped lang="less">
 .container {
   background-color: rgb(32, 33, 36);
