@@ -299,6 +299,15 @@ import { precision } from '@/utils/precisionConversion'
 
 import store from '@/utils/localStorage.js'
 
+const markdownIt = require('markdown-it')({
+  html: true,
+  breaks: true
+})
+const mkItFootnote = require('markdown-it-footnote')
+const mkItKatex = require('markdown-it-katex')
+markdownIt.use(mkItKatex)
+markdownIt.use(mkItFootnote)
+
 export default {
   components: {
     CommentList,
@@ -374,6 +383,9 @@ export default {
         { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
+      ],
+      link: [
+        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css' }
       ]
     }
   },
@@ -385,11 +397,6 @@ export default {
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     compiledMarkdown() {
-      // MarkdownIt 实例
-      const markdownIt = require('markdown-it')({
-        html: true,
-        breaks: true
-      }).use(require('markdown-it-footnote'))
       return markdownIt.render(xssFilter(this.post.content))
     },
     cover() {
@@ -463,7 +470,6 @@ export default {
       const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
       accessToekn = token ? token[0] : ''
     }
-    // console.log('accessToekn', accessToekn)
 
     const hashOrId = route.params.id
     // post hash获取; p id 短链接;
@@ -473,7 +479,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('info', info)
+    console.log('info', info)
 
     // 判断是否为付费阅读文章
     if (info.data.tokens && info.data.tokens.length !== 0) {
