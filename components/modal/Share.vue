@@ -159,7 +159,7 @@ export default {
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
+      return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
     shareLink() {
       // 应产品需求 这里改为移动端的链接
