@@ -5,6 +5,8 @@
     width="600px"
     center
     :show-close="false"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     custom-class="br10"
   >
     <div class="text-content">
