@@ -1,4 +1,5 @@
 export const paginationUrl = {
+  // 两端需要同步更新
   // home
   homeTimeRanking: 'posts/timeRanking',
   homeSupportsRanking: 'posts/supportsRanking',
