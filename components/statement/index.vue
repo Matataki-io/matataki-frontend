@@ -4,6 +4,7 @@
     :visible.sync="dialogVisible"
     width="600px"
     center
+    :show-close="false"
     custom-class="br10"
   >
     <div class="text-content">
@@ -73,7 +74,6 @@ export default {
   p {
     font-size: 14px;
     line-height: 1.5;
-    word-break: keep-all;
   }
 }
 </style>
