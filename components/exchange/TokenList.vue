@@ -18,8 +18,10 @@
       <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
         <el-table
           :data="tokenList"
+          @row-click="selectToken"
           style="width: 100%">
           <el-table-column
+            width="250px"
             label="粉丝币">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -36,17 +38,25 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="name"
             label="流通量">
+            <template slot-scope="scope">
+              <span>
+                {{scope.row.amount || '暂无流通量'}}
+              </span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="name"
             label="发币者">
+            <template slot-scope="scope">
+              <span style="white-space: nowrap;">
+                {{scope.row.nickname || scope.row.email}}
+              </span>
+            </template>
           </el-table-column>
           <el-table-column
             label="">
             <template slot-scope="scope">
-              <n-link :to="{name: 'user-id', params: {id: scope.row.id}}">
+              <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" v-if="scope.row.id !== 0">
                 <el-button icon="el-icon-link" circle></el-button>
               </n-link>
             </template>
