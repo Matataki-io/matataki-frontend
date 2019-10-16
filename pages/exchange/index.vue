@@ -1,20 +1,23 @@
 <template>
   <div class="main exchange">
     <g-header />
-    <div class="p-w">
-      <el-tabs type="border-card">
-        <el-tab-pane label="交易">
-          <Swap />
-        </el-tab-pane>
-        <!-- <el-tab-pane label="赠送">
-          <div style="color: white;text-align: center;">
-            <a href="/tokens">跳转到我的粉丝币页面</a>
-          </div>
-        </el-tab-pane> -->
-        <el-tab-pane label="资金池">
-          <Pool />
-        </el-tab-pane>
-      </el-tabs>
+    <div class="outer-container">
+      <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner">
+      <div class="p-w">
+        <el-tabs type="border-card">
+          <el-tab-pane label="交易">
+            <Swap />
+          </el-tab-pane>
+          <!-- <el-tab-pane label="赠送">
+            <div style="color: white;text-align: center;">
+              <a href="/tokens">跳转到我的粉丝币页面</a>
+            </div>
+          </el-tab-pane> -->
+          <el-tab-pane label="资金池">
+            <Pool />
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
   </div>
 </template>
@@ -57,32 +60,38 @@ export default {
 }
 </script>
 <style lang="less">
+@bg-color: #F7F7F7;
 .exchange {
   .el-tabs--border-card {
       border: none;
       box-shadow: none;
   }
   .el-tabs--border-card>.el-tabs__header {
-    background-color: rgb(51, 54, 57);
+    background-color: @bg-color;
     border: none;
   }
   .el-tabs__content {
-    background: rgb(51, 54, 57);
+    background: @bg-color;
   }
   .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
-    color: #409EFF;
-    background-color: rgb(32, 33, 36);
-    border-color: rgb(51, 51, 51);
+    color: white;
+    background-color: @purpleDark;
   }
   .el-tabs__nav {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
     height: 2.5rem;
-    background-color: rgb(41, 44, 47);
+    background-color: @bg-color;
     flex-flow: row nowrap;
     border-radius: 3rem;
-    width: 100%;
+    width: 400px;
+  }
+  .el-tabs__nav-scroll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
   }
   .el-tabs__item {
     display: flex;
@@ -92,27 +101,45 @@ export default {
     justify-content: center;
     height: 2.5rem;
     cursor: pointer;
-    color: rgb(196, 196, 196);
+    color: @purpleDark;
     font-size: 1rem;
     box-sizing: border-box;
     flex-flow: row nowrap;
     border-width: 1px;
     border-style: solid;
-    border-color: rgba(51, 51, 51, 0);
+    border-color: @purpleDark;
     border-image: initial;
     flex: 1 0 auto;
-    border-radius: 3rem;
     outline: none;
     text-decoration: none;
+    &:first-child {
+      border-top-left-radius: @borderRadius6;
+      border-bottom-left-radius: @borderRadius6;
+    }
+    &:last-child {
+      border-top-right-radius: @borderRadius6;
+      border-bottom-right-radius: @borderRadius6;
+    }
+  }
+  .el-tabs--border-card>.el-tabs__header .el-tabs__item {
+    border-color: @purpleDark;
+    color: @purpleDark;
   }
 }
 </style>
 <style lang="less" scoped>
+@bg-color: #F7F7F7;
 .main {
   .minHeight();
-  background: rgb(51, 54, 57);
+  background: @bg-color;
 }
 @width: 650px;
+.outer-container {
+  padding-top: 20px;
+  width: 766px;
+  margin: auto;
+  position: relative;
+}
 .p-w  {
   width: @width;
   margin: 20px auto 0 auto;

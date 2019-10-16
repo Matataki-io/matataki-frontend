@@ -67,43 +67,27 @@ export default {
 }
 </script>
 
-<style lang="less">
-.black-theme-dialog {
-  background-color: rgb(32, 33, 36);
-  .el-dialog__body {
-    padding: 10px 0 0 0;
-    color: #606266;
-    font-size: 14px;
-    word-break: break-all;
-  }
-  .el-dialog__title {
-    line-height: 24px;
-    font-size: 18px;
-    color: #ffffff;
-  }
-}
-</style>
 <style scoped lang="less">
 .container {
-  background-color: rgb(32, 33, 36);
+  background-color: #ffffff;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   padding: 2rem 2rem;
   .cwefbr.MODE {
-    background-color: rgb(32, 33, 36);
+    background-color: #ffffff;
     font-weight: 500;
-    color: rgb(220, 107, 229);
+    color: @purpleDark;
     border-radius: 3rem;
     border-width: 1px;
     border-style: solid;
-    border-color: rgb(51, 51, 51);
+    border-color: @purpleDark;
     border-image: initial;
   }
   .cwefbr {
     display: flex;
     cursor: pointer;
-    color: rgb(196, 196, 196);
+    color: @purpleDark;
     font-size: 1rem;
     flex-flow: row nowrap;
     padding: 1rem;
@@ -114,7 +98,7 @@ export default {
     user-select: none;
     font-size: 1rem;
     color: rgb(255, 255, 255);
-    background-color: rgb(32, 33, 36);
+    background-color: #ffffff;
     box-sizing: border-box;
     width: 100%;
     padding: 1rem 2rem;

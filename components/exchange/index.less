@@ -3,7 +3,7 @@
   -webkit-box-align: center;
   align-items: center;
   font-size: 1rem;
-  color: rgb(220, 107, 229);
+  color: @purpleDark;
   font-weight: 500;
   cursor: pointer;
   flex-flow: row nowrap;
@@ -14,20 +14,20 @@
 }
 .icyNSS {
     width: 0px;
-    color: rgb(196, 196, 196);
+    color: @purpleDark;
     flex: 1 1 auto;
 }
 .lfiYXW {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    color: rgb(196, 196, 196);
+    color: @purpleDark;
     font-size: 0.75rem;
     flex-flow: row nowrap;
     padding: 0.5rem 1rem;
 }
 .gHgbDu {
-    color: rgb(123, 123, 123);
+    color: @purpleDark;
     width: 0.625rem;
     height: 0.625rem;
     position: relative;
@@ -41,7 +41,7 @@
     left: 0px;
     height: 1rem;
     width: 100%;
-    background-color: rgb(41, 44, 47);
+    background-color: @purpleLight;
 }
 .jJSpkX {
     position: absolute;
@@ -49,7 +49,7 @@
     left: 0px;
     height: 1rem;
     width: 100%;
-    background-color: rgb(41, 44, 47);
+    background-color: @purpleLight;
 }
 .haryqg {
     display: flex;
@@ -61,7 +61,7 @@
 }
 .hYLPFg {
     position: relative;
-    background-color: rgb(41, 44, 47);
+    background-color: @purpleLight;
     width: calc(100% - 1rem);
     margin: 0px auto;
     border-radius: 0.625rem;
@@ -76,11 +76,11 @@
   border-radius: 1.25rem;
 }
 .iNUelT {
-  background-color: rgb(32, 33, 36);
-  border-radius: 1.25rem;
+  background-color: #ffffff;
+  border-radius: @borderRadius6;
   border-width: 1px;
   border-style: solid;
-  border-color: rgb(51, 51, 51);
+  border-color: @purpleDark;
   border-image: initial;
 }
 .iNUelT:focus-within {
@@ -93,8 +93,8 @@
   display: flex;
   -webkit-box-align: center;
   align-items: center;
-  color: rgb(196, 196, 196);
-  font-size: 0.75rem;
+  color: @purpleDark;
+  font-size: 1rem;
   line-height: 1rem;
   flex-flow: row nowrap;
   padding: 0.75rem 1rem;
@@ -114,10 +114,10 @@
   padding: 0.25rem 0.85rem 0.75rem;
 }
 .gcotIA {
-  color: rgb(255, 255, 255);
+  color: @purpleDark;
   width: 0px;
   font-size: 1.5rem;
-  background-color: rgb(32, 33, 36);
+  background-color: #ffffff;
   outline: none;
   border-width: initial;
   border-style: none;
@@ -157,19 +157,19 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 .iAoRgd {
-  -webkit-box-align: center;
+  padding: 4px 10px;
   align-items: center;
   font-size: 1rem;
-  color: rgb(255, 255, 255);
+  color: @purpleDark;
   height: 2rem;
-  background-color: rgb(41, 44, 47);
+  background-color: #ffffff;
   cursor: pointer;
   user-select: none;
   border-width: 1px;
   border-style: solid;
-  border-color: rgb(51, 51, 51);
+  border-color: @purpleDark;
   border-image: initial;
-  border-radius: 2.5rem;
+  border-radius: @borderRadius6;
   outline: none;
 }
 button {
@@ -206,7 +206,7 @@ button {
 
 .mHVYT {
   display: flex;
-  color: #fff;
+  color: @purpleDark;
   text-align: center;
   margin-top: 1rem;
   padding-top: 1rem;
@@ -222,21 +222,21 @@ button {
   margin-right: 12px;
   font-size: 0.75rem;
   line-height: 0.75rem;
-  color: rgb(255, 104, 113);
+  color: @purpleDark;
 }
 
 .iUPTxf {
-  background-color: rgb(41, 44, 47);
+  background-color: #DBDBDB;
   font-size: 0.75rem;
-  color: white;
-  border-radius: 1rem;
+  color: black;
+  border-radius: @borderRadius6;
   margin: 1rem 0.5rem 0px;
 }
 .hRyusy {
   padding: 1.25rem 1.25rem 1rem;
 }
 .iDChvK {
-  background-color: rgb(31, 34, 36);
+  background-color: #DBDBDB;
   padding: 0.125rem 0.3rem 0.1rem;
   border-radius: 12px;
   font-variant: tabular-nums;
@@ -279,8 +279,8 @@ button {
     background-color: #442DEf;
 }
 .jBltiI:disabled {
-  background-color: rgb(41, 44, 47);
-  color: rgb(115, 115, 115);
+  background-color: @purpleLight;
+  color: @gray;
   cursor: auto;
 }
 .cHbrWc {
@@ -298,4 +298,7 @@ button {
   font-size: 1.25rem;
   line-height: 1.5rem;
   padding: 1rem 0px;
+}
+::placeholder {
+  color: @purpleDark;
 }
