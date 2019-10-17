@@ -70,7 +70,7 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">兑换率</span>
+        <span class="sc-hORach icyNSS">兑换比率</span>
         <span v-if="exchangeRate">1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>

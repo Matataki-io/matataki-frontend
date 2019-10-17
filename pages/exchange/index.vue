@@ -13,7 +13,7 @@
               <a href="/tokens">跳转到我的粉丝币页面</a>
             </div>
           </el-tab-pane> -->
-          <el-tab-pane label="资金池">
+          <el-tab-pane label="流动金池">
             <Pool />
           </el-tab-pane>
         </el-tabs>

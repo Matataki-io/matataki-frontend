@@ -12,10 +12,10 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>{{ isDelete ? '资金池通证' : '存入' }}</span>
+            <span>{{ isDelete ? '删除' : '存入' }}</span>
           </div>
           <div v-if="isDelete && form.outputToken.symbol && form.outputToken.id !== 0">
-            余额：{{ balance.delete }}
+            流动金Token：{{ balance.delete }}
           </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
@@ -72,7 +72,7 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>{{ isDelete ? '输出（估计）' : '存入' }}</span>
+            <span>{{ isDelete ? '输出（预估）' : '存入' }}</span>
           </div>
           <div v-if="form.outputToken.symbol && form.outputToken.id !== 0 && !isDelete">
             余额：{{ balance.add }}
@@ -118,17 +118,17 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">兑换率</span>
+        <span class="sc-hORach icyNSS">兑换比率</span>
         <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">当前资金池大小</span>
+        <span class="sc-hORach icyNSS">当前流动金池总量</span>
         <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} CNY + {{ currentPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">你的资金池份额 （{{ yourPoolSize.your_supply }}）</span>
+        <span class="sc-hORach icyNSS">你占流动金池份额 （{{ yourPoolSize.your_supply }}）</span>
         <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} CNY + {{ yourPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
@@ -146,17 +146,17 @@
           </span> 和最多
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
-          </span>到流动池中。
+          </span>到流动金池中。
         </div>
         <div class="sc-bsbRJL kxtVAF">
           你将会挖到
           <span class="iDChvK">
             <span class="jbXIaP"> {{ youMintTokenAmount }} </span>
           </span>
-          liquidity tokens
+           流动金Token 作为凭证
         </div>
         <div class="sc-bsbRJL kxtVAF">
-          当前 liquidity tokens总量是
+          当前 流动金Token 的总量是
           <span class="iDChvK">
             <span class="jbXIaP"> {{ currentPoolSize.total_supply || 0 }} </span>
           </span>

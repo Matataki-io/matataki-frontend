@@ -48,7 +48,7 @@ export default {
           text: '添加流动金'
         },{
           id: 1,
-          text: '删除流动金'
+          text: '删除流动金Token'
         }
       ]
     }
