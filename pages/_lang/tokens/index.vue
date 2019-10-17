@@ -56,11 +56,11 @@
           >
             <template slot-scope="scope">
               <div class="invite-block btn">
-                <!-- <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}">
+                <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}">
                   <el-button class="info-button" size="small">
                     {{ $t('detail') }}
                   </el-button>
-                </router-link> -->
+                </router-link>
                 <el-button
                   class="info-button"
                   style="margin: 0 10px;"
@@ -170,7 +170,7 @@ export default {
       isPublishCoins: true,
       pointLog: {
         params: {
-          pagesize: 10
+          pagesize: 20
         },
         apiUrl: 'tokenTokenList',
         list: []

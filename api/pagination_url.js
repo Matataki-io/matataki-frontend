@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/prefer-default-export
 export const paginationUrl = {
   // 两端需要同步更新
   // home
@@ -39,5 +40,9 @@ export const paginationUrl = {
   // 买入粉丝币-流水明细
   tokenflow: '/token/tokenflow',
   // 我的粉丝币-流水明细
-  usertokenflow: '/token/tokenflow'
+  usertokenflow: '/token/tokenflow',
+  // 用户持有的粉丝币明
+  tokenUserLogs: '/token/userlogs',
+  // token明细
+  tokenTokenLogs: '/token/tokenlogs'
 }

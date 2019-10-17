@@ -1,16 +1,16 @@
 <template>
   <div class="card">
     <div class="card-info">
-      <span class="card-type">{{ assetType }}</span>
-      <h2 class="card-pricing" :style="{ color: `${assetColor}` }">
-        {{ assetAmount }}
+      <span class="card-type">{{ type }}</span>
+      <h2 class="card-pricing" :style="{ color: `${color}` }">
+        {{ amount }}
       </h2>
     </div>
     <div class="card-info">
-      <span class="card-date">{{ friendlyDate }}</span>
+      <span class="card-date">{{ time }}</span>
     </div>
     <div class="card-info">
-      <span class="card-title">{{ asset.title || '' }}</span>
+      <span class="card-title">{{ card.title || '' }}</span>
     </div>
   </div>
 </template>
@@ -23,42 +23,32 @@ import { precision } from '@/utils/precisionConversion'
 export default {
   name: 'AssetCard',
   props: {
-    asset: {
+    card: {
       type: Object,
       required: true
     }
   },
   computed: {
-    friendlyDate() {
-      return moment(this.asset.create_time).format('MMMDo HH:mm')
+    time() {
+      return moment(this.card.create_time).format('MMMDo HH:mm')
     },
-    assetAmount() {
-      return this.asset.amount
+    amount() {
+      const tokenamount = precision(this.card.amount, 'CNY', this.card.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
-    assetColor() {
+    color() {
       return '#FB6877'
     },
-    assetType() {
-      const { status, type } = this.asset
-      const pointTypes = {
-        read: this.$t('pointCard.read'),
-        read_like: this.$t('pointCard.read_like'),
-        read_dislike: this.$t('pointCard.read_dislike'),
-        read_referral: this.$t('pointCard.read_referral'),
-        beread: this.$t('pointCard.beread'),
-        read_new: this.$t('pointCard.read_new'),
-        beread_new: this.$t('pointCard.beread_new'),
-        publish: this.$t('pointCard.publish'),
-        publish_referral: this.$t('pointCard.publish_referral'),
-        reg_inviter: this.$t('pointCard.reg_inviter'),
-        reg_invitee: this.$t('pointCard.reg_invitee'),
-        reg_invite_finished: this.$t('pointCard.reg_invite_finished'),
-        login: this.$t('pointCard.login'),
-        profile: this.$t('pointCard.profile'),
-        comment_pay: this.$t('pointCard.comment_pay'),
-        comment_income: this.$t('pointCard.comment_income')
+    type() {
+      const { type } = this.card
+      const typeList = {
+        mint: '增发',
+        transfer: '赠送',
+        exchange_purchase: '交易所内购买',
+        exchange_addliquidity: '交易所添加流动性',
+        exchange_removeliquidity: '交易所删除流动性'
       }
-      return type ? pointTypes[type] : ''
+      return typeList[type] || '其他'
     }
   },
   created() {},

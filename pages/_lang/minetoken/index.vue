@@ -3,7 +3,7 @@
     <template slot="main">
       <user-nav nav-list-url="account" />
       <fanCoinsPublish v-if="!isPublishCoins" @publishToken="isPublishCoins = true" />
-      <fanCoinsManage v-else list-type="details" @notToken="isPublishCoins = false" />
+      <fanCoinsManage v-else @notToken="isPublishCoins = false" />
     </template>
     <template slot="info">
       <userInfo :is-setting="true" />

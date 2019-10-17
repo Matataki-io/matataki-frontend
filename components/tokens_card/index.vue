@@ -1,18 +1,12 @@
 <template>
   <div class="card">
-    <div class="fl">
-      <span class="info">{{ friendlyDate }}</span>
-      <span class="info">{{ friendlyDate }}</span>
+    <div class="fl jsb">
+      <span class="type">{{ type }}</span>
+      <span class="amount">{{ amount }}</span>
     </div>
-    <div>
-      <h3 class="title">
-        1
-      </h3>
-      <div class="detail">
-        rmb123
-        <img src="" alt="">
-        rmb123
-      </div>
+    <div class="fl jsb">
+      <span class="time">{{ time }}</span>
+      <span class="symbol">{{ card.symbol }}</span>
     </div>
   </div>
 </template>
@@ -22,53 +16,78 @@ import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
-  name: 'AssetCard',
   props: {
-    asset: {
+    card: {
       type: Object,
       required: true
     }
   },
   computed: {
-    friendlyDate() {
-      return moment(this.asset.create_time).format('MMMDo HH:mm')
+    time() {
+      return moment(this.card.create_time).format('MMMDo HH:mm')
     },
     assetAmount() {
-      return this.asset.amount
+      return this.card.amount
     },
-    assetColor() {
+    color() {
       return '#FB6877'
     },
-    assetType() {
-      const { status, type } = this.asset
-      const pointTypes = {
-        read: this.$t('pointCard.read'),
-        read_like: this.$t('pointCard.read_like'),
-        read_dislike: this.$t('pointCard.read_dislike'),
-        read_referral: this.$t('pointCard.read_referral'),
-        beread: this.$t('pointCard.beread'),
-        read_new: this.$t('pointCard.read_new'),
-        beread_new: this.$t('pointCard.beread_new'),
-        publish: this.$t('pointCard.publish'),
-        publish_referral: this.$t('pointCard.publish_referral'),
-        reg_inviter: this.$t('pointCard.reg_inviter'),
-        reg_invitee: this.$t('pointCard.reg_invitee'),
-        reg_invite_finished: this.$t('pointCard.reg_invite_finished'),
-        login: this.$t('pointCard.login'),
-        profile: this.$t('pointCard.profile'),
-        comment_pay: this.$t('pointCard.comment_pay'),
-        comment_income: this.$t('pointCard.comment_income')
+    amount() {
+      const tokenamount = precision(this.card.amount, 'CNY', this.card.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    type() {
+      const { type } = this.card
+      const typeList = {
+        mint: '增发',
+        transfer: '赠送',
+        exchange_purchase: '交易所内购买',
+        exchange_addliquidity: '交易所添加流动性',
+        exchange_removeliquidity: '交易所删除流动性'
       }
-      return pointTypes[type]
+      return typeList[type] || '其他'
     }
   },
   created() {
-    // console.log('asset', this.asset)
+    // console.log('card', this.card)
   },
   methods: {}
 }
 </script>
 
 <style scoped lang="less">
-.card {}
+.card {
+  padding: 14px 20px;
+  border-bottom: 1px solid #DBDBDB;
+  &:nth-last-child(1) {
+    border-bottom: none;
+  }
+  &>div {
+    margin: 6px 0;
+  }
+  .time {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(178,178,178,1);
+    line-height:22px;
+  }
+  .amount {
+    font-size:20px;
+    font-weight:500;
+    color:rgba(251,104,119,1);
+    line-height:28px;
+  }
+  .type {
+    font-size:20px;
+    font-weight:400;
+    color:rgba(0,0,0,1);
+    line-height:28px;
+  }
+  .symbol {
+    font-size:16px;
+    font-weight:400;
+    color:rgba(178,178,178,1);
+    line-height:22px;
+  }
+}
 </style>
