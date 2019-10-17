@@ -1,7 +1,7 @@
 <template>
   <layout @notToken="$emit('notToken')">
     <div v-loading="loading" class="card-container coins">
-      <minetokenCard :card="pointLog.list" :decimals="4" />
+      <minetokenDetailCard v-for="item in pointLog.list" :key="item.id" :card="item" />
     </div>
     <user-pagination
       v-show="!loading"
@@ -21,11 +21,11 @@
 <script>
 import layout from './fan_coins_manage_layout'
 import userPagination from '@/components/user/user_pagination.vue'
-import minetokenCard from '@/components/user/minetoken_card'
+import minetokenDetailCard from '@/components/user/minetoken_card_detail'
 export default {
   components: {
     userPagination,
-    minetokenCard,
+    minetokenDetailCard,
     layout
   },
   data() {
@@ -34,7 +34,7 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'tokenUserList',
+        apiUrl: 'tokenTokenLogs',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,

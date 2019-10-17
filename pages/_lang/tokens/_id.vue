@@ -10,7 +10,7 @@
               {{ amount }}
             </h1>
           </div> -->
-          <tokensCard v-for="(item, index) in pointLog.list" :key="index" :asset="item" />
+          <tokensCard v-for="(item, index) in pointLog.list" :key="index" :card="item" />
         </no-content-prompt>
       </div>
       <user-pagination
@@ -54,7 +54,7 @@ export default {
           tokenId: this.$route.params.id,
           pagesize: 10
         },
-        apiUrl: 'tokenflow',
+        apiUrl: 'tokenUserLogs',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,

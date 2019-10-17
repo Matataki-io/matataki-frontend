@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="list"
+    :data="card"
     style="width: 100%"
     class="coins"
   >
@@ -38,7 +38,7 @@ export default {
     avatar
   },
   props: {
-    list: {
+    card: {
       type: Array,
       required: true
     },
