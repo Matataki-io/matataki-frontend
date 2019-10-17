@@ -74,9 +74,9 @@
       </div>
     </div>
 
-    <!-- <div class="tokens-tab">
+    <div class="tokens-tab">
       <mineTokensNav />
-    </div> -->
+    </div>
 
     <slot />
   </div>
@@ -85,7 +85,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-// import mineTokensNav from '@/components/user/minetokens_nav.vue'
+import mineTokensNav from '@/components/user/minetokens_nav.vue'
 // import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
@@ -95,8 +95,8 @@ import { testDecimal } from '@/utils/reg'
 export default {
   components: {
     // userPagination,
-    avatar
-    // mineTokensNav,
+    avatar,
+    mineTokensNav
     // minetokenCard,
     // minetokenDetailCard
   },
