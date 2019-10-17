@@ -31,6 +31,15 @@
 import moment from 'moment'
 import { xssFilter } from '@/utils/xss'
 import { ipfsData, ipfsArticleData } from '@/api/async_data_api.js'
+
+const markdownIt = require('markdown-it')({
+  html: true,
+  breaks: true
+})
+const mkItFootnote = require('markdown-it-footnote')
+const mkItKatex = require('markdown-it-katex')
+markdownIt.use(mkItKatex)
+markdownIt.use(mkItFootnote)
 export default {
   layout: 'ipfs',
   data() {
@@ -57,6 +66,9 @@ export default {
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:description', property: 'og:description', content: this.articleData.short_content }
         /* end */
+      ],
+      link: [
+        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css' }
       ]
     }
   },
@@ -65,11 +77,6 @@ export default {
       return moment(this.articleData.create_time).format('YYYY-MM-DD HH:mm')
     },
     compiledMarkdown() {
-      // MarkdownIt 实例
-      const markdownIt = require('markdown-it')({
-        html: true,
-        breaks: true
-      })
       return markdownIt.render(xssFilter(this.articleIpfs.content))
     }
   },
