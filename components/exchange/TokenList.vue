@@ -15,8 +15,9 @@
         </div>
         <input v-model="search" type="text" placeholder="搜索粉丝币" class="dHtVAe" @keyup.enter="searchToken">
       </div>
-      <div v-loading="loading" class="cotdDw" element-loading-background="rgba(0, 0, 0, 0.3)">
+      <div v-loading="loading" class="cotdDw br10" element-loading-background="rgba(0, 0, 0, 0.3)">
         <el-table
+          height="50vh"
           :data="tokenList"
           @row-click="selectToken"
           style="width: 100%">
@@ -56,8 +57,10 @@
           <el-table-column
             label="">
             <template slot-scope="scope">
-              <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" v-if="scope.row.id !== 0">
-                <el-button icon="el-icon-link" circle></el-button>
+              <n-link v-if="scope.row.id !== 0" target='_blank' class="gray-btn" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+                <el-button circle>
+                  <svg-icon icon-class="share-link" style="color: #B2B2B2;"/>
+                </el-button>
               </n-link>
             </template>
           </el-table-column>
@@ -127,6 +130,8 @@
 <script>
 /* eslint-disable */
 import { CNY } from './consts.js'
+import utils from '@/utils/utils'
+
 export default {
   name: 'TokenListModal',
   props: {
@@ -169,7 +174,7 @@ export default {
       showModal: false,
       tokenList: [],
       page: 1,
-      pagesize: 10,
+      pagesize: 100,
       count: 0,
       loading: false
     }
@@ -202,6 +207,7 @@ export default {
       this.loading = true
       this.$API.allToken({ page, pagesize, search }).then(res => {
         this.loading = false
+        let listFromDecimal = this.listFromDecimal(res.data.list || [])
         if (search === '') {
           if (page === 1) {
             this.count = res.data.count
@@ -209,30 +215,47 @@ export default {
             if (this.addon) {
               list = [
                 CNY,
-                ...res.data.list
+                ...listFromDecimal
               ]
             } else {
-              list = res.data.list
+              list = listFromDecimal
             }
             this.tokenList = list
           } else {
-            this.tokenList.push(...res.data.list)
+            this.tokenList.push(...listFromDecimal)
           }
         } else {
           if (page === 1) {
             this.count = res.data.count
-            this.tokenList = res.data.list
+            this.tokenList = listFromDecimal
           } else {
-            this.tokenList.push(...res.data.list)
+            this.tokenList.push(...listFromDecimal)
           }
         }
       })
     },
+    listFromDecimal(list) {
+      list.forEach((item) => {
+        item.amount = utils.fromDecimal(item.amount)
+      })
+      return list
+    }
   }
 }
 </script>
 
 <style lang="less">
+.cotdDw {
+  .el-table .cell {
+    padding-left: 20px;
+  }
+}
+.gray-btn {
+  .el-button {
+    background-color: #f1f1f1;
+    border-color: #f1f1f1;
+  }
+}
 .black-theme-dialog {
   background-color: #ffffff;
   .el-dialog__body {
@@ -272,10 +295,7 @@ export default {
     justify-content: center;
   }
   .cotdDw {
-    -webkit-box-flex: 1;
     flex-grow: 1;
-    max-height: 50vh;
-    min-height: 40vh;
     overflow-y: auto;
   }
   .hDyKIS {
