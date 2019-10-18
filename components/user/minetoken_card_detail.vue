@@ -1,16 +1,21 @@
 <template>
   <div class="card">
-    <div class="card-info">
-      <span class="card-type">{{ type }}</span>
-      <h2 class="card-pricing" :style="{ color: `${color}` }">
-        {{ amount }}
-      </h2>
+    <div class="fl jsb">
+      <div class="from-to">
+        <router-link class="username" :to="{ name: 'User', params: { id: card.from_uid } }">
+          {{ card.from_nickname || card.from_username }}
+        </router-link>
+        <svg-icon icon-class="transfer" class="info-icon" />
+        <router-link class="username" :to="{ name: 'User', params: { id: card.to_uid } }">
+          {{ card.to_nickname || card.to_username }}
+        </router-link>
+      </div>
+      <span class="amount">{{ amount }}</span>
     </div>
-    <div class="card-info">
-      <span class="card-date">{{ time }}</span>
-    </div>
-    <div class="card-info">
-      <span class="card-title">{{ card.title || '' }}</span>
+    <div class="fl jsb">
+      <span class="time">{{ time }}</span>
+      <!-- <span class="type">{{ type }}</span> -->
+      <span class="symbol">{{ card.symbol }}</span>
     </div>
   </div>
 </template>
@@ -68,51 +73,48 @@ export default {
   text-align: left;
   width: 100%;
   border-bottom: 1px solid #DBDBDB;
-  &:nth-last-of-type(1) {
-    border: none;
-  }
-  &-pricing {
-    padding: 0;
-    margin: 0;
-    font-size:20px;
-    font-weight:500;
-    color:rgba(0,0,0,1);
-    line-height:28px;
-  }
-  &-type {
-    font-size:18px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:28px;
-  }
-  &-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  &-title {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:22px;
-    &-info {
-      margin: 0 6px 0 0;
-    }
-    .copy-hash {
-      width: 16px;
-    }
-  }
-  &-date {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
-    line-height:22px;
+  & > div {
+    margin: 4px 0;
   }
 }
-
+.card-info {
+  flex: 1;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.info-icon {
+  color: #000;
+  margin: 0 6px;
+}
+.username {
+  font-size:20px;
+  font-weight:400;
+  color:rgba(0,0,0,1);
+  line-height:28px;
+}
+.type {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
+  line-height: 17px;
+  margin: 2px 0;
+}
+.amount {
+  font-size:20px;
+  font-weight:500;
+  color:rgba(0,0,0,1);
+  line-height:28px;
+}
+.time {
+  font-size:16px;
+  font-weight:400;
+  color:rgba(178,178,178,1);
+  line-height:22px;
+}
+.symbol {
+  font-size:16px;
+  font-weight:400;
+  color:rgba(178,178,178,1);
+  line-height:22px;
+}
 </style>

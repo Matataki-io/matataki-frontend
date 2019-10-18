@@ -93,6 +93,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.card-container {
+  margin: 20px 0 80px;
+}
 .point-card {
   display: flex;
   align-items: center;
