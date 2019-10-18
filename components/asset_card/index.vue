@@ -65,9 +65,9 @@ export default {
         reading_like: '+',
         reading_dislike: '+',
         // 人民币
-        recharge: '',
+        recharge: '+',
         transfer_out: '',
-        transfer_in: ''
+        transfer_in: '+'
       }
       const switchType = {
         support_expenses: '',
