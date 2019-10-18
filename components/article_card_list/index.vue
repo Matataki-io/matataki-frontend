@@ -36,7 +36,7 @@
               {{ $t('articleCard.read') }}
             </span>
             <span class="data">
-              {{ card.likes }}点赞
+              {{ card.likes }}推荐
             </span>
             <!-- <span class="data">
               {{ card && card.ups || 0 }}
