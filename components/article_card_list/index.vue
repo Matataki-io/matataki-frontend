@@ -37,6 +37,8 @@
             <!-- <span class="data">
               {{ card && card.ups || 0 }}
               投资</span> -->
+            <img v-if="card.require_holdtokens" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+
             <span class="empty" />
             <!-- 暂时用文章页代替跳转地址 -->
             <n-link
@@ -292,6 +294,10 @@ export default {
   letter-spacing: 1px;
   overflow: hidden;
   word-break: break-all;
+}
+
+.lock-img {
+  width: 18px;
 }
 
 </style>
