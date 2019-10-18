@@ -22,6 +22,19 @@
               icon-class="seeduser"
             />
           </el-tooltip> -->
+
+          <el-tooltip
+            v-if="tokenUser"
+            class="item"
+            effect="dark"
+            content="发币用户"
+            placement="top"
+          >
+            <svg-icon
+              class="tokens"
+              icon-class="token"
+            />
+          </el-tooltip>
         </h1>
 
         <p class="profile">
@@ -77,7 +90,8 @@ export default {
   data() {
     return {
       token: false,
-      seedUser: false
+      seedUser: false,
+      tokenUser: false
     }
   },
   computed: {
@@ -92,6 +106,7 @@ export default {
   },
   mounted() {
     this.refreshUser({ id: this.$route.params.id })
+    this.tokenUserId(this.$route.params.id)
   },
   methods: {
     ...mapActions('user', [
@@ -107,6 +122,13 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    async tokenUserId(id) {
+      await this.$API.tokenUserId(id).then(res => {
+        if (res.code === 0 && res.data.id > 0) {
+          this.tokenUser = true
+        }
+      }).catch(err => console.log('get token user error', err))
     }
 
   }
@@ -163,6 +185,11 @@ export default {
   .seeduser {
     font-size: 36px;
     background: #fff;
+    margin-left: 4px;
+  }
+  .tokens {
+    cursor: pointer;
+    width: 26px;
     margin-left: 4px;
   }
   .profile {
