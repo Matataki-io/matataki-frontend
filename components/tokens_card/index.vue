@@ -45,9 +45,9 @@ export default {
     },
     id() {
       if (this.isMe(this.card.from_uid)) {
-        return this.card.from_uid
-      } else if (this.isMe(this.card.to_uid)) {
         return this.card.to_uid
+      } else if (this.isMe(this.card.to_uid)) {
+        return this.card.from_uid
       } else {
         return this.card.from_uid
       }
