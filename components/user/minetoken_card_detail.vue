@@ -2,11 +2,11 @@
   <div class="card">
     <div class="fl jsb">
       <div class="from-to">
-        <router-link class="username" :to="{ name: 'User', params: { id: card.from_uid } }">
+        <router-link class="username" :to="{ name: 'user-id', params: { id: card.from_uid } }">
           {{ card.from_nickname || card.from_username }}
         </router-link>
         <svg-icon icon-class="transfer" class="info-icon" />
-        <router-link class="username" :to="{ name: 'User', params: { id: card.to_uid } }">
+        <router-link class="username" :to="{ name: 'user-id', params: { id: card.to_uid } }">
           {{ card.to_nickname || card.to_username }}
         </router-link>
       </div>
