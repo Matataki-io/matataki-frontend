@@ -31,9 +31,12 @@
           <span class="data">
             {{ card && (card.read === 0 ? 0 : card.read) }}
             {{ $t('articleCard.read') }}</span>
-          <span class="data">
+          <!-- <span class="data">
             {{ card && (card.ups === 0 ? 0 : card.ups) }}
-            {{ $t('articleCard.investment') }}</span>
+            {{ $t('articleCard.investment') }}</span> -->
+          <span class="data">
+            {{ card.likes }}
+            点赞</span>
         </template>
         <!-- 商品卡销量和金额 -->
         <template v-else>

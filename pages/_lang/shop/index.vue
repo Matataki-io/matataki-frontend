@@ -10,7 +10,7 @@
             <recommendSlide :card="item" />
           </el-col>
           <el-col v-else :key="index" :span="8">
-            <articleCard :type-index="0" card-type="recommend-card" :card="item" />
+            <articleCard :type-index="1" card-type="recommend-card" :card="item" />
           </el-col>
         </template>
       </el-row>
