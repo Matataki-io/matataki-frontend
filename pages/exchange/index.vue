@@ -124,6 +124,7 @@ export default {
   .el-tabs--border-card>.el-tabs__header .el-tabs__item {
     border-color: @purpleDark;
     color: @purpleDark;
+    width: 100px;
   }
 }
 </style>
