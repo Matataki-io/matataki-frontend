@@ -66,7 +66,7 @@ export default {
   margin: 10px 0;
   box-sizing: border-box;
   background-color: #fff;
-  padding: 16px 20px;
+  padding: 16px 0;
   display: flex;
   flex-direction: column;
   position: relative;
