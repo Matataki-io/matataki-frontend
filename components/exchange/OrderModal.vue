@@ -43,7 +43,8 @@
             </td>
             <td>
               ￥ {{ input }}
-              <el-tooltip content="交易金额精度大于0.01元会自动进位支付，多余的金额会保留在您的人民币账户中。" placement="bottom" effect="light">
+              <el-tooltip  placement="bottom" effect="light">
+                <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
                 <i class="el-icon-question" />
               </el-tooltip>
             </td>
