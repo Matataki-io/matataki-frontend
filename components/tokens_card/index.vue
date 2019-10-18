@@ -7,7 +7,7 @@
       <div class="fl jsb">
         <div class="fl fdc">
           <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
-            {{ card.from_nickname || card.from_username }}
+            {{ username }}
           </router-link>
           <span class="type">{{ type }}</span>
         </div>
