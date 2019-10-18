@@ -104,6 +104,10 @@
           <span class="iDChvK">
             <span class="jbXIaP">{{ priceSlippage * 100 }}%</span>
           </span>
+          <el-tooltip placement="bottom" effect="light">
+            <div slot="content">您的交易可能由于正常的价格波动而失败，<br/>价格滑落区间将有助于您的交易成功</div>
+            <i class="el-icon-question" />
+          </el-tooltip>
         </div>
       </div>
     </div>
@@ -350,9 +354,8 @@ export default {
         return
       }
       this.$API.getUserBalance(tokenId).then((res) => {
-        if (res.code === 0 && res.data) {
-          const deciaml = res.data.decimals
-          this.balance[type] = parseFloat(utils.fromDecimal(res.data.amount, deciaml))
+        if (res.code === 0) {
+          this.balance[type] = parseFloat(utils.fromDecimal(res.data, 4))
           // 检查用户余额
           this.checkBalance()
         }
