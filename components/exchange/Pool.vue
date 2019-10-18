@@ -15,7 +15,7 @@
             <span>{{ isDelete ? '删除' : '存入' }}</span>
           </div>
           <div v-if="isDelete && form.outputToken.symbol && form.outputToken.id !== 0">
-            流动金Token：{{ balance.delete }}
+            流动金Token：{{ yourPoolSize.your_supply }}
           </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
@@ -128,7 +128,7 @@
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">你占流动金池份额 （{{ yourPoolSize.your_supply }}）</span>
+        <span class="sc-hORach icyNSS">你占流动金池份额 （{{ yourPercent }}）</span>
         <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} CNY + {{ yourPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
@@ -234,6 +234,15 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined']),
+    yourPercent() {
+      const yourSupply = parseFloat(this.yourPoolSize.your_supply)
+      const totalSupply = parseFloat(this.currentPoolSize.total_supply)
+      if (yourSupply === 0 || totalSupply === 0) {
+        return '0%'
+      } else {
+        return `${(yourSupply / totalSupply * 100).toFixed(2)}%`
+      }
+    },
     // 是否是删除流动金
     isDelete() {
       // 添加流动金
@@ -510,9 +519,8 @@ export default {
         return
       }
       this.$API.getUserBalance(tokenId).then((res) => {
-        if (res.code === 0 && res.data) {
-          const deciaml = res.data.decimals
-          this.balance[type] = parseFloat(utils.fromDecimal(res.data.amount, deciaml))
+        if (res.code === 0) {
+          this.balance[type] = parseFloat(utils.fromDecimal(res.data, 4))
         }
       })
     },
