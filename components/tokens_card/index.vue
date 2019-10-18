@@ -7,7 +7,7 @@
       <div class="fl jsb">
         <div class="fl fdc">
           <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
-            {{ card.from_nickname || card.from_username }}
+            {{ username }}
           </router-link>
           <span class="type">{{ type }}</span>
         </div>
@@ -96,7 +96,7 @@ export default {
       const typeList = {
         mint: '增发',
         transfer: '赠送',
-        exchange_purchase: '交易所内购买',
+        exchange_purchase: '交易',
         exchange_addliquidity: '交易所添加流动性',
         exchange_removeliquidity: '交易所删除流动性'
       }
