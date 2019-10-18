@@ -36,7 +36,8 @@
               {{ $t('articleCard.read') }}
             </span>
             <span class="data">
-              {{ card.likes }}推荐
+              {{ card.likes }}
+              推荐
             </span>
             <!-- <span class="data">
               {{ card && card.ups || 0 }}
@@ -302,6 +303,7 @@ export default {
 
 .lock-img {
   width: 18px;
+  margin-left: 4px;
 }
 
 </style>
