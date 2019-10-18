@@ -1,10 +1,14 @@
 <template>
   <div class="card">
-    <avatar :src="cover" size="45px" />
+    <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
+      <avatar :src="cover" size="45px" />
+    </router-link>
     <div class="fl card-info">
       <div class="fl jsb">
         <div class="fl fdc">
-          <span class="username">{{ username }}</span>
+          <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
+            {{ card.from_nickname || card.from_username }}
+          </router-link>
           <span class="type">{{ type }}</span>
         </div>
         <span class="amount" :style="{ color: color }">{{ amount }}</span>
@@ -38,6 +42,15 @@ export default {
     ...mapGetters(['isMe']),
     time() {
       return moment(this.card.create_time).format('MMMDo HH:mm')
+    },
+    id() {
+      if (this.isMe(this.card.from_uid)) {
+        return this.card.from_uid
+      } else if (this.isMe(this.card.to_uid)) {
+        return this.card.to_uid
+      } else {
+        return this.card.from_uid
+      }
     },
     cover() {
       if (this.isMe(this.card.from_uid)) {
