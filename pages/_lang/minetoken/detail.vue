@@ -1,7 +1,7 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="account" />
+      <user-nav nav-list-url="token" />
       <fanCoinsPublish v-if="!isPublishCoins" @publishToken="isPublishCoins = true" />
       <fanCoinsManage v-else @notToken="isPublishCoins = false" />
     </template>

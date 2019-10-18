@@ -93,6 +93,11 @@
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
+              <n-link class="link" :to="{name: 'tokens' }">
+                粉丝币
+              </n-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
               <n-link class="link" :to="{name: 'setting', params:{id: currentUserInfo.id}}">
                 {{ $t('home.setting') }}
               </n-link>

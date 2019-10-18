@@ -1,7 +1,7 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="account" />
+      <user-nav nav-list-url="token" />
 
       <div v-loading="loading" class="card-container buycoins">
         <div class="line" />
