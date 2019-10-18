@@ -5,7 +5,7 @@
     <span>
       <svg-icon
         class="integral-icon"
-        icon-class="integral"
+        icon-class="point1"
         @click.stop="jumpAccount"
       />
     </span>
