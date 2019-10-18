@@ -365,25 +365,22 @@ export default {
 .avatar-content {
   width: 60px;
   height: 60px;
-  overflow: hidden;
+  // overflow: hidden;
   border-radius: 50%;
   position: relative;
-  &:hover .gift-ful {
-    display: flex;
-  }
+  // &:hover .gift-ful {
+  //   display: flex;
+  // }
   .gift-ful {
     cursor: pointer;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: none;
+    top: -4px;
+    right: -16px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-size: 26px;
+    color: #000;
+    font-size: 20px;
   }
 }
 </style>
