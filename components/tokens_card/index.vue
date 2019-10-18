@@ -100,7 +100,7 @@ export default {
 <style scoped lang="less">
 .card {
   display: flex;
-  padding: 14px 20px;
+  padding: 14px 0;
   border-bottom: 1px solid #ececec;
 }
 .card-info {
