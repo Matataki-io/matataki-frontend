@@ -7,10 +7,11 @@
     <div class="user-info user-page-info">
       <div class="user-info-center">
         <avatar :src="userInfo.avatar" size="100px" class="avatar" />
-        <h1 class="username">
-          {{ userInfo.name }}
-          <!-- {{ userInfo }} -->
-          <!-- <el-tooltip
+        <div>
+          <h1 class="username">
+            {{ userInfo.name }}
+            <!-- {{ userInfo }} -->
+            <!-- <el-tooltip
             v-if="seedUser"
             class="item"
             effect="dark"
@@ -23,19 +24,20 @@
             />
           </el-tooltip> -->
 
-          <el-tooltip
-            v-if="tokenUser"
-            class="item"
-            effect="dark"
-            content="发币用户"
-            placement="top"
-          >
-            <svg-icon
-              class="tokens"
-              icon-class="token"
-            />
-          </el-tooltip>
-        </h1>
+            <el-tooltip
+              v-if="tokenUser"
+              class="tooltip"
+              effect="dark"
+              content="发币用户"
+              placement="top"
+            >
+              <svg-icon
+                class="tokens"
+                icon-class="token"
+              />
+            </el-tooltip>
+          </h1>
+        </div>
 
         <p class="profile">
           {{ userInfo.introduction || $t('not') }}
@@ -166,6 +168,7 @@ export default {
     box-sizing: border-box;
   }
   .avatar {
+    display: block;
     border: 4px solid #fff;
     display: inline-block;
     margin-top: -52px;
@@ -175,12 +178,18 @@ export default {
     font-size:24px;
     font-weight: bold;
     color: #000;
-    line-height:33px;
+    line-height:1;
     padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    display: inline-block;
+    position: relative;
+    .tooltip {
+      position: absolute;
+      right: -28px;
+    }
   }
   .seeduser {
     font-size: 36px;
