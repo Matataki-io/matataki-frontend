@@ -6,11 +6,28 @@
     </div>
     <div class="user-info user-page-info">
       <div class="user-info-center">
-        <avatar :src="userInfo.avatar" size="100px" class="avatar" />
-        <h1 class="username">
-          {{ userInfo.name }}
-          <!-- {{ userInfo }} -->
-          <!-- <el-tooltip
+        <div class="fl ac jc token-avatar">
+          <avatar
+            :src="userInfo.avatar"
+            size="120px"
+            class="avatar"
+          />
+          <img
+            v-if="tokenUser"
+            class="token-link"
+            src="@/assets/img/token_link.png"
+            alt="token-link"
+          >
+          <tokenAvatar
+            v-if="tokenUser"
+            :token="tokenData"
+          />
+        </div>
+        <div>
+          <h1 class="username">
+            {{ userInfo.name }}
+            <!-- {{ userInfo }} -->
+            <!-- <el-tooltip
             v-if="seedUser"
             class="item"
             effect="dark"
@@ -23,19 +40,20 @@
             />
           </el-tooltip> -->
 
-          <el-tooltip
-            v-if="tokenUser"
-            class="item"
-            effect="dark"
-            content="发币用户"
-            placement="top"
-          >
-            <svg-icon
-              class="tokens"
-              icon-class="token"
-            />
-          </el-tooltip>
-        </h1>
+            <el-tooltip
+              v-if="tokenUser"
+              class="tooltip"
+              effect="dark"
+              content="发币用户"
+              placement="top"
+            >
+              <svg-icon
+                class="tokens"
+                icon-class="token"
+              />
+            </el-tooltip>
+          </h1>
+        </div>
 
         <p class="profile">
           {{ userInfo.introduction || $t('not') }}
@@ -77,6 +95,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import userPageNav from './user_page_nav'
+import tokenAvatar from './token_avatar.vue'
 import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
 import fanCoinsBtn from '@/components/user/fan_coins_btn.vue'
@@ -85,13 +104,15 @@ export default {
     avatar,
     followBtn,
     userPageNav,
-    fanCoinsBtn
+    fanCoinsBtn,
+    tokenAvatar
   },
   data() {
     return {
       token: false,
       seedUser: false,
-      tokenUser: false
+      tokenUser: false,
+      tokenData: Object.create(null)
     }
   },
   computed: {
@@ -127,6 +148,7 @@ export default {
       await this.$API.tokenUserId(id).then(res => {
         if (res.code === 0 && res.data.id > 0) {
           this.tokenUser = true
+          this.tokenData = res.data
         }
       }).catch(err => console.log('get token user error', err))
     }
@@ -153,9 +175,13 @@ export default {
 
 .user-info {
   width: 100%;
-  height: 220px;
+  height: 240px;
   background-color: #fff;
   box-sizing: border-box;
+  .token-avatar {
+    margin-top: -62px;
+    margin-bottom: 20px;
+  }
   &-center {
     width: 766px;
     height: 100%;
@@ -166,21 +192,32 @@ export default {
     box-sizing: border-box;
   }
   .avatar {
-    border: 4px solid #fff;
+    border: 6px solid #fff;
     display: inline-block;
-    margin-top: -52px;
     background: #fff;
+    box-sizing: border-box;
   }
   .username {
     font-size:24px;
     font-weight: bold;
     color: #000;
-    line-height:33px;
+    line-height:1;
     padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    display: inline-block;
+    position: relative;
+    .tooltip {
+      position: absolute;
+      right: -28px;
+    }
+  }
+  .token-link {
+    width: 50px;
+    height: 20px;
+    margin: 0 20px;
   }
   .seeduser {
     font-size: 36px;
