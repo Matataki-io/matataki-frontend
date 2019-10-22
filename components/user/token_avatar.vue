@@ -16,7 +16,7 @@ export default {
   },
   computed: {
     logo() {
-      console.log(this.token)
+      // console.log(this.token)
       return this.token.logo ? this.$API.getImg(this.token.logo) : ''
     }
   }
