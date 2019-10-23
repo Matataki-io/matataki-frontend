@@ -1,25 +1,95 @@
 <template>
   <div v-if="isPublishCoins" class="coins-publish">
-    <div class="fl ac coins-head">
+    <div class="line" />
+    <div class="fl ac jsb coins-head">
       <div class="fl ac">
-        <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
-        <h1>
-          {{ tokenDetailData.token.symbol }}
-          ({{
-            tokenDetailData.token.name
-          }})
-        </h1>
+        <div class="fl ac">
+          <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
+          <h1>
+            {{ tokenDetailData.token.symbol }}
+            ({{
+              tokenDetailData.token.name
+            }})
+          </h1>
+        </div>
+        <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
+          <svg-icon
+            class="help-icon"
+            icon-class="help"
+          />
+        </el-tooltip>
+        <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a>
       </div>
-      <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
-        <svg-icon
-          class="help-icon"
-          icon-class="help"
-        />
-      </el-tooltip> -->
-      <!-- <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a> -->
+
+      <div>
+        <el-button size="small">
+          编辑
+        </el-button>
+        <el-button size="small">
+          增发
+        </el-button>
+        <el-button size="small" type="primary">
+          交易
+        </el-button>
+      </div>
+    </div>
+    <!-- <div class="line" /> -->
+
+    <h2 class="token-title">
+      简介
+    </h2>
+    <p class="token-sub">
+      KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。
+    </p>
+
+    <h2 class="token-title">
+      介绍
+    </h2>
+    <p class="token-sub">
+      KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。
+    </p>
+
+    <h2 class="token-title">
+      相关网站
+    </h2>
+    <ul class="about-nav">
+      <li>
+        <a href="">https://materialmaterialmaterialmaterial.io/</a>
+      </li>
+      <li>
+        <a href="">https://material.io/</a>
+      </li>
+      <li>
+        <a href="">https://material.io/</a>
+      </li>
+      <li>
+        <a href="">https://material.io/</a>
+      </li>
+    </ul>
+
+    <h2 class="token-title">
+      社交账号
+    </h2>
+
+    <div class="fl social">
+      <div v-for="item in 14" :key="item" class="circle-btn">
+        {{ item }}
+      </div>
     </div>
 
-    <div class="fl ac coins-info">
+    <h2 class="token-title">
+      分享挂件
+    </h2>
+
+    <el-input
+      v-model="tokenWidget"
+      class="token-widget"
+      type="textarea"
+      :rows="4"
+      placeholder="请输入内容"
+    />
+
+    <!-- <div class="fl ac coins-info">
       <div class="fl ac jsb info-block">
         <div class="info-data">
           <p class="info-data-number">
@@ -72,20 +142,20 @@
           </el-button>
         </router-link>
       </div>
-    </div>
+    </div> -->
 
-    <div class="tokens-tab">
+    <!-- <div class="tokens-tab">
       <mineTokensNav />
-    </div>
+    </div> -->
 
-    <slot />
+    <!-- <slot /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import mineTokensNav from '@/components/user/minetokens_nav.vue'
+// import mineTokensNav from '@/components/user/minetokens_nav.vue'
 // import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
@@ -95,8 +165,8 @@ import { testDecimal } from '@/utils/reg'
 export default {
   components: {
     // userPagination,
-    avatar,
-    mineTokensNav
+    avatar
+    // mineTokensNav
     // minetokenCard,
     // minetokenDetailCard
   },
@@ -117,7 +187,8 @@ export default {
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0
+      amount: 0,
+      tokenWidget: 'http://localhost:8080/token/15'
     }
   },
   computed: {
@@ -247,7 +318,7 @@ export default {
   margin: 20px 0 20px;
   h1 {
     font-size:24px;
-    font-weight:600;
+    font-weight:bold;
     color:rgba(0,0,0,1);
     line-height:33px;
     padding: 0;
@@ -264,6 +335,23 @@ export default {
     line-height:20px;
     text-decoration: underline;
   }
+}
+
+.token-title {
+  font-size:24px;
+  font-weight:bold;
+  color:rgba(0,0,0,1);
+  line-height:33px;
+  padding: 0;
+  margin: 40px 0 0;
+}
+.token-sub {
+  font-size:16px;
+  font-weight:400;
+  color:rgba(0,0,0,1);
+  line-height:22px;
+  padding: 0;
+  margin: 12px 0 0;
 }
 
 .coins-info {
@@ -316,5 +404,52 @@ export default {
   padding: 20px 0;
   border-top: 1px solid #ececec;
   border-bottom: 1px solid #ececec;
+}
+
+.line {
+  height: 1px;
+  background: #ececec;
+}
+
+.about-nav {
+  padding: 0;
+  margin: 10px 0 0;
+  overflow: hidden;
+  li {
+    list-style: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 10px 0;
+    a {
+      font-size:16px;
+      color:@black;
+      line-height:22px;
+    }
+  }
+}
+.social {
+  margin-top: 20px;
+}
+.circle-btn {
+  width: 40px;
+  height: 40px;
+  background-color: @black;
+  flex: 0 0 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @white;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0 10px 0 0;
+  &:nth-last-child(1) {
+    margin-right: 0;
+  }
+}
+.token-widget {
+  width: 400px;
+  margin-top: 20px;
 }
 </style>

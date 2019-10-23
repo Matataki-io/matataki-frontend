@@ -20,12 +20,28 @@ export const xssFilter = html => {
     'scrolling'
   ]
   whiteList.embed = ['src', 'allowFullScreen', 'quality', 'width', 'height', 'align', 'type']
+  whiteList.section = [
+    'class',
+    'style',
+    'data-color',
+    'data-bgless',
+    'data-bglessp',
+    'data-custom',
+    'data-brushtype',
+    'data-width',
+    'data-role',
+    'data-autoskip',
+    'data-ratio',
+    'data-id',
+    'data-tools'
+  ]
   whiteList.span = ['class', 'style']
   whiteList.p = ['class', 'style']
   let aTag = ['class', 'style', 'href', 'data-url', 'target']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
   whiteList.img.push('style')
+  whiteList.img.push('referrer')
   whiteList.div.push('align')
   whiteList.div.push('style')
 

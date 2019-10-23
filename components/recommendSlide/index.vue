@@ -35,7 +35,7 @@ export default {
   height: 394px;
   background: #fff;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: @br10;
   margin-top: 20px;
   overflow: hidden;
   cursor: pointer;

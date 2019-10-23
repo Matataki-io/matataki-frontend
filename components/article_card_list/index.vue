@@ -150,7 +150,7 @@ export default {
   width: 100%;
   background: #fff;
   transition: all 0.3s;
-  border-radius: 10px;
+  border-radius: @br10;
   padding: 20px;
   margin-top: 20px;
   box-sizing: border-box;

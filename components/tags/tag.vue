@@ -58,14 +58,14 @@ export default {
   margin: 10px 0;
   box-sizing: border-box;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: @br10;
   transition: all 0.3s;
 }
 .tag:hover span {
   color: #fff;
 }
 .tag:hover .tag-icon {
-  border-radius: @borderRadius10 0 0 @borderRadius10;
+  border-radius: @br10 0 0 @br10;
 }
 .tag:hover .full {
   opacity: 1;
@@ -76,7 +76,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: @br10;
   background-color: #eee;
   z-index: 1;
   transition: all .2s;
@@ -104,7 +104,7 @@ span {
   right: 0;
   bottom: 0;
   left: 54px;
-  border-radius: 0 @borderRadius10 @borderRadius10 0;
+  border-radius: 0 @br10 @br10 0;
   opacity: 0;
   transition: all .2s;
 }

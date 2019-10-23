@@ -1,0 +1,85 @@
+@width: 850px;
+
+.token {
+  .minHeight();
+}
+
+.tokens {
+  width: @width;
+  margin: 20px auto 0;
+  padding: 20px;
+  background: @white;
+  border-radius: @br10;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04)
+}
+
+.tokens-content {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.token-info {
+  width: 50%;
+  &-symbol {
+    font-size:20px;
+    font-weight:400;
+    color: @black;
+    line-height:28px;
+    padding: 0;
+    margin: 0;
+  }
+  &-name {
+    font-size:14px;
+    font-weight:400;
+    color:@gray;
+    line-height:20px;
+    padding: 0;
+    margin: 4px 0 0 0;
+  }
+}
+
+.token-user {
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-direction: column;
+}
+.token-username {
+  margin-left: 6px;
+  font-size:14px;
+  font-weight:400;
+  color: @black;
+  line-height:20px;
+}
+.token-user-icon {
+  padding: 40px 0;
+}
+
+.tokens-list {
+  width: @width;
+  margin: 20px auto 40px;
+  padding: 20px;
+  background: @white;
+  border-radius: @br10;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04)
+}
+
+.tokens-list-nav {
+  a {
+    font-size: 16px;
+    color: @gray;
+    line-height:28px;
+    margin-right: 20px;
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
+    &.active {
+      color: @black;
+    }
+  }
+}
+
+.card-container {
+  margin: 20px 0 40px;
+}

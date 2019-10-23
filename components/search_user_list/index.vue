@@ -101,7 +101,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   background:rgba(255,255,255,1);
-  border-radius: @borderRadius10;
+  border-radius: @br10;
   margin: 20px 0;
   padding: 20px;
   transition: all 0.3s;

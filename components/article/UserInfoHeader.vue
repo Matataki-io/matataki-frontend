@@ -147,7 +147,8 @@ export default {
   }
 }
 .Post-Time, .View-Num {
-  .info-font();
+  font-size: 16px;
+  color: @gray;
 }
 .follow {
   &.black {

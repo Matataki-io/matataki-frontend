@@ -122,7 +122,7 @@ export default {
 .info {
   overflow: hidden;
   background-color: #fff;
-  border-radius: @borderRadius10;
+  border-radius: @br10;
 }
 .avatar {
     width: 60px !important;
