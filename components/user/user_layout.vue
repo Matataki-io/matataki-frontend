@@ -36,7 +36,7 @@ export default {
   // height: 998px;
   background-color: #fff;
   padding: 20px;
-  border-radius: @borderRadius10;
+  border-radius: @br10;
   box-sizing: border-box;
   margin-bottom: 120px;
 }
@@ -44,7 +44,7 @@ export default {
 .user-info {
   // width: 270px;
   // height: 396px;
-  border-radius: @borderRadius10;
+  border-radius: @br10;
   background-color: #fff;
 }
 </style>

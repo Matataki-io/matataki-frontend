@@ -67,7 +67,7 @@ export default {
   margin-top: 80px;
   height:200px;
   background: @purpleLight;
-  border-radius: @borderRadius10;
+  border-radius: @br10;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -24,7 +24,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     background: #E3F4FF;
-    border-radius: @borderRadius10;
+    border-radius: @br10;
   }
   img {
     &:nth-child(1){

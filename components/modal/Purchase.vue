@@ -321,7 +321,7 @@ export default {
 }
 .buy-product-modal {
   width: 320px;
-  border-radius: 10px;
+  border-radius: @br10;
   color: #000;
   margin: auto;
   .title {
