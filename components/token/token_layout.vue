@@ -164,7 +164,7 @@
             v-model="tokenWidget"
             class="token-widget"
             type="textarea"
-            :rows="4"
+            :rows="6"
             placeholder="请输入内容"
           />
         </div>
@@ -183,7 +183,7 @@ export default {
   },
   data() {
     return {
-      tokenWidget: 'http://localhost:8080/token/15'
+      tokenWidget: `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`
     }
   }
 }
