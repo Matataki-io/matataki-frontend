@@ -73,7 +73,7 @@
         </div>
         <div class="flexBox padding20 bgGray">
           <div><el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox></div>
-          <div>抵扣：<span class="money">{{deduction.toFixed(2)}} CNY</span></div>
+          <div>抵扣：<span class="money">{{deduction}} CNY</span></div>
         </div>
         <div class="flexBox padding20">
           <div></div>
@@ -136,27 +136,30 @@ export default {
     deduction() {
       let input = parseFloat(this.form.input)
       let balance = parseFloat(this.balance)
+      let result = 0
       if (this.useBalance) {
         if (balance >= input) {
-          return input
+          result = input
         } else {
-          return balance
+          result = balance
         }
       } else {
-        return 0
+        result = 0
       }
+      return utils.down2points(result)
     },
     needPay() {
-      let input = parseFloat(this.form.input)
-      let balance = parseFloat(this.balance)
+      // 支付金额向上取整
+      let input = utils.up2points(this.form.input)
+      let deduction = this.deduction
       if (this.useBalance) {
-        if (balance >= input) {
+        if (deduction >= input) {
           return 0
         } else {
-          return (input - balance).toFixed(2)
+          return input - deduction
         }
       } else {
-        return input.toFixed(2)
+        return input
       }
     }
   },

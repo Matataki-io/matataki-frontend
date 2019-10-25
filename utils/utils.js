@@ -46,5 +46,15 @@ export default {
   },
   formatCNY(v) {
     return Math.ceil((parseFloat(v) / 100)) / Math.pow(10, 2)
+  },
+  // 向上取两位小数，0.022 => 0.03
+  up2points(n) {
+    n = parseFloat(n)
+    return Math.ceil(n*100)/100
+  },
+  // 向下取两位小数， 0.022 => 0.02
+  down2points(n) {
+    n = parseFloat(n)
+    return Math.floor(n*100) / 100
   }
 };
