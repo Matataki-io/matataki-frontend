@@ -57,7 +57,7 @@ export default {
     ...mapActions(['getCurrentUser']),
     async getUser() { // 获取用户头像
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatarSrc = this.$backendAPI.getAvatarImage(avatar)
+      if (avatar) this.avatarSrc = this.$API.getImg(avatar)
     },
     islogin() {
       if (!this.isLogined) {

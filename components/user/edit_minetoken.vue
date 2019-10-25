@@ -238,7 +238,7 @@ export default {
   },
   computed: {
     coinsCover() {
-      return this.form.logo ? this.$backendAPI.getAvatarImage(this.form.logo) : ''
+      return this.form.logo ? this.$API.getImg(this.form.logo) : ''
     },
     isPost() {
       return this.$route.name === 'postminetoken'

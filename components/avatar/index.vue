@@ -6,12 +6,11 @@
       height: size
     }"
   >
-    <el-image v-if="src" :src="src" class="img-lazy" alt="avatar">
+    <el-image :src="src" class="img-lazy" alt="avatar">
       <div slot="error" class="image-slot">
         <i class="el-icon-picture-outline" />
       </div>
     </el-image>
-    <svg-icon v-else icon-class="avatar" class="icon-avatar" />
   </div>
 </template>
 
@@ -51,6 +50,7 @@ export default {
 .g-avatar {
   overflow: hidden;
   border-radius: 50%;
+  border: 1px solid #ececec;
   cursor: pointer;
   display: flex;
   align-items: center;

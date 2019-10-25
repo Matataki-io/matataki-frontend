@@ -1,26 +1,30 @@
 <template>
   <div class="fl card">
-    <avatar size="45px" />
+    <router-link :to="{name: 'token-id', params: { id: card.id }}">
+      <avatar :src="cover" size="45px" />
+    </router-link>
     <div class="fl cards-content">
       <div class="card-info">
-        <h2 class="card-info-symbol">
-          DDD
-        </h2>
+        <router-link :to="{name: 'token-id', params: { id: card.id }}">
+          <h2 class="card-info-symbol">
+            {{ card.symbol || '暂无' }}
+          </h2>
+        </router-link>
         <p class="card-info-name">
-          蠢朋克钱多多币
+          {{ card.name || '暂无' }}
         </p>
         <p class="card-info-name">
-          蠢朋克钱多多币是由鼎鼎大名的蠢朋克组合所设置的粉丝币，被广大币圈玩家所看好，一推出币价便直线上涨。
+          {{ card.brief || '暂无' }}
         </p>
       </div>
       <div class="card-user">
-        <div class="fl ac">
-          <avatar size="30px" />
-          <span class="card-username">xxxxxxx</span>
-        </div>
-        <div class="card-user-icon">
+        <router-link class="fl ac" :to="{name: 'user-id', params: { id: card.uid }}">
+          <avatar :src="coverUser" size="30px" />
+          <span class="card-username">{{ card.nickname || card.username }}</span>
+        </router-link>
+        <!-- <div class="card-user-icon">
           持仓占位
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -31,16 +35,30 @@ import avatar from '@/components/avatar/index.vue'
 export default {
   components: {
     avatar
+  },
+  props: {
+    card: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    cover() {
+      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+    },
+    coverUser() {
+      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+    }
   }
 }
 </script>
 <style lang="less" scoped>
 .card {
   padding: 20px 0;
-  border-top: 1px solid #dbdbdb;
-  &:nth-last-child(1) {
-    border-bottom: 1px solid #dbdbdb;
-  }
+  border-bottom: 1px solid #dbdbdb;
+  // &:nth-last-child(1) {
+  //   border-bottom: 1px solid #dbdbdb;
+  // }
 }
 .cards-content {
   flex: 1;

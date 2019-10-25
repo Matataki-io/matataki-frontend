@@ -30,6 +30,7 @@
         </div>
       </div>
       <SocialShare v-if="socialShow" :article="article" />
+      <wechat style="margin: 60px 0 0 0;" :link="shareLink" />
     </div>
     <div v-if="widgetModalStatus === 1" class="padding1 widget-writecontent">
       <p class="widget-title">
@@ -122,11 +123,14 @@ import { strTrim } from '@/utils/reg' // 开发用
 import QRCodeDialog from './QRCodeDialog'
 import SocialShare from './SocialShare'
 import { urlAddress } from '@/api/backend'
+import wechat from "@/components/scan/wechat.vue";
+
 export default {
   name: 'ShareModal',
   components: {
     QRCodeDialog,
-    SocialShare
+    SocialShare,
+    wechat
   },
   props: {
     article: Object,
@@ -162,15 +166,13 @@ export default {
       return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
     shareLink() {
-      // 应产品需求 这里改为移动端的链接
-
-      const { article, currentUserInfo } = this
-      const { protocol, host } = window.location
-      // console.debug(this.article);
-      const articleUrl = `${protocol}//${host}/p/${article.id}`
-      // const articleUrl = `${process.env.WX_SHARE_HOST}/p/${article.id}`
-      const shareLink = this.isLogined ? `${articleUrl}?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
-      return shareLink
+      if (process.browser) {
+        const { protocol, host } = window.location
+        // let url = `${process.env.WX_SHARE_HOST}/p/${this.$route.params.id}`
+        let url = `${protocol}//${host}/p/${this.$route.params.id}`
+        if (this.isLogined) url += `?invite=${this.currentUserInfo.id}&referral=${this.currentUserInfo.id}`
+        return url
+      } else process.env.VUE_APP_URL
     },
     id() {
       return this.article.id

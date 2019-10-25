@@ -436,6 +436,12 @@ minetokenResources(data, tokenId) {
       data: data
     })
   },
+minetokenGetResources(tokenId) {
+    return request({
+      method: 'GET',
+      url: `/minetoken/${tokenId}/resources`,
+    })
+  },
   /**
    * 转移token
    * @param {*} data tokenId to amount

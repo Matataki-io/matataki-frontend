@@ -61,7 +61,7 @@ export default {
     },
     buyCover() {
       if (!this.buy) return ''
-      return this.buy.cover ? this.$backendAPI.getAvatarImage(this.buy.cover) : ''
+      return this.buy.cover ? this.$API.getImg(this.buy.cover) : ''
     }
   },
   methods: {

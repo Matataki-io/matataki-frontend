@@ -41,7 +41,7 @@ export default {
     cover() {
       // console.log(this.card)
       if (!this.card) return ''
-      return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
+      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
     },
     time() {
       if (!this.card) return ''

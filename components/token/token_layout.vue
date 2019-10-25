@@ -4,15 +4,15 @@
 
     <div class="mw container-padding">
       <div class="fl token-detail">
-        <avatar size="120px" />
+        <avatar :src="logo" size="120px" />
         <div class="token-detail-info">
           <div class="fl info-line">
             <div class="token-info-title bold">
-              DDDDDDDDDDDD
+              {{ minetokenToken.symbol }}
             </div>
             <div>
               <p class="token-info-sub">
-                「KOJIMAcoin」
+                {{ minetokenToken.name }}
               </p>
             </div>
           </div>
@@ -22,7 +22,7 @@
             </div>
             <div>
               <p class="token-info-sub">
-                KOJIMAPRODUCTION
+                {{ minetokenUser.nickname || minetokenUser.username }}
               </p>
             </div>
           </div>
@@ -32,7 +32,7 @@
             </div>
             <div>
               <p class="token-info-sub">
-                KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈  玩家所看好，一推出币价便直线上涨。
+                {{ minetokenToken.brief || '暂无' }}
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@
             介绍
           </h2>
           <p class="token-introduction">
-            KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。
+            {{ minetokenToken.introduction || '暂无' }}
           </p>
         </div>
 
@@ -170,20 +170,73 @@
         </div>
       </el-col>
     </el-row>
+    <Share
+      v-model="shareModalShow"
+      :article="{
+        ...article,
+        time: '1111',
+        content: '11111',
+        avatar
+      }"
+    />
   </div>
 </template>
 <script>
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
-
+import Share from '@/components/token/token_share.vue'
 export default {
   components: {
     avatar,
-    mineTokensNav
+    mineTokensNav,
+    Share
   },
   data() {
     return {
-      tokenWidget: `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`
+      shareModalShow: false,
+      tokenWidget: `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
+      minetokenToken: Object.create(null),
+      minetokenUser: Object.create(null),
+      minetokenExchange: Object.create(null),
+      resources: Object.create(null)
+    }
+  },
+  computed: {
+    logo() {
+      if (!this.minetokenToken) return ''
+      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+    }
+  },
+  created() {
+    this.mimetokenId(this.$route.params.id)
+    this.minetokenGetResources(this.$route.params.id)
+  },
+  methods: {
+    async mimetokenId(id) {
+      await this.$API.mimetokenId(id).then(res => {
+        if (res.code === 0) {
+          this.minetokenToken = res.data.token
+          this.minetokenUser = res.data.user
+          this.minetokenExchange = res.data.exchange
+        } else {
+          this.$message.success(res.message)
+        }
+      })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async minetokenGetResources(id) {
+      await this.$API.minetokenGetResources(id).then(res => {
+        if (res.code === 0) {
+          this.resources = res.data
+        } else {
+          this.$message.success(res.message)
+        }
+      })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

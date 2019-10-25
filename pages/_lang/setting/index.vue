@@ -175,7 +175,7 @@ export default {
       return canSetProfile
     },
     setAvatarImage(hash) {
-      if (hash) this.avatar = this.$backendAPI.getAvatarImage(hash)
+      if (hash) this.avatar = this.$API.getImg(hash)
     },
     // 完成上传
     doneImageUpload(res) {

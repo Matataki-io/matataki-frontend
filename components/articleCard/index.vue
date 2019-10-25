@@ -112,11 +112,11 @@ export default {
     cover() {
       // console.log(this.card)
       if (!this.card) return ''
-      return this.card.cover ? this.$backendAPI.getAvatarImage(this.card.cover) : ''
+      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
     },
     avatarImg() {
       if (!this.card) return ''
-      return this.card.avatar ? this.$backendAPI.getAvatarImage(this.card.avatar) : ''
+      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
     },
     cardEosValue() {
       if (!this.card) return 0

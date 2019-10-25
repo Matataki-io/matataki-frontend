@@ -210,9 +210,9 @@ const API = {
     })
   },
   // 获取头像
-  getAvatarImage(hash) {
-    return `${ssImgAddress}${hash}`
-  },
+  // getAvatarImage(hash) {
+  //   return `${ssImgAddress}${hash}`
+  // },
   // 上传图片 迁移到 API
   // async uploadImage(type, data) {
   //   const url = {

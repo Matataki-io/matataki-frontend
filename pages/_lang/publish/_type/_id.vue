@@ -301,7 +301,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     coverEditor() {
-      return this.$backendAPI.getAvatarImage(this.cover)
+      return this.$API.getImg(this.cover)
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'

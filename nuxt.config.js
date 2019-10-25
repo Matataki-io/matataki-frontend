@@ -51,7 +51,7 @@ export default {
     ],
     script: [
       { src: '/html2canvas.min.js' },
-      { src: '/qrcode.min.js' },
+      // { src: '/qrcode.min.js' },
       { src: '/gt.js' }
     ]
   },

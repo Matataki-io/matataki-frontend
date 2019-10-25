@@ -1,7 +1,7 @@
 <template>
   <div class="token">
     <g-header />
-    <div class="fl tokens">
+    <!-- <div class="fl tokens">
       <avatar size="45px" />
       <div class="fl tokens-content">
         <div class="token-info">
@@ -28,17 +28,17 @@
           </el-button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="tokens-list">
-      <nav class="tokens-list-nav">
+      <!-- <nav class="tokens-list-nav">
         <router-link class="active" :to="{ name: 'token' }">
           发布顺序
         </router-link>
         <router-link :to="{ name: 'token' }">
           字母顺序
         </router-link>
-      </nav>
+      </nav> -->
 
       <div v-loading="loading" class="card-container">
         <no-content-prompt :list="pull.list">
@@ -62,12 +62,12 @@
 </template>
 
 <script>
-import avatar from '@/components/avatar/index.vue'
+// import avatar from '@/components/avatar/index.vue'
 import tokenCard from '@/components/token_card/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 export default {
   components: {
-    avatar,
+    // avatar,
     tokenCard,
     userPagination
   },
@@ -77,7 +77,7 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'tokenTokenList',
+        apiUrl: 'tokenAll',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,

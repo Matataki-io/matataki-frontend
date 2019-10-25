@@ -112,7 +112,7 @@ export default {
   },
   computed: {
     coinsCover() {
-      return this.form.coinsIcon ? this.$backendAPI.getAvatarImage(this.form.coinsIcon) : ''
+      return this.form.coinsIcon ? this.$API.getImg(this.form.coinsIcon) : ''
     }
   },
   methods: {

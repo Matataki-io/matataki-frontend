@@ -627,6 +627,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@chenfengyuan/vue-qrcode@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/@chenfengyuan/vue-qrcode/download/@chenfengyuan/vue-qrcode-1.0.1.tgz#e6f757103c36630dc7c9f385494c5d9796c24d47"
+  integrity sha1-5vdXEDw2Yw3HyfOFSUxdl5bCTUc=
+  dependencies:
+    qrcode "^1.3.3"
+
 "@clampy-js/clampy@^1.0.9":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@clampy-js/clampy/-/clampy-1.0.10.tgz#8161e7a6460b47d67b5ffaad47f41a23f3964f2b"
@@ -1615,13 +1622,6 @@ array-unique@^0.3.2:
 asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
-
-ascii2mathml@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/ascii2mathml/-/ascii2mathml-0.6.2.tgz#e9d85058d3c06655a6100c0f0291a90dca7fcaa1"
-  integrity sha512-tkPONh2Y7ZpuGQw6AiRnExX/CSYf5C2T/rF+UMJq5n0Us7+QjL8VY5ZE16xo9wcXhdqPkl/F7lzEzU9HX0YKng==
-  dependencies:
-    minimist "^1.2.0"
 
 asn1.js@^4.0.0:
   version "4.10.1"
@@ -5092,24 +5092,12 @@ markdown-it-footnote@^3.0.2:
   resolved "https://registry.yarnpkg.com/markdown-it-footnote/-/markdown-it-footnote-3.0.2.tgz#1575ee7a093648d4e096aa33386b058d92ac8bc1"
   integrity sha512-JVW6fCmZWjvMdDQSbOT3nnOQtd9iAXmw7hTSh26+v42BnvXeVyGMDBm5b/EZocMed2MbCAHiTX632vY0FyGB8A==
 
-markdown-it-katex-external@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/markdown-it-katex-external/-/markdown-it-katex-external-1.0.0.tgz#78d1786d94df8650e0bea79ffbc0b1f03fd7c606"
-  integrity sha1-eNF4bZTfhlDgvqef+8Cx8D/XxgY=
-
 markdown-it-katex@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/markdown-it-katex/-/markdown-it-katex-2.0.3.tgz#d7b86a1aea0b9d6496fab4e7919a18fdef589c39"
   integrity sha1-17hqGuoLnWSW+rTnkZoY/e9YnDk=
   dependencies:
     katex "^0.6.0"
-
-markdown-it-math@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/markdown-it-math/-/markdown-it-math-4.1.1.tgz#a63fac36d9ffe4362749749d966a84852f2ca137"
-  integrity sha512-LQ0hREgMgN4tNcy2PGyw1XypjmKJjc+ZzATMuDIVD/Bagr5SGL198uHleVdiFDrNdXpqVmL4N1KD1GYyftMakQ==
-  optionalDependencies:
-    ascii2mathml "^0.6.2"
 
 markdown-it@^9.0.1:
   version "9.0.1"
@@ -6783,9 +6771,10 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-qrcode@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/qrcode/-/qrcode-1.4.1.tgz#2126814985d0dbbd9aee050fc523d319c6a7dc3b"
+qrcode@1.4.2, qrcode@^1.3.3:
+  version "1.4.2"
+  resolved "https://registry.npm.taobao.org/qrcode/download/qrcode-1.4.2.tgz#e7c82a60140916d666541043bd2b0b72ee4e38a6"
+  integrity sha1-58gqYBQJFtZmVBBDvSsLcu5OOKY=
   dependencies:
     dijkstrajs "^1.0.1"
     isarray "^2.0.1"

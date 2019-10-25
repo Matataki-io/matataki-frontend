@@ -30,23 +30,19 @@
         </div>
       </a>
     </div>
-    <div class="wx-share">
-      <div class="qrcode-container">
-        <div ref="wxqr" class="qrcode" />
-      </div>
-      <p class="code">
-        <span>{{ $t('p.shareWechat') }}</span>
-        <svg-icon class="icon" icon-class="weixin" />
-      </p>
-    </div>
+    <!-- <wechat style="margin: 80px 0 0 0;" :link="shareLink" /> -->
   </div>
 </template>
 
 <script>
-/* eslint-disable */
 import { mapGetters } from 'vuex'
+// import wechat from '@/components/scan/wechat.vue'
+
 export default {
   name: 'SocialShare',
+  components: {
+    // wechat
+  },
   props: {
     article: {
       type: Object,
@@ -81,16 +77,8 @@ export default {
     }
   },
   mounted() {
-    this.genQRCode()
   },
   methods: {
-    genQRCode() {
-      new QRCode(this.$refs.wxqr, {
-        text: this.shareLink,
-        width: 120,
-        height: 120,
-      });
-    },
   }
 }
 </script>
