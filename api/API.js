@@ -375,8 +375,8 @@ export default {
   wxlogin(code) {
     return request.post('/wx/login', { code })
   },
-  wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0 }) {
-    return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity })
+  wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0, pay_cny_amount, out_trade_no }) {
+    return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity, pay_cny_amount, out_trade_no })
   },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
@@ -566,7 +566,7 @@ minetokenGetResources(tokenId) {
   getUserBalance(tokenId) {
     return request({
       method: 'get',
-      url: '/exchange/balance',
+      url: '/minetoken/balance',
       params: {
         tokenId
       }
@@ -577,5 +577,43 @@ minetokenGetResources(tokenId) {
       method: 'get',
       url: `/token/user/${id}`,
     })
-  }
+  },
+  getCNYBalance() {
+    return request({
+      method: 'get',
+      url: '/asset/balance',
+      params: {
+        symbol: 'CNY'
+      }
+    })
+  },
+  addLiquidityBalance({tokenId, cny_amount, token_amount, min_liquidity, max_tokens, deadline}) {
+    return request({
+      method: 'post',
+      url: '/exchange/addLiquidityBalance',
+      data: {
+        tokenId, cny_amount, token_amount, min_liquidity, max_tokens, deadline 
+      }
+    })
+  },
+  // 以输入为准
+  cnyToTokenInputBalance({tokenId, cny_sold, min_tokens, deadline}) {
+    return request({
+      method: 'post',
+      url: '/exchange/cnyToTokenInputBalance',
+      data: {
+        tokenId, cny_sold, min_tokens, deadline
+      }
+    })
+  },
+  // 以输出为准
+  cnyToTokenOutputBalance({tokenId, tokens_bought, max_cny, deadline}) {
+    return request({
+      method: 'post',
+      url: '/exchange/cnyToTokenOutputBalance',
+      data: {
+        tokenId, tokens_bought, max_cny, deadline
+      }
+    })
+  },
 }
