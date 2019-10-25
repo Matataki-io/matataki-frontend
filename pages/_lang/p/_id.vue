@@ -76,13 +76,24 @@
               </div>
             </div>
 
-            <router-link
-              :to="{name: 'exchange'}"
-            >
-              <el-button type="primary" size="small">
-                获取粉丝币
+            <div>
+              <el-button
+                v-if="!isTokenArticle"
+                plain
+                :disabled="payBtnDisabled"
+                type="primary"
+                size="small"
+                @click="wxpay">
+                微信支付
               </el-button>
-            </router-link>
+              <router-link
+                :to="{name: 'exchange'}"
+              >
+                <el-button type="primary" size="small">
+                  交易所
+                </el-button>
+              </router-link>
+            </div>
           </div>
         </div>
       </article>
@@ -269,6 +280,7 @@
     />
 
     <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
+    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
   </div>
 </template>
 
@@ -296,8 +308,10 @@ import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
-
 import store from '@/utils/localStorage.js'
+import OrderModal from '@/components/exchange/OrderModal'
+import { CNY } from '@/components/exchange/consts.js'
+import utils from '@/utils/utils'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -322,7 +336,8 @@ export default {
     CoinBtn,
     TokenFooter,
     FeedbackModal,
-    commentInput
+    commentInput,
+    OrderModal
   },
   data() {
     return {
@@ -360,7 +375,16 @@ export default {
       comment: '', //评论内容
       currentProfile: Object.create(null),
       differenceToken: '0',
-      showLock: false
+      showLock: false,
+      showOrderModal: false,
+      form: {
+        input: '',
+        inputToken: CNY,
+        output: '',
+        outputToken: {}
+      },
+      getInputAmountError: '',
+      payBtnDisabled: true
     }
   },
   head() {
@@ -440,8 +464,11 @@ export default {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
       } else return ''
+    },
+    limitValue() {
+      const { input } = this.form
+      return (parseFloat(input) / (1 - 0.01)).toFixed(4)
     }
-
   },
   watch: {
     timeCount(v) {
@@ -538,10 +565,11 @@ export default {
         // console.log(res)
         if (res.code === 0) {
           this.currentProfile = res.data
+          this.form.outputToken = res.data.holdMineTokens && res.data.holdMineTokens.length > 0 ? res.data.holdMineTokens[0] : {}
           // Object.assign(this.article, this.currentProfile)
           // console.log('article', this.article)
           this.differenceTokenFunc()
-
+          this.calPayFormParams()
           this.getSupportStatus(res.data)
         } else if (res.code === 401) {
           console.log(res.message)
@@ -813,6 +841,51 @@ export default {
             } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
       }
+    },
+    wxpay() {
+      if (this.getInputAmountError) {
+        this.$message.error(this.getInputAmountError)
+        return
+      }
+      this.showOrderModal = true
+    },
+    // 微信支付购买
+    calPayFormParams() {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
+        const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
+        // 获取有多少token
+        const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+        let needTokenAmount = 0
+        // 获取需要多少token
+        if (this.article.tokens && this.article.tokens.length !== 0) {
+          needTokenAmount = this.article.tokens[0].amount
+        }
+        // 减之后 换算
+        this.form.output = utils.fromDecimal(needTokenAmount - amount)
+        const { inputToken, output, outputToken } = this.form
+        if (output > 0) {
+          this.getInputAmount(inputToken.id, outputToken.id, output)
+        }
+      }
+    },
+    getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+      const deciaml = 4
+      const _outputAmount = utils.toDecimal(outputAmount, deciaml)
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+        this.payBtnDisabled = false
+        if (res.code === 0) {
+          this.getInputAmountError = ''
+          // rmb向上取整
+          if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
+            this.form.input = parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
+          } else {
+            this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+          }
+        } else {
+          this.getInputAmountError = res.message
+          this.form.input = ''
+        }
+      })
     }
   }
 

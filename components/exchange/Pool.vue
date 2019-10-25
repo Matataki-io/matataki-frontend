@@ -169,7 +169,7 @@
         {{ poolSelected.text }}
       </button>
     </div>
-    <OrderModal v-model="orderShow" :order="{...order,...form}" />
+    <OrderModal v-model="orderShow" :form="{...form, type: 'add', limitValue, youMintTokenAmount}" />
     <TokenListModal v-model="tlShow" :addon="false" @selectToken="selectToken" />
     <PoolSelectModal v-model="psShow" @selectPool="selectPool" />
   </div>
@@ -412,21 +412,22 @@ export default {
     },
     addLiquidity() {
       const { input, output, outputToken } = this.form
-      this.$API
-        .wxpay({
-          total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
-          title: `添加流动金`,
-          type: 'add', // type类型见typeOptions：add，buy_token，sale_token
-          token_id: outputToken.id,
-          token_amount: utils.toDecimal(output, outputToken.decimals),
-          limit_value: utils.toDecimal(this.limitValue, outputToken.decimals),
-          decimals: outputToken.decimals,
-          min_liquidity: utils.toDecimal(this.youMintTokenAmount, outputToken.decimals)
-        })
-        .then(res => {
-          this.order = res
-          this.orderShow = true
-        })
+      this.orderShow = true
+      // this.$API
+      //   .wxpay({
+      //     total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
+      //     title: `添加流动金`,
+      //     type: 'add', // type类型见typeOptions：add，buy_token，sale_token
+      //     token_id: outputToken.id,
+      //     token_amount: utils.toDecimal(output, outputToken.decimals),
+      //     limit_value: utils.toDecimal(this.limitValue, outputToken.decimals),
+      //     decimals: outputToken.decimals,
+      //     min_liquidity: utils.toDecimal(this.youMintTokenAmount, outputToken.decimals)
+      //   })
+      //   .then(res => {
+      //     this.order = res
+      //     this.orderShow = true
+      //   })
     },
     getCurrentPoolSize(tokenId) {
       this.$API.getCurrentPoolSize(tokenId).then(res => {

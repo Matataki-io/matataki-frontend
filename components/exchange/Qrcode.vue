@@ -35,6 +35,10 @@ export default {
   methods: {
     genQRCode(url) {
       new QRCode(this.$refs.qr, {
+        color: {
+          dark: '#542DE0',  // Blue dots
+          light: '#0000' // Transparent background
+        },
         text: url,
         width: 150,
         height: 150,
