@@ -412,6 +412,29 @@ export default {
       url: '/minetoken/mint',
       data: data
     })
+  },/**
+   * 修改token详情
+   * @param {Object} data token详情
+   * @param {Number} tokenId token id
+   */
+  minetokenTokenId(data, tokenId) {
+    return request({
+      method: 'PUT',
+      url: `/minetoken/${tokenId}`,
+      data: data
+    })
+  },
+  /**
+  * 修改token资源
+  * @param {Object} data token资源
+  * @param {Number} tokenId token id
+  */
+minetokenResources(data, tokenId) {
+    return request({
+      method: 'PUT',
+      url: `/minetoken/${tokenId}/resources`,
+      data: data
+    })
   },
   /**
    * 转移token
@@ -422,6 +445,16 @@ export default {
       method: 'POST',
       url: '/minetoken/transfer',
       data: data
+    })
+  },
+  /**
+   * 粉丝币详情
+   * @param {Number} id token id
+   */
+  mimetokenId(id) {
+    return request({
+      method: 'GET',
+      url: `/minetoken/${id}`,
     })
   },
   /**

@@ -18,11 +18,11 @@
         <el-input v-model="form.name" class="input" placeholder="请输入粉丝币名称" />
       </el-form-item>
       <!-- 编辑页面不需要显示 -->
-      <el-form-item v-if="isPost" label="缩写" prop="abbreviation">
-        <el-input v-model="form.abbreviation" class="input" placeholder="请输入粉丝币缩写(发行后不可修改)" />
+      <el-form-item v-if="isPost" label="缩写" prop="symbol">
+        <el-input v-model="form.symbol" class="input" placeholder="请输入粉丝币缩写(发行后不可修改)" />
       </el-form-item>
-      <el-form-item label="图标" prop="coinsIcon">
-        <el-input v-model="form.coinsIcon" style="display: none;" class="input" />
+      <el-form-item label="图标" prop="logo">
+        <el-input v-model="form.logo" style="display: none;" class="input" />
         <img-upload
           v-show="!coinsCover"
           :img-upload-done="imgUploadDone"
@@ -53,15 +53,15 @@
         <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量(最多发行1亿)" />
       </el-form-item>
 
-      <el-form-item label="简介" prop="profile">
-        <el-input v-model="form.profile" class="input" placeholder="简介" />
+      <el-form-item label="简介" prop="brief">
+        <el-input v-model="form.brief" class="input" placeholder="简介" />
       </el-form-item>
       <el-form-item label="介绍" prop="">
         <el-input
-          v-model="form.number"
+          v-model="form.introduction"
           class="input"
           type="textarea"
-          :rows="4"
+          :rows="6"
           maxlength="500"
           show-word-limit
           placeholder="介绍"
@@ -117,7 +117,7 @@ import imgUpload from '@/components/imgUpload/index.vue'
 import { toPrecision } from '@/utils/precisionConversion'
 
 import socialIcon from '@/components/social_icon/index.vue'
-
+import socialTypes from '@/config/social_types.js'
 export default {
   components: {
     imgUpload,
@@ -126,7 +126,7 @@ export default {
   data() {
     const checkSymbol = (rule, value, callback) => {
       const reg = /^[A-Z]+$/
-      const res = reg.test(this.form.abbreviation)
+      const res = reg.test(this.form.symbol)
       if (!res) {
         callback(new Error('粉丝币缩写仅限大写英文字符'))
       } else {
@@ -136,10 +136,11 @@ export default {
     return {
       form: {
         name: '',
-        abbreviation: '',
+        symbol: '',
         number: '',
-        coinsIcon: '',
-        profile: '',
+        logo: '',
+        brief: '',
+        introduction: '',
         agree: false
       },
       rules: {
@@ -148,20 +149,20 @@ export default {
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
         ],
         // 编辑页面不需要校验
-        abbreviation: [
-          { required: !this.isPost, message: '请输入粉丝币缩写', trigger: 'blur' },
+        symbol: [
+          { required: true, message: '请输入粉丝币缩写', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
-        coinsIcon: [
+        logo: [
           { required: true, message: '请输上传图标' }
         ],
         // 编辑页面不需要校验
         number: [
-          { required: !this.isPost, message: '请输入首次发行数量', trigger: 'blur' },
+          { required: true, message: '请输入首次发行数量', trigger: 'blur' },
           { min: 1, max: 9, message: '首次发行数量一亿', trigger: ['blur', 'change'] }
         ],
-        profile: [
+        brief: [
           { required: true, message: '请输入简介', trigger: 'blur' },
           { min: 1, max: 100, message: '简介最多100字', trigger: ['blur', 'change'] }
         ]
@@ -170,7 +171,7 @@ export default {
       about: [''],
       social: [
         {
-          symbol: 'qq',
+          symbol: 'QQ',
           icon: 'qq1',
           name: 'QQ：',
           tooltip: '',
@@ -179,7 +180,7 @@ export default {
           value: ''
         },
         {
-          symbol: 'wechat',
+          symbol: 'Wechat',
           icon: 'wechat',
           name: '微信：',
           tooltip: '',
@@ -188,7 +189,7 @@ export default {
           value: ''
         },
         {
-          symbol: 'weibo',
+          symbol: 'Weibo',
           icon: 'weibo1',
           name: '微博：',
           tooltip: '(https://www.weibo.com/<span>帐号</span>)',
@@ -197,7 +198,7 @@ export default {
           value: ''
         },
         {
-          symbol: 'telegram：',
+          symbol: 'Telegram',
           icon: 'tg',
           name: 'Telegram：',
           tooltip: '',
@@ -206,7 +207,7 @@ export default {
           value: ''
         },
         {
-          symbol: 'telegram：',
+          symbol: 'Twitter',
           icon: 'twitter1',
           name: 'Twitter：',
           tooltip: '(https://twitter.com/<span>帐号</span>)',
@@ -215,7 +216,7 @@ export default {
           value: ''
         },
         {
-          symbol: 'facebook：',
+          symbol: 'Facebook',
           icon: 'fb',
           name: 'Facebook：',
           tooltip: '(https://facebook.com/<span>帐号</span>)',
@@ -224,7 +225,7 @@ export default {
           value: ''
         },
         {
-          symbol: 'github',
+          symbol: 'Github',
           icon: 'github1',
           name: 'Github：',
           tooltip: '(https://github.com/<span>帐号</span>)',
@@ -237,60 +238,118 @@ export default {
   },
   computed: {
     coinsCover() {
-      return this.form.coinsIcon ? this.$backendAPI.getAvatarImage(this.form.coinsIcon) : ''
+      return this.form.logo ? this.$backendAPI.getAvatarImage(this.form.logo) : ''
     },
     isPost() {
       return this.$route.name === 'postminetoken'
     }
   },
+  created() {
+  },
+  mounted() {
+    if (!this.isPost) this.tokenDetail()
+  },
   methods: {
+    async tokenDetail() {
+      await this.$API.tokenDetail().then(res => {
+        if (res.code === 0) {
+          if (res.data.token) {
+            const { token } = res.data
+            this.form.name = token.name
+            this.form.symbol = token.name
+            this.form.logo = token.logo
+            this.form.brief = token.brief
+            this.form.introduction = token.introduction
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    async minetokenTokenId() {
+      const { name, logo, brief, introduction } = this.form
+      const data = {
+        name: name,
+        brief: brief,
+        introduction,
+        logo: logo
+      }
+      await this.$API.minetokenTokenId(data)
+        .then(res => {
+          if (res.code === 0) this.minetokenDone(res.data)
+          else this.$message.error(res.message)
+        })
+    },
     async minetokenMint() {
       const { number } = this.form
       const data = {
         amount: toPrecision(number, 'CNY')
       }
-      await this.$API.minetokenMint(data)
-        .then(res => {
-          if (res.code === 0) {
-            this.$emit('publishToken')
-            this.$message.success(res.message)
-          } else {
-            this.$message.error(res.message)
-          }
-        })
+      const res = await this.$API.minetokenMint(data)
+      if (res.code === 0) return res.message
+      else throw res.message
+    },
+    async minetokenResources(id) {
+      const aboutArray = this.about.filter(i => i)
+      const socialFilter = this.social.filter(i => socialTypes.includes(i.symbol))
+      const socialArray = socialFilter.map(i => {
+        return {
+          type: i.symbol,
+          content: i.value
+        }
+      })
+
+      const data = {
+        websites: aboutArray,
+        socials: socialArray
+      }
+      const res = await this.$API.minetokenResources(data, id)
+      if (res.code === 0) return res.message
+      else throw res.message
     },
     async minetokenCreate() {
-      const { name, abbreviation, coinsIcon, profile } = this.form
+      const { name, symbol, logo, brief, introduction } = this.form
       const data = {
         name: name,
-        symbol: abbreviation,
-        decimals: 100,
-        profile: profile, // 确定后端定义字段后再次修改
-        logo: coinsIcon
+        symbol: symbol,
+        decimals: 4,
+        brief: brief,
+        introduction,
+        logo: logo
       }
       await this.$API.minetokenCreate(data)
         .then(res => {
-          if (res.code === 0) {
-            this.minetokenMint()
-          } else {
-            this.$message.error(res.message)
-          }
+          if (res.code === 0) this.minetokenDone(res.data)
+          else this.$message.error(res.message)
+        })
+    },
+    minetokenDone(data) {
+      Promise.all([this.minetokenMint(), this.minetokenResources(data)])
+        .then(values => {
+          // console.log(values)
+          this.$message.success(values[0])
+          this.$emit('publishToken')
+        }).catch(err => {
+          this.$message.error(err)
+          console.log(err)
         })
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid) this.minetokenCreate()
-        else return false
+        if (valid) {
+          if (this.isPost) this.minetokenCreate()
+          else console.log('edit')
+        } else return false
       })
     },
     // 完成上传
     doneImageUpload(res) {
       // console.log(res)
-      this.form.coinsIcon = res.data.data.cover
+      this.form.logo = res.data.data.cover
       this.imgUploadDone += Date.now()
     },
     removeCoinsIcon() {
-      this.form.coinsIcon = ''
+      this.form.logo = ''
     },
     aboutAdd() {
       if (this.about.length >= 5) return
