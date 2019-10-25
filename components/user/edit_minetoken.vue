@@ -93,7 +93,7 @@
           </p>
           <div class="fl">
             <div class="social-icon">
-              <socialIcon :icon="item.icon" />
+              <socialIcon :icon="item.symbol" />
             </div>
             <el-input v-model="item.value" class="social-input" :placeholder="item.placeholder" />
           </div>

@@ -25,7 +25,7 @@
         <el-button size="small">
           编辑
         </el-button>
-        <el-button size="small">
+        <el-button size="small" @click="addCoins">
           增发
         </el-button>
         <el-button size="small" type="primary">
