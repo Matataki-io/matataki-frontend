@@ -156,7 +156,7 @@ export default {
           return (input - balance).toFixed(2)
         }
       } else {
-        return input
+        return input.toFixed(2)
       }
     }
   },
