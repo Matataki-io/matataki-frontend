@@ -92,8 +92,8 @@
             <span v-html="item.tooltip" />
           </p>
           <div class="fl">
-            <div class="social-icon">
-              <socialIcon :icon="item.icon" />
+            <div class="social-icons">
+              <socialIcon :icon="item.symbol" />
             </div>
             <el-input v-model="item.value" class="social-input" :placeholder="item.placeholder" />
           </div>
@@ -115,6 +115,7 @@
 <script>
 import imgUpload from '@/components/imgUpload/index.vue'
 import { toPrecision } from '@/utils/precisionConversion'
+import { getCookie } from '@/utils/cookie'
 
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types.js'
@@ -134,6 +135,7 @@ export default {
       }
     }
     return {
+      tokenId: null,
       form: {
         name: '',
         symbol: '',
@@ -247,26 +249,36 @@ export default {
   created() {
   },
   mounted() {
-    if (!this.isPost) this.tokenDetail()
+    if (!getCookie('ACCESS_TOKEN')) return this.$router.go(-1)
+    this.tokenDetail()
   },
   methods: {
     async tokenDetail() {
       await this.$API.tokenDetail().then(res => {
         if (res.code === 0) {
           if (res.data.token) {
-            const { token } = res.data
-            this.form.name = token.name
-            this.form.symbol = token.name
-            this.form.logo = token.logo
-            this.form.brief = token.brief
-            this.form.introduction = token.introduction
+            if (this.isPost) {
+              this.$router.push({
+                name: 'editminetoken'
+              })
+            } else {
+              const { token } = res.data
+              this.form.name = token.name
+              this.form.symbol = token.name
+              this.form.logo = token.logo
+              this.form.brief = token.brief
+              this.form.introduction = token.introduction
+              this.tokenId = token.id
+            }
+          } else {
+            this.$message.error('没有发币')
           }
         } else {
           this.$message.error(res.message)
         }
       })
     },
-    async minetokenTokenId() {
+    async minetokenTokenId(id) {
       const { name, logo, brief, introduction } = this.form
       const data = {
         name: name,
@@ -274,11 +286,9 @@ export default {
         introduction,
         logo: logo
       }
-      await this.$API.minetokenTokenId(data)
-        .then(res => {
-          if (res.code === 0) this.minetokenDone(res.data)
-          else this.$message.error(res.message)
-        })
+      const res = await this.$API.minetokenTokenId(data, id)
+      if (res.code === 0) return res.message
+      else throw res.message
     },
     async minetokenMint() {
       const { number } = this.form
@@ -328,7 +338,16 @@ export default {
         .then(values => {
           // console.log(values)
           this.$message.success(values[0])
-          this.$emit('publishToken')
+        }).catch(err => {
+          this.$message.error(err)
+          console.log(err)
+        })
+    },
+    minetokenEdit(id) {
+      Promise.all([this.minetokenTokenId(id), this.minetokenResources(id)])
+        .then(values => {
+          // console.log(values)
+          this.$message.success(values[0])
         }).catch(err => {
           this.$message.error(err)
           console.log(err)
@@ -338,7 +357,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.isPost) this.minetokenCreate()
-          else console.log('edit')
+          else this.minetokenEdit(this.tokenId)
         } else return false
       })
     },
@@ -492,7 +511,7 @@ export default {
     }
   }
 }
-.social-icon {
+.social-icons {
   width: 60px;
 }
 </style>

@@ -22,15 +22,19 @@
       </div>
 
       <div>
-        <el-button size="small">
-          编辑
-        </el-button>
-        <el-button size="small">
+        <router-link :to="{name: 'editminetoken'}">
+          <el-button size="small">
+            编辑
+          </el-button>
+        </router-link>
+        <el-button size="small" @click="addCoins">
           增发
         </el-button>
-        <el-button size="small" type="primary">
-          交易
-        </el-button>
+        <router-link :to="{name: 'exchange'}">
+          <el-button size="small" type="primary">
+            交易
+          </el-button>
+        </router-link>
       </div>
     </div>
     <!-- <div class="line" /> -->
@@ -39,31 +43,22 @@
       简介
     </h2>
     <p class="token-sub">
-      KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。
+      {{ tokenDetailData.token.brief }}
     </p>
 
     <h2 class="token-title">
       介绍
     </h2>
     <p class="token-sub">
-      KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。被誉为下一个比特币，大家快来买，绝对不是割韭菜，啦啦啦～KOJIMAcoin是由鼎鼎大名的小岛工作室所设置的粉丝币。被广大币圈玩家所看好，一推出币价便直线上涨。
+      {{ tokenDetailData.token.introduction }}
     </p>
 
     <h2 class="token-title">
       相关网站
     </h2>
     <ul class="about-nav">
-      <li>
-        <a href="">https://materialmaterialmaterialmaterial.io/</a>
-      </li>
-      <li>
-        <a href="">https://material.io/</a>
-      </li>
-      <li>
-        <a href="">https://material.io/</a>
-      </li>
-      <li>
-        <a href="">https://material.io/</a>
+      <li v-for="(item, index) in resourcesWebsites" :key="index">
+        <a href="">{{ item }}</a>
       </li>
     </ul>
 
@@ -72,8 +67,14 @@
     </h2>
 
     <div class="fl social">
-      <div v-for="item in 14" :key="item" class="circle-btn">
-        {{ item }}
+      <div class="social-btn">
+        <socialIcon
+          v-for="(item, index) in resourcesSocialss"
+          :key="index"
+          :show-tooltip="true"
+          :icon="item.type"
+          :content="item.content"
+        />
       </div>
     </div>
 
@@ -162,16 +163,21 @@ import { precision, toPrecision } from '@/utils/precisionConversion'
 import { testDecimal } from '@/utils/reg'
 // import minetokenCard from '@/components/user/minetoken_card'
 // import minetokenDetailCard from '@/components/user/minetoken_card_detail'
+import socialTypes from '@/config/social_types.js'
+import socialIcon from '@/components/social_icon/index.vue'
+
 export default {
   components: {
     // userPagination,
-    avatar
+    avatar,
+    socialIcon
     // mineTokensNav
     // minetokenCard,
     // minetokenDetailCard
   },
   data() {
     return {
+      tokenId: null,
       isPublishCoins: false,
       tokenDetailData: Object.create(null),
       pointLog: {
@@ -188,7 +194,8 @@ export default {
       },
       viewStatus: 0, // 0 1
       amount: 0,
-      tokenWidget: 'http://localhost:8080/token/15'
+      resourcesSocialss: [],
+      resourcesWebsites: []
     }
   },
   computed: {
@@ -229,10 +236,14 @@ export default {
         const logo = this.tokenDetailData.token.logo
         return logo ? this.$API.getImg(logo) : ''
       } else return ''
+    },
+    tokenWidget() {
+      return `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this.tokenId || 0}' frameborder=0></iframe>`
     }
   },
   created() {
     this.tokenDetail()
+
     // 根据token判断是否有币 如果有显示当前页面并且调用list
     // 否则修改界面显示
   },
@@ -244,13 +255,32 @@ export default {
           if (res.data.token) {
             this.isPublishCoins = true
             this.tokenDetailData = res.data
+            this.tokenId = res.data.token.id
+            this.minetokenGetResources(res.data.token.id)
           } else {
-            this.$emit('notToken')
+            this.$router.push({
+              name: 'postminetoken'
+            })
           }
         } else {
           this.$message.error(res.message)
         }
       })
+    },
+    async minetokenGetResources(id) {
+      await this.$API.minetokenGetResources(id).then(res => {
+        if (res.code === 0) {
+          const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
+          const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+          this.resourcesSocialss = socialFilterEmpty
+          this.resourcesWebsites = res.data.websites
+        } else {
+          this.$message.success(res.message)
+        }
+      })
+        .catch(err => {
+          console.log(err)
+        })
     },
     async minetokenMint(amount) {
       const data = {
@@ -431,21 +461,13 @@ export default {
 .social {
   margin-top: 20px;
 }
-.circle-btn {
-  width: 40px;
-  height: 40px;
-  background-color: @black;
-  flex: 0 0 40px;
-  border-radius: 50%;
+.social-btn {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: @white;
-  box-sizing: border-box;
-  cursor: pointer;
-  margin: 0 10px 0 0;
-  &:nth-last-child(1) {
-    margin-right: 0;
+  & > div {
+    margin-right: 8px;
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
   }
 }
 .token-widget {

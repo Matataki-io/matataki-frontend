@@ -61,7 +61,7 @@
           <div class="fl total-content">
             <div class="token-data">
               <p class="token-num">
-                15000<sub>kjc</sub>
+                {{ minetokenExchange.total_supply || 0 }}
               </p>
               <p class="token-name">
                 发行总量
@@ -70,7 +70,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                15000<sub>kjc</sub>
+                {{ minetokenExchange.token_reserve || 0 }}
               </p>
               <p class="token-name">
                 流动金池
@@ -79,7 +79,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                15000<sub>kjc</sub>
+                {{ minetokenExchange.volume_24h || 0 }}
               </p>
               <p class="token-name">
                 24h成交量
@@ -88,7 +88,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                15000<sub>kjc</sub>
+                {{ minetokenExchange.change_24h || 0 }}
               </p>
               <p class="token-name">
                 24h涨跌幅
@@ -97,7 +97,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                15000<sub>kjc</sub>
+                {{ minetokenExchange.price || 0 }}
               </p>
               <p class="token-name">
                 现价
@@ -121,37 +121,25 @@
           粉丝币交易所
         </router-link>
 
-        <div class="about">
+        <div v-if="resourcesWebsites.length !== 0" class="about">
           <h2 class="token-title">
             相关网站
           </h2>
-
           <ul>
-            <li>
-              <a href="">https://materialmaterialmaterialmaterial.io/</a>
-            </li>
-            <li>
-              <a href="">https://material.io/</a>
-            </li>
-            <li>
-              <a href="">https://material.io/</a>
-            </li>
-            <li>
-              <a href="">https://material.io/</a>
+            <li v-for="(item, index) in resourcesWebsites" :key="index">
+              <a href="">{{ item }}</a>
             </li>
           </ul>
         </div>
 
-        <div class="social">
+        <div v-if="resourcesSocialss.length !== 0" class="social">
           <h2 class="token-title">
             社交账号
           </h2>
 
           <div class="social-btn">
-            <div v-for="item in 14" :key="item" class="circle">
-              <div class="circle-btn">
-                {{ item }}
-              </div>
+            <div v-for="(item, index) in resourcesSocialss" :key="index" class="circle">
+              <socialIcon :show-tooltip="true" :icon="item.type" :content="item.content" />
             </div>
           </div>
         </div>
@@ -172,12 +160,6 @@
     </el-row>
     <Share
       v-model="shareModalShow"
-      :article="{
-        ...article,
-        time: '1111',
-        content: '11111',
-        avatar
-      }"
     />
   </div>
 </template>
@@ -185,11 +167,15 @@
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
+import socialIcon from '@/components/social_icon/index.vue'
+import socialTypes from '@/config/social_types.js'
+
 export default {
   components: {
     avatar,
     mineTokensNav,
-    Share
+    Share,
+    socialIcon
   },
   data() {
     return {
@@ -198,12 +184,13 @@ export default {
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
-      resources: Object.create(null)
+      resourcesSocialss: [],
+      resourcesWebsites: []
     }
   },
   computed: {
     logo() {
-      if (!this.minetokenToken) return ''
+      if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
     }
   },
@@ -215,9 +202,9 @@ export default {
     async mimetokenId(id) {
       await this.$API.mimetokenId(id).then(res => {
         if (res.code === 0) {
-          this.minetokenToken = res.data.token
-          this.minetokenUser = res.data.user
-          this.minetokenExchange = res.data.exchange
+          this.minetokenToken = res.data.token || Object.create(null)
+          this.minetokenUser = res.data.user || Object.create(null)
+          this.minetokenExchange = res.data.exchange || Object.create(null)
         } else {
           this.$message.success(res.message)
         }
@@ -229,7 +216,10 @@ export default {
     async minetokenGetResources(id) {
       await this.$API.minetokenGetResources(id).then(res => {
         if (res.code === 0) {
-          this.resources = res.data
+          const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
+          const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+          this.resourcesSocialss = socialFilterEmpty
+          this.resourcesWebsites = res.data.websites
         } else {
           this.$message.success(res.message)
         }
@@ -382,6 +372,7 @@ export default {
       font-size:16px;
       color:@black;
       line-height:22px;
+      text-decoration: underline;
     }
   }
 }
