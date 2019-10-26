@@ -190,7 +190,7 @@ export default {
   data() {
     return {
       shareModalShow: false,
-      tokenWidget: `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
+      tokenWidget: `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
