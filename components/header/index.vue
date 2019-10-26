@@ -3,7 +3,7 @@
   <header class="header home-fixed">
     <div class="home-head">
       <div class="head-flex">
-        <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
+        <a class="logo-link" href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
         <router-link
           v-for="(item, index) in nav"
@@ -333,14 +333,17 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+  .logo-link {
+    margin: 0 20px 0 0;
+  }
   .logo {
-    width: 205px;
+    width: 190px;
   }
   .create {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    margin: 0 40px 0 0;
+    margin: 0 20px 0 0;
     color: #000;
   }
   &-avatar {
@@ -373,9 +376,7 @@ export default {
     text-align: center;
     transition: all 0.18s ease-in-out;
     text-decoration: none;
-    &:nth-child(1) {
-      margin-left: 20px;
-    }
+    display: inline-block;
     &.active {
       color: #000 !important;
     }
