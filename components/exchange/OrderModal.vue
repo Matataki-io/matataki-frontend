@@ -66,10 +66,13 @@
           </div>
           <div>
             <span class="money-label">
-            <el-tooltip  placement="bottom" effect="light">
-              <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
-              <i class="el-icon-question" />
-            </el-tooltip>合计：</span>  <span class="money">{{input}} CNY</span></div>
+              <el-tooltip  placement="bottom" effect="light">
+                <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
+                <i class="el-icon-question" />
+              </el-tooltip>
+              合计：
+            </span>
+            <span class="money">{{input}} CNY</span></div>
         </div>
         <div class="flexBox padding20 bgGray">
           <div><el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox></div>
