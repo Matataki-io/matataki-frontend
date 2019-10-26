@@ -4,12 +4,12 @@
       <h1>
         {{ isPost ? '申请发行粉丝币' : '编辑粉丝币' }}
       </h1>
-      <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝币?" placement="top-start">
+      <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
-      </el-tooltip>
+      </el-tooltip> -->
 
       <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是粉丝币?</a>
       &nbsp;

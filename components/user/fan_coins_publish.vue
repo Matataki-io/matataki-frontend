@@ -4,12 +4,12 @@
       <h1>
         申请发行粉丝币
       </h1>
-      <el-tooltip effect="dark" content="如何发行你的粉丝币?" placement="top-start">
+      <!-- <el-tooltip effect="dark" content="如何发行你的粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
-      </el-tooltip>
+      </el-tooltip> -->
       <a class="help-link" target="_blank" href="">如何发行你的粉丝币?</a>
     </div>
 

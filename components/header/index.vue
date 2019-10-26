@@ -5,24 +5,44 @@
       <div class="head-flex">
         <a class="logo-link" href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
-        <router-link
-          v-for="(item, index) in nav"
-          :key="index"
-          class="nav"
-          :style="customizeHeaderTextColorComputed"
-          :class="$route.name === item.url && 'active'"
-          :to="{name: item.url}"
-        >
-          {{ item.title }}
-          <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
-        </router-link>
-        <a
+        <template v-for="(item, index) in nav">
+          <el-tooltip
+            v-if="item.url === 'exchange'"
+            :key="index"
+            class="item"
+            effect="dark"
+            content="粉丝币交易所"
+            placement="bottom"
+          >
+            <router-link
+              class="nav"
+              :style="customizeHeaderTextColorComputed"
+              :class="$route.name === item.url && 'active'"
+              :to="{name: item.url}"
+            >
+              {{ item.title }}
+              <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
+            </router-link>
+          </el-tooltip>
+          <router-link
+            v-else
+            :key="index"
+            class="nav"
+            :style="customizeHeaderTextColorComputed"
+            :class="$route.name === item.url && 'active'"
+            :to="{name: item.url}"
+          >
+            {{ item.title }}
+            <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
+          </router-link>
+        </template>
+        <!-- <a
           class="nav"
           href="javascript:;"
           @click="writeP"
         >
-          一键导入
-        </a>
+          导入文章
+        </a> -->
       </div>
 
       <div class="head-flex">
@@ -63,13 +83,15 @@
           <point slot="reference" />
         </el-popover>
 
-        <!-- v-if="isLogined" -->
-        <svg-icon
-          class="create"
-          icon-class="write"
-          :style="customizeHeaderIconColorComputed"
-          @click="writeP"
-        />
+        <el-tooltip class="item" effect="dark" content="导入文章" placement="bottom">
+          <!-- v-if="isLogined" -->
+          <svg-icon
+            class="create"
+            icon-class="write"
+            :style="customizeHeaderIconColorComputed"
+            @click="writeP"
+          />
+        </el-tooltip>
         <!-- <span v-else class="integral">新用户登录领100积分</span> -->
 
         <el-dropdown
@@ -92,7 +114,7 @@
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link class="link" :to="{name: 'tokens' }">
-                粉丝币
+                我的粉丝币
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
