@@ -274,8 +274,6 @@ export default {
 
               this.minetokenGetResources(token.id)
             }
-          } else {
-            this.$message.error('没有发币')
           }
         } else {
           this.$message.error(res.message)

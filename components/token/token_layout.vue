@@ -88,7 +88,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ change }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ change }}</sub>
               </p>
               <p class="token-name">
                 24h涨跌幅

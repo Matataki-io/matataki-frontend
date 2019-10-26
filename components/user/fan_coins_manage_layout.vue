@@ -56,17 +56,18 @@
     <h2 class="token-title">
       相关网站
     </h2>
-    <ul class="about-nav">
+    <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
       <li v-for="(item, index) in resourcesWebsites" :key="index">
         <a href="">{{ item }}</a>
       </li>
     </ul>
+    <span v-else class="not">暂无</span>
 
     <h2 class="token-title">
       社交账号
     </h2>
 
-    <div class="fl social">
+    <div v-if="resourcesSocialss.length !== 0" class="fl social">
       <div class="social-btn">
         <socialIcon
           v-for="(item, index) in resourcesSocialss"
@@ -77,6 +78,7 @@
         />
       </div>
     </div>
+    <span v-else class="not">暂无</span>
 
     <h2 class="token-title">
       分享挂件
@@ -473,5 +475,12 @@ export default {
 .token-widget {
   width: 400px;
   margin-top: 20px;
+}
+
+.not {
+  color: #333;
+  font-style: 14px;
+  padding-top: 20px;
+  display: inline-block;
 }
 </style>
