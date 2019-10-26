@@ -367,6 +367,9 @@ export default {
         .then(values => {
           // console.log(values)
           this.$message.success(values[0])
+          this.$router.push({
+            name: 'minetoken'
+          })
         }).catch(err => {
           this.$message.error(err)
           console.log(err)
