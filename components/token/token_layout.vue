@@ -97,7 +97,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ price || 0 }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ price || 0 }}<sub>CNY</sub>
               </p>
               <p class="token-name">
                 现价
@@ -348,13 +348,14 @@ export default {
 }
 .total-content {
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .token-data {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 40px;
+  margin: 10px 40px 10px 0;
   &:nth-last-child(1) {
     margin-right: 0;
   }
