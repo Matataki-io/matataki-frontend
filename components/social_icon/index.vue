@@ -1,5 +1,5 @@
 <template>
-  <div class="social-icon">
+  <div class="social-icon" :class="icon">
     <el-tooltip v-if="showTooltip" effect="dark" :content="content" placement="top">
       <a v-if="link" :href="link + '/' + content" target="_blank">
         <svg-icon :icon-class="iconName" />
@@ -119,6 +119,29 @@ export default {
   align-items: center;
   font-size: 24px;
   color: @white;
+  &:hover {
+    &.QQ {
+      background: #5EAADE;
+    }
+        &.Wechat {
+      background: #00C800;
+    }
+        &.Weibo {
+      background: #FF003D;
+    }
+        &.Telegram {
+      background: #32A8E5;
+    }
+        &.Twitter {
+      background: #5EAADE;
+    }
+        &.Facebook {
+      background: #3B5998;
+    }
+        &.Github {
+      background: #161614;
+    }
+  }
   a {
     color: @white;
     outline: none;
