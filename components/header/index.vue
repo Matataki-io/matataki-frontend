@@ -3,9 +3,9 @@
   <header class="header home-fixed">
     <div class="home-head">
       <div class="head-flex">
-        <a href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
+        <a class="logo-link" href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
         <!-- nav -->
-        <n-link
+        <router-link
           v-for="(item, index) in nav"
           :key="index"
           class="nav"
@@ -14,17 +14,15 @@
           :to="{name: item.url}"
         >
           {{ item.title }}
-        </n-link>
-
-        <router-link
-          class="nav exchange"
-          :class="$route.name === 'exchange' && 'active'"
-          :to="{name: 'exchange'}"
-        >
-          Lab
-          <sup style="color: orange;">beta</sup>
+          <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
         </router-link>
-        <!-- <span class="new">new</span> -->
+        <a
+          class="nav"
+          href="javascript:;"
+          @click="writeP"
+        >
+          一键导入
+        </a>
       </div>
 
       <div class="head-flex">
@@ -183,11 +181,23 @@ export default {
       return [
         {
           title: this.$t('home.navArticle'),
-          url: 'article'
+          url: 'article',
+          sup: ''
         },
         {
           title: this.$t('home.navShop'),
-          url: 'shop'
+          url: 'shop',
+          sup: ''
+        },
+        {
+          title: '粉丝币',
+          url: 'token',
+          sup: ''
+        },
+        {
+          title: 'Lab',
+          url: 'exchange',
+          sup: 'beta'
         }
       ]
     },
@@ -323,14 +333,17 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+  .logo-link {
+    margin: 0 20px 0 0;
+  }
   .logo {
-    width: 205px;
+    width: 190px;
   }
   .create {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    margin: 0 40px 0 0;
+    margin: 0 20px 0 0;
     color: #000;
   }
   &-avatar {
@@ -357,14 +370,13 @@ export default {
     text-decoration: none;
   }
   .nav {
-    font-size: 20px;
-    color: rgba(178, 178, 178, 1);
-    margin: 0 0 0 40px;
-    position: relative;
+    font-size: 18px;
+    color: @gray;
+    margin: 0 14px;
     text-align: center;
     transition: all 0.18s ease-in-out;
-    font-weight: bold;
     text-decoration: none;
+    display: inline-block;
     &.active {
       color: #000 !important;
     }

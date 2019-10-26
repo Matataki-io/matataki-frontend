@@ -257,7 +257,7 @@ export default {
 .integral-icon {
   width: 26px;
   height: 26px;
-  margin: 0 40px;
+  margin: 0 20px;
   cursor: pointer;
   color: #000;
 }

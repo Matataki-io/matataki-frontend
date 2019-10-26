@@ -10,20 +10,20 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="widgetModalStatus = 1">
+        <!-- <div class="widget-button" @click="widgetModalStatus = 1">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/share.svg" alt="widget">
           </div>
           <p>{{ $t('p.createLongImg') }}</p>
-        </div>
-        <div class="widget-button" @click="copyCode(clipboard)">
+        </div> -->
+        <div class="widget-button" @click="copyCode(shareLink)">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/link.svg" alt="link">
           </div>
           <p>{{ $t('p.copyInviteLink') }}</p>
         </div>
       </div>
-      <SocialShare v-if="socialShow" :article="article" />
+      <SocialShare :img="img" :title="shareLink" />
       <wechat style="margin: 60px 0 0 0;" :link="link" />
     </div>
     <div v-if="widgetModalStatus === 1" class="padding2">
@@ -33,57 +33,52 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { mapGetters } from 'vuex'
-// import QRCodeDialog from '@/components/modal/QRCodeDialog'
-import SocialShare from '@/components/modal/SocialShare'
-import wechat from "@/components/scan/wechat.vue";
+import SocialShare from '@/components/modal/social_share'
+import wechat from '@/components/scan/wechat.vue'
 export default {
-  name: 'ShareModal',
   components: {
-    // QRCodeDialog,
     SocialShare,
     wechat
   },
   props: {
-    article: Object,
-    value: {
+    shareModalShow: {
       type: Boolean,
       default: false
+    },
+    img: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       showModal: false,
       // 0 默认 1
-      widgetModalStatus: 0,
-      oldWidgetModalStatus: 0,
-      socialShow: false
+      widgetModalStatus: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
-    clipboard() {
+    shareLink() {
       return `我在瞬MATATAKI发现了粉丝币「DAO」www.matataki.io/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`
     },
     link() {
       if (process.browser) return window.location.href
-      else process.env.VUE_APP_URL
+      else return process.env.VUE_APP_URL
     },
     id() {
       return this.article.id
-    },
+    }
   },
   watch: {
     showModal(val) {
       this.$emit('input', val)
     },
-    value(val) {
+    shareModalShow(val) {
+      console.log(val)
       this.showModal = val
     }
   },
   mounted() {
-    this.socialShow = true
   },
   methods: {
     copyCode(code) {
@@ -196,7 +191,6 @@ export default {
   }
 }
 
-
 // 公用输入框
 .widget-textarea {
   background: #F1F1F1;
@@ -251,7 +245,6 @@ p {
   overflow: hidden;
 }
 </style>
-
 
 <style lang="less">
 .p-share .el-dialog__header,

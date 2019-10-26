@@ -37,9 +37,14 @@
             </div>
           </div>
         </div>
-        <el-button size="small" class="share-btn" icon="el-icon-share">
+        <el-button size="small" class="share-btn" icon="el-icon-share" @click="shareModalShow = true">
           分享
         </el-button>
+        <a
+          class="help-link"
+          href="https://www.matataki.io/p/977"
+          target="_blank"
+        >什么是粉丝币?</a>
       </div>
     </div>
 
@@ -88,7 +93,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ change }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ change }}</sub>
               </p>
               <p class="token-name">
                 24h涨跌幅
@@ -161,7 +166,9 @@
       </el-col>
     </el-row>
     <Share
-      v-model="shareModalShow"
+      :share-modal-show="shareModalShow"
+      :img="logo"
+      @input="val => shareModalShow = val"
     />
   </div>
 </template>
@@ -214,14 +221,13 @@ export default {
     },
     change() {
       if (this.minetokenExchange.change_24h) {
-        console.log(this.minetokenExchange.change_24h)
-        return this.minetokenExchange.change_24h <= 0 ? '0%' : (this.minetokenExchange.change_24h.toFixed(2)) + '%'
-      }
-      return '0%'
+        return (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+      } else return '0%'
     },
     price() {
-      const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+      // const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
+      // return this.$publishMethods.formatDecimal(tokenamount, 4)
+      return this.minetokenExchange.price || 0
     }
 
   },
@@ -361,7 +367,7 @@ export default {
   }
 }
 .token-num {
-  font-size:24px;
+  font-size:20px;
   font-weight:bold;
   color: @purpleDark;
   line-height:28px;
@@ -452,5 +458,14 @@ export default {
   font-style: 14px;
   padding-top: 20px;
   display: inline-block;
+}
+
+.help-link {
+  font-size: 14px;
+  color: @gray;
+  text-decoration: underline;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 </style>

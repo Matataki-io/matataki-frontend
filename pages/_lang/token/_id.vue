@@ -5,7 +5,7 @@
     </div>
     <user-pagination
       v-show="!loading"
-      :url-replace="$route.params.id"
+      :url-replace="$route.params.id + ''"
       :current-page="currentPage"
       :params="pull.params"
       :api-url="pull.apiUrl"
