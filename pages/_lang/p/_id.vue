@@ -83,7 +83,8 @@
                 :disabled="payBtnDisabled"
                 type="primary"
                 size="small"
-                @click="wxpay">
+                @click="wxpay"
+              >
                 微信支付
               </el-button>
               <router-link
@@ -99,7 +100,7 @@
       </article>
 
       <!-- sidebar -->
-       <!-- v-show="navShow" -->
+      <!-- v-show="navShow" -->
       <div class="sidebar">
         <div v-if="isProduct" class="article-btn" @click="buy">
           <div class="icon-container yellow">
@@ -507,7 +508,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    console.log('info', info)
+    // console.log('info', info)
 
     // 判断是否为付费阅读文章
     if (info.data.tokens && info.data.tokens.length !== 0) {
