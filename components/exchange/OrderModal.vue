@@ -245,10 +245,10 @@ export default {
     },
     // 是否使用余额修改
     useBalanceChange(v) {
-      this.createOrder(false);
+      this.createOrder();
       clearInterval(this.timer)
     },
-    createOrder(needCreate = true) {
+    createOrder() {
       this.loading = true
       const { input, inputToken, output, outputToken, limitValue, type } = this.form
       let requestParams = {
@@ -263,9 +263,9 @@ export default {
       }
       console.log(requestParams);
       // 添加out_trade_no参数
-      if (!needCreate) {
-        requestParams.out_trade_no = this.order.trade_no
-      }
+      // if (!needCreate) {
+      //   requestParams.out_trade_no = this.order.trade_no
+      // }
       if (type === 'add') {
         requestParams = {
           ...requestParams,
