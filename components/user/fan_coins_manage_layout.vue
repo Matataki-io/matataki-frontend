@@ -47,14 +47,14 @@
       简介
     </h2>
     <p class="token-sub">
-      {{ tokenDetailData.token.brief }}
+      {{ tokenDetailData.token.brief || '暂无' }}
     </p>
 
     <h2 class="token-title">
       介绍
     </h2>
     <p class="token-sub">
-      {{ tokenDetailData.token.introduction }}
+      {{ tokenDetailData.token.introduction || '暂无' }}
     </p>
 
     <h2 class="token-title">
