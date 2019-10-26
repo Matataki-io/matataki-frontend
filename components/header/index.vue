@@ -337,7 +337,7 @@ export default {
     margin: 0 20px 0 0;
   }
   .logo {
-    width: 190px;
+    width: 180px;
   }
   .create {
     width: 24px;
@@ -385,11 +385,12 @@ export default {
 
 .search {
   position: relative;
-  width:248px;
+  width:200px;
   background:rgba(241,241,241,1);
   border-radius:4px;
   display: flex;
   box-sizing: border-box;
+  margin: 0 10px 0 0;
   .input {
     flex: 1;
     padding: 11px 40px 11px 10px;

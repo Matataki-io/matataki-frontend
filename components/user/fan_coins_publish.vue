@@ -188,7 +188,7 @@ export default {
   }
   .help-link {
     font-size:14px;
-    color:rgba(178,178,178,1);
+    color:#868686;
     line-height:20px;
     text-decoration: underline;
   }

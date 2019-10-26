@@ -41,7 +41,7 @@
           </div>
         </nav>
         <a
-          class="link"
+          class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
         >什么是粉丝币?</a>

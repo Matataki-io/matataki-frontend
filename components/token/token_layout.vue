@@ -462,7 +462,7 @@ export default {
 
 .help-link {
   font-size: 14px;
-  color: @gray;
+  color: #868686;
   text-decoration: underline;
   position: absolute;
   right: 20px;

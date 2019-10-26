@@ -432,7 +432,7 @@ export default {
   }
   .help-link {
     font-size:14px;
-    color: @gray;
+    color: #868686;
     line-height:20px;
     text-decoration: underline;
     margin-left: 10px;
