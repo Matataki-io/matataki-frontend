@@ -18,7 +18,11 @@
             icon-class="help"
           />
         </el-tooltip>
-        <a class="help-link" target="_blank" href="">如何管理你的粉丝币?</a>
+        <a
+          class="help-link"
+          target="_blank"
+          href="https://www.matataki.io/p/979"
+        >如何管理你的粉丝币?</a>
       </div>
 
       <div>
@@ -366,6 +370,7 @@ export default {
     color:rgba(178,178,178,1);
     line-height:20px;
     text-decoration: underline;
+    margin-left: 10px;
   }
 }
 

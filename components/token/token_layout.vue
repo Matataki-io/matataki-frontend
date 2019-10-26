@@ -40,6 +40,11 @@
         <el-button size="small" class="share-btn" icon="el-icon-share" @click="shareModalShow = true">
           分享
         </el-button>
+        <a
+          class="help-link"
+          href="https://www.matataki.io/p/977"
+          target="_blank"
+        >什么是粉丝币?</a>
       </div>
     </div>
 
@@ -454,5 +459,14 @@ export default {
   font-style: 14px;
   padding-top: 20px;
   display: inline-block;
+}
+
+.help-link {
+  font-size: 14px;
+  color: @gray;
+  text-decoration: underline;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 </style>

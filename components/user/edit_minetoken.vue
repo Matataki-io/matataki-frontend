@@ -4,13 +4,16 @@
       <h1>
         {{ isPost ? '申请发行粉丝币' : '编辑粉丝币' }}
       </h1>
-      <el-tooltip effect="dark" content="如何发行你的粉丝币?" placement="top-start">
+      <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝币?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
       </el-tooltip>
-      <a class="help-link" target="_blank" href="">如何发行你的粉丝币?</a>
+
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是粉丝币?</a>
+      &nbsp;
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行粉丝币?</a>
     </div>
 
     <el-form ref="form" :rules="rules" class="input-form" :model="form" label-width="80px">
@@ -101,7 +104,7 @@
       </el-form-item>
 
       <el-form-item style="margin:40px 0 0 0;">
-        <el-checkbox v-model="form.agree">
+        <el-checkbox v-if="isPost" v-model="form.agree">
           我声明粉丝币为本人自愿发行，由本人承担一切法律责任
         </el-checkbox>
         <el-button :disabled="!form.agree" type="primary" class="publish-btn" @click="submitForm('form')">
@@ -253,6 +256,8 @@ export default {
   mounted() {
     if (!getCookie('ACCESS_TOKEN')) return this.$router.go(-1)
     this.tokenDetail()
+
+    if (!this.isPost) this.form.agree = true
   },
   methods: {
     async tokenDetail() {
@@ -427,9 +432,10 @@ export default {
   }
   .help-link {
     font-size:14px;
-    color:rgba(178,178,178,1);
+    color: @gray;
     line-height:20px;
     text-decoration: underline;
+    margin-left: 10px;
   }
 }
 .coina-cover {

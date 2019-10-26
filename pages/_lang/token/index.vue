@@ -31,14 +31,21 @@
     </div> -->
 
     <div class="tokens-list">
-      <nav class="tokens-list-nav">
-        <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
-          发布顺序
-        </div>
-        <div :class="sort === 'symbol' && 'active'" @click="toggleSort('symbol')">
-          字母顺序
-        </div>
-      </nav>
+      <div class="fl jsb">
+        <nav class="tokens-list-nav">
+          <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
+            发布顺序
+          </div>
+          <div :class="sort === 'symbol' && 'active'" @click="toggleSort('symbol')">
+            字母顺序
+          </div>
+        </nav>
+        <a
+          class="link"
+          href="https://www.matataki.io/p/977"
+          target="_blank"
+        >什么是粉丝币?</a>
+      </div>
 
       <div v-loading="loading" class="card-container">
         <no-content-prompt :list="pull.list">
