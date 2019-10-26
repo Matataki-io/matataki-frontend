@@ -3,6 +3,7 @@
     <g-header />
     <div class="outer-container">
       <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner">
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/981">如何交易粉丝币?</a>
       <div class="p-w">
         <el-tabs type="border-card">
           <el-tab-pane label="交易">
@@ -92,6 +93,7 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 10px;
+    margin-bottom: 30px;
   }
   .el-tabs__item {
     display: flex;
@@ -144,5 +146,14 @@ export default {
 .p-w  {
   width: @width;
   margin: 20px auto 0 auto;
+}
+.help-link {
+  font-size: 14px;
+  color: @gray;
+  text-decoration: underline;
+  position: absolute;
+  right: 80px;
+  top: 320px;
+  z-index: 10;
 }
 </style>
