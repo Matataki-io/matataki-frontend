@@ -5,6 +5,7 @@ import utils from '@/utils/utils'
 
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
+import { replaceStr } from '@/utils/reg'
 
 export default {
   /**
@@ -84,14 +85,25 @@ export default {
    * BasePull 分页组件
    * @param {Object} param params参数
    */
-  async getBackendData({ url, params }) {
-    const pullApiUrl = paginationUrl
-    return request({
-      url: pullApiUrl[url],
-      method: 'get',
-      noLoading: true,
-      params
-    })
+  async getBackendData({ url, params, urlReplace }) {
+    if (!urlReplace) {
+      const pullApiUrl = paginationUrl
+      return request({
+        url: pullApiUrl[url],
+        method: 'get',
+        noLoading: true,
+        params
+      })
+    } else {
+      const pullApiUrl = paginationUrl
+      let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
+      return request({
+        url: urlReg,
+        method: 'get',
+        noLoading: true,
+        params
+      })
+      }
   },
   async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
     return request.post(`/login/captcha?email=${email}`, {

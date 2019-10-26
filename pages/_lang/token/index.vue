@@ -31,14 +31,14 @@
     </div> -->
 
     <div class="tokens-list">
-      <!-- <nav class="tokens-list-nav">
-        <router-link class="active" :to="{ name: 'token' }">
+      <nav class="tokens-list-nav">
+        <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
           发布顺序
-        </router-link>
-        <router-link :to="{ name: 'token' }">
+        </div>
+        <div :class="sort === 'symbol' && 'active'" @click="toggleSort('symbol')">
           字母顺序
-        </router-link>
-      </nav> -->
+        </div>
+      </nav>
 
       <div v-loading="loading" class="card-container">
         <no-content-prompt :list="pull.list">
@@ -73,9 +73,11 @@ export default {
   },
   data() {
     return {
+      sort: 'id',
       pull: {
         params: {
-          pagesize: 10
+          pagesize: 10,
+          sort: this.$route.params.sort || 'id-desc'
         },
         apiUrl: 'tokenAll',
         list: []
@@ -105,6 +107,21 @@ export default {
       this.$router.push({
         query: {
           page: i
+        }
+      })
+    },
+    toggleSort(name) {
+      if (name === 'id') {
+        this.sort = 'id'
+        this.pull.params.sort = this.pull.params.sort === 'id-desc' ? 'id-asc' : 'id-desc'
+      } else {
+        this.sort = 'symbol'
+        this.pull.params.sort = this.pull.params.sort === 'symbol-desc' ? 'symbol-asc' : 'symbol-desc'
+      }
+      this.$router.push({
+        query: {
+          sort: this.pull.params.sort,
+          page: this.currentPage
         }
       })
     }

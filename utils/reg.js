@@ -26,3 +26,9 @@ export const extractChar = (str, left, right) => {
   const pattern = new RegExp(`(?<=${left}).*?(?=${right})`)
   return str.match(pattern)
 }
+
+// 替换两个字符之间的字符
+export const replaceStr = (str, left, right, content) => {
+  const pattern = new RegExp(`(?=${left}).*?(?=${right})`)
+  return str.replace(pattern, content)
+}

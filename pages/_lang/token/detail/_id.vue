@@ -5,6 +5,7 @@
     </div>
     <user-pagination
       v-show="!loading"
+      :url-replace="$route.params.id"
       :current-page="currentPage"
       :params="pull.params"
       :api-url="pull.apiUrl"
@@ -34,7 +35,7 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'tokenTokenLogs',
+        apiUrl: 'tokenIdTransactions',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
