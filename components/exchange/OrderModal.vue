@@ -65,19 +65,19 @@
             预期价格波动：1%
           </div>
           <div>
+            <span class="money-label">
             <el-tooltip  placement="bottom" effect="light">
               <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
               <i class="el-icon-question" />
-            </el-tooltip>
-            合计：<span class="money">{{input}} CNY</span></div>
+            </el-tooltip>合计：</span>  <span class="money">{{input}} CNY</span></div>
         </div>
         <div class="flexBox padding20 bgGray">
           <div><el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox></div>
-          <div>抵扣：<span class="money">{{deduction}} CNY</span></div>
+          <div><span class="money-label">抵扣：</span><span class="money">{{deduction.toFixed(2)}} CNY</span></div>
         </div>
         <div class="flexBox padding20">
           <div></div>
-          <div>应付：<span class="money">{{needPay}} CNY</span></div>
+          <div><span class="money-label">应付：</span><span class="money">{{needPay.toFixed(2)}} CNY</span></div>
         </div>
       </div>
       <QRCode v-if="needPay > 0" :pay-link="order.code_url"/>
@@ -372,10 +372,18 @@ export default {
   }
   .money {
     color: @purpleDark;
+    display: inline-block;
+    text-align: right;
+    width: 70px;
   }
   .payBtnBox {
     padding: 20px 0;
     text-align: center;
+  }
+  .money-label {
+    display: inline-block;
+    text-align: right;
+    width: 60px;
   }
 }
 </style>
