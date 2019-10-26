@@ -99,7 +99,8 @@
       </article>
 
       <!-- sidebar -->
-      <div v-show="navShow" class="sidebar">
+       <!-- v-show="navShow" -->
+      <div class="sidebar">
         <div v-if="isProduct" class="article-btn" @click="buy">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />

@@ -16,9 +16,9 @@
           </div>
           <p>{{ $t('p.createLongImg') }}</p>
         </div> -->
-        <div class="widget-button" @click="copyCode(shareLink)">
-          <div class="widget-button-img">
-            <img src="@/assets/img/widget/link.svg" alt="link">
+        <div class="widget-button">
+          <div @click="copyCode(shareLink)">
+            <img class="token-share" src="@/assets/img/token_share.png" alt="link">
           </div>
           <p>{{ $t('p.copyInviteLink') }}</p>
         </div>
@@ -107,7 +107,7 @@ export default {
 
 .widget-content-button {
   display: flex;
-  padding: 0 0 40px 0;
+  padding: 40px 0;
   .widget-button {
     flex: 1;
     display: flex;
@@ -116,16 +116,10 @@ export default {
     flex-direction: column;
     margin: 0 8px;
     cursor: pointer;
-    &-img {
-      width: 80px;
-      height: 80px;
-      background-color: #fff;
-      border-radius: 50%;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    p {
+      font-size: 14px;
+      color: #333;
+      margin-top: 20px;
     }
   }
 }
@@ -243,6 +237,10 @@ p {
 .padding2 {
   border-radius: @br10;
   overflow: hidden;
+}
+
+.token-share {
+  width: 46px;
 }
 </style>
 

@@ -139,7 +139,7 @@ export default {
       background: #3B5998;
     }
         &.Github {
-      background: #161614;
+      background: #882592;
     }
   }
   a {
