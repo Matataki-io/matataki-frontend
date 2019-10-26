@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-        <el-button size="small" class="share-btn" icon="el-icon-share">
+        <el-button size="small" class="share-btn" icon="el-icon-share" @click="shareModalShow = true">
           分享
         </el-button>
       </div>
@@ -161,7 +161,9 @@
       </el-col>
     </el-row>
     <Share
-      v-model="shareModalShow"
+      :share-modal-show="shareModalShow"
+      :img="logo"
+      @input="val => shareModalShow = val"
     />
   </div>
 </template>
