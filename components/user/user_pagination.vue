@@ -45,6 +45,11 @@ export default {
     reload: {
       type: Number,
       default: 0
+    },
+    // 需要替换的url
+    urlReplace: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -86,7 +91,7 @@ export default {
 
       // 获取数据
       try {
-        const res = await this.$API.getBackendData({ url, params }, this.needAccessToken)
+        const res = await this.$API.getBackendData({ url, params, urlReplace: this.urlReplace }, this.needAccessToken)
         if (res.code === 0) getDataSuccess(res)
         else getDataFail(res.message)
       } catch (error) { getDataFail() }

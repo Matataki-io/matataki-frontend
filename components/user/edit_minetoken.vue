@@ -234,6 +234,8 @@ export default {
           placeholder: 'Github用户名(不需要完整URL)',
           url: 'https://github.com',
           value: ''
+          // resourcesSocialss: [],
+          // resourcesWebsites: [],
         }
       ]
     }
@@ -269,6 +271,8 @@ export default {
               this.form.brief = token.brief
               this.form.introduction = token.introduction
               this.tokenId = token.id
+
+              this.minetokenGetResources(token.id)
             }
           } else {
             this.$message.error('没有发币')
@@ -331,6 +335,28 @@ export default {
         .then(res => {
           if (res.code === 0) this.minetokenDone(res.data)
           else this.$message.error(res.message)
+        })
+    },
+    async minetokenGetResources(id) {
+      await this.$API.minetokenGetResources(id).then(res => {
+        if (res.code === 0) {
+          const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
+          const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+          // this.resourcesSocialss = socialFilterEmpty
+
+          socialFilterEmpty.map(i => {
+            const index = this.social.findIndex(j => j.symbol === i.type)
+            // ~ 运算符 用于判断index 为 -1的情况 如果index为-1 ~index 等于 0
+            if (~index) this.social[index].value = i.content
+          })
+          // this.resourcesWebsites = res.data.websites
+          this.about = res.data.websites.length > 0 ? res.data.websites : ['']
+        } else {
+          this.$message.success(res.message)
+        }
+      })
+        .catch(err => {
+          console.log(err)
         })
     },
     minetokenDone(data) {

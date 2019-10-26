@@ -61,7 +61,7 @@
           <div class="fl total-content">
             <div class="token-data">
               <p class="token-num">
-                {{ minetokenExchange.total_supply || 0 }}
+                {{ amount }}<sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 发行总量
@@ -70,7 +70,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ minetokenExchange.token_reserve || 0 }}
+                {{ cnyReserve }}<sub>CNY</sub>+{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 流动金池
@@ -79,7 +79,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ minetokenExchange.volume_24h || 0 }}
+                {{ volume }}<sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 24h成交量
@@ -88,7 +88,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ minetokenExchange.change_24h || 0 }}
+                {{ change }}<sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 24h涨跌幅
@@ -97,7 +97,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ minetokenExchange.price || 0 }}
+                {{ price || 0 }}<sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 现价
@@ -121,27 +121,29 @@
           粉丝币交易所
         </router-link>
 
-        <div v-if="resourcesWebsites.length !== 0" class="about">
+        <div class="about">
           <h2 class="token-title">
             相关网站
           </h2>
-          <ul>
+          <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
               <a href="">{{ item }}</a>
             </li>
           </ul>
+          <span v-else class="not">暂无</span>
         </div>
 
-        <div v-if="resourcesSocialss.length !== 0" class="social">
+        <div class="social">
           <h2 class="token-title">
             社交账号
           </h2>
 
-          <div class="social-btn">
+          <div v-if="resourcesSocialss.length !== 0" class="social-btn">
             <div v-for="(item, index) in resourcesSocialss" :key="index" class="circle">
               <socialIcon :show-tooltip="true" :icon="item.type" :content="item.content" />
             </div>
           </div>
+          <span v-else class="not">暂无</span>
         </div>
 
         <div class="share">
@@ -169,6 +171,7 @@ import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types.js'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -192,7 +195,35 @@ export default {
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+    },
+    amount() {
+      const tokenamount = precision(this.minetokenToken.total_supply || 0, 'CNY', this.minetokenToken.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    tokenReserve() {
+      const tokenamount = precision(this.minetokenExchange.token_reserve || 0, 'CNY', this.minetokenToken.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    cnyReserve() {
+      const tokenamount = precision(this.minetokenExchange.cny_reserve || 0, 'CNY', this.minetokenToken.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    volume() {
+      const tokenamount = precision(this.minetokenExchange.volume_24h || 0, 'CNY', this.minetokenToken.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    change() {
+      if (this.minetokenExchange.change_24h) {
+        console.log(this.minetokenExchange.change_24h)
+        return this.minetokenExchange.change_24h <= 0 ? '0%' : (this.minetokenExchange.change_24h.toFixed(2)) + '%'
+      }
+      return '0%'
+    },
+    price() {
+      const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
+
   },
   created() {
     this.mimetokenId(this.$route.params.id)
@@ -413,5 +444,12 @@ export default {
   height: 1px;
   background: #dbdbdb;
   margin: 20px 0;
+}
+
+.not {
+  color: #333;
+  font-style: 14px;
+  padding-top: 20px;
+  display: inline-block;
 }
 </style>
