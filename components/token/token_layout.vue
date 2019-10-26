@@ -221,14 +221,13 @@ export default {
     },
     change() {
       if (this.minetokenExchange.change_24h) {
-        console.log(this.minetokenExchange.change_24h)
-        return this.minetokenExchange.change_24h <= 0 ? '0%' : (this.minetokenExchange.change_24h.toFixed(2)) + '%'
-      }
-      return '0%'
+        return (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+      } else return '0%'
     },
     price() {
-      const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+      // const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
+      // return this.$publishMethods.formatDecimal(tokenamount, 4)
+      return this.minetokenExchange.price || 0
     }
 
   },
@@ -368,7 +367,7 @@ export default {
   }
 }
 .token-num {
-  font-size:24px;
+  font-size:20px;
   font-weight:bold;
   color: @purpleDark;
   line-height:28px;
