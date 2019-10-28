@@ -1,9 +1,9 @@
 <template>
-  <div class="token">
+  <router-link class="token" :to="{name: 'token-id', params: {id : token.id}}">
     <div v-if="logo" class="minetoken">
       <img :src="logo" alt="token-logo">
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
