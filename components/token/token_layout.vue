@@ -22,7 +22,9 @@
             </div>
             <div>
               <p class="token-info-sub">
-                {{ minetokenUser.nickname || minetokenUser.username }}
+                <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
+                  {{ minetokenUser.nickname || minetokenUser.username }}
+                </router-link>
               </p>
             </div>
           </div>
@@ -307,6 +309,9 @@ export default {
 .token-info-sub {
   padding: 0 0 0 10px;
   margin: 0;
+  a {
+    color: @black;
+  }
 }
 .share-btn {
   position: absolute;

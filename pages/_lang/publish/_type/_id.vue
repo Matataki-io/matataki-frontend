@@ -96,7 +96,13 @@
         </el-checkbox>
         <div v-show="readauThority" style="width: 300px;">
           <h3>持币数量</h3>
-          <el-input v-model="readToken" size="small" placeholder="请输入内容" />
+          <el-input
+            v-model="readToken"
+            :min="1"
+            :max="100000000"
+            size="small"
+            placeholder="请输入内容"
+          />
           <h3>持币类型</h3>
           <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
             <el-option
@@ -703,7 +709,7 @@ export default {
 
       if (type === 'draft') {
         if (this.readauThority) {
-          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          if (!(Number(this.readToken) > 0)) return this.$message.warning('数量不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
@@ -722,7 +728,7 @@ export default {
         })
       } else if (type === 'edit') {
         if (this.readauThority) {
-          if (!this.readToken > 0) return this.$message.warning('数量不能小于0')
+          if (!(Number(this.readToken) > 0)) return this.$message.warning('数量不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }

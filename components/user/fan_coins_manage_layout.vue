@@ -12,12 +12,12 @@
             }})
           </h1>
         </div>
-        <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
+        <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
           <svg-icon
             class="help-icon"
             icon-class="help"
           />
-        </el-tooltip>
+        </el-tooltip> -->
         <a
           class="help-link"
           target="_blank"
@@ -26,6 +26,11 @@
       </div>
 
       <div>
+        <router-link :to="{name: 'token-id', params: { id: tokenDetailData.token.id || 0}}">
+          <el-button size="small">
+            详情
+          </el-button>
+        </router-link>
         <router-link :to="{name: 'editminetoken'}">
           <el-button size="small">
             编辑
