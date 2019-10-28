@@ -92,7 +92,7 @@
             @click="writeP"
           />
         </el-tooltip>
-        <el-button style="margin-right: 10px;" @click="$store.commit('importArticle/setImportModal', true)">
+        <el-button style="margin-right: 10px;" @click="postImport">
           导入文章
         </el-button>
         <!-- <span v-else class="integral">新用户登录领100积分</span> -->
@@ -263,6 +263,10 @@ export default {
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
+    postImport() {
+      if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
+      else this.login()
+    },
     writeP() {
       if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
       else this.login()
