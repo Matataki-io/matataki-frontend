@@ -221,7 +221,7 @@
       :from="$route.params.type"
       @toggleDone="allowLeave = true"
     />
-    <articleImport :visible="importVisible" @close="importVisible = false" @importArticle="importArticle" />
+    <articleImport v-model="importVisible" />
     <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
@@ -880,12 +880,6 @@ export default {
         })
       })
       this.tagCards = tagCardsCopy
-    },
-    // 导入文章数据
-    importArticle(data) {
-      this.markdownData = data.content
-      this.title = data.title
-      this.cover = data.cover
     },
     // 关闭原创声明框
     closeStatement(val) {
