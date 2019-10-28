@@ -15,10 +15,10 @@
             label="粉丝币"
           >
             <template slot-scope="scope">
-              <div class="fl ac">
+              <router-link class="fl ac" :to="{name: 'token-id', params: {id: scope.row.token_id}}">
                 <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
                 <span class="scope">{{ scope.row.symbol }}</span>
-              </div>
+              </router-link>
             </template>
           </el-table-column>
           <el-table-column
@@ -26,7 +26,9 @@
             label="名称"
           >
             <template slot-scope="scope">
-              <span class="scope">{{ scope.row.name }}</span>
+              <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}">
+                <span class="scope">{{ scope.row.name }}</span>
+              </router-link>
             </template>
           </el-table-column>
           <el-table-column
