@@ -92,6 +92,9 @@
             @click="writeP"
           />
         </el-tooltip>
+        <el-button style="margin-right: 10px;" @click="$store.commit('importArticle/setImportModal', true)">
+          导入文章
+        </el-button>
         <!-- <span v-else class="integral">新用户登录领100积分</span> -->
 
         <el-dropdown
@@ -189,7 +192,6 @@ export default {
   },
   data() {
     return {
-
       avatar: '',
       searchFcous: false,
       searchInput: this.searchQueryVal,

@@ -18,6 +18,7 @@
     </el-tooltip>
 
     <AuthModal v-model="loginModalShow" />
+    <articleImport v-model="importModalShow" @importArticle="importArticle" />
   </div>
 </template>
 
@@ -25,12 +26,14 @@
 import footer from '~/components/footer/index.vue'
 import AuthModal from '@/components/Auth/index.vue'
 import BackToTop from '@/components/BackToTop'
+import articleImport from '@/components/article_import/index.vue'
 export default {
   name: 'Default',
   components: {
     gFooter: footer,
     AuthModal,
-    BackToTop
+    BackToTop,
+    articleImport
   },
   computed: {
     loginModalShow: {
@@ -39,6 +42,14 @@ export default {
       },
       set(v) {
         this.$store.commit('setLoginModal', v)
+      }
+    },
+    importModalShow: {
+      get() {
+        return this.$store.state.importArticle.importModalShow
+      },
+      set(v) {
+        this.$store.commit('importArticle/setImportModal', v)
       }
     },
     hideBackTop() {
@@ -84,6 +95,8 @@ export default {
     this.$store.dispatch('testLogin')
   },
   methods: {
+    importArticle() {
+    }
   }
 }
 </script>
