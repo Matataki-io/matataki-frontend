@@ -304,6 +304,7 @@ export default {
   flex: 0 0 70px;
   &.bold {
     font-weight: bold;
+    font-size: 24px;
   }
 }
 .token-info-sub {
