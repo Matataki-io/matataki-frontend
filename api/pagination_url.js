@@ -50,5 +50,9 @@ export const paginationUrl = {
   // token明细
   tokenTokenLogs: '/token/tokenlogs',
   // 所有的token 分页
-  tokenAll: 'token/all'
+  tokenAll: 'token/all',
+  // 我持有的流动金
+  liquidityLogs: 'token/liquidityLogs',
+  // 我持有的流动金详情
+  liquidityLogsDetail: 'token/liquidityLogsDetail'
 }

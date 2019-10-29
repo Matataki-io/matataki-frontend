@@ -57,6 +57,7 @@ export default {
     token() {
       return [ // todo 完善路由
         { title: this.$t('user.buycoins'), url: 'tokens', self: false },
+        { title: '持有的流动金', url: 'holdliquidity', self: false },
         { title: this.$t('user.selfcoins'), url: 'minetoken', self: false }
       ]
     },
