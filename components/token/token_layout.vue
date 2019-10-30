@@ -170,6 +170,8 @@
     <Share
       :share-modal-show="shareModalShow"
       :img="logo"
+      :minetoken-token="minetokenToken"
+      :minetoken-user="minetokenUser"
       @input="val => shareModalShow = val"
     />
   </div>

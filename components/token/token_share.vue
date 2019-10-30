@@ -1,21 +1,22 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    width="400px"
+    :width="width"
     :lock-scroll="false"
     custom-class="gray-bg br10 p-share"
     :show-close="false"
-    center
+    :center="widgetModalStatus === 0 ? true : false"
+    :top="widgetModalStatus === 0 ? '15vh' : '20px'"
     @close="change"
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <!-- <div class="widget-button" @click="widgetModalStatus = 1">
+        <div class="widget-button" @click="widgetModalStatus = 1">
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/share.svg" alt="widget">
+            <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget">
           </div>
           <p>{{ $t('p.createLongImg') }}</p>
-        </div> -->
+        </div>
         <div class="widget-button">
           <div @click="copyCode(shareLink)">
             <img class="token-share" src="@/assets/img/token_share.png" alt="link">
@@ -27,20 +28,33 @@
       <wechat style="margin: 60px 0 0 0;" :link="link" />
     </div>
     <div v-if="widgetModalStatus === 1" class="padding2">
-      111
+      <tokenShareCardLayout
+        :minetoken-token="minetokenToken"
+        :minetoken-user="minetokenUser"
+      />
     </div>
   </el-dialog>
 </template>
 
 <script>
+import tokenShareCardLayout from './token_share_card_layout'
 import SocialShare from '@/components/modal/social_share'
 import wechat from '@/components/scan/wechat.vue'
 export default {
   components: {
     SocialShare,
-    wechat
+    wechat,
+    tokenShareCardLayout
   },
   props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+    minetokenUser: {
+      type: Object,
+      required: true
+    },
     shareModalShow: {
       type: Boolean,
       default: false
@@ -53,13 +67,16 @@ export default {
   data() {
     return {
       showModal: false,
-      // 0 默认 1
+      // 0 默认 1 widget
       widgetModalStatus: 0
     }
   },
   computed: {
+    width() {
+      return this.widgetModalStatus === 0 ? '400px' : '800px'
+    },
     shareLink() {
-      return `我在瞬MATATAKI发现了粉丝币「DAO」www.matataki.io/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`
+      return `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`
     },
     link() {
       if (process.browser) return window.location.href
@@ -71,6 +88,8 @@ export default {
   },
   watch: {
     showModal(val) {
+      if (val) document.querySelector('body').style.overflow = 'hidden'
+      else document.querySelector('body').style.overflow = ''
       this.$emit('input', val)
     },
     shareModalShow(val) {
@@ -241,6 +260,10 @@ p {
 
 .token-share {
   width: 46px;
+}
+
+.token-share-card {
+  width: 51px;
 }
 </style>
 
