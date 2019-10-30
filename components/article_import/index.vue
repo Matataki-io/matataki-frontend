@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="dialogVisible"
+    :visible.sync="visible"
     width="460px"
     :show-close="false"
     :close-on-click-modal="false"
@@ -21,7 +21,7 @@
       </el-checkbox>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="closeDialog">
+      <el-button @click="visible = false">
         {{ $t('cancel') }}
       </el-button>
       <el-button :loading="loading" type="primary" :disabled="!statement" @click="importFunc">
@@ -35,28 +35,28 @@ import { strTrim, internetUrl } from '@/utils/reg'
 
 export default {
   props: {
-    visible: {
+    value: {
       type: Boolean,
-      required: true
+      default: false
     }
   },
   data() {
     return {
-      dialogVisible: this.visible,
+      visible: false,
       url: '',
       statement: false,
       loading: false
     }
   },
   watch: {
-    visible(newVal) {
-      this.dialogVisible = newVal
+    visible(val) {
+      this.$emit('input', val)
+    },
+    value(val) {
+      this.visible = val
     }
   },
   methods: {
-    closeDialog() {
-      this.dialogVisible = false
-    },
     async importFunc() {
       const url = strTrim(this.url)
       if (!internetUrl(url)) return this.$message.error(this.$t('p.importAddressError'))
@@ -67,10 +67,35 @@ export default {
         this.$message.success(this.$t('p.importSuccess'))
         const templateLink = `<br />${this.$t('p.importAddress')}[${url}](${url})`
         res.data.content += templateLink
-        this.$emit('importArticle', res.data)
+        const { title, content, cover } = res.data
+        this.createDraft({
+          title, content, cover
+        })
+        this.visible = false
+        // this.$emit('importArticle', res.data)
       } else this.$message.error(this.$t('p.importError'))
       this.loading = false
-      this.closeDialog()
+    },
+    async createDraft(article) {
+      const response = await this.$API.createDraft({
+        ...article,
+        commentPayPoint: 1,
+        fissionFactor: 2000,
+        is_original: 0,
+        tags: ''
+      }).then(res => {
+        if (res.code === 0) {
+          this.$router.push({
+            name: 'publish-type-id',
+            params: {
+              type: 'draft',
+              id: res.data
+            }
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
