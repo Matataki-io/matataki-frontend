@@ -118,6 +118,7 @@
     </div>
     <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
+    <TradeLog />
   </div>
 </template>
 
@@ -126,13 +127,15 @@ import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
+import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from './consts.js'
 import utils from '@/utils/utils'
 
 export default {
   components: {
     OrderModal,
-    TokenListModal
+    TokenListModal,
+    TradeLog
   },
   data() {
     return {
