@@ -249,7 +249,7 @@ export default {
       } else return ''
     },
     tokenWidget() {
-      return `<iframe width="100%" height="200px" src='https://test.smartsignature.io/widget/token/?id=${this.tokenId || 0}' frameborder=0></iframe>`
+      return `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.tokenId || 0}' frameborder=0></iframe>`
     }
   },
   created() {
