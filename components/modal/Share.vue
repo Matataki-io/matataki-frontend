@@ -184,6 +184,8 @@ export default {
   },
   watch: {
     showModal(val) {
+      if (val) document.querySelector('body').style.overflow = 'hidden'
+      else document.querySelector('body').style.overflow = ''
       this.$emit('input', val)
     },
     value(val) {
