@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'

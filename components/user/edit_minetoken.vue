@@ -121,7 +121,7 @@ import { toPrecision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 
 import socialIcon from '@/components/social_icon/index.vue'
-import socialTypes from '@/config/social_types.js'
+import socialTypes from '@/config/social_types'
 export default {
   components: {
     imgUpload,
