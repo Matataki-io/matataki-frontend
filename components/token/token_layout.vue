@@ -104,7 +104,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ price || 0 }}<sub>CNY</sub>
+                {{ price }}<sub>CNY</sub>
               </p>
               <p class="token-name">
                 现价
