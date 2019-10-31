@@ -39,7 +39,7 @@ export default {
   profile: '简介',
   done: '完成',
   avatar: '头像',
-  username: '昵称',
+  username: '用户名',
   email: '邮箱',
   articleUtil: '篇', //公用名称
   referral:
@@ -557,11 +557,6 @@ export default {
     transactionComplete: '交易已完成',
     unitPrice: '单价',
     totalPrice: '总价',
-    // setting page
-    updateAvatar: '修改头像',
-    updateUsername: '修改昵称',
-    updateEmail: '修改邮箱',
-    updateProfile: '修改简介',
     // account
     remainingPoints: '剩余积分',
     inviteUser: '我邀请的用户',
