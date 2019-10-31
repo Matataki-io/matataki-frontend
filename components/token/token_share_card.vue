@@ -14,7 +14,7 @@
     <div class="content">
       <div class="list">
         <div class="list-title">
-          创造者：
+          创始人：
         </div>
         <div class="list-content">
           {{ minetokenUser.nickname || minetokenUser.username }}
@@ -104,6 +104,7 @@ export default {
   background: #431055;
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   overflow: hidden;
   text-align: center;
   &.bg1 {
