@@ -36,7 +36,6 @@
         </div>
       </div>
     </div>
-    <img :src="output" alt="">
     <el-button class="save" type="primary" @click="save">
       保存
     </el-button>
@@ -61,8 +60,7 @@ export default {
   },
   data() {
     return {
-      shareCardCheckedOne: true,
-      output: null
+      shareCardCheckedOne: true
     }
   },
   computed: {

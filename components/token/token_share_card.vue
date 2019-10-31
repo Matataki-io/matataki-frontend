@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-bg" :class="cardStyleComputed">
       <div class="avatar">
-        <img src="https://ssimg.frontenduse.top/image/2019/10/26/2704b1d66dd30587ba310b69270f3f7a.png" alt="avatar">
+        <img :src="cover" alt="avatar">
       </div>
       <h1 class="title">
         {{ minetokenToken.symbol }}
@@ -74,6 +74,9 @@ export default {
     }
   },
   computed: {
+    cover() {
+      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+    },
     amount() {
       const tokenamount = precision(this.minetokenToken.total_supply || 0, 'CNY', this.minetokenToken.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
