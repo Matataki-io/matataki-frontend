@@ -67,7 +67,7 @@
     </h2>
     <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
       <li v-for="(item, index) in resourcesWebsites" :key="index">
-        <a href="">{{ item }}</a>
+        <a target="_blank" :href="item">{{ item }}</a>
       </li>
     </ul>
     <span v-else class="not">暂无</span>
@@ -467,6 +467,7 @@ export default {
       font-size:16px;
       color:@black;
       line-height:22px;
+      text-decoration: underline;
     }
   }
 }

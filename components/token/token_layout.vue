@@ -134,7 +134,7 @@
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a href="">{{ item }}</a>
+              <a target="_blank" :href="item">{{ item }}</a>
             </li>
           </ul>
           <span v-else class="not">暂无</span>
