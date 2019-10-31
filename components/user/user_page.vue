@@ -59,14 +59,15 @@
           {{ userInfo.introduction || $t('not') }}
         </p>
         <div class="fl jc">
-          <div class="fl fdc ac follow-block">
+          <router-link class="fl fdc ac follow-block" :to="{name: 'user-id-follow', params: {id: $route.params.id}}">
             <span class="follow-number">{{ userInfo.follows || 0 }}</span>
             <span class="follow-title">{{ $t('follow') }}</span>
-          </div>
-          <div class="fl fdc ac follow-block">
+          </router-link>
+
+          <router-link class="fl fdc ac follow-block" :to="{name: 'user-id-fan', params: {id: $route.params.id}}">
             <span class="follow-number">{{ userInfo.fans || 0 }}</span>
             <span class="follow-title">{{ $t('fans') }}</span>
-          </div>
+          </router-link>
         </div>
         <fanCoinsBtn :id="Number($route.params.id)" :token="token" class="fans-coins-btn" />
         <followBtn v-if="!isMe(Number($route.params.id))" :id="Number($route.params.id)" class="follow" />
