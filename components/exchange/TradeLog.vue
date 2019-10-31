@@ -5,27 +5,33 @@
         <div class="token-info">
           <avatar :src="logo" size="20px" />
           <span>{{minetokenToken.symbol}}视角</span>
+          <span title="切换视角" v-if="tokensId.length >= 2"><svg-icon class="refresh" icon-class="refresh" @click="changeView"/></span>
         </div>
-        <span>{{price}} 最新价格</span>
-        <span>{{change}} 24h涨跌</span>
-        <span>{{volume}} 24h成交</span>
+        <span><span class="num">{{price}}</span> 最新价格</span>
+        <span><span :class="changeClass">{{change}}</span> 24h涨跌</span>
+        <span><span class="num">{{volume}}</span> 24h成交</span>
       </div>
       <div class="jJSpkX" />
     </div>
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="content">
+          <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录'}}</span>
+          <n-link v-if="currentId" target='_blank' class="gray-btn btn" :to="{name: 'token-id', params: {id: currentId}}">
+            <div class="link">
+              <svg-icon icon-class="share-link" class="icon"/>
+            </div>
+          </n-link>
           <el-tabs type="border-card">
             <el-tab-pane label="我的流水">
-              <el-table size="medium" :data="tableData" style="width: 100%" header-cell-class-name="trade-log-header" cell-class-name="trade-log-row">
-                <el-table-column prop="type" label="方向" width="50"></el-table-column>
-                <el-table-column prop="cny" label="价格/CNY"></el-table-column>
-                <el-table-column prop="total" label="金额/CNY"></el-table-column>
-                <el-table-column prop="amount" label="数量/KJM"></el-table-column>
-                <el-table-column prop="time" label="时间"></el-table-column>
-              </el-table>
+              <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol"/>
+              <LiquidityTable v-else :list="myLogs" :symbol="symbol"/>
+
             </el-tab-pane>
-            <el-tab-pane label="全部流水">ces1</el-tab-pane>
+            <el-tab-pane label="全部流水">
+              <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol"/>
+              <LiquidityTable v-else :list="logs" :symbol="symbol"/>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </div>
@@ -34,28 +40,57 @@
 </template>
 
 <script>
+import moment from 'moment'
+import TradeTable from './TradeTable'
+import LiquidityTable from './LiquidityTable'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
+  props: {
+    tokensId: {
+      type: Array,
+      default: () => ([])
+    },
+    type: {
+      type: String,
+      default: 'purchase'
+    }
+  },
   components: {
-    avatar
+    avatar,
+    TradeTable,
+    LiquidityTable
+  },
+  watch: {
+    tokensId(ids) {
+      if (ids.length > 0) {
+        this.currentId = ids[0]
+        this.update()
+      } else {
+        this.currentId = null
+        this.logs = []
+        this.myLogs = []
+        this.minetokenToken = Object.create(null)
+        this.minetokenUser = Object.create(null)
+        this.minetokenExchange = Object.create(null)
+      }
+    }
   },
   data() {
     return {
-      tableData: [{
-        type: '买',
-        cny: 16.34,
-        total: 1213321,
-        amount: 15600,
-        time: '2019.10.29 08:34'
-      }],
+      logs: [],
+      myLogs: [],
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
-      minetokenExchange: Object.create(null)
+      minetokenExchange: Object.create(null),
+      currentId: null
     }
   },
   computed: {
+    symbol() {
+      return this.minetokenToken.symbol
+    },
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
@@ -71,12 +106,87 @@ export default {
     },
     price() {
       return this.minetokenExchange.price || 0
+    },
+    changeClass() {
+      if (this.minetokenExchange.change_24h < 0) {
+        return 'red'
+      } else {
+        return 'green'
+      }
     }
   },
-  mounted() {
-    this.mimetokenId(14)
+  beforeUpdate() {
+    console.log(this.tokensId)
   },
   methods: {
+    update() {
+      this.mimetokenId(this.currentId)
+      if (this.type === 'purchase') {
+        this.getPurchaseLogs(this.currentId)
+        this.getMyPurchaseLogs(this.currentId)
+      } else {
+        this.getLiquidityLogs(this.currentId)
+        this.getMyLiquidityLogs(this.currentId)
+      }
+    },
+    changeView() {
+      if (this.tokensId[0] === this.currentId) {
+        this.currentId = this.tokensId[1]
+      } else {
+        this.currentId = this.tokensId[0]
+      }
+      this.update()
+    },
+    calPrice(cnyReserve, tokenReserve) {
+      if (tokenReserve === 0) {
+        return 0
+      }
+      return (cnyReserve / tokenReserve).toFixed(4)
+    },
+    getPurchaseLogs(tokenId) {
+      this.$API.getPurchaseLogs(tokenId).then(res => {
+        this.logs = this.handleLog(res.data)
+      })
+    },
+    getMyPurchaseLogs(tokenId) {
+      this.$API.getMyPurchaseLogs(tokenId).then(res => {
+        this.myLogs = this.handleLog(res.data)
+      })
+    },
+    getLiquidityLogs(tokenId) {
+      this.$API.getLiquidityLogs(tokenId).then(res => {
+        this.logs = this.handleLog(res.data.list)
+      })
+    },
+    getMyLiquidityLogs(tokenId) {
+      this.$API.getMyLiquidityLogs(tokenId).then(res => {
+        this.myLogs = this.handleLog(res.data.list)
+      })
+    },
+    handleLog(list = []) {
+      const { isNullExcept0 } = this
+      const len = list.length
+      for (let i = 0; i < len; i++) {
+        const ele = list[i]
+        // 计算价格
+        if (!isNullExcept0(ele.cny_reserve_before) && !isNullExcept0(ele.token_reserve_before)) {
+          ele.price = this.calPrice(ele.cny_reserve_before, ele.token_reserve_before)
+        }
+        if (!isNullExcept0(ele.cny_amount)) {
+          ele.cny_amount = this.$utils.fromDecimal(ele.cny_amount)
+        }
+        if (!isNullExcept0(ele.token_amount)) {
+          ele.token_amount = this.$utils.fromDecimal(ele.token_amount)
+        }
+        if (!isNullExcept0(ele.create_time)) {
+          ele.create_time = moment(ele.create_time).format('YYYY.MM.DD hh:mm')
+        }
+        if (!isNullExcept0(ele.liquidity)) {
+          ele.liquidity = this.$utils.fromDecimal(ele.liquidity)
+        }
+      }
+      return list
+    },
     async mimetokenId(id) {
       await this.$API.mimetokenId(id).then(res => {
         if (res.code === 0) {
@@ -90,6 +200,9 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    isNullExcept0(v) {
+      return v === '' || v === null || v === undefined
     }
   }
 }
@@ -107,6 +220,7 @@ export default {
     padding: 0.5rem 0.8rem;
   }
   .content {
+    position: relative;
     display: flex;
     align-items: center;
     color: #542de0;
@@ -114,6 +228,32 @@ export default {
     line-height: 1rem;
     flex-flow: row nowrap;
     padding: 1px;
+    .title {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      z-index: 2;
+    }
+    .btn {
+      position: absolute;
+      right: 20px;
+      top: 16px;
+      z-index: 2;
+      .link {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #f1f1f1;
+        border-color: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .icon {
+          color: #B2B2B2;
+          font-size: 10px;
+        }
+      }
+    }
   }
   .token-info {
     display: flex;
@@ -122,46 +262,20 @@ export default {
     span {
       line-height: 20px;
       height: 20px;
+      margin-left: 5px;
+    }
+    .refresh {
+      cursor: pointer;
     }
   }
-}
-</style>
-<style lang="less">
-@t-h: 30px;
-.trade {
-  .el-tabs {
-    width: 100%;
+  .red {
+    color: #FB6877;
   }
-  .el-tabs__item {
-    font-size: 14px !important;
-    height: @t-h!important;
+  .green {
+    color: #44D7B6;
   }
-  .el-tabs__content {
-    background: #ffffff !important;
-    padding: 0 10px 10px;
+  .num {
+    color: #000000;
   }
-  .el-tabs--border-card > .el-tabs__header {
-    background: #ffffff !important;
-  }
-  .el-tabs__header {
-    .el-tabs__nav-scroll {
-      margin-bottom: 0;
-    }
-    .el-tabs__nav {
-      width: 220px;
-      height: @t-h;
-    }
-  }
-  .el-table::before {
-    height: 0;
-  }
-}
-.trade-log-header {
-  color: #542DE0;
-  font-weight: 400;
-  border-bottom: 0!important;
-}
-.trade-log-row {
-  border-bottom: 0!important;
 }
 </style>

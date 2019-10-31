@@ -628,4 +628,40 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  getPurchaseLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/purchaseLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getMyPurchaseLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/myPurchaseLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getLiquidityLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/liquidityLogs',
+      params: {
+        tokenId
+      }
+    })
+  },
+  getMyLiquidityLogs(tokenId) {
+    return request({
+      method: 'get',
+      url: '/token/myLiquidityLogs',
+      params: {
+        tokenId
+      }
+    })
+  }
 }
