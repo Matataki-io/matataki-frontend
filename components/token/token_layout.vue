@@ -94,8 +94,8 @@
             </div>
 
             <div class="token-data">
-              <p class="token-num">
-                {{ change }}</sub>
+              <p class="token-num" :style="{color: color}">
+                {{ change }}
               </p>
               <p class="token-name">
                 24h涨跌幅
@@ -232,6 +232,13 @@ export default {
       // const tokenamount = precision(this.minetokenExchange.price || 0, 'CNY', this.minetokenToken.decimals)
       // return this.$publishMethods.formatDecimal(tokenamount, 4)
       return this.minetokenExchange.price || 0
+    },
+    color() {
+      // 显示转换
+      const amount = parseFloat(this.change)
+      if (amount < 0) return 'rgb(74, 151, 42)'
+      else if (amount > 0) return 'rgb(266, 70, 69)'
+      else return 'rgb(153, 153, 153)'
     }
 
   },
