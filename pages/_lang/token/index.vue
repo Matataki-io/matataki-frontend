@@ -80,11 +80,11 @@ export default {
   },
   data() {
     return {
-      sort: 'id',
+      sort: this.$route.query.id || 'id',
       pull: {
         params: {
           pagesize: 10,
-          sort: this.$route.params.sort || 'id-desc'
+          sort: this.$route.query.sort || 'id-desc'
         },
         apiUrl: 'tokenAll',
         list: []
@@ -125,8 +125,9 @@ export default {
         this.sort = 'symbol'
         this.pull.params.sort = this.pull.params.sort === 'symbol-desc' ? 'symbol-asc' : 'symbol-desc'
       }
-      this.$router.push({
+      this.$router.replace({
         query: {
+          id: this.sort,
           sort: this.pull.params.sort,
           page: this.currentPage
         }
