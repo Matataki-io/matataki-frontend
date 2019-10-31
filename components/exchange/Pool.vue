@@ -172,6 +172,7 @@
     <OrderModal v-model="orderShow" :form="{...form, type: 'add', limitValue, youMintTokenAmount}" />
     <TokenListModal v-model="tlShow" :addon="false" @selectToken="selectToken" />
     <PoolSelectModal v-model="psShow" @selectPool="selectPool" />
+    <TradeLog :tokensId="tokensId" type="liquidity"/>
   </div>
 </template>
 
@@ -181,6 +182,7 @@ import debounce from 'lodash/debounce'
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
 import PoolSelectModal from './PoolSelect'
+import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from './consts.js'
 import utils from '@/utils/utils'
 
@@ -188,7 +190,8 @@ export default {
   components: {
     OrderModal,
     TokenListModal,
-    PoolSelectModal
+    PoolSelectModal,
+    TradeLog
   },
   data() {
     return {
@@ -234,6 +237,14 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined']),
+    tokensId() {
+      const result = []
+      const { outputToken } = this.form
+      if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+        result.push(outputToken.id)
+      }
+      return result
+    },
     yourPercent() {
       const yourSupply = parseFloat(this.yourPoolSize.your_supply)
       const totalSupply = parseFloat(this.currentPoolSize.total_supply)

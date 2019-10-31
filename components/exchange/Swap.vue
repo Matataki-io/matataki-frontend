@@ -118,7 +118,7 @@
     </div>
     <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
     <TokenListModal v-model="tlShow" @selectToken="selectToken" />
-    <TradeLog />
+    <TradeLog :tokensId="tokensId" />
   </div>
 </template>
 
@@ -160,6 +160,17 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined']),
+    tokensId() {
+      const result = []
+      const { inputToken, outputToken } = this.form
+      if (!utils.isNull(inputToken) && inputToken.id !== 0) {
+        result.push(inputToken.id)
+      }
+      if (!utils.isNull(outputToken) && outputToken.id !== 0) {
+        result.push(outputToken.id)
+      }
+      return result
+    },
     type() {
       return this.base === 'input' ? 'buy_token_input' : 'buy_token_output'
     },

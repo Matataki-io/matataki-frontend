@@ -13,7 +13,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "svgo": "svgo -f icons/svg --config=icons/svgo.yml",
-    "svgo-filter": "svgo -f icons/filter --config=icons/svgo.yml"
+    "svgof": "svgo -f icons/filter --config=icons/svgo.yml"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
