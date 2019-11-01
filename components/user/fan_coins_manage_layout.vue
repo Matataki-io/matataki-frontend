@@ -100,91 +100,22 @@
       :rows="4"
       placeholder="请输入内容"
     />
-
-    <!-- <div class="fl ac coins-info">
-      <div class="fl ac jsb info-block">
-        <div class="info-data">
-          <p class="info-data-number">
-            {{ totalAmount }}<sub>枚</sub>
-          </p>
-          <p class="info-data-title">
-            发行总量
-          </p>
-        </div>
-        <div class="info-data">
-          <p class="info-data-number">
-            {{ tokenReserve }}<sub>枚</sub>
-          </p>
-          <p class="info-data-title">
-            流通量
-          </p>
-        </div>
-        <div class="info-data">
-          <p class="info-data-number">
-            {{ cnyReserve }}<sub>元</sub>
-          </p>
-          <p class="info-data-title">
-            资金池
-          </p>
-        </div>
-        <div class="info-data">
-          <p class="info-data-number">
-            {{ balance }}<sub>枚</sub>
-          </p>
-          <p class="info-data-title">
-            我的持仓总量
-          </p>
-        </div>
-        <div class="info-data">
-          <p class="info-data-number">
-            {{ nowPrice }}<sub>元</sub>
-          </p>
-          <p class="info-data-title">
-            现价
-          </p>
-        </div>
-      </div>
-      <div class="fl fdc info-btn">
-        <el-button class="info-button" size="small" @click="addCoins">
-          增发
-        </el-button>
-        <router-link :to="{name: 'exchange'}">
-          <el-button class="info-button" size="small">
-            交易
-          </el-button>
-        </router-link>
-      </div>
-    </div> -->
-
-    <!-- <div class="tokens-tab">
-      <mineTokensNav />
-    </div> -->
-
-    <!-- <slot /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-// import mineTokensNav from '@/components/user/minetokens_nav.vue'
-// import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { testDecimal } from '@/utils/reg'
-// import minetokenCard from '@/components/user/minetoken_card'
-// import minetokenDetailCard from '@/components/user/minetoken_card_detail'
 import socialTypes from '@/config/social_types.js'
 import socialIcon from '@/components/social_icon/index.vue'
 
 export default {
   components: {
-    // userPagination,
     avatar,
     socialIcon
-    // mineTokensNav
-    // minetokenCard,
-    // minetokenDetailCard
   },
   data() {
     return {
@@ -254,9 +185,6 @@ export default {
   },
   created() {
     this.tokenDetail()
-
-    // 根据token判断是否有币 如果有显示当前页面并且调用list
-    // 否则修改界面显示
   },
   mounted() {},
   methods: {
@@ -286,7 +214,7 @@ export default {
           this.resourcesSocialss = socialFilterEmpty
           this.resourcesWebsites = res.data.websites
         } else {
-          this.$message.success(res.message)
+          this.$message.warning(res.message)
         }
       })
         .catch(err => {
@@ -317,34 +245,6 @@ export default {
       }).then(({ value }) => {
         if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message.warning('发行总量不能超过一亿')
         if (Number(value) > 0) this.minetokenMint(Number(value))
-      })
-    },
-    createTime(time) {
-      return moment(time).format('MMMDo HH:mm')
-    },
-    // cover(cover) {
-    //   return cover ? this.$API.getImg(cover) : ''
-    // },
-    // tokenAmount(amount) {
-    //   const tokenamount = precision(amount, 'CNY', this.tokenDetailData.token.decimals)
-    //   return this.$publishMethods.formatDecimal(tokenamount, 4)
-    // },
-    paginationData(res) {
-      // console.log(res)
-      this.pointLog.list = res.data.list
-      this.assets = res.data
-      this.total = res.data.count || 0
-      this.amount = res.data.amount || 0
-      this.loading = false
-    },
-    togglePage(i) {
-      this.loading = true
-      this.pointLog.list = []
-      this.currentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
       })
     }
   }
