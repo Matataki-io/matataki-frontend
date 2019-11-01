@@ -57,6 +57,10 @@ export default {
     }
   },
   methods: {
+    resetData() {
+      this.url = ''
+      this.statement = false
+    },
     async importFunc() {
       const url = strTrim(this.url)
       if (!internetUrl(url)) return this.$message.error(this.$t('p.importAddressError'))
@@ -72,6 +76,7 @@ export default {
           title, content, cover
         })
         this.visible = false
+        this.resetData()
         // this.$emit('importArticle', res.data)
       } else this.$message.error(this.$t('p.importError'))
       this.loading = false

@@ -82,9 +82,16 @@
           </div>
           <point slot="reference" />
         </el-popover>
-
         <el-tooltip class="item" effect="dark" content="导入文章" placement="bottom">
-          <!-- v-if="isLogined" -->
+          <svg-icon
+            class="create"
+            icon-class="import"
+            :style="customizeHeaderIconColorComputed"
+            @click="postImport"
+          />
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="写文章" placement="bottom">
           <svg-icon
             class="create"
             icon-class="write"
@@ -92,10 +99,6 @@
             @click="writeP"
           />
         </el-tooltip>
-        <el-button style="margin-right: 10px;" @click="postImport">
-          导入文章
-        </el-button>
-        <!-- <span v-else class="integral">新用户登录领100积分</span> -->
 
         <el-dropdown
           v-if="isLogined"
