@@ -27,7 +27,7 @@
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
-                  <img v-if="scope.row.logo" :src="getImg(scope.row.logo)" alt="logo">
+                  <avatar v-if="scope.row.logo" :src="getImg(scope.row.logo)" size="30px" />
                 </div>
                 <div class="sc-tilXH egNEUM">
                   <span id="symbol">{{ scope.row.symbol }}</span>
@@ -131,9 +131,13 @@
 /* eslint-disable */
 import { CNY } from './consts.js'
 import utils from '@/utils/utils'
+import avatar from '@/components/avatar/index.vue'
 
 export default {
   name: 'TokenListModal',
+  components: {
+    avatar
+  },
   props: {
     value: {
       type: Boolean,
