@@ -39,9 +39,16 @@
             </div>
           </div>
         </div>
-        <el-button size="small" class="share-btn" icon="el-icon-share" @click="shareModalShow = true">
-          分享
-        </el-button>
+        <div class="share-btn">
+          <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
+            <el-button size="small" icon="el-icon-setting">
+              管理
+            </el-button>
+          </router-link>
+          <el-button size="small" icon="el-icon-share" @click="shareModalShow = true">
+            分享
+          </el-button>
+        </div>
         <a
           class="help-link"
           href="https://www.matataki.io/p/977"
@@ -177,6 +184,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
@@ -199,10 +207,12 @@ export default {
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
       resourcesSocialss: [],
-      resourcesWebsites: []
+      resourcesWebsites: [],
+      showTokenSetting: false
     }
   },
   computed: {
+    ...mapGetters(['currentUserInfo']),
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
@@ -242,9 +252,18 @@ export default {
     }
 
   },
+  watch: {
+    currentUserInfo() {
+      // 第一次会重复请求两次接口
+      if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    }
+  },
   created() {
     this.minetokenId(this.$route.params.id)
     this.minetokenGetResources(this.$route.params.id)
+  },
+  mounted() {
+    if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
   },
   methods: {
     async minetokenId(id) {
@@ -275,6 +294,16 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    async tokenUserId(id) {
+      await this.$API
+        .tokenUserId(id)
+        .then(res => {
+          if (res.code === 0 && res.data.id > 0) {
+            this.showTokenSetting = res.data.id === Number(this.$route.params.id)
+          }
+        })
+        .catch(err => console.log('get token user error', err))
     }
   }
 }
