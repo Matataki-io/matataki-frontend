@@ -50,8 +50,8 @@ export default {
         mint: '增发',
         transfer: '赠送',
         exchange_purchase: '交易 ',
-        exchange_addliquidity: '交易所添加流动性',
-        exchange_removeliquidity: '交易所删除流动性'
+        exchange_addliquidity: '添加流动性',
+        exchange_removeliquidity: '删除流动性'
       }
       return typeList[type] || '其他'
     }

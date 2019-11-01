@@ -122,9 +122,9 @@ export default {
     type() {
       const { liquidity } = this.card
       if (liquidity > 0) {
-        return '交易所添加流动性'
+        return '添加流动性'
       } else {
-        return '交易所删除流动性'
+        return '删除流动性'
       }
     }
   },
