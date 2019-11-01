@@ -211,6 +211,7 @@ export default {
   }
 }
 </script>
+
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped>
 .trade {
