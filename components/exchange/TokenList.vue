@@ -57,7 +57,7 @@
           <el-table-column
             label="">
             <template slot-scope="scope">
-              <n-link v-if="scope.row.id !== 0" target='_blank' class="gray-btn" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+              <n-link v-if="scope.row.id !== 0" target='_blank' class="gray-btn" :to="{name: 'token-id', params: {id: scope.row.id}}">
                 <el-button circle>
                   <svg-icon icon-class="share-link" style="color: #B2B2B2;"/>
                 </el-button>
