@@ -12,11 +12,11 @@
     </div>
     <div class="token-info">
       <div>
-        <div :class="[ 'fall-rise', amountClass(card.cny_amount) ]">{{ cnyAmount }}</div>
+        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">{{ cnyAmount }}</div>
         <div class="gray">CNY</div>
       </div>
       <div>
-        <div :class="[ 'fall-rise', amountClass(card.token_amount) ]">{{ tokenAmount }}</div>
+        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">{{ tokenAmount }}</div>
         <div class="gray">{{ card.symbol }}</div>
       </div>
       <div>
@@ -122,9 +122,9 @@ export default {
     type() {
       const { liquidity } = this.card
       if (liquidity > 0) {
-        return '交易所添加流动性'
+        return '添加流动性'
       } else {
-        return '交易所删除流动性'
+        return '删除流动性'
       }
     }
   },
