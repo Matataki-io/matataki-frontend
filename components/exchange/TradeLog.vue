@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     update() {
-      this.mimetokenId(this.currentId)
+      this.minetokenId(this.currentId)
       if (this.type === 'purchase') {
         this.getPurchaseLogs(this.currentId)
         this.getMyPurchaseLogs(this.currentId)
@@ -187,8 +187,8 @@ export default {
       }
       return list
     },
-    async mimetokenId(id) {
-      await this.$API.mimetokenId(id).then(res => {
+    async minetokenId(id) {
+      await this.$API.minetokenId(id).then(res => {
         if (res.code === 0) {
           this.minetokenToken = res.data.token || Object.create(null)
           this.minetokenUser = res.data.user || Object.create(null)
