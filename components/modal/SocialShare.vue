@@ -64,7 +64,8 @@ export default {
       const pic = this.cover
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
-        facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
+        // facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${link}`,
         twitter: `https://twitter.com/intent/tweet?text=${link}`
       }
     },

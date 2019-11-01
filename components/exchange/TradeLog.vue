@@ -7,9 +7,9 @@
           <span>{{minetokenToken.symbol}}视角</span>
           <span title="切换视角" v-if="tokensId.length >= 2"><svg-icon class="refresh" icon-class="refresh" @click="changeView"/></span>
         </div>
-        <span><span class="num">{{price}}</span> 最新价格</span>
+        <span><span class="black">{{price}}</span> 最新价格</span>
         <span><span :class="changeClass">{{change}}</span> 24h涨跌</span>
-        <span><span class="num">{{volume}}</span> 24h成交</span>
+        <span><span class="black">{{volume}}</span> 24h成交</span>
       </div>
       <div class="jJSpkX" />
     </div>
@@ -22,13 +22,12 @@
               <svg-icon icon-class="share-link" class="icon"/>
             </div>
           </n-link>
-          <el-tabs type="border-card">
-            <el-tab-pane label="我的流水">
+          <el-tabs type="border-card"  v-model="activeName">
+            <el-tab-pane label="我的流水" name="my">
               <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol"/>
               <LiquidityTable v-else :list="myLogs" :symbol="symbol"/>
-
             </el-tab-pane>
-            <el-tab-pane label="全部流水">
+            <el-tab-pane label="全部流水" name="all">
               <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol"/>
               <LiquidityTable v-else :list="logs" :symbol="symbol"/>
             </el-tab-pane>
@@ -84,7 +83,8 @@ export default {
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
-      currentId: null
+      currentId: null,
+      activeName: 'all'
     }
   },
   computed: {
@@ -101,7 +101,9 @@ export default {
     },
     change() {
       if (this.minetokenExchange.change_24h) {
-        return (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+        let type = ''
+        if (this.minetokenExchange.change_24h > 0) type = '+'
+        return type + (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
       } else return '0%'
     },
     price() {
@@ -110,8 +112,10 @@ export default {
     changeClass() {
       if (this.minetokenExchange.change_24h < 0) {
         return 'red'
-      } else {
+      } else if (this.minetokenExchange.change_24h > 0) {
         return 'green'
+      } else {
+        return 'black'
       }
     }
   },
@@ -207,6 +211,7 @@ export default {
   }
 }
 </script>
+
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped>
 .trade {
@@ -274,7 +279,7 @@ export default {
   .green {
     color: #44D7B6;
   }
-  .num {
+  .black {
     color: #000000;
   }
 }

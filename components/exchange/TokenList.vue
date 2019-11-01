@@ -27,7 +27,7 @@
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
-                  <img v-if="scope.row.logo" :src="getImg(scope.row.logo)" alt="logo">
+                  <avatar v-if="scope.row.logo" :src="getImg(scope.row.logo)" size="30px" />
                 </div>
                 <div class="sc-tilXH egNEUM">
                   <span id="symbol">{{ scope.row.symbol }}</span>
@@ -57,7 +57,7 @@
           <el-table-column
             label="">
             <template slot-scope="scope">
-              <n-link v-if="scope.row.id !== 0" target='_blank' class="gray-btn" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+              <n-link v-if="scope.row.id !== 0" target='_blank' class="gray-btn" :to="{name: 'token-id', params: {id: scope.row.id}}">
                 <el-button circle>
                   <svg-icon icon-class="share-link" style="color: #B2B2B2;"/>
                 </el-button>
@@ -131,9 +131,13 @@
 /* eslint-disable */
 import { CNY } from './consts.js'
 import utils from '@/utils/utils'
+import avatar from '@/components/avatar/index.vue'
 
 export default {
   name: 'TokenListModal',
+  components: {
+    avatar
+  },
   props: {
     value: {
       type: Boolean,
