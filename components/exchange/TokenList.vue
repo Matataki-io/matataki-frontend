@@ -47,7 +47,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="发币者">
+            label="创始人">
             <template slot-scope="scope">
               <span style="white-space: nowrap;">
                 {{scope.row.nickname || scope.row.email}}
@@ -69,7 +69,7 @@
           <th>
             <td>粉丝币</td>
             <td>流通量</td>
-            <td>发币者</td>
+            <td>创始人</td>
             <td></td>
           </th>
           <tbody>
