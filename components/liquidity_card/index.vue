@@ -12,11 +12,11 @@
     </div>
     <div class="token-info">
       <div>
-        <div :class="[ 'fall-rise', amountClass(card.cny_amount) ]">{{ cnyAmount }}</div>
+        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">{{ cnyAmount }}</div>
         <div class="gray">CNY</div>
       </div>
       <div>
-        <div :class="[ 'fall-rise', amountClass(card.token_amount) ]">{{ tokenAmount }}</div>
+        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">{{ tokenAmount }}</div>
         <div class="gray">{{ card.symbol }}</div>
       </div>
       <div>
