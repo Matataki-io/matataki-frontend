@@ -33,7 +33,7 @@
           </el-table-column>
           <el-table-column
             prop="name"
-            label="发币者"
+            label="创始人"
           >
             <template slot-scope="scope">
               <n-link class="invite-block author" :to="{name: 'user-id', params: {id: scope.row.uid}}">

@@ -563,7 +563,7 @@ export default {
     registeredDate: '注册时间',
     inviteRule: '注：未激活者阅读5篇文章并作出评价后即可完成激活，激活后您即可领取额外{0}积分。',
     // buycoins
-    username: '发币者',
+    username: '创始人',
     tokenName: '缩写',
     positionCoins: '持仓量',
     // coins
