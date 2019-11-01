@@ -386,7 +386,7 @@ export default {
   .money-label {
     display: inline-block;
     text-align: right;
-    width: 60px;
+    width: 65px;
   }
 }
 </style>
