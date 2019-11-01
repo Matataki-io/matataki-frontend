@@ -110,6 +110,15 @@ export default {
   },
   created() {
     // console.log(this.articleIpfs, this.articleData)
+  },
+  mounted() {
+    this.addReadAmount(this.articleData.hash)
+  },
+  methods: {
+    // 增加文章阅读量
+    async addReadAmount(hash) {
+      await this.$API.addReadAmount({ articlehash: hash }).catch(err => console.log('add read amount error', err))
+    }
   }
 }
 </script>

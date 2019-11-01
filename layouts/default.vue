@@ -9,7 +9,8 @@
       />
     </back-to-top>
     <el-tooltip v-if="!hideFeedback" class="item" effect="dark" content="吐个槽?" placement="left">
-      <a class="feedback" href="https://support.qq.com/product/84254" target="_blank" title="反馈">
+      <!-- 84254 -->
+      <a class="feedback" href="https://support.qq.com/product/98576" target="_blank" title="反馈">
         <svg-icon
           class="icon-feedback"
           icon-class="tgc"
