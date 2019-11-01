@@ -9,7 +9,3 @@
 
 // 国际化
 切换语言后 源码里面并没有换过来是一个优化的点!!! 感觉目前的方式不太好 by xiaotian
-
-// mimetokenId 修改为 minetokenId
-// mimetokenId catch message success 修改为 error
-// 清理mimetoken layout 的多余代码
