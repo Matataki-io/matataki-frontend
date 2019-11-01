@@ -7,9 +7,9 @@
           <span>{{minetokenToken.symbol}}视角</span>
           <span title="切换视角" v-if="tokensId.length >= 2"><svg-icon class="refresh" icon-class="refresh" @click="changeView"/></span>
         </div>
-        <span><span class="num">{{price}}</span> 最新价格</span>
+        <span><span class="black">{{price}}</span> 最新价格</span>
         <span><span :class="changeClass">{{change}}</span> 24h涨跌</span>
-        <span><span class="num">{{volume}}</span> 24h成交</span>
+        <span><span class="black">{{volume}}</span> 24h成交</span>
       </div>
       <div class="jJSpkX" />
     </div>
@@ -101,7 +101,9 @@ export default {
     },
     change() {
       if (this.minetokenExchange.change_24h) {
-        return (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+        let type = ''
+        if (this.minetokenExchange.change_24h > 0) type = '+'
+        return type + (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
       } else return '0%'
     },
     price() {
@@ -110,8 +112,10 @@ export default {
     changeClass() {
       if (this.minetokenExchange.change_24h < 0) {
         return 'red'
-      } else {
+      } else if (this.minetokenExchange.change_24h > 0) {
         return 'green'
+      } else {
+        return 'black'
       }
     }
   },
@@ -274,7 +278,7 @@ export default {
   .green {
     color: #44D7B6;
   }
-  .num {
+  .black {
     color: #000000;
   }
 }
