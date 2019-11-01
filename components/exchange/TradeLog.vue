@@ -22,13 +22,12 @@
               <svg-icon icon-class="share-link" class="icon"/>
             </div>
           </n-link>
-          <el-tabs type="border-card">
-            <el-tab-pane label="我的流水">
+          <el-tabs type="border-card"  v-model="activeName">
+            <el-tab-pane label="我的流水" name="my">
               <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol"/>
               <LiquidityTable v-else :list="myLogs" :symbol="symbol"/>
-
             </el-tab-pane>
-            <el-tab-pane label="全部流水">
+            <el-tab-pane label="全部流水" name="all">
               <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol"/>
               <LiquidityTable v-else :list="logs" :symbol="symbol"/>
             </el-tab-pane>
@@ -84,7 +83,8 @@ export default {
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
-      currentId: null
+      currentId: null,
+      activeName: 'all'
     }
   },
   computed: {
