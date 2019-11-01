@@ -4,7 +4,7 @@
       <user-nav nav-list-url="setting" />
       <div class="set-main">
         <div class="list center">
-          <span class="title">{{ $t('user.updateAvatar') }}</span>
+          <span class="title">{{ $t('avatar') }}</span>
           <img-upload
             class="avatar"
             :img-upload-done="imgUploadDone"
@@ -14,7 +14,7 @@
             <div slot="uploadButton" class="user-avatar">
               <div class="edit">
                 <i class="el-icon-camera" />
-                {{ $t('user.updateAvatar') }}
+                {{ $t('avatar') }}
               </div>
               <img v-if="avatar" slot="description" :src="avatar" alt="avatar">
             </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="list center">
           <span class="title">
-            {{ $t('user.updateUsername') }}
+            {{ $t('username') }}
           </span>
           <div class="input">
             <el-input
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="list center">
-          <span class="title"> {{ $t('user.updateEmail') }}</span>
+          <span class="title"> {{ $t('email') }}</span>
           <div class="input">
             <el-input
               v-model="email"
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="list">
-          <span class="title">{{ $t('user.updateProfile') }}</span>
+          <span class="title">{{ $t('profile') }}</span>
           <div class="input">
             <el-input
               v-model="introduction"

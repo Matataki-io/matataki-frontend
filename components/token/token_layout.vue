@@ -134,7 +134,7 @@
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a href="">{{ item }}</a>
+              <a target="_blank" :href="item">{{ item }}</a>
             </li>
           </ul>
           <span v-else class="not">暂无</span>
@@ -236,8 +236,8 @@ export default {
     color() {
       // 显示转换
       const amount = parseFloat(this.change)
-      if (amount < 0) return 'rgb(74, 151, 42)'
-      else if (amount > 0) return 'rgb(266, 70, 69)'
+      if (amount < 0) return 'rgb(266, 70, 69)'
+      else if (amount > 0) return 'rgb(74, 151, 42)'
       else return 'rgb(153, 153, 153)'
     }
 

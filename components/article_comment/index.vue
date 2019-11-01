@@ -43,21 +43,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined'])
+    ...mapGetters(['isLogined', 'currentUserInfo'])
   },
   watch: {
     isLogined(val) { // 监听登陆 重新获取头像
-      if (val) this.getUser()
+      if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
     }
   },
   mounted() {
-    this.getUser() // 加载完成 获取头像
+    if (this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
   },
   methods: {
-    ...mapActions(['getCurrentUser']),
-    async getUser() { // 获取用户头像
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatarSrc = this.$API.getImg(avatar)
+    async getUser(id) { // 获取用户头像
+      await this.$API.getUser({ id }).then(res => {
+        if (res.code === 0) this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+      })
     },
     islogin() {
       if (!this.isLogined) {

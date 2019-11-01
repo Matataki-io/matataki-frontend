@@ -408,6 +408,7 @@ export default {
     transition: all 0.18s ease-in-out;
     text-decoration: none;
     display: inline-block;
+    font-weight: bold;
     &.active {
       color: #000 !important;
     }
