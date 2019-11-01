@@ -243,7 +243,6 @@ export default {
   }
 }
 </script>
-
 <style lang="less">
 .cotdDw {
   .el-table .cell {
