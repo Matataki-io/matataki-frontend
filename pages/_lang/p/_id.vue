@@ -283,6 +283,7 @@
 
     <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
     <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
+
   </div>
 </template>
 

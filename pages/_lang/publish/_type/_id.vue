@@ -260,39 +260,84 @@
         </div>
 
         <div v-for="(item, index) in relatedList" :key="index" class="related-list">
-          <div class="fl jsb">
-            <div class="fl ac related-7">
-              <div class="related-list-link">
-                <a :href="item.url" target="_blank">{{ item.url }}</a>
+          <template v-if="item.edit">
+            <el-input
+              v-model="item.urlInput"
+              class="related-input"
+              placeholder="输入链接（可自动检测本站文章）"
+            >
+              <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
+                <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+              </el-tooltip>
+            </el-input>
+            <el-input
+              v-model="item.titleInput"
+              type="text"
+              class="related-input"
+              placeholder="输入标题"
+              maxlength="50"
+              show-word-limit
+            />
+            <el-input
+              v-model="item.contentInput"
+              class="related-input"
+              type="textarea"
+              placeholder="推荐理由或摘要（选填）"
+              maxlength="500"
+              show-word-limit
+              rows="6"
+            />
+            <div class="related-add">
+              <div class="fl ac">
+                <div class="add-icon" @click="remakeRelated(index)">
+                  <svg-icon icon-class="cancel" />
+                </div>
+                <span>取消修改</span>
               </div>
-              <a :href="item.url">
-                <svg-icon class="related-icon-icon" icon-class="link" />
-              </a>
+              <div class="fl ac" style="margin-left: 20px;">
+                <div class="add-icon" @click="confirmRelated(index)">
+                  <i class="el-icon-plus" />
+                </div>
+                <span>确认修改</span>
+              </div>
             </div>
-            <div class="fl ac jfe related-3">
-              <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                <svg-icon class="related-icon-icon" icon-class="pencli" />
-              </el-tooltip>
+          </template>
 
-              <el-tooltip effect="dark" content="删除" placement="top">
-                <svg-icon class="related-icon-icon" icon-class="delete" />
-              </el-tooltip>
-              <span class="related-id">#a1</span>
+          <template v-else>
+            <div class="fl jsb">
+              <div class="fl ac related-7">
+                <div class="related-list-link">
+                  <a :href="item.url" target="_blank">{{ item.url }}</a>
+                </div>
+                <a :href="item.url">
+                  <svg-icon class="related-icon-icon" icon-class="link" />
+                </a>
+              </div>
+              <div class="fl ac jfe related-3">
+                <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                  <svg-icon class="related-icon-icon" icon-class="pencli" @click="item.edit = !item.edit" />
+                </el-tooltip>
+
+                <el-tooltip effect="dark" content="删除" placement="top">
+                  <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index)" />
+                </el-tooltip>
+                <span class="related-id">#a1</span>
+              </div>
             </div>
-          </div>
-          <div class="related-list-title">
-            {{ item.title }}
-          </div>
-          <div :class="!item.collapse && 'open'">
-            <div class="related-list-content" v-if="item.content">
-              {{ item.content }}
+            <div class="related-list-title">
+              {{ item.title }}
             </div>
-            <div class="related-more" v-if="item.showCollapse">
-              <span @click="item.collapse = !item.collapse">
-                {{ item.collapse ? '折叠': '展开' }}
-                <i class="el-icon-arrow-up arrow-up" /></span>
+            <div :class="!item.collapse && 'open'">
+              <div class="related-list-content">
+                {{ item.content }}
+              </div>
+              <div v-if="item.showCollapse" class="related-more">
+                <span @click="item.collapse = !item.collapse">
+                  {{ item.collapse ? '折叠': '展开' }}
+                  <i class="el-icon-arrow-up arrow-up" /></span>
+              </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -384,45 +429,69 @@ export default {
       relatedList: [
         {
           url: 'http://localhost:8080/publish/draft/create',
-          title: '区块链文娱产品形态猜想：文化概念的区块链化',
+          urlInput: 'http://localhost:8080/publish/draft/create',
+          title: '1区块链文娱产品形态猜想：文化概念的区块链化',
+          titleInput: '1区块链文娱产品形态猜想：文化概念的区块链化',
           content: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          contentInput: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
           collapse: false,
-          showCollapse: true
+          showCollapse: true,
+          edit: false
         },
         {
           url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          title: '区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+          title: '2区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          titleInput: '2区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
           content: '解决了区块链改造文娱行业的历史合有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          contentInput: '解决了区块链改造文娱行业的历史合有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
           collapse: false,
-          showCollapse: true
+          showCollapse: true,
+          edit: false
         },
         {
           url: 'http://localhost:8080/publish/draft/create',
-          title: '区块链文娱产品形态猜想：文化概念的区块链化',
+          urlInput: 'http://localhost:8080/publish/draft/create',
+          title: '3区块链文娱产品形态猜想：文化概念的区块链化',
+          titleInput: '3区块链文娱产品形态猜想：文化概念的区块链化',
           content: '设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          contentInput: '设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
           collapse: false,
-          showCollapse: true
+          showCollapse: true,
+          edit: false
         },
         {
           url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          title: '区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+          title: '4区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          titleInput: '4区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
           content: '解决了区块链改造文娱——有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          contentInput: '解决了区块链改造文娱——有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
           collapse: false,
-          showCollapse: true
+          showCollapse: true,
+          edit: false
         },
         {
           url: 'http://localhost:8080/publish/draft/create',
-          title: '区块链文娱产品形态猜想：文化概念的区块链化',
+          urlInput: 'http://localhost:8080/publish/draft/create',
+          title: '5区块链文娱产品形态猜想：文化概念的区块链化',
+          titleInput: '5区块链文娱产品形态猜想：文化概念的区块链化',
           content: '',
+          contentInput: '',
           collapse: false,
-          showCollapse: true
+          showCollapse: true,
+          edit: false
         },
         {
           url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          title: '区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+          title: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          titleInput: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
           content: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          contentInput: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
           collapse: false,
-          showCollapse: true
+          showCollapse: true,
+          edit: false
         }
       ]
     }
@@ -501,14 +570,7 @@ export default {
 
     this.getAllTokens()
 
-    this.$nextTick(() => {
-      const relatedList = document.querySelectorAll('.related-list-content')
-      relatedList.forEach((ele, i) => {
-        if (ele.clientHeight < 80) {
-          this.relatedList[i].showCollapse = false
-        }
-      })
-    })
+    this.renderRelatedListContent()
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -1039,8 +1101,45 @@ export default {
     closeDropdown() {
       this.transferButton = false
       this.readContent = false
+    },
+    /**
+     * 渲染关联内容 判断是否显示展开或折叠
+     * 如果传递参数 循环所有, 否则判断单个
+     */
+    renderRelatedListContent(i) {
+      this.$nextTick(() => {
+        if (i) {
+          const ele = document.querySelectorAll('.related-list-content')[i]
+          if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
+          else this.relatedList[i].showCollapse = true
+        } else {
+          const relatedList = document.querySelectorAll('.related-list-content')
+          relatedList.forEach((ele, i) => {
+            if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
+            else this.relatedList[i].showCollapse = true
+          })
+        }
+      })
+    },
+    // 取消关联编辑
+    remakeRelated(i) {
+      this.relatedList[i].urlInput = this.relatedList[i].url
+      this.relatedList[i].titleInput = this.relatedList[i].title
+      this.relatedList[i].contentInput = this.relatedList[i].content
+      this.relatedList[i].edit = false
+    },
+    // 确定管理编辑
+    confirmRelated(i) {
+      this.relatedList[i].url = this.relatedList[i].urlInput
+      this.relatedList[i].title = this.relatedList[i].titleInput
+      this.relatedList[i].content = this.relatedList[i].contentInput
+      this.relatedList[i].edit = false
+      this.renderRelatedListContent(i)
+    },
+    // 删除关联
+    removeRelated(i) {
+      this.relatedList.splice(i, 1)
     }
-
   }
 }
 </script>
