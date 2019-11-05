@@ -92,7 +92,7 @@
 .article-btn {
   text-align: center;
   cursor: pointer;
-  z-index: 10;
+  // z-index: 10;
   .flexCenter();
   flex-direction: column;
   span {
@@ -215,3 +215,131 @@
     }
   }
 }
+
+// related
+.related {
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  background: #fff;
+  width: 580px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
+  &.left {
+    left: 0;
+    box-shadow:8px 0px 16px 0px rgba(0,0,0,0.1);
+  }
+  &.right {
+    right: 0;
+    box-shadow:-8px 0px 16px 0px rgba(0,0,0,0.1);
+  }
+
+  &-title {
+    font-size:24px;
+    font-weight:bold;
+    color:rgba(0,0,0,1);
+    span {
+      color: @purpleDark;
+      margin-left: 10px;
+    }
+  }
+}
+
+.related-rort {
+  font-size:16px;
+  color:rgba(84,45,224,1);
+  margin-left: 10px;
+}
+
+.related-summary {
+  font-size:16px;
+  color:rgba(0,0,0,1);
+}
+
+// common publish related
+.related-list {
+  border-radius:6px;
+  border:1px solid rgba(219,219,219,1);
+  margin-top: 10px;
+  padding: 10px;
+  &:hover {
+    .related-edit {
+      display: block;
+    }
+  }
+}
+.related-3 {
+  width: 30%
+}
+.related-7 {
+  width: 70%
+}
+
+.related-edit {
+  transition: all .2s;
+  display: none;
+}
+.related-list-link {
+  font-size:14px;
+  color: @purpleDark;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.related-icon-icon {
+  color: @purpleDark;
+  margin-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.related-id {
+  font-size:14px;
+  color:rgba(178,178,178,1);
+  line-height:20px;
+  margin-left: 10px;
+}
+
+.related-list-title {
+  font-size:16px;
+  line-height: 1.5;
+  color:rgba(0,0,0,1);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.related-list-content {
+  font-size:14px;
+  color:rgba(0,0,0,1);
+  line-height: 1.5;
+  // margin-top: 10px;
+  overflow: hidden;
+  max-height: 530px;
+  transition: all .3s;
+}
+.open {
+  .related-list-content {
+    max-height: 80px;
+  }
+  .arrow-up {
+    transform: rotate(180deg);
+  }
+}
+
+.related-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @purpleDark;
+  font-size: 14px;
+  margin: 10px 0 0;
+  span {
+    cursor: pointer;
+  }
+  .arrow-up {
+    transition: transform .3s;
+  }
+}
+
+
+// common publish related end
