@@ -368,6 +368,8 @@ export default {
       const { hash } = this.$route.query
       // 编辑文章
       this.setArticleDataById(hash, id)
+    } else {
+      console.log('路由错误')
     }
 
     this.getTags()
@@ -684,7 +686,7 @@ export default {
       }
     },
     // 发布||修改按钮
-    async sendThePost() {
+    sendThePost() {
       // 没有登录 点击发布按钮都提示登录  编辑获取内容的时候会被前面的func拦截并返回home page
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
@@ -707,13 +709,14 @@ export default {
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
 
-      if (type === 'draft') {
+      // url draft edit
+      // 草稿发送
+      const draftPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
-
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
         // console.log('sendPost result :', hash)
@@ -726,7 +729,9 @@ export default {
           isOriginal,
           shortContent: this.readSummary
         })
-      } else if (type === 'edit') {
+      }
+      // 编辑发送
+      const editPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
@@ -747,6 +752,10 @@ export default {
           shortContent: this.readSummary
         })
       }
+
+      if (type === 'draft') draftPost()
+      else if (type === 'edit') editPost()
+      else draftPost() // 错误的路由, 当发布文章处理
     },
     $imgAdd(pos, imgfile) {
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
