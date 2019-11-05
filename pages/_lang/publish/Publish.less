@@ -312,7 +312,7 @@
   font-size: 12px;
   line-height: 20px;
   color: #B2B2B2;
-  margin-left: 20px;
+  margin-left: 6px;
 }
 
 .price-point {
@@ -343,3 +343,124 @@
   color: @gray;
 }
 
+
+
+.related {
+  max-width: 540px;
+  &-input {
+    margin: 10px 0 0;
+  }
+  .auto-test {
+    width: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+  }
+}
+
+.related-add {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 6px 0 0;
+  span {
+    font-size: 14px;
+    color: #949494;
+    margin-left: 6px;
+  }
+}
+.add-icon {
+  width: 24px;
+  height: 24px;
+  background-color: @purpleDark;
+  color: #fff;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.related-list {
+  border-radius:6px;
+  border:1px solid rgba(219,219,219,1);
+  margin-top: 10px;
+  padding: 10px;
+  &:hover {
+    .related-edit {
+      display: block;
+    }
+  }
+}
+.related-3 {
+  width: 30%
+}
+.related-7 {
+  width: 70%
+}
+
+.related-edit {
+  transition: all .2s;
+  display: none;
+}
+.related-list-link {
+  font-size:14px;
+  color: @purpleDark;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.related-icon-icon {
+  color: @purpleDark;
+  margin-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.related-id {
+  font-size:14px;
+  color:rgba(178,178,178,1);
+  line-height:20px;
+  margin-left: 10px;
+}
+
+.related-list-title {
+  font-size:16px;
+  line-height: 1.5;
+  color:rgba(0,0,0,1);
+  margin-top: 10px;
+}
+
+.related-list-content {
+  font-size:14px;
+  color:rgba(0,0,0,1);
+  line-height: 1.5;
+  margin-top: 10px;
+  overflow: hidden;
+  max-height: 530px;
+  transition: all .3s;
+}
+.open {
+  .related-list-content {
+    max-height: 80px;
+  }
+  .arrow-up {
+    transform: rotate(180deg);
+  }
+}
+
+.related-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @purpleDark;
+  font-size: 14px;
+  margin: 10px 0 0;
+  span {
+    cursor: pointer;
+  }
+  .arrow-up {
+    transition: transform .3s;
+  }
+}

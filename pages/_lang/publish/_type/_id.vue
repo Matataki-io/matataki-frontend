@@ -84,7 +84,7 @@
       <div class="post-content">
         <h3>
           持币阅读
-          <el-tooltip class="item" effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
+          <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
             <svg-icon
               class="help-icon"
               icon-class="help"
@@ -150,7 +150,7 @@
         <p>
           裂变系数
           <el-tooltip
-            class="item"
+
             effect="light"
             content="决定每名投资者的收益上限 = 投资金额 * 裂变系数 裂变系数越大投资者的收益预期越高"
             placement="top-start"
@@ -218,6 +218,82 @@
           :tag-card="item"
           @toggleTagStatus="toggleTagStatus"
         />
+      </div>
+    </div>
+
+    <div class="set-item">
+      <span class="set-title">添加关联文章
+        <span class="set-des">可选</span>
+      </span>
+      <div class="related">
+        <el-input
+          v-model="relatedLink"
+          class="related-input"
+          placeholder="输入链接（可自动检测本站文章）"
+        >
+          <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
+            <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+          </el-tooltip>
+        </el-input>
+        <el-input
+          v-model="relatedTitle"
+          type="text"
+          class="related-input"
+          placeholder="输入标题"
+          maxlength="50"
+          show-word-limit
+        />
+        <el-input
+          v-model="relatedContent"
+          class="related-input"
+          type="textarea"
+          placeholder="推荐理由或摘要（选填）"
+          maxlength="500"
+          show-word-limit
+          rows="6"
+        />
+        <div class="related-add">
+          <div class="add-icon">
+            <i class="el-icon-plus" />
+          </div>
+          <span>添加关联</span>
+        </div>
+
+        <div v-for="(item, index) in relatedList" :key="index" class="related-list">
+          <div class="fl jsb">
+            <div class="fl ac related-7">
+              <div class="related-list-link">
+                <a :href="item.url" target="_blank">{{ item.url }}</a>
+              </div>
+              <a :href="item.url">
+                <svg-icon class="related-icon-icon" icon-class="link" />
+              </a>
+            </div>
+            <div class="fl ac jfe related-3">
+              <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                <svg-icon class="related-icon-icon" icon-class="pencli" />
+              </el-tooltip>
+
+              <el-tooltip effect="dark" content="删除" placement="top">
+                <svg-icon class="related-icon-icon" icon-class="delete" />
+              </el-tooltip>
+              <span class="related-id">#a1</span>
+            </div>
+          </div>
+          <div class="related-list-title">
+            {{ item.title }}
+          </div>
+          <div :class="!item.collapse && 'open'">
+            <div class="related-list-content" v-if="item.content">
+              {{ item.content }}
+            </div>
+            <div class="related-more" v-if="item.showCollapse">
+              <span @click="item.collapse = !item.collapse">
+                {{ item.collapse ? '折叠': '展开' }}
+                <i class="el-icon-arrow-up arrow-up" /></span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <article-transfer
@@ -301,7 +377,54 @@ export default {
       readToken: 1,
       readSelectOptions: [],
       readSelectValue: '',
-      readSummary: ''
+      readSummary: '',
+      relatedLink: '',
+      relatedTitle: '',
+      relatedContent: '',
+      relatedList: [
+        {
+          url: 'http://localhost:8080/publish/draft/create',
+          title: '区块链文娱产品形态猜想：文化概念的区块链化',
+          content: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          collapse: false,
+          showCollapse: true
+        },
+        {
+          url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+          title: '区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          content: '解决了区块链改造文娱行业的历史合有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          collapse: false,
+          showCollapse: true
+        },
+        {
+          url: 'http://localhost:8080/publish/draft/create',
+          title: '区块链文娱产品形态猜想：文化概念的区块链化',
+          content: '设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          collapse: false,
+          showCollapse: true
+        },
+        {
+          url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+          title: '区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          content: '解决了区块链改造文娱——有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          collapse: false,
+          showCollapse: true
+        },
+        {
+          url: 'http://localhost:8080/publish/draft/create',
+          title: '区块链文娱产品形态猜想：文化概念的区块链化',
+          content: '',
+          collapse: false,
+          showCollapse: true
+        },
+        {
+          url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+          title: '区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+          content: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+          collapse: false,
+          showCollapse: true
+        }
+      ]
     }
   },
   computed: {
@@ -377,6 +500,15 @@ export default {
     this.setToolBar(this.screenWidth)
 
     this.getAllTokens()
+
+    this.$nextTick(() => {
+      const relatedList = document.querySelectorAll('.related-list-content')
+      relatedList.forEach((ele, i) => {
+        if (ele.clientHeight < 80) {
+          this.relatedList[i].showCollapse = false
+        }
+      })
+    })
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
