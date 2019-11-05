@@ -363,7 +363,16 @@ export default {
     modalTextButton2: 'Exit',
     importArticle: 'Import article',
     publishArticleSuccess: 'Send a successful, reward {0} points',
-    importInput: 'Please enter a link to the article URL, including http(s)://',
+    // article import
+    importInput: '请输入文章网址链接，包含http(s)://',
+    importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
+    importDes2:
+          '如若在本平台发表的内容发现侵权行为，官方有权下架该作品，并保留向侵权者追究法律责任的权利。',
+    importAgree: '我同意',
+    importAddressError: '请输入正确的地址',
+    importAddress: '来源链接：',
+    importSuccess: '导入成功',
+    importError: '导入失败,目前只支持: 链闻、橙皮书、微信文章',
     originalStatement: 'Original statement',
     statement:
       'Check this original statement, which means that you confirm and promise that the article, including the images used in the article, etc., are created independently by you (or the organization holding the account), or have obtained the original License for the right holder. Please do not check this original statement for articles with the following conditions: ',
