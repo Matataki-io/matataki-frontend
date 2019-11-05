@@ -1138,6 +1138,7 @@ export default {
     },
     // 删除关联
     removeRelated(i) {
+      // 提交数据等判断
       this.relatedList.splice(i, 1)
     }
   }
