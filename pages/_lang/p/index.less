@@ -222,17 +222,31 @@
   top: 60px;
   bottom: 0;
   background: #fff;
-  width: 580px;
-  padding: 20px;
+  max-width: 580px;
   box-sizing: border-box;
-  overflow: auto;
+  // overflow: auto;
+  transition: transform .3s;
   &.left {
     left: 0;
     box-shadow:8px 0px 16px 0px rgba(0,0,0,0.1);
+    transform: translate3d(-100%, 0, 0);
+    &.open {
+      transform: translate3d(0, 0, 0);
+      .related-arrow .icon {
+        transform: rotate(-180deg);
+      }
+    }
   }
   &.right {
     right: 0;
     box-shadow:-8px 0px 16px 0px rgba(0,0,0,0.1);
+    transform: translate3d(100%, 0, 0);
+    &.open {
+      transform: translate3d(0, 0, 0);
+      .related-arrow .icon {
+        transform: rotate(0);
+      }
+    }
   }
 
   &-title {
@@ -246,10 +260,52 @@
   }
 }
 
+.related-container {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.related-arrow {
+  position: absolute;
+  top: 50%;
+  // transform: translate(0, -50%);
+  color: @purpleDark;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  .icon {
+    font-size: 30px;
+    color: @purpleDark;
+    transition: transform .28s;
+  }
+  span {
+    font-size:14px;
+    color:rgba(178,178,178,1);
+    margin-top: 10px;
+  }
+}
+&.left .related-arrow {
+  right: -20px;
+  transform: translate(100%, -50%);
+}
+&.right .related-arrow {
+  left: -20px;
+  transform: translate(-100%, -50%);
+  .icon {
+    transform: rotate(180deg);
+  }
+}
+
 .related-rort {
   font-size:16px;
-  color:rgba(84,45,224,1);
+  color: @purpleDark;
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .related-summary {
@@ -263,6 +319,7 @@
   border:1px solid rgba(219,219,219,1);
   margin-top: 10px;
   padding: 10px;
+  transition: all .3s;
   &:hover {
     .related-edit {
       display: block;
@@ -276,10 +333,6 @@
   width: 70%
 }
 
-.related-edit {
-  transition: all .2s;
-  display: none;
-}
 .related-list-link {
   font-size:14px;
   color: @purpleDark;
@@ -306,6 +359,9 @@
   color:rgba(0,0,0,1);
   margin-top: 10px;
   margin-bottom: 10px;
+  &.no-margin-bottom {
+    margin-bottom: 0;
+  }
 }
 
 .related-list-content {
@@ -315,9 +371,9 @@
   // margin-top: 10px;
   overflow: hidden;
   max-height: 530px;
-  transition: all .3s;
+  transition: all .28s;
 }
-.open {
+.related-list .open {
   .related-list-content {
     max-height: 80px;
   }
@@ -340,6 +396,5 @@
     transition: transform .3s;
   }
 }
-
 
 // common publish related end

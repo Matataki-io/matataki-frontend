@@ -309,7 +309,7 @@
                 <div class="related-list-link">
                   <a :href="item.url" target="_blank">{{ item.url }}</a>
                 </div>
-                <a :href="item.url">
+                <a :href="item.url" target="_blank">
                   <svg-icon class="related-icon-icon" icon-class="link" />
                 </a>
               </div>
@@ -324,7 +324,7 @@
                 <span class="related-id">#a1</span>
               </div>
             </div>
-            <div class="related-list-title">
+            <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
               {{ item.title }}
             </div>
             <div :class="!item.collapse && 'open'">
