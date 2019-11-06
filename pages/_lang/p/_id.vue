@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" @click.stop="documentClick">
     <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')">
       <template slot="more">
         <el-dropdown v-if="isMe(article.uid)" trigger="click" @command="handleMoreAction">
@@ -284,7 +284,7 @@
     <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
     <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
 
-    <div class="related left" :class="relatedLeftCollapse && 'open'">
+    <div class="related left" :class="relatedLeftCollapse && 'open'" @click.stop>
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
@@ -327,7 +327,7 @@
                 {{ item.content }}
               </div>
               <div v-if="item.showCollapse" class="related-more">
-                <span @click="item.collapse = !item.collapse">
+                <span @click.stop="item.collapse = !item.collapse">
                   {{ item.collapse ? '折叠': '展开' }}
                   <i class="el-icon-arrow-up arrow-up" /></span>
               </div>
@@ -336,12 +336,12 @@
         </div>
       </div>
 
-      <div class="related-arrow">
-        <svg-icon icon-class="arrow" class="icon" @click="relatedLeftCollapse = !relatedLeftCollapse" />
+      <div class="related-arrow" @click.stop="relatedLeftCollapse = !relatedLeftCollapse" >
+        <svg-icon icon-class="arrow" class="icon"  />
         <span v-if="!relatedLeftCollapse">已关联6篇</span>
       </div>
     </div>
-    <div class="related right" :class="relatedRightCollapse && 'open'">
+    <div class="related right" :class="relatedRightCollapse && 'open'" @click.stop>
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
@@ -376,8 +376,8 @@
         </div>
       </div>
 
-      <div class="related-arrow">
-        <svg-icon icon-class="arrow" class="icon" @click="relatedRightCollapse = !relatedRightCollapse" />
+      <div class="related-arrow" @click.stop="relatedRightCollapse = !relatedRightCollapse">
+        <svg-icon icon-class="arrow" class="icon"  />
         <span v-if="!relatedRightCollapse">被关联6次</span>
       </div>
     </div>
@@ -1097,7 +1097,8 @@ export default {
     setRelatedSlider() {
       this.$nextTick(() => {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        const sliderWidth = (clientWidth / 2) - 5 - 85
+        // 10 + 37
+        const sliderWidth = (clientWidth / 2) - 47
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
           relatedDom.forEach((ele, i) => {
@@ -1106,6 +1107,10 @@ export default {
           })
         }
       })
+    },
+    documentClick() {
+      this.relatedLeftCollapse = false
+      this.relatedRightCollapse = false
     }
   }
 

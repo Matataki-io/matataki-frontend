@@ -228,9 +228,9 @@
   transition: transform .3s;
   &.left {
     left: 0;
-    box-shadow:8px 0px 16px 0px rgba(0,0,0,0.1);
     transform: translate3d(-100%, 0, 0);
     &.open {
+      box-shadow:8px 0px 16px 0px rgba(0,0,0,0.1);
       transform: translate3d(0, 0, 0);
       .related-arrow .icon {
         transform: rotate(-180deg);
@@ -239,9 +239,9 @@
   }
   &.right {
     right: 0;
-    box-shadow:-8px 0px 16px 0px rgba(0,0,0,0.1);
     transform: translate3d(100%, 0, 0);
     &.open {
+      box-shadow:-8px 0px 16px 0px rgba(0,0,0,0.1);
       transform: translate3d(0, 0, 0);
       .related-arrow .icon {
         transform: rotate(0);
@@ -290,11 +290,11 @@
   }
 }
 &.left .related-arrow {
-  right: -20px;
+  right: -10px;
   transform: translate(100%, -50%);
 }
 &.right .related-arrow {
-  left: -20px;
+  left: -10px;
   transform: translate(-100%, -50%);
   .icon {
     transform: rotate(180deg);
