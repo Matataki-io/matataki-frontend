@@ -471,7 +471,7 @@ export default {
           // 没有id是时候不请求list
           // pagesize: 5
         },
-        apiUrl: 'draftsReferences',
+        apiUrl: this.$route.params.type === 'draft' ? 'draftsReferences' : 'postsReferences',
         list: [],
         reload: 0
       },
@@ -558,7 +558,11 @@ export default {
 
     // 判断当前
     // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
-    if (type === 'draft' && typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+    if (type === 'draft' && typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) { // 草稿
+      this.pull.params = {
+        pagesize: 5
+      }
+    } else if (type === 'edit') { // 编辑
       this.pull.params = {
         pagesize: 5
       }
@@ -798,7 +802,21 @@ export default {
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
-        this.postMineTokens(response.data, 'publish')
+
+        // 关联文章  草稿发布时发布引用的文章
+        const data = {
+          signId: response.data
+        }
+        this.$API.draftsReferencesPublish(this.$route.params.id, data).then(res => {
+          if (res.code === 0) {
+            this.postMineTokens(response.data, 'publish')
+          } else {
+            this.$message.error(res.message)
+            throw new Error(res.message)
+          }
+        }).catch(err => {
+          this.$message.error(err)
+        })
       } catch (error) {
         console.error(error)
         failed(error)
@@ -1127,52 +1145,111 @@ export default {
     },
     // 确定管理编辑
     confirmRelated(i) {
-      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
-      const data = {
-        url: this.relatedList[i].urlInput,
-        title: this.relatedList[i].titleInput,
-        summary: this.relatedList[i].contentInput
-      }
-      // 如果没有草稿id 不会有列表
-      this.$API.draftsReferences(this.$route.params.id, data).then(res => {
-        if (res.code === 0) {
-          this.relatedList[i].url = this.relatedList[i].urlInput
-          this.relatedList[i].title = this.relatedList[i].titleInput
-          this.relatedList[i].content = this.relatedList[i].contentInput
-          this.relatedList[i].edit = false
-          this.renderRelatedListContent(i)
-          this.$message.success(res.message)
-        } else {
-          this.$message.success(res.message)
+      const { id, type } = this.$route.params
+      if (type === 'draft') {
+        if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
+        const data = {
+          url: this.relatedList[i].urlInput,
+          title: this.relatedList[i].titleInput,
+          summary: this.relatedList[i].contentInput
         }
-      })
+        // 如果没有草稿id 不会有列表
+        this.$API.draftsReferences(this.$route.params.id, data).then(res => {
+          if (res.code === 0) {
+            this.relatedList[i].url = this.relatedList[i].urlInput
+            this.relatedList[i].title = this.relatedList[i].titleInput
+            this.relatedList[i].content = this.relatedList[i].contentInput
+            this.relatedList[i].edit = false
+            this.renderRelatedListContent(i)
+            this.$message.success(res.message)
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+      } else if (type === 'edit') {
+        if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
+        const data = {
+          url: this.relatedList[i].urlInput,
+          title: this.relatedList[i].titleInput,
+          summary: this.relatedList[i].contentInput
+        }
+        // 如果没有草稿id 不会有列表
+        this.$API.postsReferences(this.$route.params.id, data).then(res => {
+          if (res.code === 0) {
+            this.relatedList[i].url = this.relatedList[i].urlInput
+            this.relatedList[i].title = this.relatedList[i].titleInput
+            this.relatedList[i].content = this.relatedList[i].contentInput
+            this.relatedList[i].edit = false
+            this.renderRelatedListContent(i)
+            this.$message.success(res.message)
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+      } else {
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
     },
     // 删除关联
     removeRelated(i, number) {
-      // 如果没有草稿id 不会有列表
-      this.$API.removeDraftsReferences(this.$route.params.id, number).then(res => {
-        // 提交数据等判断
-        if (res.code === 0) {
-          this.relatedList.splice(i, 1) // 客户端移除
-          this.$message.success(res.message)
-        } else {
-          this.$message.success(res.message)
-        }
-      })
+      const { id, type } = this.$route.params
+      if (type === 'draft') {
+        // 如果没有草稿id 不会有列表
+        this.$API.removeDraftsReferences(this.$route.params.id, number).then(res => {
+          // 提交数据等判断
+          if (res.code === 0) {
+            this.relatedList.splice(i, 1) // 客户端移除
+            this.$message.success(res.message)
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+      } else if (type === 'edit') {
+        // 如果没有草稿id 不会有列表
+        this.$API.removePostsReferences(this.$route.params.id, number).then(res => {
+          // 提交数据等判断
+          if (res.code === 0) {
+            this.relatedList.splice(i, 1) // 客户端移除
+            this.$message.success(res.message)
+          } else {
+            this.$message.success(res.message)
+          }
+        })
+      } else {
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
     },
     editRelated(i, number) {
-      // 如果没有草稿id 不会有列表
-      this.$API.getDraftsReferences(this.$route.params.id, number).then(res => {
-        if (res.code === 0) {
-          this.relatedList[i].urlInput = res.data.url
-          this.relatedList[i].titleInput = res.data.title
-          this.relatedList[i].contentInput = res.data.summary
+      const { id, type } = this.$route.params
+      if (type === 'draft') {
+        // 如果没有草稿id 不会有列表
+        this.$API.getDraftsReferences(this.$route.params.id, number).then(res => {
+          if (res.code === 0) {
+            this.relatedList[i].urlInput = res.data.url
+            this.relatedList[i].titleInput = res.data.title
+            this.relatedList[i].contentInput = res.data.summary
 
-          this.relatedList[i].edit = !this.relatedList[i].edit
-        } else {
-          this.$message.warning(res.message)
-        }
-      })
+            this.relatedList[i].edit = !this.relatedList[i].edit
+          } else {
+            this.$message.warning(res.message)
+          }
+        })
+      } else if (type === 'edit') {
+        // 如果没有草稿id 不会有列表
+        this.$API.getPostsReferences(this.$route.params.id, number).then(res => {
+          if (res.code === 0) {
+            this.relatedList[i].urlInput = res.data.url
+            this.relatedList[i].titleInput = res.data.title
+            this.relatedList[i].contentInput = res.data.summary
+
+            this.relatedList[i].edit = !this.relatedList[i].edit
+          } else {
+            this.$message.warning(res.message)
+          }
+        })
+      } else {
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
     },
     // 自动检测url 获取标题 内容等
     extractRefTitle() {
@@ -1196,7 +1273,6 @@ export default {
     },
     // 添加草稿资源
     addDraftsReferences() {
-      console.log('add log')
       const { id, type } = this.$route.params
       if (type === 'draft') { // 草稿
         // 判断是否为数字
@@ -1220,7 +1296,26 @@ export default {
           this.$message.warning('请先填写文章内容!!!')
         }
       } else if (type === 'edit') { // 编辑
-
+        // 判断是否为数字
+        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+          if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
+          const data = {
+            url: this.relatedLink,
+            title: this.relatedTitle,
+            summary: this.relatedContent
+          }
+          this.$API.postsReferences(id, data).then(res => {
+            if (res.code === 0) {
+              this.pull.reload = Date.now() // 刷新list
+              this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
+              this.$message.success(res.message)
+            } else {
+              this.$message.success(res.message)
+            }
+          })
+        } else { // 说明没有草稿id
+          this.$message.warning('请先填写文章内容!!!')
+        }
       } else { // 都不是
         this.$message.warning('请返回主页重新进入操作!!!')
       }

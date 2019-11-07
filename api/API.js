@@ -696,5 +696,36 @@ minetokenGetResources(tokenId) {
       method: 'GET',
       url: `/drafts/${id}/references/${number}`
     })
-  }
+  },
+  // draftId
+  // 草稿发布时发布引用的文章
+  draftsReferencesPublish(id, data) {
+    return request({
+      method: 'POST',
+      url: `/drafts/${id}/references/publish`,
+      data
+    })
+  },
+  // 删除草稿引用 signId number
+  removePostsReferences(id, number) {
+    return request({
+      method: 'DELETE',
+      url: `/posts/${id}/references/${number}`
+    })
+  },
+  // 添加/修改草稿引用 id: signId
+  postsReferences(id, data) {
+    return request({
+      method: 'PUT',
+      url: `/posts/${id}/references`,
+      data
+    })
+  },
+  // 根据草稿Id、number获取文章引用
+  getPostsReferences(id, number) {
+    return request({
+      method: 'GET',
+      url: `/posts/${id}/references/${number}`
+    })
+  },
 }
