@@ -332,6 +332,9 @@
                 {{ item.content }}
               </div>
               <div v-if="item.showCollapse" class="related-more">
+                <transition name="fade">
+                  <div v-if="!item.collapse" class="more-full" />
+                </transition>
                 <span @click="item.collapse = !item.collapse">
                   {{ item.collapse ? '折叠': '展开' }}
                   <i class="el-icon-arrow-up arrow-up" /></span>

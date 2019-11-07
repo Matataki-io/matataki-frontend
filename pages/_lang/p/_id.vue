@@ -321,12 +321,15 @@
           <div class="related-list-title" :class="!item.content || !relatedSummary && 'no-margin-bottom'">
             {{ item.title }}
           </div>
-          <transition name="fade">
+          <transition>
             <div v-if="relatedSummary" :class="!item.collapse && 'open'">
               <div class="related-list-content">
                 {{ item.content }}
               </div>
               <div v-if="item.showCollapse" class="related-more">
+                <transition name="fade">
+                  <div v-if="!item.collapse" class="more-full" />
+                </transition>
                 <span @click.stop="item.collapse = !item.collapse">
                   {{ item.collapse ? '折叠': '展开' }}
                   <i class="el-icon-arrow-up arrow-up" /></span>
@@ -336,8 +339,8 @@
         </div>
       </div>
 
-      <div class="related-arrow" @click.stop="relatedLeftCollapse = !relatedLeftCollapse" >
-        <svg-icon icon-class="arrow" class="icon"  />
+      <div class="related-arrow" @click.stop="relatedLeftCollapse = !relatedLeftCollapse">
+        <svg-icon icon-class="arrow" class="icon" />
         <span v-if="!relatedLeftCollapse">已关联6篇</span>
       </div>
     </div>
@@ -377,7 +380,7 @@
       </div>
 
       <div class="related-arrow" @click.stop="relatedRightCollapse = !relatedRightCollapse">
-        <svg-icon icon-class="arrow" class="icon"  />
+        <svg-icon icon-class="arrow" class="icon" />
         <span v-if="!relatedRightCollapse">被关联6次</span>
       </div>
     </div>
@@ -486,9 +489,9 @@ export default {
       },
       getInputAmountError: '',
       payBtnDisabled: true,
-      relatedLeftCollapse: false,
-      relatedRightCollapse: false,
-      relatedSummary: false, // 关联摘要
+      relatedLeftCollapse: false, // 左侧关联
+      relatedRightCollapse: false, // 右侧关联
+      relatedSummary: true, // 关联摘要
       relatedList: [
         {
           url: 'http://localhost:8080/publish/draft/create',
