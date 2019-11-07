@@ -663,5 +663,38 @@ minetokenGetResources(tokenId) {
         tokenId
       }
     })
+  },
+  /**
+   * 解析引用网址的title
+   * @param {Object} data {url: xxx}
+   */
+  extractRefTitle(data) {
+    return request({
+      method: 'POST',
+      url: '/posts/extractRefTitle',
+      data
+    })
+  },
+  // 添加/修改草稿引用 id: signId
+  draftsReferences(id, data) {
+    return request({
+      method: 'PUT',
+      url: `/drafts/${id}/references`,
+      data
+    })
+  },
+  // 删除草稿引用 signId number
+  removeDraftsReferences(id, number) {
+    return request({
+      method: 'DELETE',
+      url: `/drafts/${id}/references/${number}`
+    })
+  },
+  // 根据草稿Id、number获取文章引用
+  getDraftsReferences(id, number){
+    return request({
+      method: 'GET',
+      url: `/drafts/${id}/references/${number}`
+    })
   }
 }

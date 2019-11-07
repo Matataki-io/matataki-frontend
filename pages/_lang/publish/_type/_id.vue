@@ -226,121 +226,141 @@
         <span class="set-des">可选</span>
       </span>
       <div class="related">
-        <el-input
-          v-model="relatedLink"
-          class="related-input"
-          placeholder="输入链接（可自动检测本站文章）"
-        >
-          <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-            <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
-          </el-tooltip>
-        </el-input>
-        <el-input
-          v-model="relatedTitle"
-          type="text"
-          class="related-input"
-          placeholder="输入标题"
-          maxlength="50"
-          show-word-limit
-        />
-        <el-input
-          v-model="relatedContent"
-          class="related-input"
-          type="textarea"
-          placeholder="推荐理由或摘要（选填）"
-          maxlength="500"
-          show-word-limit
-          rows="6"
-        />
-        <div class="related-add">
-          <div class="add-icon">
-            <i class="el-icon-plus" />
+        <div v-loading="relatedLoading">
+          <el-input
+            v-model="relatedLink"
+            class="related-input"
+            placeholder="输入链接（可自动检测本站文章）"
+          >
+            <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
+              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle">
+            </el-tooltip>
+          </el-input>
+          <el-input
+            v-model="relatedTitle"
+            type="text"
+            class="related-input"
+            placeholder="输入标题"
+            maxlength="50"
+            show-word-limit
+          />
+          <el-input
+            v-model="relatedContent"
+            class="related-input"
+            type="textarea"
+            placeholder="推荐理由或摘要（选填）"
+            maxlength="500"
+            show-word-limit
+            rows="6"
+          />
+          <div class="related-add">
+            <div class="add-icon" @click="addDraftsReferences">
+              <i class="el-icon-plus" />
+            </div>
+            <span>添加关联</span>
           </div>
-          <span>添加关联</span>
         </div>
 
-        <div v-for="(item, index) in relatedList" :key="index" class="related-list">
-          <template v-if="item.edit">
-            <el-input
-              v-model="item.urlInput"
-              class="related-input"
-              placeholder="输入链接（可自动检测本站文章）"
-            >
-              <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
-              </el-tooltip>
-            </el-input>
-            <el-input
-              v-model="item.titleInput"
-              type="text"
-              class="related-input"
-              placeholder="输入标题"
-              maxlength="50"
-              show-word-limit
-            />
-            <el-input
-              v-model="item.contentInput"
-              class="related-input"
-              type="textarea"
-              placeholder="推荐理由或摘要（选填）"
-              maxlength="500"
-              show-word-limit
-              rows="6"
-            />
-            <div class="related-add">
-              <div class="fl ac">
-                <div class="add-icon" @click="remakeRelated(index)">
-                  <svg-icon icon-class="cancel" />
+        <div v-loading="loading">
+          <no-content-prompt :list="pull.list">
+            <div v-for="(item, index) in relatedList" :key="item.number" class="related-list">
+              <template v-if="item.edit">
+                <el-input
+                  v-model="item.urlInput"
+                  class="related-input"
+                  placeholder="输入链接（可自动检测本站文章）"
+                >
+                  <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
+                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+                  </el-tooltip>
+                </el-input>
+                <el-input
+                  v-model="item.titleInput"
+                  type="text"
+                  class="related-input"
+                  placeholder="输入标题"
+                  maxlength="50"
+                  show-word-limit
+                />
+                <el-input
+                  v-model="item.contentInput"
+                  class="related-input"
+                  type="textarea"
+                  placeholder="推荐理由或摘要（选填）"
+                  maxlength="500"
+                  show-word-limit
+                  rows="6"
+                />
+                <div class="related-add">
+                  <div class="fl ac">
+                    <div class="add-icon" @click="remakeRelated(index)">
+                      <svg-icon icon-class="cancel" />
+                    </div>
+                    <span>取消修改</span>
+                  </div>
+                  <div class="fl ac" style="margin-left: 20px;">
+                    <div class="add-icon" @click="confirmRelated(index)">
+                      <i class="el-icon-plus" />
+                    </div>
+                    <span>确认修改</span>
+                  </div>
                 </div>
-                <span>取消修改</span>
-              </div>
-              <div class="fl ac" style="margin-left: 20px;">
-                <div class="add-icon" @click="confirmRelated(index)">
-                  <i class="el-icon-plus" />
-                </div>
-                <span>确认修改</span>
-              </div>
-            </div>
-          </template>
+              </template>
 
-          <template v-else>
-            <div class="fl jsb">
-              <div class="fl ac related-7">
-                <div class="related-list-link">
-                  <a :href="item.url" target="_blank">{{ item.url }}</a>
-                </div>
-                <a :href="item.url" target="_blank">
-                  <svg-icon class="related-icon-icon" icon-class="link" />
-                </a>
-              </div>
-              <div class="fl ac jfe related-3">
-                <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                  <svg-icon class="related-icon-icon" icon-class="pencli" @click="item.edit = !item.edit" />
-                </el-tooltip>
+              <template v-else>
+                <div class="fl jsb">
+                  <div class="fl ac related-7">
+                    <div class="related-list-link">
+                      <a :href="item.url" target="_blank">{{ item.url }}</a>
+                    </div>
+                    <a :href="item.url" target="_blank">
+                      <svg-icon class="related-icon-icon" icon-class="link" />
+                    </a>
+                  </div>
+                  <div class="fl ac jfe related-3">
+                    <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                      <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
+                    </el-tooltip>
 
-                <el-tooltip effect="dark" content="删除" placement="top">
-                  <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index)" />
-                </el-tooltip>
-                <span class="related-id">#a1</span>
-              </div>
+                    <el-tooltip effect="dark" content="删除" placement="top">
+                      <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
+                    </el-tooltip>
+                    <span class="related-id">{{ item.number }}</span>
+                  </div>
+                </div>
+                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
+                  {{ item.title }}
+                </div>
+                <div :class="!item.collapse && 'open'">
+                  <div class="related-list-content">
+                    {{ item.content }}
+                  </div>
+                  <div v-if="item.showCollapse" class="related-more">
+                    <transition name="fade">
+                      <div v-if="!item.collapse" class="more-full" />
+                    </transition>
+                    <span @click="item.collapse = !item.collapse">
+                      {{ item.collapse ? '折叠': '展开' }}
+                      <i class="el-icon-arrow-up arrow-up" /></span>
+                  </div>
+                </div>
+              </template>
             </div>
-            <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
-              {{ item.title }}
-            </div>
-            <div :class="!item.collapse && 'open'">
-              <div class="related-list-content">
-                {{ item.content }}
-              </div>
-              <div v-if="item.showCollapse" class="related-more">
-                <transition name="fade">
-                  <div v-if="!item.collapse" class="more-full" />
-                </transition>
-                <span @click="item.collapse = !item.collapse">
-                  {{ item.collapse ? '折叠': '展开' }}
-                  <i class="el-icon-arrow-up arrow-up" /></span>
-              </div>
-            </div>
-          </template>
+            <!-- todo 如果id不是数字, 不让列表请求 -->
+            <user-pagination
+              v-show="!loading"
+              :url-replace="$route.params.id + ''"
+              :current-page="currentPage"
+              :params="pull.params"
+              :api-url="pull.apiUrl"
+              :page-size="pull.params.pagesize"
+              :total="total"
+              class="pagination"
+              :reload="pull.reload"
+              @paginationData="paginationData"
+              @togglePage="togglePage"
+            />
+          </no-content-prompt>
         </div>
       </div>
     </div>
@@ -374,6 +394,8 @@ import statement from '@/components/statement/index.vue'
 import { getCookie } from '@/utils/cookie'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 
+import userPagination from '@/components/user/user_pagination.vue'
+
 export default {
   name: 'NewPost',
   components: {
@@ -381,7 +403,8 @@ export default {
     tagCard,
     articleTransfer,
     articleImport,
-    statement
+    statement,
+    userPagination
   },
   data() {
     return {
@@ -429,74 +452,32 @@ export default {
       relatedLink: '',
       relatedTitle: '',
       relatedContent: '',
+      relatedLoading: false,
       relatedList: [
-        {
-          url: 'http://localhost:8080/publish/draft/create',
-          urlInput: 'http://localhost:8080/publish/draft/create',
-          title: '1区块链文娱产品形态猜想：文化概念的区块链化',
-          titleInput: '1区块链文娱产品形态猜想：文化概念的区块链化',
-          content: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          contentInput: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          collapse: false,
-          showCollapse: true,
-          edit: false
+        // {
+        //   url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+        //   urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+        //   title: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+        //   titleInput: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+        //   content: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+        //   contentInput: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+        //   collapse: false,
+        //   showCollapse: true,
+        //   edit: false
+        // }
+      ],
+      pull: {
+        params: {
+          // 没有id是时候不请求list
+          // pagesize: 5
         },
-        {
-          url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          title: '2区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-          titleInput: '2区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-          content: '解决了区块链改造文娱行业的历史合有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          contentInput: '解决了区块链改造文娱行业的历史合有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          collapse: false,
-          showCollapse: true,
-          edit: false
-        },
-        {
-          url: 'http://localhost:8080/publish/draft/create',
-          urlInput: 'http://localhost:8080/publish/draft/create',
-          title: '3区块链文娱产品形态猜想：文化概念的区块链化',
-          titleInput: '3区块链文娱产品形态猜想：文化概念的区块链化',
-          content: '设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          contentInput: '设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          collapse: false,
-          showCollapse: true,
-          edit: false
-        },
-        {
-          url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          title: '4区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-          titleInput: '4区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-          content: '解决了区块链改造文娱——有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          contentInput: '解决了区块链改造文娱——有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          collapse: false,
-          showCollapse: true,
-          edit: false
-        },
-        {
-          url: 'http://localhost:8080/publish/draft/create',
-          urlInput: 'http://localhost:8080/publish/draft/create',
-          title: '5区块链文娱产品形态猜想：文化概念的区块链化',
-          titleInput: '5区块链文娱产品形态猜想：文化概念的区块链化',
-          content: '',
-          contentInput: '',
-          collapse: false,
-          showCollapse: true,
-          edit: false
-        },
-        {
-          url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-          title: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-          titleInput: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-          content: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          contentInput: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-          collapse: false,
-          showCollapse: true,
-          edit: false
-        }
-      ]
+        apiUrl: 'draftsReferences',
+        list: [],
+        reload: 0
+      },
+      currentPage: Number(this.$route.query.page) || 1,
+      loading: false, // 加载数据
+      total: 0
     }
   },
   computed: {
@@ -574,6 +555,14 @@ export default {
     this.getAllTokens()
 
     this.renderRelatedListContent()
+
+    // 判断当前
+    // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
+    if (type === 'draft' && typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+      this.pull.params = {
+        pagesize: 5
+      }
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -833,6 +822,11 @@ export default {
           // console.log(this.$route)
           const url = window.location.origin + '/publish/draft/' + res.data
           history.pushState({}, '', url)
+
+          // 草稿创建成功, 允许list请求
+          this.pull.params = {
+            pagesize: 5
+          }
         } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }).catch(err => {
         console.log(err)
@@ -1133,16 +1127,136 @@ export default {
     },
     // 确定管理编辑
     confirmRelated(i) {
-      this.relatedList[i].url = this.relatedList[i].urlInput
-      this.relatedList[i].title = this.relatedList[i].titleInput
-      this.relatedList[i].content = this.relatedList[i].contentInput
-      this.relatedList[i].edit = false
-      this.renderRelatedListContent(i)
+      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      const data = {
+        url: this.relatedList[i].urlInput,
+        title: this.relatedList[i].titleInput,
+        summary: this.relatedList[i].contentInput
+      }
+      // 如果没有草稿id 不会有列表
+      this.$API.draftsReferences(this.$route.params.id, data).then(res => {
+        if (res.code === 0) {
+          this.relatedList[i].url = this.relatedList[i].urlInput
+          this.relatedList[i].title = this.relatedList[i].titleInput
+          this.relatedList[i].content = this.relatedList[i].contentInput
+          this.relatedList[i].edit = false
+          this.renderRelatedListContent(i)
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      })
     },
     // 删除关联
-    removeRelated(i) {
-      // 提交数据等判断
-      this.relatedList.splice(i, 1)
+    removeRelated(i, number) {
+      // 如果没有草稿id 不会有列表
+      this.$API.removeDraftsReferences(this.$route.params.id, number).then(res => {
+        // 提交数据等判断
+        if (res.code === 0) {
+          this.relatedList.splice(i, 1) // 客户端移除
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      })
+    },
+    editRelated(i, number) {
+      // 如果没有草稿id 不会有列表
+      this.$API.getDraftsReferences(this.$route.params.id, number).then(res => {
+        if (res.code === 0) {
+          this.relatedList[i].urlInput = res.data.url
+          this.relatedList[i].titleInput = res.data.title
+          this.relatedList[i].contentInput = res.data.summary
+
+          this.relatedList[i].edit = !this.relatedList[i].edit
+        } else {
+          this.$message.warning(res.message)
+        }
+      })
+    },
+    // 自动检测url 获取标题 内容等
+    extractRefTitle() {
+      const data = {
+        url: this.relatedLink
+      }
+      this.relatedLoading = true
+      this.$API.extractRefTitle(data)
+        .then(res => {
+          if (res.code === 0) {
+            this.relatedTitle = res.data.title
+            this.$message.success('检测成功')
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).catch(err => {
+          console.log('获取信息失败', err)
+        }).finally(() => {
+          this.relatedLoading = false
+        })
+    },
+    // 添加草稿资源
+    addDraftsReferences() {
+      console.log('add log')
+      const { id, type } = this.$route.params
+      if (type === 'draft') { // 草稿
+        // 判断是否为数字
+        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+          if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
+          const data = {
+            url: this.relatedLink,
+            title: this.relatedTitle,
+            summary: this.relatedContent
+          }
+          this.$API.draftsReferences(id, data).then(res => {
+            if (res.code === 0) {
+              this.pull.reload = Date.now() // 刷新list
+              this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
+              this.$message.success(res.message)
+            } else {
+              this.$message.success(res.message)
+            }
+          })
+        } else { // 说明没有草稿id
+          this.$message.warning('请先填写文章内容!!!')
+        }
+      } else if (type === 'edit') { // 编辑
+
+      } else { // 都不是
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
+    },
+    paginationData(res) {
+      // console.log(res)
+      this.total = res.data.count || 0
+      this.relatedList.length = 0
+      res.data.list.map(i => {
+        this.relatedList.push({
+          url: i.url,
+          urlInput: i.url,
+          title: i.title,
+          titleInput: i.title,
+          content: i.summary,
+          contentInput: i.summary,
+          number: i.number,
+          collapse: false,
+          showCollapse: true,
+          edit: false
+        })
+      })
+      this.pull.list = res.data.list
+      this.loading = false
+
+      this.renderRelatedListContent()
+    },
+    togglePage(i) {
+      this.loading = true
+      this.pull.list = []
+      this.currentPage = i
+      this.$router.push({
+        query: {
+          page: i
+        }
+      })
     }
   }
 }
