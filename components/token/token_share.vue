@@ -11,7 +11,7 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="$message.success('暂未开放')">
+        <div v-if="pageType === 1" class="widget-button" @click="$message.success('暂未开放')">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget">
           </div>
@@ -56,7 +56,7 @@ export default {
     },
     minetokenUser: {
       type: Object,
-      default: null
+      required: true
     },
     shareModalShow: {
       type: Boolean,
