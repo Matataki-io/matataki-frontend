@@ -87,7 +87,7 @@ export default {
     shareLink() {
       const slogan = [
         `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`,
-        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/token/${this.$route.params.id}`
+        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
       ]
       return slogan[this.pageType]
     },
