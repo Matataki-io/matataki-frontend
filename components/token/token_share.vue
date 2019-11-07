@@ -11,7 +11,13 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="widgetModalStatus = 1">
+        <div class="widget-button" @click="$message.success('暂未开放')">
+          <div class="widget-button-img">
+            <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget">
+          </div>
+          <p>{{ $t('p.createWidget') }}</p>
+        </div>
+        <div v-if="minetokenToken !== null && pageType === 0" class="widget-button" @click="widgetModalStatus = 1">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget">
           </div>
@@ -27,11 +33,8 @@
       <SocialShare :img="img" :title="shareLink" />
       <wechat style="margin: 60px 0 0 0;" :link="link" />
     </div>
-    <div v-if="widgetModalStatus === 1" class="padding2">
-      <tokenShareCardLayout
-        :minetoken-token="minetokenToken"
-        :minetoken-user="minetokenUser"
-      />
+    <div v-if="widgetModalStatus === 1 && minetokenToken !== null && pageType === 0" class="padding2">
+      <tokenShareCardLayout :minetoken-token="minetokenToken" :minetoken-user="minetokenUser" />
     </div>
   </el-dialog>
 </template>
@@ -49,15 +52,20 @@ export default {
   props: {
     minetokenToken: {
       type: Object,
-      required: true
+      default: null
     },
     minetokenUser: {
       type: Object,
-      required: true
+      default: null
     },
     shareModalShow: {
       type: Boolean,
       default: false
+    },
+    /** 0:粉丝币， 1:个人主页 */
+    pageType: {
+      type: Number,
+      default: 0
     },
     img: {
       type: String,
@@ -69,6 +77,7 @@ export default {
       showModal: false,
       // 0 默认 1 widget
       widgetModalStatus: 0
+
     }
   },
   computed: {
@@ -76,7 +85,11 @@ export default {
       return this.widgetModalStatus === 0 ? '400px' : '800px'
     },
     shareLink() {
-      return `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`
+      const slogan = [
+        `我在瞬MATATAKI发现了粉丝币「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝币，让连接不止于关注！`,
+        `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/token/${this.$route.params.id}`
+      ]
+      return slogan[this.pageType]
     },
     link() {
       if (process.browser) return window.location.href
@@ -97,8 +110,7 @@ export default {
       this.showModal = val
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     copyCode(code) {
       this.$copyText(code).then(
@@ -123,7 +135,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-
 .widget-content-button {
   display: flex;
   padding: 40px 0;
@@ -146,9 +157,9 @@ export default {
 .widget-writecontent {
   padding: 4px;
   &-title {
-    font-size:20px;
-    font-weight:600;
-    color:rgba(0,0,0,1);
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
     margin: 0 0 10px 0;
   }
 }
@@ -156,16 +167,16 @@ export default {
 .widget-help {
   padding: 4px 24px;
   &-title {
-    font-size:20px;
-    font-weight:600;
-    color:rgba(0,0,0,1);
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
     text-align: center;
   }
   &-content {
-    font-size:16px;
+    font-size: 16px;
     line-height: 1.5;
-    font-weight:400;
-    color:rgba(45,45,45,1);
+    font-weight: 400;
+    color: rgba(45, 45, 45, 1);
     margin-top: 10px;
     text-align: justify;
   }
@@ -173,17 +184,17 @@ export default {
     margin-top: 20px;
     padding: 8px 14px;
     border-radius: 4px;
-    font-size:14px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    background-color: #2B2B2B;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    background-color: #2b2b2b;
     text-align: center;
     cursor: pointer;
     float: right;
   }
-  &::after{
+  &::after {
     display: block;
-    content: '';
+    content: "";
     clear: both;
     width: 0;
     height: 0;
@@ -197,16 +208,16 @@ export default {
     overflow: auto;
   }
   &-des {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
     margin-bottom: 10px;
   }
 }
 
 // 公用输入框
 .widget-textarea {
-  background: #F1F1F1;
+  background: #f1f1f1;
   min-width: 275px;
   border-radius: 8px;
 }
@@ -214,8 +225,8 @@ export default {
 // 公用标题
 .widget-title {
   font-size: 18px;
-  font-weight:600;
-  color:rgba(0,0,0,1);
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1);
   margin: 0 0 20px 0;
 }
 // 公用footer
@@ -225,18 +236,18 @@ export default {
   align-items: center;
   margin-top: 30px;
   .help {
-    font-size:14px;
-    font-weight:500;
+    font-size: 14px;
+    font-weight: 500;
     color: @purpleDark;
     cursor: pointer;
   }
   .create {
     padding: 8px 14px;
     border-radius: 4px;
-    font-size:14px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    background-color: #2B2B2B;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    background-color: #2b2b2b;
     text-align: center;
     cursor: pointer;
   }
