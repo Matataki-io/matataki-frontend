@@ -737,4 +737,14 @@ minetokenGetResources(tokenId) {
       url: `/posts/${id}/references/${number}`
     })
   },
+  // 根据symbol获取token信息
+  getTokenBySymbol(symbol) {
+    return request({
+      method: 'GET',
+      url: '/token/symbol',
+      params: {
+        symbol
+      }
+    })
+  }
 }
