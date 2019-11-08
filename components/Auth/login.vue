@@ -213,7 +213,6 @@ export default {
         let referral = this.$utils.getCookie('referral')
         if (referral) this.$utils.delCookie('referral')
       }
-      // console.log(this.referral)
     },
     // 得到邀请状态
     getReferral() {
