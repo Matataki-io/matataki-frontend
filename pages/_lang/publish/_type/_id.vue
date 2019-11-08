@@ -1258,7 +1258,7 @@ export default {
             if (res.code === 0) {
               this.relatedList[i].titleInput = res.data.title
               this.relatedList[i].contentInput = res.data.summary
-              this.$message.success('检测成功')
+              this.$message.success('检测完成')
             } else {
               this.$message.warning(res.message)
             }
@@ -1277,7 +1277,7 @@ export default {
             if (res.code === 0) {
               this.relatedTitle = res.data.title
               this.relatedContent = res.data.summary
-              this.$message.success('检测成功')
+              this.$message.success('检测完成')
             } else {
               this.$message.warning(res.message)
             }
