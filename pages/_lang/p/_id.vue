@@ -371,7 +371,7 @@
               <svg-icon icon-class="sort" class="icon" />
             </span> -->
           </div>
-          <el-button type="primary" size="small" icon="el-icon-link" @click="posts">
+          <el-button v-loading="relatedLoadingBtn" type="primary" size="small" icon="el-icon-link" @click="posts">
             关联本文
           </el-button>
         </div>
@@ -444,7 +444,7 @@ import TokenFooter from '@/components/article/TokenFooter'
 import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
-import { extractChar } from '@/utils/reg'
+import { extractChar, regRemoveContent } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import store from '@/utils/localStorage.js'
 import OrderModal from '@/components/exchange/OrderModal'
@@ -564,7 +564,8 @@ export default {
       },
       beingCurrentPage: Number(this.$route.query.page) || 1,
       beingLoading: false, // 加载数据
-      beingTotal: 0
+      beingTotal: 0,
+      relatedLoadingBtn: false// 关联btn
     }
   },
   head() {
@@ -1168,12 +1169,48 @@ export default {
         }
       })
     },
-    posts() {
+    async posts() {
       if (this.isLogined) {
         // 生成草稿
         // 添加关联
+        const addRelated = (id) => {
+          this.relatedLoadingBtn = true
+          const data = {
+            url: window.location.href,
+            title: this.article.title,
+            summary: regRemoveContent(xssFilter(this.post.content)).slice(0, 500) // 500 字
+          }
+          this.$API.draftsReferences(id, data).then(res => {
+            if (res.code === 0) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: id } })
+            else this.$message.error(res.message)
+          }).catch(err => {
+            console.log('err', err)
+          }).finally(() => {
+            this.relatedLoadingBtn = false
+          })
+        }
+
+        // 不需要处理其他内容 如果其他内容变动会自动生成草稿
+        await this.$API.createDraft({
+          title: '',
+          content: '',
+          cover: '',
+          commentPayPoint: 1,
+          fissionFactor: 2000,
+          is_original: 0,
+          tags: ''
+        })
+          .then(res => {
+            if (res.code === 0) {
+              // 添加关联
+              addRelated(res.data)
+            } else this.$message.error(res.message)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
         // 跳转页面
-        this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
       } else this.$store.commit('setLoginModal', true)
     }
   }

@@ -263,7 +263,7 @@
 
         <div v-loading="loading">
           <no-content-prompt :list="pull.list">
-            <div v-loading="item.loading" v-for="(item, index) in relatedList" :key="item.number" class="related-list">
+            <div v-for="(item, index) in relatedList" :key="item.number" v-loading="item.loading" class="related-list">
               <template v-if="item.edit">
                 <el-input
                   v-model="item.urlInput"
@@ -831,7 +831,7 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
-      const response = await this.$API.createDraft(article).then(res => {
+      await this.$API.createDraft(article).then(res => {
         if (res.code === 0) {
           this.saveDraft = '文章自动保存至'
           // console.log(this.$route)
@@ -1289,7 +1289,7 @@ export default {
       }
     },
     // 添加草稿资源
-    addDraftsReferences() {
+    async addDraftsReferences() {
       const { id, type } = this.$route.params
 
       if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
@@ -1311,17 +1311,62 @@ export default {
 
       if (type === 'draft') { // 草稿
         // 判断是否为数字
-        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+
+        const addRelated = (id) => {
+          let draftId = null
+          if (id) {
+            draftId = id
+          } else {
+            draftId = this.$route.params.id
+          }
           this.relatedLoading = true
-          this.$API.draftsReferences(id, data).then(res => {
+          this.$API.draftsReferences(draftId, data).then(res => {
             resSuccess(res)
           }).catch(err => {
             console.log('err', err)
           }).finally(() => {
             this.relatedLoading = false
           })
+        }
+
+        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+          addRelated()
         } else { // 说明没有草稿id
-          this.$message.warning('请先填写文章内容!!!')
+          // 创建草稿
+
+          // 不需要处理其他内容 如果其他内容变动会自动生成草稿
+          await this.$API.createDraft({
+            title: '',
+            content: '',
+            cover: '',
+            commentPayPoint: 1,
+            fissionFactor: 2000,
+            is_original: 0,
+            tags: ''
+          })
+            .then(res => {
+              if (res.code === 0) {
+                // 同上草稿自动创建后成功的处理方式
+
+                this.$route.params.id = res.data
+                this.id = res.data
+
+                const url = window.location.origin + '/publish/draft/' + res.data
+                history.pushState({}, '', url)
+
+                // 草稿创建成功, 允许list请求
+                this.pull.params = {
+                  pagesize: 5
+                }
+                // 同上草稿自动创建后成功的处理方式
+
+                // 添加关联
+                addRelated(res.data)
+              } else this.$message.error(res.message)
+            })
+            .catch(err => {
+              console.log(err)
+            })
         }
       } else if (type === 'edit') { // 编辑
         // 判断是否为数字

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */ // regRemoveContent
 /**
  * ONT 地址验证
  * @param {地址} address
@@ -31,4 +32,33 @@ export const extractChar = (str, left, right) => {
 export const replaceStr = (str, left, right, content) => {
   const pattern = new RegExp(`(?=${left}).*?(?=${right})`)
   return str.replace(pattern, content)
+}
+
+// 提取内容 删除多余的标签
+export const regRemoveContent = str => {
+  // 去除空格
+  const strTrim = str => str.replace(/\s+/g, '')
+  // 去除html video标签
+  const regRemoveHtmlVideoTag = str => str.replace(/\<video.*?\>.*?\<\/video\>/g, '123')
+  // 去除标签
+  const regRemoveTag = str => str.replace(/<[^>]+>/gi, '')
+  // 去除markdown img
+  const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
+  // 去除 markdown 标签
+  const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
+
+  // 去除 剩下的括号内容(链接地址)
+  const regRemoveLinkBrackets = str => str.replace(/\(.*?\)/gi, '')
+
+  // 回车 ↵ 复制下来的时候会有, 那就多一层处理吧!
+  const regRemoveLinkEnter = str => str.replace(/↵/gi, '')
+
+  // 提前去一次换行空格
+  const regRemoveHtmlVideoTagResult = regRemoveHtmlVideoTag(strTrim(str))
+  const regRemoveTagResult = regRemoveTag(regRemoveHtmlVideoTagResult)
+  const regRemoveMarkdownImgResult = regRemoveMarkdownImg(regRemoveTagResult)
+  const regRemoveMarkdownTagResult = regRemoveMarkdownTag(regRemoveMarkdownImgResult)
+  const regRemoveLinkBracketsResult = regRemoveLinkBrackets(regRemoveMarkdownTagResult)
+  const regRemoveLinkEnterResult = regRemoveLinkEnter(regRemoveLinkBracketsResult)
+  return strTrim(regRemoveLinkEnterResult)
 }
