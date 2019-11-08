@@ -3,7 +3,7 @@
     v-if="!isMe(id)"
     size="small"
     class="btn"
-    :class="!userInfo.followed && 'black'"
+    :class="!userInfo.followed ? 'black' : 'unsubscribe'"
     @click.stop="followOrUnFollow"
   >
     <i v-if="!userInfo.followed" class="el-icon-plus" />
@@ -67,6 +67,12 @@ export default {
       background: #333;
       color: #fff;
       border: 1px solid #333;
+    }
+
+    &.unsubscribe {
+      max-width: 72px;
+      padding-left: 11px;
+      padding-right: 11px;
     }
   }
 </style>

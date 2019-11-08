@@ -127,13 +127,14 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <router-link class="exchange" :to="{name: 'exchange'}">
+        <!-- <router-link class="exchange" :to="{name: 'exchange'}">
           <svg-icon
             class="tokens"
             icon-class="token"
           />
           粉丝币交易所
-        </router-link>
+        </router-link> -->
+        <tokenBuyCard :token="minetokenToken"/>
 
         <div class="about">
           <h2 class="token-title">
@@ -188,6 +189,7 @@ import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
+import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types.js'
 import { precision } from '@/utils/precisionConversion'
@@ -197,7 +199,8 @@ export default {
     avatar,
     mineTokensNav,
     Share,
-    socialIcon
+    socialIcon,
+    tokenBuyCard
   },
   // head() {
   //   return {
