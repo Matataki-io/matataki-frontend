@@ -88,7 +88,7 @@
                 微信支付
               </el-button>
               <router-link
-                :to="{name: 'exchange'}"
+                :to="{name: 'exchange', hash: '#swap', query: { output: form.outputToken.symbol }}"
               >
                 <el-button type="primary" size="small">
                   交易所

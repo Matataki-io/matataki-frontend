@@ -9,7 +9,7 @@
       @input="inputChange"
       v-on:keypress.native="isNumber"
       v-model="form.output">
-      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.output || 0 }} CNY</span>
+      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
       <el-button class="btn1" @click="pay">立即支付</el-button>

@@ -39,7 +39,7 @@
         <el-button size="small" @click="addCoins">
           增发
         </el-button>
-        <router-link :to="{name: 'exchange'}">
+        <router-link :to="{name: 'exchange', hash: '#swap', query: { output: tokenDetailData.token.symbol }}">
           <el-button size="small" type="primary">
             交易
           </el-button>
