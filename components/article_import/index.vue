@@ -9,15 +9,15 @@
   >
     <el-input v-model="url" :placeholder="$t('publish.importInput')" />
     <p class="des gray">
-      {{ $t('p.importDes1') }}
+      {{ $t('publish.importDes1') }}
     </p>
     <p class="des" />
     <p class="des">
-      {{ $t('p.importDes2') }}
+      {{ $t('publish.importDes2') }}
     </p>
     <div class="statement">
       <el-checkbox v-model="statement">
-        {{ $t('p.importAgree') }}
+        {{ $t('publish.importAgree') }}
       </el-checkbox>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -50,6 +50,11 @@ export default {
   },
   watch: {
     visible(val) {
+      if (!val) {
+        this.url = ''
+        this.statement = false
+        this.loading = false
+      }
       this.$emit('input', val)
     },
     value(val) {
@@ -63,44 +68,49 @@ export default {
     },
     async importFunc() {
       const url = strTrim(this.url)
-      if (!internetUrl(url)) return this.$message.error(this.$t('p.importAddressError'))
+      if (!internetUrl(url)) return this.$message.error(this.$t('publish.importAddressError'))
       this.loading = true
       const res = await this.$API.importArticle(url)
       // console.log(res)
       if (res.code === 0) {
-        this.$message.success(this.$t('p.importSuccess'))
-        const templateLink = `<br />${this.$t('p.importAddress')}[${url}](${url})`
+        this.$message.success(this.$t('publish.importSuccess'))
+        const templateLink = `<br />${this.$t('publish.importAddress')}[${url}](${url})`
         res.data.content += templateLink
         const { title, content, cover } = res.data
         this.createDraft({
-          title, content, cover
+          title,
+          content,
+          cover
         })
         this.visible = false
         this.resetData()
         // this.$emit('importArticle', res.data)
-      } else this.$message.error(this.$t('p.importError'))
+      } else this.$message.error(this.$t('publish.importError'))
       this.loading = false
     },
     async createDraft(article) {
-      const response = await this.$API.createDraft({
-        ...article,
-        commentPayPoint: 1,
-        fissionFactor: 2000,
-        is_original: 0,
-        tags: ''
-      }).then(res => {
-        if (res.code === 0) {
-          this.$router.push({
-            name: 'publish-type-id',
-            params: {
-              type: 'draft',
-              id: res.data
-            }
-          })
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      await this.$API
+        .createDraft({
+          ...article,
+          commentPayPoint: 1,
+          fissionFactor: 2000,
+          is_original: 0,
+          tags: ''
+        })
+        .then(res => {
+          if (res.code === 0) {
+            this.$router.push({
+              name: 'publish-type-id',
+              params: {
+                type: 'draft',
+                id: res.data
+              }
+            })
+          } else this.$message.error(res.message)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
@@ -113,8 +123,8 @@ export default {
 
 .import {
   .des {
-    font-size:14px;
-    font-weight:400;
+    font-size: 14px;
+    font-weight: 400;
     color: #565656;
     line-height: 1.5;
     &.gray {

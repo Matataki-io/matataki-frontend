@@ -84,7 +84,7 @@
       <div class="post-content">
         <h3>
           持币阅读
-          <el-tooltip class="item" effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
+          <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
             <svg-icon
               class="help-icon"
               icon-class="help"
@@ -150,7 +150,7 @@
         <p>
           裂变系数
           <el-tooltip
-            class="item"
+
             effect="light"
             content="决定每名投资者的收益上限 = 投资金额 * 裂变系数 裂变系数越大投资者的收益预期越高"
             placement="top-start"
@@ -220,6 +220,150 @@
         />
       </div>
     </div>
+
+    <div class="set-item">
+      <span class="set-title">添加关联文章
+        <span class="set-des">可选</span>
+      </span>
+      <div class="related">
+        <div v-loading="relatedLoading">
+          <el-input
+            v-model="relatedLink"
+            class="related-input"
+            placeholder="输入链接（可自动检测本站文章）"
+          >
+            <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
+              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
+            </el-tooltip>
+          </el-input>
+          <el-input
+            v-model="relatedTitle"
+            type="text"
+            class="related-input"
+            placeholder="输入标题"
+            maxlength="50"
+            show-word-limit
+          />
+          <el-input
+            v-model="relatedContent"
+            class="related-input"
+            type="textarea"
+            placeholder="推荐理由或摘要（选填）"
+            maxlength="500"
+            show-word-limit
+            rows="6"
+          />
+          <div class="related-add">
+            <div class="add-icon" @click="addDraftsReferences">
+              <i class="el-icon-plus" />
+            </div>
+            <span>添加关联</span>
+          </div>
+        </div>
+
+        <div v-loading="loading">
+          <no-content-prompt :list="pull.list">
+            <div v-loading="item.loading" v-for="(item, index) in relatedList" :key="item.number" class="related-list">
+              <template v-if="item.edit">
+                <el-input
+                  v-model="item.urlInput"
+                  class="related-input"
+                  placeholder="输入链接（可自动检测本站文章）"
+                >
+                  <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
+                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(index)">
+                  </el-tooltip>
+                </el-input>
+                <el-input
+                  v-model="item.titleInput"
+                  type="text"
+                  class="related-input"
+                  placeholder="输入标题"
+                  maxlength="50"
+                  show-word-limit
+                />
+                <el-input
+                  v-model="item.contentInput"
+                  class="related-input"
+                  type="textarea"
+                  placeholder="推荐理由或摘要（选填）"
+                  maxlength="500"
+                  show-word-limit
+                  rows="6"
+                />
+                <div class="related-add">
+                  <div class="fl ac">
+                    <div class="add-icon" @click="remakeRelated(index)">
+                      <svg-icon icon-class="cancel" />
+                    </div>
+                    <span>取消修改</span>
+                  </div>
+                  <div class="fl ac" style="margin-left: 20px;">
+                    <div class="add-icon" @click="confirmRelated(index)">
+                      <i class="el-icon-plus" />
+                    </div>
+                    <span>确认修改</span>
+                  </div>
+                </div>
+              </template>
+
+              <template v-else>
+                <div class="fl jsb">
+                  <div class="fl ac related-7">
+                    <div class="related-list-link">
+                      <a :href="item.url" target="_blank">{{ item.url }}</a>
+                    </div>
+                    <a :href="item.url" target="_blank">
+                      <svg-icon class="related-icon-icon" icon-class="link" />
+                    </a>
+                  </div>
+                  <div class="fl ac jfe related-3">
+                    <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                      <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
+                    </el-tooltip>
+
+                    <el-tooltip effect="dark" content="删除" placement="top">
+                      <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
+                    </el-tooltip>
+                    <span class="related-id">{{ item.number }}</span>
+                  </div>
+                </div>
+                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
+                  {{ item.title }}
+                </div>
+                <div :class="!item.collapse && 'open'">
+                  <div class="related-list-content">
+                    {{ item.content }}
+                  </div>
+                  <div v-if="item.showCollapse" class="related-more">
+                    <transition name="fade">
+                      <div v-if="!item.collapse" class="more-full" />
+                    </transition>
+                    <span @click="item.collapse = !item.collapse">
+                      {{ item.collapse ? '折叠': '展开' }}
+                      <i class="el-icon-arrow-up arrow-up" /></span>
+                  </div>
+                </div>
+              </template>
+            </div>
+            <!-- todo 如果id不是数字, 不让列表请求 -->
+            <user-pagination
+              v-show="!loading"
+              :url-replace="$route.params.id + ''"
+              :current-page="currentPage"
+              :params="pull.params"
+              :api-url="pull.apiUrl"
+              :page-size="pull.params.pagesize"
+              :total="total"
+              class="pagination"
+              :reload="pull.reload"
+              @paginationData="paginationData"
+              @togglePage="togglePage"
+            />
+          </no-content-prompt>
+        </div>
+      </div>
+    </div>
     <article-transfer
       v-if="isShowTransfer"
       v-model="transferModal"
@@ -250,6 +394,8 @@ import statement from '@/components/statement/index.vue'
 import { getCookie } from '@/utils/cookie'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 
+import userPagination from '@/components/user/user_pagination.vue'
+
 export default {
   name: 'NewPost',
   components: {
@@ -257,7 +403,8 @@ export default {
     tagCard,
     articleTransfer,
     articleImport,
-    statement
+    statement,
+    userPagination
   },
   data() {
     return {
@@ -301,7 +448,36 @@ export default {
       readToken: 1,
       readSelectOptions: [],
       readSelectValue: '',
-      readSummary: ''
+      readSummary: '',
+      relatedLink: '',
+      relatedTitle: '',
+      relatedContent: '',
+      relatedLoading: false,
+      relatedList: [
+        // {
+        //   url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+        //   urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
+        //   title: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+        //   titleInput: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
+        //   content: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+        //   contentInput: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+        //   collapse: false,
+        //   showCollapse: true,
+        //   edit: false
+        // }
+      ],
+      pull: {
+        params: {
+          // 没有id是时候不请求list
+          // pagesize: 5
+        },
+        apiUrl: this.$route.params.type === 'draft' ? 'draftsReferences' : 'postsReferences',
+        list: [],
+        reload: 0
+      },
+      currentPage: Number(this.$route.query.page) || 1,
+      loading: false, // 加载数据
+      total: 0
     }
   },
   computed: {
@@ -368,6 +544,8 @@ export default {
       const { hash } = this.$route.query
       // 编辑文章
       this.setArticleDataById(hash, id)
+    } else {
+      console.log('路由错误')
     }
 
     this.getTags()
@@ -375,6 +553,20 @@ export default {
     this.setToolBar(this.screenWidth)
 
     this.getAllTokens()
+
+    this.renderRelatedListContent()
+
+    // 判断当前
+    // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
+    if (type === 'draft' && typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) { // 草稿
+      this.pull.params = {
+        pagesize: 5
+      }
+    } else if (type === 'edit') { // 编辑
+      this.pull.params = {
+        pagesize: 5
+      }
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -610,7 +802,21 @@ export default {
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
-        this.postMineTokens(response.data, 'publish')
+
+        // 关联文章  草稿发布时发布引用的文章
+        const data = {
+          signId: response.data
+        }
+        this.$API.draftsReferencesPublish(this.$route.params.id, data).then(res => {
+          if (res.code === 0) {
+            this.postMineTokens(response.data, 'publish')
+          } else {
+            this.$message.error(res.message)
+            throw new Error(res.message)
+          }
+        }).catch(err => {
+          this.$message.error(err)
+        })
       } catch (error) {
         console.error(error)
         failed(error)
@@ -634,6 +840,11 @@ export default {
           // console.log(this.$route)
           const url = window.location.origin + '/publish/draft/' + res.data
           history.pushState({}, '', url)
+
+          // 草稿创建成功, 允许list请求
+          this.pull.params = {
+            pagesize: 5
+          }
         } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }).catch(err => {
         console.log(err)
@@ -684,7 +895,7 @@ export default {
       }
     },
     // 发布||修改按钮
-    async sendThePost() {
+    sendThePost() {
       // 没有登录 点击发布按钮都提示登录  编辑获取内容的时候会被前面的func拦截并返回home page
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
 
@@ -707,13 +918,14 @@ export default {
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
 
-      if (type === 'draft') {
+      // url draft edit
+      // 草稿发送
+      const draftPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
-
         // 发布文章
         const { hash } = await this.sendPost({ title, author, content })
         // console.log('sendPost result :', hash)
@@ -726,7 +938,9 @@ export default {
           isOriginal,
           shortContent: this.readSummary
         })
-      } else if (type === 'edit') {
+      }
+      // 编辑发送
+      const editPost = async () => {
         if (this.readauThority) {
           if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
           else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
@@ -747,6 +961,10 @@ export default {
           shortContent: this.readSummary
         })
       }
+
+      if (type === 'draft') draftPost()
+      else if (type === 'edit') editPost()
+      else draftPost() // 错误的路由, 当发布文章处理
     },
     $imgAdd(pos, imgfile) {
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
@@ -898,8 +1116,265 @@ export default {
     closeDropdown() {
       this.transferButton = false
       this.readContent = false
-    }
+    },
+    /**
+     * 渲染关联内容 判断是否显示展开或折叠
+     * 如果传递参数 循环所有, 否则判断单个
+     */
+    renderRelatedListContent(i) {
+      this.$nextTick(() => {
+        if (i >= 0) {
+          const ele = document.querySelectorAll('.related-list-content')[i]
+          if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
+          else this.relatedList[i].showCollapse = true
+        } else {
+          const relatedList = document.querySelectorAll('.related-list-content')
+          relatedList.forEach((ele, i) => {
+            if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
+            else this.relatedList[i].showCollapse = true
+          })
+        }
+      })
+    },
+    // 取消关联编辑
+    remakeRelated(i) {
+      this.relatedList[i].urlInput = this.relatedList[i].url
+      this.relatedList[i].titleInput = this.relatedList[i].title
+      this.relatedList[i].contentInput = this.relatedList[i].content
+      this.relatedList[i].edit = false
+    },
+    // 确定管理编辑
+    confirmRelated(i) {
+      const { id, type } = this.$route.params
+      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      const data = {
+        url: this.relatedList[i].urlInput,
+        title: this.relatedList[i].titleInput,
+        summary: this.relatedList[i].contentInput
+      }
 
+      const resSuccess = res => {
+        if (res.code === 0) {
+          this.relatedList[i].url = this.relatedList[i].urlInput
+          this.relatedList[i].title = this.relatedList[i].titleInput
+          this.relatedList[i].content = this.relatedList[i].contentInput
+          this.relatedList[i].edit = false
+          this.renderRelatedListContent(i)
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }
+
+      if (type === 'draft') {
+        // 如果没有草稿id 不会有列表
+        this.$API.draftsReferences(this.$route.params.id, data).then(res => {
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+      } else if (type === 'edit') {
+        // 如果没有草稿id 不会有列表
+        this.$API.postsReferences(this.$route.params.id, data).then(res => {
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+      } else {
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
+    },
+    // 删除关联
+    removeRelated(i, number) {
+      const { id, type } = this.$route.params
+      const resSuccess = res => {
+        // 提交数据等判断
+        if (res.code === 0) {
+          this.relatedList.splice(i, 1) // 客户端移除
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }
+      if (type === 'draft') {
+        // 如果没有草稿id 不会有列表
+        this.$API.removeDraftsReferences(this.$route.params.id, number).then(res => {
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+      } else if (type === 'edit') {
+        // 如果没有草稿id 不会有列表
+        this.$API.removePostsReferences(this.$route.params.id, number).then(res => {
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+      } else {
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
+    },
+    editRelated(i, number) {
+      const { id, type } = this.$route.params
+      const resSuccess = res => {
+        if (res.code === 0) {
+          this.relatedList[i].urlInput = res.data.url
+          this.relatedList[i].titleInput = res.data.title
+          this.relatedList[i].contentInput = res.data.summary
+
+          this.relatedList[i].edit = !this.relatedList[i].edit
+        } else {
+          this.$message.warning(res.message)
+        }
+      }
+      if (type === 'draft') {
+        // 如果没有草稿id 不会有列表
+        this.$API.getDraftsReferences(this.$route.params.id, number).then(res => {
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+      } else if (type === 'edit') {
+        // 如果没有草稿id 不会有列表
+        this.$API.getPostsReferences(this.$route.params.id, number).then(res => {
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
+        })
+      } else {
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
+    },
+    // 自动检测url 获取标题 内容等
+    extractRefTitle(i) {
+      console.log(i)
+      if (i >= 0) {
+        const data = {
+          url: this.relatedList[i].urlInput
+        }
+        this.relatedList[i].loading = true
+        this.$API.extractRefTitle(data)
+          .then(res => {
+            if (res.code === 0) {
+              this.relatedList[i].titleInput = res.data.title
+              this.relatedList[i].contentInput = res.data.summary
+              this.$message.success('检测成功')
+            } else {
+              this.$message.warning(res.message)
+            }
+          }).catch(err => {
+            console.log('获取信息失败', err)
+          }).finally(() => {
+            this.relatedList[i].loading = false
+          })
+      } else {
+        const data = {
+          url: this.relatedLink
+        }
+        this.relatedLoading = true
+        this.$API.extractRefTitle(data)
+          .then(res => {
+            if (res.code === 0) {
+              this.relatedTitle = res.data.title
+              this.relatedContent = res.data.summary
+              this.$message.success('检测成功')
+            } else {
+              this.$message.warning(res.message)
+            }
+          }).catch(err => {
+            console.log('获取信息失败', err)
+          }).finally(() => {
+            this.relatedLoading = false
+          })
+      }
+    },
+    // 添加草稿资源
+    addDraftsReferences() {
+      const { id, type } = this.$route.params
+
+      if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      const data = {
+        url: this.relatedLink,
+        title: this.relatedTitle,
+        summary: this.relatedContent
+      }
+
+      const resSuccess = res => {
+        if (res.code === 0) {
+          this.pull.reload = Date.now() // 刷新list
+          this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }
+
+      if (type === 'draft') { // 草稿
+        // 判断是否为数字
+        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+          this.relatedLoading = true
+          this.$API.draftsReferences(id, data).then(res => {
+            resSuccess(res)
+          }).catch(err => {
+            console.log('err', err)
+          }).finally(() => {
+            this.relatedLoading = false
+          })
+        } else { // 说明没有草稿id
+          this.$message.warning('请先填写文章内容!!!')
+        }
+      } else if (type === 'edit') { // 编辑
+        // 判断是否为数字
+        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
+          this.relatedLoading = true
+          this.$API.postsReferences(id, data).then(res => {
+            resSuccess(res)
+          }).catch(err => {
+            console.log('err', err)
+          }).finally(() => {
+            this.relatedLoading = false
+          })
+        } else { // 说明没有草稿id
+          this.$message.warning('请先填写文章内容!!!')
+        }
+      } else { // 都不是
+        this.$message.warning('请返回主页重新进入操作!!!')
+      }
+    },
+    paginationData(res) {
+      // console.log(res)
+      this.total = res.data.count || 0
+      this.relatedList.length = 0
+      res.data.list.map(i => {
+        this.relatedList.push({
+          url: i.url,
+          urlInput: i.url,
+          title: i.title,
+          titleInput: i.title,
+          content: i.summary,
+          contentInput: i.summary,
+          number: i.number,
+          collapse: false,
+          showCollapse: true,
+          edit: false,
+          loading: false
+        })
+      })
+      this.pull.list = res.data.list
+      this.loading = false
+
+      this.renderRelatedListContent()
+    },
+    togglePage(i) {
+      this.loading = true
+      this.pull.list = []
+      this.currentPage = i
+      this.$router.push({
+        query: {
+          page: i
+        }
+      })
+    }
   }
 }
 </script>
