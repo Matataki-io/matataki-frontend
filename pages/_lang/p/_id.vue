@@ -376,7 +376,7 @@
           </el-button>
         </div>
 
-        <div slot="list" v-loading="loading">
+        <div slot="list" v-loading="beingLoading">
           <no-content-prompt :list="beingPull.list">
             <div v-for="(item, index) in beingRelatedList" :key="index" class="related-list">
               <div class="fl jsb">
