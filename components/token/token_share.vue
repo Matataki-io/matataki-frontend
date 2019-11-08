@@ -11,7 +11,7 @@
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div v-if="pageType === 1" class="widget-button" @click="$message.success('暂未开放')">
+        <div v-if="pageType === 1" class="widget-button" @click="copyCode(userWidget)">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget">
           </div>
@@ -97,6 +97,9 @@ export default {
     },
     id() {
       return this.article.id
+    },
+    userWidget() {
+      return `<iframe width="100%" height="200px" src="${process.env.VUE_APP_URL}/widget/user/?id=${this.$route.params.id}" frameborder=0></iframe>`
     }
   },
   watch: {
