@@ -2,14 +2,14 @@
   <div class="buy-card">
     <div class="buy-flex">
       <h2 class="token-title">快捷购买</h2>
-      <span class="center"><span class="ellipsis">{{ form.output || 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange"/></span>
+      <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange"/></span>
     </div>
     <el-input
       placeholder="输入购买数量"
       @input="inputChange"
       v-on:keypress.native="isNumber"
       v-model="form.output">
-      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
+      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.output || 0 }} CNY</span>
     </el-input>
     <div class="btns">
       <el-button class="btn1" @click="pay">立即支付</el-button>
@@ -48,7 +48,8 @@ export default {
       },
       type: 'buy_token_output',
       priceSlippage: 0.01,
-      orderShow: false
+      orderShow: false,
+      currentPoolSize: {}
     }
   },
   computed: {
@@ -65,10 +66,12 @@ export default {
     token(val) {
       if (val) {
         this.form.outputToken = val
+        if (val.id) this.getCurrentPoolSize(val.id)
       }
     }
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     pay() {
       if (this.isLogined) {
@@ -100,6 +103,17 @@ export default {
         } else {
           this.$message.error(res.message)
           this.form.input = ''
+        }
+      })
+    },
+    getCurrentPoolSize(tokenId) {
+      this.$API.getCurrentPoolSize(tokenId).then(res => {
+        if (res.code === 0) {
+          this.currentPoolSize = {
+            cny_amount: this.$utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: this.$utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
+          }
         }
       })
     },
@@ -140,6 +154,7 @@ export default {
 .center {
   line-height: 33px;
   height: 33px;
+  font-size: 14px;
 }
 .btns {
   display: flex;
