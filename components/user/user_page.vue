@@ -82,6 +82,9 @@
             {{ $t('user.editProfile') }}
           </el-button>
         </router-link>
+        <el-button size="small" icon="el-icon-share" class="follow2" @click="shareModalShow = true">
+          {{ $t('share') }}
+        </el-button>
       </div>
     </div>
     <div class="user-page-content">
@@ -90,6 +93,12 @@
         <slot name="list" />
       </div>
     </div>
+    <Share
+      :share-modal-show="shareModalShow"
+      :minetoken-user="{nickname: userInfo.name}"
+      :page-type="1"
+      @input="val => shareModalShow = val"
+    />
   </div>
 </template>
 
@@ -100,20 +109,24 @@ import tokenAvatar from './token_avatar.vue'
 import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
 import fanCoinsBtn from '@/components/user/fan_coins_btn.vue'
+import Share from '@/components/token/token_share.vue'
+
 export default {
   components: {
     avatar,
     followBtn,
     userPageNav,
     fanCoinsBtn,
-    tokenAvatar
+    tokenAvatar,
+    Share
   },
   data() {
     return {
       token: false,
       seedUser: false,
       tokenUser: false,
-      tokenData: Object.create(null)
+      tokenData: Object.create(null),
+      shareModalShow: false
     }
   },
   computed: {
@@ -257,15 +270,21 @@ export default {
     padding: 0;
     margin: 0;
   }
+  .follow2 {
+    position: absolute;
+    padding-left: 10px;
+    right: 10px;
+    bottom: 20px;
+  }
   .follow {
     position: absolute;
     right: 10px;
-    bottom: 20px;
+    bottom: 60px;
   }
   .fans-coins-btn {
     position: absolute;
     right: 10px;
-    bottom: 60px;
+    bottom: 100px;
   }
 }
 

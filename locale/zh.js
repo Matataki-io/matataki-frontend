@@ -473,7 +473,7 @@ export default {
     widgetView: 'widget预览',
     widgetCopyDes: '复制下面的代码并黏贴到您的网站来展示',
     copyCode: '复制代码',
-    sweepCodeView: '扫描二维码 免费读全文',
+    sweepCodeView: '扫描二维码 立即看全文',
     pressImgSave: '长按图片保存',
     downloadImg: '生成并下载图片',
     createImg: '生成图片',

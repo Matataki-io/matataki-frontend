@@ -183,7 +183,7 @@ export default {
           ele.token_amount = this.$utils.fromDecimal(ele.token_amount)
         }
         if (!isNullExcept0(ele.create_time)) {
-          ele.create_time = moment(ele.create_time).format('YYYY.MM.DD hh:mm')
+          ele.create_time = moment(ele.create_time).utcOffset(480).format('YYYY.MM.DD HH:mm')
         }
         if (!isNullExcept0(ele.liquidity)) {
           ele.liquidity = this.$utils.fromDecimal(ele.liquidity)
