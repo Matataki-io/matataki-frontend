@@ -73,7 +73,7 @@
 
       <el-form-item label="相关网站" prop="">
         <div v-for="(item, index) in about" :key="index" class="fl ac about-input">
-          <el-input v-model="about[index]" class="input" placeholder="请填写网站" />
+          <el-input v-model="about[index]" class="input" placeholder="请填写网站链接，包含http(s)://" />
           <!-- <div v-if="index === 0" class="about-input-btn" @click="aboutAdd">
             <i class="el-icon-plus" />
           </div> -->
