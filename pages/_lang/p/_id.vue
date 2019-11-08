@@ -288,7 +288,7 @@
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
-            <span class="related-title">已关联文章<span>{{ total }}</span></span>
+            <span class="related-title">已关联<span>{{ total }}</span></span>
             <!-- <span class="related-rort">
               正序
               <svg-icon icon-class="sort" class="icon" />
@@ -365,7 +365,7 @@
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
-            <span class="related-title">被关联次数<span>{{ beingTotal }}</span></span>
+            <span class="related-title">被关联<span>{{ beingTotal }}</span></span>
             <!-- <span class="related-rort">
               正序
               <svg-icon icon-class="sort" class="icon" />
