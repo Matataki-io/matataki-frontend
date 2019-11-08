@@ -1145,7 +1145,7 @@ export default {
       this.beingRelatedList.length = 0
       res.data.list.map(i => {
         this.beingRelatedList.push({
-          url: `${process.env.VUE_APP_URL}p/${i.id}`,
+          url: `${process.env.VUE_APP_PC_URL}/p/${i.id}`,
           title: i.title,
           // content: i.summary,
           // number: i.number,
