@@ -384,7 +384,7 @@ export default {
       dataType: "json",
     })
   },
-  wxlogin(code) {
+  getWeixinOpenId(code) {
     return request.post('/wx/login', { code })
   },
   wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0, pay_cny_amount }) {
@@ -661,6 +661,15 @@ minetokenGetResources(tokenId) {
       url: '/token/myLiquidityLogs',
       params: {
         tokenId
+      }
+    })
+  },
+  loginWeixin(code) {
+    return request({
+      method: 'POST',
+      url: '/login/weixin',
+      data: {
+        code
       }
     })
   },
