@@ -233,7 +233,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle">
+              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
             </el-tooltip>
           </el-input>
           <el-input
@@ -1123,7 +1123,7 @@ export default {
      */
     renderRelatedListContent(i) {
       this.$nextTick(() => {
-        if (i) {
+        if (i >= 0) {
           const ele = document.querySelectorAll('.related-list-content')[i]
           if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
           else this.relatedList[i].showCollapse = true
@@ -1247,7 +1247,8 @@ export default {
     },
     // 自动检测url 获取标题 内容等
     extractRefTitle(i) {
-      if (i) {
+      console.log(i)
+      if (i >= 0) {
         const data = {
           url: this.relatedList[i].urlInput
         }
