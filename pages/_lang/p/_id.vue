@@ -1144,7 +1144,7 @@ export default {
       this.beingTotal = res.data.count || 0
       this.beingRelatedList.length = 0
       res.data.list.map(i => {
-        this.relatedList.push({
+        this.beingRelatedList.push({
           url: i.url,
           title: i.title,
           content: i.summary,
@@ -1169,8 +1169,12 @@ export default {
       })
     },
     posts() {
-      if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
-      else this.$store.commit('setLoginModal', true)
+      if (this.isLogined) {
+        // 生成草稿
+        // 添加关联
+        // 跳转页面
+        this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+      } else this.$store.commit('setLoginModal', true)
     }
   }
 
