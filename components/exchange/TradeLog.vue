@@ -120,7 +120,6 @@ export default {
     }
   },
   beforeUpdate() {
-    console.log(this.tokensId)
   },
   methods: {
     update() {

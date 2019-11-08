@@ -5,8 +5,8 @@
       <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner">
       <a class="help-link" target="_blank" href="https://www.matataki.io/p/981">如何交易粉丝币?</a>
       <div class="p-w">
-        <el-tabs type="border-card">
-          <el-tab-pane label="交易">
+        <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
+          <el-tab-pane label="交易" name="#swap">
             <Swap />
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
@@ -14,7 +14,7 @@
               <a href="/tokens">跳转到我的粉丝币页面</a>
             </div>
           </el-tab-pane> -->
-          <el-tab-pane label="流动金池">
+          <el-tab-pane label="流动金池" name="#pool">
             <Pool />
           </el-tab-pane>
         </el-tabs>
@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      tab: '#swap'
     }
   },
   computed: {
@@ -41,15 +42,23 @@ export default {
   },
   async asyncData({ $axios }) {
   },
-
-  created() {
-  },
+  created() {},
   mounted() {
+    this.handleRoute()
     this.$nextTick(() => {
       this.checkLogin()
     })
   },
   methods: {
+    handleRoute() {
+      const hashArr = ['#swap', '#pool']
+      const hash = this.$route.hash
+      if (hashArr.includes(hash)) this.tab = hash
+      else this.tab = '#swap'
+    },
+    tabClick(e) {
+      this.$router.replace({ hash: e.name })
+    },
     getWeixinOpenId() {
       const code = this.$route.query.code
       this.$API.getWeixinOpenId(code).then(res => {

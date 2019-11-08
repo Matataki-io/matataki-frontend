@@ -13,7 +13,7 @@
     </el-input>
     <div class="btns">
       <el-button class="btn1" @click="pay">立即支付</el-button>
-      <router-link :to="{name: 'exchange'}">
+      <router-link :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
       <el-button class="btn2" type="primary">
         交易粉丝币
       </el-button>
