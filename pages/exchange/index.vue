@@ -47,7 +47,6 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.checkLogin()
-      this.getWeixinOpenId()
     })
   },
   methods: {

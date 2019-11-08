@@ -2,33 +2,113 @@
   <div class="buy-card">
     <div class="buy-flex">
       <h2 class="token-title">快捷购买</h2>
-      <span class="center">220 KJM <svg-icon icon-class="exchange"/></span>
+      <span class="center"><span class="ellipsis">{{ form.output || 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange"/></span>
     </div>
     <el-input
       placeholder="输入购买数量"
-      v-model="amount">
-      <span slot="suffix" class="el-input__icon suffix-text">= 0 CNY</span>
+      @input="inputChange"
+      v-on:keypress.native="isNumber"
+      v-model="form.output">
+      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
-      <el-button class="btn1">立即支付</el-button>
-      <el-button  class="btn2" type="primary">交易粉丝币</el-button>
+      <el-button class="btn1" @click="pay">立即支付</el-button>
+      <router-link :to="{name: 'exchange'}">
+      <el-button class="btn2" type="primary">
+        交易粉丝币
+      </el-button>
+      </router-link>
     </div>
+    <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
+import { CNY } from '@/components/exchange/consts.js'
+import OrderModal from '@/components/exchange/OrderModal'
 export default {
-  components: {},
-  props: {},
-  data() {
-    return {
-      amount: ''
+  components: {
+    OrderModal
+  },
+  props: {
+    token: {
+      type: Object,
+      default: () => ({})
     }
   },
-  computed: {},
-  watch: {},
+  data() {
+    return {
+      form: {
+        input: '',
+        inputToken: CNY,
+        output: '',
+        outputToken: {}
+      },
+      type: 'buy_token_output',
+      priceSlippage: 0.01,
+      orderShow: false
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined']),
+    limitValue() {
+      const { input, output } = this.form
+      if (!this.$utils.isNull(input)) {
+        return (parseFloat(input) / (1 - this.priceSlippage)).toFixed(4)
+      }
+      return 0
+    }
+  },
+  watch: {
+    token(val) {
+      if (val) {
+        this.form.outputToken = val
+      }
+    }
+  },
   mounted() {},
-  methods: {}
+  methods: {
+    pay() {
+      if (this.isLogined) {
+        if (this.$utils.isNull(this.form.output)) {
+          this.$message.error('请先输入购买数量')
+        } else {
+          this.orderShow = true
+        }
+      } else {
+        this.$store.commit('setLoginModal', true)
+      }
+    },
+    inputChange: debounce(function (e) {
+      this.getInputAmount(0, this.token.id, this.form.output)
+    }, 500),
+    getInputAmount(inputTokenId = 0, outputTokenId, outputAmount) {
+      const deciaml = 4
+      const _outputAmount = this.$utils.toDecimal(outputAmount, deciaml)
+      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+        if (res.code === 0) {
+          // rmb向上取整
+          if (parseFloat(res.data) >= 100) {
+            this.form.input = parseFloat(this.$utils.formatCNY(res.data, deciaml)).toFixed(2)
+          } else if (!this.$utils.isNull(this.form.output)) {
+            this.form.input = 0.01
+          } else {
+            this.form.input = ''
+          }
+        } else {
+          this.$message.error(res.message)
+          this.form.input = ''
+        }
+      })
+    },
+    isNumber(event) {
+      if (!/\d/.test(event.key) && event.key !== '.') {
+        return event.preventDefault()
+      }
+    }
+  }
 }
 </script>
 
@@ -67,8 +147,13 @@ export default {
   justify-content: space-between;
   margin-top: 20px;
   .btn1, .btn2 {
-    flex: 1;
+    // flex: 1;
   }
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
 <style lang="less">

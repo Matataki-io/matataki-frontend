@@ -134,7 +134,7 @@
           />
           粉丝币交易所
         </router-link> -->
-        <tokenBuyCard />
+        <tokenBuyCard :token="minetokenToken"/>
 
         <div class="about">
           <h2 class="token-title">
