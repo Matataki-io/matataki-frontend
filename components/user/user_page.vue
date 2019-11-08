@@ -69,7 +69,6 @@
             <span class="follow-title">{{ $t('fans') }}</span>
           </router-link>
         </div>
-        <fanCoinsBtn :id="Number($route.params.id)" :token="token" class="fans-coins-btn" />
         <followBtn v-if="!isMe(Number($route.params.id))" :id="Number($route.params.id)" class="follow" />
         <router-link
           v-else
@@ -77,12 +76,13 @@
         >
           <el-button
             size="small"
-            class="follow"
+            class="follow edit"
           >
             {{ $t('user.editProfile') }}
           </el-button>
         </router-link>
-        <el-button size="small" icon="el-icon-share" class="follow2" @click="shareModalShow = true">
+        <el-button size="small" class="follow2" @click="shareModalShow = true">
+          <svg-icon icon-class="share1" />
           {{ $t('share') }}
         </el-button>
       </div>
@@ -108,7 +108,6 @@ import userPageNav from './user_page_nav'
 import tokenAvatar from './token_avatar.vue'
 import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
-import fanCoinsBtn from '@/components/user/fan_coins_btn.vue'
 import Share from '@/components/token/token_share.vue'
 
 export default {
@@ -116,7 +115,6 @@ export default {
     avatar,
     followBtn,
     userPageNav,
-    fanCoinsBtn,
     tokenAvatar,
     Share
   },
@@ -272,19 +270,17 @@ export default {
   }
   .follow2 {
     position: absolute;
-    padding-left: 10px;
     right: 10px;
-    bottom: 20px;
+    bottom: 30px;
   }
   .follow {
     position: absolute;
     right: 10px;
-    bottom: 60px;
-  }
-  .fans-coins-btn {
-    position: absolute;
-    right: 10px;
-    bottom: 100px;
+    bottom: 70px;
+    &.edit {
+      padding-left: 11px;
+      padding-right: 11px;
+    }
   }
 }
 
