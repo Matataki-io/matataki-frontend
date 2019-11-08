@@ -263,7 +263,7 @@
 
         <div v-loading="loading">
           <no-content-prompt :list="pull.list">
-            <div v-for="(item, index) in relatedList" :key="item.number" class="related-list">
+            <div v-loading="item.loading" v-for="(item, index) in relatedList" :key="item.number" class="related-list">
               <template v-if="item.edit">
                 <el-input
                   v-model="item.urlInput"
@@ -271,7 +271,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(index)">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -1146,45 +1146,39 @@ export default {
     // 确定管理编辑
     confirmRelated(i) {
       const { id, type } = this.$route.params
-      if (type === 'draft') {
-        if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
-        const data = {
-          url: this.relatedList[i].urlInput,
-          title: this.relatedList[i].titleInput,
-          summary: this.relatedList[i].contentInput
+      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      const data = {
+        url: this.relatedList[i].urlInput,
+        title: this.relatedList[i].titleInput,
+        summary: this.relatedList[i].contentInput
+      }
+
+      const resSuccess = res => {
+        if (res.code === 0) {
+          this.relatedList[i].url = this.relatedList[i].urlInput
+          this.relatedList[i].title = this.relatedList[i].titleInput
+          this.relatedList[i].content = this.relatedList[i].contentInput
+          this.relatedList[i].edit = false
+          this.renderRelatedListContent(i)
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
         }
+      }
+
+      if (type === 'draft') {
         // 如果没有草稿id 不会有列表
         this.$API.draftsReferences(this.$route.params.id, data).then(res => {
-          if (res.code === 0) {
-            this.relatedList[i].url = this.relatedList[i].urlInput
-            this.relatedList[i].title = this.relatedList[i].titleInput
-            this.relatedList[i].content = this.relatedList[i].contentInput
-            this.relatedList[i].edit = false
-            this.renderRelatedListContent(i)
-            this.$message.success(res.message)
-          } else {
-            this.$message.success(res.message)
-          }
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
         })
       } else if (type === 'edit') {
-        if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
-        const data = {
-          url: this.relatedList[i].urlInput,
-          title: this.relatedList[i].titleInput,
-          summary: this.relatedList[i].contentInput
-        }
         // 如果没有草稿id 不会有列表
         this.$API.postsReferences(this.$route.params.id, data).then(res => {
-          if (res.code === 0) {
-            this.relatedList[i].url = this.relatedList[i].urlInput
-            this.relatedList[i].title = this.relatedList[i].titleInput
-            this.relatedList[i].content = this.relatedList[i].contentInput
-            this.relatedList[i].edit = false
-            this.renderRelatedListContent(i)
-            this.$message.success(res.message)
-          } else {
-            this.$message.success(res.message)
-          }
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
         })
       } else {
         this.$message.warning('请返回主页重新进入操作!!!')
@@ -1193,27 +1187,28 @@ export default {
     // 删除关联
     removeRelated(i, number) {
       const { id, type } = this.$route.params
+      const resSuccess = res => {
+        // 提交数据等判断
+        if (res.code === 0) {
+          this.relatedList.splice(i, 1) // 客户端移除
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }
       if (type === 'draft') {
         // 如果没有草稿id 不会有列表
         this.$API.removeDraftsReferences(this.$route.params.id, number).then(res => {
-          // 提交数据等判断
-          if (res.code === 0) {
-            this.relatedList.splice(i, 1) // 客户端移除
-            this.$message.success(res.message)
-          } else {
-            this.$message.success(res.message)
-          }
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
         })
       } else if (type === 'edit') {
         // 如果没有草稿id 不会有列表
         this.$API.removePostsReferences(this.$route.params.id, number).then(res => {
-          // 提交数据等判断
-          if (res.code === 0) {
-            this.relatedList.splice(i, 1) // 客户端移除
-            this.$message.success(res.message)
-          } else {
-            this.$message.success(res.message)
-          }
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
         })
       } else {
         this.$message.warning('请返回主页重新进入操作!!!')
@@ -1221,76 +1216,108 @@ export default {
     },
     editRelated(i, number) {
       const { id, type } = this.$route.params
+      const resSuccess = res => {
+        if (res.code === 0) {
+          this.relatedList[i].urlInput = res.data.url
+          this.relatedList[i].titleInput = res.data.title
+          this.relatedList[i].contentInput = res.data.summary
+
+          this.relatedList[i].edit = !this.relatedList[i].edit
+        } else {
+          this.$message.warning(res.message)
+        }
+      }
       if (type === 'draft') {
         // 如果没有草稿id 不会有列表
         this.$API.getDraftsReferences(this.$route.params.id, number).then(res => {
-          if (res.code === 0) {
-            this.relatedList[i].urlInput = res.data.url
-            this.relatedList[i].titleInput = res.data.title
-            this.relatedList[i].contentInput = res.data.summary
-
-            this.relatedList[i].edit = !this.relatedList[i].edit
-          } else {
-            this.$message.warning(res.message)
-          }
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
         })
       } else if (type === 'edit') {
         // 如果没有草稿id 不会有列表
         this.$API.getPostsReferences(this.$route.params.id, number).then(res => {
-          if (res.code === 0) {
-            this.relatedList[i].urlInput = res.data.url
-            this.relatedList[i].titleInput = res.data.title
-            this.relatedList[i].contentInput = res.data.summary
-
-            this.relatedList[i].edit = !this.relatedList[i].edit
-          } else {
-            this.$message.warning(res.message)
-          }
+          resSuccess(res)
+        }).catch(err => {
+          console.log('err', err)
         })
       } else {
         this.$message.warning('请返回主页重新进入操作!!!')
       }
     },
     // 自动检测url 获取标题 内容等
-    extractRefTitle() {
-      const data = {
-        url: this.relatedLink
+    extractRefTitle(i) {
+      if (i) {
+        const data = {
+          url: this.relatedList[i].urlInput
+        }
+        this.relatedList[i].loading = true
+        this.$API.extractRefTitle(data)
+          .then(res => {
+            if (res.code === 0) {
+              this.relatedList[i].titleInput = res.data.title
+              this.relatedList[i].contentInput = res.data.summary
+              this.$message.success('检测成功')
+            } else {
+              this.$message.warning(res.message)
+            }
+          }).catch(err => {
+            console.log('获取信息失败', err)
+          }).finally(() => {
+            this.relatedList[i].loading = false
+          })
+      } else {
+        const data = {
+          url: this.relatedLink
+        }
+        this.relatedLoading = true
+        this.$API.extractRefTitle(data)
+          .then(res => {
+            if (res.code === 0) {
+              this.relatedTitle = res.data.title
+              this.relatedContent = res.data.summary
+              this.$message.success('检测成功')
+            } else {
+              this.$message.warning(res.message)
+            }
+          }).catch(err => {
+            console.log('获取信息失败', err)
+          }).finally(() => {
+            this.relatedLoading = false
+          })
       }
-      this.relatedLoading = true
-      this.$API.extractRefTitle(data)
-        .then(res => {
-          if (res.code === 0) {
-            this.relatedTitle = res.data.title
-            this.$message.success('检测成功')
-          } else {
-            this.$message.warning(res.message)
-          }
-        }).catch(err => {
-          console.log('获取信息失败', err)
-        }).finally(() => {
-          this.relatedLoading = false
-        })
     },
     // 添加草稿资源
     addDraftsReferences() {
       const { id, type } = this.$route.params
+
+      if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      const data = {
+        url: this.relatedLink,
+        title: this.relatedTitle,
+        summary: this.relatedContent
+      }
+
+      const resSuccess = res => {
+        if (res.code === 0) {
+          this.pull.reload = Date.now() // 刷新list
+          this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }
+
       if (type === 'draft') { // 草稿
         // 判断是否为数字
         if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
-          if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
-          const data = {
-            url: this.relatedLink,
-            title: this.relatedTitle,
-            summary: this.relatedContent
-          }
+          this.relatedLoading = true
           this.$API.draftsReferences(id, data).then(res => {
-            if (res.code === 0) {
-              this.pull.reload = Date.now() // 刷新list
-              this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
-              this.$message.success(res.message)
-            } else {
-              this.$message.success(res.message)
-            }
+            resSuccess(res)
+          }).catch(err => {
+            console.log('err', err)
+          }).finally(() => {
+            this.relatedLoading = false
           })
         } else { // 说明没有草稿id
           this.$message.warning('请先填写文章内容!!!')
@@ -1298,20 +1325,13 @@ export default {
       } else if (type === 'edit') { // 编辑
         // 判断是否为数字
         if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
-          if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
-          const data = {
-            url: this.relatedLink,
-            title: this.relatedTitle,
-            summary: this.relatedContent
-          }
+          this.relatedLoading = true
           this.$API.postsReferences(id, data).then(res => {
-            if (res.code === 0) {
-              this.pull.reload = Date.now() // 刷新list
-              this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
-              this.$message.success(res.message)
-            } else {
-              this.$message.success(res.message)
-            }
+            resSuccess(res)
+          }).catch(err => {
+            console.log('err', err)
+          }).finally(() => {
+            this.relatedLoading = false
           })
         } else { // 说明没有草稿id
           this.$message.warning('请先填写文章内容!!!')
@@ -1335,7 +1355,8 @@ export default {
           number: i.number,
           collapse: false,
           showCollapse: true,
-          edit: false
+          edit: false,
+          loading: false
         })
       })
       this.pull.list = res.data.list

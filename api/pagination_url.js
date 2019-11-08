@@ -58,5 +58,7 @@ export const paginationUrl = {
   // 获取草稿引用列表
   draftsReferences: 'drafts/:id/references',
   // 获取文章引用列表
-  postsReferences: 'posts/:id/references'
+  postsReferences: 'posts/:id/references',
+  // 查看本文被引用的文章列表
+  postsPosts: '/posts/:id/posts'
 }
