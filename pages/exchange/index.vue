@@ -47,9 +47,16 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.checkLogin()
+      this.getWeixinOpenId()
     })
   },
   methods: {
+    getWeixinOpenId() {
+      const code = this.$route.query.code
+      this.$API.getWeixinOpenId(code).then(res => {
+        console.log(res)
+      })
+    },
     checkLogin() {
       if (!this.isLogined) {
         this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })

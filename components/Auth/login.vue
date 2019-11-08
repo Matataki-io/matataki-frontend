@@ -49,6 +49,13 @@
             <svg-icon class="github" icon-class="github" />
           </div>
         </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
+          <a :href="wxloginHref" class="oauth-bg bg-green">
+            <div>
+              <svg-icon class="github" icon-class="weixin" />
+            </div>
+          </a>
+        </el-tooltip>
       </div>
     </div>
     <img v-if="referral" class="referral" src="@/assets/img/invite.png" :alt="$t('auth.invite')">
@@ -97,7 +104,13 @@ export default {
   },
   computed: {
     ...mapState(['userConfig', 'loginModalShow']),
-    ...mapGetters(['currentUserInfo'])
+    ...mapGetters(['currentUserInfo']),
+    wxloginHref() {
+      const appid = 'wx95829b6a2307300b'
+      const redirectUri = `${process.env.WX_SHARE_HOST}`
+      const scope = 'snsapi_login'
+      return `https://open.weixin.qq.com/connect/qrconnect?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`
+    }
   },
   watch: {
     // 登录框关闭 隐藏loading
@@ -269,7 +282,7 @@ export default {
         width: 20px;
       }
       +.oauth-bg {
-        margin-left: 30px;
+        margin-left: 20px;
       }
     }
   }
@@ -288,6 +301,9 @@ export default {
 }
 .bg-purple {
   background: #882592;
+}
+.bg-green {
+  background: #44b549;
 }
 
 .referral {
