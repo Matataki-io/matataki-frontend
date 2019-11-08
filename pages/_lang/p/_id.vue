@@ -1145,10 +1145,10 @@ export default {
       this.beingRelatedList.length = 0
       res.data.list.map(i => {
         this.beingRelatedList.push({
-          url: i.url,
+          url: `${process.env.VUE_APP_URL}p/${i.id}`,
           title: i.title,
-          content: i.summary,
-          number: i.number,
+          // content: i.summary,
+          // number: i.number,
           collapse: false,
           showCollapse: true
         })
