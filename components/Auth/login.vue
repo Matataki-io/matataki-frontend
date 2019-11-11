@@ -38,6 +38,12 @@
           </div>
         </el-tooltip>
 
+        <el-tooltip class="item" effect="dark" :content="$t('auth.metamaskTitle')" placement="top">
+          <div class="oauth-bg bg-gray" @click="walletLogin('MetaMask')">
+            <svg-icon class="eos" icon-class="metamask" />
+          </div>
+        </el-tooltip>
+
         <el-tooltip class="item" effect="dark" :content="$t('auth.ontType')" placement="top">
           <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
             <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
@@ -135,6 +141,9 @@ export default {
         return
       } else if (type === 'Vnt') {
         this.vntLogin()
+      } else if (type === 'MetaMask') {
+        // @Todo -frank
+        alert("Sign In with MetaMask not implemented for now, please be patient.")
       } else await this.signInx(type)
     },
     async signInx(type) {
