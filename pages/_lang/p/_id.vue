@@ -34,7 +34,6 @@
           <UserInfoHeader
             :article="{
               ...article,
-              avatar,
               articleCreateTimeComputed,
             }"
           />
@@ -100,7 +99,6 @@
       </article>
 
       <!-- sidebar -->
-      <!-- v-show="navShow" -->
       <div class="sidebar">
         <div v-if="isProduct" class="article-btn" @click="buy">
           <div class="icon-container yellow">
@@ -310,9 +308,13 @@
               <div class="fl jsb">
                 <div class="fl ac related-7">
                   <div class="related-list-link">
-                    <a :href="item.url" target="_blank">{{ item.url }}</a>
+                    <a v-if="currentSite(item.url)" href="javascript:void(0);" @click="toggleArticle(item.url)">{{ item.url }}</a>
+                    <a v-else :href="item.url" target="_blank">{{ item.url }}</a>
                   </div>
-                  <a :href="item.url" target="_blank">
+                  <a v-if="currentSite(item.url)" href="javascript:void(0);" @click="toggleArticle(item.url)">
+                    <svg-icon class="related-icon-icon" icon-class="link" />
+                  </a>
+                  <a v-else :href="item.url" target="_blank">
                     <svg-icon class="related-icon-icon" icon-class="link" />
                   </a>
                 </div>
@@ -382,9 +384,13 @@
               <div class="fl jsb">
                 <div class="fl ac related-7">
                   <div class="related-list-link">
-                    <a :href="item.url" target="_blank">{{ item.url }}</a>
+                    <a v-if="currentSite(item.url)" href="javascript:void(0);">{{ item.url }}</a>
+                    <a v-else :href="item.url" target="_blank">{{ item.url }}</a>
                   </div>
-                  <a :href="item.url" target="_blank">
+                  <a v-if="currentSite(item.url)" href="javascript:void(0);">
+                    <svg-icon class="related-icon-icon" icon-class="link" />
+                  </a>
+                  <a v-else :href="item.url" target="_blank">
                     <svg-icon class="related-icon-icon" icon-class="link" />
                   </a>
                 </div>
@@ -483,13 +489,11 @@ export default {
   data() {
     return {
       avatar: null,
-      followed: false,
       investModalShow: false,
       shareModalShow: false,
       transferModal: false,
       purchaseModalShow: false,
       oldOffSetTop: 0,
-      navShow: true,
       isSupport: false, // 是否赞赏, 重新通过token请求文章数据
       commentRequest: 0,
       timer: null,
@@ -666,6 +670,9 @@ export default {
         this.visiblePopover.visible1 = true
         clearInterval(this.timerShare)
       }
+    },
+    '$route'(to, from) {
+      document.title = to.meta.title || 'Your Website'
     }
   },
 
@@ -711,9 +718,7 @@ export default {
   },
   mounted() {
     this.setAvatar()
-    this.oldOffSetTop = this.$refs.actionBtns.offsetTop
     this.addReadAmount()
-    window.addEventListener('scroll', this.handleScroll)
     this.handleFocus()
     // if (!document.hidden) {
     //   this.reading()
@@ -732,7 +737,6 @@ export default {
     window.addEventListener('resize', throttle(this.setRelatedSlider, 300))
   },
   destroyed() {
-    window.removeEventListener('scroll', this.handleScroll)
     // window.removeEventListener('resize', throttle(this.setRelatedSlider))
 
     clearInterval(this.timer)
@@ -744,10 +748,12 @@ export default {
       await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
     },
     // 获取用户在当前文章的属性
-    async getCurrentProfile() {
+    async getCurrentProfile(id) {
       const data = {
-        id: this.$route.params.id
+        id: id || this.$route.params.id
       }
+
+      console.log(data)
 
       await this.$API.getCurrentProfile(data).then(res => {
         // console.log(res)
@@ -791,11 +797,11 @@ export default {
       if (Number(differenceToken) < 0) {
         if (this.isMe(this.article.uid)) { // 自己的文章
           this.showLock = true
-          this.getIfpsData()
+          this.getIpfsData()
         } else this.showLock = false
       } else {
         this.showLock = true
-        this.getIfpsData()
+        this.getIpfsData()
       }
     },
 
@@ -823,14 +829,16 @@ export default {
     showUserPopover() {
       if (!store.get('userVisible')) this.visiblePopover.visible2 = true
     },
-    async getIfpsData() {
-      await this.$API.getIfpsData(this.article.hash)
+    async getIpfsData() {
+      await this.$API.getIpfsData(this.article.hash)
         .then(res => {
           if (res.code === 0) {
             this.post.content = res.data.content
           } else {
-            console.log(res.message)
+            this.$message.warning(res.message)
           }
+        }).catch(err => {
+          console.log('err', err)
         })
     },
     async getArticleInfoFunc() {
@@ -917,12 +925,6 @@ export default {
         this.timer = null
       }
     },
-    handleScroll() {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      const clientHeight = document.body.clientHeight
-      scrollTop + clientHeight - 100 > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
-    },
     handleMoreAction(command) {
       this[command]()
     },
@@ -995,10 +997,10 @@ export default {
     async setAvatar() {
       await this.$API.getUser({ id: this.article.uid }).then((res) => {
         if (res.code === 0) {
-          const data = res.data
-          this.followed = data.is_follow
-          if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
-        }
+          this.avatar = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+        } else this.$message.warning(res.message)
+      }).catch(err => {
+        console.log('err', err)
       })
     },
     // 获取是否赞赏状态
@@ -1088,7 +1090,7 @@ export default {
         } else {
           const relatedList = document.querySelectorAll('.related-list-content')
           relatedList.forEach((ele, i) => {
-            console.log(ele.clientHeight)
+            // console.log(ele.clientHeight)
             if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
             else this.relatedList[i].showCollapse = true
           })
@@ -1103,12 +1105,13 @@ export default {
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
           relatedDom.forEach((ele, i) => {
-            console.log(ele)
+            // console.log(ele)
             ele.style.maxWidth = sliderWidth + 'px'
           })
         }
       })
     },
+    // 隐藏侧边关联栏
     documentClick() {
       this.relatedLeftCollapse = false
       this.relatedRightCollapse = false
@@ -1169,6 +1172,7 @@ export default {
         }
       })
     },
+    // 关联本文
     async posts() {
       if (this.isLogined) {
         // 生成草稿
@@ -1212,6 +1216,70 @@ export default {
 
         // 跳转页面
       } else this.$store.commit('setLoginModal', true)
+    },
+    // 判断文章关联链接是本站还是外站
+    currentSite(link) {
+      const reg = /(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/
+      const linkArr = link.match(reg)
+      const linkHost = linkArr ? linkArr[2] : ''
+      return linkHost === window.location.hostname
+    },
+    // 切换文章
+    toggleArticle(url) {
+      // todo 应该还是要判断多个url, 可能分享的微信文章
+      const reg = /(?<=\/p\/)[\d].*/
+      const urlId = url.match(reg)
+      const id = urlId ? urlId[0] : -1
+      const idInt = parseInt(id)
+      if (idInt !== -1) this.getArticle(idInt)
+      else this.$message.warning('无效链接, 请复制地址打开新页面')
+    },
+    // 切换文章 得到文章信息
+    async getArticle(id) {
+      await this.$API.getArticleInfo(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.article = res.data
+
+            // 切换 url不刷新
+            this.$route.params.id = res.data.id
+            const url = window.location.origin + '/p/' + res.data.id
+            history.pushState({}, '', url)
+
+            // 判断是否为付费阅读文章
+            if (res.data.tokens && res.data.tokens.length !== 0) {
+              this.post.content = res.data.short_content
+            } else {
+              // 切换文章 得到ipfs内容
+              this.getIpfsData(res.data.hash)
+            }
+
+            // created
+            this.getCurrentProfile(res.data.id)
+            // mounted
+            this.setAvatar() // 头像
+            this.addReadAmount() // 增加阅读量
+            this.handleFocus()
+
+            // dom加载完提示 推荐/不推荐
+            this.$nextTick(() => {
+              // 清空两个定时器
+              clearInterval(this.timerShare)
+              this.timerShare = null
+              this.timeCountShare = 0
+
+              clearInterval(this.timer)
+              this.timer = null
+              this.timeCount = 0
+              this.shareCount()
+            })
+          } else {
+            this.$message.warning(res.message)
+          }
+          console.log('res', res)
+        }).catch(err => {
+          console.log('err', err)
+        })
     }
   }
 

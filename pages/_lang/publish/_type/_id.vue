@@ -649,7 +649,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$API.getIfpsData(hash)
+      const articleData = await this.$API.getIpfsData(hash)
       // console.log('articleData', articleData, hash, id)
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
