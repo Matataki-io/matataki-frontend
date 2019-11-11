@@ -70,15 +70,6 @@
       <p class="widget-review-des">
         {{ $t('p.widgetCopyDes') }}
       </p>
-      <!-- <el-input
-        id="codeIframe"
-        v-model="widgetContentIframe"
-        class="widget-textarea"
-        type="textarea"
-        placeholder=""
-        :rows="4"
-        @focus="selectValue($event)"
-      /> -->
       <el-input
         v-model="tokenWidget"
         class="widget-textarea"
