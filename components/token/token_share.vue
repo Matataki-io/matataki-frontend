@@ -6,12 +6,13 @@
     custom-class="gray-bg br10 p-share"
     :show-close="false"
     :center="widgetModalStatus === 0 ? true : false"
-    :top="widgetModalStatus === 0 ? '15vh' : '20px'"
+    :top="widgetModalStatus === 1 ? '20px' : '15vh'"
     @close="change"
   >
+    <!-- 主窗口 -->
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div v-if="pageType === 1" class="widget-button" @click="copyCode(userWidget)">
+        <div v-if="pageType === 1" class="widget-button" @click="widgetModalStatus = 3">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget">
           </div>
@@ -33,8 +34,66 @@
       <SocialShare :img="img" :title="shareLink" />
       <wechat style="margin: 60px 0 0 0;" :link="link" />
     </div>
+    <!-- 截图分享 -->
     <div v-if="widgetModalStatus === 1 && minetokenToken !== null && pageType === 0" class="padding2">
       <tokenShareCardLayout :minetoken-token="minetokenToken" :minetoken-user="minetokenUser" />
+    </div>
+    <!-- widget使用说明 -->
+    <div v-if="widgetModalStatus === 2" class="padding1 widget-help">
+      <p class="widget-help-title">
+        {{ $t('p.articleWidgetHelp') }}
+      </p>
+      <p class="widget-help-content">
+        {{ $t('p.articleWidgetContent') }}
+      </p>
+      <br>
+      <p class="widget-help-title">
+        {{ $t('p.stepTitle') }}
+      </p>
+      <p class="widget-help-content">
+        1.{{ $t('p.stepContent1') }}<br>
+        2.{{ $t('p.stepContent2') }}<br>
+        3.{{ $t('p.stepContent3') }}<br>
+        4.{{ $t('p.stepContent4') }}<br>
+      </p>
+
+      <a class="widget-help-button" href="javascript:;" @click="backWidget">
+        {{ $t('p.confirmPopover') }}
+      </a>
+    </div>
+    <!-- widget -->
+    <div v-if="widgetModalStatus === 3" class="padding1 widget-review">
+      <p class="widget-title">
+        {{ $t('p.widgetView') }}
+      </p>
+      <div class="widget-review-content" v-html="tokenWidget" />
+      <p class="widget-review-des">
+        {{ $t('p.widgetCopyDes') }}
+      </p>
+      <!-- <el-input
+        id="codeIframe"
+        v-model="widgetContentIframe"
+        class="widget-textarea"
+        type="textarea"
+        placeholder=""
+        :rows="4"
+        @focus="selectValue($event)"
+      /> -->
+      <el-input
+        v-model="tokenWidget"
+        class="widget-textarea"
+        type="textarea"
+        :rows="4"
+        placeholder="请输入内容"
+      />
+      <div class="widget-footer">
+        <a class="help" href="javascript:;" @click="reviewHelp">
+          {{ $t('p.widgetHelp') }}
+        </a>
+        <a class="create" href="javascript:;" @click="copyCode(tokenWidget)">
+          {{ $t('p.copyCode') }}
+        </a>
+      </div>
     </div>
   </el-dialog>
 </template>
@@ -82,7 +141,7 @@ export default {
   },
   computed: {
     width() {
-      return this.widgetModalStatus === 0 ? '400px' : '800px'
+      return this.widgetModalStatus === 1 ? '800px' : '400px'
     },
     shareLink() {
       const slogan = [
@@ -98,8 +157,8 @@ export default {
     id() {
       return this.article.id
     },
-    userWidget() {
-      return `<iframe width="100%" height="200px" src="${process.env.VUE_APP_URL}/widget/user/?id=${this.$route.params.id}" frameborder=0></iframe>`
+    tokenWidget() {
+      return `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/user/?id=${this.$route.params.id || 0}' frameborder=0></iframe>`
     }
   },
   watch: {
@@ -132,6 +191,12 @@ export default {
       this.showModal = false
       await this.$utils.sleep(300)
       !status && this.resetStatus()
+    },
+    reviewHelp() {
+      this.widgetModalStatus = 2
+    },
+    backWidget() {
+      this.widgetModalStatus = 3
     }
   }
 }
@@ -207,7 +272,7 @@ export default {
 .widget-review {
   padding: 4px;
   &-content {
-    height: 188px;
+    height: 203px;
     overflow: auto;
   }
   &-des {
