@@ -72,6 +72,7 @@
 /* eslint-disable */
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { idProvider } from './icon.js'
+import { signToLogin } from "@/api/eth";
 
 export default {
   name: 'LoginContent',
@@ -142,8 +143,8 @@ export default {
       } else if (type === 'Vnt') {
         this.vntLogin()
       } else if (type === 'MetaMask') {
-        // @Todo -frank
-        alert("Sign In with MetaMask not implemented for now, please be patient.")
+        alert("Hey! Sign In with MetaMask is a beta feature. This is intented for development only.")
+        signToLogin()
       } else await this.signInx(type)
     },
     async signInx(type) {
