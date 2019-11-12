@@ -22,26 +22,24 @@
     </g-header>
 
     <div class="container">
+      <!-- 文章封面 -->
       <div v-if="cover" class="TitleImage">
         <img :src="cover" alt="cover">
       </div>
-
       <article class="Post-Header">
         <header>
+          <!-- 标题 -->
           <h1 class="Post-Title">
             {{ article.title }}
           </h1>
-          <UserInfoHeader
-            :article="{
-              ...article,
-              articleCreateTimeComputed,
-            }"
-          />
+          <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
+          <UserInfoHeader :article="article" />
         </header>
         <!-- ipfs -->
         <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
-
+        <!-- 文章内容 -->
         <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
+        <!-- 文章页脚 声明 是否原创 -->
         <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
         <!-- 解锁按钮 -->
         <div v-if="tokenArticle" class="lock">
@@ -114,14 +112,14 @@
         </div>
 
         <!-- <div
-        v-if="!isProduct"
-        class="comment fl ac fdc"
-      >
-        <div class="comment-block">
-          <svg-icon icon-class="comment" class="comment-icon" />
-        </div>
-        <span>评论</span>
-      </div> -->
+          v-if="!isProduct"
+          class="comment fl ac fdc"
+          >
+          <div class="comment-block">
+            <svg-icon icon-class="comment" class="comment-icon" />
+          </div>
+          <span>评论</span>
+          </div> -->
 
         <div
           class="article-btn"
@@ -184,14 +182,9 @@
     </div>
 
     <div class="p-w btns-container">
-      <!-- 文章 -->
-      <!-- 推荐 不推荐 分享 -->
-
-      <!-- 商品 -->
-
-      <!-- 投资 购买 分享 -->
-
       <div ref="actionBtns" class="btns">
+        <!-- 商品 -->
+        <!-- 分享 投资 购买 -->
         <div v-if="isProduct" class="article-btn" @click="share">
           <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
             <svg-icon icon-class="share" class="icon" />
@@ -211,6 +204,10 @@
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
         </div>
 
+        <!-- 文章 -->
+        <!-- 分享 推荐 不推荐 -->
+
+        <!-- 文章下方的功能按钮, 由于修改的之前的代码, share模块用插槽的形式写入 -->
         <TokenFooter
           v-if="!isProduct"
           :time="timeCount"
@@ -219,6 +216,7 @@
           @like="like"
           @dislike="dislike"
         >
+          <!-- slot 插槽写入 -->
           <div class="article-btn" @click="share">
             <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
               <svg-icon icon-class="share" class="icon" />
@@ -227,10 +225,12 @@
           </div>
         </TokenFooter>
       </div>
+      <!-- 商品页面下面的详情信息 -->
       <ArticleInfoFooter v-if="isProduct" class="product" :article="article" />
     </div>
+    <!-- tag 标签 -->
     <div v-if="isShowTags" class="p-w" style="margin-bottom: 20px;">
-      <n-link
+      <router-link
         v-for="(item, index) in article.tags"
         :key="index"
         style="margin-right: 10px;"
@@ -238,7 +238,7 @@
         :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
       >
         {{ item.name }}
-      </n-link>
+      </router-link>
     </div>
 
     <!-- 内容居中 -->
@@ -256,15 +256,16 @@
       }"
       @investDone="payDone"
     />
+    <!-- 分享dialog -->
     <ShareModal
       v-model="shareModalShow"
       :article="{
         ...article,
-        time: articleCreateTimeComputed,
         content: compiledMarkdown,
         avatar
       }"
     />
+    <!-- 购买 -->
     <PurchaseModal
       v-model="purchaseModalShow"
       :article="{
@@ -273,15 +274,17 @@
       }"
       @purchaseDone="payDone"
     />
+    <!-- 文章转让 -->
     <article-transfer
       v-model="transferModal"
       :article-id="Number(article.id)"
       from="article"
     />
 
-    <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
+    <!-- 阅读文章积分提示框 目前已经去除 -->
+    <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
     <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
-
+    <!-- 关联文章侧边栏 -->
     <div class="related left" :class="relatedLeftCollapse && 'open'" @click.stop>
       <div class="related-container">
         <div class="fl afe jsb">
@@ -308,10 +311,10 @@
               <div class="fl jsb">
                 <div class="fl ac related-7">
                   <div class="related-list-link">
-                    <a v-if="currentSite(item.url)" href="javascript:void(0);" @click="toggleArticle(item.url)">{{ item.url }}</a>
+                    <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.url }}</a>
                     <a v-else :href="item.url" target="_blank">{{ item.url }}</a>
                   </div>
-                  <a v-if="currentSite(item.url)" href="javascript:void(0);" @click="toggleArticle(item.url)">
+                  <a v-if="currentSite(item.url)" href="javascript:void(0);" @click="toggleArticle(item.url, $event)">
                     <svg-icon class="related-icon-icon" icon-class="link" />
                   </a>
                   <a v-else :href="item.url" target="_blank">
@@ -350,6 +353,7 @@
               :url-replace="$route.params.id + ''"
               :page-size="pull.params.pagesize"
               :total="total"
+              :reload="pull.reload"
               class="pagination"
               @paginationData="paginationData"
               @togglePage="togglePage"
@@ -411,6 +415,7 @@
               :url-replace="$route.params.id + ''"
               :page-size="beingPull.params.pagesize"
               :total="beingTotal"
+              :reload="beingPull.reload"
               class="pagination"
               @paginationData="beingPaginationData"
               @togglePage="beingTogglePage"
@@ -447,7 +452,7 @@ import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 import CoinBtn from '@/components/article/CoinBtn'
 import TokenFooter from '@/components/article/TokenFooter'
-import FeedbackModal from '@/components/article/Feedback'
+// import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar, regRemoveContent } from '@/utils/reg'
@@ -481,7 +486,7 @@ export default {
     articleTransfer,
     CoinBtn,
     TokenFooter,
-    FeedbackModal,
+    // FeedbackModal,
     commentInput,
     OrderModal,
     userPagination
@@ -504,7 +509,7 @@ export default {
         likes: 0,
         is_liked: 0
       },
-      feedbackShow: false,
+      // feedbackShow: false,
       // 三个引导提示的状态
       visiblePopover: {
         visible: false,
@@ -553,6 +558,7 @@ export default {
         params: {
           pagesize: 20
         },
+        reload: 0,
         apiUrl: 'postsReferences',
         list: [] // 因为写的时候用的其他变量, 故而这里没有使用list存放数据
       },
@@ -563,6 +569,7 @@ export default {
         params: {
           pagesize: 20
         },
+        reload: 0,
         apiUrl: 'postsPosts',
         list: [] // 因为写的时候用的其他变量, 故而这里没有使用list存放数据
       },
@@ -670,10 +677,10 @@ export default {
         this.visiblePopover.visible1 = true
         clearInterval(this.timerShare)
       }
-    },
-    '$route'(to, from) {
-      document.title = to.meta.title || 'Your Website'
     }
+    // '$route'(to, from) {
+    //   document.title = to.meta.title || 'Your Website'
+    // }
   },
 
   async asyncData({ $axios, route, req }) {
@@ -735,14 +742,20 @@ export default {
 
     this.setRelatedSlider()
     window.addEventListener('resize', throttle(this.setRelatedSlider, 300))
+    window.addEventListener('popstate', this._popstateEvent)
   },
   destroyed() {
     // window.removeEventListener('resize', throttle(this.setRelatedSlider))
+    window.removeEventListener('popstate', this._popstateEvent)
 
     clearInterval(this.timer)
     clearInterval(this.timerShare)
   },
   methods: {
+    _popstateEvent() {
+      this.toggleArticle(window.location.href, null, true)
+      // console.log(111, this.$route.params, window.location, history)
+    },
     // 增加文章阅读量
     async addReadAmount() {
       await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
@@ -845,6 +858,9 @@ export default {
       await this.$API.getArticleInfo(this.$route.params.id)
         .then(res => {
           if (res.code === 0) this.article = res.data
+          else this.$message.warning(res.message)
+        }).catch(err => {
+          console.log('err', err)
         })
     },
     // 推荐
@@ -1085,12 +1101,15 @@ export default {
       this.$nextTick(() => {
         if (i) {
           const ele = document.querySelectorAll('.related-list-content')[i]
+          if (!ele) return
           if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
           else this.relatedList[i].showCollapse = true
         } else {
           const relatedList = document.querySelectorAll('.related-list-content')
+          if (!relatedList) return
           relatedList.forEach((ele, i) => {
             // console.log(ele.clientHeight)
+            if (!this.relatedList[i]) return
             if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
             else this.relatedList[i].showCollapse = true
           })
@@ -1221,21 +1240,43 @@ export default {
     currentSite(link) {
       const reg = /(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/
       const linkArr = link.match(reg)
-      const linkHost = linkArr ? linkArr[2] : ''
-      return linkHost === window.location.hostname
+      const prot = linkArr && linkArr[3] ? linkArr[3] : ''
+      const linkHost = linkArr ? linkArr[1] + '://' + linkArr[2] + prot : ''
+
+      // 地址
+      const urlList = {
+        development: [
+          process.env.VUE_APP_URL,
+          process.env.VUE_APP_PC_URL,
+          process.env.WX_SHARE_HOST,
+          'http://localhost:8080',
+          'https://localhost:8080',
+          'http://127.0.0.1:8080'
+        ],
+        production: [
+          process.env.VUE_APP_URL,
+          process.env.VUE_APP_PC_URL,
+          process.env.WX_SHARE_HOST
+        ]
+      }
+
+      const currentUrlList = urlList[process.env.NODE_ENV]
+      return currentUrlList.includes(linkHost)
     },
     // 切换文章
-    toggleArticle(url) {
-      // todo 应该还是要判断多个url, 可能分享的微信文章
-      const reg = /(?<=\/p\/)[\d].*/
+    toggleArticle(url, e, popEvent = false) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      const reg = /\/p\/[\d].*/
       const urlId = url.match(reg)
-      const id = urlId ? urlId[0] : -1
+      const id = urlId ? urlId[0].slice(3) : -1
       const idInt = parseInt(id)
-      if (idInt !== -1) this.getArticle(idInt)
+      if (idInt !== -1) this.getArticle(idInt, popEvent)
       else this.$message.warning('无效链接, 请复制地址打开新页面')
+      return false
     },
     // 切换文章 得到文章信息
-    async getArticle(id) {
+    async getArticle(id, popEvent) {
       await this.$API.getArticleInfo(id)
         .then(res => {
           if (res.code === 0) {
@@ -1243,8 +1284,10 @@ export default {
 
             // 切换 url不刷新
             this.$route.params.id = res.data.id
-            const url = window.location.origin + '/p/' + res.data.id
-            history.pushState({}, '', url)
+            if (!popEvent) {
+              const url = window.location.origin + '/p/' + res.data.id
+              history.pushState({}, '', url)
+            }
 
             // 判断是否为付费阅读文章
             if (res.data.tokens && res.data.tokens.length !== 0) {
@@ -1253,6 +1296,8 @@ export default {
               // 切换文章 得到ipfs内容
               this.getIpfsData(res.data.hash)
             }
+
+            // 有写是写在组件内的, 通过props传递的参数判断是否切换文章
 
             // created
             this.getCurrentProfile(res.data.id)
@@ -1263,6 +1308,13 @@ export default {
 
             // dom加载完提示 推荐/不推荐
             this.$nextTick(() => {
+              this.ssToken = {
+                points: [],
+                dislikes: 0,
+                likes: 0,
+                is_liked: 0
+              }
+
               // 清空两个定时器
               clearInterval(this.timerShare)
               this.timerShare = null
@@ -1272,6 +1324,9 @@ export default {
               this.timer = null
               this.timeCount = 0
               this.shareCount()
+
+              this.loading = this.beingLoading = true
+              this.pull.reload = this.beingPull.reload = Date.now()
             })
           } else {
             this.$message.warning(res.message)

@@ -78,7 +78,11 @@ export default {
       return xssFilter(this.filterStr(this.shareInfo.content).substr(0, 400));
     }
   },
-  watch: {},
+  watch: {
+    shareInfo() {
+      this.genQRCode()
+    }
+  },
   beforeDestroy(){
     // 离开删除插入的a dom
     let downloadImg = document.querySelector('#downloadImg')

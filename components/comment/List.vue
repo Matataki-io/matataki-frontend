@@ -1,22 +1,22 @@
 <template>
   <div class="comment-container">
     <h2 class="comment-title">
-      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ articleCardData.commentLength }}
+      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.commentLength }}
     </h2>
-    <no-content-prompt :list="articleCardData.articles">
+    <no-content-prompt :list="pull.articles">
       <template v-if="type === 2">
-        <CommentCard v-for="(itemChild, indexChild) in articleCardData.articles" :key="indexChild" :comment="itemChild" :type="type" />
+        <CommentCard v-for="(itemChild, indexChild) in pull.articles" :key="indexChild" :comment="itemChild" :type="type" />
       </template>
       <template v-else>
-        <articleCard v-for="(itemChild, indexChild) in articleCardData.articles" :key="indexChild" :comment="itemChild" :type="type" />
+        <articleCard v-for="(itemChild, indexChild) in pull.articles" :key="indexChild" :comment="itemChild" :type="type" />
       </template>
     </no-content-prompt>
     <buttonLoadMore
       button-type="article-comment"
       :type-index="0"
-      :params="articleCardData.params"
-      :api-url="articleCardData.apiUrl"
-      :comment-request="commentRequest"
+      :params="pull.params"
+      :api-url="pull.apiUrl"
+      :comment-request="reload"
       @buttonLoadMore="buttonLoadMore"
     >
       {{ $t('viewMore') }}
@@ -48,40 +48,42 @@ export default {
   },
   data() {
     return {
-      // comments: [],
-      articleCardData: {
+      pull: {
         params: {
           signid: this.signId
         },
         apiUrl: 'commentsList',
         articles: [],
         commentLength: 0
-      }
+      },
+      reload: this.commentRequest
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo'])
   },
-  async mounted() {
-    // await this.getListData()
+  watch: {
+    // 监听id是否变化
+    signId() {
+      this.pull.params.signid = this.signId
+      this.reload = Date.now()
+    },
+    commentRequest() {
+      this.reload = this.commentRequest
+    }
   },
   methods: {
-    // async getListData() {
-    //   const res = await this.$API.getComments(this.signId)
-    //   console.log('res', res)
-    //   this.comments = res.data
-    // },
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
-      if (res.data && res.data.list && res.data.list.length !== 0) {
+      if (res) {
         if (res.isEmpty) {
-          this.articleCardData.articles = res.data.list
-          this.articleCardData.commentLength = res.data.count
+          this.pull.articles.length = 0
+          this.pull.articles = res.data.list
         } else {
-          this.articleCardData.articles = this.articleCardData.articles.concat(res.data.list)
+          this.pull.articles = this.pull.articles.concat(res.data.list)
         }
-        this.articleCardData.commentLength = res.data.count
+        this.pull.commentLength = res.data.count
       }
     }
   }
