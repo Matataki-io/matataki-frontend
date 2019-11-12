@@ -49,13 +49,13 @@
             <svg-icon class="github" icon-class="github" />
           </div>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
+        <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
           <a :href="wxloginHref" class="oauth-bg bg-green">
             <div>
               <svg-icon class="github" icon-class="weixin" />
             </div>
           </a>
-        </el-tooltip>
+        </el-tooltip> -->
       </div>
     </div>
     <img v-if="referral" class="referral" src="@/assets/img/invite.png" :alt="$t('auth.invite')">
@@ -213,7 +213,6 @@ export default {
         let referral = this.$utils.getCookie('referral')
         if (referral) this.$utils.delCookie('referral')
       }
-      // console.log(this.referral)
     },
     // 得到邀请状态
     getReferral() {

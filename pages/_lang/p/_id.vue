@@ -77,7 +77,7 @@
               <el-button
                 v-if="!isTokenArticle"
                 plain
-                :disabled="payBtnDisabled"
+                :disabled="payBtnDisabled && isLogined"
                 type="primary"
                 size="small"
                 @click="wxpay"
@@ -1049,6 +1049,10 @@ export default {
       }
     },
     wxpay() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
       if (this.getInputAmountError) {
         this.$message.error(this.getInputAmountError)
         return
