@@ -5,7 +5,12 @@
         <el-input v-model="loginForm.email" :placeholder="$t('rule.loginEmailMessage')" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" :placeholder="$t('rule.passwordMessage')" show-password />
+        <el-input
+          v-model="loginForm.password"
+          type="password"
+          :placeholder="$t('rule.passwordMessage')"
+          show-password
+        />
       </el-form-item>
       <el-form-item class="ss-btn">
         <el-button type="primary" @click="submitLoginForm">
@@ -61,7 +66,7 @@
               <svg-icon class="github" icon-class="weixin" />
             </div>
           </a>
-        </el-tooltip> -->
+        </el-tooltip>-->
       </div>
     </div>
     <img v-if="referral" class="referral" src="@/assets/img/invite.png" :alt="$t('auth.invite')">
@@ -70,16 +75,16 @@
 
 <script>
 /* eslint-disable */
-import { mapActions, mapGetters, mapState } from 'vuex'
-import { idProvider } from './icon.js'
+import { mapActions, mapGetters, mapState } from "vuex";
+import { idProvider } from "./icon.js";
 import { signToLogin } from "@/api/eth";
 
 export default {
-  name: 'LoginContent',
+  name: "LoginContent",
   data() {
     const checkEmail = async (rule, value, callback) => {
-      if (value === '') {
-        return callback(new Error(this.$t('rule.loginEmailMessage')))
+      if (value === "") {
+        return callback(new Error(this.$t("rule.loginEmailMessage")));
       } else {
         // const res = await this.$API.verifyEmail(value)
         // if (res.data) {
@@ -87,150 +92,183 @@ export default {
         // } else {
         //   callback(new Error('邮箱尚未注册'))
         // }
-        callback()
+        callback();
       }
-    }
+    };
     return {
       loginForm: {
-        email: '',
-        password: ''
+        email: "",
+        password: ""
       },
       loginRules: {
         email: [
-          { validator: checkEmail, trigger: 'blur' },
-          { type: 'email', message: this.$t('rule.emailMessage'), trigger: ['blur', 'change'] }
+          { validator: checkEmail, trigger: "blur" },
+          {
+            type: "email",
+            message: this.$t("rule.emailMessage"),
+            trigger: ["blur", "change"]
+          }
         ],
         password: [
-          { required: true, message: this.$t('rule.passwordMessage'), trigger: 'blur' },
-          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage', [8, 16]), trigger: 'blur' }
+          {
+            required: true,
+            message: this.$t("rule.passwordMessage"),
+            trigger: "blur"
+          },
+          {
+            min: 8,
+            max: 16,
+            message: this.$t("rule.passwordLengthMessage", [8, 16]),
+            trigger: "blur"
+          }
         ]
       },
       referral: false,
       loading: false
-    }
+    };
   },
   computed: {
-    ...mapState(['userConfig', 'loginModalShow']),
-    ...mapGetters(['currentUserInfo']),
+    ...mapState(["userConfig", "loginModalShow"]),
+    ...mapGetters(["currentUserInfo"]),
     wxloginHref() {
-      const appid = 'wx95829b6a2307300b'
-      const redirectUri = `${process.env.WX_SHARE_HOST}`
-      const scope = 'snsapi_login'
-      return `https://open.weixin.qq.com/connect/qrconnect?appid=${appid}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`
+      const appid = "wx95829b6a2307300b";
+      const redirectUri = `${process.env.WX_SHARE_HOST}`;
+      const scope = "snsapi_login";
+      return `https://open.weixin.qq.com/connect/qrconnect?appid=${appid}&redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`;
     }
   },
   watch: {
     // 登录框关闭 隐藏loading
     loginModalShow(newVal) {
-      if (!newVal) this.loading = false
+      if (!newVal) this.loading = false;
     }
   },
-  mounted(){
+  mounted() {
     if (process.browser) {
-      this.isReferral()
-      this.getReferral()
+      this.isReferral();
+      this.getReferral();
     }
   },
   methods: {
-    ...mapActions(['signIn']),
-    ...mapActions('vnt', [
-      'login',
-    ]),
+    ...mapActions(["signIn"]),
+    ...mapActions("vnt", ["login"]),
+    ...mapActions("metamask", ["fetchAccount", "login"]),
     async walletLogin(type) {
-      if (type === 'GitHub') {
-        this.$router.push({ name: 'login-github' })
-        return
-      } else if (type === 'Vnt') {
-        this.vntLogin()
-      } else if (type === 'MetaMask') {
-        alert("Hey! Sign In with MetaMask is a beta feature. This is intented for development only.")
-        signToLogin()
-      } else await this.signInx(type)
+      if (type === "GitHub") {
+        this.$router.push({ name: "login-github" });
+        return;
+      } else if (type === "Vnt") {
+        this.vntLogin();
+      } else if (type === "MetaMask") {
+        this.loginWithMetaMask();
+      } else await this.signInx(type);
     },
     async signInx(type) {
       try {
-        await this.signIn({ idProvider: type })
-        this.$store.commit('setLoginModal', false)
-        this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-        window.location.reload() // 登录完成刷新一次
+        await this.signIn({ idProvider: type });
+        this.$store.commit("setLoginModal", false);
+        this.$backendAPI.accessToken = this.currentUserInfo.accessToken;
+        window.location.reload(); // 登录完成刷新一次
       } catch (error) {
         try {
-          await this.signIn({ idProvider: type })
-          this.$store.commit('setLoginModal', false)
-          this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-          window.location.reload() // 登录完成刷新一次
+          await this.signIn({ idProvider: type });
+          this.$store.commit("setLoginModal", false);
+          this.$backendAPI.accessToken = this.currentUserInfo.accessToken;
+          window.location.reload(); // 登录完成刷新一次
         } catch (err) {
-          console.log('signInx 错误', err)
-          this.$message.error(this.$t('error.loginFail'))
+          console.log("signInx 错误", err);
+          this.$message.error(this.$t("error.loginFail"));
         }
       }
     },
     async vntLogin() {
-      this.loading = true
+      this.loading = true;
       try {
-        let res = await this.$store.dispatch('vnt/login')
-        this.$store.commit('setUserConfig', { idProvider: 'Vnt' })
-        this.loading = false
-        this.$message.closeAll()
-        this.$message.success(res)
-        await this.$store.commit('setLoginModal', false)
-        window.location.reload()
+        let res = await this.$store.dispatch("vnt/login");
+        this.$store.commit("setUserConfig", { idProvider: "Vnt" });
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message.success(res);
+        await this.$store.commit("setLoginModal", false);
+        window.location.reload();
       } catch (error) {
-        this.loading = false
-        this.$message.closeAll()
-        this.$message.error(error.toString())
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message.error(error.toString());
+      }
+    },
+    async loginWithMetaMask() {
+      this.loading = true;
+      this.fetchAccount();
+      try {
+        let res = await this.$store.dispatch("metamask/login");
+        this.$store.commit("setUserConfig", { idProvider: "MetaMask" });
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message.success(res);
+        await this.$store.commit("setLoginModal", false);
+        window.location.reload();
+      } catch (error) {
+        console.error(error)
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message.error(error.toString());
       }
     },
     // 登录提交
     submitLoginForm() {
-      this.$refs.loginForm.validate(async (valid) => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
           try {
             const res = await this.$API.login({
               username: this.loginForm.email,
               password: this.loginForm.password
-            })
+            });
             if (res.code === 0) {
-              this.$store.commit('setAccessToken', res.data)
-              this.$store.commit('setUserConfig', { idProvider: 'Email' })
-              this.$message.success(this.$t('success.loginSuccess'))
-              this.$emit('hide')
-              window.location.reload() // 登录完成刷新一次
+              this.$store.commit("setAccessToken", res.data);
+              this.$store.commit("setUserConfig", { idProvider: "Email" });
+              this.$message.success(this.$t("success.loginSuccess"));
+              this.$emit("hide");
+              window.location.reload(); // 登录完成刷新一次
             } else {
-              this.$message.error(this.$t('error.loginFailPasswordOrAccount'))
+              this.$message.error(this.$t("error.loginFailPasswordOrAccount"));
             }
           } catch (error) {
-            this.$message.error(this.$t('error.loginFail'))
+            this.$message.error(this.$t("error.loginFail"));
           }
         } else {
           // console.log('error submit!!')
-          return false
+          return false;
         }
-      })
+      });
     },
     switchRegister() {
-      this.$emit('switch')
+      this.$emit("switch");
     },
     // 是否有推荐
     isReferral() {
-      let search = window.location.search.slice(1)
-      let searchArr = search.split('&')
-      let searchFilter = searchArr.filter((i) => i.includes('referral='))
+      let search = window.location.search.slice(1);
+      let searchArr = search.split("&");
+      let searchFilter = searchArr.filter(i => i.includes("referral="));
       // 有邀请id
-      if (searchFilter.length !== 0) this.$utils.setCookie('referral', searchFilter[0].slice(9))
-      else { // 如果没有邀请连接
+      if (searchFilter.length !== 0)
+        this.$utils.setCookie("referral", searchFilter[0].slice(9));
+      else {
+        // 如果没有邀请连接
         // 检查是否有邀请id 有则删除
-        let referral = this.$utils.getCookie('referral')
-        if (referral) this.$utils.delCookie('referral')
+        let referral = this.$utils.getCookie("referral");
+        if (referral) this.$utils.delCookie("referral");
       }
     },
     // 得到邀请状态
     getReferral() {
-      let referral = this.$utils.getCookie('referral')
-      if (referral) this.referral = true
+      let referral = this.$utils.getCookie("referral");
+      if (referral) this.referral = true;
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -244,7 +282,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   .red {
-    color:#FB6877;
+    color: #fb6877;
   }
 }
 .oauth-box {
@@ -261,7 +299,7 @@ export default {
   }
   .warning-tip {
     font-size: 14px;
-    color: #FB6877;
+    color: #fb6877;
     margin: 14px 0 22px;
     font-weight: 400;
   }
@@ -290,7 +328,7 @@ export default {
       img {
         width: 20px;
       }
-      +.oauth-bg {
+      + .oauth-bg {
         margin-left: 20px;
       }
     }

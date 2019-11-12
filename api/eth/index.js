@@ -1,44 +1,42 @@
+import Web3 from 'web3'
+import { fetchId, connect } from './util'
 /**
  * @author Frank Wei<frank@frankwei.xyz>
  * Contact me if you have any questions.
+ * This script is intented to run in client side
  */
-import sigUtil from 'eth-sig-util'
 
-/**
- * Connect 函数
- * 从 MetaMask v7 开始, 隐私模式默认开启
- * 授权前网站无法访问用户解锁的钱包
- * 特此请求授权
- *  */
-function connect() {
-  if (typeof window.ethereum !== 'undefined') {
-    // the browser should injected metamask
-  }
-  return window.ethereum.enable() // Return A Promise, require user authorization
-}
-
-/**
- * @returns {Promise<number>} 返回当前插件的网络ID
- */
-function fetchId() {
-  return new Promise((resolve, reject) => {
-    window.web3.currentProvider.sendAsync({
-      method: 'net_version',
-      params: [],
-      jsonrpc: '2.0'
-    }, (err, result) => {
-      if (err) { reject(err) }
-      resolve(result.result)
-    })
+if (process.browser) {
+  // window is undefined 因为nuxt.js在服务器端渲染
+  // 服务器渲染环境时 process.browser 为 false，浏览器端为true
+  window.addEventListener('load', async () => {
+    if (window.ethereum && window.web3) {
+      // Modern dapp browsers...
+      window.web3 = new Web3(window.ethereum)
+      try {
+        await connect()
+        const accounts = await window.web3.eth.getAccounts()
+      } catch (error) {
+        // @todo: handle User denied account access...
+      }
+    } else if (window.web3) {
+      // Legacy dapp browsers...
+      window.web3 = new Web3(window.web3.currentProvider)
+      // Acccounts always exposed
+      window.web3.eth.sendTransaction({/* ... */ })
+    } else {
+      // Non-dapp browsers...
+      console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    }
   })
 }
 
 async function signToLogin() {
   const netId = await fetchId()
-  let from = window.web3.eth.accounts[0]
+  let [from] = await window.web3.eth.getAccounts()
   if (!from) {
     await connect()
-    from = window.web3.eth.accounts[0]
+    from = await window.web3.eth.getAccounts()
   }
   const EIP712Domain = [
     { name: 'name', type: 'string' },
@@ -60,14 +58,20 @@ async function signToLogin() {
       ]
     },
     primaryType: 'Login',
-    domain: { name: 'Matataki 瞬', version: '1', chainId: netId, verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC' },
+    domain: {
+      name: 'Matataki 瞬',
+      version: '1',
+      chainId: netId,
+      verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+    },
     message
   })
 
   console.log(msgParams)
   const params = [from, msgParams]
-  const result = await signTypedDataV3Async({ params, from })
-  // Send the signature back to backend
+  const signature = await signTypedDataV3Async({ params, from })
+  console.info(`User signed the login request, signature is ${signature}`)
+  return { signature, msgParams }
 }
 
 /**
@@ -93,4 +97,4 @@ function signTypedDataV3Async({ params, from }) {
   })
 }
 
-export { signToLogin }
+export { signToLogin, connect }
