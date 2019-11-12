@@ -44,19 +44,25 @@ export const actions = {
       commit('SET_METAMASK_CONNECTION', true)
     } catch (error) {
       // @todo: handle User denied account access...
+      throw Error('你拒绝了网站对MetaMask插件的访问，无法通过MetaMask登录')
     }
-    const { signature, msgParams } = await signToLogin()
-    const res = await API.auth({
-      platform: 'eth',
-      publickey: state.account,
-      sign: signature,
-      msgParams
-    })
-    if (res.code === 0) {
-      setToken(res.data)
-      return '签名登录成功，正在跳转'
-    } else {
-      return '签名登录失败'
+    try {
+      const { signature, msgParams } = await signToLogin()
+      const res = await API.auth({
+        platform: 'eth',
+        publickey: state.account,
+        sign: signature,
+        msgParams
+      })
+      if (res.code === 0) {
+        setToken(res.data)
+        return '签名登录成功，正在跳转'
+      } else {
+        throw Error('签名登录失败')
+      }
+    } catch (error) {
+      console.error(`Error happened when signing ${error.toString()}`)
+      throw error
     }
   },
   // 暂未使用到

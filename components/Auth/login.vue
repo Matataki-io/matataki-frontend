@@ -211,10 +211,14 @@ export default {
         await this.$store.commit("setLoginModal", false);
         window.location.reload();
       } catch (error) {
-        console.error(error)
+        console.error(error);
         this.loading = false;
         this.$message.closeAll();
-        this.$message.error(error.toString());
+        if (error.message) {
+          this.$message.error(error.message);
+        } else {
+          this.$message.error(error.toString());
+        }
       }
     },
     // 登录提交
