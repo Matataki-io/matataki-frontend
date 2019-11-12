@@ -29,7 +29,6 @@
     "cyanobridge": "^0.1.0",
     "element-ui": "^2.10.1",
     "eosjs": "^16.0.9",
-    "eth-sig-util": "^2.5.0",
     "html2canvas": "^1.0.0-rc.3",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.1",
