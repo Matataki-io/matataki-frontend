@@ -1,11 +1,14 @@
-// import Web3 from 'web3'
+/**
+ * @author Frank Wei<frank@frankwei.xyz>
+ * Contact me if you have any questions.
+ */
 import sigUtil from 'eth-sig-util'
 
-// const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')
 /**
- * From MetaMask v7 , privacy mode will be open by default
- * blocking the dapp from direct access of user pubkey,
- * so we need user to authorize us
+ * Connect 函数
+ * 从 MetaMask v7 开始, 隐私模式默认开启
+ * 授权前网站无法访问用户解锁的钱包
+ * 特此请求授权
  *  */
 function connect() {
   if (typeof window.ethereum !== 'undefined') {
@@ -14,6 +17,9 @@ function connect() {
   return window.ethereum.enable() // Return A Promise, require user authorization
 }
 
+/**
+ * @returns {Promise<number>} 返回当前插件的网络ID
+ */
 function fetchId() {
   return new Promise((resolve, reject) => {
     window.web3.currentProvider.sendAsync({
@@ -60,30 +66,30 @@ async function signToLogin() {
 
   console.log(msgParams)
   const params = [from, msgParams]
-  signTypedDataV3({ from, params, msgParams })
+  const result = await signTypedDataV3Async({ params, from })
+  // Send the signature back to backend
 }
 
-// safer than v1
-function signTypedDataV3({ params, from, msgParams }) {
-  window.web3.currentProvider.sendAsync({
-    method: 'eth_signTypedData_v3',
-    params,
-    from
-  }, function (err, result) {
-    if (err) return console.dir(err)
-    if (result.error) {
-      alert(result.error.message)
-    }
-    if (result.error) return console.error('ERROR', result)
-    console.log('TYPED SIGNED:' + JSON.stringify(result.result))
-
-    const recovered = sigUtil.recoverTypedSignature({ data: JSON.parse(msgParams), sig: result.result })
-
-    if (recovered) {
-      alert('Successfully ecRecovered signer as ' + from)
-    } else {
-      alert('Failed to verify signer when comparing ' + result + ' to ' + from)
-    }
+/**
+ * 调用 'eth_signTypedData_v3' 在 MetaMask
+ * 可以看一下 EIP-712: https://eips.ethereum.org/EIPS/eip-712
+ * @param {Object} obj - An object that contains two fields: `params` and `from`.
+ * @param {Object} obj.params - Parameter for MetaMask to sign a message.
+ * @param {string} obj.from - User's address to sign the message.
+ * @returns {Promise<string>} The signature that user signed with TypedData
+ */
+function signTypedDataV3Async({ params, from }) {
+  return new Promise((resolve, reject) => {
+    window.web3.currentProvider.sendAsync({
+      method: 'eth_signTypedData_v3',
+      params,
+      from
+    }, (err, result) => {
+      if (err) reject(err)
+      if (result.error) reject(result.error)
+      if (result.error) return reject(result)
+      resolve(result.result)
+    })
   })
 }
 
