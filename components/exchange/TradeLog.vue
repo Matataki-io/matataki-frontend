@@ -283,3 +283,43 @@ export default {
   }
 }
 </style>
+<style lang="less">
+@t-h: 30px;
+.trade {
+  .el-tabs {
+    width: 100%;
+  }
+  .el-tabs__item {
+    font-size: 14px !important;
+    height: @t-h!important;
+  }
+  .el-tabs__content {
+    background: #ffffff !important;
+    padding: 0 10px;
+  }
+  .el-tabs--border-card > .el-tabs__header {
+    background: #ffffff !important;
+  }
+  .el-tabs__header {
+    .el-tabs__nav-scroll {
+      margin-bottom: 0;
+    }
+    .el-tabs__nav {
+      width: 220px;
+      height: @t-h;
+    }
+  }
+  .el-table::before {
+    height: 0;
+  }
+}
+.trade-log-header {
+  color: #542DE0;
+  font-weight: 400;
+  border-bottom: 0!important;
+}
+.trade-log-row {
+  border-bottom: 0!important;
+  padding: 2px 0!important;
+}
+</style>
