@@ -1,8 +1,27 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="setting" />
-      <div class="set-main">
+      <nav class="nav">
+        <template>
+          <!-- 标签 -->
+          <a
+            :class="numPage === 1 && 'active'"
+            @click="numPage = 1"
+          >
+            {{ $t('user.setting') }}
+          </a>
+        </template>
+        <template>
+          <a
+            :class="numPage === 2 && 'active'"
+            @click="numPage = 2"
+          >
+            {{ $t('user.systemSetting') }}
+          </a>
+        </template>
+      </nav>
+      <!-- 用户设置 -->
+      <div v-if="numPage === 1" class="set-main">
         <div class="list center">
           <span class="title">{{ $t('avatar') }}</span>
           <img-upload
@@ -59,6 +78,47 @@
           </div>
         </div>
         <div class="line" />
+        <!-- 相关网站 -->
+        <div class="social-div">
+          <span class="title">
+            相关网站
+          </span>
+          <div v-for="(item, index) in about" :key="index" class="fl ac about-input social-list">
+            <el-input v-model="about[index]" class="input" placeholder="请填写网站链接，包含http(s)://" />
+            <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+              <i class="el-icon-minus" />
+            </div>
+          </div>
+          <div v-if="about.length < 5" class="about-input-btn add" @click="aboutAdd">
+            <i class="el-icon-plus" />
+          </div>
+        </div>
+        <!-- 社交账号 -->
+        <div class="social-div">
+          <span class="title">
+            社交账号
+          </span>
+          <div v-for="(item, index) in social" :key="index" class="social-list">
+            <p class="social-title">
+              {{ item.name }}
+              <span v-html="item.tooltip" />
+            </p>
+            <div class="fl">
+              <div class="social-icons">
+                <socialIcon :icon="item.symbol" />
+              </div>
+              <el-input v-model="item.value" class="social-input" :placeholder="item.placeholder" />
+            </div>
+          </div>
+        </div>
+        <!-- 保存 -->
+        <div class="line" />
+        <el-button :loading="loading" class="save" :class="setProfile && 'active'" @click="save">
+          {{ $t('save') }}
+        </el-button>
+      </div>
+      <!-- 系统设置 -->
+      <div v-if="numPage === 2" class="set-main">
         <div class="list center">
           <span class="title">{{ $t('user.transfer') }}</span>
           <el-switch
@@ -67,9 +127,6 @@
             @change="changeTransfer"
           />
         </div>
-        <el-button :loading="loading" class="save" :class="setProfile && 'active'" @click="save">
-          {{ $t('save') }}
-        </el-button>
       </div>
     </template>
     <template slot="info">
@@ -83,6 +140,7 @@ import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
+import socialIcon from '@/components/social_icon/index.vue'
 
 import imgUpload from '@/components/imgUpload/index.vue'
 
@@ -90,8 +148,9 @@ export default {
   components: {
     userLayout,
     userInfo,
-    userNav,
-    imgUpload
+    // userNav,
+    imgUpload,
+    socialIcon
   },
   data() {
     return {
@@ -103,7 +162,76 @@ export default {
       avatar: '',
       setProfile: false, // 是否编辑信息
       imgUploadDone: 0, // 图片是否上传完成
-      loading: false
+      loading: false,
+      numPage: 1,
+      about: [''],
+      social: [
+        {
+          symbol: 'QQ',
+          icon: 'qq1',
+          name: 'QQ：',
+          tooltip: '',
+          placeholder: 'QQ帐号',
+          url: '',
+          value: ''
+        },
+        {
+          symbol: 'Wechat',
+          icon: 'wechat',
+          name: '微信：',
+          tooltip: '',
+          placeholder: '微信号',
+          url: '',
+          value: ''
+        },
+        {
+          symbol: 'Weibo',
+          icon: 'weibo1',
+          name: '微博：',
+          tooltip: '(https://www.weibo.com/<span>帐号</span>)',
+          placeholder: '微博用户名(不需要完整URL)',
+          url: 'https://www.weibo.com',
+          value: ''
+        },
+        {
+          symbol: 'Telegram',
+          icon: 'tg',
+          name: 'Telegram：',
+          tooltip: '',
+          placeholder: 'Telegram用户名',
+          url: '',
+          value: ''
+        },
+        {
+          symbol: 'Twitter',
+          icon: 'twitter1',
+          name: 'Twitter：',
+          tooltip: '(https://twitter.com/<span>帐号</span>)',
+          placeholder: 'Twitter用户名(不需要完整URL)',
+          url: 'https://twitter.com',
+          value: ''
+        },
+        {
+          symbol: 'Facebook',
+          icon: 'fb',
+          name: 'Facebook：',
+          tooltip: '(https://facebook.com/<span>帐号</span>)',
+          placeholder: 'Facebook用户名(不需要完整URL)',
+          url: 'https://facebook.com',
+          value: ''
+        },
+        {
+          symbol: 'Github',
+          icon: 'github1',
+          name: 'Github：',
+          tooltip: '(https://github.com/<span>帐号</span>)',
+          placeholder: 'Github用户名(不需要完整URL)',
+          url: 'https://github.com',
+          value: ''
+          // resourcesSocialss: [],
+          // resourcesWebsites: [],
+        }
+      ]
     }
   },
   computed: {
@@ -262,6 +390,14 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    aboutAdd() {
+      if (this.about.length >= 5) return
+      this.about.push('')
+    },
+    abountLess(i) {
+      if (this.about.length <= 1) return
+      this.about.splice(i, 1)
     }
   }
 }
@@ -280,13 +416,13 @@ export default {
     &.center {
       align-items: center;
     }
-  .title {
-    font-size:18px;
-    font-weight:400;
-    color:#333;
-    line-height:28px;
-    margin-right: 20px;
-  }
+}
+.title {
+  font-size:18px;
+  font-weight:400;
+  color:#333;
+  line-height:28px;
+  margin-right: 20px;
 }
 
 @avatarWidth: 90px;
@@ -353,6 +489,72 @@ export default {
   cursor: pointer;
   &.active {
     background: @purpleDark;
+  }
+}
+.nav {
+  padding-left: 10px;
+  padding-right: 10px;
+  a {
+    font-size: 18px;
+    line-height:33px;
+    text-decoration: none;
+    margin-right: 20px;
+    color: #333;
+    cursor: pointer;
+    &.active {
+      font-weight:bold;
+      color:rgba(0,0,0,1);
+    }
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
+  }
+}
+.social-title {
+  padding: 0;
+  margin: 12px 0 10px 60px;
+  font-size:14px;
+  font-weight:400;
+  color:rgba(0,0,0,1);
+  line-height:20px;
+  span {
+    span {
+      color: red;
+    }
+  }
+}
+.social-icons {
+  width: 60px;
+}
+.social-input {
+  width: 340px;
+}
+.social-div {
+  padding-top: 24px;
+  padding-bottom: 34px;
+  .social-list {
+    margin-left: 56px;
+  }
+}
+.about-input {
+  margin: 0 0 10px;
+  .input {
+    width: 400px;
+  }
+}
+.about-input-btn {
+  width: 24px;
+  height: 24px;
+  background-color: @purpleDark;
+  color: @white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin: 0 0 0 10px;
+  cursor: pointer;
+  &.add {
+    margin-left: 56px;
   }
 }
 </style>

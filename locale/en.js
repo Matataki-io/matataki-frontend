@@ -614,6 +614,7 @@ export default {
     follow: 'Follow',
     buy: 'Buy',
     setting: 'Account Settings',
+    systemSetting: 'System Settings',
     wallet: 'wallet',
     point: 'integration',
     invite: 'Invite',

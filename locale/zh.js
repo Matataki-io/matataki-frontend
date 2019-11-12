@@ -579,6 +579,7 @@ export default {
     follow: '关注',
     buy: '购买',
     setting: '账户设置',
+    systemSetting: '系统设置',
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
