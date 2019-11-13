@@ -41,7 +41,9 @@
           :toolbars="toolbars"
           :box-shadow="false"
           :autofocus="false"
-          :style="mavonStyle"
+          :style="{
+            minHeight: '700px'
+          }"
           :placeholder="$t('publish.contentPlaceholder')"
           @imgAdd="$imgAdd"
         />
@@ -308,28 +310,31 @@
               </template>
 
               <template v-else>
-                <div class="fl jsb">
-                  <div class="fl ac related-7">
-                    <div class="related-list-link">
-                      <a :href="item.url" target="_blank">{{ item.url }}</a>
+                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
+                  <div class="fl jsb">
+                    <div class="fl ac related-7">
+                      <div class="related-list-link">
+                        <a :href="item.url" target="_blank">{{ item.title }}</a>
+                      </div>
                     </div>
+                    <div class="fl ac jfe related-3">
+                      <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                        <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
+                      </el-tooltip>
+
+                      <el-tooltip effect="dark" content="删除" placement="top">
+                        <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
+                      </el-tooltip>
+                      <span class="related-id">{{ item.number }}</span>
+                    </div>
+                  </div>
+                  <div class="fl ac related-link">
+                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                    <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
                     <a :href="item.url" target="_blank">
-                      <svg-icon class="related-icon-icon" icon-class="link" />
+                      <svg-icon class="icon-share" icon-class="share1" />
                     </a>
                   </div>
-                  <div class="fl ac jfe related-3">
-                    <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                      <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
-                    </el-tooltip>
-
-                    <el-tooltip effect="dark" content="删除" placement="top">
-                      <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
-                    </el-tooltip>
-                    <span class="related-id">{{ item.number }}</span>
-                  </div>
-                </div>
-                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
-                  {{ item.title }}
                 </div>
                 <div :class="!item.collapse && 'open'">
                   <div class="related-list-content">
@@ -415,9 +420,6 @@ export default {
       fissionFactor: 2000,
       toolbars: {},
       screenWidth: 1000,
-      mavonStyle: {
-        minHeight: '800px'
-      },
       fissionNum: 2,
       cover: '',
       signature: '',
@@ -490,14 +492,6 @@ export default {
     }
   },
   watch: {
-    screenWidth(val) {
-      this.setToolBar(val)
-    },
-    mavonStyle(newVal) {
-      // console.log(newVal)
-
-      this.mavonStyle = newVal
-    },
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
@@ -549,12 +543,9 @@ export default {
     }
 
     this.getTags()
-    this.resize()
-    this.setToolBar(this.screenWidth)
-
     this.getAllTokens()
-
     this.renderRelatedListContent()
+    this.setToolBar()
 
     // 判断当前
     // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
@@ -649,7 +640,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$API.getIfpsData(hash)
+      const articleData = await this.$API.getIpfsData(hash)
       // console.log('articleData', articleData, hash, id)
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
@@ -796,9 +787,9 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
+        // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
         if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          // 单独处理 同下
-          if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
+          signature = await this.getSignatureOfArticle({ author, hash })
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
@@ -857,9 +848,9 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       let signature = null
+      // refactor: 对 VNT 的处理弄在了.invalidId()
       if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        // 单独处理 同上
-        if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
+        signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) this.postMineTokens(response.data, 'edit')
@@ -1007,19 +998,8 @@ export default {
         image.src = imgfile.miniurl
       }
     },
-    setToolBar(val) {
-      if (val > 750) this.toolbars = Object.assign(toolbars.pc, toolbars.public)
-      else this.toolbars = Object.assign(toolbars.mobile, toolbars.public)
-    },
-    resize() {
-      window.onresize = debounce(() => {
-        const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        this.screenWidth = clientWidth
-        /* this.mavonStyle = {
-          minHeight: `${clientHeight - 174}px`
-        } */
-      }, 150)
+    setToolBar() {
+      this.toolbars = Object.assign(toolbars.public, toolbars.pc)
     },
     // 上传完成
     doneImageUpload(res) {
@@ -1125,11 +1105,14 @@ export default {
       this.$nextTick(() => {
         if (i >= 0) {
           const ele = document.querySelectorAll('.related-list-content')[i]
+          if (!ele) return
           if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
           else this.relatedList[i].showCollapse = true
         } else {
           const relatedList = document.querySelectorAll('.related-list-content')
+          if (!relatedList) return
           relatedList.forEach((ele, i) => {
+            if (!this.relatedList[i]) return
             if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
             else this.relatedList[i].showCollapse = true
           })
@@ -1419,6 +1402,16 @@ export default {
           page: i
         }
       })
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
     }
   }
 }

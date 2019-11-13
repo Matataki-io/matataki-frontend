@@ -107,6 +107,7 @@ export default {
     eosWallet: 'EOS钱包',
     ontWallet: 'ONT钱包',
     eosTitle: 'EOS登录',
+    metamaskTitle: '使用 MetaMask 以太坊钱包登录',
     eosType: 'EOS',
     eosDoc: '《如何使用EOS登录》',
     ontTitle: 'ONT登录',
@@ -356,6 +357,13 @@ export default {
     publishArticleSuccess: '发文成功，奖励{0}积分',
     // article import
     importInput: '请输入文章网址链接，包含http(s)://',
+    importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
+    importDes2: '如若在本平台发表的内容发现侵权行为，官方有权下架该作品，并保留向侵权者追究法律责任的权利。',
+    importAgree: '我同意',
+    importAddressError: '请输入正确的地址',
+    importAddress: '来源链接：',
+    importSuccess: '导入成功',
+    importError: '导入失败,目前只支持: 链闻、橙皮书、微信文章',
     // statement
     originalStatement: '原创声明',
     statement: '勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：',

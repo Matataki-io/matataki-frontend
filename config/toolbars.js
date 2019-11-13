@@ -8,8 +8,7 @@ export const toolbars = {
     header: true, // 标题
     imagelink: true, // 图片链接
     preview: true, // 预览
-    help: true,
-    subfield: true
+    help: true
   },
   pc: {
     quote: true, // 引用
@@ -20,5 +19,7 @@ export const toolbars = {
     table: true, // 表格
     navigation: true
   },
-  mobile: {}
+  mobile: {
+    subfield: false
+  }
 }
