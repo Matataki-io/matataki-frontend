@@ -543,11 +543,8 @@ export default {
     }
 
     this.getTags()
-
     this.getAllTokens()
-
     this.renderRelatedListContent()
-
     this.setToolBar()
 
     // 判断当前
