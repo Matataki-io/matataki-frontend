@@ -1,15 +1,16 @@
 import { testDecimal } from '@/utils/reg'
 
 export default {
-// 无法赞赏的账号类型
-/**
- *
- * @param {String} id 登录类型
- */
+  // 无法赞赏的账号类型
+  /**
+   *
+   * @param {String} id 登录类型
+   */
   invalidId(id) {
     const lowerId = id.toLocaleLowerCase()
-    if (lowerId === 'github' || lowerId === 'email') return true
-    return false
+    const invalidProviders = ['github', 'email', 'vnt']
+    // The Array.includes() method is case sensitive.
+    return invalidProviders.includes(lowerId) //如果是不能签名的Provider则返回true，没毛病
   },
   /**
    * 格式化小数点处理 保留位数 不四舍五入

@@ -796,9 +796,9 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
+        // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
         if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          // 单独处理 同下
-          if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
+          signature = await this.getSignatureOfArticle({ author, hash })
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
@@ -857,9 +857,9 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       let signature = null
+      // refactor: 对 VNT 的处理弄在了.invalidId()
       if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        // 单独处理 同上
-        if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
+        signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) this.postMineTokens(response.data, 'edit')
