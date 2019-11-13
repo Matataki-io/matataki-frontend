@@ -308,25 +308,25 @@
         <div slot="list" v-loading="loading">
           <no-content-prompt :list="pull.list">
             <div v-for="(item, index) in relatedList" :key="index" class="related-list">
-              <div class="fl jsb">
-                <div class="fl ac related-7">
-                  <div class="related-list-link">
-                    <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.url }}</a>
-                    <a v-else :href="item.url" target="_blank">{{ item.url }}</a>
-                  </div>
-                  <a v-if="currentSite(item.url)" href="javascript:void(0);" @click="toggleArticle(item.url, $event)">
-                    <svg-icon class="related-icon-icon" icon-class="link" />
-                  </a>
-                  <a v-else :href="item.url" target="_blank">
-                    <svg-icon class="related-icon-icon" icon-class="link" />
-                  </a>
-                </div>
-                <div class="fl ac jfe related-3">
-                  <span class="related-id">{{ item.number }}</span>
-                </div>
-              </div>
               <div class="related-list-title" :class="!item.content || !relatedSummary && 'no-margin-bottom'">
-                {{ item.title }}
+                <div class="fl jsb">
+                  <div class="fl ac related-7">
+                    <div class="related-list-link">
+                      <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                      <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                    </div>
+                  </div>
+                  <div class="fl ac jfe related-3">
+                    <span class="related-id">{{ item.number }}</span>
+                  </div>
+                </div>
+                <div class="fl ac related-link">
+                  <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                  <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                  <a :href="item.url" target="_blank">
+                    <svg-icon class="icon-share" icon-class="share1" />
+                  </a>
+                </div>
               </div>
               <transition>
                 <div v-if="relatedSummary" :class="!item.collapse && 'open'">
@@ -385,25 +385,25 @@
         <div slot="list" v-loading="beingLoading">
           <no-content-prompt :list="beingPull.list">
             <div v-for="(item, index) in beingRelatedList" :key="index" class="related-list">
-              <div class="fl jsb">
-                <div class="fl ac related-7">
-                  <div class="related-list-link">
-                    <a v-if="currentSite(item.url)" href="javascript:void(0);">{{ item.url }}</a>
-                    <a v-else :href="item.url" target="_blank">{{ item.url }}</a>
-                  </div>
-                  <a v-if="currentSite(item.url)" href="javascript:void(0);">
-                    <svg-icon class="related-icon-icon" icon-class="link" />
-                  </a>
-                  <a v-else :href="item.url" target="_blank">
-                    <svg-icon class="related-icon-icon" icon-class="link" />
-                  </a>
-                </div>
-                <div class="fl ac jfe related-3">
-                  <span class="related-id">{{ item.number }}</span>
-                </div>
-              </div>
               <div class="related-list-title no-margin-bottom">
-                {{ item.title }}
+                <div class="fl jsb">
+                  <div class="fl ac related-7">
+                    <div class="related-list-link">
+                      <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                      <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                    </div>
+                  </div>
+                  <!-- <div class="fl ac jfe related-3">
+                    <span class="related-id">{{ item.number }}</span>
+                  </div> -->
+                </div>
+                <div class="fl ac related-link">
+                  <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                  <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                  <a :href="item.url" target="_blank">
+                    <svg-icon class="icon-share" icon-class="share1" />
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -1239,6 +1239,16 @@ export default {
 
         // 跳转页面
       } else this.$store.commit('setLoginModal', true)
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
     },
     // 判断文章关联链接是本站还是外站
     currentSite(link) {
