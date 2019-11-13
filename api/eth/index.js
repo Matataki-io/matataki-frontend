@@ -121,8 +121,6 @@ async function getSignature(msgParams = {
 }
 
 async function getSignatureForPublish(hash) {
-  const netId = await fetchId()
-  console.log(`hash ${hash}`)
   const message = {
     time: new Date().getTime(),
     hash: hash
@@ -138,12 +136,46 @@ async function getSignatureForPublish(hash) {
     primaryType: 'Article',
     domain: {
       name: 'Matataki 瞬',
+      version: '1'
+    },
+    message
+  }
+  const signature = await getSignature(msgParams)
+  return { signature, msgParams }
+}
+
+async function getSignatureForLogin() {
+  const netId = await fetchId()
+  let [from] = await window.web3.eth.getAccounts()
+  if (!from) {
+    await connect()
+    from = await window.web3.eth.getAccounts()
+  }
+
+  const message = {
+    from,
+    time: new Date().getTime()
+  }
+  const msgParams = {
+    types: {
+      EIP712Domain,
+      Login: [
+        { name: 'from', type: 'address' },
+        { name: 'time', type: 'uint256' }
+      ]
+    },
+    primaryType: 'Login',
+    domain: {
+      name: 'Matataki 瞬',
       version: '1',
       chainId: netId
     },
     message
   }
-  return getSignature(msgParams)
+
+  const signature = await getSignature(msgParams)
+  console.info(`User signed the login request, signature is ${signature}`)
+  return { signature, msgParams }
 }
 
-export { signToLogin, connect, getSignatureForPublish }
+export { signToLogin, connect, getSignatureForPublish, getSignatureForLogin }

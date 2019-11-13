@@ -211,6 +211,7 @@ export default {
         platform: idProvider,
         publickey: signature ? signature.publicKey : null,
         sign: signature ? signature.signature : null,
+        msgParams: signature ? signature.msgParams : null,
         signId,
         title,
         is_original: isOriginal,

@@ -377,8 +377,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
+import { mapGetters, mapActions } from 'vuex'
+import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import defaultImagesUploader from '@/api/imagesUploader'
 import { sendPost } from '@/api/ipfs'
@@ -481,7 +482,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account']),
     coverEditor() {
       return this.$API.getImg(this.cover)
     },
@@ -797,9 +798,15 @@ export default {
         const { author, hash } = article
         let signature = null
         // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
-        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        if (this.currentUserInfo.idProvider === 'MetaMask') {
+          console.info('You are using metamask')
+          signature = await getSignatureForPublish(hash)
+          const [publicKey] = await window.web3.eth.getAccounts()
+          signature = Object.assign(signature, { publicKey })
+        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
+        console.info(`signature in component: ${JSON.stringify(signature)}`)
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
 
