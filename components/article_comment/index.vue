@@ -47,6 +47,8 @@ export default {
   },
   watch: {
     isLogined(val) { // 监听登陆 重新获取头像
+      // 切换文章时重置评论框内容
+      this.comment = ''
       if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
     }
   },

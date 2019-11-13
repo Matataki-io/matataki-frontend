@@ -308,28 +308,31 @@
               </template>
 
               <template v-else>
-                <div class="fl jsb">
-                  <div class="fl ac related-7">
-                    <div class="related-list-link">
-                      <a :href="item.url" target="_blank">{{ item.url }}</a>
+                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
+                  <div class="fl jsb">
+                    <div class="fl ac related-7">
+                      <div class="related-list-link">
+                        <a :href="item.url" target="_blank">{{ item.title }}</a>
+                      </div>
                     </div>
+                    <div class="fl ac jfe related-3">
+                      <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                        <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
+                      </el-tooltip>
+
+                      <el-tooltip effect="dark" content="删除" placement="top">
+                        <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
+                      </el-tooltip>
+                      <span class="related-id">{{ item.number }}</span>
+                    </div>
+                  </div>
+                  <div class="fl ac related-link">
+                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                    <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
                     <a :href="item.url" target="_blank">
-                      <svg-icon class="related-icon-icon" icon-class="link" />
+                      <svg-icon class="icon-share" icon-class="share1" />
                     </a>
                   </div>
-                  <div class="fl ac jfe related-3">
-                    <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                      <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
-                    </el-tooltip>
-
-                    <el-tooltip effect="dark" content="删除" placement="top">
-                      <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
-                    </el-tooltip>
-                    <span class="related-id">{{ item.number }}</span>
-                  </div>
-                </div>
-                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
-                  {{ item.title }}
                 </div>
                 <div :class="!item.collapse && 'open'">
                   <div class="related-list-content">
@@ -649,7 +652,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$API.getIfpsData(hash)
+      const articleData = await this.$API.getIpfsData(hash)
       // console.log('articleData', articleData, hash, id)
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
@@ -1125,11 +1128,14 @@ export default {
       this.$nextTick(() => {
         if (i >= 0) {
           const ele = document.querySelectorAll('.related-list-content')[i]
+          if (!ele) return
           if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
           else this.relatedList[i].showCollapse = true
         } else {
           const relatedList = document.querySelectorAll('.related-list-content')
+          if (!relatedList) return
           relatedList.forEach((ele, i) => {
+            if (!this.relatedList[i]) return
             if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
             else this.relatedList[i].showCollapse = true
           })
@@ -1419,6 +1425,16 @@ export default {
           page: i
         }
       })
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
     }
   }
 }
