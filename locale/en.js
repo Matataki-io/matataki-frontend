@@ -620,7 +620,8 @@ export default {
     invite: 'Invite',
     buycoins: 'Fan coins held',
     selfcoins: 'Fan coins issued',
-    editProfile: 'Edit Profile'
+    editProfile: 'Edit Profile',
+    information: 'User information'
   },
   withdraw: {
     title: 'cash out',

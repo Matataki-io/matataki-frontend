@@ -585,7 +585,8 @@ export default {
     invite: '邀请',
     buycoins: '持有的粉丝币',
     selfcoins: '发行的粉丝币',
-    editProfile: '编辑资料'
+    editProfile: '编辑资料',
+    information: '个人信息'
   },
   withdraw: {
     title: '提现',
