@@ -766,7 +766,7 @@ export default {
         id: id || this.$route.params.id
       }
 
-      console.log(data)
+      // console.log(data)
 
       await this.$API.getCurrentProfile(data).then(res => {
         // console.log(res)
