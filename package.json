@@ -51,6 +51,7 @@
     "vue-i18n": "^8.14.1",
     "vue-scroll-reveal": "^1.0.11",
     "vue-upload-component": "^2.8.20",
+    "web3": "^1.2.2",
     "xss": "^1.0.6"
   },
   "devDependencies": {
