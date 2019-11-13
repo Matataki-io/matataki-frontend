@@ -45,6 +45,7 @@ export const getters = {
   // for store
   prefixOfType: ({ userConfig: { idProvider } }) => {
     if (idProvider === 'EOS') return 'scatter'
+    if (idProvider === 'MetaMask') return 'metamask'
     if (idProvider === 'ONT') return 'ontology'
     if (idProvider === 'GitHub') return 'github'
     return null
