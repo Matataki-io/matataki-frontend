@@ -322,9 +322,9 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                  <svg-icon class="icon-copy" icon-class="copy2" @click="copyCode(item.url)" />
                   <a :href="item.url" target="_blank">
-                    <svg-icon class="icon-share" icon-class="share1" />
+                    <svg-icon class="icon-share" icon-class="jump" />
                   </a>
                 </div>
               </div>
@@ -399,9 +399,9 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                  <svg-icon class="icon-copy" icon-class="copy2" @click="copyCode(item.url)" />
                   <a :href="item.url" target="_blank">
-                    <svg-icon class="icon-share" icon-class="share1" />
+                    <svg-icon class="icon-share" icon-class="jump" />
                   </a>
                 </div>
               </div>
