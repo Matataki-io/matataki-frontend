@@ -1,0 +1,102 @@
+<template>
+  <el-table
+    :data="card"
+    style="width: 100%"
+    class="coins"
+  >
+    <el-table-column
+      prop="username"
+      label="持仓者"
+    >
+      <template slot-scope="scope">
+        <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+          <avatar :src="cover(scope.row.avatar)" size="30px" />
+          <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
+        </n-link>
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="create_time"
+      label="持仓量"
+      width="200"
+    >
+      <template slot-scope="scope">
+        <div class="invite-block">
+          <span class="time">{{ tokenAmount(scope.row.liquidity_balance) }} ({{ percentage(scope.row.liquidity_balance / scope.row.total_supply) }})</span>
+        </div>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+
+<script>
+import { precision, toPrecision } from '@/utils/precisionConversion'
+import avatar from '@/components/avatar/index.vue'
+
+export default {
+  components: {
+    avatar
+  },
+  props: {
+    card: {
+      type: Array,
+      required: true
+    },
+    decimals: {
+      type: Number,
+      required: true
+    }
+  },
+  methods: {
+    tokenAmount(amount) {
+      const tokenamount = precision(amount, 'CNY', this.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    percentage(percentage) {
+      return percentage.toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
+    },
+    cover(cover) {
+      return cover ? this.$API.getImg(cover) : ''
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+
+.invite-block.avatar{
+  display: flex;
+  align-items: center;
+}
+.username {
+  margin-left: 10px;
+  font-size: 16px;
+  color:#333;
+  flex: 1;
+}
+.time {
+  font-size: 16px;
+  color:#333;
+}
+.point {
+  font-size: 16px;
+  font-weight: bold;
+  color:rgba(251,104,119,1);
+}
+
+</style>
+
+<style lang="less">
+.coins {
+  .el-table th>.cell {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+  }
+  .el-table td, .el-table th.is-leaf {
+    border-bottom: none;
+  }
+  .el-table::before {
+    height: 0;
+  }
+}
+</style>
