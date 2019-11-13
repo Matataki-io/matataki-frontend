@@ -36,7 +36,7 @@
           <UserInfoHeader :article="article" />
         </header>
         <!-- ipfs -->
-        <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
+        <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
         <!-- 文章内容 -->
         <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
         <!-- 文章页脚 声明 是否原创 -->
@@ -660,6 +660,11 @@ export default {
     limitValue() {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
+    },
+    // 如果是自己的文章 显示hash 否则走 持币阅读
+    isHideIpfsHash() {
+      if (this.isMe(this.article.uid)) return false
+      else return this.tokenArticle
     }
   },
   watch: {

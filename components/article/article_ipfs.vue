@@ -10,9 +10,9 @@
       </el-tooltip>
     </p>
     <div v-if="!isHide" class="ipfs-hash">
-      <n-link class="ipfs" target="_blank" :to="{name: 'ipfs-hash', params: {hash: hash}}">
+      <router-link class="ipfs" target="_blank" :to="{name: 'ipfs-hash', params: {hash: hash}}">
         IPFS Hash: {{ hash || 'Loading...' }}
-      </n-link>
+      </router-link>
       <svg-icon
         class="copy-hash"
         icon-class="copy"
