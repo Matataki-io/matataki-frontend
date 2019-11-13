@@ -31,6 +31,13 @@ if (process.browser) {
   })
 }
 
+const EIP712Domain = [
+  { name: 'name', type: 'string' },
+  { name: 'version', type: 'string' },
+  { name: 'chainId', type: 'uint256' },
+  { name: 'verifyingContract', type: 'address' }
+]
+
 async function signToLogin() {
   const netId = await fetchId()
   let [from] = await window.web3.eth.getAccounts()
@@ -38,12 +45,6 @@ async function signToLogin() {
     await connect()
     from = await window.web3.eth.getAccounts()
   }
-  const EIP712Domain = [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' }
-  ]
 
   const message = {
     from,
@@ -97,4 +98,52 @@ function signTypedDataV3Async({ params, from }) {
   })
 }
 
-export { signToLogin, connect }
+async function getSignature(msgParams = {
+  types: null,
+  primaryType: null,
+  domain: {
+    name: 'Matataki 瞬',
+    version: '1',
+    chainId: null,
+    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  },
+  message: null
+}) {
+  let [from] = await window.web3.eth.getAccounts()
+  if (!from) {
+    await connect()
+    from = await window.web3.eth.getAccounts()
+  }
+
+  const signature = await signTypedDataV3Async({ params: [from, JSON.stringify(msgParams)], from })
+  console.info(`User signed, signature is ${signature}`)
+  return signature
+}
+
+async function getSignatureForPublish(hash) {
+  const netId = await fetchId()
+  console.log(`hash ${hash}`)
+  const message = {
+    time: new Date().getTime(),
+    hash: hash
+  }
+  const msgParams = {
+    types: {
+      EIP712Domain,
+      Article: [
+        { name: 'hash', type: 'string' },
+        { name: 'time', type: 'uint256' }
+      ]
+    },
+    primaryType: 'Article',
+    domain: {
+      name: 'Matataki 瞬',
+      version: '1',
+      chainId: netId
+    },
+    message
+  }
+  return getSignature(msgParams)
+}
+
+export { signToLogin, connect, getSignatureForPublish }

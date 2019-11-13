@@ -4,7 +4,7 @@
 import BigNumber from 'bignumber.js'
 import Web3 from 'web3'
 import { getToken, setToken, removeToken } from '../utils/auth'
-import { signToLogin } from '@/api/eth'
+import { signToLogin, getSignatureForPublish } from '@/api/eth'
 import API from '@/api/API'
 
 export const state = () => ({
@@ -64,6 +64,20 @@ export const actions = {
       console.error(`Error happened when signing ${error.toString()}`)
       throw error
     }
+  },
+  getSignature({ dispatch, state }, data = { mode: null, rawSignData: null }) {
+    const { account } = state
+    switch (data.mode) {
+      case 'Article': {
+        const [author, hash] = data.rawSignData
+        return {
+          publicKey: account,
+          signature: getSignatureForPublish(hash),
+          username: account
+        }
+      }
+    }
+    return { publicKey: account }
   },
   // 暂未使用到
   logout({ commit }) {
