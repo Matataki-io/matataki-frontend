@@ -1286,7 +1286,7 @@ export default {
       const id = urlId ? urlId[0].slice(3) : -1
       const idInt = parseInt(id)
       if (idInt !== -1) this.getArticle(idInt, popEvent)
-      else this.$message.warning('无效链接, 请复制地址打开新页面')
+      else window.open(url)
       return false
     },
     // 切换文章 得到文章信息
