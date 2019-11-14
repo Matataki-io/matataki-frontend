@@ -1,11 +1,11 @@
 <template>
   <el-dialog
     :visible.sync="visible"
-    width="460px"
     :show-close="false"
     :close-on-click-modal="false"
-    custom-class="import br10"
     @close="$emit('close')"
+    width="460px"
+    custom-class="import br10"
   >
     <el-input v-model="url" :placeholder="$t('publish.importInput')" />
     <p class="des gray">
@@ -24,7 +24,7 @@
       <el-button @click="visible = false">
         {{ $t('cancel') }}
       </el-button>
-      <el-button :loading="loading" type="primary" :disabled="!statement" @click="importFunc">
+      <el-button :loading="loading" :disabled="!statement" @click="importFunc" type="primary">
         {{ $t('confirm') }}
       </el-button>
     </span>
@@ -74,7 +74,7 @@ export default {
       // console.log(res)
       if (res.code === 0) {
         this.$message.success(this.$t('publish.importSuccess'))
-        const templateLink = `<br />${this.$t('publish.importAddress')}[${url}](${url})`
+        const templateLink = `\n\n${this.$t('publish.importAddress')}[${url}](${url})`
         res.data.content += templateLink
         const { title, content, cover } = res.data
         this.createDraft({
