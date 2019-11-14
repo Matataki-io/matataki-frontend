@@ -2,7 +2,7 @@
 <template>
   <userPage>
     <div slot="list" v-loading="loading">
-      <div class="websites">
+      <div v-if="urls.length !== 0" class="websites">
         <h3 class="inline h3">
           相关网站
         </h3>
@@ -12,7 +12,7 @@
           </p>
         </div>
       </div>
-      <div class="social">
+      <div v-if="social.length !== 0" class="social">
         <h3 class="inline h3">
           社交账号
         </h3>
@@ -22,11 +22,17 @@
           </div>
         </div>
       </div>
+      <div v-if="social.length === 0 && urls.length === 0 && loading === false" class="social">
+        <h3 class="inline h3">
+          Ta没有填写这些信息……
+        </h3>
+      </div>
     </div>
   </userPage>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userPage from '@/components/user/user_page.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 
@@ -38,46 +44,71 @@ export default {
   data() {
     return {
       loading: false,
-      social: [
+      social: [],
+      socialTemplate: [
         {
           icon: 'QQ',
-          name: 'QQ：',
-          content: '185446975'
+          type: 'qq',
+          content: ''
         },
         {
           icon: 'Wechat',
-          name: '微信：',
-          content: '185446975'
+          type: 'wechat',
+          content: ''
         },
         {
           icon: 'Weibo',
-          name: '微博：',
-          content: '185446975'
+          type: 'weibo',
+          content: ''
         },
         {
           icon: 'Telegram',
-          name: 'Telegram：',
-          content: '185446975'
+          type: 'telegram',
+          content: ''
         },
         {
           icon: 'Twitter',
-          name: 'Twitter：',
-          content: '185446975'
+          type: 'twitter',
+          content: ''
+        },
+        {
+          icon: 'Facebook',
+          type: 'facebook',
+          content: ''
         },
         {
           icon: 'Github',
-          name: 'Github：',
-          content: '185446975'
+          type: 'github',
+          content: ''
         }
       ],
-      urls: [
-        'http://www.dibibi.com',
-        'http://www.abcdefg.com',
-        'http://www.efig.com'
-      ]
+      urls: []
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo'])
+  },
+  mounted() {
+    this.getMyUserLinks()
+  },
   methods: {
+    async getMyUserLinks() {
+      this.loading = true
+      try {
+        const resLinks = await this.$API.getUserLinks({ id: this.$route.params.id })
+        if (resLinks.code === 0) {
+          const data = resLinks.data
+          this.urls = data.websites
+          data.socialAccounts.forEach(item => {
+            this.socialTemplate.find(age => age.type === item.type).content = item.value
+          })
+          this.social = this.socialTemplate.filter(age => age.content !== '' && age.content != null)
+          this.loading = false
+        } else console.log('获取用户信息失败')
+      } catch (error) {
+        console.log(`获取用户信息失败${error}`)
+      }
+    }
   }
 }
 </script>

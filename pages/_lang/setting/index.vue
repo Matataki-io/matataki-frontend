@@ -113,7 +113,7 @@
         </div>
         <!-- 保存 -->
         <div class="line" />
-        <el-button :loading="loading" class="save" :class="setProfile && 'active'" @click="save">
+        <el-button :loading="loading" class="save " :class="(setProfile || aboutModify || socialModify) && 'active'" @click="save">
           {{ $t('save') }}
         </el-button>
       </div>
@@ -155,6 +155,7 @@ export default {
   data() {
     return {
       userData: null,
+      linksData: null,
       username: '',
       email: '',
       introduction: '',
@@ -164,11 +165,13 @@ export default {
       imgUploadDone: 0, // 图片是否上传完成
       loading: false,
       numPage: 1,
+      aboutModify: false,
+      socialModify: false,
       about: [''],
       social: [
         {
           symbol: 'QQ',
-          icon: 'qq1',
+          type: 'qq',
           name: 'QQ：',
           tooltip: '',
           placeholder: 'QQ帐号',
@@ -177,7 +180,7 @@ export default {
         },
         {
           symbol: 'Wechat',
-          icon: 'wechat',
+          type: 'wechat',
           name: '微信：',
           tooltip: '',
           placeholder: '微信号',
@@ -186,7 +189,7 @@ export default {
         },
         {
           symbol: 'Weibo',
-          icon: 'weibo1',
+          type: 'weibo',
           name: '微博：',
           tooltip: '(https://www.weibo.com/<span>帐号</span>)',
           placeholder: '微博用户名(不需要完整URL)',
@@ -195,7 +198,7 @@ export default {
         },
         {
           symbol: 'Telegram',
-          icon: 'tg',
+          type: 'telegram',
           name: 'Telegram：',
           tooltip: '',
           placeholder: 'Telegram用户名',
@@ -204,7 +207,7 @@ export default {
         },
         {
           symbol: 'Twitter',
-          icon: 'twitter1',
+          type: 'twitter',
           name: 'Twitter：',
           tooltip: '(https://twitter.com/<span>帐号</span>)',
           placeholder: 'Twitter用户名(不需要完整URL)',
@@ -213,7 +216,7 @@ export default {
         },
         {
           symbol: 'Facebook',
-          icon: 'fb',
+          type: 'facebook',
           name: 'Facebook：',
           tooltip: '(https://facebook.com/<span>帐号</span>)',
           placeholder: 'Facebook用户名(不需要完整URL)',
@@ -222,7 +225,7 @@ export default {
         },
         {
           symbol: 'Github',
-          icon: 'github1',
+          type: 'github',
           name: 'Github：',
           tooltip: '(https://github.com/<span>帐号</span>)',
           placeholder: 'Github用户名(不需要完整URL)',
@@ -258,7 +261,35 @@ export default {
         this.detectionUsername() ||
         this.detectionEmail()) this.setProfile = true
       else this.setProfile = false
+    },
+    about: {
+      deep: true,
+      handler() {
+        if (JSON.stringify(this.linksData.websites) !== JSON.stringify(this.about)) this.aboutModify = true
+        else this.aboutModify = false
+      }
+    },
+    social: {
+      deep: true,
+      handler() {
+        for (const item of this.social) {
+          const oSocial = this.linksData.socialAccounts.find(age => age.type === item.type)
+          if (oSocial == null) {
+            if (item.value !== '') {
+              this.socialModify = true
+              return
+            }
+          } else if (oSocial.value !== item.value) {
+            this.socialModify = true
+            return
+          }
+        }
+        this.socialModify = false
+      }
     }
+    // social(newVal) {
+
+    // }
   },
   created() {
   },
@@ -322,10 +353,21 @@ export default {
         this.introduction = data.introduction || ''
         this.setAvatarImage(data.avatar)
       }
+      const setLinks = data => {
+        this.linksData = data
+        this.about = [
+          ...data.websites.length !== 0 ? data.websites : ['']
+        ]
+        data.socialAccounts.forEach(item => {
+          this.social.find(age => age.type === item.type).value = item.value
+        })
+      }
       try {
         const res = await this.$API.getMyUserData()
-        if (res.code === 0) {
+        const resLinks = await this.$API.getUserLinks({ id: this.currentUserInfo.id })
+        if (res.code === 0 && resLinks.code === 0) {
           setUser(res.data)
+          setLinks(resLinks.data)
           this.isTransfer = !!res.data.accept
         } else console.log('获取用户信息失败')
       } catch (error) {
@@ -355,7 +397,7 @@ export default {
     },
     // 保存按钮
     async save() {
-      if (!this.setProfile) return
+      if (!(this.setProfile || this.aboutModify || this.socialModify)) return
       if (!this.checkSaveParams()) return
       // 过滤请求数据
       const filterRequestData = () => {
@@ -369,27 +411,60 @@ export default {
         if (this.email === this.userData.email) delete requestData.email
         return requestData
       }
-      // await console.log(filterRequestData())
-      this.loading = true
-      await this.$backendAPI
-        .setProfile(filterRequestData())
-        .then(res => {
-          // console.log(res)
-          if (res.status === 200 && res.data.code === 0) {
-            this.$message({
-              message: this.$t('success.success'),
-              type: 'success'
+      const filterRequestLinks = () => {
+        const requestData = {
+          websites: this.about.filter(age => age !== '' && age !== null),
+          socialAccounts: (() => {
+            const nSocial = {}
+            this.social.forEach(item => {
+              if (item.value && item.value !== '') nSocial[item.type] = item.value
             })
-            this.refreshUser({ id: this.currentUserInfo.id })
-            this.getMyUserData()
-          } else this.$message.error(this.$t('error.fail'))
-        })
-        .catch(error => {
-          console.log(`修改信息失败 catch error ${error}`)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+            return nSocial
+          })()
+        }
+        return requestData
+      }
+
+      let loadingEnd, thenEnd
+      const thenFunction = res => {
+        if (res.status === 200 && res.data.code === 0 && thenEnd) {
+          this.$message({
+            message: this.$t('success.success'),
+            type: 'success'
+          })
+          this.refreshUser({ id: this.currentUserInfo.id })
+          this.getMyUserData()
+        } else this.$message.error(this.$t('error.fail'))
+        thenEnd = true
+      }
+      this.loading = true
+      // 个人资料
+      if (this.setProfile) {
+        await this.$backendAPI
+          .setProfile(filterRequestData())
+          .then(thenFunction)
+          .catch(error => {
+            console.log(`修改信息失败 catch error ${error}`)
+          })
+          .finally(() => {
+            if (loadingEnd) this.loading = false
+            loadingEnd = true
+          })
+      } else {
+        loadingEnd = true
+        thenEnd = true
+      }
+      // 社交账号和相关网页
+      if (this.aboutModify || this.socialModify) {
+        await this.$backendAPI.setUserLinks(filterRequestLinks()).then(thenFunction)
+          .catch(error => {
+            console.log(`修改信息失败 catch error ${error}`)
+          })
+          .finally(() => {
+            if (loadingEnd) this.loading = false
+            loadingEnd = true
+          })
+      }
     },
     aboutAdd() {
       if (this.about.length >= 5) return
