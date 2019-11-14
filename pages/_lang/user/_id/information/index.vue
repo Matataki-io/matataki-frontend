@@ -22,10 +22,10 @@
           </div>
         </div>
       </div>
-      <div v-if="social.length === 0 && urls.length === 0 && loading === false" class="social">
-        <h3 class="inline h3">
-          Ta没有填写这些信息……
-        </h3>
+      <div v-if="social.length === 0 && urls.length === 0 && loading === false" class="social no-data">
+        <p>
+          暂无信息
+        </p>
       </div>
     </div>
   </userPage>
@@ -135,5 +135,13 @@ export default {
 }
 .social {
   padding-bottom: 100px;
+}
+.no-data {
+  text-align: center;
+  p {
+    margin-top: 40px;
+    font-size:14px;
+    color:rgba(178,178,178,1);
+  }
 }
 </style>
