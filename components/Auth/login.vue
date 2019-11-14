@@ -77,7 +77,6 @@
 /* eslint-disable */
 import { mapActions, mapGetters, mapState } from "vuex";
 import { idProvider } from "./icon.js";
-import { signToLogin } from "@/api/eth";
 
 export default {
   name: "LoginContent",

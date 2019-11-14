@@ -2,7 +2,6 @@
  * For MetaMask(ETH) Only
  */
 import BigNumber from 'bignumber.js'
-import Web3 from 'web3'
 import { getToken, setToken, removeToken } from '../utils/auth'
 import { signToLogin, getSignatureForLogin, getSignatureForPublish } from '@/api/eth'
 import API from '@/api/API'
@@ -47,7 +46,7 @@ export const actions = {
       throw Error('你拒绝了网站对MetaMask插件的访问，无法通过MetaMask登录')
     }
     try {
-      const { signature, msgParams } = await signToLogin()
+      const { signature, msgParams } = await getSignatureForLogin()
       const res = await API.auth({
         platform: 'eth',
         publickey: state.account,
