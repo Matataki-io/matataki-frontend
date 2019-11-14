@@ -41,7 +41,7 @@
         </div>
         <div class="list center">
           <span class="title">
-            {{ $t('username') }}
+            {{ $t('nickname') }}
           </span>
           <div class="input">
             <el-input

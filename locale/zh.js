@@ -40,6 +40,7 @@ export default {
   done: '完成',
   avatar: '头像',
   username: '用户名',
+  nickname: '昵称',
   email: '邮箱',
   articleUtil: '篇', //公用名称
   referral:

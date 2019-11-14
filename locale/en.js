@@ -40,6 +40,7 @@ export default {
   done: 'Complete',
   avatar: 'avatar',
   username: 'username',
+  nickname: 'nickname',
   email: 'mailbox',
   articleUtil: 'Article',
   referral:
