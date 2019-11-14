@@ -22,7 +22,7 @@
     >
       <template slot-scope="scope">
         <div class="invite-block">
-          <span class="time">{{ tokenAmount(scope.row.amount) }}</span>
+          <span class="time">{{ tokenAmount(scope.row.amount) }} ({{ percentage(scope.row.amount, scope.row.total_supply) }})</span>
         </div>
       </template>
     </el-table-column>
@@ -51,6 +51,13 @@ export default {
     tokenAmount(amount) {
       const tokenamount = precision(amount, 'CNY', this.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    percentage(amount, total) {
+      if (total <= 0) {
+        return '0%'
+      }
+
+      return (amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
     },
     cover(cover) {
       return cover ? this.$API.getImg(cover) : ''
