@@ -3,7 +3,7 @@
  */
 import BigNumber from 'bignumber.js'
 import { getToken, setToken, removeToken } from '../utils/auth'
-import { signToLogin, getSignatureForLogin, getSignatureForPublish } from '@/api/eth'
+import { getSignatureForLogin, getSignatureForPublish } from '@/api/eth'
 import API from '@/api/API'
 
 export const state = () => ({
