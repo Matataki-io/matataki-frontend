@@ -107,6 +107,7 @@ export default {
     eosWallet: 'EOS Wallet',
     ontWallet: 'ONT wallet',
     eosTitle: 'EOS login',
+    metamaskTitle: 'Login with MetaMask',
     eosType: 'EOS',
     eosDoc: 'How to use EOS login',
     ontTitle: 'ONT login',

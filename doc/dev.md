@@ -2,6 +2,8 @@
 
 > by xiaotian edit
 
+尽量统一用yarn
+
 1. 阅读vue nuxt文档
  - https://cn.vuejs.org/
  - https://nuxtjs.org/

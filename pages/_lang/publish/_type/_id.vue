@@ -41,7 +41,9 @@
           :toolbars="toolbars"
           :box-shadow="false"
           :autofocus="false"
-          :style="mavonStyle"
+          :style="{
+            minHeight: '700px'
+          }"
           :placeholder="$t('publish.contentPlaceholder')"
           @imgAdd="$imgAdd"
         />
@@ -418,9 +420,6 @@ export default {
       fissionFactor: 2000,
       toolbars: {},
       screenWidth: 1000,
-      mavonStyle: {
-        minHeight: '800px'
-      },
       fissionNum: 2,
       cover: '',
       signature: '',
@@ -493,14 +492,6 @@ export default {
     }
   },
   watch: {
-    screenWidth(val) {
-      this.setToolBar(val)
-    },
-    mavonStyle(newVal) {
-      // console.log(newVal)
-
-      this.mavonStyle = newVal
-    },
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
@@ -552,12 +543,9 @@ export default {
     }
 
     this.getTags()
-    this.resize()
-    this.setToolBar(this.screenWidth)
-
     this.getAllTokens()
-
     this.renderRelatedListContent()
+    this.setToolBar()
 
     // 判断当前
     // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
@@ -799,9 +787,9 @@ export default {
       try {
         const { author, hash } = article
         let signature = null
+        // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
         if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          // 单独处理 同下
-          if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
+          signature = await this.getSignatureOfArticle({ author, hash })
         }
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
@@ -860,9 +848,9 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       let signature = null
+      // refactor: 对 VNT 的处理弄在了.invalidId()
       if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        // 单独处理 同上
-        if (this.currentUserInfo.idProvider.toLocaleLowerCase() !== 'vnt') signature = await this.getSignatureOfArticle({ author, hash })
+        signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) this.postMineTokens(response.data, 'edit')
@@ -1010,19 +998,8 @@ export default {
         image.src = imgfile.miniurl
       }
     },
-    setToolBar(val) {
-      if (val > 750) this.toolbars = Object.assign(toolbars.pc, toolbars.public)
-      else this.toolbars = Object.assign(toolbars.mobile, toolbars.public)
-    },
-    resize() {
-      window.onresize = debounce(() => {
-        const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        this.screenWidth = clientWidth
-        /* this.mavonStyle = {
-          minHeight: `${clientHeight - 174}px`
-        } */
-      }, 150)
+    setToolBar() {
+      this.toolbars = Object.assign(toolbars.public, toolbars.pc)
     },
     // 上传完成
     doneImageUpload(res) {

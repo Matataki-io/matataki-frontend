@@ -36,7 +36,7 @@
           <UserInfoHeader :article="article" />
         </header>
         <!-- ipfs -->
-        <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
+        <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
         <!-- 文章内容 -->
         <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
         <!-- 文章页脚 声明 是否原创 -->
@@ -322,9 +322,9 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                  <svg-icon class="icon-copy" icon-class="copy2" @click="copyCode(item.url)" />
                   <a :href="item.url" target="_blank">
-                    <svg-icon class="icon-share" icon-class="share1" />
+                    <svg-icon class="icon-share" icon-class="jump" />
                   </a>
                 </div>
               </div>
@@ -399,9 +399,9 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                  <svg-icon class="icon-copy" icon-class="copy2" @click="copyCode(item.url)" />
                   <a :href="item.url" target="_blank">
-                    <svg-icon class="icon-share" icon-class="share1" />
+                    <svg-icon class="icon-share" icon-class="jump" />
                   </a>
                 </div>
               </div>
@@ -660,6 +660,11 @@ export default {
     limitValue() {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
+    },
+    // 如果是自己的文章 显示hash 否则走 持币阅读
+    isHideIpfsHash() {
+      if (this.isMe(this.article.uid)) return false
+      else return this.tokenArticle
     }
   },
   watch: {
@@ -1286,7 +1291,7 @@ export default {
       const id = urlId ? urlId[0].slice(3) : -1
       const idInt = parseInt(id)
       if (idInt !== -1) this.getArticle(idInt, popEvent)
-      else this.$message.warning('无效链接, 请复制地址打开新页面')
+      else window.open(url)
       return false
     },
     // 切换文章 得到文章信息

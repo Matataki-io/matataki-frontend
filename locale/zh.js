@@ -107,6 +107,7 @@ export default {
     eosWallet: 'EOS钱包',
     ontWallet: 'ONT钱包',
     eosTitle: 'EOS登录',
+    metamaskTitle: '使用 MetaMask 以太坊钱包登录',
     eosType: 'EOS',
     eosDoc: '《如何使用EOS登录》',
     ontTitle: 'ONT登录',
