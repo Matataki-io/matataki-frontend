@@ -46,9 +46,9 @@
           }"
           :placeholder="$t('publish.contentPlaceholder')"
           @imgAdd="$imgAdd"
+          class="editor"
         />
       </no-ssr>
-      <!-- class="editor" -->
 
       <!-- 备份 -->
       <!-- <div class="post-content">
@@ -1435,95 +1435,94 @@ export default {
 </script>
 
 <style scoped lang="less" src="../Publish.less"></style>
-// <style lang="less">
-// /* 全局覆盖组件样式 */
-// .v-note-wrapper .v-note-op {
-//   border: none !important;
-// }
-// .editor .content-input-wrapper {
-//   height: 100%;
-//   background-color: #f8f9fa !important;
-//   padding: 30px !important;
-// }
+<style lang="less">
+/* 全局覆盖组件样式 */
+.v-note-wrapper .v-note-op {
+  border: none !important;
+}
+.editor .content-input-wrapper {
+  height: 100%;
+  background-color: #f8f9fa !important;
+  padding: 30px !important;
+}
 
-// // 外层容器
-// .editor {
-//   margin-top: 59px;
-//   .v-show-content {
-//     padding: 30px !important;
-//   }
-//   .v-note-edit.divarea-wrapper {
-//     overflow-y: auto !important;
-//     border-right: 1px solid #ddd !important;
-//   }
-// }
+// 外层容器
+.editor {
+  .v-show-content {
+    padding: 30px !important;
+  }
+  .v-note-edit.divarea-wrapper {
+    overflow-y: auto !important;
+    border-right: 1px solid #ddd !important;
+  }
+}
 
-// // 工具栏
-// .editor .v-note-op {
-//   position: fixed;
-//   // top: 118px;
-//   left: 0;
-//   right: 0;
-//   border-top: 1px solid #eee !important;
-//   border-bottom: 1px solid #eee !important;
-//   box-sizing: border-box;
-// }
-// // 内容
-// .editor .v-note-panel {
-//   padding-top: 44px;
-//   border-top: none !important;
-//   border-right: none !important;
-//   border-left: none !important;
-//   border-bottom: 1px solid #eee !important;
-// }
-// // 工具栏按钮 去掉样式
-// .editor [type='button'] {
-//   -webkit-appearance: none;
-// }
-// // 工具栏样式下拉阴影
-// .editor .op-image.popup-dropdown,
-// .editor .op-header.popup-dropdown {
-//   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 0px !important;
-// }
+// 工具栏
+.editor .v-note-op {
+  // position: fixed;
+  // // top: 118px;
+  // left: 0;
+  // right: 0;
+  // border-top: 1px solid #eee !important;
+  // border-bottom: 1px solid #eee !important;
+  // box-sizing: border-box;
+}
+// 内容
+.editor .v-note-panel {
+  // padding-top: 44px;
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important;
+  border-bottom: 1px solid #eee !important;
+}
+// 工具栏按钮 去掉样式
+.editor [type='button'] {
+  -webkit-appearance: none;
+}
+// 工具栏样式下拉阴影
+.editor .op-image.popup-dropdown,
+.editor .op-header.popup-dropdown {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 0px !important;
+}
 
-// .editor .v-show-content.scroll-style {
-//   background-color: #fff !important;
-// }
-// .editor .v-note-edit.divarea-wrapper.scroll-style {
-//   background-color: #f8f9fa;
-// }
-// .editor .auto-textarea-input.no-border.no-resize {
-//   background-color: #f8f9fa;
-// }
-// .editor .v-note-op .v-left-item,
-// .editor .v-note-op .v-right-item {
-//   flex: none !important;
-//   display: flex;
-//   align-items: center;
-// }
-// .editor .v-note-op .v-right-item {
-//   max-width: auto !important;
-// }
-// .op-icon-divider {
-//   height: 18px !important;
-// }
-// .editor .op-icon {
-//   margin-left: 3px !important;
-//   margin-right: 3px !important;
-// }
-// @media screen and (max-width: 750px) {
-//   .editor .op-icon {
-//     margin-left: 1px !important;
-//     margin-right: 1px !important;
+.editor .v-show-content.scroll-style {
+  background-color: #fff !important;
+}
+.editor .v-note-edit.divarea-wrapper.scroll-style {
+  background-color: #f8f9fa;
+}
+.editor .auto-textarea-input.no-border.no-resize {
+  background-color: #f8f9fa;
+}
+.editor .v-note-op .v-left-item,
+.editor .v-note-op .v-right-item {
+  flex: none !important;
+  display: flex;
+  align-items: center;
+}
+.editor .v-note-op .v-right-item {
+  max-width: auto !important;
+}
+.op-icon-divider {
+  height: 18px !important;
+}
+.editor .op-icon {
+  margin-left: 3px !important;
+  margin-right: 3px !important;
+}
+@media screen and (max-width: 750px) {
+  .editor .op-icon {
+    margin-left: 1px !important;
+    margin-right: 1px !important;
+  }
+}
+// // 覆盖裂变系数
+// .fission {
+//   .el-slider__bar {
+//     background-color: @purpleDark;
+//   }
+//   .el-slider__button {
+//     border-color: @purpleDark;
 //   }
 // }
-// // // 覆盖裂变系数
-// // .fission {
-// //   .el-slider__bar {
-// //     background-color: @purpleDark;
-// //   }
-// //   .el-slider__button {
-// //     border-color: @purpleDark;
-// //   }
-// // }
-// </style>
+</style>

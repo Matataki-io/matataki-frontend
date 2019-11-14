@@ -173,8 +173,8 @@
               :token="ssToken"
               :article="article"
               @like="like"
-              style="margin-top: 40px;"
               @dislike="dislike"
+              style="margin-top: 40px;"
             />
           </div>
         </el-popover>
@@ -438,6 +438,7 @@ import moment from 'moment'
 import Cookies from 'js-cookie'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
+import { mavonEditor } from 'mavon-editor-matataki'
 import { xssFilter } from '@/utils/xss'
 import CommentList from '@/components/comment/List'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
@@ -611,7 +612,12 @@ export default {
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     compiledMarkdown() {
-      return markdownIt.render(xssFilter(this.post.content))
+      if (process.browser) {
+        const markdownIt = mavonEditor.getMarkdownIt()
+        return markdownIt.render(xssFilter(this.post.content))
+      } else {
+        return markdownIt.render(xssFilter(this.post.content))
+      }
     },
     cover() {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
