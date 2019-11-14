@@ -38,6 +38,11 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    // 默认打新建草稿打开新页面, 否则传递数据
+    openNewPage: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -70,23 +75,38 @@ export default {
       const url = strTrim(this.url)
       if (!internetUrl(url)) return this.$message.error(this.$t('publish.importAddressError'))
       this.loading = true
-      const res = await this.$API.importArticle(url)
-      // console.log(res)
-      if (res.code === 0) {
-        this.$message.success(this.$t('publish.importSuccess'))
-        const templateLink = `\n\n${this.$t('publish.importAddress')}[${url}](${url})`
-        res.data.content += templateLink
-        const { title, content, cover } = res.data
-        this.createDraft({
-          title,
-          content,
-          cover
+      await this.$API.importArticle(url)
+        .then(res => {
+          if (res.code === 0) {
+            const templateLink = `\n\n${this.$t('publish.importAddress')}[${url}](${url})`
+            res.data.content += templateLink
+            const { title, content, cover } = res.data
+            if (this.openNewPage) {
+              this.createDraft({
+                title,
+                content,
+                cover
+              })
+            } else {
+              this.$message.success(this.$t('publish.importSuccess'))
+              this.$emit('res', {
+                title,
+                content,
+                cover
+              })
+              this.loading = false
+              this.visible = false
+            }
+            this.resetData()
+          } else {
+            this.$message.error(res.message)
+            this.loading = false
+          }
+        }).catch(err => {
+          this.loading = false
+          this.$message.error(this.$t('publish.importError'))
+          console.log('err', err)
         })
-        this.visible = false
-        this.resetData()
-        // this.$emit('importArticle', res.data)
-      } else this.$message.error(this.$t('publish.importError'))
-      this.loading = false
     },
     async createDraft(article) {
       await this.$API
@@ -99,6 +119,7 @@ export default {
         })
         .then(res => {
           if (res.code === 0) {
+            this.$message.success(this.$t('publish.importSuccess'))
             this.$router.push({
               name: 'publish-type-id',
               params: {
@@ -106,9 +127,16 @@ export default {
                 id: res.data
               }
             })
-          } else this.$message.error(res.message)
+            this.loading = false
+            this.visible = false
+          } else {
+            this.$message.error(res.message)
+            this.loading = false
+          }
         })
         .catch(err => {
+          this.loading = false
+          this.$message.error(this.$t('publish.importError'))
           console.log(err)
         })
     }

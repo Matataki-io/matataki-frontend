@@ -1,28 +1,28 @@
 <template>
-  <div class="new-post" @click.stop="closeDropdown">
+  <div @click.stop="closeDropdown" class="new-post">
     <div class="edit-content">
       <div class="edit-head">
         <input
           v-model="title"
-          class="edit-title"
           :placeholder="$t('publish.titlePlaceholder')"
+          class="edit-title"
           size="large"
           clearable
         >
-        <span class="save-tips" v-html="saveDraft" />
-        <router-link class="save-draft" :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
+        <span v-html="saveDraft" class="save-tips" />
+        <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}" class="save-draft">
           草稿
         </router-link>
-        <div class="import-button" @click="importVisible = true">
+        <div @click="importVisible = true" class="import-button">
           <svg-icon class="import-icon" icon-class="import" />
           {{ $t('publish.importArticle') }}
         </div>
 
-        <div class="post" @click="sendThePost">
+        <div @click="sendThePost" class="post">
           {{ $t('publish.publish') }}
         </div>
 
-        <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
+        <el-dropdown slot="more" v-if="isShowTransfer" @command="handleMoreAction" trigger="click">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
@@ -37,7 +37,6 @@
         <mavon-editor
           ref="md"
           v-model="markdownData"
-          class="editor"
           :toolbars="toolbars"
           :box-shadow="false"
           :autofocus="false"
@@ -46,6 +45,7 @@
           }"
           :placeholder="$t('publish.contentPlaceholder')"
           @imgAdd="$imgAdd"
+          class="editor"
         />
       </no-ssr>
 
@@ -117,9 +117,9 @@
           <h3>内容摘要</h3>
           <el-input
             v-model="readSummary"
+            :autosize="{ minRows: 6, maxRows: 12}"
             size="small"
             type="textarea"
-            :autosize="{ minRows: 6, maxRows: 12}"
             placeholder="请输入内容"
             maxlength="300"
             show-word-limit
@@ -135,11 +135,11 @@
         </span>
         <el-input-number
           v-model="commentPayPoint"
+          :min="1"
+          :max="99999"
           style="width: 110px"
           controls-position="right"
           class="price-point"
-          :min="1"
-          :max="99999"
           size="mini"
           label="评论价格"
           step-strictly
@@ -185,27 +185,27 @@
             v-show="!cover"
             :img-upload-done="imgUploadDone"
             :aspect-ratio="2 / 1"
-            class="cover-upload"
             :update-type="'artileCover'"
             @doneImageUpload="doneImageUpload"
+            class="cover-upload"
           >
             <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add">
           </img-upload>
           <img
             v-show="cover"
+            @click.prevent="removeCover"
             class="cover-btn"
             src="@/assets/img/del.svg"
             alt="remove"
-            @click.prevent="removeCover"
           >
           <div v-show="cover">
-            <img class="cover-img" :src="coverEditor" alt="cover">
+            <img :src="coverEditor" class="cover-img" alt="cover">
           </div>
         </div>
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
+      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
         {{ $t('publish.original') }}
       </el-checkbox>
     </div>
@@ -235,7 +235,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
+              <img @click="extractRefTitle(-1)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
             </el-tooltip>
           </el-input>
           <el-input
@@ -256,7 +256,7 @@
             rows="6"
           />
           <div class="related-add">
-            <div class="add-icon" @click="addDraftsReferences">
+            <div @click="addDraftsReferences" class="add-icon">
               <i class="el-icon-plus" />
             </div>
             <span>添加关联</span>
@@ -273,7 +273,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(index)">
+                    <img @click="extractRefTitle(index)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -295,13 +295,13 @@
                 />
                 <div class="related-add">
                   <div class="fl ac">
-                    <div class="add-icon" @click="remakeRelated(index)">
+                    <div @click="remakeRelated(index)" class="add-icon">
                       <svg-icon icon-class="cancel" />
                     </div>
                     <span>取消修改</span>
                   </div>
                   <div class="fl ac" style="margin-left: 20px;">
-                    <div class="add-icon" @click="confirmRelated(index)">
+                    <div @click="confirmRelated(index)" class="add-icon">
                       <i class="el-icon-plus" />
                     </div>
                     <span>确认修改</span>
@@ -310,7 +310,7 @@
               </template>
 
               <template v-else>
-                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
+                <div :class="!item.content && 'no-margin-bottom'" class="related-list-title">
                   <div class="fl jsb">
                     <div class="fl ac related-7">
                       <div class="related-list-link">
@@ -319,18 +319,18 @@
                     </div>
                     <div class="fl ac jfe related-3">
                       <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                        <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
+                        <svg-icon @click="editRelated(index, item.number)" class="related-icon-icon" icon-class="pencli" />
                       </el-tooltip>
 
                       <el-tooltip effect="dark" content="删除" placement="top">
-                        <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
+                        <svg-icon @click="removeRelated(index, item.number)" class="related-icon-icon" icon-class="delete" />
                       </el-tooltip>
                       <span class="related-id">{{ item.number }}</span>
                     </div>
                   </div>
                   <div class="fl ac related-link">
                     <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy1" />
                     <a :href="item.url" target="_blank">
                       <svg-icon class="icon-share" icon-class="share1" />
                     </a>
@@ -360,10 +360,10 @@
               :api-url="pull.apiUrl"
               :page-size="pull.params.pagesize"
               :total="total"
-              class="pagination"
               :reload="pull.reload"
               @paginationData="paginationData"
               @togglePage="togglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -376,7 +376,7 @@
       :from="$route.params.type"
       @toggleDone="allowLeave = true"
     />
-    <articleImport v-model="importVisible" />
+    <articleImport v-model="importVisible" :openNewPage="false" @res="importRes" />
     <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
@@ -1096,6 +1096,11 @@ export default {
     closeDropdown() {
       this.transferButton = false
       this.readContent = false
+    },
+    importRes(res) {
+      this.title = res.title
+      this.markdownData = res.content
+      this.cover = res.cover
     },
     /**
      * 渲染关联内容 判断是否显示展开或折叠
