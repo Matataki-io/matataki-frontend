@@ -40,6 +40,7 @@ export default {
   done: '完成',
   avatar: '头像',
   username: '用户名',
+  nickname: '昵称',
   email: '邮箱',
   articleUtil: '篇', //公用名称
   referral:
@@ -587,12 +588,14 @@ export default {
     follow: '关注',
     buy: '购买',
     setting: '账户设置',
+    systemSetting: '系统设置',
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
     buycoins: '持有的粉丝币',
     selfcoins: '发行的粉丝币',
-    editProfile: '编辑资料'
+    editProfile: '编辑资料',
+    information: '个人信息'
   },
   withdraw: {
     title: '提现',

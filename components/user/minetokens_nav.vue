@@ -6,9 +6,6 @@
       :class="$route.name === item.url && 'active'"
       :to="{name: item.url, params: {id: $route.params.id}}"
     >
-      <div class="icon-tokens" :class="item.icon">
-        <svg-icon :icon-class="item.icon" />
-      </div>
       {{ item.title }}
     </router-link>
   </nav>
@@ -25,8 +22,8 @@ export default {
     user() {
       return [
         { title: '粉丝币持仓', icon: 'minetokens_details', url: 'token-id' },
-        { title: '流动金持仓', icon: 'minetokens_details', url: 'token-liquidity-id' },
         { title: '粉丝币流水', icon: 'minetokens_detail', url: 'token-detail-id' },
+        { title: '流动金持仓', icon: 'minetokens_details', url: 'token-liquidity-id' },
         { title: '流动金流水', icon: 'minetokens_detail', url: 'token-liquidity-detail-id' }
       ]
     }

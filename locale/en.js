@@ -40,6 +40,7 @@ export default {
   done: 'Complete',
   avatar: 'avatar',
   username: 'username',
+  nickname: 'nickname',
   email: 'mailbox',
   articleUtil: 'Article',
   referral:
@@ -615,12 +616,14 @@ export default {
     follow: 'Follow',
     buy: 'Buy',
     setting: 'Account Settings',
+    systemSetting: 'System Settings',
     wallet: 'wallet',
     point: 'integration',
     invite: 'Invite',
     buycoins: 'Fan coins held',
     selfcoins: 'Fan coins issued',
-    editProfile: 'Edit Profile'
+    editProfile: 'Edit Profile',
+    information: 'User information'
   },
   withdraw: {
     title: 'cash out',

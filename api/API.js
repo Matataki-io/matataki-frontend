@@ -746,5 +746,10 @@ minetokenGetResources(tokenId) {
         symbol
       }
     })
+  },
+
+  // 根据id获取个人资料中的社交账号和相关网站
+  getUserLinks({id}) {
+    return request.get(`/user/${id}/links`);
   }
 }

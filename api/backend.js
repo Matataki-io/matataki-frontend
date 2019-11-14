@@ -307,6 +307,20 @@ const API = {
       }
     })
   },
+
+  async setUserLinks({websites, socialAccounts}) {
+    return this.accessBackend({
+      method: 'PUT',
+      url: '/user/links',
+      data: {
+        websites,
+        socialAccounts,
+      }
+    })
+  },
+  getUserLinks({id}) {
+    return this.accessBackend({url: `/user/${id}/links`});
+  },
   // async getMyPost(id) {
   //   return this.accessBackend({ url: `/mypost/${id}` })
   // },
