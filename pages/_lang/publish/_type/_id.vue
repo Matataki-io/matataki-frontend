@@ -501,7 +501,7 @@ export default {
         {
           id: 0,
           symbol: 'CNY',
-          name: 'CNY'
+          name: '人民币'
         }
       ], // 支付tokenlist
       paymentSelectValue: 0, // 支付tokenlist show value
