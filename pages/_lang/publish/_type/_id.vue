@@ -236,9 +236,9 @@
           <img
             v-show="cover"
             class="cover-btn"
-            @click.prevent="removeCover"
             src="@/assets/img/del.svg"
             alt="remove"
+            @click.prevent="removeCover"
           >
           <div v-show="cover">
             <img :src="coverEditor" class="cover-img" alt="cover">
@@ -277,7 +277,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img class="auto-test" @click="extractRefTitle(-1)" src="@/assets/img/auto_test.png" alt="auto test">
+              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
             </el-tooltip>
           </el-input>
           <el-input
@@ -315,7 +315,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img class="auto-test" @click="extractRefTitle(index)" src="@/assets/img/auto_test.png" alt="auto test">
+                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(index)">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -361,18 +361,18 @@
                     </div>
                     <div class="fl ac jfe related-3">
                       <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                        <svg-icon class="related-icon-icon" @click="editRelated(index, item.number)" icon-class="pencli" />
+                        <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
                       </el-tooltip>
 
                       <el-tooltip effect="dark" content="删除" placement="top">
-                        <svg-icon class="related-icon-icon" @click="removeRelated(index, item.number)" icon-class="delete" />
+                        <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
                       </el-tooltip>
                       <span class="related-id">{{ item.number }}</span>
                     </div>
                   </div>
                   <div class="fl ac related-link">
                     <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy1" />
+                    <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
                     <a :href="item.url" target="_blank">
                       <svg-icon class="icon-share" icon-class="share1" />
                     </a>
@@ -403,8 +403,8 @@
               :page-size="pull.params.pagesize"
               :total="total"
               :reload="pull.reload"
-              @paginationData="paginationData"
               class="pagination"
+              @paginationData="paginationData"
               @togglePage="togglePage"
             />
           </no-content-prompt>
@@ -544,14 +544,21 @@ export default {
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'
+    },
+    isDevelopmentMode() {
+      return process.env.NODE_ENV === 'development'
     }
   },
   watch: {
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
-    title() {
+    title(val) {
       this.updateDraftWatch()
+      // 观察标题，且仅用于开发模式
+      if (val === '扯淡' && this.isDevelopmentMode) {
+        this.generateBullshit()
+      }
     },
     markdownData() {
       this.updateDraftWatch()
@@ -1486,6 +1493,10 @@ export default {
           this.$message.error(this.$t('error.copy'))
         }
       )
+    },
+    async generateBullshit() {
+      const { 生成文章 } = await import('@/api/bullshit-generator.js')
+      this.markdownData = 生成文章()
     }
   }
 }

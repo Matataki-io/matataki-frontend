@@ -1,7 +1,7 @@
 /**
  * 从 https://raw.githubusercontent.com/menzi11/BullshitGenerator/master/index.js 抄来的
  */
-const 主题 = '中华民族的伟大复兴' // Whatever
+const 主题 = '扯淡' // Whatever
 
 const 论述 = [
   '现在，解决主题的问题，是非常非常重要的。 所以， ',
@@ -155,7 +155,7 @@ function 随便取一句(列表) {
   return 列表[坐标]
 }
 
-function 随便取一个数(最小值 = 0, 最大值 = 100) {
+function 随便取一个数(最小值 = 0, 最大值 = 10) {
   const 数字 = Math.random() * (最大值 - 最小值) + 最小值
   return 数字
 }
