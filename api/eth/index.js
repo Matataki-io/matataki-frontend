@@ -9,13 +9,13 @@ import { fetchId, connect } from './util'
 if (process.browser) {
   // window is undefined 因为nuxt.js在服务器端渲染
   // 服务器渲染环境时 process.browser 为 false，浏览器端为true
-  window.addEventListener('load', async () => {
+  window.addEventListener('load', () => {
     if (window.ethereum && window.web3) {
       // Modern dapp browsers...
       window.web3 = new Web3(window.ethereum)
       try {
-        await connect()
-        const accounts = await window.web3.eth.getAccounts()
+        // await connect()
+        // const accounts = await window.web3.eth.getAccounts()
       } catch (error) {
         // @todo: handle User denied account access...
       }
