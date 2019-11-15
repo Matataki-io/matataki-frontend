@@ -703,8 +703,15 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$API.getIpfsData(hash)
-      // console.log('articleData', articleData, hash, id)
+      await this.$API.getIpfsData(hash).then(res => {
+        if (res.code === 0) {
+          // 设置文章内容
+          this.title = res.data.title
+          this.markdownData = res.data.content
+        } else this.$message.warning(res.message)
+      }).catch(err => {
+        console.log('err', err)
+      })
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
         if (res.code === 0) {
@@ -741,10 +748,6 @@ export default {
         this.$message.error(this.$t('error.getArticleInfoError'))
         this.$router.push({ path: '/article' })
       })
-
-      // 设置文章内容
-      this.title = articleData.data.title
-      this.markdownData = articleData.data.content
     },
     // 得到草稿箱内容 by id
     async getDraft(id) {
@@ -948,7 +951,7 @@ export default {
           const promiseArr = []
           if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
           if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
-          Promise.all(promiseArr).then(res => {
+          Promise.all(promiseArr).then(() => {
             this.success(response.data)
           }).catch(err => {
             console.log('err', err)
