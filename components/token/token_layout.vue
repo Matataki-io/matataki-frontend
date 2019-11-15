@@ -45,7 +45,8 @@
               管理
             </el-button>
           </router-link>
-          <el-button size="small" icon="el-icon-share" @click="shareModalShow = true">
+          <el-button size="small" @click="shareModalShow = true">
+            <svg-icon icon-class="share_new" />
             分享
           </el-button>
         </div>
@@ -134,7 +135,7 @@
           />
           粉丝币交易所
         </router-link> -->
-        <tokenBuyCard :token="minetokenToken"/>
+        <tokenBuyCard :token="minetokenToken" />
 
         <div class="about">
           <h2 class="token-title">
