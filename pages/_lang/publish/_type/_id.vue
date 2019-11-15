@@ -131,7 +131,7 @@
           <div v-show="paymentTokenVisible" class="fl ac">
             <div>
               <h3>支付类型</h3>
-              <el-select disabled v-model="paymentSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+              <el-select v-model="paymentSelectValue" disabled size="small" placeholder="请选择" style="width: 100%;">
                 <el-option
                   v-for="item in paymentSelectOptions"
                   :key="item.id"
