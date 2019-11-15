@@ -2,9 +2,8 @@
  * For MetaMask(ETH) Only
  */
 import BigNumber from 'bignumber.js'
-import Web3 from 'web3'
 import { getToken, setToken, removeToken } from '../utils/auth'
-import { signToLogin, getSignatureForPublish } from '@/api/eth'
+import { getSignatureForLogin, getSignatureForPublish } from '@/api/eth'
 import API from '@/api/API'
 
 export const state = () => ({
@@ -47,7 +46,7 @@ export const actions = {
       throw Error('你拒绝了网站对MetaMask插件的访问，无法通过MetaMask登录')
     }
     try {
-      const { signature, msgParams } = await signToLogin()
+      const { signature, msgParams } = await getSignatureForLogin()
       const res = await API.auth({
         platform: 'eth',
         publickey: state.account,
@@ -65,19 +64,29 @@ export const actions = {
       throw error
     }
   },
-  getSignature({ dispatch, state }, data = { mode: null, rawSignData: null }) {
+  async getSignature({ dispatch, state }, data = { mode: null, rawSignData: null }) {
+    await dispatch('fetchAccount')
     const { account } = state
     switch (data.mode) {
       case 'Article': {
         const [author, hash] = data.rawSignData
+        const signature = await getSignatureForPublish(hash)
         return {
           publicKey: account,
-          signature: getSignatureForPublish(hash),
+          signature: signature.signature,
+          msgParams: signature.msgParams,
+          username: account.slice(-12)
+        }
+      }
+      case 'Login': {
+        return {
+          publicKey: account,
+          signature: getSignatureForLogin(),
           username: account
         }
       }
+      default: return null
     }
-    return { publicKey: account }
   },
   // 暂未使用到
   logout({ commit }) {

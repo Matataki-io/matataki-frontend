@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="closeDropdown" class="new-post">
+  <div class="new-post" @click.stop="closeDropdown">
     <div class="edit-content">
       <div class="edit-head">
         <input
@@ -9,20 +9,20 @@
           size="large"
           clearable
         >
-        <span v-html="saveDraft" class="save-tips" />
+        <span class="save-tips" v-html="saveDraft" />
         <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}" class="save-draft">
           草稿
         </router-link>
-        <div @click="importVisible = true" class="import-button">
+        <div class="import-button" @click="importVisible = true">
           <svg-icon class="import-icon" icon-class="import" />
           {{ $t('publish.importArticle') }}
         </div>
 
-        <div @click="sendThePost" class="post">
+        <div class="post" @click="sendThePost">
           {{ $t('publish.publish') }}
         </div>
 
-        <el-dropdown slot="more" v-if="isShowTransfer" @command="handleMoreAction" trigger="click">
+        <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
@@ -45,8 +45,8 @@
             marginTop: '60px'
           }"
           :placeholder="$t('publish.contentPlaceholder')"
-          @imgAdd="$imgAdd"
           class="editor"
+          @imgAdd="$imgAdd"
         />
       </no-ssr>
 
@@ -228,15 +228,15 @@
             :img-upload-done="imgUploadDone"
             :aspect-ratio="2 / 1"
             :update-type="'artileCover'"
-            @doneImageUpload="doneImageUpload"
             class="cover-upload"
+            @doneImageUpload="doneImageUpload"
           >
             <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add">
           </img-upload>
           <img
             v-show="cover"
-            @click.prevent="removeCover"
             class="cover-btn"
+            @click.prevent="removeCover"
             src="@/assets/img/del.svg"
             alt="remove"
           >
@@ -247,7 +247,7 @@
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
+      <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
         {{ $t('publish.original') }}
       </el-checkbox>
     </div>
@@ -277,7 +277,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img @click="extractRefTitle(-1)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+              <img class="auto-test" @click="extractRefTitle(-1)" src="@/assets/img/auto_test.png" alt="auto test">
             </el-tooltip>
           </el-input>
           <el-input
@@ -298,7 +298,7 @@
             rows="6"
           />
           <div class="related-add">
-            <div @click="addDraftsReferences" class="add-icon">
+            <div class="add-icon" @click="addDraftsReferences">
               <i class="el-icon-plus" />
             </div>
             <span>添加关联</span>
@@ -315,7 +315,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img @click="extractRefTitle(index)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+                    <img class="auto-test" @click="extractRefTitle(index)" src="@/assets/img/auto_test.png" alt="auto test">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -337,13 +337,13 @@
                 />
                 <div class="related-add">
                   <div class="fl ac">
-                    <div @click="remakeRelated(index)" class="add-icon">
+                    <div class="add-icon" @click="remakeRelated(index)">
                       <svg-icon icon-class="cancel" />
                     </div>
                     <span>取消修改</span>
                   </div>
                   <div class="fl ac" style="margin-left: 20px;">
-                    <div @click="confirmRelated(index)" class="add-icon">
+                    <div class="add-icon" @click="confirmRelated(index)">
                       <i class="el-icon-plus" />
                     </div>
                     <span>确认修改</span>
@@ -361,18 +361,18 @@
                     </div>
                     <div class="fl ac jfe related-3">
                       <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                        <svg-icon @click="editRelated(index, item.number)" class="related-icon-icon" icon-class="pencli" />
+                        <svg-icon class="related-icon-icon" @click="editRelated(index, item.number)" icon-class="pencli" />
                       </el-tooltip>
 
                       <el-tooltip effect="dark" content="删除" placement="top">
-                        <svg-icon @click="removeRelated(index, item.number)" class="related-icon-icon" icon-class="delete" />
+                        <svg-icon class="related-icon-icon" @click="removeRelated(index, item.number)" icon-class="delete" />
                       </el-tooltip>
                       <span class="related-id">{{ item.number }}</span>
                     </div>
                   </div>
                   <div class="fl ac related-link">
                     <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy1" />
+                    <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy1" />
                     <a :href="item.url" target="_blank">
                       <svg-icon class="icon-share" icon-class="share1" />
                     </a>
@@ -404,8 +404,8 @@
               :total="total"
               :reload="pull.reload"
               @paginationData="paginationData"
-              @togglePage="togglePage"
               class="pagination"
+              @togglePage="togglePage"
             />
           </no-content-prompt>
         </div>
@@ -418,16 +418,16 @@
       :from="$route.params.type"
       @toggleDone="allowLeave = true"
     />
-    <articleImport v-model="importVisible" :openNewPage="false" @res="importRes" />
+    <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
     <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
 
 <script>
 import throttle from 'lodash/throttle'
-
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
+import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import defaultImagesUploader from '@/api/imagesUploader'
 import { sendPost } from '@/api/ipfs'
@@ -538,7 +538,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account']),
     coverEditor() {
       return this.$API.getImg(this.cover)
     },
@@ -851,9 +851,15 @@ export default {
         const { author, hash } = article
         let signature = null
         // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
-        if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        if (this.currentUserInfo.idProvider === 'MetaMask') {
+          console.info('You are using metamask')
+          signature = await getSignatureForPublish(hash)
+          const [publicKey] = await window.web3.eth.getAccounts()
+          signature = Object.assign(signature, { publicKey })
+        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
           signature = await this.getSignatureOfArticle({ author, hash })
         }
+        console.info(`signature in component: ${JSON.stringify(signature)}`)
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
 

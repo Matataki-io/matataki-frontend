@@ -144,7 +144,8 @@ export const actions = {
     await dispatch('accountCheck')
     const { currentUserInfo, prefixOfType } = getters
     const { idProvider } = currentUserInfo
-    return { idProvider, ...(await dispatch(`${prefixOfType}/getSignature`, data)) }
+    const result = { idProvider, ...(await dispatch(`${prefixOfType}/getSignature`, data)) }
+    return result
   },
   async getSignatureOfArticle({ dispatch }, { author, hash }) {
     return dispatch('getSignature', { mode: 'Article', rawSignData: [author, hash] })
