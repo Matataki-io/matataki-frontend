@@ -35,9 +35,11 @@
         <nav class="tokens-list-nav">
           <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
             发布顺序
+            <i class="el-icon-d-caret" />
           </div>
           <div :class="sort === 'symbol' && 'active'" @click="toggleSort('symbol')">
             字母顺序
+            <i class="el-icon-d-caret" />
           </div>
         </nav>
         <a
@@ -60,9 +62,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="true"
-        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
+        class="pagination"
       />
     </div>
   </div>
