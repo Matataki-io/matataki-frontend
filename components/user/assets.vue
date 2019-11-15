@@ -8,7 +8,7 @@
         </span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
-      <el-button class="btn" :disabled="type === 'CNY'" @click="$emit('toggleWithdraw', 1)">
+      <el-button class="btn" :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)">
         {{ $t('withdraw.title') }}
       </el-button>
     </div>
@@ -97,8 +97,16 @@ export default {
       const price = precision(this.assets.totalShareExpenses, this.type) || 0
       const str = price > 0 ? '+' : ''
       return str + price
+    },
+    /**
+     * 故意设置为大小写不敏感，请根据实际情况修改 `tokenThatUnableToWithdraw`
+     * 目前屏蔽 CNY 和 ETH 的提现 -- Frank, Nov.15th 2019
+     */
+    isWithdrawDisabled() {
+      const toLowerCase = (str) => str.toLowerCase()
+      const tokenThatUnableToWithdraw = ['CNY', 'eth'].map(toLowerCase)
+      return tokenThatUnableToWithdraw.includes(toLowerCase(this.type))
     }
-
   }
 }
 </script>
