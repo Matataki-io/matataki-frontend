@@ -22,7 +22,7 @@
     >
       <template slot-scope="scope">
         <div class="invite-block">
-          <span class="time">{{ tokenAmount(scope.row.amount) }} ({{ percentage(scope.row.amount, scope.row.total_supply) }})</span>
+          <span class="time">{{ tokenAmount(scope.row.liquidity_balance) }} ({{ percentage(scope.row.liquidity_balance, scope.row.total_supply) }})</span>
         </div>
       </template>
     </el-table-column>

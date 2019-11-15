@@ -1,8 +1,8 @@
 <template>
-  <div class="main" @click.stop="documentClick">
+  <div @click.stop="documentClick" class="main">
     <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')">
       <template slot="more">
-        <el-dropdown v-if="isMe(article.uid)" trigger="click" @command="handleMoreAction">
+        <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
@@ -22,28 +22,25 @@
     </g-header>
 
     <div class="container">
+      <!-- 文章封面 -->
       <div v-if="cover" class="TitleImage">
         <img :src="cover" alt="cover">
       </div>
-
       <article class="Post-Header">
         <header>
+          <!-- 标题 -->
           <h1 class="Post-Title">
             {{ article.title }}
           </h1>
-          <UserInfoHeader
-            :article="{
-              ...article,
-              avatar,
-              articleCreateTimeComputed,
-            }"
-          />
+          <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
+          <UserInfoHeader :article="article" />
         </header>
         <!-- ipfs -->
-        <articleIpfs :is-hide="tokenArticle" :hash="article.hash" />
-
-        <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
-        <ArticleFooter v-if="isTokenArticle" style="margin-top: 20px;" :article="article" />
+        <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
+        <!-- 文章内容 -->
+        <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
+        <!-- 文章页脚 声明 是否原创 -->
+        <ArticleFooter v-if="isTokenArticle" :article="article" style="margin-top: 20px;" />
         <!-- 解锁按钮 -->
         <div v-if="tokenArticle" class="lock">
           <el-divider v-if="!isTokenArticle">
@@ -79,11 +76,11 @@
             <div>
               <el-button
                 v-if="!isTokenArticle"
-                plain
                 :disabled="payBtnDisabled && isLogined"
+                @click="wxpay"
+                plain
                 type="primary"
                 size="small"
-                @click="wxpay"
               >
                 微信支付
               </el-button>
@@ -100,34 +97,33 @@
       </article>
 
       <!-- sidebar -->
-      <!-- v-show="navShow" -->
       <div class="sidebar">
-        <div v-if="isProduct" class="article-btn" @click="buy">
+        <div v-if="isProduct" @click="buy" class="article-btn">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" class="article-btn" @click="invest">
-          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+        <div v-if="isProduct" @click="invest" class="article-btn">
+          <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
         </div>
 
         <!-- <div
-        v-if="!isProduct"
-        class="comment fl ac fdc"
-      >
-        <div class="comment-block">
-          <svg-icon icon-class="comment" class="comment-icon" />
-        </div>
-        <span>评论</span>
-      </div> -->
+          v-if="!isProduct"
+          class="comment fl ac fdc"
+          >
+          <div class="comment-block">
+            <svg-icon icon-class="comment" class="comment-icon" />
+          </div>
+          <span>评论</span>
+          </div> -->
 
         <div
-          class="article-btn"
           @click="share"
+          class="article-btn"
         >
           <el-popover
             v-model="visiblePopover.visible1"
@@ -137,7 +133,7 @@
           >
             <p>{{ $t('p.sharePopover') }}</p>
             <div style="text-align: right; margin: 0">
-              <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
+              <el-button @click="poopverDone('visible1')" class="el-button--purple" type="primary" size="mini">
                 {{ $t('p.confirmPopover') }}
               </el-button>
             </div>
@@ -146,8 +142,8 @@
               slot="reference"
             >
               <div
-                class="icon-container blue"
                 :class="isProduct ? 'yellow' : 'blue'"
+                class="icon-container blue"
               >
                 <svg-icon icon-class="share" class="icon" />
               </div>
@@ -164,7 +160,7 @@
         >
           <p>{{ $t('p.likePopover') }}</p>
           <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
+            <el-button @click="poopverDone('visible')" class="el-button--purple" type="primary" size="mini">
               {{ $t('p.confirmPopover') }}
             </el-button>
           </div>
@@ -173,12 +169,12 @@
           >
             <CoinBtn
               v-if="!isProduct"
-              style="margin-top: 40px;"
               :time="timeCount"
               :token="ssToken"
               :article="article"
               @like="like"
               @dislike="dislike"
+              style="margin-top: 40px;"
             />
           </div>
         </el-popover>
@@ -186,33 +182,32 @@
     </div>
 
     <div class="p-w btns-container">
-      <!-- 文章 -->
-      <!-- 推荐 不推荐 分享 -->
-
-      <!-- 商品 -->
-
-      <!-- 投资 购买 分享 -->
-
       <div ref="actionBtns" class="btns">
-        <div v-if="isProduct" class="article-btn" @click="share">
-          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+        <!-- 商品 -->
+        <!-- 分享 投资 购买 -->
+        <div v-if="isProduct" @click="share" class="article-btn">
+          <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="share" class="icon" />
           </div>
           <span> {{ $t('share') }}</span>
         </div>
-        <div v-if="isProduct" class="article-btn" @click="buy">
+        <div v-if="isProduct" @click="buy" class="article-btn">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" class="article-btn" @click="invest">
-          <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+        <div v-if="isProduct" @click="invest" class="article-btn">
+          <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
         </div>
 
+        <!-- 文章 -->
+        <!-- 分享 推荐 不推荐 -->
+
+        <!-- 文章下方的功能按钮, 由于修改的之前的代码, share模块用插槽的形式写入 -->
         <TokenFooter
           v-if="!isProduct"
           :time="timeCount"
@@ -221,26 +216,29 @@
           @like="like"
           @dislike="dislike"
         >
-          <div class="article-btn" @click="share">
-            <div class="icon-container blue" :class="isProduct ? 'yellow' : 'blue'">
+          <!-- slot 插槽写入 -->
+          <div @click="share" class="article-btn">
+            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
               <svg-icon icon-class="share" class="icon" />
             </div>
             <span>{{ $t('share') }}</span>
           </div>
         </TokenFooter>
       </div>
-      <ArticleInfoFooter v-if="isProduct" class="product" :article="article" />
+      <!-- 商品页面下面的详情信息 -->
+      <ArticleInfoFooter v-if="isProduct" :article="article" class="product" />
     </div>
+    <!-- tag 标签 -->
     <div v-if="isShowTags" class="p-w" style="margin-bottom: 20px;">
-      <n-link
+      <router-link
         v-for="(item, index) in article.tags"
         :key="index"
+        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
         style="margin-right: 10px;"
         class="tag-card"
-        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
       >
         {{ item.name }}
-      </n-link>
+      </router-link>
     </div>
 
     <!-- 内容居中 -->
@@ -258,15 +256,16 @@
       }"
       @investDone="payDone"
     />
+    <!-- 分享dialog -->
     <ShareModal
       v-model="shareModalShow"
       :article="{
         ...article,
-        time: articleCreateTimeComputed,
         content: compiledMarkdown,
         avatar
       }"
     />
+    <!-- 购买 -->
     <PurchaseModal
       v-model="purchaseModalShow"
       :article="{
@@ -275,16 +274,18 @@
       }"
       @purchaseDone="payDone"
     />
+    <!-- 文章转让 -->
     <article-transfer
       v-model="transferModal"
       :article-id="Number(article.id)"
       from="article"
     />
 
-    <FeedbackModal v-model="feedbackShow" :points="ssToken.points" />
+    <!-- 阅读文章积分提示框 目前已经去除 -->
+    <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
     <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
-
-    <div class="related left" :class="relatedLeftCollapse && 'open'" @click.stop>
+    <!-- 关联文章侧边栏 -->
+    <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
@@ -307,21 +308,25 @@
         <div slot="list" v-loading="loading">
           <no-content-prompt :list="pull.list">
             <div v-for="(item, index) in relatedList" :key="index" class="related-list">
-              <div class="fl jsb">
-                <div class="fl ac related-7">
-                  <div class="related-list-link">
-                    <a :href="item.url" target="_blank">{{ item.url }}</a>
+              <div :class="!item.content || !relatedSummary && 'no-margin-bottom'" class="related-list-title">
+                <div class="fl jsb">
+                  <div class="fl ac related-7">
+                    <div class="related-list-link">
+                      <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                      <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                    </div>
                   </div>
+                  <div class="fl ac jfe related-3">
+                    <span class="related-id">{{ item.number }}</span>
+                  </div>
+                </div>
+                <div class="fl ac related-link">
+                  <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
-                    <svg-icon class="related-icon-icon" icon-class="link" />
+                    <svg-icon class="icon-share" icon-class="jump" />
                   </a>
                 </div>
-                <div class="fl ac jfe related-3">
-                  <span class="related-id">{{ item.number }}</span>
-                </div>
-              </div>
-              <div class="related-list-title" :class="!item.content || !relatedSummary && 'no-margin-bottom'">
-                {{ item.title }}
               </div>
               <transition>
                 <div v-if="relatedSummary" :class="!item.collapse && 'open'">
@@ -348,20 +353,21 @@
               :url-replace="$route.params.id + ''"
               :page-size="pull.params.pagesize"
               :total="total"
-              class="pagination"
+              :reload="pull.reload"
               @paginationData="paginationData"
               @togglePage="togglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
       </div>
 
-      <div class="related-arrow" @click.stop="relatedLeftCollapse = !relatedLeftCollapse">
+      <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
         <svg-icon icon-class="arrow" class="icon" />
         <span v-if="!relatedLeftCollapse">已关联{{ total }}篇</span>
       </div>
     </div>
-    <div class="related right" :class="relatedRightCollapse && 'open'" @click.stop>
+    <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
@@ -371,7 +377,7 @@
               <svg-icon icon-class="sort" class="icon" />
             </span> -->
           </div>
-          <el-button v-loading="relatedLoadingBtn" type="primary" size="small" icon="el-icon-link" @click="posts">
+          <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
             关联本文
           </el-button>
         </div>
@@ -379,21 +385,25 @@
         <div slot="list" v-loading="beingLoading">
           <no-content-prompt :list="beingPull.list">
             <div v-for="(item, index) in beingRelatedList" :key="index" class="related-list">
-              <div class="fl jsb">
-                <div class="fl ac related-7">
-                  <div class="related-list-link">
-                    <a :href="item.url" target="_blank">{{ item.url }}</a>
+              <div class="related-list-title no-margin-bottom">
+                <div class="fl jsb">
+                  <div class="fl ac related-7">
+                    <div class="related-list-link">
+                      <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                      <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                    </div>
                   </div>
+                  <!-- <div class="fl ac jfe related-3">
+                    <span class="related-id">{{ item.number }}</span>
+                  </div> -->
+                </div>
+                <div class="fl ac related-link">
+                  <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
-                    <svg-icon class="related-icon-icon" icon-class="link" />
+                    <svg-icon class="icon-share" icon-class="jump" />
                   </a>
                 </div>
-                <div class="fl ac jfe related-3">
-                  <span class="related-id">{{ item.number }}</span>
-                </div>
-              </div>
-              <div class="related-list-title no-margin-bottom">
-                {{ item.title }}
               </div>
             </div>
 
@@ -405,15 +415,16 @@
               :url-replace="$route.params.id + ''"
               :page-size="beingPull.params.pagesize"
               :total="beingTotal"
-              class="pagination"
+              :reload="beingPull.reload"
               @paginationData="beingPaginationData"
               @togglePage="beingTogglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
       </div>
 
-      <div class="related-arrow" @click.stop="relatedRightCollapse = !relatedRightCollapse">
+      <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
         <svg-icon icon-class="arrow" class="icon" />
         <span v-if="!relatedRightCollapse">被关联{{ beingTotal }}次</span>
       </div>
@@ -427,9 +438,8 @@ import moment from 'moment'
 import Cookies from 'js-cookie'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
+import { mavonEditor } from 'mavon-editor-matataki'
 import { xssFilter } from '@/utils/xss'
-import 'mavon-editor-matataki/dist/css/index.css'
-import 'mavon-editor-matataki/dist/markdown/github-markdown.min.css'
 import CommentList from '@/components/comment/List'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
@@ -441,7 +451,7 @@ import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 import CoinBtn from '@/components/article/CoinBtn'
 import TokenFooter from '@/components/article/TokenFooter'
-import FeedbackModal from '@/components/article/Feedback'
+// import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar, regRemoveContent } from '@/utils/reg'
@@ -475,7 +485,7 @@ export default {
     articleTransfer,
     CoinBtn,
     TokenFooter,
-    FeedbackModal,
+    // FeedbackModal,
     commentInput,
     OrderModal,
     userPagination
@@ -483,13 +493,11 @@ export default {
   data() {
     return {
       avatar: null,
-      followed: false,
       investModalShow: false,
       shareModalShow: false,
       transferModal: false,
       purchaseModalShow: false,
       oldOffSetTop: 0,
-      navShow: true,
       isSupport: false, // 是否赞赏, 重新通过token请求文章数据
       commentRequest: 0,
       timer: null,
@@ -500,7 +508,7 @@ export default {
         likes: 0,
         is_liked: 0
       },
-      feedbackShow: false,
+      // feedbackShow: false,
       // 三个引导提示的状态
       visiblePopover: {
         visible: false,
@@ -549,6 +557,7 @@ export default {
         params: {
           pagesize: 20
         },
+        reload: 0,
         apiUrl: 'postsReferences',
         list: [] // 因为写的时候用的其他变量, 故而这里没有使用list存放数据
       },
@@ -559,6 +568,7 @@ export default {
         params: {
           pagesize: 20
         },
+        reload: 0,
         apiUrl: 'postsPosts',
         list: [] // 因为写的时候用的其他变量, 故而这里没有使用list存放数据
       },
@@ -602,7 +612,12 @@ export default {
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     compiledMarkdown() {
-      return markdownIt.render(xssFilter(this.post.content))
+      if (process.browser) {
+        const markdownIt = mavonEditor.getMarkdownIt()
+        return markdownIt.render(xssFilter(this.post.content))
+      } else {
+        return markdownIt.render(xssFilter(this.post.content))
+      }
     },
     cover() {
       if (this.article.cover) return this.$API.getImg(this.article.cover)
@@ -649,6 +664,11 @@ export default {
     limitValue() {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
+    },
+    // 如果是自己的文章 显示hash 否则走 持币阅读
+    isHideIpfsHash() {
+      if (this.isMe(this.article.uid)) return false
+      else return this.tokenArticle
     }
   },
   watch: {
@@ -667,6 +687,9 @@ export default {
         clearInterval(this.timerShare)
       }
     }
+    // '$route'(to, from) {
+    //   document.title = to.meta.title || 'Your Website'
+    // }
   },
 
   async asyncData({ $axios, route, req }) {
@@ -711,9 +734,7 @@ export default {
   },
   mounted() {
     this.setAvatar()
-    this.oldOffSetTop = this.$refs.actionBtns.offsetTop
     this.addReadAmount()
-    window.addEventListener('scroll', this.handleScroll)
     this.handleFocus()
     // if (!document.hidden) {
     //   this.reading()
@@ -730,24 +751,31 @@ export default {
 
     this.setRelatedSlider()
     window.addEventListener('resize', throttle(this.setRelatedSlider, 300))
+    window.addEventListener('popstate', this._popstateEvent)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.handleScroll)
     // window.removeEventListener('resize', throttle(this.setRelatedSlider))
+    window.removeEventListener('popstate', this._popstateEvent)
 
     clearInterval(this.timer)
     clearInterval(this.timerShare)
   },
   methods: {
+    _popstateEvent() {
+      this.toggleArticle(window.location.href, null, true)
+      // console.log(111, this.$route.params, window.location, history)
+    },
     // 增加文章阅读量
     async addReadAmount() {
       await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
     },
     // 获取用户在当前文章的属性
-    async getCurrentProfile() {
+    async getCurrentProfile(id) {
       const data = {
-        id: this.$route.params.id
+        id: id || this.$route.params.id
       }
+
+      // console.log(data)
 
       await this.$API.getCurrentProfile(data).then(res => {
         // console.log(res)
@@ -791,11 +819,11 @@ export default {
       if (Number(differenceToken) < 0) {
         if (this.isMe(this.article.uid)) { // 自己的文章
           this.showLock = true
-          this.getIfpsData()
+          this.getIpfsData()
         } else this.showLock = false
       } else {
         this.showLock = true
-        this.getIfpsData()
+        this.getIpfsData()
       }
     },
 
@@ -823,20 +851,25 @@ export default {
     showUserPopover() {
       if (!store.get('userVisible')) this.visiblePopover.visible2 = true
     },
-    async getIfpsData() {
-      await this.$API.getIfpsData(this.article.hash)
+    async getIpfsData() {
+      await this.$API.getIpfsData(this.article.hash)
         .then(res => {
           if (res.code === 0) {
             this.post.content = res.data.content
           } else {
-            console.log(res.message)
+            this.$message.warning(res.message)
           }
+        }).catch(err => {
+          console.log('err', err)
         })
     },
     async getArticleInfoFunc() {
       await this.$API.getArticleInfo(this.$route.params.id)
         .then(res => {
           if (res.code === 0) this.article = res.data
+          else this.$message.warning(res.message)
+        }).catch(err => {
+          console.log('err', err)
         })
     },
     // 推荐
@@ -917,12 +950,6 @@ export default {
         this.timer = null
       }
     },
-    handleScroll() {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      const clientHeight = document.body.clientHeight
-      scrollTop + clientHeight - 100 > this.oldOffSetTop ? (this.navShow = false) : (this.navShow = true)
-    },
     handleMoreAction(command) {
       this[command]()
     },
@@ -995,10 +1022,10 @@ export default {
     async setAvatar() {
       await this.$API.getUser({ id: this.article.uid }).then((res) => {
         if (res.code === 0) {
-          const data = res.data
-          this.followed = data.is_follow
-          if (data.avatar) this.avatar = this.$API.getImg(data.avatar)
-        }
+          this.avatar = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+        } else this.$message.warning(res.message)
+      }).catch(err => {
+        console.log('err', err)
       })
     },
     // 获取是否赞赏状态
@@ -1087,12 +1114,15 @@ export default {
       this.$nextTick(() => {
         if (i) {
           const ele = document.querySelectorAll('.related-list-content')[i]
+          if (!ele) return
           if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
           else this.relatedList[i].showCollapse = true
         } else {
           const relatedList = document.querySelectorAll('.related-list-content')
+          if (!relatedList) return
           relatedList.forEach((ele, i) => {
-            console.log(ele.clientHeight)
+            // console.log(ele.clientHeight)
+            if (!this.relatedList[i]) return
             if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
             else this.relatedList[i].showCollapse = true
           })
@@ -1107,12 +1137,13 @@ export default {
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
           relatedDom.forEach((ele, i) => {
-            console.log(ele)
+            // console.log(ele)
             ele.style.maxWidth = sliderWidth + 'px'
           })
         }
       })
     },
+    // 隐藏侧边关联栏
     documentClick() {
       this.relatedLeftCollapse = false
       this.relatedRightCollapse = false
@@ -1173,6 +1204,7 @@ export default {
         }
       })
     },
+    // 关联本文
     async posts() {
       if (this.isLogined) {
         // 生成草稿
@@ -1216,6 +1248,116 @@ export default {
 
         // 跳转页面
       } else this.$store.commit('setLoginModal', true)
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
+    },
+    // 判断文章关联链接是本站还是外站
+    currentSite(link) {
+      const reg = /(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/
+      const linkArr = link.match(reg)
+      const prot = linkArr && linkArr[3] ? linkArr[3] : ''
+      const linkHost = linkArr ? linkArr[1] + '://' + linkArr[2] + prot : ''
+
+      // 地址
+      const urlList = {
+        development: [
+          process.env.VUE_APP_URL,
+          process.env.VUE_APP_PC_URL,
+          process.env.WX_SHARE_HOST,
+          'http://localhost:8080',
+          'https://localhost:8080',
+          'http://127.0.0.1:8080'
+        ],
+        production: [
+          process.env.VUE_APP_URL,
+          process.env.VUE_APP_PC_URL,
+          process.env.WX_SHARE_HOST
+        ]
+      }
+
+      const currentUrlList = urlList[process.env.NODE_ENV]
+      return currentUrlList.includes(linkHost)
+    },
+    // 切换文章
+    toggleArticle(url, e, popEvent = false) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      const reg = /\/p\/[\d].*/
+      const urlId = url.match(reg)
+      const id = urlId ? urlId[0].slice(3) : -1
+      const idInt = parseInt(id)
+      if (idInt !== -1) this.getArticle(idInt, popEvent)
+      else window.open(url)
+      return false
+    },
+    // 切换文章 得到文章信息
+    async getArticle(id, popEvent) {
+      await this.$API.getArticleInfo(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.article = res.data
+
+            // 切换 url不刷新
+            this.$route.params.id = res.data.id
+            if (!popEvent) {
+              const url = window.location.origin + '/p/' + res.data.id
+              history.pushState({}, '', url)
+            }
+
+            // 判断是否为付费阅读文章
+            if (res.data.tokens && res.data.tokens.length !== 0) {
+              this.post.content = res.data.short_content
+            } else {
+              // 切换文章 得到ipfs内容
+              this.getIpfsData(res.data.hash)
+            }
+
+            // 有写是写在组件内的, 通过props传递的参数判断是否切换文章
+
+            // created
+            this.getCurrentProfile(res.data.id)
+            // mounted
+            this.setAvatar() // 头像
+            this.addReadAmount() // 增加阅读量
+            this.handleFocus()
+
+            // dom加载完提示 推荐/不推荐
+            this.$nextTick(() => {
+              this.ssToken = {
+                points: [],
+                dislikes: 0,
+                likes: 0,
+                is_liked: 0
+              }
+
+              // 清空两个定时器
+              clearInterval(this.timerShare)
+              this.timerShare = null
+              this.timeCountShare = 0
+
+              clearInterval(this.timer)
+              this.timer = null
+              this.timeCount = 0
+              this.shareCount()
+
+              this.loading = this.beingLoading = true
+              this.pull.reload = this.beingPull.reload = Date.now()
+            })
+          } else {
+            this.$message.warning(res.message)
+          }
+          console.log('res', res)
+        }).catch(err => {
+          console.log('err', err)
+        })
     }
   }
 

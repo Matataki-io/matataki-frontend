@@ -8,15 +8,19 @@
       <script>
         var _hmt = _hmt || [];
         (function() {
-          if (window.location.host !== 'www.matataki.io') return console.log('测试环境不会写入统计代码')
-          function insertBeforeScript(script) {
-            var hm = document.createElement("script");
-            hm.src = script;
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-          }
-          insertBeforeScript('https://hm.baidu.com/hm.js?bbd8ff51dd2db34e7be45ca5ae14ae70')
-          insertBeforeScript('https://jic.talkingdata.com/app/h5/v1?appid=30E1EE644674443C8CC4762FA6FA9B9B&vn=pc-2.5.0&vc=2.5.0')
+          var arr = ['matataki.io','www.matataki.io','smartsignature.frontenduse.top']
+          var host = window.location.host
+          // includes 在 ie 环境有点...
+          if (host === arr[0] || host === arr[1] || host === arr[2]) {
+            function insertBeforeScript(script) {
+                var hm = document.createElement("script");
+                hm.src = script;
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+              }
+              insertBeforeScript('https://hm.baidu.com/hm.js?bbd8ff51dd2db34e7be45ca5ae14ae70')
+              insertBeforeScript('https://jic.talkingdata.com/app/h5/v1?appid=30E1EE644674443C8CC4762FA6FA9B9B&vn=pc-2.5.0&vc=2.5.0')
+          } else console.log('测试环境不会写入统计代码')
         })();
       </script>
       {{ HEAD }}

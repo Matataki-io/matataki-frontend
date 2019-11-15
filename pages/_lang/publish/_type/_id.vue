@@ -4,13 +4,13 @@
       <div class="edit-head">
         <input
           v-model="title"
-          class="edit-title"
           :placeholder="$t('publish.titlePlaceholder')"
+          class="edit-title"
           size="large"
           clearable
         >
         <span class="save-tips" v-html="saveDraft" />
-        <router-link class="save-draft" :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
+        <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}" class="save-draft">
           草稿
         </router-link>
         <div class="import-button" @click="importVisible = true">
@@ -37,12 +37,15 @@
         <mavon-editor
           ref="md"
           v-model="markdownData"
-          class="editor"
           :toolbars="toolbars"
           :box-shadow="false"
           :autofocus="false"
-          :style="mavonStyle"
+          :style="{
+            height: editorHeight,
+            marginTop: '60px'
+          }"
           :placeholder="$t('publish.contentPlaceholder')"
+          class="editor"
           @imgAdd="$imgAdd"
         />
       </no-ssr>
@@ -81,49 +84,90 @@
         </el-button>
       </div> -->
 
-      <div class="post-content">
-        <h3>
-          持币阅读
-          <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
-            <svg-icon
-              class="help-icon"
-              icon-class="help"
-            />
-          </el-tooltip>
-        </h3>
-        <el-checkbox v-model="readauThority" size="small">
-          设置阅读权限
-        </el-checkbox>
-        <div v-show="readauThority" style="width: 300px;">
-          <h3>持币数量</h3>
-          <el-input
-            v-model="readToken"
-            :min="1"
-            :max="100000000"
-            size="small"
-            placeholder="请输入内容"
-          />
-          <h3>持币类型</h3>
-          <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
-            <el-option
-              v-for="item in readSelectOptions"
-              :key="item.id"
-              :label="item.symbol + '-' + item.name"
-              :value="item.id"
-            />
-          </el-select>
-          <h3>内容摘要</h3>
-          <el-input
-            v-model="readSummary"
-            size="small"
-            type="textarea"
-            :autosize="{ minRows: 6, maxRows: 12}"
-            placeholder="请输入内容"
-            maxlength="300"
-            show-word-limit
-          />
+      <div class="post-content" style="width: 380px;">
+        <div>
+          <h3>
+            阅读权限
+            <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
+            </el-tooltip>
+          </h3>
+          <el-checkbox v-model="readauThority" size="small">
+            设置持币
+          </el-checkbox>
         </div>
+        <transition name="fade">
+          <div v-show="readauThority" class="fl ac">
+            <div>
+              <h3>持币类型</h3>
+              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+                <el-option
+                  v-for="item in readSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>持币数量</h3>
+              <el-input
+                v-model="readToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
+          设置支付
+        </el-checkbox>
+        <transition name="fade">
+          <div v-show="paymentTokenVisible" class="fl ac">
+            <div>
+              <h3>支付类型</h3>
+              <el-select v-model="paymentSelectValue" disabled size="small" placeholder="请选择" style="width: 100%;">
+                <el-option
+                  v-for="item in paymentSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>支付数量</h3>
+              <el-input
+                v-model="paymentToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+        <transition name="fade">
+          <div v-show="readauThority">
+            <h3>内容摘要</h3>
+            <el-input
+              v-model="readSummary"
+              :autosize="{ minRows: 6, maxRows: 12}"
+              size="small"
+              type="textarea"
+              placeholder="请输入内容"
+              maxlength="300"
+              show-word-limit
+            />
+          </div>
+        </transition>
       </div>
+
       <div v-if="$route.params.type !== 'edit'" class="set-item fl ac">
         <span class="set-title">
           {{ $t('publish.commentTitle') }}
@@ -133,11 +177,11 @@
         </span>
         <el-input-number
           v-model="commentPayPoint"
+          :min="1"
+          :max="99999"
           style="width: 110px"
           controls-position="right"
           class="price-point"
-          :min="1"
-          :max="99999"
           size="mini"
           label="评论价格"
           step-strictly
@@ -183,8 +227,8 @@
             v-show="!cover"
             :img-upload-done="imgUploadDone"
             :aspect-ratio="2 / 1"
-            class="cover-upload"
             :update-type="'artileCover'"
+            class="cover-upload"
             @doneImageUpload="doneImageUpload"
           >
             <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add">
@@ -192,12 +236,12 @@
           <img
             v-show="cover"
             class="cover-btn"
+            @click.prevent="removeCover"
             src="@/assets/img/del.svg"
             alt="remove"
-            @click.prevent="removeCover"
           >
           <div v-show="cover">
-            <img class="cover-img" :src="coverEditor" alt="cover">
+            <img :src="coverEditor" class="cover-img" alt="cover">
           </div>
         </div>
       </div>
@@ -233,7 +277,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
+              <img class="auto-test" @click="extractRefTitle(-1)" src="@/assets/img/auto_test.png" alt="auto test">
             </el-tooltip>
           </el-input>
           <el-input
@@ -271,7 +315,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(index)">
+                    <img class="auto-test" @click="extractRefTitle(index)" src="@/assets/img/auto_test.png" alt="auto test">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -308,28 +352,31 @@
               </template>
 
               <template v-else>
-                <div class="fl jsb">
-                  <div class="fl ac related-7">
-                    <div class="related-list-link">
-                      <a :href="item.url" target="_blank">{{ item.url }}</a>
+                <div :class="!item.content && 'no-margin-bottom'" class="related-list-title">
+                  <div class="fl jsb">
+                    <div class="fl ac related-7">
+                      <div class="related-list-link">
+                        <a :href="item.url" target="_blank">{{ item.title }}</a>
+                      </div>
                     </div>
+                    <div class="fl ac jfe related-3">
+                      <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
+                        <svg-icon class="related-icon-icon" @click="editRelated(index, item.number)" icon-class="pencli" />
+                      </el-tooltip>
+
+                      <el-tooltip effect="dark" content="删除" placement="top">
+                        <svg-icon class="related-icon-icon" @click="removeRelated(index, item.number)" icon-class="delete" />
+                      </el-tooltip>
+                      <span class="related-id">{{ item.number }}</span>
+                    </div>
+                  </div>
+                  <div class="fl ac related-link">
+                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                    <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy1" />
                     <a :href="item.url" target="_blank">
-                      <svg-icon class="related-icon-icon" icon-class="link" />
+                      <svg-icon class="icon-share" icon-class="share1" />
                     </a>
                   </div>
-                  <div class="fl ac jfe related-3">
-                    <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                      <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
-                    </el-tooltip>
-
-                    <el-tooltip effect="dark" content="删除" placement="top">
-                      <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
-                    </el-tooltip>
-                    <span class="related-id">{{ item.number }}</span>
-                  </div>
-                </div>
-                <div class="related-list-title" :class="!item.content && 'no-margin-bottom'">
-                  {{ item.title }}
                 </div>
                 <div :class="!item.collapse && 'open'">
                   <div class="related-list-content">
@@ -355,9 +402,9 @@
               :api-url="pull.apiUrl"
               :page-size="pull.params.pagesize"
               :total="total"
-              class="pagination"
               :reload="pull.reload"
               @paginationData="paginationData"
+              class="pagination"
               @togglePage="togglePage"
             />
           </no-content-prompt>
@@ -371,14 +418,15 @@
       :from="$route.params.type"
       @toggleDone="allowLeave = true"
     />
-    <articleImport v-model="importVisible" />
+    <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
     <statement :visible="statementVisible" @close="closeStatement" />
   </div>
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
+import debounce from 'lodash/debounce'
 import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import defaultImagesUploader from '@/api/imagesUploader'
@@ -409,6 +457,7 @@ export default {
   },
   data() {
     return {
+      editorHeight: '700px', // 默认
       prompt: false,
       title: '',
       author: '',
@@ -416,9 +465,6 @@ export default {
       fissionFactor: 2000,
       toolbars: {},
       screenWidth: 1000,
-      mavonStyle: {
-        minHeight: '800px'
-      },
       fissionNum: 2,
       cover: '',
       signature: '',
@@ -445,10 +491,20 @@ export default {
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章自动保存至',
       readContent: false,
-      readauThority: false,
-      readToken: 1,
-      readSelectOptions: [],
-      readSelectValue: '',
+      readauThority: false, // 持币阅读
+      readToken: 1, // 阅读token数量
+      readSelectOptions: [], // 阅读tokenlist
+      readSelectValue: '', // 阅读tokenlist show value
+      paymentTokenVisible: false, // 支付可见
+      paymentToken: 1, // 支付token
+      paymentSelectOptions: [
+        {
+          id: 0,
+          symbol: 'CNY',
+          name: 'CNY'
+        }
+      ], // 支付tokenlist
+      paymentSelectValue: 0, // 支付tokenlist show value
       readSummary: '',
       relatedLink: '',
       relatedTitle: '',
@@ -491,14 +547,6 @@ export default {
     }
   },
   watch: {
-    screenWidth(val) {
-      this.setToolBar(val)
-    },
-    mavonStyle(newVal) {
-      // console.log(newVal)
-
-      this.mavonStyle = newVal
-    },
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
@@ -550,12 +598,9 @@ export default {
     }
 
     this.getTags()
-    this.resize()
-    this.setToolBar(this.screenWidth)
-
     this.getAllTokens()
-
     this.renderRelatedListContent()
+    this.setToolBar()
 
     // 判断当前
     // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
@@ -568,6 +613,8 @@ export default {
         pagesize: 5
       }
     }
+    this._resizeEditorHeight()
+    window.addEventListener('resize', throttle(this._resizeEditorHeight, 300))
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -586,6 +633,12 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    _resizeEditorHeight() {
+      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      if (clientHeight > 800) {
+        this.editorHeight = (clientHeight - 160) + 'px'
+      } else this.editorHeight = '700px'
+    },
     // watch 监听草稿更新
     updateDraftWatch() {
       if (!this.autoUpdateDfaft) return
@@ -650,7 +703,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$API.getIfpsData(hash)
+      const articleData = await this.$API.getIpfsData(hash)
       // console.log('articleData', articleData, hash, id)
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
@@ -1014,19 +1067,8 @@ export default {
         image.src = imgfile.miniurl
       }
     },
-    setToolBar(val) {
-      if (val > 750) this.toolbars = Object.assign(toolbars.pc, toolbars.public)
-      else this.toolbars = Object.assign(toolbars.mobile, toolbars.public)
-    },
-    resize() {
-      window.onresize = debounce(() => {
-        const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        this.screenWidth = clientWidth
-        /* this.mavonStyle = {
-          minHeight: `${clientHeight - 174}px`
-        } */
-      }, 150)
+    setToolBar() {
+      this.toolbars = Object.assign(toolbars.public, toolbars.pc)
     },
     // 上传完成
     doneImageUpload(res) {
@@ -1124,6 +1166,11 @@ export default {
       this.transferButton = false
       this.readContent = false
     },
+    importRes(res) {
+      this.title = res.title
+      this.markdownData = res.content
+      this.cover = res.cover
+    },
     /**
      * 渲染关联内容 判断是否显示展开或折叠
      * 如果传递参数 循环所有, 否则判断单个
@@ -1132,11 +1179,14 @@ export default {
       this.$nextTick(() => {
         if (i >= 0) {
           const ele = document.querySelectorAll('.related-list-content')[i]
+          if (!ele) return
           if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
           else this.relatedList[i].showCollapse = true
         } else {
           const relatedList = document.querySelectorAll('.related-list-content')
+          if (!relatedList) return
           relatedList.forEach((ele, i) => {
+            if (!this.relatedList[i]) return
             if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
             else this.relatedList[i].showCollapse = true
           })
@@ -1426,6 +1476,16 @@ export default {
           page: i
         }
       })
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
     }
   }
 }
@@ -1445,7 +1505,6 @@ export default {
 
 // 外层容器
 .editor {
-  margin-top: 59px;
   .v-show-content {
     padding: 30px !important;
   }
@@ -1457,17 +1516,17 @@ export default {
 
 // 工具栏
 .editor .v-note-op {
-  position: fixed;
-  // top: 118px;
-  left: 0;
-  right: 0;
-  border-top: 1px solid #eee !important;
-  border-bottom: 1px solid #eee !important;
-  box-sizing: border-box;
+  // position: fixed;
+  // // top: 118px;
+  // left: 0;
+  // right: 0;
+  // border-top: 1px solid #eee !important;
+  // border-bottom: 1px solid #eee !important;
+  // box-sizing: border-box;
 }
 // 内容
 .editor .v-note-panel {
-  padding-top: 44px;
+  // padding-top: 44px;
   border-top: none !important;
   border-right: none !important;
   border-left: none !important;

@@ -92,6 +92,9 @@ export default {
     }
   },
   watch: {
+    // articleId() {
+    //   console.log('id变动 current‘s id', this.articleId)
+    // },
     showModal(val) {
       this.$emit('input', val)
     },

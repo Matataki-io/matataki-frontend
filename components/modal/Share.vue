@@ -105,7 +105,6 @@
           title: article.title,
           avatar: article.avatar,
           name: article.nickname || article.author,
-          time: article.time,
           content: article.content,
           shareLink,
           cover
@@ -117,13 +116,12 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapGetters } from 'vuex'
-import { strTrim } from '@/utils/reg' // 开发用
 import QRCodeDialog from './QRCodeDialog'
 import SocialShare from './SocialShare'
+import { strTrim } from '@/utils/reg' // 开发用
 import { urlAddress } from '@/api/backend'
-import wechat from "@/components/scan/wechat.vue";
+import wechat from '@/components/scan/wechat.vue'
 
 export default {
   name: 'ShareModal',
@@ -133,7 +131,10 @@ export default {
     wechat
   },
   props: {
-    article: Object,
+    article: {
+      type: Object,
+      required: true
+    },
     value: {
       type: Boolean,
       default: false
@@ -152,7 +153,8 @@ export default {
       oldWidgetModalStatus: 0,
       widgetContent: '',
       widgetContentIframe: '',
-      socialShow: false
+      socialShow: false,
+      shareLink: process.env.VUE_APP_URL
     }
   },
   computed: {
@@ -165,24 +167,25 @@ export default {
       const shareLink = this.isLogined ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
       return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
-    shareLink() {
-      if (process.browser) {
-        const { protocol, host } = window.location
-        // let url = `${process.env.WX_SHARE_HOST}/p/${this.$route.params.id}`
-        let url = `${protocol}//${host}/p/${this.$route.params.id}`
-        if (this.isLogined) url += `?invite=${this.currentUserInfo.id}&referral=${this.currentUserInfo.id}`
-        return url
-      } else process.env.VUE_APP_URL
-    },
     id() {
       return this.article.id
     },
     cover() {
       if (!this.article) return ''
       return this.article.cover ? this.$API.getImg(this.article.cover) : ''
-    },
+    }
   },
   watch: {
+    article() {
+      if (process.browser) {
+        // console.log(this.$route.params.id)
+        const { origin } = window.location
+        // let url = `${process.env.WX_SHARE_HOST}/p/${this.$route.params.id}`
+        let url = `${origin}/p/${this.$route.params.id}`
+        if (this.isLogined) url += `?invite=${this.currentUserInfo.id}&referral=${this.currentUserInfo.id}`
+        this.shareLink = url
+      } else this.shareLink = process.env.VUE_APP_URL
+    },
     showModal(val) {
       if (val) document.querySelector('body').style.overflow = 'hidden'
       else document.querySelector('body').style.overflow = ''
@@ -255,7 +258,6 @@ export default {
 
 <style src="./share.less" scoped lang="less">
 </style>
-
 
 <style lang="less">
 .p-share .el-dialog__header,

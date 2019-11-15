@@ -6,9 +6,6 @@
       :class="$route.name === item.url && 'active'"
       :to="{name: item.url, params: {id: $route.params.id}}"
     >
-      <div class="icon-tokens" :class="item.icon">
-        <svg-icon :icon-class="item.icon" />
-      </div>
       {{ item.title }}
     </router-link>
   </nav>
@@ -24,8 +21,10 @@ export default {
   computed: {
     user() {
       return [
-        { title: '持仓详情', icon: 'minetokens_details', url: 'token-id' },
-        { title: '流水明细', icon: 'minetokens_detail', url: 'token-detail-id' }
+        { title: '粉丝币持仓', icon: 'minetokens_details', url: 'token-id' },
+        { title: '粉丝币流水', icon: 'minetokens_detail', url: 'token-detail-id' },
+        { title: '流动金持仓', icon: 'minetokens_details', url: 'token-liquidity-id' },
+        { title: '流动金流水', icon: 'minetokens_detail', url: 'token-liquidity-detail-id' }
       ]
     }
   }
@@ -41,7 +40,7 @@ export default {
     font-size: 18px;
     line-height:33px;
     text-decoration: none;
-    margin: 0;
+    margin-right: 40px;
     cursor: pointer;
     color: #333;
     opacity: 0.8;
@@ -49,8 +48,8 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    &:nth-child(1) {
-      margin-right: 40px;
+    &:last-child {
+      margin-right: 0;
     }
     &.active {
       font-weight:bold;

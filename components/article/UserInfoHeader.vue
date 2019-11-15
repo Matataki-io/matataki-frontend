@@ -1,14 +1,14 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <router-link :to="`/user/${article.uid}`">
-        <avatar class="Avatar" :size="'38px'" :src="article.avatar" />
+      <router-link :to="{name: 'user-id', params: {id : article.uid}}">
+        <avatar class="Avatar" :size="'38px'" :src="avatarSrc" />
       </router-link>
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`">
           <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
         </router-link>
-        <span class="Post-Time">{{ $t('p.publishFrom') }}{{ article.articleCreateTimeComputed }}</span>
+        <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
         <span class="View-Num">
           <svg-icon class="icon" icon-class="read" />
           {{ article.read || 0 }}</span>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 
@@ -39,7 +40,7 @@ export default {
   },
   data() {
     return {
-      defaultAvatar: `this.src="${require('@/assets/avatar-default.svg')}"`,
+      avatarSrc: '',
       info: {
         is_follow: 0 // 默认值
       }
@@ -49,6 +50,18 @@ export default {
     ...mapGetters(['isLogined', 'isMe']),
     followBtnText() {
       return this.info.is_follow ? this.$t('following') : this.$t('follow')
+    },
+    time() {
+      const { create_time: createTime } = this.article
+      const time = moment(createTime)
+      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    }
+  },
+  watch: {
+    article() {
+      // 完成获取用户信息
+      this.getUserInfo(this.article.uid)
+      console.log('完成获取用户信息')
     }
   },
   mounted() {
@@ -59,7 +72,12 @@ export default {
     // 主要获取关注状态
     getUserInfo(id) {
       this.$API.getUser({ id }).then(res => {
-        if (res.code === 0) this.info.is_follow = res.data.is_follow
+        if (res.code === 0) {
+          this.info.is_follow = res.data.is_follow
+          this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+        } else {
+          this.$message.warning(res.message)
+        }
       }).catch(err => {
         console.log(`获取关注状态失败${err}`)
       })

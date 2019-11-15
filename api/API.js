@@ -41,7 +41,7 @@ export default {
     return request.get(`/${url}/${hashOrId}`)
   },
   // 通过hash获取文章内容
-  getIfpsData(hash) {
+  getIpfsData(hash) {
     return request.get(`/post/ipfs/${hash}`)
   },
   getMyPost(id) {
@@ -78,7 +78,7 @@ export default {
   async getMyUserData () {
     return request.get('/user/stats')
   },
-  async getUser({ id }) {
+  getUser({ id }) {
     return request.get(`/user/${id}`)
   },
   /**
@@ -747,5 +747,10 @@ minetokenGetResources(tokenId) {
         symbol
       }
     })
+  },
+
+  // 根据id获取个人资料中的社交账号和相关网站
+  getUserLinks({id}) {
+    return request.get(`/user/${id}/links`);
   }
 }

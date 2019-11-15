@@ -112,6 +112,7 @@ export default {
   },
   data() {
     return {
+      paginationDataLoaded: false,
       searchQueryVal: '',
       articleCardData: [
         {
@@ -129,7 +130,7 @@ export default {
   },
   computed: {
     searchQueryValLen() {
-      return this.articleCardData[0].articles.length !== 0
+      return !(this.articleCardData[0].articles.length === 0 && this.paginationDataLoaded)
     },
     // 当前搜索属于什么页面
     nowSearch() {
@@ -169,6 +170,7 @@ export default {
     paginationData(res) {
       this.articleCardData[0].articles = []
       this.articleCardData[0].articles = res.data.list
+      this.paginationDataLoaded = true
       this.total = res.data.count
       this.loading = false
     },

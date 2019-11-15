@@ -3,7 +3,7 @@
   <header class="header home-fixed">
     <div class="home-head">
       <div class="head-flex">
-        <a class="logo-link" href="/"><img class="logo" :src="customizeHeaderLogoColorComputed" alt="logo"></a>
+        <a class="logo-link" href="/"><img :src="customizeHeaderLogoColorComputed" class="logo" alt="logo"></a>
         <!-- nav -->
         <template v-for="(item, index) in nav">
           <el-tooltip
@@ -15,10 +15,10 @@
             placement="bottom"
           >
             <router-link
-              class="nav"
               :style="customizeHeaderTextColorComputed"
               :class="$route.name === item.url && 'active'"
               :to="{name: item.url}"
+              class="nav"
             >
               {{ item.title }}
               <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
@@ -27,10 +27,10 @@
           <router-link
             v-else
             :key="index"
-            class="nav"
             :style="customizeHeaderTextColorComputed"
             :class="$route.name === item.url && 'active'"
             :to="{name: item.url}"
+            class="nav"
           >
             {{ item.title }}
             <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
@@ -49,17 +49,17 @@
         <div class="search">
           <input
             v-model="searchInput"
-            type="text"
-            class="input"
             :placeholder="$t('home.searchPlaceholder')"
             @keyup.enter="jutmpToSearch"
             @focus="searchFcous = true"
             @blur="inputBlur"
+            type="text"
+            class="input"
           >
           <svg-icon
+            @click.stop="jutmpToSearch"
             class="icon-search"
             icon-class="search"
-            @click.stop="jutmpToSearch"
           />
           <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
             <li v-for="(item, index) in searchRecommendList" :key="index" @click.stop="jutmpToSearchRecommend(item.word)">
@@ -76,7 +76,7 @@
         >
           <p>{{ $t('home.pointPopover') }}</p>
           <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" size="mini" @click="$emit('popoverVisible', false)">
+            <el-button @click="$emit('popoverVisible', false)" class="el-button--purple" type="primary" size="mini">
               {{ $t('home.pointPopoverConfirm') }}
             </el-button>
           </div>
@@ -84,19 +84,19 @@
         </el-popover>
         <el-tooltip class="item" effect="dark" content="导入文章" placement="bottom">
           <svg-icon
-            class="create"
-            icon-class="import"
             :style="customizeHeaderIconColorComputed"
             @click="postImport"
+            class="create"
+            icon-class="import"
           />
         </el-tooltip>
 
         <el-tooltip class="item" effect="dark" content="写文章" placement="bottom">
           <svg-icon
-            class="create"
-            icon-class="write"
             :style="customizeHeaderIconColorComputed"
             @click="writeP"
+            class="create"
+            icon-class="write"
           />
         </el-tooltip>
 
@@ -104,32 +104,32 @@
           v-if="isLogined"
           class="user-menu"
         >
-          <div class="home-head-avatar" @click="$emit('login')">
+          <div @click="$emit('login')" class="home-head-avatar">
             <avatar :size="'30px'" :src="avatar" />
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+              <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
                 {{ currentUserInfo.nickname || currentUserInfo.name }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'account', params:{id: currentUserInfo.id}}">
+              <n-link :to="{name: 'account', params:{id: currentUserInfo.id}}" class="link">
                 {{ $t('home.account') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'tokens' }">
+              <n-link :to="{name: 'tokens' }" class="link">
                 我的粉丝币
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <n-link class="link" :to="{name: 'setting', params:{id: currentUserInfo.id}}">
+              <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
                 {{ $t('home.setting') }}
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="link" @click="btnsignOut">
+              <div @click="btnsignOut" class="link">
                 {{ $t('logout') }}
               </div>
             </el-dropdown-item>
@@ -137,9 +137,9 @@
         </el-dropdown>
         <a
           v-else
+          @click="login"
           href="javascript:void(0);"
           class="home-head-notlogin"
-          @click="login"
         >{{ $t('login') }}</a>
         <slot name="more" />
         <language />

@@ -1,12 +1,14 @@
 <template>
   <!-- https://github.com/PanJiaChen/vue-element-admin/blob/master/src/components/SvgIcon/index.vue -->
+  <!-- eslint-disable-next-line vue/valid-template-root -->
   <div
     v-if="isExternal"
     :style="styleExternalIcon"
-    class="svg-external-icon svg-icon"
     v-on="$listeners"
+    class="svg-external-icon svg-icon"
   />
-  <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">
+  <!-- eslint-disable-next-line vue/valid-template-root -->
+  <svg v-else :class="svgClass" v-on="$listeners" aria-hidden="true">
     <use :xlink:href="iconName" />
   </svg>
 </template>
