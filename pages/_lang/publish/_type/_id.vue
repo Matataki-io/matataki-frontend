@@ -84,49 +84,90 @@
         </el-button>
       </div> -->
 
-      <div class="post-content">
-        <h3>
-          持币阅读
-          <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
-            <svg-icon
-              class="help-icon"
-              icon-class="help"
-            />
-          </el-tooltip>
-        </h3>
-        <el-checkbox v-model="readauThority" size="small">
-          设置阅读权限
-        </el-checkbox>
-        <div v-show="readauThority" style="width: 300px;">
-          <h3>持币数量</h3>
-          <el-input
-            v-model="readToken"
-            :min="1"
-            :max="100000000"
-            size="small"
-            placeholder="请输入内容"
-          />
-          <h3>持币类型</h3>
-          <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
-            <el-option
-              v-for="item in readSelectOptions"
-              :key="item.id"
-              :label="item.symbol + '-' + item.name"
-              :value="item.id"
-            />
-          </el-select>
-          <h3>内容摘要</h3>
-          <el-input
-            v-model="readSummary"
-            :autosize="{ minRows: 6, maxRows: 12}"
-            size="small"
-            type="textarea"
-            placeholder="请输入内容"
-            maxlength="300"
-            show-word-limit
-          />
+      <div class="post-content" style="width: 380px;">
+        <div>
+          <h3>
+            阅读权限
+            <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝币后才可查看全文的。" placement="top-start">
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
+            </el-tooltip>
+          </h3>
+          <el-checkbox v-model="readauThority" size="small">
+            设置持币
+          </el-checkbox>
         </div>
+        <transition name="fade">
+          <div v-show="readauThority" class="fl ac">
+            <div>
+              <h3>持币类型</h3>
+              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+                <el-option
+                  v-for="item in readSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>持币数量</h3>
+              <el-input
+                v-model="readToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
+          设置支付
+        </el-checkbox>
+        <transition name="fade">
+          <div v-show="paymentTokenVisible" class="fl ac">
+            <div>
+              <h3>支付类型</h3>
+              <el-select disabled v-model="paymentSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+                <el-option
+                  v-for="item in paymentSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>支付数量</h3>
+              <el-input
+                v-model="paymentToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+        <transition name="fade">
+          <div v-show="readauThority">
+            <h3>内容摘要</h3>
+            <el-input
+              v-model="readSummary"
+              :autosize="{ minRows: 6, maxRows: 12}"
+              size="small"
+              type="textarea"
+              placeholder="请输入内容"
+              maxlength="300"
+              show-word-limit
+            />
+          </div>
+        </transition>
       </div>
+
       <div v-if="$route.params.type !== 'edit'" class="set-item fl ac">
         <span class="set-title">
           {{ $t('publish.commentTitle') }}
@@ -450,10 +491,20 @@ export default {
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章自动保存至',
       readContent: false,
-      readauThority: false,
-      readToken: 1,
-      readSelectOptions: [],
-      readSelectValue: '',
+      readauThority: false, // 持币阅读
+      readToken: 1, // 阅读token数量
+      readSelectOptions: [], // 阅读tokenlist
+      readSelectValue: '', // 阅读tokenlist show value
+      paymentTokenVisible: false, // 支付可见
+      paymentToken: 1, // 支付token
+      paymentSelectOptions: [
+        {
+          id: 0,
+          symbol: 'CNY',
+          name: 'CNY'
+        }
+      ], // 支付tokenlist
+      paymentSelectValue: 0, // 支付tokenlist show value
       readSummary: '',
       relatedLink: '',
       relatedTitle: '',
