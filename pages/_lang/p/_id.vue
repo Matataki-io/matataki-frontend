@@ -41,60 +41,68 @@
         <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
         <!-- 文章页脚 声明 是否原创 -->
         <ArticleFooter v-if="isTokenArticle" :article="article" style="margin-top: 20px;" />
-        <!-- 解锁按钮 -->
-        <div v-if="tokenArticle" class="lock">
-          <el-divider v-if="!isTokenArticle">
-            <i class="el-icon-lock lock-icon" />
+
+        <div v-if="!isTokenArticle" class="lock-line">
+          <el-divider>
+            <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
-
-          <div class="lock-info fl ac jsb">
-            <div class="fl ac">
-              <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-              <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
-              <div>
-                <h3 class="lock-info-title">
-                  {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
-                  <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
-                    <svg-icon
-                      class="help-icon"
-                      icon-class="help"
-                    />
-                  </el-tooltip>
-                </h3>
-
-                <p v-if="!isMe(article.uid)" class="lock-info-des">
-                  持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
-                  <!-- 不显示 - 号 -->
-                  <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
-                </p>
-                <p v-else class="lock-info-des">
-                  自己发布的文章
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <el-button
-                v-if="!isTokenArticle"
-                :disabled="payBtnDisabled && isLogined"
-                @click="wxpay"
-                plain
-                type="primary"
-                size="small"
-              >
-                微信支付
-              </el-button>
-              <router-link
-                :to="{name: 'exchange', hash: '#swap', query: { output: form.outputToken.symbol }}"
-              >
-                <el-button type="primary" size="small">
-                  交易所
-                </el-button>
-              </router-link>
-            </div>
-          </div>
+          <svg-icon
+            class="icon-arrow"
+            icon-class="arrow_down"
+          />
+          <div class="lock-line-full" />
         </div>
       </article>
+
+      <!-- 解锁按钮 -->
+      <div v-if="tokenArticle" class="lock">
+        <div class="lock-info fl ac jsb">
+          <div class="fl ac">
+            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+            <div>
+              <h3 class="lock-info-title">
+                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
+                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
+                  <svg-icon
+                    class="help-icon"
+                    icon-class="help"
+                  />
+                </el-tooltip>
+              </h3>
+
+              <p v-if="!isMe(article.uid)" class="lock-info-des">
+                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
+                <!-- 不显示 - 号 -->
+                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+              </p>
+              <p v-else class="lock-info-des">
+                自己发布的文章
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <el-button
+              v-if="!isTokenArticle"
+              :disabled="payBtnDisabled && isLogined"
+              @click="wxpay"
+              plain
+              type="primary"
+              size="small"
+            >
+              微信支付
+            </el-button>
+            <router-link
+              :to="{name: 'exchange', hash: '#swap', query: { output: form.outputToken.symbol }}"
+            >
+              <el-button type="primary" size="small">
+                交易所
+              </el-button>
+            </router-link>
+          </div>
+        </div>
+      </div>
 
       <!-- sidebar -->
       <div class="sidebar">
