@@ -918,7 +918,9 @@ export default {
       const { author, hash } = article
       let signature = null
       // refactor: 对 VNT 的处理弄在了.invalidId()
-      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+      if (this.currentUserInfo.idProvider === 'MetaMask') {
+        signature = await getSignatureForPublish(hash)
+      } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
