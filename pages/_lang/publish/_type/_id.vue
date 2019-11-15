@@ -153,7 +153,7 @@
           </div>
         </transition>
         <transition name="fade">
-          <div v-show="readauThority">
+          <div v-show="readauThority || paymentTokenVisible">
             <h3>内容摘要</h3>
             <el-input
               v-model="readSummary"
@@ -236,6 +236,7 @@
           <img
             v-show="cover"
             class="cover-btn"
+            @click.prevent="removeCover"
             src="@/assets/img/del.svg"
             alt="remove"
             @click.prevent="removeCover"
@@ -277,7 +278,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
+              <img class="auto-test" @click="extractRefTitle(-1)" src="@/assets/img/auto_test.png" alt="auto test">
             </el-tooltip>
           </el-input>
           <el-input
@@ -315,7 +316,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(index)">
+                    <img class="auto-test" @click="extractRefTitle(index)" src="@/assets/img/auto_test.png" alt="auto test">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -361,18 +362,18 @@
                     </div>
                     <div class="fl ac jfe related-3">
                       <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                        <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
+                        <svg-icon class="related-icon-icon" @click="editRelated(index, item.number)" icon-class="pencli" />
                       </el-tooltip>
 
                       <el-tooltip effect="dark" content="删除" placement="top">
-                        <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
+                        <svg-icon class="related-icon-icon" @click="removeRelated(index, item.number)" icon-class="delete" />
                       </el-tooltip>
                       <span class="related-id">{{ item.number }}</span>
                     </div>
                   </div>
                   <div class="fl ac related-link">
                     <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
+                    <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy1" />
                     <a :href="item.url" target="_blank">
                       <svg-icon class="icon-share" icon-class="share1" />
                     </a>
@@ -403,8 +404,8 @@
               :page-size="pull.params.pagesize"
               :total="total"
               :reload="pull.reload"
-              class="pagination"
               @paginationData="paginationData"
+              class="pagination"
               @togglePage="togglePage"
             />
           </no-content-prompt>
@@ -499,12 +500,12 @@ export default {
       paymentToken: 1, // 支付token
       paymentSelectOptions: [
         {
-          id: 0,
+          id: -1, // 暂时前端写死, 不能0否则判断要修改
           symbol: 'CNY',
           name: '人民币'
         }
       ], // 支付tokenlist
-      paymentSelectValue: 0, // 支付tokenlist show value
+      paymentSelectValue: -1, // 支付tokenlist show value
       readSummary: '',
       relatedLink: '',
       relatedTitle: '',
@@ -512,12 +513,12 @@ export default {
       relatedLoading: false,
       relatedList: [
         // {
-        //   url: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-        //   urlInput: 'http://localhostlocalhostlocalhost:8080/publish/draft/create',
-        //   title: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-        //   titleInput: '6块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化区块链文娱产品形态猜想：文化概念的区块链化',
-        //   content: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-        //   contentInput: '解决了区块链改造文娱行业的历的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
+        //   url: '',
+        //   urlInput: '',
+        //   title: ',
+        //   titleInput: '',
+        //   content: '',
+        //   contentInput: '',
         //   collapse: false,
         //   showCollapse: true,
         //   edit: false
@@ -710,8 +711,15 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      const articleData = await this.$API.getIpfsData(hash)
-      // console.log('articleData', articleData, hash, id)
+      await this.$API.getIpfsData(hash).then(res => {
+        if (res.code === 0) {
+          // 设置文章内容
+          this.title = res.data.title
+          this.markdownData = res.data.content
+        } else this.$message.warning(res.message)
+      }).catch(err => {
+        console.log('err', err)
+      })
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
         if (res.code === 0) {
@@ -730,6 +738,14 @@ export default {
             this.readSelectValue = res.data.tokens[0].id
           }
 
+          // 持币支付
+          if (res.data.prices && res.data.prices.length !== 0) {
+            this.paymentTokenVisible = true
+            this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
+            this.readSummary = res.data.short_content
+            this.paymentSelectValue = -1
+          }
+
           this.setTag(res.data)
         } else {
           this.$message.success(res.message)
@@ -740,10 +756,6 @@ export default {
         this.$message.error(this.$t('error.getArticleInfoError'))
         this.$router.push({ path: '/article' })
       })
-
-      // 设置文章内容
-      this.title = articleData.data.title
-      this.markdownData = articleData.data.content
     },
     // 得到草稿箱内容 by id
     async getDraft(id) {
@@ -789,10 +801,8 @@ export default {
         }
       }).catch(err => console.log(err))
     },
-    /**
-     * 文章持币阅读
-     */
-    async postMineTokens(id, type) {
+    // 文章持币阅读
+    async postMineTokens(id) {
       let tokenArr = []
       if (this.readauThority) { // 持币
         // 获取当前选择的币种
@@ -810,18 +820,18 @@ export default {
         signId: id,
         tokens: tokenArr
       }
-      await this.$API.addMineTokens(data)
-        .then(res => {
-          if (res.code === 0) {
-            if (type === 'publish') {
-            // 删除草稿
-              this.delDraft(this.id).then(() => {
-                this.success(id, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
-              }).catch(() => { console.log('发布错误') })
-            } else this.success(id)
-          } else this.failed('设置持币阅读失败')
-        })
-        .catch(err => console.log(err))
+      const res = await this.$API.addMineTokens(data)
+      if (res.code === 0) return res.message
+      else throw res.message
+    },
+    // 文章支付阅读
+    async articlePrices(id) {
+      const data = {
+        price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+      }
+      const res = await this.$API.articlePrices(id, data)
+      if (res.code === 0) return res.message
+      else throw res.message
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
@@ -876,7 +886,17 @@ export default {
         }
         this.$API.draftsReferencesPublish(this.$route.params.id, data).then(res => {
           if (res.code === 0) {
-            this.postMineTokens(response.data, 'publish')
+            // 发送完成开始设置阅读权限 因为需要返回的id
+            const promiseArr = []
+            if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
+            if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
+            promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
+            Promise.all(promiseArr).then(res => {
+              this.success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
+            }).catch(err => {
+              console.log('err', err)
+              this.$message.error(err)
+            })
           } else {
             this.$message.error(res.message)
             throw new Error(res.message)
@@ -925,23 +945,37 @@ export default {
       const { author, hash } = article
       let signature = null
       // refactor: 对 VNT 的处理弄在了.invalidId()
-      if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+      if (this.currentUserInfo.idProvider === 'MetaMask') {
+        signature = await getSignatureForPublish(hash)
+        const [publicKey] = await window.web3.eth.getAccounts()
+        signature = Object.assign(signature, { publicKey })
+      } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
       const response = await this.$API.editArticle({ article, signature })
-      if (response.code === 0) this.postMineTokens(response.data, 'edit')
-      else this.failed(this.$t('error.failTry'))
+      if (response.code === 0) {
+        if (this.readauThority || this.paymentTokenVisible) { // 如果阅读权限设置其中一个都要走以下流程
+          // 发送完成开始设置阅读权限 因为需要返回的id
+          const promiseArr = []
+          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
+          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
+          Promise.all(promiseArr).then(() => {
+            this.success(response.data)
+          }).catch(err => {
+            console.log('err', err)
+            this.$message.error(err)
+          })
+        } else this.success(response.data)
+      } else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
     async delDraft(id) {
-      if (!id) return this.failed(this.$t('error.deleteDraft'))
-      await this.$API.delDraft({ id })
-        .then(res => {
-          if (res.code !== 0) this.failed(this.$t('error.deleteDraft'))
-        }).catch(err => {
-          console.log(err)
-          this.failed(this.$t('error.deleteDraft'))
-        })
+      if (!id) throw this.$t('error.deleteDraft')
+      else {
+        const res = await this.$API.delDraft({ id })
+        if (res.code === 0) return res.message
+        else throw res.message
+      }
     },
     // 更新草稿
     async autoUpdateDraft(article) {
@@ -989,8 +1023,14 @@ export default {
       // 草稿发送
       const draftPost = async () => {
         if (this.readauThority) {
-          if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
-          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        if (this.paymentTokenVisible) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
         // 发布文章
@@ -1009,8 +1049,14 @@ export default {
       // 编辑发送
       const editPost = async () => {
         if (this.readauThority) {
-          if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
-          else if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
+          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
+          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        if (this.paymentTokenVisible) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 

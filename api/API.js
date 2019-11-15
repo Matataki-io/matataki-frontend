@@ -187,6 +187,14 @@ export default {
       data: data,
     })
   },
+  // 文章持币支付
+  articlePrices(id, data) {
+    return request({
+      method: 'PUT',
+      url: `/posts/${id}/prices`,
+      data: data,
+    })
+  },
   /**
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
