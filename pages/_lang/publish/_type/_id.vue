@@ -936,6 +936,8 @@ export default {
       // refactor: 对 VNT 的处理弄在了.invalidId()
       if (this.currentUserInfo.idProvider === 'MetaMask') {
         signature = await getSignatureForPublish(hash)
+        const [publicKey] = await window.web3.eth.getAccounts()
+        signature = Object.assign(signature, { publicKey })
       } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
         signature = await this.getSignatureOfArticle({ author, hash })
       }
