@@ -4,11 +4,13 @@
       <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <h1 class="title">
-        Coming Soon
+        很抱歉，以太坊相关功能正在开发中
       </h1>
+      <h2 class="subtitle">
+        暂时无法提现以太坊代币
+      </h2>
       <template v-if="viewStatus === 0">
         <assets :assets="assets" type="ETH" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
-        <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
         <div v-loading="loading" class="card-container">
           <no-content-prompt :list="articleCardData.articles">
             <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />

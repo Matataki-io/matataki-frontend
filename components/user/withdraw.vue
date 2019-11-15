@@ -137,6 +137,45 @@ export default {
           this.$t('withdraw.ontDes3')
         ]
       },
+      ethWithdraw: {
+        head: {
+          amount: 0
+        },
+        list: [
+          {
+            title: this.$t('withdraw.address'),
+            titleDes: '',
+            placeholder: this.$t('withdraw.inputAddress'),
+            value: '',
+            des: '',
+            disabled: false
+          },
+          {
+            title: this.$t('withdraw.amount'),
+            titleDes: this.$t('withdraw.amountDes'),
+            placeholder: this.$t('withdraw.inputAddress'),
+            value: 0,
+            des: 'ETH',
+            disabled: true
+          },
+          {
+            title: this.$t('withdraw.handlingFee'),
+            titleDes: this.$t('withdraw.handlingFeeDes'),
+            placeholder: this.$t('withdraw.inputAddress'),
+            value: 0.01,
+            des: 'ETH',
+            disabled: true
+          }
+        ],
+        /**
+         * @todo: 懒得改了，后续开放以太坊提现记得修改下面这个 `des`
+         */
+        des: [
+          this.$t('withdraw.ontDes1'),
+          this.$t('withdraw.ontDes2'),
+          this.$t('withdraw.ontDes3')
+        ]
+      },
       withdrawData: null
     }
   },
@@ -152,6 +191,10 @@ export default {
   created() {
     if (this.type === 'EOS') this.withdrawData = this.eosWithdraw
     else if (this.type === 'ONT') this.withdrawData = this.ontWithdraw
+    else if (this.type === 'ETH') {
+      console.info('Testing withdraw eth')
+      this.withdrawData = this.ethWithDraw
+    }
 
     this.getBalance(this.type)
     this.writeAddres()
@@ -171,6 +214,7 @@ export default {
             const filterArr = symbol => res.data.data.filter(i => i.symbol === symbol)
             const filterArrONT = filterArr('ONT')
             const filterArrEOS = filterArr('EOS')
+            const filterArrETH = filterArr('ETH')
 
             // EOS or ONT
             if (type === 'EOS' && filterArrEOS.length !== 0) {
@@ -181,6 +225,10 @@ export default {
               const amount = precision(filterArrONT[0].amount, filterArrONT[0].symbol)
               this.withdrawData.head.amount = amount
               this.withdrawData.list[1].value = Math.floor(amount) // ont 向下取整
+            } else if (type === 'ETH' && filterArrETH.length !== 0) {
+              const amount = precision(filterArrETH[0].amount, filterArrETH[0].symbol)
+              this.withdrawData.head.amount = amount
+              this.withdrawData.list[2].value = amount
             }
           } else {
             this.$message.error('res.data.message')
