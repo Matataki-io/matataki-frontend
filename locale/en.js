@@ -26,6 +26,8 @@ export default {
   notFans: 'no fans',
   unFollow: 'Unfollow',
   following: 'has been concerned',
+  bookmark: 'Bookmark',
+  unbookmark: 'Unbookmark',
   share: 'Share',
   view: 'View',
   promptTitle: 'prompt',

@@ -26,6 +26,8 @@ export default {
   notFans: '没有粉丝',
   unFollow: '取消关注',
   following: '已关注',
+  bookmark: '收藏',
+  unbookmark: '取消收藏',
   share: '分享',
   view: '查看',
   promptTitle: '提示',
