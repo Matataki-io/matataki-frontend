@@ -623,7 +623,8 @@ export default {
     buycoins: 'Fan coins held',
     selfcoins: 'Fan coins issued',
     editProfile: 'Edit Profile',
-    information: 'User information'
+    information: 'User information',
+    bookmark: 'Bookmarks'
   },
   withdraw: {
     title: 'cash out',

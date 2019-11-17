@@ -760,5 +760,14 @@ minetokenGetResources(tokenId) {
   // 根据id获取个人资料中的社交账号和相关网站
   getUserLinks({id}) {
     return request.get(`/user/${id}/links`);
+  },
+
+  // 获取收藏文章
+  getBookmarks(orderType = 1) {
+    return request.get(`/user/bookmarks`, {
+      params: {
+        order: orderType
+      }
+    })
   }
 }

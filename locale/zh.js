@@ -595,7 +595,8 @@ export default {
     buycoins: '持有的粉丝币',
     selfcoins: '发行的粉丝币',
     editProfile: '编辑资料',
-    information: '个人信息'
+    information: '个人信息',
+    bookmark: '收藏'
   },
   withdraw: {
     title: '提现',
