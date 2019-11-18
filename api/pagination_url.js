@@ -64,5 +64,7 @@ export const paginationUrl = {
   // 获取文章引用列表
   postsReferences: 'posts/:id/references',
   // 查看本文被引用的文章列表
-  postsPosts: '/posts/:id/posts'
+  postsPosts: '/posts/:id/posts',
+  // 获取收藏文章文章引用列表
+  userBookmarks: 'user/bookmarks'
 }

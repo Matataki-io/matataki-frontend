@@ -231,6 +231,12 @@
           @dislike="dislike"
         >
           <!-- slot 插槽写入 -->
+          <div class="article-btn" @click="toggleBookmark">
+            <div v-if="!isProduct" class="icon-container" :class="!isBookmarked ? 'blue' : 'blue-reversed'">
+              <svg-icon :iconClass="'bookmark-solid'" class="icon" />
+            </div>
+            <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
+          </div>
           <div class="article-btn" @click="share">
             <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
               <svg-icon icon-class="share" class="icon" />
@@ -590,7 +596,8 @@ export default {
       beingLoading: false, // 加载数据
       beingTotal: 0,
       relatedLoadingBtn: false, // 关联btn
-      tradeNo: ''
+      tradeNo: '',
+      isBookmarked: false
     }
   },
   head() {
@@ -833,6 +840,7 @@ export default {
           this.differenceTokenFunc()
           this.calPayFormParams()
           this.getSupportStatus(res.data)
+          this.isBookmarked = Boolean(res.data.is_bookmarked)
         } else if (res.code === 401) {
           console.log(res.message)
         } else {
@@ -1064,6 +1072,24 @@ export default {
     },
     share() {
       this.shareModalShow = true
+    },
+    async toggleBookmark() {
+      try {
+        if (!this.isBookmarked) {
+          const res = await this.$API.bookmark(this.article.id)
+          if (res.code === 0) {
+            this.isBookmarked = true
+          }
+        } else {
+          const res = await this.$API.unbookmark(this.article.id)
+          this.isBookmarked = false
+        }
+      } catch (err) {
+        console.error('ToggleBookmark err', err)
+        if (err.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
+        }
+      }
     },
     async setAvatar() {
       await this.$API.getUser({ id: this.article.uid }).then((res) => {

@@ -800,4 +800,21 @@ minetokenGetResources(tokenId) {
       data: order
     })
   },
+
+  // 收藏文章
+  bookmark(postId) {
+    return request.post(`/post/${postId}/bookmark`)
+  },
+  // 取消收藏文章
+  unbookmark(postId) {
+    return request.delete(`/post/${postId}/bookmark`)
+  },
+  // 获取收藏文章
+  getBookmarks(orderType = 1) {
+    return request.get(`/user/bookmarks`, {
+      params: {
+        order: orderType
+      }
+    })
+  }
 }
