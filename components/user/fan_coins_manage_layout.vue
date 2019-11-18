@@ -12,7 +12,7 @@
             }})
           </h1>
         </div>
-        <!-- <el-tooltip effect="dark" content="如何管理你的粉丝币?" placement="top-start">
+        <!-- <el-tooltip effect="dark" content="如何管理你的粉丝通证?" placement="top-start">
           <svg-icon
             class="help-icon"
             icon-class="help"
@@ -22,7 +22,7 @@
           class="help-link"
           target="_blank"
           href="https://www.matataki.io/p/979"
-        >如何管理你的粉丝币?</a>
+        >如何管理你的粉丝通证?</a>
       </div>
 
       <div>
@@ -36,7 +36,7 @@
             编辑
           </el-button>
         </router-link>
-        <el-button size="small" @click="addCoins">
+        <el-button @click="addCoins" size="small">
           增发
         </el-button>
         <router-link :to="{name: 'exchange', hash: '#swap', query: { output: tokenDetailData.token.symbol }}">
@@ -67,7 +67,7 @@
     </h2>
     <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
       <li v-for="(item, index) in resourcesWebsites" :key="index">
-        <a target="_blank" :href="item">{{ item }}</a>
+        <a :href="item" target="_blank">{{ item }}</a>
       </li>
     </ul>
     <span v-else class="not">暂无</span>
@@ -96,8 +96,8 @@
     <el-input
       v-model="tokenWidget"
       class="token-widget"
-      type="textarea"
       :rows="4"
+      type="textarea"
       placeholder="请输入内容"
     />
   </div>

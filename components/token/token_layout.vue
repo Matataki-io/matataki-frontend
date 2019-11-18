@@ -45,7 +45,7 @@
               管理
             </el-button>
           </router-link>
-          <el-button size="small" @click="shareModalShow = true">
+          <el-button @click="shareModalShow = true" size="small">
             <svg-icon icon-class="share_new" />
             分享
           </el-button>
@@ -54,7 +54,7 @@
           class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
-        >什么是粉丝币?</a>
+        >什么是粉丝通证?</a>
       </div>
     </div>
 
@@ -102,7 +102,7 @@
             </div>
 
             <div class="token-data">
-              <p class="token-num" :style="{color: color}">
+              <p :style="{color: color}" class="token-num">
                 {{ change }}
               </p>
               <p class="token-name">
@@ -133,7 +133,7 @@
             class="tokens"
             icon-class="token"
           />
-          粉丝币交易所
+          粉丝通证交易所
         </router-link> -->
         <tokenBuyCard :token="minetokenToken" />
 
@@ -143,7 +143,7 @@
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a target="_blank" :href="item">{{ item }}</a>
+              <a :href="item" target="_blank">{{ item }}</a>
             </li>
           </ul>
           <span v-else class="not">暂无</span>
@@ -168,9 +168,9 @@
           </h2>
           <el-input
             v-model="tokenWidget"
+            :rows="6"
             class="token-widget"
             type="textarea"
-            :rows="6"
             placeholder="请输入内容"
           />
         </div>

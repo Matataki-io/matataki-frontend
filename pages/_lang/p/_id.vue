@@ -40,9 +40,9 @@
         <!-- 文章内容 -->
         <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
         <!-- 文章页脚 声明 是否原创 -->
-        <ArticleFooter v-if="isTokenArticle" :article="article" style="margin-top: 20px;" />
+        <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-        <div v-if="!isTokenArticle" class="lock-line">
+        <div v-if="!hasPaied" class="lock-line">
           <el-divider>
             <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
@@ -55,15 +55,15 @@
       </article>
 
       <!-- 解锁按钮 -->
-      <div v-if="tokenArticle" class="lock">
+      <div v-if="isTokenArticle || isPriceArticle" class="lock">
         <div class="lock-info fl ac jsb">
           <div class="fl ac">
-            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
             <div>
               <h3 class="lock-info-title">
-                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
-                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
+                {{ !hasPaied ? '解锁全文的条件' : '已解锁全文' }}
+                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝通证，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
                   <svg-icon
                     class="help-icon"
                     icon-class="help"
@@ -72,9 +72,16 @@
               </h3>
 
               <p v-if="!isMe(article.uid)" class="lock-info-des">
-                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
-                <!-- 不显示 - 号 -->
-                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                <ul>
+                  <li v-if="isPriceArticle">
+                    价格：{{ getArticlePrice }} CNY
+                  </li>
+                  <li v-if="isTokenArticle">
+                    持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
+                    <!-- 不显示 - 号 -->
+                    <span> {{ !hasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                  </li>
+                </ul>
               </p>
               <p v-else class="lock-info-des">
                 自己发布的文章
@@ -84,12 +91,11 @@
 
           <div>
             <el-button
-              v-if="!isTokenArticle"
-              :disabled="payBtnDisabled && isLogined"
+              v-if="!hasPaied"
               plain
               type="primary"
               size="small"
-              @click="wxpay"
+              @click="wxpayArticle"
             >
               微信支付
             </el-button>
@@ -291,7 +297,7 @@
 
     <!-- 阅读文章积分提示框 目前已经去除 -->
     <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
-    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
+    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" :tradeNo="tradeNo" />
     <!-- 关联文章侧边栏 -->
     <div :class="relatedLeftCollapse && 'open'" class="related left" @click.stop>
       <div class="related-container">
@@ -465,7 +471,7 @@ import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar, regRemoveContent } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import store from '@/utils/localStorage.js'
-import OrderModal from '@/components/exchange/OrderModal'
+import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
 
@@ -583,7 +589,8 @@ export default {
       beingCurrentPage: Number(this.$route.query.page) || 1,
       beingLoading: false, // 加载数据
       beingTotal: 0,
-      relatedLoadingBtn: false// 关联btn
+      relatedLoadingBtn: false, // 关联btn
+      tradeNo: ''
     }
   },
   head() {
@@ -650,26 +657,51 @@ export default {
     isShowTags() {
       return this.article.tags && this.article.tags.length !== 0
     },
-    tokenArticle() {
-    // 是否为付费文章
-      return this.article.tokens.length !== 0
-    },
-    isTokenArticle() {
-      // 付费文章
-      if (this.article.tokens.length !== 0) {
-        if (this.showLock) return true
-        else return false
-      } else { // 不付费
-        return true
+    getArticlePrice() {
+      if (this.isPriceArticle) {
+        const ad = this.article.prices[0]
+        return this.$utils.fromDecimal(ad.price)
+      } else {
+        return 0
       }
     },
-    // 需要多少粉丝币
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.prices && this.article.prices.length !== 0)
+    },
+    // 是否为付费文章
+    isTokenArticle() {
+      return (this.article.tokens && this.article.tokens.length !== 0)
+    },
+    // token是否已支付
+    tokenHasPaied() {
+      if (this.isTokenArticle) {
+        if (this.showLock) return true
+        else return false
+      } else return true
+    },
+    // 文章是否支付
+    articleHasPaied() {
+      // todo
+      if (this.isPriceArticle) {
+        return false
+      }
+      return true
+    },
+    // 是否已付费
+    hasPaied() {
+      if (this.tokenHasPaied && this.articleHasPaied) {
+        return true
+      }
+      return false
+    },
+    // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens.length !== 0) {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少粉丝币名称
+    // 需要多少粉丝通证名称
     needTokenSymbol() {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
@@ -682,7 +714,7 @@ export default {
     // 如果是自己的文章 显示hash 否则走 持币阅读
     isHideIpfsHash() {
       if (this.isMe(this.article.uid)) return false
-      else return this.tokenArticle
+      else return this.isTokenArticle
     }
   },
   watch: {
@@ -1070,6 +1102,48 @@ export default {
             } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
       }
+    },
+    makeOrderParams() {
+      const requestParams = {
+        items: []
+      }
+      // token未支付
+      if (!this.tokenHasPaied) {
+        const { output, outputToken } = this.form
+        requestParams.items.push({
+          tokenId: outputToken.id,
+          type: 'buy_minetoken',
+          amount: utils.toDecimal(output, outputToken.decimals)
+        })
+      }
+      // 文章price未支付
+      if (!this.articleHasPaied) {
+        requestParams.items.push({
+          signId: this.id,
+          type: 'buy_post'
+        })
+      }
+      return requestParams
+    },
+    wxpayArticle() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      if (this.getInputAmountError) {
+        this.$message.error(this.getInputAmountError)
+        return
+      }
+      const requestParams = this.makeOrderParams()
+      this.$API.createArticleOrder(requestParams).then(res => {
+        if (res.code === 0) {
+          this.tradeNo = res.data
+          this.showOrderModal = true
+          // this.$router.push({ name: 'porder-id', params: {id: res.data}})
+        } else {
+          this.$message.error('订单创建失败')
+        }
+      })
     },
     wxpay() {
       if (!this.isLogined) {
