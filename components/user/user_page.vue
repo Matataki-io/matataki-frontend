@@ -82,7 +82,7 @@
           </el-button>
         </router-link>
         <el-button size="small" class="follow2" @click="shareModalShow = true">
-          <svg-icon icon-class="share1" />
+          <svg-icon icon-class="share_new" />
           {{ $t('share') }}
         </el-button>
       </div>

@@ -2,12 +2,12 @@
   <el-dialog
     :close-on-click-modal="false"
     :visible.sync="showModal"
-    width="500px"
     :lock-scroll="false"
-    custom-class="br10 nopadding"
     :before-close="handleClose"
+    width="500px"
+    custom-class="br10 nopadding"
   >
-    <div class="container" v-loading="loading">
+    <div v-loading="loading" class="container">
       <div class="padding20">
         <img src="@/assets/img/m_logo.png" alt="logo">
         <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
@@ -56,36 +56,45 @@
       <div class="balanceBox">
         <div class="flexBox padding20">
           <div>
-            <el-tooltip  placement="bottom" effect="light">
-              <div slot="content">您的交易可能由于正常的价格波动而失败，<br/>
-                  预置币格波动区间将有助于您的交易成功。<br/>
-                  交易成功后，多支付的金额会退回。</div>
+            <el-tooltip placement="bottom" effect="light">
+              <div slot="content">
+                您的交易可能由于正常的价格波动而失败，<br>
+                预置币格波动区间将有助于您的交易成功。<br>
+                交易成功后，多支付的金额会退回。
+              </div>
               <i class="el-icon-question" />
             </el-tooltip>
             预期价格波动：1%
           </div>
           <div>
             <span class="money-label">
-              <el-tooltip  placement="bottom" effect="light">
-                <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
+              <el-tooltip placement="bottom" effect="light">
+                <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br>多支付的金额会保留在您的CNY账户中。</div>
                 <i class="el-icon-question" />
               </el-tooltip>
               合计：
             </span>
-            <span class="money">{{input.toFixed(2)}} CNY</span></div>
+            <span class="money">{{ input.toFixed(2) }} CNY</span>
+          </div>
         </div>
         <div class="flexBox padding20 bgGray">
-          <div><el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox></div>
-          <div><span class="money-label">抵扣：</span><span class="money">{{deduction.toFixed(2)}} CNY</span></div>
+          <div>
+            <el-checkbox v-model="useBalance" @change="useBalanceChange">
+              使用余额（{{ balance }} CNY）
+            </el-checkbox>
+          </div>
+          <div><span class="money-label">抵扣：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
         </div>
         <div class="flexBox padding20">
-          <div></div>
-          <div><span class="money-label">应付：</span><span class="money">{{needPay.toFixed(2)}} CNY</span></div>
+          <div />
+          <div><span class="money-label">应付：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
         </div>
       </div>
-      <QRCode v-if="needPay > 0" :pay-link="order.code_url"/>
+      <QRCode v-if="needPay > 0" :pay-link="order.code_url" />
       <div v-else class="payBtnBox">
-        <el-button type="primary" @click="confirmPay">确认支付</el-button>
+        <el-button @click="confirmPay" type="primary">
+          确认支付
+        </el-button>
       </div>
     </div>
   </el-dialog>

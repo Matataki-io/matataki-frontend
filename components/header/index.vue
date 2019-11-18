@@ -403,7 +403,7 @@ export default {
   .nav {
     font-size: 18px;
     color: @gray;
-    margin: 0 14px;
+    margin: 0 10px;
     text-align: center;
     transition: all 0.18s ease-in-out;
     text-decoration: none;
