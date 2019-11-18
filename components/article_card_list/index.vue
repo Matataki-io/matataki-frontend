@@ -7,6 +7,11 @@
         <div class="cover">
           <el-image v-if="cover" class="img-lazy" :src="cover" lazy alt="cover" />
           <img v-else src="@/assets/img/article_bg.svg" alt="cover">
+          <div v-if="card && card.status === 1" class="overlay">
+            <div class="circle">
+              {{ $t('articleCard.deleted') }}
+            </div>
+          </div>
         </div>
         <div class="container">
           <div class="info">
@@ -220,6 +225,32 @@ export default {
     transition: all 0.3s;
     &:hover {
       transform: scale(1.02);
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    top: 0;
+    bottom: 0;
+
+    .circle {
+      background: rgba(0, 0, 0, 0.5);
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      vertical-align: middle;
+      line-height: 100px;
     }
   }
 }

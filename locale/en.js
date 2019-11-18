@@ -169,7 +169,8 @@ export default {
     read: 'Browse',
     sale: 'sales',
     investment: 'investment',
-    saleUnit: 'EOS/parts'
+    saleUnit: 'EOS/parts',
+    deleted: 'Deleted'
   },
   articleFooter: {
     received: 'received',
