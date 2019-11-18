@@ -4,9 +4,9 @@
   >
     <span>
       <svg-icon
+        @click.stop="jumpAccount"
         class="integral-icon"
         icon-class="point1"
-        @click.stop="jumpAccount"
       />
     </span>
     <el-dropdown-menu slot="dropdown">
@@ -22,7 +22,7 @@
         <div v-if="!pointStatus.profile" class="integral-list">
           <div class="flex">
             <span class="integral-title">{{ $t('point.completeProfile') }}</span>
-            <el-button size="mini" class="integral-btn" @click="profile">
+            <el-button @click="profile" size="mini" class="integral-btn">
               <svg-icon class="box" icon-class="box" />
               {{ $t('point.receive') }}
             </el-button>
@@ -35,7 +35,7 @@
         <div v-if="!pointStatus.login" class="integral-list">
           <div class="flex">
             <span class="integral-title">{{ $t('point.feedback') }}</span>
-            <el-button size="mini" class="integral-btn" @click="feedback">
+            <el-button @click="feedback" size="mini" class="integral-btn">
               <svg-icon class="box" icon-class="box" />
               {{ $t('point.receive') }}
             </el-button>
@@ -79,7 +79,7 @@
         <div class="integral-list">
           <div class="flex">
             <span class="integral-title">{{ $t('point.invite') }}</span>
-            <el-button size="mini" class="integral-btn" @click="copyLink(referralLink1)">
+            <el-button @click="copyLink(referralLink1)" size="mini" class="integral-btn">
               {{ $t('point.copyLink') }}
             </el-button>
           </div>
@@ -102,7 +102,7 @@
             </span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" color="#542DE0" :percentage="pointStatusPostNum" :show-text="false" :stroke-width="10" />
+            <el-progress :percentage="pointStatusPostNum" class="progress" :show-text="false" color="#542DE0" :stroke-width="10" />
             {{ pointStatusPost }}
           </div>
           <p class="integral-des">
@@ -117,7 +117,7 @@
             </span>
           </div>
           <div class="integral-progress">
-            <el-progress class="progress" color="#542DE0" :percentage="pointStatusReadNum" :show-text="false" :stroke-width="10" />
+            <el-progress :percentage="pointStatusReadNum" class="progress" :show-text="false" color="#542DE0" :stroke-width="10" />
             {{ pointStatusRead }}
           </div>
           <p class="integral-des">
@@ -182,6 +182,7 @@ export default {
     },
     // 防抖防止不必要的调用
     getUserPointStatus: debounce(async function () {
+      if (!this.isLogined) return
       await this.$API.userPointStatus()
         .then(res => {
           if (res.code === 0) this.pointStatus = res.data
