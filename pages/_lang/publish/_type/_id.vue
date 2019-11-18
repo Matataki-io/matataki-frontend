@@ -578,9 +578,6 @@ export default {
     if (this.$route.params.type === 'edit') this.saveDraft = ''
   },
   mounted() {
-    // 没有登录 通过isLogined获取在页面刷新后会获取较慢 无法通过它来判断
-    if (!getCookie('ACCESS_TOKEN')) return this.$router.go(-1)
-
     const { type, id } = this.$route.params
 
     if (type === 'draft' && id === 'create') {
