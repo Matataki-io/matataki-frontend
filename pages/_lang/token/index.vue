@@ -12,7 +12,7 @@
             蠢朋克钱多多币
           </p>
           <p class="token-info-name">
-            蠢朋克钱多多币是由鼎鼎大名的蠢朋克组合所设置的粉丝币，被广大币圈玩家所看好，一推出币价便直线上涨。
+            蠢朋克钱多多币是由鼎鼎大名的蠢朋克组合所设置的粉丝通证，被广大币圈玩家所看好，一推出币价便直线上涨。
           </p>
         </div>
         <div class="token-user">
@@ -46,7 +46,7 @@
           class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
-        >什么是粉丝币?</a>
+        >什么是粉丝通证?</a>
       </div>
 
       <div v-loading="loading" class="card-container">

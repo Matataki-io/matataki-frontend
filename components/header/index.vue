@@ -11,7 +11,7 @@
             :key="index"
             class="item"
             effect="dark"
-            content="粉丝币交易所"
+            content="粉丝通证交易所"
             placement="bottom"
           >
             <router-link
@@ -120,7 +120,7 @@
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link :to="{name: 'tokens' }" class="link">
-                我的粉丝币
+                我的粉丝通证
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
@@ -217,7 +217,7 @@ export default {
           sup: ''
         },
         {
-          title: '粉丝币',
+          title: '粉丝通证',
           url: 'token',
           sup: ''
         },

@@ -63,7 +63,7 @@
             <div>
               <h3 class="lock-info-title">
                 {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
-                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
+                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝通证，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
                   <svg-icon
                     class="help-icon"
                     icon-class="help"
@@ -72,7 +72,7 @@
               </h3>
 
               <p v-if="!isMe(article.uid)" class="lock-info-des">
-                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
+                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
                 <!-- 不显示 - 号 -->
                 <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
               </p>
@@ -663,13 +663,13 @@ export default {
         return true
       }
     },
-    // 需要多少粉丝币
+    // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens.length !== 0) {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少粉丝币名称
+    // 需要多少粉丝通证名称
     needTokenSymbol() {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol

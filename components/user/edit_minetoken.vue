@@ -2,36 +2,36 @@
   <div class="coins-publish">
     <div class="fl ac coins-head">
       <h1>
-        {{ isPost ? '申请发行粉丝币' : '编辑粉丝币' }}
+        {{ isPost ? '申请发行粉丝通证' : '编辑粉丝通证' }}
       </h1>
-      <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝币?" placement="top-start">
+      <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝通证?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
       </el-tooltip> -->
 
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是粉丝币?</a>
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是粉丝通证?</a>
       &nbsp;
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行粉丝币?</a>
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行粉丝通证?</a>
     </div>
 
-    <el-form ref="form" :rules="rules" class="input-form" :model="form" label-width="80px">
+    <el-form ref="form" :rules="rules" :model="form" class="input-form" label-width="80px">
       <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" class="input" placeholder="请输入粉丝币名称" />
+        <el-input v-model="form.name" class="input" placeholder="请输入粉丝通证名称" />
       </el-form-item>
       <!-- 编辑页面不需要显示 -->
       <el-form-item v-if="isPost" label="缩写" prop="symbol">
-        <el-input v-model="form.symbol" class="input" placeholder="请输入粉丝币缩写(发行后不可修改)" />
+        <el-input v-model="form.symbol" class="input" placeholder="请输入粉丝通证缩写(发行后不可修改)" />
       </el-form-item>
       <el-form-item label="图标" prop="logo">
         <el-input v-model="form.logo" style="display: none;" class="input" />
         <img-upload
           v-show="!coinsCover"
           :img-upload-done="imgUploadDone"
+          @doneImageUpload="doneImageUpload"
           update-type="coins"
           class="coins-upload-content"
-          @doneImageUpload="doneImageUpload"
         >
           <div slot="uploadButton" class="coins-upload">
             <i class="el-icon-plus add" />
@@ -46,7 +46,7 @@
             fit="cover"
             class="tokens-image"
           />
-          <div class="cover-full" @click="removeCoinsIcon">
+          <div @click="removeCoinsIcon" class="cover-full">
             <i class="el-icon-delete remove" />
           </div>
         </div>
@@ -62,9 +62,9 @@
       <el-form-item label="介绍" prop="">
         <el-input
           v-model="form.introduction"
+          :rows="6"
           class="input"
           type="textarea"
-          :rows="6"
           maxlength="500"
           show-word-limit
           placeholder="介绍"
@@ -78,12 +78,12 @@
             <i class="el-icon-plus" />
           </div> -->
 
-          <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+          <div v-if="about.length > 1" @click="abountLess(index)" class="about-input-btn">
             <i class="el-icon-minus" />
           </div>
         </div>
 
-        <div v-if="about.length < 5" class="about-input-btn add" @click="aboutAdd">
+        <div v-if="about.length < 5" @click="aboutAdd" class="about-input-btn add">
           <i class="el-icon-plus" />
         </div>
       </el-form-item>
@@ -98,16 +98,16 @@
             <div class="social-icons">
               <socialIcon :icon="item.symbol" />
             </div>
-            <el-input v-model="item.value" class="social-input" :placeholder="item.placeholder" />
+            <el-input v-model="item.value" :placeholder="item.placeholder" class="social-input" />
           </div>
         </div>
       </el-form-item>
 
       <el-form-item style="margin:40px 0 0 0;">
         <el-checkbox v-if="isPost" v-model="form.agree">
-          我声明粉丝币为本人自愿发行，由本人承担一切法律责任
+          我声明粉丝通证为本人自愿发行，由本人承担一切法律责任
         </el-checkbox>
-        <el-button :disabled="!form.agree" type="primary" class="publish-btn" @click="submitForm('form')">
+        <el-button :disabled="!form.agree" @click="submitForm('form')" type="primary" class="publish-btn">
           {{ isPost ? '发币' : '保存' }}
         </el-button>
       </el-form-item>
@@ -132,7 +132,7 @@ export default {
       const reg = /^[A-Z]+$/
       const res = reg.test(this.form.symbol)
       if (!res) {
-        callback(new Error('粉丝币缩写仅限大写英文字符'))
+        callback(new Error('粉丝通证缩写仅限大写英文字符'))
       } else {
         callback()
       }
@@ -150,12 +150,12 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入粉丝币名称', trigger: 'blur' },
+          { required: true, message: '请输入粉丝通证名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
         ],
         // 编辑页面不需要校验
         symbol: [
-          { required: true, message: '请输入粉丝币缩写', trigger: 'blur' },
+          { required: true, message: '请输入粉丝通证缩写', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
