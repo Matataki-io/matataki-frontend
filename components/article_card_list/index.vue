@@ -235,6 +235,8 @@ export default {
     color: white;
     font-size: 16px;
     text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
     top: 0;
     bottom: 0;
 
@@ -249,8 +251,6 @@ export default {
       right: 0;
       bottom: 0;
       margin: auto;
-      vertical-align: middle;
-      line-height: 100px;
     }
   }
 }
