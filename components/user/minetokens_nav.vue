@@ -21,8 +21,8 @@ export default {
   computed: {
     user() {
       return [
-        { title: '粉丝币持仓', icon: 'minetokens_details', url: 'token-id' },
-        { title: '粉丝币流水', icon: 'minetokens_detail', url: 'token-detail-id' },
+        { title: '粉丝通证持仓', icon: 'minetokens_details', url: 'token-id' },
+        { title: '粉丝通证流水', icon: 'minetokens_detail', url: 'token-detail-id' },
         { title: '流动金持仓', icon: 'minetokens_details', url: 'token-liquidity-id' },
         { title: '流动金流水', icon: 'minetokens_detail', url: 'token-liquidity-detail-id' }
       ]

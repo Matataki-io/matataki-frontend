@@ -3,7 +3,7 @@
     <g-header />
     <div class="outer-container">
       <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner">
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/981">如何交易粉丝币?</a>
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/981">如何交易粉丝通证?</a>
       <div class="p-w">
         <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
           <el-tab-pane label="交易" name="#swap">
@@ -11,7 +11,7 @@
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
             <div style="color: white;text-align: center;">
-              <a href="/tokens">跳转到我的粉丝币页面</a>
+              <a href="/tokens">跳转到我的粉丝通证页面</a>
             </div>
           </el-tab-pane> -->
           <el-tab-pane label="流动金池" name="#pool">

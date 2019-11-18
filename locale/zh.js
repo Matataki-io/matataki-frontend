@@ -577,8 +577,8 @@ export default {
     tokenName: '缩写',
     positionCoins: '持仓量',
     // coins
-    manageCoins: '管理粉丝币',
-    transactionCoins: '交易粉丝币',
+    manageCoins: '管理粉丝通证',
+    transactionCoins: '交易粉丝通证',
     // user info
     accountType: '账号类型',
     // user nav
@@ -592,8 +592,8 @@ export default {
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
-    buycoins: '持有的粉丝币',
-    selfcoins: '发行的粉丝币',
+    buycoins: '持有的粉丝通证',
+    selfcoins: '发行的粉丝通证',
     editProfile: '编辑资料',
     information: '个人信息'
   },

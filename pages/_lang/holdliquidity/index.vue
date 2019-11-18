@@ -12,7 +12,7 @@
         >
           <el-table-column
             prop="total_supply"
-            label="粉丝币"
+            label="粉丝通证"
           >
             <template slot-scope="scope">
               <router-link class="fl ac" :to="{name: 'token-id', params: {id: scope.row.token_id}}">
@@ -85,7 +85,7 @@
         @togglePage="togglePage"
       />
       <el-dialog
-        title="赠送粉丝币"
+        title="赠送粉丝通证"
         :visible.sync="giftDialog"
         width="600px"
         :before-close="giftDialogClose"
@@ -97,7 +97,7 @@
           label-width="70px"
           class="gift-form"
         >
-          <el-form-item label="粉丝币">
+          <el-form-item label="粉丝通证">
             <p class="tokenname">
               {{ form.tokenname }}
             </p>
