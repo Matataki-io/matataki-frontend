@@ -71,8 +71,8 @@ export default {
       let link = encodeURIComponent(window.location.href)
       if (this.isLogined) link += encodeURIComponent(`/?referral=${this.currentUserInfo.id}`)
       const pic = this.cover
-      // 用于 Telegram 的即时预览，模板ID为6937cb5e3b86c1，模板出问题了联系我 --Frank
-      const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${link}&rhash=6937cb5e3b86c1`)
+      // 用于 Telegram 的即时预览，模板出问题了联系我 --Frank
+      const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${link}&rhash=${process.env.TELEGRAM_IV_RHASH}`)
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         // facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,

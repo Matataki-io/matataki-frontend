@@ -9,7 +9,8 @@ module.exports = {
     VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://wwwtest.smartsignature.io',
-    WX_SHARE_HOST: 'https://sstest.frontenduse.top'
+    WX_SHARE_HOST: 'https://sstest.frontenduse.top',
+    TELEGRAM_IV_RHASH: '71acceb5462fa6'
   },
   production: {
     NODE: 'production',
@@ -21,6 +22,7 @@ module.exports = {
     VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://www.matataki.io',
-    WX_SHARE_HOST: 'https://smartsignature.frontenduse.top'
+    WX_SHARE_HOST: 'https://smartsignature.frontenduse.top',
+    TELEGRAM_IV_RHASH: '6937cb5e3b86c1'
   }
 }
