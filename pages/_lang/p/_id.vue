@@ -232,7 +232,7 @@
         >
           <!-- slot 插槽写入 -->
           <div class="article-btn" @click="toggleBookmark">
-            <div v-if="!isProduct" class="icon-container blue">
+            <div v-if="!isProduct" class="icon-container" :class="!isBookmarked ? 'blue' : 'blue-reversed'">
               <svg-icon :iconClass="'bookmark-solid'" class="icon" />
             </div>
             <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
