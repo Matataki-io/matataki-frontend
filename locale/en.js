@@ -27,7 +27,7 @@ export default {
   unFollow: 'Unfollow',
   following: 'has been concerned',
   bookmark: 'Bookmark',
-  unbookmark: 'Unbookmark',
+  unbookmark: 'Bookmarked',
   share: 'Share',
   view: 'View',
   promptTitle: 'prompt',
