@@ -29,6 +29,15 @@
           <p>Twitter</p>
         </div>
       </a>
+      <a :href="socialLink.telegram" target="_blank">
+        <div class="share-btn">
+          <div class="share-bg">
+            <!-- Telegram and Share shares the same icon as paperplane -->
+            <svg-icon class="share-icon telegram" icon-class="telegram" />
+          </div>
+          <p>Telegram</p>
+        </div>
+      </a>
     </div>
     <!-- <wechat style="margin: 80px 0 0 0;" :link="shareLink" /> -->
   </div>
@@ -62,11 +71,13 @@ export default {
       let link = encodeURIComponent(window.location.href)
       if (this.isLogined) link += `/?referral=${this.currentUserInfo.id}`
       const pic = this.cover
+      const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${encodeURIComponent(link)}&rhash=6937cb5e3b86c1`)
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         // facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${link}`,
-        twitter: `https://twitter.com/intent/tweet?text=${link}`
+        twitter: `https://twitter.com/intent/tweet?text=${link}`,
+        telegram: `https://t.me/share/url?url=${telegramIVLink}`
       }
     },
     shareLink() {
