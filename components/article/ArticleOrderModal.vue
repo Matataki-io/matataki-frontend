@@ -36,6 +36,29 @@
           </tbody>
         </table>
       </div>
+      <div class="order-item">
+        <el-table
+          header-cell-class-name="grayHeader"
+          :data="orderItems"
+          style="width: 100%">
+          <el-table-column
+            prop="name"
+            label="品名">
+          </el-table-column>
+          <el-table-column
+            prop="operating"
+            label="操作">
+          </el-table-column>
+          <el-table-column
+            prop="amount"
+            label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="total"
+            label="小计">
+          </el-table-column>
+        </el-table>
+      </div>
       <div class="balanceBox">
         <div class="flexBox padding20">
           <div>
@@ -194,7 +217,8 @@ export default {
       useBalance: false,
       qrcodeShow: false,
       payLink: '',
-      qrcodeLoading: true
+      qrcodeLoading: true,
+      orderItems: []
     }
   },
   mounted() {
@@ -229,10 +253,33 @@ export default {
           }
           this.order = res.data
           this.useBalance = Boolean(res.data.use_balance)
+          this.orderItems = this.handleOrderItem(res.data.items)
         } else {
           this.errorNotice('订单不存在')
         }
       })
+    },
+    handleOrderItem(items) {
+      let result = []
+      const t1 = items.orderPriceItem
+      const t2 = items.orderTokenItem
+      if (t1) {
+        result.push({
+          name: t1.symbol,
+          operating: '支付',
+          amount: utils.fromDecimal(t1.amount),
+          total: utils.up2points(utils.fromDecimal(t1.price)) + ' CNY'
+        })
+      }
+      if (t2) {
+        result.push({
+          name: t2.symbol,
+          operating: '购买',
+          amount: utils.fromDecimal(t2.token_amount),
+          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' CNY',
+        })
+      }
+      return result
     },
     weixinPay() {
       this.qrcodeLoading = true
@@ -398,6 +445,13 @@ export default {
 }
 </script>
 <style lang="less">
+.container {
+  .grayHeader {
+    color: #B2B2B2;
+    font-weight: 400;
+    padding: 6px 0;
+  }
+}
 .nopadding {
   .el-dialog__body {
     padding: 0
@@ -447,6 +501,9 @@ export default {
     display: inline-block;
     text-align: right;
     width: 65px;
+  }
+  .order-item {
+    margin: 20px 20px 0;
   }
 }
 </style>
