@@ -36,7 +36,7 @@ export default {
         { title: this.$t('user.follow'), url: 'user-id-follow', self: false },
         { title: this.$t('user.buy'), url: 'user-id-buy', self: true },
         { title: this.$t('user.bookmark'), url: 'user-id-bookmark', self: true },
-        { title: this.$t('user.information'), url: 'user-id-information', self: false }
+        { title: this.$t('user.information'), url: 'user-id-info', self: false }
       ]
     }
   }
