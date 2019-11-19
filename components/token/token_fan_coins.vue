@@ -1,7 +1,7 @@
 <template>
-  <layout>
-    <div v-loading="loading">
-      <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" />
+  <div>
+    <div v-loading="loading" class="coins">
+      <minetokenCard :card="pull.list" :decimals="4" />
     </div>
     <user-pagination
       v-show="!loading"
@@ -16,18 +16,16 @@
       @paginationData="paginationData"
       @togglePage="togglePage"
     />
-  </layout>
+  </div>
 </template>
 
 <script>
 import userPagination from '@/components/user/user_pagination.vue'
-import minetokenDetailCard from '@/components/user/minetoken_card_detail'
-import layout from '@/components/token/token_layout.vue'
+import minetokenCard from '@/components/user/minetoken_card'
 export default {
   components: {
-    layout,
     userPagination,
-    minetokenDetailCard
+    minetokenCard
   },
   data() {
     return {
@@ -35,11 +33,11 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'tokenIdTransactions',
+        apiUrl: 'tokenIdBalances',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
-      loading: false, // 加载数据
+      loading: true, // 加载数据
       total: 0
     }
   },

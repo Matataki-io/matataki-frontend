@@ -45,7 +45,7 @@
               管理
             </el-button>
           </router-link>
-          <el-button @click="shareModalShow = true" size="small">
+          <el-button size="small" @click="shareModalShow = true">
             <svg-icon icon-class="share_new" />
             分享
           </el-button>
@@ -122,7 +122,7 @@
         </div>
 
         <div class="detail">
-          <mineTokensNav />
+          <mineTokensNav v-model="tabPage" />
           <div class="line" />
           <slot />
         </div>
@@ -238,7 +238,8 @@ export default {
       minetokenExchange: Object.create(null),
       resourcesSocialss: [],
       resourcesWebsites: [],
-      showTokenSetting: false
+      showTokenSetting: false,
+      tabPage: 0
     }
   },
   computed: {
@@ -288,6 +289,9 @@ export default {
     currentUserInfo() {
       // 第一次会重复请求两次接口
       if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    },
+    tabPage(val) {
+      this.$emit('input', val)
     }
   },
   created() {
