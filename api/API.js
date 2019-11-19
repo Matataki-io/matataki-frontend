@@ -800,7 +800,15 @@ minetokenGetResources(tokenId) {
       data: order
     })
   },
-
+  handleAmount0(tradeNo) {
+    return request({
+      method: 'post',
+      url: '/orders/handleAmount0',
+      data: {
+        tradeNo
+      }
+    })
+  },
   // 收藏文章
   bookmark(postId) {
     return request.post(`/post/${postId}/bookmark`)

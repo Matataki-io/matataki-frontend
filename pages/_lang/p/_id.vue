@@ -79,7 +79,7 @@
                   <li v-if="isTokenArticle">
                     持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
                     <!-- 不显示 - 号 -->
-                    <span> {{ !hasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                    <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
                   </li>
                 </ul>
               </p>
@@ -690,19 +690,10 @@ export default {
         else return false
       } else return true
     },
-    // 文章是否支付
-    articleHasPaied() {
-      // todo
-      if (this.isPriceArticle) {
-        return false
-      }
-      return true
-    },
     // 是否已付费
     hasPaied() {
-      if (this.tokenHasPaied && this.articleHasPaied) {
-        return true
-      }
+      if (this.isMe(this.article.uid)) return true
+      if (this.currentProfile) return this.currentProfile.is_buy
       return false
     },
     // 需要多少粉丝通证
@@ -801,6 +792,7 @@ export default {
       // undefined false 显示
       if (!store.get('likeVisible')) this.visiblePopover.visible = true
       this.shareCount()
+      // this.showOrderModal = true
     })
 
     this.renderRelatedListContent()
@@ -1135,10 +1127,11 @@ export default {
     },
     makeOrderParams() {
       const requestParams = {
+        useBalance: 0,
         items: []
       }
       // token未支付
-      if (!this.tokenHasPaied) {
+      if (this.isTokenArticle) {
         const { output, outputToken } = this.form
         requestParams.items.push({
           tokenId: outputToken.id,
@@ -1147,9 +1140,9 @@ export default {
         })
       }
       // 文章price未支付
-      if (!this.articleHasPaied) {
+      if (this.isPriceArticle) {
         requestParams.items.push({
-          signId: this.id,
+          signId: this.article.id,
           type: 'buy_post'
         })
       }
@@ -1164,8 +1157,14 @@ export default {
         this.$message.error(this.getInputAmountError)
         return
       }
+      const loading = this.$loading({
+        lock: false,
+        text: '提交中',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
       const requestParams = this.makeOrderParams()
       this.$API.createArticleOrder(requestParams).then(res => {
+        loading.close()
         if (res.code === 0) {
           this.tradeNo = res.data
           this.showOrderModal = true
@@ -1198,7 +1197,8 @@ export default {
           needTokenAmount = this.article.tokens[0].amount
         }
         // 减之后 换算
-        this.form.output = utils.fromDecimal(needTokenAmount - amount)
+        if (needTokenAmount <= amount) this.form.output = 0
+        else this.form.output = utils.fromDecimal(needTokenAmount - amount)
         const { inputToken, output, outputToken } = this.form
         if (output > 0) {
           this.getInputAmount(inputToken.id, outputToken.id, output)

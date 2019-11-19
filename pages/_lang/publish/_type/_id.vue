@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="closeDropdown" class="new-post">
+  <div class="new-post" @click.stop="closeDropdown">
     <div class="edit-content">
       <div class="edit-head">
         <input
@@ -9,20 +9,20 @@
           size="large"
           clearable
         >
-        <span v-html="saveDraft" class="save-tips" />
+        <span class="save-tips" v-html="saveDraft" />
         <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}" class="save-draft">
           草稿
         </router-link>
-        <div @click="importVisible = true" class="import-button">
+        <div class="import-button" @click="importVisible = true">
           <svg-icon class="import-icon" icon-class="import" />
           {{ $t('publish.importArticle') }}
         </div>
 
-        <div @click="sendThePost" class="post">
+        <div class="post" @click="sendThePost">
           {{ $t('publish.publish') }}
         </div>
 
-        <el-dropdown slot="more" v-if="isShowTransfer" @command="handleMoreAction" trigger="click">
+        <el-dropdown v-if="isShowTransfer" slot="more" trigger="click" @command="handleMoreAction">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
@@ -45,8 +45,8 @@
             marginTop: '60px'
           }"
           :placeholder="$t('publish.contentPlaceholder')"
-          @imgAdd="$imgAdd"
           class="editor"
+          @imgAdd="$imgAdd"
         />
       </no-ssr>
 
@@ -228,17 +228,17 @@
             :img-upload-done="imgUploadDone"
             :aspect-ratio="2 / 1"
             :update-type="'artileCover'"
-            @doneImageUpload="doneImageUpload"
             class="cover-upload"
+            @doneImageUpload="doneImageUpload"
           >
             <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add">
           </img-upload>
           <img
             v-show="cover"
-            @click.prevent="removeCover"
             class="cover-btn"
             src="@/assets/img/del.svg"
             alt="remove"
+            @click.prevent="removeCover"
           >
           <div v-show="cover">
             <img :src="coverEditor" class="cover-img" alt="cover">
@@ -247,7 +247,7 @@
       </div>
     </div>
     <div class="cover-container">
-      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
+      <el-checkbox v-model="isOriginal" class="is-original" @change="originalChange">
         {{ $t('publish.original') }}
       </el-checkbox>
     </div>
@@ -277,7 +277,7 @@
             placeholder="输入链接（可自动检测本站文章）"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img @click="extractRefTitle(-1)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+              <img class="auto-test" src="@/assets/img/auto_test.png" alt="auto test" @click="extractRefTitle(-1)">
             </el-tooltip>
           </el-input>
           <el-input
@@ -298,7 +298,7 @@
             rows="6"
           />
           <div class="related-add">
-            <div @click="addDraftsReferences" class="add-icon">
+            <div class="add-icon" @click="addDraftsReferences">
               <i class="el-icon-plus" />
             </div>
             <span>添加关联</span>
@@ -315,7 +315,7 @@
                   placeholder="输入链接（可自动检测本站文章）"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img @click="extractRefTitle(index)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+                    <img alt="auto test" class="auto-test" src="@/assets/img/auto_test.png" @click="extractRefTitle(index)">
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -337,13 +337,13 @@
                 />
                 <div class="related-add">
                   <div class="fl ac">
-                    <div @click="remakeRelated(index)" class="add-icon">
+                    <div class="add-icon" @click="remakeRelated(index)">
                       <svg-icon icon-class="cancel" />
                     </div>
                     <span>取消修改</span>
                   </div>
                   <div class="fl ac" style="margin-left: 20px;">
-                    <div @click="confirmRelated(index)" class="add-icon">
+                    <div class="add-icon" @click="confirmRelated(index)">
                       <i class="el-icon-plus" />
                     </div>
                     <span>确认修改</span>
@@ -361,18 +361,18 @@
                     </div>
                     <div class="fl ac jfe related-3">
                       <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                        <svg-icon @click="editRelated(index, item.number)" class="related-icon-icon" icon-class="pencli" />
+                        <svg-icon class="related-icon-icon" icon-class="pencli" @click="editRelated(index, item.number)" />
                       </el-tooltip>
 
                       <el-tooltip effect="dark" content="删除" placement="top">
-                        <svg-icon @click="removeRelated(index, item.number)" class="related-icon-icon" icon-class="delete" />
+                        <svg-icon class="related-icon-icon" icon-class="delete" @click="removeRelated(index, item.number)" />
                       </el-tooltip>
                       <span class="related-id">{{ item.number }}</span>
                     </div>
                   </div>
                   <div class="fl ac related-link">
                     <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy1" />
+                    <svg-icon class="icon-copy" icon-class="copy1" @click="copyCode(item.url)" />
                     <a :href="item.url" target="_blank">
                       <svg-icon class="icon-share" icon-class="share1" />
                     </a>
@@ -403,9 +403,9 @@
               :page-size="pull.params.pagesize"
               :total="total"
               :reload="pull.reload"
+              class="pagination"
               @paginationData="paginationData"
               @togglePage="togglePage"
-              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -544,14 +544,21 @@ export default {
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'
+    },
+    isDevelopmentMode() {
+      return process.env.NODE_ENV === 'development'
     }
   },
   watch: {
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
-    title() {
+    title(val) {
       this.updateDraftWatch()
+      // 观察标题，且仅用于开发模式
+      if (val === '扯淡' && this.isDevelopmentMode) {
+        this.generateBullshit()
+      }
     },
     markdownData() {
       this.updateDraftWatch()
@@ -1528,6 +1535,10 @@ export default {
           this.$message.error(this.$t('error.copy'))
         }
       )
+    },
+    async generateBullshit() {
+      const { 生成文章 } = await import('@/api/bullshit-generator.js')
+      this.markdownData = 生成文章()
     }
   }
 }
