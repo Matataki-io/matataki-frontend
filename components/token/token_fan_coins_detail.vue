@@ -1,7 +1,10 @@
 <template>
-  <layout>
-    <div v-loading="loading" class="coins">
-      <minetokenCardLiquidity :card="pull.list" :decimals="4" />
+  <div>
+    <div v-loading="loading" class="pillar">
+      <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" />
+      <div v-if="pull.list.length === 0 && !loading" class="no-data">
+        暂无数据
+      </div>
     </div>
     <user-pagination
       v-show="!loading"
@@ -16,18 +19,16 @@
       @paginationData="paginationData"
       @togglePage="togglePage"
     />
-  </layout>
+  </div>
 </template>
 
 <script>
 import userPagination from '@/components/user/user_pagination.vue'
-import minetokenCardLiquidity from '@/components/user/minetoken_card_liquidity'
-import layout from '@/components/token/token_layout.vue'
+import minetokenDetailCard from '@/components/user/minetoken_card_detail'
 export default {
   components: {
-    layout,
     userPagination,
-    minetokenCardLiquidity
+    minetokenDetailCard
   },
   data() {
     return {
@@ -35,11 +36,11 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'liquidityUserList',
+        apiUrl: 'tokenIdTransactions',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
-      loading: false, // 加载数据
+      loading: true, // 加载数据
       total: 0
     }
   },
@@ -68,5 +69,15 @@ export default {
 <style scoped>
 .pagination {
   margin-top: 40px;
+}
+.pillar {
+  min-height: 99px;
+}
+.no-data {
+  line-height: 99px;
+  text-align: center;
+  margin-top: 40px;
+  font-size:14px;
+  color:rgba(178,178,178,1);
 }
 </style>
