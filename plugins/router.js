@@ -3,7 +3,7 @@ import { getCookie } from '@/utils/cookie'
 
 export default ({ app }) => {
   app.router.beforeEach((to, from, next) => {
-    const hasLoginPage = ['account', 'points', 'invite', 'tokens', 'holdliquidity', 'minetoken', 'editminetoken', 'postminetoken', 'setting', 'user-id-buy', 'publish-type-id'] // 需要登陆才能进入
+    const hasLoginPage = ['account', 'points', 'invite', 'tokens', 'tokens-id', 'holdliquidity', 'minetoken', 'editminetoken', 'postminetoken', 'setting', 'user-id-buy', 'publish-type-id'] // 需要登陆才能进入
     // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
     // 需要登陆的页面没有token
     if (hasLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) next('/')

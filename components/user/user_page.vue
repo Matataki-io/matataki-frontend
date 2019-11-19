@@ -59,12 +59,12 @@
           {{ userInfo.introduction || $t('not') }}
         </p>
         <div class="fl jc">
-          <router-link class="fl fdc ac follow-block" :to="{name: 'user-id-follow', params: {id: $route.params.id}}">
+          <router-link :to="{name: 'user-id-follow', params: {id: $route.params.id}}" class="fl fdc ac follow-block">
             <span class="follow-number">{{ userInfo.follows || 0 }}</span>
             <span class="follow-title">{{ $t('follow') }}</span>
           </router-link>
 
-          <router-link class="fl fdc ac follow-block" :to="{name: 'user-id-fan', params: {id: $route.params.id}}">
+          <router-link :to="{name: 'user-id-fan', params: {id: $route.params.id}}" class="fl fdc ac follow-block">
             <span class="follow-number">{{ userInfo.fans || 0 }}</span>
             <span class="follow-title">{{ $t('fans') }}</span>
           </router-link>
@@ -81,7 +81,7 @@
             {{ $t('user.editProfile') }}
           </el-button>
         </router-link>
-        <el-button size="small" class="follow2" @click="shareModalShow = true">
+        <el-button @click="shareModalShow = true" size="small" class="follow2">
           <svg-icon icon-class="share_new" />
           {{ $t('share') }}
         </el-button>

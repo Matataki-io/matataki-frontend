@@ -10,7 +10,7 @@
           <recommendSlide :card="item" />
         </el-col>
         <el-col v-else :key="index" :span="8">
-          <articleCard :type-index="0" card-type="recommend-card" :card="item" />
+          <articleCard :type-index="0" :card="item" card-type="recommend-card" />
         </el-col>
       </template>
     </el-row>
@@ -54,15 +54,15 @@
       <el-col :span="8">
         <div class="tags article  position-sticky top80">
           <span>{{ $t('home.articleTagTitle') }}</span>
-          <tags class="tags-container" :type-index="0" :tag-cards="tagCards" />
+          <tags :type-index="0" class="tags-container" :tag-cards="tagCards" />
         </div>
 
         <div v-if="usersRecommendList.length !== 0" class="recommend-author position-sticky top380">
           <div class="ra-head">
             <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-            <span class="ra-head-random" @click="usersrecommend">
+            <span @click="usersrecommend" class="ra-head-random">
               <div class="change">
-                <svg-icon class="change-icon" :class="usersLoading && 'rotate'" icon-class="change" />
+                <svg-icon :class="usersLoading && 'rotate'" class="change-icon" icon-class="change" />
               </div>
               <span>{{ $t('home.random') }}</span>
             </span>

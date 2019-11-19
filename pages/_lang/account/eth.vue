@@ -10,7 +10,7 @@
         暂时无法提现以太坊代币
       </h2>
       <template v-if="viewStatus === 0">
-        <assets :assets="assets" type="ETH" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
+        <assets :assets="assets" @toggleWithdraw="status => viewStatus = status" type="ETH" class="assets-margin" />
         <div v-loading="loading" class="card-container">
           <no-content-prompt :list="articleCardData.articles">
             <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />
@@ -24,13 +24,13 @@
           :page-size="9"
           :total="total"
           :need-access-token="true"
-          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
+          class="pagination"
         />
       </template>
       <template v-else>
-        <withdraw type="ETH" class="withdraw" @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" />
+        <withdraw @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" type="ETH" class="withdraw" />
       </template>
     </template>
     <template slot="info">
