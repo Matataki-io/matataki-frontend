@@ -319,18 +319,13 @@ export default {
       // 中文 字母 数字 1-12
       const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-      let canSetProfile = true
       if (!reg.test(this.username)) {
-        this.$message.error(this.$t('rule.strEnglishNumber', ['1-12']))
-        canSetProfile = false
+        throw this.$t('rule.strEnglishNumber', ['1-12'])
       } else if (this.introduction.length > 20) {
-        this.$message.error(this.$t('rule.profileNotExceedStr', [20]))
-        canSetProfile = false
+        throw this.$t('rule.profileNotExceedStr', [20])
       } else if (this.email !== '' && !regEmail.test(this.email)) {
-        this.$message.error(this.$t('rule.emailMessage'))
-        canSetProfile = false
+        throw this.$t('rule.emailMessage')
       }
-      return canSetProfile
     },
     setAvatarImage(hash) {
       if (hash) this.avatar = this.$API.getImg(hash)
@@ -399,7 +394,9 @@ export default {
       if (!this.setProfile && !this.aboutModify && !this.socialModify) return
 
       const saveProfile = async () => {
-        if (!this.setProfile || !this.checkSaveParams()) return
+        if (!this.setProfile) return
+
+        this.checkSaveParams()
 
         const requestData = {
           nickname: this.username,
@@ -447,11 +444,12 @@ export default {
           type: 'success'
         })
       } catch (error) {
-        console.error(`修改信息失败 catch error ${error}`)
-
-        if (error.response && error.response.data) {
+        if (typeof error === 'string') {
+          this.$message.error(error)
+        } else if (error.response && error.response.data) {
           this.$message.error(error.response.data.message)
         } else {
+          console.error(`修改信息失败 catch error ${error}`)
           this.$message.error(this.$t('error.fail'))
         }
       } finally {
