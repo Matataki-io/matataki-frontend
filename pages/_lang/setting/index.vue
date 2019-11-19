@@ -265,8 +265,7 @@ export default {
     about: {
       deep: true,
       handler() {
-        if (JSON.stringify(this.linksData.websites) !== JSON.stringify(this.about)) this.aboutModify = true
-        else this.aboutModify = false
+        this.aboutModify = JSON.stringify(this.linksData.websites) !== JSON.stringify(this.about)
       }
     },
     social: {
@@ -320,18 +319,13 @@ export default {
       // 中文 字母 数字 1-12
       const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-      let canSetProfile = true
       if (!reg.test(this.username)) {
-        this.$message.error(this.$t('rule.strEnglishNumber', ['1-12']))
-        canSetProfile = false
+        throw this.$t('rule.strEnglishNumber', ['1-12'])
       } else if (this.introduction.length > 20) {
-        this.$message.error(this.$t('rule.profileNotExceedStr', [20]))
-        canSetProfile = false
+        throw this.$t('rule.profileNotExceedStr', [20])
       } else if (this.email !== '' && !regEmail.test(this.email)) {
-        this.$message.error(this.$t('rule.emailMessage'))
-        canSetProfile = false
+        throw this.$t('rule.emailMessage')
       }
-      return canSetProfile
     },
     setAvatarImage(hash) {
       if (hash) this.avatar = this.$API.getImg(hash)
@@ -396,11 +390,14 @@ export default {
       }
     },
     // 保存按钮
-    save() {
-      if (!(this.setProfile || this.aboutModify || this.socialModify)) return
-      if (!this.checkSaveParams()) return
-      // 过滤请求数据
-      const filterRequestData = () => {
+    async save() {
+      if (!this.setProfile && !this.aboutModify && !this.socialModify) return
+
+      const saveProfile = async () => {
+        if (!this.setProfile) return
+
+        this.checkSaveParams()
+
         const requestData = {
           nickname: this.username,
           introduction: this.introduction,
@@ -409,72 +406,54 @@ export default {
         if (this.username === (this.userData.nickname || this.userData.username)) delete requestData.nickname
         if (this.introduction === this.userData.introduction) delete requestData.introduction
         if (this.email === this.userData.email) delete requestData.email
-        return requestData
+
+        await this.$backendAPI.setProfile(requestData)
+
+        this.setProfile = false
       }
-      const filterRequestLinks = () => {
+      const saveLinks = async () => {
+        if (!this.aboutModify && !this.socialModify) return
+
         const requestData = {
-          websites: this.about.filter(age => age !== '' && age !== null),
+          websites: this.about.filter(Boolean),
           socialAccounts: (() => {
             const nSocial = {}
             this.social.forEach(item => {
-              if (item.value && item.value !== '') nSocial[item.type] = item.value
+              if (item.value && item.value !== '') {
+                nSocial[item.type] = item.value
+              }
             })
             return nSocial
           })()
         }
-        return requestData
+
+        await this.$backendAPI.setUserLinks(requestData)
+
+        this.aboutModify = false
+        this.socialModify = false
       }
 
-      let loadingEnd, thenEnd
-      const thenFunction = res => {
-        console.log(res)
-        if (res.status === 200 && res.data.code === 0) {
-          if (thenEnd) {
-            this.setProfile = false
-            this.aboutModify = false
-            this.socialModify = false
-            this.refreshUser({ id: this.currentUserInfo.id })
-            this.getMyUserData()
-            this.$message({
-              message: this.$t('success.success'),
-              type: 'success'
-            })
-          }
+      this.loading = true
+      try {
+        await Promise.all([saveProfile(), saveLinks()])
+
+        this.refreshUser({ id: this.currentUserInfo.id })
+        this.getMyUserData()
+        this.$message({
+          message: this.$t('success.success'),
+          type: 'success'
+        })
+      } catch (error) {
+        if (typeof error === 'string') {
+          this.$message.error(error)
+        } else if (error.response && error.response.data) {
+          this.$message.error(error.response.data.message)
         } else {
+          console.error(`修改信息失败 catch error ${error}`)
           this.$message.error(this.$t('error.fail'))
         }
-        thenEnd = true
-      }
-      this.loading = true
-      // 个人资料
-      if (this.setProfile) {
-        this.$backendAPI
-          .setProfile(filterRequestData())
-          .then(thenFunction)
-          .catch(error => {
-            console.log(`修改信息失败 catch error ${error}`)
-          })
-          .finally(() => {
-            if (loadingEnd) this.loading = false
-            loadingEnd = true
-          })
-      } else {
-        loadingEnd = true
-        thenEnd = true
-      }
-      // 社交账号和相关网页
-      if (this.aboutModify || this.socialModify) {
-        this.$backendAPI.setUserLinks(filterRequestLinks()).then(thenFunction)
-          .catch(error => {
-            console.log(`修改信息失败 catch error ${error}`)
-          })
-          .finally(() => {
-            if (loadingEnd) this.loading = false
-            loadingEnd = true
-          })
-      } else {
-        loadingEnd = true
-        thenEnd = true
+      } finally {
+        this.loading = false
       }
     },
     aboutAdd() {
