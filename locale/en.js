@@ -26,6 +26,8 @@ export default {
   notFans: 'no fans',
   unFollow: 'Unfollow',
   following: 'has been concerned',
+  bookmark: 'Bookmark',
+  unbookmark: 'Bookmarked',
   share: 'Share',
   view: 'View',
   promptTitle: 'prompt',
@@ -167,7 +169,8 @@ export default {
     read: 'Browse',
     sale: 'sales',
     investment: 'investment',
-    saleUnit: 'EOS/parts'
+    saleUnit: 'EOS/parts',
+    deleted: 'Deleted'
   },
   articleFooter: {
     received: 'received',
@@ -623,7 +626,8 @@ export default {
     buycoins: 'Fan coins held',
     selfcoins: 'Fan coins issued',
     editProfile: 'Edit Profile',
-    information: 'User information'
+    information: 'User information',
+    bookmark: 'Bookmarks'
   },
   withdraw: {
     title: 'cash out',
