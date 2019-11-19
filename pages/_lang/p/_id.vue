@@ -1,25 +1,6 @@
 <template>
   <div @click.stop="documentClick" class="main">
-    <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')">
-      <template slot="more">
-        <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
-          <div class="more-icon">
-            <svg-icon class="icon" icon-class="more" />
-          </div>
-          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-            <el-dropdown-item command="edit">
-              {{ $t('edit') }}
-            </el-dropdown-item>
-            <el-dropdown-item command="transfer">
-              {{ $t('transfer') }}
-            </el-dropdown-item>
-            <el-dropdown-item command="del">
-              {{ $t('delete') }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </template>
-    </g-header>
+    <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')" />
 
     <div class="container">
       <!-- 文章封面 -->
@@ -28,10 +9,29 @@
       </div>
       <article class="Post-Header">
         <header>
-          <!-- 标题 -->
-          <h1 class="Post-Title">
-            {{ article.title }}
-          </h1>
+          <div class="fl ac jsb">
+            <!-- 标题 -->
+            <h1 class="Post-Title">
+              {{ article.title }}
+            </h1>
+            <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
+              <div class="more-setting">
+                <svg-icon class="more-icon-setting" icon-class="setting" />
+                <span class="more-text-setting">设置</span>
+              </div>
+              <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+                <el-dropdown-item command="edit">
+                  {{ $t('edit') }}
+                </el-dropdown-item>
+                <el-dropdown-item command="transfer">
+                  {{ $t('transfer') }}
+                </el-dropdown-item>
+                <el-dropdown-item command="del">
+                  {{ $t('delete') }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
           <UserInfoHeader :article="article" />
         </header>
