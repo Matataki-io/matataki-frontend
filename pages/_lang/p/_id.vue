@@ -92,9 +92,9 @@
           <div>
             <el-button
               v-if="!hasPaied"
+              @click="wxpayArticle"
               plain
               type="primary"
-              @click="wxpayArticle"
               size="small"
             >
               微信支付
@@ -147,7 +147,7 @@
           >
             <p>{{ $t('p.sharePopover') }}</p>
             <div style="text-align: right; margin: 0">
-              <el-button class="el-button--purple" type="primary" @click="poopverDone('visible1')" size="mini">
+              <el-button @click="poopverDone('visible1')" class="el-button--purple" type="primary" size="mini">
                 {{ $t('p.confirmPopover') }}
               </el-button>
             </div>
@@ -174,7 +174,7 @@
         >
           <p>{{ $t('p.likePopover') }}</p>
           <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" @click="poopverDone('visible')" size="mini">
+            <el-button @click="poopverDone('visible')" class="el-button--purple" type="primary" size="mini">
               {{ $t('p.confirmPopover') }}
             </el-button>
           </div>
@@ -187,8 +187,8 @@
               :token="ssToken"
               :article="article"
               @like="like"
-              style="margin-top: 40px;"
               @dislike="dislike"
+              style="margin-top: 40px;"
             />
           </div>
         </el-popover>
@@ -344,7 +344,7 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy2" />
+                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
                     <svg-icon class="icon-share" icon-class="jump" />
                   </a>
@@ -377,8 +377,8 @@
               :total="total"
               :reload="pull.reload"
               @paginationData="paginationData"
-              class="pagination"
               @togglePage="togglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -399,7 +399,7 @@
               <svg-icon icon-class="sort" class="icon" />
             </span> -->
           </div>
-          <el-button v-loading="relatedLoadingBtn" type="primary" size="small" @click="posts" icon="el-icon-link">
+          <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
             关联本文
           </el-button>
         </div>
@@ -421,7 +421,7 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy2" />
+                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
                     <svg-icon class="icon-share" icon-class="jump" />
                   </a>
@@ -439,8 +439,8 @@
               :total="beingTotal"
               :reload="beingPull.reload"
               @paginationData="beingPaginationData"
-              class="pagination"
               @togglePage="beingTogglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -482,6 +482,7 @@ import store from '@/utils/localStorage.js'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
+import { getCookie } from '@/utils/cookie'
 
 import userPagination from '@/components/user/user_pagination.vue'
 
@@ -826,6 +827,7 @@ export default {
     },
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
+      if (!getCookie('ACCESS_TOKEN')) return
       const data = {
         id: id || this.$route.params.id
       }
