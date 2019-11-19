@@ -8,7 +8,7 @@
         </h3>
         <div class="inline url">
           <p v-for="(item, index ) in urls" :key="index">
-            <a class="link" :href="item">{{ item }} </a>
+            <a :href="item" class="link">{{ item }} </a>
           </p>
         </div>
       </div>
@@ -124,6 +124,9 @@ export default {
   }
   &.url {
     display: inline-table;
+  }
+  a {
+    text-decoration: underline;
   }
   a:link {color:black}
   a:visited {color: black}

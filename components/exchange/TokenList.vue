@@ -1,10 +1,10 @@
 <template>
   <el-dialog
-    title="选择粉丝币"
     :close-on-click-modal="false"
+    title="选择粉丝通证"
     :visible.sync="showModal"
-    width="600px"
     :lock-scroll="false"
+    width="600px"
     :before-close="handleClose"
     custom-class="br10 black-theme-dialog"
   >
@@ -13,17 +13,19 @@
         <div class="search-box">
           <i class="el-icon-search" />
         </div>
-        <input v-model="search" type="text" placeholder="搜索粉丝币" class="dHtVAe" @keyup.enter="searchToken">
+        <input v-model="search" type="text" placeholder="搜索粉丝通证" @keyup.enter="searchToken" class="dHtVAe">
       </div>
       <div v-loading="loading" class="cotdDw br10" element-loading-background="rgba(0, 0, 0, 0.3)">
         <el-table
-          height="50vh"
           :data="tokenList"
+          height="50vh"
           @row-click="selectToken"
-          style="width: 100%">
+          style="width: 100%"
+>
           <el-table-column
             width="250px"
-            label="粉丝币">
+            label="粉丝通证"
+>
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
@@ -39,27 +41,30 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="流通量">
+            label="流通量"
+>
             <template slot-scope="scope">
               <span>
-                {{scope.row.amount || '暂无流通量'}}
+                {{ scope.row.amount || '暂无流通量' }}
               </span>
             </template>
           </el-table-column>
           <el-table-column
-            label="创始人">
+            label="创始人"
+>
             <template slot-scope="scope">
               <span style="white-space: nowrap;">
-                {{scope.row.nickname || scope.row.email}}
+                {{ scope.row.nickname || scope.row.email }}
               </span>
             </template>
           </el-table-column>
           <el-table-column
-            label="">
+            label=""
+>
             <template slot-scope="scope">
-              <n-link v-if="scope.row.id !== 0" target='_blank' class="gray-btn" :to="{name: 'token-id', params: {id: scope.row.id}}">
+              <n-link v-if="scope.row.id !== 0" target="_blank" :to="{name: 'token-id', params: {id: scope.row.id}}" class="gray-btn">
                 <el-button circle>
-                  <svg-icon icon-class="share-link" style="color: #B2B2B2;"/>
+                  <svg-icon icon-class="share-link" style="color: #B2B2B2;" />
                 </el-button>
               </n-link>
             </template>
@@ -67,7 +72,7 @@
         </el-table>
         <!-- <table>
           <th>
-            <td>粉丝币</td>
+            <td>粉丝通证</td>
             <td>流通量</td>
             <td>创始人</td>
             <td></td>

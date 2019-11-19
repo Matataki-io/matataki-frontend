@@ -396,7 +396,7 @@ export default {
       }
     },
     // 保存按钮
-    async save() {
+    save() {
       if (!(this.setProfile || this.aboutModify || this.socialModify)) return
       if (!this.checkSaveParams()) return
       // 过滤请求数据
@@ -427,20 +427,28 @@ export default {
 
       let loadingEnd, thenEnd
       const thenFunction = res => {
-        if (res.status === 200 && res.data.code === 0 && thenEnd) {
-          this.$message({
-            message: this.$t('success.success'),
-            type: 'success'
-          })
-          this.refreshUser({ id: this.currentUserInfo.id })
-          this.getMyUserData()
-        } else this.$message.error(this.$t('error.fail'))
+        console.log(res)
+        if (res.status === 200 && res.data.code === 0) {
+          if (thenEnd) {
+            this.setProfile = false
+            this.aboutModify = false
+            this.socialModify = false
+            this.refreshUser({ id: this.currentUserInfo.id })
+            this.getMyUserData()
+            this.$message({
+              message: this.$t('success.success'),
+              type: 'success'
+            })
+          }
+        } else {
+          this.$message.error(this.$t('error.fail'))
+        }
         thenEnd = true
       }
       this.loading = true
       // 个人资料
       if (this.setProfile) {
-        await this.$backendAPI
+        this.$backendAPI
           .setProfile(filterRequestData())
           .then(thenFunction)
           .catch(error => {
@@ -456,7 +464,7 @@ export default {
       }
       // 社交账号和相关网页
       if (this.aboutModify || this.socialModify) {
-        await this.$backendAPI.setUserLinks(filterRequestLinks()).then(thenFunction)
+        this.$backendAPI.setUserLinks(filterRequestLinks()).then(thenFunction)
           .catch(error => {
             console.log(`修改信息失败 catch error ${error}`)
           })
@@ -464,6 +472,9 @@ export default {
             if (loadingEnd) this.loading = false
             loadingEnd = true
           })
+      } else {
+        loadingEnd = true
+        thenEnd = true
       }
     },
     aboutAdd() {

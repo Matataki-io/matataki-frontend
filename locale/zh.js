@@ -26,6 +26,8 @@ export default {
   notFans: '没有粉丝',
   unFollow: '取消关注',
   following: '已关注',
+  bookmark: '收藏',
+  unbookmark: '已收藏',
   share: '分享',
   view: '查看',
   promptTitle: '提示',
@@ -166,7 +168,8 @@ export default {
     read: '浏览',
     sale: '销量',
     investment: '投资',
-    saleUnit: 'EOS/份'
+    saleUnit: 'EOS/份',
+    deleted: '文章已下架'
   },
   articleFooter: {
     received: '已领取',
@@ -577,8 +580,8 @@ export default {
     tokenName: '缩写',
     positionCoins: '持仓量',
     // coins
-    manageCoins: '管理粉丝币',
-    transactionCoins: '交易粉丝币',
+    manageCoins: '管理粉丝通证',
+    transactionCoins: '交易粉丝通证',
     // user info
     accountType: '账号类型',
     // user nav
@@ -592,10 +595,11 @@ export default {
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
-    buycoins: '持有的粉丝币',
-    selfcoins: '发行的粉丝币',
+    buycoins: '持有的粉丝通证',
+    selfcoins: '发行的粉丝通证',
     editProfile: '编辑资料',
-    information: '个人信息'
+    information: '个人信息',
+    bookmark: '收藏'
   },
   withdraw: {
     title: '提现',

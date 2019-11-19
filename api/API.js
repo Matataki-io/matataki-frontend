@@ -475,7 +475,7 @@ minetokenGetResources(tokenId) {
     })
   },
   /**
-   * 粉丝币详情
+   * 粉丝通证详情
    * @param {Number} id token id
    */
   minetokenId(id) {
@@ -760,5 +760,61 @@ minetokenGetResources(tokenId) {
   // 根据id获取个人资料中的社交账号和相关网站
   getUserLinks({id}) {
     return request.get(`/user/${id}/links`);
+  },
+
+  //-------------文章支付使用开始-----------------
+  articleNativePay(tradeNo) {
+    return this.articleWxPay({
+      tradeNo,
+      trade_type: 'NATIVE'
+    })
+  },
+  articleJsapiPay(tradeNo, openid) {
+    return this.articleWxPay({
+      tradeNo,
+      trade_type: 'JSAPI',
+      openid
+    })
+  },
+  articleWxPay(order) {
+    return request.post('/order/articlepay', order)
+  },
+  //-------------文章支付使用结束-----------------
+  getArticleOrder(tradeNo) {
+    return request({
+      method: 'get',
+      url: `/orders/${tradeNo}`
+    })
+  },
+  updateArticleOrder(tradeNo, order) {
+    return request({
+      method: 'put',
+      url: `/orders/${tradeNo}`,
+      data: order
+    })
+  },
+  createArticleOrder(order) {
+    return request({
+      method: 'PUT',
+      url: '/orders',
+      data: order
+    })
+  },
+
+  // 收藏文章
+  bookmark(postId) {
+    return request.post(`/post/${postId}/bookmark`)
+  },
+  // 取消收藏文章
+  unbookmark(postId) {
+    return request.delete(`/post/${postId}/bookmark`)
+  },
+  // 获取收藏文章
+  getBookmarks(orderType = 1) {
+    return request.get(`/user/bookmarks`, {
+      params: {
+        order: orderType
+      }
+    })
   }
 }

@@ -49,7 +49,7 @@ export default {
     return {
       visible: false,
       url: '',
-      statement: false,
+      statement: true,
       loading: false
     }
   },
@@ -57,7 +57,7 @@ export default {
     visible(val) {
       if (!val) {
         this.url = ''
-        this.statement = false
+        this.statement = true
         this.loading = false
       }
       this.$emit('input', val)
@@ -69,7 +69,7 @@ export default {
   methods: {
     resetData() {
       this.url = ''
-      this.statement = false
+      this.statement = true
     },
     async importFunc() {
       const url = strTrim(this.url)

@@ -1,8 +1,8 @@
 <template>
-  <div class="main" @click.stop="documentClick">
+  <div @click.stop="documentClick" class="main">
     <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')">
       <template slot="more">
-        <el-dropdown v-if="isMe(article.uid)" trigger="click" @command="handleMoreAction">
+        <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
           <div class="more-icon">
             <svg-icon class="icon" icon-class="more" />
           </div>
@@ -38,11 +38,11 @@
         <!-- ipfs -->
         <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
         <!-- 文章内容 -->
-        <div class="Post-RichText markdown-body article-content" v-html="compiledMarkdown" />
+        <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
         <!-- 文章页脚 声明 是否原创 -->
-        <ArticleFooter v-if="isTokenArticle" :article="article" style="margin-top: 20px;" />
+        <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-        <div v-if="!isTokenArticle" class="lock-line">
+        <div v-if="!hasPaied" class="lock-line">
           <el-divider>
             <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
@@ -55,15 +55,15 @@
       </article>
 
       <!-- 解锁按钮 -->
-      <div v-if="tokenArticle" class="lock">
+      <div v-if="isTokenArticle || isPriceArticle" class="lock">
         <div class="lock-info fl ac jsb">
           <div class="fl ac">
-            <img v-if="!isTokenArticle" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
             <div>
               <h3 class="lock-info-title">
-                {{ !isTokenArticle ? '解锁全文的条件' : '已解锁全文' }}
-                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝币，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
+                {{ !hasPaied ? '解锁全文的条件' : '已解锁全文' }}
+                <el-tooltip class="item" effect="dark" content="阅读本文需要先持有特定数量的粉丝通证，满足本文的阅读条件后刷新页面即可阅读全文。" placement="top-start">
                   <svg-icon
                     class="help-icon"
                     icon-class="help"
@@ -72,9 +72,16 @@
               </h3>
 
               <p v-if="!isMe(article.uid)" class="lock-info-des">
-                持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝币
-                <!-- 不显示 - 号 -->
-                <span> {{ !isTokenArticle ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                <ul>
+                  <li v-if="isPriceArticle">
+                    价格：{{ getArticlePrice }} CNY
+                  </li>
+                  <li v-if="isTokenArticle">
+                    持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
+                    <!-- 不显示 - 号 -->
+                    <span> {{ !hasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                  </li>
+                </ul>
               </p>
               <p v-else class="lock-info-des">
                 自己发布的文章
@@ -84,12 +91,11 @@
 
           <div>
             <el-button
-              v-if="!isTokenArticle"
-              :disabled="payBtnDisabled && isLogined"
+              v-if="!hasPaied"
               plain
               type="primary"
+              @click="wxpayArticle"
               size="small"
-              @click="wxpay"
             >
               微信支付
             </el-button>
@@ -106,13 +112,13 @@
 
       <!-- sidebar -->
       <div class="sidebar">
-        <div v-if="isProduct" class="article-btn" @click="buy">
+        <div v-if="isProduct" @click="buy" class="article-btn">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" class="article-btn" @click="invest">
+        <div v-if="isProduct" @click="invest" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
@@ -130,8 +136,8 @@
           </div> -->
 
         <div
-          class="article-btn"
           @click="share"
+          class="article-btn"
         >
           <el-popover
             v-model="visiblePopover.visible1"
@@ -141,7 +147,7 @@
           >
             <p>{{ $t('p.sharePopover') }}</p>
             <div style="text-align: right; margin: 0">
-              <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible1')">
+              <el-button class="el-button--purple" type="primary" @click="poopverDone('visible1')" size="mini">
                 {{ $t('p.confirmPopover') }}
               </el-button>
             </div>
@@ -168,7 +174,7 @@
         >
           <p>{{ $t('p.likePopover') }}</p>
           <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" size="mini" @click="poopverDone('visible')">
+            <el-button class="el-button--purple" type="primary" @click="poopverDone('visible')" size="mini">
               {{ $t('p.confirmPopover') }}
             </el-button>
           </div>
@@ -180,8 +186,8 @@
               :time="timeCount"
               :token="ssToken"
               :article="article"
-              style="margin-top: 40px;"
               @like="like"
+              style="margin-top: 40px;"
               @dislike="dislike"
             />
           </div>
@@ -193,19 +199,19 @@
       <div ref="actionBtns" class="btns">
         <!-- 商品 -->
         <!-- 分享 投资 购买 -->
-        <div v-if="isProduct" class="article-btn" @click="share">
+        <div v-if="isProduct" @click="share" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="share" class="icon" />
           </div>
           <span> {{ $t('share') }}</span>
         </div>
-        <div v-if="isProduct" class="article-btn" @click="buy">
+        <div v-if="isProduct" @click="buy" class="article-btn">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" class="article-btn" @click="invest">
+        <div v-if="isProduct" @click="invest" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
@@ -225,12 +231,20 @@
           @dislike="dislike"
         >
           <!-- slot 插槽写入 -->
-          <div class="article-btn" @click="share">
-            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-              <svg-icon icon-class="share" class="icon" />
+          <template>
+            <div @click="toggleBookmark" class="article-btn">
+              <div v-if="!isProduct" :class="!isBookmarked ? 'blue' : 'blue-reversed'" class="icon-container">
+                <svg-icon :iconClass="'bookmark-solid'" class="icon" />
+              </div>
+              <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
             </div>
-            <span>{{ $t('share') }}</span>
-          </div>
+            <div @click="share" class="article-btn">
+              <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
+                <svg-icon icon-class="share" class="icon" />
+              </div>
+              <span>{{ $t('share') }}</span>
+            </div>
+          </template>
         </TokenFooter>
       </div>
       <!-- 商品页面下面的详情信息 -->
@@ -291,9 +305,9 @@
 
     <!-- 阅读文章积分提示框 目前已经去除 -->
     <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
-    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" />
+    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" :tradeNo="tradeNo" />
     <!-- 关联文章侧边栏 -->
-    <div :class="relatedLeftCollapse && 'open'" class="related left" @click.stop>
+    <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
@@ -330,7 +344,7 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" icon-class="copy2" @click="copyCode(item.url)" />
+                  <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
                     <svg-icon class="icon-share" icon-class="jump" />
                   </a>
@@ -362,20 +376,20 @@
               :page-size="pull.params.pagesize"
               :total="total"
               :reload="pull.reload"
-              class="pagination"
               @paginationData="paginationData"
+              class="pagination"
               @togglePage="togglePage"
             />
           </no-content-prompt>
         </div>
       </div>
 
-      <div class="related-arrow" @click.stop="relatedLeftCollapse = !relatedLeftCollapse">
+      <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
         <svg-icon icon-class="arrow" class="icon" />
         <span v-if="!relatedLeftCollapse">已关联{{ total }}篇</span>
       </div>
     </div>
-    <div :class="relatedRightCollapse && 'open'" class="related right" @click.stop>
+    <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
       <div class="related-container">
         <div class="fl afe jsb">
           <div>
@@ -385,7 +399,7 @@
               <svg-icon icon-class="sort" class="icon" />
             </span> -->
           </div>
-          <el-button v-loading="relatedLoadingBtn" type="primary" size="small" icon="el-icon-link" @click="posts">
+          <el-button v-loading="relatedLoadingBtn" type="primary" size="small" @click="posts" icon="el-icon-link">
             关联本文
           </el-button>
         </div>
@@ -407,7 +421,7 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" icon-class="copy2" @click="copyCode(item.url)" />
+                  <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
                     <svg-icon class="icon-share" icon-class="jump" />
                   </a>
@@ -424,15 +438,15 @@
               :page-size="beingPull.params.pagesize"
               :total="beingTotal"
               :reload="beingPull.reload"
-              class="pagination"
               @paginationData="beingPaginationData"
+              class="pagination"
               @togglePage="beingTogglePage"
             />
           </no-content-prompt>
         </div>
       </div>
 
-      <div class="related-arrow" @click.stop="relatedRightCollapse = !relatedRightCollapse">
+      <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
         <svg-icon icon-class="arrow" class="icon" />
         <span v-if="!relatedRightCollapse">被关联{{ beingTotal }}次</span>
       </div>
@@ -465,7 +479,7 @@ import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar, regRemoveContent } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import store from '@/utils/localStorage.js'
-import OrderModal from '@/components/exchange/OrderModal'
+import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
 
@@ -583,7 +597,9 @@ export default {
       beingCurrentPage: Number(this.$route.query.page) || 1,
       beingLoading: false, // 加载数据
       beingTotal: 0,
-      relatedLoadingBtn: false// 关联btn
+      relatedLoadingBtn: false, // 关联btn
+      tradeNo: '',
+      isBookmarked: false
     }
   },
   head() {
@@ -650,26 +666,51 @@ export default {
     isShowTags() {
       return this.article.tags && this.article.tags.length !== 0
     },
-    tokenArticle() {
-    // 是否为付费文章
-      return this.article.tokens.length !== 0
-    },
-    isTokenArticle() {
-      // 付费文章
-      if (this.article.tokens.length !== 0) {
-        if (this.showLock) return true
-        else return false
-      } else { // 不付费
-        return true
+    getArticlePrice() {
+      if (this.isPriceArticle) {
+        const ad = this.article.prices[0]
+        return this.$utils.fromDecimal(ad.price)
+      } else {
+        return 0
       }
     },
-    // 需要多少粉丝币
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.prices && this.article.prices.length !== 0)
+    },
+    // 是否为付费文章
+    isTokenArticle() {
+      return (this.article.tokens && this.article.tokens.length !== 0)
+    },
+    // token是否已支付
+    tokenHasPaied() {
+      if (this.isTokenArticle) {
+        if (this.showLock) return true
+        else return false
+      } else return true
+    },
+    // 文章是否支付
+    articleHasPaied() {
+      // todo
+      if (this.isPriceArticle) {
+        return false
+      }
+      return true
+    },
+    // 是否已付费
+    hasPaied() {
+      if (this.tokenHasPaied && this.articleHasPaied) {
+        return true
+      }
+      return false
+    },
+    // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens.length !== 0) {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少粉丝币名称
+    // 需要多少粉丝通证名称
     needTokenSymbol() {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
@@ -682,7 +723,7 @@ export default {
     // 如果是自己的文章 显示hash 否则走 持币阅读
     isHideIpfsHash() {
       if (this.isMe(this.article.uid)) return false
-      else return this.tokenArticle
+      else return this.isTokenArticle
     }
   },
   watch: {
@@ -801,6 +842,7 @@ export default {
           this.differenceTokenFunc()
           this.calPayFormParams()
           this.getSupportStatus(res.data)
+          this.isBookmarked = Boolean(res.data.is_bookmarked)
         } else if (res.code === 401) {
           console.log(res.message)
         } else {
@@ -1033,6 +1075,24 @@ export default {
     share() {
       this.shareModalShow = true
     },
+    async toggleBookmark() {
+      try {
+        if (!this.isBookmarked) {
+          const res = await this.$API.bookmark(this.article.id)
+          if (res.code === 0) {
+            this.isBookmarked = true
+          }
+        } else {
+          const res = await this.$API.unbookmark(this.article.id)
+          this.isBookmarked = false
+        }
+      } catch (err) {
+        console.error('ToggleBookmark err', err)
+        if (err.response.status === 401) {
+          this.$store.commit('setLoginModal', true)
+        }
+      }
+    },
     async setAvatar() {
       await this.$API.getUser({ id: this.article.uid }).then((res) => {
         if (res.code === 0) {
@@ -1070,6 +1130,48 @@ export default {
             } else console.log('阅读新文章增加积分失败')
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
       }
+    },
+    makeOrderParams() {
+      const requestParams = {
+        items: []
+      }
+      // token未支付
+      if (!this.tokenHasPaied) {
+        const { output, outputToken } = this.form
+        requestParams.items.push({
+          tokenId: outputToken.id,
+          type: 'buy_minetoken',
+          amount: utils.toDecimal(output, outputToken.decimals)
+        })
+      }
+      // 文章price未支付
+      if (!this.articleHasPaied) {
+        requestParams.items.push({
+          signId: this.id,
+          type: 'buy_post'
+        })
+      }
+      return requestParams
+    },
+    wxpayArticle() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      if (this.getInputAmountError) {
+        this.$message.error(this.getInputAmountError)
+        return
+      }
+      const requestParams = this.makeOrderParams()
+      this.$API.createArticleOrder(requestParams).then(res => {
+        if (res.code === 0) {
+          this.tradeNo = res.data
+          this.showOrderModal = true
+          // this.$router.push({ name: 'porder-id', params: {id: res.data}})
+        } else {
+          this.$message.error('订单创建失败')
+        }
+      })
     },
     wxpay() {
       if (!this.isLogined) {
