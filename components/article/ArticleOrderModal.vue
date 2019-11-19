@@ -55,7 +55,7 @@
               </el-tooltip>
               合计：
             </span>
-            <span class="money">{{input.toFixed(2)}} CNY</span></div>
+            <span class="money">{{cnyAmount.toFixed(2)}} CNY</span></div>
         </div>
         <div class="flexBox padding20 bgGray">
           <div><el-checkbox v-model="useBalance" @change="useBalanceChange">使用余额（{{balance}} CNY）</el-checkbox></div>
@@ -80,7 +80,7 @@
       </el-dialog> -->
       <QRCode v-if="needPay > 0" :pay-link="payLink" v-loading="qrcodeLoading"/>
       <div v-else class="payBtnBox">
-        <el-button type="primary" @click="onSubmit">确认支付</el-button>
+        <el-button type="primary" @click="onSubmit">确认使用余额支付</el-button>
       </div>
     </div>
   </el-dialog>
@@ -129,24 +129,20 @@ export default {
     tradeType() {
       return '购买文章'
     },
-    cnyAmount() {
-      if (this.order.amount) return this.$utils.fromDecimal(this.order.amount)
-      else return 0
-    },
     friendlyTime() {
       return moment(this.order.create_time).format(
         "YYYY-MM-DD HH:mm:ss"
       );
     },
-    input() {
-      if (this.form.input) {
-        return utils.up2points(this.form.input)
+    cnyAmount() {
+      if (this.order.total) {
+        return utils.up2points(utils.fromDecimal(this.order.total))
       } else {
         return 0
       }
     },
     deduction() {
-      let input = parseFloat(this.form.input)
+      let input = parseFloat(this.cnyAmount)
       let balance = parseFloat(this.balance)
       let result = 0
       if (this.useBalance) {
@@ -162,8 +158,8 @@ export default {
     },
     needPay() {
       // 支付金额向上取整
-      let input = utils.up2points(this.form.input)
-      let deduction = this.deduction
+      let input = parseFloat(this.cnyAmount)
+      let deduction = this.deduction;
       if (this.useBalance) {
         if (deduction >= input) {
           return 0
@@ -220,8 +216,9 @@ export default {
       this.qrcodeShow = false
     },
     getOrderData() {
+      this.loading = true
       this.$API.getArticleOrder(this.tradeNo).then(res => {
-        console.log(res);
+        this.loading = false
         if (res.code === 0) {
           const status = Number(res.data.status)
           if(status === 7 || status === 8) {
@@ -231,6 +228,7 @@ export default {
             this.errorNotice('订单已支付')
           }
           this.order = res.data
+          this.useBalance = Boolean(res.data.use_balance)
         } else {
           this.errorNotice('订单不存在')
         }
@@ -246,6 +244,20 @@ export default {
         this.timer = setInterval(() => {
           this.getOrderStatus(this.order.trade_no)
         }, interval)
+      })
+    },
+    // 使用余额支付
+    balancePay() {
+      this.$API.handleAmount0(this.tradeNo).then(res => {
+        if (res.code === 0) {
+          this.loading = false
+          this.showModal = false
+          this.successNotice('交易成功，即将刷新页面')
+          clearInterval(this.timer)
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
+        }
       })
     },
     confirmPay() {
@@ -292,7 +304,7 @@ export default {
     // 是否使用余额修改
     useBalanceChange(v) {
       clearInterval(this.timer)
-      this.$API.updateArticleOrder(this.tradeNo, { useBalance: v }).then(res => {
+      this.$API.updateArticleOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
         if (res.code === 0) {
           if (this.needPay > 0) this.weixinPay()
         }

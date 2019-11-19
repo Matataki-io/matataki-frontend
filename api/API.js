@@ -800,4 +800,13 @@ minetokenGetResources(tokenId) {
       data: order
     })
   },
+  handleAmount0(tradeNo) {
+    return request({
+      method: 'post',
+      url: '/orders/handleAmount0',
+      data: {
+        tradeNo
+      }
+    })
+  }
 }
