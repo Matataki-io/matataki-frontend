@@ -56,7 +56,7 @@
 .btns-center {
   justify-content: center;
 }
-.article-btn {
+.article-btn-margin {
   margin: 0 20px;
 }
 .TitleImage {
@@ -199,33 +199,61 @@
 
 .lock {
   background: #fff;
-  &-info {
-    padding: 20px 0;
-  }
-
-  .lock-img {
-    width: 46px;
+  display: flex;
+  &-left {
+    align-self: flex-start;
     margin-right: 10px;
   }
-  .help-icon {
-    color:#DBDBDB;
+  .lock-img {
+    width: 46px;
   }
-  &-info-title {
-    font-size: 16px;
-    color: #000000;
-    padding: 0;
-    margin: 4px 0;
+  &-info {
+    width: 100%;
+    &-title {
+      font-size: 22px;
+      color: #000000;
+      padding: 0;
+      margin: 4px 0;
+    }
+    &-subtitle {
+      font-size: 14px;
+      color: #B2B2B2;
+      padding: 0;
+      margin: 8px 0;
+      font-weight: 400;
+    }
   }
   &-info-des {
     font-size: 14px;
     font-weight: 400;
     color: #000000;
     padding: 0;
-    margin: 4px 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     span {
       color:rgba(178,178,178,1);
       margin-left: 6px;
     }
+  }
+  &-bottom {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #DBDBDB;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    li {
+      margin-bottom: 10px;
+    }
+  }
+  .help-icon {
+    color:#DBDBDB;
   }
 }
 .lock-line {
@@ -254,7 +282,7 @@
   margin: 20px 0 0 0;
   background: #fff;
   border-radius: 4px;
-  padding: 20px;
+  padding: 20px 20px 10px 20px;
   position: relative;
   overflow: hidden;
   &::before {
