@@ -118,12 +118,13 @@
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" @click="invest" class="article-btn">
+        <!-- 投资按钮 -->
+        <!-- <div v-if="isProduct" @click="invest" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-        </div>
+        </div> -->
 
         <!-- <div
           v-if="!isProduct"
@@ -196,27 +197,28 @@
     </div>
 
     <div class="p-w btns-container">
-      <div ref="actionBtns" class="btns">
+      <div ref="actionBtns" :class="isProduct && 'btns-center'" class="btns">
         <!-- 商品 -->
         <!-- 分享 投资 购买 -->
-        <div v-if="isProduct" @click="share" class="article-btn">
+        <div v-if="isProduct" @click="share" class="article-btn article-btn-margin">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="share" class="icon" />
           </div>
           <span> {{ $t('share') }}</span>
         </div>
-        <div v-if="isProduct" @click="buy" class="article-btn">
+        <div v-if="isProduct" @click="buy" class="article-btn article-btn-margin">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" @click="invest" class="article-btn">
+        <!-- 投资商品 -->
+        <!-- <div v-if="isProduct" @click="invest" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-        </div>
+        </div> -->
 
         <!-- 文章 -->
         <!-- 分享 推荐 不推荐 -->
