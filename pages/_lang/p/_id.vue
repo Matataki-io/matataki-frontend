@@ -585,9 +585,9 @@ export default {
       relatedLoadingBtn: false, // 关联btn
       tradeNo: '',
       isBookmarked: false,
-      tokenHasPaied: false,
-      priceHasPaied: false,
-      hasPaied: false
+      tokenHasPaied: true,
+      priceHasPaied: true,
+      hasPaied: true
     }
   },
   head() {
@@ -749,14 +749,11 @@ export default {
       }
     }
   },
-
-  created() {
-    this.getCurrentProfile()
-  },
   mounted() {
     this.setAvatar()
     this.addReadAmount()
     this.handleFocus()
+    this.getCurrentProfile()
     // if (!document.hidden) {
     //   this.reading()
     // }
@@ -793,7 +790,12 @@ export default {
     },
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
-      if (!getCookie('ACCESS_TOKEN')) return
+      if (!getCookie('ACCESS_TOKEN')) {
+        this.tokenHasPaied = false
+        this.priceHasPaied = false
+        this.hasPaie = false
+        return
+      }
       const data = {
         id: id || this.$route.params.id
       }
