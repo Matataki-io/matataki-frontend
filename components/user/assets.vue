@@ -8,7 +8,7 @@
         </span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
-      <el-button class="btn" :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)">
+      <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" class="btn">
         {{ $t('withdraw.title') }}
       </el-button>
     </div>
@@ -16,14 +16,14 @@
     <div class="total-list">
       <div class="total-list-block">
         <span
-          class="total-list-money"
           :style="
             totalSignIncome > 0
-              ? { color: '#FB6877' }
+              ? { color: '#d74e5a' }
               : totalSignIncome < 0
-                ? { color: '#44D7B6' }
+                ? { color: '#41b37d' }
                 : { color: '#000000' }
           "
+          class="total-list-money"
         >{{ totalSignIncome }}</span>
         <span class="total-list-title">
           {{ $t('withdraw.createIncome') }}
@@ -31,14 +31,14 @@
       </div>
       <div class="total-list-block">
         <span
-          class="total-list-money"
           :style="
             totalShareIncome > 0
-              ? { color: '#FB6877' }
+              ? { color: '#d74e5a' }
               : totalShareIncome < 0
-                ? { color: '#44D7B6' }
+                ? { color: '#41b37d' }
                 : { color: '#000000' }
           "
+          class="total-list-money"
         >{{ totalShareIncome }}</span>
         <span class="total-list-title">
           {{ $t('withdraw.supportIncome') }}
@@ -46,14 +46,14 @@
       </div>
       <div class="total-list-block">
         <span
-          class="total-list-money"
           :style="
             totalShareExpenses > 0
-              ? { color: '#FB6877' }
+              ? { color: '#d74e5a' }
               : totalShareExpenses < 0
-                ? { color: '#44D7B6' }
+                ? { color: '#41b37d' }
                 : { color: '#000000' }
           "
+          class="total-list-money"
         >{{ totalShareExpenses }}</span>
         <span class="total-list-title">
           {{ $t('withdraw.supportExpenditure') }}

@@ -52,9 +52,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .sell {
-  color: #FB6877;
+  color: @red;
 }
 .buy {
-  color: #44D7B6;
+  color: @green;
 }
 </style>

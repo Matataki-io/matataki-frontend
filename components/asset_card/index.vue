@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-info">
       <span class="card-type">{{ assetType }}</span>
-      <h2 class="card-pricing" :style="{ color: `${assetColor}` }">
+      <h2 :style="{ color: `${assetColor}` }" class="card-pricing">
         {{ assetAmount }}
       </h2>
     </div>
@@ -14,16 +14,16 @@
       <span v-else class="card-title">
         <div
           v-if="asset.toaddress"
-          class="copy-list"
           @click="copyInfo(asset.toaddress)"
+          class="copy-list"
         >
           {{ asset.toaddress }}
           <svg-icon class="icon" icon-class="copy" />
         </div>
         <div
           v-if="asset.trx"
-          class="copy-list"
           @click="copyInfo(asset.trx)"
+          class="copy-list"
         >
           {{ asset.trx }}
           <svg-icon class="icon" icon-class="copy" />
@@ -85,21 +85,21 @@ export default {
     },
     assetColor() {
       const switchType = {
-        support_expenses: '#44D7B6',
-        buy_expenses: '#44D7B6',
-        fission_income: '#FB6877',
-        referral_income: '#FB6877',
-        author_sale_income: '#FB6877',
-        author_supported_income: '#FB6877',
+        support_expenses: '#41b37d',
+        buy_expenses: '#41b37d',
+        fission_income: '#d74e5a',
+        referral_income: '#d74e5a',
+        author_sale_income: '#d74e5a',
+        author_supported_income: '#d74e5a',
         withdraw: '#000000',
-        buyad: '#44D7B6',
-        earn: '#FB6877',
+        buyad: '#41b37d',
+        earn: '#d74e5a',
         // 人民币
-        recharge: '#FB6877',
-        transfer_out: '#44D7B6',
-        transfer_in: '#FB6877'
+        recharge: '#d74e5a',
+        transfer_out: '#41b37d',
+        transfer_in: '#d74e5a'
       }
-      return switchType[this.asset.type] || '#FB6877'
+      return switchType[this.asset.type] || '#d74e5a'
     },
     assetTitle() {
       const { title, type } = this.asset

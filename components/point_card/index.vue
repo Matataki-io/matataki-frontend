@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-info">
       <span class="card-type">{{ assetType }}</span>
-      <h2 class="card-pricing" :style="{ color: `${assetColor}` }">
+      <h2 :style="{ color: `${assetColor}` }" class="card-pricing">
         {{ assetAmount }}
       </h2>
     </div>
@@ -36,7 +36,7 @@ export default {
       return this.asset.amount
     },
     assetColor() {
-      return '#FB6877'
+      return '#d74e5a'
     },
     assetType() {
       const { status, type } = this.asset
