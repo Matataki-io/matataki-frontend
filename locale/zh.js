@@ -522,7 +522,8 @@ export default {
     vntBuyMinMoney: 'Vnt购买最低不能小于1Vnt',
     vntBuyAccount: '登陆的Vnt账号与支付账号不相同',
     shareWeibo: '微博',
-    shareWechat: '扫一扫，分享到微信'
+    shareWechat: '扫一扫，分享到微信',
+    deleted: '文章已下架'
   },
   invite: {
     headerTitle: '我的邀请',
