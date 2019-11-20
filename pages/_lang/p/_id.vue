@@ -585,9 +585,9 @@ export default {
       relatedLoadingBtn: false, // 关联btn
       tradeNo: '',
       isBookmarked: false,
-      tokenHasPaied: true,
-      priceHasPaied: true,
-      hasPaied: true
+      tokenHasPaied: false,
+      priceHasPaied: false,
+      hasPaied: false
     }
   },
   head() {
@@ -793,12 +793,7 @@ export default {
     },
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
-      if (!getCookie('ACCESS_TOKEN')) {
-        this.tokenHasPaied = false
-        this.priceHasPaied = false
-        this.hasPaied = false
-        return
-      }
+      if (!getCookie('ACCESS_TOKEN')) return
       const data = {
         id: id || this.$route.params.id
       }
