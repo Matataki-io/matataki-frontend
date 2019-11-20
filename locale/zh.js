@@ -350,7 +350,7 @@ export default {
     tagTitle: '选择标签',
     public: '公开发布',
     draft: '保存到草稿箱',
-    original: '我声明此文章为原创',
+    original: '我声明此文章为本人原创',
     draftTitle: '是否保存为草稿？',
     draftText: '保存草稿',
     draftCancel: '不保存',

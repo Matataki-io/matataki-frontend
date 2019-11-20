@@ -11,11 +11,24 @@ function CreativeCommonsLicenseGenerator({
   NoDerivativeWorks = false
 }) {
   if (ShareAlike && NoDerivativeWorks) throw new Error("You can't use ShareAlike and NoDerivativeWorks at the same time.")
-  let result = 'BY-' // 自2004年以来，当前所有的许可协议要求原作者署名
-  if (ShareAlike) result += 'SA'
-  if (Noncommercial) result += 'NC'
-  if (NoDerivativeWorks) result += 'ND'
-  return result
+  const result = ['BY'] // 自2004年以来，当前所有的许可协议要求原作者署名
+  if (Noncommercial) result.push('NC')
+  if (NoDerivativeWorks) result.push('ND')
+  if (ShareAlike) result.push('SA')
+  return result.join('-')
 }
 
+function convertLicenseToChinese(str) {
+  const splitted = str.split('-')
+  return splitted.map(item => {
+    switch (item) {
+      case 'BY': return '署名'
+      case 'NC': return '非商业性使用'
+      case 'ND': return '禁止演绎'
+      case 'SA': return '相同方式共享'
+      default: return ''
+    }
+  }).join('-')
+}
+export { convertLicenseToChinese, CreativeCommonsLicenseGenerator }
 export default CreativeCommonsLicenseGenerator

@@ -274,26 +274,27 @@
               </el-tooltip>
             </h3>
             <h3>
-              请问您允许本作品的演绎作品被修改后传播吗？
+              请问您允许本作品被别人转载、节选、混编、二次创作吗？
             </h3>
             <el-radio v-model="ccLicenseOptions.share" label="true">
-              是
+              允许
             </el-radio>
             <el-radio v-model="ccLicenseOptions.share" label="false">
-              否
+              不允许
               <el-tooltip effect="dark" content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品" placement="top-start">
                 <i class="el-icon-info" />
               </el-tooltip>
             </el-radio>
             <el-radio v-model="ccLicenseOptions.share" label="SA">
-              是的，只要他人以相同方式共享
+              仅允许采用本协议授权的二次创作
               <el-tooltip effect="dark" content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。" placement="top-start">
                 <i class="el-icon-info" />
               </el-tooltip>
             </el-radio>
             <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
-              商业性使用
+              允许商业性使用
             </el-checkbox>
+            <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
           </div>
         </el-col>
       </el-row>
@@ -480,6 +481,7 @@ import defaultImagesUploader from '@/api/imagesUploader'
 import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
+import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/api/creative_commons'
 import imgUpload from '@/components/imgUpload' // 图片上传
 import tagCard from '@/components/tag_card'
 import articleTransfer from '@/components/articleTransfer'
@@ -598,6 +600,31 @@ export default {
     },
     isDevelopmentMode() {
       return process.env.NODE_ENV === 'development'
+    },
+    CCLicenseCredit() {
+      let ShareAlike = false
+      const Noncommercial = !this.ccLicenseOptions.commercialUse
+      let NoDerivativeWorks = false
+      if (this.ccLicenseOptions.share === 'false') NoDerivativeWorks = true
+      if (this.ccLicenseOptions.share === 'SA') ShareAlike = true
+      const license = CreativeCommonsLicenseGenerator({
+        ShareAlike,
+        Noncommercial,
+        NoDerivativeWorks
+      })
+      const chinese = convertLicenseToChinese(license)
+      const url = `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
+      return { license, chinese, url }
+    },
+    contentWithCuricialInfo() {
+      if (this.isOriginal) {
+        const { license, chinese, url } = this.CCLicenseCredit
+        const CCLicenseWords = `本文章 [知识共享 ${chinese} (CC-${license}) 4.0](${url}) 协议授权`
+        return `${this.markdownData}
+    ${CCLicenseWords}`
+      } else {
+        return this.markdownData
+      }
     }
   },
   watch: {
@@ -1062,7 +1089,7 @@ export default {
       const {
         currentUserInfo,
         title,
-        markdownData: content,
+        contentWithCuricialInfo: content,
         fissionFactor,
         cover
       } = this
