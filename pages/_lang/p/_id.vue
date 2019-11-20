@@ -63,7 +63,7 @@
           <h3 class="lock-info-title">
              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
           </h3>
-          <h5 class="lock-info-subtitle" v-if="isPriceArticle">购买后即可解锁全部精彩内容</h5>
+          <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
           <p v-if="!isMe(article.uid)" class="lock-info-des">
             <ul>
               <li v-if="isPriceArticle">
