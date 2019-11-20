@@ -5,13 +5,15 @@
     </div>
     <div class="avatar-content">
       <avatar :src="userInfo.avatar" class="avatar" />
-      <div v-if="isMe($route.params.id)" :class="iconType" class="info-type">
+      <div v-if="iconType" :class="iconType" class="info-type">
         <svg-icon :title="$t('user.accountType')" :icon-class="iconType" class="icon-type" />
       </div>
     </div>
     <h3 class="author">
       {{ userTitle }}
-      <svg-icon v-if="isMe($route.params.id)" @click="jumpTo" class="icon-edit" icon-class="edit" />
+      <router-link v-if="$route.name !== 'setting'" :to="{ name: 'setting' }">
+        <svg-icon class="icon-edit" icon-class="edit" />
+      </router-link>
     </h3>
 
     <p class="des">
@@ -101,12 +103,7 @@ export default {
     ...mapActions('user', [
       'refreshUser',
       'followOrUnfollowUser'
-    ]),
-    jumpTo() {
-      this.$router.push({
-        name: 'setting'
-      })
-    }
+    ])
   }
 }
 </script>
