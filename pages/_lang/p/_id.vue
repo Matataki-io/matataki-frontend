@@ -90,55 +90,6 @@
             </el-button>
           </div>
         </div>
-        <!-- <div class="lock-info fl ac jsb">
-          <div class="fl ac">
-            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
-            <div>
-              <div>
-                <div>
-                  <h3 class="lock-info-title">
-                    {{ !hasPaied ? '购买全文' : '已拥有本文' }}
-                  </h3>
-                  <h5 class="lock-info-subtitle">购买后即可解锁全部精彩内容</h5>
-                </div>
-
-                <p v-if="!isMe(article.uid)" class="lock-info-des">
-                  <ul>
-                    <li v-if="isPriceArticle">
-                      价格：{{ getArticlePrice }} CNY
-                    </li>
-                    <li v-if="isTokenArticle">
-                      持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
-                      <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
-                    </li>
-                  </ul>
-                </p>
-                <p v-else class="lock-info-des">
-                  自己发布的文章
-                </p>
-              </div>
-              <div>已支付</div>
-            </div>
-          </div>
-        </div>
-        <div class="lock-btns">
-          <el-button
-            v-if="!hasPaied"
-            type="primary"
-            @click="wxpayArticle"
-            size="small"
-          >
-            一键购买
-          </el-button>
-          <router-link
-            :to="{name: 'exchange', hash: '#swap', query: { output: form.outputToken.symbol }}"
-          >
-            <el-button type="primary" size="small">
-              交易所
-            </el-button>
-          </router-link>
-        </div> -->
       </div>
 
       <!-- sidebar -->
