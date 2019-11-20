@@ -248,56 +248,47 @@
     </div>
     <div class="post-content">
       <h3>
-        文章版权
+        原创声明
+        <el-tooltip effect="dark" content="来设置你的文章版权信息" placement="top-start">
+          <svg-icon
+            class="help-icon"
+            icon-class="help"
+          />
+        </el-tooltip>
       </h3>
-      <el-row>
-        <el-col :span="12">
-          <h3>
-            原创声明
-            <el-tooltip effect="dark" content="来设置你的文章版权信息" placement="top-start">
-              <svg-icon
-                class="help-icon"
-                icon-class="help"
-              />
-            </el-tooltip>
-          </h3>
-          <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
-            {{ $t('publish.original') }}
-          </el-checkbox>
-        </el-col>
-        <el-col :span="12">
-          <div v-if="isOriginal" class="cc-licensing">
-            <h3>
-              Creative Commons 授权许可协议
-              <el-tooltip effect="dark" content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。" placement="top-start">
-                <i class="el-icon-info" />
-              </el-tooltip>
-            </h3>
-            <h3>
-              请问您允许本作品被别人转载、节选、混编、二次创作吗？
-            </h3>
-            <el-radio v-model="ccLicenseOptions.share" label="true">
-              允许
-            </el-radio>
-            <el-radio v-model="ccLicenseOptions.share" label="false">
-              不允许
-              <el-tooltip effect="dark" content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品" placement="top-start">
-                <i class="el-icon-info" />
-              </el-tooltip>
-            </el-radio>
-            <el-radio v-model="ccLicenseOptions.share" label="SA">
-              仅允许采用本协议授权的二次创作
-              <el-tooltip effect="dark" content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。" placement="top-start">
-                <i class="el-icon-info" />
-              </el-tooltip>
-            </el-radio>
-            <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
-              允许商业性使用
-            </el-checkbox>
-            <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
-          </div>
-        </el-col>
-      </el-row>
+      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
+        {{ $t('publish.original') }}
+      </el-checkbox>
+      <div v-if="isOriginal" class="cc-licensing">
+        <h3>
+          Creative Commons 授权许可协议
+          <el-tooltip effect="dark" content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。" placement="top-start">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </h3>
+        <h3>
+          请问您允许本作品被别人转载、节选、混编、二次创作吗？
+        </h3>
+        <el-radio v-model="ccLicenseOptions.share" label="true">
+          允许
+        </el-radio>
+        <el-radio v-model="ccLicenseOptions.share" label="false">
+          不允许
+          <el-tooltip effect="dark" content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品" placement="top-start">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </el-radio>
+        <el-radio v-model="ccLicenseOptions.share" label="SA">
+          仅允许采用本协议授权的二次创作
+          <el-tooltip effect="dark" content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。" placement="top-start">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </el-radio>
+        <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
+          允许商业性使用
+        </el-checkbox>
+        <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
+      </div>
     </div>
     <div class="tag">
       <p>
@@ -621,7 +612,7 @@ export default {
         const { license, chinese, url } = this.CCLicenseCredit
         const CCLicenseWords = `本文章 [知识共享 ${chinese} (CC-${license}) 4.0](${url}) 协议授权`
         return `${this.markdownData}
-    ${CCLicenseWords}`
+${CCLicenseWords}`
       } else {
         return this.markdownData
       }
