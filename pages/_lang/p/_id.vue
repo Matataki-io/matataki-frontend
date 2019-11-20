@@ -42,7 +42,7 @@
         <!-- 文章页脚 声明 是否原创 -->
         <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-        <div v-if="!hasPaied" class="lock-line">
+        <div v-if="!hasPaied && !isProduct" class="lock-line">
           <el-divider>
             <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
@@ -54,7 +54,7 @@
         </div>
       </article>
       <!-- 解锁按钮 -->
-      <div v-if="isTokenArticle || isPriceArticle" class="lock">
+      <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
         <div class="lock-left">
           <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
           <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
