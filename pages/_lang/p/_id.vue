@@ -1,25 +1,6 @@
 <template>
   <div @click.stop="documentClick" class="main">
-    <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')">
-      <template slot="more">
-        <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
-          <div class="more-icon">
-            <svg-icon class="icon" icon-class="more" />
-          </div>
-          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-            <el-dropdown-item command="edit">
-              {{ $t('edit') }}
-            </el-dropdown-item>
-            <el-dropdown-item command="transfer">
-              {{ $t('transfer') }}
-            </el-dropdown-item>
-            <el-dropdown-item command="del">
-              {{ $t('delete') }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </template>
-    </g-header>
+    <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')" />
 
     <div class="container">
       <!-- 文章封面 -->
@@ -28,10 +9,29 @@
       </div>
       <article class="Post-Header">
         <header>
-          <!-- 标题 -->
-          <h1 class="Post-Title">
-            {{ article.title }}
-          </h1>
+          <div class="fl ac jsb">
+            <!-- 标题 -->
+            <h1 class="Post-Title">
+              {{ article.title }}
+            </h1>
+            <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
+              <div class="more-setting">
+                <svg-icon class="more-icon-setting" icon-class="setting" />
+                <span class="more-text-setting">设置</span>
+              </div>
+              <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+                <el-dropdown-item command="edit">
+                  {{ $t('edit') }}
+                </el-dropdown-item>
+                <el-dropdown-item command="transfer">
+                  {{ $t('transfer') }}
+                </el-dropdown-item>
+                <el-dropdown-item command="del">
+                  {{ $t('delete') }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
           <UserInfoHeader :article="article" />
         </header>
@@ -149,12 +149,13 @@
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" @click="invest" class="article-btn">
+        <!-- 投资按钮 -->
+        <!-- <div v-if="isProduct" @click="invest" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-        </div>
+        </div> -->
 
         <!-- <div
           v-if="!isProduct"
@@ -178,7 +179,7 @@
           >
             <p>{{ $t('p.sharePopover') }}</p>
             <div style="text-align: right; margin: 0">
-              <el-button class="el-button--purple" type="primary" @click="poopverDone('visible1')" size="mini">
+              <el-button @click="poopverDone('visible1')" class="el-button--purple" type="primary" size="mini">
                 {{ $t('p.confirmPopover') }}
               </el-button>
             </div>
@@ -205,7 +206,7 @@
         >
           <p>{{ $t('p.likePopover') }}</p>
           <div style="text-align: right; margin: 0">
-            <el-button class="el-button--purple" type="primary" @click="poopverDone('visible')" size="mini">
+            <el-button @click="poopverDone('visible')" class="el-button--purple" type="primary" size="mini">
               {{ $t('p.confirmPopover') }}
             </el-button>
           </div>
@@ -218,8 +219,8 @@
               :token="ssToken"
               :article="article"
               @like="like"
-              style="margin-top: 40px;"
               @dislike="dislike"
+              style="margin-top: 40px;"
             />
           </div>
         </el-popover>
@@ -227,27 +228,28 @@
     </div>
 
     <div class="p-w btns-container">
-      <div ref="actionBtns" class="btns">
+      <div ref="actionBtns" :class="isProduct && 'btns-center'" class="btns">
         <!-- 商品 -->
         <!-- 分享 投资 购买 -->
-        <div v-if="isProduct" @click="share" class="article-btn">
+        <div v-if="isProduct" @click="share" class="article-btn article-btn-margin">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="share" class="icon" />
           </div>
           <span> {{ $t('share') }}</span>
         </div>
-        <div v-if="isProduct" @click="buy" class="article-btn">
+        <div v-if="isProduct" @click="buy" class="article-btn article-btn-margin">
           <div class="icon-container yellow">
             <svg-icon icon-class="purchase" class="icon" />
           </div>
           <span>{{ $t('p.buyShop') }}</span>
         </div>
-        <div v-if="isProduct" @click="invest" class="article-btn">
+        <!-- 投资商品 -->
+        <!-- <div v-if="isProduct" @click="invest" class="article-btn">
           <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
             <svg-icon icon-class="invest" class="icon" />
           </div>
           <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-        </div>
+        </div> -->
 
         <!-- 文章 -->
         <!-- 分享 推荐 不推荐 -->
@@ -264,7 +266,7 @@
           <!-- slot 插槽写入 -->
           <template>
             <div @click="toggleBookmark" class="article-btn">
-              <div v-if="!isProduct" :class="!isBookmarked ? 'blue' : 'blue-reversed'" class="icon-container">
+              <div v-if="!isProduct" :class="{ actived: isBookmarked }" class="icon-container blue">
                 <svg-icon :iconClass="'bookmark-solid'" class="icon" />
               </div>
               <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
@@ -375,7 +377,7 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy2" />
+                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
                     <svg-icon class="icon-share" icon-class="jump" />
                   </a>
@@ -408,8 +410,8 @@
               :total="total"
               :reload="pull.reload"
               @paginationData="paginationData"
-              class="pagination"
               @togglePage="togglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -430,7 +432,7 @@
               <svg-icon icon-class="sort" class="icon" />
             </span> -->
           </div>
-          <el-button v-loading="relatedLoadingBtn" type="primary" size="small" @click="posts" icon="el-icon-link">
+          <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
             关联本文
           </el-button>
         </div>
@@ -452,7 +454,7 @@
                 </div>
                 <div class="fl ac related-link">
                   <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon class="icon-copy" @click="copyCode(item.url)" icon-class="copy2" />
+                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
                   <a :href="item.url" target="_blank">
                     <svg-icon class="icon-share" icon-class="jump" />
                   </a>
@@ -470,8 +472,8 @@
               :total="beingTotal"
               :reload="beingPull.reload"
               @paginationData="beingPaginationData"
-              class="pagination"
               @togglePage="beingTogglePage"
+              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -513,6 +515,7 @@ import store from '@/utils/localStorage.js'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
+import { getCookie } from '@/utils/cookie'
 
 import userPagination from '@/components/user/user_pagination.vue'
 
@@ -833,6 +836,7 @@ export default {
     },
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
+      if (!getCookie('ACCESS_TOKEN')) return
       const data = {
         id: id || this.$route.params.id
       }

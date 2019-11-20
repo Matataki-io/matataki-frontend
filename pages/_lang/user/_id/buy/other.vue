@@ -1,19 +1,9 @@
 
 <template>
-  <userPage>
-    <div slot="list" v-loading="loading">
+  <userByTab>
+    <div v-loading="loading">
       <no-content-prompt :list="articleCardData.articles">
-        <n-link
-          v-for="(item, index) in articleCardData.articles"
-          :key="index"
-          target="_blank"
-          :to="{
-            name: 'p-id',
-            params: { id: item.id }
-          }"
-        >
-          <articleCardList :card="item" />
-        </n-link>
+        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
         <user-pagination
           v-show="!loading"
           :current-page="currentPage"
@@ -21,34 +11,33 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
-          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
+          class="pagination"
         />
       </no-content-prompt>
     </div>
-  </userPage>
+  </userByTab>
 </template>
 
 <script>
-import userPage from '@/components/user/user_page.vue'
+import userByTab from '@/components/user/user_buy_tab.vue'
 import userPagination from '@/components/user/user_pagination.vue'
-import articleCardList from '@/components/article_card_list/index.vue'
+import buy from '@/components/buy_card/index.vue'
 
 export default {
   components: {
-    userPage,
+    userByTab,
     userPagination,
-    articleCardList
+    buy
   },
   data() {
     return {
       articleCardData: {
         params: {
-          user: this.$route.params.id,
           pagesize: 20
         },
-        apiUrl: 'userArticlesSupportedList',
+        apiUrl: 'buyHistory',
         articles: []
       },
       currentPage: Number(this.$route.query.page) || 1,

@@ -1,31 +1,46 @@
 <template>
   <nav class="nav">
-    <router-link
+    <a
       v-for="(item, index) in user"
       :key="index"
-      :class="$route.name === item.url && 'active'"
-      :to="{name: item.url, params: {id: $route.params.id}}"
+      :class="tabPageCopy === index && 'active'"
+      @click="tabPageCopy = index"
     >
       {{ item.title }}
-    </router-link>
+    </a>
   </nav>
 </template>
 
 <script>
 export default {
+  props: {
+    tabPage: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
-
+      tabPageCopy: 0
     }
   },
   computed: {
     user() {
       return [
-        { title: '粉丝通证持仓', icon: 'minetokens_details', url: 'token-id' },
-        { title: '粉丝通证流水', icon: 'minetokens_detail', url: 'token-detail-id' },
-        { title: '流动金持仓', icon: 'minetokens_details', url: 'token-liquidity-id' },
-        { title: '流动金流水', icon: 'minetokens_detail', url: 'token-liquidity-detail-id' }
+        { title: '粉丝通证持仓', icon: 'minetokens_details' },
+        { title: '粉丝通证流水', icon: 'minetokens_detail' },
+        { title: '流动金持仓', icon: 'minetokens_details' },
+        { title: '流动金流水', icon: 'minetokens_detail' }
       ]
+    }
+  },
+  watch: {
+    tabPage(val) {
+      this.tabPageCopy = val
+    },
+    // 子组件 改变的就是这段代码
+    tabPageCopy(val) {
+      this.$emit('input', val)
     }
   }
 }

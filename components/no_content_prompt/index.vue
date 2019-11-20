@@ -1,12 +1,12 @@
 <template>
   <div style="width: 100%;">
-    <slot />
     <div v-if="!hasList" class="not-content">
       <img v-if="isShowImg" src="@/assets/img/not_content_prompt.png" alt="notContent">
       <p>
         {{ prompt }}
       </p>
     </div>
+    <slot />
   </div>
 </template>
 
@@ -44,10 +44,10 @@ export default {
   width: 100%;
   p {
     color: #848484;
-    font-size: 16px;
+    font-size: 14px;
   }
   img {
-    width: 140px;
+    width: 100px;
   }
 }
 </style>

@@ -12,12 +12,12 @@
       </template>
     </no-content-prompt>
     <buttonLoadMore
-      button-type="article-comment"
       :type-index="0"
       :params="pull.params"
       :api-url="pull.apiUrl"
       :comment-request="reload"
       @buttonLoadMore="buttonLoadMore"
+      button-type="article-comment"
     >
       {{ $t('viewMore') }}
     </buttonLoadMore>

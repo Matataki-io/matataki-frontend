@@ -53,6 +53,12 @@
   align-items: center;
   justify-content: space-between;
 }
+.btns-center {
+  justify-content: center;
+}
+.article-btn {
+  margin: 0 20px;
+}
 .TitleImage {
   display: block;
   margin: 16px auto 0;
@@ -120,16 +126,10 @@
           color: #ffffff;
         }
       }
-    }
-    &.blue-reversed {
-      background: @purpleDark;
-      .icon {
-        color: #ffffff;
-      }
-      &:hover {
-        background: #F1F1F1;
+      &.actived {
+        background: @purpleDark;
         .icon {
-          color: @purpleDark;
+          color: #ffffff;
         }
       }
     }
@@ -521,4 +521,23 @@
 
 .pagination {
   margin-top: 20px;
+}
+
+.more-setting {
+  display: flex;
+  align-items: center;
+  width: 60px;
+  cursor: pointer;
+  margin-left: 10px;
+  box-sizing: border-box;
+  user-select: none;
+}
+.more-text-setting {
+  margin-left: 4px;
+  font-size: 14px;
+  color: #989898;
+}
+.more-icon-setting {
+  font-size: 18px;
+  color: #989898;
 }

@@ -16,7 +16,7 @@ export const paginationUrl = {
   assetList: 'user/tokens',
   // user articles
   // 原创文章-使用 homeTimeRanking 接口 地址一样
-  userArticlesSupportedList: 'posts/supported',
+  userArticlesSupportedList: 'posts/supported', // 页面被移除
   // draftbox
   draftboxList: 'draft/drafts',
   // tag by id

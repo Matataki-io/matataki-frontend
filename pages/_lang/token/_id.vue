@@ -1,72 +1,37 @@
 <template>
-  <layout>
-    <div v-loading="loading" class="coins">
-      <minetokenCard :card="pull.list" :decimals="4" />
-    </div>
-    <user-pagination
-      v-show="!loading"
-      :url-replace="$route.params.id + ''"
-      :current-page="currentPage"
-      :params="pull.params"
-      :api-url="pull.apiUrl"
-      :page-size="10"
-      :total="total"
-      :need-access-token="true"
-      class="pagination"
-      @paginationData="paginationData"
-      @togglePage="togglePage"
-    />
+  <layout v-model="tabPage">
+    <tokenFanCoins v-if="tabPage === 0" />
+    <tokenFanCoinsDetail v-if="tabPage === 1" />
+    <tokenLiquidity v-if="tabPage === 2" />
+    <tokenLiquidityDetail v-if="tabPage === 3" />
   </layout>
 </template>
 
 <script>
-import userPagination from '@/components/user/user_pagination.vue'
-import minetokenCard from '@/components/user/minetoken_card'
+// import userPagination from '@/components/user/user_pagination.vue'
+// import minetokenCard from '@/components/user/minetoken_card'
 import layout from '@/components/token/token_layout.vue'
+import tokenFanCoins from '@/components/token/token_fan_coins'
+import tokenFanCoinsDetail from '@/components/token/token_fan_coins_detail'
+import tokenLiquidity from '@/components/token/token_liquidity'
+import tokenLiquidityDetail from '@/components/token/token_liquidity_detail'
 export default {
   components: {
     layout,
-    userPagination,
-    minetokenCard
+    tokenFanCoins,
+    tokenFanCoinsDetail,
+    tokenLiquidity,
+    tokenLiquidityDetail
   },
   data() {
     return {
-      pull: {
-        params: {
-          pagesize: 10
-        },
-        apiUrl: 'tokenIdBalances',
-        list: []
-      },
-      currentPage: Number(this.$route.query.page) || 1,
-      loading: false, // 加载数据
-      total: 0
+      tabPage: 0
     }
   },
   methods: {
-    paginationData(res) {
-      // console.log(res)
-      this.pull.list = res.data.list
-      this.total = res.data.count || 0
-      this.amount = res.data.amount || 0
-      this.loading = false
-    },
-    togglePage(i) {
-      this.loading = true
-      this.pull.list = []
-      this.currentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
-      })
-    }
   }
 }
 </script>
 
 <style scoped>
-.pagination {
-  margin-top: 40px;
-}
 </style>
