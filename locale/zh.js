@@ -285,7 +285,7 @@ export default {
     navArticle: '文章',
     navShop: '商品',
     searchPlaceholder: '请输入搜索内容',
-    pointPopover: '点击小星星即可查看积分的获取记录',
+    pointPopover: '点击积分图标即可查看积分的获取记录',
     pointPopoverConfirm: '知道了',
     account: '我的账户',
     setting: '设置',
