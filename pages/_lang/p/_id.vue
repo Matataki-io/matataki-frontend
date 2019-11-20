@@ -43,7 +43,7 @@
           <!-- 文章页脚 声明 是否原创 -->
           <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-          <div v-if="!hasPaied" class="lock-line">
+          <div v-if="!hasPaied && !isProduct" class="lock-line">
             <el-divider>
               <span class="lock-text">达成条件即可阅读全文</span>
             </el-divider>
@@ -55,16 +55,16 @@
           </div>
         </article>
         <!-- 解锁按钮 -->
-        <div v-if="isTokenArticle || isPriceArticle" class="lock">
+        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
           <div class="lock-left">
             <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
           </div>
           <div class="lock-info">
             <h3 class="lock-info-title">
-              {{ !hasPaied ? '购买全文' : '已拥有本文' }}
+              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
             </h3>
-            <h5 class="lock-info-subtitle" v-if="!hasPaied">购买后即可解锁全部精彩内容</h5>
+            <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
             <p v-if="!isMe(article.uid)" class="lock-info-des">
               <ul>
                 <li v-if="isPriceArticle">
@@ -82,12 +82,13 @@
               自己发布的文章
             </p>
             <div class="lock-bottom" v-if="!hasPaied">
+              <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
               <el-button
                 type="primary"
                 @click="wxpayArticle"
                 size="small"
               >
-                一键购买
+                一键{{unlockText}}
               </el-button>
             </div>
           </div>
@@ -694,6 +695,13 @@ export default {
       }
       return '解锁'
     },
+    totalCny() {
+      let result = 0
+      if (this.isTokenArticle) {
+        result += parseFloat(this.form.input || 0)
+      }
+      return (result + this.getArticlePrice).toFixed(2)
+    },
     // 需要多少粉丝通证
     needTokenAmount() {
       if (this.article.tokens.length !== 0) {
@@ -817,7 +825,9 @@ export default {
       if (!getCookie('ACCESS_TOKEN')) {
         this.tokenHasPaied = false
         this.priceHasPaied = false
-        this.hasPaie = false
+        this.hasPaied = false
+        this.form.outputToken = this.article.tokens && this.article.tokens.length > 0 ? this.article.tokens[0] : {}
+        this.calPayFormParams()
         return
       }
       const data = {
@@ -1183,34 +1193,29 @@ export default {
         }
       })
     },
-    wxpay() {
-      if (!this.isLogined) {
-        this.$store.commit('setLoginModal', true)
-        return false
-      }
-      if (this.getInputAmountError) {
-        this.$message.error(this.getInputAmountError)
-        return
-      }
-      this.showOrderModal = true
-    },
-    // 微信支付购买
     calPayFormParams() {
-      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
-        const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
-        // 获取有多少token
-        const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
-        let needTokenAmount = 0
-        // 获取需要多少token
-        if (this.article.tokens && this.article.tokens.length !== 0) {
-          needTokenAmount = this.article.tokens[0].amount
-        }
-        // 减之后 换算
-        if (needTokenAmount <= amount) this.form.output = 0
-        else this.form.output = utils.fromDecimal(needTokenAmount - amount)
-        const { inputToken, output, outputToken } = this.form
-        if (output > 0) {
-          this.getInputAmount(inputToken.id, outputToken.id, output)
+      if (this.article.tokens && this.article.tokens.length !== 0) {
+        if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+          const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
+          // 获取有多少token
+          const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+          // 获取需要多少token
+          const needTokenAmount = this.article.tokens[0].amount
+          // 减之后 换算
+          if (needTokenAmount <= amount) this.form.output = 0
+          else this.form.output = utils.fromDecimal(needTokenAmount - amount)
+          const { inputToken, output, outputToken } = this.form
+          if (output > 0) {
+            this.getInputAmount(inputToken.id, outputToken.id, output)
+          }
+        } else {
+          // 获取需要多少token
+          const needTokenAmount = this.article.tokens[0].amount
+          this.form.output = utils.fromDecimal(needTokenAmount)
+          const { inputToken, output, outputToken } = this.form
+          if (output > 0) {
+            this.getInputAmount(inputToken.id, outputToken.id, output)
+          }
         }
       }
     },
