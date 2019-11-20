@@ -552,7 +552,8 @@ export default {
     vntBuyAccount:
       'The login Vnt account is not the same as the payment account',
     shareWeibo: '微博',
-    shareWechat: 'Sweep, share to WeChat'
+    shareWechat: 'Sweep, share to WeChat',
+    deleted: 'Deleted'
   },
   invite: {
     headerTitle: 'my invitation',
