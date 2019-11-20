@@ -42,7 +42,7 @@
         <!-- 文章页脚 声明 是否原创 -->
         <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-        <div v-if="!hasPaied" class="lock-line">
+        <div v-if="!hasPaied && !isProduct" class="lock-line">
           <el-divider>
             <span class="lock-text">达成条件即可阅读全文</span>
           </el-divider>
@@ -54,7 +54,7 @@
         </div>
       </article>
       <!-- 解锁按钮 -->
-      <div v-if="isTokenArticle || isPriceArticle" class="lock">
+      <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
         <div class="lock-left">
           <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
           <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
@@ -585,11 +585,9 @@ export default {
       relatedLoadingBtn: false, // 关联btn
       tradeNo: '',
       isBookmarked: false,
-      tokenHasPaied: true,
-      priceHasPaied: true,
-      hasPaied: true,
-      isTokenArticle: false,
-      isPriceArticle: false
+      tokenHasPaied: false,
+      priceHasPaied: false,
+      hasPaied: false
     }
   },
   head() {
@@ -663,6 +661,14 @@ export default {
       } else {
         return 0
       }
+    },
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.prices && this.article.prices.length !== 0)
+    },
+    // 是否为付费文章
+    isTokenArticle() {
+      return (this.article.tokens && this.article.tokens.length !== 0)
     },
     // 需要多少粉丝通证
     needTokenAmount() {
@@ -829,10 +835,10 @@ export default {
 
         this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
-      // 是否是需要持币阅读的文章
+      /* // 是否是需要持币阅读的文章
       this.isTokenArticle = Boolean(this.currentProfile.holdMineTokens) && this.currentProfile.holdMineTokens.length > 0
       // 是否是需要购买的文章
-      this.isPriceArticle = Boolean(this.currentProfile.require_buy)
+      this.isPriceArticle = Boolean(this.currentProfile.require_buy) */
       if (this.isMe(this.article.uid)) {
         this.tokenHasPaied = true
         this.priceHasPaied = true
