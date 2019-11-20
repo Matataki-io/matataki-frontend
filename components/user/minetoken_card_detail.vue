@@ -2,11 +2,11 @@
   <div class="card">
     <div class="fl jsb">
       <div class="from-to">
-        <router-link class="username" :to="{ name: 'user-id', params: { id: card.from_uid } }">
+        <router-link :to="{ name: 'user-id', params: { id: card.from_uid } }" class="username">
           {{ card.from_nickname || card.from_username }}
         </router-link>
         <svg-icon icon-class="transfer" class="info-icon" />
-        <router-link class="username" :to="{ name: 'user-id', params: { id: card.to_uid } }">
+        <router-link :to="{ name: 'user-id', params: { id: card.to_uid } }" class="username">
           {{ card.to_nickname || card.to_username }}
         </router-link>
       </div>
@@ -42,7 +42,7 @@ export default {
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     color() {
-      return '#FB6877'
+      return '#d74e5a'
     },
     type() {
       const { type } = this.card

@@ -246,10 +246,49 @@
         </div>
       </div>
     </div>
-    <div class="cover-container">
+    <div class="post-content">
+      <h3>
+        原创声明
+        <el-tooltip effect="dark" content="来设置你的文章版权信息" placement="top-start">
+          <svg-icon
+            class="help-icon"
+            icon-class="help"
+          />
+        </el-tooltip>
+      </h3>
       <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
         {{ $t('publish.original') }}
       </el-checkbox>
+      <div v-if="isOriginal" class="cc-licensing">
+        <h3>
+          Creative Commons 授权许可协议
+          <el-tooltip effect="dark" content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。" placement="top-start">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </h3>
+        <h3>
+          请问您允许本作品被别人转载、节选、混编、二次创作吗？
+        </h3>
+        <el-radio v-model="ccLicenseOptions.share" label="true">
+          允许
+        </el-radio>
+        <el-radio v-model="ccLicenseOptions.share" label="false">
+          不允许
+          <el-tooltip effect="dark" content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品" placement="top-start">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </el-radio>
+        <el-radio v-model="ccLicenseOptions.share" label="SA">
+          仅允许采用本协议授权的二次创作
+          <el-tooltip effect="dark" content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。" placement="top-start">
+            <i class="el-icon-info" />
+          </el-tooltip>
+        </el-radio>
+        <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
+          允许商业性使用
+        </el-checkbox>
+        <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
+      </div>
     </div>
     <div class="tag">
       <p>
@@ -433,6 +472,7 @@ import defaultImagesUploader from '@/api/imagesUploader'
 import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
+import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/api/creative_commons'
 import imgUpload from '@/components/imgUpload' // 图片上传
 import tagCard from '@/components/tag_card'
 import articleTransfer from '@/components/articleTransfer'
@@ -472,6 +512,10 @@ export default {
       id: '',
       isOriginal: false, // 是否原创
       imgUploadDone: 0,
+      ccLicenseOptions: {
+        share: 'false',
+        commercialUse: false
+      },
       showModal: false, // 弹框显示
       modalText: {
         text: [this.$t('publish.modalTextText')], // 退出
@@ -547,6 +591,31 @@ export default {
     },
     isDevelopmentMode() {
       return process.env.NODE_ENV === 'development'
+    },
+    CCLicenseCredit() {
+      let ShareAlike = false
+      const Noncommercial = !this.ccLicenseOptions.commercialUse
+      let NoDerivativeWorks = false
+      if (this.ccLicenseOptions.share === 'false') NoDerivativeWorks = true
+      if (this.ccLicenseOptions.share === 'SA') ShareAlike = true
+      const license = CreativeCommonsLicenseGenerator({
+        ShareAlike,
+        Noncommercial,
+        NoDerivativeWorks
+      })
+      const chinese = convertLicenseToChinese(license)
+      const url = `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
+      return { license, chinese, url }
+    },
+    contentWithCuricialInfo() {
+      if (this.isOriginal) {
+        const { license, chinese, url } = this.CCLicenseCredit
+        const CCLicenseWords = `本文章 [知识共享 ${chinese} (CC-${license}) 4.0](${url}) 协议授权`
+        return `${this.markdownData}
+${CCLicenseWords}`
+      } else {
+        return this.markdownData
+      }
     }
   },
   watch: {
@@ -1011,7 +1080,7 @@ export default {
       const {
         currentUserInfo,
         title,
-        markdownData: content,
+        contentWithCuricialInfo: content,
         fissionFactor,
         cover
       } = this
@@ -1540,7 +1609,10 @@ export default {
       )
     },
     async generateBullshit() {
-      const { 生成文章 } = await import('@/api/bullshit-generator.js')
+      const 扯淡生成器 = import('@/api/bullshit-generator.js')
+      this.title = '【扯淡警告】只是一篇用来开发测试的文章'
+      this.cover = '/image/2019/11/20/ebf10fad1a4a2e8e77f33140a1411b09.jpg'
+      const { 生成文章 } = await 扯淡生成器
       this.markdownData = 生成文章()
     }
   }

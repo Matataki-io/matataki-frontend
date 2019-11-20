@@ -1,17 +1,17 @@
 <template>
   <div class="card">
-    <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
+    <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
       <avatar :src="cover" size="45px" />
     </router-link>
     <div class="fl card-info">
       <div class="fl jsb">
         <div class="fl fdc">
-          <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
+          <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
             {{ username }}
           </router-link>
           <span class="type">{{ type }}</span>
         </div>
-        <span class="amount" :style="{ color: color }">{{ amount }}</span>
+        <span :style="{ color: color }" class="amount">{{ amount }}</span>
       </div>
       <div class="fl jsb">
         <span class="time">{{ time }}</span>
@@ -84,9 +84,9 @@ export default {
     },
     color() {
       if (this.isMe(this.card.from_uid)) {
-        return '#44D7B6'
+        return '#41b37d'
       } else if (this.isMe(this.card.to_uid)) {
-        return '#FB6877'
+        return '#d74e5a'
       } else {
         return '#000000'
       }

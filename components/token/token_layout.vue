@@ -45,7 +45,7 @@
               管理
             </el-button>
           </router-link>
-          <el-button size="small" @click="shareModalShow = true">
+          <el-button @click="shareModalShow = true" size="small">
             <svg-icon icon-class="share_new" />
             分享
           </el-button>
@@ -279,8 +279,8 @@ export default {
     color() {
       // 显示转换
       const amount = parseFloat(this.change)
-      if (amount < 0) return 'rgb(266, 70, 69)'
-      else if (amount > 0) return 'rgb(74, 151, 42)'
+      if (amount < 0) return '#d74e5a'
+      else if (amount > 0) return '#41b37d'
       else return 'rgb(153, 153, 153)'
     }
 
@@ -453,6 +453,9 @@ export default {
   line-height:28px;
   padding: 0;
   margin: 0;
+  sub {
+    bottom: 0;
+  }
 }
 .token-name {
   font-size:14px;

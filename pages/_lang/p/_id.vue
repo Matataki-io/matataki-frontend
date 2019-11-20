@@ -1,439 +1,457 @@
 <template>
-  <div @click.stop="documentClick" class="main">
+  <div class="main">
     <g-header :popover-visible="visiblePopover.visible2" @popoverVisible="poopverDone('visible2')" />
 
-    <div class="container">
-      <!-- 文章封面 -->
-      <div v-if="cover" class="TitleImage">
-        <img :src="cover" alt="cover">
-      </div>
-      <article class="Post-Header">
-        <header>
-          <div class="fl ac jsb">
-            <!-- 标题 -->
-            <h1 class="Post-Title">
-              {{ article.title }}
-            </h1>
-            <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
-              <div class="more-setting">
-                <svg-icon class="more-icon-setting" icon-class="setting" />
-                <span class="more-text-setting">设置</span>
-              </div>
-              <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-                <el-dropdown-item command="edit">
-                  {{ $t('edit') }}
-                </el-dropdown-item>
-                <el-dropdown-item command="transfer">
-                  {{ $t('transfer') }}
-                </el-dropdown-item>
-                <el-dropdown-item command="del">
-                  {{ $t('delete') }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-          <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
-          <UserInfoHeader :article="article" />
-        </header>
-        <!-- ipfs -->
-        <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
-        <!-- 文章内容 -->
-        <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
-        <!-- 文章页脚 声明 是否原创 -->
-        <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
+    <div v-if="article.status === 0" @click.stop="documentClick">
+      <div class="container">
+        <!-- 文章封面 -->
+        <div v-if="cover" class="TitleImage">
+          <img :src="cover" alt="cover">
+        </div>
+        <article class="Post-Header">
+          <header>
+            <div class="fl ac jsb">
+              <!-- 标题 -->
+              <h1 class="Post-Title">
+                {{ article.title }}
+              </h1>
+              <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
+                <div class="more-setting">
+                  <svg-icon class="more-icon-setting" icon-class="setting" />
+                  <span class="more-text-setting">设置</span>
+                </div>
+                <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+                  <el-dropdown-item command="edit">
+                    {{ $t('edit') }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="transfer">
+                    {{ $t('transfer') }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="del">
+                    {{ $t('delete') }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+            <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
+            <UserInfoHeader :article="article" />
+          </header>
+          <!-- ipfs -->
+          <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
+          <!-- 文章内容 -->
+          <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
+          <!-- 文章页脚 声明 是否原创 -->
+          <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-        <div v-if="!hasPaied && !isProduct" class="lock-line">
-          <el-divider>
-            <span class="lock-text">达成条件即可阅读全文</span>
-          </el-divider>
-          <svg-icon
-            class="icon-arrow"
-            icon-class="arrow_down"
-          />
-          <div class="lock-line-full" />
-        </div>
-      </article>
-      <!-- 解锁按钮 -->
-      <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
-        <div class="lock-left">
-          <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-          <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
-        </div>
-        <div class="lock-info">
-          <h3 class="lock-info-title">
-             {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
-          </h3>
-          <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
-          <p v-if="!isMe(article.uid)" class="lock-info-des">
-            <ul>
-              <li v-if="isPriceArticle">
-                价格：{{ getArticlePrice }} CNY
-              </li>
-              <li v-if="isTokenArticle">
-                条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
-                <!-- 不显示 - 号 -->
-                <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
-              </li>
-            </ul>
-            <span v-if="hasPaied" class="lock-pay-text">已支付</span>
-          </p>
-          <p v-else class="lock-info-des">
-            自己发布的文章
-          </p>
-          <div class="lock-bottom" v-if="!hasPaied">
-            <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
-            <el-button
-              type="primary"
-              @click="wxpayArticle"
-              size="small"
-            >
-              一键{{unlockText}}
-            </el-button>
+          <div v-if="!hasPaied && !isProduct" class="lock-line">
+            <el-divider>
+              <span class="lock-text">达成条件即可阅读全文</span>
+            </el-divider>
+            <svg-icon
+              class="icon-arrow"
+              icon-class="arrow_down"
+            />
+            <div class="lock-line-full" />
+          </div>
+        </article>
+        <!-- 解锁按钮 -->
+        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
+          <div class="lock-left">
+            <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+          </div>
+          <div class="lock-info">
+            <h3 class="lock-info-title">
+              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
+            </h3>
+            <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
+            <p v-if="!isMe(article.uid)" class="lock-info-des">
+              <ul>
+                <li v-if="isPriceArticle">
+                  价格：{{ getArticlePrice }} CNY
+                </li>
+                <li v-if="isTokenArticle">
+                  条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
+                  <!-- 不显示 - 号 -->
+                  <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                </li>
+              </ul>
+              <span v-if="hasPaied" class="lock-pay-text">已支付</span>
+            </p>
+            <p v-else class="lock-info-des">
+              自己发布的文章
+            </p>
+            <div class="lock-bottom" v-if="!hasPaied">
+              <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
+              <el-button
+                type="primary"
+                @click="wxpayArticle"
+                size="small"
+              >
+                一键{{unlockText}}
+              </el-button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- sidebar -->
-      <div class="sidebar">
-        <div v-if="isProduct" @click="buy" class="article-btn">
-          <div class="icon-container yellow">
-            <svg-icon icon-class="purchase" class="icon" />
+        <!-- sidebar -->
+        <div class="sidebar">
+          <div v-if="isProduct" @click="buy" class="article-btn">
+            <div class="icon-container yellow">
+              <svg-icon icon-class="purchase" class="icon" />
+            </div>
+            <span>{{ $t('p.buyShop') }}</span>
           </div>
-          <span>{{ $t('p.buyShop') }}</span>
-        </div>
-        <!-- 投资按钮 -->
-        <!-- <div v-if="isProduct" @click="invest" class="article-btn">
-          <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-            <svg-icon icon-class="invest" class="icon" />
-          </div>
-          <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-        </div> -->
-
-        <!-- <div
-          v-if="!isProduct"
-          class="comment fl ac fdc"
-          >
-          <div class="comment-block">
-            <svg-icon icon-class="comment" class="comment-icon" />
-          </div>
-          <span>评论</span>
+          <!-- 投资按钮 -->
+          <!-- <div v-if="isProduct" @click="invest" class="article-btn">
+            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
+              <svg-icon icon-class="invest" class="icon" />
+            </div>
+            <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
           </div> -->
 
-        <div
-          @click="share"
-          class="article-btn"
-        >
+          <!-- <div
+            v-if="!isProduct"
+            class="comment fl ac fdc"
+            >
+            <div class="comment-block">
+              <svg-icon icon-class="comment" class="comment-icon" />
+            </div>
+            <span>评论</span>
+            </div> -->
+
+          <div
+            @click="share"
+            class="article-btn"
+          >
+            <el-popover
+              v-model="visiblePopover.visible1"
+              placement="right"
+              width="300"
+              trigger="manual"
+            >
+              <p>{{ $t('p.sharePopover') }}</p>
+              <div style="text-align: right; margin: 0">
+                <el-button @click="poopverDone('visible1')" class="el-button--purple" type="primary" size="mini">
+                  {{ $t('p.confirmPopover') }}
+                </el-button>
+              </div>
+
+              <div
+                slot="reference"
+              >
+                <div
+                  :class="isProduct ? 'yellow' : 'blue'"
+                  class="icon-container blue"
+                >
+                  <svg-icon icon-class="share" class="icon" />
+                </div>
+                <span>{{ $t('share') }}</span>
+              </div>
+            </el-popover>
+          </div>
+
           <el-popover
-            v-model="visiblePopover.visible1"
+            v-model="visiblePopover.visible"
             placement="right"
             width="300"
             trigger="manual"
           >
-            <p>{{ $t('p.sharePopover') }}</p>
+            <p>{{ $t('p.likePopover') }}</p>
             <div style="text-align: right; margin: 0">
-              <el-button @click="poopverDone('visible1')" class="el-button--purple" type="primary" size="mini">
+              <el-button @click="poopverDone('visible')" class="el-button--purple" type="primary" size="mini">
                 {{ $t('p.confirmPopover') }}
               </el-button>
             </div>
-
             <div
               slot="reference"
             >
-              <div
-                :class="isProduct ? 'yellow' : 'blue'"
-                class="icon-container blue"
-              >
-                <svg-icon icon-class="share" class="icon" />
-              </div>
-              <span>{{ $t('share') }}</span>
+              <CoinBtn
+                v-if="!isProduct"
+                :time="timeCount"
+                :token="ssToken"
+                :article="article"
+                @like="like"
+                @dislike="dislike"
+                style="margin-top: 40px;"
+              />
             </div>
           </el-popover>
         </div>
+      </div>
 
-        <el-popover
-          v-model="visiblePopover.visible"
-          placement="right"
-          width="300"
-          trigger="manual"
+      <div class="p-w btns-container">
+        <div ref="actionBtns" :class="isProduct && 'btns-center'" class="btns">
+          <!-- 商品 -->
+          <!-- 分享 投资 购买 -->
+          <div v-if="isProduct" @click="share" class="article-btn article-btn-margin">
+            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
+              <svg-icon icon-class="share" class="icon" />
+            </div>
+            <span> {{ $t('share') }}</span>
+          </div>
+          <div v-if="isProduct" @click="buy" class="article-btn article-btn-margin">
+            <div class="icon-container yellow">
+              <svg-icon icon-class="purchase" class="icon" />
+            </div>
+            <span>{{ $t('p.buyShop') }}</span>
+          </div>
+          <!-- 投资商品 -->
+          <!-- <div v-if="isProduct" @click="invest" class="article-btn">
+            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
+              <svg-icon icon-class="invest" class="icon" />
+            </div>
+            <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
+          </div> -->
+
+          <!-- 文章 -->
+          <!-- 分享 推荐 不推荐 -->
+
+          <!-- 文章下方的功能按钮, 由于修改的之前的代码, share模块用插槽的形式写入 -->
+          <TokenFooter
+            v-if="!isProduct"
+            :time="timeCount"
+            :token="ssToken"
+            :article="article"
+            @like="like"
+            @dislike="dislike"
+          >
+            <!-- slot 插槽写入 -->
+            <template>
+              <div @click="toggleBookmark" class="article-btn">
+                <div v-if="!isProduct" :class="{ actived: isBookmarked }" class="icon-container blue">
+                  <svg-icon :iconClass="'bookmark-solid'" class="icon" />
+                </div>
+                <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
+              </div>
+              <div @click="share" class="article-btn">
+                <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
+                  <svg-icon icon-class="share" class="icon" />
+                </div>
+                <span>{{ $t('share') }}</span>
+              </div>
+            </template>
+          </TokenFooter>
+        </div>
+        <!-- 商品页面下面的详情信息 -->
+        <ArticleInfoFooter v-if="isProduct" :article="article" class="product" />
+      </div>
+      <!-- tag 标签 -->
+      <div v-if="isShowTags" class="p-w" style="margin-bottom: 20px;">
+        <router-link
+          v-for="(item, index) in article.tags"
+          :key="index"
+          :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
+          style="margin-right: 10px;"
+          class="tag-card"
         >
-          <p>{{ $t('p.likePopover') }}</p>
-          <div style="text-align: right; margin: 0">
-            <el-button @click="poopverDone('visible')" class="el-button--purple" type="primary" size="mini">
-              {{ $t('p.confirmPopover') }}
+          {{ item.name }}
+        </router-link>
+      </div>
+
+      <!-- 内容居中 -->
+      <div class="p-w">
+        <!-- 评论内容 -->
+        <commentInput v-if="!isProduct" :article="article" @doneComment="commentRequest = Date.now()" />
+        <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" />
+      </div>
+
+      <InvestModal
+        v-model="investModalShow"
+        :article="{
+          ...article,
+          title: $t('p.investArticle')
+        }"
+        @investDone="payDone"
+      />
+      <!-- 分享dialog -->
+      <ShareModal
+        v-model="shareModalShow"
+        :article="{
+          ...article,
+          content: compiledMarkdown,
+          avatar
+        }"
+      />
+      <!-- 购买 -->
+      <PurchaseModal
+        v-model="purchaseModalShow"
+        :article="{
+          ...article,
+          cover
+        }"
+        @purchaseDone="payDone"
+      />
+      <!-- 文章转让 -->
+      <article-transfer
+        v-model="transferModal"
+        :article-id="Number(article.id)"
+        from="article"
+      />
+
+      <!-- 阅读文章积分提示框 目前已经去除 -->
+      <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
+      <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" :tradeNo="tradeNo" />
+      <!-- 关联文章侧边栏 -->
+      <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
+        <div class="related-container">
+          <div class="fl afe jsb">
+            <div>
+              <span class="related-title">已关联<span>{{ total }}</span></span>
+              <!-- <span class="related-rort">
+                正序
+                <svg-icon icon-class="sort" class="icon" />
+              </span> -->
+            </div>
+            <div>
+              <span class="related-summary">摘要
+                <el-switch
+                  v-model="relatedSummary"
+                  active-color="#542DE0"
+                />
+              </span>
+            </div>
+          </div>
+
+          <div slot="list" v-loading="loading">
+            <no-content-prompt :list="pull.list">
+              <div v-for="(item, index) in relatedList" :key="index" class="related-list">
+                <div :class="!item.content || !relatedSummary && 'no-margin-bottom'" class="related-list-title">
+                  <div class="fl jsb">
+                    <div class="fl ac related-7">
+                      <div class="related-list-link">
+                        <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                        <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                      </div>
+                    </div>
+                    <div class="fl ac jfe related-3">
+                      <span class="related-id">{{ item.number }}</span>
+                    </div>
+                  </div>
+                  <div class="fl ac related-link">
+                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
+                    <a :href="item.url" target="_blank">
+                      <svg-icon class="icon-share" icon-class="jump" />
+                    </a>
+                  </div>
+                </div>
+                <transition>
+                  <div v-if="relatedSummary" :class="!item.collapse && 'open'">
+                    <div class="related-list-content">
+                      {{ item.content }}
+                    </div>
+                    <div v-if="item.showCollapse" class="related-more">
+                      <transition name="fade">
+                        <div v-if="!item.collapse" class="more-full" />
+                      </transition>
+                      <span @click.stop="item.collapse = !item.collapse">
+                        {{ item.collapse ? '折叠': '展开' }}
+                        <i class="el-icon-arrow-up arrow-up" /></span>
+                    </div>
+                  </div>
+                </transition>
+              </div>
+
+              <user-pagination
+                v-show="!loading"
+                :current-page="currentPage"
+                :params="pull.params"
+                :api-url="pull.apiUrl"
+                :url-replace="$route.params.id + ''"
+                :page-size="pull.params.pagesize"
+                :total="total"
+                :reload="pull.reload"
+                @paginationData="paginationData"
+                @togglePage="togglePage"
+                class="pagination"
+              />
+            </no-content-prompt>
+          </div>
+        </div>
+
+        <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
+          <svg-icon icon-class="arrow" class="icon" />
+          <span v-if="!relatedLeftCollapse">已关联{{ total }}篇</span>
+        </div>
+      </div>
+      <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
+        <div class="related-container">
+          <div class="fl afe jsb">
+            <div>
+              <span class="related-title">被关联<span>{{ beingTotal }}</span></span>
+              <!-- <span class="related-rort">
+                正序
+                <svg-icon icon-class="sort" class="icon" />
+              </span> -->
+            </div>
+            <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
+              关联本文
             </el-button>
           </div>
-          <div
-            slot="reference"
-          >
-            <CoinBtn
-              v-if="!isProduct"
-              :time="timeCount"
-              :token="ssToken"
-              :article="article"
-              @like="like"
-              @dislike="dislike"
-              style="margin-top: 40px;"
-            />
-          </div>
-        </el-popover>
-      </div>
-    </div>
 
-    <div class="p-w btns-container">
-      <div ref="actionBtns" :class="isProduct && 'btns-center'" class="btns">
-        <!-- 商品 -->
-        <!-- 分享 投资 购买 -->
-        <div v-if="isProduct" @click="share" class="article-btn article-btn-margin">
-          <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-            <svg-icon icon-class="share" class="icon" />
-          </div>
-          <span> {{ $t('share') }}</span>
-        </div>
-        <div v-if="isProduct" @click="buy" class="article-btn article-btn-margin">
-          <div class="icon-container yellow">
-            <svg-icon icon-class="purchase" class="icon" />
-          </div>
-          <span>{{ $t('p.buyShop') }}</span>
-        </div>
-        <!-- 投资商品 -->
-        <!-- <div v-if="isProduct" @click="invest" class="article-btn">
-          <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-            <svg-icon icon-class="invest" class="icon" />
-          </div>
-          <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-        </div> -->
-
-        <!-- 文章 -->
-        <!-- 分享 推荐 不推荐 -->
-
-        <!-- 文章下方的功能按钮, 由于修改的之前的代码, share模块用插槽的形式写入 -->
-        <TokenFooter
-          v-if="!isProduct"
-          :time="timeCount"
-          :token="ssToken"
-          :article="article"
-          @like="like"
-          @dislike="dislike"
-        >
-          <!-- slot 插槽写入 -->
-          <template>
-            <div @click="toggleBookmark" class="article-btn">
-              <div v-if="!isProduct" :class="{ actived: isBookmarked }" class="icon-container blue">
-                <svg-icon :iconClass="'bookmark-solid'" class="icon" />
+          <div slot="list" v-loading="beingLoading">
+            <no-content-prompt :list="beingPull.list">
+              <div v-for="(item, index) in beingRelatedList" :key="index" class="related-list">
+                <div class="related-list-title no-margin-bottom">
+                  <div class="fl jsb">
+                    <div class="fl ac related-7">
+                      <div class="related-list-link">
+                        <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                        <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                      </div>
+                    </div>
+                    <!-- <div class="fl ac jfe related-3">
+                      <span class="related-id">{{ item.number }}</span>
+                    </div> -->
+                  </div>
+                  <div class="fl ac related-link">
+                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
+                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
+                    <a :href="item.url" target="_blank">
+                      <svg-icon class="icon-share" icon-class="jump" />
+                    </a>
+                  </div>
+                </div>
               </div>
-              <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
-            </div>
-            <div @click="share" class="article-btn">
-              <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-                <svg-icon icon-class="share" class="icon" />
-              </div>
-              <span>{{ $t('share') }}</span>
-            </div>
-          </template>
-        </TokenFooter>
-      </div>
-      <!-- 商品页面下面的详情信息 -->
-      <ArticleInfoFooter v-if="isProduct" :article="article" class="product" />
-    </div>
-    <!-- tag 标签 -->
-    <div v-if="isShowTags" class="p-w" style="margin-bottom: 20px;">
-      <router-link
-        v-for="(item, index) in article.tags"
-        :key="index"
-        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
-        style="margin-right: 10px;"
-        class="tag-card"
-      >
-        {{ item.name }}
-      </router-link>
-    </div>
 
-    <!-- 内容居中 -->
-    <div class="p-w">
-      <!-- 评论内容 -->
-      <commentInput v-if="!isProduct" :article="article" @doneComment="commentRequest = Date.now()" />
-      <CommentList :class="!isProduct && 'has-comment-input'" :comment-request="commentRequest" :sign-id="article.id" :type="article.channel_id" />
-    </div>
-
-    <InvestModal
-      v-model="investModalShow"
-      :article="{
-        ...article,
-        title: $t('p.investArticle')
-      }"
-      @investDone="payDone"
-    />
-    <!-- 分享dialog -->
-    <ShareModal
-      v-model="shareModalShow"
-      :article="{
-        ...article,
-        content: compiledMarkdown,
-        avatar
-      }"
-    />
-    <!-- 购买 -->
-    <PurchaseModal
-      v-model="purchaseModalShow"
-      :article="{
-        ...article,
-        cover
-      }"
-      @purchaseDone="payDone"
-    />
-    <!-- 文章转让 -->
-    <article-transfer
-      v-model="transferModal"
-      :article-id="Number(article.id)"
-      from="article"
-    />
-
-    <!-- 阅读文章积分提示框 目前已经去除 -->
-    <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
-    <OrderModal v-model="showOrderModal" :form="{...form, type: 'buy_token_output', limitValue}" :tradeNo="tradeNo" />
-    <!-- 关联文章侧边栏 -->
-    <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
-      <div class="related-container">
-        <div class="fl afe jsb">
-          <div>
-            <span class="related-title">已关联<span>{{ total }}</span></span>
-            <!-- <span class="related-rort">
-              正序
-              <svg-icon icon-class="sort" class="icon" />
-            </span> -->
-          </div>
-          <div>
-            <span class="related-summary">摘要
-              <el-switch
-                v-model="relatedSummary"
-                active-color="#542DE0"
+              <user-pagination
+                v-show="!beingLoading"
+                :current-page="beingCurrentPage"
+                :params="beingPull.params"
+                :api-url="beingPull.apiUrl"
+                :url-replace="$route.params.id + ''"
+                :page-size="beingPull.params.pagesize"
+                :total="beingTotal"
+                :reload="beingPull.reload"
+                @paginationData="beingPaginationData"
+                @togglePage="beingTogglePage"
+                class="pagination"
               />
-            </span>
+            </no-content-prompt>
           </div>
         </div>
 
-        <div slot="list" v-loading="loading">
-          <no-content-prompt :list="pull.list">
-            <div v-for="(item, index) in relatedList" :key="index" class="related-list">
-              <div :class="!item.content || !relatedSummary && 'no-margin-bottom'" class="related-list-title">
-                <div class="fl jsb">
-                  <div class="fl ac related-7">
-                    <div class="related-list-link">
-                      <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
-                      <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
-                    </div>
-                  </div>
-                  <div class="fl ac jfe related-3">
-                    <span class="related-id">{{ item.number }}</span>
-                  </div>
-                </div>
-                <div class="fl ac related-link">
-                  <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
-                  <a :href="item.url" target="_blank">
-                    <svg-icon class="icon-share" icon-class="jump" />
-                  </a>
-                </div>
-              </div>
-              <transition>
-                <div v-if="relatedSummary" :class="!item.collapse && 'open'">
-                  <div class="related-list-content">
-                    {{ item.content }}
-                  </div>
-                  <div v-if="item.showCollapse" class="related-more">
-                    <transition name="fade">
-                      <div v-if="!item.collapse" class="more-full" />
-                    </transition>
-                    <span @click.stop="item.collapse = !item.collapse">
-                      {{ item.collapse ? '折叠': '展开' }}
-                      <i class="el-icon-arrow-up arrow-up" /></span>
-                  </div>
-                </div>
-              </transition>
-            </div>
-
-            <user-pagination
-              v-show="!loading"
-              :current-page="currentPage"
-              :params="pull.params"
-              :api-url="pull.apiUrl"
-              :url-replace="$route.params.id + ''"
-              :page-size="pull.params.pagesize"
-              :total="total"
-              :reload="pull.reload"
-              @paginationData="paginationData"
-              @togglePage="togglePage"
-              class="pagination"
-            />
-          </no-content-prompt>
+        <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
+          <svg-icon icon-class="arrow" class="icon" />
+          <span v-if="!relatedRightCollapse">被关联{{ beingTotal }}次</span>
         </div>
-      </div>
-
-      <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
-        <svg-icon icon-class="arrow" class="icon" />
-        <span v-if="!relatedLeftCollapse">已关联{{ total }}篇</span>
       </div>
     </div>
-    <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
-      <div class="related-container">
-        <div class="fl afe jsb">
-          <div>
-            <span class="related-title">被关联<span>{{ beingTotal }}</span></span>
-            <!-- <span class="related-rort">
-              正序
-              <svg-icon icon-class="sort" class="icon" />
-            </span> -->
-          </div>
-          <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
-            关联本文
-          </el-button>
-        </div>
-
-        <div slot="list" v-loading="beingLoading">
-          <no-content-prompt :list="beingPull.list">
-            <div v-for="(item, index) in beingRelatedList" :key="index" class="related-list">
-              <div class="related-list-title no-margin-bottom">
-                <div class="fl jsb">
-                  <div class="fl ac related-7">
-                    <div class="related-list-link">
-                      <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
-                      <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
-                    </div>
-                  </div>
-                  <!-- <div class="fl ac jfe related-3">
-                    <span class="related-id">{{ item.number }}</span>
-                  </div> -->
-                </div>
-                <div class="fl ac related-link">
-                  <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                  <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
-                  <a :href="item.url" target="_blank">
-                    <svg-icon class="icon-share" icon-class="jump" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <user-pagination
-              v-show="!beingLoading"
-              :current-page="beingCurrentPage"
-              :params="beingPull.params"
-              :api-url="beingPull.apiUrl"
-              :url-replace="$route.params.id + ''"
-              :page-size="beingPull.params.pagesize"
-              :total="beingTotal"
-              :reload="beingPull.reload"
-              @paginationData="beingPaginationData"
-              @togglePage="beingTogglePage"
-              class="pagination"
-            />
-          </no-content-prompt>
-        </div>
+    <div v-else class="container deleted">
+      <div>
+        <img src="@/assets/img/deleted.png" alt="deleted">
       </div>
-
-      <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
-        <svg-icon icon-class="arrow" class="icon" />
-        <span v-if="!relatedRightCollapse">被关联{{ beingTotal }}次</span>
+      <div class="message">
+        <span>{{ $t('p.deleted') }}</span>
+      </div>
+      <div class="ipfs-hash">
+        <svg-icon
+          class="copy-hash"
+          icon-class="copy"
+          @click="copyText(article.hash)"
+        />
+        <span>Hash: {{ article.hash }}</span>
       </div>
     </div>
   </div>
@@ -1471,6 +1489,17 @@ export default {
         }).catch(err => {
           console.log('err', err)
         })
+    },
+
+    copyText(getCopyIpfsHash) {
+      this.$copyText(getCopyIpfsHash).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
     }
   }
 

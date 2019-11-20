@@ -31,7 +31,7 @@
         </el-dropdown>
       </div>
 
-      <div v-show="searchQueryValLen">
+      <div v-loading="loading" v-show="searchQueryValLen">
         <!-- 文章 -->
         <template v-if="$route.name === 'search'">
           <articleCardList
@@ -49,10 +49,10 @@
             :span="8"
           >
             <articleCard
-              card-type="commodity-card"
               :type-index="1"
               :card="item"
               :is-search-card="true"
+              card-type="commodity-card"
             />
           </el-col>
         </el-row>
@@ -66,7 +66,7 @@
           />
         </div>
 
-        <div v-loading="loading" class="pagination">
+        <div class="pagination">
           <user-pagination
             :current-page="currentPage"
             :params="articleCardData[0].params"

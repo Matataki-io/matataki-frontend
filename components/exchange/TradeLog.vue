@@ -4,32 +4,32 @@
       <div class="header">
         <div class="token-info">
           <avatar :src="logo" size="20px" />
-          <span>{{minetokenToken.symbol}}视角</span>
-          <span title="切换视角" v-if="tokensId.length >= 2"><svg-icon class="refresh" icon-class="refresh" @click="changeView"/></span>
+          <span>{{ minetokenToken.symbol }}视角</span>
+          <span v-if="tokensId.length >= 2" title="切换视角"><svg-icon @click="changeView" class="refresh" icon-class="refresh" /></span>
         </div>
-        <span><span class="black">{{price}}</span> 最新价格</span>
-        <span><span :class="changeClass">{{change}}</span> 24h涨跌</span>
-        <span><span class="black">{{volume}}</span> 24h成交</span>
+        <span><span class="black">{{ price }}</span> 最新价格</span>
+        <span><span :class="changeClass">{{ change }}</span> 24h涨跌</span>
+        <span><span class="black">{{ volume }}</span> 24h成交</span>
       </div>
       <div class="jJSpkX" />
     </div>
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="content">
-          <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录'}}</span>
-          <n-link v-if="currentId" target='_blank' class="gray-btn btn" :to="{name: 'token-id', params: {id: currentId}}">
+          <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录' }}</span>
+          <n-link v-if="currentId" :to="{name: 'token-id', params: {id: currentId}}" target="_blank" class="gray-btn btn">
             <div class="link">
-              <svg-icon icon-class="share-link" class="icon"/>
+              <svg-icon icon-class="share-link" class="icon" />
             </div>
           </n-link>
-          <el-tabs type="border-card"  v-model="activeName">
+          <el-tabs v-model="activeName" type="border-card">
             <el-tab-pane label="我的流水" name="my">
-              <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol"/>
-              <LiquidityTable v-else :list="myLogs" :symbol="symbol"/>
+              <TradeTable v-if="type === 'purchase'" :list="myLogs" :symbol="symbol" />
+              <LiquidityTable v-else :list="myLogs" :symbol="symbol" />
             </el-tab-pane>
             <el-tab-pane label="全部流水" name="all">
-              <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol"/>
-              <LiquidityTable v-else :list="logs" :symbol="symbol"/>
+              <TradeTable v-if="type === 'purchase'" :list="logs" :symbol="symbol" />
+              <LiquidityTable v-else :list="logs" :symbol="symbol" />
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -46,6 +46,11 @@ import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
+  components: {
+    avatar,
+    TradeTable,
+    LiquidityTable
+  },
   props: {
     tokensId: {
       type: Array,
@@ -54,26 +59,6 @@ export default {
     type: {
       type: String,
       default: 'purchase'
-    }
-  },
-  components: {
-    avatar,
-    TradeTable,
-    LiquidityTable
-  },
-  watch: {
-    tokensId(ids) {
-      if (ids.length > 0) {
-        this.currentId = ids[0]
-        this.update()
-      } else {
-        this.currentId = null
-        this.logs = []
-        this.myLogs = []
-        this.minetokenToken = Object.create(null)
-        this.minetokenUser = Object.create(null)
-        this.minetokenExchange = Object.create(null)
-      }
     }
   },
   data() {
@@ -116,6 +101,21 @@ export default {
         return 'green'
       } else {
         return 'black'
+      }
+    }
+  },
+  watch: {
+    tokensId(ids) {
+      if (ids.length > 0) {
+        this.currentId = ids[0]
+        this.update()
+      } else {
+        this.currentId = null
+        this.logs = []
+        this.myLogs = []
+        this.minetokenToken = Object.create(null)
+        this.minetokenUser = Object.create(null)
+        this.minetokenExchange = Object.create(null)
       }
     }
   },
@@ -273,10 +273,10 @@ export default {
     }
   }
   .red {
-    color: #FB6877;
+    color: @red;
   }
   .green {
-    color: #44D7B6;
+    color: @green;
   }
   .black {
     color: #000000;

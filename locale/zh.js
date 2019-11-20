@@ -285,7 +285,7 @@ export default {
     navArticle: '文章',
     navShop: '商品',
     searchPlaceholder: '请输入搜索内容',
-    pointPopover: '点击小星星即可查看积分的获取记录',
+    pointPopover: '点击积分图标即可查看积分的获取记录',
     pointPopoverConfirm: '知道了',
     account: '我的账户',
     setting: '设置',
@@ -350,7 +350,7 @@ export default {
     tagTitle: '选择标签',
     public: '公开发布',
     draft: '保存到草稿箱',
-    original: '我声明此文章为原创',
+    original: '我声明此文章为本人原创',
     draftTitle: '是否保存为草稿？',
     draftText: '保存草稿',
     draftCancel: '不保存',
@@ -522,7 +522,8 @@ export default {
     vntBuyMinMoney: 'Vnt购买最低不能小于1Vnt',
     vntBuyAccount: '登陆的Vnt账号与支付账号不相同',
     shareWeibo: '微博',
-    shareWechat: '扫一扫，分享到微信'
+    shareWechat: '扫一扫，分享到微信',
+    deleted: '文章已下架'
   },
   invite: {
     headerTitle: '我的邀请',
