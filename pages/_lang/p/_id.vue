@@ -840,7 +840,7 @@ export default {
         this.getIpfsData()
       } else {
         if (this.isTokenArticle) {
-          this.tokenHasPaied = Number(this.differenceToken) < 0
+          this.tokenHasPaied = Number(this.differenceToken) > 0
         } else this.tokenHasPaied = true
         if (this.isPriceArticle) {
           this.priceHasPaied = Boolean(this.currentProfile.is_buy)
