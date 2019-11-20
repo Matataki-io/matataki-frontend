@@ -76,7 +76,7 @@
                   <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已支付</span>
+              <span v-if="hasPaied" class="lock-pay-text">已购买</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
@@ -604,9 +604,9 @@ export default {
       relatedLoadingBtn: false, // 关联btn
       tradeNo: '',
       isBookmarked: false,
-      tokenHasPaied: true,
-      priceHasPaied: true,
-      hasPaied: true
+      tokenHasPaied: false,
+      priceHasPaied: false,
+      hasPaied: false
     }
   },
   head() {
@@ -700,7 +700,7 @@ export default {
       if (this.isTokenArticle) {
         result += parseFloat(this.form.input || 0)
       }
-      return (result + this.getArticlePrice).toFixed(2)
+      return utils.up2points(result + this.getArticlePrice)
     },
     // 需要多少粉丝通证
     needTokenAmount() {
