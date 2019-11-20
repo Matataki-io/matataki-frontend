@@ -700,7 +700,7 @@ export default {
       if (this.isTokenArticle) {
         result += parseFloat(this.form.input || 0)
       }
-      return result + this.getArticlePrice
+      return (result + this.getArticlePrice).toFixed(2)
     },
     // 需要多少粉丝通证
     needTokenAmount() {
