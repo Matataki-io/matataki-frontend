@@ -45,7 +45,7 @@
               管理
             </el-button>
           </router-link>
-          <el-button size="small" @click="shareModalShow = true">
+          <el-button @click="shareModalShow = true" size="small">
             <svg-icon icon-class="share_new" />
             分享
           </el-button>
@@ -453,6 +453,9 @@ export default {
   line-height:28px;
   padding: 0;
   margin: 0;
+  sub {
+    bottom: 0;
+  }
 }
 .token-name {
   font-size:14px;
