@@ -25,17 +25,17 @@
         <div class="list center">
           <span class="title">{{ $t('avatar') }}</span>
           <img-upload
-            class="avatar"
             :img-upload-done="imgUploadDone"
             :update-type="'avatar'"
             @doneImageUpload="doneImageUpload"
+            class="avatar"
           >
             <div slot="uploadButton" class="user-avatar">
               <div class="edit">
                 <i class="el-icon-camera" />
                 {{ $t('avatar') }}
               </div>
-              <img v-if="avatar" slot="description" :src="avatar" alt="avatar">
+              <img slot="description" v-if="avatar" :src="avatar" alt="avatar">
             </div>
           </img-upload>
         </div>
@@ -69,11 +69,11 @@
           <div class="input">
             <el-input
               v-model="introduction"
-              type="textarea"
               :rows="4"
+              :placeholder="$t('rule.content')"
+              type="textarea"
               maxlength="20"
               show-word-limit
-              :placeholder="$t('rule.content')"
             />
           </div>
         </div>
@@ -85,11 +85,11 @@
           </span>
           <div v-for="(item, index) in about" :key="index" class="fl ac about-input social-list">
             <el-input v-model="about[index]" class="input" placeholder="请填写网站链接，包含http(s)://" />
-            <div v-if="about.length > 1" class="about-input-btn" @click="abountLess(index)">
+            <div v-if="about.length > 1" @click="abountLess(index)" class="about-input-btn">
               <i class="el-icon-minus" />
             </div>
           </div>
-          <div v-if="about.length < 5" class="about-input-btn add" @click="aboutAdd">
+          <div v-if="about.length < 5" @click="aboutAdd" class="about-input-btn add">
             <i class="el-icon-plus" />
           </div>
         </div>
@@ -107,13 +107,13 @@
               <div class="social-icons">
                 <socialIcon :icon="item.symbol" />
               </div>
-              <el-input v-model="item.value" class="social-input" :placeholder="item.placeholder" />
+              <el-input v-model="item.value" :placeholder="item.placeholder" class="social-input" />
             </div>
           </div>
         </div>
         <!-- 保存 -->
         <div class="line" />
-        <el-button :loading="loading" class="save " :class="(setProfile || aboutModify || socialModify) && 'active'" @click="save">
+        <el-button :loading="loading" :class="(setProfile || aboutModify || socialModify) && 'active'" @click="save" class="save ">
           {{ $t('save') }}
         </el-button>
       </div>
@@ -123,8 +123,8 @@
           <span class="title">{{ $t('user.transfer') }}</span>
           <el-switch
             v-model="isTransfer"
-            active-color="#542DE0"
             @change="changeTransfer"
+            active-color="#542DE0"
           />
         </div>
       </div>
