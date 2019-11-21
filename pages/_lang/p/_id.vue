@@ -609,7 +609,7 @@ export default {
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
-      hasPaied: false
+      hasPaied: true
     }
   },
   head() {
