@@ -472,7 +472,7 @@ import defaultImagesUploader from '@/api/imagesUploader'
 import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
-import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/api/creative_commons'
+import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
 import imgUpload from '@/components/imgUpload' // 图片上传
 import tagCard from '@/components/tag_card'
 import articleTransfer from '@/components/articleTransfer'
@@ -927,6 +927,7 @@ ${CCLicenseWords}`
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      article.cc_license = this.CCLicenseCredit.license || null
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this

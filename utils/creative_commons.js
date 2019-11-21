@@ -11,7 +11,7 @@ function CreativeCommonsLicenseGenerator({
   NoDerivativeWorks = false
 }) {
   if (ShareAlike && NoDerivativeWorks) throw new Error("You can't use ShareAlike and NoDerivativeWorks at the same time.")
-  const result = ['BY'] // 自2004年以来，当前所有的许可协议要求原作者署名
+  const result = ['BY'] // 自2004年以来，当前所有的许可协议要求必须原作者署名
   if (Noncommercial) result.push('NC')
   if (NoDerivativeWorks) result.push('ND')
   if (ShareAlike) result.push('SA')
@@ -30,5 +30,8 @@ function convertLicenseToChinese(str) {
     }
   }).join('-')
 }
-export { convertLicenseToChinese, CreativeCommonsLicenseGenerator }
+
+const licenseDetailLink = (license) => `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
+
+export { convertLicenseToChinese, CreativeCommonsLicenseGenerator, licenseDetailLink }
 export default CreativeCommonsLicenseGenerator
