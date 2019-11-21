@@ -539,7 +539,7 @@ export default {
   color: #bbb;
 }
 .input {
-  width: 240px;
+  width: 400px;
 }
 .save {
   display: block;
@@ -621,5 +621,8 @@ export default {
   &.add {
     margin-left: 56px;
   }
+}
+.set-main {
+  padding-left: 10px;
 }
 </style>
