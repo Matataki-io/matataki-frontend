@@ -141,6 +141,8 @@ export default {
     .author {
       font-size: 14px;
       color: #333;
+      padding: 0;
+      margin: 0;
     }
     &.no-padding {
       padding: 0;
