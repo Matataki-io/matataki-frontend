@@ -18,7 +18,7 @@
         </p>
       </div>
       <div class="card-user">
-        <router-link class="fl ac" :to="{name: 'user-id', params: { id: card.uid }}">
+        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac">
           <avatar :src="coverUser" size="30px" />
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </router-link>
@@ -47,7 +47,7 @@ export default {
       return this.card.logo ? this.$API.getImg(this.card.logo) : ''
     },
     coverUser() {
-      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
     }
   }
 }
