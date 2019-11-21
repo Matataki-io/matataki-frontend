@@ -28,7 +28,7 @@ export default {
 <style lang="less" scoped>
 .buy-tab {
   width: 320px;
-  margin: 10px auto 0;
+  margin: 10px auto 10px;
   border-radius: 6px;
   border: 1px solid #000;
   box-sizing: border-box;

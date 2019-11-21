@@ -3,7 +3,7 @@
   <userByTab>
     <div v-loading="loading">
       <no-content-prompt :list="articleCardData.articles">
-        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
+        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" type="article" />
         <user-pagination
           v-show="!loading"
           :current-page="currentPage"
@@ -35,7 +35,8 @@ export default {
     return {
       articleCardData: {
         params: {
-          pagesize: 20
+          pagesize: 20,
+          platform: 'cny'
         },
         apiUrl: 'buyHistory',
         articles: []

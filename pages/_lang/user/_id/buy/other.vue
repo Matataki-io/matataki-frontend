@@ -3,7 +3,7 @@
   <userByTab>
     <div v-loading="loading">
       <no-content-prompt :list="articleCardData.articles">
-        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" />
+        <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" type="other" />
         <user-pagination
           v-show="!loading"
           :current-page="currentPage"

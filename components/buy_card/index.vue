@@ -7,30 +7,35 @@
       </span>
     </div>
 
-    <div class="container">
-      <div class="cover" @click.stop="jumpPage(buy && buy.sign_id)">
+    <div :class="type === 'article' && 'no-padding'" class="container">
+      <!-- 文章卡片 其他卡片 -->
+      <router-link :to="{name: 'p-id', params: { id: type === 'article' ? buy.id : buy.sign_id }}" class="cover">
         <img v-if="buyCover" :src="buyCover" alt="cover">
-      </div>
+      </router-link>
       <div class="info">
-        <p class="title" @click.stop="jumpPage(buy && buy.sign_id)">
+        <router-link :to="{name: 'p-id', params: { id: type === 'article' ? buy.id : buy.sign_id }}" class="title">
           {{ buy && buy.title }}
-        </p>
+        </router-link>
         <p class="money">
-          {{ $t('user.unitPrice') }}
-          {{ buyPrice }}
-          {{ buy && buy.symbol }}
+          <template v-if="type === 'other'">
+            {{ $t('user.unitPrice') }}
+            {{ buyPrice }}
+            {{ buy && buy.symbol }}
           &nbsp;&nbsp;
+          </template>
           {{ $t('user.totalPrice') }}
           {{ buyAmount }}
-          {{ buy && buy.symbol }}
+          {{ amount }}
         </p>
       </div>
     </div>
 
-    <div v-for="(item, index) in buy && buy.digital_copy" :key="index" class="copy">
-      <span>{{ item }}</span>
-      <svg-icon class="copy-button" icon-class="copy" @click.stop="copyText(item)" />
-    </div>
+    <template v-if="type === 'other'">
+      <div v-for="(item, index) in buy && buy.digital_copy" :key="index" class="copy">
+        <span>{{ item }}</span>
+        <svg-icon @click.stop="copyText(item)" class="copy-button" icon-class="copy" />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -44,16 +49,27 @@ export default {
     buy: {
       type: Object,
       required: true
+    },
+    type: {// other article
+      type: String,
+      required: true
     }
   },
   computed: {
     buyAmount() {
       if (!this.buy) return 0
-      return precision(this.buy.amount, this.buy.symbol)
+      if (this.type === 'article') return precision(this.buy.amount, this.buy.platform, this.buy.decimals) // 文章卡片
+      else if (this.type === 'other') return precision(this.buy.amount, this.buy.symbol) // 其他卡片
+      else return precision(this.buy.amount, this.buy.symbol) // 默认文章卡片
+    },
+    amount() {
+      if (this.type === 'article') return this.buy && this.buy.platform.toUpperCase() // 文章卡片
+      else if (this.type === 'other') return this.buy && this.buy.symbol.toUpperCase() // 其他卡片
+      else return this.buy && this.buy.platform.toUpperCase() // 默认文章卡片
     },
     buyPrice() {
       if (!this.buy) return 0
-      return precision(this.buy.price, this.buy.symbol)
+      return precision(this.buy.price, this.buy.symbol) // 目前其他才有单价
     },
     buyTime() {
       if (!this.buy) return 0
@@ -119,6 +135,9 @@ export default {
     align-items: center;
     margin: 10px 0 0 0;
     padding: 0 0 10px 0;
+    &.no-padding {
+      padding: 0;
+    }
   .cover {
     flex: 0 0 120px;
     overflow: hidden;
@@ -159,6 +178,8 @@ export default {
       font-size: 14px;
       color:rgba(0,0,0,1);
       text-align: right;
+      padding: 0;
+      margin: 0;
     }
   }
 }
