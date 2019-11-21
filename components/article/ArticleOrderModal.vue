@@ -150,7 +150,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo']),
     tradeType() {
-      return '购买文章'
+      return `购买文章${this.articleId}`
     },
     friendlyTime() {
       return moment(this.order.create_time).format(
@@ -218,7 +218,8 @@ export default {
       qrcodeShow: false,
       payLink: '',
       qrcodeLoading: true,
-      orderItems: []
+      orderItems: [],
+      articleId: ''
     }
   },
   mounted() {
@@ -252,6 +253,7 @@ export default {
             this.errorNotice('订单已支付')
           }
           this.order = res.data
+          this.articleId = res.data.items.orderPriceItem ? res.data.items.orderPriceItem.signid : ''
           this.useBalance = Boolean(res.data.use_balance)
           this.orderItems = this.handleOrderItem(res.data.items)
         } else {

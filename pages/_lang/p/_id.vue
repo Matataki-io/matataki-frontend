@@ -56,7 +56,7 @@
         </article>
 
         <!-- 解锁按钮 -->
-        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
+        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock" v-loading="lockLoading" >
           <div class="lock-left">
             <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
@@ -609,7 +609,8 @@ export default {
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
-      hasPaied: true
+      hasPaied: true,
+      lockLoading: true
     }
   },
   head() {
@@ -826,6 +827,7 @@ export default {
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
       if (!getCookie('ACCESS_TOKEN')) {
+        this.lockLoading = false
         this.tokenHasPaied = false
         this.priceHasPaied = false
         this.hasPaied = false
@@ -836,11 +838,9 @@ export default {
       const data = {
         id: id || this.$route.params.id
       }
-
-      // console.log(data)
-
+      this.lockLoading = true
       await this.$API.getCurrentProfile(data).then(res => {
-        // console.log(res)
+        this.lockLoading = false
         if (res.code === 0) {
           this.currentProfile = res.data
           this.form.outputToken = res.data.holdMineTokens && res.data.holdMineTokens.length > 0 ? res.data.holdMineTokens[0] : {}
