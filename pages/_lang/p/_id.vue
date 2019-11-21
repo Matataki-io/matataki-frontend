@@ -604,8 +604,8 @@ export default {
       relatedLoadingBtn: false, // 关联btn
       tradeNo: '',
       isBookmarked: false,
-      tokenHasPaied: false,
-      priceHasPaied: false,
+      tokenHasPaied: true,
+      priceHasPaied: true,
       hasPaied: true
     }
   },
