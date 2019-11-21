@@ -64,7 +64,9 @@
             <h3 class="lock-info-title">
               {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
             </h3>
-            <h5 class="lock-info-subtitle" v-if="isPriceArticle && !hasPaied">购买后即可解锁全部精彩内容</h5>
+            <h5 v-if="isPriceArticle && !hasPaied" class="lock-info-subtitle">
+              购买后即可解锁全部精彩内容
+            </h5>
             <p v-if="!isMe(article.uid)" class="lock-info-des">
               <ul>
                 <li v-if="isPriceArticle">
@@ -81,14 +83,14 @@
             <p v-else class="lock-info-des">
               自己发布的文章
             </p>
-            <div class="lock-bottom" v-if="!hasPaied">
-              <span class="lock-bottom-total">总计约{{totalCny}}CNY</span>
+            <div v-if="!hasPaied" class="lock-bottom">
+              <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
               <el-button
-                type="primary"
                 @click="wxpayArticle"
+                type="primary"
                 size="small"
               >
-                一键{{unlockText}}
+                一键{{ unlockText }}
               </el-button>
             </div>
           </div>
@@ -447,9 +449,9 @@
       </div>
       <div class="ipfs-hash">
         <svg-icon
+          @click="copyText(article.hash)"
           class="copy-hash"
           icon-class="copy"
-          @click="copyText(article.hash)"
         />
         <span>Hash: {{ article.hash }}</span>
       </div>
