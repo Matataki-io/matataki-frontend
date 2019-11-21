@@ -76,7 +76,7 @@
                   <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已购买</span>
+              <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
@@ -606,7 +606,7 @@ export default {
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
-      hasPaied: false
+      hasPaied: true
     }
   },
   head() {
