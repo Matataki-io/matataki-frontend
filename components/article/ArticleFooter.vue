@@ -36,6 +36,7 @@ export default {
       return Boolean(this.article.is_original)
     },
     license() {
+      if (!this.article.cc_license) return null
       const { cc_license: ccLicense } = this.article
       const chineseLicense = convertLicenseToChinese(ccLicense)
       const url = licenseDetailLink(ccLicense)
