@@ -483,7 +483,7 @@ export default {
     articleTransferNotOpen:
       'The other party has not opened the transfer permission',
     publishMatataki: 'This article was posted on instant matataki',
-    publishMatatakOriginal: 'Unauthorized reprinting',
+    publishMatatakOriginal: "Please repost under the license's permission",
     publishMatatakiUser:
       'Disclaimer: This article was uploaded and published by the user "{0}", the content is the author\'s independent point of view. Does not represent the instant Matataki position, does not constitute investment advice, please be cautious. ',
     ipfsTitle:

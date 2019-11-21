@@ -454,7 +454,7 @@ export default {
     articleTransferSuccess: '转让成功,自动返回首页',
     articleTransferNotOpen: '对方未开启转让权限',
     publishMatataki: '本文发布于瞬matataki',
-    publishMatatakOriginal: '未经授权禁止转载',
+    publishMatatakOriginal: '请遵守协议许可进行转载',
     publishMatatakiUser:
       '免责声明：本文由用户「{0}」上传发布，内容为作者独立观点。不代表瞬Matataki立场，不构成投资建议，请谨慎对待。',
     ipfsTitle: '本文内容已上传星际文件存储系统「IPFS」，永久保存，不可删除。',
