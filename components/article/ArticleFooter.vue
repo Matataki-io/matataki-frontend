@@ -12,7 +12,7 @@
       </el-tooltip>
       <template v-if="isOriginal">
         {{ $t('p.publishMatatakOriginal') }}
-      </template>X
+      </template>
     </p>
     <p class="statement">
       {{ $t('p.publishMatatakiUser', [article.nickname || article.username]) }}
