@@ -203,7 +203,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null },
     signature = null
   ) {
     // 账号类型
@@ -224,6 +224,7 @@ export default {
         title,
         is_original: isOriginal,
         tags,
+        cc_license,
         commentPayPoint,
         shortContent
       }
