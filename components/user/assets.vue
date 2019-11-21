@@ -18,9 +18,9 @@
         <span
           :style="
             totalSignIncome > 0
-              ? { color: '#d74e5a' }
+              ? { color: '#41b37d' }
               : totalSignIncome < 0
-                ? { color: '#41b37d' }
+                ? { color: '#d74e5a' }
                 : { color: '#000000' }
           "
           class="total-list-money"
@@ -33,9 +33,9 @@
         <span
           :style="
             totalShareIncome > 0
-              ? { color: '#d74e5a' }
+              ? { color: '#41b37d' }
               : totalShareIncome < 0
-                ? { color: '#41b37d' }
+                ? { color: '#d74e5a' }
                 : { color: '#000000' }
           "
           class="total-list-money"
@@ -48,9 +48,9 @@
         <span
           :style="
             totalShareExpenses > 0
-              ? { color: '#d74e5a' }
+              ? { color: '#41b37d' }
               : totalShareExpenses < 0
-                ? { color: '#41b37d' }
+                ? { color: '#d74e5a' }
                 : { color: '#000000' }
           "
           class="total-list-money"
