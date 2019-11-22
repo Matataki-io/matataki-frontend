@@ -44,7 +44,7 @@
               v-if="tokenUser"
               class="tooltip"
               effect="dark"
-              content="发币用户"
+              content="发行了粉丝通证的用户"
               placement="top"
             >
               <svg-icon

@@ -59,7 +59,7 @@
             <el-tooltip placement="bottom" effect="light">
               <div slot="content">
                 您的交易可能由于正常的价格波动而失败，<br>
-                预置币格波动区间将有助于您的交易成功。<br>
+                预期价格波动区间将有助于您的交易成功。<br>
                 交易成功后，多支付的金额会退回。
               </div>
               <i class="el-icon-question" />

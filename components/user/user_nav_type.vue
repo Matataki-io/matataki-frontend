@@ -1,5 +1,5 @@
 <template>
-  <!-- 币种 -->
+  <!-- 通证种 -->
   <nav class="nav">
     <a
       v-for="(item, index) in typeIcon"

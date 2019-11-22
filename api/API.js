@@ -179,7 +179,7 @@ export default {
       timeout: 40000,
     })
   },
-  // 文章持币阅读
+  // 文章持通证阅读
   addMineTokens(data) {
     return request({
       method: 'post',
@@ -187,7 +187,7 @@ export default {
       data: data,
     })
   },
-  // 文章持币支付
+  // 文章持通证支付
   articlePrices(id, data) {
     return request({
       method: 'PUT',

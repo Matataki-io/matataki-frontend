@@ -52,14 +52,14 @@
 
       <!-- 备份 -->
       <!-- <div class="post-content">
-        <h3>持币阅读</h3>
+        <h3>持通证阅读</h3>
         <el-checkbox v-model="readauThority" size="small">
           设置阅读权限
         </el-checkbox>
         <div v-show="readauThority">
-          <h3>持币数量</h3>
+          <h3>持通证数量</h3>
           <el-input v-model="readToken" size="small" placeholder="请输入内容" />
-          <h3>持币类型</h3>
+          <h3>持通证类型</h3>
           <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
             <el-option
               v-for="item in readSelectOptions"
@@ -96,13 +96,13 @@
             </el-tooltip>
           </h3>
           <el-checkbox v-model="readauThority" size="small">
-            设置持币
+            设置持通证
           </el-checkbox>
         </div>
         <transition name="fade">
           <div v-show="readauThority" class="fl ac">
             <div>
-              <h3>持币类型</h3>
+              <h3>持通证类型</h3>
               <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
                 <el-option
                   v-for="item in readSelectOptions"
@@ -113,7 +113,7 @@
               </el-select>
             </div>
             <div style="margin-left: 10px;">
-              <h3>持币数量</h3>
+              <h3>持通证数量</h3>
               <el-input
                 v-model="readToken"
                 :min="1"
@@ -535,7 +535,7 @@ export default {
       autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章自动保存至',
       readContent: false,
-      readauThority: false, // 持币阅读
+      readauThority: false, // 持通证阅读
       readToken: 1, // 阅读token数量
       readSelectOptions: [], // 阅读tokenlist
       readSelectValue: '', // 阅读tokenlist show value
@@ -785,7 +785,7 @@ export default {
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
 
-          // 持币阅读
+          // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
             this.readToken = precision(res.data.tokens[0].amount, 'cny', res.data.tokens[0].decimals)
@@ -794,7 +794,7 @@ export default {
             this.readSelectValue = res.data.tokens[0].id
           }
 
-          // 持币支付
+          // 持通证支付
           if (res.data.prices && res.data.prices.length !== 0) {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
@@ -857,11 +857,11 @@ export default {
         }
       }).catch(err => console.log(err))
     },
-    // 文章持币阅读
+    // 文章持通证阅读
     async postMineTokens(id) {
       let tokenArr = []
-      if (this.readauThority) { // 持币
-        // 获取当前选择的币种
+      if (this.readauThority) { // 持通证
+        // 获取当前选择的通证种
         const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
         // 目前只用上传一种数据格式
         tokenArr = [
@@ -946,8 +946,8 @@ export default {
             if (res.code === 0) {
             // 发送完成开始设置阅读权限 因为需要返回的id
               const promiseArr = []
-              if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
-              if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
+              if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
+              if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
               promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
               Promise.all(promiseArr).then(res => {
                 this.success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
@@ -1016,8 +1016,8 @@ export default {
         if (this.readauThority || this.paymentTokenVisible) { // 如果阅读权限设置其中一个都要走以下流程
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
-          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持币阅读
-          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付币
+          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
+          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
           Promise.all(promiseArr).then(() => {
             this.success(response.data)
           }).catch(err => {
@@ -1082,8 +1082,8 @@ export default {
       // 草稿发送
       const draftPost = async () => {
         if (this.readauThority) {
-          if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
-          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
+          if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
@@ -1108,8 +1108,8 @@ export default {
       // 编辑发送
       const editPost = async () => {
         if (this.readauThority) {
-          if (!this.readSelectValue) return this.$message.warning('请选择持币类型')
-          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持币数量设置不能小于0')
+          if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 

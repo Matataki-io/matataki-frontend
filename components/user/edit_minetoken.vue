@@ -108,7 +108,7 @@
           我声明粉丝通证为本人自愿发行，由本人承担一切法律责任
         </el-checkbox>
         <el-button :disabled="!form.agree" @click="submitForm('form')" type="primary" class="publish-btn">
-          {{ isPost ? '发币' : '保存' }}
+          {{ isPost ? '发行粉丝通证' : '保存' }}
         </el-button>
       </el-form-item>
     </el-form>

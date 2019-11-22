@@ -722,7 +722,7 @@ export default {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
     },
-    // 如果是自己的文章 显示hash 否则走 持币阅读
+    // 如果是自己的文章 显示hash 否则走 持通证阅读
     isHideIpfsHash() {
       if (this.isMe(this.article.uid)) return false
       else return this.isTokenArticle
@@ -874,7 +874,7 @@ export default {
 
         this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
-      /* // 是否是需要持币阅读的文章
+      /* // 是否是需要持通证阅读的文章
       this.isTokenArticle = Boolean(this.currentProfile.holdMineTokens) && this.currentProfile.holdMineTokens.length > 0
       // 是否是需要购买的文章
       this.isPriceArticle = Boolean(this.currentProfile.require_buy) */
