@@ -1,6 +1,6 @@
 /* eslint-disable */
-import ScatterJS from '@scatterjs/core';
-import ScatterEOS from '@scatterjs/eosjs';
+import ScatterJS from 'scatterjs-core';
+import ScatterEOS from 'scatterjs-plugin-eosjs';
 import Eos from 'eosjs';
 import * as config from '@/config';
 
