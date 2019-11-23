@@ -69,7 +69,7 @@ export const actions = {
     }
     return false
   },
-  // tokenName 传进来判断是提现什么币
+  // tokenName 传进来判断是提现什么通证
   async getSignature({ dispatch, state }, { mode, rawSignData, tokenName }) {
     const api = await dispatch('getAPI')
     const { eos } = await import(/* webpackChunkName: "EOS" */ '@/api/scatter')

@@ -327,7 +327,7 @@ export const actions = {
       await dispatch('accountCheck')
     }
     console.debug(data)
-    // 根据传进来的mode判断提现什么币
+    // 根据传进来的mode判断提现什么通证
     if (data.tokenName === 'EOS') {
       data.contract = 'eosio.token'
       data.symbol = 'EOS'

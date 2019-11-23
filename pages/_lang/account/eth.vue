@@ -7,7 +7,7 @@
         很抱歉，以太坊相关功能正在开发中
       </h1>
       <h2 class="subtitle">
-        暂时无法提现以太坊代币
+        暂时无法提现以太坊
       </h2>
       <template v-if="viewStatus === 0">
         <assets :assets="assets" @toggleWithdraw="status => viewStatus = status" type="ETH" class="assets-margin" />

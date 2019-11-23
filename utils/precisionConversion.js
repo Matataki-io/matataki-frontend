@@ -6,7 +6,7 @@ const CNY = 10
 
 /**
  *
- * @param {币} amount 需要转换的币
+ * @param {通证} amount 需要转换的通证
  * @param {类型} symbol 需要转换的类型
  */
 export const precision = (amount, symbol = '', precision = 4) => {
@@ -19,7 +19,7 @@ export const precision = (amount, symbol = '', precision = 4) => {
 }
 /**
  *
- * @param {币} amount 需要转换的币
+ * @param {通证} amount 需要转换的通证
  * @param {类型} symbol 需要转换的类型
  */
 export const toPrecision = (amount, symbol, precision = 4) => {

@@ -179,7 +179,7 @@ export default {
       timeout: 40000,
     })
   },
-  // 文章持币阅读
+  // 文章持通证阅读
   addMineTokens(data) {
     return request({
       method: 'post',
@@ -187,7 +187,7 @@ export default {
       data: data,
     })
   },
-  // 文章持币支付
+  // 文章持通证支付
   articlePrices(id, data) {
     return request({
       method: 'PUT',
@@ -203,7 +203,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent },
+    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null },
     signature = null
   ) {
     // 账号类型
@@ -224,6 +224,7 @@ export default {
         title,
         is_original: isOriginal,
         tags,
+        cc_license,
         commentPayPoint,
         shortContent
       }

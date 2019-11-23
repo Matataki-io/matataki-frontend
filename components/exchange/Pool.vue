@@ -566,7 +566,7 @@ export default {
         const { output, outputToken } = this.form
         // 添加流动性的余额
         const addBalance = this.balance.add
-        // 输入币存在，且不是rmb
+        // 输入通证存在，且不是rmb
         if (!utils.isNull(outputToken) && outputToken.id !== 0) {
           // 输入大于余额
           if (parseFloat(output) > parseFloat(addBalance)) {

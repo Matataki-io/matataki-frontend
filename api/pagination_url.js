@@ -37,7 +37,7 @@ export const paginationUrl = {
   tokenUserList: '/token/userlist',
   // 获取用户的持仓token列表
   tokenTokenList: '/token/tokenlist',
-  // 持币详情
+  // 持通证详情
   tokenIdBalances: '/token/:id/balances',
   // 流水明细
   tokenIdTransactions: '/token/:id/transactions',

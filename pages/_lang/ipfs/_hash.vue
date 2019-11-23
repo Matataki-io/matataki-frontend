@@ -12,7 +12,7 @@
         >
           {{ articleData.author }}
         </n-link>
-        <time itemprop="datePublished" :datetime="articleData.create_time">{{ articleCreateTime }}</time>
+        <time :datetime="articleData.create_time" itemprop="datePublished">{{ articleCreateTime }}</time>
         <span itemprops="provider" itemscope="" itemtype="https://www.matataki.io/">
           from <span itemprops="name">瞬MATATAKI</span>
           <meta itemprops="url" content="https://www.matataki.io/">
@@ -22,8 +22,8 @@
         </p>
       </figure>
     </header>
-    <article v-if="showContent" itemprop="articleBody" v-html="compiledMarkdown" />
-    <article v-else itemprop="articleBody" v-html="articleIpfs.content" />
+    <article v-if="showContent" v-html="compiledMarkdown" itemprop="articleBody" />
+    <article v-else v-html="articleIpfs.content" itemprop="articleBody" />
   </main>
 </template>
 
@@ -89,7 +89,7 @@ export default {
 
     if (articleData.tokens && articleData.tokens.length !== 0) {
       articleIpfs.content = `
-      <p>该文章为持币阅读文章,请返回原文查看
+      <p>该文章需持通证阅读,请返回原文查看
       <a href="/p/${articleData.id}">立即跳转</a></p>
       `
       return {

@@ -415,7 +415,7 @@ export default {
     checkBalance(showError = true) {
       const { input, inputToken } = this.form
       const inputBalance = this.balance.input
-      // 输入币存在，且不是rmb
+      // 输入通证存在，且不是rmb
       if (!utils.isNull(inputToken) && inputToken.id !== 0) {
         // 输入大于余额
         if (parseFloat(input) > parseFloat(inputBalance)) {

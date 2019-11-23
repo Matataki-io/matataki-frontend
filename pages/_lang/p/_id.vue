@@ -41,9 +41,8 @@
           <!-- 文章内容 -->
           <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
           <!-- 文章页脚 声明 是否原创 -->
-          <ArticleFooter v-if="hasPaied" :article="article" style="margin-top: 20px;" />
 
-          <div v-if="!hasPaied && !isProduct" class="lock-line">
+          <div v-if="!hasPaied && !isProduct && (isTokenArticle || isPriceArticle)" class="lock-line">
             <el-divider>
               <span class="lock-text">达成条件即可阅读全文</span>
             </el-divider>
@@ -53,9 +52,11 @@
             />
             <div class="lock-line-full" />
           </div>
+          <ArticleFooter v-else :article="article" style="margin-top: 20px;" />
         </article>
+
         <!-- 解锁按钮 -->
-        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock">
+        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock" v-loading="lockLoading" >
           <div class="lock-left">
             <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
@@ -78,7 +79,7 @@
                   <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已购买</span>
+              <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
@@ -608,7 +609,8 @@ export default {
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
-      hasPaied: false
+      hasPaied: true,
+      lockLoading: true
     }
   },
   head() {
@@ -720,7 +722,7 @@ export default {
       const { input } = this.form
       return (parseFloat(input) / (1 - 0.01)).toFixed(4)
     },
-    // 如果是自己的文章 显示hash 否则走 持币阅读
+    // 如果是自己的文章 显示hash 否则走 持通证阅读
     isHideIpfsHash() {
       if (this.isMe(this.article.uid)) return false
       else return this.isTokenArticle
@@ -825,6 +827,7 @@ export default {
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
       if (!getCookie('ACCESS_TOKEN')) {
+        this.lockLoading = false
         this.tokenHasPaied = false
         this.priceHasPaied = false
         this.hasPaied = false
@@ -835,11 +838,9 @@ export default {
       const data = {
         id: id || this.$route.params.id
       }
-
-      // console.log(data)
-
+      this.lockLoading = true
       await this.$API.getCurrentProfile(data).then(res => {
-        // console.log(res)
+        this.lockLoading = false
         if (res.code === 0) {
           this.currentProfile = res.data
           this.form.outputToken = res.data.holdMineTokens && res.data.holdMineTokens.length > 0 ? res.data.holdMineTokens[0] : {}
@@ -873,7 +874,7 @@ export default {
 
         this.differenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
       } else this.differenceToken = '0'
-      /* // 是否是需要持币阅读的文章
+      /* // 是否是需要持通证阅读的文章
       this.isTokenArticle = Boolean(this.currentProfile.holdMineTokens) && this.currentProfile.holdMineTokens.length > 0
       // 是否是需要购买的文章
       this.isPriceArticle = Boolean(this.currentProfile.require_buy) */

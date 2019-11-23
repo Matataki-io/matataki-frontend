@@ -240,7 +240,7 @@ export default {
         })
     },
     writeAddres() {
-      // 如果登录的平台等于进入的币提现类型 默认带上提现地址
+      // 如果登录的平台等于进入的通证提现类型 默认带上提现地址
       if (this.currentUserInfo.idProvider === this.type) { this.withdrawData.list[0].value = this.currentUserInfo.name }
     },
     withdrawButton() {
