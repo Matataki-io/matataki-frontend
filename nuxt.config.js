@@ -161,5 +161,14 @@ export default {
     port: 8080, // default: 3000
     host: '0.0.0.0'
   },
+  pwa: {
+    manifest: {
+      name: 'Matataki',
+      gcm_sender_id: '1011435306795'
+    },
+    workbox: {
+
+    }
+  },
   env: genENV()
 }
