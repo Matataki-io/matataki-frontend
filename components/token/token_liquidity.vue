@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-loading="loading" class="coins">
-      <minetokenCardLiquidity :card="pull.list" :decimals="4" />
+      <minetokenCardLiquidity :card="pull.list" :decimals="4" @sort-changed="toggleSort" />
     </div>
     <user-pagination
       v-show="!loading"
@@ -31,7 +31,8 @@ export default {
     return {
       pull: {
         params: {
-          pagesize: 10
+          pagesize: 10,
+          sort: this.$route.query.sort || 'amount-desc'
         },
         apiUrl: 'liquidityUserList',
         list: []
@@ -55,9 +56,24 @@ export default {
       this.currentPage = i
       this.$router.push({
         query: {
-          page: i
+          page: i,
+          sort: this.pull.params.sort
         }
       })
+    },
+    toggleSort({ prop, order }) {
+      if (order === 'ascending') order = 'asc'
+      else order = 'desc'
+
+      const sort = `${prop}-${order}`
+
+      this.$router.push({
+        query: {
+          page: this.currentPage,
+          sort
+        }
+      })
+      this.pull.params.sort = sort
     }
   }
 }

@@ -3,10 +3,14 @@
     :data="card"
     style="width: 100%"
     class="coins"
+    :default-sort="{ prop: 'amount', order: 'descending' }"
+    @sort-change="onSortChanged"
   >
     <el-table-column
-      prop="username"
+      prop="name"
       label="持仓者"
+      sortable="custom"
+      :sort-orders="['ascending', 'descending']"
     >
       <template slot-scope="scope">
         <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
@@ -16,9 +20,11 @@
       </template>
     </el-table-column>
     <el-table-column
-      prop="create_time"
+      prop="amount"
       label="持仓量"
       width="200"
+      sortable="custom"
+      :sort-orders="['descending', 'ascending']"
     >
       <template slot-scope="scope">
         <div class="invite-block">
@@ -61,6 +67,9 @@ export default {
     },
     cover(cover) {
       return cover ? this.$API.getImg(cover) : ''
+    },
+    onSortChanged(args) {
+      this.$emit('sort-changed', args)
     }
   }
 }
