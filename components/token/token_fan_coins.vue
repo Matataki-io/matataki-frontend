@@ -54,7 +54,7 @@ export default {
       this.loading = true
       this.pull.list = []
       this.currentPage = i
-      this.$router.push({
+      this.$router.replace({
         query: {
           page: i,
           sort: this.pull.params.sort
@@ -67,7 +67,7 @@ export default {
 
       const sort = `${prop}-${order}`
 
-      this.$router.push({
+      this.$router.replace({
         query: {
           page: this.currentPage,
           sort
