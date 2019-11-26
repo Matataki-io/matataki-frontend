@@ -591,6 +591,7 @@ export default {
       return process.env.NODE_ENV === 'development'
     },
     CCLicenseCredit() {
+      if (!this.isOriginal) return null //非原创不适用
       let ShareAlike = false
       const Noncommercial = !this.ccLicenseOptions.commercialUse
       let NoDerivativeWorks = false
@@ -907,7 +908,7 @@ export default {
     async publishArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
-      article.cc_license = this.CCLicenseCredit.license || null
+      article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this
