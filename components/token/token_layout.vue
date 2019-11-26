@@ -34,7 +34,7 @@
             </div>
             <div>
               <p class="token-info-sub">
-                {{ minetokenUser.create_time }}
+                {{ friendlyDate }}
               </p>
             </div>
           </div>
@@ -197,6 +197,7 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
@@ -293,8 +294,11 @@ export default {
       if (amount < 0) return '#d74e5a'
       else if (amount > 0) return '#41b37d'
       else return 'rgb(153, 153, 153)'
+    },
+    friendlyDate() {
+      const time = moment(this.minetokenUser.create_time)
+      return this.$utils.isNDaysAgo(2, time) ? time.format('lll') : time.fromNow()
     }
-
   },
   watch: {
     currentUserInfo() {
