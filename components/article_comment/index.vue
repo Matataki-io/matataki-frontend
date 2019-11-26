@@ -4,16 +4,16 @@
     <div class="comment-container">
       <el-input
         v-model="comment"
-        type="textarea"
         :autosize="{ minRows: 4}"
         :placeholder="$t('p.commentPointPlaceholder')"
+        @keyup.native="postCommentKeyup"
+        type="textarea"
         maxlength="500"
         show-word-limit
-        @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac jfe">
         <span class="btn-des">{{ article.comment_pay_point }}{{ $t('p.commentPointDes') }}</span>
-        <el-button size="small" class="btn" @click="postComment">
+        <el-button @click="postComment" size="small" class="btn">
           {{ $t('p.commentPointBtn') }}
         </el-button>
       </div>

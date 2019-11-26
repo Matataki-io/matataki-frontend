@@ -44,8 +44,8 @@
             </div>
             <div>
               <p class="token-info-sub">
-                {{ minetokenToken.brief || '暂无' }}
-              </p>
+{{ minetokenToken.brief || '暂无' }}
+</p>
             </div>
           </div>
         </div>
@@ -75,7 +75,8 @@
             介绍
           </h2>
           <p class="token-introduction">
-            {{ minetokenToken.introduction || '暂无' }}
+            <!-- 开了wrap 这个span不能换行！ -->
+            <span class="wrap-open">{{ minetokenToken.introduction || '暂无' }}</span>
           </p>
         </div>
 
@@ -560,5 +561,8 @@ export default {
   position: absolute;
   right: 20px;
   top: 20px;
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 </style>

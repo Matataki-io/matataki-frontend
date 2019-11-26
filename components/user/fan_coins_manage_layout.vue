@@ -59,7 +59,8 @@
       介绍
     </h2>
     <p class="token-sub">
-      {{ tokenDetailData.token.introduction || '暂无' }}
+      <!-- 开了wrap 这个span不能换行！ -->
+      <span class="wrap-open">{{ tokenDetailData.token.introduction || '暂无' }}</span>
     </p>
 
     <h2 class="token-title">
@@ -95,8 +96,8 @@
 
     <el-input
       v-model="tokenWidget"
-      class="token-widget"
       :rows="4"
+      class="token-widget"
       type="textarea"
       placeholder="请输入内容"
     />
@@ -393,5 +394,8 @@ export default {
   font-style: 14px;
   padding-top: 20px;
   display: inline-block;
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 </style>

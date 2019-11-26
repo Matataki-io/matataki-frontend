@@ -2,13 +2,13 @@
   <div class="comment">
     <div class="comment-info">
       <n-link
-        class="comment-avatar"
         :to="{name: 'user-id', params: {id : comment.uid}}"
+        class="comment-avatar"
       >
         <avatar :src="avatar" size="30px" /></avatar>
       </n-link>
       <div class="comment-head">
-        <router-link class="comment-author" :to="`/user/${comment.uid}`">
+        <router-link :to="`/user/${comment.uid}`" class="comment-author">
           {{ comment.nickname || comment.username }}
         </router-link>
         {{ action }}
@@ -19,7 +19,7 @@
       </div>
     </div>
     <p class="comment-message">
-      {{ displayMessage }}
+      <span class="wrap-open">{{ displayMessage }}</span>
     </p>
   </div>
 </template>
@@ -160,5 +160,8 @@ export default {
   margin-left: 44px;
   background-color: rgba(241, 241, 241, 1);
   box-sizing: border-box;
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 </style>

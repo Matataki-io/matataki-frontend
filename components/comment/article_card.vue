@@ -2,20 +2,21 @@
   <div class="comment">
     <div class="comment-info">
       <n-link
-        class="comment-avatar"
         :to="{name: 'user-id', params: {id : comment.uid}}"
+        class="comment-avatar"
       >
         <avatar :src="avatar" size="30px" /></avatar>
       </n-link>
       <div>
-        <router-link class="comment-author" :to="`/user/${comment.uid}`">
+        <router-link :to="`/user/${comment.uid}`" class="comment-author">
           {{ comment.nickname || comment.username }}
           <span>
             {{ friendlyDate }}
           </span>
         </router-link>
-        <p class="comment-content">
-          {{ displayMessage }}
+        <p class="comment-content wrap-open">
+          <!-- 开了wrap 这个span不能换行！ -->
+          <span class="wrap-open">{{ displayMessage }}</span>
         </p>
       </div>
     </div>
@@ -44,6 +45,7 @@ export default {
   },
   computed: {
     displayMessage() {
+      console.log('comment', this.comment.comment)
       return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
     },
     friendlyDate() {
@@ -90,6 +92,9 @@ export default {
   padding: 0;
   margin: 6px 0;
   word-break: break-all;
+}
+.wrap-open {
+  white-space: pre-wrap;
 }
 
 </style>
