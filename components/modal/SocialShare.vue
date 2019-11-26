@@ -74,7 +74,7 @@ export default {
       // 用于 Telegram 的即时预览，模板出问题了联系我 --Frank
       const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${link}&rhash=${process.env.TELEGRAM_IV_RHASH}`)
       return {
-        weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
+        weibo: `http://service.weibo.com/share/share.php?&title=${encodeURIComponent(`${title} - 来自 Matataki 瞬 ${link}`)}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         // facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${link}`,
         twitter: `https://twitter.com/intent/tweet?text=${link}`,
