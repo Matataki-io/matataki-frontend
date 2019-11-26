@@ -32,7 +32,7 @@
 
     <div class="tokens-list">
       <div class="fl jsb">
-        <nav class="tokens-list-nav">
+        <!-- <nav class="tokens-list-nav">
           <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
             发布顺序
             <i class="el-icon-d-caret" />
@@ -46,7 +46,41 @@
           class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
-        >什么是粉丝通证?</a>
+        >什么是粉丝通证?</a> -->
+        <div class="tokens-list-header">
+          <div class="tokens-list-header-left-column">
+            <el-dropdown trigger="click" @command="handleDropdown">
+              <span class="el-dropdown-link">
+                <span v-if="sort === 'name-asc'">首字母升序</span>
+                <span v-else-if="sort === 'name-desc'">首字母降序</span>
+                <span v-else>综合排序</span>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="general">综合排序</el-dropdown-item>
+                <el-dropdown-item command="name-asc">首字母升序</el-dropdown-item>
+                <el-dropdown-item command="name-desc">首字母降序</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+          <div class="tokens-list-header-medium-column">
+            <div class="sub-column">
+              单价
+              <i class="el-icon-d-caret" />
+            </div>
+            <div class="sub-column">
+              流动金
+              <i class="el-icon-d-caret" />
+            </div>
+            <div class="sub-column">
+              24h 成交量
+              <i class="el-icon-d-caret" />
+            </div>
+          </div>
+          <div class="tokens-list-header-right-column">
+            发布时间
+          </div>
+        </div>
       </div>
 
       <div v-loading="loading" class="card-container">
@@ -82,7 +116,7 @@ export default {
   },
   data() {
     return {
-      sort: this.$route.query.id || 'id',
+      sort: this.$route.query.id || 'general',
       pull: {
         params: {
           pagesize: 10,
@@ -129,8 +163,16 @@ export default {
       }
       this.$router.replace({
         query: {
-          id: this.sort,
           sort: this.pull.params.sort,
+          page: this.currentPage
+        }
+      })
+    },
+    handleDropdown(command) {
+      this.sort = command
+      this.$router.replace({
+        query: {
+          sort: command,
           page: this.currentPage
         }
       })

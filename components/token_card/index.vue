@@ -17,6 +17,23 @@
           {{ card.brief || '暂无' }}
         </p>
       </div>
+      <div class="card-data">
+        <div class="card-data-column">
+          <p class="card-data-amount">
+            0 CNY
+          </p>
+        </div>
+        <div class="card-data-column">
+          <p class="card-data-amount">
+            0 CNY
+          </p>
+        </div>
+        <div class="card-data-column">
+          <p class="card-data-amount">
+            0 {{ card.symbol }}
+          </p>
+        </div>
+      </div>
       <div class="card-user">
         <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac">
           <avatar :src="coverUser" size="30px" />
@@ -25,11 +42,13 @@
         <!-- <div class="card-user-icon">
           持仓占位
         </div> -->
+        <span class="card-create-time">{{ friendlyDate }}</span>
       </div>
     </div>
   </div>
 </template>
 <script>
+import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 
 export default {
@@ -48,6 +67,10 @@ export default {
     },
     coverUser() {
       return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+    },
+    friendlyDate() {
+      const time = moment(this.card.create_time)
+      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
   }
 }
@@ -66,7 +89,7 @@ export default {
 }
 
 .card-info {
-  width: 50%;
+  width: 360px;
   &-symbol {
     font-size:20px;
     font-weight:400;
@@ -85,8 +108,25 @@ export default {
   }
 }
 
+.card-data {
+  width: calc(100% - 660px);
+
+  &-column {
+    float: left;
+    width: 33%;
+    height: 100%;
+  }
+
+  &-amount {
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+    line-height: 76px;
+  }
+}
+
 .card-user {
-  width: 50%;
+  width: 300px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
@@ -103,5 +143,8 @@ export default {
   display: flex;
   flex: 1;
   align-items: flex-end;
+}
+.card-create-time {
+  margin: auto 0 0 auto;
 }
 </style>
