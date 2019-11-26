@@ -342,7 +342,7 @@
                 <transition>
                   <div v-if="relatedSummary" :class="!item.collapse && 'open'">
                     <div class="related-list-content">
-                      {{ item.content }}
+                      <span class="wrap-open">{{ item.content }}</span>
                     </div>
                     <div v-if="item.showCollapse" class="related-more">
                       <transition name="fade">
