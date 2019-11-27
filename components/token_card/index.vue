@@ -20,17 +20,17 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            0 CNY
+            {{ card.unit_price }} CNY
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            0 CNY
+            {{ card.liquidity }} CNY
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            0 {{ card.symbol }}
+            {{ card.exchange_amount }} {{ card.symbol }}
           </p>
         </div>
       </div>

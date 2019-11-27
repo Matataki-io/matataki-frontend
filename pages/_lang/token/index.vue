@@ -64,7 +64,7 @@
             </el-dropdown>
           </div>
           <div class="tokens-list-header-medium-column">
-            <div class="sub-column" :class="sort.startsWith('danjia') && 'active'" @click="toggleSort('danjia')">
+            <div class="sub-column" :class="sort.startsWith('unit-price') && 'active'" @click="toggleSort('unit-price')">
               单价
               <i class="el-icon-d-caret" />
             </div>
@@ -116,7 +116,7 @@ export default {
   },
   data() {
     return {
-      sort: this.$route.query.id || 'general',
+      sort: this.$route.query.sort || 'general',
       pull: {
         params: {
           pagesize: 10,
@@ -150,6 +150,7 @@ export default {
       this.currentPage = i
       this.$router.push({
         query: {
+          sort: this.$route.query.sort,
           page: i
         }
       })
@@ -173,13 +174,15 @@ export default {
           break
       }
 
+      const query = {
+        sort
+      }
+      if (this.currentPage > 1) query.page = this.currentPage
+
       this.sort = sort
       this.pull.params.sort = sort
       this.$router.replace({
-        query: {
-          sort,
-          page: this.currentPage
-        }
+        query
       })
     },
     toggleDropdown(command) {
