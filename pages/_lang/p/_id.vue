@@ -74,9 +74,9 @@
                   价格：{{ getArticlePrice }} CNY
                 </li>
                 <li v-if="isTokenArticle">
-                  条件：持有{{ needTokenAmount }}枚以上的{{ needTokenSymbol }}粉丝通证
+                  条件：持有 {{ needTokenAmount }} {{ needTokenSymbol }} 以上的Fan票
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }}枚{{ needTokenSymbol }}</span>
+                  <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
                 </li>
               </ul>
               <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
@@ -706,13 +706,13 @@ export default {
       }
       return utils.up2points(result + this.getArticlePrice)
     },
-    // 需要多少粉丝通证
+    // 需要多少Fan票
     needTokenAmount() {
       if (this.article.tokens.length !== 0) {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少粉丝通证名称
+    // 需要多少Fan票名称
     needTokenSymbol() {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol

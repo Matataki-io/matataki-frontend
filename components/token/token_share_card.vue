@@ -44,7 +44,7 @@
       </div>
       <el-divider>
         <div class="info">
-          扫描二维码&nbsp;&nbsp;了解粉丝通证
+          扫描二维码&nbsp;&nbsp;了解Fan票
         </div>
       </el-divider>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :close-on-click-modal="false"
-    title="选择粉丝通证"
+    title="选择Fan票"
     :visible.sync="showModal"
     :lock-scroll="false"
     width="600px"
@@ -13,7 +13,7 @@
         <div class="search-box">
           <i class="el-icon-search" />
         </div>
-        <input v-model="search" type="text" placeholder="搜索粉丝通证" @keyup.enter="searchToken" class="dHtVAe">
+        <input v-model="search" type="text" placeholder="搜索Fan票" @keyup.enter="searchToken" class="dHtVAe">
       </div>
       <div v-loading="loading" class="cotdDw br10" element-loading-background="rgba(0, 0, 0, 0.3)">
         <el-table
@@ -24,7 +24,7 @@
 >
           <el-table-column
             width="250px"
-            label="粉丝通证"
+            label="Fan票"
 >
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -72,7 +72,7 @@
         </el-table>
         <!-- <table>
           <th>
-            <td>粉丝通证</td>
+            <td>Fan票</td>
             <td>流通量</td>
             <td>创始人</td>
             <td></td>

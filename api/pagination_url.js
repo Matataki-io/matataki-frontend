@@ -41,11 +41,11 @@ export const paginationUrl = {
   tokenIdBalances: '/token/:id/balances',
   // 流水明细
   tokenIdTransactions: '/token/:id/transactions',
-  // 买入粉丝通证-流水明细
+  // 买入Fan票-流水明细
   tokenflow: '/token/tokenflow',
-  // 我的粉丝通证-流水明细
+  // 我的Fan票-流水明细
   usertokenflow: '/token/tokenflow',
-  // 用户持有的粉丝通证明
+  // 用户持有的Fan票明
   tokenUserLogs: '/token/userlogs',
   // token明细
   tokenTokenLogs: '/token/tokenlogs',

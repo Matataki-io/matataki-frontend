@@ -64,7 +64,7 @@
           class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
-        >什么是粉丝通证?</a>
+        >什么是Fan票?</a>
       </div>
     </div>
 
@@ -144,7 +144,7 @@
             class="tokens"
             icon-class="token"
           />
-          粉丝通证交易所
+          Fan票交易所
         </router-link> -->
         <tokenBuyCard :token="minetokenToken" />
 

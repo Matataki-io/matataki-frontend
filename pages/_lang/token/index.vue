@@ -12,7 +12,7 @@
             蠢朋克钱多多通证
           </p>
           <p class="token-info-name">
-            蠢朋克钱多多通证是由鼎鼎大名的蠢朋克组合所设置的粉丝通证，被广大通证圈玩家所看好，一推出通证价便直线上涨。
+            蠢朋克钱多多通证是由鼎鼎大名的蠢朋克组合所设置的Fan票，被广大通证圈玩家所看好，一推出通证价便直线上涨。
           </p>
         </div>
         <div class="token-user">
@@ -46,7 +46,7 @@
           class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
-        >什么是粉丝通证?</a>
+        >什么是Fan票?</a>
       </div>
 
       <div v-loading="loading" class="card-container">

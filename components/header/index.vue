@@ -11,7 +11,7 @@
             :key="index"
             class="item"
             effect="dark"
-            content="粉丝通证交易所"
+            content="Fan票交易所"
             placement="bottom"
           >
             <router-link
@@ -43,13 +43,13 @@
           trigger="hover"
         >
           <div class="notice">
-            <h3>粉丝通证删档测试即将结束：</h3>
-            <p>瞬matataki的粉丝币第一阶段删档测试马上就结束了。感谢所有参与者们的支持！</p>
+            <h3>Fan票删档测试即将结束：</h3>
+            <p>瞬matataki的Fan票第一阶段删档测试马上就结束了。感谢所有参与者们的支持！</p>
             <p>我们将会在11月25日开始清理以下测试数据：</p>
 
-            <p>1. 个人持仓粉丝币和流动金的交易记录</p>
+            <p>1. 个人持仓Fan票和流动金的交易记录</p>
             <p>2. cny账户余额和记录</p>
-            <p>3. 粉丝币的全部持仓和交易记录</p>
+            <p>3. Fan票的全部持仓和交易记录</p>
             <p>4. 交易所的交易记录和流动金记录</p>
 
             <p>在测试期间各位支付的资金基本都已经如数退回了，还未退回的资金将会在未来几天中退还，请注意在微信中查看退款记录。</p>
@@ -143,7 +143,7 @@
             </el-dropdown-item>
             <el-dropdown-item>
               <n-link :to="{name: 'tokens' }" class="link">
-                我的粉丝通证
+                我的Fan票
               </n-link>
             </el-dropdown-item>
             <el-dropdown-item>
@@ -240,7 +240,7 @@ export default {
           sup: ''
         },
         {
-          title: '粉丝通证',
+          title: 'Fan票',
           url: 'token',
           sup: ''
         },
