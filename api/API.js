@@ -476,7 +476,7 @@ minetokenGetResources(tokenId) {
     })
   },
   /**
-   * 粉丝通证详情
+   * Fan票详情
    * @param {Number} id token id
    */
   minetokenId(id) {

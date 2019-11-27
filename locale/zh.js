@@ -233,7 +233,7 @@ export default {
     logoDes: '发布瞬间 灵感永存', // img
     homeTitle: '一个永久存储和版权确权的内容平台',
     homeDes:
-      '瞬MATATAKI 是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询；使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络；致力于回归更加开放去中心化的互联网。',
+      '瞬MATATAKI 是一个保护创作者权益的高质量内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询；使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络；致力于回归更加开放去中心化的互联网。',
     homeBtnRead: '开始阅读',
     homeBtnCreate: '立即创作',
     painPoint: '行业痛点',
@@ -581,8 +581,8 @@ export default {
     tokenName: '缩写',
     positionCoins: '持仓量',
     // coins
-    manageCoins: '管理粉丝通证',
-    transactionCoins: '交易粉丝通证',
+    manageCoins: '管理Fan票',
+    transactionCoins: '交易Fan票',
     // user info
     accountType: '账号类型',
     // user nav
@@ -596,8 +596,8 @@ export default {
     wallet: '钱包',
     point: '积分',
     invite: '邀请',
-    buycoins: '持有的粉丝通证',
-    selfcoins: '发行的粉丝通证',
+    buycoins: '持有的Fan票',
+    selfcoins: '发行的Fan票',
     editProfile: '编辑资料',
     information: '个人信息',
     bookmark: '收藏'

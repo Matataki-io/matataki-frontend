@@ -89,7 +89,7 @@ export default {
 
     if (articleData.tokens && articleData.tokens.length !== 0) {
       articleIpfs.content = `
-      <p>该文章需持通证阅读,请返回原文查看
+      <p>该文章需持Fan票阅读,请返回原文查看
       <a href="/p/${articleData.id}">立即跳转</a></p>
       `
       return {

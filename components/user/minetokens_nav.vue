@@ -27,8 +27,8 @@ export default {
   computed: {
     user() {
       return [
-        { title: '粉丝通证持仓', icon: 'minetokens_details' },
-        { title: '粉丝通证流水', icon: 'minetokens_detail' },
+        { title: 'Fan票持仓', icon: 'minetokens_details' },
+        { title: 'Fan票流水', icon: 'minetokens_detail' },
         { title: '流动金持仓', icon: 'minetokens_details' },
         { title: '流动金流水', icon: 'minetokens_detail' }
       ]

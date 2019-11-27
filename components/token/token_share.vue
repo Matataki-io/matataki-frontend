@@ -112,7 +112,7 @@ export default {
       type: Boolean,
       default: false
     },
-    /** 0:粉丝通证， 1:个人主页 */
+    /** 0:Fan票， 1:个人主页 */
     pageType: {
       type: Number,
       default: 0
@@ -136,7 +136,7 @@ export default {
     },
     shareLink() {
       const slogan = [
-        `我在瞬MATATAKI发现了粉丝通证「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有粉丝通证，让连接不止于关注！`,
+        `我在瞬MATATAKI发现了Fan票「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
         `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
       ]
       return slogan[this.pageType]

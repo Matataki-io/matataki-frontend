@@ -2,27 +2,27 @@
   <div class="coins-publish">
     <div class="fl ac coins-head">
       <h1>
-        {{ isPost ? '申请发行粉丝通证' : '编辑粉丝通证' }}
+        {{ isPost ? '申请发行Fan票' : '编辑Fan票' }}
       </h1>
-      <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行粉丝通证?" placement="top-start">
+      <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行Fan票?" placement="top-start">
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
       </el-tooltip> -->
 
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是粉丝通证?</a>
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是Fan票?</a>
       &nbsp;
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行粉丝通证?</a>
+      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行Fan票?</a>
     </div>
 
     <el-form ref="form" :rules="rules" :model="form" class="input-form" label-width="80px">
       <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" class="input" placeholder="请输入粉丝通证名称" />
+        <el-input v-model="form.name" class="input" placeholder="请输入Fan票名称" />
       </el-form-item>
       <!-- 编辑页面不需要显示 -->
       <el-form-item v-if="isPost" label="缩写" prop="symbol">
-        <el-input v-model="form.symbol" class="input" placeholder="请输入粉丝通证缩写(发行后不可修改)" />
+        <el-input v-model="form.symbol" class="input" placeholder="请输入Fan票缩写(发行后不可修改)" />
       </el-form-item>
       <el-form-item label="图标" prop="logo">
         <el-input v-model="form.logo" style="display: none;" class="input" />
@@ -105,10 +105,10 @@
 
       <el-form-item style="margin:40px 0 0 0;">
         <el-checkbox v-if="isPost" v-model="form.agree">
-          我声明粉丝通证为本人自愿发行，由本人承担一切法律责任
+          我声明Fan票为本人自愿发行，由本人承担一切法律责任
         </el-checkbox>
         <el-button :disabled="!form.agree" @click="submitForm('form')" type="primary" class="publish-btn">
-          {{ isPost ? '发行粉丝通证' : '保存' }}
+          {{ isPost ? '发行Fan票' : '保存' }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -132,7 +132,7 @@ export default {
       const reg = /^[A-Z]+$/
       const res = reg.test(this.form.symbol)
       if (!res) {
-        callback(new Error('粉丝通证缩写仅限大写英文字符'))
+        callback(new Error('Fan票缩写仅限大写英文字符'))
       } else {
         callback()
       }
@@ -150,12 +150,12 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入粉丝通证名称', trigger: 'blur' },
+          { required: true, message: '请输入Fan票名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
         ],
         // 编辑页面不需要校验
         symbol: [
-          { required: true, message: '请输入粉丝通证缩写', trigger: 'blur' },
+          { required: true, message: '请输入Fan票缩写', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],

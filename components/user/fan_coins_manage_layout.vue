@@ -12,7 +12,7 @@
             }})
           </h1>
         </div>
-        <!-- <el-tooltip effect="dark" content="如何管理你的粉丝通证?" placement="top-start">
+        <!-- <el-tooltip effect="dark" content="如何管理你的Fan票?" placement="top-start">
           <svg-icon
             class="help-icon"
             icon-class="help"
@@ -22,7 +22,7 @@
           class="help-link"
           target="_blank"
           href="https://www.matataki.io/p/979"
-        >如何管理你的粉丝通证?</a>
+        >如何管理你的Fan票?</a>
       </div>
 
       <div>

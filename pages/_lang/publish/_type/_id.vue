@@ -87,7 +87,7 @@
         <div>
           <h3>
             阅读权限
-            <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的粉丝通证后才可查看全文的。" placement="top-start">
+            <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。" placement="top-start">
               <svg-icon
                 class="help-icon"
                 icon-class="help"
