@@ -1157,7 +1157,7 @@ export default {
         const { output, outputToken } = this.form
         requestParams.items.push({
           tokenId: outputToken.id,
-          type: 'buy_minetoken',
+          type: 'buy_token_output',
           amount: utils.toDecimal(output, outputToken.decimals)
         })
       }
