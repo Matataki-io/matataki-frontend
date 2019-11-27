@@ -32,7 +32,7 @@
 
     <div class="tokens-list">
       <div class="fl jsb">
-        <nav class="tokens-list-nav">
+        <!-- <nav class="tokens-list-nav">
           <div :class="sort === 'id' && 'active'" @click="toggleSort('id')">
             发布顺序
             <i class="el-icon-d-caret" />
@@ -46,7 +46,41 @@
           class="help-link"
           href="https://www.matataki.io/p/977"
           target="_blank"
-        >什么是Fan票?</a>
+        >什么是Fan票?</a> -->
+        <div class="tokens-list-header">
+          <div class="tokens-list-header-left-column">
+            <el-dropdown trigger="click" @command="toggleDropdown">
+              <span class="el-dropdown-link" :class="sort === selectedDropdown && 'active'">
+                <span v-if="selectedDropdown === 'name-asc'">首字母升序</span>
+                <span v-else-if="selectedDropdown === 'name-desc'">首字母降序</span>
+                <span v-else>综合排序</span>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="general">综合排序</el-dropdown-item>
+                <el-dropdown-item command="name-asc">首字母升序</el-dropdown-item>
+                <el-dropdown-item command="name-desc">首字母降序</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+          <div class="tokens-list-header-medium-column">
+            <div class="sub-column" :class="sort.startsWith('unit-price') && 'active'" @click="toggleSort('unit-price')">
+              单价
+              <i class="el-icon-d-caret" />
+            </div>
+            <div class="sub-column" :class="sort.startsWith('liquidity') && 'active'" @click="toggleSort('liquidity')">
+              流动金
+              <i class="el-icon-d-caret" />
+            </div>
+            <div class="sub-column" :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')">
+              24h 成交量
+              <i class="el-icon-d-caret" />
+            </div>
+          </div>
+          <div class="tokens-list-header-right-column">
+            发布时间
+          </div>
+        </div>
       </div>
 
       <div v-loading="loading" class="card-container">
@@ -82,11 +116,11 @@ export default {
   },
   data() {
     return {
-      sort: this.$route.query.id || 'id',
+      sort: this.$route.query.sort || 'general',
       pull: {
         params: {
           pagesize: 10,
-          sort: this.$route.query.sort || 'id-desc'
+          sort: this.$route.query.sort || 'general'
         },
         apiUrl: 'tokenAll',
         list: []
@@ -97,7 +131,8 @@ export default {
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0
+      amount: 0,
+      selectedDropdown: 'general'
     }
   },
   methods: {
@@ -115,25 +150,44 @@ export default {
       this.currentPage = i
       this.$router.push({
         query: {
+          sort: this.$route.query.sort,
           page: i
         }
       })
     },
     toggleSort(name) {
-      if (name === 'id') {
-        this.sort = 'id'
-        this.pull.params.sort = this.pull.params.sort === 'id-desc' ? 'id-asc' : 'id-desc'
-      } else {
-        this.sort = 'symbol'
-        this.pull.params.sort = this.pull.params.sort === 'symbol-desc' ? 'symbol-asc' : 'symbol-desc'
+      let sort
+
+      switch (name) {
+        case 'general':
+        case 'name-asc':
+        case 'name-desc':
+          sort = name
+          break
+
+        default:
+          if (this.sort.startsWith(name)) {
+            sort = this.sort.endsWith('-desc') ? name + '-asc' : name + '-desc'
+          } else {
+            sort = name + '-desc'
+          }
+          break
       }
+
+      const query = {
+        sort
+      }
+      if (this.currentPage > 1) query.page = this.currentPage
+
+      this.sort = sort
+      this.pull.params.sort = sort
       this.$router.replace({
-        query: {
-          id: this.sort,
-          sort: this.pull.params.sort,
-          page: this.currentPage
-        }
+        query
       })
+    },
+    toggleDropdown(command) {
+      this.selectedDropdown = command
+      this.toggleSort(command)
     }
   }
 }

@@ -1,4 +1,4 @@
-@width: 850px;
+@width: 1160px;
 
 .token {
   .minHeight();
@@ -70,20 +70,42 @@
   }
 }
 
-.tokens-list-nav {
-  div {
-    cursor: pointer;
-    display: inline-block;
-    font-size: 16px;
+.tokens-list-header {
+  width: 100%;
+  font-size: 16px;
+  color: @gray;
+  line-height:28px;
+
+  .el-dropdown-link {
     color: @gray;
-    line-height:28px;
-    margin-right: 20px;
-    &:nth-last-child(1) {
-      margin-right: 0;
+  }
+
+  div {
+    float: left;
+  }
+
+  .active {
+    color: black;
+  }
+
+  &-left-column {
+    width: 415px;
+
+    .el-dropdown {
+      font-size: 16px;
     }
-    &.active {
-      color: @black;
+  }
+  &-medium-column {
+    width: 445px;
+    text-align: center;
+
+    .sub-column {
+      width: 33%;
     }
+  }
+  &-right-column {
+    width: 300px;
+    text-align: right;
   }
 }
 
