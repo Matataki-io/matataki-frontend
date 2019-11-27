@@ -49,10 +49,10 @@
         >什么是粉丝通证?</a> -->
         <div class="tokens-list-header">
           <div class="tokens-list-header-left-column">
-            <el-dropdown trigger="click" @command="handleDropdown">
-              <span class="el-dropdown-link">
-                <span v-if="sort === 'name-asc'">首字母升序</span>
-                <span v-else-if="sort === 'name-desc'">首字母降序</span>
+            <el-dropdown trigger="click" @command="toggleDropdown">
+              <span class="el-dropdown-link" :class="sort === selectedDropdown && 'active'">
+                <span v-if="selectedDropdown === 'name-asc'">首字母升序</span>
+                <span v-else-if="selectedDropdown === 'name-desc'">首字母降序</span>
                 <span v-else>综合排序</span>
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
@@ -64,15 +64,15 @@
             </el-dropdown>
           </div>
           <div class="tokens-list-header-medium-column">
-            <div class="sub-column">
+            <div class="sub-column" :class="sort.startsWith('danjia') && 'active'" @click="toggleSort('danjia')">
               单价
               <i class="el-icon-d-caret" />
             </div>
-            <div class="sub-column">
+            <div class="sub-column" :class="sort.startsWith('liquidity') && 'active'" @click="toggleSort('liquidity')">
               流动金
               <i class="el-icon-d-caret" />
             </div>
-            <div class="sub-column">
+            <div class="sub-column" :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')">
               24h 成交量
               <i class="el-icon-d-caret" />
             </div>
@@ -120,7 +120,7 @@ export default {
       pull: {
         params: {
           pagesize: 10,
-          sort: this.$route.query.sort || 'id-desc'
+          sort: this.$route.query.sort || 'general'
         },
         apiUrl: 'tokenAll',
         list: []
@@ -131,7 +131,8 @@ export default {
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0
+      amount: 0,
+      selectedDropdown: 'general'
     }
   },
   methods: {
@@ -154,28 +155,36 @@ export default {
       })
     },
     toggleSort(name) {
-      if (name === 'id') {
-        this.sort = 'id'
-        this.pull.params.sort = this.pull.params.sort === 'id-desc' ? 'id-asc' : 'id-desc'
-      } else {
-        this.sort = 'symbol'
-        this.pull.params.sort = this.pull.params.sort === 'symbol-desc' ? 'symbol-asc' : 'symbol-desc'
+      let sort
+
+      switch (name) {
+        case 'general':
+        case 'name-asc':
+        case 'name-desc':
+          sort = name
+          break
+
+        default:
+          if (this.sort.startsWith(name)) {
+            sort = this.sort.endsWith('-desc') ? name + '-asc' : name + '-desc'
+          } else {
+            sort = name + '-desc'
+          }
+          break
       }
+
+      this.sort = sort
+      this.pull.params.sort = sort
       this.$router.replace({
         query: {
-          sort: this.pull.params.sort,
+          sort,
           page: this.currentPage
         }
       })
     },
-    handleDropdown(command) {
-      this.sort = command
-      this.$router.replace({
-        query: {
-          sort: command,
-          page: this.currentPage
-        }
-      })
+    toggleDropdown(command) {
+      this.selectedDropdown = command
+      this.toggleSort(command)
     }
   }
 }
