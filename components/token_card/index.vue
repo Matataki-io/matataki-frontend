@@ -25,7 +25,7 @@
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ card.liquidity || 0 }} CNY
+            {{ cnyReserve }} CNY
           </p>
         </div>
         <div class="card-data-column">
@@ -50,6 +50,7 @@
 <script>
 import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -67,6 +68,10 @@ export default {
     },
     coverUser() {
       return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+    },
+    cnyReserve() {
+      const tokenamount = precision(this.card.liquidity || 0, 'CNY', this.card.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     friendlyDate() {
       const time = moment(this.card.create_time)
