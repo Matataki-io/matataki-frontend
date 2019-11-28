@@ -13,7 +13,7 @@
         <p class="card-info-name">
           {{ card.name || '暂无' }}
         </p>
-        <p class="card-info-name">
+        <p class="card-info-name brief">
           {{ card.brief || '暂无' }}
         </p>
       </div>
@@ -39,10 +39,6 @@
           <avatar :src="coverUser" size="30px" />
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </router-link>
-        <!-- <div class="card-user-icon">
-          持仓占位
-        </div> -->
-        <span class="card-create-time">{{ friendlyDate }}</span>
       </div>
     </div>
   </div>
@@ -110,6 +106,12 @@ export default {
     line-height:20px;
     padding: 0;
     margin: 4px 0 0 0;
+    &.brief {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
   }
 }
 
@@ -143,6 +145,9 @@ export default {
   font-weight:400;
   color: @black;
   line-height:20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
 .card-user-icon {
   display: flex;
