@@ -157,9 +157,36 @@ export default {
     //   })
     // }
   },
+  data() {
+    return {
+      showModal: false,
+      timer: null,
+      order: {},
+      balance: 0,
+      loading: false,
+      useBalance: false,
+      qrcodeShow: false,
+      payLink: '',
+      qrcodeLoading: true,
+      orderItems: [],
+      articleId: ''
+    }
+  },
   computed: {
     ...mapGetters(['currentUserInfo']),
     tradeType() {
+      const typeOptions = {
+        add: '添加流动性',
+        buy_token_input: '购买Fan票',
+        buy_token_output: '购买Fan票',
+        sale_token: '出售Fan票',
+      };
+      if (this.articleId) {
+        return `购买文章${this.articleId}`
+      } else {
+        const type = this.order.items ? this.order.items.orderTokenItem.type : null
+        return typeOptions[type] || '暂无'
+      }
       return `购买文章${this.articleId}`
     },
     friendlyTime() {
@@ -215,21 +242,6 @@ export default {
         this.getUserBalance()
       }
       this.showModal = val
-    }
-  },
-  data() {
-    return {
-      showModal: false,
-      timer: null,
-      order: {},
-      balance: 0,
-      loading: false,
-      useBalance: false,
-      qrcodeShow: false,
-      payLink: '',
-      qrcodeLoading: true,
-      orderItems: [],
-      articleId: ''
     }
   },
   mounted() {
@@ -295,7 +307,7 @@ export default {
     },
     weixinPay() {
       this.qrcodeLoading = true
-      this.$API.articleNativePay(this.tradeNo).then(res => {
+      this.$API.wxNativePay(this.tradeNo, this.tradeType).then(res => {
         this.loading = false
         this.payLink = res.code_url
         this.qrcodeShow = true
@@ -410,49 +422,7 @@ export default {
         duration: 4000,
         showClose: true
       })
-    },
-    createOrder() {
-      this.loading = true
-      const { input, inputToken, output, outputToken, limitValue, type } = this.form
-      let requestParams = {
-        total: utils.toDecimal(input, outputToken.decimals), // 单位yuan
-        title: `购买${outputToken.symbol}`,
-        type, // type类型见typeOptions：add，buy_token_input，buy_token_output
-        token_id: outputToken.id,
-        token_amount: utils.toDecimal(output, outputToken.decimals),
-        limit_value: utils.toDecimal(limitValue, outputToken.decimals),
-        decimals: outputToken.decimals,
-        pay_cny_amount: utils.toDecimal(this.needPay)
-      }
-      console.log(requestParams);
-      // 添加out_trade_no参数
-      // if (!needCreate) {
-      //   requestParams.out_trade_no = this.order.trade_no
-      // }
-      if (type === 'add') {
-        requestParams = {
-          ...requestParams,
-          title: `添加流动金`,
-          min_liquidity: utils.toDecimal(this.form.youMintTokenAmount)
-        }
-      } else {
-        requestParams = {
-          ...requestParams,
-          title: `购买${outputToken.symbol}`
-        }
-      }
-      this.$API
-        .wxpay(requestParams)
-        .then(res => {
-          this.loading = false
-          this.order = res
-          if (this.needPay > 0) {
-            this.timer = setInterval(() => {
-              this.getOrderStatus(this.order.trade_no)
-            }, interval)
-          }
-        })
-    },
+    }
   }
 }
 </script>

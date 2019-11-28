@@ -764,20 +764,22 @@ minetokenGetResources(tokenId) {
   },
 
   //-------------文章支付使用开始-----------------
-  articleNativePay(tradeNo) {
-    return this.articleWxPay({
+  wxNativePay(tradeNo, title) {
+    return this.orderWxpay({
       tradeNo,
-      trade_type: 'NATIVE'
+      trade_type: 'NATIVE',
+      title
     })
   },
-  articleJsapiPay(tradeNo, openid) {
-    return this.articleWxPay({
+  wxJsapiPay(tradeNo, openid, title) {
+    return this.orderWxpay({
       tradeNo,
       trade_type: 'JSAPI',
+      title,
       openid
     })
   },
-  articleWxPay(order) {
+  orderWxpay(order) {
     return request.post('/order/wxpay', order)
   },
   //-------------文章支付使用结束-----------------
