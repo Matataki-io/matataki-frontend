@@ -778,7 +778,7 @@ minetokenGetResources(tokenId) {
     })
   },
   articleWxPay(order) {
-    return request.post('/order/articlepay', order)
+    return request.post('/order/wxpay', order)
   },
   //-------------文章支付使用结束-----------------
   getArticleOrder(tradeNo) {
