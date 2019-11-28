@@ -264,7 +264,7 @@ export default {
     },
     getOrderData() {
       this.loading = true
-      this.$API.getArticleOrder(this.tradeNo).then(res => {
+      this.$API.getOrderData(this.tradeNo).then(res => {
         this.loading = false
         if (res.code === 0) {
           const status = Number(res.data.status)
@@ -375,7 +375,7 @@ export default {
     // 是否使用余额修改
     useBalanceChange(v) {
       clearInterval(this.timer)
-      this.$API.updateArticleOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
+      this.$API.updateOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
         if (res.code === 0) {
           if (this.needPay > 0) this.weixinPay()
         }
@@ -391,7 +391,7 @@ export default {
       this.showModal = false
     },
     getOrderStatus(tradeNo) {
-      this.$API.getArticleOrder(tradeNo).then(res => {
+      this.$API.getOrderData(tradeNo).then(res => {
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {

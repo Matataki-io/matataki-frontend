@@ -1185,12 +1185,12 @@ export default {
         background: 'rgba(0, 0, 0, 0.4)'
       })
       const requestParams = this.makeOrderParams()
-      this.$API.createArticleOrder(requestParams).then(res => {
+      this.$API.createOrder(requestParams).then(res => {
         loading.close()
         if (res.code === 0) {
           this.tradeNo = res.data
-          this.showOrderModal = true
-          // this.$router.push({ name: 'porder-id', params: {id: res.data}})
+          // this.showOrderModal = true
+          this.$router.push({ name: 'order-id', params: { id: res.data } })
         } else {
           this.$message.error('订单创建失败')
         }

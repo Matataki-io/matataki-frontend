@@ -73,12 +73,46 @@ export default {
   mounted() {
   },
   methods: {
+    makeOrderParams() {
+      const requestParams = {
+        useBalance: 0,
+        items: []
+      }
+      const { input, inputToken, output, outputToken } = this.form
+      requestParams.items.push({
+        tokenId: outputToken.id,
+        type: this.type,
+        min_tokens: this.$utils.toDecimal(this.limitValue, outputToken.decimals),
+        cny_amount: this.$utils.toDecimal(input, outputToken.decimals),
+        amount: this.$utils.toDecimal(output, outputToken.decimals)
+      })
+      return requestParams
+    },
+    createOrder() {
+      const loading = this.$loading({
+        lock: false,
+        text: '订单创建中...',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
+      const requestParams = this.makeOrderParams()
+      this.$API
+        .createOrder(requestParams)
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            this.$router.push({ name: 'order-id', params: { id: res.data } })
+          } else {
+            this.$alert('订单创建失败', '温馨提示')
+          }
+        })
+    },
     pay() {
       if (this.isLogined) {
         if (this.$utils.isNull(this.form.output)) {
           this.$message.error('请先输入购买数量')
         } else {
-          this.orderShow = true
+          // this.orderShow = true
+          this.createOrder()
         }
       } else {
         this.$store.commit('setLoginModal', true)

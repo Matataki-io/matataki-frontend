@@ -783,20 +783,20 @@ minetokenGetResources(tokenId) {
     return request.post('/order/wxpay', order)
   },
   //-------------文章支付使用结束-----------------
-  getArticleOrder(tradeNo) {
+  getOrderData(tradeNo) {
     return request({
       method: 'get',
       url: `/orders/${tradeNo}`
     })
   },
-  updateArticleOrder(tradeNo, order) {
+  updateOrder(tradeNo, order) {
     return request({
       method: 'put',
       url: `/orders/${tradeNo}`,
       data: order
     })
   },
-  createArticleOrder(order) {
+  createOrder(order) {
     return request({
       method: 'PUT',
       url: '/orders',

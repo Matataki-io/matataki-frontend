@@ -33,7 +33,8 @@ import {
   Select,
   Option,
   Divider,
-  Radio
+  Radio,
+  Alert
 } from 'element-ui'
 
 Vue.use(Row)
@@ -68,10 +69,12 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Divider)
 Vue.use(Radio)
+Vue.use(Alert)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message
 Vue.prototype.$loading = Loading.service
+Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt
 // import Element from 'element-ui'
