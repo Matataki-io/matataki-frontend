@@ -1,14 +1,14 @@
 <template>
   <div
-    class="g-avatar"
     :style="{
       width: size,
       height: size
     }"
+    class="g-avatar"
   >
     <el-image :src="src" class="img-lazy" alt="avatar">
       <div slot="error" class="image-slot">
-        <i class="el-icon-picture-outline" />
+        <i :style="{ 'font-size': `calc(${ size } * 0.7)` }" class="el-icon-user-solid" />
       </div>
     </el-image>
   </div>
@@ -73,7 +73,7 @@ export default {
 </style>
 
 <style lang="less">
-.g-avatar .el-icon-picture-outline {
+.g-avatar .el-icon-user-solid {
   font-size: 18px;
   color: #848484;
 }

@@ -78,7 +78,7 @@
             </div>
           </div>
           <div class="tokens-list-header-right-column">
-            发布时间
+            创始人
           </div>
         </div>
       </div>
