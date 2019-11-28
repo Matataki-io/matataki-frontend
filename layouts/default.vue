@@ -2,7 +2,7 @@
   <div class="app">
     <nuxt />
     <g-footer v-if="!hideFooter" />
-    <back-to-top v-if="!hideBackTop" class="backtop" :visibility-height="300" :back-position="50" transition-name="fade">
+    <back-to-top v-if="!hideBackTop" :visibility-height="300" :back-position="50" class="backtop" transition-name="fade">
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
@@ -69,30 +69,6 @@ export default {
 
   },
   mounted() {
-    // (function () {
-    //   const isPC = () => {
-    //     const userAgentInfo = navigator.userAgent
-    //     const Agents = ['Android', 'iPhone',
-    //       'SymbianOS', 'Windows Phone',
-    //       'iPad', 'iPod']
-    //     let flag = true
-    //     for (let v = 0; v < Agents.length; v++) {
-    //       if (userAgentInfo.indexOf(Agents[v]) > 0) {
-    //         flag = false
-    //         break
-    //       }
-    //     }
-    //     return flag
-    //   }
-    //   // 规则只匹配了 文章详情页面 其他直接使用 all
-    //   const pathname = window.location.pathname.includes('/p/')
-    //     ? '/article/' + window.location.pathname.slice(3)
-    //     : window.location.pathname === '/'
-    //       ? ''
-    //       : window.location.pathname
-    //   if (!isPC()) window.location.href = process.env.VUE_APP_URL + pathname
-    // })()
-
     this.$store.dispatch('testLogin')
   },
   methods: {
