@@ -73,7 +73,7 @@
               <i class="el-icon-d-caret" />
             </div>
             <div class="sub-column" :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')">
-              24h 成交量
+              24h 成交额
               <i class="el-icon-d-caret" />
             </div>
           </div>
