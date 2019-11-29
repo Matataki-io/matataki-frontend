@@ -850,35 +850,55 @@ export default {
     },
     // 文章持通证阅读
     async postMineTokens(id) {
-      let tokenArr = []
-      if (this.readauThority) { // 持通证
-        // 获取当前选择的通证种
-        const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
-        // 目前只用上传一种数据格式
-        tokenArr = [
-          {
-            tokenId: token[0].id,
-            amount: toPrecision(this.readToken, 'cny', token[0].decimals)
-          }
-        ]
+      let data = null
+      const { type } = this.$route.params
+      // 如果是编辑 并且没有设置 传递空数组
+      // 如果是发布文章 没有设置不会进入这里
+      if (type === 'edit' && !this.readauThority) {
+        data = {
+          signId: id,
+          tokens: []
+        }
+      } else {
+        let tokenArr = []
+        if (this.readauThority) { // 持通证
+          // 获取当前选择的通证种
+          const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+          // 目前只用上传一种数据格式
+          tokenArr = [
+            {
+              tokenId: token[0].id,
+              amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+            }
+          ]
+        }
+        data = {
+          signId: id,
+          tokens: tokenArr
+        }
       }
 
-      const data = {
-        signId: id,
-        tokens: tokenArr
-      }
       const res = await this.$API.addMineTokens(data)
       if (res.code === 0) return res.message
       else throw res.message
     },
     // 文章支付阅读
     async articlePrices(id) {
-      const data = {
-        price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+      const { type } = this.$route.params
+      // 如果是编辑 并且没有设置 删除
+      // 如果是发布文章 没有设置不会进入这里
+      if (type === 'edit' && !this.paymentTokenVisible) {
+        const res = await this.$API.articlePricesDelete(id)
+        if (res.code === 0) return res.message
+        else throw res.message
+      } else {
+        const data = {
+          price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+        }
+        const res = await this.$API.articlePrices(id, data)
+        if (res.code === 0) return res.message
+        else throw res.message
       }
-      const res = await this.$API.articlePrices(id, data)
-      if (res.code === 0) return res.message
-      else throw res.message
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
@@ -1004,18 +1024,16 @@ export default {
       }
       const response = await this.$API.editArticle({ article, signature })
       if (response.code === 0) {
-        if (this.readauThority || this.paymentTokenVisible) { // 如果阅读权限设置其中一个都要走以下流程
-          // 发送完成开始设置阅读权限 因为需要返回的id
-          const promiseArr = []
-          if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
-          if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
-          Promise.all(promiseArr).then(() => {
-            this.success(response.data)
-          }).catch(err => {
-            console.log('err', err)
-            this.$message.error(err)
-          })
-        } else this.success(response.data)
+        // 发送完成开始设置阅读权限 因为需要返回的id
+        const promiseArr = []
+        promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
+        promiseArr.push(this.articlePrices(response.data)) // 支付通证
+        Promise.all(promiseArr).then(() => {
+          this.success(response.data)
+        }).catch(err => {
+          console.log('err', err)
+          this.$message.error(err)
+        })
       } else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿

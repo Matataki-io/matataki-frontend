@@ -195,6 +195,13 @@ export default {
       data: data,
     })
   },
+  // 删除文章持通证支付
+  articlePricesDelete(id) {
+    return request({
+      method: 'DELETE',
+      url: `/posts/${id}/prices`,
+    })
+  },
   /**
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
