@@ -6,26 +6,7 @@
         <a class="logo-link" href="/"><img :src="customizeHeaderLogoColorComputed" class="logo" alt="logo"></a>
         <!-- nav -->
         <template v-for="(item, index) in nav">
-          <el-tooltip
-            v-if="item.url === 'exchange'"
-            :key="index"
-            class="item"
-            effect="dark"
-            content="Fan票交易所"
-            placement="bottom"
-          >
-            <router-link
-              :style="customizeHeaderTextColorComputed"
-              :class="$route.name === item.url && 'active'"
-              :to="{name: item.url}"
-              class="nav"
-            >
-              {{ item.title }}
-              <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
-            </router-link>
-          </el-tooltip>
           <router-link
-            v-else
             :key="index"
             :style="customizeHeaderTextColorComputed"
             :class="$route.name === item.url && 'active'"
@@ -243,11 +224,6 @@ export default {
           title: 'Fan票',
           url: 'token',
           sup: ''
-        },
-        {
-          title: 'Lab',
-          url: 'exchange',
-          sup: 'beta'
         }
       ]
     },
