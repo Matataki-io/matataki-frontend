@@ -31,6 +31,7 @@
     "eosjs": "^16.0.9",
     "fundebug-javascript": "2.0.0",
     "fundebug-vue": "0.0.1",
+    "gsap": "3.0.1",
     "html2canvas": "^1.0.0-rc.3",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.1",

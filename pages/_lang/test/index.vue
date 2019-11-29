@@ -3,14 +3,16 @@
     <!-- home -->
     <section ref="home" class="home">
       <!-- logo -->
-      <img class="home-logo" src="@/assets/img/index/logo.png" alt="logo">
-      <img class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary">
+      <img ref="logo" class="home-logo" src="@/assets/img/index/logo.png" alt="logo">
+      <img ref="sumary" class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary">
       <!-- btn -->
-      <div class="btn">
-        <svg-icon
-          icon-class="add"
-        />
-        <div class="btn-list">
+      <div class="btn-menu">
+        <div ref="btn" @click="showMoreMenu" class="btn">
+          <svg-icon
+            icon-class="add"
+          />
+        </div>
+        <div ref="btnList" class="btn-list">
           <svg-icon
             class="btn-list_btn"
             icon-class="article"
@@ -33,7 +35,7 @@
     <!-- story -->
     <section class="story">
       <!-- story 1 -->
-      <section id="story_01" class="component-story story-left">
+      <section ref="storyOne" class="component-story story-left story_01">
         <section class="component-story__header">
           <article class="component-story__inner">
             <figure class="component-story__inner__title">
@@ -80,7 +82,7 @@
       </section>
 
       <!-- story 2 -->
-      <section id="story_02" class="component-story story-right">
+      <section ref="storyTwo" class="component-story story-right story_02">
         <section class="component-story__header">
           <article class="component-story__inner">
             <figure class="component-story__inner__title">
@@ -127,7 +129,7 @@
       </section>
 
       <!-- story 3 -->
-      <section id="story_03" class="component-story story-left">
+      <section ref="storyThree" class="component-story story-left story_03">
         <section class="component-story__header">
           <article class="component-story__inner">
             <figure class="component-story__inner__title">
@@ -214,16 +216,60 @@
 </template>
 
 <script>
+import { TimelineLite } from 'gsap'
+
 export default {
   mounted() {
-    if (process.browser) this._resizeHomeHeight()
+    if (process.browser) {
+      this._resizeHomeHeight()
+      window.addEventListener('scroll', this._scrollStory)
+    }
   },
   methods: {
     _resizeHomeHeight() {
-      console.log(11)
-      const domHeight = document.body.clientHeight || document.documentElement.clientHeight
-      if (domHeight < 800) return false
-      else this.$refs.home.style.height = domHeight + 'px'
+      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      if (clientHeight < 800) return false
+      else this.$refs.home.style.height = clientHeight + 'px'
+    },
+    // 首页第一屏按钮点击显示菜单
+    showMoreMenu() {
+      const { btn, btnList } = this.$refs
+      const timeline = new TimelineLite()
+      const btnVisible = btn.getAttribute('data-visible') === 'true'
+      btn.setAttribute('data-visible', !btnVisible)
+
+      if (btnVisible) {
+        timeline.to(btn, 0.2, {
+          rotation: 0
+        })
+        timeline.to(btnList, 0.2, {
+          y: 0,
+          opacity: 0
+        },
+        '-=0.1')
+      } else {
+        timeline.to(btn, 0.2, {
+          rotation: 45
+        })
+        timeline.to(btnList, 0.2, {
+          y: 10,
+          opacity: 1
+        },
+        '-=0.1')
+      }
+    },
+    _scrollStory() {
+      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+      const { storyOne, storyTwo, storyThree } = this.$refs
+
+      // let storyOneOffsetTop = storyOne.offsetTop
+      // let storyTwoOffsetTop = storyTwo.offsetTop
+      // let storyThreeOffsetTop = storyThree.offsetTop
+
+      // let storyOneDistanceToTop = story_01
+
+      console.log(scrollTop)
     }
   }
 }
