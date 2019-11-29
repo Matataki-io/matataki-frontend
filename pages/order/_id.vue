@@ -253,7 +253,7 @@ export default {
       if (t2) {
         result.push({
           name: t2.symbol,
-          operating: '购买',
+          operating: t2.type === 'add' ? '支付' : '购买',
           amount: utils.fromDecimal(t2.token_amount),
           total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' CNY'
         })

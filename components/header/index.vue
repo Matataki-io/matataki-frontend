@@ -17,29 +17,6 @@
             <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
           </router-link>
         </template>
-
-        <el-popover
-          placement="top-start"
-          width="300"
-          trigger="hover"
-        >
-          <div class="notice">
-            <h3>Fan票删档测试即将结束：</h3>
-            <p>瞬matataki的Fan票第一阶段删档测试马上就结束了。感谢所有参与者们的支持！</p>
-            <p>我们将会在11月25日开始清理以下测试数据：</p>
-
-            <p>1. 个人持仓Fan票和流动金的交易记录</p>
-            <p>2. cny账户余额和记录</p>
-            <p>3. Fan票的全部持仓和交易记录</p>
-            <p>4. 交易所的交易记录和流动金记录</p>
-
-            <p>在测试期间各位支付的资金基本都已经如数退回了，还未退回的资金将会在未来几天中退还，请注意在微信中查看退款记录。</p>
-            <p>所有数据清理完成后，将会开放正式版。</p>
-          </div>
-          <div slot="reference" class="notice-btn">
-            重要通知!
-          </div>
-        </el-popover>
         <!-- <a
           class="nav"
           href="javascript:;"
