@@ -8,9 +8,12 @@
         </span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
-      <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" class="btn">
-        {{ $t('withdraw.title') }}
-      </el-button>
+      <div>
+        <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" class="btn">
+          {{ $t('withdraw.title') }}
+        </el-button>
+        <el-button @click="giftDialogShow = true" v-if="isShowTransfer">转账</el-button>
+      </div>
     </div>
     <div class="line" />
     <div class="total-list">
@@ -61,13 +64,18 @@
       </div>
     </div>
     <div class="line" />
+    <giftDialog v-model="giftDialogShow"/>
   </div>
 </template>
 
 <script>
 import { precision } from '@/utils/precisionConversion'
+import giftDialog from '@/components/asset/giftDialog.vue'
 
 export default {
+  components: {
+    giftDialog
+  },
   props: {
     assets: {
       type: Object,
@@ -76,6 +84,11 @@ export default {
     type: {
       type: String,
       required: true
+    }
+  },
+  data() {
+    return {
+      giftDialogShow: false
     }
   },
   computed: {
@@ -105,6 +118,11 @@ export default {
     isWithdrawDisabled() {
       const toLowerCase = (str) => str.toLowerCase()
       const tokenThatUnableToWithdraw = ['CNY', 'eth'].map(toLowerCase)
+      return tokenThatUnableToWithdraw.includes(toLowerCase(this.type))
+    },
+    isShowTransfer() {
+      const toLowerCase = (str) => str.toLowerCase()
+      const tokenThatUnableToWithdraw = ['CNY'].map(toLowerCase)
       return tokenThatUnableToWithdraw.includes(toLowerCase(this.type))
     }
   }
