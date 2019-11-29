@@ -113,6 +113,15 @@
             </div>
 
             <div class="token-data">
+              <p class="token-num">
+                {{ exchangeAmount }}<sub>CNY</sub>
+              </p>
+              <p class="token-name">
+                24h成交额
+              </p>
+            </div>
+
+            <div class="token-data">
               <p :style="{color: color}" class="token-num">
                 {{ change }}
               </p>
@@ -274,6 +283,10 @@ export default {
     },
     volume() {
       const tokenamount = precision(this.minetokenExchange.volume_24h || 0, 'CNY', this.minetokenToken.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    exchangeAmount() {
+      const tokenamount = precision(this.minetokenExchange.amount_24h || 0, 'CNY', this.minetokenToken.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     change() {
