@@ -1147,29 +1147,6 @@ export default {
           }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
       }
     },
-    makeOrderParams() {
-      const requestParams = {
-        useBalance: 0,
-        items: []
-      }
-      // token未支付
-      if (this.isTokenArticle && !this.tokenHasPaied) {
-        const { output, outputToken } = this.form
-        requestParams.items.push({
-          tokenId: outputToken.id,
-          type: 'buy_token_output',
-          amount: utils.toDecimal(output, outputToken.decimals)
-        })
-      }
-      // 文章price未支付
-      if (this.isPriceArticle && !this.priceHasPaied) {
-        requestParams.items.push({
-          signId: this.article.id,
-          type: 'buy_post'
-        })
-      }
-      return requestParams
-    },
     wxpayArticle() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
@@ -1179,7 +1156,14 @@ export default {
         this.$message.error(this.getInputAmountError)
         return
       }
-      const loading = this.$loading({
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        type: 'buy_token_output',
+        needToken: this.isTokenArticle && !this.tokenHasPaied,
+        needPrice: this.isPriceArticle && !this.priceHasPaied,
+        signId: this.article.id
+      })
+      /* const loading = this.$loading({
         lock: false,
         text: '提交中',
         background: 'rgba(0, 0, 0, 0.4)'
@@ -1188,13 +1172,13 @@ export default {
       this.$API.createOrder(requestParams).then(res => {
         loading.close()
         if (res.code === 0) {
-          this.tradeNo = res.data
+          // this.tradeNo = res.data
           // this.showOrderModal = true
           this.$router.push({ name: 'order-id', params: { id: res.data } })
         } else {
           this.$message.error('订单创建失败')
         }
-      })
+      }) */
     },
     calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {

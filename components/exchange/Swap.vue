@@ -310,7 +310,10 @@ export default {
       }
       // 输入是人民币
       if (inputToken.isCNY) {
-        this.createOrder()
+        this.$store.dispatch('order/createOrder', {
+          ...this.form,
+          type: this.type
+        })
         // this.orderShow = true
         // this.$API
         //   .wxpay({
@@ -431,39 +434,6 @@ export default {
         }
       }
       return true
-    },
-    makeOrderParams() {
-      const requestParams = {
-        useBalance: 0,
-        items: []
-      }
-      const { input, inputToken, output, outputToken } = this.form
-      requestParams.items.push({
-        tokenId: outputToken.id,
-        type: this.type,
-        min_tokens: utils.toDecimal(this.limitValue, outputToken.decimals),
-        cny_amount: utils.toDecimal(input, outputToken.decimals),
-        amount: utils.toDecimal(output, outputToken.decimals)
-      })
-      return requestParams
-    },
-    createOrder() {
-      const loading = this.$loading({
-        lock: false,
-        text: '订单创建中...',
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
-      const requestParams = this.makeOrderParams()
-      this.$API
-        .createOrder(requestParams)
-        .then(res => {
-          loading.close()
-          if (res.code === 0) {
-            this.$router.push({ name: 'order-id', params: { id: res.data } })
-          } else {
-            this.$alert('订单创建失败', '温馨提示')
-          }
-        })
     }
   }
 }

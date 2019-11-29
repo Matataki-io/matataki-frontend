@@ -1,7 +1,7 @@
 <template>
 <div class="main">
   <g-header />
-  <div class="order outer-container">
+  <div class="order outer-container" v-loading="loading">
     <el-alert
       title="请仔细核对订单信息，如果有误请取消后再次尝试"
       effect="dark"
@@ -201,8 +201,6 @@ export default {
       this.qrcodeShow = false
     },
     onSubmit() {
-      this.loading = true
-      console.log('this.needPay', this.needPay)
       if (this.needPay > 0) {
         this.weixinPay()
       } else {
@@ -218,15 +216,11 @@ export default {
       })
     },
     getOrderData() {
-      const loading = this.$loading({
-        lock: false,
-        text: '获取订单数据中...',
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
+      this.loading = true
       const id = this.$route.params.id
       this.tradeNo = id
       this.$API.getOrderData(id).then(res => {
-        loading.close()
+        this.loading = false
         if (res.code === 0) {
           const status = Number(res.data.status)
           if (status === 7 || status === 8) {
@@ -268,8 +262,10 @@ export default {
     },
     // 是否使用余额修改
     useBalanceChange(v) {
+      this.loading = true
       clearInterval(this.timer)
       this.$API.updateOrder(this.tradeNo, { useBalance: Number(v) }).then(res => {
+        this.loading = false
         if (res.code === 0) {
           // this.getOrderData()
         }
@@ -277,14 +273,19 @@ export default {
     },
     // 使用余额支付
     balancePay() {
+      this.loading = true
       this.$API.handleAmount0(this.tradeNo).then(res => {
+        this.loading = false
         if (res.code === 0) {
           this.alert('交易成功')
+        } else {
+          this.alert('交易失败')
         }
       })
     },
     // 使用微信支付
     weixinPay() {
+      this.loading = true
       const { tradeNo } = this
       // 当前是否处于微信浏览器中
       if (this.isInWeixin) {
@@ -297,6 +298,7 @@ export default {
           openid = window.localStorage.getItem('WX_OPENID')
         }
         this.$API.wxJsapiPay(tradeNo, openid, this.tradeType).then(res => {
+          this.loading = false
           this.weakWeixinPay(res)
         })
       } else {
