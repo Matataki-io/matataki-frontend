@@ -827,5 +827,14 @@ minetokenGetResources(tokenId) {
         order: orderType
       }
     })
+  },
+  transferAsset({ symbol = 'cny', to, amount }) {
+    return request({
+      method: 'POST',
+      url: '/asset/transfer',
+      data: {
+        symbol, to, amount
+      }
+    })
   }
 }
