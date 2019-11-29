@@ -30,7 +30,7 @@
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ card.exchange_amount || 0 }} {{ card.symbol }}
+            {{ exchangeAmount }} CNY
           </p>
         </div>
       </div>
@@ -80,6 +80,10 @@ export default {
       if (amount === 0) return 0
 
       return (liquidity / amount).toFixed(this.card.decimals)
+    },
+    exchangeAmount() {
+      const tokenamount = precision(this.card.exchange_amount || 0, 'CNY', this.card.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     friendlyDate() {
       const time = moment(this.card.create_time)
