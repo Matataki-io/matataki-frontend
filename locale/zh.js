@@ -51,6 +51,7 @@ export default {
   transaction: '交易',
   gift: '赠送',
   detail: '明细',
+  notice: '通知',
   success: {
     success: '成功',
     copy: '复制成功',
@@ -600,7 +601,8 @@ export default {
     selfcoins: '发行的Fan票',
     editProfile: '编辑资料',
     information: '个人信息',
-    bookmark: '收藏'
+    bookmark: '收藏',
+    message: '私信'
   },
   withdraw: {
     title: '提现',
@@ -635,6 +637,9 @@ export default {
     supportExpenditure: '投资支出',
     assetList: '资产明细',
     balance: '钱包余额'
+  },
+  notification: {
+    followed_you: '关注了你'
   },
   footer: {
     hellpbook: '使用手册',

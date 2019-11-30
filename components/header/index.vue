@@ -49,6 +49,15 @@
           </ul>
         </div>
 
+        <el-tooltip class="item" effect="dark" content="通知中心" placement="bottom">
+          <n-link to="/notification" :class="{ badge: hasNewNotification }"><svg-icon
+            :style="customizeHeaderIconColorComputed"
+            style="margin: 0 0 0 18px"
+            class="create notification"
+            icon-class="bell"
+          /></n-link>
+        </el-tooltip>
+
         <el-popover
           v-model="visible"
           placement="bottom"
@@ -185,6 +194,7 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    ...mapGetters('notification', ['hasNewNotification']),
     nav() {
       return [
         {
@@ -235,13 +245,17 @@ export default {
   },
   created() {
     const { isLogined, refreshUser } = this
-    if (isLogined) refreshUser()
+    if (isLogined) {
+      refreshUser()
+      setInterval(this.getNotificationCounters, 120000)
+    }
   },
   mounted() {
     this.getRecommend()
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
+    ...mapActions('notification', ['getNotificationCounters']),
     postImport() {
       if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
       else this.login()
@@ -253,6 +267,7 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$API.getImg(avatar)
+      await this.getNotificationCounters()
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -520,5 +535,20 @@ export default {
 .notice-btn {
   margin-left: 10px;
   cursor: pointer;
+}
+.badge{
+  position: relative;
+  &::after{
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(251,104,119,1);
+    position: absolute;
+    z-index: 1000;
+    right: 0%;
+    margin-right: -3px;
+    margin-top: -3px;
+  }
 }
 </style>

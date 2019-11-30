@@ -50,6 +50,7 @@ export default {
   save: 'save',
   transaction: 'transaction',
   gift: 'gift',
+  notice: 'Notice',
   success: {
     success: 'success',
     copy: 'Copy success',
@@ -628,7 +629,8 @@ export default {
     selfcoins: 'Fan coins issued',
     editProfile: 'Edit Profile',
     information: 'User information',
-    bookmark: 'Bookmarks'
+    bookmark: 'Bookmarks',
+    message: 'Messages'
   },
   withdraw: {
     title: 'cash out',
@@ -669,6 +671,9 @@ export default {
     supportExpenditure: 'Investment expenditure',
     assetList: 'asset details',
     balance: 'wallet balance'
+  },
+  notification: {
+    followed_you: 'has followed you'
   },
   footer: {
     hellpbook: 'User manual',
