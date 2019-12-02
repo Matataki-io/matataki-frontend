@@ -37,7 +37,7 @@ export default {
   name: 'NotificationPage',
   components: { NotificationList, buttonLoadMore },
   data() {
-    const active = this.$route.params.provider ? PROVIDERS.findIndex(this.$route.params.provider) : 0
+    const active = this.$route.params.provider && PROVIDERS.indexOf(this.$route.params.provider) >= 0 ? PROVIDERS.indexOf(this.$route.params.provider) : 0
     return {
       PROVIDERS,
       active,
