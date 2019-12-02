@@ -770,7 +770,8 @@ export default {
     // console.log('info', info)
 
     // 判断是否为付费阅读文章
-    if ((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) {
+    const isProduct = info.data.channel_id === 2
+    if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
       return {
         article: info.data,
         post: {
@@ -1431,7 +1432,7 @@ export default {
               history.pushState({}, '', url)
             }
             // 判断是否为付费阅读文章
-            if ((res.data.tokens && res.data.tokens.length !== 0) || (res.data.prices && res.data.prices.length > 0)) {
+            if (((res.data.tokens && res.data.tokens.length !== 0) || (res.data.prices && res.data.prices.length > 0)) && !this.isProduct) {
               this.post.content = res.data.short_content
             } else {
               // 切换文章 得到ipfs内容
