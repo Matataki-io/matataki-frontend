@@ -241,14 +241,14 @@ export default {
     },
     searchQueryVal(newVal) {
       this.searchInput = newVal
+    },
+    async $route() {
+      await this.getNotificationCounters()
     }
   },
   created() {
     const { isLogined, refreshUser } = this
-    if (isLogined) {
-      refreshUser()
-      setInterval(this.getNotificationCounters, 120000)
-    }
+    if (isLogined) refreshUser()
   },
   mounted() {
     this.getRecommend()
