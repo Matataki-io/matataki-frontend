@@ -89,5 +89,3 @@ sw.*
 
 .vscode
 coverage
-
-yarn.lock
