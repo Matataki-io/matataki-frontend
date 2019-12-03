@@ -70,7 +70,7 @@ export default {
   methods: {
     ...mapActions('notification', ['getNotificationCounters']),
     setActive(index) {
-      if (!this.navItems[index] || !this.PROVIDERS.inculudes(this.navItems[index].name)) return
+      if (!this.navItems[index] || !this.PROVIDERS.includes(this.navItems[index].name)) return
       this.active = index
       this.page = 1
     },
