@@ -260,7 +260,7 @@ export default {
       resourcesSocialss: [],
       resourcesWebsites: [],
       showTokenSetting: false,
-      tabPage: 0
+      tabPage: Number(this.$route.query.tab) || 0
     }
   },
   computed: {
@@ -319,6 +319,12 @@ export default {
       if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
     },
     tabPage(val) {
+      this.$router.replace({
+        query: {
+          tab: this.tabPage
+        }
+      })
+      this.$route.query.page = 1 // This is a hack. It wasted me a lot of time!!!
       this.$emit('input', val)
     }
   },

@@ -56,6 +56,7 @@ export default {
       this.currentPage = i
       this.$router.replace({
         query: {
+          ...this.$route.query,
           page: i,
           sort: this.pull.params.sort
         }
@@ -69,6 +70,7 @@ export default {
 
       this.$router.replace({
         query: {
+          ...this.$route.query,
           page: this.currentPage,
           sort
         }
