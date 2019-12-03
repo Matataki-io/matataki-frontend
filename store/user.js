@@ -14,6 +14,7 @@ export const mutations = {
   setUserInfo(state, data) {
     const {
       avatar,
+      banner,
       email,
       fans,
       follows,
@@ -34,6 +35,7 @@ export const mutations = {
       followed: is_follow,
       name: nickname || username,
       avatar: API.getImg(avatar),
+      banner: banner ? API.getImg(banner) : '',
       stats: { accounts, articles, supports, drafts }
     }
   },
@@ -43,6 +45,7 @@ export const actions = {
   async refreshUser({ commit, rootGetters }, { id }) {
     const { isMe } = rootGetters
     const { data } = await (isMe(id) ? API.getMyUserData() : API.getUser({ id }))
+    console.log('数据：', isMe(id), data)
     commit('setUserInfo', data)
   },
   async followOrUnfollowUser({ commit, rootGetters, dispatch }, { id, type }) {
