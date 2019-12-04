@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <div class="mw footer-content">
+    <div class="footer-content">
       <div class="content">
         <div class="nav">
           <a class="href" target="_blank" href="https://www.matataki.io/p/1060">
@@ -90,7 +90,10 @@ export default {}
     padding-bottom: 52px;
     box-sizing: border-box;
   &-content {
+    max-width: 1200px;
     height: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -211,21 +214,33 @@ export default {}
   margin: 10px 0 0;
 }
 
-  .link {
-    margin: 10px 0 0;
-    font-size:14px;
+.link {
+  margin: 10px 0 0;
+  font-size:14px;
+  color:rgba(178,178,178,1);
+  line-height:22px;
+  a {
     color:rgba(178,178,178,1);
-    line-height:22px;
-    a {
-      color:rgba(178,178,178,1);
-      text-decoration: none;
-      margin: 0 4px;
-      &:nth-child(1) {
-        margin-left: 12px;
-      }
-      &:hover {
-        color: #fff;
-      }
+    text-decoration: none;
+    margin: 0 4px;
+    &:nth-child(1) {
+      margin-left: 12px;
+    }
+    &:hover {
+      color: #fff;
     }
   }
+}
+
+@media (max-width: 900px) {
+  .footer {
+    height: auto;
+  }
+  .footer-content {
+    flex-direction: column;
+    .content {
+      margin-bottom: 20px;
+    }
+  }
+}
 </style>

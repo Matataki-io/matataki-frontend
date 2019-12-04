@@ -54,6 +54,7 @@ export default {
           window.scrollTo(0, this.backPosition)
           clearInterval(this.interval)
           this.isMoving = false
+          window.scrollTo(0, 0) // 莫名其妙的差一点没有回到顶部 暂时先用这个办法把.....
         } else {
           window.scrollTo(0, next)
         }
