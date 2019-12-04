@@ -20,7 +20,7 @@
       :visible.sync="modal"
       :close-on-click-modal="false"
       :lock-scroll="false"
-      width="400px"
+      width="680px"
       custom-class="img-upload-modal br10"
     >
       <div slot="title" class="modal-header">
@@ -28,7 +28,7 @@
           {{ $t('imgUpload.title') }}
         </p>
         <p class="modal-header-subtitle">
-          {{ $t('imgUpload.subtitle') }}
+          {{ $t('imgUpload.subtitle2') }}
         </p>
       </div>
       <div :style="computedStyleContent" class="modal-content">
@@ -81,7 +81,7 @@ export default {
     // 比列
     aspectRatio: {
       type: Number,
-      default: 1 / 1
+      default: 120 / 29
     },
     // 上传类型
     updateType: {
@@ -102,16 +102,10 @@ export default {
   },
   computed: {
     computedStyleContent() {
-      if (this.updateType === 'artileCover') {
-        return {
-          width: '240px',
-          height: '120px'
-        }
-      } else {
-        return {
-          width: '240px',
-          height: '240px'
-        }
+      return {
+        width: '600px',
+        // height: '145px'
+        height: '400px'
       }
     }
   },
@@ -129,12 +123,10 @@ export default {
             viewMode: 3,
             dragMode: 'move',
             autoCropArea: 1,
+            modal: true,
             restore: false,
-            modal: false,
             guides: false,
             highlight: false,
-            cropBoxMovable: false,
-            cropBoxResizable: false,
             toggleDragModeOnDblclick: false
           })
           this.cropper = cropper
