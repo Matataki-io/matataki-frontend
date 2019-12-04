@@ -161,7 +161,21 @@ export default {
       checkedFilter: ['1', '2', '4']
     }
   },
-  computed: {},
+  computed: {
+    filter() {
+      let result = 0
+      for (const item of this.checkedFilter) {
+        result |= parseInt(item)
+      }
+      return result
+    }
+  },
+  watch: {
+    nowMainIndex(value) {
+      this.articleCardData[value].articles = []
+      this.onCheckedFilterChanged()
+    }
+  },
   async asyncData({ $axios }) {
     const initData = Object.create(null)
     try {
@@ -245,18 +259,11 @@ export default {
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(async function () {
-      let filter = 0
-      for (const item of this.checkedFilter) {
-        filter |= parseInt(item)
-      }
-
-      for (const tab of this.articleCardData) {
-        tab.params.filter = filter
-      }
-
       // This page drives me crazy!!!
 
       const currentTab = this.articleCardData[this.nowMainIndex]
+
+      currentTab.params.filter = this.filter
 
       try {
         const res = await this.$API.getBackendData({ url: currentTab.apiUrl, params: currentTab.params }, false)
