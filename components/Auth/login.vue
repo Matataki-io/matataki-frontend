@@ -19,7 +19,7 @@
         <div class="bottom-tip">
           <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
-          <a href="javascript:void(0);" @click="switchRegister">注册</a>
+          <a href="javascript:void(0);" @click="$emit('switch')">忘记密码</a>
         </div>
       </el-form-item>
     </el-form>

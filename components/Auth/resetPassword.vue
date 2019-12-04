@@ -1,37 +1,58 @@
 <template>
-  <section class="register">
+  <!-- v-show="!isLogin" -->
+  <section class="resetPassword">
+    <h1>重置密码</h1>
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input v-model="registerForm.email" type="" :placeholder="$t('rule.loginEmailMessage')" />
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input v-model="registerForm.password" type="password" :placeholder="$t('rule.setPassword')" show-password />
-      </el-form-item>
-      <el-form-item prop="repassword">
-        <el-input v-model="registerForm.repassword" type="password" :placeholder="$t('rule.setPasswordAgain')" show-password />
+        <el-input
+          v-model="registerForm.email"
+          type=""
+          :placeholder="$t('rule.loginEmailMessage')"
+        ></el-input>
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
-          <el-input v-model="registerForm.smscode" :placeholder="$t('rule.emailCode')" autocomplete="off" />
-          <el-button type="primary" :loading="loading" :disabled="!!timer || loading" @click="sendCode">
-            {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
-          </el-button>
+          <el-input
+            v-model="registerForm.smscode"
+            :placeholder="$t('rule.emailCode')"
+            autocomplete="off"
+          ></el-input>
+          <el-button
+            type="primary"
+            :loading="loading"
+            :disabled="!!timer || loading"
+            @click="sendCode"
+            >{{ timer ? `${count}S` : $t('auth.getEmailCode') }}</el-button
+          >
         </div>
       </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          v-model="registerForm.password"
+          type="password"
+          placeholder="请输入新密码"
+          show-password
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="repassword">
+        <el-input
+          v-model="registerForm.repassword"
+          type="password"
+          placeholder="请在输入一遍新密码"
+          show-password
+        ></el-input>
+      </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitRegisterForm">
-          {{ $t('registered') }}
-        </el-button>
+        <el-button type="primary" @click="submitRegisterForm">重置密码</el-button>
       </el-form-item>
     </el-form>
-    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="$t('auth.invite')">
   </section>
 </template>
 
 <script>
 /* eslint-disable */
 const TIME_COUNT = 60
-
+import utils from "@/utils/utils";
 export default {
   name: 'RegisterContent',
   data() {
@@ -40,8 +61,8 @@ export default {
         return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
         const res = await this.$API.verifyEmail(value)
-        if (res.data) {
-          callback(new Error(this.$t('rule.emailHasBeenRegistered')))
+        if (!res.data) {
+          callback(new Error('邮箱未注册'))
         } else {
           callback()
         }
@@ -60,10 +81,12 @@ export default {
       if (!value) {
         return callback(new Error(this.$t('rule.emailCode')))
       }
+
+
       if (!Number.isInteger(Number(value))) {
         callback(new Error(this.$t('rule.inputNumber')))
       } else if (value.toString().length !== 6) {
-        callback(new Error(this.$t('rule.inputLengthNumber', [6])))
+        callback(new Error(this.$t('rule.inputLengthNumber')))
       } else {
         callback()
       }
@@ -86,16 +109,12 @@ export default {
         ],
         password: [
           { required: true, message: this.$t('rule.passwordMessage'), trigger: 'blur' },
-          { min: 8, max: 16, message:  this.$t('rule.passwordLengthMessage', [8, 16]), trigger: 'blur' }
+          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage', [8, 16]), trigger: 'blur' }
         ],
         repassword: { validator: validatePass2, trigger: 'blur' },
         smscode: { validator: checkCode, trigger: 'blur' }
       },
-      referral: false
     }
-  },
-  mounted() {
-    if (process.browser) this.getReferral()
   },
   methods: {
     registerInitGT(cb) {
@@ -125,20 +144,24 @@ export default {
         });
       })
     },
+    successToast(msg) {
+      this.$message.success(msg)
+    },
+    failToast(msg) {
+      this.$message.error(msg)
+    },
     confirmSendCode(gt) {
-      this.loading = true
-      this.$API.getCaptcha(this.registerForm.email, {
+      this.$API.getResetCaptcha(this.registerForm.email, {
         geetest_challenge: gt.geetest_challenge,
         geetest_validate: gt.geetest_validate,
         geetest_seccode: gt.geetest_seccode
       }).then(res => {
         if (res.code === 0) {
           this.countDown()
-          this.$message.success(this.$t('success.codeSendSuccess', [5]))
+          this.successToast(this.$t('success.codeSendSuccess'))
         } else {
-          this.$message.error(this.$t('error.codeSendFail'))
+          this.failToast(this.$t('error.codeSendFail'))
         }
-        this.loading = false
       })
     },
     sendCode() {
@@ -166,63 +189,53 @@ export default {
         }, 1000)
       }
     },
-    // 注册提交
-    submitRegisterForm() {
-      this.$refs.registerForm.validate(async (valid) => {
+    async submitRegisterForm() {
+      await this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
           let params = {
             email: this.registerForm.email,
             captcha: this.registerForm.smscode,
             password: this.registerForm.password
           }
-          // 检查是否有邀请id
-          let referral = this.$utils.getCookie('referral')
-          if (referral) Object.assign(params, { referral: referral })
+
           try {
-            const res = await this.$API.register(params)
+            this.loading = true
+            const res = await this.$API.resetPassword(params)
+            console.log(res)
             if (res.code === 0) {
-              this.$message.success(this.$t('success.registeredSuccess'))
+              this.successToast('密码修改成功，请重新登录')
               this.$emit('switch')
-              this.isLogin = true
             } else {
-              this.$message.error(res.message)
+              this.failToast('密码修改失败')
             }
+            this.loading = false
           } catch (error) {
-            this.$message.error(this.$t('error.registeredFail'))
+            this.failToast('密码修改失败')
+            this.loading = false
           }
         } else {
-          console.log('error submit!!')
           return false
         }
       })
     },
-    // 得到邀请状态
-    getReferral() {
-      let referral = this.$utils.getCookie('referral')
-      if (referral) this.referral = true
-    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.register {
+.resetPassword {
+  h1 {
+    margin: 10px 0 20px 0;
+    font-size: 20px;
+  }
   .code-contaniner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     button {
       margin-left: 10px;
-      // width: 120px;
       text-align: center;
     }
   }
-}
-
-.referral {
-  height: 30px;
-  position: absolute;
-  right: 20px;
-  top: 0;
 }
 </style>

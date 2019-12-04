@@ -853,5 +853,27 @@ minetokenGetResources(tokenId) {
   },
   readNotifications(provider) {
     return request.post('/notification/read', { provider })
+  },
+  async getResetCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword/captcha?email=${email}`,
+      data: {
+        geetest_challenge,
+        geetest_validate,
+        geetest_seccode
+      }
+    })
+  },
+  async resetPassword({ email, password, captcha }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword`,
+      data: {
+        email,
+        password,
+        captcha: captcha.toString()
+      }
+    })
   }
 }
