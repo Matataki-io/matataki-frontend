@@ -193,18 +193,15 @@ export default {
   },
   data() {
     return {
-      storyOne: 1000,
-      storyOneVisualWrap: 10,
-      storyOneSummary: 240
     }
   },
   mounted() {
     if (process.browser) {
       this._setDefaultStyle()
-      this._resizeHomeHeight()
-      window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
 
       this.$nextTick(() => {
+        this._resizeHomeHeight()
+        window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
         this._initScrollAnimation()
       })
     }

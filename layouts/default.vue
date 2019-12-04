@@ -8,16 +8,7 @@
         icon-class="backtop"
       />
     </back-to-top>
-    <el-tooltip v-if="!hideFeedback" class="item" effect="dark" content="吐个槽?" placement="left">
-      <!-- 84254 -->
-      <a class="feedback" href="https://support.qq.com/product/98576" target="_blank" title="反馈">
-        <svg-icon
-          class="icon-feedback"
-          icon-class="tgc"
-        />
-      </a>
-    </el-tooltip>
-
+    <feedback v-if="!hideFeedback" :showPosition="100" />
     <AuthModal v-model="loginModalShow" />
     <articleImport v-model="importModalShow" @importArticle="importArticle" />
   </div>
@@ -28,13 +19,15 @@ import footer from '~/components/footer/index.vue'
 import AuthModal from '@/components/Auth/index.vue'
 import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
+import feedback from '@/components/feedback'
 export default {
   name: 'Default',
   components: {
     gFooter: footer,
     AuthModal,
     BackToTop,
-    articleImport
+    articleImport,
+    feedback
   },
   computed: {
     loginModalShow: {
@@ -58,7 +51,7 @@ export default {
     },
     hideFooter() {
       // 发布页面 GitHub登录
-      return this.$route.name === 'publish-type-id' || this.$route.name === 'login-github' || this.$route.name === 'test'
+      return this.$route.name === 'publish-type-id' || this.$route.name === 'login-github'
     },
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
@@ -103,30 +96,5 @@ export default {
     color: #fff;
   }
 }
-.feedback {
-  border-radius: 50%;
-  position: fixed;
-  width: 50px;
-  height: 50px;
-  color: #fff;
-  background: @purpleDark;
-  cursor: pointer;
-  bottom: 126px;
-  right: 40px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: all .3s;
-  z-index: 99;
-  // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
-    &:hover {
-    opacity: 0.9;
-  }
-  .icon-feedback {
-    font-size: 30px;
-    color: #fff;
-  }
-}
+
 </style>
