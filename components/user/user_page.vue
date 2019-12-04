@@ -199,7 +199,7 @@ export default {
   overflow: hidden;
   padding: 0px;
   img {
-    max-width: 1920px;
+    max-width: 3840px;
     height: 100%;
     display: block;
     object-fit: cover;

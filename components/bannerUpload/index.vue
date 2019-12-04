@@ -20,7 +20,7 @@
       :visible.sync="modal"
       :close-on-click-modal="false"
       :lock-scroll="false"
-      width="1050px"
+      width="680px"
       custom-class="img-upload-modal br10"
     >
       <div slot="title" class="modal-header">
@@ -81,7 +81,7 @@ export default {
     // 比列
     aspectRatio: {
       type: Number,
-      default: 192 / 29
+      default: 120 / 29
     },
     // 上传类型
     updateType: {
@@ -103,7 +103,7 @@ export default {
   computed: {
     computedStyleContent() {
       return {
-        width: '960px',
+        width: '600px',
         // height: '145px'
         height: '400px'
       }
