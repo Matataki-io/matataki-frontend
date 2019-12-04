@@ -4844,6 +4844,11 @@ growl@1.10.5:
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
   integrity sha512-qBr4OuELkhPenW6goKVXiv47US3clb3/IbuWF9KNKEijAy9oeHxU9IgzjvJhHkUzhaj7rOUD7+YGWqUjLp5oSA==
 
+gsap@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npm.taobao.org/gsap/download/gsap-3.0.1.tgz#946b49e860487bd23e6c884b95152d556a5f86f1"
+  integrity sha1-lGtJ6GBIe9I+bIhLlRUtVWpfhvE=
+
 gzip-size@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-5.1.1.tgz#cb9bee692f87c0612b232840a873904e4c135274"
@@ -6243,10 +6248,10 @@ match-at@^0.1.0:
   resolved "https://registry.yarnpkg.com/match-at/-/match-at-0.1.1.tgz#25d040d291777704d5e6556bbb79230ec2de0540"
   integrity sha512-h4Yd392z9mST+dzc+yjuybOGFNOZjmXIPKWjxBd1Bb23r4SmDOsk2NYCU2BMUBGbSpZqwVsZYNq26QS3xfaT3Q==
 
-mavon-editor-matataki@2.7.16:
-  version "2.7.16"
-  resolved "https://registry.yarnpkg.com/mavon-editor-matataki/-/mavon-editor-matataki-2.7.16.tgz#b4c455fc409031831f37c1be13651b5e015be550"
-  integrity sha512-kxQzDI3FOReZmY/lYysQIXbYMp8lkQ9cnvGcmztYYVtaP93Li+qX6bONYWFJMYPwnkMg6AoWbT0SnYbd/LHWfA==
+mavon-editor-matataki@2.7.17:
+  version "2.7.17"
+  resolved "https://registry.npm.taobao.org/mavon-editor-matataki/download/mavon-editor-matataki-2.7.17.tgz?cache=0&sync_timestamp=1574950795767&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmavon-editor-matataki%2Fdownload%2Fmavon-editor-matataki-2.7.17.tgz#3aa43a0addd772858f2c74b9a77c331348875a8a"
+  integrity sha1-OqQ6Ct3XcoWPLHS5p3wzE0iHWoo=
   dependencies:
     highlight.js "^9.11.0"
     highlight.js-async-webpack "^1.0.4"
