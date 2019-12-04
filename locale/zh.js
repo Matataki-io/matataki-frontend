@@ -132,7 +132,7 @@ export default {
     btn: '上传按钮',
     title: '编辑图像',
     subtitle: '调整图像寸和位置',
-    subtitle2: '调整图像寸和位置,建议分辨率为1920x290。',
+    subtitle2: '调整图像寸和位置。建议分辨率>1080p,裁切比例为120:29',
     save: '保存',
     selectImg: '请选择图片',
     imgVeryBIg: '图片过大',
