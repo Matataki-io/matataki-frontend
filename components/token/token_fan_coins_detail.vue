@@ -58,6 +58,7 @@ export default {
       this.currentPage = i
       this.$router.push({
         query: {
+          ...this.$route.query,
           page: i
         }
       })

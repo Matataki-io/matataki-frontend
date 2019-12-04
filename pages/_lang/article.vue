@@ -28,6 +28,18 @@
               :class="nowMainIndex === index && 'active'"
               @click="nowMainIndex = index"
             >{{ itme.title }}</span>
+
+            <el-popover class="filter" placement="bottom-end" trigger="click">
+              <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
+              <div style="font-size: 16px">
+                <div style="margin-bottom: 8px"><el-checkbox :indeterminate="isIndeterminate" v-model="filterAll" @change="handleFilterAllChanged">全部</el-checkbox></div>
+                <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
+                  <div style="margin-bottom: 8px"><el-checkbox label="1">免费</el-checkbox></div>
+                  <div style="margin-bottom: 8px"><el-checkbox label="2">持币可见</el-checkbox></div>
+                  <div style="margin-bottom: 8px"><el-checkbox label="4">付费可见</el-checkbox></div>
+                </el-checkbox-group>
+              </div>
+            </el-popover>
           </div>
           <!-- 导航部分 end -->
           <!-- 空div控制内容 -->
@@ -79,6 +91,7 @@
 <script>
 
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import articleCardList from '@/components/article_card_list/index.vue'
@@ -112,7 +125,8 @@ export default {
         {
           title: this.$t('home.articleNavHotTitle'),
           params: {
-            channel: 1
+            channel: 1,
+            filter: null
           },
           apiUrl: 'homeScoreRanking',
           articles: [],
@@ -121,7 +135,8 @@ export default {
         {
           title: this.$t('home.articleNavNowTitle'),
           params: {
-            channel: 1
+            channel: 1,
+            filter: null
           },
           apiUrl: 'homeTimeRanking',
           articles: [],
@@ -130,7 +145,8 @@ export default {
         {
           title: this.$t('home.articleNavFollowTitle'),
           params: {
-            channel: 1
+            channel: 1,
+            filter: null
           },
           apiUrl: 'followedPosts',
           articles: [],
@@ -139,10 +155,27 @@ export default {
       ],
       tagCards: [],
       usersRecommendList: [],
-      usersLoading: false
+      usersLoading: false,
+      filterAll: true,
+      isIndeterminate: false,
+      checkedFilter: ['1', '2', '4']
     }
   },
-  computed: {},
+  computed: {
+    filter() {
+      let result = 0
+      for (const item of this.checkedFilter) {
+        result |= parseInt(item)
+      }
+      return result
+    }
+  },
+  watch: {
+    nowMainIndex(value) {
+      this.articleCardData[value].articles = []
+      this.onCheckedFilterChanged()
+    }
+  },
   async asyncData({ $axios }) {
     const initData = Object.create(null)
     try {
@@ -208,7 +241,40 @@ export default {
     },
     promptComputed(index) {
       return index === 2 ? this.$t('notFollowContent') : this.$t('notArticle')
-    }
+    },
+    handleFilterAllChanged(value) {
+      if (!value) {
+        this.filterAll = true
+        return
+      }
+
+      this.checkedFilter = ['1', '2', '4']
+      this.isIndeterminate = false
+      this.onCheckedFilterChanged()
+    },
+    handleCheckedFilterChanged(value) {
+      const checkedCount = value.length
+      this.filterAll = checkedCount === 3
+      this.isIndeterminate = checkedCount > 0 && checkedCount < 3
+      this.onCheckedFilterChanged()
+    },
+    onCheckedFilterChanged: debounce(async function () {
+      // This page drives me crazy!!!
+
+      const currentTab = this.articleCardData[this.nowMainIndex]
+
+      currentTab.params.filter = this.filter
+
+      try {
+        const res = await this.$API.getBackendData({ url: currentTab.apiUrl, params: currentTab.params }, false)
+        if (res.code !== 0) console.error(res.message)
+        else if (res.data && res.data.list && res.data.list.length !== 0) {
+          currentTab.articles = res.data.list
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }, 500)
   }
 }
 </script>

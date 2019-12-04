@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      tabPage: 0
+      tabPage: Number(this.$route.query.tab) || 0
     }
   },
   methods: {

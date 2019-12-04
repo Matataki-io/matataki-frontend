@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      tabPageCopy: 0
+      tabPageCopy: Number(this.$route.query.tab) || 0
     }
   },
   computed: {
