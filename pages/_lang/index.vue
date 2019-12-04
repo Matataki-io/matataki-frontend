@@ -181,7 +181,7 @@
 <script>
 /* eslint-disable no-undef */
 
-import { TimelineLite, TimelineMax, TweenMax, Linear, Power4 } from 'gsap'
+import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 export default {
   head: {
@@ -211,7 +211,7 @@ export default {
       const initStory = () => {
         const componentStory = document.querySelectorAll('.component-story')
         const controller = new ScrollMagic.Controller()
-        const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+        // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
 
         componentStory.forEach((el, i) => {
           const childHeaderInner = el.querySelector('.component-story__header .component-story__inner')
