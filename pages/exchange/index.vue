@@ -147,6 +147,9 @@ export default {
 </style>
 <style lang="less" scoped>
 @bg-color: #F7F7F7;
+.ma-banner {
+  width: 100%;
+}
 .main {
   .minHeight();
   background: @bg-color;

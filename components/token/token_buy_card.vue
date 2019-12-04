@@ -78,7 +78,11 @@ export default {
         if (this.$utils.isNull(this.form.output)) {
           this.$message.error('请先输入购买数量')
         } else {
-          this.orderShow = true
+          // this.orderShow = true
+          this.$store.dispatch('order/createOrder', {
+            ...this.form,
+            type: this.type
+          })
         }
       } else {
         this.$store.commit('setLoginModal', true)

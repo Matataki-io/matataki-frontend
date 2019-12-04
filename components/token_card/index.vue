@@ -20,7 +20,7 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ card.unit_price || 0 }} CNY
+            {{ unitPrice }} CNY
           </p>
         </div>
         <div class="card-data-column">
@@ -30,7 +30,7 @@
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ card.exchange_amount || 0 }} {{ card.symbol }}
+            {{ exchangeAmount }} CNY
           </p>
         </div>
       </div>
@@ -67,6 +67,18 @@ export default {
     },
     cnyReserve() {
       const tokenamount = precision(this.card.liquidity || 0, 'CNY', this.card.decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    unitPrice() {
+      const amount = this.card.amount || 0
+      const liquidity = this.card.liquidity || 0
+
+      if (amount === 0) return 0
+
+      return (liquidity / amount).toFixed(this.card.decimals)
+    },
+    exchangeAmount() {
+      const tokenamount = precision(this.card.exchange_amount || 0, 'CNY', this.card.decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     friendlyDate() {

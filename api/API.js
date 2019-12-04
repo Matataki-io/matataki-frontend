@@ -195,6 +195,13 @@ export default {
       data: data,
     })
   },
+  // 删除文章持通证支付
+  articlePricesDelete(id) {
+    return request({
+      method: 'DELETE',
+      url: `/posts/${id}/prices`,
+    })
+  },
   /**
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
@@ -298,6 +305,7 @@ export default {
       avatar: '/user/uploadAvatar',
       artileCover: '/post/uploadImage',
       coins: '/post/uploadImage',
+      banner: '/user/uploadBanner'
     }
     const formdata = new FormData()
     formdata.append('image', data)
@@ -764,37 +772,39 @@ minetokenGetResources(tokenId) {
   },
 
   //-------------文章支付使用开始-----------------
-  articleNativePay(tradeNo) {
-    return this.articleWxPay({
+  wxNativePay(tradeNo, title) {
+    return this.orderWxpay({
       tradeNo,
-      trade_type: 'NATIVE'
+      trade_type: 'NATIVE',
+      title
     })
   },
-  articleJsapiPay(tradeNo, openid) {
-    return this.articleWxPay({
+  wxJsapiPay(tradeNo, openid, title) {
+    return this.orderWxpay({
       tradeNo,
       trade_type: 'JSAPI',
+      title,
       openid
     })
   },
-  articleWxPay(order) {
+  orderWxpay(order) {
     return request.post('/order/wxpay', order)
   },
   //-------------文章支付使用结束-----------------
-  getArticleOrder(tradeNo) {
+  getOrderData(tradeNo) {
     return request({
       method: 'get',
       url: `/orders/${tradeNo}`
     })
   },
-  updateArticleOrder(tradeNo, order) {
+  updateOrder(tradeNo, order) {
     return request({
       method: 'put',
       url: `/orders/${tradeNo}`,
       data: order
     })
   },
-  createArticleOrder(order) {
+  createOrder(order) {
     return request({
       method: 'PUT',
       url: '/orders',
@@ -823,6 +833,46 @@ minetokenGetResources(tokenId) {
     return request.get(`/user/bookmarks`, {
       params: {
         order: orderType
+      }
+    })
+  },
+  transferAsset({ symbol = 'cny', to, amount }) {
+    return request({
+      method: 'POST',
+      url: '/asset/transfer',
+      data: {
+        symbol, to, amount
+      }
+    })
+  },
+  fetchNotifications(provider, page = 1, type = 'check_time') {
+    return request.get('/notification/fetch', { params: { page, type, provider } })
+  },
+  getNotificationCounters() {
+    return request.get('/notification')
+  },
+  readNotifications(provider) {
+    return request.post('/notification/read', { provider })
+  },
+  async getResetCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword/captcha?email=${email}`,
+      data: {
+        geetest_challenge,
+        geetest_validate,
+        geetest_seccode
+      }
+    })
+  },
+  async resetPassword({ email, password, captcha }) {
+    return request({
+      method: 'POST',
+      url: `/login/resetPassword`,
+      data: {
+        email,
+        password,
+        captcha: captcha.toString()
       }
     })
   }

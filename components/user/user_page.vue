@@ -1,27 +1,23 @@
 <template>
   <div class="user-page">
     <g-header />
-    <div class="banner user-page-banner">
+    <div v-if="userInfo.banner" class="banner user-page-banner">
+      <img :src="userInfo.banner" alt="banner">
+    </div>
+    <div v-else class="default-banner user-page-banner">
       <img src="@/assets/img/user_banner.png" alt="banner">
     </div>
     <div class="user-info user-page-info">
       <div class="user-info-center">
         <div class="fl ac jc token-avatar">
-          <avatar
-            :src="userInfo.avatar"
-            size="120px"
-            class="avatar"
-          />
+          <avatar :src="userInfo.avatar" size="120px" class="avatar" />
           <img
             v-if="tokenUser"
             class="token-link"
             src="@/assets/img/token_link.png"
             alt="token-link"
           >
-          <tokenAvatar
-            v-if="tokenUser"
-            :token="tokenData"
-          />
+          <tokenAvatar v-if="tokenUser" :token="tokenData" />
         </div>
         <div>
           <h1 class="username">
@@ -38,7 +34,7 @@
               class="seeduser"
               icon-class="seeduser"
             />
-          </el-tooltip> -->
+            </el-tooltip>-->
 
             <el-tooltip
               v-if="tokenUser"
@@ -47,10 +43,7 @@
               content="发行了Fan票的用户"
               placement="top"
             >
-              <svg-icon
-                class="tokens"
-                icon-class="token"
-              />
+              <svg-icon class="tokens" icon-class="token" />
             </el-tooltip>
           </h1>
         </div>
@@ -59,25 +52,39 @@
           {{ userInfo.introduction || $t('not') }}
         </p>
         <div class="fl jc">
-          <router-link :to="{name: 'user-id-follow', params: {id: $route.params.id}}" class="fl fdc ac follow-block">
+          <router-link
+            :to="{name: 'user-id-follow', params: {id: $route.params.id}}"
+            class="fl fdc ac follow-block"
+          >
             <span class="follow-number">{{ userInfo.follows || 0 }}</span>
             <span class="follow-title">{{ $t('follow') }}</span>
           </router-link>
 
-          <router-link :to="{name: 'user-id-fan', params: {id: $route.params.id}}" class="fl fdc ac follow-block">
+          <router-link
+            :to="{name: 'user-id-fan', params: {id: $route.params.id}}"
+            class="fl fdc ac follow-block"
+          >
             <span class="follow-number">{{ userInfo.fans || 0 }}</span>
             <span class="follow-title">{{ $t('fans') }}</span>
           </router-link>
         </div>
-        <followBtn v-if="!isMe(Number($route.params.id))" :id="Number($route.params.id)" class="follow" />
-        <router-link
-          v-else
-          :to="{name: 'setting'}"
-        >
-          <el-button
-            size="small"
-            class="follow edit"
+        <el-tooltip v-if="isMe(Number($route.params.id))" class="item" effect="dark" content="上传背景图" placement="top">
+          <bannerUpload
+            :img-upload-done="imgUploadDone"
+            :update-type="'banner'"
+            @doneImageUpload="doneImageUpload"
+            class="follow3"
           >
+            <el-button slot="uploadButton" size="small" class="ibutton" type="info" icon="el-icon-s-open" />
+          </bannerUpload>
+        </el-tooltip>
+        <followBtn
+          v-if="!isMe(Number($route.params.id))"
+          :id="Number($route.params.id)"
+          class="follow"
+        />
+        <router-link v-else :to="{name: 'setting'}">
+          <el-button size="small" class="follow edit">
             {{ $t('user.editProfile') }}
           </el-button>
         </router-link>
@@ -110,13 +117,16 @@ import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
 import Share from '@/components/token/token_share.vue'
 
+import bannerUpload from '@/components/bannerUpload/index.vue'
+
 export default {
   components: {
     avatar,
     followBtn,
     userPageNav,
     tokenAvatar,
-    Share
+    Share,
+    bannerUpload
   },
   data() {
     return {
@@ -124,7 +134,8 @@ export default {
       seedUser: false,
       tokenUser: false,
       tokenData: Object.create(null),
-      shareModalShow: false
+      shareModalShow: false,
+      imgUploadDone: 0 // 图片是否上传完成
     }
   },
   computed: {
@@ -142,31 +153,37 @@ export default {
     this.tokenUserId(this.$route.params.id)
   },
   methods: {
-    ...mapActions('user', [
-      'refreshUser',
-      'followOrUnfollowUser'
-    ]),
+    ...mapActions('user', ['refreshUser', 'followOrUnfollowUser']),
     async getMyUserData() {
-      const res = await this.$API.getMyUserData().then(res => {
-        const statusToken = (res.data.status & this.$userStatus.hasMineTokenPermission)
-        const statusSeedUser = (res.data.status & this.$userStatus.isSeedUser)
-        if (res.code === 0 && statusToken) this.token = true
-        if (res.code === 0 && statusSeedUser) this.seedUser = true
-      }).catch(err => {
-        console.log(err)
-      })
+      const res = await this.$API
+        .getMyUserData()
+        .then(res => {
+          const statusToken =
+            res.data.status & this.$userStatus.hasMineTokenPermission
+          const statusSeedUser = res.data.status & this.$userStatus.isSeedUser
+          if (res.code === 0 && statusToken) this.token = true
+          if (res.code === 0 && statusSeedUser) this.seedUser = true
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     async tokenUserId(id) {
-      await this.$API.tokenUserId(id).then(res => {
-        if (res.code === 0 && res.data.id > 0) {
-          this.tokenUser = true
-          this.tokenData = res.data
-        }
-      }).catch(err => console.log('get token user error', err))
+      await this.$API
+        .tokenUserId(id)
+        .then(res => {
+          if (res.code === 0 && res.data.id > 0) {
+            this.tokenUser = true
+            this.tokenData = res.data
+          }
+        })
+        .catch(err => console.log('get token user error', err))
+    },
+    doneImageUpload(res) {
+      this.imgUploadDone += Date.now()
+      this.refreshUser({ id: this.$route.params.id })
     }
-
   }
-
 }
 </script>
 
@@ -175,6 +192,24 @@ export default {
   .minHeight();
 }
 .banner {
+  height: 290px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  padding: 0px;
+  img {
+    max-width: 3840px;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+.default-banner {
   height: 290px;
   background-color: #C8D7FF;
   box-sizing: border-box;
@@ -210,10 +245,10 @@ export default {
     box-sizing: border-box;
   }
   .username {
-    font-size:24px;
+    font-size: 24px;
     font-weight: bold;
     color: #000;
-    line-height:1;
+    line-height: 1;
     padding: 0;
     margin: 0;
     display: flex;
@@ -242,10 +277,10 @@ export default {
     margin-left: 4px;
   }
   .profile {
-    font-size:16px;
-    font-weight:400;
+    font-size: 16px;
+    font-weight: 400;
     color: #000;
-    line-height:22px;
+    line-height: 22px;
     padding: 0;
     margin: 10px 0 20px;
   }
@@ -253,18 +288,18 @@ export default {
     margin: 0 34px;
   }
   .follow-number {
-    font-size:24px;
-    font-weight:bold;
-    color:rgba(84,45,224,1);
-    line-height:28px;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(84, 45, 224, 1);
+    line-height: 28px;
     padding: 0;
     margin: 0 0 8px;
   }
   .follow-title {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 1);
+    line-height: 20px;
     padding: 0;
     margin: 0;
   }
@@ -272,6 +307,20 @@ export default {
     position: absolute;
     right: 10px;
     bottom: 30px;
+  }
+  .follow3 {
+    position: absolute;
+    right: 10px;
+    bottom: 250px;
+    .ibutton {
+      font-size: 18px;
+      padding: 5px;
+      background: #9093998c;
+      border-color: #00000000;
+      &:hover {
+        background: #909399;
+      }
+    }
   }
   .follow {
     position: absolute;

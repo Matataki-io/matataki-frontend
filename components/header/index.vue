@@ -6,26 +6,7 @@
         <a class="logo-link" href="/"><img :src="customizeHeaderLogoColorComputed" class="logo" alt="logo"></a>
         <!-- nav -->
         <template v-for="(item, index) in nav">
-          <el-tooltip
-            v-if="item.url === 'exchange'"
-            :key="index"
-            class="item"
-            effect="dark"
-            content="Fan票交易所"
-            placement="bottom"
-          >
-            <router-link
-              :style="customizeHeaderTextColorComputed"
-              :class="$route.name === item.url && 'active'"
-              :to="{name: item.url}"
-              class="nav"
-            >
-              {{ item.title }}
-              <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
-            </router-link>
-          </el-tooltip>
           <router-link
-            v-else
             :key="index"
             :style="customizeHeaderTextColorComputed"
             :class="$route.name === item.url && 'active'"
@@ -36,29 +17,6 @@
             <sup v-if="item.sup" style="color: orange;">{{ item.sup }}</sup>
           </router-link>
         </template>
-
-        <el-popover
-          placement="top-start"
-          width="300"
-          trigger="hover"
-        >
-          <div class="notice">
-            <h3>Fan票删档测试即将结束：</h3>
-            <p>瞬matataki的Fan票第一阶段删档测试马上就结束了。感谢所有参与者们的支持！</p>
-            <p>我们将会在11月25日开始清理以下测试数据：</p>
-
-            <p>1. 个人持仓Fan票和流动金的交易记录</p>
-            <p>2. cny账户余额和记录</p>
-            <p>3. Fan票的全部持仓和交易记录</p>
-            <p>4. 交易所的交易记录和流动金记录</p>
-
-            <p>在测试期间各位支付的资金基本都已经如数退回了，还未退回的资金将会在未来几天中退还，请注意在微信中查看退款记录。</p>
-            <p>所有数据清理完成后，将会开放正式版。</p>
-          </div>
-          <div slot="reference" class="notice-btn">
-            重要通知!
-          </div>
-        </el-popover>
         <!-- <a
           class="nav"
           href="javascript:;"
@@ -90,6 +48,15 @@
             </li>
           </ul>
         </div>
+
+        <el-tooltip class="item" effect="dark" content="通知中心" placement="bottom">
+          <n-link to="/notification" :class="{ badge: hasNewNotification }"><svg-icon
+            :style="customizeHeaderIconColorComputed"
+            style="margin: 0 0 0 18px"
+            class="create notification"
+            icon-class="bell"
+          /></n-link>
+        </el-tooltip>
 
         <el-popover
           v-model="visible"
@@ -227,6 +194,7 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    ...mapGetters('notification', ['hasNewNotification']),
     nav() {
       return [
         {
@@ -243,11 +211,6 @@ export default {
           title: 'Fan票',
           url: 'token',
           sup: ''
-        },
-        {
-          title: 'Lab',
-          url: 'exchange',
-          sup: 'beta'
         }
       ]
     },
@@ -282,13 +245,17 @@ export default {
   },
   created() {
     const { isLogined, refreshUser } = this
-    if (isLogined) refreshUser()
+    if (isLogined) {
+      refreshUser()
+      setInterval(this.getNotificationCounters, 120000)
+    }
   },
   mounted() {
     this.getRecommend()
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut']),
+    ...mapActions('notification', ['getNotificationCounters']),
     postImport() {
       if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
       else this.login()
@@ -300,6 +267,7 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$API.getImg(avatar)
+      await this.getNotificationCounters()
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -567,5 +535,20 @@ export default {
 .notice-btn {
   margin-left: 10px;
   cursor: pointer;
+}
+.badge{
+  position: relative;
+  &::after{
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(251,104,119,1);
+    position: absolute;
+    z-index: 1000;
+    right: 0%;
+    margin-right: -3px;
+    margin-top: -3px;
+  }
 }
 </style>

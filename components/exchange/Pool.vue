@@ -441,7 +441,11 @@ export default {
       if (this.isDelete) {
         this.removeLiquidity()
       } else {
-        this.addLiquidity()
+        // 添加流动性创建订单
+        this.$store.dispatch('order/createOrder', {
+          ...this.form,
+          type: 'add'
+        })
       }
     },
     addLiquidity() {

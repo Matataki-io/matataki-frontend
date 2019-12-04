@@ -310,7 +310,11 @@ export default {
       }
       // 输入是人民币
       if (inputToken.isCNY) {
-        this.orderShow = true
+        this.$store.dispatch('order/createOrder', {
+          ...this.form,
+          type: this.type
+        })
+        // this.orderShow = true
         // this.$API
         //   .wxpay({
         //     total: utils.toDecimal(input, outputToken.decimals), // 单位yuan

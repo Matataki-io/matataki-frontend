@@ -66,6 +66,9 @@
           <a target="_blank" href="https://t.me/smartsignature_io">
             <div class="icon telegram-icon" />
           </a>
+          <a target="_blank" href="https://www.facebook.com/MatatakiOfficial/">
+            <div class="icon facebook-icon" />
+          </a>
         </div>
         <p class="copyright">
           Copyright © 2018-2019 ANDOROMEDA TECH.ltd
@@ -190,6 +193,14 @@ export default {}
     background-image: url('../../assets/img/footer_telegram.svg');
     &:hover {
       background-image: url('../../assets/img/footer_telegram_active.svg');
+    }
+  }
+  &.facebook-icon{
+    width: 24px;
+    height: 24px;
+    background-image: url('../../assets/img/footer_facebook.svg');
+    &:hover {
+      background-image: url('../../assets/img/footer_facebook_active.svg');
     }
   }
 }
