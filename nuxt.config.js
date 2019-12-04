@@ -52,7 +52,10 @@ export default {
     script: [
       { src: '/html2canvas.min.js' },
       { src: '/qrcode.min.js' },
-      { src: '/gt.js' }
+      { src: '/gt.js' },
+      { src: '/ScrollMagic.min.js' },
+      { src: '/animation.gsap.min.js' },
+      { src: '/debug.addIndicators.min.js' }
     ]
   },
   /*
