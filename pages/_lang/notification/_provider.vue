@@ -84,3 +84,11 @@ export default {
 }
 </script>
 <style lang="less" scoped src="./index.less"></style>
+<style lang="less" scoped>
+.load-more /deep/ button.btn {
+  margin: 50px auto !important;
+  width: 300px !important;
+  height: 40px !important;
+  font-size: 16px !important;
+}
+</style>
