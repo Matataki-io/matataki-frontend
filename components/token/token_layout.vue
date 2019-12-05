@@ -146,6 +146,8 @@
           <div class="line" />
           <slot />
         </div>
+
+        <tokenRelated class="related" />
       </el-col>
       <el-col :span="6">
         <!-- <router-link class="exchange" :to="{name: 'exchange'}">
@@ -213,6 +215,7 @@ import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
 import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
+import tokenRelated from '@/components/token/token_related.vue'
 import socialTypes from '@/config/social_types.js'
 import { precision } from '@/utils/precisionConversion'
 
@@ -222,7 +225,8 @@ export default {
     mineTokensNav,
     Share,
     socialIcon,
-    tokenBuyCard
+    tokenBuyCard,
+    tokenRelated
   },
   // head() {
   //   return {
@@ -464,7 +468,8 @@ export default {
 .detail,
 .about,
 .social,
-.share {
+.share,
+.related {
   background: @white;
   padding: 20px;
   border-radius: @br10;

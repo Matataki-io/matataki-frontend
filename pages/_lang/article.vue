@@ -32,11 +32,10 @@
             <el-popover class="filter" placement="bottom-end" trigger="click">
               <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
               <div style="font-size: 16px">
-                <div style="margin-bottom: 8px"><el-checkbox :indeterminate="isIndeterminate" v-model="filterAll" @change="handleFilterAllChanged">全部</el-checkbox></div>
                 <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
                   <div style="margin-bottom: 8px"><el-checkbox label="1">免费</el-checkbox></div>
                   <div style="margin-bottom: 8px"><el-checkbox label="2">持币可见</el-checkbox></div>
-                  <div style="margin-bottom: 8px"><el-checkbox label="4">付费可见</el-checkbox></div>
+                  <div><el-checkbox label="4">付费可见</el-checkbox></div>
                 </el-checkbox-group>
               </div>
             </el-popover>
@@ -156,8 +155,6 @@ export default {
       tagCards: [],
       usersRecommendList: [],
       usersLoading: false,
-      filterAll: true,
-      isIndeterminate: false,
       checkedFilter: ['1', '2', '4']
     }
   },
@@ -242,20 +239,7 @@ export default {
     promptComputed(index) {
       return index === 2 ? this.$t('notFollowContent') : this.$t('notArticle')
     },
-    handleFilterAllChanged(value) {
-      if (!value) {
-        this.filterAll = true
-        return
-      }
-
-      this.checkedFilter = ['1', '2', '4']
-      this.isIndeterminate = false
-      this.onCheckedFilterChanged()
-    },
     handleCheckedFilterChanged(value) {
-      const checkedCount = value.length
-      this.filterAll = checkedCount === 3
-      this.isIndeterminate = checkedCount > 0 && checkedCount < 3
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(async function () {
