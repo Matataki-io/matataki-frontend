@@ -423,7 +423,7 @@ export default {
   padding: 0 0 0 10px;
   margin: 0;
   a {
-    color: @black;
+    color: #542de0;
   }
 }
 .share-btn {
