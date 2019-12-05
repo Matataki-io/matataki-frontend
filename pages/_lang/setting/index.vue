@@ -2,27 +2,7 @@
   <userLayout>
     <template slot="main">
       <userNav nav-list-url="setting" />
-      <nav class="nav">
-        <template>
-          <!-- 标签 -->
-          <a
-            :class="numPage === 1 && 'active'"
-            @click="numPage = 1"
-          >
-            {{ $t('user.setting') }}
-          </a>
-        </template>
-        <template>
-          <a
-            :class="numPage === 2 && 'active'"
-            @click="numPage = 2"
-          >
-            {{ $t('user.systemSetting') }}
-          </a>
-        </template>
-      </nav>
-      <!-- 用户设置 -->
-      <div v-if="numPage === 1" class="set-main">
+      <div class="set-main">
         <div class="list center">
           <span class="title">{{ $t('avatar') }}</span>
           <img-upload
@@ -118,17 +98,6 @@
           {{ $t('save') }}
         </el-button>
       </div>
-      <!-- 系统设置 -->
-      <div v-if="numPage === 2" class="set-main">
-        <div class="list center">
-          <span class="title">{{ $t('user.transfer') }}</span>
-          <el-switch
-            v-model="isTransfer"
-            @change="changeTransfer"
-            active-color="#542DE0"
-          />
-        </div>
-      </div>
     </template>
     <template slot="info">
       <userInfo :is-setting="true" />
@@ -160,7 +129,6 @@ export default {
       username: '',
       email: '',
       introduction: '',
-      isTransfer: true,
       avatar: '',
       setProfile: false, // 是否编辑信息
       imgUploadDone: 0, // 图片是否上传完成
@@ -363,31 +331,9 @@ export default {
         if (res.code === 0 && resLinks.code === 0) {
           setUser(res.data)
           setLinks(resLinks.data)
-          this.isTransfer = !!res.data.accept
         } else console.log('获取用户信息失败')
       } catch (error) {
         console.log(`获取用户信息失败${error}`)
-      }
-    },
-    // 改变转让状态
-    async changeTransfer(status) {
-      try {
-        this.articleTransfer = status
-        const accept = status ? 1 : 0
-        const res = await this.$backendAPI.setProfile({ accept })
-        if (res.status === 200 && res.data.code === 0) {
-          this.$message({
-            message: this.$t('success.success'),
-            type: 'success'
-          })
-        } else {
-          this.$message.error(this.$t('error.fail'))
-          this.articleTransfer = !status
-        }
-      } catch (error) {
-        this.articleTransfer = !status
-        console.log(`转让状态错误${error}`)
-        this.$message.error(this.$t('error.fail'))
       }
     },
     // 保存按钮
@@ -557,25 +503,7 @@ export default {
     background: @purpleDark;
   }
 }
-.nav {
-  padding-left: 10px;
-  padding-right: 10px;
-  a {
-    font-size: 18px;
-    line-height:33px;
-    text-decoration: none;
-    margin-right: 20px;
-    color: #333;
-    cursor: pointer;
-    &.active {
-      font-weight:bold;
-      color:rgba(0,0,0,1);
-    }
-    &:nth-last-child(1) {
-      margin-right: 0;
-    }
-  }
-}
+
 .social-title {
   padding: 0;
   margin: 12px 0 10px 60px;
