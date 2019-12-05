@@ -34,7 +34,7 @@
         </el-dropdown>
       </div>
 
-      <div class="mavonEditor">
+      <div :style="editorStyle" class="mavonEditor">
         <no-ssr>
           <mavon-editor
             ref="md"
@@ -44,6 +44,7 @@
             :autofocus="false"
             :placeholder="$t('publish.contentPlaceholder')"
             @imgAdd="$imgAdd"
+            :style="editorStyle"
             class="editor"
           />
         </no-ssr>
@@ -576,7 +577,8 @@ export default {
       },
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
-      total: 0
+      total: 0,
+      editorStyle: {}
     }
   },
   computed: {
@@ -665,6 +667,11 @@ export default {
     this.renderRelatedListContent()
     this.setToolBar()
 
+    if (process.browser) {
+      this._resizeEditor()
+      window.addEventListener('resize', throttle(this._resizeEditor), 300)
+    }
+
     // 判断当前
     // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
     if (type === 'draft' && typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) { // 草稿
@@ -694,6 +701,12 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    _resizeEditor() {
+      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      this.editorStyle = {
+        height: `${clientHeight - 110}px`
+      }
+    },
     // watch 监听草稿更新
     updateDraftWatch() {
       if (!this.autoUpdateDfaft) return
