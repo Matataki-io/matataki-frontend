@@ -95,13 +95,13 @@
             </el-tooltip>
           </h3>
           <el-checkbox v-model="readauThority" size="small">
-            设置持通证
+            设置持Fan票
           </el-checkbox>
         </div>
         <transition name="fade">
           <div v-show="readauThority" class="fl ac">
             <div>
-              <h3>持通证类型</h3>
+              <h3>Fan票类型</h3>
               <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
                 <el-option
                   v-for="item in readSelectOptions"
@@ -112,7 +112,7 @@
               </el-select>
             </div>
             <div style="margin-left: 10px;">
-              <h3>持通证数量</h3>
+              <h3>持Fan票数量</h3>
               <el-input
                 v-model="readToken"
                 :min="1"

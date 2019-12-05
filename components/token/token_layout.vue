@@ -44,8 +44,8 @@
             </div>
             <div>
               <p class="token-info-sub">
-{{ minetokenToken.brief || '暂无' }}
-</p>
+                {{ minetokenToken.brief || '暂无' }}
+              </p>
             </div>
           </div>
         </div>
@@ -430,6 +430,11 @@ export default {
 
 .token-container {
   margin: 20px auto 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  .el-col-18 {
+    padding-right: 20px;
+  }
 }
 
 .introduction {
