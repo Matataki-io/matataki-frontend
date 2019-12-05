@@ -180,16 +180,19 @@
 
 <script>
 /* eslint-disable no-undef */
-
-import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
+// import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 export default {
   head: {
-    // script: [
-    //   { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
-    //   { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }
-    //   // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js' }
-    // ]
+    script: [
+      { src: '/gsap.min.js' },
+      { src: '/ScrollMagic.min.js' },
+      { src: '/animation.gsap.min.js' },
+      { src: '/debug.addIndicators.min.js' }
+      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
+      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }
+      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js' }
+    ]
   },
   data() {
     return {
