@@ -21,9 +21,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="true"
-        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
+        class="pagination"
       />
     </template>
     <template slot="info">
@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .point-card {
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@ export default {
   margin-bottom: 20px;
   margin: 10px 0;
   background-color: #fff;
-  padding: 16px 20px;
+  padding: 16px 20px 16px 10px;
   border-bottom: 1px solid #DBDBDB;
   .title {
     font-size: 18px;

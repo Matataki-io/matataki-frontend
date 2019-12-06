@@ -36,7 +36,13 @@ export default {
       return this.asset.amount
     },
     assetColor() {
-      return '#d74e5a'
+      if (this.asset.amount < 0) {
+        return '#d74e5a'
+      } else if (this.asset.amount) {
+        return '#41b37d'
+      } else {
+        return '#000000'
+      }
     },
     assetType() {
       const { status, type } = this.asset
