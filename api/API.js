@@ -315,6 +315,28 @@ export default {
       data: formdata
     })
   },
+  ossUploadImage(folder, data) {
+    const folderOption = {
+      avatar: 'avatar', // 头像
+      userBanner: 'userBanner', // 用户封面
+      articleCover: 'articleCover', // 文章封面
+      article: 'article', // 编辑器上传
+      temp: 'temp', // 临时文件
+      coin: 'coin', // fan票
+    }
+    const formdata = new FormData()
+    // Invalid filename blob
+    let filename = data.name ? data.name.split('.') : 'png'
+    if (typeof filename !== 'string') {
+      filename = filename[filename.length - 1]
+    }
+    formdata.append('file', data, `${Date.now()}.${filename}`)
+    return request({
+      method: 'POST',
+      url: `/oss/uploadImage?folder=${folderOption[folder]}`,
+      data: formdata
+    })
+  },
   // 通过用户名搜索
   searchUsername(username) {
       return request.get('/user/search', {

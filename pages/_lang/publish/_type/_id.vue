@@ -1164,15 +1164,25 @@ export default {
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
       // 不要在页面组件写具体实现，谢谢合作 - Frank
       if (imgfile.type === 'image/gif') {
-        defaultImagesUploader(imgfile).then(({ data }) => {
-          let url
-          if (!data.data) {
-            url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
-          } else {
-            url = data.data.url
-          }
-          this.$refs.md.$img2Url(pos, url)
-        })
+        this.$API
+          .ossUploadImage('article', imgfile)
+          .then(res => {
+            if (res.code === 0) {
+              this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
+            } else {
+              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
+            }
+          })
+          .catch(err => {
+            if (err.response.status === 401) {
+              this.$message.error({ message: '请登录后上传图片' })
+              this.$store.commit('setLoginModal', true)
+              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
+            } else {
+              console.log('err', err)
+              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
+            }
+          })
       } else {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
@@ -1183,16 +1193,25 @@ export default {
           ctx.drawImage(image, 0, 0)
           canvas.toBlob(
             blob => {
-              defaultImagesUploader(blob).then(({ data }) => {
-                let url
-                if (!data.data) {
-                  url = data.message.replace('Image upload repeated limit, this image exists at: ', '')
-                } else {
-                  url = data.data.url
-                }
-                console.log(url)
-                this.$refs.md.$img2Url(pos, url)
-              })
+              this.$API
+                .ossUploadImage('article', blob)
+                .then(res => {
+                  if (res.code === 0) {
+                    this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
+                  } else {
+                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
+                  }
+                })
+                .catch(err => {
+                  if (err.response.status === 401) {
+                    this.$message.error({ message: '请登录后上传图片' })
+                    this.$store.commit('setLoginModal', true)
+                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
+                  } else {
+                    console.log('err', err)
+                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
+                  }
+                })
             },
             imgfile.type,
             0.3
