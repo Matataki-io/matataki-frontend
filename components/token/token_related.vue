@@ -16,7 +16,11 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-popover class="filter" placement="bottom-end" trigger="click">
-        <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
+        <el-button class="filter-button" slot="reference" type="text">
+          <div class="filter-header">
+            <img class="filter-icon" src="@/assets/img/filter.svg" />过滤
+          </div>
+        </el-button>
         <div style="font-size: 16px">
           <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
             <div style="margin-bottom: 8px"><el-checkbox label="1">持票可见</el-checkbox></div>
@@ -155,10 +159,16 @@ export default {
 
       &-button {
         padding: 0;
+        color: #606266;
+      }
+      &-header {
+        display: flex;
+        align-items: center;
       }
       &-icon {
         width: 25px;
         height: 25px;
+        margin-right: 4px;
       }
     }
   }
