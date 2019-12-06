@@ -2,19 +2,28 @@
   <div class="container">
     <div class="header">
       <h2 class="title">
-        相关文章
+        相关创作
       </h2>
-      <div>
-        <el-popover class="filter" placement="bottom-end" trigger="click">
-          <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
-          <div style="font-size: 16px">
-            <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
-              <div style="margin-bottom: 8px"><el-checkbox label="1">持票可见</el-checkbox></div>
-              <div><el-checkbox label="2">付费可见</el-checkbox></div>
-            </el-checkbox-group>
-          </div>
-        </el-popover>
-      </div>
+      <el-dropdown class="sort" trigger="click" @command="toggleDropdown">
+        <span class="el-dropdown-link">
+          <span v-if="pull.params.sort === 'popular-desc'">按照热度排序</span>
+          <span v-else-if="pull.params.sort === 'time-desc'">按照时间排序</span>
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="popular-desc">按照热度排序</el-dropdown-item>
+          <el-dropdown-item command="time-desc">按照时间排序</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-popover class="filter" placement="bottom-end" trigger="click">
+        <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
+        <div style="font-size: 16px">
+          <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
+            <div style="margin-bottom: 8px"><el-checkbox label="1">持票可见</el-checkbox></div>
+            <div><el-checkbox label="2">付费可见</el-checkbox></div>
+          </el-checkbox-group>
+        </div>
+      </el-popover>
     </div>
 
     <div class="list">
@@ -60,7 +69,8 @@ export default {
       pull: {
         apiUrl: 'minetokenRelated',
         params: {
-          filter: 3
+          filter: 3,
+          sort: 'popular-desc'
         }
       },
       currentPage: 1,
@@ -90,16 +100,7 @@ export default {
     },
     onCheckedFilterChanged: debounce(function () {
       this.pull.params.filter = this.filter
-
-      // try {
-      //   const res = await this.$API.getBackendData({ url: this.pull.apiUrl, params: this.pull.params, urlReplace: this.$route.params.id }, false)
-      //   if (res.code !== 0) console.error(res.message)
-      //   else if (res.data) {
-      //     this.articles = res.data.list
-      //   }
-      // } catch (error) {
-      //   console.error(error)
-      // }
+      this.currentPage = 1
     }, 500),
 
     paginationData(res) {
@@ -111,6 +112,9 @@ export default {
       this.loading = true
       this.articles = []
       this.currentPage = i
+    },
+    toggleDropdown(sort) {
+      this.pull.params.sort = sort
     }
   }
 }
@@ -135,7 +139,20 @@ export default {
       flex: 1;
     }
 
+    .sort {
+      margin: 0 16px;
+
+      .el-dropdown-link {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+
     .filter {
+      display: flex;
+      align-items: center;
+
       &-button {
         padding: 0;
       }
