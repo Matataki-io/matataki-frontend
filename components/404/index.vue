@@ -11,7 +11,7 @@
     <div class="info">
       <p>{{ $t('notPage') }}</p>
       <a href="/" class="btn">{{ $t('backHome') }}</a>
-      <a href="https://support.qq.com/product/84254" target="_blank" class="btn">{{ $t('feedback') }}</a>
+      <a href="https://support.qq.com/products/98576" target="_blank" class="btn">{{ $t('feedback') }}</a>
     </div>
   </div>
 </template>
