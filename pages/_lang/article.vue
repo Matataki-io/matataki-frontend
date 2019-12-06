@@ -34,7 +34,7 @@
               <div style="font-size: 16px">
                 <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
                   <div style="margin-bottom: 8px"><el-checkbox label="1">免费</el-checkbox></div>
-                  <div style="margin-bottom: 8px"><el-checkbox label="2">持币可见</el-checkbox></div>
+                  <div style="margin-bottom: 8px"><el-checkbox label="2">持票可见</el-checkbox></div>
                   <div><el-checkbox label="4">付费可见</el-checkbox></div>
                 </el-checkbox-group>
               </div>
