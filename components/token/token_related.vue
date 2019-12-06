@@ -9,7 +9,7 @@
           <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
           <div style="font-size: 16px">
             <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
-              <div style="margin-bottom: 8px"><el-checkbox label="1">持币可见</el-checkbox></div>
+              <div style="margin-bottom: 8px"><el-checkbox label="1">持票可见</el-checkbox></div>
               <div><el-checkbox label="2">付费可见</el-checkbox></div>
             </el-checkbox-group>
           </div>

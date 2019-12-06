@@ -122,8 +122,8 @@ export default {
           },
           {
             url: iconMathwallet,
-            href: 'http://www.medishares.org/',
-            alt: 'http://www.medishares.org/'
+            href: 'http://mathwallet.net/',
+            alt: 'http://mathwallet.net/'
           },
           {
             url: iconLeafwallet,
@@ -156,8 +156,8 @@ export default {
           },
           {
             url: iconMathwallet,
-            href: 'http://www.medishares.org/',
-            alt: 'http://www.medishares.org/'
+            href: 'http://mathwallet.net/',
+            alt: 'http://mathwallet.net/'
           }
         ]
       },
@@ -190,8 +190,8 @@ export default {
             },
             {
               url: iconMathwallet,
-              href: 'http://www.medishares.org/',
-              alt: 'http://www.medishares.org/'
+              href: 'http://mathwallet.net/',
+              alt: 'http://mathwallet.net/'
             },
             {
               url: iconLeafwallet,
@@ -233,8 +233,8 @@ export default {
             },
             {
               url: iconMathwallet,
-              href: 'http://www.medishares.org/',
-              alt: 'http://www.medishares.org/'
+              href: 'http://mathwallet.net/',
+              alt: 'http://mathwallet.net/'
             }
           ],
           doc: {

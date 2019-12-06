@@ -96,7 +96,7 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ cnyReserve }}<sub>CNY</sub>+{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ cnyReserve }}<sub>CNY</sub> + {{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 流动金池
