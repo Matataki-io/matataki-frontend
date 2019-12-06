@@ -3,22 +3,22 @@
     :visible.sync="showModal"
     :width="width"
     :lock-scroll="false"
-    custom-class="gray-bg br10 p-share"
     :show-close="false"
     :center="widgetModalStatus === 0 ? true : false"
     :top="widgetModalStatus === 1 ? '20px' : '15vh'"
+    custom-class="gray-bg br10 p-share"
     @close="change"
   >
     <!-- 主窗口 -->
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="widgetModalStatus = 3">
+        <div @click="widgetModalStatus = 3" class="widget-button">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget">
           </div>
           <p>{{ $t('p.createWidget') }}</p>
         </div>
-        <div v-if="minetokenToken !== null && pageType === 0" class="widget-button" @click="widgetModalStatus = 1">
+        <div v-if="minetokenToken !== null && pageType === 0" @click="widgetModalStatus = 1" class="widget-button">
           <div class="widget-button-img">
             <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget">
           </div>
@@ -32,7 +32,7 @@
         </div>
       </div>
       <SocialShare :img="img" :title="shareLink" />
-      <wechat style="margin: 60px 0 0 0;" :link="link" />
+      <wechat :link="link" style="margin: 60px 0 0 0;" />
     </div>
     <!-- 截图分享 -->
     <div v-if="widgetModalStatus === 1 && minetokenToken !== null && pageType === 0" class="padding2">
@@ -57,7 +57,7 @@
         4.{{ $t('p.stepContent4') }}<br>
       </p>
 
-      <a class="widget-help-button" href="javascript:;" @click="backWidget">
+      <a @click="backWidget" class="widget-help-button" href="javascript:;">
         {{ $t('p.confirmPopover') }}
       </a>
     </div>
@@ -66,22 +66,22 @@
       <p class="widget-title">
         {{ $t('p.widgetView') }}
       </p>
-      <div class="widget-review-content" v-html="tokenWidget" />
+      <div v-html="tokenWidget" class="widget-review-content" />
       <p class="widget-review-des">
         {{ $t('p.widgetCopyDes') }}
       </p>
       <el-input
         v-model="tokenWidget"
+        :rows="4"
         class="widget-textarea"
         type="textarea"
-        :rows="4"
         placeholder="请输入内容"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">
+        <a @click="reviewHelp" class="help" href="javascript:;">
           {{ $t('p.widgetHelp') }}
         </a>
-        <a class="create" href="javascript:;" @click="copyCode(tokenWidget)">
+        <a @click="copyCode(tokenWidget)" class="create" href="javascript:;">
           {{ $t('p.copyCode') }}
         </a>
       </div>
@@ -136,7 +136,7 @@ export default {
     },
     shareLink() {
       const slogan = [
-        `我在瞬MATATAKI发现了Fan票「DAO」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
+        `我在瞬MATATAKI发现了Fan票「${this.minetokenToken.symbol}」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
         `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
       ]
       return slogan[this.pageType]
