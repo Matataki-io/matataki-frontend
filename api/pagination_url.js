@@ -68,5 +68,6 @@ export const paginationUrl = {
   // 获取收藏文章文章引用列表
   userBookmarks: 'user/bookmarks',
   // 通知
-  notifications: '/notification/fetch'
+  notifications: '/notification/fetch',
+  minetokenRelated: 'minetoken/:id/related'
 }
