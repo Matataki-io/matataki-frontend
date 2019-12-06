@@ -1177,11 +1177,10 @@ export default {
             if (err.response.status === 401) {
               this.$message.error({ message: '请登录后上传图片' })
               this.$store.commit('setLoginModal', true)
-              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
             } else {
               console.log('err', err)
-              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
             }
+            this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
           })
       } else {
         const canvas = document.createElement('canvas')
@@ -1206,11 +1205,10 @@ export default {
                   if (err.response.status === 401) {
                     this.$message.error({ message: '请登录后上传图片' })
                     this.$store.commit('setLoginModal', true)
-                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
                   } else {
                     console.log('err', err)
-                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
                   }
+                  this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
                 })
             },
             imgfile.type,
