@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <h2 class="title">
-        相关文章
+        相关创作
       </h2>
       <div>
         <el-popover class="filter" placement="bottom-end" trigger="click">
