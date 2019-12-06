@@ -304,7 +304,7 @@ export default {
     const url = {
       avatar: '/user/uploadAvatar',
       artileCover: '/post/uploadImage',
-      coins: '/post/uploadImage',
+      coins: '/post/uploadImage', // fan票的icon也考虑新开路由
       banner: '/user/uploadBanner'
     }
     const formdata = new FormData()

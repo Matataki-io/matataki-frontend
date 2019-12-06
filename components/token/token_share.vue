@@ -6,8 +6,8 @@
     :show-close="false"
     :center="widgetModalStatus === 0 ? true : false"
     :top="widgetModalStatus === 1 ? '20px' : '15vh'"
-    custom-class="gray-bg br10 p-share"
     @close="change"
+    custom-class="gray-bg br10 p-share"
   >
     <!-- 主窗口 -->
     <div v-if="widgetModalStatus === 0" class="padding1">
@@ -136,7 +136,7 @@ export default {
     },
     shareLink() {
       const slogan = [
-        `我在瞬MATATAKI发现了Fan票「${this.minetokenToken.symbol}」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
+        `我在瞬MATATAKI发现了Fan票「${(this.minetokenToken && this.minetokenToken.symbol) || ''}」${process.env.VUE_APP_URL}/token/${this.$route.params.id} 持有Fan票，让连接不止于关注！`,
         `${this.minetokenUser.nickname}的个人主页：\n${process.env.VUE_APP_URL}/user/${this.$route.params.id}`
       ]
       return slogan[this.pageType]

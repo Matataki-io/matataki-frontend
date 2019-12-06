@@ -6,11 +6,11 @@
         <n-link
           v-for="(item, index) in articleCardData.articles"
           :key="index"
-          target="_blank"
           :to="{
             name: 'p-id',
             params: { id: item.id }
           }"
+          target="_blank"
         >
           <articleCardList :card="item" />
         </n-link>
@@ -21,9 +21,9 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
-          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
+          class="pagination"
         />
       </no-content-prompt>
     </div>
