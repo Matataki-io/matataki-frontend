@@ -1,11 +1,11 @@
 <template>
-  <n-link class="card" :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank">
+  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" class="card" target="_blank">
     <div class="bg">
       <div class="article">
         <!-- 适用于 首页, 商品页, 标签页 -->
         <!-- 区分那种卡 -->
         <div class="cover">
-          <el-image v-if="cover" class="img-lazy" :src="cover" lazy alt="cover" />
+          <el-image v-if="cover" :src="cover" class="img-lazy" lazy alt="cover" />
           <img v-else src="@/assets/img/article_bg.svg" alt="cover">
           <div v-if="card && card.status === 1" class="overlay">
             <div class="circle">
@@ -17,11 +17,11 @@
           <div class="info">
             <!-- 暂时用文章页代替跳转地址 -->
             <n-link
-              target="_blank"
               :to=" {name: 'user-id', params: {id: Uid}} "
+              target="_blank"
               class="author"
             >
-              <avatar class="avatar" :size="'30px'" :src="avatarImg" />
+              <avatar :size="'30px'" :src="avatarImg" class="avatar" />
               <span class="username">
                 {{ card && (card.nickname || card.author || '') }}
               </span>
@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="article-title">
-            <h3 v-clampy="2" class="search-res" v-html="xssTitle" />
+            <h3 v-clampy="2" v-html="xssTitle" class="search-res" />
           </div>
           <div class="des">
             <!-- 文章卡阅读和投资 -->
@@ -63,7 +63,7 @@
         </div>
       </div>
       <!-- 文章卡片内容 -->
-      <div v-if="isSearchCard" v-clampy="4" class="content-text search-res" v-html="xssContent" />
+      <div v-if="isSearchCard" v-clampy="4" v-html="xssContent" class="content-text search-res" />
     </div>
     <div style="width: 0;height: 0;" />
   </n-link>
@@ -97,10 +97,14 @@ export default {
   },
   computed: {
     xssTitle() {
-      return xssFilter(this.card.title)
+      if (this.card.title) {
+        return xssFilter(this.card.title)
+      } else return ''
     },
     xssContent() {
-      return xssFilter(this.card.short_content)
+      if (this.card.short_content) {
+        return xssFilter(this.card.short_content)
+      } else return ''
     },
     cover() {
       // console.log(this.card)

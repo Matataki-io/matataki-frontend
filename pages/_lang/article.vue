@@ -30,12 +30,26 @@
             >{{ itme.title }}</span>
 
             <el-popover class="filter" placement="bottom-end" trigger="click">
-              <el-button class="filter-button" slot="reference" type="text"><img class="filter-icon" src="@/assets/img/filter.svg" /></el-button>
+              <el-button slot="reference" class="filter-button" type="text">
+                <img class="filter-icon" src="@/assets/img/filter.svg">
+              </el-button>
               <div style="font-size: 16px">
                 <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
-                  <div style="margin-bottom: 8px"><el-checkbox label="1">免费</el-checkbox></div>
-                  <div style="margin-bottom: 8px"><el-checkbox label="2">持票可见</el-checkbox></div>
-                  <div><el-checkbox label="4">付费可见</el-checkbox></div>
+                  <div style="margin-bottom: 8px">
+                    <el-checkbox label="1">
+                      免费
+                    </el-checkbox>
+                  </div>
+                  <div style="margin-bottom: 8px">
+                    <el-checkbox label="2">
+                      持票可见
+                    </el-checkbox>
+                  </div>
+                  <div>
+                    <el-checkbox label="4">
+                      付费可见
+                    </el-checkbox>
+                  </div>
                 </el-checkbox-group>
               </div>
             </el-popover>
@@ -46,8 +60,8 @@
             <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
               <no-content-prompt :prompt="promptComputed(index)" :list="item.articles">
                 <articleCardList
-                  v-for="(itemChild, indexChild) in item.articles"
-                  :key="indexChild"
+                  v-for="itemChild in item.articles"
+                  :key="itemChild.id"
                   :card="itemChild"
                 />
               </no-content-prompt>
@@ -65,7 +79,7 @@
       <el-col :span="8">
         <div class="tags article  position-sticky top80">
           <span>{{ $t('home.articleTagTitle') }}</span>
-          <tags :type-index="0" class="tags-container" :tag-cards="tagCards" />
+          <tags :type-index="0" :tag-cards="tagCards" class="tags-container" />
         </div>
 
         <div v-if="usersRecommendList.length !== 0" class="recommend-author position-sticky top380">
