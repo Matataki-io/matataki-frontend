@@ -468,7 +468,6 @@ import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
 import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
-import defaultImagesUploader from '@/api/imagesUploader'
 import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
