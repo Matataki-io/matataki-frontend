@@ -31,7 +31,9 @@
 
             <el-popover class="filter" placement="bottom-end" trigger="click">
               <el-button slot="reference" class="filter-button" type="text">
-                <img class="filter-icon" src="@/assets/img/filter.svg">
+                <div class="filter-header">
+                  <img class="filter-icon" src="@/assets/img/filter.svg">过滤
+                </div>
               </el-button>
               <div style="font-size: 16px">
                 <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
