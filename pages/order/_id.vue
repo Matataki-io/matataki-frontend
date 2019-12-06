@@ -171,7 +171,11 @@ export default {
       } else {
         result = 0
       }
-      return utils.down2points(result)
+      if (result === 0 || result === input) {
+        return result
+      } else {
+        return utils.down2points(result)
+      }
     },
     needPay() {
       // 支付金额向上取整
