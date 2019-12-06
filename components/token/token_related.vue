@@ -100,6 +100,7 @@ export default {
     },
     onCheckedFilterChanged: debounce(function () {
       this.pull.params.filter = this.filter
+      this.currentPage = 1
     }, 500),
 
     paginationData(res) {
