@@ -12,7 +12,6 @@
     "build-dev": "cross-env NODE_ENV=development nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "svgo": "svgo -f icons/svg --config=icons/svgo.yml",
     "svgof": "svgo -f icons/filter --config=icons/svgo.yml"
   },
   "dependencies": {
