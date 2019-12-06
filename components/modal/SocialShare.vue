@@ -33,7 +33,7 @@
         <div class="share-btn">
           <div class="share-bg">
             <!-- Telegram and Share shares the same icon as paperplane -->
-            <svg-icon class="share-icon telegram" icon-class="telegram" />
+            <svg-icon class="share-icon telegram" icon-class="tg" />
           </div>
           <p>Telegram</p>
         </div>
@@ -150,6 +150,9 @@ p {
   }
   .twitter {
     color: #00ACED;
+  }
+  .telegram {
+    color: #36aae8;
   }
 }
 .code {
