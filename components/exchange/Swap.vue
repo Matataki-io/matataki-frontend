@@ -33,7 +33,7 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="haryqg">
-        <i class="el-icon-bottom gHgbDu" />
+        <i class="el-icon-bottom gHgbDu" @click="swap" />
       </div>
       <div class="jJSpkX" />
     </div>
@@ -207,8 +207,8 @@ export default {
     }
   },
   async asyncData() {},
-  async mounted() {
-    await this.getTokenBySymbol()
+  mounted() {
+    this.getTokenBySymbol()
   },
   methods: {
     async getTokenBySymbol() {
@@ -434,6 +434,18 @@ export default {
         }
       }
       return true
+    },
+    swap() {
+      const { input, output } = this.$route.query
+      this.$router.replace({
+        hash: this.$route.hash,
+        query: {
+          ...this.$route.query,
+          input: output,
+          output: input
+        }
+      })
+      this.getTokenBySymbol()
     }
   }
 }
