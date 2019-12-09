@@ -118,6 +118,8 @@ export default {
   ** Build configuration
   */
   build: {
+    cache: true,
+    parallel: true,
     // CSS提取
     // extractCSS: true,
     /*
