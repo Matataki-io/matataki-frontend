@@ -51,3 +51,8 @@ $ yarn generate
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+
+## Config
+IDE Eslint Config
+ - vsCode [举例](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+ - webStorm [举例](https://www.jianshu.com/p/926a0e17a42d)
