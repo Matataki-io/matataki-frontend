@@ -79,23 +79,25 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="tags article  position-sticky top80">
-          <span>{{ $t('home.articleTagTitle') }}</span>
-          <tags :type-index="0" :tag-cards="tagCards" class="tags-container" />
-        </div>
-
-        <div v-if="usersRecommendList.length !== 0" class="recommend-author position-sticky top380">
-          <div class="ra-head">
-            <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-            <span @click="usersrecommend" class="ra-head-random">
-              <div class="change">
-                <svg-icon :class="usersLoading && 'rotate'" class="change-icon" icon-class="change" />
-              </div>
-              <span>{{ $t('home.random') }}</span>
-            </span>
+        <div class="position-sticky top80">
+          <div class="tags article">
+            <span>{{ $t('home.articleTagTitle') }}</span>
+            <tags :type-index="0" :tag-cards="tagCards" class="tags-container" />
           </div>
-          <div class="ra-content">
-            <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
+
+          <div v-if="usersRecommendList.length !== 0" class="recommend-author">
+            <div class="ra-head">
+              <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
+              <span @click="usersrecommend" class="ra-head-random">
+                <div class="change">
+                  <svg-icon :class="usersLoading && 'rotate'" class="change-icon" icon-class="change" />
+                </div>
+                <span>{{ $t('home.random') }}</span>
+              </span>
+            </div>
+            <div class="ra-content">
+              <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
+            </div>
           </div>
         </div>
       </el-col>
