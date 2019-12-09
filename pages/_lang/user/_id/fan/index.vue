@@ -6,10 +6,10 @@
         <fansCard
           v-for="(item, i) in articleCardData.articles"
           :key="i"
-          type="fan"
           :card="{
             ...item,
             id: item.uid }"
+          type="fan"
         />
         <user-pagination
           v-show="!loading"
@@ -18,9 +18,9 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
-          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
+          class="pagination"
         />
       </no-content-prompt>
     </div>

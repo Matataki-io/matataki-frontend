@@ -1,10 +1,10 @@
 <template>
   <div class="fans-card">
-    <n-link target="_blank" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
-      <avatar class="avatar" :src="avatar" />
+    <n-link :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}" target="_blank">
+      <avatar :src="avatar" class="avatar" />
     </n-link>
     <div class="fans-info">
-      <n-link target="_blank" class="name" :title="name" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}">
+      <n-link :title="name" :to="{name: 'user-id', params: {id: type==='follow' ? card.fuid : card.uid}}" target="_blank" class="name">
         {{ name }}
       </n-link>
       <p class="fans">
@@ -12,7 +12,7 @@
       </p>
     </div>
     <template v-if="!isMe(card.id)">
-      <el-button size="small" :class="!cardCopy.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+      <el-button :class="!cardCopy.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
         <i v-if="!cardCopy.is_follow" class="el-icon-plus" />
         {{ followBtnText }}
       </el-button>

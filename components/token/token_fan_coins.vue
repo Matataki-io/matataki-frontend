@@ -12,9 +12,9 @@
       :page-size="10"
       :total="total"
       :need-access-token="true"
-      class="pagination"
       @paginationData="paginationData"
       @togglePage="togglePage"
+      class="pagination"
     />
   </div>
 </template>

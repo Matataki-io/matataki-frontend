@@ -16,6 +16,7 @@
           style="stroke-dasharray: 300px,300px; stroke-dashoffset: 0px;"
         />
         <path
+          :style="`stroke-dasharray: ${strokeDasharray}px, 300px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`"
           d="
         M 50 50
         m 0 -47
@@ -27,7 +28,6 @@
           stroke-linecap="round"
           stroke-width="5"
           class="progress-circle__path"
-          :style="`stroke-dasharray: ${strokeDasharray}px, 300px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`"
         />
       </svg>
     </div>

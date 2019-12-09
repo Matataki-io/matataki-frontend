@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card" v-for="(notification, index) in notifications" :key="index">
+    <div v-for="(notification, index) in notifications" :key="index" class="card">
       <!-- Possible an eslint issue: https://github.com/vuejs/eslint-plugin-vue/issues/869 Remove next workaround if resolved -->
       <!-- eslint-disable-next-line vue/require-component-is -->
       <component
@@ -24,13 +24,13 @@ export default {
   name: 'NotificationList',
   /* eslint-disable vue/no-unused-components */
   components: { NewFanNotification },
+  props: {
+    notifications: { type: Array, default: () => [] }
+  },
   data() {
     return {
       COMPONENTS
     }
-  },
-  props: {
-    notifications: { type: Array, default: () => [] }
   }
 }
 </script>

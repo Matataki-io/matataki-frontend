@@ -2,8 +2,8 @@
   <el-dialog
     :close-on-click-modal="false"
     :visible.sync="showModal"
-    width="450px"
     :lock-scroll="false"
+    width="450px"
     custom-class="br10 black-theme-dialog"
   >
     <div class="container br10">

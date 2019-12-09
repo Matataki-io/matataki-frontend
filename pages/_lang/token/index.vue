@@ -49,30 +49,36 @@
         >什么是Fan票?</a> -->
         <div class="tokens-list-header">
           <div class="tokens-list-header-left-column">
-            <el-dropdown trigger="click" @command="toggleDropdown">
-              <span class="el-dropdown-link" :class="sort === selectedDropdown && 'active'">
+            <el-dropdown @command="toggleDropdown" trigger="click">
+              <span :class="sort === selectedDropdown && 'active'" class="el-dropdown-link">
                 <span v-if="selectedDropdown === 'name-asc'">首字母升序</span>
                 <span v-else-if="selectedDropdown === 'name-desc'">首字母降序</span>
                 <span v-else>综合排序</span>
-                <i class="el-icon-arrow-down el-icon--right"></i>
+                <i class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="general">综合排序</el-dropdown-item>
-                <el-dropdown-item command="name-asc">首字母升序</el-dropdown-item>
-                <el-dropdown-item command="name-desc">首字母降序</el-dropdown-item>
+                <el-dropdown-item command="general">
+                  综合排序
+                </el-dropdown-item>
+                <el-dropdown-item command="name-asc">
+                  首字母升序
+                </el-dropdown-item>
+                <el-dropdown-item command="name-desc">
+                  首字母降序
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
           <div class="tokens-list-header-medium-column">
-            <div class="sub-column" :class="sort.startsWith('unit-price') && 'active'" @click="toggleSort('unit-price')">
+            <div :class="sort.startsWith('unit-price') && 'active'" @click="toggleSort('unit-price')" class="sub-column">
               单价
               <i class="el-icon-d-caret" />
             </div>
-            <div class="sub-column" :class="sort.startsWith('liquidity') && 'active'" @click="toggleSort('liquidity')">
+            <div :class="sort.startsWith('liquidity') && 'active'" @click="toggleSort('liquidity')" class="sub-column">
               流动金
               <i class="el-icon-d-caret" />
             </div>
-            <div class="sub-column" :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')">
+            <div :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')" class="sub-column">
               24h 成交额
               <i class="el-icon-d-caret" />
             </div>

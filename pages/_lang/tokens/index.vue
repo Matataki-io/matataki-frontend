@@ -15,7 +15,7 @@
             label="Fan票"
           >
             <template slot-scope="scope">
-              <router-link class="fl ac" :to="{name: 'token-id', params: {id: scope.row.token_id}}">
+              <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac">
                 <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
                 <span class="scope">{{ scope.row.symbol }}</span>
               </router-link>
@@ -36,7 +36,7 @@
             label="创始人"
           >
             <template slot-scope="scope">
-              <n-link class="invite-block author" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+              <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block author">
                 <!-- <avatar :src="cover(scope.row.avatar)" size="30px" /> -->
                 <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
               </n-link>
@@ -44,8 +44,8 @@
           </el-table-column>
 
           <el-table-column
-            prop="total_supply"
             :label="$t('user.positionCoins')"
+            prop="total_supply"
           >
             <template slot-scope="scope">
               <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
@@ -64,10 +64,10 @@
                   </el-button>
                 </router-link>
                 <el-button
+                  @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
                   class="info-button"
                   style="margin: 0 10px;"
                   size="small"
-                  @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
                 >
                   {{ $t('gift') }}
                 </el-button>
@@ -90,15 +90,15 @@
         :page-size="10"
         :total="total"
         :need-access-token="true"
-        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
+        class="pagination"
       />
       <el-dialog
-        title="赠送Fan票"
         :visible.sync="giftDialog"
-        width="600px"
         :before-close="giftDialogClose"
+        title="赠送Fan票"
+        width="600px"
       >
         <el-form
           ref="form"
@@ -113,14 +113,14 @@
             </p>
           </el-form-item>
           <el-form-item label="接受对象">
-            <el-input v-model="form.username" placeholder="请输入赠送的对象" size="medium" @keyup.enter.native="searchUser">
-              <el-button slot="append" icon="el-icon-search" @click="searchUser" />
+            <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="medium">
+              <el-button slot="append" @click="searchUser" icon="el-icon-search" />
             </el-input>
           </el-form-item>
           <el-form-item v-if="form.userId" label="" prop="">
             <div class="avatar-content">
-              <avatar class="gift-avatar" :src="form.useravatar" size="60px" />
-              <div class="gift-ful" @click="closeUser">
+              <avatar :src="form.useravatar" class="gift-avatar" size="60px" />
+              <div @click="closeUser" class="gift-ful">
                 <i class="el-icon-close" />
               </div>
             </div>
@@ -128,16 +128,16 @@
           <el-form-item label="发送数量" prop="">
             <el-input-number
               v-model="form.tokens"
-              size="small"
               :min="1"
               :max="form.max"
+              size="small"
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="submitForm('form')">
+            <el-button @click="submitForm('form')" type="primary" size="small">
               确定
             </el-button>
-            <el-button size="small" @click="formClose">
+            <el-button @click="formClose" size="small">
               取消
             </el-button>
           </el-form-item>

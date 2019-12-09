@@ -5,9 +5,9 @@
     </p>
     <div class="token-content">
       <div
-        class="share"
         :class="shareCardCheckedOne && 'active'"
         @click="shareCardCheckedOne = true"
+        class="share"
       >
         <div
           ref="tokenCardOne"
@@ -20,9 +20,9 @@
         </div>
       </div>
       <div
-        class="share"
         :class="!shareCardCheckedOne && 'active'"
         @click="shareCardCheckedOne = false"
+        class="share"
       >
         <div
           ref="tokenCardTwo"
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <el-button class="save" type="primary" @click="save">
+    <el-button @click="save" class="save" type="primary">
       保存
     </el-button>
   </div>

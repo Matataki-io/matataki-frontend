@@ -3,8 +3,8 @@
     v-loading="loading"
     :close-on-click-modal="false"
     :visible.sync="showModal"
-    width="400px"
     :lock-scroll="false"
+    width="400px"
     custom-class="br10"
   >
     <div class="buy-product-modal">
@@ -28,18 +28,18 @@
       <el-input
         v-model="amount"
         :placeholder="$t('p.investmentAmountPlaceholder')"
-        class="comment-container"
         @input="handleChange(amount)"
+        class="comment-container"
       />
       <el-input
         v-model="comment"
-        type="textarea"
-        class="comment-container"
         :rows="4"
         :placeholder="$t('p.commentPlaceholder')"
+        type="textarea"
+        class="comment-container"
       />
       <div class="invest-container">
-        <div class="invest-btn" @click="investProduct">
+        <div @click="investProduct" class="invest-btn">
           {{ $t('p.investment') }}
         </div>
       </div>

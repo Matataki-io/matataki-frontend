@@ -22,7 +22,7 @@
       </el-form-item>
 
       <el-form-item label="缩写" prop="symbol">
-        <el-input v-model="form.symbol" class="input" :disabled="!isPost" placeholder="请输入Fan票缩写(发行后不可修改)" />
+        <el-input v-model="form.symbol" :disabled="!isPost" class="input" placeholder="请输入Fan票缩写(发行后不可修改)" />
       </el-form-item>
       <el-form-item label="图标" prop="logo">
         <el-input v-model="form.logo" style="display: none;" class="input" />

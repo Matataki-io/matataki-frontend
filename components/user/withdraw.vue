@@ -4,8 +4,8 @@
     <div class="money">
       <p class="money-title">
         <i
-          class="el-icon-arrow-left"
           @click="$emit('toggleWithdraw', 0)"
+          class="el-icon-arrow-left"
         />
         {{ $t('withdraw.balance') }}
       </p>
@@ -36,7 +36,7 @@
         {{ item }}
       </p>
     </div>
-    <button class="with" @click="withdrawButton">
+    <button @click="withdrawButton" class="with">
       {{ $t('withdraw.title') }}
     </button>
   </div>

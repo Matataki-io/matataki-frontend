@@ -1,9 +1,9 @@
 <template>
   <el-dialog
-    title="转账"
     :visible.sync="giftDialog"
-    width="600px"
     :before-close="giftDialogClose"
+    title="转账"
+    width="600px"
   >
     <el-form
       ref="form"
@@ -15,29 +15,29 @@
       <el-form-item label="接受对象">
         <el-input
           v-model="form.username"
+          @keyup.enter.native="searchUser"
           placeholder="请输入赠送的对象"
           size="medium"
-          @keyup.enter.native="searchUser"
         >
-          <el-button slot="append" icon="el-icon-search" @click="searchUser" />
+          <el-button slot="append" @click="searchUser" icon="el-icon-search" />
         </el-input>
       </el-form-item>
       <el-form-item v-if="form.userId" label="" prop="">
         <div class="avatar-content">
-          <avatar class="gift-avatar" :src="form.useravatar" size="60px" />
-          <div class="gift-ful" @click="closeUser">
+          <avatar :src="form.useravatar" class="gift-avatar" size="60px" />
+          <div @click="closeUser" class="gift-ful">
             <i class="el-icon-close" />
           </div>
         </div>
       </el-form-item>
       <el-form-item label="发送数量" prop="">
-        <el-input-number v-model="form.amount" size="small" :min="0.01" :max="form.max" :step="0.01"/>
+        <el-input-number v-model="form.amount" :min="0.01" :max="form.max" :step="0.01" size="small" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small" @click="submitForm('form')">
+        <el-button @click="submitForm('form')" type="primary" size="small">
           确定
         </el-button>
-        <el-button size="small" @click="formClose">
+        <el-button @click="formClose" size="small">
           取消
         </el-button>
       </el-form-item>

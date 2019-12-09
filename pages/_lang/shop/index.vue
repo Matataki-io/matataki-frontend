@@ -10,14 +10,14 @@
             <recommendSlide :card="item" />
           </el-col>
           <el-col v-else :key="index" :span="8">
-            <articleCard :type-index="1" card-type="recommend-card" :card="item" />
+            <articleCard :type-index="1" :card="item" card-type="recommend-card" />
           </el-col>
         </template>
       </el-row>
     </div>
     <!-- <banner /> -->
     <el-row class="container mw">
-      <el-col class="not-padding" :span="18">
+      <el-col :span="18" class="not-padding">
         <div class="main commodity">
           <!-- 导航部分 -->
           <div class="main-nav padding-10">
@@ -40,8 +40,8 @@
                 >
                   <articleCard
                     :card="itemChild"
-                    card-type="commodity-card"
                     :type-index="1"
+                    card-type="commodity-card"
                   />
                 </el-col>
               </div>
@@ -58,7 +58,7 @@
       <el-col :span="6">
         <div class="tags commodity position-sticky top80">
           <span>{{ $t('home.shopTagTitle') }}</span>
-          <tags class="tags-container" :type-index="1" :tag-cards="tagCards" />
+          <tags :type-index="1" :tag-cards="tagCards" class="tags-container" />
         </div>
       </el-col>
     </el-row>

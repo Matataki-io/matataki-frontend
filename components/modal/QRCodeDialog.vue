@@ -1,10 +1,10 @@
 <template>
   <div class="outer">
     <div ref="container" :class="{ 'white-bg': !canvas }">
-      <div v-if="!canvas" ref="capture" class="container">
+      <div ref="capture" v-if="!canvas" class="container">
         <div class="header">
           <div class="info">
-            <avatar size="40px" :src="shareInfo.avatar" />
+            <avatar :src="shareInfo.avatar" size="40px" />
             <span class="username">{{ shareInfo.name }}</span>
           </div>
           <p v-clampy="2">
@@ -18,7 +18,7 @@
           />
         </div>
         <div class="content-container">
-          <p v-clampy="8" class="markdown-body" v-html="htmlStr" />
+          <p v-clampy="8" v-html="htmlStr" class="markdown-body" />
         </div>
         <div class="hide-article-box">
           —— {{ $t('p.sweepCodeView') }} ——
@@ -33,7 +33,7 @@
       </div>
       <img v-else :src="downloadLink" alt="" style="width: 100%;">
     </div>
-    <a href="javascript:;" class="save-btn" @click="toCanvas">
+    <a @click="toCanvas" href="javascript:;" class="save-btn">
       {{ $t('p.downloadImg') }}
     </a>
   </div>

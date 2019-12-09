@@ -1,30 +1,30 @@
 <template>
   <el-table
     :data="card"
-    style="width: 100%"
-    class="coins"
     :default-sort="{ prop: 'amount', order: 'descending' }"
     @sort-change="onSortChanged"
+    style="width: 100%"
+    class="coins"
   >
     <el-table-column
+      :sort-orders="['ascending', 'descending']"
       prop="name"
       label="持仓者"
       sortable="custom"
-      :sort-orders="['ascending', 'descending']"
     >
       <template slot-scope="scope">
-        <n-link class="invite-block avatar" :to="{name: 'user-id', params: {id: scope.row.uid}}">
+        <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block avatar">
           <avatar :src="cover(scope.row.avatar)" size="30px" />
           <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
         </n-link>
       </template>
     </el-table-column>
     <el-table-column
+      :sort-orders="['descending', 'ascending']"
       prop="amount"
       label="持仓量"
       width="200"
       sortable="custom"
-      :sort-orders="['descending', 'ascending']"
     >
       <template slot-scope="scope">
         <div class="invite-block">

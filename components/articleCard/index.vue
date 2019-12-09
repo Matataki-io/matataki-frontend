@@ -1,10 +1,10 @@
 <template>
-  <div class="article" :class="cardType">
+  <div :class="cardType" class="article">
     <!-- 适用于 首页, 商品页, 标签页 -->
     <!-- 区分那种卡 -->
-    <n-link target="_blank" :to="{name: 'p-id', params: {id: card && card.id}}">
+    <n-link :to="{name: 'p-id', params: {id: card && card.id}}" target="_blank">
       <div class="cover">
-        <el-image v-if="cover" class="img-lazy" :src="cover" alt="cover" lazy />
+        <el-image v-if="cover" :src="cover" class="img-lazy" alt="cover" lazy />
         <img v-else src="@/assets/img/article_bg.svg" alt="cover">
       </div>
       <div class="article-title">
@@ -58,7 +58,7 @@
           target="_blank"
           class="author"
         >
-          <avatar class="avatar" :size="'28px'" :src="avatarImg" />
+          <avatar :size="'28px'" :src="avatarImg" class="avatar" />
           <span class="username">
             {{ card && (card.nickname || card.author || '') }}
           </span>

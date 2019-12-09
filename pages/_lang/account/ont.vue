@@ -4,7 +4,7 @@
       <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <template v-if="viewStatus === 0">
-        <assets :assets="assets" type="ONT" class="assets-margin" @toggleWithdraw="status => viewStatus = status" />
+        <assets :assets="assets" @toggleWithdraw="status => viewStatus = status" type="ONT" class="assets-margin" />
         <!-- todo 目前得不到页数, 页面太后没数据会一直loading  -->
         <div v-loading="loading" class="card-container">
           <no-content-prompt :list="articleCardData.articles">
@@ -19,13 +19,13 @@
           :page-size="9"
           :total="total"
           :need-access-token="true"
-          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
+          class="pagination"
         />
       </template>
       <template v-else>
-        <withdraw type="ONT" class="withdraw" @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" />
+        <withdraw @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" type="ONT" class="withdraw" />
       </template>
     </template>
     <template slot="info">

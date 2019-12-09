@@ -1,5 +1,5 @@
 <template>
-  <el-button v-if="!isLoadEnd" :loading="loading" :class="buttonType" class="load-more" @click="loadMore">
+  <el-button v-if="!isLoadEnd" :loading="loading" :class="buttonType" @click="loadMore" class="load-more">
     <slot>{{ $t('viewMore') }}</slot>
   </el-button>
 </template>

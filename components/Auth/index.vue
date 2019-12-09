@@ -1,11 +1,11 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    width="380px"
     :modal="true"
-    custom-class="my-dialog br10"
     :close-on-click-modal="false"
     @closed="() => {step = 1; isLogin = true}"
+    width="380px"
+    custom-class="my-dialog br10"
   >
     <section v-show="step === 1" class="auth-main">
       <div class="auth-title-container">
@@ -23,7 +23,7 @@
     <section v-show="step === 3" class="auth-main">
       <ResetPassword @switch="step = 1;isLogin = true;" />
     </section>
-    <div class="footer-arrow" @click="step === 1 ? (step = 2) : (step = 1)">
+    <div @click="step === 1 ? (step = 2) : (step = 1)" class="footer-arrow">
       <div v-if="step === 2 || step === 3" class="arrow">
         <i class="el-icon-arrow-left" />
       </div>

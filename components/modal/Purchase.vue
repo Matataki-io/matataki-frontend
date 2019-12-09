@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="400px" :lock-scroll="false" custom-class="br10">
+  <el-dialog :visible.sync="showModal" :lock-scroll="false" width="400px" custom-class="br10">
     <div class="buy-product-modal">
       <h1 class="title">
         {{ $t('p.buyShop') }}
@@ -31,16 +31,16 @@
       </div>
       <el-input
         v-model="comment"
-        type="textarea"
-        class="comment-container"
         :rows="4"
         :placeholder="$t('p.buyPlaceholder')"
+        type="textarea"
+        class="comment-container"
       />
       <div class="buy-container">
         <span class="storage">
           {{ $t('p.remainingStock', [product.stock ]) }}
         </span>
-        <div class="buy-btn" @click="buyProduct">
+        <div @click="buyProduct" class="buy-btn">
           {{ $t('p.buy') }}
         </div>
       </div>

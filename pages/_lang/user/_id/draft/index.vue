@@ -25,9 +25,9 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
-          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
+          class="pagination"
         />
       </no-content-prompt>
     </div>

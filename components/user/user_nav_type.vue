@@ -4,9 +4,9 @@
     <a
       v-for="(item, index) in typeIcon"
       :key="index"
-      href="javascript:;"
       :class="[$route.name === item.url && 'active', item.url === '' && 'disabled']"
       @click="toggleNav(item.url)"
+      href="javascript:;"
     >
       <img
         :src="item.icon"

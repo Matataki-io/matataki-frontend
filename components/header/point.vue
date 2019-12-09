@@ -102,7 +102,7 @@
             </span>
           </div>
           <div class="integral-progress">
-            <el-progress :percentage="pointStatusPostNum" class="progress" :show-text="false" color="#542DE0" :stroke-width="10" />
+            <el-progress :percentage="pointStatusPostNum" :show-text="false" :stroke-width="10" class="progress" color="#542DE0" />
             {{ pointStatusPost }}
           </div>
           <p class="integral-des">
@@ -117,7 +117,7 @@
             </span>
           </div>
           <div class="integral-progress">
-            <el-progress :percentage="pointStatusReadNum" class="progress" :show-text="false" color="#542DE0" :stroke-width="10" />
+            <el-progress :percentage="pointStatusReadNum" :show-text="false" :stroke-width="10" class="progress" color="#542DE0" />
             {{ pointStatusRead }}
           </div>
           <p class="integral-des">

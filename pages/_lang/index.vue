@@ -7,7 +7,7 @@
           v-scroll-reveal="{ distance: '20px'}"
           class="head-text "
         >
-          <img class="home-head-logo" src="@/assets/img/home/home_logo.png" :alt="$t('about.logo')">
+          <img :alt="$t('about.logo')" class="home-head-logo" src="@/assets/img/home/home_logo.png">
           <p class="home-head-des">
             {{ $t('about.homeTitle') }}
           </p>
@@ -19,7 +19,7 @@
               {{ $t('about.homeBtnRead') }}
             </el-button>
           </n-link>
-          <el-button class="home-btn" icon="el-icon-edit" @click="jumpTo('publish')">
+          <el-button @click="jumpTo('publish')" class="home-btn" icon="el-icon-edit">
             {{ $t('about.homeBtnCreate') }}
           </el-button>
         </div>
@@ -106,7 +106,7 @@
       <el-row class="mw flex stage">
         <el-col v-for="(item, index) in stageList" :key="index" :span="8">
           <div v-scroll-reveal="{distance: '20px', delay: index*200}" class="stage-block">
-            <img class="stage-img" :src="item.img" alt="stage">
+            <img :src="item.img" class="stage-img" alt="stage">
             <h3 class="stage-title">
               {{ item.title }}
             </h3>

@@ -5,7 +5,7 @@
       :key="index"
       :span="typeIndex === 0 ? 8 : 12"
     >
-      <n-link class="tag-card" :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}">
+      <n-link :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}" class="tag-card">
         {{ item.name }}
       </n-link>
       <!-- <tag :type-index="typeIndex" :tag="item" /> -->

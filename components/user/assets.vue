@@ -12,7 +12,9 @@
         <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" class="btn">
           {{ $t('withdraw.title') }}
         </el-button>
-        <el-button @click="giftDialogShow = true" v-if="isShowTransfer">转账</el-button>
+        <el-button @click="giftDialogShow = true" v-if="isShowTransfer">
+          转账
+        </el-button>
       </div>
     </div>
     <div class="line" />
@@ -64,7 +66,7 @@
       </div>
     </div>
     <div class="line" />
-    <giftDialog v-model="giftDialogShow"/>
+    <giftDialog v-model="giftDialogShow" />
   </div>
 </template>
 

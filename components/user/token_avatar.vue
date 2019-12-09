@@ -1,5 +1,5 @@
 <template>
-  <router-link class="token" :to="{name: 'token-id', params: {id : token.id}}">
+  <router-link :to="{name: 'token-id', params: {id : token.id}}" class="token">
     <div v-if="logo" class="minetoken">
       <img :src="logo" alt="token-logo">
     </div>

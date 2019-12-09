@@ -1,11 +1,11 @@
 <template>
   <el-dialog
     :close-on-click-modal="false"
-    title="选择Fan票"
     :visible.sync="showModal"
     :lock-scroll="false"
-    width="600px"
     :before-close="handleClose"
+    title="选择Fan票"
+    width="600px"
     custom-class="br10 black-theme-dialog"
   >
     <div class="container">
@@ -13,19 +13,19 @@
         <div class="search-box">
           <i class="el-icon-search" />
         </div>
-        <input v-model="search" type="text" placeholder="搜索Fan票" @keyup.enter="searchToken" class="dHtVAe">
+        <input v-model="search" @keyup.enter="searchToken" type="text" placeholder="搜索Fan票" class="dHtVAe">
       </div>
       <div v-loading="loading" class="cotdDw br10" element-loading-background="rgba(0, 0, 0, 0.3)">
         <el-table
           :data="tokenList"
-          height="50vh"
           @row-click="selectToken"
+          height="50vh"
           style="width: 100%"
->
+        >
           <el-table-column
             width="250px"
             label="Fan票"
->
+          >
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
@@ -42,7 +42,7 @@
           </el-table-column>
           <el-table-column
             label="流通量"
->
+          >
             <template slot-scope="scope">
               <span>
                 {{ scope.row.amount || '暂无流通量' }}
@@ -51,7 +51,7 @@
           </el-table-column>
           <el-table-column
             label="创始人"
->
+          >
             <template slot-scope="scope">
               <span style="white-space: nowrap;">
                 {{ scope.row.nickname || scope.row.email }}
@@ -60,9 +60,9 @@
           </el-table-column>
           <el-table-column
             label=""
->
+          >
             <template slot-scope="scope">
-              <n-link v-if="scope.row.id !== 0" target="_blank" :to="{name: 'token-id', params: {id: scope.row.id}}" class="gray-btn">
+              <n-link v-if="scope.row.id !== 0" :to="{name: 'token-id', params: {id: scope.row.id}}" target="_blank" class="gray-btn">
                 <el-button circle>
                   <svg-icon icon-class="share-link" style="color: #B2B2B2;" />
                 </el-button>

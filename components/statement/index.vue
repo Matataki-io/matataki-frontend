@@ -2,11 +2,11 @@
   <el-dialog
     :title="$t('publish.originalStatement')"
     :visible.sync="dialogVisible"
-    width="600px"
-    center
     :show-close="false"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
+    width="600px"
+    center
     custom-class="br10"
   >
     <div class="text-content">
@@ -34,7 +34,7 @@
       <el-button @click="closeButton(false)">
         {{ $t('cancel') }}
       </el-button>
-      <el-button type="primary" @click="closeButton(true)">
+      <el-button @click="closeButton(true)" type="primary">
         {{ $t('confirm') }}
       </el-button>
     </span>

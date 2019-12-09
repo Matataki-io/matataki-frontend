@@ -5,7 +5,7 @@
       <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner">
       <a class="help-link" target="_blank" href="https://www.matataki.io/p/981">如何交易Fan票?</a>
       <div class="p-w">
-        <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
+        <el-tabs v-model="tab" @tab-click="tabClick" type="border-card">
           <el-tab-pane label="交易" name="#swap">
             <Swap />
           </el-tab-pane>

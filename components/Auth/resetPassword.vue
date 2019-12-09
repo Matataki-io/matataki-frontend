@@ -6,9 +6,9 @@
       <el-form-item prop="email">
         <el-input
           v-model="registerForm.email"
-          type=""
           :placeholder="$t('rule.loginEmailMessage')"
-        ></el-input>
+          type=""
+        />
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
@@ -16,14 +16,15 @@
             v-model="registerForm.smscode"
             :placeholder="$t('rule.emailCode')"
             autocomplete="off"
-          ></el-input>
+          />
           <el-button
-            type="primary"
             :loading="loading"
             :disabled="!!timer || loading"
             @click="sendCode"
-            >{{ timer ? `${count}S` : $t('auth.getEmailCode') }}</el-button
+            type="primary"
           >
+            {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
+          </el-button>
         </div>
       </el-form-item>
       <el-form-item prop="password">
@@ -32,7 +33,7 @@
           type="password"
           placeholder="请输入新密码"
           show-password
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item prop="repassword">
         <el-input
@@ -40,10 +41,12 @@
           type="password"
           placeholder="请在输入一遍新密码"
           show-password
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitRegisterForm">重置密码</el-button>
+        <el-button @click="submitRegisterForm" type="primary">
+          重置密码
+        </el-button>
       </el-form-item>
     </el-form>
   </section>

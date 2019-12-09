@@ -2,7 +2,7 @@
   <div class="Post-Author">
     <div class="AuthorInfo">
       <router-link :to="{name: 'user-id', params: {id : article.uid}}">
-        <avatar class="Avatar" :size="'38px'" :src="avatarSrc" />
+        <avatar :size="'38px'" :src="avatarSrc" class="Avatar" />
       </router-link>
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <template v-if="!isMe(article.uid)">
-      <el-button size="small" :class="!info.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+      <el-button :class="!info.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
         <i v-if="!info.is_follow" class="el-icon-plus" />
         {{ followBtnText }}
       </el-button>

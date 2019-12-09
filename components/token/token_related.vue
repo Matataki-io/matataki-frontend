@@ -4,27 +4,39 @@
       <h2 class="title">
         相关创作
       </h2>
-      <el-dropdown class="sort" trigger="click" @command="toggleDropdown">
+      <el-dropdown @command="toggleDropdown" class="sort" trigger="click">
         <span class="el-dropdown-link">
           <span v-if="pull.params.sort === 'popular-desc'">按照热度排序</span>
           <span v-else-if="pull.params.sort === 'time-desc'">按照时间排序</span>
-          <i class="el-icon-arrow-down el-icon--right"></i>
+          <i class="el-icon-arrow-down el-icon--right" />
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="popular-desc">按照热度排序</el-dropdown-item>
-          <el-dropdown-item command="time-desc">按照时间排序</el-dropdown-item>
+          <el-dropdown-item command="popular-desc">
+            按照热度排序
+          </el-dropdown-item>
+          <el-dropdown-item command="time-desc">
+            按照时间排序
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-popover class="filter" placement="bottom-end" trigger="click">
-        <el-button class="filter-button" slot="reference" type="text">
+        <el-button slot="reference" class="filter-button" type="text">
           <div class="filter-header">
-            <img class="filter-icon" src="@/assets/img/filter.svg" />过滤
+            <img class="filter-icon" src="@/assets/img/filter.svg">过滤
           </div>
         </el-button>
         <div style="font-size: 16px">
           <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
-            <div style="margin-bottom: 8px"><el-checkbox label="1">持票可见</el-checkbox></div>
-            <div><el-checkbox label="2">付费可见</el-checkbox></div>
+            <div style="margin-bottom: 8px">
+              <el-checkbox label="1">
+                持票可见
+              </el-checkbox>
+            </div>
+            <div>
+              <el-checkbox label="2">
+                付费可见
+              </el-checkbox>
+            </div>
           </el-checkbox-group>
         </div>
       </el-popover>
@@ -49,9 +61,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="false"
-        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
+        class="pagination"
       />
     </div>
   </div>

@@ -1,14 +1,14 @@
 <template>
   <el-pagination
-    class="user-pagination"
-    background
-    layout="prev, pager, next"
     :total="total"
     :page-size="pageSize"
     :current-page.sync="currentPageCopy"
     @prev-click="prevClick"
     @next-click="nextClick"
     @current-change="currentChange"
+    class="user-pagination"
+    background
+    layout="prev, pager, next"
   />
 </template>
 

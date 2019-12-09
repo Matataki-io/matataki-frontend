@@ -40,7 +40,7 @@
       <el-col :span="mainNavTypeIndex === 0 ? 8 : 6" class="tags article">
         <div class="position-sticky top80">
           <span>{{ $t('tag.moreTag') }}</span>
-          <tags class="tags-container" :type-index="mainNavTypeIndex" :tag-cards="tagCards" />
+          <tags :type-index="mainNavTypeIndex" :tag-cards="tagCards" class="tags-container" />
         </div>
       </el-col>
     </el-row>

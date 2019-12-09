@@ -50,12 +50,14 @@
         </div>
 
         <el-tooltip class="item" effect="dark" content="通知中心" placement="bottom">
-          <n-link to="/notification" :class="{ badge: hasNewNotification }"><svg-icon
-            :style="customizeHeaderIconColorComputed"
-            style="margin: 0 0 0 18px"
-            class="create notification"
-            icon-class="bell"
-          /></n-link>
+          <n-link :class="{ badge: hasNewNotification }" to="/notification">
+            <svg-icon
+              :style="customizeHeaderIconColorComputed"
+              style="margin: 0 0 0 18px"
+              class="create notification"
+              icon-class="bell"
+            />
+          </n-link>
         </el-tooltip>
 
         <el-popover

@@ -1,22 +1,27 @@
 <template>
   <div class="buy-card">
     <div class="buy-flex">
-      <h2 class="token-title">快捷购买</h2>
-      <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange"/></span>
+      <h2 class="token-title">
+        快捷购买
+      </h2>
+      <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange" /></span>
     </div>
     <el-input
-      placeholder="输入购买数量"
       @input="inputChange"
       v-on:keypress.native="isNumber"
-      v-model="form.output">
+      v-model="form.output"
+      placeholder="输入购买数量"
+    >
       <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
-      <el-button class="btn1" @click="pay">立即支付</el-button>
-      <router-link :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-      <el-button class="btn2" type="primary">
-        交易Fan票
+      <el-button @click="pay" class="btn1">
+        立即支付
       </el-button>
+      <router-link :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
+        <el-button class="btn2" type="primary">
+          交易Fan票
+        </el-button>
       </router-link>
     </div>
     <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />

@@ -9,19 +9,19 @@
           style="width: 100%"
         >
           <el-table-column
-            prop="username"
             :label="$t('user.inviteUser')"
+            prop="username"
           >
             <template slot-scope="scope">
-              <n-link class="invite-block" :to="{name: 'user-id', params: {id: scope.row.id}}">
+              <n-link :to="{name: 'user-id', params: {id: scope.row.id}}" class="invite-block">
                 <avatar :src="cover(scope.row.avatar)" size="30px" />
                 <span class="username">{{ scope.row.username }}</span>
               </n-link>
             </template>
           </el-table-column>
           <el-table-column
-            prop="create_time"
             :label="$t('user.registeredDate')"
+            prop="create_time"
           >
             <template slot-scope="scope">
               <div class="invite-block">
@@ -53,9 +53,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="true"
-        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
+        class="pagination"
       />
     </template>
     <template slot="info">

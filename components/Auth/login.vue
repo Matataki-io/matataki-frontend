@@ -7,19 +7,19 @@
       <el-form-item prop="password">
         <el-input
           v-model="loginForm.password"
-          type="password"
           :placeholder="$t('rule.passwordMessage')"
+          type="password"
           show-password
         />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitLoginForm">
+        <el-button @click="submitLoginForm" type="primary">
           {{ $t('login') }}
         </el-button>
         <div class="bottom-tip">
           <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
-          <a href="javascript:void(0);" @click="$emit('switch')">忘记密码</a>
+          <a @click="$emit('switch')" href="javascript:void(0);">忘记密码</a>
         </div>
       </el-form-item>
     </el-form>
@@ -31,32 +31,32 @@
         {{ $t('auth.loginWarning') }}
       </p>
       <div class="oauth">
-        <el-tooltip class="item" effect="dark" :content="$t('auth.vntTitle')" placement="top">
-          <div class="oauth-bg bg-blue1" @click="walletLogin('Vnt')">
+        <el-tooltip :content="$t('auth.vntTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('Vnt')" class="oauth-bg bg-blue1">
             <svg-icon class="vnt" icon-class="vnt" />
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="$t('auth.eosTitle')" placement="top">
-          <div class="oauth-bg bg-gray" @click="walletLogin('EOS')">
+        <el-tooltip :content="$t('auth.eosTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('EOS')" class="oauth-bg bg-gray">
             <svg-icon class="eos" icon-class="eos_login" />
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="$t('auth.metamaskTitle')" placement="top">
-          <div class="oauth-bg bg-gray" @click="walletLogin('MetaMask')">
+        <el-tooltip :content="$t('auth.metamaskTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('MetaMask')" class="oauth-bg bg-gray">
             <svg-icon class="eos" icon-class="metamask" />
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="$t('auth.ontType')" placement="top">
-          <div class="oauth-bg bg-blue" @click="walletLogin('ONT')">
+        <el-tooltip :content="$t('auth.ontType')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('ONT')" class="oauth-bg bg-blue">
             <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
           </div>
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" :content="$t('auth.githubTitle')" placement="top">
-          <div class="oauth-bg bg-purple" @click="walletLogin('GitHub')">
+        <el-tooltip :content="$t('auth.githubTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('GitHub')" class="oauth-bg bg-purple">
             <svg-icon class="github" icon-class="github" />
           </div>
         </el-tooltip>
@@ -69,7 +69,7 @@
         </el-tooltip>-->
       </div>
     </div>
-    <img v-if="referral" class="referral" src="@/assets/img/invite.png" :alt="$t('auth.invite')">
+    <img v-if="referral" :alt="$t('auth.invite')" class="referral" src="@/assets/img/invite.png">
   </section>
 </template>
 

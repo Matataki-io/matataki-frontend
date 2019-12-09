@@ -2,24 +2,24 @@
   <section class="register">
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
-        <el-input v-model="registerForm.email" type="" :placeholder="$t('rule.loginEmailMessage')" />
+        <el-input v-model="registerForm.email" :placeholder="$t('rule.loginEmailMessage')" type="" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="registerForm.password" type="password" :placeholder="$t('rule.setPassword')" show-password />
+        <el-input v-model="registerForm.password" :placeholder="$t('rule.setPassword')" type="password" show-password />
       </el-form-item>
       <el-form-item prop="repassword">
-        <el-input v-model="registerForm.repassword" type="password" :placeholder="$t('rule.setPasswordAgain')" show-password />
+        <el-input v-model="registerForm.repassword" :placeholder="$t('rule.setPasswordAgain')" type="password" show-password />
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
           <el-input v-model="registerForm.smscode" :placeholder="$t('rule.emailCode')" autocomplete="off" />
-          <el-button type="primary" :loading="loading" :disabled="!!timer || loading" @click="sendCode">
+          <el-button :loading="loading" :disabled="!!timer || loading" @click="sendCode" type="primary">
             {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
           </el-button>
         </div>
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button type="primary" @click="submitRegisterForm">
+        <el-button @click="submitRegisterForm" type="primary">
           {{ $t('registered') }}
         </el-button>
       </el-form-item>

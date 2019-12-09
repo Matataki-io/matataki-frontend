@@ -1,11 +1,11 @@
 <template>
   <div class="user-list">
     <n-link :to="{name: 'user-id', params: {id: card.id}}">
-      <avatar size="80px" class="avatar" :src="avatarSrc" />
+      <avatar :src="avatarSrc" size="80px" class="avatar" />
     </n-link>
     <div class="user-info">
       <n-link :to="{name: 'user-id', params: {id: card.id}}">
-        <p class="user-title" v-html="userTitle" />
+        <p v-html="userTitle" class="user-title" />
       </n-link>
       <p class="user-num">
         <span>{{ $t('follow') }}: {{ card && card.follows }}</span>
@@ -17,7 +17,7 @@
       </p>
     </div>
     <template v-if="!isMe(card.id)">
-      <el-button :class="!card.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+      <el-button :class="!card.is_follow && 'black'" @click.stop="followOrUnFollow" class="follow">
         <i v-if="!card.is_follow" class="el-icon-plus" />
         {{ followBtnText }}
       </el-button>

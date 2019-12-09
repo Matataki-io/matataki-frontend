@@ -1,13 +1,13 @@
 <template>
   <div class="ra-list">
-    <n-link target="_blank" :to="{name: 'user-id', params: {id: card.id}}">
+    <n-link :to="{name: 'user-id', params: {id: card.id}}" target="_blank">
       <avatar :src="avatarSrc" size="44px" />
     </n-link>
-    <n-link target="_blank" class="name" :to="{name: 'user-id', params: {id: card.id}}">
+    <n-link :to="{name: 'user-id', params: {id: card.id}}" target="_blank" class="name">
       {{ card && card.nickname || card.username }}
     </n-link>
     <template v-if="!isMe(card.id)">
-      <el-button size="small" :class="!card.is_follow && 'black'" class="follow" @click.stop="followOrUnFollow">
+      <el-button :class="!card.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
         <i v-if="!card.is_follow" class="el-icon-plus" />
         {{ followBtnText }}
       </el-button>

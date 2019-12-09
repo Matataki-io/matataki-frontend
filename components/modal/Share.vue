@@ -1,28 +1,28 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    width="400px"
     :lock-scroll="false"
-    custom-class="gray-bg br10 p-share"
     :show-close="false"
-    center
     @close="change"
+    width="400px"
+    custom-class="gray-bg br10 p-share"
+    center
   >
     <div v-if="widgetModalStatus === 0" class="padding1">
       <div class="widget-content-button">
-        <div class="widget-button" @click="createWidget">
+        <div @click="createWidget" class="widget-button">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/widget.svg" alt="widget">
           </div>
           <p>{{ $t('p.createWidget') }}</p>
         </div>
-        <div class="widget-button" @click="widgetModalStatus = 4">
+        <div @click="widgetModalStatus = 4" class="widget-button">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/share.svg" alt="widget">
           </div>
           <p>{{ $t('p.createLongImg') }}</p>
         </div>
-        <div class="widget-button" @click="copyCode(clipboard)">
+        <div @click="copyCode(clipboard)" class="widget-button">
           <div class="widget-button-img">
             <img src="@/assets/img/widget/link.svg" alt="link">
           </div>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <SocialShare v-if="socialShow" :article="article" />
-      <wechat style="margin: 60px 0 0 0;" :link="shareLink" />
+      <wechat :link="shareLink" style="margin: 60px 0 0 0;" />
     </div>
     <div v-if="widgetModalStatus === 1" class="padding1 widget-writecontent">
       <p class="widget-title">
@@ -38,15 +38,15 @@
       </p>
       <el-input
         v-model="widgetContent"
+        :rows="4"
         type="textarea"
         placeholder="添加简介(选填)"
-        :rows="4"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">
+        <a @click="reviewHelp" class="help" href="javascript:;">
           {{ $t('p.widgetHelp') }}
         </a>
-        <a class="create" href="javascript:;" @click="createWidgetContent">
+        <a @click="createWidgetContent" class="create" href="javascript:;">
           {{ $t('p.createWidget') }}
         </a>
       </div>
@@ -69,7 +69,7 @@
         4.{{ $t('p.stepContent4') }}<br>
       </p>
 
-      <a class="widget-help-button" href="javascript:;" @click="backPage">
+      <a @click="backPage" class="widget-help-button" href="javascript:;">
         {{ $t('p.confirmPopover') }}
       </a>
     </div>
@@ -77,24 +77,24 @@
       <p class="widget-title">
         {{ $t('p.widgetView') }}
       </p>
-      <div class="widget-review-content" v-html="widgetContentIframe" />
+      <div v-html="widgetContentIframe" class="widget-review-content" />
       <p class="widget-review-des">
         {{ $t('p.widgetCopyDes') }}
       </p>
       <el-input
         id="codeIframe"
         v-model="widgetContentIframe"
+        :rows="4"
+        @focus="selectValue($event)"
         class="widget-textarea"
         type="textarea"
         placeholder=""
-        :rows="4"
-        @focus="selectValue($event)"
       />
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">
+        <a @click="reviewHelp" class="help" href="javascript:;">
           {{ $t('p.widgetHelp') }}
         </a>
-        <a class="create" href="javascript:;" @click="copyCode(widgetContentIframe)">
+        <a @click="copyCode(widgetContentIframe)" class="create" href="javascript:;">
           {{ $t('p.copyCode') }}
         </a>
       </div>

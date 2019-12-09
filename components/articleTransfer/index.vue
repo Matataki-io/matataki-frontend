@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="375px" :lock-scroll="false" custom-class="br10" @close="change">
+  <el-dialog :visible.sync="showModal" :lock-scroll="false" @close="change" width="375px" custom-class="br10">
     <div v-if="widgetModalStatus === 0" class="widget-writecontent">
       <p class="widget-title">
         {{ $t('p.articleTransferTitle') }}
@@ -7,10 +7,10 @@
       <div class="widget-input-container">
         <el-input
           v-model="transferUsername"
-          class="widget-input"
           :placeholder="$t('p.articleTransferPlaceholder')"
+          class="widget-input"
         />
-        <div v-if="resultUser" class="widget-input-user" @click="continueUser">
+        <div v-if="resultUser" @click="continueUser" class="widget-input-user">
           <div class="widget-input-avater">
             <img :src="userAvatar" alt="avatar">
           </div>
@@ -19,12 +19,12 @@
         <span v-if="errorMessage" class="error-info">{{ $t('p.articleTransferNotUser') }}</span>
       </div>
       <div class="widget-footer">
-        <a class="help" href="javascript:;" @click="reviewHelp">{{ $t('p.articleTransferHelp') }}</a>
+        <a @click="reviewHelp" class="help" href="javascript:;">{{ $t('p.articleTransferHelp') }}</a>
         <a
-          class="create"
-          href="javascript:;"
           :class="[!buttonStatus && 'gray']"
           @click="transferArticle"
+          class="create"
+          href="javascript:;"
         >
           {{ $t('p.articleTransferBtn') }}</a>
       </div>
@@ -45,7 +45,7 @@
         2.{{ $t('p.articleTransferHelpStepDes2') }}<br>
         3.{{ $t('p.articleTransferHelpStepDes3') }}
       </p>
-      <a class="widget-help-button" href="javascript:;" @click="backPage">
+      <a @click="backPage" class="widget-help-button" href="javascript:;">
         {{ $t('p.articleTransferHelpBtn') }}
       </a>
     </div>

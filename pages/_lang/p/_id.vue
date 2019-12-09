@@ -56,7 +56,7 @@
         </article>
 
         <!-- 解锁按钮 -->
-        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" class="lock" v-loading="lockLoading" >
+        <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" v-loading="lockLoading" class="lock">
           <div class="lock-left">
             <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
             <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">

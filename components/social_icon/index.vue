@@ -1,6 +1,6 @@
 <template>
-  <div class="social-icon" :class="icon">
-    <el-tooltip v-if="showTooltip" effect="dark" :content="content" placement="top">
+  <div :class="icon" class="social-icon">
+    <el-tooltip v-if="showTooltip" :content="content" effect="dark" placement="top">
       <a v-if="link" :href="link + '/' + content" target="_blank">
         <svg-icon :icon-class="iconName" />
       </a>

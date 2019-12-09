@@ -10,11 +10,11 @@
       </Progress>
       <div v-show="showTip" class="like-btn">
         <div v-if="!clicked" class="btns-container">
-          <button class="great-cointainer" :disabled="clicked" @click="like">
+          <button :disabled="clicked" @click="like" class="great-cointainer">
             <svg-icon icon-class="great" />
             <span>推荐<em class="like">{{ article && article.likes }}</em></span>
           </button>
-          <button class="bullshit-cointainer" :disabled="clicked" @click="dislike">
+          <button :disabled="clicked" @click="dislike" class="bullshit-cointainer">
             <svg-icon icon-class="bullshit" />
             <span>不推荐<em class="like">{{ article && article.dislikes }}</em></span>
           </button>

@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-bg" :class="cardStyleComputed">
+    <div :class="cardStyleComputed" class="card-bg">
       <div class="avatar">
         <img :src="cover" alt="avatar">
       </div>
@@ -40,7 +40,7 @@
       <img class="slogan" src="@/assets/img/token_share_slogan.png" alt="slogan">
       <div class="fl ac jc">
         <img class="logo" src="@/assets/img/token_share_logo.png" alt="logo">
-        <qrcode class="code" :value="link" :options="{ width: '80' }" />
+        <qrcode :value="link" :options="{ width: '80' }" class="code" />
       </div>
       <el-divider>
         <div class="info">

@@ -1,94 +1,97 @@
 <template>
-<div class="main">
-  <g-header />
-  <div class="order outer-container" v-loading="loading">
-    <el-alert
-      title="请仔细核对订单信息，如果有误请取消后再次尝试"
-      effect="dark"
-      type="warning">
-    </el-alert>
-    <!-- <p></p> -->
-    <table class="order-table">
-      <tbody>
-        <tr>
-          <td class="order-key">
-            交易账号：
-          </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
-        </tr>
-        <tr>
-          <td class="order-key">
-            交易类型：
-          </td><td>{{ tradeType }}</td>
-        </tr>
-        <tr>
-          <td class="order-key">
-            创建时间：
-          </td><td>{{ friendlyTime }}</td>
-        </tr>
-        <tr>
-          <td class="order-key">
-            订单编号：
-          </td><td>{{ tradeNo }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="order-item">
-      <el-table header-cell-class-name="grayHeader" :data="orderItems" style="width: 100%">
-        <el-table-column prop="name" label="品名"> </el-table-column>
-        <el-table-column prop="operating" label="操作"> </el-table-column>
-        <el-table-column prop="amount" label="数量"> </el-table-column>
-        <el-table-column prop="total" label="小计"> </el-table-column>
-      </el-table>
-    </div>
-    <div class="flexBox">
-      <span>预期价格波动：1% </span>
-      <div>
-        合计：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
+  <div class="main">
+    <g-header />
+    <div v-loading="loading" class="order outer-container">
+      <el-alert
+        title="请仔细核对订单信息，如果有误请取消后再次尝试"
+        effect="dark"
+        type="warning"
+      />
+      <!-- <p></p> -->
+      <table class="order-table">
+        <tbody>
+          <tr>
+            <td class="order-key">
+              交易账号：
+            </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              交易类型：
+            </td><td>{{ tradeType }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              创建时间：
+            </td><td>{{ friendlyTime }}</td>
+          </tr>
+          <tr>
+            <td class="order-key">
+              订单编号：
+            </td><td>{{ tradeNo }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="order-item">
+        <el-table :data="orderItems" header-cell-class-name="grayHeader" style="width: 100%">
+          <el-table-column prop="name" label="品名" />
+          <el-table-column prop="operating" label="操作" />
+          <el-table-column prop="amount" label="数量" />
+          <el-table-column prop="total" label="小计" />
+        </el-table>
       </div>
-    </div>
-    <div class="flexBox">
-      <div>
-        <el-checkbox
-          v-model="useBalance"
-          @change="useBalanceChange"
-          >使用余额（¥ {{ balance }}）</el-checkbox>
+      <div class="flexBox">
+        <span>预期价格波动：1% </span>
+        <div>
+          合计：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
+        </div>
       </div>
-      <div>
-        抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>
+      <div class="flexBox">
+        <div>
+          <el-checkbox
+            v-model="useBalance"
+            @change="useBalanceChange"
+          >
+            使用余额（¥ {{ balance }}）
+          </el-checkbox>
+        </div>
+        <div>
+          抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>
+        </div>
       </div>
-    </div>
-    <div class="flexBox">
-      <div></div>
-      <div>应付：<span class="money">¥ {{needPay.toFixed(2)}}</span>
+      <div class="flexBox">
+        <div />
+        <div>
+          应付：<span class="money">¥ {{ needPay.toFixed(2) }}</span>
+        </div>
       </div>
+      <div class="tip">
+        <p>
+          <i class="el-icon-warning" />
+          您的交易可能由于正常的价格波动而失败，预期价格波动区间将有助于您的交易成功。交易成功后，多支付的金额会退回。
+        </p>
+        <p>
+          <i class="el-icon-warning" />
+          CNY 交易金额精度大于 0.01 时会自动进位支付，多支付的金额会保留在您的CNY账户中。
+        </p>
+      </div>
+      <div class="btns">
+        <el-button @click="onSubmit" type="primary" class="pay-btn">
+          确认支付
+        </el-button>
+      </div>
+      <el-dialog
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :visible.sync="qrcodeShow"
+        :before-close="handleClose"
+        title=""
+        width="300px"
+      >
+        <QRCode :pay-link="payLink" />
+      </el-dialog>
     </div>
-    <div class="tip">
-      <p>
-        <i class="el-icon-warning" />
-        您的交易可能由于正常的价格波动而失败，预期价格波动区间将有助于您的交易成功。交易成功后，多支付的金额会退回。
-      </p>
-      <p>
-        <i class="el-icon-warning" />
-        CNY 交易金额精度大于 0.01 时会自动进位支付，多支付的金额会保留在您的CNY账户中。
-      </p>
-    </div>
-    <div class="btns">
-      <el-button type="primary" @click="onSubmit" class="pay-btn">
-        确认支付
-      </el-button>
-    </div>
-    <el-dialog
-      title=""
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :visible.sync="qrcodeShow"
-      :before-close="handleClose"
-      width="300px"
-    >
-      <QRCode :pay-link="payLink" />
-    </el-dialog>
   </div>
-</div>
 </template>
 
 <script>
