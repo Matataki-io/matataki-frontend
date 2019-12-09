@@ -49,7 +49,7 @@
           </ul>
         </div>
 
-        <el-tooltip class="item" effect="dark" content="通知中心" placement="bottom">
+        <el-tooltip v-if="isLogined" class="item" effect="dark" content="通知中心" placement="bottom">
           <n-link to="/notification" :class="{ badge: hasNewNotification }"><svg-icon
             :style="customizeHeaderIconColorComputed"
             style="margin: 0 0 0 18px"
@@ -243,7 +243,7 @@ export default {
       this.searchInput = newVal
     },
     async $route() {
-      await this.getNotificationCounters()
+      if (this.isLogined) await this.getNotificationCounters()
     }
   },
   created() {
