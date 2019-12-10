@@ -90,7 +90,17 @@ export default {
   methods: {
     buildAccount(type) {
       console.log(type)
-      if (type === 'github') {
+      if (type === 'email') {
+        let windowObjectReference = null
+        const openRequestedPopup = (strUrl, strWindowName) => {
+          if (windowObjectReference == null || windowObjectReference.closed) {
+            windowObjectReference = window.open(strUrl, strWindowName, 'left=100,top=100,width=600,height=500,resizable,scrollbars,status')
+          } else {
+            windowObjectReference.focus()
+          }
+        }
+        openRequestedPopup('http://localhost:8080/login/email', 'buildEmail')
+      } else if (type === 'github') {
         this.$router.push({
           name: 'login-github',
           query: {
