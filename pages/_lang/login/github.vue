@@ -11,20 +11,19 @@ export default {
   computed: {},
   mounted() {
     const { code, from, error } = this.$route.query
-    // const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
-    const clientID = '750700EDFF6D3C6199CD'
+    const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
+    // const clientID = '750700EDFF6D3C6199CD'
     const APP_URL = process.env.VUE_APP_URL
     const scope = 'read:public_repo,read:user'
     if (from) sessionStorage.setItem('githubFrom', from) // set sessionStorage
-    // const redirectUri = `${APP_URL}/login/github?from=pc` // 範例值
-    const redirectUri = `http://localhost:8080/login/github${from ? '?from=' + from : ''}`
+    const redirectUri = `${APP_URL}/login/github${from ? '?from=' + from : ''}`
+    // const redirectUri = `http://localhost:8080/login/github${from ? '?from=' + from : ''}`
     if (error) { // 如果是error之后
       this.$message.error('Github登录失败, 请返回重试')
       const from = sessionStorage.getItem('githubFrom') || 'index'
       this.$router.push({ name: from })
     } else if (!code) {
       // http://localhost:8080/login/github?error=redirect_uri_mismatch&error_description=The+redirect_uri+MUST+match+the+registered+callback+URL+for+this+application.&error_uri=https%3A%2F%2Fdeveloper.github.com%2Fapps%2Fmanaging-oauth-apps%2Ftroubleshooting-authorization-request-errors%2F%23redirect-uri-mismatch
-      // 跳轉
       window.location = `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`
     } else {
       const from = sessionStorage.getItem('githubFrom') || 'index'
