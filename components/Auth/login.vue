@@ -156,7 +156,12 @@ export default {
     ...mapActions("metamask", ["fetchAccount", "login"]),
     async walletLogin(type) {
       if (type === "GitHub") {
-        this.$router.push({ name: "login-github" });
+        this.$router.push({
+          name: "login-github",
+          query: {
+            from: this.$route.name
+          }
+        });
         return;
       } else if (type === "Vnt") {
         this.vntLogin();

@@ -1,4 +1,4 @@
-import backendAPI from '@/api/backend'
+import API from '@/api/API'
 
 export const state = () => ({})
 
@@ -10,10 +10,15 @@ export const actions = {
   // eslint-disable-next-line no-empty-pattern
   async signIn({}, { code }) {
     if (!code) throw new Error('GitHub login faild, no code.')
-    const res = await backendAPI.loginGitHub(code)
-    if (res.status === 200 && res.data.code === 0) return res.data.data
-    else {
-      console.log('github 获取签名失败')
+    try {
+      const res = await API.loginGitHub(code)
+      if (res.code === 0) return res.data
+      else {
+        console.log(res.message)
+        return res.data
+      }
+    } catch (error) {
+      console.log(error)
       return ''
     }
   }

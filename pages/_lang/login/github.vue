@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <div class="login" />
 </template>
@@ -7,30 +6,45 @@
 import { mapActions } from 'vuex'
 
 export default {
+  layout: 'empty',
   name: 'LoginPage',
   computed: {},
   mounted() {
-    const { protocol, host } = window.location
-    const { path, query } = this.$route
-    const { code, from } = query
-    const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
+    const { code, from, error } = this.$route.query
+    // const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
+    const clientID = '750700EDFF6D3C6199CD'
     const APP_URL = process.env.VUE_APP_URL
     const scope = 'read:public_repo,read:user'
-    // 跳转到移动端的登录页面，添加上pc参数，标志来自pc端
+    if (from) sessionStorage.setItem('githubFrom', from) // set sessionStorage
     // const redirectUri = `${APP_URL}/login/github?from=pc` // 範例值
-    const redirectUri = `${APP_URL}/login/github`
-    if (!code) {
+    const redirectUri = `http://localhost:8080/login/github${from ? '?from=' + from : ''}`
+    if (error) { // 如果是error之后
+      this.$message.error('Github登录失败, 请返回重试')
+      const from = sessionStorage.getItem('githubFrom') || 'index'
+      this.$router.push({ name: from })
+    } else if (!code) {
+      // http://localhost:8080/login/github?error=redirect_uri_mismatch&error_description=The+redirect_uri+MUST+match+the+registered+callback+URL+for+this+application.&error_uri=https%3A%2F%2Fdeveloper.github.com%2Fapps%2Fmanaging-oauth-apps%2Ftroubleshooting-authorization-request-errors%2F%23redirect-uri-mismatch
       // 跳轉
       window.location = `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`
     } else {
-      this.signIn({ code, idProvider: 'GitHub' })
-        .then(() => {
-          this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-        })
-        .catch(() => {})
-        .then(() => {
-          this.$router.push('/')
-        })
+      const from = sessionStorage.getItem('githubFrom') || 'index'
+      if (from === 'buildAccount') { // 调用接口
+        // ...
+        this.$router.push({ name: 'setting-account' })
+      } else {
+        this.signIn({ code, idProvider: 'GitHub' })
+          .then(res => {
+            console.log('---', res)
+            if (res) this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+            else this.$message.error('Github登录失败, 请返回重试')
+          })
+          .catch(err => {
+            console.log('err', err)
+            this.$message.error('Github登录失败, 请返回重试')
+          }).finally(() => {
+            this.$router.push({ name: from })
+          })
+      }
     }
   },
   methods: {

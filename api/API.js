@@ -2,6 +2,7 @@
 import qs from 'qs'
 import request from '@/utils/request'
 import utils from '@/utils/utils'
+import { getCookie } from '@/utils/cookie'
 
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
@@ -897,5 +898,15 @@ minetokenGetResources(tokenId) {
         captcha: captcha.toString()
       }
     })
-  }
+  },
+  // -------------------------------- 用户登录 --------------------------------
+  // github登录
+  loginGitHub(code) {
+    let params = { code }
+    // 推荐人id
+    let referral = getCookie('referral')
+    if (referral) Object.assign(params, { referral: referral })
+    return request.post('/login/github', params)
+  },
+
 }

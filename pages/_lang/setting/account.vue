@@ -3,7 +3,7 @@
     <template slot="main">
       <userNav nav-list-url="setting" />
       <div class="list">
-        <div v-for="(item, idx) in accountList" :key="idx" :class="[item.type, item.status && 'bind']" class="list-account">
+        <div v-for="(item, idx) in accountList" :key="idx" :class="[item.type, item.status && 'bind']" @click="buildAccount(item.type)" class="list-account">
           <svg-icon :icon-class="item.icon" class="icon" />
           <span class="typename">{{ item.typename }}</span>
           <span class="username">{{ item.username }}</span>
@@ -88,6 +88,17 @@ export default {
   mounted() {
   },
   methods: {
+    buildAccount(type) {
+      console.log(type)
+      if (type === 'github') {
+        this.$router.push({
+          name: 'login-github',
+          query: {
+            from: 'buildAccount'
+          }
+        })
+      }
+    }
   }
 }
 </script>
