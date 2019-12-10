@@ -4,6 +4,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { getCookie, removeCookie } from '@/utils/cookie'
 
 export default {
   layout: 'empty',
@@ -31,14 +32,23 @@ export default {
         // ...
         this.$router.push({ name: 'setting-account' })
       } else {
+        // 移除github cookie
+        const removeCookies = () => {
+          const idProvider = getCookie('idProvider')
+          if (idProvider.toLocaleLowerCase() === 'github') removeCookie('idProvider')
+        }
         this.signIn({ code, idProvider: 'GitHub' })
           .then(res => {
             console.log('---', res)
             if (res) this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-            else this.$message.error('Github登录失败, 请返回重试')
+            else {
+              removeCookies()
+              this.$message.error('Github登录失败, 请返回重试')
+            }
           })
           .catch(err => {
             console.log('err', err)
+            removeCookies()
             this.$message.error('Github登录失败, 请返回重试')
           }).finally(() => {
             this.$router.push({ name: from })
