@@ -75,6 +75,14 @@ export default {
           status: true
         },
         {
+          type: 'vnt',
+          icon: 'vnt', // 随时可换 防止影响
+          typename: 'VNT',
+          username: '123456****34234', // 最好后端混淆后返回
+          redirect: '??????????????',
+          status: true
+        },
+        {
           type: 'github',
           icon: 'github', // 随时可换 防止影响
           typename: 'Github',
@@ -100,6 +108,10 @@ export default {
           }
         }
         openRequestedPopup('http://localhost:8080/login/email', 'buildEmail')
+      } else if (type === 'wechat') {
+        this.$message.warning('PC端暂不支持微信绑定')
+      } else if (type === 'vnt') {
+        this.$message.warning('PC端VNT暂不支持绑定')
       } else if (type === 'github') {
         this.$router.push({
           name: 'login-github',
@@ -172,6 +184,15 @@ export default {
     background-color:#4D9AFD;
          &:hover {
       background-color: mix(#000, #4D9AFD, 20%);
+    }
+       .icon {
+      font-size: 20px
+    }
+  }
+      &.vnt {
+    background-color:#3289ff;
+         &:hover {
+      background-color: mix(#000, #3289ff, 20%);
     }
        .icon {
       font-size: 20px
