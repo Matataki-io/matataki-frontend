@@ -3,7 +3,13 @@
     <template slot="main">
       <userNav nav-list-url="setting" />
       <div class="list">
-        <div v-for="(item, idx) in accountList" :key="idx" :class="[item.type, item.status && 'bind']" @click="buildAccount(item.type)" class="list-account">
+        <div
+          v-for="(item, idx) in accountList"
+          :key="idx"
+          :class="[item.type, item.status && 'bind']"
+          @click="buildAccount(item.type)"
+          class="list-account"
+        >
           <svg-icon :icon-class="item.icon" class="icon" />
           <span class="typename">{{ item.typename }}</span>
           <span class="username">{{ item.username }}</span>
@@ -93,8 +99,7 @@ export default {
       ]
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     buildAccount(type) {
       console.log(type)
@@ -102,7 +107,11 @@ export default {
         let windowObjectReference = null
         const openRequestedPopup = (strUrl, strWindowName) => {
           if (windowObjectReference == null || windowObjectReference.closed) {
-            windowObjectReference = window.open(strUrl, strWindowName, 'left=100,top=100,width=600,height=500,resizable,scrollbars,status')
+            windowObjectReference = window.open(
+              strUrl,
+              strWindowName,
+              'left=100,top=100,width=600,height=500,resizable,scrollbars,status'
+            )
           } else {
             windowObjectReference.focus()
           }
@@ -136,89 +145,89 @@ export default {
   // height: 40px;
   background-color: #eee;
   color: #fff;
-  border-radius:6px;
+  border-radius: 6px;
   margin: 20px 0;
   padding: 9px 10px;
   box-sizing: border-box;
   cursor: pointer;
-  transition: all .2s;
+  transition: all 0.2s;
 
   &.email {
-    background-color:#542DE0;
+    background-color: #542de0;
     &:hover {
-      background-color: mix(#000, #542DE0, 20%);
+      background-color: mix(#000, #542de0, 20%);
     }
-      .icon {
-      font-size: 20px
-    }
-  }
-    &.wechat {
-    background-color:#00C800;
-        &:hover {
-      background-color: mix(#000, #00C800, 20%);
-    }
-       .icon {
-      font-size: 20px
+    .icon {
+      font-size: 20px;
     }
   }
-    &.eth {
-    background-color:#6C7AB7;
-         &:hover {
-      background-color: mix(#000, #6C7AB7, 20%);
+  &.wechat {
+    background-color: #00c800;
+    &:hover {
+      background-color: mix(#000, #00c800, 20%);
     }
-       .icon {
-      font-size: 20px
+    .icon {
+      font-size: 20px;
     }
-
   }
-    &.eos {
-    background-color:#333333;
-         &:hover {
+  &.eth {
+    background-color: #6c7ab7;
+    &:hover {
+      background-color: mix(#000, #6c7ab7, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.eos {
+    background-color: #333333;
+    &:hover {
       background-color: mix(#000, #333, 20%);
     }
-       .icon {
-      font-size: 20px
+    .icon {
+      font-size: 20px;
     }
   }
-    &.ont {
-    background-color:#4D9AFD;
-         &:hover {
-      background-color: mix(#000, #4D9AFD, 20%);
+  &.ont {
+    background-color: #4d9afd;
+    &:hover {
+      background-color: mix(#000, #4d9afd, 20%);
     }
-       .icon {
-      font-size: 20px
+    .icon {
+      font-size: 20px;
     }
   }
-      &.vnt {
-    background-color:#3289ff;
-         &:hover {
+  &.vnt {
+    background-color: #3289ff;
+    &:hover {
       background-color: mix(#000, #3289ff, 20%);
     }
-       .icon {
-      font-size: 20px
+    .icon {
+      font-size: 20px;
     }
   }
-    &.github {
-    background-color:#882592;
-         &:hover {
+  &.github {
+    background-color: #882592;
+    &:hover {
       background-color: mix(#000, #882592, 20%);
     }
-       .icon {
-      font-size: 20px
+    .icon {
+      font-size: 20px;
     }
   }
-  .typename, .close {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(255,255,255,1);
-    line-height:22px;
+  .typename,
+  .close {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 22px;
     margin-left: 4px;
   }
   .username {
-    font-size:16px;
-    font-weight:400;
-    color:rgba(255,255,255,1);
-    line-height:22px;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 22px;
     margin-left: 10px;
     margin-right: 40px;
     flex: 1;
@@ -240,14 +249,17 @@ export default {
     display: none;
   }
   &.bind {
-    .correct, .username {
+    .correct,
+    .username {
       display: block;
     }
     &:hover {
-      .username, .correct {
+      .username,
+      .correct {
         display: none;
       }
-      .close, .close_thin {
+      .close,
+      .close_thin {
         display: block;
       }
     }
