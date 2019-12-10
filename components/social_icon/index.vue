@@ -31,7 +31,7 @@ export default {
       social: [
         {
           symbol: 'QQ',
-          icon: 'qq1',
+          icon: 'qq',
           name: 'QQ：',
           tooltip: '',
           placeholder: 'QQ帐号',
@@ -67,7 +67,7 @@ export default {
         },
         {
           symbol: 'Twitter',
-          icon: 'twitter1',
+          icon: 'twitter',
           name: 'Twitter：',
           tooltip: '(https://twitter.com/<span>帐号</span>)',
           placeholder: 'Twitter用户名(不需要完整URL)',
