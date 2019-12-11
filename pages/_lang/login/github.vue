@@ -12,13 +12,13 @@ export default {
   computed: {},
   mounted() {
     const { code, from, error } = this.$route.query
-    const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
-    // const clientID = '750700EDFF6D3C6199CD'
+    // const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
+    const clientID = '750700EDFF6D3C6199CD'
     const APP_URL = process.env.VUE_APP_URL
     const scope = 'read:public_repo,read:user'
     if (from) sessionStorage.setItem('githubFrom', from) // set sessionStorage
-    const redirectUri = `${APP_URL}/login/github${from ? '?from=' + from : ''}`
-    // const redirectUri = `http://localhost:8080/login/github${from ? '?from=' + from : ''}`
+    // const redirectUri = `${APP_URL}/login/github${from ? '?from=' + from : ''}`
+    const redirectUri = `http://localhost:8080/login/github${from ? '?from=' + from : ''}`
     if (error) { // 如果是error之后
       this.$message.error('Github登录失败, 请返回重试')
       const from = sessionStorage.getItem('githubFrom') || 'index'
@@ -30,7 +30,22 @@ export default {
       const from = sessionStorage.getItem('githubFrom') || 'index'
       if (from === 'buildAccount') { // 调用接口
         // ...
-        this.$router.push({ name: 'setting-account' })
+        const params = {
+          platform: 'github',
+          code: code
+        }
+        this.$API.accountBind(params).then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('Github绑定失败')
+        }).finally(() => {
+          this.$router.push({ name: 'setting-account' })
+        })
       } else {
         // 移除github cookie
         const removeCookies = () => {

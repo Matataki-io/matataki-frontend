@@ -5,9 +5,10 @@
       <div class="list">
         <div
           v-for="(item, idx) in accountList"
+          v-loading="item.loading"
           :key="idx"
           :class="[item.type, item.status && 'bind']"
-          @click="buildAccount(item.type, item.typename)"
+          @click="buildAccount(item.type, item.typename, idx)"
           class="list-account"
         >
           <svg-icon :icon-class="item.icon" class="icon" />
@@ -48,6 +49,7 @@ export default {
           typename: '邮箱',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: false
         },
         {
@@ -56,6 +58,7 @@ export default {
           typename: '微信',
           username: '123456****342343423434234342343423434234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: true
         },
         {
@@ -64,6 +67,7 @@ export default {
           typename: 'ETH',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: false
         },
         {
@@ -72,6 +76,7 @@ export default {
           typename: 'EOS',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: false
         },
         {
@@ -80,6 +85,7 @@ export default {
           typename: 'ONT',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: true
         },
         {
@@ -88,6 +94,7 @@ export default {
           typename: 'VNT',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: true
         },
         {
@@ -96,13 +103,14 @@ export default {
           typename: 'Github',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: false
         }
       ]
     }
   },
   computed: {
-    ...mapState(['scatter']),
+    ...mapState(['scatter', 'metamask']),
     ...mapGetters(['scatter/currentUsername'])
   },
   mounted() {
@@ -110,8 +118,23 @@ export default {
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
     ...mapActions('ontology', ['getAccount', 'getSignature']),
-    buildAccount: debounce(async function (type, typename) {
-      console.log(type)
+    ...mapActions('metamask', ['getSignature']),
+    accountBild(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API.accountBind(params).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.success(`绑定失败${params.platform.toUpperCase()}`)
+      }).finally(() => {
+        this.accountList[idx].loading = false
+      })
+    },
+    buildAccount: debounce(async function (type, typename, idx) {
       if (type === 'email') {
         let windowObjectReference = null
         const openRequestedPopup = (strUrl, strWindowName) => {
@@ -130,15 +153,22 @@ export default {
         this.$message.warning(`PC端暂不支持${typename}绑定`)
       } else if (type === 'eth') {
         try {
-          const { signature } = await getSignatureForLogin()
-          console.log('🚀', signature)
+          const { signature, msgParams } = await getSignatureForLogin('Bind')
+          console.log('🚀', signature, msgParams)
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publicKey: this.metamask.account,
+            sign: signature,
+            msgParams
+          }, idx)
         } catch (error) {
           console.log(error)
           if (error.message && error.code === 4001) {
             if (error.message && error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
             else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
             else this.$message.warning('签名失败')
-          } else this.$message.warning(error.toString())
+          } else if (error.message) this.$message.warning(error.message)
+          else this.$message.warning(error.toString())
         }
       } else if (type === 'eos') {
         try {
@@ -151,12 +181,19 @@ export default {
             const result = await this.$store.dispatch('scatter/login')
             if (!result) throw new Error('Scatter登录失败')
           }
-          // get username
-          const username = await this['scatter/currentUsername'] || ''
-          if (!username) throw new Error('Scatter获取账户信息失败')
+          // get currentUsername
+          const currentUsername = await this['scatter/currentUsername'] || ''
+          if (!currentUsername) throw new Error('Scatter获取账户信息失败')
           // signature
-          const signature = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [username] })
+          // 没有扩展
+          const { publicKey, signature, username } = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [currentUsername] })
           console.log('🚀', signature)
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publicKey: publicKey,
+            sign: signature,
+            username: username
+          }, idx)
         } catch (error) {
           console.log(error)
           if (error.isError) {
@@ -168,10 +205,17 @@ export default {
         }
       } else if (type === 'ont') {
         try {
-          const username = await this.$store.dispatch('ontology/getAccount')
-          if (!username) throw new Error('Ont获取账户信息失败')
-          const signature = await this.$store.dispatch('ontology/getSignature', { mode: 'Auth', rawSignData: [username] })
+          const getAccount = await this.$store.dispatch('ontology/getAccount')
+          if (!getAccount) throw new Error('Ont获取账户信息失败')
+          // 没有扩展
+          const { publicKey, signature, username } = await this.$store.dispatch('ontology/getSignature', { mode: 'Auth', rawSignData: [getAccount] })
           console.log('🚀', signature)
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publicKey: publicKey,
+            sign: signature,
+            username: username
+          }, idx)
         } catch (error) {
           console.log(error)
           if (error.message && error.message.includes('Could not establish connection')) this.$message.warning('无法建立连接')

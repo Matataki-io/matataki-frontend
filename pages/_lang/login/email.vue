@@ -34,7 +34,7 @@
             </el-form-item>
             <div style="margin-bottom: 22px;">
               <el-button @click="setp--" class="step-input__btn" icon="el-icon-back" circle />
-              <el-button @click="emailPassOnSubmit('emailPass')" type="primary" class="step-input__btn">
+              <el-button v-loading="loading" @click="emailPassOnSubmit('emailPass')" type="primary" class="step-input__btn">
                 立即绑定
               </el-button>
             </div>
@@ -76,6 +76,7 @@ export default {
       }
     }
     return {
+      loading: false,
       setp: 0,
       rules: {
         email: [
@@ -112,11 +113,28 @@ export default {
     },
     async emailPassOnSubmit(formName) {
       if (await this.setpFunc(formName)) {
-        this.$message.success('done')
-        if (window.opener) {
-          window.opener.location.reload()
-          window.close()
+        this.loading = true
+        const params = {
+          account: this.emailAddress.email,
+          platform: 'email',
+          password_hash: this.emailPass.pass
         }
+        this.$API.accountBind(params).then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+            if (window.opener) {
+              window.opener.location.reload()
+              window.close()
+            }
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('邮箱绑定失败')
+        }).finally(() => {
+          this.loading = false
+        })
       }
     }
   }
