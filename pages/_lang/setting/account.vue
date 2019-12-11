@@ -109,6 +109,7 @@ export default {
   },
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
+    ...mapActions('ontology', ['getAccount', 'getSignature']),
     buildAccount: debounce(async function (type, typename) {
       console.log(type)
       if (type === 'email') {
@@ -133,9 +134,9 @@ export default {
           console.log('🚀', signature)
         } catch (error) {
           console.log(error)
-          if (error.message || error.code === 4001) {
-            if (error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
-            else if (error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
+          if (error.message && error.code === 4001) {
+            if (error.message && error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
+            else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
             else this.$message.warning('签名失败')
           } else this.$message.warning(error.toString())
         }
@@ -148,10 +149,11 @@ export default {
           }
           if (!this.scatter.isLoggingIn) {
             const result = await this.$store.dispatch('scatter/login')
-            if (!result) throw new Error('Scatter: login failed')
+            if (!result) throw new Error('Scatter登录失败')
           }
           // get username
           const username = await this['scatter/currentUsername'] || ''
+          if (!username) throw new Error('Scatter获取账户信息失败')
           // signature
           const signature = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [username] })
           console.log('🚀', signature)
@@ -161,19 +163,21 @@ export default {
             // User rejected the signature request
             this.$message.warning('您拒绝了签名请求')
           } else if (error.toString().includes('\'name\' of null')) this.$message.warning('无法连接钱包, 请稍后再试')
+          else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning('用户不允许此应用连接到他们的Scatter')
           else this.$message.warning(error.toString())
         }
-
-        // getters[`${prefixOfType}/currentUsername`]
-
-        // const sg = await dispatch('getSignatureOfAuth', { name })
-
-        // async getSignatureOfAuth({ dispatch }, { name = null }) {
-        //   console.log('-------', name)
-        //   return dispatch('getSignature', { mode: 'Auth', rawSignData: [name] })
-        // },
       } else if (type === 'ont') {
-        this.$message.warning(`PC端暂不支持${typename}绑定`)
+        try {
+          const username = await this.$store.dispatch('ontology/getAccount')
+          if (!username) throw new Error('Ont获取账户信息失败')
+          const signature = await this.$store.dispatch('ontology/getSignature', { mode: 'Auth', rawSignData: [username] })
+          console.log('🚀', signature)
+        } catch (error) {
+          console.log(error)
+          if (error.message && error.message.includes('Could not establish connection')) this.$message.warning('无法建立连接')
+          else if (error === 'CANCELED') this.$message.warning('您取消了签名请求')
+          else this.$message.warning('您拒绝了签名请求')
+        }
       } else if (type === 'vnt') {
         this.$message.warning(`PC端暂不支持${typename}绑定`)
       } else if (type === 'github') {
