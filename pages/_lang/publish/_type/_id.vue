@@ -18,7 +18,7 @@
           {{ $t('publish.importArticle') }}
         </div>
 
-        <div @click="sendThePost" class="post">
+        <div v-loading.fullscreen.lock="fullscreenLoading" @click="sendThePost" class="post">
           {{ $t('publish.publish') }}
         </div>
 
@@ -577,7 +577,8 @@ export default {
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
       total: 0,
-      editorStyle: {}
+      editorStyle: {},
+      fullscreenLoading: false
     }
   },
   computed: {
@@ -1114,7 +1115,9 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
         // 发布文章
+        this.fullscreenLoading = true
         const { hash } = await this.sendPost({ title, author, content })
+        this.fullscreenLoading = false
         // console.log('sendPost result :', hash)
         this.publishArticle({
           author,
@@ -1140,8 +1143,10 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
+        this.fullscreenLoading = true
         // 编辑文章
         const { hash } = await this.sendPost({ title, author, content })
+        this.fullscreenLoading = false
         this.editArticle({
           signId: this.signId,
           author,
