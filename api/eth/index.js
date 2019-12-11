@@ -106,8 +106,8 @@ async function getSignatureForPublish(hash) {
   const signature = await getSignature(msgParams)
   return { signature, msgParams }
 }
-
-async function getSignatureForLogin() {
+// type Login || Bind
+async function getSignatureForLogin(type = 'Login') {
   const netId = await fetchId()
   let [from] = await window.web3.eth.getAccounts()
   if (!from) {
@@ -119,15 +119,22 @@ async function getSignatureForLogin() {
     from,
     time: new Date().getTime()
   }
+  const signatureType = {
+    Login: [
+      { name: 'from', type: 'address' },
+      { name: 'time', type: 'uint256' }
+    ],
+    Bind: [
+      { name: 'from', type: 'address' },
+      { name: 'time', type: 'uint256' }
+    ]
+  }
   const msgParams = {
     types: {
       EIP712Domain,
-      Login: [
-        { name: 'from', type: 'address' },
-        { name: 'time', type: 'uint256' }
-      ]
+      Login: signatureType[type]
     },
-    primaryType: 'Login',
+    primaryType: type, // type
     domain: {
       name: 'Matataki 瞬',
       version: '1',
@@ -135,6 +142,8 @@ async function getSignatureForLogin() {
     },
     message
   }
+
+  // console.log('msgParams', msgParams)
 
   const signature = await getSignature(msgParams)
   console.info(`User signed the login request, signature is ${signature}`)
