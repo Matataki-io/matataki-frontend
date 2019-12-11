@@ -34,7 +34,7 @@ export const mutations = {
       introduction: introduction,
       followed: is_follow,
       name: nickname || username,
-      avatar: API.getImg(avatar),
+      avatar: avatar ? API.getImg(avatar) : '',
       banner: banner ? API.getImg(banner) : '',
       stats: { accounts, articles, supports, drafts }
     }

@@ -108,7 +108,7 @@ export default {
   mounted() {
   },
   methods: {
-    ...mapActions('scatter', ['connect', 'getSignature']),
+    ...mapActions('scatter', ['connect', 'getSignature', 'login']),
     buildAccount: debounce(async function (type, typename) {
       console.log(type)
       if (type === 'email') {
@@ -146,12 +146,12 @@ export default {
             const result = await this.$store.dispatch('scatter/connect')
             if (!result) throw new Error('scatter连接失败')
           }
-          console.log(this.scatter.isConnected)
+          if (!this.scatter.isLoggingIn) {
+            const result = await this.$store.dispatch('scatter/login')
+            if (!result) throw new Error('Scatter: login failed')
+          }
           // get username
-          console.log(this.$sotre)
-
           const username = await this['scatter/currentUsername'] || ''
-
           // signature
           const signature = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [username] })
           console.log('🚀', signature)

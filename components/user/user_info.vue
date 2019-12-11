@@ -90,14 +90,14 @@ export default {
   watch: {
     currentUserInfo() {
       if (this.isSetting) this.refreshUser({ id: this.currentUserInfo.id })
-      this.iconType = (this.currentUserInfo.idProvider).toLocaleLowerCase()
+      this.iconType = this.currentUserInfo.idProvider ? (this.currentUserInfo.idProvider).toLocaleLowerCase() : ''
     }
   },
 
   mounted() {
     if (!this.isSetting) this.refreshUser({ id: this.$route.params.id })
     else if (this.currentUserInfo.id) this.refreshUser({ id: this.currentUserInfo.id })
-    if (this.currentUserInfo.idProvider) this.iconType = (this.currentUserInfo.idProvider).toLocaleLowerCase()
+    if (this.currentUserInfo.idProvider) this.iconType = this.currentUserInfo.idProvider ? (this.currentUserInfo.idProvider).toLocaleLowerCase() : ''
   },
   methods: {
     ...mapActions('user', [
