@@ -913,4 +913,6 @@ minetokenGetResources(tokenId) {
   accountBind(params) { return request.post('/account/binding', params) },
   // account unbinding
   accountUnbind(params) { return request.post('/account/unbinding', params) },
+  // 账号列表
+  accountList() { return request.get('/account/list') },
 }
