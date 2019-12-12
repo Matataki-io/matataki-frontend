@@ -54,12 +54,7 @@ export default {
         }
         this.signIn({ code, idProvider: 'GitHub' })
           .then(res => {
-            // console.log('---', res)
-            if (res) this.$backendAPI.accessToken = this.currentUserInfo.accessToken
-            else {
-              removeCookies()
-              this.$message.error('Github登录失败, 请返回重试')
-            }
+            this.$backendAPI.accessToken = this.currentUserInfo.accessToken
           })
           .catch(err => {
             console.log('err', err)
