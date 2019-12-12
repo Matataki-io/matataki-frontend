@@ -355,6 +355,7 @@ export default {
       })
     },
     accountChangeFunc(label, idx) {
+      if (!this.accountList[idx].status) return
       if (label === 'email') {
         this.$prompt('请输入邮箱密码', '提示', {
           confirmButtonText: '确定',
