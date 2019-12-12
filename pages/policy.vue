@@ -1,4 +1,4 @@
 <script>
 import Policy from '~/pages/_lang/policy'
-export default Policy
+// export default Policy
 </script>
