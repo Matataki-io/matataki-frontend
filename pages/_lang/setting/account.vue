@@ -50,7 +50,7 @@ export default {
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
           loading: false,
-          status: false
+          status: true
         },
         {
           type: 'wechat',
@@ -68,7 +68,7 @@ export default {
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
           loading: false,
-          status: false
+          status: true
         },
         {
           type: 'eos',
@@ -77,7 +77,7 @@ export default {
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
           loading: false,
-          status: false
+          status: true
         },
         {
           type: 'ont',
@@ -104,7 +104,7 @@ export default {
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
           loading: false,
-          status: false
+          status: true
         }
       ]
     }
@@ -118,7 +118,8 @@ export default {
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
     ...mapActions('ontology', ['getAccount', 'getSignature']),
-    ...mapActions('metamask', ['getSignature']),
+    ...mapActions('metamask', ['getSignature', 'fetchAccount']),
+    ...mapActions('vnt', ['bind']),
     accountBild(params, idx) {
       this.accountList[idx].loading = true
       this.$API.accountBind(params).then(res => {
@@ -134,7 +135,22 @@ export default {
         this.accountList[idx].loading = false
       })
     },
-    buildAccount: debounce(async function (type, typename, idx) {
+    accountUnbild(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API.accountUnbind(params).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+      }).finally(() => {
+        this.accountList[idx].loading = false
+      })
+    },
+    async bindFunc(type, typename, idx) {
       if (type === 'email') {
         let windowObjectReference = null
         const openRequestedPopup = (strUrl, strWindowName) => {
@@ -153,6 +169,7 @@ export default {
         this.$message.warning(`PC端暂不支持${typename}绑定`)
       } else if (type === 'eth') {
         try {
+          await this.$store.dispatch('metamask/fetchAccount')
           const { signature, msgParams } = await getSignatureForLogin('Bind')
           console.log('🚀', signature, msgParams)
           await this.accountBild({
@@ -223,7 +240,14 @@ export default {
           else this.$message.warning('您拒绝了签名请求')
         }
       } else if (type === 'vnt') {
-        this.$message.warning(`PC端暂不支持${typename}绑定`)
+        const username = await this.$store.dispatch('vnt/bind')
+        if (!username) throw new Error('Vnt获取账户信息失败')
+        await this.accountBild({
+          platform: type.toLocaleLowerCase(),
+          publicKey: 'vnt',
+          sign: 'vnt',
+          username: username
+        }, idx)
       } else if (type === 'github') {
         this.$router.push({
           name: 'login-github',
@@ -232,6 +256,32 @@ export default {
           }
         })
       } else this.$message.warning('PC端暂不支持绑定')
+    },
+    async unbindFunc(type, typename, idx) {
+      await console.log('??????')
+      if (type === 'email') {
+        this.$message.warning('PC端暂不支持解除绑定')
+        await this.accountBild({
+          platform: type.toLocaleLowerCase(),
+          account: this.metamask.account
+        }, idx)
+      } else if (type === 'wechat') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'eth') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'eos') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'ont') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'vnt') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'github') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else this.$message.warning('PC端暂不支持解除绑定')
+    },
+    buildAccount: debounce(function (type, typename, idx) {
+      if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
+      else this.bindFunc(type, typename, idx)
     }, 500)
 
   }

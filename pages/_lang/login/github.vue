@@ -54,7 +54,7 @@ export default {
         }
         this.signIn({ code, idProvider: 'GitHub' })
           .then(res => {
-            console.log('---', res)
+            // console.log('---', res)
             if (res) this.$backendAPI.accessToken = this.currentUserInfo.accessToken
             else {
               removeCookies()

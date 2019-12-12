@@ -140,6 +140,82 @@ export const actions = {
       login()
     })
   },
+
+  bind({ commit }) {
+    // TODO 优化
+    return new Promise((resolve, reject) => {
+      const init = () => window.vnt !== 'undefined'
+      if (!init()) reject(new Error('您还没有安装钱包'))
+      // console.log('vnt', window.vnt)
+
+      const networkUrl = () => { // TODO 切换网络等考虑
+        // 尚未获取到 -1
+        // 主网 1
+        // 测试网 2
+        return new Promise((resolve, reject) => {
+          window.vnt.getNetworkUrl((err, result) => {
+            if (err) {
+              console.log('vnt network url error', err)
+              reject(new Error(err))
+            } else {
+              if (!result.chainId) return resolve(-1)
+              if (result.chainId === 1) resolve(1)
+              else if (result.chainId === 2) resolve(2)
+            }
+          })
+        })
+      }
+
+      // 判断网络
+      const getNetwork = async () => {
+        try {
+          const networkId = await networkUrl()
+          const dev = process.env.NODE === 'development'
+          if (!dev && networkId === 2) {
+            reject(new Error('钱包测试网不能登陆, 请切换'))
+            return false
+          } else if (dev && networkId === 1) {
+            reject(new Error('钱包主网不能登陆, 请切换'))
+            return false
+          } else if (networkId === -1) {
+            reject(new Error('获取网络失败, 请重试'))
+            return false
+          } else {
+            return true
+          }
+        } catch (error) {
+          reject(new Error('获取当前网络失败'))
+          return false
+        }
+      }
+      // TODO 由于不去区分网络 开放账号
+      // if (!getNetwork()) return
+
+      // 登录
+      const bind = () => {
+        // 获取账号
+        const getCoinbaseBalance = () => {
+          const coinbase = getCoinbase()
+          if (!coinbase) return reject(new Error('获取钱包账户名称失败'))
+          return resolve(coinbase)
+        }
+
+        if (window.vnt.isConnected()) {
+          // console.log('已连接')
+          getCoinbaseBalance()
+        } else {
+          // console.log('没有连接,请授权解锁')
+          requestAuthorization((err, res) => {
+            if (err) reject(new Error('取消了授权或者失败'))
+            else if (!res) reject(new Error('取消了授权或者失败'))
+            else getCoinbaseBalance()
+          })
+        }
+      }
+
+      bind()
+    })
+  },
   // 暂未使用到
   logout({ commit }) {
     return new Promise((resolve, reject) => {
