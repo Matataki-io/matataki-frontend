@@ -9,12 +9,13 @@
           <a class="href" target="_blank" href="https://www.matataki.io/p/781">
             {{ $t('footer.point') }}
           </a>
-          <a class="href" target="_blank" href="/policy">
+          <!-- 隐私政策与用户协议 -->
+          <!-- <a class="href" target="_blank" href="/policy">
             {{ $t('footer.privacyPolicy') }}
           </a>
           <a class="href" target="_blank" href="/agreement">
             {{ $t('footer.userAgreement') }}
-          </a>
+          </a> -->
           <a class="href" target="_blank" href="https://github.com/smart-signature/MATATAKI_FE">
             {{ $t('footer.about') }}
           </a>
