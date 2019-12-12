@@ -5,18 +5,27 @@
       <div class="list">
         <div
           v-for="(item, idx) in accountList"
-          v-loading="item.loading"
           :key="idx"
-          :class="[item.type, item.status && 'bind']"
-          @click="buildAccount(item.type, item.typename, idx)"
-          class="list-account"
+          class="fl ac"
         >
-          <svg-icon :icon-class="item.icon" class="icon" />
-          <span class="typename">{{ item.typename }}</span>
-          <span class="username">{{ item.username }}</span>
-          <span class="close">取消绑定</span>
-          <svg-icon icon-class="correct" class="correct" />
-          <svg-icon icon-class="close_thin" class="close_thin" />
+          <div
+            v-loading="item.loading"
+            @click="buildAccount(item.type, item.typename, idx)"
+            :class="[item.type, item.status && 'bind']"
+            :data-disabled="item.disabled"
+            class="list-account"
+          >
+            <svg-icon :icon-class="item.icon" class="icon" />
+            <span class="typename">{{ item.typename }}</span>
+            <span class="username">{{ item.username }}</span>
+            <span class="close">取消绑定</span>
+            <svg-icon icon-class="correct" class="correct" />
+            <svg-icon icon-class="close_thin" class="close_thin" />
+          </div>
+          <el-radio :value="accountRadio" :label="item.type" :disabled="item.disabled" @change="accountChangeFunc(item.type, idx)" style="margin-left: 10px;">
+            <span v-if="accountRadio === item.type">主账号</span>
+            <span v-else>&nbsp;</span>
+          </el-radio>
         </div>
       </div>
     </template>
@@ -42,69 +51,77 @@ export default {
   },
   data() {
     return {
+      accountRadio: '',
       accountList: [
         {
           type: 'email',
           icon: 'email', // 随时可换 防止影响
           typename: '邮箱',
-          username: '123456****34234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: false
         },
         {
           type: 'wechat',
           icon: 'wechat', // 随时可换 防止影响
           typename: '微信',
-          username: '123456****342343423434234342343423434234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: true
         },
         {
           type: 'eth',
           icon: 'eth', // 随时可换 防止影响
           typename: 'ETH',
-          username: '123456****34234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: false
         },
         {
           type: 'eos',
           icon: 'eos', // 随时可换 防止影响
           typename: 'EOS',
-          username: '123456****34234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: false
         },
         {
           type: 'ont',
           icon: 'ont', // 随时可换 防止影响
           typename: 'ONT',
-          username: '123456****34234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: false
         },
         {
           type: 'vnt',
           icon: 'vnt', // 随时可换 防止影响
           typename: 'VNT',
-          username: '123456****34234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: false
         },
         {
           type: 'github',
           icon: 'github', // 随时可换 防止影响
           typename: 'Github',
-          username: '123456****34234', // 最好后端混淆后返回
-          redirect: '??????????????',
+          username: '', // 最好后端混淆后返回
           loading: false,
-          status: true
+          status: false,
+          is_main: 0,
+          disabled: false
         }
       ]
     }
@@ -114,6 +131,7 @@ export default {
     ...mapGetters(['scatter/currentUsername'])
   },
   mounted() {
+    this.getAccountList()
   },
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
@@ -125,6 +143,7 @@ export default {
       this.$API.accountBind(params).then(res => {
         if (res.code === 0) {
           this.$message.success(res.message)
+          this.getAccountList()
         } else {
           this.$message.success(res.message)
         }
@@ -140,6 +159,24 @@ export default {
       this.$API.accountUnbind(params).then(res => {
         if (res.code === 0) {
           this.$message.success(res.message)
+          this.getAccountList()
+        } else {
+          this.$message.success(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+      }).finally(() => {
+        this.accountList[idx].loading = false
+      })
+    },
+    accountChange(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API.accountChange(params).then(res => {
+        if (res.code === 0) {
+          this.accountRadio = this.accountList[idx].type
+          this.$message.success(res.message)
+          this.getAccountList()
         } else {
           this.$message.success(res.message)
         }
@@ -174,7 +211,7 @@ export default {
           console.log('🚀', signature, msgParams)
           await this.accountBild({
             platform: type.toLocaleLowerCase(),
-            publicKey: this.metamask.account,
+            publickey: this.metamask.account,
             sign: signature,
             msgParams
           }, idx)
@@ -207,7 +244,7 @@ export default {
           console.log('🚀', signature)
           await this.accountBild({
             platform: type.toLocaleLowerCase(),
-            publicKey: publicKey,
+            publickey: publicKey,
             sign: signature,
             username: username
           }, idx)
@@ -229,7 +266,7 @@ export default {
           console.log('🚀', signature)
           await this.accountBild({
             platform: type.toLocaleLowerCase(),
-            publicKey: publicKey,
+            publickey: publicKey,
             sign: signature,
             username: username
           }, idx)
@@ -244,7 +281,7 @@ export default {
         if (!username) throw new Error('Vnt获取账户信息失败')
         await this.accountBild({
           platform: type.toLocaleLowerCase(),
-          publicKey: 'vnt',
+          publickey: 'vnt',
           sign: 'vnt',
           username: username
         }, idx)
@@ -257,33 +294,92 @@ export default {
         })
       } else this.$message.warning('PC端暂不支持绑定')
     },
-    async unbindFunc(type, typename, idx) {
-      await console.log('??????')
-      if (type === 'email') {
-        this.$message.warning('PC端暂不支持解除绑定')
-        await this.accountBild({
+    unbindFunc(type, typename, idx) {
+      this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.accountUnbild({
           platform: type.toLocaleLowerCase(),
-          account: this.accountList[idx].account
+          account: this.accountList[idx].username
         }, idx)
-      } else if (type === 'wechat') {
-        this.$message.warning('PC端暂不支持解除绑定')
-      } else if (type === 'eth') {
-        this.$message.warning('PC端暂不支持解除绑定')
-      } else if (type === 'eos') {
-        this.$message.warning('PC端暂不支持解除绑定')
-      } else if (type === 'ont') {
-        this.$message.warning('PC端暂不支持解除绑定')
-      } else if (type === 'vnt') {
-        this.$message.warning('PC端暂不支持解除绑定')
-      } else if (type === 'github') {
-        this.$message.warning('PC端暂不支持解除绑定')
-      } else this.$message.warning('PC端暂不支持解除绑定')
+      })
+
+      // if (type === 'email') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else if (type === 'wechat') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else if (type === 'eth') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else if (type === 'eos') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else if (type === 'ont') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else if (type === 'vnt') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else if (type === 'github') {
+      //   this.$message.warning('PC端暂不支持解除绑定')
+      // } else this.$message.warning('PC端暂不支持解除绑定')
     },
     buildAccount: debounce(function (type, typename, idx) {
+      if (this.accountList[idx].disabled) return
+      if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
       if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
       else this.bindFunc(type, typename, idx)
-    }, 500)
+    }, 300),
+    getAccountList() {
+      this.$API.accountList().then(res => {
+        if (res.code === 0) {
+          // console.log(res)
+          this.accountList.map(i => {
+            const filterPlatform = res.data.filter(j => j.platform === i.type)
+            // console.log(filterPlatform)
+            if (filterPlatform.length > 0) {
+              i.username = filterPlatform[0].account
+              i.status = filterPlatform[0].status
+              i.is_main = filterPlatform[0].is_main
+            } else {
+              i.username = ''
+              i.status = false
+              i.is_main = 0
+            }
 
+            if (i.is_main === 1) this.accountRadio = i.type
+          })
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
+    },
+    accountChangeFunc(label, idx) {
+      if (label === 'email') {
+        this.$prompt('请输入邮箱密码', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          this.accountChange({
+            platform: this.accountList[idx].type,
+            account: this.accountList[idx].username,
+            password: value
+          }, idx)
+        })
+      } else {
+        this.$confirm('此操作将切换主账号, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(this.accountList[idx])
+          this.accountChange({
+            platform: this.accountList[idx].type,
+            account: this.accountList[idx].username
+          }, idx)
+        })
+      }
+    }
   }
 }
 </script>
@@ -300,7 +396,7 @@ export default {
   background-color: #eee;
   color: #fff;
   border-radius: 6px;
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 9px 10px;
   box-sizing: border-box;
   cursor: pointer;
@@ -367,6 +463,14 @@ export default {
     }
     .icon {
       font-size: 20px;
+    }
+  }
+
+  &[data-disabled="true"] {
+    cursor: not-allowed;
+    background-color: #dadada;
+    &:hover {
+      background-color: #dadada;
     }
   }
   .typename,
