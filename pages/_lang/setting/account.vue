@@ -6,6 +6,7 @@
         <div
           v-for="(item, idx) in accountList"
           :key="idx"
+          class="fl ac"
         >
           <div
             v-loading="item.loading"
@@ -21,8 +22,9 @@
             <svg-icon icon-class="correct" class="correct" />
             <svg-icon icon-class="close_thin" class="close_thin" />
           </div>
-          <el-radio v-model="item.is_main === 1" :label="item.is_main">
-            更换主账号
+          <el-radio :value="accountRadio" :label="item.type" :disabled="item.disabled" @change="accountChangeFunc(item.type, idx)" style="margin-left: 10px;">
+            <span v-if="accountRadio === item.type">主账号</span>
+            <span v-else>&nbsp;</span>
           </el-radio>
         </div>
       </div>
@@ -49,6 +51,7 @@ export default {
   },
   data() {
     return {
+      accountRadio: '',
       accountList: [
         {
           type: 'email',
@@ -155,6 +158,23 @@ export default {
       this.accountList[idx].loading = true
       this.$API.accountUnbind(params).then(res => {
         if (res.code === 0) {
+          this.$message.success(res.message)
+          this.getAccountList()
+        } else {
+          this.$message.success(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+      }).finally(() => {
+        this.accountList[idx].loading = false
+      })
+    },
+    accountChange(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API.accountChange(params).then(res => {
+        if (res.code === 0) {
+          this.accountRadio = this.accountList[idx].type
           this.$message.success(res.message)
           this.getAccountList()
         } else {
@@ -324,6 +344,8 @@ export default {
               i.status = false
               i.is_main = 0
             }
+
+            if (i.is_main === 1) this.accountRadio = i.type
           })
         } else {
           console.log(res.message)
@@ -331,8 +353,33 @@ export default {
       }).catch(err => {
         console.log('err', err)
       })
+    },
+    accountChangeFunc(label, idx) {
+      if (label === 'email') {
+        this.$prompt('请输入邮箱密码', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          this.accountChange({
+            platform: this.accountList[idx].type,
+            account: this.accountList[idx].username,
+            password: value
+          }, idx)
+        })
+      } else {
+        this.$confirm('此操作将切换主账号, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(this.accountList[idx])
+          this.accountChange({
+            platform: this.accountList[idx].type,
+            account: this.accountList[idx].username
+          }, idx)
+        })
+      }
     }
-
   }
 }
 </script>
@@ -349,7 +396,7 @@ export default {
   background-color: #eee;
   color: #fff;
   border-radius: 6px;
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 9px 10px;
   box-sizing: border-box;
   cursor: pointer;
