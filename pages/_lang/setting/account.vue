@@ -263,7 +263,7 @@ export default {
         this.$message.warning('PC端暂不支持解除绑定')
         await this.accountBild({
           platform: type.toLocaleLowerCase(),
-          account: this.metamask.account
+          account: this.accountList[idx].account
         }, idx)
       } else if (type === 'wechat') {
         this.$message.warning('PC端暂不支持解除绑定')
