@@ -162,7 +162,7 @@ export default {
       }).then(res => {
         if (res.code === 0) {
           this.countDown()
-          this.successToast(this.$t('success.codeSendSuccess'))
+          this.successToast(this.$t('success.codeSendSuccess', [5]))
         } else {
           this.failToast(this.$t('error.codeSendFail'))
         }
