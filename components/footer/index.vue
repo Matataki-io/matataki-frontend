@@ -10,6 +10,14 @@
             {{ $t('footer.point') }}
           </a>
           <!-- 隐私政策与用户协议 -->
+          <!-- 去掉链接 -->
+          <a class="href" target="_blank">
+            {{ $t('footer.privacyPolicy') }}
+          </a>
+          <a class="href" target="_blank">
+            {{ $t('footer.userAgreement') }}
+          </a>
+          <!-- 保留链接 -->
           <!-- <a class="href" target="_blank" href="/policy">
             {{ $t('footer.privacyPolicy') }}
           </a>
