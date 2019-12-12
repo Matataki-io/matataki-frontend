@@ -29,7 +29,6 @@ export default {
     } else {
       const from = sessionStorage.getItem('githubFrom') || 'index'
       if (from === 'buildAccount') { // 调用接口
-        // ...
         const params = {
           platform: 'github',
           code: code
@@ -48,19 +47,16 @@ export default {
         })
       } else {
         // 移除github cookie
-        const removeCookies = () => {
-          const idProvider = getCookie('idProvider')
-          if (idProvider.toLocaleLowerCase() === 'github') removeCookie('idProvider')
-        }
+        // const removeCookies = () => {
+        //   const idProvider = getCookie('idProvider')
+        //   if (idProvider.toLocaleLowerCase() === 'github') removeCookie('idProvider')
+        // }
         this.signIn({ code, idProvider: 'GitHub' })
           .then(res => {
             this.$backendAPI.accessToken = this.currentUserInfo.accessToken
           })
-          .catch(err => {
-            console.log('err', err)
-            removeCookies()
-            this.$message.error('Github登录失败, 请返回重试')
-          }).finally(() => {
+          .catch(() => {})
+          .then(() => {
             this.$router.push({ name: from })
           })
       }
