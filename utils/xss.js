@@ -65,19 +65,62 @@ export const xssFilter = html => {
   whiteList.ul.push(...ulTag)
   whiteList.section.push(...sectionTag)
 
+  let rulePush = [
+    {
+      tag: 'h1',
+      attributes: ['style']
+    },
+    {
+      tag: 'h2',
+      attributes: ['style']
+    },
+    {
+      tag: 'h3',
+      attributes: ['style']
+    },
+    {
+      tag: 'h4',
+      attributes: ['style']
+    },
+    {
+      tag: 'h5',
+      attributes: ['style']
+    },
+    {
+      tag: 'h6',
+      attributes: ['style']
+    },
+    {
+      tag: 'hr',
+      attributes: ['style']
+    },
+    {
+      tag: 'code',
+      attributes: ['style']
+    },
+  ]
 
+  let ruleAdd = [
+    {
+      tag: 'figure',
+      attributes: ['style']
+    },
+    {
+      tag: 'figcaption',
+      attributes: ['style']
+    },
+  ]
 
-
+  for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
+  for (const key of ruleAdd) whiteList[key.tag] = key.attributes
 
   const options = {
     whiteList,
-    // eslint-disable-next-line no-unused-vars
     onIgnoreTag(tag, html, options) {
-      console.log(`不支持的标签属性，请联系客服：${tag}`)
+      console.log(`Tag 不支持的标签属性，请联系客服：${tag}, ${html}, ${options}`)
     },
-    // eslint-disable-next-line no-unused-vars
     onIgnoreTagAttr(tag, name, value, isWhiteAttr) {
-      console.log(`不支持的标签属性，请联系客服：${tag} ${name}`)
+      console.log(`Attr 不支持的标签属性，请联系客服：${tag} ${name}, ${value}`)
     },
     // > 放过md引用
     escapeHtml(html) {

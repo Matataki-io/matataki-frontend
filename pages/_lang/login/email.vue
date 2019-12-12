@@ -9,37 +9,40 @@
         </p>
         <el-form ref="emailAddress" :rules="rules" :model="emailAddress">
           <el-form-item label="" prop="email">
-            <div class="step-input">
-              <el-input v-model="emailAddress.email" type="text" placeholder="请输入邮箱账号" />
-              <el-button @click="emailAddressOnSubmit('emailAddress')" class="step-input__btn" icon="el-icon-right" circle />
-            </div>
+            <el-input v-model="emailAddress.email" type="text" placeholder="请输入邮箱账号" />
+          </el-form-item>
+          <el-form-item label="" prop="">
+            <el-button v-loading="nextLoading" @click="emailAddressOnSubmit('emailAddress')">
+              下一步
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
-
       <div v-if="setp === 1" class="step">
         <el-form ref="emailPass" :rules="rulesPass" :model="emailPass">
-          <div class="step-input">
-            <el-form-item label="" prop="pass">
-              <p class="setp-title">
-                请设置密码
-              </p>
-              <el-input v-model="emailPass.pass" type="text" placeholder="请设置密码" show-password />
-            </el-form-item>
-            <el-form-item label="" prop="code">
-              <p class="setp-title code">
-                请设置验证码
-              </p>
-              <el-input v-model="emailPass.code" type="text" maxlength="6" placeholder="请输入验证码" style="margin-left: 10px;width:130px;" />
-            </el-form-item>
-            <div style="margin-bottom: 22px;">
-              <el-button @click="setp--" class="step-input__btn" icon="el-icon-back" circle />
-              <el-button @click="emailPassOnSubmit('emailPass')" type="primary" class="step-input__btn">
-                立即绑定
+          <el-form-item label="" prop="pass">
+            <p class="setp-title">
+              请设置密码
+            </p>
+            <el-input v-model="emailPass.pass" type="text" placeholder="请设置密码" show-password />
+          </el-form-item>
+          <el-form-item label="" prop="code">
+            <p class="setp-title code">
+              请输入验证码
+            </p>
+            <div class="setp-code">
+              <el-input v-model="emailPass.code" type="text" maxlength="6" placeholder="请输入验证码" />
+              <el-button :loading="codeLoading" :disabled="!!timer || codeLoading" @click="sendCode" type="primary" class="btn">
+                {{ timer ? `${count}S` : '获取邮箱验证码' }}
               </el-button>
             </div>
-          </div>
           </el-form-item>
+          <el-button @click="setp--">
+            上一步
+          </el-button>
+          <el-button v-loading="loading" @click="emailPassOnSubmit('emailPass')" type="primary">
+            立即绑定
+          </el-button>
         </el-form>
       </div>
     </div>
@@ -47,16 +50,27 @@
 </template>
 
 <script>
-
 export default {
   layout: 'empty',
   name: 'Email',
   data() {
-    const validateEmail = (rule, value, callback) => {
+    const validateEmail = async (rule, value, callback) => {
       if (this.emailAddress.email === '') {
         callback(new Error('请输入账号'))
       } else {
-        callback()
+        try {
+          this.nextLoading = true
+          const res = await this.$API.verifyEmail(this.emailAddress.email)
+          this.nextLoading = false
+          if (res.data) {
+            callback(new Error('账号已存在'))
+          } else {
+            callback()
+          }
+        } catch (error) {
+          console.log(error)
+          callback(new Error('验证账号失败,请重试'))
+        }
       }
     }
     const validateEmailPass = (rule, value, callback) => {
@@ -67,15 +81,21 @@ export default {
       }
     }
     const validateEmailCode = (rule, value, callback) => {
-      if (this.emailPass.code === '') {
+      if (this.emailCode.code === '') {
         callback(new Error('请输入验证码'))
-      } else if (this.emailPass.code.length !== 6) {
+      } else if (this.emailCode.code.length !== 6) {
         callback(new Error('请输入六位验证码'))
       } else {
         callback()
       }
     }
     return {
+      TIME_COUNT: 60,
+      nextLoading: false,
+      codeLoading: false,
+      count: '',
+      timer: null,
+      loading: false,
       setp: 0,
       rules: {
         email: [
@@ -85,7 +105,8 @@ export default {
       },
       rulesPass: {
         pass: [
-          { validator: validateEmailPass, trigger: 'blur' }
+          { validator: validateEmailPass, trigger: 'blur' },
+          { min: 8, max: 16, message: this.$t('rule.passwordLengthMessage', [8, 16]), trigger: 'blur' }
         ],
         code: [
           { validator: validateEmailCode, trigger: 'blur' }
@@ -112,11 +133,95 @@ export default {
     },
     async emailPassOnSubmit(formName) {
       if (await this.setpFunc(formName)) {
-        this.$message.success('done')
-        if (window.opener) {
-          window.opener.location.reload()
-          window.close()
+        this.loading = true
+        const params = {
+          platform: 'email',
+          email: this.emailAddress.email,
+          password: this.emailPass.pass,
+          captcha: this.emailPass.code
         }
+        this.$API.accountBind(params).then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+            if (window.opener) {
+              window.opener.location.reload()
+              window.close()
+            }
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('邮箱绑定失败')
+        }).finally(() => {
+          this.loading = false
+        })
+      }
+    },
+    registerInitGT(cb) {
+      this.$API.registerGT().then(res => {
+        window.initGeetest({
+          // 以下 4 个配置参数为必须，不能缺少
+          gt: res.gt,
+          challenge: res.challenge,
+          offline: !res.success, // 表示用户后台检测极验服务器是否宕机
+          new_captcha: res.new_captcha, // 用于宕机时表示是新验证码的宕机
+          product: 'bind', // 产品形式，包括：float，popup
+          width: '300px'
+          // 更多配置参数说明请参见：http://docs.geetest.com/install/client/web-front/
+        }, (captchaObj) => {
+          this.captchaObj = captchaObj
+          captchaObj.onReady(() => {
+            captchaObj.verify()
+          }).onSuccess(() => {
+            const result = captchaObj.getValidate()
+            if (!result) {
+              this.$message.error(this.$t('rule.pleaseDoneRule'))
+            } else {
+              cb(result)
+            }
+            // this.validateGT(result, captchaObj);
+          })
+        })
+      })
+    },
+    confirmSendCode(gt) {
+      this.codeLoading = true
+      this.$API.getCaptcha(this.emailAddress.email, {
+        geetest_challenge: gt.geetest_challenge,
+        geetest_validate: gt.geetest_validate,
+        geetest_seccode: gt.geetest_seccode
+      }).then(res => {
+        if (res.code === 0) {
+          this.countDown()
+          this.$message.success(this.$t('success.codeSendSuccess', [5]))
+        } else {
+          this.$message.error(this.$t('error.codeSendFail'))
+        }
+      }).catch(err => {
+        console.log(err)
+      }).finally(() => {
+        this.codeLoading = false
+      })
+    },
+    async sendCode() {
+      // await this.countDown()
+      await this.registerInitGT(this.confirmSendCode)
+    },
+    // 倒计时函数
+    countDown() {
+      if (!this.timer) {
+        this.count = this.TIME_COUNT
+        this.text = false
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= this.TIME_COUNT) {
+            this.count--
+          } else {
+            this.text = true
+            clearInterval(this.timer)
+            this.timer = null
+          }
+        }, 1000)
       }
     }
   }
@@ -147,16 +252,16 @@ export default {
     color: #333;
     line-height: 1;
     &.code {
-      margin-left: 10px;
+      margin-top: 0;
     }
   }
 }
-.step-input {
+.setp-code {
   display: flex;
-  align-items: flex-end;
-}
-.step-input__btn {
-  margin-left: 10px;
+  align-items: center;
+  .btn {
+    margin-left: 10px;
+  }
 }
 .logo {
   display: block;

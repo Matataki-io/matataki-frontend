@@ -908,5 +908,9 @@ minetokenGetResources(tokenId) {
     if (referral) Object.assign(params, { referral: referral })
     return request.post('/login/github', params)
   },
-
+  // -------------------------------- 账号绑定 --------------------------------
+  // account binding
+  accountBind(params) { return request.post('/account/binding', params) },
+  // account unbinding
+  accountUnbind(params) { return request.post('/account/unbinding', params) },
 }

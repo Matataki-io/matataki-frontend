@@ -5,9 +5,10 @@
       <div class="list">
         <div
           v-for="(item, idx) in accountList"
+          v-loading="item.loading"
           :key="idx"
           :class="[item.type, item.status && 'bind']"
-          @click="buildAccount(item.type, item.typename)"
+          @click="buildAccount(item.type, item.typename, idx)"
           class="list-account"
         >
           <svg-icon :icon-class="item.icon" class="icon" />
@@ -48,7 +49,8 @@ export default {
           typename: '邮箱',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
-          status: false
+          loading: false,
+          status: true
         },
         {
           type: 'wechat',
@@ -56,6 +58,7 @@ export default {
           typename: '微信',
           username: '123456****342343423434234342343423434234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: true
         },
         {
@@ -64,7 +67,8 @@ export default {
           typename: 'ETH',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
-          status: false
+          loading: false,
+          status: true
         },
         {
           type: 'eos',
@@ -72,7 +76,8 @@ export default {
           typename: 'EOS',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
-          status: false
+          loading: false,
+          status: true
         },
         {
           type: 'ont',
@@ -80,6 +85,7 @@ export default {
           typename: 'ONT',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: true
         },
         {
@@ -88,6 +94,7 @@ export default {
           typename: 'VNT',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
+          loading: false,
           status: true
         },
         {
@@ -96,21 +103,54 @@ export default {
           typename: 'Github',
           username: '123456****34234', // 最好后端混淆后返回
           redirect: '??????????????',
-          status: false
+          loading: false,
+          status: true
         }
       ]
     }
   },
   computed: {
-    ...mapState(['scatter']),
+    ...mapState(['scatter', 'metamask']),
     ...mapGetters(['scatter/currentUsername'])
   },
   mounted() {
   },
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
-    buildAccount: debounce(async function (type, typename) {
-      console.log(type)
+    ...mapActions('ontology', ['getAccount', 'getSignature']),
+    ...mapActions('metamask', ['getSignature', 'fetchAccount']),
+    ...mapActions('vnt', ['bind']),
+    accountBild(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API.accountBind(params).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.success(`绑定失败${params.platform.toUpperCase()}`)
+      }).finally(() => {
+        this.accountList[idx].loading = false
+      })
+    },
+    accountUnbild(params, idx) {
+      this.accountList[idx].loading = true
+      this.$API.accountUnbind(params).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.message)
+        } else {
+          this.$message.success(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.success(`解除绑定失败${params.platform.toUpperCase()}`)
+      }).finally(() => {
+        this.accountList[idx].loading = false
+      })
+    },
+    async bindFunc(type, typename, idx) {
       if (type === 'email') {
         let windowObjectReference = null
         const openRequestedPopup = (strUrl, strWindowName) => {
@@ -129,15 +169,23 @@ export default {
         this.$message.warning(`PC端暂不支持${typename}绑定`)
       } else if (type === 'eth') {
         try {
-          const { signature } = await getSignatureForLogin()
-          console.log('🚀', signature)
+          await this.$store.dispatch('metamask/fetchAccount')
+          const { signature, msgParams } = await getSignatureForLogin('Bind')
+          console.log('🚀', signature, msgParams)
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publicKey: this.metamask.account,
+            sign: signature,
+            msgParams
+          }, idx)
         } catch (error) {
           console.log(error)
-          if (error.message || error.code === 4001) {
-            if (error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
-            else if (error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
+          if (error.message && error.code === 4001) {
+            if (error.message && error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
+            else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
             else this.$message.warning('签名失败')
-          } else this.$message.warning(error.toString())
+          } else if (error.message) this.$message.warning(error.message)
+          else this.$message.warning(error.toString())
         }
       } else if (type === 'eos') {
         try {
@@ -148,34 +196,58 @@ export default {
           }
           if (!this.scatter.isLoggingIn) {
             const result = await this.$store.dispatch('scatter/login')
-            if (!result) throw new Error('Scatter: login failed')
+            if (!result) throw new Error('Scatter登录失败')
           }
-          // get username
-          const username = await this['scatter/currentUsername'] || ''
+          // get currentUsername
+          const currentUsername = await this['scatter/currentUsername'] || ''
+          if (!currentUsername) throw new Error('Scatter获取账户信息失败')
           // signature
-          const signature = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [username] })
+          // 没有扩展
+          const { publicKey, signature, username } = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [currentUsername] })
           console.log('🚀', signature)
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publicKey: publicKey,
+            sign: signature,
+            username: username
+          }, idx)
         } catch (error) {
           console.log(error)
           if (error.isError) {
             // User rejected the signature request
             this.$message.warning('您拒绝了签名请求')
           } else if (error.toString().includes('\'name\' of null')) this.$message.warning('无法连接钱包, 请稍后再试')
+          else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning('用户不允许此应用连接到他们的Scatter')
           else this.$message.warning(error.toString())
         }
-
-        // getters[`${prefixOfType}/currentUsername`]
-
-        // const sg = await dispatch('getSignatureOfAuth', { name })
-
-        // async getSignatureOfAuth({ dispatch }, { name = null }) {
-        //   console.log('-------', name)
-        //   return dispatch('getSignature', { mode: 'Auth', rawSignData: [name] })
-        // },
       } else if (type === 'ont') {
-        this.$message.warning(`PC端暂不支持${typename}绑定`)
+        try {
+          const getAccount = await this.$store.dispatch('ontology/getAccount')
+          if (!getAccount) throw new Error('Ont获取账户信息失败')
+          // 没有扩展
+          const { publicKey, signature, username } = await this.$store.dispatch('ontology/getSignature', { mode: 'Auth', rawSignData: [getAccount] })
+          console.log('🚀', signature)
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publicKey: publicKey,
+            sign: signature,
+            username: username
+          }, idx)
+        } catch (error) {
+          console.log(error)
+          if (error.message && error.message.includes('Could not establish connection')) this.$message.warning('无法建立连接')
+          else if (error === 'CANCELED') this.$message.warning('您取消了签名请求')
+          else this.$message.warning('您拒绝了签名请求')
+        }
       } else if (type === 'vnt') {
-        this.$message.warning(`PC端暂不支持${typename}绑定`)
+        const username = await this.$store.dispatch('vnt/bind')
+        if (!username) throw new Error('Vnt获取账户信息失败')
+        await this.accountBild({
+          platform: type.toLocaleLowerCase(),
+          publicKey: 'vnt',
+          sign: 'vnt',
+          username: username
+        }, idx)
       } else if (type === 'github') {
         this.$router.push({
           name: 'login-github',
@@ -184,6 +256,32 @@ export default {
           }
         })
       } else this.$message.warning('PC端暂不支持绑定')
+    },
+    async unbindFunc(type, typename, idx) {
+      await console.log('??????')
+      if (type === 'email') {
+        this.$message.warning('PC端暂不支持解除绑定')
+        await this.accountBild({
+          platform: type.toLocaleLowerCase(),
+          account: this.metamask.account
+        }, idx)
+      } else if (type === 'wechat') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'eth') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'eos') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'ont') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'vnt') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else if (type === 'github') {
+        this.$message.warning('PC端暂不支持解除绑定')
+      } else this.$message.warning('PC端暂不支持解除绑定')
+    },
+    buildAccount: debounce(function (type, typename, idx) {
+      if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
+      else this.bindFunc(type, typename, idx)
     }, 500)
 
   }

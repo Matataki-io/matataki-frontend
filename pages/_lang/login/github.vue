@@ -30,7 +30,22 @@ export default {
       const from = sessionStorage.getItem('githubFrom') || 'index'
       if (from === 'buildAccount') { // 调用接口
         // ...
-        this.$router.push({ name: 'setting-account' })
+        const params = {
+          platform: 'github',
+          code: code
+        }
+        this.$API.accountBind(params).then(res => {
+          if (res.code === 0) {
+            this.$message.success(res.message)
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('Github绑定失败')
+        }).finally(() => {
+          this.$router.push({ name: 'setting-account' })
+        })
       } else {
         // 移除github cookie
         const removeCookies = () => {
@@ -39,7 +54,7 @@ export default {
         }
         this.signIn({ code, idProvider: 'GitHub' })
           .then(res => {
-            console.log('---', res)
+            // console.log('---', res)
             if (res) this.$backendAPI.accessToken = this.currentUserInfo.accessToken
             else {
               removeCookies()

@@ -134,7 +134,7 @@ async function getSignatureForLogin(type = 'Login') {
       EIP712Domain,
       Login: signatureType[type]
     },
-    primaryType: type, // type
+    primaryType: 'Login', // type 使用 'Bind' 有问题
     domain: {
       name: 'Matataki 瞬',
       version: '1',
