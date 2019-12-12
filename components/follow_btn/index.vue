@@ -7,7 +7,7 @@
     class="btn"
   >
     <i v-if="!userInfo.followed" class="el-icon-plus" />
-    {{ userInfo.followed ? $t('unFollow') : $t('follow') }}
+    {{ userInfo.followed ? $t('following') : $t('follow') }}
   </el-button>
 </template>
 
@@ -70,9 +70,8 @@ export default {
     }
 
     &.unsubscribe {
-      max-width: 72px;
-      padding-left: 11px;
-      padding-right: 11px;
+      padding-left: 17px;
+      padding-right: 17px;
     }
   }
 </style>
