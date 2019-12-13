@@ -189,6 +189,7 @@ export default {
     },
     async bindFunc(type, typename, idx) {
       if (type === 'email') {
+        if (!this.isLogined) return this.$store.commit('setLoginModal', true)
         // const url = 'http://localhost:8080/login/email'
         const url = `${process.env.VUE_APP_PC_URL}/login/email`
         let windowObjectReference = null
@@ -297,32 +298,39 @@ export default {
       } else this.$message.warning('PC端暂不支持绑定')
     },
     unbindFunc(type, typename, idx) {
-      this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.accountUnbild({
-          platform: type.toLocaleLowerCase(),
-          account: this.accountList[idx].username
-        }, idx)
-      })
-
-      // if (type === 'email') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else if (type === 'wechat') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else if (type === 'eth') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else if (type === 'eos') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else if (type === 'ont') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else if (type === 'vnt') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else if (type === 'github') {
-      //   this.$message.warning('PC端暂不支持解除绑定')
-      // } else this.$message.warning('PC端暂不支持解除绑定')
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (type === 'email') {
+        this.$prompt('此操作将取消账号绑定, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: '',
+          inputPlaceholder: '请输入密码',
+          // inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
+          inputValidator: function (value) {
+            if (!value) return false
+            else return true
+          },
+          inputErrorMessage: '请输入密码'
+        }).then(({ value }) => {
+          this.accountUnbild({
+            platform: this.accountList[idx].type,
+            account: this.accountList[idx].username,
+            password: value
+          }, idx)
+        })
+      } else {
+        this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.accountUnbild({
+            platform: type.toLocaleLowerCase(),
+            account: this.accountList[idx].username
+          }, idx)
+        })
+      }
     },
     buildAccount: debounce(function (type, typename, idx) {
       if (this.accountList[idx].disabled) return
@@ -532,6 +540,26 @@ export default {
       .close,
       .close_thin {
         display: block;
+      }
+    }
+  }
+  &[data-disabled="true"].bind {
+    .correct {
+      display: none;
+    }
+    .username {
+      display: block;
+    }
+    &:hover {
+      .correct {
+        display: none;
+      }
+      .username {
+        display: block;
+      }
+      .close,
+      .close_thin {
+        display: none;
       }
     }
   }

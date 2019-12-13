@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   layout: 'empty',
   name: 'Email',
@@ -121,17 +123,22 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['isLogined'])
+  },
   methods: {
     setpFunc(formName) {
       return new Promise(resolve => this.$refs[formName].validate(valid => resolve(valid)))
     },
     async emailAddressOnSubmit(formName) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (await this.setpFunc(formName)) {
         if (this.setp >= 2) return
         ++this.setp
       }
     },
     async emailPassOnSubmit(formName) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (await this.setpFunc(formName)) {
         this.loading = true
         const params = {
@@ -206,6 +213,7 @@ export default {
     },
     async sendCode() {
       // await this.countDown()
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       await this.registerInitGT(this.confirmSendCode)
     },
     // 倒计时函数
@@ -214,7 +222,7 @@ export default {
         this.count = this.TIME_COUNT
         this.text = false
         this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= this.TIME_COUNT) {
+          if (this.count > 1 && this.count <= this.TIME_COUNT) {
             this.count--
           } else {
             this.text = true
