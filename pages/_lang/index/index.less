@@ -399,3 +399,49 @@
     margin-left: 0;
   }
 }
+
+.evaluation_section {
+  display: flex;
+  padding: 0 0 100px 0;
+  background: #f9f8ff;
+}
+.evaluation {
+  display: flex;
+  margin: -250px auto 0;
+  z-index: 1000;
+  padding-bottom: 108px;
+  .arrow {
+    margin: auto 40px;
+    color: #542de0;
+    font-size: 30px;
+    font-weight: 1000;
+    cursor: pointer;
+  }
+  .bubble {
+    background: white;
+    border-radius: 0 25px 25px 25px;
+    width: 650px;
+    padding: 0 25px;
+    margin: 25px 25px 0 12px;
+    min-height: 137px;
+    .name {
+      font-size:20px;
+      font-weight:400;
+      margin-bottom: 0;
+    }
+    .content {
+      font-size:24px;
+      font-weight:500;
+      margin-top: 16px;
+      img {
+        &.left {
+          padding-bottom: 10px;
+        }
+        &.right {
+          padding-bottom: 6px;
+        }
+
+      }
+    }
+  }
+}
