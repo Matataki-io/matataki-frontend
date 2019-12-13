@@ -189,6 +189,8 @@ export default {
     },
     async bindFunc(type, typename, idx) {
       if (type === 'email') {
+        // const url = 'http://localhost:8080/login/email'
+        const url = `${${APP_URL}}/login/email`
         let windowObjectReference = null
         const openRequestedPopup = (strUrl, strWindowName) => {
           if (windowObjectReference == null || windowObjectReference.closed) {
@@ -201,7 +203,7 @@ export default {
             windowObjectReference.focus()
           }
         }
-        openRequestedPopup('http://localhost:8080/login/email', 'buildEmail')
+        openRequestedPopup(url, 'buildEmail')
       } else if (type === 'wechat') {
         this.$message.warning(`PC端暂不支持${typename}绑定`)
       } else if (type === 'eth') {
