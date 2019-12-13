@@ -128,7 +128,7 @@ export default {
   },
   computed: {
     ...mapState(['scatter', 'metamask']),
-    ...mapGetters(['scatter/currentUsername'])
+    ...mapGetters(['scatter/currentUsername', 'isLogined'])
   },
   mounted() {
     this.getAccountList()
@@ -324,6 +324,7 @@ export default {
     },
     buildAccount: debounce(function (type, typename, idx) {
       if (this.accountList[idx].disabled) return
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
       if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
       else this.bindFunc(type, typename, idx)
@@ -355,11 +356,20 @@ export default {
       })
     },
     accountChangeFunc(label, idx) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (!this.accountList[idx].status) return
       if (label === 'email') {
         this.$prompt('请输入邮箱密码', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消'
+          cancelButtonText: '取消',
+          inputValue: '',
+          inputPlaceholder: '请输入密码',
+          // inputType: 'password',
+          inputValidator: function (value) {
+            if (!value) return false
+            else return true
+          },
+          inputErrorMessage: '请输入密码'
         }).then(({ value }) => {
           this.accountChange({
             platform: this.accountList[idx].type,
