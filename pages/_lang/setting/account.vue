@@ -357,14 +357,14 @@ export default {
     },
     accountChangeFunc(label, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (!this.accountList[idx].status) return
+      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
       if (label === 'email') {
         this.$prompt('请输入邮箱密码', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputValue: '',
           inputPlaceholder: '请输入密码',
-          // inputType: 'password',
+          // inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
           inputValidator: function (value) {
             if (!value) return false
             else return true
