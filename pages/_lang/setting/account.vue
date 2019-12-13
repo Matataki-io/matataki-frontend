@@ -190,7 +190,7 @@ export default {
     async bindFunc(type, typename, idx) {
       if (type === 'email') {
         // const url = 'http://localhost:8080/login/email'
-        const url = `${process.env.VUE_APP_URL}/login/email`
+        const url = `${process.env.VUE_APP_PC_URL}/login/email`
         let windowObjectReference = null
         const openRequestedPopup = (strUrl, strWindowName) => {
           if (windowObjectReference == null || windowObjectReference.closed) {
