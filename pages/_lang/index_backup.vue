@@ -60,15 +60,23 @@
               <figure class="component-story__summary__title">
                 <img src="@/assets/img/index/sotry_passion_title.png" alt="passion">
               </figure>
-              <p class="summary">
-                - 我所热爱的就是最大的。
-              </p>
-              <p class="summary">
-                - 在未来，我们与AI有什么不同？是生生不息的热爱、探索与执着让我们如此不同！
-              </p>
-              <p class="summary">
-                - 投资执着和努力创作的人，未来，一个人就是一家“公司”。
-              </p>
+              <ul>
+                <li>
+                  <p class="summary">
+                    我所热爱的就是最大的。
+                  </p>
+                </li>
+                <li>
+                  <p class="summary">
+                    在未来，我们与AI有什么不同？是生生不息的热爱、探索与执着让我们如此不同！
+                  </p>
+                </li>
+                <li>
+                  <p class="summary">
+                    投资执着和努力创作的人，未来，一个人就是一家“公司”。
+                  </p>
+                </li>
+              </ul>
             </article>
           </section>
         </section>
@@ -92,15 +100,23 @@
               <figure class="component-story__summary__title">
                 <img src="@/assets/img/index/sotry_sustainability_title.png" alt="sustainability">
               </figure>
-              <p class="summary">
-                - 利用区块链为创作数据确权，数据资产完全归属作者，不再被平台剥夺、剥削。
-              </p>
-              <p class="summary">
-                - 完善的区块链价值工具集，保证作者的创作价值触达更多爱好者，用社区的力量反哺创作，用创作的价值壮大社区。
-              </p>
-              <p class="summary">
-                - 区块链上价值透明可传导，保证衍生创作持续输血原作，让优秀的创作生生不息。
-              </p>
+              <ul>
+                <li>
+                  <p class="summary">
+                    利用区块链为创作数据确权，数据资产完全归属作者，不再被平台剥夺、剥削。
+                  </p>
+                </li>
+                <li>
+                  <p class="summary">
+                    完善的区块链价值工具集，保证作者的创作价值触达更多爱好者，用社区的力量反哺创作，用创作的价值壮大社区。
+                  </p>
+                </li>
+                <li>
+                  <p class="summary">
+                    区块链上价值透明可传导，保证衍生创作持续输血原作，让优秀的创作生生不息。
+                  </p>
+                </li>
+              </ul>
             </article>
           </section>
         </section>
@@ -124,15 +140,23 @@
               <figure class="component-story__summary__title">
                 <img src="@/assets/img/index/sotry_boundary_title.png" alt="boundary">
               </figure>
-              <p class="summary">
-                - 思想高度多样化的群体，智能水平能够超越多年训练的专家
-              </p>
-              <p class="summary">
-                - 社交媒体快速抢占我们的注意力，而思考和学习需要慢时间，如何让慢的事情高质量变快？
-              </p>
-              <p class="summary">
-                - 市场和经济系统能够奖励优秀的思想，合作能够快速传播思想和带来思想的进化，<b>”市场激励“</b>加<b>”合作“</b>能让群体的“慢”思考变快，提升社会中每个人的能力和收益。
-              </p>
+              <ul>
+                <li>
+                  <p class="summary">
+                    思想高度多样化的群体，智能水平能够超越多年训练的专家
+                  </p>
+                </li>
+                <li>
+                  <p class="summary">
+                    社交媒体快速抢占我们的注意力，而思考和学习需要慢时间，如何让慢的事情高质量变快？
+                  </p>
+                </li>
+                <li>
+                  <p class="summary">
+                    市场和经济系统能够奖励优秀的思想，合作能够快速传播思想和带来思想的进化，<b>”市场激励“</b>加<b>”合作“</b>能让群体的“慢”思考变快，提升社会中每个人的能力和收益。
+                  </p>
+                </li>
+              </ul>
             </article>
           </section>
         </section>
@@ -148,28 +172,71 @@
         </div>
         <section class="roadmap-time">
           <div class="roadmap-time__block">
-            <h4>2019.4</h4>
-            <p class="sumary">
-              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的 。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。 一家“公司”。
-            </p>
+            <h4><img src="@/assets/img/index/2019Q4.png" alt="2019.Q4"></h4>
+            <ul>
+              <li>
+                <p class="sumary">
+                  用户创作数据区块链时间戳确权，为原创作品保驾护航
+                </p>
+              </li>
+              <li>
+                <p class="sumary">
+                  去中心化存储协议保证数据资产权益完全归用户所有
+                </p>
+              </li>
+              <li>
+                <p class="sumary">
+                  数据价值量化系统“Fan票”上线，丰富数据的商业化应用场景，为创作者商业变现赋能
+                </p>
+              </li>
+            </ul>
           </div>
           <div class="roadmap-time__block">
-            <h4>2019.4</h4>
-            <p class="sumary">
-              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的 。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。 一家“公司”。
-            </p>
+            <h4><img src="@/assets/img/index/2020Q1.png" alt="2020.Q1"></h4>
+            <ul>
+              <li>
+                <p class="sumary">
+                  FanDAOs 创作者社群去中心化协作工具集上线，帮助创作社群自发、高效运转，让社群专注价值生产。
+                </p>
+              </li>
+            </ul>
           </div>
           <div class="roadmap-time__block">
-            <h4>2019.4</h4>
-            <p class="sumary">
-              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的 。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。 一家“公司”。
-            </p>
+            <h4><img src="@/assets/img/index/2020Q2.png" alt="2020.Q2"></h4>
+            <div class="leftFrame">
+              <ul>
+                <li>
+                  <p class="sumary">
+                    上线零工经济系统。
+                  </p>
+                </li>
+                <li>
+                  <p class="sumary">
+                    完善去中心化存储激励协议层。
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="roadmap-time__block">
-            <h4>2019.4</h4>
-            <p class="sumary">
-              我所热爱的就是最大的。在未来，我们与AI有什么不同？是生生不息的 。热爱、探索与执着让我们如此不同！ 投资执着和努力创作的人，未来，一个人就是。 一家“公司”。
-            </p>
+            <h4><img src="@/assets/img/index/2020Q3.png" alt="2020.Q3"></h4>
+            <ul>
+              <li>
+                <p class="sumary">
+                  全面开放平台API，提供完善的开发工具套件，平台转向社区化运营。
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="roadmap-time__block">
+            <h4><img src="@/assets/img/index/2020Q4.png" alt="2020.Q4"></h4>
+            <ul>
+              <li>
+                <p class="sumary">
+                  “人类知识共享、创新计划”上线，建设全网开放、通用的语义网络数据集。
+                </p>
+              </li>
+            </ul>
           </div>
           <div class="roadmap-time__line" />
         </section>
