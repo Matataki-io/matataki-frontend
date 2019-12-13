@@ -163,29 +163,31 @@
       </div>
     </section>
 
-    <section class="evaluation_section">
-      <div class="evaluation">
-        <i @click="pageTurning(-1)" class="el-icon-arrow-left arrow" />
-        <n-link
-          :to=" {name: 'user-id', params: {id: userReviews[pageNum].id}} "
-          target="_blank"
-          class="author"
-        >
-          <avatar :size="'50px'" :src="userReviews[pageNum].avatar" class="avatar" />
-        </n-link>
-        <div class="bubble">
-          <p class="name">
-            {{ userReviews[pageNum].name }}：
-          </p>
-          <p class="content">
-            <img src="@/assets/img/index/double_quotes_left.png" class="left" alt="double_quotes_left">
-            {{ userReviews[pageNum].content }}
-            <img src="@/assets/img/index/double_quotes_right.png" class="right" alt="double_quotes_right">
-          </p>
+    <div ref="evaluation" class="evaluation_section_div">
+      <section class="evaluation_section">
+        <div class="evaluation">
+          <i @click="pageTurning(-1)" class="el-icon-arrow-left arrow" />
+          <n-link
+            :to=" {name: 'user-id', params: {id: userReviews[pageNum].id}} "
+            target="_blank"
+            class="author"
+          >
+            <avatar :size="'50px'" :src="userReviews[pageNum].avatar" class="avatar" />
+          </n-link>
+          <div class="bubble">
+            <p class="name">
+              {{ userReviews[pageNum].name }}：
+            </p>
+            <p class="content">
+              <img src="@/assets/img/index/double_quotes_left.png" class="left" alt="double_quotes_left">
+              {{ userReviews[pageNum].content }}
+              <img src="@/assets/img/index/double_quotes_right.png" class="right" alt="double_quotes_right">
+            </p>
+          </div>
+          <i @click="pageTurning(1)" class="el-icon-arrow-right arrow" />
         </div>
-        <i @click="pageTurning(1)" class="el-icon-arrow-right arrow" />
-      </div>
-    </section>
+      </section>
+    </div>
 
     <!-- roadmap -->
     <section class="roadmap">
@@ -210,7 +212,7 @@
               </li>
               <li>
                 <p class="sumary">
-                  数据价值量化系统“Fan票”上线，丰富数据的商业化应用场景，为创作者商业变现赋能。
+                  Fan票 数据价值量化系统上线，丰富数据的商业化应用场景，为创作者商业变现赋能。
                 </p>
               </li>
             </ul>
@@ -412,7 +414,10 @@ export default {
     _resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
       if (clientHeight < 800) return false
-      else this.$refs.home.style.height = clientHeight + 'px'
+      else {
+        this.$refs.home.style.height = clientHeight + 'px'
+        this.$refs.evaluation.style.height = (clientHeight - 257) + 'px'
+      }
     },
     /**
      * 设置默认样式, 从css里面抽离出来, 减少样式的印象
