@@ -166,14 +166,20 @@
     <section class="evaluation_section">
       <div class="evaluation">
         <i @click="pageTurning(-1)" class="el-icon-arrow-left arrow" />
-        <avatar :size="'50px'" :src="aComment.avatar" class="avatar" />
+        <n-link
+          :to=" {name: 'user-id', params: {id: userReviews[pageNum].id}} "
+          target="_blank"
+          class="author"
+        >
+          <avatar :size="'50px'" :src="userReviews[pageNum].avatar" class="avatar" />
+        </n-link>
         <div class="bubble">
           <p class="name">
-            {{ aComment.name }}：
+            {{ userReviews[pageNum].name }}：
           </p>
           <p class="content">
             <img src="@/assets/img/index/double_quotes_left.png" class="left" alt="double_quotes_left">
-            {{ aComment.content }}
+            {{ userReviews[pageNum].content }}
             <img src="@/assets/img/index/double_quotes_right.png" class="right" alt="double_quotes_right">
           </p>
         </div>
@@ -294,19 +300,28 @@ export default {
       },
       userReviews: [
         {
-          avatar: '',
-          name: '蠢朋克乐队秀出最炫电音风',
-          content: 'MATATAKI真是太棒了，下次还要来发文！这里就像我的家一样，啦啦啦啦啦啦啦啦啦～'
+          id: 82,
+          avatar: this.$API.getImg('/avatar/2019/09/06/b4b75ec1f3ab19c74aab668579535848.jpeg'),
+          name: 'Ponge',
+          content: '优美流畅的UI，方便易用的编辑方式（支持Markdown）是Matataki最吸引我的两个地方。这里没有404，这里没有敏感词，但是这里有无限的可能。粉丝经济、电商……不知道未来Matataki会走向何方，但是每一个“瞬”间都值得“留链”。'
         },
         {
-          avatar: '',
-          name: '小田',
-          content: 'MATATAKI真是太棒了，里面的人个个都是人才，说话又好听，待在这里就像家一样。'
+          id: 967,
+          avatar: this.$API.getImg('/avatar/2019/11/15/ceac57a33b012302d637f8d9f2927d3d.jpeg'),
+          name: '加菲众',
+          content: '迄今为止，Matataki是内容价值领域最易用直观的产品。小岛和他的团队已经寻得了内容通证化的最优路径。'
         },
         {
-          avatar: '',
-          name: '我是xxx',
-          content: '下次还要来发文！'
+          id: 176,
+          avatar: this.$API.getImg('/avatar/2019/08/24/12526397d587c80fcca7f58924d1cc33.png'),
+          name: '筷子手',
+          content: '用区块链把读者和作者更加紧密地联系起来，这是一个自由写作的平台。山海皆升平，偏偏爱重庆，关注「筷子手」，带你了解最地道的重庆。'
+        },
+        {
+          id: 989,
+          avatar: this.$API.getImg('/avatar/2019/11/17/d1c06bec2210f293fa1a8a0576a54efd.jpg'),
+          name: 'udspj',
+          content: '程序员日常漫画做了很多年，虽然已经完成出本的愿望（我没有跟QB交易），但出本上瘾正在企划2本新刊，身在11区也能通过matataki发行阿宅币在国内贩售新的漫画内容真是太棒了~~~'
         }
       ]
     }
