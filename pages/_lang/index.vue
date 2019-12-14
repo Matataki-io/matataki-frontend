@@ -431,7 +431,7 @@ export default {
      */
     _setDefaultStyle() {
       const { btnList } = this.$refs
-      const timeline = new TimelineLite()
+      // const timeline = new TimelineLite()
 
       TweenMax.set('.btn-list', {
         opacity: 0,
