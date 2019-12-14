@@ -413,10 +413,17 @@ export default {
     },
     _resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-      if (clientHeight < 800) return false
-      else {
+      const heightop = 367
+      if (clientHeight < 800) {
+        this.$refs.evaluation.style['padding-top'] = '0px'
+        this.$refs.evaluation.style.height = '780px'
+        return false
+      } else {
         this.$refs.home.style.height = clientHeight + 'px'
-        this.$refs.evaluation.style.height = (clientHeight - 257) + 'px'
+        const top = (clientHeight / 2) - (heightop + 108)
+        this.$refs.evaluation.style['padding-top'] = top + 'px'
+        this.$refs.evaluation.style.height = ((clientHeight - heightop) - top) + 'px'
+        // this.$refs.evaluation.style.height = clientHeight + 'px'
       }
     },
     /**
