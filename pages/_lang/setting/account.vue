@@ -42,6 +42,7 @@ import userLayout from '@/components/user/user_layout.vue'
 import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
 import { getSignatureForLogin } from '@/api/eth'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -300,6 +301,9 @@ export default {
     unbindFunc(type, typename, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      let idProvider = getCookie('idProvider').toLocaleLowerCase()
+      idProvider = idProvider === 'weixin' ? 'wechat' : idProvider
+      if (idProvider === type.toLocaleLowerCase()) return this.$message.warning('解绑当前账号需要切换账号')
       if (type === 'email') {
         this.$prompt('此操作将取消账号绑定, 是否继续?', '提示', {
           confirmButtonText: '确定',
