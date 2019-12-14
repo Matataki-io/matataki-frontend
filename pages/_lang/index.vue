@@ -430,27 +430,26 @@ export default {
      * 设置默认样式, 从css里面抽离出来, 减少样式的印象
      */
     _setDefaultStyle() {
-      const { btnList } = this.$refs
+      // const { btnList } = this.$refs
       // const timeline = new TimelineLite()
 
-      TweenMax.set('.btn-list', {
-        opacity: 0,
-        y: 0
-      })
-
-      TweenMax.set('.story', {
-        perspective: 1000
-      })
+      // TweenMax.set('.btn-list', {
+      //   opacity: 0,
+      //   y: 0
+      // })
+      // TweenMax.set('.story', {
+      //   perspective: 1000
+      // })
       // TweenMax.set('.component-story', {
       //   z: -40
       // })
-      TweenMax.set('.component-story .component-story__header .component-story__inner', {
-        y: '-10%'
-      })
-      TweenMax.set('.roadmap .roadmap-time__block', {
-        y: 20,
-        opacity: 0
-      })
+      // TweenMax.set('.component-story .component-story__header .component-story__inner', {
+      //   y: '-10%'
+      // })
+      // TweenMax.set('.roadmap .roadmap-time__block', {
+      //   y: 20,
+      //   opacity: 0
+      // })
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
