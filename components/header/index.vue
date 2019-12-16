@@ -280,6 +280,7 @@ export default {
         this.$utils.delCookie('ACCESS_TOKEN')
         this.$utils.delCookie('idProvider')
         window.localStorage.clear()
+        sessionStorage.clear()
         // this.$utils.deleteAllCookies()
         this.$router.push({
           name: 'index'
