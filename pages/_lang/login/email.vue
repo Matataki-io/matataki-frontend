@@ -131,9 +131,7 @@ export default {
     async emailAddressOnSubmit(formName) {
       if (!getCookie('ACCESS_TOKEN')) return this.$store.commit('setLoginModal', true)
       if (await this.setpFunc(formName)) {
-        console.log('11111111')
         if (this.setp >= 2) return
-        console.log('1111111122222')
         ++this.setp
       }
     },
