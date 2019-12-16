@@ -7,15 +7,13 @@
         <p class="setp-title">
           请输入邮箱账号
         </p>
-        <el-form ref="emailAddress" :rules="rules" :model="emailAddress">
+        <el-form ref="emailAddress" :rules="rules" :model="emailAddress" @submit.native.prevent>
           <el-form-item label="" prop="email">
-            <el-input v-model="emailAddress.email" type="text" placeholder="请输入邮箱账号" />
+            <el-input v-model="emailAddress.email" @change="emailAddressOnSubmit('emailAddress')" placeholder="请输入邮箱账号" clearable />
           </el-form-item>
-          <el-form-item label="" prop="">
-            <el-button v-loading="nextLoading" @click="emailAddressOnSubmit('emailAddress')">
-              下一步
-            </el-button>
-          </el-form-item>
+          <el-button v-loading="nextLoading" @click="emailAddressOnSubmit('emailAddress')">
+            下一步
+          </el-button>
         </el-form>
       </div>
       <div v-if="setp === 1" class="step">
