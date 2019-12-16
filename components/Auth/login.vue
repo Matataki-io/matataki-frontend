@@ -27,9 +27,6 @@
       <h1 class="oauth-title">
         {{ $t('auth.otherAccount') }}
       </h1>
-      <p class="warning-tip">
-        {{ $t('auth.loginWarning') }}
-      </p>
       <div class="oauth">
         <el-tooltip :content="$t('auth.vntTitle')" class="item" effect="dark" placement="top">
           <div @click="walletLogin('Vnt')" class="oauth-bg bg-blue1">

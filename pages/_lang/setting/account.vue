@@ -3,6 +3,8 @@
     <template slot="main">
       <userNav nav-list-url="setting" />
       <div class="list">
+        <p>瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。</p>
+        <p>已绑定的任意账号均可用于登录</p>
         <div
           v-for="(item, idx) in accountList"
           :key="idx"
@@ -384,7 +386,7 @@ export default {
     },
     accountChangeFunc(label, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (!this.accountList[idx].status) return this.$message.warning('绑定后才可设置为主账号')
       if (label === 'email') {
         this.$prompt('请输入邮箱密码', '提示', {
           confirmButtonText: '确定',
