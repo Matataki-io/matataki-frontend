@@ -1,5 +1,5 @@
 <template>
-  <div class="login" />
+  <div v-loading="loading" style="height: 100%;" element-loading-text="登录中..." />
 </template>
 
 <script>
@@ -9,6 +9,11 @@ import { getCookie, removeCookie } from '@/utils/cookie'
 export default {
   layout: 'empty',
   name: 'LoginPage',
+  data() {
+    return {
+      loading: true
+    }
+  },
   computed: {},
   mounted() {
     const { code, from, error } = this.$route.query
