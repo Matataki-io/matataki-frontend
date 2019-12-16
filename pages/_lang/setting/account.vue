@@ -3,8 +3,6 @@
     <template slot="main">
       <userNav nav-list-url="setting" />
       <div class="list">
-        <p>瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。</p>
-        <p>已绑定的任意账号均可用于登录</p>
         <div
           v-for="(item, idx) in accountList"
           :key="idx"
@@ -29,6 +27,12 @@
             <span v-else>&nbsp;</span>
           </el-radio>
         </div>
+        <p class="list-p">
+          瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。
+        </p>
+        <p class="list-p">
+          已绑定的任意账号均可用于登录
+        </p>
       </div>
     </template>
     <template slot="info">
@@ -582,5 +586,9 @@ export default {
       }
     }
   }
+}
+.list-p{
+  font-size: 12px;
+  color: #555555;
 }
 </style>
