@@ -170,10 +170,9 @@ export default {
             window.localStorage.clear()
             sessionStorage.clear()
             // this.$utils.deleteAllCookies()
-            this.$router.push({ name: 'article' })
             setTimeout(() => {
               window.location.reload()
-            }, 1000)
+            }, 300)
           } else {
             this.$message.success(res.message)
             this.getAccountList()
