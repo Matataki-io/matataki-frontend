@@ -176,7 +176,7 @@ export default {
               window.location.reload()
             }, 300)
           } else {
-            this.$message.success(res.message + '123')
+            this.$message.success(res.message)
             this.getAccountList()
           }
         } else {
