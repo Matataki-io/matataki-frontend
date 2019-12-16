@@ -689,7 +689,7 @@ export default {
     isPriceArticle() {
       return (this.article.prices && this.article.prices.length !== 0)
     },
-    // 是否为付费文章
+    // 是否是持通证文章
     isTokenArticle() {
       return (this.article.tokens && this.article.tokens.length !== 0)
     },
@@ -725,7 +725,7 @@ export default {
     // 如果是自己的文章 显示hash 否则走 持通证阅读
     isHideIpfsHash() {
       if (this.isMe(this.article.uid)) return false
-      else return this.isTokenArticle
+      else return this.isTokenArticle || this.isPriceArticle
     }
   },
   watch: {
