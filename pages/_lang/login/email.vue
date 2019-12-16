@@ -51,6 +51,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   layout: 'empty',
@@ -123,22 +124,21 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters(['isLogined'])
-  },
   methods: {
     setpFunc(formName) {
       return new Promise(resolve => this.$refs[formName].validate(valid => resolve(valid)))
     },
     async emailAddressOnSubmit(formName) {
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!getCookie('ACCESS_TOKEN')) return this.$store.commit('setLoginModal', true)
       if (await this.setpFunc(formName)) {
+        console.log('11111111')
         if (this.setp >= 2) return
+        console.log('1111111122222')
         ++this.setp
       }
     },
     async emailPassOnSubmit(formName) {
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!getCookie('ACCESS_TOKEN')) return this.$store.commit('setLoginModal', true)
       if (await this.setpFunc(formName)) {
         this.loading = true
         const params = {
@@ -213,7 +213,7 @@ export default {
     },
     async sendCode() {
       // await this.countDown()
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!getCookie('ACCESS_TOKEN')) return this.$store.commit('setLoginModal', true)
       await this.registerInitGT(this.confirmSendCode)
     },
     // 倒计时函数

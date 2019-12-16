@@ -65,7 +65,7 @@ export default {
           disabled: false
         },
         {
-          type: 'wechat',
+          type: 'weixin',
           icon: 'wechat', // 随时可换 防止影响
           typename: '微信',
           username: '', // 最好后端混淆后返回
@@ -139,6 +139,7 @@ export default {
     ...mapActions('ontology', ['getAccount', 'getSignature']),
     ...mapActions('metamask', ['getSignature', 'fetchAccount']),
     ...mapActions('vnt', ['bind']),
+    // ...mapActions(['signOut']),
     accountBild(params, idx) {
       this.accountList[idx].loading = true
       this.$API.accountBind(params).then(res => {
@@ -159,8 +160,21 @@ export default {
       this.accountList[idx].loading = true
       this.$API.accountUnbind(params).then(res => {
         if (res.code === 0) {
-          this.$message.success(res.message)
-          this.getAccountList()
+          let idProvider = getCookie('idProvider').toLocaleLowerCase()
+          idProvider = idProvider === 'metamask' ? 'eth' : idProvider
+          if (idProvider === this.accountList[idx].type.toLocaleLowerCase()) {
+            this.$message.warning('解绑后需重新登录')
+            // this.signOut()
+            this.$utils.delCookie('ACCESS_TOKEN')
+            this.$utils.delCookie('idProvider')
+            window.localStorage.clear()
+            sessionStorage.clear()
+            // this.$utils.deleteAllCookies()
+            this.$router.push({ name: 'article' })
+          } else {
+            this.$message.success(res.message)
+            this.getAccountList()
+          }
         } else {
           this.$message.warning(res.message)
         }
@@ -206,7 +220,7 @@ export default {
           }
         }
         openRequestedPopup(url, 'buildEmail')
-      } else if (type === 'wechat') {
+      } else if (type === 'weixin') {
         this.$message.warning(`PC端暂不支持${typename}绑定`)
       } else if (type === 'eth') {
         try {
@@ -301,16 +315,13 @@ export default {
     unbindFunc(type, typename, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
-      let idProvider = getCookie('idProvider').toLocaleLowerCase()
-      idProvider = idProvider === 'weixin' ? 'wechat' : idProvider
-      if (idProvider === type.toLocaleLowerCase()) return this.$message.warning('解绑当前账号需要切换账号')
       if (type === 'email') {
         this.$prompt('此操作将取消账号绑定, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputValue: '',
           inputPlaceholder: '请输入密码',
-          // inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
+          inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
           inputValidator: function (value) {
             if (!value) return false
             else return true
@@ -348,11 +359,7 @@ export default {
         if (res.code === 0) {
           // console.log(res)
           this.accountList.map(i => {
-            const filterPlatform = res.data.filter(j => {
-              if (j.platform === 'weixin') {
-                return i.type === 'wechat'
-              } else return j.platform === i.type
-            })
+            const filterPlatform = res.data.filter(j => j.platform === i.type)
             // console.log(filterPlatform)
             if (filterPlatform.length > 0) {
               i.username = filterPlatform[0].account
@@ -382,7 +389,7 @@ export default {
           cancelButtonText: '取消',
           inputValue: '',
           inputPlaceholder: '请输入密码',
-          // inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
+          inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
           inputValidator: function (value) {
             if (!value) return false
             else return true
@@ -440,7 +447,7 @@ export default {
       font-size: 20px;
     }
   }
-  &.wechat {
+  &.weixin {
     background-color: #00c800;
     &:hover {
       background-color: mix(#000, #00c800, 20%);
