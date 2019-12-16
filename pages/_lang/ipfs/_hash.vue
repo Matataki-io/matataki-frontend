@@ -87,7 +87,16 @@ export default {
       if (res.code === 0) articleData = res.data
     })
 
-    if (articleData.tokens && articleData.tokens.length !== 0) {
+    if ((articleData.tokens && articleData.tokens.length === 0) && (articleData.prices && articleData.prices.length === 0)) {
+      await ipfsData($axios, params.hash).then(res => {
+        if (res.code === 0) articleIpfs = res.data
+      })
+      return {
+        articleIpfs,
+        articleData,
+        showContent: true
+      }
+    } else {
       articleIpfs.content = `
       <p>该文章需持Fan票阅读,请返回原文查看
       <a href="/p/${articleData.id}">立即跳转</a></p>
@@ -96,15 +105,6 @@ export default {
         articleIpfs,
         articleData,
         showContent: false
-      }
-    } else {
-      await ipfsData($axios, params.hash).then(res => {
-        if (res.code === 0) articleIpfs = res.data
-      })
-      return {
-        articleIpfs,
-        articleData,
-        showContent: true
       }
     }
   },
