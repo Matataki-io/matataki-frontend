@@ -100,31 +100,31 @@
             <avatar :size="'30px'" :src="avatar" />
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
-            <el-dropdown-item>
-              <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
+            <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
+              <el-dropdown-item>
                 {{ currentUserInfo.nickname || currentUserInfo.name }}
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link :to="{name: 'account', params:{id: currentUserInfo.id}}" class="link">
+              </el-dropdown-item>
+            </n-link>
+            <n-link :to="{name: 'account', params:{id: currentUserInfo.id}}" class="link">
+              <el-dropdown-item>
                 {{ $t('home.account') }}
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link :to="{name: 'tokens' }" class="link">
+              </el-dropdown-item>
+            </n-link>
+            <n-link :to="{name: 'tokens' }" class="link">
+              <el-dropdown-item>
                 我的Fan票
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
+              </el-dropdown-item>
+            </n-link>
+            <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
+              <el-dropdown-item>
                 {{ $t('home.setting') }}
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div @click="btnsignOut" class="link">
+              </el-dropdown-item>
+            </n-link>
+            <div @click="btnsignOut" class="link">
+              <el-dropdown-item>
                 {{ $t('logout') }}
-              </div>
-            </el-dropdown-item>
+              </el-dropdown-item>
+            </div>
           </el-dropdown-menu>
         </el-dropdown>
         <a
