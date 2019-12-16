@@ -280,9 +280,9 @@ import avatar from '@/components/avatar/index.vue'
 export default {
   head: {
     script: [
-      { src: '/gsap.min.js' },
-      { src: '/ScrollMagic.min.js' },
-      { src: '/animation.gsap.min.js' }
+      // { src: '/gsap.min.js' },
+      // { src: '/ScrollMagic.min.js' },
+      // { src: '/animation.gsap.min.js' }
       // { src: '/debug.addIndicators.min.js' }
       // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
       // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }

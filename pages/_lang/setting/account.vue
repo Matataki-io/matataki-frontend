@@ -348,7 +348,11 @@ export default {
         if (res.code === 0) {
           // console.log(res)
           this.accountList.map(i => {
-            const filterPlatform = res.data.filter(j => j.platform === i.type)
+            const filterPlatform = res.data.filter(j => {
+              if (j.platform === 'weixin') {
+                return i.type === 'wechat'
+              } else return j.platform === i.type
+            })
             // console.log(filterPlatform)
             if (filterPlatform.length > 0) {
               i.username = filterPlatform[0].account
