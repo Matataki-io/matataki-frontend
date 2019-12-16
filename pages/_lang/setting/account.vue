@@ -234,7 +234,7 @@ export default {
         try {
           await this.$store.dispatch('metamask/fetchAccount')
           const { signature, msgParams } = await getSignatureForLogin('Bind')
-          console.log('🚀', signature, msgParams)
+          // console.log('🚀', signature, msgParams)
           await this.accountBild({
             platform: type.toLocaleLowerCase(),
             publickey: this.metamask.account,
@@ -267,7 +267,7 @@ export default {
           // signature
           // 没有扩展
           const { publicKey, signature, username } = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [currentUsername] })
-          console.log('🚀', signature)
+          // console.log('🚀', signature)
           await this.accountBild({
             platform: type.toLocaleLowerCase(),
             publickey: publicKey,
@@ -275,13 +275,39 @@ export default {
             username: username
           }, idx)
         } catch (error) {
-          console.log(error)
-          if (error.isError) {
+          // 因为之前的base scatter原因 第一次登录连接会失败, 下面重复一次 如果修改请同步修改 谢谢
+          try {
+          // connect
+            if (!this.scatter.isConnected) {
+              const result = await this.$store.dispatch('scatter/connect')
+              if (!result) throw new Error('scatter连接失败')
+            }
+            if (!this.scatter.isLoggingIn) {
+              const result = await this.$store.dispatch('scatter/login')
+              if (!result) throw new Error('Scatter登录失败')
+            }
+            // get currentUsername
+            const currentUsername = await this['scatter/currentUsername'] || ''
+            if (!currentUsername) throw new Error('Scatter获取账户信息失败')
+            // signature
+            // 没有扩展
+            const { publicKey, signature, username } = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [currentUsername] })
+            // console.log('🚀', signature)
+            await this.accountBild({
+              platform: type.toLocaleLowerCase(),
+              publickey: publicKey,
+              sign: signature,
+              username: username
+            }, idx)
+          } catch (error) {
+            console.log(error)
+            if (error.isError) {
             // User rejected the signature request
-            this.$message.warning('您拒绝了签名请求')
-          } else if (error.toString().includes('\'name\' of null')) this.$message.warning('无法连接钱包, 请稍后再试')
-          else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning('用户不允许此应用连接到他们的Scatter')
-          else this.$message.warning(error.toString())
+              this.$message.warning('您拒绝了签名请求')
+            } else if (error.toString().includes('\'name\' of null')) this.$message.warning('无法连接钱包, 请稍后再试')
+            else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning('用户不允许此应用连接到他们的Scatter')
+            else this.$message.warning(error.toString())
+          }
         }
       } else if (type === 'ont') {
         try {
@@ -289,7 +315,7 @@ export default {
           if (!getAccount) throw new Error('Ont获取账户信息失败')
           // 没有扩展
           const { publicKey, signature, username } = await this.$store.dispatch('ontology/getSignature', { mode: 'Auth', rawSignData: [getAccount] })
-          console.log('🚀', signature)
+          // console.log('🚀', signature)
           await this.accountBild({
             platform: type.toLocaleLowerCase(),
             publickey: publicKey,
