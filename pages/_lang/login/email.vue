@@ -82,9 +82,9 @@ export default {
       }
     }
     const validateEmailCode = (rule, value, callback) => {
-      if (this.emailCode.code === '') {
+      if (this.emailPass.code === '') {
         callback(new Error('请输入验证码'))
-      } else if (this.emailCode.code.length !== 6) {
+      } else if (this.emailPass.code.length !== 6) {
         callback(new Error('请输入六位验证码'))
       } else {
         callback()
