@@ -299,7 +299,7 @@ export default {
   .oauth-title {
     font-size: 16px;
     color: #000000;
-    margin-bottom: 0;
+    margin: 20px 0 20px;
     font-weight: 400;
   }
   .warning-tip {
