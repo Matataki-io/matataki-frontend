@@ -145,7 +145,7 @@ import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
 import point from './point'
 import language from './language'
-import homeLogo from '@/assets/img/m_logo.png'
+import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 import avatar from '@/components/avatar/index.vue'
 
@@ -362,7 +362,7 @@ export default {
     margin: 0 20px 0 0;
   }
   .logo {
-    width: 180px;
+    height: 40px;
   }
   .create {
     width: 24px;
