@@ -283,7 +283,7 @@ export default {
         sessionStorage.clear()
         // this.$utils.deleteAllCookies()
         this.$router.push({
-          name: 'index'
+          name: 'article'
         })
         setTimeout(() => {
           window.location.reload()
