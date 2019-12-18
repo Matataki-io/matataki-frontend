@@ -26,7 +26,7 @@
         <section class="footer-share">
           <div class="flex">
             <img class="logo" src="@/assets/img/share_logo.png" alt="logo">
-            <div ref="qr" class="qrcode" />
+            <qrcode :value="shareInfo.shareLink" :options="{ width: '80' }" class="qrcode" />
           </div>
           <img class="des" src="@/assets/img/des_logo.png" alt="logo">
         </section>
@@ -44,6 +44,7 @@
 
 import avatar from "@/components/avatar";
 import { xssFilter } from '@/utils/xss'
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   name: 'QRCodeDialog',
@@ -54,7 +55,8 @@ export default {
     }
   },
   components: {
-    avatar
+    avatar,
+    qrcode: VueQrcode
   },
   data() {
     return {
@@ -78,19 +80,10 @@ export default {
       return xssFilter(this.filterStr(this.shareInfo.content).substr(0, 400));
     }
   },
-  watch: {
-    shareInfo() {
-      this.genQRCode()
-    }
-  },
   beforeDestroy(){
     // 离开删除插入的a dom
     let downloadImg = document.querySelector('#downloadImg')
     if (downloadImg) downloadImg.remove()
-  },
-  mounted() {
-    this.genQRCode()
-    // console.log(this.isAPP)
   },
   methods: {
     filterStr(str) {
@@ -134,13 +127,6 @@ export default {
         loading.close()
         this.$message(this.$t('p.createFail'))
       })
-    },
-    genQRCode() {
-      new QRCode(this.$refs.qr, {
-        text: this.shareInfo.shareLink,
-        width: 80,
-        height: 80,
-      });
     }
   }
 }
