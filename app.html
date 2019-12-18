@@ -1,46 +1,41 @@
 <!DOCTYPE html>
 <html {{ HTML_ATTRS }}>
-  <head {{ HEAD_ATTRS }}>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-      <!-- <meta name="referrer" content="no-referrer" /> -->
-      <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?aa6eb4e79af4a742f38cd4661071dfb3";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-        </script>
-      <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var arr = ['matataki.io','www.matataki.io','smartsignature.frontenduse.top']
-          var host = window.location.host
-          // includes 在 ie 环境有点...
-          if (host === arr[0] || host === arr[1] || host === arr[2]) {
-            function insertBeforeScript(script) {
-                var hm = document.createElement("script");
-                hm.src = script;
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(hm, s);
-              }
-              // insertBeforeScript('https://hm.baidu.com/hm.js?92220991ac77a90c23811a011a86f722')
-              insertBeforeScript('https://jic.talkingdata.com/app/h5/v1?appid=30E1EE644674443C8CC4762FA6FA9B9B&vn=pc-2.5.0&vc=2.5.0')
-          } else console.log('测试环境不会写入统计代码')
-        })();
-      </script>
-      {{ HEAD }}
-  </head>
-  <body {{ BODY_ATTRS }}>
-    <script src="https://cdn.bootcss.com/gsap/latest/TimelineLite.min.js"></script>
-    <script src="https://cdn.bootcss.com/gsap/latest/TimelineMax.min.js"></script>
-    <script src="https://cdn.bootcss.com/gsap/latest/TweenMax.min.js"></script>
-    <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
-    <script src="https://cdn.bootcss.com/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
-    <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
-    {{ APP }}
-  </body>
+<head {{ HEAD_ATTRS }}>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <!-- <meta name="referrer" content="no-referrer" /> -->
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var arr = ['matataki.io', 'www.matataki.io', 'smartsignature.frontenduse.top']
+      var host = window.location.host
+      // includes 在 ie 环境有点...
+      function insertBeforeScript(script) {
+        var hm = document.createElement("script");
+        hm.src = script;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      }
+      if (host === arr[0] || host === arr[1] || host === arr[2]) {
+        insertBeforeScript('https://jic.talkingdata.com/app/h5/v1?appid=30E1EE644674443C8CC4762FA6FA9B9B&vn=m-2.5.0&vc=2.5.0')
+        insertBeforeScript("https://hm.baidu.com/hm.js?92220991ac77a90c23811a011a86f722")
+      }
+      else insertBeforeScript("https://hm.baidu.com/hm.js?aa6eb4e79af4a742f38cd4661071dfb3")
+    })();
+  </script>
+  {{ HEAD }}
+</head>
+
+<body {{ BODY_ATTRS }}>
+  <script src="https://cdn.bootcss.com/gsap/latest/TimelineLite.min.js"></script>
+  <script src="https://cdn.bootcss.com/gsap/latest/TimelineMax.min.js"></script>
+  <script src="https://cdn.bootcss.com/gsap/latest/TweenMax.min.js"></script>
+  <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+  <script src="https://cdn.bootcss.com/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+  <script src="https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
+  {{ APP }}
+</body>
+
 </html>
