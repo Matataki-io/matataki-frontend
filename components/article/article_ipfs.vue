@@ -9,7 +9,7 @@
         />
       </el-tooltip>
     </p>
-    <div v-if="!isHide" class="ipfs-hash">
+    <div v-if="isHide" class="ipfs-hash">
       <router-link :to="{name: 'ipfs-hash', params: {hash: hash}}" class="ipfs" target="_blank">
         IPFS Hash: {{ hash || 'Loading...' }}
       </router-link>
@@ -33,7 +33,7 @@ export default {
     },
     isHide: {
       type: Boolean,
-      required: true
+      required: false
     }
   },
   data() {
