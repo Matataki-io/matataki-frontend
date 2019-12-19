@@ -56,7 +56,12 @@ _axios.interceptors.response.use(
       console.log(error.message)
 
       if (error.message.includes('status code 401')) {
-        console.log('未授权')
+        Message.closeAll()
+        Message({
+          message: '登录状态异常,请重新登录',
+          type: 'error'
+        })
+        if (process.browser && window && window.$nuxt) window.$nuxt.$store.commit('setLoginModal', true)
       }
 
       // 超时处理

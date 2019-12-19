@@ -36,7 +36,12 @@
             @blur="inputBlur"
             type="text"
             class="input"
+            autocomplete="off"
+            readonly
+            onfocus="this.removeAttribute('readonly')"
+            onblur="this.setAttribute('readonly', 'readonly')"
           >
+
           <svg-icon
             @click.stop="jutmpToSearch"
             class="icon-search"
