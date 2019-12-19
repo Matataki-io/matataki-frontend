@@ -1,8 +1,10 @@
 <template>
   <div class="home">
     <g-header />
+    <banner-matataki />
+
     <!-- 首页内容 轮播和推荐 -->
-    <el-row class="recommend mw recommend-top80">
+    <el-row class="recommend mw">
       <template v-for="(item, index) in recommendList">
         <el-col v-if="index === 0" :key="index" :span="16">
           <recommendSlide :card="item" />
@@ -14,8 +16,6 @@
     </el-row>
 
     <!-- <banner /> -->
-
-    <banner-matataki />
 
     <el-row class="container mw">
       <el-col :span="16">
@@ -61,7 +61,7 @@
           <no-content-prompt :list="articleCardData">
             <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
               <no-content-prompt :prompt="promptComputed(index)" :list="item.articles">
-                <articleCardListNew
+                <articleCardList
                   v-for="itemChild in item.articles"
                   :key="itemChild.id"
                   :card="itemChild"
@@ -80,6 +80,11 @@
       </el-col>
       <el-col :span="8">
         <div class="position-sticky top80">
+          <div class="tags article">
+            <span>{{ $t('home.articleTagTitle') }}</span>
+            <tags :type-index="0" :tag-cards="tagCards" class="tags-container" />
+          </div>
+
           <div v-if="usersRecommendList.length !== 0" class="recommend-author">
             <div class="ra-head">
               <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
@@ -94,9 +99,6 @@
               <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
             </div>
           </div>
-          <n-link :to="{name: 'token'}">
-            <img class="fan-entrance" src="@/assets/img/fan_entrance.png">
-          </n-link>
         </div>
       </el-col>
     </el-row>
@@ -109,8 +111,8 @@ import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
-import articleCardListNew from '@/components/article_card_list_new/index.vue'
-// import tags from '@/components/tags/index.vue'
+import articleCardList from '@/components/article_card_list/index.vue'
+import tags from '@/components/tags/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
@@ -123,8 +125,8 @@ export default {
   components: {
     recommendSlide,
     articleCard,
-    articleCardListNew,
-    // tags,
+    articleCardList,
+    tags,
     buttonLoadMore,
     // banner,
     bannerMatataki,
@@ -141,8 +143,7 @@ export default {
           title: this.$t('home.articleNavHotTitle'),
           params: {
             channel: 1,
-            filter: null,
-            extra: 'short_content'
+            filter: null
           },
           apiUrl: 'homeScoreRanking',
           articles: [],
@@ -152,8 +153,7 @@ export default {
           title: this.$t('home.articleNavNowTitle'),
           params: {
             channel: 1,
-            filter: null,
-            extra: 'short_content'
+            filter: null
           },
           apiUrl: 'homeTimeRanking',
           articles: [],
@@ -163,8 +163,7 @@ export default {
           title: this.$t('home.articleNavFollowTitle'),
           params: {
             channel: 1,
-            filter: null,
-            extra: 'short_content'
+            filter: null
           },
           apiUrl: 'followedPosts',
           articles: [],
@@ -202,8 +201,8 @@ export default {
 
       // 内容列表
       const params = {
-        channel: 1,
-        extra: 'short_content'
+        channel: 1
+        // extra: 'short_content'
       }
       const resPagination = await paginationData($axios, 'homeScoreRanking', params)
       if (resPagination.code === 0) initData.paginationData = resPagination.data.list

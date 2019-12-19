@@ -653,7 +653,7 @@ export default {
     link: '友情链接',
     linkidol: '链接偶像',
     orange: '橙皮书',
-    scanCode: '扫码进群',
+    scanCode: '扫码后备注“进群”',
     follow: '关注公众号'
   }
 }

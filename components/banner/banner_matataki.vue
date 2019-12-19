@@ -2,7 +2,8 @@
   <div class="banner-container mw">
     <div class="banner">
       <n-link :to="{name: 'index'}" class="banner-logo">
-        <img class="logo" src="@/assets/img/matataki_logo.png" alt="logo">
+        <img class="logo" src="@/assets/img/m_logo_square.png" alt="logo">
+        <img class="slogan" src="@/assets/img/des_logo.png" alt="slogan">
       </n-link>
       <div class="banner-data">
         <div class="data">
@@ -65,13 +66,13 @@ export default {
 }
 .banner {
   margin-top: 80px;
-  height:200px;
-  background: @purpleLight;
+  height: 136px;
+  background: #ffffff;
   border-radius: @br10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px 0 80px;
+  padding: 0 40px 0 40px;
   box-sizing: border-box;
 }
 
@@ -80,7 +81,11 @@ export default {
   flex-direction: column;
   align-items: self-end;
   .logo {
-    width: 174px;
+    width: 64px;
+  }
+  .slogan {
+    width: 139px;
+    margin: 10px 0 0 7px;
   }
 }
 
@@ -108,7 +113,7 @@ export default {
     margin: 0;
   }
   &-num {
-    font-size: 56px;
+    font-size: 36px;
     font-weight:bold;
     color: @purpleDark;
     padding: 0;
@@ -122,7 +127,7 @@ export default {
   display: flex;
   align-items: center;
   img {
-    height: 84%;
+    height: 108px;
   }
 }
 
