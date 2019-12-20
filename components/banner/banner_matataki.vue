@@ -65,7 +65,6 @@ export default {
   box-sizing: border-box;
 }
 .banner {
-  margin-top: 80px;
   height: 136px;
   background: #ffffff;
   border-radius: @br10;
