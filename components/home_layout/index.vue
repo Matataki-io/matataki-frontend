@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <g-header />
-    <swipe :card="recommendList" />
+    <swipe :card="swipeList" />
     <!-- 首页内容 轮播和推荐 -->
     <banner-matataki class="home-banner" />
     <el-row class="container mw">
@@ -16,67 +16,9 @@
               @click="nowMainIndex = index"
             >{{ itme.title }}</span>
 
-            <el-popover class="filter" placement="bottom-end" trigger="click">
-              <el-button slot="reference" class="filter-button" type="text">
-                <div class="filter-header">
-                  <img class="filter-icon" src="@/assets/img/filter.svg">过滤
-                </div>
-              </el-button>
-              <div style="font-size: 16px">
-                <el-checkbox-group
-                  v-model="checkedFilter"
-                  :min="1"
-                  @change="handleCheckedFilterChanged"
-                >
-                  <div style="margin-bottom: 8px">
-                    <el-checkbox label="1">
-                      免费
-                    </el-checkbox>
-                  </div>
-                  <div style="margin-bottom: 8px">
-                    <el-checkbox label="2">
-                      持票可见
-                    </el-checkbox>
-                  </div>
-                  <div>
-                    <el-checkbox label="4">
-                      付费可见
-                    </el-checkbox>
-                  </div>
-                </el-checkbox-group>
-              </div>
-            </el-popover>
+            <slot name="sort" />
           </div>
-          <!-- 导航部分 end -->
-          <!-- 空div控制内容 -->
-          <no-content-prompt :list="articleCardData">
-            <div
-              v-for="(item, index) in articleCardData"
-              v-show="nowMainIndex === index"
-              :key="index"
-            >
-              <no-content-prompt :prompt="promptComputed(index)" :list="item.articles">
-                <articleCardListNew
-                  v-for="itemChild in item.articles"
-                  :key="itemChild.id"
-                  :card="itemChild"
-                />
-              </no-content-prompt>
-              <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
-              <div class="load-more-button">
-                <buttonLoadMore
-                  :type-index="index"
-                  :params="item.params"
-                  :api-url="item.apiUrl"
-                  :is-atuo-request="item.isAtuoRequest"
-                  @buttonLoadMore="buttonLoadMore"
-                />
-              </div>
-              <!-- end -->
-            </div>
-          </no-content-prompt>
-
-          <!-- 空div控制内容 end -->
+          <slot />
         </div>
       </el-col>
       <el-col :span="8">
@@ -113,9 +55,9 @@ import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 // import recommendSlide from '~/components/recommendSlide/index.vue'
 // import articleCard from '@/components/articleCard/index.vue'
-import articleCardListNew from '@/components/article_card_list_new/index.vue'
+// import articleCardListNew from '@/components/article_card_list_new/index.vue'
 // import tags from '@/components/tags/index.vue'
-import buttonLoadMore from '@/components/button_load_more/index.vue'
+// import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
 // import banner from '@/components/banner/index.vue'
@@ -128,13 +70,19 @@ export default {
   components: {
     // recommendSlide,
     // articleCard,
-    articleCardListNew,
+    // articleCardListNew,
     // tags,
-    buttonLoadMore,
+    // buttonLoadMore,
     // banner,
     bannerMatataki,
     RAList,
     swipe
+  },
+  props: {
+    swipeList: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
@@ -302,8 +250,8 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped src="./index.less"></style>
-<style lang="less" scoped src="./home_container.less"></style>
+<style lang="less" scoped src="../../pages/_lang/index.less"></style>
+<style lang="less" scoped src="../../pages/_lang/home_container.less"></style>
 
 <style lang="less" scoped>
 @keyframes rotate {

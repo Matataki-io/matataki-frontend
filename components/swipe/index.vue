@@ -1,8 +1,8 @@
 <template>
   <div ref="swipe" class="swipe">
-    <el-carousel :interval="300000" type="card" height="390px" arrow="always">
+    <el-carousel :interval="3000" @change="swipeChange" type="card" height="390px" arrow="always">
       <el-carousel-item v-for="(item, index) in card" :key="index">
-        <div class="swipe-content">
+        <div @click="viewP(index, item.id)" class="swipe-content">
           <img v-if="item.cover" :src="cover(item.cover)" :alt="item.title">
           <p>{{ item.title }}</p>
           <!-- <div class="full" /> -->
@@ -22,9 +22,28 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      swipeIndex: 0
+    }
+  },
   methods: {
     cover(src) {
       return src ? this.$API.getImg(src) : ''
+    },
+    swipeChange(i) {
+      this.swipeIndex = i
+    },
+    viewP(i, id) {
+      if (i === this.swipeIndex) {
+        const { href } = this.$router.resolve({
+          name: 'p-id',
+          params: {
+            id: id
+          }
+        })
+        window.open(href, '_blank')
+      }
     }
   }
 }
@@ -96,6 +115,10 @@ export default {
           background-color: #542DE0;
         }
       }
+    }
+
+    .el-carousel__indicators {
+      overflow: hidden;
     }
   }
 </style>
