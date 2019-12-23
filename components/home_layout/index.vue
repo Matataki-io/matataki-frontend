@@ -20,7 +20,6 @@
               :class="nowMainIndex === index && 'active'"
               @click="nowMainIndex = index"
             >{{ itme.title }}</span> -->
-
             <slot name="sort" />
           </div>
           <slot />
@@ -85,7 +84,7 @@ export default {
   },
   props: {
     swipeList: {
-      type: Object,
+      type: Array,
       required: true
     }
   },

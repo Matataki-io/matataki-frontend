@@ -145,11 +145,16 @@ export default {
     const initData = Object.create(null)
     try {
       // 推荐
-      const res = await recommend($axios, 1)
-      if (res.code === 0) initData.recommend = res.data
-      else {
-        const obj = { src: '', title: '' }
-        for (let i = 0; i < 5; i++) initData.recommend = [obj]
+      try {
+        const res = await recommend($axios, 1)
+        if (res.code === 10) initData.recommend = res.data
+        else throw new Error(res.message)
+      } catch (error) {
+        console.log('error', error)
+        const obj = { cover: '', title: '', id: -1 }
+        const arr = []
+        for (let i = 0; i < 5; i++) arr.push(obj)
+        initData.recommend = arr
       }
 
       // 内容列表
