@@ -1,11 +1,11 @@
 <template>
   <homeLayout :swipeList="recommendList">
     <el-popover slot="sort" class="filter" placement="bottom-end" trigger="click">
-      <el-button slot="reference" class="filter-button" type="text">
-        <div class="filter-header">
-          <img class="filter-icon" src="@/assets/img/filter.svg">过滤
-        </div>
-      </el-button>
+      <div slot="reference" class="filter-header">
+        <svg-icon icon-class="setting1" />
+        <!-- <img class="filter-icon" src="@/assets/img/filter.svg"> -->
+        <span>过滤</span>
+      </div>
       <div style="font-size: 16px">
         <el-checkbox-group
           v-model="checkedFilter"
@@ -224,41 +224,19 @@ export default {
 
 <style lang="less" scoped>
   .main-nav {
-    margin: 0 0 20px;
-    span {
-      font-size: 20px;
-      color:rgba(0,0,0,1);
-      line-height:1;
-      cursor: pointer;
-      transition: all .3s;
-      font-weight:400;
-      margin-right: 30px;
-      &.active {
-      font-weight: bold;
-      }
-      em {
-        font-size: 20px;
-        font-style: normal;
-        color: @purpleDark;
-      }
-    }
-
     .filter {
-      float: right;
       margin-right: 0px;
-
-      &-button {
-        padding: 0;
-        color: #606266;
-      }
       &-header {
         display: flex;
         align-items: center;
       }
       &-icon {
-        width: 22px;
-        height: 22px;
-        margin-right: 4px;
+        font: 22px;
+        margin-right: 6px;
+      }
+      span {
+        font: 14px;
+        color: #000;
       }
     }
   }
