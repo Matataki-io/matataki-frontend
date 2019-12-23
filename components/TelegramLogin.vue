@@ -39,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    // create script with given params
+    // https://core.telegram.org/widgets/login
     if (process.browser) this.createScript()
   },
   methods: {
