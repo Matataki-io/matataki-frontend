@@ -115,12 +115,12 @@ export default {
   cursor: pointer;
   &.btn {
     font-size: 18px;
-    width: 190px;
+    width: 300px;
     height: 48px;
     border-radius: 4px;
     background: #000000;
     color: #fff;
-    margin:60px 0;
+    margin:60px auto;
   }
   &.article-comment {
     background: transparent;
