@@ -5,6 +5,11 @@ export const recommend = (axios, channel) => {
   return axios.get(path + channel)
 }
 
+export const tokenTokenList = (axios, params, accessToekn) => {
+  const path = '/token/tokenlist'
+  return axios.get(path, { params, headers: { 'x-access-token': accessToekn } })
+}
+
 // 分页数据
 export const paginationData = (axios, url, params) => axios.get(paginationUrl[url], { params })
 

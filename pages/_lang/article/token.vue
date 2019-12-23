@@ -37,8 +37,9 @@ import debounce from 'lodash/debounce'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
-import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
+import { recommend, paginationData, getTags, tokenTokenList } from '@/api/async_data_api.js'
 import homeLayout from '@/components/home_layout/index.vue'
+import { extractChar, regRemoveContent } from '@/utils/reg'
 
 export default {
   transition: 'page',
@@ -91,7 +92,14 @@ export default {
       tagCards: [],
       usersRecommendList: [],
       usersLoading: false,
-      checkedFilter: ['1', '2', '4']
+      checkedFilter: ['1', '2', '4'],
+      pull: {
+        params: {
+          login: null
+        },
+        apiUrl: 'tokenTokenList',
+        list: []
+      }
     }
   },
   computed: {
@@ -109,7 +117,7 @@ export default {
       this.onCheckedFilterChanged()
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, req }) {
     const initData = Object.create(null)
     try {
       // 推荐
@@ -136,14 +144,34 @@ export default {
       const resTag = await getTags($axios, 'post')
       if (resTag.code === 0) initData.tags = resTag.data
       else initData.tags = []
-
-      return { initData }
     } catch (error) {
       console.log(error)
       return { initData }
     }
+
+    try {
+      // 获取cookie token
+      let accessToekn = ''
+      // 请检查您是否在服务器端
+      if (process.server) {
+        const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+        const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+        accessToekn = token ? token[0] : ''
+      }
+      initData.tokenList = await tokenTokenList($axios, {
+        login: null,
+        channel: 1,
+        extra: 'short_content'
+      }, accessToekn)
+      console.log('initData.tokenList:', initData.tokenList)
+    } catch (error) {
+      console.log('出错了：', error)
+    }
+
+    return { initData }
   },
   created() {
+    console.log('请求结果：', this.initData)
     this.recommendList = this.initData.recommend
     this.articleCardData[0].articles = this.initData.paginationData
     this.tagCards = this.initData.tags
