@@ -35,7 +35,8 @@ export default {
       this.swipeIndex = i
     },
     viewP(i, id) {
-      if (i === this.swipeIndex) {
+      // id > 0 因为可能id = -1   接口报错id会设置为-1
+      if (i === this.swipeIndex && id > 0) {
         const { href } = this.$router.resolve({
           name: 'p-id',
           params: {

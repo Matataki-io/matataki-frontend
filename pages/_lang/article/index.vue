@@ -120,7 +120,6 @@ export default {
           isAtuoRequest: true
         }
       ],
-      tagCards: [],
       usersRecommendList: [],
       usersLoading: false,
       checkedFilter: ['1', '2', '4']
@@ -143,15 +142,18 @@ export default {
   },
   async asyncData({ $axios }) {
     const initData = Object.create(null)
+    // 推荐
     try {
-      // 推荐
       const res = await recommend($axios, 1)
       if (res.code === 0) initData.recommend = res.data
-      else {
-        const obj = { src: '', title: '' }
-        for (let i = 0; i < 5; i++) initData.recommend = [obj]
-      }
+      else throw new Error(res.message)
+    } catch (error) {
+      console.log('error', error)
+      initData.recommend = []
+      for (let i = 0; i < 5; i++) initData.recommend.push({ cover: '', title: '', id: -1 })
+    }
 
+    try {
       // 内容列表
       const params = {
         channel: 1,
@@ -162,23 +164,18 @@ export default {
         'homeScoreRanking',
         params
       )
-      if (resPagination.code === 0) { initData.paginationData = resPagination.data.list } else initData.paginationData = []
-
-      // tags
-      const resTag = await getTags($axios, 'post')
-      if (resTag.code === 0) initData.tags = resTag.data
-      else initData.tags = []
-
-      return { initData }
+      if (resPagination.code === 0) initData.paginationData = resPagination.data.list
+      else throw new Error(resPagination.message)
     } catch (error) {
-      console.log(error)
-      return { initData }
+      console.log('error', error)
+      initData.paginationData = []
     }
+
+    return { initData }
   },
   created() {
     this.recommendList = this.initData.recommend
     this.articleCardData[0].articles = this.initData.paginationData
-    this.tagCards = this.initData.tags
   },
   mounted() {
   },
