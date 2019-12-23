@@ -201,7 +201,7 @@ export default {
 
 .container {
   flex: 1;
-  height: 148px;
+  // height: 148px;
   // padding: 0 0 0 20px;
   overflow: hidden;
 }
@@ -215,7 +215,7 @@ export default {
   text-decoration: none;
 
   &-title {
-    height: 56px;
+    // height: 56px;
     margin-bottom: 10px;
     overflow: hidden;
     h3 {
@@ -252,8 +252,9 @@ export default {
   overflow: hidden;
   width: 192px;
   flex: 0 0 192px;
-  margin-top: 29px;
-  margin-bottom: auto;
+  // margin-top: 29px;
+  // margin-bottom: auto;
+  margin: auto;
   .avatar {
     flex: 0 0 30px;
     margin: auto;
