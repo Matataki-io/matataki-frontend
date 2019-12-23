@@ -29,9 +29,11 @@
         </div>
         <TelegramLogin
           @callback="telegramLogin"
+          :userpic="false"
           mode="callback"
           telegram-login="matataki_bot"
           request-access="write"
+          radius="6"
         />
         <p class="list-p">
           瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。
@@ -155,7 +157,7 @@ export default {
     ...mapActions('vnt', ['bind']),
     // ...mapActions(['signOut']),
     telegramLogin(user) {
-      alert(user)
+      alert(JSON.stringify(user))
     },
     accountBild(params, idx) {
       this.accountList[idx].loading = true
