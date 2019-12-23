@@ -1,37 +1,5 @@
 <template>
   <homeLayout :swipeList="recommendList">
-    <el-popover slot="sort" class="filter" placement="bottom-end" trigger="click">
-      <el-button slot="reference" class="filter-button" type="text">
-        <div class="filter-header">
-          <img class="filter-icon" src="@/assets/img/filter.svg">过滤
-        </div>
-      </el-button>
-      <div style="font-size: 16px">
-        <el-checkbox-group
-          v-model="checkedFilter"
-          :min="1"
-          @change="handleCheckedFilterChanged"
-        >
-          <div style="margin-bottom: 8px">
-            <el-checkbox label="1">
-              免费
-            </el-checkbox>
-          </div>
-          <div style="margin-bottom: 8px">
-            <el-checkbox label="2">
-              持票可见
-            </el-checkbox>
-          </div>
-          <div>
-            <el-checkbox label="4">
-              付费可见
-            </el-checkbox>
-          </div>
-        </el-checkbox-group>
-      </div>
-    </el-popover>
-
-    <!-- 空div控制内容 -->
     <no-content-prompt :list="articleCardData">
       <div
         v-for="(item, index) in articleCardData"

@@ -9,12 +9,17 @@
         <div class="main article">
           <!-- 导航部分 -->
           <div class="main-nav">
-            <span
+            <div class="nav-title">
+              <router-link v-for="(item, index) in head" :to="{name: item.url}" :key="index" :class="item.url === $route.name && 'active'">
+                {{ item.lab }}
+              </router-link>
+            </div>
+            <!-- <span
               v-for="(itme, index) in articleCardData"
               :key="index"
               :class="nowMainIndex === index && 'active'"
               @click="nowMainIndex = index"
-            >{{ itme.title }}</span>
+            >{{ itme.title }}</span> -->
 
             <slot name="sort" />
           </div>
@@ -89,6 +94,20 @@ export default {
       nowMainIndex: 0,
       recommendList: [],
       initData: [],
+      head: [
+        {
+          url: 'article',
+          lab: '综合创作'
+        },
+        {
+          url: 'article-token',
+          lab: 'Fan票圈'
+        },
+        {
+          url: 'article-follow',
+          lab: '我的关注'
+        }
+      ],
       articleCardData: [
         {
           title: this.$t('home.articleNavHotTitle'),
@@ -269,5 +288,30 @@ export default {
 
 .home-banner {
   margin-top: 10px;
+}
+
+.main-nav {
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a {
+    font-size: 20px;
+    color:rgba(0,0,0,1);
+    line-height:1;
+    cursor: pointer;
+    transition: all .3s;
+    font-weight:400;
+    margin-right: 30px;
+    text-decoration: none;
+    &.active {
+      font-weight: bold;
+    }
+    em {
+      font-size: 20px;
+      font-style: normal;
+      color: @purpleDark;
+    }
+  }
 }
 </style>
