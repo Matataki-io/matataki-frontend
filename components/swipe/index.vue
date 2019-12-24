@@ -1,6 +1,13 @@
 <template>
   <div ref="swipe" class="swipe">
-    <el-carousel :interval="3000" @change="swipeChange" type="card" height="390px" arrow="always">
+    <el-carousel
+      :interval="3000"
+      @change="swipeChange"
+      trigger="click"
+      type="card"
+      height="390px"
+      arrow="always"
+    >
       <el-carousel-item v-for="(item, index) in card" :key="index">
         <div @click="viewP(index, item.id)" class="swipe-content">
           <img v-if="item.cover" :src="cover(item.cover)" :alt="item.title">
@@ -103,6 +110,7 @@ export default {
     }
     .el-carousel__arrow {
       background: transparent;
+      font-size: 32px;
     }
 
     .el-carousel__indicator {
