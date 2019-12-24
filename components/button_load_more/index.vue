@@ -33,9 +33,19 @@ export default {
       type: Number,
       default: 0
     },
+    // 自动请求
+    autoRequestTime: {
+      type: Number,
+      default: 0
+    },
     buttonType: {
       type: String,
       default: 'btn'
+    },
+    // 需要替换的url
+    urlReplace: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -46,6 +56,10 @@ export default {
     }
   },
   watch: {
+    // 自动请求 通过time++
+    autoRequestTime() {
+      this.reload()
+    },
     commentRequest() {
       this.reload()
     }
@@ -65,11 +79,12 @@ export default {
       if (this.isLoadEnd) return
       params.page = this.page
       const getDataSuccess = (res) => {
+        const pagesize = this.params.pagesize || 20
         // 判断是否加载完成
-        if ((this.returnType === 'Object') && (res.data && res.data.list && res.data.list.length < 20)) {
+        if ((this.returnType === 'Object') && (res.data && res.data.list && res.data.list.length < pagesize)) {
           this.isLoadEnd = true
           // console.log(this.returnType)
-        } else if ((this.returnType === 'Array') && (res.data && res.data.length < 20)) {
+        } else if ((this.returnType === 'Array') && (res.data && res.data.length < pagesize)) {
           this.isLoadEnd = true
           // console.log(this.returnType)
         }
@@ -85,7 +100,7 @@ export default {
       // 获取数据
       try {
         this.loading = true
-        const res = await this.$API.getBackendData({ url, params }, false)
+        const res = await this.$API.getBackendData({ url, params, urlReplace: this.urlReplace }, false)
         if (res.code === 0) getDataSuccess(res)
         else getDataFail(res.message)
         this.loading = false
@@ -117,7 +132,7 @@ export default {
     font-size: 18px;
     width: 300px;
     height: 48px;
-    border-radius: 4px;
+    border-radius: 10px;
     background: #000000;
     color: #fff;
     margin:60px auto;

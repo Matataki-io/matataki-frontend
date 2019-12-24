@@ -39,9 +39,9 @@
               <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
             </div>
           </div>
-          <n-link :to="{name: 'token'}">
+          <router-link :to="{name: 'token'}">
             <img class="fan-entrance" src="@/assets/img/fan_entrance.png">
-          </n-link>
+          </router-link>
         </div>
       </el-col>
     </el-row>
