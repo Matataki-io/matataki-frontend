@@ -10,9 +10,9 @@
           <!-- 导航部分 -->
           <div class="main-nav">
             <div class="nav-title">
-              <router-link v-for="(item, index) in head" :to="{name: item.url}" :key="index" :class="item.url === $route.name && 'active'">
+              <a v-for="(item, index) in head" :href="item.href" :key="index" :class="item.url === $route.name && 'active'">
                 {{ item.lab }}
-              </router-link>
+              </a>
             </div>
             <slot name="sort" />
           </div>
@@ -74,15 +74,18 @@ export default {
       head: [
         {
           url: 'article',
-          lab: '综合创作'
+          lab: '综合创作',
+          href: '/article'
         },
         {
           url: 'article-token',
-          lab: 'Fan票圈'
+          lab: 'Fan票圈',
+          href: '/article/token'
         },
         {
           url: 'article-follow',
-          lab: '我的关注'
+          lab: '我的关注',
+          href: '/article/follow'
         }
       ],
       usersRecommendList: [],
