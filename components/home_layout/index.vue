@@ -10,9 +10,9 @@
           <!-- 导航部分 -->
           <div class="main-nav">
             <div class="nav-title">
-              <a v-for="(item, index) in head" :href="item.href" :key="index" :class="item.url === $route.name && 'active'">
+              <router-link v-for="(item, index) in head" :to="{name: item.url}" :key="index" :class="item.url === $route.name && 'active'">
                 {{ item.lab }}
-              </a>
+              </router-link>
             </div>
             <slot name="sort" />
           </div>

@@ -76,7 +76,10 @@ export default {
       this.getLoadMore(this.apiUrl, this.params)
     },
     async getLoadMore(url, params, isEmpty = false) {
-      if (this.isLoadEnd) return
+      // eslint-disable-next-line no-return-assign
+      if (this.isLoadEnd) return this.loading = false
+      // eslint-disable-next-line no-return-assign
+      // for (const [key, value] of Object.entries(params)) if (!value) return this.loading = false
       params.page = this.page
       const getDataSuccess = (res) => {
         const pagesize = this.params.pagesize || 20
