@@ -69,7 +69,6 @@ export default {
   },
   async asyncData({ $axios, req }) {
     const initData = Object.create(null)
-    console.log('---asyncData--Go---')
     // 推荐
     try {
       const res = await recommend($axios, 1)
@@ -81,7 +80,6 @@ export default {
       for (let i = 0; i < 5; i++) initData.recommend.push({ cover: '', title: '', id: -1 })
     }
 
-    console.log('---asyncData--bbb---')
     try {
       // 获取cookie token
       let accessToekn = ''
@@ -91,13 +89,11 @@ export default {
         const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
         accessToekn = token ? token[0] : ''
       }
-      console.log('获取fan票圈数据！')
       const resTokenList = initData.tokenList = await tokenTokenList($axios, {
         login: null,
         channel: 1,
         extra: 'short_content'
       }, accessToekn)
-      console.log('fan票圈数据的结果：', resTokenList)
       if (resTokenList.code === 0) initData.tokenList = resTokenList.data
       else throw new Error(resTokenList.message)
     } catch (error) {
@@ -107,7 +103,6 @@ export default {
     return { initData }
   },
   created() {
-    console.log('请求结果：', this.initData)
     this.tokenCards = this.initData.tokenList
     this.recommendList = this.initData.recommend
   },
