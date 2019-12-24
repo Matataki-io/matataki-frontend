@@ -10,7 +10,8 @@ module.exports = {
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://wwwtest.smartsignature.io',
     WX_SHARE_HOST: 'https://sstest.frontenduse.top',
-    TELEGRAM_IV_RHASH: '71acceb5462fa6'
+    TELEGRAM_IV_RHASH: '71acceb5462fa6',
+    TELEGRAM_BOT_NAME: 'matataki_test_pc_bot'
   },
   production: {
     NODE: 'production',
@@ -23,6 +24,7 @@ module.exports = {
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://www.matataki.io',
     WX_SHARE_HOST: 'https://smartsignature.frontenduse.top',
-    TELEGRAM_IV_RHASH: '6937cb5e3b86c1'
+    TELEGRAM_IV_RHASH: '6937cb5e3b86c1',
+    TELEGRAM_BOT_NAME: 'matataki_bot'
   }
 }
