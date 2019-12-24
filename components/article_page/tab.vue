@@ -56,6 +56,7 @@ export default {
 
 <style lang="less" scoped>
 .main-nav {
+  height: 50px;
   margin: 0 0 20px;
   display: flex;
   align-items: center;
