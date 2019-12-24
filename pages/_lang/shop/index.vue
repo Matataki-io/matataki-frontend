@@ -1,7 +1,7 @@
 <template>
   <div class="commodity">
     <g-header />
-    <banner-matataki />
+    <banner-matataki class="shop-banner" />
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">
       <el-row>
@@ -157,3 +157,14 @@ export default {
 </script>
 <style lang="less" scoped src="../index.less"></style>
 <style lang="less" scoped src="../home_container.less"></style>
+
+<style lang="less" scoped>
+.commodity {
+  min-height: 100%;
+  margin-top: 60px;
+}
+
+.shop-banner {
+  margin-top: 80px;
+}
+</style>
