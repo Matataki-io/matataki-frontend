@@ -60,23 +60,26 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  span {
-    font-size: 20px;
-    color:rgba(0,0,0,1);
-    line-height:1;
-    cursor: pointer;
-    transition: all .3s;
-    font-weight:400;
-    margin-right: 30px;
-    text-decoration: none;
-    &.active {
-      font-weight: bold;
-    }
-    em {
+  .nav-title {
+    span {
       font-size: 20px;
-      font-style: normal;
-      color: @purpleDark;
+      color:rgba(0,0,0,1);
+      line-height:1;
+      cursor: pointer;
+      transition: all .3s;
+      font-weight:400;
+      margin-right: 30px;
+      text-decoration: none;
+      &.active {
+        font-weight: bold;
+      }
+      em {
+        font-size: 20px;
+        font-style: normal;
+        color: @purpleDark;
+      }
     }
   }
+
 }
 </style>
