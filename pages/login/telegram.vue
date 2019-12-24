@@ -29,7 +29,8 @@ export default {
       this.$API
         .accountBind({
           platform: 'telegram',
-          telegramParams: user
+          telegramParams: user,
+          telegramBotName: this.TELEGRAM_BOT_NAME
         })
         .then(res => {
           if (res.code === 0) {
