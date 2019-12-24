@@ -1,18 +1,18 @@
 <template>
   <homeLayout :swipeList="recommendList">
     <div>
-      <div v-if="tokenCards" v-for="tokenCard in tokenCards.list" class="token-card">
-        <div class="img-frame">
-          <img :src="logo(tokenCard.logo)" :alt="tokenCard.symbol">
+      <router-link :to="{name: 'token'}">
+        <div class="add-card">
+          <svg-icon icon-class="add1" />
+          <span>购买Fan票</span>
         </div>
-        <div class="title">
-          {{ tokenCard.symbol }}的Fan票圈
-        </div>
-      </div>
+      </router-link>
+      <fanCard v-for="tokenCard in tokenCards.list" :card="tokenCard" />
     </div>
     <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
     <div class="load-more-button">
       <buttonLoadMore
+        v-if="tokenCards.count !== tokenCards.list.length"
         :type-index="pull.index"
         :params="pull.params"
         :api-url="pull.apiUrl"
@@ -27,9 +27,8 @@
 <script>
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-// import articleCard from '@/components/articleCard/index.vue'
-// import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
+import fanCard from '@/components/fan_card/index.vue'
 
 import { recommend, paginationData, getTags, tokenTokenList } from '@/api/async_data_api.js'
 import homeLayout from '@/components/home_layout/index.vue'
@@ -38,8 +37,7 @@ import { extractChar, regRemoveContent } from '@/utils/reg'
 export default {
   transition: 'page',
   components: {
-    // articleCard,
-    // articleCardListNew,
+    fanCard,
     buttonLoadMore,
     homeLayout
   },
@@ -71,6 +69,7 @@ export default {
   },
   async asyncData({ $axios, req }) {
     const initData = Object.create(null)
+    console.log('---asyncData--Go---')
     // 推荐
     try {
       const res = await recommend($axios, 1)
@@ -82,6 +81,7 @@ export default {
       for (let i = 0; i < 5; i++) initData.recommend.push({ cover: '', title: '', id: -1 })
     }
 
+    console.log('---asyncData--bbb---')
     try {
       // 获取cookie token
       let accessToekn = ''
@@ -91,11 +91,13 @@ export default {
         const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
         accessToekn = token ? token[0] : ''
       }
+      console.log('获取fan票圈数据！')
       const resTokenList = initData.tokenList = await tokenTokenList($axios, {
         login: null,
         channel: 1,
         extra: 'short_content'
       }, accessToekn)
+      console.log('fan票圈数据的结果：', resTokenList)
       if (resTokenList.code === 0) initData.tokenList = resTokenList.data
       else throw new Error(resTokenList.message)
     } catch (error) {
@@ -115,9 +117,9 @@ export default {
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
-      // if (res.data && res.data.list && res.data.list.length !== 0) {
-      //   this.tokenCards.list = this.tokenCards.list.concat(res.data.list)
-      // }
+      if (res.data && res.data.list && res.data.list.length !== 0) {
+        this.tokenCards.list = this.tokenCards.list.concat(res.data.list)
+      }
     },
     promptComputed(index) {
       return index === 2 ? this.$t('notFollowContent') : this.$t('notArticle')
@@ -128,27 +130,35 @@ export default {
   }
 }
 </script>
-
+<style lang="less" scoped src="../home_container.less"></style>
 <style lang="less" scoped>
-  .token-card {
-    width:177px;
-    height:239px;
-    border-radius: 10px;
-    background:white;
-    margin-right: 20px;
-    margin-right: 18px;
-    margin-bottom: 20px;
-    float: left;
-    .img-frame {
-      width:177px;
-      height:177px;
-      img {
-        width:177px;
-        height:177px;
+    .add-card {
+      background: white;
+      margin-right: 18px;
+      margin-bottom: 20px;
+      float: left;
+      transition: all 0.3s;
+      border: 1px dashed #dbdbdb;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 40px;
+      color: #dbdbdb;
+      overflow: hidden;
+      text-decoration: none;
+      width: 175px;
+      height: 237px;
+      span {
+        font-size: 12px;
+        margin: 4px 0 0;
+        padding: 0;
+        color: #dbdbdb;
+      }
+      &:hover {
+        transform: translate(0, -4px);
+        box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
       }
     }
-    .title {
-      margin: auto;
-    }
-  }
 </style>
