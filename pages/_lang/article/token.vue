@@ -47,7 +47,6 @@ export default {
     return {
       recommendList: [],
       initData: [],
-      tagCards: [],
       tokenCards: { list: [], count: 0 },
       pull: {
         params: {
@@ -72,19 +71,18 @@ export default {
   },
   async asyncData({ $axios, req }) {
     const initData = Object.create(null)
+    // 推荐
     try {
-      // 推荐
       const res = await recommend($axios, 1)
       if (res.code === 0) initData.recommend = res.data
-      else {
-        const obj = { src: '', title: '' }
-        for (let i = 0; i < 5; i++) initData.recommend = [obj]
-      }
-      // tags
-      const resTag = await getTags($axios, 'post')
-      if (resTag.code === 0) initData.tags = resTag.data
-      else initData.tags = []
+      else throw new Error(res.message)
+    } catch (error) {
+      console.log('error', error)
+      initData.recommend = []
+      for (let i = 0; i < 5; i++) initData.recommend.push({ cover: '', title: '', id: -1 })
+    }
 
+    try {
       // 获取cookie token
       let accessToekn = ''
       // 请检查您是否在服务器端
@@ -99,19 +97,17 @@ export default {
         extra: 'short_content'
       }, accessToekn)
       if (resTokenList.code === 0) initData.tokenList = resTokenList.data
-      else initData.tokenList = { list: [], count: 0 }
-
-      return { initData }
+      else throw new Error(resTokenList.message)
     } catch (error) {
-      console.log(error)
-      return { initData }
+      console.log('error', error)
+      initData.tokenList = { list: [], count: 0 }
     }
+    return { initData }
   },
   created() {
     console.log('请求结果：', this.initData)
     this.tokenCards = this.initData.tokenList
     this.recommendList = this.initData.recommend
-    this.tagCards = this.initData.tags
   },
   mounted() {
   },
