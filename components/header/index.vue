@@ -208,7 +208,7 @@ export default {
           title: '创作大厅',
           url: 'article',
           sup: '',
-          urlList: ['article', 'article-token', 'article-follow', 'ring-id']
+          urlList: ['article', 'ring-id']
         },
         {
           title: this.$t('home.navShop'),
