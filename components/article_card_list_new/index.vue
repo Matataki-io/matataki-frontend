@@ -14,7 +14,12 @@
             </div>
             <span class="empty" />
             <!-- 付费文章 -->
-            <img v-if="card.require_holdtokens || card.require_buy" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img
+              v-if="card.require_holdtokens || card.require_buy"
+              class="lock-img"
+              src="@/assets/img/lock.png"
+              alt="lock"
+            >
             <!-- 阅读量 -->
             <span class="data">
               <i class="el-icon-view" />
@@ -38,10 +43,7 @@
         <!-- 适用于 首页, Fan票圈 -->
         <!-- 区分那种卡 -->
         <div class="author">
-          <n-link
-            :to=" {name: 'user-id', params: {id: Uid}} "
-            target="_blank"
-          >
+          <n-link :to=" {name: 'user-id', params: {id: Uid}} " target="_blank">
             <avatar :size="'60px'" :src="avatarImg" class="avatar" />
           </n-link>
           <div class="username">
@@ -52,7 +54,7 @@
             <svg-icon
               icon-class="add"
             />
-          </div> -->
+          </div>-->
         </div>
       </div>
       <!-- 文章卡片内容 -->
@@ -62,7 +64,6 @@
 </template>
 
 <script>
-
 import { mapGetters, mapActions, mapState } from 'vuex'
 import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
@@ -114,13 +115,25 @@ export default {
       return precision(this.card.eosprice, 'eos')
     },
     tagName() {
-      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].name : '')
+      return (
+        this.card &&
+        this.card.tags &&
+        (this.card.tags.length !== 0 ? this.card.tags[0].name : '')
+      )
     },
     tagId() {
-      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].id : 0)
+      return (
+        this.card &&
+        this.card.tags &&
+        (this.card.tags.length !== 0 ? this.card.tags[0].id : 0)
+      )
     },
     tagType() {
-      return this.card && this.card.tags && (this.card.tags.length !== 0 ? this.card.tags[0].type : '')
+      return (
+        this.card &&
+        this.card.tags &&
+        (this.card.tags.length !== 0 ? this.card.tags[0].type : '')
+      )
     },
     Uid() {
       return this.card && this.card.uid
@@ -132,26 +145,30 @@ export default {
     },
     likes() {
       if (!this.card || !this.card.likes) return 0
-      if (this.card.likes > 9999) return Math.round(this.card.likes / 10000) + '万'
+      if (this.card.likes > 9999) { return Math.round(this.card.likes / 10000) + '万' }
       return this.card.likes
     },
     read() {
       if (!this.card || !this.card.read) return 0
-      if (this.card.read > 9999) return Math.round(this.card.read / 10000) + '万'
+      if (this.card.read > 9999) { return Math.round(this.card.read / 10000) + '万' }
       return this.card.read
     }
   },
   methods: {
-    ...mapActions('user', [
-      'followOrUnfollowUser'
-    ]),
+    ...mapActions('user', ['followOrUnfollowUser']),
     clipboard(article) {
       const { currentUserInfo } = this
       const { protocol, host } = window.location
       // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/p/${this.card.id}`
-      const shareLink = this.isLogined ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.nickname || article.author || ''} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
+      const shareLink = this.isLogined
+        ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}`
+        : articleUrl
+      return `《${article.title}》by ${article.nickname ||
+        article.author ||
+        ''} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t(
+        'p.clipboardText2'
+      )}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
     },
     copyCode(code) {
       console.log(code)
@@ -221,10 +238,10 @@ export default {
     h3 {
       padding: 0;
       margin: 0;
-      font-size:20px;
-      font-weight:500;
-      color:rgba(0,0,0,1);
-      line-height:28px;
+      font-size: 20px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 1);
+      line-height: 28px;
     }
   }
 
@@ -240,9 +257,9 @@ export default {
   }
 
   .split-line {
-    width:1px;
-    height:60px;
-    background: #B2B2B2;
+    width: 1px;
+    height: 60px;
+    background: #b2b2b2;
     margin: auto 20px;
   }
 }
@@ -273,7 +290,7 @@ export default {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: #542DE0;
+    background-color: #542de0;
     color: #fff;
     font-size: 12px;
     display: flex;
@@ -285,7 +302,7 @@ export default {
     bottom: 50px;
     cursor: pointer;
     &:hover {
-      background-color: mix(#fff, #542DE0, 10%);
+      background-color: mix(#fff, #542de0, 10%);
     }
   }
 }
@@ -308,16 +325,16 @@ export default {
   padding: 0;
   .title {
     cursor: pointer;
-    font-size:16px;
-    font-weight:500;
+    font-size: 16px;
+    font-weight: 500;
     color: @purpleDark;
-    line-height:22px;
+    line-height: 22px;
   }
   .data {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
-    line-height:22px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
+    line-height: 22px;
     margin-right: 8px;
     width: 50px;
   }
@@ -325,15 +342,15 @@ export default {
     text-align: left;
     color: #b2b2b2;
     flex: 0 0 120px;
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
-    line-height:22px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
+    line-height: 22px;
   }
   .copy {
-    font-size:14px;
-    color:#542DE0;
-    line-height:22px;
+    font-size: 14px;
+    color: #542de0;
+    line-height: 22px;
     margin-right: 8px;
   }
 }
@@ -346,16 +363,16 @@ export default {
 }
 
 .content-text {
-  font-size:14px;
-  font-weight:400;
-  color: #B2B2B2;
+  font-size: 14px;
+  font-weight: 400;
+  color: #b2b2b2;
   line-height: 1.5;
   letter-spacing: 1px;
   overflow: hidden;
   word-break: break-all;
   height: 40px;
   /*!autoprefixer:off*/
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical; // 不怕兼容问题吗????
   /*autoprefixer:on*/
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
@@ -366,7 +383,6 @@ export default {
   margin: 4px 23px 0 0;
   height: 13px;
 }
-
 </style>
 
 <style lang="less">
