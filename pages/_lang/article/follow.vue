@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      nowMainIndex: 0,
+      nowMainIndex: 2,
       recommendList: [],
       initData: [],
       articleCardData: [
