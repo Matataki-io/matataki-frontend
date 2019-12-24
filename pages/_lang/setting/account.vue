@@ -27,14 +27,6 @@
             <span v-else>&nbsp;</span>
           </el-radio>
         </div>
-        <TelegramLogin
-          @callback="telegramLogin"
-          :userpic="false"
-          mode="callback"
-          telegram-login="matataki_bot"
-          request-access="write"
-          radius="6"
-        />
         <p class="list-p">
           瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。
         </p>
@@ -57,14 +49,12 @@ import userInfo from '@/components/user/user_info.vue'
 import userNav from '@/components/user/user_nav.vue'
 import { getSignatureForLogin } from '@/api/eth'
 import { getCookie } from '@/utils/cookie'
-import TelegramLogin from '@/components/TelegramLogin'
 
 export default {
   components: {
     userLayout,
     userInfo,
-    userNav,
-    TelegramLogin
+    userNav
   },
   data() {
     return {
@@ -134,6 +124,16 @@ export default {
           type: 'github',
           icon: 'github', // 随时可换 防止影响
           typename: 'Github',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        },
+        {
+          type: 'telegram',
+          icon: 'telegram', // 随时可换 防止影响
+          typename: 'Telegram',
           username: '', // 最好后端混淆后返回
           loading: false,
           status: false,
@@ -357,6 +357,8 @@ export default {
             from: 'buildAccount'
           }
         })
+      } if (type === 'telegram') {
+        this.$router.push({ name: 'login-telegram' })
       } else this.$message.warning('PC端暂不支持绑定')
     },
     unbindFunc(type, typename, idx) {
@@ -543,6 +545,15 @@ export default {
     background-color: #882592;
     &:hover {
       background-color: mix(#000, #882592, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.telegram {
+    background-color: #4d9afd;
+    &:hover {
+      background-color: mix(#000, #4d9afd, 20%);
     }
     .icon {
       font-size: 20px;
