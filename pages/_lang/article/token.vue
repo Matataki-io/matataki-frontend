@@ -1,31 +1,25 @@
 <template>
   <homeLayout :swipeList="recommendList">
-    <no-content-prompt :list="articleCardData">
-      <div
-        v-for="(item, index) in articleCardData"
-        v-show="nowMainIndex === index"
-        :key="index"
-      >
-        <no-content-prompt :prompt="promptComputed(index)" :list="item.articles">
-          <articleCardListNew
-            v-for="itemChild in item.articles"
-            :key="itemChild.id"
-            :card="itemChild"
-          />
-        </no-content-prompt>
-        <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
-        <div class="load-more-button">
-          <buttonLoadMore
-            :type-index="index"
-            :params="item.params"
-            :api-url="item.apiUrl"
-            :is-atuo-request="item.isAtuoRequest"
-            @buttonLoadMore="buttonLoadMore"
-          />
+    <div>
+      <div v-if="tokenCards" v-for="tokenCard in tokenCards.list" class="token-card">
+        <div class="img-frame">
+          <img :src="logo(tokenCard.logo)" :alt="tokenCard.symbol">
         </div>
-        <!-- end -->
+        <div class="title">
+          {{ tokenCard.symbol }}的Fan票圈
+        </div>
       </div>
-    </no-content-prompt>
+    </div>
+    <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
+    <div class="load-more-button">
+      <buttonLoadMore
+        :type-index="pull.index"
+        :params="pull.params"
+        :api-url="pull.apiUrl"
+        :is-atuo-request="pull.isAtuoRequest"
+        @buttonLoadMore="buttonLoadMore"
+      />
+    </div>
     <!-- 空div控制内容 end -->
   </homeLayout>
 </template>
@@ -34,7 +28,7 @@
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 // import articleCard from '@/components/articleCard/index.vue'
-import articleCardListNew from '@/components/article_card_list_new/index.vue'
+// import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags, tokenTokenList } from '@/api/async_data_api.js'
@@ -45,60 +39,23 @@ export default {
   transition: 'page',
   components: {
     // articleCard,
-    articleCardListNew,
+    // articleCardListNew,
     buttonLoadMore,
     homeLayout
   },
   data() {
     return {
-      nowMainIndex: 0,
       recommendList: [],
       initData: [],
-      articleCardData: [
-        {
-          title: this.$t('home.articleNavHotTitle'),
-          params: {
-            channel: 1,
-            filter: null,
-            extra: 'short_content'
-          },
-          apiUrl: 'homeScoreRanking',
-          articles: [],
-          isAtuoRequest: false
-        },
-        {
-          title: this.$t('home.articleNavNowTitle'),
-          params: {
-            channel: 1,
-            filter: null,
-            extra: 'short_content'
-          },
-          apiUrl: 'homeTimeRanking',
-          articles: [],
-          isAtuoRequest: true
-        },
-        {
-          title: this.$t('home.articleNavFollowTitle'),
-          params: {
-            channel: 1,
-            filter: null,
-            extra: 'short_content'
-          },
-          apiUrl: 'followedPosts',
-          articles: [],
-          isAtuoRequest: true
-        }
-      ],
       tagCards: [],
-      usersRecommendList: [],
-      usersLoading: false,
-      checkedFilter: ['1', '2', '4'],
+      tokenCards: { list: [], count: 0 },
       pull: {
         params: {
           login: null
         },
         apiUrl: 'tokenTokenList',
-        list: []
+        isAtuoRequest: false,
+        index: 0
       }
     }
   },
@@ -112,10 +69,6 @@ export default {
     }
   },
   watch: {
-    nowMainIndex(value) {
-      this.articleCardData[value].articles = []
-      this.onCheckedFilterChanged()
-    }
   },
   async asyncData({ $axios, req }) {
     const initData = Object.create(null)
@@ -127,29 +80,11 @@ export default {
         const obj = { src: '', title: '' }
         for (let i = 0; i < 5; i++) initData.recommend = [obj]
       }
-
-      // 内容列表
-      const params = {
-        channel: 1,
-        extra: 'short_content'
-      }
-      const resPagination = await paginationData(
-        $axios,
-        'homeScoreRanking',
-        params
-      )
-      if (resPagination.code === 0) { initData.paginationData = resPagination.data.list } else initData.paginationData = []
-
       // tags
       const resTag = await getTags($axios, 'post')
       if (resTag.code === 0) initData.tags = resTag.data
       else initData.tags = []
-    } catch (error) {
-      console.log(error)
-      return { initData }
-    }
 
-    try {
       // 获取cookie token
       let accessToekn = ''
       // 请检查您是否在服务器端
@@ -158,22 +93,24 @@ export default {
         const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
         accessToekn = token ? token[0] : ''
       }
-      initData.tokenList = await tokenTokenList($axios, {
+      const resTokenList = initData.tokenList = await tokenTokenList($axios, {
         login: null,
         channel: 1,
         extra: 'short_content'
       }, accessToekn)
-      console.log('initData.tokenList:', initData.tokenList)
-    } catch (error) {
-      console.log('出错了：', error)
-    }
+      if (resTokenList.code === 0) initData.tokenList = resTokenList.data
+      else initData.tokenList = { list: [], count: 0 }
 
-    return { initData }
+      return { initData }
+    } catch (error) {
+      console.log(error)
+      return { initData }
+    }
   },
   created() {
     console.log('请求结果：', this.initData)
+    this.tokenCards = this.initData.tokenList
     this.recommendList = this.initData.recommend
-    this.articleCardData[0].articles = this.initData.paginationData
     this.tagCards = this.initData.tags
   },
   mounted() {
@@ -182,38 +119,40 @@ export default {
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
-      if (res.data && res.data.list && res.data.list.length !== 0) {
-        this.articleCardData[res.index].articles = this.articleCardData[
-          res.index
-        ].articles.concat(res.data.list)
-      }
+      // if (res.data && res.data.list && res.data.list.length !== 0) {
+      //   this.tokenCards.list = this.tokenCards.list.concat(res.data.list)
+      // }
     },
     promptComputed(index) {
       return index === 2 ? this.$t('notFollowContent') : this.$t('notArticle')
     },
-    handleCheckedFilterChanged(value) {
-      this.onCheckedFilterChanged()
-    },
-    onCheckedFilterChanged: debounce(async function () {
-      // This page drives me crazy!!!
-
-      const currentTab = this.articleCardData[this.nowMainIndex]
-
-      currentTab.params.filter = this.filter
-
-      try {
-        const res = await this.$API.getBackendData(
-          { url: currentTab.apiUrl, params: currentTab.params },
-          false
-        )
-        if (res.code !== 0) console.error(res.message)
-        else if (res.data && res.data.list && res.data.list.length !== 0) {
-          currentTab.articles = res.data.list
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    }, 500)
+    logo(logo) {
+      return logo ? this.$API.getImg(logo) : ''
+    }
   }
 }
 </script>
+
+<style lang="less" scoped>
+  .token-card {
+    width:177px;
+    height:239px;
+    border-radius: 10px;
+    background:white;
+    margin-right: 20px;
+    margin-right: 18px;
+    margin-bottom: 20px;
+    float: left;
+    .img-frame {
+      width:177px;
+      height:177px;
+      img {
+        width:177px;
+        height:177px;
+      }
+    }
+    .title {
+      margin: auto;
+    }
+  }
+</style>
