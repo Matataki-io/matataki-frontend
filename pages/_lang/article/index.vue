@@ -65,23 +65,6 @@ export default {
   data() {
     return {
       idx: 0,
-      head: [
-        {
-          url: 'article',
-          lab: '综合创作',
-          href: '/article'
-        },
-        {
-          url: 'article-token',
-          lab: 'Fan票圈',
-          href: '/article/token'
-        },
-        {
-          url: 'article-follow',
-          lab: '我的关注',
-          href: '/article/follow'
-        }
-      ],
       usersRecommendList: [],
       usersLoading: false,
       recommendList: [],
