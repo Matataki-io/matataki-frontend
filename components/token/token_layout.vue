@@ -3,68 +3,70 @@
     <g-header />
 
     <div class="mw container-padding">
-      <div class="fl token-detail">
-        <avatar :src="logo" size="120px" />
-        <div class="token-detail-info">
-          <div class="fl info-line">
-            <div class="token-info-title bold">
-              {{ minetokenToken.symbol }}
+      <div class="token-detail">
+        <div class="fl">
+          <avatar :src="logo" size="120px" />
+          <div class="token-detail-info">
+            <div class="fl info-line">
+              <div class="token-info-title bold">
+                {{ minetokenToken.symbol }}
+              </div>
+              <div>
+                <p class="token-info-sub">
+                  {{ minetokenToken.name }}
+                </p>
+              </div>
             </div>
-            <div>
-              <p class="token-info-sub">
-                {{ minetokenToken.name }}
-              </p>
+            <div class="fl info-line">
+              <div class="token-info-title">
+                创始人：
+              </div>
+              <div>
+                <p class="token-info-sub">
+                  <router-link
+                    :to="{name: 'user-id', params: {id: minetokenToken.uid}}"
+                  >
+                    {{ minetokenUser.nickname || minetokenUser.username }}
+                  </router-link>
+                </p>
+              </div>
+            </div>
+            <div class="fl info-line">
+              <div class="token-info-title">
+                发布时间：
+              </div>
+              <div>
+                <p class="token-info-sub">
+                  {{ friendlyDate }}
+                </p>
+              </div>
+            </div>
+            <div class="fl info-line">
+              <div class="token-info-title">
+                简&emsp;介：
+              </div>
+              <div>
+                <p class="token-info-sub">
+                  {{ minetokenToken.brief || '暂无' }}
+                </p>
+              </div>
             </div>
           </div>
-          <div class="fl info-line">
-            <div class="token-info-title">
-              创始人：
-            </div>
-            <div>
-              <p class="token-info-sub">
-                <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
-                  {{ minetokenUser.nickname || minetokenUser.username }}
-                </router-link>
-              </p>
-            </div>
-          </div>
-          <div class="fl info-line">
-            <div class="token-info-title">
-              发布时间：
-            </div>
-            <div>
-              <p class="token-info-sub">
-                {{ friendlyDate }}
-              </p>
-            </div>
-          </div>
-          <div class="fl info-line">
-            <div class="token-info-title">
-              简&emsp;介：
-            </div>
-            <div>
-              <p class="token-info-sub">
-                {{ minetokenToken.brief || '暂无' }}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="share-btn">
-          <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
-            <el-button size="small" icon="el-icon-setting">
-              管理
+          <div class="share-btn">
+            <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
+              <el-button size="small" icon="el-icon-setting">
+                管理
+              </el-button>
+            </router-link>
+            <el-button @click="shareModalShow = true" size="small">
+              <svg-icon icon-class="share_new" />分享
             </el-button>
-          </router-link>
-          <el-button @click="shareModalShow = true" size="small">
-            <svg-icon icon-class="share_new" />
-            分享
-          </el-button>
+          </div>
+          <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
         </div>
-        <a
-          class="help-link"
-          href="https://www.matataki.io/p/977"
-          target="_blank"
-        >什么是Fan票?</a>
+        <p v-if="!minetokenToken.contract_address" class="warning">
+          fan票正在发布中，请稍后过来操作!
+        </p>
       </div>
     </div>
 
@@ -87,7 +89,8 @@
           <div class="fl total-content">
             <div class="token-data">
               <p class="token-num">
-                {{ amount }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ amount }}
+                <sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 发行总量
@@ -96,7 +99,10 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ cnyReserve }}<sub>CNY</sub> + {{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ cnyReserve }}
+                <sub>CNY</sub>
+                + {{ tokenReserve }}
+                <sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 流动金池
@@ -105,7 +111,8 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ volume }}<sub>{{ minetokenToken.symbol }}</sub>
+                {{ volume }}
+                <sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
                 24h成交量
@@ -114,7 +121,8 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ exchangeAmount }}<sub>CNY</sub>
+                {{ exchangeAmount }}
+                <sub>CNY</sub>
               </p>
               <p class="token-name">
                 24h成交额
@@ -132,7 +140,8 @@
 
             <div class="token-data">
               <p class="token-num">
-                {{ price }}<sub>CNY</sub>
+                {{ price }}
+                <sub>CNY</sub>
               </p>
               <p class="token-name">
                 现价
@@ -156,7 +165,7 @@
             icon-class="token"
           />
           Fan票交易所
-        </router-link> -->
+        </router-link>-->
         <tokenBuyCard :token="minetokenToken" />
 
         <div class="about">
@@ -258,7 +267,9 @@ export default {
     return {
       shareModalShow: false,
       tokenWidget: `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
-      minetokenToken: Object.create(null),
+      minetokenToken: {
+        contract_address: true // v-fi 会取反
+      },
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
       resourcesSocialss: [],
@@ -271,31 +282,54 @@ export default {
     ...mapGetters(['currentUserInfo']),
     logo() {
       if (!this.minetokenToken.logo) return ''
-      return this.minetokenToken.logo ? this.$API.getImg(this.minetokenToken.logo) : ''
+      return this.minetokenToken.logo
+        ? this.$API.getImg(this.minetokenToken.logo)
+        : ''
     },
     amount() {
-      const tokenamount = precision(this.minetokenToken.total_supply || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenToken.total_supply || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     tokenReserve() {
-      const tokenamount = precision(this.minetokenExchange.token_reserve || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.token_reserve || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     cnyReserve() {
-      const tokenamount = precision(this.minetokenExchange.cny_reserve || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.cny_reserve || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     volume() {
-      const tokenamount = precision(this.minetokenExchange.volume_24h || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.volume_24h || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     exchangeAmount() {
-      const tokenamount = precision(this.minetokenExchange.amount_24h || 0, 'CNY', this.minetokenToken.decimals)
+      const tokenamount = precision(
+        this.minetokenExchange.amount_24h || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     change() {
       if (this.minetokenExchange.change_24h) {
-        const amount = (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
+        const amount =
+          (this.minetokenExchange.change_24h * 100).toFixed(2) + '%'
         if (parseInt(amount) > 0) return '+' + amount
         return amount
       } else return '0%'
@@ -314,7 +348,9 @@ export default {
     },
     friendlyDate() {
       const time = moment(this.minetokenUser.create_time)
-      return this.$utils.isNDaysAgo(2, time) ? time.format('lll') : time.fromNow()
+      return this.$utils.isNDaysAgo(2, time)
+        ? time.format('lll')
+        : time.fromNow()
     }
   },
   watch: {
@@ -341,30 +377,36 @@ export default {
   },
   methods: {
     async minetokenId(id) {
-      await this.$API.minetokenId(id).then(res => {
-        if (res.code === 0) {
-          this.minetokenToken = res.data.token || Object.create(null)
-          this.minetokenUser = res.data.user || Object.create(null)
-          this.minetokenExchange = res.data.exchange || Object.create(null)
-        } else {
-          this.$message.success(res.message)
-        }
-      })
+      await this.$API
+        .minetokenId(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.minetokenToken = res.data.token || Object.create(null)
+            this.minetokenUser = res.data.user || Object.create(null)
+            this.minetokenExchange = res.data.exchange || Object.create(null)
+          } else {
+            this.$message.success(res.message)
+          }
+        })
         .catch(err => {
           console.log(err)
         })
     },
     async minetokenGetResources(id) {
-      await this.$API.minetokenGetResources(id).then(res => {
-        if (res.code === 0) {
-          const socialFilter = res.data.socials.filter(i => socialTypes.includes(i.type)) // 过滤
-          const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
-          this.resourcesSocialss = socialFilterEmpty
-          this.resourcesWebsites = res.data.websites
-        } else {
-          this.$message.success(res.message)
-        }
-      })
+      await this.$API
+        .minetokenGetResources(id)
+        .then(res => {
+          if (res.code === 0) {
+            const socialFilter = res.data.socials.filter(i =>
+              socialTypes.includes(i.type)
+            ) // 过滤
+            const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
+            this.resourcesSocialss = socialFilterEmpty
+            this.resourcesWebsites = res.data.websites
+          } else {
+            this.$message.success(res.message)
+          }
+        })
         .catch(err => {
           console.log(err)
         })
@@ -374,7 +416,8 @@ export default {
         .tokenUserId(id)
         .then(res => {
           if (res.code === 0 && res.data.id > 0) {
-            this.showTokenSetting = res.data.id === Number(this.$route.params.id)
+            this.showTokenSetting =
+              res.data.id === Number(this.$route.params.id)
           }
         })
         .catch(err => console.log('get token user error', err))
@@ -383,7 +426,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
 .token {
   .minHeight();
 }
@@ -403,10 +445,10 @@ export default {
 .token-detail-info {
   width: 60%;
   margin-left: 10px;
-  font-size:16px;
-  font-weight:400;
+  font-size: 16px;
+  font-weight: 400;
   color: @black;
-  line-height:22px;
+  line-height: 22px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -448,18 +490,18 @@ export default {
 }
 
 .token-title {
-  font-size:24px;
-  font-weight:bold;
-  color:@black;
-  line-height:33px;
+  font-size: 24px;
+  font-weight: bold;
+  color: @black;
+  line-height: 33px;
   padding: 0;
   margin: 0;
 }
 .token-introduction {
-  font-size:16px;
-  font-weight:400;
-  color:@black;
-  line-height:22px;
+  font-size: 16px;
+  font-weight: 400;
+  color: @black;
+  line-height: 22px;
   padding: 0;
   margin: 20px 0 0;
 }
@@ -491,10 +533,10 @@ export default {
   }
 }
 .token-num {
-  font-size:20px;
-  font-weight:bold;
+  font-size: 20px;
+  font-weight: bold;
   color: @purpleDark;
-  line-height:28px;
+  line-height: 28px;
   padding: 0;
   margin: 0;
   sub {
@@ -502,15 +544,15 @@ export default {
   }
 }
 .token-name {
-  font-size:14px;
+  font-size: 14px;
   color: @black;
-  line-height:20px;
+  line-height: 20px;
   padding: 0;
   margin: 6px 0 0;
 }
 
 .exchange {
-  border-radius:20px;
+  border-radius: 20px;
   display: block;
   background: @purpleDark;
   text-align: center;
@@ -534,9 +576,9 @@ export default {
     white-space: nowrap;
     margin: 10px 0;
     a {
-      font-size:16px;
-      color:@black;
-      line-height:22px;
+      font-size: 16px;
+      color: @black;
+      line-height: 22px;
       text-decoration: underline;
     }
   }
@@ -597,5 +639,11 @@ export default {
 }
 .wrap-open {
   white-space: pre-wrap;
+}
+.warning {
+  padding: 0;
+  margin: 20px 0 0;
+  font-size: 16px;
+  color: red;
 }
 </style>
