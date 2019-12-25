@@ -306,7 +306,7 @@ export default {
     sale: '总销量',
     bannerUser: '生态共建者数',
     bannerArticles: '文章确权数',
-    bannerPoint: '全局积分发放数',
+    bannerPoint: '已发放积分',
     articleTagTitle: '文章标签',
     shopTagTitle: '商品标签',
     recommendAuthor: '推荐作者',
