@@ -66,7 +66,7 @@ export default {
   &-logo {
     width: 128px;
     height: 128px;
-    border-radius: 4px;
+    border-radius: 10px;
     background-color: #f1f1f1;
     border: 1px solid #f1f1f1;
     box-sizing: border-box;

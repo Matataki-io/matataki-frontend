@@ -33,14 +33,16 @@
           :card="item"
         />
       </no-content-prompt>
-      <buttonLoadMore
-        :type-index="0"
-        :url-replace="$route.params.id + ''"
-        :params="pull.params"
-        :api-url="pull.apiUrl"
-        :autoRequestTime="pull.autoRequestTime"
-        @buttonLoadMore="buttonLoadMore"
-      />
+      <div class="load-more">
+        <buttonLoadMore
+          :type-index="0"
+          :url-replace="$route.params.id + ''"
+          :params="pull.params"
+          :api-url="pull.apiUrl"
+          :autoRequestTime="pull.autoRequestTime"
+          @buttonLoadMore="buttonLoadMore"
+        />
+      </div>
     </div>
   </ringLayout>
 </template>
@@ -126,5 +128,8 @@ export default {
   .list-card {
     margin: 20px 0 0;
   }
+}
+.load-more{
+  height: 168px;
 }
 </style>
