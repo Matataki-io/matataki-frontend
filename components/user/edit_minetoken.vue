@@ -506,7 +506,7 @@ export default {
 }
 .publish-btn {
   display: block;
-  width: 100px;
+  // width: 100px;
   // background: @purpleDark;
   // border-color: @purpleDark;
 }
