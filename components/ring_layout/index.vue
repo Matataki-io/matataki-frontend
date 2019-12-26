@@ -10,8 +10,8 @@
 
     <div class="ring-head">
       <div class="ring-title">
-        <router-link :to="{name: 'ring-id', params: { id: $route.params.id }}" class="active">
-          全部内容
+        <router-link v-for="tag in tagList" :to="{name: tag.url, params: { id: $route.params.id }}" :class="$route.name === tag.url && 'active'">
+          {{ tag.label }}
         </router-link>
         <!-- <router-link :to="{name: 'ring'}">只看创始人</router-link> -->
       </div>
@@ -27,7 +27,17 @@ export default {
     return {
       logo: '',
       symbol: '',
-      name: ''
+      name: '',
+      tagList: [
+        {
+          label: '全部内容',
+          url: 'ring-id'
+        },
+        {
+          label: '只看创始人',
+          url: 'ring-id-founder'
+        }
+      ]
     }
   },
   computed: {

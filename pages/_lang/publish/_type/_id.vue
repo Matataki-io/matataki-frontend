@@ -305,7 +305,7 @@
     </div>
 
     <div class="set-item">
-      <span class="set-title">添加关联文章
+      <span class="set-title">添加引用文章
         <span class="set-des">可选</span>
       </span>
       <div class="related">
@@ -340,7 +340,7 @@
             <div @click="addDraftsReferences" class="add-icon">
               <i class="el-icon-plus" />
             </div>
-            <span>添加关联</span>
+            <span>添加引用</span>
           </div>
         </div>
 
@@ -1358,7 +1358,7 @@ export default {
     // 确定管理编辑
     confirmRelated(i) {
       const { id, type } = this.$route.params
-      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('引用文章链接或标题不能为空!!!')
       const data = {
         url: this.relatedList[i].urlInput,
         title: this.relatedList[i].titleInput,
@@ -1504,7 +1504,7 @@ export default {
     async addDraftsReferences() {
       const { id, type } = this.$route.params
 
-      if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('关联文章链接或标题不能为空!!!')
+      if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('引用文章链接或标题不能为空!!!')
       const data = {
         url: this.relatedLink,
         title: this.relatedTitle,

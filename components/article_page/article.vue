@@ -1,9 +1,8 @@
 <template>
   <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
-    <el-popover slot="sort" class="filter" placement="bottom-end" trigger="click">
+    <!-- <el-popover slot="sort" class="filter" placement="bottom-end" trigger="click">
       <el-button slot="reference" class="filter-button" type="text">
         <div class="filter-header">
-          <!-- <svg-icon icon-class="setting1" /> -->
           <img class="filter-icon" src="@/assets/img/filter.svg">
           <span>过滤</span>
         </div>
@@ -27,19 +26,28 @@
           </div>
         </el-checkbox-group>
       </div>
-    </el-popover>
+    </el-popover> -->
+
+    <el-select slot="sort" v-model="sortValue" class="sort-articles" size="small">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
 
     <articleCardListNew
-      v-for="item in articleCardData.articles"
+      v-for="item in articleCardData[sortValue].articles"
       :key="item.id"
       :card="item"
     />
     <div class="load-more-button">
       <buttonLoadMore
         :type-index="0"
-        :params="articleCardData.params"
-        :api-url="articleCardData.apiUrl"
-        :is-atuo-request="articleCardData.isAtuoRequest"
+        :params="articleCardData[sortValue].params"
+        :api-url="articleCardData[sortValue].apiUrl"
+        :is-atuo-request="articleCardData[sortValue].isAtuoRequest"
         @buttonLoadMore="buttonLoadMore"
       />
     </div>
@@ -76,18 +84,48 @@ export default {
   },
   data() {
     return {
-      articleCardData: {
-        title: this.$t('home.articleNavHotTitle'),
-        params: {
-          channel: 1,
-          filter: null,
-          extra: 'short_content'
+      // articleCardData: {
+      //   title: this.$t('home.articleNavHotTitle'),
+      //   params: {
+      //     channel: 1,
+      //     filter: null,
+      //     extra: 'short_content'
+      //   },
+      //   apiUrl: 'homeScoreRanking',
+      //   articles: [],
+      //   isAtuoRequest: false
+      // },
+      articleCardData: [
+        {
+          params: {
+            channel: 1,
+            filter: null,
+            extra: 'short_content'
+          },
+          apiUrl: 'homeScoreRanking',
+          articles: [],
+          isAtuoRequest: false
         },
-        apiUrl: 'homeScoreRanking',
-        articles: [],
-        isAtuoRequest: false
-      },
-      checkedFilter: ['1', '2', '4']
+        {
+          params: {
+            channel: 1,
+            filter: null,
+            extra: 'short_content'
+          },
+          apiUrl: 'homeTimeRanking',
+          articles: [],
+          isAtuoRequest: true
+        }
+      ],
+      checkedFilter: ['1', '2', '4'],
+      options: [{
+        value: 0,
+        label: this.$t('home.articleNavHotTitle')
+      }, {
+        value: 1,
+        label: this.$t('home.articleNavNowTitle')
+      }],
+      sortValue: 0
     }
   },
   computed: {
@@ -99,17 +137,22 @@ export default {
       return result
     }
   },
+  watch: {
+    sortValue(value) {
+      this.articleCardData[value].articles = []
+      this.onCheckedFilterChanged()
+    }
+  },
   created() {
-    this.articleCardData.articles = this.articleList
+    this.articleCardData[0].articles = this.articleList
   },
   mounted() {
   },
   methods: {
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
-      // console.log(res)
       if (res.data && res.data.list && res.data.list.length !== 0) {
-        this.articleCardData.articles = this.articleCardData.articles.concat(res.data.list)
+        this.articleCardData[this.sortValue].articles = this.articleCardData[this.sortValue].articles.concat(res.data.list)
       }
     },
     handleCheckedFilterChanged(value) {
@@ -118,16 +161,16 @@ export default {
     onCheckedFilterChanged: debounce(async function () {
       // This page drives me crazy!!!
 
-      this.articleCardData.params.filter = this.filter
+      this.articleCardData[this.sortValue].params.filter = this.filter
 
       try {
         const res = await this.$API.getBackendData(
-          { url: this.articleCardData.apiUrl, params: this.articleCardData.params },
+          { url: this.articleCardData[this.sortValue].apiUrl, params: this.articleCardData[this.sortValue].params },
           false
         )
         if (res.code !== 0) console.error(res.message)
         else if (res.data && res.data.list && res.data.list.length !== 0) {
-          this.articleCardData.articles = res.data.list
+          this.articleCardData[this.sortValue].articles = res.data.list
         }
       } catch (error) {
         console.error(error)
@@ -156,5 +199,9 @@ export default {
     font: 14px;
     color: #000;
   }
+}
+
+.sort-articles {
+  width: 100px;
 }
 </style>
