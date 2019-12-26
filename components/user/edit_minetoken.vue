@@ -297,6 +297,7 @@ export default {
       if (res.code === 0) return res.message
       else throw res.message
     },
+    // 初始发fan票不需要调用mint接口
     async minetokenMint() {
       const { number } = this.form
       const data = {
@@ -325,14 +326,15 @@ export default {
       else throw res.message
     },
     async minetokenCreate() {
-      const { name, symbol, logo, brief, introduction } = this.form
+      const { name, symbol, logo, brief, introduction, number } = this.form
       const data = {
         name: name,
         symbol: symbol,
         decimals: 4,
         brief: brief,
         introduction,
-        logo: logo
+        logo: logo,
+        initialSupply: toPrecision(number, 'CNY') + '' // to string type
       }
       await this.$API.minetokenCreate(data)
         .then(res => {
@@ -363,7 +365,7 @@ export default {
         })
     },
     minetokenDone(data) {
-      Promise.all([this.minetokenMint(), this.minetokenResources(data)])
+      Promise.all([this.minetokenResources(data)])
         .then(values => {
           // console.log(values)
           this.$message.success(values[0])
@@ -504,7 +506,7 @@ export default {
 }
 .publish-btn {
   display: block;
-  width: 100px;
+  // width: 100px;
   // background: @purpleDark;
   // border-color: @purpleDark;
 }

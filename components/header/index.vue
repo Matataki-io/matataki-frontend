@@ -9,7 +9,7 @@
           <router-link
             :key="index"
             :style="customizeHeaderTextColorComputed"
-            :class="$route.name === item.url && 'active'"
+            :class="item.urlList.includes($route.name) && 'active'"
             :to="{name: item.url}"
             class="nav"
           >
@@ -205,19 +205,23 @@ export default {
     nav() {
       return [
         {
-          title: this.$t('home.navArticle'),
+          title: '创作大厅',
           url: 'article',
-          sup: ''
+          sup: '',
+          urlList: ['article', 'ring-id']
         },
-        {
-          title: this.$t('home.navShop'),
-          url: 'shop',
-          sup: ''
-        },
+        // 隐藏导航栏的商品选项
+        // {
+        //   title: this.$t('home.navShop'),
+        //   url: 'shop',
+        //   sup: '',
+        //   urlList: ['shop']
+        // },
         {
           title: 'Fan票',
           url: 'token',
-          sup: ''
+          sup: '',
+          urlList: ['token']
         }
       ]
     },

@@ -35,7 +35,9 @@ import {
   Option,
   Divider,
   Radio,
-  Alert
+  Alert,
+  Carousel,
+  CarouselItem
 } from 'element-ui'
 
 Vue.use(Row)
@@ -72,6 +74,8 @@ Vue.use(Option)
 Vue.use(Divider)
 Vue.use(Radio)
 Vue.use(Alert)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

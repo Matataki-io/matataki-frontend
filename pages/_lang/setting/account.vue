@@ -129,6 +129,16 @@ export default {
           status: false,
           is_main: 0,
           disabled: false
+        },
+        {
+          type: 'telegram',
+          icon: 'telegram', // 随时可换 防止影响
+          typename: 'Telegram',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
         }
       ]
     }
@@ -146,6 +156,9 @@ export default {
     ...mapActions('metamask', ['getSignature', 'fetchAccount']),
     ...mapActions('vnt', ['bind']),
     // ...mapActions(['signOut']),
+    telegramLogin(user) {
+      alert(JSON.stringify(user))
+    },
     accountBild(params, idx) {
       this.accountList[idx].loading = true
       this.$API.accountBind(params).then(res => {
@@ -344,6 +357,8 @@ export default {
             from: 'buildAccount'
           }
         })
+      } if (type === 'telegram') {
+        this.$router.push({ name: 'login-telegram' })
       } else this.$message.warning('PC端暂不支持绑定')
     },
     unbindFunc(type, typename, idx) {
@@ -530,6 +545,15 @@ export default {
     background-color: #882592;
     &:hover {
       background-color: mix(#000, #882592, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.telegram {
+    background-color: #4d9afd;
+    &:hover {
+      background-color: mix(#000, #4d9afd, 20%);
     }
     .icon {
       font-size: 20px;

@@ -1,15 +1,15 @@
 <template>
-  <div class="fl card">
-    <router-link :to="{name: 'token-id', params: { id: card.id }}">
+  <router-link :to="{name: 'token-id', params: { id: card.id }}" class="fl card">
+    <div>
       <avatar :src="cover" size="45px" />
-    </router-link>
+    </div>
     <div class="fl cards-content">
       <div class="card-info">
-        <router-link :to="{name: 'token-id', params: { id: card.id }}">
+        <div>
           <h2 class="card-info-symbol">
             {{ card.symbol || '暂无' }}
           </h2>
-        </router-link>
+        </div>
         <p class="card-info-name">
           {{ card.name || '暂无' }}
         </p>
@@ -41,7 +41,7 @@
         </router-link>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 <script>
 import moment from 'moment'
@@ -92,6 +92,8 @@ export default {
 .card {
   padding: 20px 0;
   border-bottom: 1px solid #dbdbdb;
+  color: #000;
+  text-decoration: none;
   // &:nth-last-child(1) {
   //   border-bottom: 1px solid #dbdbdb;
   // }
