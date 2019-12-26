@@ -300,7 +300,7 @@
         <div class="related-container">
           <div class="fl afe jsb">
             <div>
-              <span class="related-title">已关联<span>{{ total }}</span></span>
+              <span class="related-title">已引用<span>{{ total }}</span></span>
               <!-- <span class="related-rort">
                 正序
                 <svg-icon icon-class="sort" class="icon" />
@@ -375,21 +375,21 @@
 
         <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
           <svg-icon icon-class="arrow" class="icon" />
-          <span v-if="!relatedLeftCollapse">已关联{{ total }}篇</span>
+          <span v-if="!relatedLeftCollapse">已引用{{ total }}篇</span>
         </div>
       </div>
       <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
         <div class="related-container">
           <div class="fl afe jsb">
             <div>
-              <span class="related-title">被关联<span>{{ beingTotal }}</span></span>
+              <span class="related-title">被引用<span>{{ beingTotal }}</span></span>
               <!-- <span class="related-rort">
                 正序
                 <svg-icon icon-class="sort" class="icon" />
               </span> -->
             </div>
             <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
-              关联本文
+              引用本文
             </el-button>
           </div>
 
@@ -437,7 +437,7 @@
 
         <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
           <svg-icon icon-class="arrow" class="icon" />
-          <span v-if="!relatedRightCollapse">被关联{{ beingTotal }}次</span>
+          <span v-if="!relatedRightCollapse">被引用{{ beingTotal }}次</span>
         </div>
       </div>
     </div>
