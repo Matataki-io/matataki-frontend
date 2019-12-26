@@ -29,6 +29,11 @@ export default {
     articleImport,
     feedback
   },
+  data() {
+    return {
+      time: null
+    }
+  },
   computed: {
     loginModalShow: {
       get() {
@@ -56,16 +61,26 @@ export default {
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
     }
-
   },
   created() {
 
   },
   mounted() {
     this.$store.dispatch('testLogin')
+    this.removeOverflowHide()
   },
   methods: {
     importArticle() {
+    },
+    removeOverflowHide() {
+      clearInterval(this.time)
+      this.time = setInterval(() => {
+        const bodyDom = document.querySelector('body')
+        if (bodyDom.style.overflow) {
+          const dialog = document.querySelector('.el-dialog__wrapper').style.display
+          if (dialog === 'none') bodyDom.style.overflow = 'auto'
+        }
+      }, 1000)
     }
   }
 }
