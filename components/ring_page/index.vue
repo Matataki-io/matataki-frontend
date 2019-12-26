@@ -49,15 +49,21 @@
 
 <script>
 import debounce from 'lodash/debounce'
-import ringLayout from '@/components/ring_layout/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
+import ringLayout from '@/components/ring_layout/index.vue'
 
 export default {
   components: {
-    ringLayout,
     buttonLoadMore,
-    articleCardListNew
+    articleCardListNew,
+    ringLayout
+  },
+  props: {
+    onlyCreator: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -86,7 +92,14 @@ export default {
       }
     }
   },
+  watch: {
+    onlyCreator(value) {
+      this.pull.params.onlyCreator = value
+    }
+  },
   created() {
+    this.pull.params.onlyCreator = this.onlyCreator
+    console.log('结果：', this.pull, this.onlyCreator)
   },
   methods: {
     sortChange: debounce(function (val) {
