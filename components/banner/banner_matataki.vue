@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <!-- <div class="invite">
+      <div class="invite">
         <p class="title">
           邀请好友有奖
           <el-tooltip class="item" effect="dark" content="每成功邀请一名好友注册可得666积分！" placement="top-end">
@@ -88,25 +88,25 @@
         <el-button @click="share" type="primary" size="small" class="invite-button">
           立即邀请
         </el-button>
-      </div> -->
+      </div>
     </div>
-    <!-- <Share
+    <Share
       :share-modal-show="shareModalShow"
       :minetoken-user="{nickname: '123'}"
       :page-type="2"
       @input="val => shareModalShow = val"
-    /> -->
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
-// import Share from '@/components/token/token_share.vue'
+import Share from '@/components/token/token_share.vue'
 
 export default {
   components: {
-    // Share
+    Share
   },
   data() {
     return {
