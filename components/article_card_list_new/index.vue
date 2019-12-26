@@ -40,7 +40,7 @@
         </div>
 
         <div class="split-line" />
-        <!-- 适用于 首页, Fan票圈 -->
+        <!-- 适用于 首页, Fan圈 -->
         <!-- 区分那种卡 -->
         <div class="author">
           <n-link :to=" {name: 'user-id', params: {id: Uid}} " target="_blank">

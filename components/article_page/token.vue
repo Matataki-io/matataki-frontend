@@ -1,23 +1,25 @@
 <template>
   <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
-    <div>
-      <router-link :to="{name: 'token'}">
-        <div class="add-card">
-          <svg-icon icon-class="add1" />
-          <span>购买Fan票</span>
-        </div>
-      </router-link>
-      <fanCard v-for="(tokenCard, index) in tokenCards.list" :key="index" :card="tokenCard" />
-    </div>
-    <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
-    <div class="load-more-button">
-      <!-- v-if="tokenCards.count !== tokenCards.list.length" -->
-      <buttonLoadMore
-        :type-index="pull.index"
-        :params="pull.params"
-        :api-url="pull.apiUrl"
-        @buttonLoadMore="buttonLoadMore"
-      />
+    <div class="token-tap">
+      <div class="token-list">
+        <router-link :to="{name: 'token'}">
+          <div class="add-card">
+            <svg-icon icon-class="add1" />
+            <span>购买Fan票</span>
+          </div>
+        </router-link>
+        <fanCard v-for="(tokenCard, index) in tokenCards.list" :key="index" :card="tokenCard" />
+      </div>
+      <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
+      <div class="load-more-button">
+        <!-- v-if="tokenCards.count !== tokenCards.list.length" -->
+        <buttonLoadMore
+          :type-index="pull.index"
+          :params="pull.params"
+          :api-url="pull.apiUrl"
+          @buttonLoadMore="buttonLoadMore"
+        />
+      </div>
     </div>
     <!-- 空div控制内容 end -->
   </tab>
@@ -77,6 +79,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .token-tap {
+      min-height: 600px;
+      margin-bottom: 60px;
+      overflow: hidden;
+      .token-list {
+        overflow: hidden;
+      }
+    }
     .add-card {
       background: white;
       margin-right: 18px;

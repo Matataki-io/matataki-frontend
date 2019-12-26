@@ -161,7 +161,15 @@ export default {
         .catch(err => console.log('获取个人统计数据失败', err))
     }, 1000),
     share() {
-      this.shareModalShow = true
+      if (this.isLogined) {
+        this.shareModalShow = true
+      } else {
+        this.$alert(this.$t('error.pleaseLogin'), '提示', {
+          confirmButtonText: '确定',
+          showClose: false,
+          callback: action => this.$store.commit('setLoginModal', true)
+        })
+      }
     }
   }
 }

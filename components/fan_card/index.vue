@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'ring-id', params: { id: card.token_id }}">
+  <router-link :to="{name: 'ring-id', params: { id: card.token_id }}" target="_blank">
     <div v-if="card" class="token-card">
       <div class="img-frame">
         <el-image v-if="logo" :src="logo" :alt="card.symbol" class="img-frame">
@@ -9,7 +9,7 @@
         </el-image>
       </div>
       <div class="title">
-        {{ card.symbol }}的Fan票圈
+        {{ card.symbol }}的Fan圈
       </div>
     </div>
   </router-link>
