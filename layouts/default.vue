@@ -73,12 +73,17 @@ export default {
     importArticle() {
     },
     removeOverflowHide() {
+      // 这段代码也是无奈之举
       clearInterval(this.time)
       this.time = setInterval(() => {
         const bodyDom = document.querySelector('body')
         if (bodyDom.style.overflow) {
-          const dialog = document.querySelector('.el-dialog__wrapper').style.display
-          if (dialog === 'none') bodyDom.style.overflow = 'auto'
+          const dialog = document.querySelector('.el-dialog__wrapper')
+          if (dialog) {
+            if (dialog.style.display === 'none') bodyDom.style.overflow = 'auto'
+          } else {
+            bodyDom.style.overflow = 'auto'
+          }
         }
       }, 1000)
     }
