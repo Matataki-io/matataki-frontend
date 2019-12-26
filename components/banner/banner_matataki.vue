@@ -134,6 +134,12 @@ export default {
       else return `0/${this.$point.readDailyMax}`
     }
   },
+  watch: {
+    shareModalShow(val) {
+      if (val) document.querySelector('body').style.overflow = 'hidden'
+      else document.querySelector('body').style.overflow = ''
+    }
+  },
   mounted() {
     this.getPostsStats()
     this.getUserPointStatus()
