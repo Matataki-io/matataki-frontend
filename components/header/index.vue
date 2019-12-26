@@ -210,12 +210,13 @@ export default {
           sup: '',
           urlList: ['article', 'ring-id']
         },
-        {
-          title: this.$t('home.navShop'),
-          url: 'shop',
-          sup: '',
-          urlList: ['shop']
-        },
+        // 隐藏导航栏的商品选项
+        // {
+        //   title: this.$t('home.navShop'),
+        //   url: 'shop',
+        //   sup: '',
+        //   urlList: ['shop']
+        // },
         {
           title: 'Fan票',
           url: 'token',
