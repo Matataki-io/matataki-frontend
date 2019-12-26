@@ -3,7 +3,7 @@
     <div class="banner">
       <n-link :to="{name: 'index'}" class="banner-logo">
         <img class="logo" src="@/assets/img/m_logo_square.png" alt="logo">
-        <img class="slogan" src="@/assets/img/des_logo.png" alt="slogan">
+        <img class="slogan" src="@/assets/img/des_logo2.png" alt="slogan">
       </n-link>
       <div class="banner-data">
         <!-- <div class="data">
@@ -90,19 +90,29 @@
         </el-button>
       </div>
     </div>
-  </div>
+    <Share
+      :share-modal-show="shareModalShow"
+      :minetoken-user="{nickname: '123'}"
+      :page-type="2"
+      @input="val => shareModalShow = val"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
+import Share from '@/components/token/token_share.vue'
 
 export default {
+  components: {
+    Share
+  },
   data() {
     return {
       postsStats: Object.create(null),
-      pointStatus: Object.create(null)
+      pointStatus: Object.create(null),
+      shareModalShow: false
     }
   },
   computed: {
@@ -151,7 +161,15 @@ export default {
         .catch(err => console.log('获取个人统计数据失败', err))
     }, 1000),
     share() {
-      this.$message('此功能开发中')
+      if (this.isLogined) {
+        this.shareModalShow = true
+      } else {
+        this.$alert(this.$t('error.pleaseLogin'), '提示', {
+          confirmButtonText: '确定',
+          showClose: false,
+          callback: action => this.$store.commit('setLoginModal', true)
+        })
+      }
     }
   }
 }
