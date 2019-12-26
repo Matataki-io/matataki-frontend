@@ -69,5 +69,6 @@ export const paginationUrl = {
   userBookmarks: 'user/bookmarks',
   // 通知
   notifications: '/notification/fetch',
+  // Fan 票相关创作
   minetokenRelated: 'minetoken/:id/related'
 }
