@@ -87,7 +87,6 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        padding: 0;
         margin: 0;
         z-index: 10;
         opacity: 0.5;
