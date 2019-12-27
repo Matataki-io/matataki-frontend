@@ -103,7 +103,7 @@ export default {
   font-size: 18px;
   position: fixed;
   right: 40px;
-  bottom: 186px;
+  bottom: 110px;
   color: #fff;
   display: flex;
   align-items: center;

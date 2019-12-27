@@ -56,7 +56,7 @@ export default {
   color: #fff;
   background: @purpleDark;
   cursor: pointer;
-  bottom: 126px;
+  bottom: 40px;
   right: 40px;
   text-align: center;
   display: flex;
