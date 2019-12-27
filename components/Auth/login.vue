@@ -151,13 +151,19 @@ export default {
     ...mapActions(["signIn"]),
     ...mapActions("vnt", ["login"]),
     ...mapActions("metamask", ["fetchAccount", "login"]),
+    setPathToSession(name) {
+      if (window.sessionStorage) {
+        const { pathname, search, hash } = window.location
+        sessionStorage.setItem(name, pathname + search + hash)
+      } else {
+        console.log('don\'t support sessionStorage')
+      }
+    },
     async walletLogin(type) {
+      this.setPathToSession('githubFrom')
       if (type === "GitHub") {
         this.$router.push({
-          name: "login-github",
-          query: {
-            from: this.$route.name
-          }
+          name: "login-github"
         });
         return;
       } else if (type === "Vnt") {
