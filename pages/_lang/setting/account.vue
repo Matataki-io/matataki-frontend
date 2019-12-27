@@ -362,7 +362,7 @@ export default {
         this.$router.push({
           name: 'login-github'
         })
-      } if (type === 'telegram') {
+      } else if (type === 'telegram') {
         this.$router.push({ name: 'login-telegram' })
       } else this.$message.warning('PC端暂不支持绑定')
     },
