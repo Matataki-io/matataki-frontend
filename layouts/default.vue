@@ -74,6 +74,7 @@ export default {
     },
     removeOverflowHide() {
       // 这段代码也是无奈之举
+      // 这里的代码, 如果没有找到为什么会设置 overflow hideen, 就删除了的话, 就等着加班吧 !!!
       clearInterval(this.time)
       this.time = setInterval(() => {
         const bodyDom = document.querySelector('body')
