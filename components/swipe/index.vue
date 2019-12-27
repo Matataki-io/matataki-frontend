@@ -12,7 +12,7 @@
         <div @click="viewP(index, item.id)" class="swipe-content">
           <img v-if="item.cover" :src="cover(item.cover)" :alt="item.title">
           <p>{{ item.title }}</p>
-          <!-- <div class="full" /> -->
+          <div class="full" />
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -77,9 +77,9 @@ export default {
     }
     p {
         position: absolute;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
+        bottom: 40px;
+        left: 50px;
+        right: 40px;
         font-size: 26px;
         font-weight: bold;
         letter-spacing: 1px;
@@ -89,15 +89,30 @@ export default {
         white-space: nowrap;
         padding: 0;
         margin: 0;
+        z-index: 10;
+        opacity: 0.5;
+        padding: 0 0 0 15px;
+        &::before {
+          display: block;
+          content: '';
+          width: 5px;
+          // height: 30px;
+          background: #fff;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+        }
       }
-      // .full {
-      //   position: absolute;
-      //   top: 0;
-      //   right: 0;
-      //   bottom: 0;
-      //   left: 0;
-      //   background-color: rgba(0, 0, 0, 0.1);
-      // }
+      .full {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9;
+      }
   }
 }
 </style>
@@ -107,6 +122,14 @@ export default {
     .el-carousel__item--card.is-active {
       width: 760px;
       transform: translateX(220px) scale(1) !important;
+      .full {
+          height: 120px;
+          top: auto;
+          background: linear-gradient(0, rgba(0,0,0,0.5) 0, transparent 100%);
+      }
+      p {
+        opacity: 1;
+      }
     }
     .el-carousel__arrow {
       background: transparent;
