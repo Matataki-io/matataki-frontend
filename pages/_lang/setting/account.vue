@@ -223,6 +223,13 @@ export default {
         this.accountList[idx].loading = false
       })
     },
+    setPathToSession(name, from) {
+      if (window.sessionStorage) {
+        sessionStorage.setItem(name, from)
+      } else {
+        console.log('don\'t support sessionStorage')
+      }
+    },
     async bindFunc(type, typename, idx) {
       if (type === 'email') {
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
@@ -351,11 +358,9 @@ export default {
           username: username
         }, idx)
       } else if (type === 'github') {
+        this.setPathToSession('githubFrom', 'buildAccount')
         this.$router.push({
-          name: 'login-github',
-          query: {
-            from: 'buildAccount'
-          }
+          name: 'login-github'
         })
       } if (type === 'telegram') {
         this.$router.push({ name: 'login-telegram' })
