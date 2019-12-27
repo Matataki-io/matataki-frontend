@@ -25,6 +25,6 @@ module.exports = {
     VUE_APP_PC_URL: 'https://www.matataki.io',
     WX_SHARE_HOST: 'https://smartsignature.frontenduse.top',
     TELEGRAM_IV_RHASH: '6937cb5e3b86c1',
-    TELEGRAM_BOT_NAME: 'matataki_bot'
+    TELEGRAM_BOT_NAME: 'matataki_prod_pc_bot'
   }
 }

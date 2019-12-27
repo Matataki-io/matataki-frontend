@@ -29,6 +29,11 @@ export default {
     articleImport,
     feedback
   },
+  data() {
+    return {
+      time: null
+    }
+  },
   computed: {
     loginModalShow: {
       get() {
@@ -56,16 +61,32 @@ export default {
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
     }
-
   },
   created() {
 
   },
   mounted() {
     this.$store.dispatch('testLogin')
+    this.removeOverflowHide()
   },
   methods: {
     importArticle() {
+    },
+    removeOverflowHide() {
+      // 这段代码也是无奈之举
+      // 这里的代码, 如果没有找到为什么会设置 overflow hideen, 就删除了的话, 就等着加班吧 !!!
+      clearInterval(this.time)
+      this.time = setInterval(() => {
+        const bodyDom = document.querySelector('body')
+        if (bodyDom.style.overflow) {
+          const dialog = document.querySelector('.el-dialog__wrapper')
+          if (dialog) {
+            if (dialog.style.display === 'none') bodyDom.style.overflow = 'auto'
+          } else {
+            bodyDom.style.overflow = 'auto'
+          }
+        }
+      }, 1000)
     }
   }
 }
