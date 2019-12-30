@@ -975,6 +975,7 @@ export default {
               promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
               Promise.all(promiseArr).then(res => {
                 this.success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
+                this.fullscreenLoading = false // remove full loading
               }).catch(err => {
                 console.log('err', err)
                 this.$message.error(err)
@@ -1048,6 +1049,7 @@ export default {
           promiseArr.push(this.articlePrices(res.data)) // 支付通证
           Promise.all(promiseArr).then(() => {
             success(res.data)
+            this.fullscreenLoading = false // remove full loading
           }).catch(err => {
             console.log('err', err)
             this.$message.error(err)
