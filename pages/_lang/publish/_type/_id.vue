@@ -978,6 +978,7 @@ export default {
               }).catch(err => {
                 console.log('err', err)
                 this.$message.error(err)
+                this.fullscreenLoading = false // remove full loading
               })
             } else {
               this.$message.error(res.message)
@@ -985,10 +986,12 @@ export default {
             }
           }).catch(err => {
             this.$message.error(err)
+            this.fullscreenLoading = false // remove full loading
           })
         }
       } catch (error) {
         console.error(error)
+        this.fullscreenLoading = false // remove full loading
         failed(error)
         throw error
       }
@@ -1026,28 +1029,40 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
+      const { failed, success } = this
       let signature = null
-      // refactor: 对 VNT 的处理弄在了.invalidId()
-      if (this.currentUserInfo.idProvider === 'MetaMask') {
-        signature = await getSignatureForPublish(hash)
-        const [publicKey] = await window.web3.eth.getAccounts()
-        signature = Object.assign(signature, { publicKey })
-      } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        signature = await this.getSignatureOfArticle({ author, hash })
+      try {
+        // refactor: 对 VNT 的处理弄在了.invalidId()
+        if (this.currentUserInfo.idProvider === 'MetaMask') {
+          signature = await getSignatureForPublish(hash)
+          const [publicKey] = await window.web3.eth.getAccounts()
+          signature = Object.assign(signature, { publicKey })
+        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+          signature = await this.getSignatureOfArticle({ author, hash })
+        }
+        const res = await this.$API.editArticle({ article, signature })
+        if (res.code === 0) {
+          // 发送完成开始设置阅读权限 因为需要返回的id
+          const promiseArr = []
+          promiseArr.push(this.postMineTokens(res.data)) // 持通证阅读
+          promiseArr.push(this.articlePrices(res.data)) // 支付通证
+          Promise.all(promiseArr).then(() => {
+            success(res.data)
+          }).catch(err => {
+            console.log('err', err)
+            this.$message.error(err)
+            this.fullscreenLoading = false // remove full loading
+          })
+        } else {
+          this.$message.error(res.message)
+          throw new Error(res.message)
+        }
+      } catch (error) {
+        console.error(error)
+        this.fullscreenLoading = false // remove full loading
+        failed(error)
+        throw error
       }
-      const response = await this.$API.editArticle({ article, signature })
-      if (response.code === 0) {
-        // 发送完成开始设置阅读权限 因为需要返回的id
-        const promiseArr = []
-        promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
-        promiseArr.push(this.articlePrices(response.data)) // 支付通证
-        Promise.all(promiseArr).then(() => {
-          this.success(response.data)
-        }).catch(err => {
-          console.log('err', err)
-          this.$message.error(err)
-        })
-      } else this.failed(this.$t('error.failTry'))
     },
     // 删除草稿
     async delDraft(id) {
@@ -1116,8 +1131,15 @@ export default {
         }
         // 发布文章
         this.fullscreenLoading = true
-        const { hash } = await this.sendPost({ title, author, content })
-        this.fullscreenLoading = false
+        let hash = ''
+        try {
+          const res = await this.sendPost({ title, author, content })
+          hash = res.hash
+        } catch (error) {
+          console.log(error)
+          this.fullscreenLoading = false // remove full loading
+        }
+        // this.fullscreenLoading = false // remove full loading
         // console.log('sendPost result :', hash)
         this.publishArticle({
           author,
@@ -1144,9 +1166,16 @@ export default {
         }
 
         this.fullscreenLoading = true
-        // 编辑文章
-        const { hash } = await this.sendPost({ title, author, content })
-        this.fullscreenLoading = false
+        let hash = ''
+        try {
+          // 编辑文章
+          const res = await this.sendPost({ title, author, content })
+          hash = res.hash
+        } catch (error) {
+          console.log(error)
+          this.fullscreenLoading = false // remove full loading
+        }
+        // this.fullscreenLoading = false // remove full loading
         this.editArticle({
           signId: this.signId,
           author,
