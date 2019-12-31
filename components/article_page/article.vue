@@ -28,20 +28,10 @@
       </div>
     </el-popover> -->
 
-    <div slot="sort">
-      <div class="sort">
-        <span @click="sortValue = options[0].value" :class="sortValue === options[0].value && 'active'">{{ options[0].label }}</span>
-        &nbsp;/&nbsp;
-        <span @click="sortValue = options[1].value" :class="sortValue === options[1].value && 'active'">{{ options[1].label }}</span>
-      </div>
-      <!-- <el-select v-model="sortValue" class="sort-articles" size="small">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select> -->
+    <div slot="sort" class="sort">
+      <span @click="sortValue = options[0].value" :class="sortValue === options[0].value && 'active'">{{ options[0].label }}</span>
+      &nbsp;/&nbsp;
+      <span @click="sortValue = options[1].value" :class="sortValue === options[1].value && 'active'">{{ options[1].label }}</span>
     </div>
 
     <articleCardListNew
