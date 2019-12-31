@@ -80,7 +80,7 @@
     </div>
 
     <el-row class="mw token-container">
-      <el-col :span="18">
+      <el-col :span="17">
         <div class="introduction">
           <h2 class="token-title">
             介绍
@@ -167,7 +167,7 @@
 
         <tokenRelated class="related" />
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7">
         <!-- <router-link class="exchange" :to="{name: 'exchange'}">
           <svg-icon
             class="tokens"
@@ -176,6 +176,8 @@
           Fan票交易所
         </router-link>-->
         <tokenBuyCard :token="minetokenToken" />
+
+        <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" />
 
         <div class="about">
           <h2 class="token-title">
@@ -228,6 +230,7 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
@@ -244,7 +247,8 @@ export default {
     Share,
     socialIcon,
     tokenBuyCard,
-    tokenRelated
+    tokenRelated,
+    TokenJoinFandom
   },
   // head() {
   //   return {
@@ -504,7 +508,7 @@ export default {
   margin: 20px auto 40px;
   padding-left: 10px;
   padding-right: 10px;
-  .el-col-18 {
+  .el-col-17 {
     padding-right: 20px;
   }
 }
