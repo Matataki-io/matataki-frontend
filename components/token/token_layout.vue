@@ -52,14 +52,23 @@
               </div>
             </div>
           </div>
+          <div class="link-btn">
+            <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
+              <el-button class="btn" size="small">
+                <svg-icon icon-class="eth_mini" />
+                链上查看
+              </el-button>
+            </a>
+          </div>
           <div class="share-btn">
             <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
-              <el-button size="small" icon="el-icon-setting">
+              <el-button class="btn" size="small" icon="el-icon-setting">
                 管理
               </el-button>
             </router-link>
-            <el-button @click="shareModalShow = true" size="small">
-              <svg-icon icon-class="share_new" />分享
+            <el-button @click="shareModalShow = true" class="btn" size="small">
+              <svg-icon icon-class="share_new" />
+              分享
             </el-button>
           </div>
           <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
@@ -472,6 +481,23 @@ export default {
   position: absolute;
   right: 20px;
   bottom: 20px;
+  .btn {
+    padding: 7px 21px;
+    font-size: 14px;
+    border-radius:6px;
+    margin-left: 5px;
+  }
+}
+
+.link-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 60px;
+  .btn {
+    padding: 7px 7px;
+    font-size: 14px;
+    border-radius:6px;
+  }
 }
 
 .token-container {
