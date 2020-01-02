@@ -358,7 +358,7 @@ export default {
       else return 'rgb(153, 153, 153)'
     },
     friendlyDate() {
-      const time = moment(this.minetokenUser.create_time)
+      const time = moment(this.minetokenToken.create_time)
       return this.$utils.isNDaysAgo(2, time)
         ? time.format('lll')
         : time.fromNow()
