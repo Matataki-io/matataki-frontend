@@ -26,18 +26,19 @@
         </div>
       </div>
     </div>
-    <!-- 展开更多 -->
-    <div v-if="fandomData.length > 1" class="expand-page">
-      <a v-if="isExpand" @click="isExpand = false">
-        收起列表
-        <svg-icon class="svg-top" icon-class="arrow_down" />
-      </a>
-      <a v-else @click="isExpand = true">
-        查看更多
-        <svg-icon icon-class="arrow_down" />
-      </a>
-    </div>
+    <!-- 分页按钮 -->
+    <el-pagination
+      v-if="fandomData.length > 5"
+      :total="fandomData.length"
+      :page-size="pageSize"
+      @current-change="handleCurrentChange"
+      class="pagination"
+      small
+      background
+      layout="prev, pager, next"
+    />
 
+    <!-- [弹窗]入群指南 -->
     <el-dialog :visible.sync="showHelp" width="360px" title="入群指南" center>
       <p class="subtitle">
         根据以下步骤操作加入Fan票的粉丝群
@@ -102,10 +103,11 @@ export default {
   },
   data() {
     return {
-      isExpand: false,
       showHelp: false,
       bindStatus: false,
       balance: 100,
+      pageNum: 1,
+      pageSize: 5,
       fandomData: [
         {
           fandomId: '0',
@@ -130,6 +132,24 @@ export default {
           name: '新手粉丝群',
           people: 1358,
           minBalance: 10
+        },
+        {
+          fandomId: '4',
+          name: '超级粉丝群',
+          people: 2345,
+          minBalance: 198
+        },
+        {
+          fandomId: '5',
+          name: '黑粉群',
+          people: 450,
+          minBalance: 0
+        },
+        {
+          fandomId: '6',
+          name: '核心粉丝群',
+          people: 3671,
+          minBalance: 9999
         }
       ]
     }
@@ -138,7 +158,13 @@ export default {
     ...mapGetters(['isLogined']),
     /** 控制数据是否展开 */
     fandomList() {
-      return this.isExpand ? this.fandomData : [this.fandomData[0]]
+      const pageNum = this.pageNum - 1
+      return this.fandomData.slice(pageNum * this.pageSize, this.pageNum * this.pageSize)
+    }
+  },
+  watch: {
+    isLogined(val) {
+      if (val) this.getAccountStatus()
     }
   },
   mounted() {
@@ -184,11 +210,11 @@ export default {
         .accountList()
         .then(res => {
           if (res.code === 0) {
-            // console.log('账号绑定状态：',res)
+            console.log('账号绑定状态：', res)
             const filterPlatform = res.data.filter(
               j => j.platform === 'telegram'
             )
-            // console.log(filterPlatform)
+            console.log(filterPlatform)
             if (filterPlatform.length > 0) {
               this.bindStatus = !!filterPlatform[0].status
             } else {
@@ -201,6 +227,9 @@ export default {
         .catch(err => {
           console.log('err', err)
         })
+    },
+    handleCurrentChange(val) {
+      this.pageNum = val
     }
   }
 }
@@ -234,7 +263,7 @@ export default {
   }
 }
 .fandom-unit {
-  margin: 20px 0;
+  margin: 20px 0 0;
   .fandom-text {
     flex: 1;
     h2 {
@@ -348,5 +377,9 @@ a{
       margin-top: 40px;
     }
   }
+}
+.pagination {
+  margin-top: 13px;
+  text-align: center;
 }
 </style>
