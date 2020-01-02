@@ -210,11 +210,11 @@ export default {
         .accountList()
         .then(res => {
           if (res.code === 0) {
-            console.log('账号绑定状态：', res)
+            // console.log('账号绑定状态：', res)
             const filterPlatform = res.data.filter(
               j => j.platform === 'telegram'
             )
-            console.log(filterPlatform)
+            // console.log(filterPlatform)
             if (filterPlatform.length > 0) {
               this.bindStatus = !!filterPlatform[0].status
             } else {
