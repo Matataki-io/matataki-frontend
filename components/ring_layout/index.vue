@@ -2,11 +2,16 @@
   <div class="ring">
     <g-header />
     <div class="ring-logo">
-      <img v-if="logo" :src="logoSrc" :alt="symbol">
+      <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
+        <img v-if="logo" :src="logoSrc" :alt="symbol">
+      </router-link>
     </div>
-    <p class="ring-logo-title">
-      {{ symbol }}{{ name ? (name) : '' }}
-    </p>
+    <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
+      <p class="ring-logo-title">
+        {{ symbol }}{{ name ? (name) : '' }}
+        <i class="el-icon-arrow-right" />
+      </p>
+    </router-link>
 
     <div class="ring-head">
       <div class="ring-title">
@@ -95,6 +100,9 @@ export default {
     font-weight:600;
     color:rgba(0,0,0,1);
     line-height:28px;
+    i {
+      font-weight:600;
+    }
   }
 
   &-head {
