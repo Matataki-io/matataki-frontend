@@ -28,14 +28,11 @@
       </div>
     </el-popover> -->
 
-    <el-select slot="sort" v-model="sortValue" class="sort-articles" size="small">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
-    </el-select>
+    <div slot="sort" class="sort">
+      <span @click="sortValue = options[0].value" :class="sortValue === options[0].value && 'active'">{{ options[0].label }}</span>
+      &nbsp;/&nbsp;
+      <span @click="sortValue = options[1].value" :class="sortValue === options[1].value && 'active'">{{ options[1].label }}</span>
+    </div>
 
     <articleCardListNew
       v-for="item in articleCardData[sortValue].articles"
@@ -48,6 +45,7 @@
         :params="articleCardData[sortValue].params"
         :api-url="articleCardData[sortValue].apiUrl"
         :is-atuo-request="articleCardData[sortValue].isAtuoRequest"
+        :autoRequestTime="articleCardData[sortValue].autoRequestTime"
         @buttonLoadMore="buttonLoadMore"
       />
     </div>
@@ -102,8 +100,9 @@ export default {
             filter: null,
             extra: 'short_content'
           },
-          apiUrl: 'homeScoreRanking',
+          apiUrl: 'homeTimeRanking',
           articles: [],
+          autoRequestTime: 0,
           isAtuoRequest: false
         },
         {
@@ -112,18 +111,19 @@ export default {
             filter: null,
             extra: 'short_content'
           },
-          apiUrl: 'homeTimeRanking',
+          apiUrl: 'homeScoreRanking',
           articles: [],
-          isAtuoRequest: true
+          autoRequestTime: 0,
+          isAtuoRequest: false
         }
       ],
       checkedFilter: ['1', '2', '4'],
       options: [{
         value: 0,
-        label: this.$t('home.articleNavHotTitle')
+        label: this.$t('home.articleNavNowTitle')
       }, {
         value: 1,
-        label: this.$t('home.articleNavNowTitle')
+        label: this.$t('home.articleNavHotTitle')
       }],
       sortValue: 0
     }
@@ -140,7 +140,7 @@ export default {
   watch: {
     sortValue(value) {
       this.articleCardData[value].articles = []
-      this.onCheckedFilterChanged()
+      this.articleCardData[value].autoRequestTime = Date.now()
     }
   },
   created() {
@@ -203,5 +203,20 @@ export default {
 
 .sort-articles {
   width: 100px;
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  span {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    &.active {
+      font-weight: bold;
+      color: @purpleDark;
+    }
+  }
 }
 </style>

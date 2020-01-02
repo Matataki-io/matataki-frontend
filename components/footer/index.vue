@@ -27,6 +27,9 @@
           <a class="href" target="_blank" href="https://github.com/smart-signature/MATATAKI_FE">
             {{ $t('footer.about') }}
           </a>
+          <a class="href" target="_blank" href="https://www.matataki.io/p/1059">
+            {{ $t('footer.updateRecord') }}
+          </a>
           <a class="href" target="_blank" href="http://www.matataki.io/p/616">
             {{ $t('footer.billboard') }}
           </a>

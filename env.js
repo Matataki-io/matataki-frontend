@@ -11,7 +11,9 @@ module.exports = {
     VUE_APP_PC_URL: 'https://wwwtest.smartsignature.io',
     WX_SHARE_HOST: 'https://sstest.frontenduse.top',
     TELEGRAM_IV_RHASH: '71acceb5462fa6',
-    TELEGRAM_BOT_NAME: 'matataki_test_pc_bot'
+    TELEGRAM_BOT_NAME: 'matataki_test_pc_bot',
+    TELEGRAM_FANDOM_BOT: 'matataki_testing_bot',
+    FANDOM_SERVER_API: 'https://us-central1-fanpiao-bot-data.cloudfunctions.net'
   },
   production: {
     NODE: 'production',
@@ -25,6 +27,8 @@ module.exports = {
     VUE_APP_PC_URL: 'https://www.matataki.io',
     WX_SHARE_HOST: 'https://smartsignature.frontenduse.top',
     TELEGRAM_IV_RHASH: '6937cb5e3b86c1',
-    TELEGRAM_BOT_NAME: 'matataki_prod_pc_bot'
+    TELEGRAM_BOT_NAME: 'matataki_prod_pc_bot',
+    TELEGRAM_FANDOM_BOT: 'matatakibot',
+    FANDOM_SERVER_API: 'https://us-central1-fanpiao-bot-data-prod.cloudfunctions.net'
   }
 }
