@@ -1,5 +1,5 @@
 <template>
-  <div class="fandom-card">
+  <div v-if="fandomData.length > 0" class="fandom-card">
     <div class="fl">
       <h2 class="token-title">
         加入{{ tokenSymbol }}粉丝群
@@ -10,20 +10,24 @@
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
       <div class="fandom-text">
         <h2>
-          {{ fandom.name }}
-          <span>（已有{{ fandom.people }}人）</span>
+          {{ fandom.title }}
+          <span>（已有{{ fandom.groupSize }}人）</span>
         </h2>
         <p class="condition">
-          持有的{{ tokenSymbol }}票>{{ fandom.minBalance }}即可加群
+          持有的{{ tokenSymbol }}票>{{ fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0 }}即可加群
         </p>
       </div>
       <div>
-        <el-button v-if="!isLogined || fandom.minBalance <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
+        <el-button @click="addFandom(fandom)" class="add-button top10" size="small">
+          加群
+        </el-button>
+        <!-- 目前不方便获取余额 -->
+        <!-- <el-button v-if="!isLogined || fandom.requirement.minetoken.amount <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
           加群
         </el-button>
         <div v-else class="disable top10">
           持票不足
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- 分页按钮 -->
@@ -91,6 +95,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   components: {
@@ -98,6 +103,10 @@ export default {
   props: {
     tokenSymbol: {
       type: String,
+      required: true
+    },
+    tokenId: {
+      type: Number,
       required: true
     }
   },
@@ -109,48 +118,48 @@ export default {
       pageNum: 1,
       pageSize: 5,
       fandomData: [
-        {
-          fandomId: '0',
-          name: '高级粉丝群',
-          people: 250,
-          minBalance: 200
-        },
-        {
-          fandomId: '1',
-          name: '中级粉丝群',
-          people: 519,
-          minBalance: 100
-        },
-        {
-          fandomId: '2',
-          name: '初级粉丝群',
-          people: 879,
-          minBalance: 50
-        },
-        {
-          fandomId: '3',
-          name: '新手粉丝群',
-          people: 1358,
-          minBalance: 10
-        },
-        {
-          fandomId: '4',
-          name: '超级粉丝群',
-          people: 2345,
-          minBalance: 198
-        },
-        {
-          fandomId: '5',
-          name: '黑粉群',
-          people: 450,
-          minBalance: 0
-        },
-        {
-          fandomId: '6',
-          name: '核心粉丝群',
-          people: 3671,
-          minBalance: 9999
-        }
+        // {
+        //   fandomId: '0',
+        //   name: '高级粉丝群',
+        //   people: 250,
+        //   minBalance: 200
+        // },
+        // {
+        //   fandomId: '1',
+        //   name: '中级粉丝群',
+        //   people: 519,
+        //   minBalance: 100
+        // },
+        // {
+        //   fandomId: '2',
+        //   name: '初级粉丝群',
+        //   people: 879,
+        //   minBalance: 50
+        // },
+        // {
+        //   fandomId: '3',
+        //   name: '新手粉丝群',
+        //   people: 1358,
+        //   minBalance: 10
+        // },
+        // {
+        //   fandomId: '4',
+        //   name: '超级粉丝群',
+        //   people: 2345,
+        //   minBalance: 198
+        // },
+        // {
+        //   fandomId: '5',
+        //   name: '黑粉群',
+        //   people: 450,
+        //   minBalance: 0
+        // },
+        // {
+        //   fandomId: '6',
+        //   name: '核心粉丝群',
+        //   people: 3671,
+        //   minBalance: 9999
+        // }
       ]
     }
   },
@@ -169,6 +178,7 @@ export default {
   },
   mounted() {
     if (this.isLogined) this.getAccountStatus()
+    this.getFandomList()
   },
   methods: {
     /** 申请加群 */
@@ -183,8 +193,8 @@ export default {
         this.showHelp = true
         return
       }
-      console.log('加群：', fandom.name)
-      this.$message(`申请加入：${fandom.name} 此功能还在开发中`)
+      console.log('加群：', fandom.title)
+      window.open(`https://t.me/${process.env.TELEGRAM_FANDOM_BOT}?start=${fandom.id}`)
     },
     /** 绑定tg账号 */
     setTelegram() {
@@ -227,6 +237,24 @@ export default {
         .catch(err => {
           console.log('err', err)
         })
+    },
+    getFandomList() {
+      const _axios = axios.create({
+        baseURL: process.env.FANDOM_SERVER_API,
+        timeout: 20000,
+        headers: {}
+      })
+      _axios.get(`/api/token/${this.tokenId}`).then(res => {
+        const { data } = res
+        if (data.status) {
+          console.log('粉丝群列表：', data)
+          this.fandomData = data.result
+        } else {
+          console.log('获取粉丝群列表失败', data.error)
+        }
+      }).catch(err => {
+        console.log('err', err)
+      })
     },
     handleCurrentChange(val) {
       this.pageNum = val
