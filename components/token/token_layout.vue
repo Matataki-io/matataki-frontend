@@ -16,6 +16,9 @@
                   {{ minetokenToken.name }}
                 </p>
               </div>
+              <div>
+                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+              </div>
             </div>
             <div class="fl info-line">
               <div class="token-info-title">
@@ -69,7 +72,9 @@
               分享
             </el-button>
           </div>
-          <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+          <div class="balance">
+            已持有：{{ balance }} {{ minetokenToken.symbol }}
+          </div>
         </div>
         <p v-if="!minetokenToken.contract_address" class="warning">
           fan票正在发布中，请稍后过来操作!
@@ -237,6 +242,7 @@ import socialIcon from '@/components/social_icon/index.vue'
 import tokenRelated from '@/components/token/token_related.vue'
 import socialTypes from '@/config/social_types.js'
 import { precision } from '@/utils/precisionConversion'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -286,11 +292,12 @@ export default {
       resourcesSocialss: [],
       resourcesWebsites: [],
       showTokenSetting: false,
-      tabPage: Number(this.$route.query.tab) || 0
+      tabPage: Number(this.$route.query.tab) || 0,
+      balance: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo']),
+    ...mapGetters(['currentUserInfo', 'isLogined']),
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo
@@ -374,6 +381,11 @@ export default {
       })
       this.$route.query.page = 1 // This is a hack. It wasted me a lot of time!!!
       this.$emit('input', val)
+    },
+    isLogined(val) {
+      if (val) {
+        this.getUserBalance()
+      }
     }
   },
   created() {
@@ -382,6 +394,7 @@ export default {
   },
   mounted() {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    if (this.isLogined) this.getUserBalance()
   },
   methods: {
     async minetokenId(id) {
@@ -418,6 +431,13 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    getUserBalance() {
+      this.$API.getUserBalance(Number(this.$route.params.id)).then(res => {
+        if (res.code === 0) {
+          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
+        }
+      })
     },
     async tokenUserId(id) {
       await this.$API
@@ -652,7 +672,12 @@ export default {
   font-size: 14px;
   color: #868686;
   text-decoration: underline;
+  margin-left: 20px;
+}
+.balance{
   position: absolute;
+  font-weight:400;
+  font-size:16px;
   right: 20px;
   top: 20px;
 }
