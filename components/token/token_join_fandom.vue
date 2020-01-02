@@ -18,16 +18,12 @@
         </p>
       </div>
       <div>
-        <el-button @click="addFandom(fandom)" class="add-button top10" size="small">
-          加群
-        </el-button>
-        <!-- 目前不方便获取余额 -->
-        <!-- <el-button v-if="!isLogined || fandom.requirement.minetoken.amount <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
+        <el-button v-if="!isLogined || fandom.requirement.minetoken.amount <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
           加群
         </el-button>
         <div v-else class="disable top10">
           持票不足
-        </div> -->
+        </div>
       </div>
     </div>
     <!-- 分页按钮 -->
@@ -96,6 +92,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -117,50 +114,7 @@ export default {
       balance: 100,
       pageNum: 1,
       pageSize: 5,
-      fandomData: [
-        // {
-        //   fandomId: '0',
-        //   name: '高级粉丝群',
-        //   people: 250,
-        //   minBalance: 200
-        // },
-        // {
-        //   fandomId: '1',
-        //   name: '中级粉丝群',
-        //   people: 519,
-        //   minBalance: 100
-        // },
-        // {
-        //   fandomId: '2',
-        //   name: '初级粉丝群',
-        //   people: 879,
-        //   minBalance: 50
-        // },
-        // {
-        //   fandomId: '3',
-        //   name: '新手粉丝群',
-        //   people: 1358,
-        //   minBalance: 10
-        // },
-        // {
-        //   fandomId: '4',
-        //   name: '超级粉丝群',
-        //   people: 2345,
-        //   minBalance: 198
-        // },
-        // {
-        //   fandomId: '5',
-        //   name: '黑粉群',
-        //   people: 450,
-        //   minBalance: 0
-        // },
-        // {
-        //   fandomId: '6',
-        //   name: '核心粉丝群',
-        //   people: 3671,
-        //   minBalance: 9999
-        // }
-      ]
+      fandomData: []
     }
   },
   computed: {
@@ -173,11 +127,17 @@ export default {
   },
   watch: {
     isLogined(val) {
-      if (val) this.getAccountStatus()
+      if (val) {
+        this.getAccountStatus()
+        this.getUserBalance()
+      }
     }
   },
   mounted() {
-    if (this.isLogined) this.getAccountStatus()
+    if (this.isLogined) {
+      this.getAccountStatus()
+      this.getUserBalance()
+    }
     this.getFandomList()
   },
   methods: {
@@ -247,13 +207,20 @@ export default {
       _axios.get(`/api/token/${this.tokenId}`).then(res => {
         const { data } = res
         if (data.status) {
-          console.log('粉丝群列表：', data)
           this.fandomData = data.result
         } else {
           console.log('获取粉丝群列表失败', data.error)
         }
       }).catch(err => {
         console.log('err', err)
+      })
+    },
+    getUserBalance() {
+      this.$API.getUserBalance(this.tokenId).then(res => {
+        if (res.code === 0) {
+          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
+          // console.log('账户余额：', this.balance, res.data)
+        }
       })
     },
     handleCurrentChange(val) {
