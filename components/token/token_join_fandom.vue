@@ -10,15 +10,15 @@
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
       <div class="fandom-text">
         <h2>
-          {{ fandom.title }}
+          {{ getTitle(fandom) }}
           <span>（已有{{ fandom.groupSize }}人）</span>
         </h2>
         <p class="condition">
-          持有的{{ tokenSymbol }}票>{{ fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0 }}即可加群
+          持有的{{ tokenSymbol }}票>{{ getMinBalance(fandom) }}即可加群
         </p>
       </div>
       <div>
-        <el-button v-if="!isLogined || fandom.requirement.minetoken.amount <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
+        <el-button v-if="!isLogined || getMinBalance(fandom) <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
           加群
         </el-button>
         <div v-else class="disable top10">
@@ -225,6 +225,14 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNum = val
+    },
+    getMinBalance(fandom) {
+      return fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0
+    },
+    getTitle(fandom) {
+      const max = 8
+      if (fandom.title.length >= max) return fandom.title.substring(0, max) + '...'
+      return fandom.title
     }
   }
 }
