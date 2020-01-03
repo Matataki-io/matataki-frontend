@@ -682,6 +682,7 @@ export default {
     privacyPolicy: 'Privacy Policy',
     userAgreement: 'user agreement',
     about: 'About us',
+    updateRecord: 'update record',
     billboard: 'Smart Bulletin Board',
     link: 'Friendly link',
     linkidol: 'Link Idol',

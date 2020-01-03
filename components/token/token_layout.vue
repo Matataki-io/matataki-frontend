@@ -16,6 +16,9 @@
                   {{ minetokenToken.name }}
                 </p>
               </div>
+              <div>
+                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+              </div>
             </div>
             <div class="fl info-line">
               <div class="token-info-title">
@@ -52,15 +55,13 @@
               </div>
             </div>
           </div>
-          <div class="link-btn">
+          <div class="share-btn">
             <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
-              <el-button class="btn" size="small">
+              <el-button class="link-btn" size="small">
                 <svg-icon icon-class="eth_mini" />
                 链上查看
               </el-button>
             </a>
-          </div>
-          <div class="share-btn">
             <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
               <el-button class="btn" size="small" icon="el-icon-setting">
                 管理
@@ -71,7 +72,9 @@
               分享
             </el-button>
           </div>
-          <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+          <div class="balance">
+            已持有：{{ balance }} {{ minetokenToken.symbol }}
+          </div>
         </div>
         <p v-if="!minetokenToken.contract_address" class="warning">
           fan票正在发布中，请稍后过来操作!
@@ -80,7 +83,7 @@
     </div>
 
     <el-row class="mw token-container">
-      <el-col :span="18">
+      <el-col :span="17">
         <div class="introduction">
           <h2 class="token-title">
             介绍
@@ -167,7 +170,7 @@
 
         <tokenRelated class="related" />
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7">
         <!-- <router-link class="exchange" :to="{name: 'exchange'}">
           <svg-icon
             class="tokens"
@@ -176,6 +179,8 @@
           Fan票交易所
         </router-link>-->
         <tokenBuyCard :token="minetokenToken" />
+
+        <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" :token-id="Number($route.params.id)" />
 
         <div class="about">
           <h2 class="token-title">
@@ -228,6 +233,7 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
@@ -236,6 +242,7 @@ import socialIcon from '@/components/social_icon/index.vue'
 import tokenRelated from '@/components/token/token_related.vue'
 import socialTypes from '@/config/social_types.js'
 import { precision } from '@/utils/precisionConversion'
+import utils from '@/utils/utils'
 
 export default {
   components: {
@@ -244,7 +251,8 @@ export default {
     Share,
     socialIcon,
     tokenBuyCard,
-    tokenRelated
+    tokenRelated,
+    TokenJoinFandom
   },
   // head() {
   //   return {
@@ -284,11 +292,12 @@ export default {
       resourcesSocialss: [],
       resourcesWebsites: [],
       showTokenSetting: false,
-      tabPage: Number(this.$route.query.tab) || 0
+      tabPage: Number(this.$route.query.tab) || 0,
+      balance: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo']),
+    ...mapGetters(['currentUserInfo', 'isLogined']),
     logo() {
       if (!this.minetokenToken.logo) return ''
       return this.minetokenToken.logo
@@ -356,10 +365,7 @@ export default {
       else return 'rgb(153, 153, 153)'
     },
     friendlyDate() {
-      const time = moment(this.minetokenUser.create_time)
-      return this.$utils.isNDaysAgo(2, time)
-        ? time.format('lll')
-        : time.fromNow()
+      return moment(this.minetokenToken.create_time).format('lll')
     }
   },
   watch: {
@@ -375,6 +381,11 @@ export default {
       })
       this.$route.query.page = 1 // This is a hack. It wasted me a lot of time!!!
       this.$emit('input', val)
+    },
+    isLogined(val) {
+      if (val) {
+        this.getUserBalance()
+      }
     }
   },
   created() {
@@ -383,6 +394,7 @@ export default {
   },
   mounted() {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
+    if (this.isLogined) this.getUserBalance()
   },
   methods: {
     async minetokenId(id) {
@@ -419,6 +431,13 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    getUserBalance() {
+      this.$API.getUserBalance(Number(this.$route.params.id)).then(res => {
+        if (res.code === 0) {
+          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
+        }
+      })
     },
     async tokenUserId(id) {
       await this.$API
@@ -487,13 +506,7 @@ export default {
     border-radius:6px;
     margin-left: 5px;
   }
-}
-
-.link-btn {
-  position: absolute;
-  right: 20px;
-  bottom: 60px;
-  .btn {
+  .link-btn {
     padding: 7px 7px;
     font-size: 14px;
     border-radius:6px;
@@ -504,7 +517,7 @@ export default {
   margin: 20px auto 40px;
   padding-left: 10px;
   padding-right: 10px;
-  .el-col-18 {
+  .el-col-17 {
     padding-right: 20px;
   }
 }
@@ -659,7 +672,12 @@ export default {
   font-size: 14px;
   color: #868686;
   text-decoration: underline;
+  margin-left: 20px;
+}
+.balance{
   position: absolute;
+  font-weight:400;
+  font-size:16px;
   right: 20px;
   top: 20px;
 }

@@ -648,6 +648,7 @@ export default {
     privacyPolicy: '隐私政策',
     userAgreement: '用户协议',
     about: '关于我们',
+    updateRecord: '更新记录',
     billboard: '智能公告牌',
     link: '友情链接',
     linkidol: '链接偶像',
