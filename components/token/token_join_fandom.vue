@@ -15,7 +15,7 @@
               {{ fandom.title }}
             </h2>
           </el-tooltip>
-          <span>（已有{{ fandom.groupSize }}人）</span>
+          <span>（{{ fandom.groupSize }}人）</span>
         </div>
         <p class="condition">
           持有的{{ tokenSymbol }}票 ≥{{ getMinBalance(fandom) }} 即可加群
@@ -43,17 +43,15 @@
     />
 
     <!-- [弹窗]入群指南 -->
-    <el-dialog :visible.sync="showHelp" width="360px" title="入群指南" center>
-      <p class="subtitle">
+    <el-dialog :visible.sync="showHelp" width="360px" title="入群指南" center custom-class="fandom-popups-title">
+      <!-- <p class="subtitle">
         根据以下步骤操作加入Fan票的粉丝群
-      </p>
+      </p> -->
       <div class="fl help-step top">
         <div class="help-text">
           <h3>
             步骤
-            <div class="help-serial">
-              1
-            </div>
+            <svg-icon class="help-serial" icon-class="step1" />
           </h3>
           <p class="introduction">
             绑定Telegram账号
@@ -75,18 +73,28 @@
           </el-button>
         </div>
       </div>
+      <div class="fl help-step top">
+        <div class="help-text">
+          <h3>
+            步骤
+            <svg-icon class="help-serial" icon-class="step2" />
+          </h3>
+          <p class="introduction">
+            完成入群条件
+          </p>
+          <p>购买并持有特定数量的Fan票</p>
+        </div>
+      </div>
       <div class="fl help-step">
         <div class="help-text">
           <h3>
             步骤
-            <div class="help-serial">
-              2
-            </div>
+            <svg-icon class="help-serial" icon-class="step3" />
           </h3>
           <p class="introduction">
             点击加群按钮
           </p>
-          <p>根据机器人的指引入群</p>
+          <p>根据机器人的引导入群</p>
         </div>
       </div>
     </el-dialog>
@@ -109,13 +117,16 @@ export default {
     tokenId: {
       type: Number,
       required: true
+    },
+    balance: {
+      type: Number,
+      required: true
     }
   },
   data() {
     return {
       showHelp: false,
       bindStatus: false,
-      balance: 100,
       pageNum: 1,
       pageSize: 5,
       fandomData: []
@@ -133,14 +144,12 @@ export default {
     isLogined(val) {
       if (val) {
         this.getAccountStatus()
-        this.getUserBalance()
       }
     }
   },
   mounted() {
     if (this.isLogined) {
       this.getAccountStatus()
-      this.getUserBalance()
     }
     this.getFandomList()
   },
@@ -217,14 +226,6 @@ export default {
         }
       }).catch(err => {
         console.log('err', err)
-      })
-    },
-    getUserBalance() {
-      this.$API.getUserBalance(this.tokenId).then(res => {
-        if (res.code === 0) {
-          this.balance = parseFloat(utils.fromDecimal(res.data, 4))
-          // console.log('账户余额：', this.balance, res.data)
-        }
       })
     },
     handleCurrentChange(val) {
@@ -363,17 +364,7 @@ a{
       }
     }
     .help-serial {
-      display: inline-block;
-      background-color: black;
-      color: white;
-      text-align: center;
-      border-radius: 50%;
-      font-size: 8px;
-      font-weight: 500;
       margin-left: 5px;
-      padding: 1.5px 4.7px;
-      position: relative;
-      bottom: 2px;
     }
   }
   .help-touch {
@@ -389,5 +380,14 @@ a{
 .pagination {
   margin-top: 13px;
   text-align: center;
+}
+</style>
+
+<style lang="less">
+.fandom-popups-title {
+  border-radius: 6px;
+  .el-dialog__title {
+    font-weight: 600;
+  }
 }
 </style>

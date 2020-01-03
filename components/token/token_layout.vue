@@ -180,7 +180,7 @@
         </router-link>-->
         <tokenBuyCard :token="minetokenToken" />
 
-        <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" :token-id="Number($route.params.id)" />
+        <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" :token-id="Number($route.params.id)" :balance="balance" />
 
         <div class="about">
           <h2 class="token-title">
