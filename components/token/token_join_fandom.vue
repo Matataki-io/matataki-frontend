@@ -9,12 +9,16 @@
     <!-- 列表 -->
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
       <div class="fandom-text">
-        <h2>
-          {{ getTitle(fandom) }}
+        <div class="fl title">
+          <el-tooltip :content="fandom.title" class="item" effect="dark" placement="top">
+            <h2>
+              {{ fandom.title }}
+            </h2>
+          </el-tooltip>
           <span>（已有{{ fandom.groupSize }}人）</span>
-        </h2>
+        </div>
         <p class="condition">
-          持有的{{ tokenSymbol }}票>{{ getMinBalance(fandom) }}即可加群
+          持有的{{ tokenSymbol }}票 ≥{{ getMinBalance(fandom) }} 即可加群
         </p>
       </div>
       <div>
@@ -228,11 +232,6 @@ export default {
     },
     getMinBalance(fandom) {
       return fandom.requirement.minetoken ? fandom.requirement.minetoken.amount : 0
-    },
-    getTitle(fandom) {
-      const max = 8
-      if (fandom.title.length >= max) return fandom.title.substring(0, max) + '...'
-      return fandom.title
     }
   }
 }
@@ -269,11 +268,17 @@ export default {
   margin: 20px 0 0;
   .fandom-text {
     flex: 1;
-    h2 {
-      font-size: 16px;
-      color: black;
-      margin-top: 0;
-      margin-bottom: 10px;
+    .title {
+      white-space: nowrap;
+      max-width: 220px;
+      h2 {
+        font-size: 16px;
+        color: black;
+        margin-top: 0;
+        margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       span {
         font-size: 14px;
         font-weight: 400;
