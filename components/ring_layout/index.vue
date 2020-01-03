@@ -8,6 +8,7 @@
     </div>
     <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
       <p class="ring-logo-title">
+        <i class="el-icon-arrow-right disappear" />
         {{ symbol }}{{ name ? (name) : '' }}
         <i class="el-icon-arrow-right" />
       </p>
@@ -102,6 +103,9 @@ export default {
     line-height:28px;
     i {
       font-weight:600;
+      &.disappear {
+        color: #00000000;
+      }
     }
   }
 
