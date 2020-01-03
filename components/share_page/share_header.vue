@@ -5,7 +5,7 @@
       <span class="share-header__username">Xiaotiandada</span>
       <span class="share-header__time">123123213213123</span>
       <span class="share-header__read">
-        <svg-icon icon-class="eye_blod" />
+        <svg-icon icon-class="eye_blod" class="icon" />
         121211
       </span>
     </div>
@@ -56,6 +56,9 @@ export default {
     color:rgba(178,178,178,1);
     line-height:17px;
     margin-left: 10px;
+    .icon {
+      font-size: 16px;
+    }
   }
 }
 </style>
