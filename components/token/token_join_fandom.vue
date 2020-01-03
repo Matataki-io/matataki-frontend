@@ -167,7 +167,7 @@ export default {
         return
       }
       console.log('加群：', fandom.title)
-      window.open(`https://t.me/${process.env.TELEGRAM_FANDOM_BOT}?start=${fandom.id}`)
+      window.location.href = `tg://resolve?domain=${process.env.TELEGRAM_FANDOM_BOT}&start=${fandom.id}`
     },
     /** 绑定tg账号 */
     setTelegram() {
