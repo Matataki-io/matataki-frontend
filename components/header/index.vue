@@ -210,6 +210,12 @@ export default {
           sup: '',
           urlList: ['article', 'ring-id']
         },
+        {
+          title: '分享大厅',
+          url: 'article',
+          sup: '',
+          urlList: ['article']
+        },
         // 隐藏导航栏的商品选项
         // {
         //   title: this.$t('home.navShop'),
