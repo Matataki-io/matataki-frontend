@@ -1,6 +1,5 @@
 <template>
-  <!-- // TODO: 需要调整 -->
-  <div @click.stop="documentClick">
+  <div>
     <!-- 关联文章侧边栏 -->
     <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
       <div class="related-container">
@@ -33,10 +32,24 @@
 import throttle from 'lodash/throttle'
 
 export default {
+  props: {
+    // 关闭侧边
+    offSlidebar: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
       relatedLeftCollapse: false, // 左侧关联
       relatedRightCollapse: false // 右侧关联
+    }
+  },
+  watch: {
+    offSlidebar() {
+      // 隐藏侧边关联栏
+      this.relatedLeftCollapse = false
+      this.relatedRightCollapse = false
     }
   },
   mounted() {
@@ -47,11 +60,6 @@ export default {
     // window.removeEventListener('resize', throttle(this.setRelatedSlider))
   },
   methods: {
-    // 隐藏侧边关联栏
-    documentClick() {
-      this.relatedLeftCollapse = false
-      this.relatedRightCollapse = false
-    },
     // 设置侧边栏宽度
     setRelatedSlider() {
       this.$nextTick(() => {

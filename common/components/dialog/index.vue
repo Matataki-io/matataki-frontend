@@ -2,7 +2,7 @@
   <el-dialog
     :title="title"
     :visible.sync="shareDialogVisible"
-    width="90%"
+    :width="width"
     center
   >
     <slot />
@@ -15,6 +15,10 @@ export default {
     title: {
       type: String,
       default: '提示'
+    },
+    width: {
+      type: String,
+      default: '90%'
     },
     value: {
       type: Boolean,

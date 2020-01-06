@@ -7,14 +7,14 @@
       <p>收藏</p>
     </div>
     <div class="icon-num">
-      <div>
-        <svg-icon @click="pushShare" class="icon" icon-class="reference" />
+      <div @click="pushShare">
+        <svg-icon class="icon" icon-class="reference" />
       </div>
       <p>引用</p>
     </div>
     <div class="icon-num">
-      <div>
-        <svg-icon @click="$emit('share')" class="icon" icon-class="share2" />
+      <div @click="$emit('share')">
+        <svg-icon class="icon" icon-class="share2" />
       </div>
       <p>分享</p>
     </div>
@@ -79,9 +79,10 @@ export default {
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform .3s;
+      transition: all .3s;
       &:hover {
         transform: scale(1.07);
+        background-color: mix(#000, #f1f1f1, 2%);
       }
     }
     p {
