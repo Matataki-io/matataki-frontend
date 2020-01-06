@@ -1,21 +1,34 @@
 <template>
   <div class="share-footer">
     <div class="icon-num">
-      <svg-icon class="icon active" icon-class="bookmark-solid"/>
+      <div>
+        <svg-icon class="icon active" icon-class="bookmark-solid" />
+      </div>
+      <p>收藏</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="reference" @click="pushShare"/>
+      <div>
+        <svg-icon @click="pushShare" class="icon" icon-class="reference" />
+      </div>
+      <p>引用</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="share2" @click="$emit('share')"/>
+      <div>
+        <svg-icon @click="$emit('share')" class="icon" icon-class="share2" />
+      </div>
+      <p>分享</p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="great-solid" />
-      <p>12312312</p>
+      <div>
+        <svg-icon class="icon" icon-class="great-solid" />
+      </div>
+      <p>推荐<span>12</span></p>
     </div>
     <div class="icon-num">
-      <svg-icon class="icon" icon-class="bullshit-solid" />
-      <p>121</p>
+      <div>
+        <svg-icon class="icon" icon-class="bullshit-solid" />
+      </div>
+      <p>不推荐<span>123</span></p>
     </div>
   </div>
 </template>
@@ -38,22 +51,13 @@ export default {
 
 <style lang="less" scoped>
 .share-footer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
   // height: 50px;
-  padding: 16px 40px 2px;
   box-sizing: border-box;
-  padding-bottom: calc(2px + constant(safe-area-inset-bottom));
-  padding-bottom: calc(2px + env(safe-area-inset-bottom));
-  background-color: #fff;
-  box-shadow:0px -2px 8px 0px rgba(0,0,0,0.1);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   .icon {
-    font-size: 20px;
+    font-size: 32px;
     color: #B2B2B2;
     &.active {
       color: @purpleDark;
@@ -66,14 +70,35 @@ export default {
     justify-content: center;
     flex-direction: column;
     // position: relative;
+    & > div {
+      width: 80px;
+      height: 80px;
+      background-color: #F1F1F1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .3s;
+      &:hover {
+        transform: scale(1.07);
+      }
+    }
     p {
-      // position: absolute;
-      // top: 20px;
-      // left: 0;
       text-align: center;
-      font-size:12px;
-      color:rgba(178,178,178,1);
-      line-height: 1;
+      font-size:16px;
+      font-weight: bold;
+      color:rgba(0,0,0,1);
+      line-height:22px;
+      padding: 0;
+      margin: 10px 0 0;
+      span {
+        font-size:16px;
+        font-weight:bold;
+        color: @purpleDark;
+        line-height:22px;
+        margin-left: 4px;
+      }
     }
   }
 }
