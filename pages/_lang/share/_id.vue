@@ -33,6 +33,8 @@
           </p>
         </div>
       </div>
+      <socialShare class="social-share" img="https://ssimg.frontenduse.top/banner/2019/12/16/4d79938b44c12f1ac12bb60faf04bed5.gif" title="title" />
+      <wechat :link="link" style="margin: 60px 0 0 0;" />
     </m-dialog>
     <shareFooter @share="shareDialogVisible = true" class="footer" />
   </div>
@@ -44,12 +46,17 @@ import shareMain from '@/components/share_page/share_main'
 import shareFooter from '@/components/share_page/share_footer'
 // import quote from '@/components/share_page/quote'
 import reference from '@/components/reference/index'
+import socialShare from '@/components/modal/social_share'
+import wechat from '@/components/scan/wechat.vue'
+
 export default {
   components: {
     shareHeader,
     shareMain,
     shareFooter,
-    reference
+    reference,
+    socialShare,
+    wechat
   },
   data() {
     return {
@@ -57,6 +64,12 @@ export default {
       showQuote: false, // reference
       nowTime: 0, // reference
       shareDialogVisible: false
+    }
+  },
+  computed: {
+    link() {
+      if (process.browser) return window.location.href
+      else return process.env.VUE_APP_URL
     }
   },
   methods: {
@@ -93,7 +106,7 @@ export default {
 .dialog-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   &__btn {
     display: flex;
     align-items: center;
@@ -119,5 +132,9 @@ export default {
     text-align: center;
     margin: 4px 0 0 0;
   }
+}
+
+.social-share {
+  margin-top: 10px;
 }
 </style>
