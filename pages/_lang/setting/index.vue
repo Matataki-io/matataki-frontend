@@ -1,7 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <userNav nav-list-url="setting" />
+      <h2 class="tag-title">
+        {{ $t('user.information') }}
+      </h2>
       <div class="set-main">
         <div class="list center">
           <span class="title">{{ $t('avatar') }}</span>
@@ -99,8 +101,8 @@
         </el-button>
       </div>
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
@@ -108,8 +110,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 
 import imgUpload from '@/components/imgUpload/index.vue'
@@ -117,10 +118,9 @@ import imgUpload from '@/components/imgUpload/index.vue'
 export default {
   components: {
     userLayout,
-    userInfo,
-    userNav,
     imgUpload,
-    socialIcon
+    socialIcon,
+    myAccountNav
   },
   data() {
     return {
@@ -553,5 +553,11 @@ export default {
 }
 .set-main {
   padding-left: 10px;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
 }
 </style>
