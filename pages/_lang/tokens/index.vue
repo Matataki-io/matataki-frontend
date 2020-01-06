@@ -144,8 +144,8 @@
         </el-form>
       </el-dialog>
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
@@ -155,14 +155,14 @@ import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import userNav from '@/components/user/user_nav.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 
 export default {
   components: {
     userLayout,
-    userInfo,
+    myAccountNav,
     userNav,
     userPagination,
     avatar

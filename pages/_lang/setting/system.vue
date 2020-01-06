@@ -1,7 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <userNav nav-list-url="setting" />
+      <h2 class="tag-title">
+        {{ $t('user.systemSetting') }}
+      </h2>
       <div class="list">
         <span class="title">{{ $t('user.transfer') }}</span>
         <el-switch
@@ -11,8 +13,8 @@
         />
       </div>
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
@@ -20,14 +22,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 
 export default {
   components: {
     userLayout,
-    userInfo,
-    userNav
+    myAccountNav
   },
   data() {
     return {
@@ -84,5 +84,11 @@ export default {
 }
 .list {
   margin: 20px 0 0 10px;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
 }
 </style>
