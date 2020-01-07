@@ -4,7 +4,7 @@
       <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <template v-if="viewStatus === 0">
-        <assets :assets="assets" @toggleWithdraw="status => viewStatus = status" type="CNY" class="assets-margin" />
+        <assets :assets="assets" @toggleWithdraw="status => viewStatus = status" type="EOS" class="assets-margin" />
         <div v-loading="loading" class="card-container">
           <no-content-prompt :list="articleCardData.articles">
             <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />
@@ -24,7 +24,7 @@
         />
       </template>
       <template v-else>
-        <withdraw @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" type="ONT" class="withdraw" />
+        <withdraw @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" class="withdraw" />
       </template>
     </template>
     <template slot="nav">
@@ -35,13 +35,14 @@
 
 <script>
 import userLayout from '@/components/user/user_layout.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import userNav from '@/components/user/user_nav.vue'
 import userNavType from '@/components/user/user_nav_type.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import assetCard from '@/components/asset_card/index.vue'
 import assets from '@/components/user/assets.vue'
 import withdraw from '@/components/user/withdraw.vue'
-import myAccountNav from '@/components/my_account/my_account_nav.vue'
+
 export default {
   components: {
     userLayout,
@@ -57,7 +58,7 @@ export default {
     return {
       articleCardData: {
         params: {
-          symbol: (this.$route.query.type || 'CNY').toUpperCase(),
+          symbol: (this.$route.query.type || 'eos').toUpperCase(),
           pagesize: 9
         },
         apiUrl: 'assetList',

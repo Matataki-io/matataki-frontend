@@ -8,7 +8,7 @@
         </div>
       </el-col>
       <el-col :span="20">
-        <div class="user-main">
+        <div :class="needFrame && 'user-main'">
           <slot name="main" />
         </div>
       </el-col>
@@ -18,7 +18,12 @@
 
 <script>
 export default {
-
+  props: {
+    needFrame: {
+      type: Boolean,
+      default: true
+    }
+  }
 }
 </script>
 
