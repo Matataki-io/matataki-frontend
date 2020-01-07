@@ -19,7 +19,7 @@ export default {
       tagsList: [
         { title: this.$t('user.information'), url: 'setting' },
         { title: this.$t('user.accountSetting'), url: 'setting-account' },
-        { title: this.$t('user.buycoins'), url: 'tokens' },
+        { title: this.$t('user.fanWallet'), url: 'tokens' },
         { title: this.$t('user.editcoins'), url: 'editminetoken' },
         { title: this.$t('user.myBookmark'), url: 'bookmark' },
         { title: this.$t('user.wallet'), url: 'account' },
@@ -33,10 +33,27 @@ export default {
   },
   watch: {
   },
-
+  created() {
+    this.tokenDetail()
+  },
   mounted() {
   },
   methods: {
+    async tokenDetail() {
+      await this.$API.tokenDetail().then(res => {
+        if (res.code === 0) {
+          if (!res.data.token) {
+            const i = this.tagsList.findIndex(tag => tag.url === 'editminetoken')
+            if (i !== -1) {
+              this.tagsList[i].title = this.$t('user.applycoins')
+              this.tagsList[i].url = 'postminetoken'
+            }
+          }
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    }
   }
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
-  <div class="coins-publish">
+  <div>
     <div class="fl ac coins-head">
-      <h1>
+      <h2 class="tag-title">
         {{ isPost ? '申请发行Fan票' : '编辑Fan票' }}
-      </h1>
+      </h2>
       <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行Fan票?" placement="top-start">
         <svg-icon
           class="help-icon"
@@ -417,11 +417,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.coins-publish {
-  padding: 10px;
-}
 .coins-head {
-  margin: 20px 0 20px;
   h1 {
     font-size:24px;
     font-weight:600;
@@ -548,6 +544,12 @@ export default {
 }
 .social-icons {
   width: 60px;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
 }
 </style>
 

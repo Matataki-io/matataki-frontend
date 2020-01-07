@@ -13,7 +13,7 @@ module.exports = {
     TELEGRAM_IV_RHASH: '71acceb5462fa6',
     TELEGRAM_BOT_NAME: 'matataki_test_pc_bot',
     TELEGRAM_FANDOM_BOT: 'matataki_testing_bot',
-    FANDOM_SERVER_API: 'https://us-central1-fanpiao-bot-data.cloudfunctions.net'
+    FANDOM_SERVER_API: 'https://fanpiao-bot-data.web.app'
   },
   production: {
     NODE: 'production',
@@ -29,6 +29,6 @@ module.exports = {
     TELEGRAM_IV_RHASH: '6937cb5e3b86c1',
     TELEGRAM_BOT_NAME: 'matataki_prod_pc_bot',
     TELEGRAM_FANDOM_BOT: 'matatakibot',
-    FANDOM_SERVER_API: 'https://us-central1-fanpiao-bot-data-prod.cloudfunctions.net'
+    FANDOM_SERVER_API: 'https://fanpiao-bot-data-prod.web.app'
   }
 }
