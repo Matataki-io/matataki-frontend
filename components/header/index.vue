@@ -124,12 +124,12 @@
               <el-dropdown-item>
                 {{ $t('home.setting') }}
               </el-dropdown-item>
-            </n-link>
+            </n-link> -->
             <div @click="btnsignOut" class="link">
               <el-dropdown-item>
                 {{ $t('logout') }}
               </el-dropdown-item>
-            </div> -->
+            </div>
           </el-dropdown-menu>
         </el-dropdown>
         <a
