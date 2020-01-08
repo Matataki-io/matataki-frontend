@@ -110,12 +110,12 @@
                 {{ currentUserInfo.nickname || currentUserInfo.name }}
               </el-dropdown-item>
             </n-link>
-            <n-link :to="{name: 'account', params:{id: currentUserInfo.id}}" class="link">
+            <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
               <el-dropdown-item>
                 {{ $t('home.account') }}
               </el-dropdown-item>
             </n-link>
-            <n-link :to="{name: 'tokens' }" class="link">
+            <!-- <n-link :to="{name: 'tokens' }" class="link">
               <el-dropdown-item>
                 我的Fan票
               </el-dropdown-item>
@@ -129,7 +129,7 @@
               <el-dropdown-item>
                 {{ $t('logout') }}
               </el-dropdown-item>
-            </div>
+            </div> -->
           </el-dropdown-menu>
         </el-dropdown>
         <a

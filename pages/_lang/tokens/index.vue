@@ -75,7 +75,7 @@
                     {{ $t('gift') }}
                   </el-button>
                   <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
-                    <el-button class="info-button" size="small">
+                    <el-button type="primary" class="info-button" size="small">
                       {{ $t('transaction') }}
                     </el-button>
                   </router-link>

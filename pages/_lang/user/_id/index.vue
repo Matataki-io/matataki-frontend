@@ -3,17 +3,12 @@
   <userPage>
     <div slot="list" v-loading="loading">
       <no-content-prompt :list="articleCardData.articles">
-        <n-link
+        <articleCardListNew
           v-for="(item, index) in articleCardData.articles"
           :key="index"
-          :to="{
-            name: 'p-id',
-            params: { id: item.id }
-          }"
-          target="_blank"
-        >
-          <articleCardList :card="item" />
-        </n-link>
+          :card="item"
+          :hide-author="true"
+        />
         <user-pagination
           v-show="!loading"
           :current-page="currentPage"
@@ -33,20 +28,21 @@
 <script>
 import userPage from '@/components/user/user_page.vue'
 import userPagination from '@/components/user/user_pagination.vue'
-import articleCardList from '@/components/article_card_list/index.vue'
+import articleCardListNew from '@/components/article_card_list_new/index.vue'
 
 export default {
   components: {
     userPage,
     userPagination,
-    articleCardList
+    articleCardListNew
   },
   data() {
     return {
       articleCardData: {
         params: {
           author: this.$route.params.id,
-          pagesize: 20
+          pagesize: 20,
+          extra: 'short_content'
         },
         apiUrl: 'homeTimeRanking',
         articles: []
