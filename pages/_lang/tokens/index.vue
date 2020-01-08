@@ -178,7 +178,7 @@ export default {
       isPublishCoins: true,
       pointLog: {
         params: {
-          pagesize: 4
+          pagesize: 10
         },
         apiUrl: 'tokenTokenList',
         list: []
