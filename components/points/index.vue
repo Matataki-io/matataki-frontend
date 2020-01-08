@@ -85,13 +85,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  margin: 10px 0;
+  margin-bottom: 10px;
   background-color: #fff;
-  padding: 16px 20px 16px 10px;
+  padding: 20px 20px 20px 10px;
   border-bottom: 1px solid #DBDBDB;
   .title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: #000000;
     line-height: 28px;
@@ -99,7 +98,7 @@ export default {
   .point-pricing {
     padding: 0;
     margin: 0;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 700;
     color: #000000;
     line-height: 28px;
