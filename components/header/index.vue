@@ -295,6 +295,7 @@ export default {
           name: 'article'
         })
         setTimeout(() => {
+          this.$userMsgChannel.postMessage('logout')
           window.location.reload()
         }, 1000)
       }

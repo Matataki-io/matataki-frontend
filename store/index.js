@@ -323,9 +323,9 @@ export const actions = {
     commit('setUserConfig')
     commit('setAccessToken')
     commit('setNickname')
-    this._vm.$userMsgChannel.postMessage("logout")
     // localStorage.clear()
     this.$utils.deleteAllCookies()
+    this._vm.$userMsgChannel.postMessage("logout")
   },
   // data: { amount, toaddress, memo }
   async withdraw({ dispatch, getters }, data) {
