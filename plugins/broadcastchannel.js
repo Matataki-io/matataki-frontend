@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { BroadcastChannel } from 'broadcast-channel'
 
 const userMsgChannel = new BroadcastChannel('user')
 
