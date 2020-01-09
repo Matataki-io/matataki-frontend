@@ -5,17 +5,35 @@
       <shareHeader />
       <shareMain />
     </main>
-    <reference :offSlidebar="offSlidebar">
-      <div slot="left">
-        1231
-      </div>
+    <reference :offSlidebar="offSlidebar" :open="true">
+      <template slot="left">
+        <div class="reference-header">
+          <span class="reference-header__title">
+            已引用<span>34</span>
+          </span>
+
+          <span class="reference-header__sort">
+            正序
+            <svg-icon icon-class="sort" />
+          </span>
+        </div>
+      </template>
       <template slot="left-prompt">
         已引用<span>12</span>
       </template>
 
-      <div slot="right">
-        1231
-      </div>
+      <template slot="right">
+        <div class="reference-header">
+          <span class="reference-header__title">
+            被引用<span>34</span>
+          </span>
+
+          <span class="reference-header__sort">
+            倒序
+            <svg-icon icon-class="sort" />
+          </span>
+        </div>
+      </template>
       <template slot="right-prompt">
         被引用<span>0</span>
       </template>
@@ -136,5 +154,26 @@ export default {
 
 .social-share {
   margin-top: 10px;
+}
+
+.reference-header {
+  margin-top: 20px;
+  &__title {
+    font-size:24px;
+    font-weight:bold;
+    color:rgba(0,0,0,1);
+    line-height:33px;
+    span {
+      color: @purpleDark;
+      margin-left: 6px;
+    }
+  }
+
+  &__sort {
+    margin-left: 20px;
+    color: @purpleDark;
+    font-size:16px;
+    line-height:22px;
+  }
 }
 </style>

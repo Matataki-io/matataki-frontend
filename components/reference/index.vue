@@ -37,6 +37,11 @@ export default {
     offSlidebar: {
       type: Number,
       required: true
+    },
+    // 打开侧边
+    open: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -50,6 +55,14 @@ export default {
       // 隐藏侧边关联栏
       this.relatedLeftCollapse = false
       this.relatedRightCollapse = false
+    }
+  },
+  created() {
+    if (process.browser) {
+      if (this.open) {
+        this.relatedLeftCollapse = true
+        this.relatedRightCollapse = true
+      }
     }
   },
   mounted() {

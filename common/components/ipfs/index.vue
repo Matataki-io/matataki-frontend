@@ -3,7 +3,7 @@
     class="ipfs-block"
     placement="bottom"
     width="400"
-    trigger="click"
+    trigger="hover"
   >
     <div>
       <p class="ipfs-tip">
@@ -23,8 +23,8 @@ export default {
   methods: {
     copy(val) {
       this.$copyText(val).then(
-        () => this.$toast.success({ duration: 1000, message: this.$t('success.copy') }),
-        () => this.$toast.fail({ duration: 1000, message: this.$t('fail.copy') })
+        () => this.$message.success(this.$t('success.copy')),
+        () => this.$message.error(this.$t('error.copy'))
       )
     }
   }
