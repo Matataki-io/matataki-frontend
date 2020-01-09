@@ -20,13 +20,14 @@ export default {
         { title: this.$t('user.information'), url: 'setting' },
         { title: this.$t('user.accountSetting'), url: 'setting-account' },
         { title: this.$t('user.fanWallet'), url: 'tokens' },
-        { title: this.$t('user.editcoins'), url: 'editminetoken' },
+        { title: this.$t('user.applycoins'), url: 'tokens-apply' },
         { title: this.$t('user.myBookmark'), url: 'bookmark' },
         { title: this.$t('user.wallet'), url: 'account' },
         { title: this.$t('user.buyHistory'), url: 'buy' },
         { title: this.$t('user.invite'), url: 'invite' },
         { title: this.$t('user.systemSetting'), url: 'setting-system' }
-      ]
+      ],
+      tokens: false
     }
   },
   computed: {
@@ -34,24 +35,40 @@ export default {
   watch: {
   },
   created() {
-    this.tokenDetail()
+    this.whichButtonToShow()
   },
   mounted() {
   },
   methods: {
+    async whichButtonToShow() {
+      await this.getMyUserData()
+      const i = this.tagsList.findIndex(tag => tag.url === 'tokens-apply')
+      if (i !== -1 && this.tokens) {
+        this.tagsList[i].title = this.$t('user.editcoins')
+        this.tagsList[i].url = 'editminetoken'
+        this.tokenDetail()
+      }
+    },
     async tokenDetail() {
       await this.$API.tokenDetail().then(res => {
         if (res.code === 0) {
           if (!res.data.token) {
             const i = this.tagsList.findIndex(tag => tag.url === 'editminetoken')
             if (i !== -1) {
-              this.tagsList[i].title = this.$t('user.applycoins')
               this.tagsList[i].url = 'postminetoken'
             }
           }
         } else {
           this.$message.error(res.message)
         }
+      })
+    },
+    async getMyUserData() {
+      const res = await this.$API.getMyUserData().then(res => {
+        const statusToken = (res.data.status & this.$userStatus.hasMineTokenPermission)
+        if (res.code === 0 && statusToken) this.tokens = true
+      }).catch(err => {
+        console.log(err)
       })
     }
   }

@@ -603,6 +603,7 @@ export default {
     fanWallet: 'Fan票夹',
     editcoins: '管理Fan票',
     applycoins: '申请Fan票',
+    issuecoins: '发行Fan票',
     editProfile: '编辑资料',
     information: '个人信息',
     bookmark: '收藏',
