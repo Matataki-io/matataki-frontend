@@ -313,7 +313,7 @@
           <el-input
             v-model="relatedLink"
             class="related-input"
-            placeholder="输入链接（可自动检测本站文章）"
+            placeholder="输入链接（可自动检测本站文章），包含http(s)://"
           >
             <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
               <img @click="extractRefTitle(-1)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
@@ -351,7 +351,7 @@
                 <el-input
                   v-model="item.urlInput"
                   class="related-input"
-                  placeholder="输入链接（可自动检测本站文章）"
+                  placeholder="输入链接（可自动检测本站文章），包含http(s)://"
                 >
                   <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
                     <img @click="extractRefTitle(index)" alt="auto test" class="auto-test" src="@/assets/img/auto_test.png">
