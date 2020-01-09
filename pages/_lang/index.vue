@@ -19,6 +19,12 @@
               icon-class="article"
             />
           </router-link>
+          <router-link :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }">
+            <svg-icon
+              class="btn-list_btn"
+              icon-class="write_index"
+            />
+          </router-link>
           <router-link :to="{name: 'token'}">
             <svg-icon
               class="btn-list_btn"

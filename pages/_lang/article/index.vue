@@ -92,7 +92,7 @@ export default {
       }
       const resPagination = await paginationData(
         $axios,
-        'homeTimeRanking',
+        'homeScoreRanking',
         params
       )
       if (resPagination.code === 0) initData.paginationData = resPagination.data.list
