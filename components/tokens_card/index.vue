@@ -1,23 +1,25 @@
 <template>
-  <div class="card">
-    <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
-      <avatar :src="cover" size="45px" />
-    </router-link>
+  <div>
     <div class="fl card-info">
-      <div class="fl jsb">
-        <div class="fl fdc">
-          <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
-            {{ username }}
-          </router-link>
-          <span class="type">{{ type }}</span>
+      <div class="fl">
+        <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
+          {{ username || 'Zero' }}
+        </router-link>
+        <div class="type">
+          {{ type }}
         </div>
-        <span :style="{ color: color }" class="amount">{{ amount }}</span>
-      </div>
-      <div class="fl jsb">
-        <span class="time">{{ time }}</span>
-        <span class="symbol">{{ card.symbol }}</span>
+        <div class="time">
+          {{ time }}
+        </div>
+        <div :style="{ color: color }" class="amount">
+          {{ amount }}
+          <span class="symbol">
+            {{ card.symbol }}
+          </span>
+        </div>
       </div>
     </div>
+    <div v-if="!end" class="solid-line" />
   </div>
 </template>
 
@@ -26,16 +28,17 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 
-import avatar from '@/components/avatar/index.vue'
-
 export default {
   components: {
-    avatar
   },
   props: {
     card: {
       type: Object,
       required: true
+    },
+    end: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -111,45 +114,53 @@ export default {
 </script>
 
 <style scoped lang="less">
-.card {
-  display: flex;
-  padding: 14px 0;
-  border-bottom: 1px solid #ececec;
+.solid-line {
+  background-color: #B2B2B2;
+  width: 900px;
+  height: 1px;
+  margin: 0 auto;
 }
 .card-info {
   flex: 1;
   flex-direction: column;
-  margin-left: 10px;
+  margin: 0 20px;
+  padding: 14px 0;
 }
 .username {
-font-size:20px;
-font-weight:400;
-color:rgba(0,0,0,1);
-line-height:28px;
+  font-size:16px;
+  font-weight:400;
+  color:rgba(0,0,0,1);
+  line-height:28px;
+  flex: 1;
 }
 .type {
-font-size:16px;
-font-weight:400;
-color:rgba(178,178,178,1);
-line-height:22px;
-margin: 4px 0;
+  font-size:14px;
+  font-weight:400;
+  color:#B2B2B2;
+  line-height:22px;
+  margin: 4px 0;
+  width: 170px;
 }
 .amount {
-font-size:20px;
-font-weight:500;
-color:#000;
-line-height:28px;
+  font-size:16px;
+  font-weight:500;
+  color:#000;
+  line-height:28px;
+  width: 150px;
+  text-align: right;
 }
 .time {
-font-size:16px;
-font-weight:400;
-color:rgba(178,178,178,1);
-line-height:22px;
+  font-size:13px;
+  font-weight:400;
+  color:#B2B2B2;
+  line-height:22px;
+  width: 255px;
+  margin: 4px 0;
 }
 .symbol {
-font-size:16px;
-font-weight:400;
-color:rgba(178,178,178,1);
-line-height:22px;
+  font-size:14px;
+  font-weight:400;
+  color:#B2B2B2;
+  line-height:22px;
 }
 </style>

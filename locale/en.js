@@ -628,9 +628,14 @@ export default {
     invite: 'Invite',
     buycoins: 'Fan coins held',
     selfcoins: 'Fan coins issued',
+    fanWallet: 'fan coins wallet',
+    editcoins: 'Fan coins edit',
+    applycoins: 'Apply for Fan coins',
+    issuecoins: 'Issue for Fan coins',
     editProfile: 'Edit Profile',
     information: 'User information',
     bookmark: 'Bookmarks',
+    myBookmark: 'My bookmark',
     message: 'Messages'
   },
   withdraw: {

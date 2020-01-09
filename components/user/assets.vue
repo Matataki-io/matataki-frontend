@@ -8,18 +8,24 @@
         </span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
-      <div>
-        <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" class="btn">
+      <div style="text-align: right;">
+        <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" size="small" class="btn">
           {{ $t('withdraw.title') }}
         </el-button>
-        <el-button @click="giftDialogShow = true" v-if="isShowTransfer">
+        <!-- <el-button @click="giftDialogShow = true" v-if="isShowTransfer" size="small">
           转账
-        </el-button>
+        </el-button> -->
+        <p v-if="isWithdrawDisabled" class="mark-text">
+          提现功能暂未开放
+        </p>
       </div>
     </div>
     <div class="line" />
     <div class="total-list">
       <div class="total-list-block">
+        <span class="total-list-title">
+          {{ $t('withdraw.createIncome') }}
+        </span>
         <span
           :style="
             totalSignIncome > 0
@@ -30,39 +36,6 @@
           "
           class="total-list-money"
         >{{ totalSignIncome }}</span>
-        <span class="total-list-title">
-          {{ $t('withdraw.createIncome') }}
-        </span>
-      </div>
-      <div class="total-list-block">
-        <span
-          :style="
-            totalShareIncome > 0
-              ? { color: '#41b37d' }
-              : totalShareIncome < 0
-                ? { color: '#d74e5a' }
-                : { color: '#000000' }
-          "
-          class="total-list-money"
-        >{{ totalShareIncome }}</span>
-        <span class="total-list-title">
-          {{ $t('withdraw.supportIncome') }}
-        </span>
-      </div>
-      <div class="total-list-block">
-        <span
-          :style="
-            totalShareExpenses > 0
-              ? { color: '#41b37d' }
-              : totalShareExpenses < 0
-                ? { color: '#d74e5a' }
-                : { color: '#000000' }
-          "
-          class="total-list-money"
-        >{{ totalShareExpenses }}</span>
-        <span class="total-list-title">
-          {{ $t('withdraw.supportExpenditure') }}
-        </span>
       </div>
     </div>
     <div class="line" />
@@ -153,19 +126,24 @@ export default {
     padding: 20px 0;
   }
   &-title {
-    font-size: 18px;
+    font-size: 16px;
     color: #333;
     line-height: 1;
   }
   &-money {
-    font-size:40px;
+    font-size:24px;
     color:rgba(0,0,0,1);
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .btn:not([disabled]) {
     background: #000;
     border-color: #000;
     color: #fff;
+  }
+  .mark-text {
+    color: #b2b2b2;
+    font-size: 12px;
+    margin: 12px 5px 0px;
   }
 }
 
@@ -175,7 +153,6 @@ export default {
   &-block {
     display: flex;
     flex-direction: column;
-    align-items: center;
     position: relative;
     flex: 1;
     &:nth-child(n+2)::before{
@@ -190,12 +167,12 @@ export default {
     }
   }
   &-money {
-    font-size: 30px;
+    font-size: 24px;
     color: rgba(251,104,119,1);
-    margin: 4px 0;
+    margin-top: 20px;
   }
   &-title {
-    font-size: 14px;
+    font-size: 16px;
     color:#333;
   }
 }

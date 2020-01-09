@@ -323,7 +323,7 @@
                   <div class="fl jsb">
                     <div class="fl ac related-7">
                       <div class="related-list-link">
-                        <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                        <a v-if="item.ref_sign_id !== 0" :href="item.url" @click="toggleArticle(item.ref_sign_id, $event)">{{ item.title }}</a>
                         <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
                       </div>
                     </div>
@@ -342,7 +342,7 @@
                 <transition>
                   <div v-if="relatedSummary" :class="!item.collapse && 'open'">
                     <div class="related-list-content">
-                      <span class="wrap-open">{{ item.content }}</span>
+                      <span class="wrap-open">{{ item.summary }}</span>
                     </div>
                     <div v-if="item.showCollapse" class="related-more">
                       <transition name="fade">
@@ -400,7 +400,7 @@
                   <div class="fl jsb">
                     <div class="fl ac related-7">
                       <div class="related-list-link">
-                        <a v-if="currentSite(item.url)" :href="item.url" @click="toggleArticle(item.url, $event)">{{ item.title }}</a>
+                        <a v-if="item.sign_id !== 0" :href="item.url" @click="toggleArticle(item.sign_id, $event)">{{ item.title }}</a>
                         <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
                       </div>
                     </div>
@@ -1276,14 +1276,9 @@ export default {
       this.total = res.data.count || 0
       this.relatedList.length = 0
       res.data.list.map(i => {
-        this.relatedList.push({
-          url: i.url,
-          title: i.title,
-          content: i.summary,
-          number: i.number,
-          collapse: false,
-          showCollapse: true
-        })
+        i.collapse = false
+        i.showCollapse = true
+        this.relatedList.push(i)
       })
       this.pull.list = res.data.list
       this.loading = false
@@ -1304,14 +1299,10 @@ export default {
       this.beingTotal = res.data.count || 0
       this.beingRelatedList.length = 0
       res.data.list.map(i => {
-        this.beingRelatedList.push({
-          url: `${process.env.VUE_APP_PC_URL}/p/${i.id}`,
-          title: i.title,
-          // content: i.summary,
-          // number: i.number,
-          collapse: false,
-          showCollapse: true
-        })
+        i.url = `${process.env.VUE_APP_PC_URL}/p/${i.sign_id}`
+        i.collapse = false
+        i.showCollapse = true
+        this.beingRelatedList.push(i)
       })
       this.beingPull.list = res.data.list
       this.beingLoading = false
@@ -1411,14 +1402,11 @@ export default {
       return currentUrlList.includes(linkHost)
     },
     // 切换文章
-    toggleArticle(url, e, popEvent = false) {
+    toggleArticle(id, e, popEvent = false) {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
-      const reg = /\/p\/[\d].*/
-      const urlId = url.match(reg)
-      const id = urlId ? urlId[0].slice(3) : -1
-      const idInt = parseInt(id)
-      if (idInt !== -1) this.getArticle(idInt, popEvent)
+      const url = `${process.env.VUE_APP_URL}/p/${id}`
+      if (id !== 0) this.getArticle(id, popEvent)
       else window.open(url)
       return false
     },

@@ -6,9 +6,10 @@
     @prev-click="prevClick"
     @next-click="nextClick"
     @current-change="currentChange"
-    class="user-pagination"
-    background
+    :small="small"
+    :class="selectClass"
     layout="prev, pager, next"
+    background
   />
 </template>
 
@@ -50,6 +51,14 @@ export default {
     urlReplace: {
       type: String,
       default: ''
+    },
+    small: {
+      type: Boolean,
+      default: false
+    },
+    selectClass: {
+      type: String,
+      default: 'user-pagination'
     }
   },
   data() {
@@ -131,5 +140,24 @@ export default {
 }
 .user-pagination.el-pagination.is-background .el-pager li:not(.disabled):hover.active {
   color: #fff;
+}
+
+.user-pagination-light {
+  text-align: center;
+}
+.user-pagination-light.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color:#000;
+}
+.user-pagination-light.el-pagination.is-background .el-pager li:not(.disabled):hover {
+  color: #000;
+}
+.user-pagination-light.el-pagination.is-background .el-pager li:not(.disabled):hover.active {
+  color: #fff;
+}
+.user-pagination-light.el-pagination.is-background .btn-prev {
+  background-color: white;
+}
+.user-pagination-light.el-pagination.is-background .btn-next {
+  background-color: white;
 }
 </style>

@@ -2,14 +2,14 @@
   <div class="user user-layout">
     <g-header />
     <el-row class="user-container mw">
-      <el-col :span="18">
-        <div class="user-main">
-          <slot name="main" />
+      <el-col :span="4">
+        <div class="account-nav position-sticky top70">
+          <slot name="nav" />
         </div>
       </el-col>
-      <el-col :span="6">
-        <div class="user-info position-sticky top70">
-          <slot name="info" />
+      <el-col :span="20">
+        <div :class="needFrame && 'user-main'">
+          <slot name="main" />
         </div>
       </el-col>
     </el-row>
@@ -18,7 +18,12 @@
 
 <script>
 export default {
-
+  props: {
+    needFrame: {
+      type: Boolean,
+      default: true
+    }
+  }
 }
 </script>
 
@@ -41,10 +46,14 @@ export default {
   margin-bottom: 120px;
 }
 
-.user-info {
+.account-nav {
   // width: 270px;
   // height: 396px;
   border-radius: @br10;
   background-color: #fff;
+}
+
+.position-sticky {
+  margin-top: 0px;
 }
 </style>

@@ -39,10 +39,10 @@
           </div>
         </div>
 
-        <div class="split-line" />
+        <div v-if="!hideAuthor" class="split-line" />
         <!-- 适用于 首页, Fan圈 -->
         <!-- 区分那种卡 -->
-        <div class="author">
+        <div v-if="!hideAuthor" class="author">
           <n-link :to=" {name: 'user-id', params: {id: Uid}} " target="_blank">
             <avatar :size="'60px'" :src="avatarImg" class="avatar" />
           </n-link>
@@ -85,6 +85,11 @@ export default {
     },
     // 是否为搜索卡
     isSearchCard: {
+      type: Boolean,
+      default: false
+    },
+    // 是否为搜索卡
+    hideAuthor: {
       type: Boolean,
       default: false
     }
@@ -335,8 +340,7 @@ export default {
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
     line-height: 22px;
-    margin-right: 8px;
-    width: 50px;
+    margin-right: 20px;
   }
   .date {
     text-align: left;

@@ -110,12 +110,12 @@
                 {{ currentUserInfo.nickname || currentUserInfo.name }}
               </el-dropdown-item>
             </n-link>
-            <n-link :to="{name: 'account', params:{id: currentUserInfo.id}}" class="link">
+            <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
               <el-dropdown-item>
                 {{ $t('home.account') }}
               </el-dropdown-item>
             </n-link>
-            <n-link :to="{name: 'tokens' }" class="link">
+            <!-- <n-link :to="{name: 'tokens' }" class="link">
               <el-dropdown-item>
                 我的Fan票
               </el-dropdown-item>
@@ -124,7 +124,7 @@
               <el-dropdown-item>
                 {{ $t('home.setting') }}
               </el-dropdown-item>
-            </n-link>
+            </n-link> -->
             <div @click="btnsignOut" class="link">
               <el-dropdown-item>
                 {{ $t('logout') }}
@@ -210,6 +210,12 @@ export default {
           sup: '',
           urlList: ['article', 'ring-id']
         },
+        // {
+        //   title: '分享大厅',
+        //   url: 'article',
+        //   sup: '',
+        //   urlList: ['article']
+        // },
         // 隐藏导航栏的商品选项
         // {
         //   title: this.$t('home.navShop'),
@@ -295,6 +301,7 @@ export default {
           name: 'article'
         })
         setTimeout(() => {
+          this.$userMsgChannel.postMessage('logout')
           window.location.reload()
         }, 1000)
       }

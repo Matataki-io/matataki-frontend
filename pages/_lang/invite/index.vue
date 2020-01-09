@@ -1,7 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="account" />
+      <h2 class="tag-title">
+        {{ $t('user.invite') }}
+      </h2>
       <div v-loading="loading" class="card-container invite">
         <div class="line" />
         <el-table
@@ -58,8 +60,8 @@
         class="pagination"
       />
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
@@ -68,16 +70,14 @@
 import moment from 'moment'
 
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 
 export default {
   components: {
     userLayout,
-    userInfo,
-    userNav,
+    myAccountNav,
     userPagination,
     avatar
   },
@@ -173,6 +173,12 @@ export default {
   color:rgba(178,178,178,1);
   line-height:20px;
   margin: 0 10px 20px;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
 }
 </style>
 
