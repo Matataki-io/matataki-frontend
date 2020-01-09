@@ -9,7 +9,10 @@
 
       <el-table
         :data="pointLog.list"
+        :expand-row-keys="expands"
+        class="hide-expand-button"
         style="width: 100%"
+        row-key="token_id"
       >
         <el-table-column
           prop="total_supply"
@@ -42,6 +45,11 @@
             <span class="scope">{{ liquidity(scope.row.liquidity_balance, scope.row.decimals) }} ({{ percent(scope.row.liquidity_balance, scope.row.total_supply) }})</span>
           </template>
         </el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <holdliquidityDetail v-if="expands[0] === scope.row.token_id" :id="scope.row.token_id" />
+          </template>
+        </el-table-column>
         <el-table-column
           prop="create_time"
           label=""
@@ -49,19 +57,16 @@
         >
           <template slot-scope="scope">
             <div class="invite-block btn">
-              <router-link :to="{name: 'holdliquidity-id', params: {id: scope.row.token_id}}" style="margin: 0 10px;">
-                <el-button class="info-button" size="small">
-                  {{ $t('detail') }}
-                </el-button>
-              </router-link>
-              <!-- <el-button
-                class="info-button"
-                style="margin: 0 10px;"
-                size="small"
-                @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
-              >
-                {{ $t('gift') }}
-              </el-button> -->
+              <el-button @click="foldingClick(scope.row.token_id)" type="text" class="info-button" size="small" style="margin-right: 10px;">
+                <span v-if="expands[0] !== scope.row.token_id" class="expand-button">
+                  展开明细
+                  <i class="el-icon-d-arrow-right i-spin-z90" />
+                </span>
+                <span v-else class="expand-button">
+                  收起明细
+                  <i class="el-icon-d-arrow-right i-spin-f90" />
+                </span>
+              </el-button>
               <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
                 <el-button type="primary" class="info-button" size="small">
                   {{ $t('transaction') }}
@@ -142,11 +147,13 @@ import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
+import holdliquidityDetail from '@/components/holdliquidity_detail/index.vue'
 
 export default {
   components: {
     userPagination,
-    avatar
+    avatar,
+    holdliquidityDetail
   },
   data() {
     return {
@@ -176,7 +183,8 @@ export default {
         tokenId: '',
         tokens: 1,
         max: 99999999 // 默认最大
-      }
+      },
+      expands: []
     }
   },
   methods: {
@@ -200,7 +208,7 @@ export default {
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     paginationData(res) {
-      console.log(res)
+      // console.log(res)
       this.pointLog.list = res.data.list
       this.assets = res.data
       this.total = res.data.count || 0
@@ -289,7 +297,7 @@ export default {
       await this.$API.searchUsername(this.form.username.trim())
         .then(res => {
           if (res.code === 0) {
-            console.log(res)
+            // console.log(res)
             this.form.useravatar = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
             this.form.userId = res.data.id
           } else return this.$message.warning(res.message)
@@ -298,6 +306,10 @@ export default {
         }).finally(() => {
           this.transferLoading = false
         })
+    },
+    foldingClick(id) {
+      if (this.expands.length === 0 || this.expands[0] !== id) this.expands = [id]
+      else this.expands = []
     }
   }
 }
@@ -381,6 +393,17 @@ export default {
   padding-left: 10px;
   margin: 0;
 }
+.expand-button {
+  font-size: 14px;
+  .i-spin {
+    &-z90 {
+          transform: rotate(90deg)
+    }
+    &-f90 {
+          transform: rotate(-90deg)
+    }
+  }
+}
 </style>
 
 <style lang="less">
@@ -402,5 +425,17 @@ export default {
   border-radius: @br10;
   box-sizing: border-box;
   margin-bottom: 120px;
+}
+.hide-expand-button {
+  .el-table__body-wrapper .el-table__body .el-table__row .el-table__expand-column .cell {
+    display: none;
+  }
+  .el-table__expanded-cell {
+    padding: 0;
+    background-color: #F1F1F1;
+    &:hover {
+      background-color: #F1F1F1!important;
+    }
+  }
 }
 </style>
