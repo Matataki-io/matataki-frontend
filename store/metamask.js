@@ -55,7 +55,7 @@ export const actions = {
       })
       if (res.code === 0) {
         setToken(res.data)
-        this._vm.$userMsgChannel.postMessage('logout')
+        this._vm.$userMsgChannel.postMessage('login')
         return '签名登录成功，正在跳转'
       } else {
         throw Error('签名登录失败')
