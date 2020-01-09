@@ -1,74 +1,64 @@
 <template>
-  <userLayout>
-    <template slot="main">
-      <h2 class="tag-title">
-        {{ tokenSymbol }}的明细
-      </h2>
-      <div v-loading="loading" class="card-container">
-        <no-content-prompt :list="pointLog.list">
-          <!-- <div class="point-card">
-            <span class="title">{{ $t('user.remainingPoints') }}</span>
-            <h1 class="point-pricing">
-              {{ amount }}
-            </h1>
-          </div> -->
-          <tokensCard v-for="(item, index) in pointLog.list" :key="index" :card="item" />
-        </no-content-prompt>
-      </div>
+  <div>
+    <div v-loading="loading" class="card-container">
+      <no-content-prompt :list="pointLog.list">
+        <tokensCard v-for="(item, index) in pointLog.list" :key="index" :card="item" :end="index === pointLog.list.length-1" />
+      </no-content-prompt>
+    </div>
+    <div v-if="loading || total > pointLog.params.pagesize" class="pagination">
       <user-pagination
         v-show="!loading"
         :current-page="currentPage"
         :params="pointLog.params"
         :api-url="pointLog.apiUrl"
-        :page-size="10"
+        :page-size="5"
         :total="total"
         :need-access-token="true"
         @paginationData="paginationData"
         @togglePage="togglePage"
-        class="pagination"
+        :small="true"
+        :selectClass="'user-pagination-light'"
       />
-    </template>
-    <template slot="nav">
-      <myAccountNav />
-    </template>
-  </userLayout>
+    </div>
+  </div>
 </template>
 
 <script>
-import userLayout from '@/components/user/user_layout.vue'
-import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import tokensCard from '@/components/tokens_card/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 
 export default {
   components: {
-    userLayout,
-    myAccountNav,
     tokensCard,
     userPagination
+  },
+  props: {
+    id: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
       pointLog: {
         params: {
-          tokenId: this.$route.params.id,
-          pagesize: 10
+          tokenId: this.id,
+          pagesize: 5
         },
         apiUrl: 'tokenUserLogs',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
-      loading: false, // 加载数据
+      loading: true, // 加载数据
       total: 0,
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0,
-      tokenSymbol: ''
+      amount: 0
     }
   },
   created() {
-    if (!this.$route.params.id) this.$router.go(-1)
+    if (!this.id) this.$router.go(-1)
   },
   methods: {
     paginationData(res) {
@@ -77,7 +67,6 @@ export default {
       this.assets = res.data
       this.total = res.data.count || 0
       this.amount = res.data.amount || 0
-      this.tokenSymbol = res.data.tokenDetail.symbol
       this.loading = false
     },
     togglePage(i) {
@@ -96,7 +85,7 @@ export default {
 
 <style lang="less" scoped>
 .card-container {
-  margin: 20px 0 80px;
+  margin: 0;
 }
 .point-card {
   display: flex;
@@ -127,5 +116,8 @@ export default {
   font-size: 20px;
   padding-left: 10px;
   margin: 0;
+}
+.pagination {
+  margin: 20px 0;
 }
 </style>
