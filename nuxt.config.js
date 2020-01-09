@@ -86,7 +86,7 @@ export default {
     '~/plugins/vue_components.js',
     '~/plugins/i18n.js',
     { src: '~/plugins/broadcastchannel.js', mode: 'client' },
-    { src: '~/plugins/router.js', mode: 'client' },
+    { src: '~/plugins/router.js', mode: 'client', ssr: false },
     { src: '@/plugins/element-ui', ssr: true },
     { src: '@/plugins/vue-mavon-editor', ssr: false },
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false },

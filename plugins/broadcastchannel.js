@@ -25,3 +25,5 @@ userMsgChannel.onmessage = (ev) => {
 window.userMsgChannel = userMsgChannel
 
 Vue.prototype.$userMsgChannel = userMsgChannel
+
+export default userMsgChannel
