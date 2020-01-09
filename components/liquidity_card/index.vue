@@ -1,62 +1,34 @@
 <template>
-  <div class="card">
-    <div class="user-info">
-      <router-link :to="{ name: 'token-id', params: { id: card.token_id } }" class="avatar">
-        <avatar :src="cover" size="45px" />
-      </router-link>
-      <div>
-        <div class="nickname">
-          {{ card.name }}
-        </div>
-        <div class="gray">
+  <div>
+    <div class="fl card-info">
+      <div class="fl">
+        <div class="type">
           {{ type }}
         </div>
         <div class="time">
           {{ time }}
         </div>
-      </div>
-    </div>
-    <div class="token-info">
-      <div>
-        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">
+        <div :class="[ 'fall-rise', amountClass(cnyAmount) ]">
           {{ cnyAmount }}
+          <span class="symbol">
+            CNY
+          </span>
         </div>
-        <div class="gray">
-          CNY
-        </div>
-      </div>
-      <div>
-        <div :class="[ 'fall-rise', amountClass(card.liquidity) ]">
+        <div :class="[ 'fall-rise', amountClass(tokenAmount) ]">
           {{ tokenAmount }}
+          <span class="symbol">
+            {{ card.symbol }}
+          </span>
         </div>
-        <div class="gray">
-          {{ card.symbol }}
-        </div>
-      </div>
-      <div>
-        <div :class="[ 'fall-rise', tokenClass(card.liquidity) ]">
+        <div :class="[ 'fall-rise end', amountClass(liquidityAmount) ]">
           {{ liquidityAmount }}
-        </div>
-        <div class="gray">
-          流动金Token
+          <span class="symbol">
+            流动金Token
+          </span>
         </div>
       </div>
     </div>
-    <!-- <div class="fl card-info">
-      <div class="fl jsb">
-        <div class="fl fdc">
-          <router-link class="username" :to="{ name: 'user-id', params: { id: id } }">
-            {{ username }}
-          </router-link>
-          <span class="type">{{ type }}</span>
-        </div>
-        <span class="amount" :style="{ color: color }">{{ amount }}</span>
-      </div>
-      <div class="fl jsb">
-        <span class="time">{{ time }}</span>
-        <span class="symbol">{{ card.symbol }}</span>
-      </div>
-    </div> -->
+    <div v-if="!end" class="solid-line" />
   </div>
 </template>
 
@@ -76,6 +48,10 @@ export default {
     card: {
       type: Object,
       required: true
+    },
+    end: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -160,6 +136,7 @@ export default {
       }
     },
     amountClass(amount) {
+      amount = Number(amount)
       if (amount > 0) {
         return 'red'
       } else if (amount < 0) {
@@ -173,44 +150,34 @@ export default {
 </script>
 
 <style scoped lang="less">
-.card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.solid-line {
+  background-color: #B2B2B2;
+  width: 900px;
+  height: 1px;
+  margin: 0 auto;
+}
+.card-info {
+  flex: 1;
+  flex-direction: column;
+  margin: 0 20px;
   padding: 14px 0;
-  border-bottom: 1px solid #ececec;
 }
-.user-info {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  .avatar {
-    font-size:20px;
-    font-weight:400;
-    color:rgba(0,0,0,1);
-    line-height:28px;
-    margin-right: 20px;
-  }
-}
-.token-info {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  div {
-    margin-left: 20px;
-  }
-}
-
 .gray {
-  font-size:16px;
+  font-size:14px;
   font-weight:400;
   color:#B2B2B2;
   line-height:22px;
 }
 .fall-rise {
-  font-size:20px;
-  font-weight:700;
-  line-height:28px;
+    font-size:16px;
+    font-weight:500;
+    color:#000;
+    line-height:28px;
+    width: 142px;
+    &.end {
+      width: 180px;
+      text-align: right;
+    }
 }
 .black {
   color:#000000;
@@ -224,11 +191,20 @@ export default {
 .time {
   .gray();
   font-size: 14px;
+  margin: 4px 0;
+  width: 225px;
 }
-.nickname {
-  font-size: 20px;
-  color: #000;
-  font-weight: 400;
-  line-height: 28px;
+.type {
+  font-size:16px;
+  font-weight:400;
+  color:rgba(0,0,0,1);
+  line-height:28px;
+  flex: 1;
+}
+.symbol {
+  font-size:14px;
+  font-weight:400;
+  color:#B2B2B2;
+  line-height:22px;
 }
 </style>

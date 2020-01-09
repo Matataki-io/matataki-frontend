@@ -2,7 +2,7 @@
   <div>
     <div class="fl ac coins-head">
       <h2 class="tag-title">
-        {{ isPost ? '申请发行Fan票' : '编辑Fan票' }}
+        {{ isPost ? $t('user.applycoins') : $t('user.editcoins') }}
       </h2>
       <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行Fan票?" placement="top-start">
         <svg-icon
