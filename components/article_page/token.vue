@@ -65,7 +65,8 @@ export default {
   watch: {
   },
   created() {
-    if (getCookie('ACCESS_TOKEN')) this.pull.params = {} // 登录了才能请求数据, login: null只是为了阻断请求
+    // 登录了才能请求数据, login: null只是为了阻断请求
+    if (getCookie('ACCESS_TOKEN')) this.pull.params = { pagesize: 20 }
   },
   methods: {
     // 点击更多按钮返回的数据

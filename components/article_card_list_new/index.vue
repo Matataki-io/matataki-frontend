@@ -340,8 +340,7 @@ export default {
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
     line-height: 22px;
-    margin-right: 8px;
-    width: 50px;
+    margin-right: 20px;
   }
   .date {
     text-align: left;
