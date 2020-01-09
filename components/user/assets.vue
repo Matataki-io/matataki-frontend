@@ -8,7 +8,7 @@
         </span>
         <span class="total-money">{{ playerincome }}</span>
       </div>
-      <div>
+      <div style="text-align: right;">
         <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" size="small" class="btn">
           {{ $t('withdraw.title') }}
         </el-button>

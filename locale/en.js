@@ -631,6 +631,7 @@ export default {
     fanWallet: 'fan coins wallet',
     editcoins: 'Fan coins edit',
     applycoins: 'Apply for Fan coins',
+    issuecoins: 'Issue for Fan coins',
     editProfile: 'Edit Profile',
     information: 'User information',
     bookmark: 'Bookmarks',
