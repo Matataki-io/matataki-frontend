@@ -23,6 +23,7 @@
     "@sentry/integrations": "5.8.0",
     "axios": "^0.18.0",
     "bignumber.js": "^9.0.0",
+    "broadcast-channel": "^3.0.3",
     "compressorjs": "^1.0.5",
     "cropperjs": "^1.5.4",
     "cyanobridge": "^0.1.0",
