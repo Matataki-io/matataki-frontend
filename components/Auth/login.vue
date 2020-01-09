@@ -242,6 +242,7 @@ export default {
               this.$store.commit("setUserConfig", { idProvider: "Email" });
               this.$message.success(this.$t("success.loginSuccess"));
               this.$emit("hide");
+              this.$userMsgChannel.postMessage("login")
               window.location.reload(); // 登录完成刷新一次
             } else {
               this.$message.error(this.$t("error.loginFailPasswordOrAccount"));

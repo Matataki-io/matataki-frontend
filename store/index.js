@@ -68,8 +68,12 @@ export const getters = {
 export const mutations = {
   setAccessToken(state, accessToken = null) {
     state.userInfo.accessToken = accessToken
-    if (accessToken) accessTokenAPI.set(accessToken)
-    else accessTokenAPI.rm()
+    if (accessToken) { 
+      accessTokenAPI.set(accessToken) 
+    }
+    else { 
+      accessTokenAPI.rm()
+    }
     // console.info('set access token :', accessToken);
   },
   setNickname(state, nickname = '') {
@@ -233,6 +237,7 @@ export const actions = {
 
     // localStorage.setItem('idProvider', state.userConfig.idProvider)
     this.$utils.setCookie('idProvider', state.userConfig.idProvider)
+    this._vm.$userMsgChannel.postMessage("login")
     return state.userInfo.accessToken
   },
   /*
@@ -320,6 +325,7 @@ export const actions = {
     commit('setNickname')
     // localStorage.clear()
     this.$utils.deleteAllCookies()
+    this._vm.$userMsgChannel.postMessage("logout")
   },
   // data: { amount, toaddress, memo }
   async withdraw({ dispatch, getters }, data) {

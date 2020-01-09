@@ -28,15 +28,15 @@
         <withdraw @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" type="ONT" class="withdraw" />
       </template>
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
 
 <script>
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import userNav from '@/components/user/user_nav.vue'
 import userNavType from '@/components/user/user_nav_type.vue'
 import userPagination from '@/components/user/user_pagination.vue'
@@ -46,7 +46,7 @@ import withdraw from '@/components/user/withdraw.vue'
 export default {
   components: {
     userLayout,
-    userInfo,
+    myAccountNav,
     userNav,
     userNavType,
     userPagination,

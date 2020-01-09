@@ -1,151 +1,157 @@
 <template>
-  <userLayout>
+  <userLayout :need-frame="false">
     <template slot="main">
-      <user-nav nav-list-url="token" />
+      <div class="tokens-main">
+        <h2 class="tag-title">
+          {{ $t('user.buycoins') }}
+        </h2>
 
-      <div v-loading="loading" class="card-container buycoins">
-        <div class="line" />
+        <div v-loading="loading" class="card-container buycoins">
+          <div class="line" />
 
-        <el-table
-          :data="pointLog.list"
-          style="width: 100%"
+          <el-table
+            :data="pointLog.list"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="total_supply"
+              label="Fan票"
+            >
+              <template slot-scope="scope">
+                <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac">
+                  <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
+                  <span class="scope">{{ scope.row.symbol }}</span>
+                </router-link>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="total_supply"
+              label="名称"
+            >
+              <template slot-scope="scope">
+                <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}">
+                  <span class="scope">{{ scope.row.name }}</span>
+                </router-link>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="创始人"
+            >
+              <template slot-scope="scope">
+                <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block author">
+                  <!-- <avatar :src="cover(scope.row.avatar)" size="30px" /> -->
+                  <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
+                </n-link>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              :label="$t('user.positionCoins')"
+              prop="total_supply"
+            >
+              <template slot-scope="scope">
+                <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="create_time"
+              label=""
+              width="220"
+            >
+              <template slot-scope="scope">
+                <div class="invite-block btn">
+                  <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}">
+                    <el-button class="info-button" size="small">
+                      {{ $t('detail') }}
+                    </el-button>
+                  </router-link>
+                  <el-button
+                    @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
+                    class="info-button"
+                    style="margin: 0 10px;"
+                    size="small"
+                  >
+                    {{ $t('gift') }}
+                  </el-button>
+                  <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
+                    <el-button type="primary" class="info-button" size="small">
+                      {{ $t('transaction') }}
+                    </el-button>
+                  </router-link>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <user-pagination
+          v-show="!loading"
+          :reload="reload"
+          :current-page="currentPage"
+          :params="pointLog.params"
+          :api-url="pointLog.apiUrl"
+          :page-size="pointLog.params.pagesize"
+          :total="total"
+          :need-access-token="true"
+          @paginationData="paginationData"
+          @togglePage="togglePage"
+          class="pagination"
+        />
+        <el-dialog
+          :visible.sync="giftDialog"
+          :before-close="giftDialogClose"
+          title="赠送Fan票"
+          width="600px"
         >
-          <el-table-column
-            prop="total_supply"
-            label="Fan票"
+          <el-form
+            ref="form"
+            v-loading="transferLoading"
+            :model="form"
+            label-width="70px"
+            class="gift-form"
           >
-            <template slot-scope="scope">
-              <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac">
-                <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
-                <span class="scope">{{ scope.row.symbol }}</span>
-              </router-link>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="total_supply"
-            label="名称"
-          >
-            <template slot-scope="scope">
-              <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}">
-                <span class="scope">{{ scope.row.name }}</span>
-              </router-link>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="创始人"
-          >
-            <template slot-scope="scope">
-              <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block author">
-                <!-- <avatar :src="cover(scope.row.avatar)" size="30px" /> -->
-                <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
-              </n-link>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            :label="$t('user.positionCoins')"
-            prop="total_supply"
-          >
-            <template slot-scope="scope">
-              <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="create_time"
-            label=""
-            width="220"
-          >
-            <template slot-scope="scope">
-              <div class="invite-block btn">
-                <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}">
-                  <el-button class="info-button" size="small">
-                    {{ $t('detail') }}
-                  </el-button>
-                </router-link>
-                <el-button
-                  @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
-                  class="info-button"
-                  style="margin: 0 10px;"
-                  size="small"
-                >
-                  {{ $t('gift') }}
-                </el-button>
-                <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
-                  <el-button class="info-button" size="small">
-                    {{ $t('transaction') }}
-                  </el-button>
-                </router-link>
+            <el-form-item label="Fan票">
+              <p class="tokenname">
+                {{ form.tokenname }}
+              </p>
+            </el-form-item>
+            <el-form-item label="接受对象">
+              <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="medium">
+                <el-button slot="append" @click="searchUser" icon="el-icon-search" />
+              </el-input>
+            </el-form-item>
+            <el-form-item v-if="form.userId" label="" prop="">
+              <div class="avatar-content">
+                <avatar :src="form.useravatar" class="gift-avatar" size="60px" />
+                <div @click="closeUser" class="gift-ful">
+                  <i class="el-icon-close" />
+                </div>
               </div>
-            </template>
-          </el-table-column>
-        </el-table>
+            </el-form-item>
+            <el-form-item label="发送数量" prop="">
+              <el-input-number
+                v-model="form.tokens"
+                :min="1"
+                :max="form.max"
+                size="small"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="submitForm('form')" type="primary" size="small">
+                确定
+              </el-button>
+              <el-button @click="formClose" size="small">
+                取消
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
       </div>
-      <user-pagination
-        v-show="!loading"
-        :reload="reload"
-        :current-page="currentPage"
-        :params="pointLog.params"
-        :api-url="pointLog.apiUrl"
-        :page-size="10"
-        :total="total"
-        :need-access-token="true"
-        @paginationData="paginationData"
-        @togglePage="togglePage"
-        class="pagination"
-      />
-      <el-dialog
-        :visible.sync="giftDialog"
-        :before-close="giftDialogClose"
-        title="赠送Fan票"
-        width="600px"
-      >
-        <el-form
-          ref="form"
-          v-loading="transferLoading"
-          :model="form"
-          label-width="70px"
-          class="gift-form"
-        >
-          <el-form-item label="Fan票">
-            <p class="tokenname">
-              {{ form.tokenname }}
-            </p>
-          </el-form-item>
-          <el-form-item label="接受对象">
-            <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="medium">
-              <el-button slot="append" @click="searchUser" icon="el-icon-search" />
-            </el-input>
-          </el-form-item>
-          <el-form-item v-if="form.userId" label="" prop="">
-            <div class="avatar-content">
-              <avatar :src="form.useravatar" class="gift-avatar" size="60px" />
-              <div @click="closeUser" class="gift-ful">
-                <i class="el-icon-close" />
-              </div>
-            </div>
-          </el-form-item>
-          <el-form-item label="发送数量" prop="">
-            <el-input-number
-              v-model="form.tokens"
-              :min="1"
-              :max="form.max"
-              size="small"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button @click="submitForm('form')" type="primary" size="small">
-              确定
-            </el-button>
-            <el-button @click="formClose" size="small">
-              取消
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
+      <!-- 流动金 -->
+      <holdliquidity />
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
@@ -155,16 +161,16 @@ import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
+import holdliquidity from '@/components/holdliquidity/index.vue'
 
 export default {
   components: {
     userLayout,
-    userInfo,
-    userNav,
+    myAccountNav,
     userPagination,
+    holdliquidity,
     avatar
   },
   data() {
@@ -172,12 +178,12 @@ export default {
       isPublishCoins: true,
       pointLog: {
         params: {
-          pagesize: 20
+          pagesize: 10
         },
         apiUrl: 'tokenTokenList',
         list: []
       },
-      currentPage: Number(this.$route.query.page) || 1,
+      currentPage: Number(this.$route.query.tokensPage) || 1,
       loading: false, // 加载数据
       transferLoading: false,
       total: 0,
@@ -221,10 +227,10 @@ export default {
       this.loading = true
       this.pointLog.list = []
       this.currentPage = i
+      const query = { ...this.$route.query }
+      query.tokensPage = i
       this.$router.push({
-        query: {
-          page: i
-        }
+        query
       })
     },
     transferMinetoken() {
@@ -384,6 +390,19 @@ export default {
     color: #000;
     font-size: 20px;
   }
+}
+.tokens-main {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: @br10;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
 }
 </style>
 

@@ -1,7 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <userNav nav-list-url="setting" />
+      <h2 class="tag-title">
+        {{ $t('user.accountSetting') }}
+      </h2>
       <div class="list">
         <div
           v-for="(item, idx) in accountList"
@@ -35,8 +37,8 @@
         </p>
       </div>
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
@@ -45,16 +47,14 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import { getSignatureForLogin } from '@/api/eth'
 import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
     userLayout,
-    userInfo,
-    userNav
+    myAccountNav
   },
   data() {
     return {
@@ -645,5 +645,12 @@ export default {
 .list-p{
   font-size: 12px;
   color: #555555;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  margin: 0;
 }
 </style>

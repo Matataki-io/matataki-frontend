@@ -1,7 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="token" />
+      <h2 class="tag-title">
+        {{ tokenSymbol }}的明细
+      </h2>
       <div v-loading="loading" class="card-container">
         <no-content-prompt :list="pointLog.list">
           <!-- <div class="point-card">
@@ -26,24 +28,22 @@
         class="pagination"
       />
     </template>
-    <template slot="info">
-      <userInfo :is-setting="true" />
+    <template slot="nav">
+      <myAccountNav />
     </template>
   </userLayout>
 </template>
 
 <script>
 import userLayout from '@/components/user/user_layout.vue'
-import userInfo from '@/components/user/user_info.vue'
-import userNav from '@/components/user/user_nav.vue'
+import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import tokensCard from '@/components/tokens_card/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 
 export default {
   components: {
     userLayout,
-    userInfo,
-    userNav,
+    myAccountNav,
     tokensCard,
     userPagination
   },
@@ -63,7 +63,8 @@ export default {
       assets: {
       },
       viewStatus: 0, // 0 1
-      amount: 0
+      amount: 0,
+      tokenSymbol: ''
     }
   },
   created() {
@@ -76,6 +77,7 @@ export default {
       this.assets = res.data
       this.total = res.data.count || 0
       this.amount = res.data.amount || 0
+      this.tokenSymbol = res.data.tokenDetail.symbol
       this.loading = false
     },
     togglePage(i) {
@@ -119,5 +121,11 @@ export default {
     color: #000000;
     line-height: 28px;
   }
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
 }
 </style>

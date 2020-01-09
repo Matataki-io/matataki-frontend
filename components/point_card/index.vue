@@ -33,7 +33,7 @@ export default {
       return moment(this.asset.create_time).format('MMMDo HH:mm')
     },
     assetAmount() {
-      return this.asset.amount
+      return this.asset.amount > 0 ? '+' + this.asset.amount : this.asset.amount
     },
     assetColor() {
       if (this.asset.amount < 0) {
@@ -96,7 +96,7 @@ export default {
     line-height:28px;
   }
   &-type {
-    font-size:18px;
+    font-size:16px;
     font-weight:400;
     color:rgba(0,0,0,1);
     line-height:28px;
@@ -116,6 +116,9 @@ export default {
     font-weight:400;
     color:rgba(0,0,0,1);
     line-height:22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     &-info {
       margin: 0 6px 0 0;
     }
