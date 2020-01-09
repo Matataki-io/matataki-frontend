@@ -100,7 +100,7 @@ export default {
             filter: null,
             extra: 'short_content'
           },
-          apiUrl: 'homeTimeRanking',
+          apiUrl: 'homeScoreRanking',
           articles: [],
           autoRequestTime: 0,
           isAtuoRequest: false
@@ -111,7 +111,7 @@ export default {
             filter: null,
             extra: 'short_content'
           },
-          apiUrl: 'homeScoreRanking',
+          apiUrl: 'homeTimeRanking',
           articles: [],
           autoRequestTime: 0,
           isAtuoRequest: false
@@ -120,10 +120,10 @@ export default {
       checkedFilter: ['1', '2', '4'],
       options: [{
         value: 0,
-        label: this.$t('home.articleNavNowTitle')
+        label: this.$t('home.articleNavHotTitle')
       }, {
         value: 1,
-        label: this.$t('home.articleNavHotTitle')
+        label: this.$t('home.articleNavNowTitle')
       }],
       sortValue: 0
     }
