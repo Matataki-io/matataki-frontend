@@ -200,7 +200,7 @@ export default {
     },
     jumpAccount() {
       if (!this.isLoginFunc()) return
-      if (this.isLogined) this.$router.push({ name: 'points' })
+      if (this.isLogined) this.$router.push({ name: 'account' })
     },
     profile() {
       if (!this.isLoginFunc()) return
