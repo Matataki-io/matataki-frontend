@@ -64,14 +64,12 @@
               </template>
             </div>
           </el-form-item>
-          <el-form-item>
-            <div class="push-btn">
-              <el-button @click="pushShare('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading" type="primary" class="g-button__black " size="mini">
-                <svg-icon icon-class="edit" class="icon" />
-                发布
-              </el-button>
-            </div>
-          </el-form-item>
+          <div class="push-btn">
+            <el-button @click="pushShare('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading" type="primary" class="g-button__black " size="mini">
+              <svg-icon icon-class="edit" class="icon" />
+              发布
+            </el-button>
+          </div>
         </el-form>
       </div>
     </div>
@@ -241,7 +239,6 @@ export default {
         this.$refs.shareContent.focus()
         next(false)
       } catch (error) {
-        this.$navigation.cleanRoutes() // 清除路由记录
         if (process.browser) {
           window.sessionStorage.removeItem('shareLink')
           window.sessionStorage.removeItem('shareRef')
@@ -267,7 +264,7 @@ export default {
       // console.log('shareLinkParse', shareLinkParse)
       this.shareLinkList = Array.isArray(shareLinkParse) ? shareLinkParse : []
 
-      console.log(shareLink, this.shareLinkList)
+      // console.log(shareLink, this.shareLinkList)
     },
     initUrlInput() {
       const id = process.browser ? window.sessionStorage.getItem('shareRef') : ''
@@ -322,6 +319,7 @@ export default {
           .then(res => {
             if (res.code === 0) {
               this.resetForm()
+              this.pull.list.length = 0
               this.pull.time = Date.now()
               this.$message({ message: '发布成功', type: 'success' })
             } else {
@@ -390,8 +388,9 @@ export default {
       this.getUrlData('urlForm')
     },
     getListData(res) {
-      console.log('res1', res)
+      // console.log('res1', res)
       if (res.data.list && res.data.list.length !== 0) {
+        // console.log('1111', res)
         this.pull.list = this.pull.list.concat(res.data.list)
       }
     },
@@ -443,8 +442,7 @@ export default {
 
 .sharehall-push__content {
   background: #fff;
-  height: 500px;
-  margin: 40px 0 0;
+  margin: 20px 0 0;
   padding: 20px;
   border-radius:10px;
   box-sizing: border-box;

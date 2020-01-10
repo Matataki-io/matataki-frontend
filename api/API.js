@@ -917,4 +917,11 @@ minetokenGetResources(tokenId) {
   accountChange(params) { return request.post('/account/changeMainAccount', params) },
   // 账号列表
   accountList() { return request.get('/account/list') },
+  // -------------------------------- 分享 --------------------------------
+  // 创建分享
+  createShare(data) { return request.post('/share', data) },
+  // 分享详情
+  // 暂时不用, 后端说用 p 接口
+  // shareDetail(id) { return request.get(`/share/${id}`) },
+  shareDetail(id) { return request.get(`/p/${id}`) },
 }
