@@ -4,7 +4,12 @@
       <div class="article">
         <div class="container">
           <div class="article-title">
-            <h3 v-clampy="2" v-html="xssTitle" class="search-res" />
+            <h3 v-clampy="2" class="search-res">
+              <span v-if="card && card.status === 1" class="off-shelves">
+                （{{ $t('articleCard.deleted') }}）
+              </span>
+              {{ xssTitle }}
+            </h3>
           </div>
           <div v-html="xssContent" class="content-text search-res" />
           <div class="des">
@@ -258,6 +263,9 @@ export default {
       cursor: pointer;
       margin: 0;
       padding: 0;
+    }
+    .off-shelves {
+      color: #b2b2b2;
     }
   }
 
