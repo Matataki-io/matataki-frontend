@@ -205,17 +205,17 @@ export default {
     nav() {
       return [
         {
-          title: '创作大厅',
+          title: '创作',
           url: 'article',
           sup: '',
           urlList: ['article', 'ring-id']
         },
-        // {
-        //   title: '分享大厅',
-        //   url: 'article',
-        //   sup: '',
-        //   urlList: ['article']
-        // },
+        {
+          title: '分享',
+          url: 'sharehall',
+          sup: '',
+          urlList: ['sharehall']
+        },
         // 隐藏导航栏的商品选项
         // {
         //   title: this.$t('home.navShop'),

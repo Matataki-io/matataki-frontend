@@ -1,5 +1,5 @@
 <template>
-  <a target="_blank" :href="card.url" class="card">
+  <a :href="card.url" target="_blank" class="card">
     <div v-if="card.cover" class="card-cover">
       <img :src="coverSrc" :alt="card.title">
     </div>
@@ -7,8 +7,8 @@
       <p class="card-text">{{ card.title || '暂无' }}</p>
       <p class="card-summary">{{ card.summary || '暂无' }}</p>
     </div>
-    <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
-      <i class="el-icon-close icon"></i>
+    <span v-if="cardType === 'edit'" @click="removeCard" class="card-remove">
+      <i class="el-icon-close icon" />
     </span>
   </a>
 </template>
@@ -33,7 +33,7 @@ export default {
     coverSrc() {
       if (this.card.cover) return this.$API.getImg(this.card.cover)
       return ''
-    },
+    }
   },
   methods: {
     removeCard(e) {
@@ -41,13 +41,13 @@ export default {
       else if (e && e.stopPropagation) e.stopPropagation()
       if (this.cardType !== 'edit') return
       this.$confirm('此操作将删除, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          customClass: 'message-box__mobile'
-        }).then(() => {
-          this.$emit('removeShareLink', this.idx)
-        }).catch(() => {})
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'message-box__mobile'
+      }).then(() => {
+        this.$emit('removeShareLink', this.idx)
+      }).catch(() => {})
       return false
     }
   }
@@ -93,6 +93,8 @@ export default {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     white-space: pre-wrap;
+    padding: 0;
+    margin: 0;
   }
   &-summary {
     font-size:12px;
@@ -106,6 +108,8 @@ export default {
     -webkit-box-orient: vertical;
     color: #737373;
     white-space: pre-wrap;
+    padding: 0;
+    margin: 0;
   }
   &-remove {
     position: absolute;
@@ -125,6 +129,5 @@ export default {
     }
   }
 }
-
 
 </style>

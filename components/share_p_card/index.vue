@@ -4,21 +4,23 @@
       <img :src="coverSrc" :alt="card.title">
     </div>
     <div class="card-content">
-      <p class="card-text">{{ card.title || '暂无' }}</p>
+      <p class="card-text">
+        {{ card.title || '暂无' }}
+      </p>
       <div class="card-info">
         <span>
-          <svg-icon icon-class="eye" class="icon"></svg-icon>{{ card.real_read_count }}
+          <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
         </span>
         <span>
-          <svg-icon icon-class="like_thin" class="icon"></svg-icon>{{ card.likes }}
+          <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
         </span>
         <!-- <span>
           <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
         </span> -->
       </div>
     </div>
-    <span v-if="cardType === 'edit'" class="card-remove" @click="removeCard">
-      <i class="el-icon-close icon"></i>
+    <span v-if="cardType === 'edit'" @click="removeCard" class="card-remove">
+      <i class="el-icon-close icon" />
     </span>
   </router-link>
 </template>
@@ -47,7 +49,7 @@ export default {
     coverSrc() {
       if (this.card.cover) return this.$API.getImg(this.card.cover)
       return ''
-    },
+    }
   },
   methods: {
     removeCard(e) {
@@ -55,13 +57,13 @@ export default {
       else if (e && e.stopPropagation) e.stopPropagation()
       if (this.cardType !== 'edit') return
       this.$confirm('此操作将删除, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          customClass: 'message-box__mobile'
-        }).then(() => {
-          this.$emit('removeShareLink', this.idx)
-        }).catch(() => {})
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        customClass: 'message-box__mobile'
+      }).then(() => {
+        this.$emit('removeShareLink', this.idx)
+      }).catch(() => {})
       return false
     }
   }
@@ -112,6 +114,8 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     white-space: pre-wrap;
+    padding: 0;
+    margin: 0;
   }
   &-info {
     display: flex;
@@ -147,6 +151,5 @@ export default {
     }
   }
 }
-
 
 </style>

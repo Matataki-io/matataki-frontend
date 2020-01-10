@@ -35,32 +35,34 @@
             </div>
           </el-form-item>
           <el-form-item v-if="shareLinkList.length !== 0">
-            <template v-for="(item, index) in shareLinkList">
-              <shareOuterCard
-                :card="item"
-                v-if="item.ref_sign_id === 0"
-                :key="'shareInsideCard' + index"
-                :idx="index"
-                @removeShareLink="removeShareLink"
-                class="list-card"
-              />
-              <sharePCard
-                :card="item"
-                v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
-                :key="'shareInsideCard' + index"
-                :idx="index"
-                @removeShareLink="removeShareLink"
-                class="list-card"
-              />
-              <shareInsideCard
-                :card="item"
-                v-else-if="item.ref_sign_id && item.channel_id === 3"
-                :key="'shareOuterCard' + index"
-                :idx="index"
-                @removeShareLink="removeShareLink"
-                class="list-card"
-              />
-            </template>
+            <div class="share-push__content">
+              <template v-for="(item, index) in shareLinkList">
+                <shareOuterCard
+                  :card="item"
+                  v-if="item.ref_sign_id === 0"
+                  :key="'shareInsideCard' + index"
+                  :idx="index"
+                  @removeShareLink="removeShareLink"
+                  class="list-card"
+                />
+                <sharePCard
+                  :card="item"
+                  v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+                  :key="'shareInsideCard' + index"
+                  :idx="index"
+                  @removeShareLink="removeShareLink"
+                  class="list-card"
+                />
+                <shareInsideCard
+                  :card="item"
+                  v-else-if="item.ref_sign_id && item.channel_id === 3"
+                  :key="'shareOuterCard' + index"
+                  :idx="index"
+                  @removeShareLink="removeShareLink"
+                  class="list-card"
+                />
+              </template>
+            </div>
           </el-form-item>
           <el-form-item>
             <div class="push-btn">
@@ -76,10 +78,40 @@
 
     <div class="sharehall-content">
       <div class="sharehall-main">
-        11
+        <div class="sharehall-head">
+          <h3 class="sharehall-title">
+            分享大厅
+          </h3>
+          <div class="sort">
+            <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
+            &nbsp;/&nbsp;
+            <span @click="value = options[1].value" :class="value === options[1].value && 'active'">{{ options[1].label }}</span>
+          </div>
+        </div>
+        <shareCard v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick" class="list-card" />
+        <buttonLoadMore :params="pull.params" :api-url="pull.apiUrl" :autoRequestTime="pull.time" @buttonLoadMore="getListData" :type-index="0" />
       </div>
       <div class="sharehall-other">
-        111
+        <div v-if="usersRecommendList.length !== 0" class="recommend-author">
+          <div class="ra-head">
+            <h3 class="sharehall-title">
+              推荐作者
+            </h3>
+            <span @click="usersrecommend" class="ra-head-random">
+              <div class="change">
+                <svg-icon
+                  :class="usersLoading && 'rotate'"
+                  class="change-icon"
+                  icon-class="change"
+                />
+              </div>
+              <span>{{ $t('home.random') }}</span>
+            </span>
+          </div>
+          <div class="ra-content">
+            <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -90,15 +122,19 @@ import throttle from 'lodash/throttle'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
-// import shareCard from '@/components/share_card/index.vue'
+import shareCard from '@/components/share_card/index.vue'
 import { getCookie } from '@/utils/cookie'
+import buttonLoadMore from '@/components/button_load_more/index.vue'
+import RAList from '@/components/recommend_author_list'
 
 export default {
   components: {
     shareOuterCard,
     sharePCard,
-    shareInsideCard
-    // shareCard
+    shareInsideCard,
+    shareCard,
+    buttonLoadMore,
+    RAList
   },
   data() {
     const httpTest = (rule, value, callback) => {
@@ -155,8 +191,13 @@ export default {
         apiUrl: 'share',
         list: []
       },
-      shareHeadActive: false // 导航是否到顶部
+      shareHeadActive: false, // 导航是否到顶部
+      usersRecommendList: [], // 推荐作者
+      usersLoading: false // 推荐作者
     }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   watch: {
     shareLinkList: {
@@ -217,13 +258,7 @@ export default {
     })
   },
   mounted() {
-    window.addEventListener('scroll', throttle(this.shareHeadSetClass, 300))
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.shareHeadSetClass)
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
+    this.usersrecommend()
   },
   methods: {
     initShareLink() {
@@ -257,11 +292,11 @@ export default {
       if (await this.setpFunc(formName)) {
         // console.log('currentUserInfo', this.currentUserInfo)
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-        if (this.shareLinkList.length <= 0) return this.$toast({ duration: 1000, message: '分享引用不能为空' })
+        if (this.shareLinkList.length <= 0) return this.$message({ message: '分享引用不能为空', type: 'warning' })
         // 平台检测
         const idProvider = getCookie('idProvider')
         if (!idProvider) {
-          this.$toast({ duration: 1000, message: '发生错误, 请您重新登录' })
+          this.$message({ message: '发生错误, 请您重新登录', type: 'error' })
           this.$store.commit('setLoginModal', true)
           return false
         }
@@ -288,13 +323,13 @@ export default {
             if (res.code === 0) {
               this.resetForm()
               this.pull.time = Date.now()
-              this.$toast.success({ duration: 500, message: '发布成功' })
+              this.$message({ message: '发布成功', type: 'success' })
             } else {
-              this.$toast.fail({ duration: 500, message: '发布失败' })
+              this.$message({ message: '发布失败', type: 'error' })
             }
           }).catch(err => {
             console.log(err)
-            this.$toast.fail({ duration: 500, message: '发布失败' })
+            this.$message({ message: '发布失败', type: 'error' })
           }).finally(() => {
             this.fullscreenLoading = false
           })
@@ -311,21 +346,21 @@ export default {
           return arr.filter(i => i.url === url).length !== 0
         }
 
-        if (urlIncludes(url, this.shareLinkList)) return this.$toast({ duration: 1000, message: '不能引用重复的内容' })
+        if (urlIncludes(url, this.shareLinkList)) return this.$message({ message: '不能引用重复的内容', type: 'warning' })
 
         // 自动检测url 获取标题 内容等
         this.urlLoading = true
         this.$API.extractRefTitle({ url })
           .then(res => {
             if (res.code === 0) {
-              this.$toast({ duration: 1000, message: '检测完成' })
+              this.$message({ message: '检测完成', type: 'success' })
               res.data.url = url
               this.shareLinkList.push(res.data)
               // 清空数据
               this.urlForm.url = ''
               this.$refs[formName].resetFields()
             } else {
-              this.$toast.fail(res.message)
+              this.$message({ message: res.message, type: 'error' })
             }
           }).catch(err => {
             console.log('获取信息失败', err)
@@ -356,20 +391,34 @@ export default {
     },
     getListData(res) {
       console.log('res1', res)
-      this.pull.list = res.list
+      if (res.data.list && res.data.list.length !== 0) {
+        this.pull.list = this.pull.list.concat(res.data.list)
+      }
     },
-    shareHeadSetClass() {
-      this.$nextTick(() => {
-        try {
-          const headOffsetTop = this.$refs.head.offsetTop
-          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-          if (scrollTop >= headOffsetTop) this.shareHeadActive = true
-          else this.shareHeadActive = false
-        } catch (error) {
-          console.log(error)
-        }
-      })
-    }
+    // 获取推荐作者
+    usersrecommend: throttle(async function () {
+      this.usersLoading = true
+      const params = {
+        amount: 3
+      }
+      await this.$API
+        .usersRecommend(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.usersRecommendList = res.data
+          } else {
+            console.log(`获取推荐用户失败${res.code}, ${res.message}`)
+          }
+        })
+        .catch(err => {
+          console.log(`获取推荐用户失败${err}`)
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.usersLoading = false
+          }, 300)
+        })
+    }, 800)
   }
 }
 </script>
@@ -395,7 +444,7 @@ export default {
 .sharehall-push__content {
   background: #fff;
   height: 500px;
-  margin: 20px 0 0;
+  margin: 40px 0 0;
   padding: 20px;
   border-radius:10px;
   box-sizing: border-box;
@@ -411,29 +460,36 @@ export default {
       border-color: #542DE0;
     }
   }
+}
 
+.share-push__content {
+  width: 726px;
+  box-sizing: border-box;
+}
+.sharehall-content {
+  display: flex;
+}
+.sharehall-main {
+  width: 766px;
+  flex: 0 0 766px;
+  margin: 0 20px 100px 0;
+}
+.sharehall-other {
+  flex: 1;
 }
 
 .sharehall-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 0 4px;
-  padding: 10px 20px;
-  position: sticky;
-  top: 45px;
-  background: #fff;
-  z-index: 9;
-  box-sizing: border-box;
-  &.active {
-    border-bottom: 0.0625rem solid #eaeaea;
-    box-shadow: 0 0 10px 4px rgba(0,0,0,.08);
-  }
 }
 .sharehall-title {
-  font-size:14px;
+  font-size:20px;
+  font-weight: bold;
   color:rgba(0,0,0,1);
-  line-height:20px;
+  line-height:28px;
+  padding: 0;
+  margin: 0;
 }
 
 .list-card {
@@ -464,6 +520,56 @@ export default {
 .push-btn {
   display: flex;
   justify-content: flex-end;
+}
+
+.recommend-author {
+  position: sticky;
+  top: 70px;
+  .ra-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .change {
+      width: 20px;
+      height: 20px;
+      //background: @purpleDark;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 6px;
+      &-icon {
+        width: 72%;
+      }
+    }
+    .ra-head-random {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size:16px;
+      font-weight:bold;
+      color:@purpleDark;;
+      cursor: pointer;
+    }
+  }
+  .ra-content {
+    background:rgba(255,255,255,1);
+    border-radius: @br10;
+    padding: 10px 20px;
+    margin-top: 20px;
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 0.8s ease-in-out infinite;
 }
 </style>
 

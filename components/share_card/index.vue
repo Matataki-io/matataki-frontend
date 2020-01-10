@@ -1,43 +1,45 @@
 <template>
-  <div class="card-share">
-    <div class="card-info">
-      <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info__left">
-        <avatar class="card-avatar" :src="avatarSrc"></avatar>
-        <div class="card-author">
-          <span class="card-username">{{ card.nickname || card.author }}</span>
-          <div>
-            <span class="card-date">{{ time }}</span>
-            <span class="card-read">
-              <svg-icon class="icon" icon-class="eye_blod" />{{ card.read }}
-            </span>
+  <div class="card-share__content">
+    <div class="card-share">
+      <div class="card-info">
+        <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info__left">
+          <avatar :src="avatarSrc" class="card-avatar" />
+          <div class="card-author">
+            <span class="card-username">{{ card.nickname || card.author }}</span>
+            <div>
+              <span class="card-date">{{ time }}</span>
+              <span class="card-read">
+                <svg-icon class="icon" icon-class="eye_blod" />{{ card.read }}
+              </span>
+            </div>
           </div>
+        </router-link>
+        <div @click="$emit('refClick', card)" class="card-quote">
+          <svg-icon class="icon" icon-class="quote" />
+          <span>引用&nbsp;{{ card.beRefs.length }}</span>
         </div>
-      </router-link>
-      <div class="card-quote" @click="$emit('refClick', card)">
-        <svg-icon class="icon" icon-class="quote" />
-        <span>引用&nbsp;{{card.beRefs.length}}</span>
       </div>
+      <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content">
+        <svg-icon class="icon" icon-class="quotation_marks" />
+        <svg-icon class="icon" icon-class="quotation_marks" />
+        <p>{{ card.short_content || "&nbsp;" }}</p>
+      </router-link>
     </div>
-    <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content">
-      <svg-icon class="icon" icon-class="quotation_marks" />
-      <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>{{ card.short_content || "&nbsp;" }}</p>
-    </router-link>
-    <div class="card-list" v-if="this.card.refs.length !== 0">
-      <template v-for="(item, index) in this.card.refs.slice(0, 1)">
-        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card"  :key="'shareOuterCard' + index"></shareOuterCard>
-        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card"  :key="'sharePCard' + index"></sharePCard>
-        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card"  :key="'shareInsideCard' + index"></shareInsideCard>
+    <div v-if="card.refs.length !== 0" class="card-list">
+      <template v-for="(item, index) in card.refs.slice(0, 1)">
+        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
+        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" :key="'sharePCard' + index" card-type="read" class="list-card" />
+        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" :key="'shareInsideCard' + index" card-type="read" class="list-card" />
       </template>
-      <div class="card-list__more" :class="toggleMore && 'open'">
+      <div :class="toggleMore && 'open'" class="card-list__more">
         <template v-for="(item, index) in shareListMore">
-          <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" cardType="read" class="list-card" :key="'shareOuterCard' + index"></shareOuterCard>
-          <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" cardType="read" class="list-card" :key="'shareOuterCard' + index"></sharePCard>
-          <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" cardType="read" class="list-card" :key="'shareOuterCard' + index"></shareInsideCard>
+          <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
+          <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
+          <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
         </template>
       </div>
-      <div v-if="shareListMore.length !== 0" class="card-more" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore">
-        <span>{{toggleMore ? '收起更多' : '查看更多' }}</span><i class="el-icon-d-arrow-left icon"></i>
+      <div v-if="shareListMore.length !== 0" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore" class="card-more">
+        <span>{{ toggleMore ? '收起更多' : '查看更多' }}</span><i class="el-icon-d-arrow-left icon" />
       </div>
     </div>
   </div>
@@ -54,17 +56,17 @@ export default {
     avatar,
     shareOuterCard,
     sharePCard,
-    shareInsideCard,
+    shareInsideCard
   },
   props: {
     card: {
       type: Object,
       required: true
-    },
+    }
   },
   data() {
     return {
-      toggleMore: false,
+      toggleMore: false
     }
   },
   computed: {
@@ -78,20 +80,26 @@ export default {
     avatarSrc() {
       if (this.card.avatar) return this.$API.getImg(this.card.avatar)
       return ''
-    },
+    }
   },
   created() {
-  },
+  }
 }
 </script>
 
 <style lang="less" scoped>
+.card-share__content {
+
+}
 .card-share {
   display: flex;
   align-items: center;
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .card {
@@ -176,6 +184,7 @@ export default {
     margin-top: 10px;
     text-decoration: none;
     cursor: pointer;
+    box-sizing: border-box;
     .icon {
       position: absolute;
       color: @purpleDark;
@@ -198,6 +207,8 @@ export default {
       line-height:20px;
       overflow: hidden;
       max-height: 102px;
+      padding: 0;
+      margin: 0;
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
@@ -208,21 +219,22 @@ export default {
     border-radius:6px;
     background-color: #eaeaea;
     padding: 0;
-    width: 100%;
-    margin: 14px 0 0 0;
+    margin: 0px 20px 0 20px;
+    box-sizing: border-box;
+    // margin: 14px 0 0 0;
     position: relative;
-    &::before {
-      display: block;
-      content: '';
-      width: 0;
-      height: 0;
-      border-width: 10px;
-      border-style: solid;
-      border-color: transparent transparent #eaeaea transparent;
-      position: absolute;
-      left: 20px;
-      top: -20px;
-    }
+    // &::before {
+    //   display: block;
+    //   content: '';
+    //   width: 0;
+    //   height: 0;
+    //   border-width: 10px;
+    //   border-style: solid;
+    //   border-color: transparent transparent #eaeaea transparent;
+    //   position: absolute;
+    //   left: 20px;
+    //   top: -20px;
+    // }
 
     &__more {
       max-height: 0;
@@ -246,6 +258,7 @@ export default {
       color:@purpleDark;
       line-height:17px;
       margin-right: 2px;
+      cursor: pointer;
     }
     .icon {
       color:@purpleDark;
