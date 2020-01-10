@@ -14,6 +14,22 @@
       <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是Fan票?</a>
       &nbsp;
       <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行Fan票?</a>
+
+      <div v-if="!isPost" class="click-box">
+        <router-link :to="{name: 'token-id', params: { id: tokenId || 0}}">
+          <el-button size="small">
+            详情
+          </el-button>
+        </router-link>
+        <el-button @click="addCoins" :loading="addToLoading" size="small">
+          增发
+        </el-button>
+        <router-link :to="{name: 'exchange', hash: '#swap', query: { output: form.symbol }}">
+          <el-button size="small" type="primary">
+            交易
+          </el-button>
+        </router-link>
+      </div>
     </div>
 
     <el-form ref="form" :rules="rules" :model="form" class="input-form" label-width="80px">
@@ -116,10 +132,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import imgUpload from '@/components/imgUpload/index.vue'
-import { toPrecision } from '@/utils/precisionConversion'
+import { precision, toPrecision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
-
 import socialIcon from '@/components/social_icon/index.vue'
 import socialTypes from '@/config/social_types'
 export default {
@@ -240,10 +256,19 @@ export default {
           // resourcesSocialss: [],
           // resourcesWebsites: [],
         }
-      ]
+      ],
+      tokenDetailData: {},
+      addToLoading: false
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
+    totalAmount() {
+      if (this.tokenDetailData.token) {
+        const tokenamount = precision(this.tokenDetailData.token.total_supply, 'CNY', this.tokenDetailData.token.decimals)
+        return this.$publishMethods.formatDecimal(tokenamount, 4)
+      } else return 0
+    },
     coinsCover() {
       return this.form.logo ? this.$API.getImg(this.form.logo) : ''
     },
@@ -276,6 +301,7 @@ export default {
               this.form.brief = token.brief
               this.form.introduction = token.introduction
               this.tokenId = token.id
+              this.tokenDetailData = res.data
 
               this.minetokenGetResources(token.id)
             }
@@ -303,9 +329,16 @@ export default {
       const data = {
         amount: toPrecision(number, 'CNY')
       }
+      this.$message('正在增发中，请稍等片刻。')
+      this.addToLoading = true
       const res = await this.$API.minetokenMint(data)
-      if (res.code === 0) return res.message
-      else throw res.message
+      this.addToLoading = false
+      if (res.code === 0) {
+        this.$message.success(res.message)
+        this.tokenDetail()
+      } else {
+        this.$message.error(res.message)
+      }
     },
     async minetokenResources(id) {
       const aboutArray = this.about.filter(i => i)
@@ -411,6 +444,23 @@ export default {
     abountLess(i) {
       if (this.about.length <= 1) return
       this.about.splice(i, 1)
+    },
+    addCoins() {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      this.$prompt('增发数量(总量最多发行一亿)', '提示', {
+        inputPattern: /^\d{0,9}$/,
+        inputErrorMessage: '请输入数字(总量最多发行一亿)',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message.warning('发行总量不能超过一亿')
+        if (Number(value) > 0) {
+          this.form.number = Number(value)
+          this.minetokenMint()
+        }
+      }).catch(() => {
+        // 不写这个取消时候会报错
+      })
     }
   }
 }
@@ -437,6 +487,12 @@ export default {
     line-height:20px;
     text-decoration: underline;
     margin-left: 10px;
+  }
+
+  .click-box {
+    flex: 1;
+    text-align: right;
+    padding-right: 10px;
   }
 }
 .coina-cover {
