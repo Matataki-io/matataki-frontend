@@ -62,7 +62,7 @@
                 链上查看
               </el-button>
             </a>
-            <router-link v-if="showTokenSetting" :to="{ name: 'minetoken' }">
+            <router-link v-if="showTokenSetting" :to="{ name: 'editminetoken' }">
               <el-button class="btn" size="small" icon="el-icon-setting">
                 管理
               </el-button>
