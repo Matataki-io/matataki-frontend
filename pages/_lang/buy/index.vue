@@ -2,6 +2,9 @@
 <template>
   <userLayout>
     <template slot="main">
+      <h2 class="tag-title">
+        {{ $t('user.buyHistory') }}
+      </h2>
       <div v-loading="loading">
         <no-content-prompt :list="articleCardData.articles">
           <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" type="article" />
@@ -76,5 +79,13 @@ export default {
 <style scoped>
 .pagination {
   padding: 40px 5px;
+}
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  margin: 0;
+  border-bottom: 1px solid #ececec;
 }
 </style>
