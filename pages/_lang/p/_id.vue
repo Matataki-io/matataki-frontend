@@ -323,7 +323,7 @@
                   <div class="fl jsb">
                     <div class="fl ac related-7">
                       <div class="related-list-link">
-                        <a v-if="item.ref_sign_id !== 0" :href="item.url" @click="toggleArticle(item.ref_sign_id, $event)">{{ item.title }}</a>
+                        <a v-if="item.ref_sign_id !== 0 && item.channel_id === 1" :href="item.url" @click="toggleArticle(item.ref_sign_id, $event)">{{ item.title }}</a>
                         <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
                       </div>
                     </div>
@@ -400,8 +400,8 @@
                   <div class="fl jsb">
                     <div class="fl ac related-7">
                       <div class="related-list-link">
-                        <a v-if="item.sign_id !== 0" :href="item.url" @click="toggleArticle(item.sign_id, $event)">{{ item.title }}</a>
-                        <a v-else :href="item.url" target="_blank">{{ item.title }}</a>
+                        <a v-if="item.sign_id !== 0 && item.channel_id === 1" :href="cardUrl(item)" @click="toggleArticle(item.sign_id, $event)">{{ cardTitle(item) }}</a>
+                        <a v-else :href="cardUrl(item)" target="_blank">{{ cardTitle(item) }}</a>
                       </div>
                     </div>
                     <!-- <div class="fl ac jfe related-3">
@@ -409,9 +409,9 @@
                     </div> -->
                   </div>
                   <div class="fl ac related-link">
-                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy2" />
-                    <a :href="item.url" target="_blank">
+                    <a class="link" href="javascript:void(0);">{{ cardUrl(item) }}</a>
+                    <svg-icon @click="copyCode(cardUrl(item))" class="icon-copy" icon-class="copy2" />
+                    <a :href="cardUrl(item)" target="_blank">
                       <svg-icon class="icon-share" icon-class="jump" />
                     </a>
                   </div>
@@ -1299,7 +1299,6 @@ export default {
       this.beingTotal = res.data.count || 0
       this.beingRelatedList.length = 0
       res.data.list.map(i => {
-        i.url = `${process.env.VUE_APP_PC_URL}/p/${i.sign_id}`
         i.collapse = false
         i.showCollapse = true
         this.beingRelatedList.push(i)
@@ -1480,6 +1479,21 @@ export default {
           this.$message.error(this.$t('error.copy'))
         }
       )
+    },
+    // 移动端是写在组件内, 用的 computed , 这里是写在页面, 写词重构的时候修改
+    cardTitle(card) {
+      // eslint-disable-next-line camelcase
+      const { channel_id, title, summary } = card
+      // eslint-disable-next-line camelcase
+      return channel_id === 1 ? title : channel_id === 3 ? summary : title
+    },
+    cardUrl(card) {
+      // eslint-disable-next-line camelcase
+      const { channel_id, sign_id } = card
+      // eslint-disable-next-line camelcase
+      const routerName = channel_id === 1 ? 'p' : channel_id === 3 ? 'share' : 'p'
+      // eslint-disable-next-line camelcase
+      return `${process.env.VUE_APP_URL}/${routerName}/${sign_id}`
     }
   }
 
