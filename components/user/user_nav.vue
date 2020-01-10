@@ -53,14 +53,12 @@ export default {
     account() {
       return [ // todo 完善路由
         { title: this.$t('user.wallet'), url: 'account', self: false },
-        { title: this.$t('user.point'), url: 'points', self: false },
         { title: this.$t('user.invite'), url: 'invite', self: false }
       ]
     },
     token() {
       return [ // todo 完善路由
         { title: this.$t('user.buycoins'), url: 'tokens', self: false },
-        { title: '持有的流动金', url: 'holdliquidity', self: false },
         { title: this.$t('user.selfcoins'), url: 'minetoken', self: false }
       ]
     },

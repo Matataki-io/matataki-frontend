@@ -1,7 +1,9 @@
 <template>
   <userLayout>
     <template slot="main">
-      <user-nav nav-list-url="token" />
+      <h2 class="tag-title">
+        {{ $t('user.selfcoins') }}
+      </h2>
       <minetoken />
     </template>
     <template slot="nav">
@@ -16,14 +18,12 @@ import moment from 'moment'
 import minetoken from '@/components/user/fan_coins_manage_layout'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
-import userNav from '@/components/user/user_nav.vue'
 
 export default {
   components: {
     minetoken,
     userLayout,
-    myAccountNav,
-    userNav
+    myAccountNav
   },
   data() {
     return {
@@ -32,3 +32,12 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.tag-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 10px;
+  margin: 0;
+}
+</style>
