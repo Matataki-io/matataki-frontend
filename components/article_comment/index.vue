@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async getUser(id) { // 获取用户头像
-      await this.$API.getUser({ id }).then(res => {
+      await this.$API.getUser(id).then(res => {
         if (res.code === 0) this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
       })
     },

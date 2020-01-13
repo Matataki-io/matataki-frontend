@@ -1,32 +1,55 @@
 <template>
-  <BasePull
-    class="container"
-    :url-replace="$route.params.id + ''"
-    :params="pull.params"
-    :api-url="pull.apiUrl"
-    :loading-text="$t('not')"
-    :is-obj="{ type: 'newObject', key: 'data', keys: 'list' }"
-    :need-access-token="true"
-    :auto-request-time="nowTime"
-    @getListData="getListData"
-  >
-    <!-- <card @getArticle="getArticle" v-for="(item, index) in pull.list" :key="index" :card="item"></card> -->
-    <template v-for="(item, index) in referenceList">
-      <shareInsideCard cardType="read" v-if="item.type === 'inside'" class="list-card" :key="'shareInsideCard' + index" :idx="index"></shareInsideCard>
-      <shareOuterCard cardType="read" v-if="item.type === 'outer'" class="list-card" :key="'shareOuterCard' + index" :idx="index"></shareOuterCard>
+  <div>
+    <template v-for="(item, index) in pull.list">
+      <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" :key="index" card-type="read" class="list-card" />
+      <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" :key="index" card-type="read" class="list-card" />
+      <shareInsideCard
+        :card="item"
+        v-else-if="item.ref_sign_id && item.channel_id === 3"
+        :toggleArticle="true"
+        @getArticle="getArticle"
+        :key="index"
+        card-type="read"
+        class="list-card"
+      />
     </template>
-  </BasePull>
+
+    <div v-loading="loading" v-show="pull.list.length !== 0" class="pagination">
+      <user-pagination
+        :url-replace="$route.params.id + ''"
+        :current-page="currentPage"
+        :params="pull.params"
+        :api-url="pull.apiUrl"
+        :page-size="pull.params.pagesize || 20"
+        :total="total"
+        :need-access-token="true"
+        @paginationData="paginationData"
+        @togglePage="togglePage"
+        :reload="nowTime"
+        :small="true"
+        :selectClass="'user-pagination-light'"
+      />
+    </div>
+    <p v-if="pull.list.length === 0" class="not-prompt">
+      暂无内容
+    </p>
+  </div>
 </template>
 
 <script>
 // import card from './quote_reference_card.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
+import sharePCard from '@/components/share_p_card/index.vue'
+import userPagination from '@/components/user/user_pagination.vue'
+
 export default {
   components: {
     // card,
     shareOuterCard,
     shareInsideCard,
+    sharePCard,
+    userPagination
   },
   props: {
     nowTime: {
@@ -36,35 +59,31 @@ export default {
   },
   data() {
     return {
-      referenceList: [
-        {
-          type: 'inside'
-        },
-        {
-          type: 'outer'
-        },
-        {
-          type: 'inside'
-        },
-        {
-          type: 'outer'
-        }
-      ],
+      currentPage: 1,
+      loading: true, // 加载数据
+      total: 0,
       pull: {
         params: {
-          pagesize: 10
+          pagesize: 5
         },
         apiUrl: 'postsReferences',
         list: []
-      },
+      }
     }
   },
   created() {
   },
   methods: {
-    getListData(res) {
-      // console.log('res1', res.list)
-      this.pull.list = res.list
+    paginationData(res) {
+      console.log(res)
+      this.pull.list.length = 0
+      this.pull.list = res.data.list
+      this.total = res.data.count || 0
+      this.loading = false
+    },
+    togglePage(i) {
+      this.loading = true
+      this.currentPage = i
     },
     getArticle(idInt, popEvent) {
       this.$emit('getArticle', idInt, popEvent)
@@ -72,7 +91,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="less" scoped>
 .container {
@@ -85,10 +103,11 @@ export default {
   padding: 0 10px;
 }
 .list-card {
-  margin-top: 20px;
+  // margin-top: 10px;
   background-color: transparent;
-  &:nth-child(1) {
-    margin-top: 0;
-  }
+  // &:nth-child(1) {
+    // margin-top: 0;
+  // }
 }
+
 </style>

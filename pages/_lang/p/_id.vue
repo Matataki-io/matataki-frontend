@@ -844,7 +844,7 @@ export default {
         id: id || this.$route.params.id
       }
       this.lockLoading = true
-      await this.$API.getCurrentProfile(data).then(res => {
+      await this.$API.currentProfile(data).then(res => {
         this.lockLoading = false
         if (res.code === 0) {
           this.currentProfile = res.data
@@ -952,7 +952,9 @@ export default {
     // 推荐
     like() {
       this.showUserPopover()
-      this.$API.like(this.article.id, this.timeCount).then(res => {
+      this.$API.like(this.article.id, {
+        time: this.timeCount
+      }).then(res => {
         if (res.code === 0) {
           clearInterval(this.timer)
           this.ssToken.is_liked = 2
@@ -973,7 +975,9 @@ export default {
     // 不推荐
     dislike() {
       this.showUserPopover()
-      this.$API.dislike(this.article.id, this.timeCount).then(res => {
+      this.$API.dislike(this.article.id, {
+        time: this.timeCount
+      }).then(res => {
         if (res.code === 0) {
           clearInterval(this.timer)
           this.ssToken.is_liked = 1
@@ -1115,7 +1119,7 @@ export default {
       }
     },
     async setAvatar() {
-      await this.$API.getUser({ id: this.article.uid }).then((res) => {
+      await this.$API.getUser(this.article.uid).then((res) => {
         if (res.code === 0) {
           this.avatar = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
         } else this.$message.warning(res.message)

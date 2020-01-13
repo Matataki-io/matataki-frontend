@@ -28,14 +28,6 @@ export default {
       `${endpoint.wx}?url=${url}`
     )
   },
-  // 获取当前用户的文章信息
-  getCurrentProfile(data) {
-    return request({
-      url: '/post/currentProfile',
-      method: 'post',
-      data: data
-    })
-  },
   getArticleInfo(hashOrId) {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
@@ -78,9 +70,6 @@ export default {
   },
   async getMyUserData () {
     return request.get('/user/stats')
-  },
-  getUser({ id }) {
-    return request.get(`/user/${id}`)
   },
   /**
    * BasePull 分页组件
@@ -142,15 +131,6 @@ export default {
       data: stringifyData,
       config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     })
-  },
-  async reading(id) {
-    return request.post(`/posts/${id}/reading`, {}, { noLoading: true })
-  },
-  async like(id, time) {
-    return request.post(`/posts/${id}/like`, { time })
-  },
-  async dislike(id, time) {
-    return request.post(`/posts/${id}/dislike`, { time })
   },
   async myPoints(params) {
     return request.get(`/user/points`, { params })
@@ -843,14 +823,6 @@ minetokenGetResources(tokenId) {
       }
     })
   },
-  // 收藏文章
-  bookmark(postId) {
-    return request.post(`/post/${postId}/bookmark`)
-  },
-  // 取消收藏文章
-  unbookmark(postId) {
-    return request.delete(`/post/${postId}/bookmark`)
-  },
   // 获取收藏文章
   getBookmarks(orderType = 1) {
     return request.get(`/user/bookmarks`, {
@@ -908,6 +880,20 @@ minetokenGetResources(tokenId) {
     if (referral) Object.assign(params, { referral: referral })
     return request.post('/login/github', params)
   },
+  // 得到用户信息
+  getUser(id) { return request.get(`/user/${id}`) },
+  // 增加阅读量
+  read(hash) { return request.post(`/post/show/${hash}`) },
+  // 获取当前用户的文章信息
+  currentProfile(data) { return request.post('/post/currentProfile', data) },
+  // 收藏
+  bookmark(id) { return request.post(`/post/${id}/bookmark`) },
+  unbookmark(id) { return request.delete(`/post/${id}/bookmark`) },
+  // 点赞
+  like(id, data) { return request.post(`/posts/${id}/like`, data) },
+  dislike(id, data) { return request.post(`/posts/${id}/dislike`, data) },
+  // 客户端打开文章后提交，表示开始阅读
+  reading(id) { return request.post(`/posts/${id}/reading`) },
   // -------------------------------- 账号绑定 --------------------------------
   // account binding
   accountBind(params) { return request.post('/account/binding', params) },

@@ -71,7 +71,7 @@ export default {
   methods: {
     // 主要获取关注状态
     getUserInfo(id) {
-      this.$API.getUser({ id }).then(res => {
+      this.$API.getUser(id).then(res => {
         if (res.code === 0) {
           this.info.is_follow = res.data.is_follow
           this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''

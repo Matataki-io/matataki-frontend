@@ -1,12 +1,12 @@
 <template>
   <div class="share-header">
     <div class="share-header__info">
-      <avatar class="avatar" src="https://p3.pstatp.com/large/pgc-image/6deea2238fa54440ac411fabc3ad2cff?/1.jpg" />
-      <span class="share-header__username">Xiaotiandada</span>
-      <span class="share-header__time">123123213213123</span>
+      <avatar :src="avatarSrc" class="avatar" />
+      <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
+      <span class="share-header__time">{{ timeFormat }}</span>
       <span class="share-header__read">
         <svg-icon icon-class="eye_blod" class="icon" />
-        121211
+        {{ read }}
       </span>
     </div>
     <m-ipfs />
@@ -14,10 +14,42 @@
 </template>
 
 <script>
+import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 export default {
   components: {
     avatar
+  },
+  props: {
+    avatar: {
+      type: String,
+      default: ''
+    },
+    username: {
+      type: String,
+      default: ''
+    },
+    time: {
+      type: String,
+      default: ''
+    },
+    read: {
+      type: Number,
+      default: 0
+    },
+    hash: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    avatarSrc() {
+      if (this.avatar) return this.$API.getImg(this.avatar)
+      return ''
+    },
+    timeFormat() {
+      return moment(this.time).format('lll')
+    }
   }
 }
 </script>
