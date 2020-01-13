@@ -119,7 +119,7 @@ export default {
       flex: 0 0 30px;
     }
     .card-username {
-      font-size:12px;
+      font-size:14px;
       font-weight:bold;
       color:rgba(0,0,0,1);
       line-height:17px;
@@ -152,7 +152,7 @@ export default {
     }
 
     p {
-      font-size:12px;
+      font-size:14px;
       font-weight:400;
       color:rgba(178,178,178,1);
       line-height:17px;

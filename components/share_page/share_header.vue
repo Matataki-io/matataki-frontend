@@ -1,8 +1,10 @@
 <template>
   <div class="share-header">
     <div class="share-header__info">
-      <avatar :src="avatarSrc" class="avatar" />
-      <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
+      <router-link :to="{name: 'user-id', params: {id: id}}" class="share-header__author" target="_blank">
+        <avatar :src="avatarSrc" class="avatar" />
+        <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
+      </router-link>
       <span class="share-header__time">{{ timeFormat }}</span>
       <span class="share-header__read">
         <svg-icon icon-class="eye_blod" class="icon" />
@@ -21,6 +23,10 @@ export default {
     avatar
   },
   props: {
+    id: {
+      type: Number,
+      default: 0
+    },
     avatar: {
       type: String,
       default: ''
@@ -48,7 +54,7 @@ export default {
       return ''
     },
     timeFormat() {
-      return moment(this.time).format('lll')
+      return this.time ? moment(this.time).format('lll') : '00:00:00'
     }
   }
 }
@@ -59,10 +65,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 10px 20px;
+  padding: 20px 20px 14px;
   &__info {
     display: flex;
     align-items: center;
+  }
+  &__author {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
   }
   .avatar {
     width: 45px !important;

@@ -4,6 +4,7 @@
     <div v-loading="loading" class="container-loading">
       <main class="container">
         <shareHeader
+          :id="content.uid"
           :avatar="userInfo.avatar"
           :username="userInfo.nickname || userInfo.username"
           :time="content.create_time"

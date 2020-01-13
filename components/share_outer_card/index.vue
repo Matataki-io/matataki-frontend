@@ -67,12 +67,12 @@ export default {
   cursor: pointer;
   color: #000;
   &-cover {
-    width: 100px;
-    height: 50px;
+    width: 120px;
+    height: 60px;
     border-radius: 3px;
     overflow: hidden;
-    margin-right: 5px;
-    flex: 0 0 100px;
+    margin-right: 10px;
+    flex: 0 0 120px;
     border: 1px solid #e0e0e0;
     box-sizing: border-box;
     img {
@@ -82,12 +82,12 @@ export default {
     }
   }
   &-text {
-    font-size:12px;
+    font-size:15px;
     font-weight: bold;
     color:rgba(0,0,0,1);
-    line-height:17px;
+    line-height: 18px;
     flex: 1;
-    max-height: 19px;
+    max-height: 20px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -97,11 +97,11 @@ export default {
     margin: 0;
   }
   &-summary {
-    font-size:12px;
-    font-weight: bold;
-    line-height:17px;
+    font-size:14px;
+    // font-weight: bold;
+    line-height: 18px;
     flex: 1;
-    max-height: 36px;
+    max-height: 38px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -109,7 +109,7 @@ export default {
     color: #737373;
     white-space: pre-wrap;
     padding: 0;
-    margin: 0;
+    margin: 4px 0 0 0;
   }
   &-remove {
     position: absolute;
