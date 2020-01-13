@@ -37,7 +37,6 @@
 </template>
 
 <script>
-// import card from './quote_reference_card.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
@@ -45,7 +44,6 @@ import userPagination from '@/components/user/user_pagination.vue'
 
 export default {
   components: {
-    // card,
     shareOuterCard,
     shareInsideCard,
     sharePCard,
