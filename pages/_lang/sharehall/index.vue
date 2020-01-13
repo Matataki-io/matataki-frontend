@@ -502,7 +502,7 @@ export default {
   align-items: center;
   span {
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: #333;
     &.active {
