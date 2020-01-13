@@ -16,6 +16,8 @@
         :need-access-token="true"
         @paginationData="paginationData"
         @togglePage="togglePage"
+        :small="true"
+        :selectClass="'user-pagination-light'"
         class="pagination"
       />
     </div>
@@ -47,7 +49,7 @@ export default {
         apiUrl: 'liquidityLogsDetail',
         list: []
       },
-      currentPage: Number(this.$route.query.page) || 1,
+      currentPage: Number(this.$route.query['detailH' + this.id]) || 1,
       loading: true, // 加载数据
       total: 0,
       assets: {
@@ -74,10 +76,10 @@ export default {
       this.loading = true
       this.pointLog.list = []
       this.currentPage = i
+      const query = { ...this.$route.query }
+      query['detailH' + this.id] = i
       this.$router.push({
-        query: {
-          page: i
-        }
+        query
       })
     }
   }

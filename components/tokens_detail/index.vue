@@ -48,7 +48,7 @@ export default {
         apiUrl: 'tokenUserLogs',
         list: []
       },
-      currentPage: Number(this.$route.query.page) || 1,
+      currentPage: Number(this.$route.query['detailT' + this.id]) || 1,
       loading: true, // 加载数据
       total: 0,
       assets: {
@@ -73,10 +73,10 @@ export default {
       this.loading = true
       this.pointLog.list = []
       this.currentPage = i
+      const query = { ...this.$route.query }
+      query['detailT' + this.id] = i
       this.$router.push({
-        query: {
-          page: i
-        }
+        query
       })
     }
   }

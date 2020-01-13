@@ -170,7 +170,7 @@ export default {
     sale: '销量',
     investment: '投资',
     saleUnit: 'EOS/份',
-    deleted: '文章已下架'
+    deleted: '已下架'
   },
   articleFooter: {
     received: '已领取',

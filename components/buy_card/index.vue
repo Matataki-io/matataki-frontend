@@ -106,7 +106,6 @@ export default {
 
 <style lang="less" scoped>
 .buy-block {
-  width: 100%;
   background: #fff;
   border-radius: 4px;
   padding: 20px;
