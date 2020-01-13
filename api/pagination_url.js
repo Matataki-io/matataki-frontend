@@ -70,5 +70,7 @@ export const paginationUrl = {
   // 通知
   notifications: '/notification/fetch',
   // Fan 票相关创作
-  minetokenRelated: 'minetoken/:id/related'
+  minetokenRelated: 'minetoken/:id/related',
+  // 分享列表
+  share: 'share'
 }

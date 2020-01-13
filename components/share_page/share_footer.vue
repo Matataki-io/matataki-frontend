@@ -1,8 +1,8 @@
 <template>
   <div class="share-footer">
     <div class="icon-num">
-      <div>
-        <svg-icon class="icon active" icon-class="bookmark-solid" />
+      <div @click="$emit('bookmarked', bookmarked)">
+        <svg-icon :class="bookmarked && 'active'" class="icon" icon-class="bookmark-solid" />
       </div>
       <p>收藏</p>
     </div>
@@ -19,31 +19,49 @@
       <p>分享</p>
     </div>
     <div class="icon-num">
-      <div>
-        <svg-icon class="icon" icon-class="great-solid" />
+      <div @click="$emit('like', 2)">
+        <svg-icon :class="isLiked === 2 && 'active'" class="icon" icon-class="great-solid" />
       </div>
-      <p>推荐<span>12</span></p>
+      <p>推荐<span>{{ likes }}</span></p>
     </div>
     <div class="icon-num">
-      <div>
-        <svg-icon class="icon" icon-class="bullshit-solid" />
+      <div @click="$emit('like', 1)">
+        <svg-icon :class="isLiked === 1 && 'active'" class="icon" icon-class="bullshit-solid" />
       </div>
-      <p>不推荐<span>123</span></p>
+      <p>不推荐<span>{{ dislikes }}</span></p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    // 是否收藏
+    bookmarked: {
+      type: Number,
+      default: 0
+    },
+    // 是否点赞 like 2 dislike 1
+    isLiked: {
+      type: Number,
+      default: 0
+    },
+    // 点赞数
+    likes: {
+      type: Number,
+      default: 0
+    },
+    // 不推荐数
+    dislikes: {
+      type: Number,
+      default: 0
+    }
+  },
   methods: {
     pushShare() {
-      this.$router.push({
-        name: 'sharehall',
-        query: {
-          id: this.$route.params.id,
-          from: 'share'
-        }
-      })
+      // 优化体验, 大厅取这个key
+      sessionStorage.setItem('shareRef', this.$route.params.id)
+      this.$router.push({ name: 'sharehall' })
     }
   }
 }
