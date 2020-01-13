@@ -25,7 +25,7 @@
         class="footer"
       />
     </div>
-    <reference :show="false" :offSlidebar="offSlidebar">
+    <reference :show="true" :offSlidebar="offSlidebar">
       <template slot="left">
         <div class="reference-header">
           <span class="reference-header__title">

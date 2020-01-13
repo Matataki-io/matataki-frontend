@@ -75,7 +75,7 @@ export default {
       this.$nextTick(() => {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
         // 10 + 37
-        const sliderWidth = (clientWidth / 2) - 47
+        const sliderWidth = ((clientWidth - 660) / 2)
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
           relatedDom.forEach((ele, i) => {
