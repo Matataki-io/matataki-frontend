@@ -111,7 +111,8 @@ export default {
     &__left {
       display: flex;
       align-items: center;
-      flex: 1;
+      // flex: 1;
+      max-width: 300px;
       overflow: hidden;
       margin-right: 10px;
       text-decoration: none;
