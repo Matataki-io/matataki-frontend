@@ -11,7 +11,7 @@
         {{ read }}
       </span>
     </div>
-    <m-ipfs />
+    <m-ipfs :hash="hash" />
   </div>
 </template>
 
