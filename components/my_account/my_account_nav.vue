@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       tagsList: [
-        { title: this.$t('user.information'), url: 'setting' },
+        { title: this.$t('user.userInformation'), url: 'setting' },
         { title: this.$t('user.accountSetting'), url: 'setting-account' },
         { title: this.$t('user.fanWallet'), url: 'tokens' },
         { title: this.$t('user.applycoins'), url: 'tokens-apply' },

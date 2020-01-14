@@ -1,7 +1,7 @@
 <template>
   <div class="share-header">
     <div class="share-header__info">
-      <router-link :to="{name: 'user-id', params: {id: id}}" class="share-header__author" target="_blank">
+      <router-link :to="{name: 'user-id-share', params: {id: id}}" class="share-header__author" target="_blank">
         <avatar :src="avatarSrc" class="avatar" />
         <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
       </router-link>

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="cardUrl" @click.native="toggle" class="card">
+  <router-link :to="cardUrl" @click.native="toggle" class="card" target="_blank">
     <div class="card-info">
       <div class="card-info__user">
         <avatar :src="avatarSrc" class="card-avatar" />
