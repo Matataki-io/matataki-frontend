@@ -633,7 +633,8 @@ export default {
     applycoins: 'Apply for Fan coins',
     issuecoins: 'Issue for Fan coins',
     editProfile: 'Edit Profile',
-    information: 'User information',
+    information: 'Information',
+    userInformation: 'User information',
     bookmark: 'Bookmarks',
     myBookmark: 'My bookmark',
     message: 'Messages'

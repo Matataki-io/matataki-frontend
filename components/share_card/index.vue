@@ -2,7 +2,7 @@
   <div class="card-share__content">
     <div class="card-share">
       <div class="card-info">
-        <router-link :to="{ name: 'user-id', params: { id: card.uid } }" class="card-info__left">
+        <router-link :to="{ name: 'user-id-share', params: { id: card.uid } }" :target="blank && '_blank'" class="card-info__left">
           <avatar :src="avatarSrc" class="card-avatar" />
           <div class="card-author">
             <span class="card-username">{{ card.nickname || card.author }}</span>
@@ -19,7 +19,7 @@
           <span>引用&nbsp;{{ card.beRefs.length }}</span>
         </div>
       </div>
-      <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content">
+      <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content" target="_blank">
         <svg-icon class="icon" icon-class="quotation_marks" />
         <svg-icon class="icon" icon-class="quotation_marks" />
         <p>{{ card.short_content || "&nbsp;" }}</p>
@@ -104,6 +104,10 @@ export default {
     card: {
       type: Object,
       required: true
+    },
+    blank: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

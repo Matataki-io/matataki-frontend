@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav">
+  <nav class="nav fl">
     <router-link
       v-for="(item, index) in navList"
       :key="index"
@@ -30,6 +30,7 @@ export default {
       return [
       // self 只有自己才能看
         { title: this.$t('user.creation'), url: 'user-id', self: false },
+        { title: this.$t('share'), url: 'user-id-share', self: false },
         { title: this.$t('user.draft'), url: 'user-id-draft', self: true },
         { title: this.$t('user.fan'), url: 'user-id-fan', self: false },
         { title: this.$t('user.follow'), url: 'user-id-follow', self: false },
@@ -44,8 +45,8 @@ export default {
 
 <style lang="less" scoped>
 .nav {
-  width: 766px;
-  // text-align: center;
+  width: 570px;
+  text-align: center;
   margin: 0 auto;
   padding: 20px 0 10px;
   a {
@@ -53,6 +54,7 @@ export default {
     line-height:33px;
     text-decoration: none;
     margin: 0 10px;
+    flex: 1;
     cursor: pointer;
     color: #333;
     &.active {

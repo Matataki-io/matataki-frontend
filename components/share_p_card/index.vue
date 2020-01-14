@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="cardUrl" class="card">
+  <router-link :to="cardUrl" class="card" target="_blank">
     <div v-if="card.cover" class="card-cover">
       <img :src="coverSrc" :alt="card.title">
     </div>

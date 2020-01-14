@@ -605,7 +605,8 @@ export default {
     applycoins: '申请Fan票',
     issuecoins: '发行Fan票',
     editProfile: '编辑资料',
-    information: '个人信息',
+    information: '信息',
+    userInformation: '个人信息',
     bookmark: '收藏',
     myBookmark: '我的收藏',
     message: '私信'

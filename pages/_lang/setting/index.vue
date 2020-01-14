@@ -2,7 +2,7 @@
   <userLayout>
     <template slot="main">
       <h2 class="tag-title">
-        {{ $t('user.information') }}
+        {{ $t('user.userInformation') }}
       </h2>
       <div class="set-main">
         <div class="list center">

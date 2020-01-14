@@ -1,11 +1,11 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <router-link :to="{name: 'user-id', params: {id : article.uid}}">
+      <router-link :to="{name: 'user-id', params: {id : article.uid}}" target="_blank">
         <avatar :size="'38px'" :src="avatarSrc" class="Avatar" />
       </router-link>
       <div class="AuthorInfo-content">
-        <router-link :to="`/user/${article.uid}`">
+        <router-link :to="`/user/${article.uid}`" target="_blank">
           <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
         </router-link>
         <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
