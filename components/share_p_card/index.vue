@@ -7,16 +7,22 @@
       <p class="card-text">
         {{ card.title || '暂无' }}
       </p>
-      <div class="card-info">
-        <span>
-          <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
-        </span>
-        <span>
-          <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
-        </span>
+      <div class="card-operate">
+        <div v-if="cardType !== 'edit'" class="card-info">
+          <span>
+            <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
+          </span>
+          <span>
+            <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
+          </span>
         <!-- <span>
           <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
         </span> -->
+        </div>
+        <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+          <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
+          <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+        </div>
       </div>
     </div>
     <span v-if="cardType === 'edit'" @click="removeCard" class="card-remove">
@@ -65,6 +71,21 @@ export default {
         this.$emit('removeShareLink', this.idx)
       }).catch(() => {})
       return false
+    },
+    copy(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$copyText(val).then(
+        () => this.$message.success(this.$t('success.copy')),
+        () => this.$message.error(this.$t('error.copy'))
+      )
+      return false
+    },
+    ref(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$emit('ref', val)
+      return false
     }
   }
 }
@@ -97,11 +118,26 @@ export default {
       object-fit: cover;
     }
   }
+  &-operate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .icon {
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 14px;
+      color: @purpleDark;
+      &:nth-child(2) {
+        font-size: 16px;
+      }
+    }
+  }
   &-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 60px;
+    width: 100%;
   }
   &-text {
     font-size:15px;
@@ -109,7 +145,7 @@ export default {
     color:rgba(0,0,0,1);
     line-height:18px;
     flex: 1;
-    max-height: 38px;
+    max-height: 36px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -128,7 +164,9 @@ export default {
       line-height:17px;
       margin-left: 10px;
       .icon {
-        margin-right: 4px;
+        color:rgba(178,178,178,1);
+        padding: 0;
+        margin: 0 4px 0 0;
       }
       &:nth-child(1) {
         margin-left: 0;
