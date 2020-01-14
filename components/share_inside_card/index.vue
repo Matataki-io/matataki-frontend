@@ -1,8 +1,14 @@
 <template>
   <router-link :to="cardUrl" @click.native="toggle" class="card">
     <div class="card-info">
-      <avatar :src="avatarSrc" class="card-avatar" />
-      <span class="card-username">{{ username }}</span>
+      <div class="card-info__user">
+        <avatar :src="avatarSrc" class="card-avatar" />
+        <span class="card-username">{{ username }}</span>
+      </div>
+      <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+        <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
+        <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+      </div>
     </div>
     <div class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
@@ -91,6 +97,21 @@ export default {
         const id = this.from === 'beref' ? this.card.sign_id : this.card.ref_sign_id
         this.$emit('getArticle', id, false)
       }
+    },
+    copy(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$copyText(val).then(
+        () => this.$message.success(this.$t('success.copy')),
+        () => this.$message.error(this.$t('error.copy'))
+      )
+      return false
+    },
+    ref(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$emit('ref', val)
+      return false
     }
   }
 }
@@ -108,9 +129,13 @@ export default {
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
+  &:active .card-operate {
+    color: @purpleDark;
+  }
   &-info {
     width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     .card-avatar {
       margin-right: 5px;
@@ -126,6 +151,24 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+  }
+  &-info__user {
+    display: flex;
+    align-items: center;
+  }
+  &-operate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .icon {
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 14px;
+      color: @purpleDark;
+      &:nth-child(2) {
+        font-size: 16px;
+      }
     }
   }
   &-content {

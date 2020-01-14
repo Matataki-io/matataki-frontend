@@ -86,7 +86,14 @@
             <span @click="value = options[1].value" :class="value === options[1].value && 'active'">{{ options[1].label }}</span>
           </div>
         </div>
-        <shareCard v-for="(item, index) in pull.list" :key="index" :card="item" @refClick="refClick" class="list-card" />
+        <shareCard
+          v-for="(item, index) in pull.list"
+          :key="index"
+          :card="item"
+          @refClick="refClick"
+          @ref="ref"
+          class="list-card"
+        />
         <buttonLoadMore :params="pull.params" :api-url="pull.apiUrl" :autoRequestTime="pull.time" @buttonLoadMore="getListData" :type-index="0" />
       </div>
       <div class="sharehall-other">
@@ -385,6 +392,10 @@ export default {
     // 引用
     refClick(card) {
       this.urlForm.url = `${process.env.VUE_APP_URL}/share/${card.id}`
+      this.getUrlData('urlForm')
+    },
+    ref(val) {
+      this.urlForm.url = val
       this.getUrlData('urlForm')
     },
     getListData(res) {

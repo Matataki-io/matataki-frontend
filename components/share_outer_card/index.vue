@@ -4,7 +4,13 @@
       <img :src="coverSrc" :alt="card.title">
     </div>
     <div>
-      <p class="card-text">{{ card.title || '暂无' }}</p>
+      <div class="card-operate">
+        <p class="card-text">{{ card.title || '暂无' }}</p>
+        <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
+          <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
+          <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+        </div>
+      </div>
       <p class="card-summary">{{ card.summary || '暂无' }}</p>
     </div>
     <span v-if="cardType === 'edit'" @click="removeCard" class="card-remove">
@@ -49,6 +55,21 @@ export default {
         this.$emit('removeShareLink', this.idx)
       }).catch(() => {})
       return false
+    },
+    copy(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$copyText(val).then(
+        () => this.$message.success(this.$t('success.copy')),
+        () => this.$message.error(this.$t('error.copy'))
+      )
+      return false
+    },
+    ref(val, e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
+      this.$emit('ref', val)
+      return false
     }
   }
 }
@@ -79,6 +100,20 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+  }
+  &-operate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .icon {
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 14px;
+      color: @purpleDark;
+      &:nth-child(2) {
+        font-size: 16px;
+      }
     }
   }
   &-text {

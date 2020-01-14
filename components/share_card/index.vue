@@ -27,15 +27,57 @@
     </div>
     <div v-if="card.refs.length !== 0" class="card-list">
       <template v-for="(item, index) in card.refs.slice(0, 1)">
-        <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
-        <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" :key="'sharePCard' + index" card-type="read" class="list-card" />
-        <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" :key="'shareInsideCard' + index" card-type="read" class="list-card" />
+        <shareOuterCard
+          @ref="val => $emit('ref', val)"
+          :card="item"
+          v-if="item.ref_sign_id === 0"
+          :key="'shareOuterCard' + index"
+          card-type="read"
+          class="list-card"
+        />
+        <sharePCard
+          @ref="val => $emit('ref', val)"
+          :card="item"
+          v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+          :key="'sharePCard' + index"
+          card-type="read"
+          class="list-card"
+        />
+        <shareInsideCard
+          @ref="val => $emit('ref', val)"
+          :card="item"
+          v-else-if="item.ref_sign_id && item.channel_id === 3"
+          :key="'shareInsideCard' + index"
+          card-type="read"
+          class="list-card"
+        />
       </template>
       <div :class="toggleMore && 'open'" class="card-list__more">
         <template v-for="(item, index) in shareListMore">
-          <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
-          <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
-          <shareInsideCard :card="item" v-else-if="item.ref_sign_id && item.channel_id === 3" :key="'shareOuterCard' + index" card-type="read" class="list-card" />
+          <shareOuterCard
+            @ref="val => $emit('ref', val)"
+            :card="item"
+            v-if="item.ref_sign_id === 0"
+            :key="'shareOuterCard' + index"
+            card-type="read"
+            class="list-card"
+          />
+          <sharePCard
+            @ref="val => $emit('ref', val)"
+            :card="item"
+            v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+            :key="'shareOuterCard' + index"
+            card-type="read"
+            class="list-card"
+          />
+          <shareInsideCard
+            @ref="val => $emit('ref', val)"
+            :card="item"
+            v-else-if="item.ref_sign_id && item.channel_id === 3"
+            :key="'shareOuterCard' + index"
+            card-type="read"
+            class="list-card"
+          />
         </template>
       </div>
       <div v-if="shareListMore.length !== 0" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore" class="card-more">
