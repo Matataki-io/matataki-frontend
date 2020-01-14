@@ -7,7 +7,7 @@
       <p class="card-text">
         {{ card.title || '暂无' }}
       </p>
-      <div class="card-operate">
+      <div class="card-more">
         <div v-if="cardType !== 'edit'" class="card-info">
           <span>
             <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
@@ -118,10 +118,14 @@ export default {
       object-fit: cover;
     }
   }
-  &-operate {
+  &-more {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  &-operate {
+    display: flex;
+    align-items: center;
     .icon {
       cursor: pointer;
       padding: 4px 6px;
