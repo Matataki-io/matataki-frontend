@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <span v-if="cardType === 'edit'" @click="removeCard" class="card-remove">
+    <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
       <i class="el-icon-close icon" />
     </span>
   </router-link>
@@ -45,6 +45,11 @@ export default {
     card: {
       type: Object,
       required: true
+    },
+    // 如果是分享卡片 隐藏删除按钮
+    shareCard: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

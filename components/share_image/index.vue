@@ -1,10 +1,12 @@
 <template>
   <div class="share-image">
     <img class="share-image__head" src="@/assets/img/share_image_head.png" alt="share_image_head">
-    <p class="share-image__text">
-      {{ content || '&nbsp;' }}
+    <div class="share-image__content">
+      <p class="share-image__text">
+        {{ content || '&nbsp;' }}
+      </p>
       <img class="ref" src="@/assets/img/share_ref.png" alt="ref">
-    </p>
+    </div>
     <div class="share-image__user">
       <avatar :src="avatarSrc" class="avatar" />
       <span>{{ username.length > 12 ? username.slice(0, 12) + '...': username }}</span>
@@ -14,9 +16,34 @@
         <div :key="index" class="ref-index">
           <div class="ref-index__line" />
           <div class="ref-index__number">
-            {{ index }}
+            {{ index+1 }}
           </div>
         </div>
+
+        <shareOuterCard
+          :card="item"
+          v-if="item.ref_sign_id === 0"
+          :key="'shareInsideCard' + index"
+          :idx="index"
+          :shareCard="true"
+          class="list-card"
+        />
+        <sharePCard
+          :card="item"
+          v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+          :key="'shareInsideCard' + index"
+          :idx="index"
+          :shareCard="true"
+          class="list-card"
+        />
+        <shareInsideCard
+          :card="item"
+          v-else-if="item.ref_sign_id && item.channel_id === 3"
+          :key="'shareOuterCard' + index"
+          :idx="index"
+          :shareCard="true"
+          class="list-card"
+        />
       </template>
     </div>
     <img src="@/assets/img/share_image_logo.png" alt="share-image__logo" class="share-image__logo">
@@ -31,11 +58,16 @@
 <script>
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 import avatar from '@/components/avatar/index.vue'
-
+import shareOuterCard from '@/components/share_outer_card/index.vue'
+import sharePCard from '@/components/share_p_card/index.vue'
+import shareInsideCard from '@/components/share_inside_card/index.vue'
 export default {
   components: {
     avatar,
-    qrcode: VueQrcode
+    qrcode: VueQrcode,
+    shareOuterCard,
+    sharePCard,
+    shareInsideCard
   },
   props: {
     content: {
@@ -56,7 +88,7 @@ export default {
     },
     url: {
       type: String,
-      default: '1'
+      default: process.env.VUE_APP_URL
     }
   }
 }
@@ -74,13 +106,7 @@ export default {
     width: 168px;
     margin: 0 auto;
   }
-  &__text {
-    padding: 0;
-    margin: 20px 0 0 0;
-    font-size:14px;
-    font-weight:bold;
-    color:rgba(84,45,224,1);
-    line-height:20px;
+  &__content {
     position: relative;
     .ref {
       width: 47px;
@@ -88,6 +114,20 @@ export default {
       left: 0;
       top: -25px
     }
+  }
+  &__text {
+    padding: 0 0 0 10px;
+    margin: 20px 0 0 0;
+    font-size:14px;
+    font-weight:bold;
+    color:rgba(84,45,224,1);
+    line-height:20px;
+    max-height: 100px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    white-space: normal;
   }
   &__user {
     margin-top: 5px;

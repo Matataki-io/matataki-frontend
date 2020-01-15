@@ -27,6 +27,7 @@
     "compressorjs": "^1.0.5",
     "cropperjs": "^1.5.4",
     "cyanobridge": "^0.1.0",
+    "dom-to-image": "2.6.0",
     "element-ui": "^2.10.1",
     "eosjs": "^16.0.9",
     "gsap": "3.0.1",
