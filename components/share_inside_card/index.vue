@@ -15,7 +15,7 @@
       <svg-icon class="icon" icon-class="quotation_marks" />
       <p>{{ card.summary || '暂无' }}</p>
     </div>
-    <span v-if="cardType === 'edit'" @click="removeCard" class="card-remove">
+    <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
       <i class="el-icon-close icon" />
     </span>
   </router-link>
@@ -49,6 +49,11 @@ export default {
     card: {
       type: Object,
       required: true
+    },
+    // 如果是分享卡片 隐藏删除按钮
+    shareCard: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -61,7 +66,7 @@ export default {
     },
     username() {
       if (this.cardType === 'edit') {
-        return this.card.user.nickname || this.card.user.username1
+        return this.card.user.nickname || this.card.user.username
       } else if (this.cardType === 'read') {
         return this.card.nickname || this.card.username
       } else return ''
