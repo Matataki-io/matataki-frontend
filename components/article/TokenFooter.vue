@@ -132,7 +132,7 @@ export default {
 
 <style scoped lang="less">
 .info {
-  width: 400px;
+  width: 500px;
 }
 .solid-icon {
   font-size: 30px;
@@ -221,7 +221,7 @@ export default {
   border-radius: 40px;
   box-sizing: border-box;
   font-size: 16px;
-  width: 400px;
+  width: 500px;
   .flexCenter();
   .info1 {
     text-align: center;

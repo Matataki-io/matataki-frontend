@@ -296,6 +296,7 @@ export default {
         if (process.browser) {
           window.sessionStorage.removeItem('shareLink')
           window.sessionStorage.removeItem('shareRef')
+          window.sessionStorage.removeItem('articleRef')
         }
         await this.$utils.sleep(100)
         next()
@@ -320,11 +321,16 @@ export default {
 
       // console.log(shareLink, this.shareLinkList)
     },
-    initUrlInput() {
-      const id = process.browser ? window.sessionStorage.getItem('shareRef') : ''
-      if (id) {
-        this.urlForm.url = `${process.env.VUE_APP_URL}/share/${id}`
-        this.getUrlData('urlForm')
+    async initUrlInput() {
+      const shareId = process.browser ? window.sessionStorage.getItem('shareRef') : ''
+      const articleId = process.browser ? window.sessionStorage.getItem('articleRef') : ''
+      if (shareId) {
+        this.urlForm.url = `${process.env.VUE_APP_URL}/share/${shareId}`
+        await this.getUrlData('urlForm')
+      }
+      if (articleId) {
+        this.urlForm.url = `${process.env.VUE_APP_URL}/p/${articleId}`
+        await this.getUrlData('urlForm')
       }
     },
     // 初始化所有表单内容

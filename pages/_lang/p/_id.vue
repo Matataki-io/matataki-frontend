@@ -227,6 +227,12 @@
                 </div>
                 <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
               </div>
+              <div @click="pushShare" class="article-btn">
+                <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
+                  <svg-icon icon-class="reference" class="icon" />
+                </div>
+                <span>{{ '引用' }}</span>
+              </div>
               <div @click="share" class="article-btn">
                 <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
                   <svg-icon icon-class="share" class="icon" />
@@ -1498,6 +1504,12 @@ export default {
       const routerName = channel_id === 1 ? 'p' : channel_id === 3 ? 'share' : 'p'
       // eslint-disable-next-line camelcase
       return `${process.env.VUE_APP_URL}/${routerName}/${sign_id}`
+    },
+    pushShare() {
+      // 优化体验, 大厅取这个key
+      sessionStorage.setItem('articleRef', this.$route.params.id)
+      const routeUrl = this.$router.resolve({ name: 'sharehall' })
+      window.open(routeUrl.href)
     }
   }
 
