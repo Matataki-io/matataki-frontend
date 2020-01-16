@@ -148,6 +148,7 @@
           :username="shareCard.username"
           :reference="shareCard.reference"
           :url="shareCard.url"
+          card-type="edit"
           class="share-card__box"
         />
       </div>

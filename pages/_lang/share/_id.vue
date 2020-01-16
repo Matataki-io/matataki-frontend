@@ -64,6 +64,14 @@
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
         <div class="dialog-content__btn">
+          <div @click="shareImageShow" class="btn-icon">
+            <svg-icon icon-class="share_img" />
+          </div>
+          <p class="btn-text">
+            生成图片
+          </p>
+        </div>
+        <div class="dialog-content__btn">
           <div @click="copy(shareLink)" class="btn-icon">
             <svg-icon icon-class="copy3" />
           </div>
@@ -74,6 +82,40 @@
       </div>
       <socialShare :title="shareContent" class="social-share" />
       <wechat :link="link" style="margin: 60px 0 0 0;" />
+    </m-dialog>
+
+    <m-dialog v-model="shareDoneCard" width="400px">
+      <!-- 如果内容过多可以抽离 -->
+      <div>
+        <img src="@/assets/img/done.png" alt="done" class="share-done">
+        <h4 class="share-done__title">
+          分享已发布
+        </h4>
+        <p class="share-done__desciption">
+          保存分享卡片把思考与灵感传达给更多的人
+        </p>
+        <div
+          ref="shareCard"
+          v-loading="createShareLoading"
+          class="share-card"
+        >
+          <img v-if="saveImg" :src="saveImg" alt="save">
+        </div>
+        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
+          保存并分享卡片
+        </el-button>
+        <shareImage
+          ref="shareImage"
+          v-if="!saveImg"
+          :content="shareCard.content"
+          :avatarSrc="shareCard.avatarSrc"
+          :username="shareCard.username"
+          :reference="shareCard.reference"
+          :url="shareCard.url"
+          card-type="read"
+          class="share-card__box"
+        />
+      </div>
     </m-dialog>
   </div>
 </template>
@@ -91,6 +133,7 @@ import socialShare from '@/components/modal/social_share'
 import wechat from '@/components/scan/wechat.vue'
 import quoteReference from '@/components/share_page/quote_reference'
 import quoteBereference from '@/components/share_page/quote_bereference'
+import shareImage from '@/components/share_image/index'
 
 export default {
   components: {
@@ -101,7 +144,9 @@ export default {
     socialShare,
     wechat,
     quoteReference,
-    quoteBereference
+    quoteBereference,
+    shareImage
+
   },
   data() {
     return {
@@ -116,7 +161,18 @@ export default {
       // showQuote: false, // refernces
       nowTime: 0, // refernces
       refernceTotal: 0, // refernces slidebar
-      berefernceTotal: 0 // refernces slidebar
+      berefernceTotal: 0, // refernces slidebar
+      shareDoneCard: false, // share card
+      shareCard: { // share card data
+        content: '',
+        avatarSrc: '',
+        username: '',
+        reference: [],
+        url: process.env.VUE_APP_URL
+      },
+      saveImg: '', // share img src
+      createShareLoading: false,
+      saveLoading: false // 保存图片loading
     }
   },
   computed: {
@@ -133,6 +189,18 @@ export default {
     nowTime() {
       this.getReferenceCount('postsReferences', {}, 'refernce')
       this.getReferenceCount('postsPosts', {}, 'berefernce')
+    },
+    shareDoneCard(newVal) {
+      if (!newVal) {
+        this.shareCard = {
+          content: '',
+          avatarSrc: '',
+          username: '',
+          reference: [],
+          url: process.env.VUE_APP_URL
+        }
+        this.saveImg = ''
+      }
     }
   },
   created() {
@@ -169,6 +237,9 @@ export default {
               this.authorInfo(res.data.uid)
               this.getIpfsData(res.data.hash)
               this.read(res.data.hash)
+
+              // share
+              this.setShareContentAndUrl(res.data.short_content, res.data.id)
             }
           } else {
             console.log(res.message)
@@ -187,6 +258,9 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.userInfo = res.data
+
+            // share
+            this.setShareUser(res.data.avatar, res.data.nickname || res.data.username)
           } else {
             console.log(res.message)
           }
@@ -330,11 +404,89 @@ export default {
       try {
         const res = await this.$API.getBackendData({ url, params, urlReplace: this.$route.params.id }, false)
         if (res.code === 0) {
-          if (type === 'refernce') this.refernceTotal = res.data.count
-          else if (type === 'berefernce') this.berefernceTotal = res.data.count
+          if (type === 'refernce') {
+            this.refernceTotal = res.data.count
+
+            // share
+            this.setShareRef(res.data.list)
+          } else if (type === 'berefernce') this.berefernceTotal = res.data.count
           else this.refernceTotal = res.data.count
         } else console.log(res.message)
       } catch (error) { console.log(error) }
+    },
+    // 显示分享框
+    shareImageShow() {
+      this.shareDialogVisible = false
+      this.shareDoneCard = true
+      // 清空图片
+      this.saveImg = ''
+      // 生成图片loading
+      this.createShareLoading = true
+      // 显示dialog
+      this.shareDoneCard = true
+      this.createShareImage()
+    },
+    // 设置内容和url
+    setShareContentAndUrl(content, id) {
+      this.shareCard.content = content
+      this.shareCard.url = `${process.env.VUE_APP_URL}/share/${id}`
+    },
+    // 设置用户信息
+    setShareUser(avatar, username) {
+      this.shareCard.avatarSrc = avatar ? this.$API.getImg(avatar) : ''
+      this.shareCard.username = username
+    },
+    // 设置引用
+    setShareRef(ref) {
+      this.shareCard.reference = ref.slice(0, 10)
+    },
+    // 下载图片
+    downloadShareImage() {
+      this.saveLoading = true
+      let linkTag = document.querySelector('#downloadImg')
+      const { content } = this.shareCard
+      const name = content.length >= 12 ? content.slice(0, 12) + '...' : content
+
+      // 没有则创建
+      if (!linkTag) {
+        linkTag = document.createElement('a')
+        linkTag.id = 'downloadImg'
+      }
+
+      linkTag.href = this.saveImg
+      linkTag.download = `${name}.png`
+      linkTag.click()
+
+      this.saveLoading = false
+    },
+    // 创建分享的卡片
+    createShareImage() {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          const dom = this.$refs.shareImage.$el
+          // eslint-disable-next-line no-undef
+          html2canvas(dom, {
+            useCORS: true,
+            allowTaint: true, //允许加载跨域的图片
+            tainttest: true, //检测每张图片都已经加载完成
+            scrollX: 0,
+            scrollY: 0,
+            width: dom.clientWidth,
+            height: dom.clientHeight
+          })
+            .then(canvas => {
+            // this.saveLocal(canvas)
+              this.saveImg = canvas.toDataURL()
+            })
+            .catch(error => {
+              console.log(error)
+              this.$toast({})
+            }).finally(() => {
+            // 生成完毕 关闭loading
+              this.createShareLoading = false
+            })
+        }, 1500)
+      })
     }
   }
 }
@@ -415,6 +567,55 @@ export default {
     color: @purpleDark;
     font-size:16px;
     line-height:22px;
+  }
+}
+
+.share-done {
+  display: block;
+  margin: 0 auto;
+  width: 124px;
+}
+.share-done__title {
+  font-size:14px;
+  font-weight:bold;
+  color:rgba(0,0,0,1);
+  line-height:20px;
+  padding: 0;
+  margin: 10px 0 0;
+  text-align: center;
+}
+.share-done__desciption {
+  font-size:14px;
+  line-height:20px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: #B2B2B2;
+}
+.share-card {
+  width: 105px;
+  height: 222px;
+  margin: 10px auto 0;
+  // background-color: red;
+  overflow: hidden;
+  border: 1px solid #f1f1f1;
+  position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  &__box {
+    // opacity: 0;
+    // transform: scale(0.28);
+    // transform-origin: 0 0;
+    position: fixed;
+    left: 100%;
+    top: 0;
+  }
+  &__btn {
+    display: block;
+    margin: 20px auto 0;
   }
 }
 </style>
