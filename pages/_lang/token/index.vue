@@ -53,6 +53,8 @@
               <span :class="sort === selectedDropdown && 'active'" class="el-dropdown-link">
                 <span v-if="selectedDropdown === 'name-asc'">首字母升序</span>
                 <span v-else-if="selectedDropdown === 'name-desc'">首字母降序</span>
+                <span v-else-if="selectedDropdown === 'time-asc'">时间升序</span>
+                <span v-else-if="selectedDropdown === 'time-desc'">时间降序</span>
                 <span v-else>综合排序</span>
                 <i class="el-icon-arrow-down el-icon--right" />
               </span>
@@ -65,6 +67,12 @@
                 </el-dropdown-item>
                 <el-dropdown-item command="name-desc">
                   首字母降序
+                </el-dropdown-item>
+                <el-dropdown-item command="time-asc">
+                  时间升序
+                </el-dropdown-item>
+                <el-dropdown-item command="time-desc">
+                  时间降序
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -138,7 +146,7 @@ export default {
       },
       viewStatus: 0, // 0 1
       amount: 0,
-      selectedDropdown: 'general'
+      selectedDropdown: this.$route.query.sort || 'general'
     }
   },
   methods: {
@@ -168,6 +176,8 @@ export default {
         case 'general':
         case 'name-asc':
         case 'name-desc':
+        case 'time-asc':
+        case 'time-desc':
           sort = name
           break
 
