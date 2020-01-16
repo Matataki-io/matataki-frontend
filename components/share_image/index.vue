@@ -26,6 +26,7 @@
           :key="'shareInsideCard' + index"
           :idx="index"
           :shareCard="true"
+          :card-type="cardType"
           class="list-card"
         />
         <sharePCard
@@ -34,6 +35,7 @@
           :key="'shareInsideCard' + index"
           :idx="index"
           :shareCard="true"
+          :card-type="cardType"
           class="list-card"
         />
         <shareInsideCard
@@ -42,6 +44,7 @@
           :key="'shareOuterCard' + index"
           :idx="index"
           :shareCard="true"
+          :card-type="cardType"
           class="list-card"
         />
       </template>
@@ -89,6 +92,10 @@ export default {
     url: {
       type: String,
       default: process.env.VUE_APP_URL
+    },
+    cardType: {
+      type: String,
+      required: true
     }
   }
 }
