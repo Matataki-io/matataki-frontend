@@ -196,6 +196,15 @@ export default {
             this.$message.success(res.message)
             this.getAccountList()
           }
+        } else if (res.code === 999) {
+          let msg = '<ul>'
+          msg += res.message.reduce((accumulator, item) => {
+            return accumulator + `<li>${item.error}</li>`
+          }, '')
+          msg += '</ul>'
+          this.$alert(msg, '账号风险提示', {
+            dangerouslyUseHTMLString: true
+          })
         } else {
           this.$message.warning(res.message)
         }
@@ -404,7 +413,7 @@ export default {
     buildAccount: debounce(function (type, typename, idx) {
       if (this.accountList[idx].disabled) return
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
+      // if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
       if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
       else this.bindFunc(type, typename, idx)
     }, 300),
