@@ -401,14 +401,15 @@ export default {
 }
 
 .lock-img {
-  margin: 4px 4px 0 0;
-  height: 13px;
+  margin: 0 4px 0 0;
+  height: 20px;
 }
 .lock-text {
   color: #b2b2b2;
   font-size: 14px;
   line-height: 22px;
   margin: 0 18px 0 0;
+  font-weight: bold;
 }
 </style>
 
