@@ -104,6 +104,7 @@
       :share-modal-show="shareModalShow"
       :minetoken-user="{nickname: userInfo.name}"
       :page-type="1"
+      :img="userInfo.avatar"
       @input="val => shareModalShow = val"
     />
   </div>

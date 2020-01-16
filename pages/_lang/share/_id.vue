@@ -80,7 +80,12 @@
           </p>
         </div>
       </div>
-      <socialShare :title="shareContent" class="social-share" />
+      <socialShare
+        :title="shareContent"
+        :link="link"
+        :qq-title="title"
+        class="social-share"
+      />
       <wechat :link="link" style="margin: 60px 0 0 0;" />
     </m-dialog>
 
@@ -178,11 +183,14 @@ export default {
   computed: {
     ...mapGetters(['isLogined']),
     link() {
-      if (process.browser) return window.location.href
+      if (process.browser) return `${process.env.VUE_APP_URL}/share/${this.$route.params.id}`
       else return process.env.VUE_APP_URL
     },
+    title() {
+      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享`
+    },
     shareLink() {
-      return `来自Matataki「${this.userInfo.nickname || this.userInfo.username}」用户的分享 - ${window.location.origin}/share/${this.$route.params.id}` || process.env.VUE_APP_URL
+      return `${this.title} - ${this.link}` || process.env.VUE_APP_URL
     }
   },
   watch: {
