@@ -3,7 +3,7 @@
     <!-- 关联文章侧边栏 -->
     <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
       <div class="related-container">
-        <slot name="left" />
+        <slot name="ref" />
       </div>
 
       <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
@@ -15,7 +15,7 @@
     </div>
     <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
       <div class="related-container">
-        <slot name="right" />
+        <slot name="beref" />
       </div>
 
       <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
@@ -33,15 +33,13 @@ import throttle from 'lodash/throttle'
 
 export default {
   props: {
-    // 关闭侧边
-    offSlidebar: {
-      type: Number,
-      required: true
-    },
-    // 打开侧边
-    open: {
+    show: {
       type: Boolean,
       default: false
+    },
+    offSlidebar: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -52,14 +50,13 @@ export default {
   },
   watch: {
     offSlidebar() {
-      // 隐藏侧边关联栏
       this.relatedLeftCollapse = false
       this.relatedRightCollapse = false
     }
   },
   created() {
     if (process.browser) {
-      if (this.open) {
+      if (this.show) {
         this.relatedLeftCollapse = true
         this.relatedRightCollapse = true
       }
@@ -78,7 +75,7 @@ export default {
       this.$nextTick(() => {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
         // 10 + 37
-        const sliderWidth = (clientWidth / 2) - 47
+        const sliderWidth = ((clientWidth - 660) / 2)
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
           relatedDom.forEach((ele, i) => {

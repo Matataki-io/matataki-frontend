@@ -1,23 +1,61 @@
 <template>
   <div class="share-header">
     <div class="share-header__info">
-      <avatar class="avatar" src="https://p3.pstatp.com/large/pgc-image/6deea2238fa54440ac411fabc3ad2cff?/1.jpg" />
-      <span class="share-header__username">Xiaotiandada</span>
-      <span class="share-header__time">123123213213123</span>
+      <router-link :to="{name: 'user-id-share', params: {id: id}}" class="share-header__author" target="_blank">
+        <avatar :src="avatarSrc" class="avatar" />
+        <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
+      </router-link>
+      <span class="share-header__time">{{ timeFormat }}</span>
       <span class="share-header__read">
         <svg-icon icon-class="eye_blod" class="icon" />
-        121211
+        {{ read }}
       </span>
     </div>
-    <m-ipfs />
+    <m-ipfs :hash="hash" />
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 export default {
   components: {
     avatar
+  },
+  props: {
+    id: {
+      type: Number,
+      default: 0
+    },
+    avatar: {
+      type: String,
+      default: ''
+    },
+    username: {
+      type: String,
+      default: ''
+    },
+    time: {
+      type: String,
+      default: ''
+    },
+    read: {
+      type: Number,
+      default: 0
+    },
+    hash: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    avatarSrc() {
+      if (this.avatar) return this.$API.getImg(this.avatar)
+      return ''
+    },
+    timeFormat() {
+      return this.time ? moment(this.time).format('lll') : '00:00:00'
+    }
   }
 }
 </script>
@@ -27,10 +65,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 10px 20px;
+  padding: 20px 20px 14px;
   &__info {
     display: flex;
     align-items: center;
+  }
+  &__author {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
   }
   .avatar {
     width: 45px !important;

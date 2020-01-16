@@ -1,11 +1,11 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <router-link :to="{name: 'user-id', params: {id : article.uid}}">
+      <router-link :to="{name: 'user-id', params: {id : article.uid}}" target="_blank">
         <avatar :size="'38px'" :src="avatarSrc" class="Avatar" />
       </router-link>
       <div class="AuthorInfo-content">
-        <router-link :to="`/user/${article.uid}`">
+        <router-link :to="`/user/${article.uid}`" target="_blank">
           <span class="UserLink AuthorInfo-name">{{ article.nickname || article.author }}</span>
         </router-link>
         <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
@@ -71,7 +71,7 @@ export default {
   methods: {
     // 主要获取关注状态
     getUserInfo(id) {
-      this.$API.getUser({ id }).then(res => {
+      this.$API.getUser(id).then(res => {
         if (res.code === 0) {
           this.info.is_follow = res.data.is_follow
           this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''

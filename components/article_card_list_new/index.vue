@@ -24,7 +24,7 @@
               class="lock-img"
               src="@/assets/img/lock.png"
               alt="lock"
-            >
+            ><span class="lock-text">{{ lock }}</span>
             <!-- 阅读量 -->
             <span class="data">
               <i class="el-icon-view" />
@@ -162,6 +162,15 @@ export default {
       if (!this.card || !this.card.read) return 0
       if (this.card.read > 9999) { return Math.round(this.card.read / 10000) + '万' }
       return this.card.read
+    },
+    lock() {
+      if (this.card.pay_symbol) {
+        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+      } else if (this.card.token_symbol) {
+        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+      } else {
+        return ''
+      }
     }
   },
   methods: {
@@ -392,8 +401,15 @@ export default {
 }
 
 .lock-img {
-  margin: 4px 23px 0 0;
-  height: 13px;
+  margin: 0 4px 0 0;
+  height: 20px;
+}
+.lock-text {
+  color: #b2b2b2;
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0 18px 0 0;
+  font-weight: bold;
 }
 </style>
 

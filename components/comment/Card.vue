@@ -4,11 +4,12 @@
       <n-link
         :to="{name: 'user-id', params: {id : comment.uid}}"
         class="comment-avatar"
+        target="_blank"
       >
         <avatar :src="avatar" size="30px" /></avatar>
       </n-link>
       <div class="comment-head">
-        <router-link :to="`/user/${comment.uid}`" class="comment-author">
+        <router-link :to="`/user/${comment.uid}`" class="comment-author" target="_blank">
           {{ comment.nickname || comment.username }}
         </router-link>
         {{ action }}

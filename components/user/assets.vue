@@ -12,9 +12,9 @@
         <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" size="small" class="btn">
           {{ $t('withdraw.title') }}
         </el-button>
-        <!-- <el-button @click="giftDialogShow = true" v-if="isShowTransfer" size="small">
+        <el-button @click="giftDialogShow = true" v-if="isShowTransfer" size="small">
           转账
-        </el-button> -->
+        </el-button>
         <p v-if="isWithdrawDisabled" class="mark-text">
           提现功能暂未开放
         </p>

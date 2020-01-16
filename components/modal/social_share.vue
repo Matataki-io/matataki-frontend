@@ -1,34 +1,38 @@
 <template>
   <div class="outer">
     <div class="share-btn-container">
-      <!-- <div class="share-btn">
-        <svg-icon class="share-icon" icon-class="qq" />
+      <div @click="windowSmallOpen(socialLink.weibo)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon weibo" icon-class="weibo" />
+        </div>
+        <p>{{ $t('p.shareWeibo') }}</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.facebook)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon facebook" icon-class="facebook" />
+        </div>
+        <p>Facebook</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.twitter)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon twitter" icon-class="twitter" />
+        </div>
+        <p>Twitter</p>
+      </div>
+    </div>
+    <div class="share-btn-container itop30">
+      <div @click="windowSmallOpen(socialLink.qq)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon qq" icon-class="qq" />
+        </div>
         <p>QQ</p>
-      </div> -->
-      <a :href="socialLink.weibo" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <svg-icon class="share-icon weibo" icon-class="weibo" />
-          </div>
-          <p>{{ $t('p.shareWeibo') }}</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.qzone)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon qzone" icon-class="qzone" />
         </div>
-      </a>
-      <a :href="socialLink.facebook" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <svg-icon class="share-icon facebook" icon-class="facebook" />
-          </div>
-          <p>Facebook</p>
-        </div>
-      </a>
-      <a :href="socialLink.twitter" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <svg-icon class="share-icon twitter" icon-class="twitter" />
-          </div>
-          <p>Twitter</p>
-        </div>
-      </a>
+        <p>QQ空间</p>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +50,14 @@ export default {
       type: String,
       required: true
     },
+    qqTitle: {
+      type: String,
+      default: ''
+    },
+    summary: {
+      type: String,
+      default: ''
+    },
     img: {
       type: String,
       default: ''
@@ -61,25 +73,35 @@ export default {
       return this.img || 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
     },
     socialLink() {
-      const title = this.title
+      const title = this.title.length <= 120 ? this.title : this.title.slice(0, 120) + '...'
       const link = this.link ? this.link : encodeURIComponent(window.location.href)
       const pic = this.cover
+      const qqTitle = (this.qqTitle || this.title).slice(0, 60)
+      const summary = (this.summary || this.title).slice(0, 120)
       return {
         weibo: `http://service.weibo.com/share/share.php?appkey=&title=${title}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
-        twitter: `https://twitter.com/intent/tweet?text=${title}`
+        twitter: `https://twitter.com/intent/tweet?text=${title}`,
+        qq: `http://connect.qq.com/widget/shareqq/index.html?url=${link}&sharesource=qzone&title=${qqTitle}&pics=${pic}&summary=${summary}`,
+        qzone: `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${link}&sharesource=qzone&title=${qqTitle}&pics=${pic}&summary=${summary}`
       }
     }
   },
   mounted() {
   },
   methods: {
+    windowSmallOpen(url) {
+      window.open(url, '_blank', 'width=760,height=640')
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .share-btn-container {
+  &.itop30 {
+    margin-top: 30px;
+  }
   .flexCenter();
   justify-content: space-around;
   .share-btn {
@@ -132,6 +154,12 @@ p {
   }
   .twitter {
     color: #00ACED;
+  }
+  .qq {
+    color: #4CAFE9;
+  }
+  .qzone {
+    color: #FAB619;
   }
 }
 .code {

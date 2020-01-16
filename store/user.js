@@ -44,8 +44,8 @@ export const mutations = {
 export const actions = {
   async refreshUser({ commit, rootGetters }, { id }) {
     const { isMe } = rootGetters
-    const { data } = await (isMe(id) ? API.getMyUserData() : API.getUser({ id }))
-    console.log('数据：', isMe(id), data)
+    const { data } = await (isMe(id) ? API.getMyUserData() : API.getUser(id))
+    // console.log('数据：', isMe(id), data)
     commit('setUserInfo', data)
   },
   async followOrUnfollowUser({ commit, rootGetters, dispatch }, { id, type }) {
