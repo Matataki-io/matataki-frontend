@@ -142,6 +142,7 @@
         </el-button>
         <shareImage
           ref="shareImage"
+          v-if="!saveImg"
           :content="shareCard.content"
           :avatarSrc="shareCard.avatarSrc"
           :username="shareCard.username"
@@ -272,6 +273,18 @@ export default {
       })
       this.pull.time = Date.now()
       this.pull.list.length = 0
+    },
+    shareDoneCard(newVal) {
+      if (!newVal) {
+        this.shareCard = {
+          content: '',
+          avatarSrc: '',
+          username: '',
+          reference: [],
+          url: process.env.VUE_APP_URL
+        }
+        this.saveImg = ''
+      }
     }
   },
   async beforeRouteLeave(to, from, next) {
@@ -375,10 +388,10 @@ export default {
         this.$API.createShare(data)
           .then(res => {
             if (res.code === 0) {
-              this.createShareCard(res.data)
-              this.resetForm()
+              this.createShareCard(res.data, this.ruleForm.content.trim())
               this.pull.list.length = 0
               this.pull.time = Date.now()
+              this.resetForm()
               this.$message({ message: '发布成功', type: 'success' })
             } else {
               this.$message({ message: '发布失败', type: 'error' })
@@ -481,13 +494,12 @@ export default {
         })
     }, 800),
     // 创建卡片
-    createShareCard(id) {
-      const setShareCard = id => {
-        this.shareCard.content = this.ruleForm.content
-        this.shareCard.reference = this.shareLinkList.slice(0, 10)
-        this.shareCard.url = `${process.env.VUE_APP_URL}/share/${id}`
-      }
-      setShareCard(id)
+    createShareCard(id, content) {
+      this.shareCard.content = content
+      this.shareCard.reference = this.shareLinkList.slice(0, 10)
+      this.shareCard.url = `${process.env.VUE_APP_URL}/share/${id}`
+      console.log(this.shareCard)
+
       this.$API.getUser(this.currentUserInfo.id).then(res => {
         if (res.code === 0) {
           this.shareCard.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
@@ -515,24 +527,26 @@ export default {
         // console.log(error)
         // }
         // }, 1000)
-        this.createShareImage(this.ruleForm.content)
+        this.createShareImage()
       })
     },
     // 下载图片
     downloadShareImage() {
       this.saveLoading = true
-      const linkTag = document.querySelector('#downloadImg')
-      if (linkTag) {
-        linkTag.click()
-      } else {
-        const link = document.createElement('a')
-        const { content } = this.shareCard
-        const name = content.length >= 12 ? content.slice(0, 12) + '...' : content
-        link.id = 'downloadImg'
-        link.download = `${name}.png`
-        link.href = this.saveImg
-        link.click()
+      let linkTag = document.querySelector('#downloadImg')
+      const { content } = this.shareCard
+      const name = content.length >= 12 ? content.slice(0, 12) + '...' : content
+
+      // 没有则创建
+      if (!linkTag) {
+        linkTag = document.createElement('a')
+        linkTag.id = 'downloadImg'
       }
+
+      linkTag.href = this.saveImg
+      linkTag.download = `${name}.png`
+      linkTag.click()
+
       this.saveLoading = false
     },
     // 创建分享的卡片
@@ -543,6 +557,8 @@ export default {
           // eslint-disable-next-line no-undef
           html2canvas(dom, {
             useCORS: true,
+            allowTaint: true, //允许加载跨域的图片
+            tainttest: true, //检测每张图片都已经加载完成
             scrollX: 0,
             scrollY: 0,
             width: dom.clientWidth,
@@ -559,7 +575,7 @@ export default {
             // 生成完毕 关闭loading
               this.createShareLoading = false
             })
-        }, 1000)
+        }, 1500)
       })
     }
   }

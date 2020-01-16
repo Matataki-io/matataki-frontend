@@ -13,7 +13,9 @@
     <div class="card-content">
       <svg-icon class="icon" icon-class="quotation_marks" />
       <svg-icon class="icon" icon-class="quotation_marks" />
-      <p>{{ card.summary || '暂无' }}</p>
+      <p :class="!shareCard && 'card-sharehall'">
+        {{ card.summary || '暂无' }}
+      </p>
     </div>
     <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
       <i class="el-icon-close icon" />
@@ -205,13 +207,15 @@ export default {
       color:rgba(178,178,178,1);
       line-height:17px;
       overflow: hidden;
-      max-height: 87px;
+      max-height: 85px;
       padding: 0;
       margin: 0;
+      white-space: pre-wrap;
+    }
+    .card-sharehall {
       display: -webkit-box;
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
-      white-space: pre-wrap;
     }
   }
 

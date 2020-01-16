@@ -108,6 +108,8 @@ export default {
   }
   &__content {
     position: relative;
+    padding: 0 0 0 10px;
+    margin: 20px 0 0 0;
     .ref {
       width: 47px;
       position: absolute;
@@ -116,17 +118,17 @@ export default {
     }
   }
   &__text {
-    padding: 0 0 0 10px;
-    margin: 20px 0 0 0;
+    padding: 0;
+    margin: 0;
     font-size:14px;
     font-weight:bold;
     color:rgba(84,45,224,1);
     line-height:20px;
     max-height: 100px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 5;
+    // -webkit-box-orient: vertical;
     white-space: normal;
   }
   &__user {
@@ -183,19 +185,20 @@ export default {
         align-items: center;
         justify-content: center;
         z-index: 2;
+        position: relative;
       }
     }
     &::before {
       position: absolute;
-      top: -24px;
+      top: -16px;
       left: 20px;
       display: block;
       content: '';
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 15px;
-      border-color: transparent transparent #EAEAEA transparent;
+      border-width: 8px;
+      border-color: #fff #fff #EAEAEA #fff;
     }
   }
 

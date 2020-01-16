@@ -5,13 +5,13 @@
     </div>
     <div>
       <div class="card-operate">
-        <p class="card-text">{{ card.title || '暂无' }}</p>
+        <p :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.title || '暂无' }}</p>
         <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
           <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
           <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
         </div>
       </div>
-      <p class="card-summary">{{ card.summary || '暂无' }}</p>
+      <p :class="!shareCard && 'card-sharehall'" class="card-summary">{{ card.summary || '暂无' }}</p>
     </div>
     <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
       <i class="el-icon-close icon" />
@@ -127,29 +127,33 @@ export default {
     color:rgba(0,0,0,1);
     line-height: 18px;
     flex: 1;
-    max-height: 20px;
+    max-height: 18px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
     white-space: pre-wrap;
     padding: 0;
     margin: 0;
+    &.card-sharehall {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
   }
   &-summary {
     font-size:14px;
     // font-weight: bold;
     line-height: 18px;
     flex: 1;
-    max-height: 38px;
+    max-height: 36px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     color: #737373;
     white-space: pre-wrap;
     padding: 0;
     margin: 4px 0 0 0;
+    &.card-sharehall {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
   &-remove {
     position: absolute;

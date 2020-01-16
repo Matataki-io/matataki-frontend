@@ -4,7 +4,7 @@
       <img :src="coverSrc" :alt="card.title">
     </div>
     <div class="card-content">
-      <p class="card-text">
+      <p :class="!shareCard && 'card-sharehall'" class="card-text">
         {{ card.title || '暂无' }}
       </p>
       <div class="card-more">
@@ -156,13 +156,18 @@ export default {
     flex: 1;
     max-height: 36px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 2;
+    // -webkit-box-orient: vertical;
     // white-space: pre-wrap;
     white-space: normal;
     padding: 0;
     margin: 0;
+    &.card-sharehall {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
   &-info {
     display: flex;
