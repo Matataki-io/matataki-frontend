@@ -111,7 +111,6 @@
         </el-button>
         <shareImage
           ref="shareImage"
-          v-if="!saveImg"
           :content="shareCard.content"
           :avatarSrc="shareCard.avatarSrc"
           :username="shareCard.username"
@@ -209,6 +208,9 @@ export default {
         }
         this.saveImg = ''
       }
+      // 手动增加dialog
+      if (newVal) document.querySelector('body').style.overflow = 'hidden'
+      else document.querySelector('body').style.overflow = ''
     }
   },
   created() {
@@ -284,6 +286,9 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.shareContent = res.data.content
+
+            // share
+            this.setShareContentAndUrl(res.data.content, this.content.id)
           } else {
             this.$message({ type: 'error', message: res.message })
             console.log(res.message)
