@@ -3,7 +3,7 @@
   <header class="header home-fixed">
     <div class="home-head">
       <div class="head-flex">
-        <a class="logo-link" href="/"><img :src="customizeHeaderLogoColorComputed" class="logo" alt="logo"></a>
+        <a class="logo-link" href="/home"><img :src="customizeHeaderLogoColorComputed" class="logo" alt="logo"></a>
         <!-- nav -->
         <template v-for="(item, index) in nav">
           <router-link
