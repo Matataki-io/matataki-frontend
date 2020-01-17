@@ -111,6 +111,7 @@
         </el-button>
         <shareImage
           ref="shareImage"
+          v-if="!saveImg"
           :content="shareCard.content"
           :avatarSrc="shareCard.avatarSrc"
           :username="shareCard.username"
