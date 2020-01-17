@@ -3,7 +3,7 @@
     <img class="share-image__head" src="@/assets/img/share_image_head.png" alt="share_image_head">
     <div class="share-image__content">
       <p class="share-image__text">
-        {{ content || '&nbsp;' }}
+        {{ contentSlice || '&nbsp;' }}
       </p>
       <img class="ref" src="@/assets/img/share_ref.png" alt="ref">
     </div>
@@ -97,6 +97,16 @@ export default {
       type: String,
       required: true
     }
+  },
+  computed: {
+    contentSlice() {
+      // 显示1500字
+      if (this.content.length > 1500) {
+        return `${this.content.slice(0, 1500)}...`
+      } else {
+        return this.content
+      }
+    }
   }
 }
 </script>
@@ -131,8 +141,8 @@ export default {
     font-weight:bold;
     color:rgba(84,45,224,1);
     line-height:20px;
-    max-height: 100px;
-    overflow: hidden;
+    // max-height: 100px;
+    // overflow: hidden;
     // display: -webkit-box;
     // -webkit-line-clamp: 5;
     // -webkit-box-orient: vertical;
