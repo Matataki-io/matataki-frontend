@@ -357,6 +357,11 @@ export default {
       })
     }
     this.aComment = this.userReviews[this.pageNum]
+
+    window.addEventListener('scroll', this.scrollTop)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.scrollTop)
   },
   methods: {
     _initScrollAnimation() {
@@ -399,7 +404,6 @@ export default {
         const tl = new TimelineMax()
         const roadmap = document.querySelector('.roadmap')
         const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
-
         roadmapBlock.forEach((el, i) => {
           tl.to(el, 0.3, {
             x: function () {
@@ -501,6 +505,17 @@ export default {
     pageTurning(num) {
       this.pageNum = (num + this.pageNum + this.userReviews.length) % this.userReviews.length
       this.aComment = this.userReviews[this.pageNum]
+    },
+    /** 滚动后展开按钮 */
+    scrollTop() {
+      const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
+      const btnVisible = this.$refs.btn.getAttribute('data-visible') === 'true'
+      if (scroll >= 100 && !btnVisible) {
+        this.showMoreMenu()
+      }
+      if (scroll < 100 && btnVisible) {
+        this.showMoreMenu()
+      }
     }
   }
 }
