@@ -79,9 +79,18 @@ export default {
       this.time = setInterval(() => {
         const bodyDom = document.querySelector('body')
         if (bodyDom.style.overflow) {
-          const dialog = document.querySelector('.el-dialog__wrapper')
-          if (dialog) {
-            if (dialog.style.display === 'none') bodyDom.style.overflow = 'auto'
+          const dialog = document.querySelectorAll('.el-dialog__wrapper')
+          let dialogStatus = false
+          // 循环 所有元素有一个不是node 说明是展开的dialog
+          for (let i = 0; i < dialog.length; i++) {
+            if (dialog[i].style.display !== 'none') {
+              dialogStatus = true
+              break
+            }
+          }
+          // 此时body hidden 否则 auto
+          if (dialogStatus) {
+            bodyDom.style.overflow = 'hidden'
           } else {
             bodyDom.style.overflow = 'auto'
           }
