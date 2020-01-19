@@ -1,45 +1,46 @@
 <template>
   <div class="outer">
     <div class="share-btn-container">
-      <!-- <div class="share-btn">
-        <svg-icon class="share-icon" icon-class="qq" />
-        <p>QQ</p>
-      </div> -->
-      <a :href="socialLink.weibo" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <svg-icon class="share-icon weibo" icon-class="weibo" />
-          </div>
-          <p>{{ $t('p.shareWeibo') }}</p>
+      <div @click="windowSmallOpen(socialLink.weibo)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon weibo" icon-class="weibo" />
         </div>
-      </a>
-      <a :href="socialLink.facebook" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <svg-icon class="share-icon facebook" icon-class="facebook" />
-          </div>
-          <p>Facebook</p>
+        <p>{{ $t('p.shareWeibo') }}</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.facebook)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon facebook" icon-class="facebook" />
         </div>
-      </a>
-      <a :href="socialLink.twitter" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <svg-icon class="share-icon twitter" icon-class="twitter" />
-          </div>
-          <p>Twitter</p>
+        <p>Facebook</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.twitter)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon twitter" icon-class="twitter" />
         </div>
-      </a>
-      <a :href="socialLink.telegram" target="_blank">
-        <div class="share-btn">
-          <div class="share-bg">
-            <!-- Telegram and Share shares the same icon as paperplane -->
-            <svg-icon class="share-icon telegram" icon-class="tg" />
-          </div>
-          <p>Telegram</p>
-        </div>
-      </a>
+        <p>Twitter</p>
+      </div>
     </div>
-    <!-- <wechat style="margin: 80px 0 0 0;" :link="shareLink" /> -->
+    <div class="share-btn-container itop30">
+      <div @click="windowSmallOpen(socialLink.qq)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon qq" icon-class="qq" />
+        </div>
+        <p>QQ</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.qzone)" class="share-btn">
+        <div class="share-bg">
+          <svg-icon class="share-icon qzone" icon-class="qzone" />
+        </div>
+        <p>QQ空间</p>
+      </div>
+      <div @click="windowSmallOpen(socialLink.telegram)" class="share-btn">
+        <div class="share-bg">
+          <!-- Telegram and Share shares the same icon as paperplane -->
+          <svg-icon class="share-icon telegram" icon-class="tg" />
+        </div>
+        <p>Telegram</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -58,6 +59,14 @@ export default {
       default: () => {
         return {}
       }
+    },
+    qqTitle: {
+      type: String,
+      default: ''
+    },
+    summary: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -73,31 +82,39 @@ export default {
       const pic = this.cover
       // 用于 Telegram 的即时预览，模板出问题了联系我 --Frank
       const telegramIVLink = encodeURIComponent(`https://t.me/iv?url=${link}&rhash=${process.env.TELEGRAM_IV_RHASH}`)
+
+      const shortContent = this.article.short_content.slice(0, 120)
       return {
-        weibo: `http://service.weibo.com/share/share.php?&title=${encodeURIComponent(`${title} - 来自 Matataki 瞬 ${link}`)}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
-        // facebook: `https://www.facebook.com/sharer.php?title=${title}&href=${link}`,
+        weibo: `http://service.weibo.com/share/share.php?&title=${encodeURIComponent(`${title} - 来自 瞬Matataki ${link}`)}&url=${link}&pic=${pic}&searchPic=false&style=simple`,
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${link}`,
         twitter: `https://twitter.com/intent/tweet?text=${link}`,
-        telegram: `https://t.me/share/url?url=${telegramIVLink}`
+        telegram: `https://t.me/share/url?url=${telegramIVLink}`,
+        qq: `http://connect.qq.com/widget/shareqq/index.html?url=${this.shareLink}&sharesource=qzone&title=${title}&pics=${pic}&summary=${shortContent}`,
+        qzone: `https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${this.shareLink}&sharesource=qzone&title=${title}&pics=${pic}&summary=${shortContent}`
       }
     },
     shareLink() {
       const { protocol, host } = window.location
-      // let url = `${process.env.WX_SHARE_HOST}/p/${this.$route.params.id}`
-      let url = `${protocol}//${host}/p/${this.$route.params.id}`
-      if (this.isLogined) url += `?invite=${this.currentUserInfo.id}&referral=${this.currentUserInfo.id}`
+      let url = `${process.env.VUE_APP_URL}/p/${this.$route.params.id}`
+      if (this.isLogined) url += `?referral=${this.currentUserInfo.id}`
       return url
     }
   },
   mounted() {
   },
   methods: {
+    windowSmallOpen(url) {
+      window.open(url, '_blank', 'width=760,height=640')
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .share-btn-container {
+  &.itop30 {
+    margin-top: 30px;
+  }
   .flexCenter();
   justify-content: space-around;
   .share-btn {
@@ -153,6 +170,12 @@ p {
   }
   .telegram {
     color: #36aae8;
+  }
+  .qq {
+    color: #4CAFE9;
+  }
+  .qzone {
+    color: #FAB619;
   }
 }
 .code {
