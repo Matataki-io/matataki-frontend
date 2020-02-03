@@ -468,7 +468,6 @@ import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
 import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
-import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
 import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
@@ -915,15 +914,23 @@ export default {
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
-      const data = await this.$API.sendPost({
-        title,
-        author,
-        content,
-        desc: 'whatever'
-      })
-      // console.log(data)
-      if (data.code !== 0) this.failed(this.$t('error.sendPostIpfsFail'))
-      return data
+      try {
+        const res = await this.$API.sendPost({
+          title,
+          author,
+          content,
+          desc: 'whatever'
+        })
+        if (res.code === 0) return res
+        else {
+          this.failed(this.$t('error.sendPostIpfsFail'))
+          return false
+        }
+      } catch (error) {
+        console.log('sendPost error', error)
+        this.failed('上传ipfs失败')
+        return false
+      }
     },
     // 文章标签 tag
     setArticleTag(tagCards) {
@@ -1141,10 +1148,12 @@ export default {
         let hash = ''
         try {
           const res = await this.sendPost({ title, author, content })
+          if (!res) throw new Error('not res')
           hash = res.hash
         } catch (error) {
           console.log(error)
           this.fullscreenLoading = false // remove full loading
+          return
         }
         // this.fullscreenLoading = false // remove full loading
         // console.log('sendPost result :', hash)
@@ -1177,10 +1186,12 @@ export default {
         try {
           // 编辑文章
           const res = await this.sendPost({ title, author, content })
+          if (!res) throw new Error('not res')
           hash = res.hash
         } catch (error) {
           console.log(error)
           this.fullscreenLoading = false // remove full loading
+          return
         }
         // this.fullscreenLoading = false // remove full loading
         this.editArticle({
