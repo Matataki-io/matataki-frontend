@@ -98,11 +98,11 @@
         </div>
       </div>
       <p class="tips">
-        该功能需要“科学上网”
+        使用该功能需要“科学上网”
       </p>
     </el-dialog>
     <p class="tips">
-      该功能需要“科学上网”
+      使用该功能需要“科学上网”
     </p>
   </div>
 </template>
