@@ -8,7 +8,7 @@
       radius="6"
     />
     <p class="tips">
-      该功能需要“科学上网”
+      使用该功能需要“科学上网”
     </p>
   </div>
 </template>
