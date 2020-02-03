@@ -1033,16 +1033,19 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       const { failed, success } = this
-      let signature = null
+      const signature = null
       try {
+        // 取消钱包签名, 暂注释后面再彻底删除 start
         // refactor: 对 VNT 的处理弄在了.invalidId()
-        if (this.currentUserInfo.idProvider === 'MetaMask') {
-          signature = await getSignatureForPublish(hash)
-          const [publicKey] = await window.web3.eth.getAccounts()
-          signature = Object.assign(signature, { publicKey })
-        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
+        // if (this.currentUserInfo.idProvider === 'MetaMask') {
+        //   signature = await getSignatureForPublish(hash)
+        //   const [publicKey] = await window.web3.eth.getAccounts()
+        //   signature = Object.assign(signature, { publicKey })
+        // } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
+        // 取消钱包签名, 暂注释后面再彻底删除 end
+
         const res = await this.$API.editArticle({ article, signature })
         if (res.code === 0) {
           // 发送完成开始设置阅读权限 因为需要返回的id
