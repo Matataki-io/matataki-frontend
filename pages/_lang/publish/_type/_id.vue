@@ -468,7 +468,6 @@ import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
 import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
-import { sendPost } from '@/api/ipfs'
 import { strTrim } from '@/utils/reg'
 
 import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
@@ -915,15 +914,23 @@ export default {
     },
     // 发送文章到ipfs
     async sendPost({ title, author, content }) {
-      const data = await this.$API.sendPost({
-        title,
-        author,
-        content,
-        desc: 'whatever'
-      })
-      // console.log(data)
-      if (data.code !== 0) this.failed(this.$t('error.sendPostIpfsFail'))
-      return data
+      try {
+        const res = await this.$API.sendPost({
+          title,
+          author,
+          content,
+          desc: 'whatever'
+        })
+        if (res.code === 0) return res
+        else {
+          this.failed(this.$t('error.sendPostIpfsFail'))
+          return false
+        }
+      } catch (error) {
+        console.log('sendPost error', error)
+        this.failed('上传ipfs失败')
+        return false
+      }
     },
     // 文章标签 tag
     setArticleTag(tagCards) {
@@ -947,17 +954,19 @@ export default {
       const { failed, success } = this
       try {
         const { author, hash } = article
-        let signature = null
+        // 取消钱包签名, 暂注释后面再彻底删除 start
+        const signature = null
         // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
-        if (this.currentUserInfo.idProvider === 'MetaMask') {
-          console.info('You are using metamask')
-          signature = await getSignatureForPublish(hash)
-          const [publicKey] = await window.web3.eth.getAccounts()
-          signature = Object.assign(signature, { publicKey })
-        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
-        console.info(`signature in component: ${JSON.stringify(signature)}`)
+        // if (this.currentUserInfo.idProvider === 'MetaMask') {
+        //   console.info('You are using metamask')
+        //   signature = await getSignatureForPublish(hash)
+        //   const [publicKey] = await window.web3.eth.getAccounts()
+        //   signature = Object.assign(signature, { publicKey })
+        // } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
+        // console.info(`signature in component: ${JSON.stringify(signature)}`)
+        // 取消钱包签名, 暂注释后面再彻底删除 end
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
 
@@ -1031,16 +1040,19 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       const { author, hash } = article
       const { failed, success } = this
-      let signature = null
+      const signature = null
       try {
+        // 取消钱包签名, 暂注释后面再彻底删除 start
         // refactor: 对 VNT 的处理弄在了.invalidId()
-        if (this.currentUserInfo.idProvider === 'MetaMask') {
-          signature = await getSignatureForPublish(hash)
-          const [publicKey] = await window.web3.eth.getAccounts()
-          signature = Object.assign(signature, { publicKey })
-        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
+        // if (this.currentUserInfo.idProvider === 'MetaMask') {
+        //   signature = await getSignatureForPublish(hash)
+        //   const [publicKey] = await window.web3.eth.getAccounts()
+        //   signature = Object.assign(signature, { publicKey })
+        // } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
+        // 取消钱包签名, 暂注释后面再彻底删除 end
+
         const res = await this.$API.editArticle({ article, signature })
         if (res.code === 0) {
           // 发送完成开始设置阅读权限 因为需要返回的id
@@ -1136,10 +1148,12 @@ export default {
         let hash = ''
         try {
           const res = await this.sendPost({ title, author, content })
+          if (!res) throw new Error('not res')
           hash = res.hash
         } catch (error) {
           console.log(error)
           this.fullscreenLoading = false // remove full loading
+          return
         }
         // this.fullscreenLoading = false // remove full loading
         // console.log('sendPost result :', hash)
@@ -1172,10 +1186,12 @@ export default {
         try {
           // 编辑文章
           const res = await this.sendPost({ title, author, content })
+          if (!res) throw new Error('not res')
           hash = res.hash
         } catch (error) {
           console.log(error)
           this.fullscreenLoading = false // remove full loading
+          return
         }
         // this.fullscreenLoading = false // remove full loading
         this.editArticle({
