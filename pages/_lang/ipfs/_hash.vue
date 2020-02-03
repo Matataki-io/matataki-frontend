@@ -10,7 +10,7 @@
           target="_blank"
           itemprop="author"
         >
-          {{ articleData.username || '&nbsp;' }}
+          {{ articleData.nickname || articleData.username || '&nbsp;' }}
         </n-link>
         <time :datetime="articleData.create_time" itemprop="datePublished">{{ articleCreateTime }}</time>
         <span itemprops="provider" itemscope="" itemtype="https://www.matataki.io/">

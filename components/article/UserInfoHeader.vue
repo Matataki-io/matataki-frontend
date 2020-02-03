@@ -7,7 +7,7 @@
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`" target="_blank">
           <span class="UserLink AuthorInfo-name">
-            {{ article.username || '&nbsp;' }}
+            {{ article.nickname || article.username || '&nbsp;' }}
           </span>
         </router-link>
         <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
