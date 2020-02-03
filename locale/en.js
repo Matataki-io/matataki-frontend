@@ -396,7 +396,7 @@ export default {
     statement7:
       'After obtaining the consent of the original author or the right owner, the adaptation, translation and re-creation of the work shall be regarded as original. ',
     statement8:
-      'Instant MATATAKI encourages users to post original articles. Checking this original statement will show the original logo. However, this original statement is only a unilateral commitment to the originality of the content of the article, and does not mean that Instant MATATAKI recognizes the originality of the article. If you check this original statement, the article proves to be not independent and original, and MATATAKI will be deleted according to the platform specification. '
+      'Instant MATATAKI encourages users to publish original articles. Articles that replace this original statement will display the original logo. However, this original statement is only your unilateral commitment to the originality of the content of the article, and does not mean that Instant MATATAKI recognizes the originality of the article. If after inserting this original statement, the article proves that it is not an independent original, Instant MATATAKI will remove it according to the platform specifications.'
   },
   search: {
     hot: 'hot search',

@@ -1,3 +1,6 @@
+/**
+ * 用户文章的XSS过滤, 开发者如果修改规则请同步两端规则
+ */
 /* eslint-disable */
 import xss from 'xss'
 
@@ -109,6 +112,10 @@ export const xssFilter = html => {
       tag: 'figcaption',
       attributes: ['style']
     },
+    {
+      tag: 'blockquote',
+      attributes: ['style']
+    },
   ]
 
   for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
@@ -120,7 +127,7 @@ export const xssFilter = html => {
       console.log(`Tag 不支持的标签属性，请联系客服：${tag}, ${html}, ${options}`)
     },
     onIgnoreTagAttr(tag, name, value, isWhiteAttr) {
-      console.log(`Attr 不支持的标签属性，请联系客服：${tag} ${name}, ${value}`)
+      console.log(`Attr 不支持的标签属性，请联系客服：${tag}, ${name}, ${value}`)
     },
     // > 放过md引用
     escapeHtml(html) {

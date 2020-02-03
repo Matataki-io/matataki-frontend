@@ -97,7 +97,13 @@
           <p>根据机器人的引导入群</p>
         </div>
       </div>
+      <p class="tips">
+        该功能需要“科学上网”
+      </p>
     </el-dialog>
+    <p class="tips">
+      该功能需要“科学上网”
+    </p>
   </div>
 </template>
 
@@ -380,6 +386,13 @@ a{
 .pagination {
   margin-top: 13px;
   text-align: center;
+}
+
+.tips {
+  font-size: 14px;
+  color: #bbb;
+  padding: 0;
+  margin: 10px 0 0;
 }
 </style>
 
