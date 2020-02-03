@@ -947,17 +947,19 @@ export default {
       const { failed, success } = this
       try {
         const { author, hash } = article
-        let signature = null
+        // 取消钱包签名, 暂注释后面再彻底删除 start
+        const signature = null
         // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
-        if (this.currentUserInfo.idProvider === 'MetaMask') {
-          console.info('You are using metamask')
-          signature = await getSignatureForPublish(hash)
-          const [publicKey] = await window.web3.eth.getAccounts()
-          signature = Object.assign(signature, { publicKey })
-        } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-          signature = await this.getSignatureOfArticle({ author, hash })
-        }
-        console.info(`signature in component: ${JSON.stringify(signature)}`)
+        // if (this.currentUserInfo.idProvider === 'MetaMask') {
+        //   console.info('You are using metamask')
+        //   signature = await getSignatureForPublish(hash)
+        //   const [publicKey] = await window.web3.eth.getAccounts()
+        //   signature = Object.assign(signature, { publicKey })
+        // } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
+        //   signature = await this.getSignatureOfArticle({ author, hash })
+        // }
+        // console.info(`signature in component: ${JSON.stringify(signature)}`)
+        // 取消钱包签名, 暂注释后面再彻底删除 end
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
 
