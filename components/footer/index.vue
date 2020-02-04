@@ -24,7 +24,7 @@
           <a class="href" target="_blank" href="/agreement">
             {{ $t('footer.userAgreement') }}
           </a> -->
-          <a class="href" target="_blank" href="https://github.com/smart-signature/MATATAKI_FE">
+          <a class="href" target="_blank" href="https://github.com/Matataki-io/Matataki-FE">
             {{ $t('footer.about') }}
           </a>
           <a class="href" target="_blank" href="https://www.matataki.io/p/1059">
@@ -72,7 +72,7 @@
               </div>
             </div>
           </div>
-          <a target="_blank" href="https://github.com/smart-signature/MATATAKI_FE">
+          <a target="_blank" href="https://github.com/Matataki-io/Matataki-FE">
             <div class="icon github-icon" />
           </a>
           <a target="_blank" href="https://t.me/smartsignature_io">
