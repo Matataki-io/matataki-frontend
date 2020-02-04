@@ -104,7 +104,7 @@
         :share-info="{
           title: article.title,
           avatar: article.avatar,
-          name: article.nickname || article.author,
+          name: article.nickname || article.username || '&nbsp;',
           content: article.content,
           shareLink,
           cover
