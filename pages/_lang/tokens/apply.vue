@@ -51,6 +51,8 @@ export default {
   p {
     font-size: 16px;
     margin: 60px 0 0;
+    line-height: 1.5;
+    color: #333;
   }
   button {
     margin: 205px 0 20px;

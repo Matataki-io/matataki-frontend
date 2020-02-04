@@ -126,6 +126,9 @@
         <el-button :disabled="!form.agree" @click="submitForm('form')" type="primary" class="publish-btn">
           {{ isPost ? '发行Fan票' : '保存' }}
         </el-button>
+        <p v-if="isPost" class="tips">
+          创建Fan票过程需要上链，请耐心等候。
+        </p>
       </el-form-item>
     </el-form>
   </div>
@@ -606,6 +609,13 @@ export default {
   font-size: 20px;
   padding-left: 10px;
   margin: 0;
+}
+.tips {
+  padding: 0;
+  margin: 10px 0 0 0;
+  line-height: 1.5;
+  color: #848484;
+  font-size: 14px;
 }
 </style>
 
