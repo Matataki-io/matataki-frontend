@@ -287,7 +287,7 @@
 /* eslint-disable no-undef */
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
-
+import loadScript from '@/utils/load_script'
 export default {
   middleware: 'redirect',
   head: {
@@ -349,21 +349,41 @@ export default {
   mounted() {
     if (process.browser) {
       this.$nextTick(() => {
-        window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
+        const scriptSrc = [
+          'https://cdn.bootcss.com/gsap/latest/TweenMax.min.js',
+          'https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js',
+          'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
+        ]
+        const PromiseLoadScript = scriptSrc.map(i => loadScript(i))
+        const timer = null
+        Promise.all(PromiseLoadScript)
+          .then(res => {
+            console.log('done', res)
+            const timer = setInterval(() => {
+              if (TweenMax && ScrollMagic) {
+                this.initScrollAnimation()
+                this.setDefaultStyle()
+                clearInterval(timer)
+              }
+            }, 300)
+          })
+          .catch(err => {
+            console.log('error', err)
+          })
+
+        window.addEventListener('resize', throttle(this.resizeHomeHeight, 300))
         window.addEventListener('scroll', throttle(this.scrollTop, 300))
-        this._resizeHomeHeight()
-        this._initScrollAnimation()
-        this._setDefaultStyle()
+        this.resizeHomeHeight()
       })
     }
     this.aComment = this.userReviews[this.pageNum]
   },
   destroyed() {
-    window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
+    window.addEventListener('resize', throttle(this.resizeHomeHeight, 300))
     window.addEventListener('scroll', throttle(this.scrollTop, 300))
   },
   methods: {
-    _initScrollAnimation() {
+    initScrollAnimation() {
       const initStory = () => {
         const componentStory = document.querySelectorAll('.component-story')
         const controller = new ScrollMagic.Controller()
@@ -436,7 +456,7 @@ export default {
         console.log(error)
       }
     },
-    _resizeHomeHeight() {
+    resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
       const heightop = 367
       if (clientHeight < 800) {
@@ -451,7 +471,7 @@ export default {
         // this.$refs.evaluation.style.height = clientHeight + 'px'
       }
     },
-    _setDefaultStyle() {
+    setDefaultStyle() {
       try {
         const tl = new TimelineMax()
         tl.set('.story', {
@@ -473,7 +493,7 @@ export default {
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
-      const { btnMenu } = this.$refs
+      const btnMenu = document.querySelector('.btn-menu')
       try {
         btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
       } catch (error) {
@@ -498,6 +518,7 @@ export default {
     scrollTop() {
       try {
         const btnMenu = document.querySelector('.btn-menu')
+        if (!btnMenu) return
         const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
         const btnVisible = btnMenu.classList.contains('open')
         if (scroll >= 100 && !btnVisible) {
