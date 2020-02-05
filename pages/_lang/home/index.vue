@@ -343,7 +343,9 @@ export default {
           name: '行者说币',
           content: '几个月前，我在各种区块链内容、中心化写作平台高频发文，收到仙女座科技工作人员的信息，从此展开与瞬之间的缘分。我认为，瞬是一个做事情的团队。瞬Matataki 采用的是IPFS协议，星际文件存储系统，随着用户量的增多，就会产生大量节点，我们作为其中一个节点，可以利用自己的闲置硬盘存储他人的作品，当然，一个作品提交到IPFS网络，就会被复制成很多分、分割成很多片，存储在不同节点中，每个节点都无法查看具体信息，这样，就保证了，创作者的作品由大家共同存储，同时无法篡改，具备公信力。单一或者部分节点受到毁灭性打击也不影响作者从其他备份节点取得完整作品，具有很好的安全性。'
         }
-      ]
+      ],
+      resizeEvent: null,
+      scrollEvent: null
     }
   },
   mounted() {
@@ -371,16 +373,19 @@ export default {
             console.log('error', err)
           })
 
-        window.addEventListener('resize', throttle(this.resizeHomeHeight, 300))
-        window.addEventListener('scroll', throttle(this.scrollTop, 300))
+        this.resizeEvent = throttle(this.resizeHomeHeight, 300)
+        this.scrollEvent = throttle(this.scrollTop, 300)
+        window.addEventListener('resize', this.resizeEvent)
+        window.addEventListener('scroll', this.scrollEvent)
+
         this.resizeHomeHeight()
       })
     }
     this.aComment = this.userReviews[this.pageNum]
   },
   destroyed() {
-    window.addEventListener('resize', throttle(this.resizeHomeHeight, 300))
-    window.addEventListener('scroll', throttle(this.scrollTop, 300))
+    window.removeEventListener('resize', this.resizeEvent)
+    window.removeEventListener('scroll', this.scrollEvent)
   },
   methods: {
     initScrollAnimation() {
