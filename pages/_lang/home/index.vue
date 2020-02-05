@@ -6,13 +6,13 @@
       <img ref="logo" class="home-logo" src="@/assets/img/index/logo.png" alt="logo">
       <img ref="sumary" class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary">
       <!-- btn -->
-      <div class="btn-menu">
-        <div ref="btn" @click="showMoreMenu" class="btn">
+      <div ref="btnMenu" class="btn-menu">
+        <div @click="showMoreMenu" class="btn">
           <svg-icon
             icon-class="add"
           />
         </div>
-        <div ref="btnList" class="btn-list">
+        <div class="btn-list">
           <router-link :to="{name: 'article'}">
             <svg-icon
               class="btn-list_btn"
@@ -285,7 +285,6 @@
 
 <script>
 /* eslint-disable no-undef */
-// import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 
@@ -349,20 +348,19 @@ export default {
   },
   mounted() {
     if (process.browser) {
-      this._setDefaultStyle()
-
       this.$nextTick(() => {
-        this._resizeHomeHeight()
         window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
+        window.addEventListener('scroll', throttle(this.scrollTop, 300))
+        this._resizeHomeHeight()
         this._initScrollAnimation()
+        this._setDefaultStyle()
       })
     }
     this.aComment = this.userReviews[this.pageNum]
-
-    window.addEventListener('scroll', this.scrollTop)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.scrollTop)
+    window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
+    window.addEventListener('scroll', throttle(this.scrollTop, 300))
   },
   methods: {
     _initScrollAnimation() {
@@ -374,14 +372,13 @@ export default {
         componentStory.forEach((el, i) => {
           const childHeaderInner = el.querySelector('.component-story__header .component-story__inner')
           const childSumaryInner = el.querySelector('.component-story__summary .component-story__inner')
+          const tl = new TimelineMax()
 
-          const timelinemax = new TimelineMax()
+          // tl.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+          tl.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+          tl.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
 
-          // timelinemax.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
-          timelinemax.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
-          timelinemax.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
-
-          // timelinemax.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
+          // tl.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
 
           const scene = new ScrollMagic.Scene({
             triggerElement: el,
@@ -389,7 +386,7 @@ export default {
             duration: '200%'
           // offset: -clientHeight
           })
-            .setTween(timelinemax)
+            .setTween(tl)
             // .addIndicators({
             //   colorTrigger: 'black',
             //   colorStart: 'black',
@@ -402,9 +399,10 @@ export default {
 
       const initRoadmap = () => {
         const controller = new ScrollMagic.Controller()
-        const tl = new TimelineMax()
         const roadmap = document.querySelector('.roadmap')
         const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
+        const tl = new TimelineMax()
+
         roadmapBlock.forEach((el, i) => {
           tl.to(el, 0.3, {
             x: function () {
@@ -431,8 +429,12 @@ export default {
           // })
           .addTo(controller)
       }
-      initStory()
-      initRoadmap()
+      try {
+        initStory()
+        initRoadmap()
+      } catch (error) {
+        console.log(error)
+      }
     },
     _resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
@@ -449,57 +451,42 @@ export default {
         // this.$refs.evaluation.style.height = clientHeight + 'px'
       }
     },
-    /**
-     * 设置默认样式, 从css里面抽离出来, 减少样式的印象
-     */
     _setDefaultStyle() {
-      const { btnList } = this.$refs
-      const timeline = new TimelineLite()
-
-      TweenMax.set('.btn-list', {
-        opacity: 0,
-        y: 0
-      })
-
-      TweenMax.set('.story', {
-        perspective: 1000
-      })
-      // TweenMax.set('.component-story', {
-      //   z: -40
-      // })
-      TweenMax.set('.component-story .component-story__header .component-story__inner', {
-        y: '-10%'
-      })
-      TweenMax.set('.roadmap .roadmap-time__block', {
-        y: 20,
-        opacity: 0
-      })
+      try {
+        const tl = new TimelineMax()
+        tl.set('.story', {
+          perspective: 1000
+        })
+        // tl.set('.component-story', {
+        //   z: -40
+        // })
+        tl.set('.component-story .component-story__header .component-story__inner', {
+          y: '-10%'
+        })
+        tl.set('.roadmap .roadmap-time__block', {
+          y: 20,
+          opacity: 0
+        })
+      } catch (error) {
+        console.log('error', error)
+      }
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
-      const { btn, btnList } = this.$refs
-      const timeline = new TimelineLite()
-      const btnVisible = btn.getAttribute('data-visible') === 'true'
-      btn.setAttribute('data-visible', !btnVisible)
-
-      if (btnVisible) {
-        timeline.to(btn, 0.2, {
-          rotation: 0
-        })
-        timeline.to(btnList, 0.2, {
-          y: 0,
-          opacity: 0
-        },
-        '-=0.1')
-      } else {
-        timeline.to(btn, 0.2, {
-          rotation: 45
-        })
-        timeline.to(btnList, 0.2, {
-          y: 10,
-          opacity: 1
-        },
-        '-=0.1')
+      const { btnMenu } = this.$refs
+      try {
+        btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
+      } catch (error) {
+        // 万一遇到ie不支持 💀💀💀
+        let classVal = btnMenu.getAttribute('class')
+        // includes 通杀????
+        const hasClass = classVal.includes ? classVal.includes('open') : false
+        if (hasClass) {
+          classVal = classVal.replace('open', '').trim()
+        } else {
+          classVal = classVal.concat(' open')
+        }
+        btnMenu.setAttribute('class', classVal)
       }
     },
     /** 翻页 */
@@ -509,13 +496,18 @@ export default {
     },
     /** 滚动后展开按钮 */
     scrollTop() {
-      const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
-      const btnVisible = this.$refs.btn.getAttribute('data-visible') === 'true'
-      if (scroll >= 100 && !btnVisible) {
-        this.showMoreMenu()
-      }
-      if (scroll < 100 && btnVisible) {
-        this.showMoreMenu()
+      try {
+        const btnMenu = document.querySelector('.btn-menu')
+        const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
+        const btnVisible = btnMenu.classList.contains('open')
+        if (scroll >= 100 && !btnVisible) {
+          this.showMoreMenu()
+        }
+        if (scroll < 100 && btnVisible) {
+          this.showMoreMenu()
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   }
