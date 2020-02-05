@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="tokenUser" class="fl token-card" :to="{name: 'token-id', params: { id: tokenData.id }}" tag="div">
+  <router-link v-if="tokenUser" :to="{name: 'token-id', params: { id: tokenData.id }}" class="fl token-card" tag="div">
     <div>
       <avatar :src="cover" size="60px" />
     </div>
