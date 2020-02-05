@@ -1,5 +1,6 @@
 <template>
   <div class="token">
+    <myTokenHeader />
     <g-header />
     <!-- <div class="fl tokens">
       <avatar size="45px" />
@@ -122,11 +123,13 @@
 // import avatar from '@/components/avatar/index.vue'
 import tokenCard from '@/components/token_card/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
+import myTokenHeader from '@/components/token/my_token_header.vue'
 export default {
   components: {
     // avatar,
     tokenCard,
-    userPagination
+    userPagination,
+    myTokenHeader
   },
   data() {
     return {

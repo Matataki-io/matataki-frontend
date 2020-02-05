@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading" class="container">
     <TelegramLogin
-      @callback="telegramLogin"
+      @callback="login"
       :telegram-login="TELEGRAM_BOT_NAME"
       mode="callback"
       request-access="write"
@@ -27,7 +27,31 @@ export default {
     }
   },
   methods: {
+    login(user) {
+      const from = this.$route.query.from
+      if (from === 'login') {
+        this.telegramLogin(user)
+      } else {
+        this.telegramBinding(user)
+      }
+    },
     telegramLogin(user) {
+      this.loading = true
+      this.$API
+        .telegramLogin({
+          telegramParams: user,
+          telegramBotName: this.TELEGRAM_BOT_NAME
+        })
+        .then(res => {
+          this.$store.commit('setAccessToken', res.data)
+          this.$store.commit('setUserConfig', { idProvider: 'telegram' })
+          this.$router.back(-1)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    telegramBinding(user) {
       this.loading = true
       this.$API
         .accountBind({
@@ -48,7 +72,7 @@ export default {
           this.$message.error('绑定失败')
         })
         .finally(() => {
-          this.loading = true
+          this.loading = false
         })
     }
   }
