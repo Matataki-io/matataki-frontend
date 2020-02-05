@@ -287,7 +287,7 @@
 /* eslint-disable no-undef */
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
-
+import loadScript from '@/utils/load_script'
 export default {
   middleware: 'redirect',
   head: {
@@ -343,27 +343,52 @@ export default {
           name: '行者说币',
           content: '几个月前，我在各种区块链内容、中心化写作平台高频发文，收到仙女座科技工作人员的信息，从此展开与瞬之间的缘分。我认为，瞬是一个做事情的团队。瞬Matataki 采用的是IPFS协议，星际文件存储系统，随着用户量的增多，就会产生大量节点，我们作为其中一个节点，可以利用自己的闲置硬盘存储他人的作品，当然，一个作品提交到IPFS网络，就会被复制成很多分、分割成很多片，存储在不同节点中，每个节点都无法查看具体信息，这样，就保证了，创作者的作品由大家共同存储，同时无法篡改，具备公信力。单一或者部分节点受到毁灭性打击也不影响作者从其他备份节点取得完整作品，具有很好的安全性。'
         }
-      ]
+      ],
+      resizeEvent: null,
+      scrollEvent: null
     }
   },
   mounted() {
     if (process.browser) {
       this.$nextTick(() => {
-        window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
-        window.addEventListener('scroll', throttle(this.scrollTop, 300))
-        this._resizeHomeHeight()
-        this._initScrollAnimation()
-        this._setDefaultStyle()
+        const scriptSrc = [
+          'https://cdn.bootcss.com/gsap/latest/TweenMax.min.js',
+          'https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js',
+          'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
+        ]
+        const PromiseLoadScript = scriptSrc.map(i => loadScript(i))
+        const timer = null
+        Promise.all(PromiseLoadScript)
+          .then(res => {
+            console.log('done', res)
+            const timer = setInterval(() => {
+              if (TweenMax && ScrollMagic) {
+                this.initScrollAnimation()
+                this.setDefaultStyle()
+                clearInterval(timer)
+              }
+            }, 300)
+          })
+          .catch(err => {
+            console.log('error', err)
+          })
+
+        this.resizeEvent = throttle(this.resizeHomeHeight, 300)
+        this.scrollEvent = throttle(this.scrollTop, 300)
+        window.addEventListener('resize', this.resizeEvent)
+        window.addEventListener('scroll', this.scrollEvent)
+
+        this.resizeHomeHeight()
       })
     }
     this.aComment = this.userReviews[this.pageNum]
   },
   destroyed() {
-    window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
-    window.addEventListener('scroll', throttle(this.scrollTop, 300))
+    window.removeEventListener('resize', this.resizeEvent)
+    window.removeEventListener('scroll', this.scrollEvent)
   },
   methods: {
-    _initScrollAnimation() {
+    initScrollAnimation() {
       const initStory = () => {
         const componentStory = document.querySelectorAll('.component-story')
         const controller = new ScrollMagic.Controller()
@@ -436,7 +461,7 @@ export default {
         console.log(error)
       }
     },
-    _resizeHomeHeight() {
+    resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
       const heightop = 367
       if (clientHeight < 800) {
@@ -451,7 +476,7 @@ export default {
         // this.$refs.evaluation.style.height = clientHeight + 'px'
       }
     },
-    _setDefaultStyle() {
+    setDefaultStyle() {
       try {
         const tl = new TimelineMax()
         tl.set('.story', {
@@ -473,7 +498,7 @@ export default {
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
-      const { btnMenu } = this.$refs
+      const btnMenu = document.querySelector('.btn-menu')
       try {
         btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
       } catch (error) {
@@ -498,6 +523,7 @@ export default {
     scrollTop() {
       try {
         const btnMenu = document.querySelector('.btn-menu')
+        if (!btnMenu) return
         const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
         const btnVisible = btnMenu.classList.contains('open')
         if (scroll >= 100 && !btnVisible) {
