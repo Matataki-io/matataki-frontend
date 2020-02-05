@@ -44,6 +44,15 @@
   .btn-menu {
     position: relative;
     z-index: 99;
+    &.open {
+      .btn {
+        transform: rotate(45deg);
+      }
+      .btn-list {
+        opacity: 1;
+        transform: translate(-50%, 10px);
+      }
+    }
   }
   .btn {
     width: 54px;
@@ -57,6 +66,7 @@
     justify-content: center;
     z-index: 9;
     cursor: pointer;
+    transition: all .2s;
     &:hover {
       background-color: mix(#fff, #542DE0, 10%);
     }
@@ -68,7 +78,7 @@
     z-index: 9;
     left: 27px;
     bottom: -170%;
-    transform: translate(-50%, 10px);
+    transform: translate(-50%, 0px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,6 +86,8 @@
     padding: 20px;
     cursor: default;
     opacity: 0;
+    transition: all .2s;
+    // transition-delay: 0.1s;
     a {
       margin: 0 20px;
     }
