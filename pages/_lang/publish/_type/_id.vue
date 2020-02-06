@@ -103,7 +103,7 @@
           <div v-show="readauThority" class="fl ac">
             <div>
               <h3>Fan票类型</h3>
-              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
+              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable>
                 <el-option
                   v-for="item in readSelectOptions"
                   :key="item.id"
