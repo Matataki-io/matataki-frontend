@@ -75,6 +75,7 @@ export default {
     },
     params: {
       handler(newVal) {
+        this.currentPageCopy = this.currentPage
         this.currentPageData(this.apiUrl, this.params, this.currentPage)
       },
       deep: true
