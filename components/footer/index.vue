@@ -36,16 +36,16 @@
         </div>
         <p class="link">
           {{ $t('footer.link') }}:
-          <a href="http://linkidol.pro/" target="_blank">
-            {{ $t('footer.linkidol') }}
+          <a href="https://matters.news/" target="_blank">
+            Matters
+          </a>
+          |
+          <a href="https://maskbook.com/" target="_blank">
+            Maskbook
           </a>
           |
           <a href="https://orange.xyz/" target="_blank">
             {{ $t('footer.orange') }}
-          </a>
-          |
-          <a href="https://eosvote.com/" target="_blank">
-            EOSvote
           </a>
           |
           <a href="https://www.defi.wtf" target="_blank">
@@ -77,6 +77,9 @@
           </a>
           <a target="_blank" href="https://t.me/smartsignature_io">
             <div class="icon telegram-icon" />
+          </a>
+          <a target="_blank" href="https://twitter.com/realmatataki">
+            <div class="icon twitter-icon" />
           </a>
           <a target="_blank" href="https://www.facebook.com/MatatakiOfficial/">
             <div class="icon facebook-icon" />
@@ -208,6 +211,14 @@ export default {}
     background-image: url('../../assets/img/footer_telegram.svg');
     &:hover {
       background-image: url('../../assets/img/footer_telegram_active.svg');
+    }
+  }
+  &.twitter-icon{
+    width: 25px;
+    height: 21px;
+    background-image: url('../../assets/img/footer_twitter.svg');
+    &:hover {
+      background-image: url('../../assets/img/footer_twitter_active.svg');
     }
   }
   &.facebook-icon{
