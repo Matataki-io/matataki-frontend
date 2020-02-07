@@ -10,7 +10,7 @@
       <span class="card-date">{{ friendlyDate }}</span>
     </div>
     <div class="card-info">
-      <span class="card-title">{{ asset.title || '' }}</span>
+      <span class="card-title">{{ assetTitle }}</span>
     </div>
   </div>
 </template>
@@ -65,6 +65,15 @@ export default {
         comment_income: this.$t('pointCard.comment_income')
       }
       return pointTypes[type]
+    },
+    assetTitle() {
+      const { type, title } = this.asset
+      // 不是邀请用户注册奖励积分
+      if (type !== 'reg_inviter') {
+        return title || ''
+      } else {
+        return '邀请用户阅读5篇文章超过30秒并评价即可获得剩余600积分'
+      }
     }
   },
   created() {},

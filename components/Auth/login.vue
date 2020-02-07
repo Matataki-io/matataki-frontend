@@ -51,12 +51,6 @@
             <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
           </div>
         </el-tooltip>
-
-        <el-tooltip :content="$t('auth.githubTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('GitHub')" class="oauth-bg bg-purple">
-            <svg-icon class="github" icon-class="github" />
-          </div>
-        </el-tooltip>
         <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
           <a :href="wxloginHref" class="oauth-bg bg-green">
             <div>
@@ -64,6 +58,18 @@
             </div>
           </a>
         </el-tooltip>-->
+      </div>
+      <div class="oauth">
+        <el-tooltip :content="$t('auth.githubTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('GitHub')" class="oauth-bg bg-purple">
+            <svg-icon class="github" icon-class="github" />
+          </div>
+        </el-tooltip>
+        <el-tooltip content="Telegram登录" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('Telegram')" class="oauth-bg bg-tg">
+            <svg-icon class="github" icon-class="telegram" />
+          </div>
+        </el-tooltip>
       </div>
     </div>
     <img v-if="referral" :alt="$t('auth.invite')" class="referral" src="@/assets/img/invite.png">
@@ -170,6 +176,8 @@ export default {
         this.vntLogin();
       } else if (type === "MetaMask") {
         this.loginWithMetaMask();
+      } else if (type === "Telegram") {
+        this.telegramLogin();
       } else await this.signInx(type);
     },
     async signInx(type) {
@@ -227,6 +235,10 @@ export default {
           this.$message.error(error.toString());
         }
       }
+    },
+    async telegramLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-telegram', query: { from: 'login' } })
     },
     // 登录提交
     submitLoginForm() {
@@ -316,6 +328,7 @@ export default {
     font-weight: 400;
   }
   .oauth {
+    margin-bottom: 10px;
     .vnt {
       font-size: 24px;
       padding-top: 2px;
@@ -363,6 +376,9 @@ export default {
 }
 .bg-green {
   background: #44b549;
+}
+.bg-tg {
+  background: #0088cc;
 }
 
 .referral {

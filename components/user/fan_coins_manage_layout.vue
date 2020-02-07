@@ -48,7 +48,7 @@
     </div>
 
     <p v-if="!tokenDetailData.token.contract_address" class="warning">
-      fan票正在发布中，请稍后过来操作!
+      Fan票正在部署中，请耐心等候。
     </p>
     <!-- <div class="line" /> -->
 

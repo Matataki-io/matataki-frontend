@@ -191,7 +191,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null },
+    { signId = null, author, data, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null },
     signature = null
   ) {
     // 账号类型
@@ -203,7 +203,7 @@ export default {
         author,
         cover,
         fissionFactor,
-        hash,
+        data,
         platform: idProvider,
         publickey: signature ? signature.publicKey : null,
         sign: signature ? signature.signature : null,
@@ -215,7 +215,8 @@ export default {
         cc_license,
         commentPayPoint,
         shortContent
-      }
+      },
+      timeout: 30000
     })
   },
   /**
@@ -910,4 +911,11 @@ minetokenGetResources(tokenId) {
   // 暂时不用, 后端说用 p 接口
   // shareDetail(id) { return request.get(`/share/${id}`) },
   shareDetail(id) { return request.get(`/p/${id}`) },
+  telegramLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/telegram',
+      data: data
+    })
+  }
 }

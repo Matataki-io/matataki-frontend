@@ -371,7 +371,7 @@ export default {
     publishArticleSuccess: 'Send a successful, reward {0} points',
     // article import
     importInput: '请输入文章网址链接，包含http(s)://',
-    importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
+    importDes1: '目前支持：链闻、橙皮书、微信、知乎专栏、Matters、简书、微博文章。',
     importDes2:
           '如若在本平台发表的内容发现侵权行为，官方有权下架该作品，并保留向侵权者追究法律责任的权利。',
     importAgree: '我同意',
@@ -396,7 +396,7 @@ export default {
     statement7:
       'After obtaining the consent of the original author or the right owner, the adaptation, translation and re-creation of the work shall be regarded as original. ',
     statement8:
-      'Instant MATATAKI encourages users to post original articles. Checking this original statement will show the original logo. However, this original statement is only a unilateral commitment to the originality of the content of the article, and does not mean that Instant MATATAKI recognizes the originality of the article. If you check this original statement, the article proves to be not independent and original, and MATATAKI will be deleted according to the platform specification. '
+      'Instant MATATAKI encourages users to publish original articles. Articles that replace this original statement will display the original logo. However, this original statement is only your unilateral commitment to the originality of the content of the article, and does not mean that Instant MATATAKI recognizes the originality of the article. If after inserting this original statement, the article proves that it is not an independent original, Instant MATATAKI will remove it according to the platform specifications.'
   },
   search: {
     hot: 'hot search',
@@ -539,9 +539,6 @@ export default {
     readAddPoint: 'read + {0} points',
     newAddPoint: 'new article + {0} points',
     confirmUnFollowMessage: 'Are you unfollow?',
-    importDes1: 'Current support: Chain Wen, Orange Book, WeChat, Jane Book. ',
-    importDes2:
-      'If the content published on this platform is infringing, official has the right to remove the work and reserve the right to pursue legal liability for the infringer. ',
     importAgree: 'I agree',
     importAddressError: 'Please enter the correct address',
     importAddress: 'Source link:',

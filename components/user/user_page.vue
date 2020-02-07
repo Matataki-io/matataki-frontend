@@ -147,7 +147,7 @@ export default {
   },
   created() {
     if (!this.$route.params.id) this.$router.go(-1)
-    this.getMyUserData()
+    // this.getMyUserData()
   },
   mounted() {
     this.refreshUser({ id: this.$route.params.id })

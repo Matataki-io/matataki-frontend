@@ -1,5 +1,6 @@
 <template>
   <div class="token">
+    <myTokenHeader />
     <g-header />
     <!-- <div class="fl tokens">
       <avatar size="45px" />
@@ -56,7 +57,8 @@
                 <span v-else-if="selectedDropdown === 'time-asc'">时间升序</span>
                 <span v-else-if="selectedDropdown === 'time-desc'">时间降序</span>
                 <span v-else>综合排序</span>
-                <i class="el-icon-arrow-down el-icon--right" />
+                <i v-if='selectedDropdown.includes("-asc")' class="el-icon-arrow-up el-icon--right" />
+                <i v-else class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="general">
@@ -122,11 +124,13 @@
 // import avatar from '@/components/avatar/index.vue'
 import tokenCard from '@/components/token_card/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
+import myTokenHeader from '@/components/token/my_token_header.vue'
 export default {
   components: {
     // avatar,
     tokenCard,
-    userPagination
+    userPagination,
+    myTokenHeader
   },
   data() {
     return {
@@ -190,15 +194,18 @@ export default {
           break
       }
 
+      this.currentPage = 1
       const query = {
         sort
       }
-      if (this.currentPage > 1) query.page = this.currentPage
+      this.pull.list = []
 
       this.sort = sort
       this.pull.params.sort = sort
-      this.$router.replace({
-        query
+      this.$router.push({
+        query: {
+          sort
+        }
       })
     },
     toggleDropdown(command) {

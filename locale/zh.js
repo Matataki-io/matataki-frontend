@@ -362,7 +362,7 @@ export default {
     publishArticleSuccess: '发文成功，奖励{0}积分',
     // article import
     importInput: '请输入文章网址链接，包含http(s)://',
-    importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
+    importDes1: '目前支持：链闻、橙皮书、微信、知乎专栏、Matters、简书、微博文章。',
     importDes2: '如若在本平台发表的内容发现侵权行为，官方有权下架该作品，并保留向侵权者追究法律责任的权利。',
     importAgree: '我同意',
     importAddressError: '请输入正确的地址',
@@ -379,7 +379,7 @@ export default {
     statement5: '5.文章主体系整合、汇编他人作品内容',
     statement6: '6.通过其他侵犯著作权或其他权益方式形成的内容。',
     statement7: '在取得原作者或权利人同意后，对作品进行改编、翻译再创作的，视同原创。',
-    statement8: '瞬MATATAKI鼓励用户发布原创文章，勾选本原创声明的文章会展示原创标识。但本原创声明仅是您对文章内容原创性的单方承诺，并不表示瞬MATATAKI认可了文章的原创性。若您在勾选本原创声明后，文章被证明并非独立原创，瞬MATATAKI将按照平台规范删除等。'
+    statement8: '瞬MATATAKI鼓励用户发布原创文章，勾选本原创声明的文章会展示原创标识。但本原创声明仅是您对文章内容原创性的单方承诺，并不表示瞬MATATAKI认可了文章的原创性。若您在勾选本原创声明后，文章被证明并非独立原创，瞬MATATAKI将按照平台规范下架等。'
   },
   search: {
     hot: '热门搜索',
@@ -511,8 +511,6 @@ export default {
     // userInfoHeader
     confirmUnFollowMessage: '确定取消关注?',
     // article import
-    importDes1: '目前支持：链闻、橙皮书、微信、简书文章。',
-    importDes2: '如若在本平台发表的内容发现侵权行为，官方有权下架该作品，并保留向侵权者追究法律责任的权利。',
     importAgree: '我同意',
     importAddressError: '请输入正确的地址',
     importAddress: '来源链接：',

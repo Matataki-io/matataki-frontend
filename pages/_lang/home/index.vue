@@ -6,13 +6,13 @@
       <img ref="logo" class="home-logo" src="@/assets/img/index/logo.png" alt="logo">
       <img ref="sumary" class="home-sumary" src="@/assets/img/index/sumary.png" alt="sumary">
       <!-- btn -->
-      <div class="btn-menu">
-        <div ref="btn" @click="showMoreMenu" class="btn">
+      <div ref="btnMenu" class="btn-menu">
+        <div @click="showMoreMenu" class="btn">
           <svg-icon
             icon-class="add"
           />
         </div>
-        <div ref="btnList" class="btn-list">
+        <div class="btn-list">
           <router-link :to="{name: 'article'}">
             <svg-icon
               class="btn-list_btn"
@@ -285,10 +285,9 @@
 
 <script>
 /* eslint-disable no-undef */
-// import { TimelineLite, TimelineMax, TweenMax, Linear } from 'gsap'
 import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
-
+import loadScript from '@/utils/load_script'
 export default {
   middleware: 'redirect',
   head: {
@@ -344,28 +343,52 @@ export default {
           name: '行者说币',
           content: '几个月前，我在各种区块链内容、中心化写作平台高频发文，收到仙女座科技工作人员的信息，从此展开与瞬之间的缘分。我认为，瞬是一个做事情的团队。瞬Matataki 采用的是IPFS协议，星际文件存储系统，随着用户量的增多，就会产生大量节点，我们作为其中一个节点，可以利用自己的闲置硬盘存储他人的作品，当然，一个作品提交到IPFS网络，就会被复制成很多分、分割成很多片，存储在不同节点中，每个节点都无法查看具体信息，这样，就保证了，创作者的作品由大家共同存储，同时无法篡改，具备公信力。单一或者部分节点受到毁灭性打击也不影响作者从其他备份节点取得完整作品，具有很好的安全性。'
         }
-      ]
+      ],
+      resizeEvent: null,
+      scrollEvent: null
     }
   },
   mounted() {
     if (process.browser) {
-      this._setDefaultStyle()
-
       this.$nextTick(() => {
-        this._resizeHomeHeight()
-        window.addEventListener('resize', throttle(this._resizeHomeHeight, 300))
-        this._initScrollAnimation()
+        const scriptSrc = [
+          'https://cdn.bootcss.com/gsap/latest/TweenMax.min.js',
+          'https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js',
+          'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
+        ]
+        const PromiseLoadScript = scriptSrc.map(i => loadScript(i))
+        const timer = null
+        Promise.all(PromiseLoadScript)
+          .then(res => {
+            console.log('done', res)
+            const timer = setInterval(() => {
+              if (TweenMax && ScrollMagic) {
+                this.initScrollAnimation()
+                this.setDefaultStyle()
+                clearInterval(timer)
+              }
+            }, 300)
+          })
+          .catch(err => {
+            console.log('error', err)
+          })
+
+        this.resizeEvent = throttle(this.resizeHomeHeight, 300)
+        this.scrollEvent = throttle(this.scrollTop, 300)
+        window.addEventListener('resize', this.resizeEvent)
+        window.addEventListener('scroll', this.scrollEvent)
+
+        this.resizeHomeHeight()
       })
     }
     this.aComment = this.userReviews[this.pageNum]
-
-    window.addEventListener('scroll', this.scrollTop)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.scrollTop)
+    window.removeEventListener('resize', this.resizeEvent)
+    window.removeEventListener('scroll', this.scrollEvent)
   },
   methods: {
-    _initScrollAnimation() {
+    initScrollAnimation() {
       const initStory = () => {
         const componentStory = document.querySelectorAll('.component-story')
         const controller = new ScrollMagic.Controller()
@@ -374,14 +397,13 @@ export default {
         componentStory.forEach((el, i) => {
           const childHeaderInner = el.querySelector('.component-story__header .component-story__inner')
           const childSumaryInner = el.querySelector('.component-story__summary .component-story__inner')
+          const tl = new TimelineMax()
 
-          const timelinemax = new TimelineMax()
+          // tl.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
+          tl.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
+          tl.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
 
-          // timelinemax.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
-          timelinemax.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
-          timelinemax.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
-
-          // timelinemax.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
+          // tl.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
 
           const scene = new ScrollMagic.Scene({
             triggerElement: el,
@@ -389,7 +411,7 @@ export default {
             duration: '200%'
           // offset: -clientHeight
           })
-            .setTween(timelinemax)
+            .setTween(tl)
             // .addIndicators({
             //   colorTrigger: 'black',
             //   colorStart: 'black',
@@ -402,9 +424,10 @@ export default {
 
       const initRoadmap = () => {
         const controller = new ScrollMagic.Controller()
-        const tl = new TimelineMax()
         const roadmap = document.querySelector('.roadmap')
         const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
+        const tl = new TimelineMax()
+
         roadmapBlock.forEach((el, i) => {
           tl.to(el, 0.3, {
             x: function () {
@@ -431,10 +454,14 @@ export default {
           // })
           .addTo(controller)
       }
-      initStory()
-      initRoadmap()
+      try {
+        initStory()
+        initRoadmap()
+      } catch (error) {
+        console.log(error)
+      }
     },
-    _resizeHomeHeight() {
+    resizeHomeHeight() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
       const heightop = 367
       if (clientHeight < 800) {
@@ -449,57 +476,42 @@ export default {
         // this.$refs.evaluation.style.height = clientHeight + 'px'
       }
     },
-    /**
-     * 设置默认样式, 从css里面抽离出来, 减少样式的印象
-     */
-    _setDefaultStyle() {
-      const { btnList } = this.$refs
-      const timeline = new TimelineLite()
-
-      TweenMax.set('.btn-list', {
-        opacity: 0,
-        y: 0
-      })
-
-      TweenMax.set('.story', {
-        perspective: 1000
-      })
-      // TweenMax.set('.component-story', {
-      //   z: -40
-      // })
-      TweenMax.set('.component-story .component-story__header .component-story__inner', {
-        y: '-10%'
-      })
-      TweenMax.set('.roadmap .roadmap-time__block', {
-        y: 20,
-        opacity: 0
-      })
+    setDefaultStyle() {
+      try {
+        const tl = new TimelineMax()
+        tl.set('.story', {
+          perspective: 1000
+        })
+        // tl.set('.component-story', {
+        //   z: -40
+        // })
+        tl.set('.component-story .component-story__header .component-story__inner', {
+          y: '-10%'
+        })
+        tl.set('.roadmap .roadmap-time__block', {
+          y: 20,
+          opacity: 0
+        })
+      } catch (error) {
+        console.log('error', error)
+      }
     },
     // 首页第一屏按钮点击显示菜单
     showMoreMenu() {
-      const { btn, btnList } = this.$refs
-      const timeline = new TimelineLite()
-      const btnVisible = btn.getAttribute('data-visible') === 'true'
-      btn.setAttribute('data-visible', !btnVisible)
-
-      if (btnVisible) {
-        timeline.to(btn, 0.2, {
-          rotation: 0
-        })
-        timeline.to(btnList, 0.2, {
-          y: 0,
-          opacity: 0
-        },
-        '-=0.1')
-      } else {
-        timeline.to(btn, 0.2, {
-          rotation: 45
-        })
-        timeline.to(btnList, 0.2, {
-          y: 10,
-          opacity: 1
-        },
-        '-=0.1')
+      const btnMenu = document.querySelector('.btn-menu')
+      try {
+        btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
+      } catch (error) {
+        // 万一遇到ie不支持 💀💀💀
+        let classVal = btnMenu.getAttribute('class')
+        // includes 通杀????
+        const hasClass = classVal.includes ? classVal.includes('open') : false
+        if (hasClass) {
+          classVal = classVal.replace('open', '').trim()
+        } else {
+          classVal = classVal.concat(' open')
+        }
+        btnMenu.setAttribute('class', classVal)
       }
     },
     /** 翻页 */
@@ -509,13 +521,19 @@ export default {
     },
     /** 滚动后展开按钮 */
     scrollTop() {
-      const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
-      const btnVisible = this.$refs.btn.getAttribute('data-visible') === 'true'
-      if (scroll >= 100 && !btnVisible) {
-        this.showMoreMenu()
-      }
-      if (scroll < 100 && btnVisible) {
-        this.showMoreMenu()
+      try {
+        const btnMenu = document.querySelector('.btn-menu')
+        if (!btnMenu) return
+        const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
+        const btnVisible = btnMenu.classList.contains('open')
+        if (scroll >= 100 && !btnVisible) {
+          this.showMoreMenu()
+        }
+        if (scroll < 100 && btnVisible) {
+          this.showMoreMenu()
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   }
