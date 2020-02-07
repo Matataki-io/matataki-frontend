@@ -124,7 +124,7 @@
         <el-form-item label="发送数量" prop="">
           <el-input-number
             v-model="form.tokens"
-            :min="1"
+            :min="0"
             :max="form.max"
             size="small"
           />
