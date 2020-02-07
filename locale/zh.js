@@ -362,7 +362,7 @@ export default {
     publishArticleSuccess: '发文成功，奖励{0}积分',
     // article import
     importInput: '请输入文章网址链接，包含http(s)://',
-    importDes1: '目前支持：链闻、橙皮书、微信、知乎专栏、Matters、简书文章。',
+    importDes1: '目前支持：链闻、橙皮书、微信、知乎专栏、Matters、简书、微博文章。',
     importDes2: '如若在本平台发表的内容发现侵权行为，官方有权下架该作品，并保留向侵权者追究法律责任的权利。',
     importAgree: '我同意',
     importAddressError: '请输入正确的地址',
