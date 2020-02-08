@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="21px" viewBox="0 0 25 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>telegram</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="指向底部信息栏时" transform="translate(-1535.000000, -200.000000)" fill="#0091FF" fill-rule="nonzero">
+            <g id="telegram" transform="translate(1535.000000, 200.000000)">
+                <path d="M9.07125,18.9604167 L9.44458334,13.3204167 L19.6845833,4.09375 C20.1379167,3.68041666 19.59125,3.48041666 18.99125,3.84041666 L6.35125,11.8270833 L0.884583344,10.09375 C-0.28875,9.76041666 -0.302083344,8.94708334 1.15125,8.36041666 L22.4445833,0.147083344 C23.4179167,-0.292916656 24.35125,0.387083344 23.9779167,1.88041666 L20.35125,18.9604167 C20.0979167,20.17375 19.3645833,20.4670833 18.35125,19.9070833 L12.83125,15.8270833 L10.1779167,18.4004167 C9.87125,18.7070833 9.61791666,18.9604167 9.07125,18.9604167 Z" id="路径"></path>
+            </g>
+        </g>
+    </g>
+</svg>
