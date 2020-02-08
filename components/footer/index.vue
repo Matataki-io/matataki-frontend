@@ -79,7 +79,7 @@
             <div class="icon telegram-icon" />
           </a>
           <a target="_blank" href="https://twitter.com/realmatataki">
-            <div class="icon twitter-icon" />
+            <svg-icon class="icon twitter-icon" icon-class="twitter" />
           </a>
           <a target="_blank" href="https://www.facebook.com/MatatakiOfficial/">
             <div class="icon facebook-icon" />
@@ -214,11 +214,11 @@ export default {}
     }
   }
   &.twitter-icon{
-    width: 25px;
-    height: 21px;
-    background-image: url('../../assets/img/footer_twitter.svg');
+    width: 24px;
+    height: 24px;
+    color: #B2B2B2;
     &:hover {
-      background-image: url('../../assets/img/footer_twitter_active.svg');
+      color: #00ACED;
     }
   }
   &.facebook-icon{
