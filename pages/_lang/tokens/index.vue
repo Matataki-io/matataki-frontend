@@ -198,7 +198,9 @@ export default {
   },
   data() {
     const validateToken = (rule, value, callback) => {
-      if (Number(value) < this.form.min) {
+      if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
+        callback(new Error('发送的数量小数不能超过4位'))
+      } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
       } else if (Number(value) > this.form.max) {
         callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
