@@ -100,6 +100,7 @@
         ref="form"
         v-loading="transferLoading"
         :model="form"
+        :rules="rules"
         label-width="70px"
         class="gift-form"
       >
@@ -121,12 +122,14 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="发送数量" prop="">
-          <el-input-number
+        <el-form-item label="发送数量" prop="tokens">
+          <el-input
             v-model="form.tokens"
-            :min="1"
             :max="form.max"
+            :min="form.min"
+            placeholder="请输入内容"
             size="small"
+            clearable
           />
         </el-form-item>
         <el-form-item>
@@ -156,6 +159,15 @@ export default {
     holdliquidityDetail
   },
   data() {
+    const validateToken = (rule, value, callback) => {
+      if (Number(value) < this.form.min) {
+        callback(new Error('发送数量不能少于0.0001'))
+      } else if (Number(value) > this.form.max) {
+        callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
+      } else {
+        callback()
+      }
+    }
     return {
       isPublishCoins: true,
       pointLog: {
@@ -182,7 +194,13 @@ export default {
         userId: '',
         tokenId: '',
         tokens: 1,
+        min: 0.0001,
         max: 99999999 // 默认最大
+      },
+      rules: {
+        tokens: [
+          { validator: validateToken, trigger: 'blur' }
+        ]
       },
       expands: []
     }
@@ -288,7 +306,7 @@ export default {
       this.form.tokenname = symbol
       this.form.tokenId = tokenId
       this.form.decimals = decimals
-      this.form.max = Math.floor(Number(amount))
+      this.form.max = Number(amount)
       this.giftDialog = true
     },
     async searchUser() {
