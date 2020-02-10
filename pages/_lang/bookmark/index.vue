@@ -3,7 +3,7 @@
   <userLayout>
     <template slot="main">
       <h2 class="tag-title">
-        {{ $t('user.myBookmark') }}
+        文章
       </h2>
       <div slot="list" v-loading="loading">
         <no-content-prompt :list="pull.list">
@@ -21,6 +21,44 @@
             :total="total"
             @paginationData="paginationData"
             @togglePage="togglePage"
+            class="pagination"
+          />
+        </no-content-prompt>
+      </div>
+
+      <h2 class="tag-title">
+        分享
+      </h2>
+      <div slot="list" v-loading="loadingShare">
+        <no-content-prompt :list="pullShare.list">
+          <!-- 暂时处理  by xiaotian -->
+          <!-- 下次功能调整重构 -->
+          <router-link
+            :to="{name: 'share-id', params: {id: item.id}}"
+            v-for="(item, index) in pullShare.list"
+            :key="index"
+            target="_blank"
+            class="card-bookmark"
+          >
+            <p>{{ item.short_content }}</p>
+            <div>
+              <span>
+                <svg-icon class="icon" icon-class="eye" />{{ item.read }}
+              </span>
+              <span>
+                <svg-icon class="icon" icon-class="like_thin" />{{ item.likes }}
+              </span>
+            </div>
+          </router-link>
+          <user-pagination
+            v-show="!loadingShare"
+            :current-page="currentPageShare"
+            :params="pullShare.params"
+            :api-url="pullShare.apiUrl"
+            :page-size="pullShare.params.pagesize"
+            :total="totalShare"
+            @paginationData="paginationDataShare"
+            @togglePage="togglePageShare"
             class="pagination"
           />
         </no-content-prompt>
@@ -49,14 +87,26 @@ export default {
     return {
       pull: {
         params: {
-          pagesize: 20
+          pagesize: 5
         },
         apiUrl: 'userBookmarks',
         list: []
       },
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
-      total: 0
+      total: 0,
+
+      pullShare: {
+        params: {
+          pagesize: 5,
+          channel_id: 3
+        },
+        apiUrl: 'userBookmarks',
+        list: []
+      },
+      currentPageShare: Number(this.$route.query.page) || 1,
+      loadingShare: false, // 加载数据
+      totalShare: 0
     }
   },
   methods: {
@@ -69,15 +119,49 @@ export default {
       this.loading = true
       this.pull.list = []
       this.currentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
-      })
+    },
+    paginationDataShare(res) {
+      this.pullShare.list = res.data.list
+      this.totalShare = res.data.count || 0
+      this.loadingShare = false
+    },
+    togglePageShare(i) {
+      this.loadingShare = true
+      this.pullShare.list = []
+      this.currentPageShare = i
     }
   }
 }
 </script>
+
+<style lang="less" scoped>
+.card-bookmark {
+  padding: 20px;
+  background-color: #fff;
+  display: block;
+  margin: 0;
+  border-radius: 3px;
+  border-bottom: 1px solid #efefef;
+  p {
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  div {
+    margin-top: 10px;
+    span {
+      color: #949494;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+    .icon {
+      margin-right: 2px;
+    }
+  }
+}
+</style>
 
 <style scoped>
 .pagination {
@@ -86,8 +170,7 @@ export default {
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  padding-left: 20px;
-  padding-bottom: 10px;
-  margin: 0;
+  margin: 0 0 20px 20px;
+  padding: 0;
 }
 </style>
