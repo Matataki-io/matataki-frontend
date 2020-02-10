@@ -101,9 +101,7 @@
           v-if="isLogined"
           class="user-menu"
         >
-          <div @click="$emit('login')" class="home-head-avatar">
-            <avatar :size="'30px'" :src="avatar" />
-          </div>
+          <avatar :size="'30px'" :src="avatar" class="home-head-avatar" />
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
               <el-dropdown-item>
