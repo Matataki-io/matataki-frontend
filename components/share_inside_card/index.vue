@@ -98,12 +98,15 @@ export default {
       }).catch(() => {})
       return false
     },
-    toggle() {
+    toggle(e) {
+      if (e && e.preventDefault) e.preventDefault()
+      else if (e && e.stopPropagation) e.stopPropagation()
       if (this.toggleArticle) {
         // beref use sign_id
         const id = this.from === 'beref' ? this.card.sign_id : this.card.ref_sign_id
         this.$emit('getArticle', id, false)
       }
+      return false
     },
     copy(val, e) {
       if (e && e.preventDefault) e.preventDefault()
