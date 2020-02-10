@@ -132,7 +132,7 @@
               </p>
             </el-form-item>
             <el-form-item label="接受对象">
-              <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="medium">
+              <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="small">
                 <el-button slot="append" @click="searchUser" icon="el-icon-search" />
               </el-input>
             </el-form-item>
@@ -154,6 +154,9 @@
                 clearable
               />
             </el-form-item>
+            <p v-if="form.balance" class="balance">
+              Fan票余额&nbsp;{{ form.balance }}，<a @click="form.tokens = form.balance" href="javascript:;">全部转入</a>
+            </p>
             <el-form-item>
               <el-button @click="submitForm('form')" type="primary" size="small">
                 确定
@@ -195,7 +198,9 @@ export default {
   },
   data() {
     const validateToken = (rule, value, callback) => {
-      if (Number(value) < this.form.min) {
+      if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
+        callback(new Error('发送的数量小数不能超过4位'))
+      } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
       } else if (Number(value) > this.form.max) {
         callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
@@ -230,7 +235,8 @@ export default {
         tokenId: '',
         tokens: 1,
         min: 0.0001,
-        max: 99999999 // 默认最大
+        max: 99999999, // 默认最大
+        balance: 0
       },
       rules: {
         tokens: [
@@ -313,6 +319,7 @@ export default {
       this.form.decimals = ''
       this.form.tokens = 1
       this.form.max = 99999999
+      this.form.balance = 0
       this.$refs.form.resetFields()
     },
     giftDialogClose(done) {
@@ -333,6 +340,7 @@ export default {
       this.form.tokenId = tokenId
       this.form.decimals = decimals
       this.form.max = Number(amount)
+      this.form.balance = Number(amount)
       this.giftDialog = true
     },
     async searchUser() {
@@ -463,6 +471,19 @@ export default {
 }
 .expand-card {
     background-color: #F1F1F1;
+}
+.balance {
+  padding: 0;
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #777777;
+  word-spacing: 1px;
+  a {
+    font-size: 14px;
+    color: #542de0;
+    cursor: pointer;
+  }
 }
 </style>
 
