@@ -90,7 +90,8 @@
       @togglePage="togglePage"
       class="pagination"
     />
-    <el-dialog
+    <!-- TODO: 发布后再无修改立即删除 -->
+    <!-- <el-dialog
       :visible.sync="giftDialog"
       :before-close="giftDialogClose"
       title="赠送Fan票"
@@ -141,7 +142,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -301,14 +302,15 @@ export default {
       this.form.userId = ''
       this.form.useravatar = ''
     },
-    showGift(symbol, tokenId, amount, decimals) {
-      // console.log(Math.floor(Number(amount)))
-      this.form.tokenname = symbol
-      this.form.tokenId = tokenId
-      this.form.decimals = decimals
-      this.form.max = Number(amount)
-      this.giftDialog = true
-    },
+    // TODO: 发布后再无修改立即删除
+    // showGift(symbol, tokenId, amount, decimals) {
+    //   // console.log(Math.floor(Number(amount)))
+    //   this.form.tokenname = symbol
+    //   this.form.tokenId = tokenId
+    //   this.form.decimals = decimals
+    //   this.form.max = Number(amount)
+    //   this.giftDialog = true
+    // },
     async searchUser() {
       if (!this.form.username.trim()) return this.$message.warning('用户名不能为空')
       this.transferLoading = true
