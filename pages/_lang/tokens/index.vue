@@ -233,7 +233,7 @@ export default {
         useravatar: '',
         userId: '',
         tokenId: '',
-        tokens: 1,
+        tokens: '',
         min: 0.0001,
         max: 99999999, // 默认最大
         balance: 0
@@ -317,7 +317,7 @@ export default {
       this.form.userId = ''
       this.form.tokenId = ''
       this.form.decimals = ''
-      this.form.tokens = 1
+      this.form.tokens = ''
       this.form.max = 99999999
       this.form.balance = 0
       this.$refs.form.resetFields()
