@@ -102,7 +102,9 @@
           class="user-menu"
         >
           <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
-          <img :src="avatar" class="user-avatar" alt="user avatar">
+          <div class="user-avatar">
+            <img v-if="avatar" :src="avatar" alt="user avatar">
+          </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
               <el-dropdown-item>
@@ -574,7 +576,13 @@ export default {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
   user-select: none;
+  border: 1px solid #ddd;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 </style>
