@@ -97,7 +97,40 @@
           />
         </el-tooltip>
 
-        <avatarComponents v-if="isLogined" :size="'30px'" :src="avatar" class="home-head-avatar" />
+        <el-dropdown
+          v-if="isLogined"
+          class="user-menu"
+        >
+          <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
+          <img :src="avatar" class="user-avatar" alt="user avatar">
+          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+            <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
+              <el-dropdown-item>
+                {{ currentUserInfo.nickname || currentUserInfo.name }}
+              </el-dropdown-item>
+            </n-link>
+            <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
+              <el-dropdown-item>
+                {{ $t('home.account') }}
+              </el-dropdown-item>
+            </n-link>
+            <!-- <n-link :to="{name: 'tokens' }" class="link">
+              <el-dropdown-item>
+                我的Fan票
+              </el-dropdown-item>
+            </n-link>
+            <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
+              <el-dropdown-item>
+                {{ $t('home.setting') }}
+              </el-dropdown-item>
+            </n-link> -->
+            <div @click="btnsignOut" class="link">
+              <el-dropdown-item>
+                {{ $t('logout') }}
+              </el-dropdown-item>
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
         <a
           v-else
           @click="login"
@@ -118,14 +151,14 @@ import point from './point'
 import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
-import avatarComponents from '@/components/avatar/index.vue'
+// import avatarComponents from '@/components/avatar/index.vue'
 
 import { strTrim } from '@/utils/reg'
 
 export default {
   name: 'HomeHead',
   components: {
-    avatarComponents,
+    // avatarComponents,
     point,
     language
   },
@@ -535,5 +568,13 @@ export default {
     margin-right: -3px;
     margin-top: -3px;
   }
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  user-select: none;
 }
 </style>
