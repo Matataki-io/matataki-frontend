@@ -70,6 +70,11 @@
             <svg-icon class="github" icon-class="telegram" />
           </div>
         </el-tooltip>
+        <el-tooltip :content="$t('auth.twitterTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('Twitter')" class="oauth-bg bg-twitter">
+            <svg-icon class="twitter" icon-class="twitter" />
+          </div>
+        </el-tooltip>
       </div>
     </div>
     <img v-if="referral" :alt="$t('auth.invite')" class="referral" src="@/assets/img/invite.png">
@@ -178,6 +183,8 @@ export default {
         this.loginWithMetaMask();
       } else if (type === "Telegram") {
         this.telegramLogin();
+      } else if (type === "Twitter") {
+        this.$message.warning('这个功能还在开发哦~');
       } else await this.signInx(type);
     },
     async signInx(type) {
@@ -342,6 +349,10 @@ export default {
       font-size: 22px;
       color: #fff;
     }
+    .twitter {
+      font-size: 22px;
+      color: #fff;
+    }
     .flexCenter();
     .oauth-bg {
       cursor: pointer;
@@ -379,6 +390,9 @@ export default {
 }
 .bg-tg {
   background: #0088cc;
+}
+.bg-twitter {
+  background: #00ACED;
 }
 
 .referral {

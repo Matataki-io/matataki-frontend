@@ -117,6 +117,7 @@ export default {
     ontType: 'ONT',
     vntTitle: 'VNT登录',
     githubTitle: 'GitHub登录',
+    twitterTitle: 'Twitter登录',
     ontDoc: '《如何使用ONT登录》',
     invite: '已邀请', //img
     viewWallet: '查看支持的钱包',
