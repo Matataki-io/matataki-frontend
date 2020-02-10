@@ -357,11 +357,12 @@ export default {
           'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
         ]
         const PromiseLoadScript = scriptSrc.map(i => loadScript(i))
-        const timer = null
+        let timer = null
         Promise.all(PromiseLoadScript)
           .then(res => {
             console.log('done', res)
-            const timer = setInterval(() => {
+            clearInterval(timer)
+            timer = setInterval(() => {
               if (TweenMax && ScrollMagic) {
                 this.initScrollAnimation()
                 this.setDefaultStyle()
