@@ -477,7 +477,7 @@ export default {
 }
 .balance {
   padding: 0;
-  margin: 0 0 10px 70px;
+  margin: 0 0 40px 70px;
   font-size: 14px;
   font-weight: 400;
   color: #777777;
