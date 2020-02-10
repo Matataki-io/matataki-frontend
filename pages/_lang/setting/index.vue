@@ -78,8 +78,11 @@
         </div>
         <!-- 社交账号 -->
         <div class="social-div">
-          <span class="title">
+          <span class="title right0">
             社交账号
+          </span>
+          <span class="title-note">
+            仅用于信息展示
           </span>
           <div v-for="(item, index) in social" :key="index" class="social-list">
             <p class="social-title">
@@ -435,6 +438,15 @@ export default {
   color:#333;
   line-height:28px;
   margin-right: 20px;
+  &.right0 {
+    margin-right: 0;
+  }
+}
+.title-note {
+  font-size:12px;
+  font-weight:400;
+  color:#b2b2b2;
+  line-height:28px;
 }
 
 @avatarWidth: 90px;

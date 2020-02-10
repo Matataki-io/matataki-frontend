@@ -1,7 +1,7 @@
 <template>
   <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
     <div class="token-tap">
-      <div class="token-list">
+      <div>
         <router-link :to="{name: 'token'}">
           <div class="add-card">
             <svg-icon icon-class="add1" />
@@ -83,10 +83,6 @@ export default {
     .token-tap {
       min-height: 600px;
       margin-bottom: 60px;
-      overflow: hidden;
-      .token-list {
-        overflow: hidden;
-      }
     }
     .add-card {
       background: white;

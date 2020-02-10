@@ -65,7 +65,7 @@
             <svg-icon class="github" icon-class="github" />
           </div>
         </el-tooltip>
-        <el-tooltip :content="$t('auth.githubTitle')" class="item" effect="dark" placement="top">
+        <el-tooltip content="Telegram登录" class="item" effect="dark" placement="top">
           <div @click="walletLogin('Telegram')" class="oauth-bg bg-tg">
             <svg-icon class="github" icon-class="telegram" />
           </div>

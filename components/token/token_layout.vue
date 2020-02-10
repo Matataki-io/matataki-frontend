@@ -254,41 +254,24 @@ export default {
     tokenRelated,
     TokenJoinFandom
   },
-  // head() {
-  //   return {
-  //     title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
-  //     meta: [
-  //       { hid: 'description', name: 'description', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-  //       /* <!--  Meta for Twitter Card --> */
-  //       { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-  //       { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-  //       { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-  //       { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-  //       { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/token/${this.$route.params.id}` },
-  //       { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.minetokenToken.logo) },
-  //       /* <!--  Meta for OpenGraph --> */
-  //       { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-  //       { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-  //       { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
-  //       { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/token/${this.$route.params.id}` },
-  //       { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.minetokenToken.logo) },
-  //       { hid: 'og:description', name: 'description', property: 'og:description', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` }
-  //       /* end */
-  //     ],
-  //     link: [
-  //       { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css' }
-  //     ]
-  //   }
-  // },
+  props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+    minetokenUser: {
+      type: Object,
+      required: true
+    },
+    minetokenExchange: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       shareModalShow: false,
       tokenWidget: `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
-      minetokenToken: {
-        contract_address: true // v-fi 会取反
-      },
-      minetokenUser: Object.create(null),
-      minetokenExchange: Object.create(null),
       resourcesSocialss: [],
       resourcesWebsites: [],
       showTokenSetting: false,
@@ -389,7 +372,6 @@ export default {
     }
   },
   created() {
-    this.minetokenId(this.$route.params.id)
     this.minetokenGetResources(this.$route.params.id)
   },
   mounted() {
@@ -397,22 +379,6 @@ export default {
     if (this.isLogined) this.getUserBalance()
   },
   methods: {
-    async minetokenId(id) {
-      await this.$API
-        .minetokenId(id)
-        .then(res => {
-          if (res.code === 0) {
-            this.minetokenToken = res.data.token || Object.create(null)
-            this.minetokenUser = res.data.user || Object.create(null)
-            this.minetokenExchange = res.data.exchange || Object.create(null)
-          } else {
-            this.$message.success(res.message)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     async minetokenGetResources(id) {
       await this.$API
         .minetokenGetResources(id)

@@ -953,20 +953,9 @@ export default {
       article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this
       try {
-        const { author, hash } = article
+        const { author } = article
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const signature = null
-        // 检测是不是钱包登录（如Github，微信登录不是钱包，不能签名）
-        // if (this.currentUserInfo.idProvider === 'MetaMask') {
-        //   console.info('You are using metamask')
-        //   signature = await getSignatureForPublish(hash)
-        //   const [publicKey] = await window.web3.eth.getAccounts()
-        //   signature = Object.assign(signature, { publicKey })
-        // } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        //   signature = await this.getSignatureOfArticle({ author, hash })
-        // }
-        // console.info(`signature in component: ${JSON.stringify(signature)}`)
-        // 取消钱包签名, 暂注释后面再彻底删除 end
         const response = await this.$API.publishArticle({ article, signature })
         if (response.code !== 0) throw new Error(response.message)
 
@@ -1038,21 +1027,10 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
-      const { author, hash } = article
+      const { author } = article
       const { failed, success } = this
       const signature = null
       try {
-        // 取消钱包签名, 暂注释后面再彻底删除 start
-        // refactor: 对 VNT 的处理弄在了.invalidId()
-        // if (this.currentUserInfo.idProvider === 'MetaMask') {
-        //   signature = await getSignatureForPublish(hash)
-        //   const [publicKey] = await window.web3.eth.getAccounts()
-        //   signature = Object.assign(signature, { publicKey })
-        // } else if (!this.$publishMethods.invalidId(this.currentUserInfo.idProvider)) {
-        //   signature = await this.getSignatureOfArticle({ author, hash })
-        // }
-        // 取消钱包签名, 暂注释后面再彻底删除 end
-
         const res = await this.$API.editArticle({ article, signature })
         if (res.code === 0) {
           // 发送完成开始设置阅读权限 因为需要返回的id
@@ -1131,7 +1109,7 @@ export default {
 
       // url draft edit
       // 草稿发送
-      const draftPost = async () => {
+      const draftPost = () => {
         if (this.readauThority) {
           if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
           else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
@@ -1145,22 +1123,13 @@ export default {
         }
         // 发布文章
         this.fullscreenLoading = true
-        let hash = ''
-        try {
-          const res = await this.sendPost({ title, author, content })
-          if (!res) throw new Error('not res')
-          hash = res.hash
-        } catch (error) {
-          console.log(error)
-          this.fullscreenLoading = false // remove full loading
-          return
-        }
+
+        const data = { title, author, content }
         // this.fullscreenLoading = false // remove full loading
-        // console.log('sendPost result :', hash)
         this.publishArticle({
           author,
           title,
-          hash,
+          data,
           fissionFactor,
           cover,
           isOriginal,
@@ -1168,7 +1137,7 @@ export default {
         })
       }
       // 编辑发送
-      const editPost = async () => {
+      const editPost = () => {
         if (this.readauThority) {
           if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
           else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
@@ -1182,23 +1151,12 @@ export default {
         }
 
         this.fullscreenLoading = true
-        let hash = ''
-        try {
-          // 编辑文章
-          const res = await this.sendPost({ title, author, content })
-          if (!res) throw new Error('not res')
-          hash = res.hash
-        } catch (error) {
-          console.log(error)
-          this.fullscreenLoading = false // remove full loading
-          return
-        }
-        // this.fullscreenLoading = false // remove full loading
+        const data = { title, author, content }
         this.editArticle({
           signId: this.signId,
           author,
           title,
-          hash,
+          data,
           fissionFactor,
           signature: this.signature,
           cover,

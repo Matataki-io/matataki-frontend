@@ -83,7 +83,7 @@ export default {
         params: {
           pagesize: 10,
           filter: 3,
-          sort: 'popular-desc'
+          sort: 'time-desc'
           // extra: 'short_content' // 好像接口没有提供这个功能
         },
         autoRequestTime: 0,
