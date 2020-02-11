@@ -88,7 +88,7 @@
                     持有 {{ needTokenAmount }}
                     <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
                       <avatar :size="'16px'" :src="needTokenLogo" class="avatar" />
-                      {{ needTokenSymbol }}
+                      {{ needTokenSymbol }}（{{ needTokenName }}）
                     </router-link>
                   </div>
                   <!-- 不显示 - 号 -->
@@ -743,10 +743,16 @@ export default {
         return this.article.tokens[0].id
       } else return -1
     },
-    // 需要多少Fan票名称
+    // 需要多少Fan票代号
     needTokenSymbol() {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
+      } else return ''
+    },
+    // 需要多少Fan票名称
+    needTokenName() {
+      if (this.article.tokens.length !== 0) {
+        return this.article.tokens[0].name
       } else return ''
     },
     // 需要多少Fan票LOGO
