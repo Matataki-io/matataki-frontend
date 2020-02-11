@@ -184,7 +184,8 @@ export default {
       } else if (type === "Telegram") {
         this.telegramLogin();
       } else if (type === "Twitter") {
-        this.$message.warning('这个功能还在开发哦~');
+        // this.$message.warning('这个功能还在开发哦~');
+        this.twitterLogin();
       } else await this.signInx(type);
     },
     async signInx(type) {
@@ -246,6 +247,10 @@ export default {
     async telegramLogin() {
       this.$store.commit('setLoginModal', false)
       this.$router.push({ name: 'login-telegram', query: { from: 'login' } })
+    },
+    async twitterLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-twitter', query: { from: 'login' } })
     },
     // 登录提交
     submitLoginForm() {
