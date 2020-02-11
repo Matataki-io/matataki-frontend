@@ -63,36 +63,53 @@
           </div>
           <div class="lock-info">
             <h3 class="lock-info-title">
-              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}本文` }}
+              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}全文` }}
             </h3>
-            <h5 v-if="isPriceArticle && !hasPaied" class="lock-info-subtitle">
-              购买后即可解锁全部精彩内容
+            <h5 class="lock-info-subtitle">
+              {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
+              <el-tooltip class="item" effect="dark" content="满足全部条件后即可阅读全文。" placement="top-start">
+                <svg-icon icon-class="anser" class="prompt-svg" />
+              </el-tooltip>
             </h5>
             <p v-if="!isMe(article.uid)" class="lock-info-des">
               <ul>
-                <li v-if="isPriceArticle">
-                  价格：{{ getArticlePrice }} CNY
+                <li v-if="isPriceArticle" class="fl">
+                  <div class="fl price">
+                    支付 {{ getArticlePrice }}
+                    <svg-icon icon-class="currency" class="avatar" />
+                    CNY
+                  </div>
+                  <el-tooltip class="item" effect="dark" content="支付解锁的文章可在“购买记录”中永久查看。" placement="left">
+                    <svg-icon icon-class="anser" />
+                  </el-tooltip>
                 </li>
-                <li v-if="isTokenArticle">
-                  条件：持有 {{ needTokenAmount }} {{ needTokenSymbol }} 以上的Fan票
+                <li v-if="isTokenArticle" class="fl">
+                  <div class="fl price">
+                    持有 {{ needTokenAmount }}
+                    <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
+                      <avatar :size="'16px'" :src="needTokenLogo" class="avatar" />
+                      {{ needTokenSymbol }}（{{ needTokenName }}）
+                    </router-link>
+                  </div>
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? '还差' : '目前拥有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+                  <span> {{ !tokenHasPaied ? '还需持有' : '已持有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
                 </li>
               </ul>
-              <span v-if="hasPaied" class="lock-pay-text">已{{ unlockText }}</span>
             </p>
             <p v-else class="lock-info-des">
               自己发布的文章
             </p>
             <div v-if="!hasPaied" class="lock-bottom">
               <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
-              <el-button
-                @click="wxpayArticle"
-                type="primary"
-                size="small"
-              >
-                一键{{ unlockText }}
-              </el-button>
+              <el-tooltip class="item" effect="dark" content="点击后支付即可一键解锁此文内容" placement="top-end">
+                <el-button
+                  @click="wxpayArticle"
+                  type="primary"
+                  size="small"
+                >
+                  一键{{ unlockText }}
+                </el-button>
+              </el-tooltip>
             </div>
           </div>
         </div>
@@ -495,6 +512,7 @@ import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
 import { getCookie } from '@/utils/cookie'
+import avatar from '@/components/avatar/index.vue'
 
 import userPagination from '@/components/user/user_pagination.vue'
 
@@ -523,7 +541,8 @@ export default {
     // FeedbackModal,
     commentInput,
     OrderModal,
-    userPagination
+    userPagination,
+    avatar
   },
   data() {
     return {
@@ -720,10 +739,28 @@ export default {
         return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
       } else return 0
     },
-    // 需要多少Fan票名称
+    // Fan票ID
+    needTokenId() {
+      if (this.article.tokens.length !== 0) {
+        return this.article.tokens[0].id
+      } else return -1
+    },
+    // 需要多少Fan票代号
     needTokenSymbol() {
       if (this.article.tokens.length !== 0) {
         return this.article.tokens[0].symbol
+      } else return ''
+    },
+    // 需要多少Fan票名称
+    needTokenName() {
+      if (this.article.tokens.length !== 0) {
+        return this.article.tokens[0].name
+      } else return ''
+    },
+    // 需要多少Fan票LOGO
+    needTokenLogo() {
+      if (this.article.tokens.length !== 0) {
+        return this.$API.getImg(this.article.tokens[0].logo)
       } else return ''
     },
     limitValue() {
