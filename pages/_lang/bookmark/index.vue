@@ -1,67 +1,70 @@
 
 <template>
-  <userLayout>
+  <userLayout :needFrame="false">
     <template slot="main">
-      <h2 class="tag-title">
-        文章
-      </h2>
-      <div slot="list" v-loading="loading">
-        <no-content-prompt :list="pull.list">
-          <articleCardListNew
-            v-for="(item, index) in pull.list"
-            :key="index"
-            :card="item"
-          />
-          <user-pagination
-            v-show="!loading"
-            :current-page="currentPage"
-            :params="pull.params"
-            :api-url="pull.apiUrl"
-            :page-size="pull.params.pagesize"
-            :total="total"
-            @paginationData="paginationData"
-            @togglePage="togglePage"
-            class="pagination"
-          />
-        </no-content-prompt>
+      <div class="bookmark-container">
+        <h2 class="tag-title">
+          文章
+        </h2>
+        <div slot="list" v-loading="loading">
+          <no-content-prompt :list="pull.list">
+            <articleCardListNew
+              v-for="(item, index) in pull.list"
+              :key="index"
+              :card="item"
+            />
+            <user-pagination
+              v-show="!loading"
+              :current-page="currentPage"
+              :params="pull.params"
+              :api-url="pull.apiUrl"
+              :page-size="pull.params.pagesize"
+              :total="total"
+              @paginationData="paginationData"
+              @togglePage="togglePage"
+              class="pagination"
+            />
+          </no-content-prompt>
+        </div>
       </div>
-
-      <h2 class="tag-title">
-        分享
-      </h2>
-      <div slot="list" v-loading="loadingShare">
-        <no-content-prompt :list="pullShare.list">
-          <!-- 暂时处理  by xiaotian -->
-          <!-- 下次功能调整重构 -->
-          <router-link
-            :to="{name: 'share-id', params: {id: item.id}}"
-            v-for="(item, index) in pullShare.list"
-            :key="index"
-            target="_blank"
-            class="card-bookmark"
-          >
-            <p>{{ item.short_content }}</p>
-            <div>
-              <span>
-                <svg-icon class="icon" icon-class="eye" />{{ item.read }}
-              </span>
-              <span>
-                <svg-icon class="icon" icon-class="like_thin" />{{ item.likes }}
-              </span>
-            </div>
-          </router-link>
-          <user-pagination
-            v-show="!loadingShare"
-            :current-page="currentPageShare"
-            :params="pullShare.params"
-            :api-url="pullShare.apiUrl"
-            :page-size="pullShare.params.pagesize"
-            :total="totalShare"
-            @paginationData="paginationDataShare"
-            @togglePage="togglePageShare"
-            class="pagination"
-          />
-        </no-content-prompt>
+      <div class="bookmark-container">
+        <h2 class="tag-title">
+          分享
+        </h2>
+        <div slot="list" v-loading="loadingShare">
+          <no-content-prompt :list="pullShare.list">
+            <!-- 暂时处理  by xiaotian -->
+            <!-- 下次功能调整重构 -->
+            <router-link
+              :to="{name: 'share-id', params: {id: item.id}}"
+              v-for="(item, index) in pullShare.list"
+              :key="index"
+              target="_blank"
+              class="card-bookmark"
+            >
+              <p>{{ item.short_content }}</p>
+              <div>
+                <span>
+                  <svg-icon class="icon" icon-class="eye" />{{ item.read }}
+                </span>
+                <span>
+                  <svg-icon class="icon" icon-class="like_thin" />{{ item.likes }}
+                </span>
+              </div>
+            </router-link>
+            <user-pagination
+              v-show="!loadingShare"
+              :current-page="currentPageShare"
+              :params="pullShare.params"
+              :api-url="pullShare.apiUrl"
+              :page-size="pullShare.params.pagesize"
+              :total="totalShare"
+              @paginationData="paginationDataShare"
+              @togglePage="togglePageShare"
+              class="pagination"
+            />
+          </no-content-prompt>
+        </div>
       </div>
     </template>
     <template slot="nav">
@@ -144,10 +147,13 @@ export default {
   border-bottom: 1px solid #efefef;
   p {
     color: #333;
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 1.5;
     font-weight: bold;
     word-break: break-all;
     white-space: pre-wrap;
+    padding: 0;
+    margin: 0;
   }
   div {
     margin-top: 10px;
@@ -160,6 +166,14 @@ export default {
       margin-right: 2px;
     }
   }
+}
+
+.bookmark-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 </style>
 
