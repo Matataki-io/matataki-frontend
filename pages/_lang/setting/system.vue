@@ -12,6 +12,11 @@
           active-color="#542DE0"
         />
       </div>
+      <div class="list">
+        <el-button @click="clearCache" type="danger" icon="el-icon-delete">
+          一键清除缓存
+        </el-button>
+      </div>
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -23,6 +28,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
+import store from '@/utils/store.js'
 
 export default {
   components: {
@@ -68,6 +74,28 @@ export default {
         console.log(`转让状态错误${error}`)
         this.$message.error(this.$t('error.fail'))
       }
+    },
+    clearCache() {
+      this.$confirm('清除浏览器缓存, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // TODO: 这里需要清除所有cookie
+        this.$utils.delCookie('ACCESS_TOKEN')
+        this.$utils.delCookie('idProvider')
+        store.clearAll()
+        sessionStorage.clear()
+        this.$message({
+          type: 'success',
+          message: '清除成功!'
+        })
+        this.$router.push({ name: 'index' })
+        setTimeout(() => {
+          this.$userMsgChannel.postMessage('logout')
+          window.location.reload()
+        }, 1000)
+      }).catch(() => { })
     }
   }
 }
