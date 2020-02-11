@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="article-title">
-            <h3 v-clampy="2" v-html="xssTitle" class="search-res" />
+            <h3 v-html="xssTitle" class="search-res" />
           </div>
           <div class="des">
             <!-- 文章卡阅读和投资 -->
@@ -209,6 +209,10 @@ export default {
       cursor: pointer;
       margin: 0;
       padding: 0;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 }
