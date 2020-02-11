@@ -19,7 +19,8 @@ export default {
   props: {
     showPosition: {
       type: Number,
-      default: 0
+      default: 0,
+      scrollEvent: null
     }
   },
   data() {
@@ -32,10 +33,14 @@ export default {
       this.$nextTick(() => {
         if (this.showPosition !== 0) {
           this._scrollShow()
-          window.addEventListener('scroll', throttle(this._scrollShow, 300))
+          this.scrollEvent = throttle(this._scrollShow, 300)
+          window.addEventListener('scroll', this.scrollEvent)
         }
       })
     }
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.scrollEvent)
   },
   methods: {
     _scrollShow() {

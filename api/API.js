@@ -40,6 +40,8 @@ export default {
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
   },
+  // 获取文章的ipfs hash信息
+  getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
   getImg(hash) {
     return `${process.env.ssImgAddress}${hash}`
   },

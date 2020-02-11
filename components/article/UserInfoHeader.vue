@@ -16,6 +16,7 @@
           {{ article.read || 0 }}</span>
       </div>
     </div>
+    <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHide" />
     <template v-if="!isMe(article.uid)">
       <el-button :class="!info.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
         <i v-if="!info.is_follow" class="el-icon-plus" />
@@ -29,15 +30,25 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
+import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
 export default {
   components: {
-    avatar
+    avatar,
+    ipfsAll
   },
   props: {
     article: {
       type: Object,
       required: true
+    },
+    articleIpfsArray: {
+      type: Array,
+      required: true
+    },
+    isHide: {
+      type: Boolean,
+      required: false
     }
   },
   data() {
@@ -173,6 +184,7 @@ export default {
   color: @gray;
 }
 .follow {
+  margin: 0 0 0 20px;
   &.black {
     background: #333;
     color: #fff;
