@@ -34,7 +34,7 @@
               </el-dropdown>
             </div>
             <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
-            <UserInfoHeader :article="article" />
+            <UserInfoHeader :article="article" :articleIpfsArray="articleIpfsArray" :is-hide="isHideIpfsHash" />
           </header>
           <!-- ipfs -->
           <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
@@ -616,7 +616,8 @@ export default {
       tokenHasPaied: false,
       priceHasPaied: false,
       hasPaied: true,
-      lockLoading: true
+      lockLoading: true,
+      articleIpfsArray: [] // ipfs hash
     }
   },
   head() {
@@ -801,6 +802,7 @@ export default {
     this.addReadAmount()
     this.handleFocus()
     this.getCurrentProfile()
+    this.getArticleIpfs()
     // if (!document.hidden) {
     //   this.reading()
     // }
@@ -1444,6 +1446,7 @@ export default {
 
             // created
             this.getCurrentProfile(res.data.id)
+            this.getArticleIpfs(res.data.id)
             // mounted
             this.setAvatar() // 头像
             this.addReadAmount() // 增加阅读量
@@ -1510,6 +1513,19 @@ export default {
       sessionStorage.setItem('articleRef', this.$route.params.id)
       const routeUrl = this.$router.resolve({ name: 'sharehall' })
       window.open(routeUrl.href)
+    },
+    // 获取文章的ipfs hash信息
+    async getArticleIpfs(id = this.$route.params.id) {
+      await this.$API.getArticleIpfs(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.articleIpfsArray = res.data
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log('err', err)
+        })
     }
   }
 
