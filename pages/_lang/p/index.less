@@ -236,6 +236,11 @@
     span {
       color:rgba(178,178,178,1);
       margin-left: 6px;
+      &.amount {
+        color: #000000;
+        margin-left: 5;
+        min-width: 36px;
+      }
     }
     a {
       color:#542DE0;
@@ -581,9 +586,14 @@
 }
 
 .avatar {
-  margin: 0 5px;
+  &-token {
+    margin: 0 5px;
+  }
+  &-cny {
+    margin: 0 6px;
+  }
 }
 
-.prompt-svg { 
+.prompt-svg-token { 
   padding-left: 8px;
 }
