@@ -617,7 +617,8 @@ export default {
       priceHasPaied: false,
       hasPaied: true,
       lockLoading: true,
-      articleIpfsArray: [] // ipfs hash
+      articleIpfsArray: [], // ipfs hash
+      resizeEvent: null
     }
   },
   head() {
@@ -818,11 +819,12 @@ export default {
     this.renderRelatedListContent()
 
     this.setRelatedSlider()
-    window.addEventListener('resize', throttle(this.setRelatedSlider, 300))
+    this.resizeEvent = throttle(this.setRelatedSlider, 300)
+    window.addEventListener('resize', this.resizeEvent)
     window.addEventListener('popstate', this._popstateEvent)
   },
   destroyed() {
-    // window.removeEventListener('resize', throttle(this.setRelatedSlider))
+    window.removeEventListener('resize', this.resizeEvent)
     window.removeEventListener('popstate', this._popstateEvent)
 
     clearInterval(this.timer)

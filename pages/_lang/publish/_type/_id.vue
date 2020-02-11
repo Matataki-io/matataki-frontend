@@ -577,7 +577,8 @@ export default {
       loading: false, // 加载数据
       total: 0,
       editorStyle: {},
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      resizeEvent: null
     }
   },
   computed: {
@@ -668,7 +669,8 @@ export default {
 
     if (process.browser) {
       this._resizeEditor()
-      window.addEventListener('resize', throttle(this._resizeEditor), 300)
+      this.resizeEvent = throttle(this._resizeEditor, 300)
+      window.addEventListener('resize', this.resizeEvent)
     }
 
     // 判断当前
@@ -696,6 +698,9 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('beforeunload', this.unload)
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeEvent)
   },
 
   methods: {
