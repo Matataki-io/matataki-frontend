@@ -133,7 +133,7 @@ export default {
 
   .ipfs_all__description {
     padding: 0;
-    margin: 0 0 10px;
+    margin: 0;
     font-size:12px;
     color:rgba(178,178,178,1);
     line-height:17px;

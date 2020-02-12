@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div v-show="status === 'loading'" v-loading="status === 'loading'" />
+    <div v-show="status === 'loading'" v-loading="status === 'loading'" class="telegram-loading" />
     <div v-show="status === 'error'" class="telegram-error">
       <i class="el-icon-refresh" />
       <a @click="createScript" href="javascript:;">重试</a>
     </div>
     <div ref="telegram" v-show="status === 'completed'" />
     <a v-show="status === 'completed'" class="telegram-toggleaccount" href="#" target="_blank">
-      切换账号<svg-icon icon-class="share3" class="icon" />
+      切换账号教程<svg-icon icon-class="share3" class="icon" />
     </a>
   </div>
 </template>
@@ -104,6 +104,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.telegram-loading {
+  min-width: 100px;
+}
 .telegram-error {
   text-align: center;
   font-size: 16px;
