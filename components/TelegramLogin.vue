@@ -6,7 +6,7 @@
       <a @click="createScript" href="javascript:;">重试</a>
     </div>
     <div ref="telegram" v-show="status === 'completed'" />
-    <a v-show="status === 'completed'" class="telegram-toggleaccount" href="#" target="_blank">
+    <a v-show="status === 'completed'" class="telegram-toggleaccount" href="https://www.matataki.io/p/2465" target="_blank">
       切换账号教程<svg-icon icon-class="share3" class="icon" />
     </a>
   </div>
