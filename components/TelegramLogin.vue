@@ -65,7 +65,12 @@ export default {
       script.async = true
       script.src = 'https://telegram.org/js/telegram-widget.js?7'
       script.onload = () => {
-        this.status = 'completed'
+        // 因为加载tg的script需要一点时间, 所以这里延时了显示内容
+        let timer = null
+        timer = setTimeout(() => {
+          clearTimeout(timer)
+          this.status = 'completed'
+        }, 500)
       }
       script.onerror = () => {
         this.status = 'error'
