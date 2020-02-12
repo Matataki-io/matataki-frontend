@@ -29,6 +29,7 @@ import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import store from '@/utils/store.js'
+import { removeCookie, clearAllCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -81,9 +82,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // TODO: 这里需要清除所有cookie
-        this.$utils.delCookie('ACCESS_TOKEN')
-        this.$utils.delCookie('idProvider')
+        clearAllCookie()
+        // 防止没有清除干净
+        removeCookie('ACCESS_TOKEN')
+        removeCookie('idProvider')
         store.clearAll()
         sessionStorage.clear()
         this.$message({
