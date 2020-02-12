@@ -1,5 +1,15 @@
 <template>
-  <div ref="telegram" />
+  <div>
+    <div v-show="status === 'loading'" v-loading="status === 'loading'" />
+    <div v-show="status === 'error'" class="telegram-error">
+      <i class="el-icon-refresh" />
+      <a @click="createScript" href="javascript:;">重试</a>
+    </div>
+    <div ref="telegram" v-show="status === 'completed'" />
+    <a v-show="status === 'completed'" class="telegram-toggleaccount" href="#" target="_blank">
+      切换账号<svg-icon icon-class="share3" class="icon" />
+    </a>
+  </div>
 </template>
 
 <script>
@@ -35,7 +45,13 @@ export default {
       default: true
     },
     radius: {
-      type: String
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      status: '' // loading completed error
     }
   },
   mounted() {
@@ -44,9 +60,16 @@ export default {
   },
   methods: {
     createScript() {
+      this.status = 'loading'
       const script = document.createElement('script')
       script.async = true
       script.src = 'https://telegram.org/js/telegram-widget.js?7'
+      script.onload = () => {
+        this.status = 'completed'
+      }
+      script.onerror = () => {
+        this.status = 'error'
+      }
       /*
       src: '',
       'data-telegram-login': 'matataki_bot',
@@ -65,6 +88,7 @@ export default {
       } else {
         script.setAttribute('data-auth-url', this.redirectUrl)
       }
+      this.$refs.telegram.innerHTML = ''
       this.$refs.telegram.appendChild(script)
     },
     onTelegramAuth(user) {
@@ -73,3 +97,25 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.telegram-error {
+  text-align: center;
+  font-size: 16px;
+  a {
+    color: #0000EE;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.telegram-toggleaccount {
+  font-size: 14px;
+  padding: 0;
+  margin: 6px 0 0 0;
+  color: #0000EE;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+</style>
