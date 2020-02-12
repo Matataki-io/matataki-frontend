@@ -7,7 +7,7 @@
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`" target="_blank">
           <span class="UserLink AuthorInfo-name">
-            {{ article.nickname || article.username || '&nbsp;' }}
+            {{ avatarName || '&nbsp;' }}
           </span>
         </router-link>
         <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
@@ -15,8 +15,8 @@
           <svg-icon class="icon" icon-class="read" />
           {{ article.read || 0 }}</span>
       </div>
+      <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHide" />
     </div>
-    <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHide" />
     <template v-if="!isMe(article.uid)">
       <el-button :class="!info.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
         <i v-if="!info.is_follow" class="el-icon-plus" />
@@ -61,6 +61,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined', 'isMe']),
+    avatarName() {
+      // 因为内容比较宽 没有控制12字符
+      const name = this.article.nickname || this.article.username
+      return name.length > 24 ? name.slice(0, 24) + '...' : name
+    },
     followBtnText() {
       return this.info.is_follow ? this.$t('following') : this.$t('follow')
     },
@@ -142,6 +147,7 @@ export default {
 .AuthorInfo-content {
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
 .Post-Author {
   display: flex;
