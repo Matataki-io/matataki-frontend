@@ -75,8 +75,9 @@
               <ul>
                 <li v-if="isPriceArticle" class="fl">
                   <div class="fl price">
-                    支付 {{ getArticlePrice }}
-                    <svg-icon icon-class="currency" class="avatar" />
+                    支付
+                    <span class="amount">{{ getArticlePrice }}</span>
+                    <svg-icon icon-class="currency" class="avatar-cny" />
                     CNY
                   </div>
                   <el-tooltip class="item" effect="dark" content="支付解锁的文章可在“购买记录”中永久查看。" placement="left">
@@ -85,9 +86,10 @@
                 </li>
                 <li v-if="isTokenArticle" class="fl">
                   <div class="fl price">
-                    持有 {{ needTokenAmount }}
+                    持有
+                    <span class="amount">{{ needTokenAmount }}</span>
                     <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
-                      <avatar :size="'16px'" :src="needTokenLogo" class="avatar" />
+                      <avatar :size="'16px'" :src="needTokenLogo" class="avatar-token" />
                       {{ needTokenSymbol }}（{{ needTokenName }}）
                     </router-link>
                   </div>
