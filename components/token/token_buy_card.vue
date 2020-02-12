@@ -86,6 +86,9 @@ export default {
           // this.orderShow = true
           this.$store.dispatch('order/createOrder', {
             ...this.form,
+            outputToken: {
+              id: this.token.id
+            },
             type: this.type
           })
         }
