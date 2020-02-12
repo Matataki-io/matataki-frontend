@@ -8,7 +8,7 @@
               <span v-if="card && card.status === 1" class="off-shelves">
                 （{{ $t('articleCard.deleted') }}）
               </span>
-              {{ xssTitle }}
+              <span v-html="xssTitle" />
             </h3>
           </div>
           <div v-html="xssContent" class="content-text search-res" />
