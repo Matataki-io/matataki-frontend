@@ -49,6 +49,7 @@
     "qs": "^6.7.0",
     "scatterjs-core": "^2.7.18",
     "scatterjs-plugin-eosjs": "^1.5.1",
+    "store": "2.0.12",
     "vue-clipboard2": "^0.3.0",
     "vue-content-loader": "^0.2.2",
     "vue-html2canvas": "0.0.4",

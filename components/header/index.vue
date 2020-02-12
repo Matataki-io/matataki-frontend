@@ -156,6 +156,7 @@ import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
 
 import { strTrim } from '@/utils/reg'
+import store from '@/utils/store.js'
 
 export default {
   name: 'HomeHead',
@@ -295,7 +296,7 @@ export default {
       if (confirm(this.$t('warning.confirmLogout'))) {
         this.$utils.delCookie('ACCESS_TOKEN')
         this.$utils.delCookie('idProvider')
-        window.localStorage.clear()
+        store.clear()
         sessionStorage.clear()
         // this.$utils.deleteAllCookies()
         this.$router.push({
