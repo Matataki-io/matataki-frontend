@@ -300,7 +300,7 @@ export default {
       }
     },
     setAvatarImage(hash) {
-      if (hash) this.avatar = this.$API.getImg(hash)
+      if (hash) this.avatar = this.$ossProcess(hash)
     },
     // 完成上传
     doneImageUpload(res) {

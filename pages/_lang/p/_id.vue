@@ -690,11 +690,11 @@ export default {
       }
     },
     cover() {
-      if (this.article.cover) return this.$API.getImg(this.article.cover)
+      if (this.article.cover) return this.$ossProcess(this.article.cover)
       return null
     },
     avatarSrc() {
-      if (this.currentUserInfo.avatar) return this.$API.getImg(this.currentUserInfo.avatar)
+      if (this.currentUserInfo.avatar) return this.$ossProcess(this.currentUserInfo.avatar)
       return ''
     },
     isProduct() {
@@ -762,7 +762,7 @@ export default {
     // 需要多少Fan票LOGO
     needTokenLogo() {
       if (this.article.tokens.length !== 0) {
-        return this.$API.getImg(this.article.tokens[0].logo)
+        return this.$ossProcess(this.article.tokens[0].logo)
       } else return ''
     },
     limitValue() {
@@ -1170,7 +1170,7 @@ export default {
     async setAvatar() {
       await this.$API.getUser(this.article.uid).then((res) => {
         if (res.code === 0) {
-          this.avatar = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+          this.avatar = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
         } else this.$message.warning(res.message)
       }).catch(err => {
         console.log('err', err)

@@ -109,11 +109,11 @@ export default {
     cover() {
       // console.log(this.card)
       if (!this.card) return ''
-      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
+      return this.card.cover ? this.$ossProcess(this.card.cover, { h: 200 }) : ''
     },
     avatarImg() {
       if (!this.card) return ''
-      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+      return this.card.avatar ? this.$ossProcess(this.card.avatar, { h: 60 }) : ''
     },
     cardEosValue() {
       if (!this.card) return 0

@@ -49,7 +49,7 @@ export default {
       else return this.card.nickname || this.card.username
     },
     avatar() {
-      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      if (this.card.avatar) return this.$ossProcess(this.card.avatar)
       return ''
     },
     followBtnText() {

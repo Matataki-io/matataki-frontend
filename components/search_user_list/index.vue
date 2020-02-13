@@ -43,7 +43,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     avatarSrc() {
-      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      if (this.card.avatar) return this.$ossProcess(this.card.avatar)
       return ''
     },
     userTitle() {

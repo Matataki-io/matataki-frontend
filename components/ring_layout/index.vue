@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     logoSrc() {
-      return this.logo ? this.$API.getImg(this.logo) : ''
+      return this.logo ? this.$ossProcess(this.logo) : ''
     }
   },
   created() {

@@ -57,11 +57,11 @@ export default {
     },
     cover() {
       if (this.isMe(this.card.from_uid)) {
-        return this.card.to_avatar ? this.$API.getImg(this.card.to_avatar) : ''
+        return this.card.to_avatar ? this.$ossProcess(this.card.to_avatar) : ''
       } else if (this.isMe(this.card.to_uid)) {
-        return this.card.from_avatar ? this.$API.getImg(this.card.from_avatar) : ''
+        return this.card.from_avatar ? this.$ossProcess(this.card.from_avatar) : ''
       } else {
-        return this.card.from_avatar ? this.$API.getImg(this.card.from_avatar) : ''
+        return this.card.from_avatar ? this.$ossProcess(this.card.from_avatar) : ''
       }
     },
     username() {

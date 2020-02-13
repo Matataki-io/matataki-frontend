@@ -81,7 +81,7 @@ export default {
       return type + this.$utils.fromDecimal(liquidity, decimals)
     },
     cover() {
-      return this.$API.getImg(this.card.logo)
+      return this.$ossProcess(this.card.logo)
     },
     username() {
       if (this.isMe(this.card.from_uid)) {

@@ -124,7 +124,7 @@ export default {
       return moment(this.card.create_time).format('lll')
     },
     avatarSrc() {
-      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      if (this.card.avatar) return this.$ossProcess(this.card.avatar, { h: 60 })
       return ''
     }
   },

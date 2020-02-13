@@ -447,7 +447,7 @@ export default {
     },
     // 设置用户信息
     setShareUser(avatar, username) {
-      this.shareCard.avatarSrc = avatar ? this.$API.getImg(avatar) : ''
+      this.shareCard.avatarSrc = avatar ? this.$ossProcess(avatar) : ''
       this.shareCard.username = username
     },
     // 设置引用

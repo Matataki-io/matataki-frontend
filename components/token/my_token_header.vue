@@ -40,7 +40,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
-      return this.tokenData.logo ? this.$API.getImg(this.tokenData.logo) : ''
+      return this.tokenData.logo ? this.$ossProcess(this.tokenData.logo, { h: 90 }) : ''
     }
   },
   watch: {
@@ -72,7 +72,7 @@ export default {
     },
     async getAvatar() {
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$API.getImg(avatar)
+      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
     }
   }
 }

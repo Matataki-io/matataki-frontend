@@ -113,7 +113,7 @@ export default {
     },
     // cover() {
     //   if (!this.card) return ''
-    //   return this.card.cover ? this.$API.getImg(this.card.cover) : ''
+    //   return this.card.cover ? this.$ossProcess(this.card.cover) : ''
     // },
     avatarImg() {
       if (!this.card) return ''

@@ -254,7 +254,7 @@ export default {
       return moment(time).format('MMMDo HH:mm')
     },
     cover(cover) {
-      return cover ? this.$API.getImg(cover) : ''
+      return cover ? this.$ossProcess(cover) : ''
     },
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)
@@ -353,7 +353,7 @@ export default {
         .then(res => {
           if (res.code === 0) {
             // console.log(res)
-            this.form.useravatar = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+            this.form.useravatar = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
             this.form.userId = res.data.id
           } else return this.$message.warning(res.message)
         }).catch(err => {

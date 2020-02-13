@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     userAvatar() {
-      return this.$API.getImg(this.searchUsernameInfo.avatar)
+      return this.$ossProcess(this.searchUsernameInfo.avatar)
     }
   },
   watch: {
