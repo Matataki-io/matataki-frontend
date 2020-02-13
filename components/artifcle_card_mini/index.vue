@@ -2,14 +2,14 @@
   <!-- 卡片适用于 个人主页设置页 -->
   <div class="card">
     <div class="cover">
-      <img :src="cover" alt="cover" :onerror="defaultCover">
+      <img :src="cover" :onerror="defaultCover" alt="cover">
     </div>
     <h3 v-clampy="2" class="title">
       {{ card && card.title }}
     </h3>
     <p class="date">
       {{ time }}
-      <a v-if="isDraftCard" class="del" href="javascript:;" @click.stop="$emit('del', index)">
+      <a v-if="isDraftCard" @click.stop="$emit('del', index)" class="del" href="javascript:;">
         {{ $t('delete') }}
       </a>
     </p>
@@ -43,7 +43,7 @@ export default {
     cover() {
       // console.log(this.card)
       if (!this.card) return ''
-      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
+      return this.card.cover ? this.$ossProcess(this.card.cover) : ''
     },
     time() {
       if (!this.card) return ''

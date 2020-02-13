@@ -27,7 +27,7 @@ export default (src, { w, h, interlace } = {}) => {
     ossprocess += '/format,webp'
   }
 
-  return (whStatus || interlaceStatus) ? API.getImg(src).concat(ossprocess) : API.getImg(src)
+  return (whStatus || interlaceStatus || isSupportWebp) ? API.getImg(src).concat(ossprocess) : API.getImg(src)
 }
 
 // console.log(this.$ossProcess('123'))

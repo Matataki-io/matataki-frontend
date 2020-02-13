@@ -66,7 +66,7 @@ export default {
       return (amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 })
     },
     cover(cover) {
-      return cover ? this.$API.getImg(cover) : ''
+      return cover ? this.$ossProcess(cover, { h: 60 }) : ''
     },
     onSortChanged(args) {
       this.$emit('sort-changed', args)

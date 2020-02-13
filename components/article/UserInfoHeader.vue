@@ -92,7 +92,7 @@ export default {
       this.$API.getUser(id).then(res => {
         if (res.code === 0) {
           this.info.is_follow = res.data.is_follow
-          this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+          this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
         } else {
           this.$message.warning(res.message)
         }
