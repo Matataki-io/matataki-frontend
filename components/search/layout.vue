@@ -3,17 +3,17 @@
     <g-header :search-query-val="searchQueryVal" @search="search" />
     <div class="search-container">
       <div class="search-head">
-        <router-link v-for="(tag, index) in tagList" :key="index" :to="{name: tag.url, query: {q: $route.query.q}}" :class="$route.name === tag.url && 'active'">
+        <a v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'" replace>
           {{ tag.label }}
           <span>
-            {{ tag.numResults > 99 ? '99+' : tag.numResults }}
+            {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
           </span>
-        </router-link>
+        </a>
       </div>
 
       <div v-loading="loading" v-show="searchQueryValLen">
         <!-- 文章 -->
-        <template v-if="$route.name === 'search'">
+        <template v-if="searchType === 0">
           <articleCardListNew
             v-for="item in articleCardData[0].articles"
             :key="item.id"
@@ -21,51 +21,35 @@
           />
         </template>
         <!-- 分享 -->
-        <template v-if="$route.name === 'search-share'">
+        <template v-else-if="searchType === 1">
           <articleCardListNew
-            v-for="item in articleCardData[0].articles"
+            v-for="item in articleCardData[1].articles"
             :key="item.id"
             :card="item"
           />
         </template>
         <!-- Fan票 -->
-        <template v-if="$route.name === 'search-token'">
+        <template v-else-if="searchType === 2">
           <articleCardListNew
-            v-for="item in articleCardData[0].articles"
+            v-for="item in articleCardData[2].articles"
             :key="item.id"
             :card="item"
           />
         </template>
-        <div v-else-if="$route.name === 'search-user'" class="search-list">
+        <div v-else-if="searchType === 3" class="search-list">
           <!-- 用户 -->
           <searchUserList
-            v-for="item in articleCardData[0].articles"
+            v-for="item in articleCardData[3].articles"
             :key="item.id"
             :card="item"
             @updateList="updateList"
           />
         </div>
-        <!-- 商品 -->
-        <!-- <el-row v-else-if="$route.name === 'search-shop'" class="search-card">
-          <el-col
-            v-for="item in articleCardData[0].articles"
-            :key="item.id"
-            :span="8"
-          >
-            <articleCard
-              :type-index="1"
-              :card="item"
-              :is-search-card="true"
-              card-type="commodity-card"
-            />
-          </el-col>
-        </el-row> -->
-
         <div class="pagination">
           <user-pagination
             :current-page="currentPage"
-            :params="articleCardData[0].params"
-            :api-url="articleCardData[0].apiUrl"
+            :params="articleCardData[searchType].params"
+            :api-url="articleCardData[searchType].apiUrl"
             :page-size="9"
             :total="total"
             :reload="reload"
@@ -109,9 +93,40 @@ export default {
       searchQueryVal: '',
       articleCardData: [
         {
-          params: { },
-          apiUrl: this.apiUrlPath,
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchArticleList',
           articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchArticleList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchArticleList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {},
+          apiUrl: 'searchUserList',
+          articles: [],
+          count: 0,
           isAtuoRequest: false
         }
       ],
@@ -121,37 +136,31 @@ export default {
       reload: 0,
       tagList: [
         {
-          url: 'search',
-          label: this.$t('search.optionText11'),
-          numResults: 1222
+          label: this.$t('search.optionText11')
         },
         {
-          url: 'search-share',
-          label: this.$t('search.optionText12'),
-          numResults: 46
+          label: this.$t('search.optionText12')
         },
         {
-          url: 'search-token',
-          label: this.$t('search.optionText13'),
-          numResults: 7
+          label: this.$t('search.optionText13')
         },
         {
-          url: 'search-user',
-          label: this.$t('search.optionText14'),
-          numResults: 34
+          label: this.$t('search.optionText14')
         }
-      ]
+      ],
+      searchType: Number(this.$route.query.type) || 0
     }
   },
   computed: {
     searchQueryValLen() {
-      return !(this.articleCardData[0].articles.length === 0 && this.paginationDataLoaded)
+      return !(this.articleCardData[this.searchType].articles.length === 0 && this.paginationDataLoaded)
     }
   },
   created() {
+    this.query()
   },
   mounted() {
-    this.query()
+    this.getOtherResults()
   },
   methods: {
     // 搜索 修改val 和 重置page
@@ -159,7 +168,8 @@ export default {
       this.searchQueryVal = val
       this.currentPage = 1
 
-      this.articleCardData[0].params.word = this.searchQueryVal
+      this.articleCardData[this.searchType].params.word = this.searchQueryVal
+      this.getOtherResults()
 
       this.reload = Date.now()
     },
@@ -172,13 +182,12 @@ export default {
         word: this.searchQueryVal
       }
 
-      this.articleCardData[0].params = Object.assign(params, this.params)
-
-      // console.log(this.articleCardData[0].params)
+      this.articleCardData[this.searchType].params = Object.assign(params, this.params)
     },
     paginationData(res) {
-      this.articleCardData[0].articles = []
-      this.articleCardData[0].articles = res.data.list
+      this.articleCardData[this.searchType].articles = []
+      this.articleCardData[this.searchType].articles = res.data.list
+      this.articleCardData[this.searchType].count = res.data.count
       this.paginationDataLoaded = true
       this.total = res.data.count
       this.loading = false
@@ -188,13 +197,46 @@ export default {
       this.currentPage = i
       this.$router.push({
         query: {
+          type: this.searchType,
           q: strTrim(this.$route.query.q),
           page: i
         }
       })
     },
+    toggleType(type) {
+      this.currentPage = 1
+      this.searchType = type
+      this.$router.push({
+        query: {
+          type: this.searchType,
+          q: strTrim(this.$route.query.q)
+        }
+      })
+    },
     updateList() {
       this.reload = Date.now()
+    },
+    getOtherResults() {
+      const otherRoutings = this.articleCardData.filter((value, index) => index !== this.searchType)
+      for (let i = 0; i < otherRoutings.length; i++) {
+        this.getSearchDate(otherRoutings[i])
+      }
+    },
+    async getSearchDate(otherRouting) {
+      otherRouting.params.page = 1
+      otherRouting.params.pagesize = 9
+      otherRouting.params.word = this.searchQueryVal
+      const getDataFail = message => message ? console.error(message) : console.error('获取数据失败')
+
+      // 获取数据
+      try {
+        const res = await this.$API.getBackendData({ url: otherRouting.apiUrl, params: otherRouting.params }, false)
+        // console.log('结果：', otherRouting.apiUrl, res)
+        if (res.code === 0) {
+          otherRouting.articles = res.data.list
+          otherRouting.count = res.data.count
+        } else getDataFail(res.message)
+      } catch (error) { getDataFail() }
     }
   }
 }
