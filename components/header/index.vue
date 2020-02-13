@@ -285,7 +285,7 @@ export default {
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$API.getImg(avatar)
+      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
       await this.getNotificationCounters()
     },
     login() {
