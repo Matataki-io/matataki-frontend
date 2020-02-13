@@ -169,6 +169,7 @@ export default {
       this.currentPage = 1
 
       this.articleCardData[this.searchType].params.word = this.searchQueryVal
+      this.getOtherResults()
 
       this.reload = Date.now()
     },
