@@ -67,15 +67,9 @@ export default {
       return 0
     }
   },
-  watch: {
-    token(val) {
-      if (val) {
-        this.form.outputToken = val
-        if (val.id) this.getCurrentPoolSize(val.id)
-      }
-    }
-  },
   mounted() {
+    this.form.outputToken = this.token
+    if (this.token.id) this.getCurrentPoolSize(this.token.id)
   },
   methods: {
     pay() {
@@ -86,9 +80,6 @@ export default {
           // this.orderShow = true
           this.$store.dispatch('order/createOrder', {
             ...this.form,
-            outputToken: {
-              id: this.token.id
-            },
             type: this.type
           })
         }
