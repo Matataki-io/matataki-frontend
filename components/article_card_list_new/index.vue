@@ -111,13 +111,13 @@ export default {
         return xssFilter(this.card.short_content)
       } else return ''
     },
-    cover() {
-      if (!this.card) return ''
-      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
-    },
+    // cover() {
+    //   if (!this.card) return ''
+    //   return this.card.cover ? this.$API.getImg(this.card.cover) : ''
+    // },
     avatarImg() {
       if (!this.card) return ''
-      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+      return this.card.avatar ? this.$ossProcess(this.card.avatar, { h: 90 }) : ''
     },
     cardEosValue() {
       if (!this.card) return 0
