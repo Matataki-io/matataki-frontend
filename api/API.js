@@ -193,7 +193,9 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, data, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null },
+    { signId = null, author, data, title, fissionFactor, 
+      cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
+      requireToken, requireBuy },
     signature = null
   ) {
     // 账号类型
@@ -216,7 +218,8 @@ export default {
         tags,
         cc_license,
         commentPayPoint,
-        shortContent
+        shortContent,
+        requireToken, requireBuy
       },
       timeout: 30000
     })
