@@ -37,7 +37,7 @@
             <UserInfoHeader :article="article" :articleIpfsArray="articleIpfsArray" :is-hide="isHideIpfsHash" />
           </header>
           <!-- ipfs -->
-          <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" />
+          <!-- <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" /> -->
           <!-- 文章内容 -->
           <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
           <!-- 文章页脚 声明 是否原创 -->
@@ -497,7 +497,7 @@ import CommentList from '@/components/comment/List'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
 import ArticleFooter from '@/components/article/ArticleFooter'
-import articleIpfs from '@/components/article/article_ipfs'
+// import articleIpfs from '@/components/article/article_ipfs'
 import InvestModal from '@/components/modal/Invest'
 import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
@@ -536,7 +536,7 @@ export default {
     UserInfoHeader,
     ArticleInfoFooter,
     ArticleFooter,
-    articleIpfs,
+    // articleIpfs,
     articleTransfer,
     CoinBtn,
     TokenFooter,
