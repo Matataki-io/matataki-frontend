@@ -919,5 +919,9 @@ minetokenGetResources(tokenId) {
       url: '/login/telegram',
       data: data
     })
+  },
+  // --------------------------- 搜索 ------------------------------------
+  search(type, params) {
+    return request.get(`/search/${type}`, { params })
   }
 }
