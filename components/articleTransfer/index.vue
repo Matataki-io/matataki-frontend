@@ -10,18 +10,24 @@
           :placeholder="$t('p.articleTransferPlaceholder')"
           class="widget-input"
         />
-        <div v-if="resultUser" @click="continueUser" class="widget-input-user">
-          <div class="widget-input-avater">
-            <img :src="userAvatar" alt="avatar">
+        <!-- 搜索结果 -->
+        <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="widget-input-user">
+          <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
+            <avatar :src="searchUserAvatar(item.avatar)" class="widget-input-avater" />
+            <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
           </div>
-          <span>{{ searchUsernameInfo.nickname || searchUsernameInfo.username }}</span>
         </div>
+        <!-- 结果 -->
+        <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
+          <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
+          <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
+        </router-link>
         <span v-if="errorMessage" class="error-info">{{ $t('p.articleTransferNotUser') }}</span>
       </div>
       <div class="widget-footer">
         <a @click="reviewHelp" class="help" href="javascript:;">{{ $t('p.articleTransferHelp') }}</a>
         <a
-          :class="[!buttonStatus && 'gray']"
+          :class="[toUserInfoIndex === -1 && 'gray']"
           @click="transferArticle"
           class="create"
           href="javascript:;"
@@ -54,10 +60,14 @@
 
 <script>
 import debounce from 'lodash/debounce'
-import { strTrim } from '@/utils/reg'
+import { xssFilter } from '@/utils/xss'
+import avatar from '@/common/components/avatar'
 
 export default {
   name: 'ArticleTransfer',
+  components: {
+    avatar
+  },
   props: {
     value: {
       type: Boolean,
@@ -80,21 +90,12 @@ export default {
       oldWidgetModalStatus: 0,
       transferUsername: '',
       errorMessage: false, // 错误信息 默认不显示
-      resultUser: false, // 搜索结果  默认不显示
-      buttonStatus: false, // 转让按钮 默认无法点击
-      searchUsernameInfo: null, // 用户信息
-      showModal: false
-    }
-  },
-  computed: {
-    userAvatar() {
-      return this.$ossProcess(this.searchUsernameInfo.avatar)
+      showModal: false,
+      searchUserList: [], // 搜索结果
+      toUserInfoIndex: -1 // 转让的对象
     }
   },
   watch: {
-    // articleId() {
-    //   console.log('id变动 current‘s id', this.articleId)
-    // },
     showModal(val) {
       this.$emit('input', val)
     },
@@ -113,8 +114,10 @@ export default {
       this.widgetModalStatus = this.oldWidgetModalStatus
     },
     async transferArticle() {
-      if (!this.buttonStatus) return
-      const transferUsername = this.searchUsernameInfo.id
+      const toUserInfoIndex = this.toUserInfoIndex
+
+      if (toUserInfoIndex === -1) return
+      const transferUsername = this.searchUserList[toUserInfoIndex].id
       try {
         const res = await this.$backendAPI.transferOwner(
           this.from,
@@ -139,47 +142,59 @@ export default {
       this.widgetModalStatus = 0
       this.transferUsername = ''
       this.errorMessage = false
-      this.resultUser = false
-      this.buttonStatus = false
-      this.searchUsernameInfo = null
+
+      this.searchUserList = [] // 搜索结果
+      this.toUserInfoIndex = -1 // 转让的对象
     },
     async change(status) {
       this.showModal = false
       await this.$utils.sleep(300)
       !status && this.resetStatus()
     },
-    setSearchUserInfo(data) {
-      this.searchUsernameInfo = data
-    },
-    changeTransferId: debounce(async function () {
-      if (!strTrim(this.transferUsername)) {
-        this.resultUser = false
+    changeTransferId: debounce(function () {
+      const searchName = this.transferUsername.trim()
+      if (!searchName) {
         this.errorMessage = false
         return
       }
-      try {
-        // console.log(this.transferUsername)
-        const res = await this.$backendAPI.searchUsername(this.transferUsername)
-        // console.log(res)
-        if (res.status === 200 && res.data.code === 0) {
-          this.setSearchUserInfo(res.data.data)
-          this.resultUser = true
-          this.errorMessage = false
-        } else {
-          this.resultUser = false
-          this.errorMessage = true
-          this.buttonStatus = false
-        }
-      } catch (error) {
-        console.log(error)
-        this.resultUser = false
-        this.errorMessage = true
-        this.buttonStatus = false
+
+      this.toUserInfoIndex = -1
+
+      const params = {
+        word: searchName,
+        pagesize: 10
       }
+
+      this.$API.search('user', params).then(res => {
+        if (res.code === 0) {
+          this.searchUserList = res.data.list
+          if (res.data.list.length === 0) {
+            // 没有结果
+            this.errorMessage = true
+          } else {
+            // 有结果
+            this.errorMessage = false
+          }
+        } else {
+          // 失败
+          this.errorMessage = false
+          this.$message.warning(res.message)
+        }
+      }).catch(err => {
+        // 出错
+        console.log(err)
+        this.searchUserList = []
+        this.errorMessage = false
+      })
     }, 300),
-    continueUser() {
-      this.resultUser = false
-      this.buttonStatus = true
+    continueUser(i) {
+      this.toUserInfoIndex = i
+    },
+    searchUserAvatar(src) {
+      return src ? this.$ossProcess(src, { h: 60 }) : ''
+    },
+    searchUserTitle(html) {
+      return html ? xssFilter(html) : ''
     }
   }
 }
