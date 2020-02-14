@@ -466,7 +466,6 @@
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
-import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { strTrim } from '@/utils/reg'
 
@@ -504,7 +503,6 @@ export default {
       screenWidth: 1000,
       fissionNum: 2,
       cover: '',
-      signature: '',
       signId: '',
       id: '',
       isOriginal: false, // 是否原创
@@ -537,7 +535,7 @@ export default {
       readSelectOptions: [], // 阅读tokenlist
       readSelectValue: '', // 阅读tokenlist show value
       paymentTokenVisible: false, // 支付可见
-      paymentToken: 1, // 支付token
+      paymentToken: 0, // 支付token
       paymentSelectOptions: [
         {
           id: -1, // 暂时前端写死, 不能0否则判断要修改
@@ -607,6 +605,32 @@ export default {
       const chinese = convertLicenseToChinese(license)
       const url = `https://creativecommons.org/licenses/${license.toLowerCase()}/4.0/deed.zh`
       return { license, chinese, url }
+    },
+    requireToken() {
+      let tokenArr = []
+      if (this.readauThority) {
+        // 持通证
+        // 获取当前选择的通证种
+        const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [{
+          tokenId: token[0].id,
+          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+        }]
+      }
+      return tokenArr
+    },
+    requireBuy() {
+      const { type } = this.$route.params
+      if (this.paymentToken === 0) return null
+      if (type === 'edit' && !this.paymentTokenVisible) {
+        return null
+      } else {
+        const data = {
+          price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+        }
+        return data
+      }
     }
   },
   watch: {
@@ -954,14 +978,15 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
+      article.requireBuy = this.requireBuy
+      article.requireToken = this.requireToken
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this
       try {
         const { author } = article
         // 取消钱包签名, 暂注释后面再彻底删除 start
-        const signature = null
-        const response = await this.$API.publishArticle({ article, signature })
+        const response = await this.$API.publishArticle({ article })
         if (response.code !== 0) throw new Error(response.message)
 
         // 关联文章  草稿发布时发布引用的文章
@@ -1032,11 +1057,12 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.setArticleTag(this.tagCards)
+      article.requireBuy = this.requireBuy
+      article.requireToken = this.requireToken
       const { author } = article
       const { failed, success } = this
-      const signature = null
       try {
-        const res = await this.$API.editArticle({ article, signature })
+        const res = await this.$API.editArticle({ article })
         if (res.code === 0) {
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
@@ -1163,7 +1189,6 @@ export default {
           title,
           data,
           fissionFactor,
-          signature: this.signature,
           cover,
           isOriginal,
           shortContent: this.readSummary

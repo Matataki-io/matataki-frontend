@@ -26,9 +26,13 @@ export const paginationUrl = {
   // 用户积分日志
   userPoint: 'user/points',
   // 搜索文章
-  searchArticleList: 'posts/search',
+  searchArticleList: 'search/post',
   // 搜索用户
-  searchUserList: 'users/search',
+  searchUserList: 'search/user',
+  // 搜索分享
+  searchShareList: 'search/share',
+  // 搜索Fan票
+  searchTokenList: 'search/token',
   // 已经关注用户的文章
   followedPosts: 'posts/followedPosts',
   // 邀请列表，没有统计数据
