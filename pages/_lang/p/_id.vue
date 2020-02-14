@@ -1562,7 +1562,7 @@ export default {
           if (res.code === 0) {
             this.articleIpfsArray = res.data
           } else {
-            this.$message.error(res.message)
+            console.log(res.message)
           }
         }).catch(err => {
           console.log('err', err)
