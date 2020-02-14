@@ -3,7 +3,7 @@
  */
 import BigNumber from 'bignumber.js'
 import { getToken, setToken, removeToken } from '../utils/auth'
-import { getSignatureForLogin, getSignatureForPublish } from '@/api/eth'
+import { getSignatureForLogin } from '@/api/eth'
 import API from '@/api/API'
 
 export const state = () => ({
@@ -69,16 +69,6 @@ export const actions = {
     await dispatch('fetchAccount')
     const { account } = state
     switch (data.mode) {
-      case 'Article': {
-        const [author, hash] = data.rawSignData
-        const signature = await getSignatureForPublish(hash)
-        return {
-          publicKey: account,
-          signature: signature.signature,
-          msgParams: signature.msgParams,
-          username: account.slice(-12)
-        }
-      }
       case 'Login': {
         return {
           publicKey: account,

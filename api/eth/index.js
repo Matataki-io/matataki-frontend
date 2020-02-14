@@ -83,29 +83,6 @@ async function getSignature(msgParams = {
   return signature
 }
 
-async function getSignatureForPublish(hash) {
-  const message = {
-    time: new Date().getTime(),
-    hash: hash
-  }
-  const msgParams = {
-    types: {
-      EIP712Domain,
-      Article: [
-        { name: 'hash', type: 'string' },
-        { name: 'time', type: 'uint256' }
-      ]
-    },
-    primaryType: 'Article',
-    domain: {
-      name: 'Matataki 瞬',
-      version: '1'
-    },
-    message
-  }
-  const signature = await getSignature(msgParams)
-  return { signature, msgParams }
-}
 // type Login || Bind
 async function getSignatureForLogin(type = 'Login') {
   const netId = await fetchId()
@@ -150,4 +127,4 @@ async function getSignatureForLogin(type = 'Login') {
   return { signature, msgParams }
 }
 
-export { connect, getSignatureForPublish, getSignatureForLogin }
+export { connect, getSignatureForLogin }

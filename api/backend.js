@@ -71,38 +71,6 @@ const API = {
     }
     return axiosforApiServer(config)
   },
-  // 迁移到 API
-  // async sendArticle(
-  //   url,
-  //   { signId = null, author, hash, title, fissionFactor, cover, isOriginal, tags },
-  //   signature = null
-  // ) {
-  //   return this.accessBackend({
-  //     method: 'POST',
-  //     url,
-  //     data: {
-  //       author,
-  //       cover,
-  //       fissionFactor,
-  //       hash,
-  //       platform: 'need',
-  //       publickey: signature ? signature.publicKey : null,
-  //       sign: signature ? signature.signature : null,
-  //       signId,
-  //       title,
-  //       is_original: isOriginal,
-  //       tags
-  //     }
-  //   })
-  // },
-  // async publishArticle({ article, signature }) {
-  //   return this.sendArticle('/post/publish', article, signature)
-  // },
-  // async editArticle({ article, signature }) {
-  //   console.log(article, signature)
-
-  //   return this.sendArticle('/post/edit', article, signature)
-  // },
   async reportOrder(order) {
     const data = {
       ...order,

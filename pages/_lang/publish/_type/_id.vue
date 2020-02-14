@@ -466,7 +466,6 @@
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
-import { getSignatureForPublish } from '@/api/eth'
 import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { strTrim } from '@/utils/reg'
 
@@ -504,7 +503,6 @@ export default {
       screenWidth: 1000,
       fissionNum: 2,
       cover: '',
-      signature: '',
       signId: '',
       id: '',
       isOriginal: false, // 是否原创
@@ -983,8 +981,7 @@ export default {
       try {
         const { author } = article
         // 取消钱包签名, 暂注释后面再彻底删除 start
-        const signature = null
-        const response = await this.$API.publishArticle({ article, signature })
+        const response = await this.$API.publishArticle({ article })
         if (response.code !== 0) throw new Error(response.message)
 
         // 关联文章  草稿发布时发布引用的文章
@@ -1059,9 +1056,8 @@ export default {
       article.requireToken = this.requireToken
       const { author } = article
       const { failed, success } = this
-      const signature = null
       try {
-        const res = await this.$API.editArticle({ article, signature })
+        const res = await this.$API.editArticle({ article })
         if (res.code === 0) {
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
@@ -1188,7 +1184,6 @@ export default {
           title,
           data,
           fissionFactor,
-          signature: this.signature,
           cover,
           isOriginal,
           shortContent: this.readSummary
