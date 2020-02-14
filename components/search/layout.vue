@@ -2,13 +2,13 @@
   <div class="search">
     <g-header :search-query-val="searchQueryVal" @search="search" />
     <div class="search-container">
-      <div class="search-head">
-        <a v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'" replace>
+      <div class="search-head fl">
+        <p v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'" replace>
           {{ tag.label }}
           <span>
             {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
           </span>
-        </a>
+        </p>
       </div>
 
       <div v-loading="loading" v-show="searchQueryValLen">
@@ -22,15 +22,18 @@
         </template>
         <!-- 分享 -->
         <template v-else-if="searchType === 1">
-          <articleCardListNew
-            v-for="item in articleCardData[1].articles"
-            :key="item.id"
+          <shareCard
+            v-for="(item, index) in articleCardData[1].articles"
+            :key="index"
             :card="item"
+            :blank="false"
+            @refClick="pushShare"
+            class="share-card"
           />
         </template>
         <!-- Fan票 -->
         <template v-else-if="searchType === 2">
-          <articleCardListNew
+          <tokenCard
             v-for="item in articleCardData[2].articles"
             :key="item.id"
             :card="item"
@@ -70,22 +73,16 @@ import { strTrim } from '@/utils/reg'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import searchUserList from '@/components/search_user_list/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
+import shareCard from '@/components/share_card/index.vue'
+import tokenCard from '@/components/token_card/search_token.vue'
 
 export default {
   components: {
     articleCardListNew,
     searchUserList,
-    userPagination
-  },
-  props: {
-    params: {
-      type: Object,
-      required: true
-    },
-    apiUrlPath: {
-      type: String,
-      required: true
-    }
+    userPagination,
+    shareCard,
+    tokenCard
   },
   data() {
     return {
@@ -107,7 +104,7 @@ export default {
             channel: 1,
             type: 'post'
           },
-          apiUrl: 'searchArticleList',
+          apiUrl: 'searchShareList',
           articles: [],
           count: 0,
           isAtuoRequest: false
@@ -117,7 +114,7 @@ export default {
             channel: 1,
             type: 'post'
           },
-          apiUrl: 'searchArticleList',
+          apiUrl: 'searchTokenList',
           articles: [],
           count: 0,
           isAtuoRequest: false
@@ -182,7 +179,7 @@ export default {
         word: this.searchQueryVal
       }
 
-      this.articleCardData[this.searchType].params = Object.assign(params, this.params)
+      this.articleCardData[this.searchType].params = Object.assign(params, this.articleCardData[this.searchType].params)
     },
     paginationData(res) {
       this.articleCardData[this.searchType].articles = []
@@ -237,6 +234,12 @@ export default {
           otherRouting.count = res.data.count
         } else getDataFail(res.message)
       } catch (error) { getDataFail() }
+    },
+    /** 分享引用 */
+    pushShare(card) {
+      // 优化体验, 大厅取这个key
+      sessionStorage.setItem('shareRef', card.id)
+      this.$router.push({ name: 'sharehall' })
     }
   }
 }

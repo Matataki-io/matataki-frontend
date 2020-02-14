@@ -5,12 +5,13 @@
 .search-head {
   margin: 40px 0 20px;
   display: flex;
-  a {
+  p {
     color: rgba(178, 178, 178, 1);
     font-size: 20px;
     font-weight: 600;
     line-height: 28px;
-    margin-right: 5px;
+    margin: 0 5px 0 0;
+    cursor: pointer;
     &.active {
       color: #000;
     }
@@ -62,5 +63,13 @@
   li a {
     padding: 0 12px;
     color: #606266;
+  }
+}
+
+.share-card {
+  margin-top: 20px;
+
+  &:nth-child(1) {
+    margin-top: 0;
   }
 }
