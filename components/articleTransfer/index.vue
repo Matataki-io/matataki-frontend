@@ -166,16 +166,25 @@ export default {
       }
 
       this.$API.search('user', params).then(res => {
-        if (res.code === 0 && res.data.list.length !== 0) {
+        if (res.code === 0) {
           this.searchUserList = res.data.list
-          this.errorMessage = false
+          if (res.data.list.length === 0) {
+            // 没有结果
+            this.errorMessage = true
+          } else {
+            // 有结果
+            this.errorMessage = false
+          }
         } else {
-          throw new Error('not result')
+          // 失败
+          this.errorMessage = false
+          this.$message.warning(res.message)
         }
       }).catch(err => {
+        // 出错
         console.log(err)
         this.searchUserList = []
-        this.errorMessage = true
+        this.errorMessage = false
       })
     }, 300),
     continueUser(i) {

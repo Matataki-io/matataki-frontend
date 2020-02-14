@@ -386,13 +386,18 @@ export default {
       }
 
       this.$API.search('user', params).then(res => {
-        if (res.code === 0 && res.data.list.length !== 0) {
+        if (res.code === 0) {
           this.searchUserList = res.data.list
+          if (res.data.list.length === 0) {
+            // 没有结果
+            this.$message.warning('没有搜索结果')
+          }
         } else {
+          // 失败
           this.$message.warning(res.message)
-          this.searchUserList = []
         }
       }).catch(err => {
+        // 出错
         console.log(err)
         this.searchUserList = []
       }).finally(() => {
