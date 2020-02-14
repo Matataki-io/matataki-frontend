@@ -84,16 +84,6 @@ export default {
     shareCard,
     tokenCard
   },
-  props: {
-    params: {
-      type: Object,
-      required: true
-    },
-    apiUrlPath: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
       paginationDataLoaded: false,
@@ -189,7 +179,7 @@ export default {
         word: this.searchQueryVal
       }
 
-      this.articleCardData[this.searchType].params = Object.assign(params, this.params)
+      this.articleCardData[this.searchType].params = Object.assign(params, this.articleCardData[this.searchType].params)
     },
     paginationData(res) {
       this.articleCardData[this.searchType].articles = []
