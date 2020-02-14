@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     avatarSrc() {
-      if (this.avatar) return this.$API.getImg(this.avatar)
+      if (this.avatar) return this.$ossProcess(this.avatar, { h: 90 })
       return ''
     },
     timeFormat() {

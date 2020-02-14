@@ -217,7 +217,7 @@
       margin: 4px 0;
     }
     &-subtitle {
-      font-size: 14px;
+      font-size: 16px;
       color: #B2B2B2;
       padding: 0;
       margin: 8px 0;
@@ -225,7 +225,7 @@
     }
   }
   &-info-des {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     color: #000000;
     padding: 0;
@@ -236,6 +236,17 @@
     span {
       color:rgba(178,178,178,1);
       margin-left: 6px;
+      &.amount {
+        color: #000000;
+        margin-left: 5;
+        min-width: 36px;
+      }
+    }
+    a {
+      color:#542DE0;
+    }
+    .price {
+      flex: 1;
     }
   }
   &-bottom {
@@ -257,6 +268,7 @@
     list-style-type: none;
     padding: 0;
     margin: 10px 0 0 0;
+    width: 100%;
     li {
       margin-bottom: 10px;
     }
@@ -571,4 +583,17 @@
 }
 .wrap-open {
   white-space: pre-wrap;
+}
+
+.avatar {
+  &-token {
+    margin: 0 5px;
+  }
+  &-cny {
+    margin: 0 6px;
+  }
+}
+
+.prompt-svg-token { 
+  padding-left: 8px;
 }

@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     cover(src) {
-      return src ? this.$API.getImg(src) : ''
+      return src ? this.$ossProcess(src, { h: 390 }) : ''
     },
     swipeChange(i) {
       this.swipeIndex = i

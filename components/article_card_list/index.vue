@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="article-title">
-            <h3 v-clampy="2" v-html="xssTitle" class="search-res" />
+            <h3 v-html="xssTitle" class="search-res" />
           </div>
           <div class="des">
             <!-- 文章卡阅读和投资 -->
@@ -109,11 +109,11 @@ export default {
     cover() {
       // console.log(this.card)
       if (!this.card) return ''
-      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
+      return this.card.cover ? this.$ossProcess(this.card.cover, { h: 200 }) : ''
     },
     avatarImg() {
       if (!this.card) return ''
-      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+      return this.card.avatar ? this.$ossProcess(this.card.avatar, { h: 60 }) : ''
     },
     cardEosValue() {
       if (!this.card) return 0
@@ -209,6 +209,10 @@ export default {
       cursor: pointer;
       margin: 0;
       padding: 0;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 }

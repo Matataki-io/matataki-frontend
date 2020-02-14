@@ -116,6 +116,10 @@ export const xssFilter = html => {
       tag: 'blockquote',
       attributes: ['style']
     },
+    {
+      tag: 'em',
+      attributes: ['style']
+    },
   ]
 
   for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
@@ -127,7 +131,10 @@ export const xssFilter = html => {
       console.log(`Tag 不支持的标签属性，请联系客服：${tag}, ${html}, ${options}`)
     },
     onIgnoreTagAttr(tag, name, value, isWhiteAttr) {
-      console.log(`Attr 不支持的标签属性，请联系客服：${tag}, ${name}, ${value}`)
+      // 过滤输出data-自定义属性
+      if (!(/data-.*?/.test(name))) {
+        console.log(`Attr 不支持的标签属性，请联系客服：${tag}, ${name}, ${value}`)
+      }
     },
     // > 放过md引用
     escapeHtml(html) {

@@ -315,31 +315,31 @@ export default {
       userReviews: [
         {
           id: 82,
-          avatar: this.$API.getImg('/avatar/2019/09/06/b4b75ec1f3ab19c74aab668579535848.jpeg'),
+          avatar: this.$ossProcess('/avatar/2019/09/06/b4b75ec1f3ab19c74aab668579535848.jpeg'),
           name: 'Ponge',
           content: '优美流畅的UI，方便易用的编辑方式（支持Markdown）是Matataki最吸引我的两个地方。这里没有404，这里没有敏感词，但是这里有无限的可能。粉丝经济、电商……不知道未来Matataki会走向何方，但是每一个“瞬”间都值得“留链”。'
         },
         {
           id: 967,
-          avatar: this.$API.getImg('/avatar/2019/11/15/ceac57a33b012302d637f8d9f2927d3d.jpeg'),
+          avatar: this.$ossProcess('/avatar/2019/11/15/ceac57a33b012302d637f8d9f2927d3d.jpeg'),
           name: '加菲众',
           content: '迄今为止，Matataki是内容价值领域最易用直观的产品。小岛和他的团队已经寻得了内容通证化的最优路径。'
         },
         {
           id: 176,
-          avatar: this.$API.getImg('/avatar/2019/08/24/12526397d587c80fcca7f58924d1cc33.png'),
+          avatar: this.$ossProcess('/avatar/2019/08/24/12526397d587c80fcca7f58924d1cc33.png'),
           name: '筷子手',
           content: '用区块链把读者和作者更加紧密地联系起来，这是一个自由写作的平台。山海皆升平，偏偏爱重庆，关注「筷子手」，带你了解最地道的重庆。'
         },
         {
           id: 989,
-          avatar: this.$API.getImg('/avatar/2019/11/17/d1c06bec2210f293fa1a8a0576a54efd.jpg'),
+          avatar: this.$ossProcess('/avatar/2019/11/17/d1c06bec2210f293fa1a8a0576a54efd.jpg'),
           name: 'udspj',
           content: '程序员日常漫画做了很多年，虽然已经完成出本的愿望（我没有跟QB交易），但出本上瘾正在企划2本新刊，身在11区也能通过matataki发行阿宅币在国内贩售新的漫画内容真是太棒了~~~'
         },
         {
           id: 775,
-          avatar: this.$API.getImg('/avatar/2019/12/14/51f801a26860752f34dc233e256e03e5.png'),
+          avatar: this.$ossProcess('/avatar/2019/12/14/51f801a26860752f34dc233e256e03e5.png'),
           name: '行者说币',
           content: '几个月前，我在各种区块链内容、中心化写作平台高频发文，收到仙女座科技工作人员的信息，从此展开与瞬之间的缘分。我认为，瞬是一个做事情的团队。瞬Matataki 采用的是IPFS协议，星际文件存储系统，随着用户量的增多，就会产生大量节点，我们作为其中一个节点，可以利用自己的闲置硬盘存储他人的作品，当然，一个作品提交到IPFS网络，就会被复制成很多分、分割成很多片，存储在不同节点中，每个节点都无法查看具体信息，这样，就保证了，创作者的作品由大家共同存储，同时无法篡改，具备公信力。单一或者部分节点受到毁灭性打击也不影响作者从其他备份节点取得完整作品，具有很好的安全性。'
         }
@@ -357,11 +357,12 @@ export default {
           'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
         ]
         const PromiseLoadScript = scriptSrc.map(i => loadScript(i))
-        const timer = null
+        let timer = null
         Promise.all(PromiseLoadScript)
           .then(res => {
             console.log('done', res)
-            const timer = setInterval(() => {
+            clearInterval(timer)
+            timer = setInterval(() => {
               if (TweenMax && ScrollMagic) {
                 this.initScrollAnimation()
                 this.setDefaultStyle()

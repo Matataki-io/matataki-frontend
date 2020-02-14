@@ -40,6 +40,8 @@ export default {
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
   },
+  // 获取文章的ipfs hash信息
+  getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
   getImg(hash) {
     return `${process.env.ssImgAddress}${hash}`
   },
@@ -187,13 +189,12 @@ export default {
    * 发布文章接口 通用方法 私有方法
    * @param {String} url 接口地址
    * @param {Object} param1 文章参数
-   * @param {String || null} signature 签名
    */
   _sendArticle(
     url,
-    { signId = null, author, data, title, fissionFactor, cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null },
-    signature = null
-  ) {
+    { signId = null, author, data, title, fissionFactor, 
+      cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
+      requireToken, requireBuy }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -205,16 +206,14 @@ export default {
         fissionFactor,
         data,
         platform: idProvider,
-        publickey: signature ? signature.publicKey : null,
-        sign: signature ? signature.signature : null,
-        msgParams: signature ? signature.msgParams : null,
         signId,
         title,
         is_original: isOriginal,
         tags,
         cc_license,
         commentPayPoint,
-        shortContent
+        shortContent,
+        requireToken, requireBuy
       },
       timeout: 30000
     })
@@ -223,15 +222,15 @@ export default {
    * 发布文章
    * @param {Object} params 参数, 签名 非钱包用户需要签名
    */
-  publishArticle({ article, signature }) {
-    return this._sendArticle('/post/publish', article, signature)
+  publishArticle({ article }) {
+    return this._sendArticle('/post/publish', article)
   },
   /**
    * 编辑文章
    * @param {Object} params 参数, 签名 非钱包用户需要签名
    */
-  editArticle({ article, signature }) {
-    return this._sendArticle('/post/edit', article, signature)
+  editArticle({ article }) {
+    return this._sendArticle('/post/edit', article)
   },
   // 创建草稿
   createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
@@ -917,5 +916,9 @@ minetokenGetResources(tokenId) {
       url: '/login/telegram',
       data: data
     })
+  },
+  // --------------------------- 搜索 ------------------------------------
+  search(type, params) {
+    return request.get(`/search/${type}`, { params })
   }
 }

@@ -5,8 +5,25 @@
 .search-head {
   margin: 40px 0 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  p {
+    color: rgba(178, 178, 178, 1);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    margin: 0 5px 0 0;
+    cursor: pointer;
+    &.active {
+      color: #000;
+    }
+    span {
+      display: inline-block;
+      color: #B2B2B2;
+      font-size:16px;
+      font-weight:400;
+      line-height:22px;
+      width: 70px;
+    }
+  }
 }
 .search-title {
   display: inline-block;
@@ -46,5 +63,13 @@
   li a {
     padding: 0 12px;
     color: #606266;
+  }
+}
+
+.share-card {
+  margin-top: 20px;
+
+  &:nth-child(1) {
+    margin-top: 0;
   }
 }

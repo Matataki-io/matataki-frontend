@@ -17,7 +17,7 @@ export default {
   computed: {
     logo() {
       // console.log(this.token)
-      return this.token.logo ? this.$API.getImg(this.token.logo) : ''
+      return this.token.logo ? this.$ossProcess(this.token.logo) : ''
     }
   }
 }

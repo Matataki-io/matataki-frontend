@@ -386,9 +386,9 @@ export default {
     placeholder: '请输入搜索关键词',
     btn: '搜索',
     optionText11: '文章',
-    optionText12: '商品',
-    optionText13: '用户',
-    optionText21: '默认',
+    optionText12: '分享',
+    optionText13: 'Fan票',
+    optionText14: '用户',
     result: '的搜索结果',
     notResult: '暂无搜索结果'
   },

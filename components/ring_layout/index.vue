@@ -16,7 +16,7 @@
 
     <div class="ring-head">
       <div class="ring-title">
-        <router-link v-for="tag in tagList" :to="{name: tag.url, params: { id: $route.params.id }}" :class="$route.name === tag.url && 'active'">
+        <router-link v-for="(tag, index) in tagList" :key="index" :to="{name: tag.url, params: { id: $route.params.id }}" :class="$route.name === tag.url && 'active'">
           {{ tag.label }}
         </router-link>
         <!-- <router-link :to="{name: 'ring'}">只看创始人</router-link> -->
@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     logoSrc() {
-      return this.logo ? this.$API.getImg(this.logo) : ''
+      return this.logo ? this.$ossProcess(this.logo) : ''
     }
   },
   created() {

@@ -57,7 +57,7 @@
                 <span v-else-if="selectedDropdown === 'time-asc'">时间升序</span>
                 <span v-else-if="selectedDropdown === 'time-desc'">时间降序</span>
                 <span v-else>综合排序</span>
-                <i v-if='selectedDropdown.includes("-asc")' class="el-icon-arrow-up el-icon--right" />
+                <i v-if="selectedDropdown.includes('-asc')" class="el-icon-arrow-up el-icon--right" />
                 <i v-else class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">

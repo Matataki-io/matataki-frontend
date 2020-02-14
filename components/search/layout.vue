@@ -2,75 +2,57 @@
   <div class="search">
     <g-header :search-query-val="searchQueryVal" @search="search" />
     <div class="search-container">
-      <div class="search-head">
-        <p class="search-title">
-          <span>{{ searchQueryVal }}</span>
-          {{ $t('search.result') }}
+      <div class="search-head fl">
+        <p v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'" replace>
+          {{ tag.label }}
+          <span>
+            {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
+          </span>
         </p>
-        <el-dropdown>
-          <el-button>
-            {{ nowSearch }}<i class="el-icon-arrow-down el-icon--right" />
-          </el-button>
-          <el-dropdown-menu slot="dropdown" class="search-dropdown">
-            <el-dropdown-item>
-              <n-link :to="{name: 'search', query: {q: $route.query.q}}">
-                {{ $t('search.optionText11') }}
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link :to="{name: 'search-shop', query: {q: $route.query.q}}">
-                {{ $t('search.optionText12') }}
-              </n-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <n-link :to="{name: 'search-user', query: {q: $route.query.q}}">
-                {{ $t('search.optionText13') }}
-              </n-link>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
       </div>
 
       <div v-loading="loading" v-show="searchQueryValLen">
         <!-- 文章 -->
-        <template v-if="$route.name === 'search'">
-          <articleCardList
+        <template v-if="searchType === 0">
+          <articleCardListNew
             v-for="item in articleCardData[0].articles"
             :key="item.id"
             :card="item"
-            :is-search-card="true"
           />
         </template>
-        <!-- 商品 -->
-        <el-row v-else-if="$route.name === 'search-shop'" class="search-card">
-          <el-col
-            v-for="item in articleCardData[0].articles"
+        <!-- 分享 -->
+        <template v-else-if="searchType === 1">
+          <shareCard
+            v-for="(item, index) in articleCardData[1].articles"
+            :key="index"
+            :card="item"
+            :blank="false"
+            @refClick="pushShare"
+            class="share-card"
+          />
+        </template>
+        <!-- Fan票 -->
+        <template v-else-if="searchType === 2">
+          <tokenCard
+            v-for="item in articleCardData[2].articles"
             :key="item.id"
-            :span="8"
-          >
-            <articleCard
-              :type-index="1"
-              :card="item"
-              :is-search-card="true"
-              card-type="commodity-card"
-            />
-          </el-col>
-        </el-row>
-        <div v-else-if="$route.name === 'search-user'" class="search-list">
+            :card="item"
+          />
+        </template>
+        <div v-else-if="searchType === 3" class="search-list">
           <!-- 用户 -->
           <searchUserList
-            v-for="item in articleCardData[0].articles"
+            v-for="item in articleCardData[3].articles"
             :key="item.id"
             :card="item"
             @updateList="updateList"
           />
         </div>
-
         <div class="pagination">
           <user-pagination
             :current-page="currentPage"
-            :params="articleCardData[0].params"
-            :api-url="articleCardData[0].apiUrl"
+            :params="articleCardData[searchType].params"
+            :api-url="articleCardData[searchType].apiUrl"
             :page-size="9"
             :total="total"
             :reload="reload"
@@ -88,27 +70,19 @@
 
 <script>
 import { strTrim } from '@/utils/reg'
-import articleCardList from '@/components/article_card_list/index.vue'
-import articleCard from '@/components/articleCard/index.vue'
+import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import searchUserList from '@/components/search_user_list/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
+import shareCard from '@/components/share_card/index.vue'
+import tokenCard from '@/components/token_card/search_token.vue'
 
 export default {
   components: {
-    articleCardList,
-    articleCard,
+    articleCardListNew,
     searchUserList,
-    userPagination
-  },
-  props: {
-    params: {
-      type: Object,
-      required: true
-    },
-    apiUrlPath: {
-      type: String,
-      required: true
-    }
+    userPagination,
+    shareCard,
+    tokenCard
   },
   data() {
     return {
@@ -116,33 +90,74 @@ export default {
       searchQueryVal: '',
       articleCardData: [
         {
-          params: { },
-          apiUrl: this.apiUrlPath,
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchArticleList',
           articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchShareList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {
+            channel: 1,
+            type: 'post'
+          },
+          apiUrl: 'searchTokenList',
+          articles: [],
+          count: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {},
+          apiUrl: 'searchUserList',
+          articles: [],
+          count: 0,
           isAtuoRequest: false
         }
       ],
       loading: false, // 加载数据
       currentPage: Number(this.$route.query.page) || 1,
       total: 0,
-      reload: 0
+      reload: 0,
+      tagList: [
+        {
+          label: this.$t('search.optionText11')
+        },
+        {
+          label: this.$t('search.optionText12')
+        },
+        {
+          label: this.$t('search.optionText13')
+        },
+        {
+          label: this.$t('search.optionText14')
+        }
+      ],
+      searchType: Number(this.$route.query.type) || 0
     }
   },
   computed: {
     searchQueryValLen() {
-      return !(this.articleCardData[0].articles.length === 0 && this.paginationDataLoaded)
-    },
-    // 当前搜索属于什么页面
-    nowSearch() {
-      if (this.$route.name === 'search-shop') return this.$t('search.optionText12')
-      else if (this.$route.name === 'search-user') return this.$t('search.optionText13')
-      else return this.$t('search.optionText11')
+      return !(this.articleCardData[this.searchType].articles.length === 0 && this.paginationDataLoaded)
     }
   },
   created() {
+    this.query()
   },
   mounted() {
-    this.query()
+    this.getOtherResults()
   },
   methods: {
     // 搜索 修改val 和 重置page
@@ -150,7 +165,8 @@ export default {
       this.searchQueryVal = val
       this.currentPage = 1
 
-      this.articleCardData[0].params.word = this.searchQueryVal
+      this.articleCardData[this.searchType].params.word = this.searchQueryVal
+      this.getOtherResults()
 
       this.reload = Date.now()
     },
@@ -163,13 +179,12 @@ export default {
         word: this.searchQueryVal
       }
 
-      this.articleCardData[0].params = Object.assign(params, this.params)
-
-      // console.log(this.articleCardData[0].params)
+      this.articleCardData[this.searchType].params = Object.assign(params, this.articleCardData[this.searchType].params)
     },
     paginationData(res) {
-      this.articleCardData[0].articles = []
-      this.articleCardData[0].articles = res.data.list
+      this.articleCardData[this.searchType].articles = []
+      this.articleCardData[this.searchType].articles = res.data.list
+      this.articleCardData[this.searchType].count = res.data.count
       this.paginationDataLoaded = true
       this.total = res.data.count
       this.loading = false
@@ -179,13 +194,52 @@ export default {
       this.currentPage = i
       this.$router.push({
         query: {
+          type: this.searchType,
           q: strTrim(this.$route.query.q),
           page: i
         }
       })
     },
+    toggleType(type) {
+      this.currentPage = 1
+      this.searchType = type
+      this.$router.push({
+        query: {
+          type: this.searchType,
+          q: strTrim(this.$route.query.q)
+        }
+      })
+    },
     updateList() {
       this.reload = Date.now()
+    },
+    getOtherResults() {
+      const otherRoutings = this.articleCardData.filter((value, index) => index !== this.searchType)
+      for (let i = 0; i < otherRoutings.length; i++) {
+        this.getSearchDate(otherRoutings[i])
+      }
+    },
+    async getSearchDate(otherRouting) {
+      otherRouting.params.page = 1
+      otherRouting.params.pagesize = 9
+      otherRouting.params.word = this.searchQueryVal
+      const getDataFail = message => message ? console.error(message) : console.error('获取数据失败')
+
+      // 获取数据
+      try {
+        const res = await this.$API.getBackendData({ url: otherRouting.apiUrl, params: otherRouting.params }, false)
+        // console.log('结果：', otherRouting.apiUrl, res)
+        if (res.code === 0) {
+          otherRouting.articles = res.data.list
+          otherRouting.count = res.data.count
+        } else getDataFail(res.message)
+      } catch (error) { getDataFail() }
+    },
+    /** 分享引用 */
+    pushShare(card) {
+      // 优化体验, 大厅取这个key
+      sessionStorage.setItem('shareRef', card.id)
+      this.$router.push({ name: 'sharehall' })
     }
   }
 }

@@ -1,24 +1,18 @@
 <template>
-  <router-link v-if="tokenUser" :to="{name: 'token-id', params: { id: tokenData.id }}" class="fl token-card" tag="div">
+  <router-link :to="{name: 'token-id', params: { id: card.id }}" class="fl token-card" tag="div">
     <div>
       <avatar :src="cover" size="60px" />
     </div>
     <div class="card-info">
-      <h2>
-        {{ tokenData.symbol }}
-      </h2>
-      <p>
-        {{ tokenData.name }}
-      </p>
-      <p>
-        {{ tokenData.brief }}
-      </p>
+      <h2 v-html="card.symbol" class="search-res" />
+      <p v-html="card.name" class="search-res" />
+      <p v-html="card.brief" class="search-res" />
     </div>
     <div>
-      <router-link :to="{name: 'user-id', params: { id: currentUserInfo.id }}" class="fl ac">
+      <!-- <router-link :to="{name: 'user-id', params: { id: currentUserInfo.id }}" class="fl ac">
         <avatar :src="avatar" size="30px" />
         <span class="card-username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
-      </router-link>
+      </router-link> -->
     </div>
   </router-link>
 </template>
@@ -30,63 +24,44 @@ export default {
   components: {
     avatar
   },
+  props: {
+    card: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      tokenData: {},
-      tokenUser: false,
-      avatar: ''
+      // avatar: ''
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
-      return this.tokenData.logo ? this.$ossProcess(this.tokenData.logo, { h: 90 }) : ''
+      return this.card.logo ? this.$ossProcess(this.card.logo, { h: 90 }) : ''
     }
   },
   watch: {
-    isLogined(newState) {
-      if (newState) {
-        this.tokenUserId()
-        this.getAvatar()
-      }
-    }
   },
   created() {
-    if (this.isLogined) {
-      this.tokenUserId()
-      this.getAvatar()
-    }
   },
   methods: {
-    ...mapActions(['getCurrentUser']),
-    async tokenUserId() {
-      await this.$API
-        .tokenUserId(this.currentUserInfo.id)
-        .then(res => {
-          if (res.code === 0 && res.data.id > 0) {
-            this.tokenUser = true
-            this.tokenData = res.data
-          }
-        })
-        .catch(err => console.log('get token user error', err))
-    },
-    async getAvatar() {
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
-    }
   }
 }
 </script>
 
 <style scoped lang="less">
 .token-card {
-  width: 1160px;
   margin: 20px auto 20px;
   padding: 20px;
   background: @white;
   border-radius: @br10;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    transform: translate(0, -4px);
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+  }
   .card-info {
     -webkit-box-flex: 1;
     flex: 1;
@@ -119,5 +94,13 @@ export default {
     text-overflow: ellipsis;
     max-width: 250px;
   }
+}
+</style>
+
+<style lang="less">
+.search-res em {
+  font-weight: bold;
+  font-style: normal;
+  color: @purpleDark;
 }
 </style>

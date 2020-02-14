@@ -36,15 +36,17 @@ export default {
   data() {
     return {
       relatedLeftCollapse: false, // 左侧关联
-      relatedRightCollapse: false // 右侧关联
+      relatedRightCollapse: false, // 右侧关联
+      resizeEvent: null
     }
   },
   mounted() {
     this.setRelatedSlider()
-    window.addEventListener('resize', throttle(this.setRelatedSlider, 300))
+    this.resizeEvent = throttle(this.setRelatedSlider, 300)
+    window.addEventListener('resize', this.resizeEvent)
   },
   destroyed() {
-    // window.removeEventListener('resize', throttle(this.setRelatedSlider))
+    window.removeEventListener('resize', this.resizeEvent)
   },
   methods: {
     // 隐藏侧边关联栏
