@@ -90,67 +90,12 @@
       @togglePage="togglePage"
       class="pagination"
     />
-    <!-- TODO: 发布后再无修改立即删除 -->
-    <!-- <el-dialog
-      :visible.sync="giftDialog"
-      :before-close="giftDialogClose"
-      title="赠送Fan票"
-      width="600px"
-    >
-      <el-form
-        ref="form"
-        v-loading="transferLoading"
-        :model="form"
-        :rules="rules"
-        label-width="70px"
-        class="gift-form"
-      >
-        <el-form-item label="Fan票">
-          <p class="tokenname">
-            {{ form.tokenname }}
-          </p>
-        </el-form-item>
-        <el-form-item label="接受对象">
-          <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="medium">
-            <el-button slot="append" @click="searchUser" icon="el-icon-search" />
-          </el-input>
-        </el-form-item>
-        <el-form-item v-if="form.userId" label="" prop="">
-          <div class="avatar-content">
-            <avatar :src="form.useravatar" class="gift-avatar" size="60px" />
-            <div @click="closeUser" class="gift-ful">
-              <i class="el-icon-close" />
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="发送数量" prop="tokens">
-          <el-input
-            v-model="form.tokens"
-            :max="form.max"
-            :min="form.min"
-            placeholder="请输入内容"
-            size="small"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="submitForm('form')" type="primary" size="small">
-            确定
-          </el-button>
-          <el-button @click="formClose" size="small">
-            取消
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog> -->
   </div>
 </template>
 
 <script>
-import moment from 'moment'
 import userPagination from '@/components/user/user_pagination.vue'
 import avatar from '@/components/avatar/index.vue'
-import { precision, toPrecision } from '@/utils/precisionConversion'
 import holdliquidityDetail from '@/components/holdliquidity_detail/index.vue'
 
 export default {
@@ -160,15 +105,6 @@ export default {
     holdliquidityDetail
   },
   data() {
-    const validateToken = (rule, value, callback) => {
-      if (Number(value) < this.form.min) {
-        callback(new Error('发送数量不能少于0.0001'))
-      } else if (Number(value) > this.form.max) {
-        callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
-      } else {
-        callback()
-      }
-    }
     return {
       isPublishCoins: true,
       pointLog: {
@@ -187,29 +123,10 @@ export default {
       },
       viewStatus: 0, // 0 1
       amount: 0,
-      giftDialog: false,
-      form: {
-        tokenname: '',
-        username: '',
-        useravatar: '',
-        userId: '',
-        tokenId: '',
-        tokens: 1,
-        min: 0.0001,
-        max: 99999999 // 默认最大
-      },
-      rules: {
-        tokens: [
-          { validator: validateToken, trigger: 'blur' }
-        ]
-      },
       expands: []
     }
   },
   methods: {
-    createTime(time) {
-      return moment(time).format('MMMDo HH:mm')
-    },
     cover(cover) {
       return cover ? this.$ossProcess(cover) : ''
     },
@@ -221,10 +138,6 @@ export default {
     },
     liquidity(balance, decimals = 4) {
       return this.$utils.fromDecimal(balance, 4)
-    },
-    tokenAmount(amount, decimals) {
-      const tokenamount = precision(amount, 'CNY', decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     paginationData(res) {
       // console.log(res)
@@ -243,89 +156,6 @@ export default {
       this.$router.push({
         query
       })
-    },
-    transferMinetoken() {
-      this.transferLoading = true
-      const data = {
-        tokenId: this.form.tokenId,
-        to: this.form.userId,
-        amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
-      }
-      this.$API.transferMinetoken(data)
-        .then(res => {
-          if (res.code === 0) {
-            this.$message.success(res.message)
-            this.reload = Date.now()
-          } else {
-            this.$message.error(res.message)
-          }
-        }).catch(err => {
-          console.log(err)
-          this.$message.error('赠送token失败')
-        }).finally(() => {
-          this.transferLoading = false
-        })
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (this.form.userId && this.form.tokenId) this.transferMinetoken()
-          else {
-            this.$message.warning('请选择用户')
-          }
-        } else return false
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    formEmpty() {
-      this.form.tokenname = ''
-      this.form.username = ''
-      this.form.useravatar = ''
-      this.form.userId = ''
-      this.form.tokenId = ''
-      this.form.decimals = ''
-      this.form.tokens = 1
-      this.form.max = 99999999
-      this.$refs.form.resetFields()
-    },
-    giftDialogClose(done) {
-      this.formEmpty()
-      done()
-    },
-    formClose() {
-      this.giftDialog = false
-      this.formEmpty()
-    },
-    closeUser() {
-      this.form.userId = ''
-      this.form.useravatar = ''
-    },
-    // TODO: 发布后再无修改立即删除
-    // showGift(symbol, tokenId, amount, decimals) {
-    //   // console.log(Math.floor(Number(amount)))
-    //   this.form.tokenname = symbol
-    //   this.form.tokenId = tokenId
-    //   this.form.decimals = decimals
-    //   this.form.max = Number(amount)
-    //   this.giftDialog = true
-    // },
-    async searchUser() {
-      if (!this.form.username.trim()) return this.$message.warning('用户名不能为空')
-      this.transferLoading = true
-      await this.$API.searchUsername(this.form.username.trim())
-        .then(res => {
-          if (res.code === 0) {
-            // console.log(res)
-            this.form.useravatar = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
-            this.form.userId = res.data.id
-          } else return this.$message.warning(res.message)
-        }).catch(err => {
-          console.log(err)
-        }).finally(() => {
-          this.transferLoading = false
-        })
     },
     foldingClick(id) {
       if (this.expands.length === 0 || this.expands[0] !== id) this.expands = [id]
