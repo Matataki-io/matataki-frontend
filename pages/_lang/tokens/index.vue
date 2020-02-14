@@ -292,11 +292,15 @@ export default {
       })
     },
     transferMinetoken() {
+      const toUserInfoIndex = this.toUserInfoIndex
+      if (toUserInfoIndex === -1) return
+
+      const toId = toUserInfoIndex === -1 ? -1 : this.searchUserList[toUserInfoIndex].id
       this.transferLoading = true
 
       const data = {
         tokenId: this.form.tokenId,
-        to: this.searchUserList[this.toUserInfoIndex].id,
+        to: toId,
         amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
       }
       this.$API.transferMinetoken(data)
@@ -378,6 +382,9 @@ export default {
       const searchName = this.form.username.trim()
 
       if (!searchName) return this.$message.warning('用户名不能为空')
+
+      this.toUserInfoIndex = -1
+
       this.transferLoading = true
 
       const params = {
