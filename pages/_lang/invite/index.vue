@@ -104,7 +104,7 @@ export default {
       return moment(time).format('MMMDo HH:mm')
     },
     cover(cover) {
-      return cover ? this.$API.getImg(cover) : ''
+      return cover ? this.$ossProcess(cover) : ''
     },
     paginationData(res) {
       // console.log(res)

@@ -16,16 +16,16 @@
         </router-link>
         <div @click="$emit('refClick', card)" class="card-quote">
           <svg-icon class="icon" icon-class="quote" />
-          <span>引用&nbsp;{{ card.beRefs.length }}</span>
+          <span>引用&nbsp;{{ card.beRefs ? card.beRefs.length : '' }}</span>
         </div>
       </div>
       <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content" target="_blank">
         <svg-icon class="icon" icon-class="quotation_marks" />
         <svg-icon class="icon" icon-class="quotation_marks" />
-        <p>{{ card.short_content || "&nbsp;" }}</p>
+        <p v-html="card.short_content || '&nbsp;'" class="search-res" />
       </router-link>
     </div>
-    <div v-if="card.refs.length !== 0" class="card-list">
+    <div v-if="card.refs && card.refs.length !== 0" class="card-list">
       <template v-for="(item, index) in card.refs.slice(0, 1)">
         <shareOuterCard
           @ref="val => $emit('ref', val)"
@@ -117,14 +117,14 @@ export default {
   },
   computed: {
     shareListMore() {
-      if (this.card.refs.length > 1) return this.card.refs.slice(1)
+      if (this.card.refs && this.card.refs.length > 1) return this.card.refs.slice(1)
       else return []
     },
     time() {
       return moment(this.card.create_time).format('lll')
     },
     avatarSrc() {
-      if (this.card.avatar) return this.$API.getImg(this.card.avatar)
+      if (this.card.avatar) return this.$ossProcess(this.card.avatar, { h: 60 })
       return ''
     }
   },
@@ -316,4 +316,12 @@ export default {
   }
 }
 
+</style>
+
+<style lang="less">
+.search-res em {
+  font-weight: bold;
+  font-style: normal;
+  color: @purpleDark;
+}
 </style>

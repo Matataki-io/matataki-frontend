@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     avatarUrl() {
-      return this.$API.getImg(this.avatar)
+      return this.$ossProcess(this.avatar)
     }
   }
 }

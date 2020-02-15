@@ -101,8 +101,9 @@
           v-if="isLogined"
           class="user-menu"
         >
-          <div @click="$emit('login')" class="home-head-avatar">
-            <avatar :size="'30px'" :src="avatar" />
+          <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
+          <div class="user-avatar">
+            <img v-if="avatar" :src="avatar" alt="user avatar">
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dorpdown">
             <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}" class="link">
@@ -152,14 +153,15 @@ import point from './point'
 import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
-import avatar from '@/components/avatar/index.vue'
+// import avatarComponents from '@/components/avatar/index.vue'
 
 import { strTrim } from '@/utils/reg'
+import store from '@/utils/store.js'
 
 export default {
   name: 'HomeHead',
   components: {
-    avatar,
+    // avatarComponents,
     point,
     language
   },
@@ -283,7 +285,7 @@ export default {
     },
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$API.getImg(avatar)
+      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
       await this.getNotificationCounters()
     },
     login() {
@@ -294,7 +296,7 @@ export default {
       if (confirm(this.$t('warning.confirmLogout'))) {
         this.$utils.delCookie('ACCESS_TOKEN')
         this.$utils.delCookie('idProvider')
-        window.localStorage.clear()
+        store.clear()
         sessionStorage.clear()
         // this.$utils.deleteAllCookies()
         this.$router.push({
@@ -568,6 +570,20 @@ export default {
     right: 0%;
     margin-right: -3px;
     margin-top: -3px;
+  }
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+  border: 1px solid #ddd;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 </style>

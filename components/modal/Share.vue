@@ -172,7 +172,7 @@ export default {
     },
     cover() {
       if (!this.article) return ''
-      return this.article.cover ? this.$API.getImg(this.article.cover) : ''
+      return this.article.cover ? this.$ossProcess(this.article.cover) : ''
     }
   },
   watch: {

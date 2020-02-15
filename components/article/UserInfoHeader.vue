@@ -7,7 +7,7 @@
       <div class="AuthorInfo-content">
         <router-link :to="`/user/${article.uid}`" target="_blank">
           <span class="UserLink AuthorInfo-name">
-            {{ article.nickname || article.username || '&nbsp;' }}
+            {{ avatarName || '&nbsp;' }}
           </span>
         </router-link>
         <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
@@ -15,6 +15,7 @@
           <svg-icon class="icon" icon-class="read" />
           {{ article.read || 0 }}</span>
       </div>
+      <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHide" />
     </div>
     <template v-if="!isMe(article.uid)">
       <el-button :class="!info.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
@@ -29,15 +30,25 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
+import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
 export default {
   components: {
-    avatar
+    avatar,
+    ipfsAll
   },
   props: {
     article: {
       type: Object,
       required: true
+    },
+    articleIpfsArray: {
+      type: Array,
+      required: true
+    },
+    isHide: {
+      type: Boolean,
+      required: false
     }
   },
   data() {
@@ -50,6 +61,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined', 'isMe']),
+    avatarName() {
+      // 因为内容比较宽 没有控制12字符
+      const name = this.article.nickname || this.article.username
+      return name.length > 24 ? name.slice(0, 24) + '...' : name
+    },
     followBtnText() {
       return this.info.is_follow ? this.$t('following') : this.$t('follow')
     },
@@ -76,7 +92,7 @@ export default {
       this.$API.getUser(id).then(res => {
         if (res.code === 0) {
           this.info.is_follow = res.data.is_follow
-          this.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+          this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
         } else {
           this.$message.warning(res.message)
         }
@@ -131,6 +147,7 @@ export default {
 .AuthorInfo-content {
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
 .Post-Author {
   display: flex;
@@ -173,6 +190,7 @@ export default {
   color: @gray;
 }
 .follow {
+  margin: 0 0 0 20px;
   &.black {
     background: #333;
     color: #fff;

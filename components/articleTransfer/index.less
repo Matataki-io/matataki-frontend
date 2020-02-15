@@ -97,19 +97,17 @@
   position: relative;
   .widget-input-user {
     position: absolute;
-    top: 32px;
+    top: 36px;
     left: 0;
     right: 0;
     background: #fff;
     border: 1px solid #B2B2B2;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     border-top: none;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     align-items: center;
-    padding: 22px 0 10px 20px;
+    flex-direction: column;
+    padding: 4px 0 0 0;
     box-sizing: border-box;
     cursor: pointer;
     span {
@@ -120,21 +118,29 @@
       overflow: hidden;
       white-space: nowrap;
     }
-   
+    & > div {
+      width: 100%;
+      margin: 0;
+      padding: 5px 20px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      &:hover {
+        background: #f1f1f1;
+      }
+      span {
+        font-size:14px;
+        font-weight:400;
+        color:rgba(178,178,178,1);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
   }
   .widget-input-avater {
-    width: 30px;
-    height: 30px;
-    background-color: #eee;
-    border-radius: 50%;
-    overflow: hidden;
     margin-right: 10px;
     flex: 0 0 30px;
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
   }
 
   .error-info {
@@ -147,6 +153,25 @@
 
 }
 
+
+.search-user {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 10px;
+  &-avatar {
+    margin-right: 10px;
+    flex: 0 0 30px;
+  }
+  span {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(178,178,178,1);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
 
 // 公用输入框
 .widget-input {

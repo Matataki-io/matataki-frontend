@@ -60,10 +60,10 @@ export default {
   },
   computed: {
     cover() {
-      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+      return this.card.logo ? this.$ossProcess(this.card.logo, { h: 60 }) : ''
     },
     coverUser() {
-      return this.card.avatar ? this.$API.getImg(this.card.avatar) : ''
+      return this.card.avatar ? this.$ossProcess(this.card.avatar, { h: 60 }) : ''
     },
     cnyReserve() {
       const tokenamount = precision(this.card.liquidity || 0, 'CNY', this.card.decimals)

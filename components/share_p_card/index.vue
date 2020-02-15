@@ -68,7 +68,7 @@ export default {
       else return { name: 'p-id', params: { id: this.card.ref_sign_id } }
     },
     coverSrc() {
-      if (this.card.cover) return this.$API.getImg(this.card.cover)
+      if (this.card.cover) return this.$ossProcess(this.card.cover, { h: 90 })
       return ''
     },
     lock() {

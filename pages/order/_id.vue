@@ -100,6 +100,7 @@ import { mapGetters } from 'vuex'
 import moment from 'moment'
 import QRCode from '@/components/exchange/Qrcode'
 import utils from '@/utils/utils'
+import store from '@/utils/store.js'
 
 const interval = 5000
 export default {
@@ -302,7 +303,7 @@ export default {
           openid = this.currentUserInfo.name
         } else {
           // 不是微信账号需要先获取openid
-          openid = window.localStorage.getItem('WX_OPENID')
+          openid = store.get('WX_OPENID')
         }
         this.$API.wxJsapiPay(tradeNo, openid, this.tradeType).then(res => {
           this.loading = false

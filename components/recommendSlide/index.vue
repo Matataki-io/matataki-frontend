@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     cover() {
-      return this.card.cover ? this.$API.getImg(this.card.cover) : ''
+      return this.card.cover ? this.$ossProcess(this.card.cover) : ''
     }
   }
 }

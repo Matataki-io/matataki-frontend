@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     logo() {
-      return this.card.logo ? this.$API.getImg(this.card.logo) : ''
+      return this.card.logo ? this.$ossProcess(this.card.logo, { h: 240 }) : ''
     }
   }
 }

@@ -50,6 +50,7 @@ import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import { getSignatureForLogin } from '@/api/eth'
 import { getCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 
 export default {
   components: {
@@ -196,7 +197,7 @@ export default {
             // this.signOut()
             this.$utils.delCookie('ACCESS_TOKEN')
             this.$utils.delCookie('idProvider')
-            window.localStorage.clear()
+            store.clear()
             sessionStorage.clear()
             // this.$utils.deleteAllCookies()
             setTimeout(() => {

@@ -509,7 +509,7 @@ export default {
 
       this.$API.getUser(this.currentUserInfo.id).then(res => {
         if (res.code === 0) {
-          this.shareCard.avatarSrc = res.data.avatar ? this.$API.getImg(res.data.avatar) : ''
+          this.shareCard.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
           this.shareCard.username = res.data.nickname || res.data.username
         }
       }).catch(err => {

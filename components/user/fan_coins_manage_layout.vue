@@ -185,7 +185,7 @@ export default {
     tokenCover() {
       if (this.tokenDetailData.token) {
         const logo = this.tokenDetailData.token.logo
-        return logo ? this.$API.getImg(logo) : ''
+        return logo ? this.$ossProcess(logo) : ''
       } else return ''
     },
     tokenWidget() {
