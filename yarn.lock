@@ -6354,10 +6354,10 @@ match-at@^0.1.0:
   resolved "https://registry.npm.taobao.org/match-at/download/match-at-0.1.1.tgz#25d040d291777704d5e6556bbb79230ec2de0540"
   integrity sha1-JdBA0pF3dwTV5lVru3kjDsLeBUA=
 
-mavon-editor-matataki@2.7.19:
-  version "2.7.19"
-  resolved "https://registry.npm.taobao.org/mavon-editor-matataki/download/mavon-editor-matataki-2.7.19.tgz#b7cdfd8cb6ebf2251456d648aba336abdb6e5bb7"
-  integrity sha1-t839jLbr8iUUVtZIq6M2q9tuW7c=
+mavon-editor-matataki@2.20.0:
+  version "2.20.0"
+  resolved "https://registry.npm.taobao.org/mavon-editor-matataki/download/mavon-editor-matataki-2.20.0.tgz?cache=0&sync_timestamp=1581935371790&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmavon-editor-matataki%2Fdownload%2Fmavon-editor-matataki-2.20.0.tgz#02431b10a503ebf0db442906d7ddb4f2f370d564"
+  integrity sha1-AkMbEKUD6/DbRCkG19208vNw1WQ=
   dependencies:
     highlight.js "^9.11.0"
     highlight.js-async-webpack "^1.0.4"
