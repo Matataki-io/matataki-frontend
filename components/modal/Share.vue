@@ -117,11 +117,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import QRCodeDialog from './QRCodeDialog'
-import SocialShare from './SocialShare'
 import { strTrim } from '@/utils/reg' // 开发用
 import { urlAddress } from '@/api/backend'
 import wechat from '@/components/scan/wechat.vue'
+import SocialShare from './SocialShare'
+import QRCodeDialog from './QRCodeDialog'
 
 export default {
   name: 'ShareModal',

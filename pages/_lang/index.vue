@@ -6,9 +6,11 @@
 
 export default {
   middleware: 'redirect',
-  head: {
-    script: [
-    ]
+  head: function () {
+    return {
+      script: [
+      ]
+    }
   },
   components: {
   },

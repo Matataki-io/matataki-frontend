@@ -107,7 +107,6 @@
 
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-import recommendSlide from '~/components/recommendSlide/index.vue'
 import articleCard from '@/components/articleCard/index.vue'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 // import tags from '@/components/tags/index.vue'
@@ -117,6 +116,7 @@ import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
 // import banner from '@/components/banner/index.vue'
 import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import RAList from '@/components/recommend_author_list'
+import recommendSlide from '~/components/recommendSlide/index.vue'
 
 export default {
   transition: 'page',
