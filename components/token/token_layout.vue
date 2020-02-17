@@ -233,7 +233,6 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
@@ -243,6 +242,7 @@ import tokenRelated from '@/components/token/token_related.vue'
 import socialTypes from '@/config/social_types.js'
 import { precision } from '@/utils/precisionConversion'
 import utils from '@/utils/utils'
+import TokenJoinFandom from './token_join_fandom'
 
 export default {
   components: {

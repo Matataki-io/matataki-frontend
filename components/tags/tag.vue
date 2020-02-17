@@ -3,7 +3,7 @@
     :to=" {name: 'tag-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
     class="tag"
   >
-    <div class="tag-icon" :style="tagStyleObject">
+    <div :style="tagStyleObject" class="tag-icon">
       <tag-icon :id="tag.id" />
     </div>
     <span :class="typeIndex === 1 && 'left'">{{ tag.name }}</span>

@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import footer from '~/components/footer/index.vue'
 import AuthModal from '@/components/Auth/index.vue'
 import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
+import footer from '~/components/footer/index.vue'
 export default {
   name: 'Default',
   components: {
