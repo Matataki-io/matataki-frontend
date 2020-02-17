@@ -72,9 +72,10 @@
               分享
             </el-button>
           </div>
-          <div class="balance">
+          <router-link v-if="isLogined" :to="{ name: 'tokens' }" tag="div" class="balance">
             已持有：{{ balance }} {{ minetokenToken.symbol }}
-          </div>
+            <i class="el-icon-arrow-right" />
+          </router-link>
         </div>
         <p v-if="!minetokenToken.contract_address" class="warning">
           Fan票正在部署中，请耐心等候。
@@ -601,7 +602,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 8px 10px 8px 0;
-  &:nth-child(5n) {
+  &:nth-child(6n) {
     margin-right: 0;
   }
 }
@@ -646,6 +647,10 @@ export default {
   font-size:16px;
   right: 20px;
   top: 20px;
+  cursor: pointer;
+  &:hover {
+    color: #542de0;
+  }
 }
 .wrap-open {
   white-space: pre-wrap;
