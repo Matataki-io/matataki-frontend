@@ -1,5 +1,5 @@
 <template>
-  <div v-if="fandomData.length > 0" class="fandom-card">
+  <div v-loading="loading" class="fandom-card">
     <div class="fl">
       <h2 class="token-title">
         加入{{ tokenSymbol }}粉丝群
@@ -102,7 +102,7 @@
       </p>
     </el-dialog>
     <p class="tips">
-      使用该功能需要“科学上网”
+      {{ fandomData.length > 0 ? '使用该功能需要“科学上网”' : '暂无Fan票粉丝群' }}
     </p>
   </div>
 </template>
@@ -135,7 +135,8 @@ export default {
       bindStatus: false,
       pageNum: 1,
       pageSize: 5,
-      fandomData: []
+      fandomData: [],
+      loading: true
     }
   },
   computed: {
@@ -225,6 +226,7 @@ export default {
       })
       _axios.get(`/api/token/${this.tokenId}`).then(res => {
         const { data } = res
+        this.loading = false
         if (data.status) {
           this.fandomData = data.result
         } else {
