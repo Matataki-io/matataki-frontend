@@ -112,12 +112,7 @@
           @togglePage="togglePage"
           class="pagination"
         />
-        <el-dialog
-          :visible.sync="giftDialog"
-          :before-close="giftDialogClose"
-          title="赠送Fan票"
-          width="600px"
-        >
+        <m-dialog v-model="giftDialog" width="600px" title="赠送Fan票" class="transfer-dialog">
           <el-form
             ref="form"
             v-loading="transferLoading"
@@ -132,9 +127,7 @@
               </p>
             </el-form-item>
             <el-form-item label="接受对象">
-              <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="small" style="z-index: 2;">
-                <el-button slot="append" @click="searchUser" icon="el-icon-search" />
-              </el-input>
+              <el-input v-model="form.username" placeholder="请输入赠送的对象" size="small" style="z-index: 2;" />
               <!-- 搜索结果 -->
               <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="transfer—search__list">
                 <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
@@ -144,16 +137,18 @@
               </div>
             </el-form-item>
             <!-- 结果 -->
-            <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
-              <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
-                <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
-                <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
-                <div @click="closeUser" class="gift-ful">
-                  <i class="el-icon-close" />
-                </div>
-              </router-link>
-              <div class="avatar-content" />
-            </el-form-item>
+            <transition name="result">
+              <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
+                <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
+                  <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
+                  <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
+                  <div @click="closeUser" class="gift-ful">
+                    <i class="el-icon-close" />
+                  </div>
+                </router-link>
+                <div class="avatar-content" />
+              </el-form-item>
+            </transition>
             <el-form-item label="发送数量" prop="tokens">
               <el-input
                 v-model="form.tokens"
@@ -173,13 +168,10 @@
                 <el-button :disabled="toUserInfoIndex === -1" @click="submitForm('form')" type="primary" size="small">
                   确定
                 </el-button>
-              <!-- <el-button @click="formClose" size="small"> -->
-              <!-- 取消 -->
-              <!-- </el-button> -->
               </div>
             </el-form-item>
           </el-form>
-        </el-dialog>
+        </m-dialog>
       </div>
       <!-- 流动金 -->
       <holdliquidity />
@@ -192,6 +184,7 @@
 
 <script>
 import moment from 'moment'
+import debounce from 'lodash/debounce'
 import userPagination from '@/components/user/user_pagination.vue'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
@@ -260,6 +253,25 @@ export default {
       expands: [],
       searchUserList: [], // 搜索结果
       toUserInfoIndex: -1 // 转让的对象
+    }
+  },
+  computed: {
+    searchUserName() {
+      return this.form.username
+    }
+  },
+  watch: {
+    giftDialog(newVal) {
+      if (!newVal) {
+        this.formEmpty()
+      }
+    },
+    searchUserName: {
+      deep: true,
+      immediate: true,
+      handler: function () {
+        this.searchUser()
+      }
     }
   },
   methods: {
@@ -354,14 +366,6 @@ export default {
       this.searchUserList = [] // 搜索结果
       this.toUserInfoIndex = -1 // 转让的对象
     },
-    giftDialogClose(done) {
-      this.formEmpty()
-      done()
-    },
-    // formClose() {
-    //   this.giftDialog = false
-    //   this.formEmpty()
-    // },
     closeUser(e) {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
@@ -378,14 +382,12 @@ export default {
       this.form.balance = Number(amount)
       this.giftDialog = true
     },
-    searchUser() {
+    searchUser: debounce(function () {
       const searchName = this.form.username.trim()
 
-      if (!searchName) return this.$message.warning('用户名不能为空')
+      if (!searchName) return
 
       this.toUserInfoIndex = -1
-
-      this.transferLoading = true
 
       const params = {
         word: searchName,
@@ -407,10 +409,8 @@ export default {
         // 出错
         console.log(err)
         this.searchUserList = []
-      }).finally(() => {
-        this.transferLoading = false
       })
-    },
+    }, 300),
     foldingClick(id) {
       if (this.expands.length === 0 || this.expands[0] !== id) this.expands = [id]
       else this.expands = []
@@ -536,7 +536,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  top: 28px;
+  top: 32px;
   background: #fff;
   border: 1px solid #B2B2B2;
   border-top: none;
@@ -600,6 +600,15 @@ export default {
   }
 }
 
+// result transition
+.result-enter-active,
+.result-leave-active {
+  transition: opacity .2s;
+}
+.result-enter,
+.result-leave-to {
+  opacity: 0
+}
 </style>
 
 <style lang="less">
