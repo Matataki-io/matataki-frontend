@@ -312,12 +312,17 @@ export default {
     jutmpToSearch() {
       if (!strTrim(this.searchInput)) return this.$message.warning(this.$t('warning.searchContent'))
 
-      const name = this.$route.name
+      const names = ['sharehall', 'share-id', 'token', 'token-id']
+      const types = [1, 1, 2, 2]
+      const type = types[names.indexOf(this.$route.name)]
+
+      const query = {}
+      if (type) query.type = type
+      query.q = strTrim(this.searchInput)
+
       this.$router.push({
-        name: name === 'search-shop' || name === 'search-user' ? name : 'search',
-        query: {
-          q: strTrim(this.searchInput)
-        }
+        name: 'search',
+        query
       })
       this.$emit('search', strTrim(this.searchInput))
     },
