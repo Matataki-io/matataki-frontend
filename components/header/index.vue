@@ -320,10 +320,18 @@ export default {
       if (type) query.type = type
       query.q = strTrim(this.searchInput)
 
-      this.$router.push({
-        name: 'search',
-        query
-      })
+      if (this.$route.name === 'search') {
+        this.$router.replace({
+          name: 'search',
+          query
+        })
+      } else {
+        const { href } = this.$router.resolve({
+          name: 'search',
+          query
+        })
+        window.open(href, '_blank')
+      }
       this.$emit('search', strTrim(this.searchInput))
     },
     // 推荐跳转
