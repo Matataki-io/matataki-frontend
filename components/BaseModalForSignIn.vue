@@ -1,21 +1,21 @@
 <template>
-  <el-dialog :visible.sync="showModal" width="320px" :modal="true" custom-class="my-dialog br10">
+  <el-dialog :visible.sync="showModal" :modal="true" width="320px" custom-class="my-dialog br10">
     <section v-if="step === 1" class="step">
       <h1 class="step-title">
         选择授权方式
       </h1>
       <div class="btns">
-        <button class="btn-base bg-black" @click="walletLogin('EOS')">
+        <button @click="walletLogin('EOS')" class="btn-base bg-black">
           <div class="eos-logo">
             <img src="@/assets/img/eos_icon.svg" alt="EOS">
           </div>
           <span>EOS 登录</span>
         </button>
-        <button class="btn-base bg-blue" @click="walletLogin('ONT')">
+        <button @click="walletLogin('ONT')" class="btn-base bg-blue">
           <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
           <span>ONT 登录</span>
         </button>
-        <button class="btn-base bg-purple" @click="walletLogin('GitHub')">
+        <button @click="walletLogin('GitHub')" class="btn-base bg-purple">
           <img src="@/assets/img/github.png" alt="github">
           <span>Github 登录</span>
         </button>
@@ -53,7 +53,7 @@
         </a>
       </div>
     </section>
-    <div class="footer-arrow" @click="step === 1 ? (step = 2) : (step = 1)">
+    <div @click="step === 1 ? (step = 2) : (step = 1)" class="footer-arrow">
       <div v-if="step === 2" class="arrow">
         <i class="el-icon-arrow-left" />
       </div>

@@ -1,9 +1,9 @@
 <template>
   <el-button
     v-if="showBtn"
+    @click="fanCoins"
     size="small"
     class="fan-coins"
-    @click="fanCoins"
   >
     {{ fanCoinsBtn }}
   </el-button>

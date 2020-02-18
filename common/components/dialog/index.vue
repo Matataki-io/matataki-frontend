@@ -3,6 +3,7 @@
     :title="title"
     :visible.sync="shareDialogVisible"
     :width="width"
+    :close-on-click-modal="closeOnClickModal"
     center
   >
     <slot />
@@ -21,6 +22,10 @@ export default {
       default: '90%'
     },
     value: {
+      type: Boolean,
+      default: false
+    },
+    closeOnClickModal: {
       type: Boolean,
       default: false
     }

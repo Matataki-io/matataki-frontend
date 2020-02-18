@@ -149,8 +149,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
-import point from './point'
 import language from './language'
+import point from './point'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
@@ -312,12 +312,17 @@ export default {
     jutmpToSearch() {
       if (!strTrim(this.searchInput)) return this.$message.warning(this.$t('warning.searchContent'))
 
-      const name = this.$route.name
+      const names = ['sharehall', 'share-id', 'token', 'token-id']
+      const types = [1, 1, 2, 2]
+      const type = types[names.indexOf(this.$route.name)]
+
+      const query = {}
+      if (type) query.type = type
+      query.q = strTrim(this.searchInput)
+
       this.$router.push({
-        name: name === 'search-shop' || name === 'search-user' ? name : 'search',
-        query: {
-          q: strTrim(this.searchInput)
-        }
+        name: 'search',
+        query
       })
       this.$emit('search', strTrim(this.searchInput))
     },

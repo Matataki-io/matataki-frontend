@@ -112,8 +112,8 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import userPageNav from './user_page_nav'
 import tokenAvatar from './token_avatar.vue'
+import userPageNav from './user_page_nav'
 import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
 import Share from '@/components/token/token_share.vue'

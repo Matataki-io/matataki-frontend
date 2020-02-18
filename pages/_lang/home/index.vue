@@ -290,8 +290,9 @@ import avatar from '@/components/avatar/index.vue'
 import loadScript from '@/utils/load_script'
 export default {
   middleware: 'redirect',
-  head: {
-    script: [
+  head: function () {
+    return {
+      script: [
       // { src: '/gsap.min.js' },
       // { src: '/ScrollMagic.min.js' },
       // { src: '/animation.gsap.min.js' }
@@ -299,7 +300,8 @@ export default {
       // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
       // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }
       // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js' }
-    ]
+      ]
+    }
   },
   components: {
     avatar

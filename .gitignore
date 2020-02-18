@@ -88,5 +88,4 @@ sw.*
 # Mac OSX
 .DS_Store
 
-.vscode
 coverage

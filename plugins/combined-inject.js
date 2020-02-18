@@ -1,5 +1,5 @@
-import point from '../config/points.js'
 import userStatus from '../config/userStatus.js'
+import point from '../config/points.js'
 import API from '@/api/API'
 import backendAPI from '@/api/backend'
 import endpoint from '@/api/endpoint'

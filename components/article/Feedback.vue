@@ -1,9 +1,9 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    width="400px"
     :show-close="false"
     :lock-scroll="false"
+    width="400px"
     custom-class="my-dialog br10"
   >
     <div class="feedback-outer">
