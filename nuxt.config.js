@@ -91,6 +91,7 @@ export default {
     { src: '@/plugins/element-ui', ssr: true },
     { src: '@/plugins/vue-mavon-editor', ssr: false },
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false },
+    { src: '~/plugins/twitter_login.js', mode: 'client', ssr: false },
     // { src: '~/plugins/fundebug.js', ssr: false },
     { src: '~/plugins/sentry.js', ssr: false }
   ],
