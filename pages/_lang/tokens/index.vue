@@ -146,7 +146,6 @@
                     <i class="el-icon-close" />
                   </div>
                 </router-link>
-                <div class="avatar-content" />
               </el-form-item>
             </transition>
             <el-form-item label="发送数量" prop="tokens">
