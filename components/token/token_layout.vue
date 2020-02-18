@@ -189,7 +189,7 @@
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a :href="item" target="_blank">{{ item }}</a>
+              <a :href="formatUrl(item)" target="_blank">{{ item }}</a>
             </li>
           </ul>
           <span v-else class="not">暂无</span>
@@ -234,6 +234,7 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
 import mineTokensNav from '@/components/user/minetokens_nav.vue'
 import Share from '@/components/token/token_share.vue'
@@ -243,7 +244,6 @@ import tokenRelated from '@/components/token/token_related.vue'
 import socialTypes from '@/config/social_types.js'
 import { precision } from '@/utils/precisionConversion'
 import utils from '@/utils/utils'
-import TokenJoinFandom from './token_join_fandom'
 
 export default {
   components: {
@@ -416,6 +416,12 @@ export default {
           }
         })
         .catch(err => console.log('get token user error', err))
+    },
+    formatUrl(url) {
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
+      if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
+      return url
     }
   }
 }
