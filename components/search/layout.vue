@@ -203,7 +203,7 @@ export default {
     toggleType(type) {
       this.currentPage = 1
       this.searchType = type
-      this.$router.push({
+      this.$router.replace({
         query: {
           type: this.searchType,
           q: strTrim(this.$route.query.q)
