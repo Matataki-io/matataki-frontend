@@ -33,7 +33,7 @@ export default {
     return v === '' || v === null || v === undefined || JSON.stringify(v) === '{}' || JSON.stringify(v) === '[]';
   },
   sleep(time) {
-   return new Promise(resolve => setTimeout(resolve, time))
+    return new Promise(resolve => setTimeout(resolve, time))
   },
   isEmptyArray(arr){
     return Array.isArray(arr) && arr.length !== 0

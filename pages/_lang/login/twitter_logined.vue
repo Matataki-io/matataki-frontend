@@ -2,7 +2,7 @@
   <div class="tg-container">
     <!-- <div v-loading='loading' style='height: 100%;' element-loading-text='登录中...' /> -->
     <p class="tips">
-      {{$t("success.loginSuccess")}}
+      {{ $t("success.loginSuccess") }}
     </p>
   </div>
 </template>

@@ -120,6 +120,39 @@ export const xssFilter = html => {
       tag: 'em',
       attributes: ['style']
     },
+    {
+      tag: 'th',
+      attributes: ['style']
+    },
+    {
+      tag: 'td',
+      attributes: ['style']
+    },
+    // id 因为有个锚点插件需要这个id所以开放规则防止toc目录的锚地失败
+    {
+      tag: 'h1',
+      attributes: ['id']
+    },
+    {
+      tag: 'h2',
+      attributes: ['id']
+    },
+    {
+      tag: 'h3',
+      attributes: ['id']
+    },
+    {
+      tag: 'h4',
+      attributes: ['id']
+    },
+    {
+      tag: 'h5',
+      attributes: ['id']
+    },
+    {
+      tag: 'h6',
+      attributes: ['id']
+    },
   ]
 
   for (const key of rulePush) whiteList[key.tag].push(...key.attributes)

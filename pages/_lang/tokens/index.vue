@@ -128,9 +128,15 @@
             </el-form-item>
             <el-form-item label="接受对象">
               <el-input v-model="form.username" placeholder="请输入赠送的对象" size="small" style="z-index: 2;" />
+              <!-- 常用候选对象列表 -->
+              <div v-if="historyUser.length !== 0" name="history">
+                <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
+                  {{ item.nickname }}
+                </el-tag>
+              </div>
               <!-- 搜索结果 -->
-              <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="transfer—search__list">
-                <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
+              <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
+                <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
                   <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
                   <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
                 </div>
@@ -138,10 +144,10 @@
             </el-form-item>
             <!-- 结果 -->
             <transition name="result">
-              <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
-                <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
-                  <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
-                  <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
+              <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
+                <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
+                  <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
+                  <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
                   <div @click="closeUser" class="gift-ful">
                     <i class="el-icon-close" />
                   </div>
@@ -164,7 +170,7 @@
             </p>
             <el-form-item>
               <div class="form-button">
-                <el-button :disabled="toUserInfoIndex === -1" @click="submitForm('form')" type="primary" size="small">
+                <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
                   确定
                 </el-button>
               </div>
@@ -251,7 +257,8 @@ export default {
       },
       expands: [],
       searchUserList: [], // 搜索结果
-      toUserInfoIndex: -1 // 转让的对象
+      toUserInfo: null, // 转让的对象
+      historyUser: [] // 历史转让用户
     }
   },
   computed: {
@@ -261,7 +268,9 @@ export default {
   },
   watch: {
     giftDialog(newVal) {
-      if (!newVal) {
+      if (newVal) {
+        this.historyUserFunc('post')
+      } else {
         this.formEmpty()
       }
     },
@@ -303,10 +312,10 @@ export default {
       })
     },
     transferMinetoken() {
-      const toUserInfoIndex = this.toUserInfoIndex
-      if (toUserInfoIndex === -1) return
+      const toUserInfo = this.toUserInfo
+      if (this.$utils.isNull(toUserInfo)) return
 
-      const toId = toUserInfoIndex === -1 ? -1 : this.searchUserList[toUserInfoIndex].id
+      const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
       this.transferLoading = true
 
       const data = {
@@ -339,7 +348,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.toUserInfoIndex === -1) {
+          if (this.$utils.isNull(this.toUserInfo)) {
             this.$message.warning('请选择用户')
           } else {
             this.transferMinetoken()
@@ -363,12 +372,12 @@ export default {
       this.$refs.form.resetFields()
 
       this.searchUserList = [] // 搜索结果
-      this.toUserInfoIndex = -1 // 转让的对象
+      this.toUserInfo = null
     },
     closeUser(e) {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
-      this.toUserInfoIndex = -1
+      this.toUserInfo = null
       this.searchUserList = []
       return false
     },
@@ -386,7 +395,7 @@ export default {
 
       if (!searchName) return
 
-      this.toUserInfoIndex = -1
+      this.toUserInfo = null
 
       const params = {
         word: searchName,
@@ -414,14 +423,28 @@ export default {
       if (this.expands.length === 0 || this.expands[0] !== id) this.expands = [id]
       else this.expands = []
     },
-    continueUser(i) {
-      this.toUserInfoIndex = i
+    continueUser(val) {
+      this.toUserInfo = val
     },
     searchUserAvatar(src) {
       return src ? this.$ossProcess(src, { h: 60 }) : ''
     },
     searchUserTitle(html) {
       return html ? xssFilter(html) : ''
+    },
+    // 获取常用用户列表
+    historyUserFunc(type) {
+      this.$API.historyUser({
+        type
+      }).then(res => {
+        if (res.code === 0) {
+          this.historyUser = res.data.slice(0, 10)
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
@@ -597,6 +620,12 @@ export default {
     color: #000;
     font-size: 20px;
   }
+}
+
+// history user
+.history-user__tag {
+  cursor: pointer;
+  margin: 0 10px 0 0;
 }
 
 // result transition

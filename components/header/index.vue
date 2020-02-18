@@ -149,14 +149,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
-import language from './language'
-import point from './point'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
 
 import { strTrim } from '@/utils/reg'
 import store from '@/utils/store.js'
+import point from './point'
+import language from './language'
 
 export default {
   name: 'HomeHead',
