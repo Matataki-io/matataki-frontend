@@ -189,7 +189,7 @@
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a :href="item" target="_blank">{{ item }}</a>
+              <a :href="formatUrl(item)" target="_blank">{{ item }}</a>
             </li>
           </ul>
           <span v-else class="not">暂无</span>
@@ -416,6 +416,12 @@ export default {
           }
         })
         .catch(err => console.log('get token user error', err))
+    },
+    formatUrl(url) {
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
+      if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
+      return url
     }
   }
 }
