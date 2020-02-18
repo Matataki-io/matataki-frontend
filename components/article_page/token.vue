@@ -28,13 +28,13 @@
 <script>
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-import tab from './tab.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import fanCard from '@/components/fan_card/index.vue'
 
 import { recommend, paginationData, getTags, tokenTokenList } from '@/api/async_data_api.js'
 import { extractChar, regRemoveContent } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
+import tab from './tab.vue'
 
 export default {
   transition: 'page',

@@ -109,10 +109,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import tokenShareCardLayout from './token_share_card_layout'
-import inviteNewUsersCardLayout from './invite_new_users_card_layout'
 import SocialShare from '@/components/modal/social_share'
 import wechat from '@/components/scan/wechat.vue'
+import tokenShareCardLayout from './token_share_card_layout'
+import inviteNewUsersCardLayout from './invite_new_users_card_layout'
 export default {
   components: {
     SocialShare,
