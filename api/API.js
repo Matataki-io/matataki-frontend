@@ -919,11 +919,13 @@ minetokenGetResources(tokenId) {
     })
   },
   // twitter 登录
-  async twitterLogin(data) { return await request({
+  twitterLogin(data) {
+    return request({
       method: 'POST',
       url: '/login/twitter',
       data: data
     })
+  },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
     return request.get(`/search/${type}`, { params })
