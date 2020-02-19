@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
-import API from '@/api/API'
 import { getToken, setToken, removeToken } from '../utils/auth'
+import API from '@/api/API'
 
 export const state = () => ({
   // token: 'token',
