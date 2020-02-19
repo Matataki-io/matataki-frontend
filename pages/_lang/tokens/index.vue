@@ -598,7 +598,6 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  margin-top: 10px;
   &-avatar {
     width: 40px;
     height: 40px;
