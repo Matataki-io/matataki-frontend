@@ -45,9 +45,9 @@
     <div class="list">
       <div v-loading="loading">
         <no-content-prompt :prompt="$t('notArticle')" :list="articles">
-          <articleCardList
+          <articleCardListNew
             v-for="(item, index) in articles"
-            :key="index"
+            :key="index + item.id"
             :card="item"
           />
         </no-content-prompt>
@@ -71,12 +71,12 @@
 
 <script>
 import debounce from 'lodash/debounce'
-import articleCardList from '@/components/article_card_list/index.vue'
+import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 
 export default {
   components: {
-    articleCardList,
+    articleCardListNew,
     userPagination
   },
   data() {
