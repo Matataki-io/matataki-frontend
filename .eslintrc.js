@@ -1,3 +1,5 @@
+// https://zh.nuxtjs.org/guide/development-tools
+// 暂时和移动端统一eslint
 module.exports = {
   root: true,
   env: {
@@ -8,15 +10,12 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: [
-    '@nuxtjs',
-    'plugin:nuxt/recommended'
+    'plugin:vue/essential',
+    'prettier',
+    'prettier/vue',
   ],
-  // add your custom rules here
   rules: {
-    'vue/no-v-html': 0, // 使用 v-html 前要确保 xss 过滤了
-    'no-console': 0,
-    'no-unused-vars': 0,
-    'spaced-comment': 'off',
-    'arrow-parens': 'off',
+    quotes: [2, 'single'], // https://eslint.org/docs/2.0.0/rules/quotes
+    semi: [2, 'never'], // https://eslint.org/docs/2.0.0/rules/semi
   }
 }
