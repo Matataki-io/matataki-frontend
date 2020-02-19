@@ -26,9 +26,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import buttonLoadMore from '@/components/button_load_more/index.vue'
 import CommentCard from './Card'
 import articleCard from './article_card'
-import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 export default {
   components: { CommentCard, buttonLoadMore, articleCard },

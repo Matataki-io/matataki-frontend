@@ -40,10 +40,10 @@
 
 <script>
 import moment from 'moment'
-import TradeTable from './TradeTable'
-import LiquidityTable from './LiquidityTable'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
+import TradeTable from './TradeTable'
+import LiquidityTable from './LiquidityTable'
 
 export default {
   components: {
