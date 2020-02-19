@@ -179,12 +179,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
+import utils from '@/utils/utils'
 import OrderModal from './OrderModal'
 import TokenListModal from './TokenList'
 import PoolSelectModal from './PoolSelect'
 import TradeLog from './TradeLog'
 import { CNY, INPUT, OUTPUT } from './consts.js'
-import utils from '@/utils/utils'
 
 export default {
   components: {

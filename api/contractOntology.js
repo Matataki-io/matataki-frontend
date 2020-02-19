@@ -1,5 +1,5 @@
-import API from './ontology'
 import * as config from '@/config'
+import API from './ontology'
 
 // eslint-disable-next-line import/prefer-default-export
 export const recordOrder = async ({

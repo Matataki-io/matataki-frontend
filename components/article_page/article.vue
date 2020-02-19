@@ -56,11 +56,11 @@
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 // import articleCard from '@/components/articleCard/index.vue'
-import tab from './tab.vue'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
+import tab from './tab.vue'
 
 export default {
   transition: 'page',
