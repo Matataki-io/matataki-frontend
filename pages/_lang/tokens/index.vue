@@ -129,11 +129,15 @@
             <el-form-item label="接受对象">
               <el-input v-model="form.username" placeholder="请输入赠送的对象" size="small" style="z-index: 2;" />
               <!-- 常用候选对象列表 -->
-              <div v-if="historyUser.length !== 0" name="history">
+              <template v-if="historyUser.length !== 0">
                 <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
-                  {{ item.nickname }}
+                  {{
+                    (item.nickname || item.username).length > 20
+                      ? `${(item.nickname || item.username).slice(0, 20)}...`
+                      : item.nickname || item.username
+                  }}
                 </el-tag>
-              </div>
+              </template>
               <!-- 搜索结果 -->
               <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
                 <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
