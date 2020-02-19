@@ -273,7 +273,7 @@ export default {
   watch: {
     giftDialog(newVal) {
       if (newVal) {
-        this.historyUserFunc('post')
+        this.historyUserFunc('token')
       } else {
         this.formEmpty()
       }
