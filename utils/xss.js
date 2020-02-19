@@ -71,27 +71,27 @@ export const xssFilter = html => {
   let rulePush = [
     {
       tag: 'h1',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h2',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h3',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h4',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h5',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h6',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'hr',
@@ -99,6 +99,10 @@ export const xssFilter = html => {
     },
     {
       tag: 'code',
+      attributes: ['style']
+    },
+    {
+      tag: 'pre',
       attributes: ['style']
     },
   ]
@@ -127,31 +131,6 @@ export const xssFilter = html => {
     {
       tag: 'td',
       attributes: ['style']
-    },
-    // id 因为有个锚点插件需要这个id所以开放规则防止toc目录的锚地失败
-    {
-      tag: 'h1',
-      attributes: ['id']
-    },
-    {
-      tag: 'h2',
-      attributes: ['id']
-    },
-    {
-      tag: 'h3',
-      attributes: ['id']
-    },
-    {
-      tag: 'h4',
-      attributes: ['id']
-    },
-    {
-      tag: 'h5',
-      attributes: ['id']
-    },
-    {
-      tag: 'h6',
-      attributes: ['id']
     },
   ]
 

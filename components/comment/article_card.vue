@@ -6,7 +6,7 @@
         class="comment-avatar"
         target="_blank"
       >
-        <avatar :src="avatar" size="30px" /></avatar>
+        <avatar :src="avatar" size="30px"></avatar>
       </n-link>
       <div>
         <router-link :to="`/user/${comment.uid}`" class="comment-author" target="_blank">

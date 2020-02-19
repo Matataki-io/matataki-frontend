@@ -15,7 +15,11 @@
           <svg-icon class="icon" icon-class="read" />
           {{ article.read || 0 }}</span>
       </div>
-      <ipfsAll :articleIpfsArray="articleIpfsArray" v-if="isHide" />
+      <template v-if="isHide" >
+        <ipfsAll :articleIpfsArray="articleIpfsArray" />
+        &nbsp;
+        <span class="article-head__ipfs">IPFS</span>
+      </template>
     </div>
     <template v-if="!isMe(article.uid)">
       <el-button :class="!info.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
@@ -196,5 +200,12 @@ export default {
     color: #fff;
     border: 1px solid #333;
   }
+}
+
+.article-head__ipfs {
+  font-size:16px;
+  font-weight:bold;
+  color:rgba(84,45,224,1);
+  line-height:14px;
 }
 </style>

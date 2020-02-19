@@ -10,7 +10,7 @@
           type=""
         />
       </el-form-item>
-      <input type="text" class="is-hidden"></input>
+      <input type="text" class="is-hidden" />
       <el-form-item prop="smscode">
         <div class="code-contaniner">
           <el-input

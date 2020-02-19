@@ -1,7 +1,6 @@
 <template>
   <div class="components-avatar">
-    <img v-show="src" :src="src" alt="avatar">
-  </div>
+    <img v-show="src" :src="src" alt="avatar" >
   </div>
 </template>
 
