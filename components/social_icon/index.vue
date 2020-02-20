@@ -1,7 +1,7 @@
 <template>
   <div :class="icon" class="social-icon">
     <el-tooltip v-if="showTooltip" :content="content" effect="dark" placement="top">
-      <a v-if="link" :href="link + '/' + content" target="_blank">
+      <a v-if="link" :href="link + content" target="_blank">
         <svg-icon :icon-class="iconName" />
       </a>
       <svg-icon v-else :icon-class="iconName" />
@@ -30,6 +30,15 @@ export default {
     return {
       social: [
         {
+          symbol: 'Email',
+          icon: 'email',
+          name: 'Email：',
+          tooltip: '',
+          placeholder: '邮箱',
+          url: 'mailto:',
+          value: ''
+        },
+        {
           symbol: 'QQ',
           icon: 'qq',
           name: 'QQ：',
@@ -53,7 +62,7 @@ export default {
           name: '微博：',
           tooltip: '(https://www.weibo.com/<span>帐号</span>)',
           placeholder: '微博用户名(不需要完整URL)',
-          url: 'https://www.weibo.com',
+          url: 'https://www.weibo.com/',
           value: ''
         },
         {
@@ -71,7 +80,7 @@ export default {
           name: 'Twitter：',
           tooltip: '(https://twitter.com/<span>帐号</span>)',
           placeholder: 'Twitter用户名(不需要完整URL)',
-          url: 'https://twitter.com',
+          url: 'https://twitter.com/',
           value: ''
         },
         {
@@ -80,7 +89,7 @@ export default {
           name: 'Facebook：',
           tooltip: '(https://facebook.com/<span>帐号</span>)',
           placeholder: 'Facebook用户名(不需要完整URL)',
-          url: 'https://facebook.com',
+          url: 'https://facebook.com/',
           value: ''
         },
         {
@@ -89,7 +98,7 @@ export default {
           name: 'Github：',
           tooltip: '(https://github.com/<span>帐号</span>)',
           placeholder: 'Github用户名(不需要完整URL)',
-          url: 'https://github.com',
+          url: 'https://github.com/',
           value: ''
         }
       ]
@@ -120,25 +129,28 @@ export default {
   font-size: 24px;
   color: @white;
   &:hover {
+    &.Email {
+      background: #542de0;
+    }
     &.QQ {
       background: #5EAADE;
     }
-        &.Wechat {
+    &.Wechat {
       background: #00C800;
     }
-        &.Weibo {
+    &.Weibo {
       background: #FF003D;
     }
-        &.Telegram {
+    &.Telegram {
       background: #32A8E5;
     }
-        &.Twitter {
+    &.Twitter {
       background: #5EAADE;
     }
-        &.Facebook {
+    &.Facebook {
       background: #3B5998;
     }
-        &.Github {
+    &.Github {
       background: #882592;
     }
   }
