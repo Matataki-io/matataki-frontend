@@ -47,6 +47,11 @@ export default {
       social: [],
       socialTemplate: [
         {
+          icon: 'Email',
+          type: 'email',
+          content: ''
+        },
+        {
           icon: 'QQ',
           type: 'qq',
           content: ''
