@@ -13,6 +13,7 @@
         class="hide-expand-button"
         style="width: 100%"
         row-key="token_id"
+        @sort-change="sortChange"
       >
         <el-table-column
           prop="total_supply"
@@ -40,6 +41,7 @@
         <el-table-column
           prop="total_supply"
           label="我的流动金Token"
+          sortable="custom"
         >
           <template slot-scope="scope">
             <span class="scope">{{ liquidity(scope.row.liquidity_balance, scope.row.decimals) }} ({{ percent(scope.row.liquidity_balance, scope.row.total_supply) }})</span>
@@ -109,7 +111,8 @@ export default {
       isPublishCoins: true,
       pointLog: {
         params: {
-          pagesize: 10
+          pagesize: 10,
+          order: 0
         },
         apiUrl: 'liquidityLogs',
         list: []
@@ -160,6 +163,18 @@ export default {
     foldingClick(id) {
       if (this.expands.length === 0 || this.expands[0] !== id) this.expands = [id]
       else this.expands = []
+    },
+    sortChange(sort) {
+      switch(sort.order) {
+        case 'ascending':
+          this.pointLog.params.order = 1
+          break
+        case 'descending':
+          this.pointLog.params.order = 2
+          break
+        default:
+          this.pointLog.params.order = 0
+      }
     }
   }
 }

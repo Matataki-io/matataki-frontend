@@ -15,6 +15,7 @@
             class="hide-expand-button"
             style="width: 100%"
             row-key="token_id"
+            @sort-change="sortChange"
           >
             <el-table-column
               prop="total_supply"
@@ -52,6 +53,7 @@
             <el-table-column
               :label="$t('user.positionCoins')"
               prop="total_supply"
+              sortable="custom"
             >
               <template slot-scope="scope">
                 <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
@@ -230,7 +232,8 @@ export default {
       isPublishCoins: true,
       pointLog: {
         params: {
-          pagesize: 10
+          pagesize: 10,
+          order: 0
         },
         apiUrl: 'tokenTokenList',
         list: []
@@ -450,6 +453,18 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    sortChange(sort) {
+      switch(sort.order) {
+        case 'ascending':
+          this.pointLog.params.order = 1
+          break
+        case 'descending':
+          this.pointLog.params.order = 2
+          break
+        default:
+          this.pointLog.params.order = 0
+      }
     }
   }
 }
