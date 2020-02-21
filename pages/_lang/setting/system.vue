@@ -17,6 +17,13 @@
           一键清除缓存
         </el-button>
       </div>
+
+      <div class="list">
+        <a class="href" target="_blank" href="https://www.yuque.com/matataki">
+          帮助文档
+        </a>
+      </div>
+
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -114,6 +121,10 @@ export default {
 }
 .list {
   margin: 20px 0 0 10px;
+  a {
+    color: #333;
+    text-decoration: underline;
+  }
 }
 .tag-title {
   font-weight: bold;
