@@ -15,11 +15,9 @@
           <svg-icon class="icon" icon-class="read" />
           {{ article.read || 0 }}</span>
       </div>
-      <template v-if="isHide" >
-        <ipfsAll :articleIpfsArray="articleIpfsArray" />
-        &nbsp;
-        <span class="article-head__ipfs">IPFS</span>
-      </template>
+      <ipfsAll :articleIpfsArray="articleIpfsArray" />
+      &nbsp;
+      <span class="article-head__ipfs">IPFS</span>
     </div>
     <template v-if="!isMe(article.uid)">
       <el-button :class="!info.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
