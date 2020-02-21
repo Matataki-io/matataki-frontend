@@ -219,10 +219,14 @@ export default {
         }
       })
     },
+    // 搜索用户
     searchUser: debounce(function () {
       const searchName = this.form.username.trim()
 
-      if (!searchName) return
+      if (!searchName) {
+        this.searchUserList = []
+        return
+      }
 
       this.toUserInfo = null
 
