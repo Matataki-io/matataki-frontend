@@ -20,7 +20,7 @@
 
       <div class="list">
         <a class="href" target="_blank" href="https://www.yuque.com/matataki">
-          帮助文档
+          帮助和支持
         </a>
       </div>
 
