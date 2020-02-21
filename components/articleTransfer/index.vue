@@ -176,7 +176,10 @@ export default {
     // 搜索用户
     searchUser: debounce(function () {
       const searchName = this.transferUsername.trim()
-      if (!searchName) return
+      if (!searchName) {
+        this.searchUserList = []
+        return
+      }
 
       this.toUserInfo = null
 

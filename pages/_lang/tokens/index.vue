@@ -280,12 +280,8 @@ export default {
         this.formEmpty()
       }
     },
-    searchUserName: {
-      deep: true,
-      immediate: true,
-      handler: function () {
-        this.searchUser()
-      }
+    searchUserName() {
+      this.searchUser()
     }
   },
   methods: {
@@ -396,10 +392,13 @@ export default {
       this.form.balance = Number(amount)
       this.giftDialog = true
     },
+    // 搜索用户
     searchUser: debounce(function () {
       const searchName = this.form.username.trim()
-
-      if (!searchName) return
+      if (!searchName) {
+        this.searchUserList = []
+        return
+      }
 
       this.toUserInfo = null
 
