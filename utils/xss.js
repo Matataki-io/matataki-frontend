@@ -71,27 +71,27 @@ export const xssFilter = html => {
   let rulePush = [
     {
       tag: 'h1',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h2',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h3',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h4',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h5',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'h6',
-      attributes: ['style']
+      attributes: ['id', 'style']
     },
     {
       tag: 'hr',
@@ -99,6 +99,10 @@ export const xssFilter = html => {
     },
     {
       tag: 'code',
+      attributes: ['style']
+    },
+    {
+      tag: 'pre',
       attributes: ['style']
     },
   ]
@@ -118,6 +122,14 @@ export const xssFilter = html => {
     },
     {
       tag: 'em',
+      attributes: ['style']
+    },
+    {
+      tag: 'th',
+      attributes: ['style']
+    },
+    {
+      tag: 'td',
       attributes: ['style']
     },
   ]

@@ -15,6 +15,7 @@
             class="hide-expand-button"
             style="width: 100%"
             row-key="token_id"
+            @sort-change="sortChange"
           >
             <el-table-column
               prop="total_supply"
@@ -52,6 +53,7 @@
             <el-table-column
               :label="$t('user.positionCoins')"
               prop="total_supply"
+              sortable="custom"
             >
               <template slot-scope="scope">
                 <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
@@ -112,12 +114,7 @@
           @togglePage="togglePage"
           class="pagination"
         />
-        <el-dialog
-          :visible.sync="giftDialog"
-          :before-close="giftDialogClose"
-          title="赠送Fan票"
-          width="600px"
-        >
+        <m-dialog v-model="giftDialog" width="600px" title="赠送Fan票" class="transfer-dialog">
           <el-form
             ref="form"
             v-loading="transferLoading"
@@ -132,34 +129,43 @@
               </p>
             </el-form-item>
             <el-form-item label="接受对象">
-              <el-input v-model="form.username" @keyup.enter.native="searchUser" placeholder="请输入赠送的对象" size="small" style="z-index: 2;">
-                <el-button slot="append" @click="searchUser" icon="el-icon-search" />
-              </el-input>
+              <el-input v-model="form.username" placeholder="请输入赠送的对象" size="small" style="z-index: 2;" />
+              <!-- 常用候选对象列表 -->
+              <template v-if="historyUser.length !== 0">
+                <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
+                  {{
+                    (item.nickname || item.username).length > 20
+                      ? `${(item.nickname || item.username).slice(0, 20)}...`
+                      : item.nickname || item.username
+                  }}
+                </el-tag>
+              </template>
               <!-- 搜索结果 -->
-              <div v-if="searchUserList.length !== 0 && toUserInfoIndex === -1" class="transfer—search__list">
-                <div v-for="(item, index) in searchUserList" :key="item.id" @click="continueUser(index)">
+              <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
+                <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
                   <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
                   <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
                 </div>
               </div>
             </el-form-item>
             <!-- 结果 -->
-            <el-form-item v-if="toUserInfoIndex !== -1" label="" prop="">
-              <router-link v-if="toUserInfoIndex !== -1" :to="{name: 'user-id', params: {id: searchUserList[toUserInfoIndex].id}}" class="search-user" target="_blank">
-                <avatar :src="searchUserAvatar(searchUserList[toUserInfoIndex].avatar)" class="search-user-avatar" />
-                <span v-html="searchUserTitle(searchUserList[toUserInfoIndex].nickname || searchUserList[toUserInfoIndex].username)" class="search-result__tag " />
-                <div @click="closeUser" class="gift-ful">
-                  <i class="el-icon-close" />
-                </div>
-              </router-link>
-              <div class="avatar-content" />
-            </el-form-item>
+            <transition name="result">
+              <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
+                <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
+                  <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
+                  <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
+                  <div @click="closeUser" class="gift-ful">
+                    <i class="el-icon-close" />
+                  </div>
+                </router-link>
+              </el-form-item>
+            </transition>
             <el-form-item label="发送数量" prop="tokens">
               <el-input
                 v-model="form.tokens"
                 :max="form.max"
                 :min="form.min"
-                placeholder="请输入内容"
+                placeholder="请输入数量"
                 size="small"
                 clearable
               />
@@ -170,16 +176,13 @@
             </p>
             <el-form-item>
               <div class="form-button">
-                <el-button :disabled="toUserInfoIndex === -1" @click="submitForm('form')" type="primary" size="small">
+                <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
                   确定
                 </el-button>
-              <!-- <el-button @click="formClose" size="small"> -->
-              <!-- 取消 -->
-              <!-- </el-button> -->
               </div>
             </el-form-item>
           </el-form>
-        </el-dialog>
+        </m-dialog>
       </div>
       <!-- 流动金 -->
       <holdliquidity />
@@ -192,6 +195,7 @@
 
 <script>
 import moment from 'moment'
+import debounce from 'lodash/debounce'
 import userPagination from '@/components/user/user_pagination.vue'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
@@ -212,7 +216,9 @@ export default {
   },
   data() {
     const validateToken = (rule, value, callback) => {
-      if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
+      if (!value) {
+        callback('发送数量不能为空')
+      } else if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
         callback(new Error('发送的数量小数不能超过4位'))
       } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
@@ -226,7 +232,8 @@ export default {
       isPublishCoins: true,
       pointLog: {
         params: {
-          pagesize: 10
+          pagesize: 10,
+          order: 0
         },
         apiUrl: 'tokenTokenList',
         list: []
@@ -254,12 +261,30 @@ export default {
       },
       rules: {
         tokens: [
-          { validator: validateToken, trigger: 'blur' }
+          { validator: validateToken, trigger: ['blur', 'change'] }
         ]
       },
       expands: [],
       searchUserList: [], // 搜索结果
-      toUserInfoIndex: -1 // 转让的对象
+      toUserInfo: null, // 转让的对象
+      historyUser: [] // 历史转让用户
+    }
+  },
+  computed: {
+    searchUserName() {
+      return this.form.username
+    }
+  },
+  watch: {
+    giftDialog(newVal) {
+      if (newVal) {
+        this.historyUserFunc('token')
+      } else {
+        this.formEmpty()
+      }
+    },
+    searchUserName() {
+      this.searchUser()
     }
   },
   methods: {
@@ -292,10 +317,10 @@ export default {
       })
     },
     transferMinetoken() {
-      const toUserInfoIndex = this.toUserInfoIndex
-      if (toUserInfoIndex === -1) return
+      const toUserInfo = this.toUserInfo
+      if (this.$utils.isNull(toUserInfo)) return
 
-      const toId = toUserInfoIndex === -1 ? -1 : this.searchUserList[toUserInfoIndex].id
+      const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
       this.transferLoading = true
 
       const data = {
@@ -328,7 +353,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.toUserInfoIndex === -1) {
+          if (this.$utils.isNull(this.toUserInfo)) {
             this.$message.warning('请选择用户')
           } else {
             this.transferMinetoken()
@@ -352,20 +377,12 @@ export default {
       this.$refs.form.resetFields()
 
       this.searchUserList = [] // 搜索结果
-      this.toUserInfoIndex = -1 // 转让的对象
+      this.toUserInfo = null
     },
-    giftDialogClose(done) {
-      this.formEmpty()
-      done()
-    },
-    // formClose() {
-    //   this.giftDialog = false
-    //   this.formEmpty()
-    // },
     closeUser(e) {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
-      this.toUserInfoIndex = -1
+      this.toUserInfo = null
       this.searchUserList = []
       return false
     },
@@ -378,14 +395,15 @@ export default {
       this.form.balance = Number(amount)
       this.giftDialog = true
     },
-    searchUser() {
+    // 搜索用户
+    searchUser: debounce(function () {
       const searchName = this.form.username.trim()
+      if (!searchName) {
+        this.searchUserList = []
+        return
+      }
 
-      if (!searchName) return this.$message.warning('用户名不能为空')
-
-      this.toUserInfoIndex = -1
-
-      this.transferLoading = true
+      this.toUserInfo = null
 
       const params = {
         word: searchName,
@@ -407,22 +425,46 @@ export default {
         // 出错
         console.log(err)
         this.searchUserList = []
-      }).finally(() => {
-        this.transferLoading = false
       })
-    },
+    }, 300),
     foldingClick(id) {
       if (this.expands.length === 0 || this.expands[0] !== id) this.expands = [id]
       else this.expands = []
     },
-    continueUser(i) {
-      this.toUserInfoIndex = i
+    continueUser(val) {
+      this.toUserInfo = val
     },
     searchUserAvatar(src) {
       return src ? this.$ossProcess(src, { h: 60 }) : ''
     },
     searchUserTitle(html) {
       return html ? xssFilter(html) : ''
+    },
+    // 获取常用用户列表
+    historyUserFunc(type) {
+      this.$API.historyUser({
+        type
+      }).then(res => {
+        if (res.code === 0) {
+          this.historyUser = res.data.slice(0, 10)
+        } else {
+          console.log(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    sortChange(sort) {
+      switch(sort.order) {
+        case 'ascending':
+          this.pointLog.params.order = 1
+          break
+        case 'descending':
+          this.pointLog.params.order = 2
+          break
+        default:
+          this.pointLog.params.order = 0
+      }
     }
   }
 }
@@ -536,7 +578,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  top: 28px;
+  top: 32px;
   background: #fff;
   border: 1px solid #B2B2B2;
   border-top: none;
@@ -572,7 +614,6 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  margin-top: 10px;
   &-avatar {
     width: 40px;
     height: 40px;
@@ -600,6 +641,21 @@ export default {
   }
 }
 
+// history user
+.history-user__tag {
+  cursor: pointer;
+  margin: 0 10px 0 0;
+}
+
+// result transition
+.result-enter-active,
+.result-leave-active {
+  transition: opacity .2s;
+}
+.result-enter,
+.result-leave-to {
+  opacity: 0
+}
 </style>
 
 <style lang="less">

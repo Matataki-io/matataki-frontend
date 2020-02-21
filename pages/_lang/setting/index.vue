@@ -36,7 +36,7 @@
             />
           </div>
         </div>
-        <div class="list center">
+        <!-- <div class="list center">
           <span class="title"> {{ $t('email') }}</span>
           <div class="input">
             <el-input
@@ -46,7 +46,7 @@
               clearable
             />
           </div>
-        </div>
+        </div> -->
         <div class="list">
           <span class="title">{{ $t('profile') }}</span>
           <div class="input">
@@ -130,7 +130,6 @@ export default {
       userData: null,
       linksData: null,
       username: '',
-      email: '',
       introduction: '',
       avatar: '',
       setProfile: false, // 是否编辑信息
@@ -141,6 +140,15 @@ export default {
       socialModify: false,
       about: [''],
       social: [
+        {
+          symbol: 'Email',
+          type: 'email',
+          name: 'Email：',
+          tooltip: '',
+          placeholder: '邮箱',
+          url: '',
+          value: ''
+        },
         {
           symbol: 'QQ',
           type: 'qq',
@@ -216,22 +224,13 @@ export default {
     username(newVal) {
       if (
         this.detection(newVal, 'username') ||
-        this.detectionIntroduction() ||
-        this.detectionEmail()) this.setProfile = true
-      else this.setProfile = false
-    },
-    email(newVal) {
-      if (
-        this.detection(newVal, 'email') ||
-        this.detectionIntroduction() ||
-        this.detectionUsername()) this.setProfile = true
+        this.detectionIntroduction()) this.setProfile = true
       else this.setProfile = false
     },
     introduction(newVal) {
       if (
         this.detection(newVal, 'introduction') ||
-        this.detectionUsername() ||
-        this.detectionEmail()) this.setProfile = true
+        this.detectionUsername()) this.setProfile = true
       else this.setProfile = false
     },
     about: {
@@ -274,14 +273,10 @@ export default {
     // 检测
     detection(val, type) {
       if (type === 'username') return val !== (this.userData.nickname || this.userData.username)
-      if (type === 'email') return val !== this.userData.email
       if (type === 'introduction') return val !== this.userData.introduction
     },
     detectionUsername() {
       return this.username !== (this.userData.nickname || this.userData.username)
-    },
-    detectionEmail() {
-      return this.email !== this.userData.email
     },
     detectionIntroduction() {
       return this.introduction !== this.userData.introduction
@@ -295,8 +290,6 @@ export default {
         throw this.$t('rule.strEnglishNumber', ['1-12'])
       } else if (this.introduction.length > 20) {
         throw this.$t('rule.profileNotExceedStr', [20])
-      } else if (this.email !== '' && !regEmail.test(this.email)) {
-        throw this.$t('rule.emailMessage')
       }
     },
     setAvatarImage(hash) {
@@ -315,7 +308,6 @@ export default {
         // console.log(data)
         this.userData = data
         this.username = data.nickname || data.username
-        this.email = data.email || ''
         this.introduction = data.introduction || ''
         this.setAvatarImage(data.avatar)
       }
@@ -350,12 +342,10 @@ export default {
 
         const requestData = {
           nickname: this.username,
-          introduction: this.introduction,
-          email: this.email
+          introduction: this.introduction
         }
         if (this.username === (this.userData.nickname || this.userData.username)) delete requestData.nickname
         if (this.introduction === this.userData.introduction) delete requestData.introduction
-        if (this.email === this.userData.email) delete requestData.email
 
         await this.$backendAPI.setProfile(requestData)
 

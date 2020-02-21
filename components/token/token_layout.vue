@@ -72,9 +72,10 @@
               分享
             </el-button>
           </div>
-          <div class="balance">
+          <router-link v-if="isLogined" :to="{ name: 'tokens' }" tag="div" class="balance">
             已持有：{{ balance }} {{ minetokenToken.symbol }}
-          </div>
+            <i class="el-icon-arrow-right" />
+          </router-link>
         </div>
         <p v-if="!minetokenToken.contract_address" class="warning">
           Fan票正在部署中，请耐心等候。
@@ -188,7 +189,7 @@
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a :href="item" target="_blank">{{ item }}</a>
+              <a :href="formatUrl(item)" target="_blank">{{ item }}</a>
             </li>
           </ul>
           <span v-else class="not">暂无</span>
@@ -415,6 +416,12 @@ export default {
           }
         })
         .catch(err => console.log('get token user error', err))
+    },
+    formatUrl(url) {
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
+      if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
+      return url
     }
   }
 }
@@ -601,7 +608,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 8px 10px 8px 0;
-  &:nth-child(5n) {
+  &:nth-child(6n) {
     margin-right: 0;
   }
 }
@@ -646,6 +653,10 @@ export default {
   font-size:16px;
   right: 20px;
   top: 20px;
+  cursor: pointer;
+  &:hover {
+    color: #542de0;
+  }
 }
 .wrap-open {
   white-space: pre-wrap;

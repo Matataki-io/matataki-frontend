@@ -29,9 +29,8 @@
 
 - Other Resources: [Backend Repo](https://github.com/smart-signature/smart-signature-backend) | [Backend Doc](https://github.com/smart-signature/smart-signature-backend/blob/master/doc.md) | [Contract](https://github.com/smart-signature/smart-signature-EOS-contract) | [Documentation about Project](https://shimo.im/docs/UOYT3DqklCYBbzny) | [Whitepaper (Draft)](https://hackmd.io/Q3KNkxjgSwKRJ5cfBL2I4g)
 
-目前项目本体开发转为私有，大部分文档和Repo内容已经失效。</br>
-不过仙女科技开发团队还是秉持着开源精神，待产品稳定后可能会有同步更新。</br>
-如果对Repo感兴趣，欢迎`star`和`clone`
+<del>目前项目本体开发转为私有，大部分文档和Repo内容已经失效。</br></del>
+如果对 Repo 感兴趣，欢迎`star`和`clone`
 
 ## Build Setup
 

@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="line" />
-    <giftDialog v-model="giftDialogShow" />
+    <giftDialog v-model="giftDialogShow" :balance="playerincome" />
   </div>
 </template>
 

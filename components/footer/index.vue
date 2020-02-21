@@ -3,7 +3,10 @@
     <div class="footer-content">
       <div class="content">
         <div class="nav">
-          <a class="href" target="_blank" href="https://www.matataki.io/p/1060">
+          <a class="href" target="_blank" href="https://www.yuque.com/matataki">
+            帮助和支持
+          </a>
+          <a class="href" target="_blank" href="https://www.yuque.com/matataki/matataki">
             {{ $t('footer.hellpbook') }}
           </a>
           <a class="href" target="_blank" href="https://www.matataki.io/p/781">
@@ -27,7 +30,7 @@
           <a class="href" target="_blank" href="https://github.com/Matataki-io/Matataki-FE">
             {{ $t('footer.about') }}
           </a>
-          <a class="href" target="_blank" href="https://www.matataki.io/p/1059">
+          <a class="href" target="_blank" href="https://www.yuque.com/matataki/matataki_version">
             {{ $t('footer.updateRecord') }}
           </a>
           <a class="href" target="_blank" href="http://www.matataki.io/p/616">

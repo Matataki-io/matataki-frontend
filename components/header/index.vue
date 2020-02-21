@@ -312,13 +312,26 @@ export default {
     jutmpToSearch() {
       if (!strTrim(this.searchInput)) return this.$message.warning(this.$t('warning.searchContent'))
 
-      const name = this.$route.name
-      this.$router.push({
-        name: name === 'search-shop' || name === 'search-user' ? name : 'search',
-        query: {
-          q: strTrim(this.searchInput)
-        }
-      })
+      const names = ['sharehall', 'share-id', 'token', 'token-id']
+      const types = [1, 1, 2, 2]
+      const type = types[names.indexOf(this.$route.name)]
+
+      const query = {}
+      if (type) query.type = type
+      query.q = strTrim(this.searchInput)
+
+      if (this.$route.name === 'search') {
+        this.$router.replace({
+          name: 'search',
+          query
+        })
+      } else {
+        const { href } = this.$router.resolve({
+          name: 'search',
+          query
+        })
+        window.open(href, '_blank')
+      }
       this.$emit('search', strTrim(this.searchInput))
     },
     // 推荐跳转

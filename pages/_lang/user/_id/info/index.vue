@@ -8,7 +8,7 @@
         </h3>
         <div class="inline url">
           <p v-for="(item, index ) in urls" :key="index">
-            <a :href="item" class="link">{{ item }} </a>
+            <a :href="formatUrl(item)" target="_blank" class="link">{{ item }} </a>
           </p>
         </div>
       </div>
@@ -46,6 +46,11 @@ export default {
       loading: false,
       social: [],
       socialTemplate: [
+        {
+          icon: 'Email',
+          type: 'email',
+          content: ''
+        },
         {
           icon: 'QQ',
           type: 'qq',
@@ -108,6 +113,12 @@ export default {
       } catch (error) {
         console.log(`获取用户信息失败${error}`)
       }
+    },
+    formatUrl(url) {
+      const isHttp = url.indexOf('http://')
+      const isHttps = url.indexOf('https://')
+      if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
+      return url
     }
   }
 }

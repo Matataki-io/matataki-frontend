@@ -910,6 +910,7 @@ minetokenGetResources(tokenId) {
   // 暂时不用, 后端说用 p 接口
   // shareDetail(id) { return request.get(`/share/${id}`) },
   shareDetail(id) { return request.get(`/p/${id}`) },
+  // telegram 登录
   telegramLogin(data) {
     return request({
       method: 'POST',
@@ -917,8 +918,20 @@ minetokenGetResources(tokenId) {
       data: data
     })
   },
+  // twitter 登录
+  twitterLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/twitter',
+      data: data
+    })
+  },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
     return request.get(`/search/${type}`, { params })
+  },
+  // 常用候选列表
+  historyUser(params) {
+    return request.get(`/history/user`, { params })
   }
 }

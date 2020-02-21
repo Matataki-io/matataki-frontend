@@ -140,7 +140,17 @@ export default {
           status: false,
           is_main: 0,
           disabled: false
-        }
+        },
+        // {
+        //   type: 'twitter',
+        //   icon: 'twitter', // 随时可换 防止影响
+        //   typename: 'Twitter',
+        //   username: '', // 最好后端混淆后返回
+        //   loading: false,
+        //   status: false,
+        //   is_main: 0,
+        //   disabled: false
+        // }
       ]
     }
   },
@@ -569,6 +579,15 @@ export default {
     background-color: #4d9afd;
     &:hover {
       background-color: mix(#000, #4d9afd, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.twitter {
+    background-color: #00ACED;
+    &:hover {
+      background-color: mix(#000, #00ACED, 20%);
     }
     .icon {
       font-size: 20px;
