@@ -48,7 +48,7 @@ export default {
       const signtext = httpmethod + '&' + encodeURIComponent(twitterurl) + '&' + encodeURIComponent(params)
       const signkey = encodeURIComponent(process.env.TWITTER_APP_KEY) + '&'
       const sign = encodeURIComponent(crypto.createHmac('sha1', signkey).update(signtext).digest().toString('base64'))
-      const requesturl = 'http://twitter.com/oauth/request_token?' +
+      const requesturl = 'https://twitter.com/oauth/request_token?' +
       'oauth_consumer_key=' + process.env.TWITTER_APP_KEY +
       '&oauth_nonce=' + ranstr +
       '&oauth_signature_method=' + 'HMAC-SHA1' +
