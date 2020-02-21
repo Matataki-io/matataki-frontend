@@ -33,7 +33,7 @@ export default {
   promptTitle: 'prompt',
   backHome: 'Back to the home page',
   feedback: 'Immediately spit',
-  notPage: "Can't find the page you want to visit.",
+  notPage: 'Can\'t find the page you want to visit.',
   serverError: 'The server is missing...',
   close: 'close',
   confirm: 'OK',
@@ -46,7 +46,7 @@ export default {
   email: 'mailbox',
   articleUtil: 'Article',
   referral:
-    "Instantaneous MATATAKI, a content platform for permanent storage and copyright records. Industry-leading decentralized applications, the creator's safe haven. Sign up to receive an additional 500 points. ",
+    'Instantaneous MATATAKI, a content platform for permanent storage and copyright records. Industry-leading decentralized applications, the creator\'s safe haven. Sign up to receive an additional 500 points. ',
   save: 'save',
   transaction: 'transaction',
   gift: 'gift',
@@ -226,11 +226,11 @@ export default {
     inviteDes1:
       'Every successful invitation to a friend to register for {0} points',
     inviteDes2: 'You can get extra {0} points for your friends',
-    inviteDes3: "You can get extra 1/{0}' for your friends to read points",
+    inviteDes3: 'You can get extra 1/{0}\' for your friends to read points',
     dailyPublishPoint: 'Daily Post Award',
     dailyPublishPointDes: 'Maximum get {0} points rewards per day',
     dailyReadPoint: 'Daily reading rewards',
-    dailyReadPointDes: "Maximum {0} points rewards' for daily reading reviews",
+    dailyReadPointDes: 'Maximum {0} points rewards\' for daily reading reviews',
     receiveSuccess: 'Receive success',
     receiveFail: 'Receive failed',
     receiveProfileFail: 'Receive settings data integration failed',
@@ -263,7 +263,7 @@ export default {
     programDes2:
       'Instant MATATAKI adopts the Inter-Star File System (IPFS) protocol, and each file only has a unique one, which reduces the waste of storage resources, reduces the storage cost, realizes that the platform resources will never be lost, the website will never shut down, and the user rights will be permanently valid. . ',
     programDes3:
-      "Support to use the decentralized account login of mainstream public links such as EOS and Ontology, the platform cannot touch the user's private key. Use IPFS technology to record content modification operations, and no one, including the platform, can tamper with it. ",
+      'Support to use the decentralized account login of mainstream public links such as EOS and Ontology, the platform cannot touch the user\'s private key. Use IPFS technology to record content modification operations, and no one, including the platform, can tamper with it. ',
     blockTitle1: 'Copyright permanent record, timestamp efficient confirmation',
     blockDes1:
       'The blockchain and digital copyright protection can be perfectly combined to solve the current situation of piracy. First of all, in the process of confirming the rights, the patent application process under the existing mechanism is time-consuming and inefficient. The distributed ledger and time stamping technology of the blockchain makes it possible for the whole network to quickly reach a consensus on the ownership of intellectual property rights. In theory, timely confirmation of rights can be achieved. The asymmetric encryption technology guarantees the uniqueness of the copyright. The time stamp technology guarantees the copyright owner. The copyright owner can complete the process of confirming the rights conveniently and quickly, and solves the problem of the inefficiency of the traditional confirmation mechanism. ',
@@ -387,11 +387,11 @@ export default {
       '1. Distorted, falsified, plagiarized, plagiarized works created by others,',
     statement2:
       '2. The main contents of the article are such as "laws, regulations, resolutions, decisions, orders of the state organs and other documents with legislative, administrative, judicial nature, current affairs news, calendars, general tables, general forms and formulas", etc. Public content; ',
-    statement3: "3. Forward the content formed by other people's work, ",
+    statement3: '3. Forward the content formed by other people\'s work, ',
     statement4:
-      "4. Large-scale quotation of other people's content or the main content of the article for other people's works, such as abstracts, abstracts, remarks, etc",
+      '4. Large-scale quotation of other people\'s content or the main content of the article for other people\'s works, such as abstracts, abstracts, remarks, etc',
     statement5:
-      "5. The main system of the article integrates and compiles the content of others' works",
+      '5. The main system of the article integrates and compiles the content of others\' works',
     statement6:
       '6. Content formed through other infringements of copyright or other rights. ',
     statement7:
@@ -463,7 +463,7 @@ export default {
     noId: 'no ID',
     ipfsPrompt:
       'This article has been uploaded to IPFS for permanent storage. This operation only deletes the display in Instant MATATAKI. ',
-    articleTransferTitle: "Transfer article's ownership",
+    articleTransferTitle: 'Transfer article\'s ownership',
     articleTransferPlaceholder:
       'Please enter the username you want to transfer',
     articleTransferNotUser: 'User does not exist',
@@ -475,7 +475,7 @@ export default {
     articleTransferHelpBtn: 'Know it',
     articleTransferHelpStepTitle: 'Transfer step',
     articleTransferHelpStepDes1:
-      "Enter the other party's nickname' in the search box",
+      'Enter the other party\'s nickname\' in the search box',
     articleTransferHelpStepDes2:
       'Please check the information of the transferred account carefully',
     articleTransferHelpStepDes3:
@@ -485,13 +485,13 @@ export default {
     articleTransferNotOpen:
       'The other party has not opened the transfer permission',
     publishMatataki: 'This article was posted on instant matataki',
-    publishMatatakOriginal: "Please repost under the license's permission",
+    publishMatatakOriginal: 'Please repost under the license\'s permission',
     publishMatatakiUser:
       'Disclaimer: This article was uploaded and published by the user "{0}", the content is the author\'s independent point of view. Does not represent the instant Matataki position, does not constitute investment advice, please be cautious. ',
     ipfsTitle:
       'The content of this article has been uploaded to the interstellar file storage system "IPFS", which is permanently saved and cannot be deleted. ',
     ipfsContent:
-      "HASH' is a unique ID generated after a work is uploaded to IPFS. HASH can access the work content at different nodes of IPFS. ",
+      'HASH\' is a unique ID generated after a work is uploaded to IPFS. HASH can access the work content at different nodes of IPFS. ',
     likeList: 'Support queue',
     commentList: 'Comment list',
     createWidget: 'create widget',
@@ -500,7 +500,7 @@ export default {
     widgetHelp: 'How to use widgets? ',
     articleWidgetHelp: 'What is the article widget',
     articleWidgetContent:
-      "The widget function generates a beautiful display card for the current article. You can copy the widget code into Instant MATATAKI's article editor so that you can insert beautiful article display cards into your articles. Of course, the article card you show will also have the ability to invite links. ",
+      'The widget function generates a beautiful display card for the current article. You can copy the widget code into Instant MATATAKI\'s article editor so that you can insert beautiful article display cards into your articles. Of course, the article card you show will also have the ability to invite links. ',
     stepTitle: 'Operating steps',
     stepContent1: 'You can choose to customize the content on the display card',
     stepContent2: 'Click the "Create widget" button to get the code',
@@ -547,7 +547,7 @@ export default {
     importError:
       'Import failed, currently only supports: Chain Wen, Orange Book, WeChat Article',
     shopNotBuy: 'This product does not currently support {0} purchase',
-    vntBuyMinMoney: "Vnt purchase can't be less than 1Vnt",
+    vntBuyMinMoney: 'Vnt purchase can\'t be less than 1Vnt',
     vntBuyAccount:
       'The login Vnt account is not the same as the payment account',
     shareWeibo: '微博',
@@ -560,7 +560,7 @@ export default {
     copyLink: 'copy link',
     des1: 'Every successful invitation to a friend to register for {0} points',
     des2: 'You can get extra {0} points for your friends.',
-    des3: "You can get extra 1{0}' when you get points.",
+    des3: 'You can get extra 1{0}\' when you get points.',
     des4:
       'Note: If the inactive person reads {0} articles and makes an evaluation, the activation will be completed and you will receive additional {0} points after activation. ',
     loginViewList: 'Login to view the invitation list'
@@ -592,7 +592,7 @@ export default {
     article: 'commodity',
     shop: 'goods',
     rule: 'Rules introduction',
-    transfer: "Accept someone else's article permission to hand over",
+    transfer: 'Accept someone else\'s article permission to hand over',
     about: 'About us',
     github: 'Github entrance',
     tg: 'Join the telegram',
