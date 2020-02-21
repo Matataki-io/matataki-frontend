@@ -141,16 +141,16 @@ export default {
           is_main: 0,
           disabled: false
         },
-        {
-          type: 'twitter',
-          icon: 'twitter', // 随时可换 防止影响
-          typename: 'Twitter',
-          username: '', // 最好后端混淆后返回
-          loading: false,
-          status: false,
-          is_main: 0,
-          disabled: false
-        }
+        // {
+        //   type: 'twitter',
+        //   icon: 'twitter', // 随时可换 防止影响
+        //   typename: 'Twitter',
+        //   username: '', // 最好后端混淆后返回
+        //   loading: false,
+        //   status: false,
+        //   is_main: 0,
+        //   disabled: false
+        // }
       ]
     }
   },
