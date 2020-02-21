@@ -184,7 +184,6 @@ export default {
       } else if (type === "Telegram") {
         this.telegramLogin();
       } else if (type === "Twitter") {
-        // this.$message.warning('这个功能还在开发哦~');
         this.twitterLogin();
       } else await this.signInx(type);
     },
@@ -249,23 +248,9 @@ export default {
       this.$router.push({ name: 'login-telegram', query: { from: 'login' } })
     },
     async twitterLogin() {
-      this.loading = true;
-      try {
-        const res = await this.hello('twitter').login()
-        const res2 = await this.$API.twitterLogin({
-          oauth_token: res.authResponse.oauth_token,
-          oauth_token_secret: res.authResponse.oauth_token_secret
-        });
-        await this.$store.commit('setLoginModal', false)
-        this.loading = false;
-        await this.$store.commit('setAccessToken', res2.data)
-        await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
-        window.location.reload();
-      } catch (error) {
-        this.loading = false;
-        this.$message.closeAll();
-        this.$message.error(error.toString());
-      }
+      this.$store.commit('setLoginModal', true)
+      this.$store.commit('setTwitterLoginMode', 'login')
+      this.$router.push({ name: 'login-twitter', query: { from: 'login' } })
     },
     // 登录提交
     submitLoginForm() {

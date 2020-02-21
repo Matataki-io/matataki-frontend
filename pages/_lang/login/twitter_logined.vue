@@ -9,7 +9,25 @@
 
 <script>
 export default {
-  layout: 'empty'
+  layout: 'empty',
+  async mounted() {
+    try {
+      const oauthtoken = this.$route.query.oauth_token
+      const oauthverifier = this.$route.query.oauth_verifier
+      const res2 = await this.$API.twitterLogin({
+        oauth_token: oauthtoken,
+        oauth_verifier: oauthverifier
+      })
+      await this.$store.commit('setLoginModal', false)
+      await this.$store.commit('setAccessToken', res2.data)
+      await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
+      this.$router.go(-2) // 本页面由twitter登录后重定向而来，故-1是twitter/login
+    } catch (error) {
+      this.$router.go(-2)
+      this.$message.closeAll()
+      this.$message.error(error.toString())
+    }
+  }
 }
 </script>
 

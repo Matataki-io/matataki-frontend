@@ -12,6 +12,8 @@ export const state = () => ({
     nickname: ''
   },
   loginModalShow: false,
+  twitterLoginMode: 'login', 
+  // mode值：login/bind，twitter登录回调地址固定，故需要全局设置
   locales: ['zh', 'en'],
   locale: 'zh'
 })
@@ -93,6 +95,9 @@ export const mutations = {
   },
   setLoginModal(state, show) {
     state.loginModalShow = show
+  },
+  setTwitterLoginMode(state, mode) {
+    state.twitterLoginMode = mode
   },
   SET_LANG(state, locale) {
     if (state.locales.includes(locale)) {
