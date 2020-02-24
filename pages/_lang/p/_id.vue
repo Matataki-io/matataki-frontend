@@ -116,6 +116,14 @@
           </div>
         </div>
 
+        <becomeAnArticleEditor
+          :article="article"
+          :hasPaied="hasPaied"
+          :tokenHasPaied="tokenHasPaied"
+          :differenceToken="differenceToken"
+          :totalCny="totalCny"
+        />
+
         <!-- sidebar -->
         <div class="sidebar">
           <div v-if="isProduct" @click="buy" class="article-btn">
@@ -515,6 +523,7 @@ import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
 import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
+import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
 
 import userPagination from '@/components/user/user_pagination.vue'
 
@@ -544,6 +553,7 @@ export default {
     commentInput,
     OrderModal,
     userPagination,
+    becomeAnArticleEditor,
     avatar
   },
   data() {

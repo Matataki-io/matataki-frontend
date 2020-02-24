@@ -168,6 +168,77 @@
         </transition>
       </div>
 
+      <!-- 编辑权限 （功能开发中） -->
+      <div class="post-content" style="width: 380px;">
+        <div>
+          <h3>
+            编辑权限 （功能开发中）
+            <el-tooltip effect="dark" content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。" placement="top-start">
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
+            </el-tooltip>
+          </h3>
+          <el-checkbox v-model="tokenEditAuthority" size="small">
+            设置持Fan票
+          </el-checkbox>
+        </div>
+        <transition name="fade">
+          <div v-show="tokenEditAuthority" class="fl ac">
+            <div>
+              <h3>Fan票类型</h3>
+              <el-select v-model="editSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable>
+                <el-option
+                  v-for="item in readSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>持Fan票数量</h3>
+              <el-input
+                v-model="editToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;">
+          设置支付
+        </el-checkbox>
+        <transition name="fade">
+          <div v-show="buyEditAuthority" class="fl ac">
+            <div>
+              <h3>支付类型</h3>
+              <el-select v-model="paymentSelectValue" disabled size="small" placeholder="请选择" style="width: 100%;">
+                <el-option
+                  v-for="item in paymentSelectOptions"
+                  :key="item.id"
+                  :label="item.symbol + '-' + item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div style="margin-left: 10px;">
+              <h3>支付数量</h3>
+              <el-input
+                v-model="editPaymentToken"
+                :min="1"
+                :max="100000000"
+                size="small"
+                placeholder="请输入内容"
+              />
+            </div>
+          </div>
+        </transition>
+      </div>
+
       <div v-if="$route.params.type !== 'edit'" class="set-item fl ac">
         <span class="set-title">
           {{ $t('publish.commentTitle') }}
@@ -531,11 +602,16 @@ export default {
       saveDraft: '文章自动保存至',
       readContent: false,
       readauThority: false, // 持通证阅读
+      tokenEditAuthority: false,
+      buyEditAuthority: false,
       readToken: 1, // 阅读token数量
+      editToken: 1, // 编辑token数量
       readSelectOptions: [], // 阅读tokenlist
       readSelectValue: '', // 阅读tokenlist show value
+      editSelectValue: '', // 编辑tokenlist show value
       paymentTokenVisible: false, // 支付可见
       paymentToken: 0, // 支付token
+      editPaymentToken: 0, // 编辑文章需支付token数量
       paymentSelectOptions: [
         {
           id: -1, // 暂时前端写死, 不能0否则判断要修改
