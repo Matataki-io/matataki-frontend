@@ -90,7 +90,7 @@ export default {
     const validateAmount = (rule, value, callback) => {
       if (!value) {
         callback('发送数量不能为空')
-      } else if (!(/^[0-9]+(\.[0-9]{1,2})?$/.test(value))) {
+      } else if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
         callback(new Error(`发送的数量小数不能超过${this.form.decimals}位`))
       } else if (Number(value) < this.form.min) {
         callback(new Error(`发送数量不能少于${this.form.min}`))
@@ -105,11 +105,11 @@ export default {
       giftDialog: false,
       transferLoading: false,
       form: {
-        decimals: 2,
+        decimals: 4,
         symbol: 'CNY',
         username: '',
         amount: '',
-        min: 0.01,
+        min: 0.0001,
         max: 99999999, // 默认最大
       },
       rules: {
