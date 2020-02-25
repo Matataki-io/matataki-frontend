@@ -175,6 +175,7 @@ export default {
         default:
           this.pointLog.params.order = 0
       }
+      this.togglePage(1)
     }
   }
 }
