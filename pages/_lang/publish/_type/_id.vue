@@ -124,6 +124,14 @@
             </div>
           </div>
         </transition>
+        <div v-show="readauThority" class="related-add">
+          <el-tooltip effect="dark" content="多Fan票解锁正在开发中" placement="top">
+            <div class="add-icon disable">
+              <i class="el-icon-plus" />
+            </div>
+          </el-tooltip>
+          <span>添加更多</span>
+        </div>
         <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
           设置支付
         </el-checkbox>
@@ -180,7 +188,7 @@
               />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="tokenEditAuthority" size="small">
+          <el-checkbox v-model="tokenEditAuthority" size="small" disabled>
             设置持Fan票
           </el-checkbox>
         </div>
@@ -209,7 +217,7 @@
             </div>
           </div>
         </transition>
-        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;">
+        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;" disabled>
           设置支付
         </el-checkbox>
         <transition name="fade">
