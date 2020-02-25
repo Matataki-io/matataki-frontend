@@ -82,17 +82,6 @@ export default {
   },
   data() {
     return {
-      // articleCardData: {
-      //   title: this.$t('home.articleNavHotTitle'),
-      //   params: {
-      //     channel: 1,
-      //     filter: null,
-      //     extra: 'short_content'
-      //   },
-      //   apiUrl: 'homeScoreRanking',
-      //   articles: [],
-      //   isAtuoRequest: false
-      // },
       articleCardData: [
         {
           params: {
@@ -144,7 +133,9 @@ export default {
     }
   },
   created() {
-    this.articleCardData[0].articles = this.articleList
+    if (this.articleList.length !== 0) {
+      this.articleCardData[0].articles = this.articleList
+    }
   },
   mounted() {
   },

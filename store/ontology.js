@@ -3,13 +3,19 @@ import API from '@/api/ontology'
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 
-export const state = () => ({
-  account: null,
-  balance: {
-    ONG: 0,
-    ONT: 0
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('ontology')
+  return {
+    account: null,
+    balance: {
+      ONG: 0,
+      ONT: 0
+    }
   }
-})
+}
+// 初始化
+export const state = getDefaultState
 
 export const getters = {
   currentBalance: ({ balance }) => `${balance.ONT} ONT`
@@ -21,6 +27,10 @@ export const mutations = {
   },
   setBalance(state, balance = { ONG: 0, ONT: 0 }) {
     state.balance = balance
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -71,5 +81,9 @@ export const actions = {
   signOut({ commit }) {
     commit('setAccount')
     commit('setBalance')
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 }

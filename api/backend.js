@@ -327,18 +327,28 @@ const API = {
   // 文章转让
   async transferOwner(from, articleId, uid) {
     // console.log(from, articleId, uid)
-    if (from === 'article')
+    if (from === 'article') {
+      // 文章
       return this.accessBackend({
         method: 'POST',
         url: '/post/transferOwner',
         data: { signid: articleId, uid }
       })
-    if (from === 'draft')
+    } else if (from === 'draft') {
+      // 草稿
       return this.accessBackend({
         method: 'POST',
         url: '/draft/transferOwner',
         data: { draftid: articleId, uid }
       })
+    } else {
+      // 其他
+      return this.accessBackend({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    }
   },
   // 通过用户名搜索
   async searchUsername(username) {

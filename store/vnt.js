@@ -2,10 +2,17 @@ import BigNumber from 'bignumber.js'
 import { getToken, setToken, removeToken } from '../utils/auth'
 import API from '@/api/API'
 
-export const state = () => ({
-  // token: 'token',
-  balances: 0
-})
+
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('vnt')
+  return {
+    // token: 'token',
+    balances: 0
+  }
+}
+
+export const state = getDefaultState
 
 export const getters = {
 }
@@ -13,6 +20,10 @@ export const getters = {
 export const mutations = {
   SET_BALANCE(state, data) {
     state.balances = data
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 // 授权 方法
@@ -301,6 +312,10 @@ export const actions = {
         })
       }
     })
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 
 }

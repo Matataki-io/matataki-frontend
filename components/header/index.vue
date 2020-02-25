@@ -273,7 +273,7 @@ export default {
     this.getRecommend()
   },
   methods: {
-    ...mapActions(['getCurrentUser', 'signOut']),
+    ...mapActions(['getCurrentUser', 'signOut', 'resetAllStore']),
     ...mapActions('notification', ['getNotificationCounters']),
     postImport() {
       if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
@@ -294,18 +294,38 @@ export default {
     },
     btnsignOut() {
       if (confirm(this.$t('warning.confirmLogout'))) {
-        this.$utils.delCookie('ACCESS_TOKEN')
-        this.$utils.delCookie('idProvider')
-        store.clear()
-        sessionStorage.clear()
-        // this.$utils.deleteAllCookies()
-        this.$router.push({
-          name: 'article'
-        })
-        setTimeout(() => {
-          this.$userMsgChannel.postMessage('logout')
-          window.location.reload()
-        }, 1000)
+
+        // 出错后弹出框提示
+        const alertDialog = () => {
+          this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
+            showClose: false,
+            type: 'success',
+            callback: action => {
+              window.location.reload()
+            }
+          })
+        }
+
+        // 重置all store
+        this.resetAllStore()
+          .then(res => {
+            this.$utils.delCookie('ACCESS_TOKEN')
+            this.$utils.delCookie('idProvider')
+            store.clear()
+            sessionStorage.clear()
+            this.$router.replace({
+              name: 'article'
+            })
+
+            // 通知刷新其他页面
+            setTimeout(() => {
+              this.$userMsgChannel.postMessage('logout')
+            }, 2000)
+
+          }).catch(err => {
+            console.log(err)
+            alertDialog()
+          })
       }
     },
     // 跳转搜索

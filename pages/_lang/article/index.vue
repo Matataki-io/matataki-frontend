@@ -17,7 +17,7 @@
           <div v-if="usersRecommendList.length !== 0" class="recommend-author">
             <div class="ra-head">
               <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-              <span @click="usersrecommend" class="ra-head-random">
+              <span @click="usersRecommend" class="ra-head-random">
                 <div class="change">
                   <svg-icon
                     :class="usersLoading && 'rotate'"
@@ -67,21 +67,19 @@ export default {
       idx: 0,
       usersRecommendList: [],
       usersLoading: false,
-      recommendList: [],
-      articleList: []
     }
   },
   async asyncData({ $axios }) {
-    const initData = Object.create(null)
+    let recommendList = []
+    let articleList = []
     // 推荐
     try {
       const res = await recommend($axios, 1)
-      if (res.code === 0) initData.recommend = res.data
+      if (res.code === 0) recommendList = res.data
       else throw new Error(res.message)
     } catch (error) {
       console.log('error', error)
-      initData.recommend = []
-      for (let i = 0; i < 5; i++) initData.recommend.push({ cover: '', title: '', id: -1 })
+      for (let i = 0; i < 5; i++) recommendList.push({ cover: '', title: '', id: -1 })
     }
 
     try {
@@ -95,25 +93,24 @@ export default {
         'homeScoreRanking',
         params
       )
-      if (resPagination.code === 0) initData.paginationData = resPagination.data.list
+      if (resPagination.code === 0) articleList = resPagination.data.list
       else throw new Error(resPagination.message)
     } catch (error) {
       console.log('error', error)
-      initData.paginationData = []
     }
 
-    return { initData }
+    return { recommendList, articleList }
   },
   created() {
-    this.recommendList = this.initData.recommend
-    this.articleList = this.initData.paginationData
   },
   mounted() {
-    this.usersrecommend()
+    if (process.browser) {
+      this.usersRecommend()
+    }
   },
   methods: {
     // 获取推荐作者
-    usersrecommend: throttle(async function () {
+    usersRecommend: throttle(async function () {
       this.usersLoading = true
       const params = {
         amount: 3

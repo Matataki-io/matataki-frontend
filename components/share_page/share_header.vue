@@ -11,16 +11,23 @@
         {{ read }}
       </span>
     </div>
-    <m-ipfs :hash="hash" />
+    <div class="share-header__right">
+      <m-ipfs :hash="hash" />
+      <shareHeadRight v-if="isMe(id)" :id="id"></shareHeadRight>
+    </div>
+
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
+import shareHeadRight from '@/components/share_page/share_head_right'
 export default {
   components: {
-    avatar
+    avatar,
+    shareHeadRight
   },
   props: {
     id: {
@@ -48,14 +55,55 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      transferModal: false
+    }
+  },
   computed: {
+    ...mapGetters(['isMe']),
     avatarSrc() {
       if (this.avatar) return this.$ossProcess(this.avatar, { h: 90 })
       return ''
     },
     timeFormat() {
       return this.time ? moment(this.time).format('lll') : '00:00:00'
-    }
+    },
+  },
+  methods: {
+    // 下拉菜单 指令
+    handleMoreAction(command) {
+      this[command]()
+    },
+    // 删除
+    del() {
+      // 删除方法
+      const delFunc = async (id) => {
+        if (!id) return
+        try {
+          const res = await this.$backendAPI.delArticle({ id })
+          if (res.status === 200 && res.data.code === 0) {
+            this.$message({ duration: 2000, message: '删除成功' })
+            this.$router.push('/article')
+          }
+          else this.$message.error(res.data.message)
+        } catch (error) {
+          return console.error(error)
+        }
+      }
+      this.$confirm('该分享已上传至 IPFS 永久保存, 本次操作仅删除瞬MATATAKI中的显示。', this.$t('promptTitle'), {
+        distinguishCancelAndClose: true,
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel')
+      })
+        .then(() => {
+          delFunc(this.id)
+        })
+        .catch((action) => {})
+    },
+    transfer() {
+      this.transferModal = true
+    },
   }
 }
 </script>
@@ -102,6 +150,10 @@ export default {
     .icon {
       font-size: 16px;
     }
+  }
+  &__right {
+    display: flex;
+    align-items: center;
   }
 }
 </style>
