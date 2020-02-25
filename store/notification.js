@@ -1,8 +1,14 @@
 import API from '@/api/API'
 
-export const state = () => ({
-  notificationCounters: {}
-})
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('notification')
+  return {
+    notificationCounters: {}
+  }
+}
+// 初始化
+export const state = getDefaultState
 
 export const getters = {
   hasNewNotification({ notificationCounters }) {
@@ -22,6 +28,10 @@ export const mutations = {
     if (state.notificationCounters[provider]) {
       state.notificationCounters[provider] = 0
     }
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -35,5 +45,9 @@ export const actions = {
   async clearNotificationCounter({ commit }, { provider }) {
     await API.readNotifications(provider)
     commit('clearCounters', provider)
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 }

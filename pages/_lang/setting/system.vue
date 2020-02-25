@@ -52,6 +52,7 @@ export default {
     this.getMyUserData()
   },
   methods: {
+    ...mapActions(['resetAllStore']),
     // 获取用户信息 - 转让状态
     async getMyUserData() {
       const res = await this.$API.getMyUserData().then(res => {
@@ -84,26 +85,50 @@ export default {
       }
     },
     clearCache() {
+
+      // 出错后弹出框提示
+      const alertDialog = () => {
+        this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
+          showClose: false,
+          type: 'success',
+          callback: action => {
+            window.location.reload()
+          }
+        })
+      }
+
+      // 清除
+      const clear = () => {
+        // 重置all store
+        this.resetAllStore()
+          .then(res => {
+            clearAllCookie()
+            // 防止没有清除干净
+            removeCookie('ACCESS_TOKEN')
+            removeCookie('idProvider')
+            store.clearAll()
+            sessionStorage.clear()
+            this.$router.replace({
+              name: 'article'
+            })
+
+            // 通知刷新其他页面
+            setTimeout(() => {
+              this.$userMsgChannel.postMessage('logout')
+            }, 2000)
+
+          }).catch(err => {
+            console.log(err)
+            alertDialog()
+          })
+      }
+
       this.$confirm('清除浏览器缓存, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        clearAllCookie()
-        // 防止没有清除干净
-        removeCookie('ACCESS_TOKEN')
-        removeCookie('idProvider')
-        store.clearAll()
-        sessionStorage.clear()
-        this.$message({
-          type: 'success',
-          message: '清除成功!'
-        })
-        this.$router.push({ name: 'index' })
-        setTimeout(() => {
-          this.$userMsgChannel.postMessage('logout')
-          window.location.reload()
-        }, 1000)
+        clear()
       }).catch(() => { })
     }
   }
