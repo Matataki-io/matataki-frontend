@@ -683,7 +683,7 @@ export default {
     },
     compiledMarkdown() {
       // 前提: 都在自己的平台下
-      // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产品一个webp格式的链接, 所以这里过优化一下
+      // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       if (process.browser) {
