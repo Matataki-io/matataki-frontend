@@ -694,9 +694,9 @@ export default {
     compiledMarkdown() {
       if (process.browser) {
         const markdownIt = mavonEditor.getMarkdownIt()
-        return markdownIt.render(xssFilter(this.post.content))
+        return xssFilter(markdownIt.render(this.post.content))
       } else {
-        return markdownIt.render(xssFilter(this.post.content))
+        return xssFilter(markdownIt.render(this.post.content))
       }
     },
     cover() {
