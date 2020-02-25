@@ -301,7 +301,7 @@ export default {
             showClose: false,
             type: 'success',
             callback: action => {
-              this.$router.go(0)
+              window.location.reload()
             }
           })
         }
@@ -320,7 +320,7 @@ export default {
             // 通知刷新其他页面
             setTimeout(() => {
               this.$userMsgChannel.postMessage('logout')
-            }, 1000)
+            }, 2000)
 
           }).catch(err => {
             console.log(err)
