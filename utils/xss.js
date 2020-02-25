@@ -3,8 +3,9 @@
  */
 /* eslint-disable */
 import xss from 'xss'
+const isSupportWebp = process.browser ? !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0 : false
+console.log('xss', isSupportWebp)
 
-// eslint-disable-next-line import/prefer-default-export
 export const xssFilter = html => {
   // 自定义规则
   const { whiteList } = xss
@@ -156,4 +157,59 @@ export const xssFilter = html => {
   const myxss = new xss.FilterXSS(options)
 
   return myxss.process(html)
+}
+
+// 通过xss处理图片
+export const xssImageProcess = html => {
+
+  const isSelfOss = url => {
+    let oss = process.env.ssImgAddress
+    return new RegExp(oss).test(url)
+  }
+
+  return xss(html, {
+    onTagAttr: function(tag, name, value, isWhiteAttr) {
+      if (tag === "img" && name === "src") {
+
+        let url = xss.friendlyAttrValue(value)
+
+        if (isSelfOss(url)) {
+          // 是自己的oss
+          if (isSupportWebp) {
+            // 如果支持webp
+
+            if (new RegExp(/\?x-oss-process=image/).test(url)) {
+              // 有x-ossprocess=image
+              if (!new RegExp(/\/format,webp/).test(url)) {
+                // 如果没有/format,webp 则添加
+                url += '/format,webp'
+              }
+            } else {
+              // 没有x-ossprocess=image
+              if (new RegExp(/\?*\=/).test('')) {
+                // 有别的参数了
+                url+= '&x-oss-process=image/format,webp'
+              } else {
+                // 没有别的参数
+                url+= '?x-oss-process=image/format,webp'
+              }
+            }
+          } else {
+            // 如果不支持webp
+
+            if (new RegExp(/\?x-oss-process=image/).test(url)) {
+              // 有x-ossprocess=image
+              if (new RegExp(/\/format,webp/).test(url)) {
+                // 如果有/format,webp 则替换/format,png
+                url = url.replace(/\/format,webp/gi, '/format,png')
+              }
+            }
+
+          }
+          // console.log('url', url)
+          return `${name}=${url} alt=${url}`
+        }
+      }
+    }
+  });
 }

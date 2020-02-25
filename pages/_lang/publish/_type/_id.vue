@@ -954,8 +954,13 @@ export default {
       this.$message.error(error)
     },
     // 跳转页面
-    jumpToArticle(hash) {
-      this.$router.push({ path: `/p/${hash}` })
+    jumpToArticle(id) {
+      this.$router.push({
+        name: 'p-id',
+        params: {
+          id: id
+        }
+      })
     },
     // 成功提示
     success(hash, msg = this.$t('success.public')) {
@@ -1291,7 +1296,7 @@ export default {
           .ossUploadImage('article', imgfile)
           .then(res => {
             if (res.code === 0) {
-              this.$refs.md.$img2Url(pos, this.$ossProcess(res.data))
+              this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
             } else {
               this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
             }
@@ -1319,7 +1324,7 @@ export default {
                 .ossUploadImage('article', blob)
                 .then(res => {
                   if (res.code === 0) {
-                    this.$refs.md.$img2Url(pos, this.$ossProcess(res.data))
+                    this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
                   } else {
                     this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
                   }
