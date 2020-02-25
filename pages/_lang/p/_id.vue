@@ -116,7 +116,9 @@
           </div>
         </div>
 
+        <!-- 编辑全文 -->
         <becomeAnArticleEditor
+          v-if="false"
           :article="article"
           :hasPaied="hasPaied"
           :tokenHasPaied="tokenHasPaied"
