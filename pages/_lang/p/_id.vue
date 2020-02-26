@@ -39,7 +39,10 @@
           <!-- ipfs -->
           <!-- <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" /> -->
           <!-- 文章内容 -->
-          <div v-html="compiledMarkdown" class="Post-RichText markdown-body article-content" />
+          <no-ssr>
+            <mavon-editor v-show="false" style="display: none;" />
+          </no-ssr>
+          <div v-html="compiledMarkdown" v-highlight class="markdown-body article-content" />
           <!-- 文章页脚 声明 是否原创 -->
 
           <div v-if="!hasPaied && !isProduct && (isTokenArticle || isPriceArticle)" class="lock-line">
@@ -501,7 +504,6 @@ import moment from 'moment'
 import Cookies from 'js-cookie'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
-import { mavonEditor } from 'mavon-editor-matataki'
 import { xssFilter, xssImageProcess } from '@/utils/xss'
 import CommentList from '@/components/comment/List'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
@@ -699,13 +701,14 @@ export default {
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       if (process.browser) {
-        const markdownIt = mavonEditor.getMarkdownIt()
+
+        const markdownIt = this.$mavonEditor.markdownIt
 
         let md = markdownIt.render(this.post.content)
-        return this.$utils.compose(xssFilter, xssImageProcess)(md)
+        return this.$utils.compose(xssImageProcess, xssFilter)(md)
       } else {
         let md = markdownIt.render(this.post.content)
-        return this.$utils.compose(xssFilter, xssImageProcess)(md)
+        return this.$utils.compose(xssImageProcess, xssFilter)(md)
       }
     },
     cover() {
