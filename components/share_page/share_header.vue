@@ -13,7 +13,7 @@
     </div>
     <div class="share-header__right">
       <m-ipfs :hash="hash" />
-      <shareHeadRight v-if="isMe(id)" :id="id"></shareHeadRight>
+      <shareHeadRight v-if="isMe(id)" :id="shareId"></shareHeadRight>
     </div>
 
   </div>
@@ -30,10 +30,12 @@ export default {
     shareHeadRight
   },
   props: {
+    // 用户id
     id: {
       type: Number,
-      default: 0
+      default: -1
     },
+    // 头像
     avatar: {
       type: String,
       default: ''
@@ -53,6 +55,11 @@ export default {
     hash: {
       type: String,
       default: ''
+    },
+    // 分享的id
+    shareId: {
+      type: Number,
+      default: -1
     }
   },
   data() {

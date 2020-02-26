@@ -10,6 +10,7 @@
           :time="content.create_time"
           :read="content.read"
           :hash="content.hash"
+          :shareId="content.id"
         />
         <shareMain :content="shareContent" />
       </main>

@@ -231,7 +231,15 @@ export default {
         )
         if (res.status === 200 && res.data.code === 0) {
           this.$message.success(this.$t('p.articleTransferSuccess'))
-          this.$router.push({ name: 'article' })
+
+          if (this.from === 'article' || this.from === 'draft') {
+            this.$router.push({ name: 'article' })
+          } else if (this.from === 'share') {
+            this.$router.push({ name: 'sharehall' })
+          } else {
+            this.$router.push({ name: 'article' })
+          }
+
         } else {
           this.$message.warning(this.$t('p.articleTransferNotOpen'))
         }

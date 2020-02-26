@@ -86,6 +86,7 @@ export default {
     '~/plugins/vue_components.js',
     '~/plugins/i18n.js',
     '~/plugins/components.js',
+    '@/plugins/vue_directive.js',
     { src: '~/plugins/broadcastchannel.js', mode: 'client' },
     { src: '~/plugins/router.js', mode: 'client', ssr: false },
     { src: '@/plugins/element-ui', ssr: true },
