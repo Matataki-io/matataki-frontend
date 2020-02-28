@@ -109,7 +109,9 @@ export default {
     },
     xssContent() {
       if (this.card.short_content) {
-        return filterOutHtmlTags(this.card.short_content)
+        return filterOutHtmlTags(this.card.short_content, {
+          em: []
+        })
       } else return ''
     },
     // cover() {
