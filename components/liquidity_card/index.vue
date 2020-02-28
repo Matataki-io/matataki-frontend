@@ -4,6 +4,7 @@
       <div class="fl">
         <div class="type">
           {{ type }}
+          <txHash v-if="card.tx_hash" :hash="card.tx_hash" size="16px" />
         </div>
         <div class="time">
           {{ time }}
@@ -38,11 +39,11 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 
-import avatar from '@/components/avatar/index.vue'
+import txHash from '@/components/tx_hash_popover/index'
 
 export default {
   components: {
-    avatar
+    txHash
   },
   props: {
     card: {
