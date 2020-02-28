@@ -74,6 +74,13 @@ export default {
   methods: {
     pay() {
       if (this.isLogined) {
+        
+        // 没有合约地址
+        if (!this.token.contract_address) {
+          this.$message.error('Fan票正在部署中，请稍后过来操作!')
+          return
+        }
+
         if (this.$utils.isNull(this.form.output)) {
           this.$message.error('请先输入购买数量')
         } else {
@@ -88,6 +95,10 @@ export default {
       }
     },
     inputChange: debounce(function (e) {
+
+      // 没有合约地址
+      if (!this.token.contract_address) return
+
       this.getInputAmount(0, this.token.id, this.form.output)
     }, 500),
     getInputAmount(inputTokenId = 0, outputTokenId, outputAmount) {

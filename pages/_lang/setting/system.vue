@@ -106,6 +106,7 @@ export default {
             // 防止没有清除干净
             removeCookie('ACCESS_TOKEN')
             removeCookie('idProvider')
+            removeCookie('referral')
             store.clearAll()
             sessionStorage.clear()
             this.$router.replace({
