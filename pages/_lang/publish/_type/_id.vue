@@ -8,6 +8,7 @@
           class="edit-title"
           size="large"
           clearable
+          maxlength="50"
         >
         <span v-html="saveDraft" class="save-tips" />
         <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}" class="save-draft">

@@ -74,7 +74,7 @@ import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { tagColor } from '@/utils/tag'
-import { xssFilter } from '@/utils/xss'
+import { xssFilter, filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
@@ -102,12 +102,14 @@ export default {
     ...mapGetters(['isMe', 'currentUserInfo', 'isLogined']),
     xssTitle() {
       if (this.card.title) {
-        return xssFilter(this.card.title)
+        return filterOutHtmlTags(this.card.title, {
+          em: []
+        })
       } else return ''
     },
     xssContent() {
       if (this.card.short_content) {
-        return xssFilter(this.card.short_content)
+        return filterOutHtmlTags(this.card.short_content)
       } else return ''
     },
     // cover() {
