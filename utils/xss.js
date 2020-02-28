@@ -144,10 +144,14 @@ export const xssFilter = html => {
       tag: 'td',
       attributes: ['style']
     },
+    {
+      tag: 'source',
+      attributes: ['src', 'type']
+    },
   ]
 
-  for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
   for (const key of ruleAdd) whiteList[key.tag] = key.attributes
+  for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
 
   const options = {
     whiteList,
@@ -218,5 +222,15 @@ export const xssImageProcess = html => {
         }
       }
     }
+  });
+}
+
+// 过滤html标签
+export const filterOutHtmlTags = (html, whiteList = []) => {
+  // 没有用markdownit渲染markdown文档, 因为可能造成不必要的消耗,(他只是一个摘要而已)
+  return xss(html, {
+    whiteList: whiteList,
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ["script"]
   });
 }
