@@ -154,6 +154,7 @@ import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
+import { removeCookie } from '@/utils/cookie'
 
 import { strTrim } from '@/utils/reg'
 import store from '@/utils/store.js'
@@ -309,13 +310,19 @@ export default {
         // 重置all store
         this.resetAllStore()
           .then(res => {
-            this.$utils.delCookie('ACCESS_TOKEN')
-            this.$utils.delCookie('idProvider')
+            removeCookie('ACCESS_TOKEN')
+            removeCookie('idProvider')
+            removeCookie('referral')
             store.clear()
             sessionStorage.clear()
-            this.$router.replace({
-              name: 'article'
-            })
+
+            if (this.$route.name === 'article') {
+              this.$router.go(0)
+            } else {
+              this.$router.replace({
+                name: 'article'
+              })
+            }
 
             // 通知刷新其他页面
             setTimeout(() => {
