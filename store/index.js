@@ -384,7 +384,7 @@ export const actions = {
         // 清空all state
         commit('resetState')
         commit('user/resetState')
-        commit('i18n/resetState')
+        // commit('i18n/resetState')
         commit('importArticle/resetState')
         commit('metamask/resetState')
         commit('notification/resetState')

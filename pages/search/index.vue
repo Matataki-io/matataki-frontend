@@ -1,4 +1,16 @@
+<template>
+  <searchLayout />
+</template>
+
 <script>
-import SearchIndex from '~/pages/_lang/search/index'
-export default SearchIndex
+import searchLayout from '@/components/search/layout'
+export default {
+  components: {
+    searchLayout
+  },
+  data() {
+    return {
+    }
+  }
+}
 </script>

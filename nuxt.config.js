@@ -3,8 +3,9 @@ import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
+import i18n from './plugins/i18n'
+
 import env from './env'
-// import I18N from './plugins/i18n.js'
 function genENV() {
   const keys = Object.keys(env.production)
   const result = {}
@@ -84,7 +85,7 @@ export default {
     // '~/plugins/element-ui',
     '~/plugins/vue_plugins.js',
     '~/plugins/vue_components.js',
-    '~/plugins/i18n.js',
+    // '~/plugins/i18n.js',
     '~/plugins/components.js',
     '@/plugins/vue_directive.js',
     { src: '~/plugins/broadcastchannel.js', mode: 'client' },
@@ -108,8 +109,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    '@nuxtjs/pwa'
-    // ['nuxt-i18n', I18N]
+    '@nuxtjs/pwa',
+    ['nuxt-i18n', i18n]
   ],
   styleResources: {
     less: './assets/css/global.less'

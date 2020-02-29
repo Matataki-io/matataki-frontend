@@ -283,7 +283,12 @@ export default {
     stageDes32: '打造区块链永存知识数据库'
   },
   home: {
-    navHome: '首页',
+    creation: '创作',
+    share: '分享',
+    fanTicket: 'Fan票',
+    signOut: '登出',
+    signIn: '立即登录',
+
     navArticle: '文章',
     navShop: '商品',
     searchPlaceholder: '请输入搜索内容',
