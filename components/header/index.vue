@@ -128,7 +128,7 @@
             </n-link> -->
             <div @click="btnsignOut" class="link">
               <el-dropdown-item>
-                {{ $t('logout') }}
+                {{ $t('home.signOut') }}
               </el-dropdown-item>
             </div>
           </el-dropdown-menu>
@@ -138,7 +138,7 @@
           @click="login"
           href="javascript:void(0);"
           class="home-head-notlogin"
-        >{{ $t('login') }}</a>
+        >{{ $t('home.signIn') }}</a>
         <slot name="more" />
         <language />
       </div>
@@ -208,13 +208,13 @@ export default {
     nav() {
       return [
         {
-          title: '创作',
+          title: this.$t('home.creation'),
           url: 'article',
           sup: '',
           urlList: ['article', 'ring-id']
         },
         {
-          title: '分享',
+          title: this.$t('home.share'),
           url: 'sharehall',
           sup: '',
           urlList: ['sharehall']
@@ -227,7 +227,7 @@ export default {
         //   urlList: ['shop']
         // },
         {
-          title: 'Fan票',
+          title: this.$t('home.fanTicket'),
           url: 'token',
           sup: '',
           urlList: ['token']
