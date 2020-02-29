@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <nuxt />
-    <g-footer v-if="!hideFooter" />
+    <g-footer v-if="hideFooter" />
     <back-to-top v-if="!hideBackTop" :visibility-height="300" :back-position="50" class="backtop" transition-name="fade">
       <svg-icon
         class="backtop-icon"
@@ -55,15 +55,14 @@ export default {
       return this.$route.name === 'publish-type-id'
     },
     hideFooter() {
-      // 发布页面 GitHub登录
-      return this.$route.name === 'publish-type-id' || this.$route.name === 'login-github'
+      const hide = ['publish-type-id', 'login-github', 'index']
+      return !hide.includes(this.$route.name)
     },
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
     }
   },
   created() {
-
   },
   mounted() {
     this.$store.dispatch('testLogin')

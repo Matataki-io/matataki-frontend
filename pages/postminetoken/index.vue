@@ -1,4 +1,12 @@
+<template>
+  <minetoken />
+</template>
+
 <script>
-import postminetoken from '~/pages/_lang/postminetoken/index'
-export default postminetoken
+import minetoken from '@/components/minetoken/index.vue'
+export default {
+  components: {
+    minetoken
+  }
+}
 </script>
