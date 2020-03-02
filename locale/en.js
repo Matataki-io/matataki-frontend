@@ -117,7 +117,7 @@ export default {
     ontType: 'ONT',
     vntTitle: 'login with VNT',
     githubTitle: 'login with GitHub',
-    twitterTitle: 'login with Twitter',
+    twitterTitle: 'login with Twitter (inDevelopment)',
     ontDoc: 'How to login with ONT',
     invite: 'Have invited', //img
     viewWallet: 'view wallets supported',

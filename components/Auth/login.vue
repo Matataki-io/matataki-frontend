@@ -70,11 +70,11 @@
             <svg-icon class="github" icon-class="telegram" />
           </div>
         </el-tooltip>
-        <!-- <el-tooltip :content="$t('auth.twitterTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('Twitter')" class="oauth-bg bg-twitter">
+        <el-tooltip :content="$t('auth.twitterTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('Twitter')" style="cursor: not-allowed;" class="oauth-bg bg-twitter">
             <svg-icon class="twitter" icon-class="twitter" />
           </div>
-        </el-tooltip> -->
+        </el-tooltip>
       </div>
     </div>
     <img v-if="referral" :alt="$t('auth.invite')" class="referral" src="@/assets/img/invite.png">
@@ -188,7 +188,7 @@ export default {
       } else if (type === "Telegram") {
         this.telegramLogin();
       } else if (type === "Twitter") {
-        this.twitterLogin();
+        // this.twitterLogin();
       } else await this.signInx(type);
     },
     async signInx(type) {
@@ -395,7 +395,8 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  background: #00ACED;
+  // background: #00ACED;
+  background: #b2b2b2;
 }
 
 .referral {
