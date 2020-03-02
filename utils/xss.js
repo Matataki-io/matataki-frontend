@@ -68,6 +68,41 @@ export const xssFilter = html => {
   whiteList.ul.push(...ulTag)
   whiteList.section.push(...sectionTag)
 
+  let ruleAdd = [
+    {
+      tag: 'figure',
+      attributes: ['style']
+    },
+    {
+      tag: 'figcaption',
+      attributes: ['style']
+    },
+    {
+      tag: 'blockquote',
+      attributes: ['style']
+    },
+    {
+      tag: 'em',
+      attributes: ['style']
+    },
+    {
+      tag: 'th',
+      attributes: ['style']
+    },
+    {
+      tag: 'td',
+      attributes: ['style']
+    },
+    {
+      tag: 'source',
+      attributes: ['src', 'type']
+    },
+    {
+      tag: 'input',
+      attributes: ['type', 'disabled', 'checked', 'class']
+    },
+  ]
+
   let rulePush = [
     {
       tag: 'div',
@@ -117,36 +152,13 @@ export const xssFilter = html => {
       tag: 'ol',
       attributes: ['style']
     },
-  ]
-
-  let ruleAdd = [
     {
-      tag: 'figure',
-      attributes: ['style']
+      tag: 'ul',
+      attributes: ['class']
     },
     {
-      tag: 'figcaption',
-      attributes: ['style']
-    },
-    {
-      tag: 'blockquote',
-      attributes: ['style']
-    },
-    {
-      tag: 'em',
-      attributes: ['style']
-    },
-    {
-      tag: 'th',
-      attributes: ['style']
-    },
-    {
-      tag: 'td',
-      attributes: ['style']
-    },
-    {
-      tag: 'source',
-      attributes: ['src', 'type']
+      tag: 'li',
+      attributes: ['class']
     },
   ]
 
