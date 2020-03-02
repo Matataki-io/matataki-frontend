@@ -106,6 +106,9 @@ export default {
     content: '请输入内容'
   },
   // components
+  header: {
+    newArticle: '写文章'
+  },
   auth: {
     eosWallet: 'EOS钱包',
     ontWallet: 'ONT钱包',
@@ -653,6 +656,7 @@ export default {
     followed_you: '关注了你'
   },
   footer: {
+    helpAndSupport: '帮助和支持',
     hellpbook: '使用手册',
     point: '平台积分',
     privacyPolicy: '隐私政策',
