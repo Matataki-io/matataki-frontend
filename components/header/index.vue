@@ -88,7 +88,7 @@
           />
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" content="写文章" placement="bottom">
+        <el-tooltip class="item" effect="dark" :content="$t('header.newArticle')" placement="bottom">
           <svg-icon
             :style="customizeHeaderIconColorComputed"
             @click="writeP"

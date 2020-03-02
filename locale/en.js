@@ -106,6 +106,9 @@ export default {
     content: 'Please enter content'
   },
   // components
+  header: {
+    newArticle: 'New article'
+  },
   auth: {
     eosWallet: 'EOS wallet',
     ontWallet: 'ONT wallet',
@@ -653,6 +656,7 @@ export default {
     followed_you: 'Follow you'
   },
   footer: {
+    helpAndSupport: 'Help',
     hellpbook: 'manual',
     point: 'point',
     privacyPolicy: 'Privacy Policy',
