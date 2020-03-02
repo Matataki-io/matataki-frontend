@@ -79,7 +79,7 @@
           </div>
           <point slot="reference" />
         </el-popover>
-        <el-tooltip class="item" effect="dark" content="{{ $t('publish.importArticle') }}" placement="bottom">
+        <el-tooltip class="item" effect="dark" :content="$t('publish.importArticle')" placement="bottom">
           <svg-icon
             :style="customizeHeaderIconColorComputed"
             @click="postImport"
