@@ -47,7 +47,7 @@
         <no-content-prompt :prompt="$t('notArticle')" :list="articles">
           <articleCardListNew
             v-for="(item, index) in articles"
-            :key="index + item.id"
+            :key="index"
             :card="item"
           />
         </no-content-prompt>
