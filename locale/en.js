@@ -66,7 +66,7 @@ export default {
     copy: 'Copy failed',
     getArticleInfoError: 'Cannot get article info',
     getUserInfoError: 'Cannot get user info',
-    sendPostIpfsFail: 'Cannot publish to IPFS,
+    sendPostIpfsFail: 'Cannot publish to IPFS',
     failTry: 'Failed, try again plz.',
     loginFail: 'Login failed',
     loginFailPasswordOrAccount: 'Login failed, wrong username or password.',
@@ -109,7 +109,7 @@ export default {
   auth: {
     eosWallet: 'EOS wallet',
     ontWallet: 'ONT wallet',
-    eosTitle: 'login with EOS'
+    eosTitle: 'login with EOS',
     metamaskTitle: 'MetaMask login',
     eosType: 'EOS',
     eosDoc: 'How to login with EOS',
@@ -117,7 +117,7 @@ export default {
     ontType: 'ONT',
     vntTitle: 'login with VNT',
     githubTitle: 'login with GitHub',
-    twitterTitle: 'login with Twitter',
+    twitterTitle: 'login with Twitter (inDevelopment)',
     ontDoc: 'How to login with ONT',
     invite: 'Have invited', //img
     viewWallet: 'view wallets supported',
@@ -255,9 +255,9 @@ export default {
     programDes1:
       'The cold start phase focuses on meeting user needs and verifying business models, earning points through attention mining and labor mining, and using points to circulate within the product. After the official launch, it is proportionally mapped to ecological tokens, and gives users many platform rights.',
     programDes2:
-      'Instant MATATAKI adopts the Interstellar File System (IPFS) protocol. Each file only has a unique copy, which reduces the waste of storage resources and reduces the storage cost, so that platform resources are never lost, the website is never shut down, and the user's rights and interests are permanently effective.',
+      'Instant MATATAKI adopts the Interstellar File System (IPFS) protocol. Each file only has a unique copy, which reduces the waste of storage resources and reduces the storage cost, so that platform resources are never lost, the website is never shut down, and the user\'s rights and interests are permanently effective.',
     programDes3:
-      'Support decentralized account login with mainstream public chains such as EOS, ontology, etc. The platform cannot touch the user's private key. Using IPFS technology to record content modification operations, no one, including the platform, can tamper with it.',
+      'Support decentralized account login with mainstream public chains such as EOS, ontology, etc. The platform cannot touch the user\'s private key. Using IPFS technology to record content modification operations, no one, including the platform, can tamper with it.',
     blockTitle1: 'Copyright permanent record, efficient time stamp confirmation',
     blockDes1:
       'Blockchain and digital copyright protection can be perfectly combined to solve the current situation of piracy. First of all, in the process of confirming rights, the patent application process under the existing mechanism is time-consuming and inefficient. The distributed ledger and timestamp technology of the blockchain makes it possible for the entire network to quickly reach consensus on the ownership of intellectual property rights. The asymmetric encryption technology guarantees the uniqueness of the copyright, the time stamp technology guarantees the copyright owner, and the copyright owner can quickly and easily complete the process of confirming the rights, which solves the problem of inefficient traditional rights confirmation mechanisms.',
@@ -381,12 +381,11 @@ export default {
     statement1: '1. Distorted, tampered with, plagiarized, plagiarized works created by others,',
     statement2: '2. The main length of the article is public content such as "laws, regulations, resolutions, decisions, orders of state organs and other documents of a legislative, administrative, judicial nature, current affairs news, calendar, universal tables, universal tables and formulas", etc. ;',
     statement3: '3. Forward the content formed by the works of others,',
-    statement4: '4. Citing other people's content or the main content of the article as other people's works, such as book digests, abstracts, newspaper digests, etc .;',
-    statement5: '5. The main system of the article integrates and compiles the content of others' works',
+    statement4: '4. Citing other people\'s content or the main content of the article as other people\'s works, such as book digests, abstracts, newspaper digests, etc .;',
+    statement5: '5. The main system of the article integrates and compiles the content of others\' works',
     statement6: '6. Content formed by other infringement of copyright or other rights.',
     statement7: 'Adaptation, translation and re-creation of a work after obtaining the consent of the original author or right holder are deemed original.',
-    statement8: 'Instant MATATAKI encourages users to publish original articles. Checking the articles of this original statement will display the original logo. However, this original statement is only your unilateral commitment to the originality of the content of the article, and does not mean that Instant MATATAKI recognizes the originality of the article. If you check this original statement, the article proves that it is not an independent original, Instant MATATAKI will remove it according to the platform specifications.
-'
+    statement8: 'Instant MATATAKI encourages users to publish original articles. Checking the articles of this original statement will display the original logo. However, this original statement is only your unilateral commitment to the originality of the content of the article, and does not mean that Instant MATATAKI recognizes the originality of the article. If you check this original statement, the article proves that it is not an independent original, Instant MATATAKI will remove it according to the platform specifications.'
   },
   search: {
     hot: 'hot search',
@@ -453,18 +452,18 @@ export default {
     articleTransferBtn: 'transfer article',
     articleTransferHelpTitle: 'What is article permission transfer',
     articleTransferHelpDes:
-      'Use this feature to transfer an article's attribution and revenue rights to another user. The option to accept permission transfer is off by default and needs to be turned on manually in the settings. Transferable objects are published articles and draft articles. Don't abuse this feature!',
+      'Use this feature to transfer an article\'s attribution and revenue rights to another user. The option to accept permission transfer is off by default and needs to be turned on manually in the settings. Transferable objects are published articles and draft articles. Don\'t abuse this feature!',
     articleTransferHelpBtn: 'Confirm',
     articleTransferHelpStepTitle: 'Transfer step',
     articleTransferHelpStepDes1: 'Enter the person’s nickname in the search box',
     articleTransferHelpStepDes2: 'Please check the information of the transferred account carefully',
     articleTransferHelpStepDes3: 'After checking, click "Transfer Article" to transfer permissions',
     articleTransferSuccess: 'Successfully transferred, automatically return to the homepage',
-    articleTransferNotOpen: 'The other party does not open the transfer permission,
+    articleTransferNotOpen: 'The other party does not open the transfer permission',
     publishMatataki: 'This article was posted on Instant Matataki',
     publishMatatakOriginal: 'Please follow the agreement to reproduce',
     publishMatatakiUser:
-      'Disclaimer: This article was uploaded and posted by user "{0}", and the content is the author's independent opinion. It does not represent Instant Matataki's position, does not constitute investment advice, please treat it with caution.',
+      'Disclaimer: This article was uploaded and posted by user "{0}", and the content is the author\'s independent opinion. It does not represent Instant Matataki\'s position, does not constitute investment advice, please treat it with caution.',
     ipfsTitle: 'The content of this article has been uploaded to the interstellar file storage system "IPFS". It is permanently saved and cannot be deleted.',
     ipfsContent:
       '"HASH" is a unique ID generated after a work is uploaded to IPFS. Through HASH, the content of the work can be accessed at different nodes in IPFS.',
