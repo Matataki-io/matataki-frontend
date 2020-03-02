@@ -1,7 +1,21 @@
 <template>
   <div>
+    <div class="header fl jsb">
+      <div class="title">
+        方向&时间
+      </div>
+      <div class="amount">
+        Fan票
+      </div>
+      <div class="amount">
+        金额
+      </div>
+      <div class="amount">
+        流动金Token
+      </div>
+    </div>
     <div v-loading="loading" class="pillar">
-      <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" />
+      <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" :token="token" />
       <div v-if="pull.list.length === 0 && !loading" class="no-data">
         暂无数据
       </div>
@@ -29,6 +43,12 @@ export default {
   components: {
     userPagination,
     minetokenDetailCard
+  },
+  props: {
+    token: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
@@ -67,7 +87,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .pagination {
   margin-top: 40px;
 }
@@ -80,5 +100,17 @@ export default {
   margin-top: 40px;
   font-size:14px;
   color:rgba(178,178,178,1);
+}
+.header {
+  color: black;
+  font-size: 18px;
+  line-height:22px;
+  font-weight:600;
+  .title {
+    width: 335px;
+  }
+  .amount {
+    width: 150px;
+  }
 }
 </style>

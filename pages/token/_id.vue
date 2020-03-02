@@ -3,7 +3,7 @@
     <tokenFanCoins v-if="tabPage === 0" />
     <tokenFanCoinsDetail v-if="tabPage === 1" />
     <tokenLiquidity v-if="tabPage === 2" />
-    <tokenLiquidityDetail v-if="tabPage === 3" />
+    <tokenLiquidityDetail v-if="tabPage === 3" :token="minetokenToken" />
   </layout>
 </template>
 
@@ -74,7 +74,6 @@ export default {
       headers: { 'x-access-token': accessToekn }
     })
 
-    // 判断是否为付费阅读文章
     if (res.code === 0) {
       return {
         minetokenToken: res.data.token || Object.create(null),
