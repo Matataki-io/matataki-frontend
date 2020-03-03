@@ -5,6 +5,9 @@
         <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
           {{ username || 'Zero' }}
         </router-link>
+        <div class="tx-hash">
+          <txHash v-if="card.tx_hash" :hash="card.tx_hash" size="16px" />
+        </div>
         <div class="type">
           {{ type }}
         </div>
@@ -27,9 +30,11 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
+import txHash from '@/components/tx_hash_popover/index'
 
 export default {
   components: {
+    txHash
   },
   props: {
     card: {
@@ -131,6 +136,11 @@ export default {
   font-weight:400;
   color:rgba(0,0,0,1);
   line-height:28px;
+  margin-right: 4px;
+}
+.tx-hash {
+  display: flex;
+  align-items: center;
   flex: 1;
 }
 .type {

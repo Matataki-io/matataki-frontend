@@ -1,10 +1,10 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <div class="content">
+      <div class="content footer-c6">
         <div class="nav">
           <a class="href" target="_blank" href="https://www.yuque.com/matataki">
-            帮助和支持
+            {{ $t('footer.helpAndSupport') }}
           </a>
           <a class="href" target="_blank" href="https://www.yuque.com/matataki/matataki">
             {{ $t('footer.hellpbook') }}
@@ -56,7 +56,7 @@
           </a>
         </p>
       </div>
-      <div>
+      <div class="footer-c4">
         <div>
           <img class="logo" src="@/assets/img/footer_logo1.png" alt="logo">
           <div class="icon wechat-icon">
@@ -117,6 +117,12 @@ export default {}
     justify-content: space-between;
     box-sizing: border-box;
   }
+  .footer-c6 {
+    width: 60%;
+  }
+  .footer-c4 {
+    width: 40%;
+  }
 }
 
 .logo {
@@ -128,6 +134,7 @@ export default {}
     margin: 0;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     .href {
       margin-right: 20px;
       text-decoration: none;

@@ -1,5 +1,5 @@
 <template>
-  <m-dialog v-model="showModal" :title="$t('p.articleTransferTitle')" width="600px" class="transfer-dialog">
+  <m-dialog v-model="showModal" :title="dialogTitle" width="600px" class="transfer-dialog">
     <el-form
       ref="form"
       v-show="widgetModalStatus === 0"
@@ -49,26 +49,26 @@
       <el-form-item>
         <div class="form-button">
           <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
-            {{ $t('p.articleTransferBtn') }}
+            {{ dialogButton }}
           </el-button>
         </div>
       </el-form-item>
     </el-form>
     <div v-show="widgetModalStatus === 1" class="widget-help">
       <p class="widget-help-title">
-        {{ $t('p.articleTransferHelpTitle') }}
+        {{ dialogHelpTitle }}
       </p>
       <p class="widget-help-content">
-        {{ $t('p.articleTransferHelpDes') }}
+        {{ dialogHelpContent }}
       </p>
       <br>
       <p class="widget-help-title">
         {{ $t('p.articleTransferHelpStepTitle') }}
       </p>
       <p class="widget-help-content">
-        1.{{ $t('p.articleTransferHelpStepDes1') }}<br>
-        2.{{ $t('p.articleTransferHelpStepDes2') }}<br>
-        3.{{ $t('p.articleTransferHelpStepDes3') }}
+        <template v-for="(item, index) in dialogHelpContentStep">
+          {{ item }} <br :key="index" />
+        </template>
       </p>
       <div class="form-button">
         <el-button @click="widgetModalStatus = 0" type="primary" size="small">
@@ -129,6 +129,81 @@ export default {
       this.searchUser()
     }
   },
+  computed: {
+    // dialog 标题
+    dialogTitle() {
+      // 文章 草稿
+      if (this.from === 'article' || this.from === 'draft') {
+        return this.$t('p.articleTransferTitle')
+      } else if (this.from === 'share') {
+        // 分享
+        return '转让分享的ownership'
+      } else {
+        // other
+        return ''
+      }
+    },
+    // dialog 按钮
+    dialogButton() {
+      // 文章 草稿
+      if (this.from === 'article' || this.from === 'draft') {
+        return this.$t('p.articleTransferBtn')
+      } else if (this.from === 'share') {
+        // 分享
+        return '转让分享'
+      } else {
+        // other
+        return ''
+      }
+    },
+    // dialog 帮助标题
+    dialogHelpTitle() {
+      // 文章 草稿
+      if (this.from === 'article' || this.from === 'draft') {
+        return this.$t('p.articleTransferHelpTitle')
+      } else if (this.from === 'share') {
+        // 分享
+        return '什么是分享权限转移'
+      } else {
+        // other
+        return ''
+      }
+    },
+    // dialog 帮助内容
+    dialogHelpContent() {
+      // 文章 草稿
+      if (this.from === 'article' || this.from === 'draft') {
+        return this.$t('p.articleTransferHelpDes')
+      } else if (this.from === 'share') {
+        // 分享
+        return '使用此功能可以将分享的署名权和收益权转移给另一名用户。接受权限转移的选项默认为关闭状态，需要在设置中手动开启。可转移对象为已发表的分享。请勿滥用此功能！'
+      } else {
+        // other
+        return ''
+      }
+    },
+    // dialog 帮助内容
+    dialogHelpContentStep() {
+      // 文章 草稿
+      if (this.from === 'article' || this.from === 'draft') {
+        return [
+          '1.在搜索框中完整输入对方昵称',
+          '2.请仔细核对被转移账户的信息',
+          '3.核对后点击“转让文章”来移交权限'
+        ]
+      } else if (this.from === 'share') {
+        // 分享
+        return [
+          '1.在搜索框中完整输入对方昵称',
+          '2.请仔细核对被转移账户的信息',
+          '3.核对后点击“转让分享”来移交权限'
+        ]
+      } else {
+        // other
+        return ''
+      }
+    },
+  },
   methods: {
     submitForm(formName) {
       // 这里没有用表单验证
@@ -156,7 +231,15 @@ export default {
         )
         if (res.status === 200 && res.data.code === 0) {
           this.$message.success(this.$t('p.articleTransferSuccess'))
-          this.$router.push({ name: 'article' })
+
+          if (this.from === 'article' || this.from === 'draft') {
+            this.$router.push({ name: 'article' })
+          } else if (this.from === 'share') {
+            this.$router.push({ name: 'sharehall' })
+          } else {
+            this.$router.push({ name: 'article' })
+          }
+
         } else {
           this.$message.warning(this.$t('p.articleTransferNotOpen'))
         }

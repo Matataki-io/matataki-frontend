@@ -3,9 +3,15 @@ import { Message } from 'element-ui';
 import backendAPI from '@/api/backend'
 import API from '@/api/API'
 
-export const state = () => ({
-  userInfo: {}
-})
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('user')
+  return {
+    userInfo: {}
+  }
+}
+// 初始化
+export const state = getDefaultState
 
 export const getters = {
 }
@@ -39,6 +45,10 @@ export const mutations = {
       stats: { accounts, articles, supports, drafts }
     }
   },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
+  }
 }
 
 export const actions = {
@@ -63,5 +73,9 @@ export const actions = {
       Message.error(`${message}失败`)
     }
     dispatch('refreshUser', {id})
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
 }

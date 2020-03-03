@@ -43,7 +43,7 @@
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.0.0",
-    "nuxt-i18n": "^6.3.0",
+    "nuxt-i18n": "6.6.0",
     "oauth": "^0.9.15",
     "ontology-dapi": "^0.4.9",
     "qrcode": "1.4.2",

@@ -79,7 +79,7 @@
           </div>
           <point slot="reference" />
         </el-popover>
-        <el-tooltip class="item" effect="dark" content="导入文章" placement="bottom">
+        <el-tooltip class="item" effect="dark" :content="$t('publish.importArticle')" placement="bottom">
           <svg-icon
             :style="customizeHeaderIconColorComputed"
             @click="postImport"
@@ -88,7 +88,7 @@
           />
         </el-tooltip>
 
-        <el-tooltip class="item" effect="dark" content="写文章" placement="bottom">
+        <el-tooltip class="item" effect="dark" :content="$t('header.newArticle')" placement="bottom">
           <svg-icon
             :style="customizeHeaderIconColorComputed"
             @click="writeP"
@@ -128,7 +128,7 @@
             </n-link> -->
             <div @click="btnsignOut" class="link">
               <el-dropdown-item>
-                {{ $t('logout') }}
+                {{ $t('home.signOut') }}
               </el-dropdown-item>
             </div>
           </el-dropdown-menu>
@@ -138,7 +138,7 @@
           @click="login"
           href="javascript:void(0);"
           class="home-head-notlogin"
-        >{{ $t('login') }}</a>
+        >{{ $t('home.signIn') }}</a>
         <slot name="more" />
         <language />
       </div>
@@ -154,6 +154,7 @@ import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
+import { removeCookie } from '@/utils/cookie'
 
 import { strTrim } from '@/utils/reg'
 import store from '@/utils/store.js'
@@ -207,13 +208,13 @@ export default {
     nav() {
       return [
         {
-          title: '创作',
+          title: this.$t('home.creation'),
           url: 'article',
           sup: '',
           urlList: ['article', 'ring-id']
         },
         {
-          title: '分享',
+          title: this.$t('home.share'),
           url: 'sharehall',
           sup: '',
           urlList: ['sharehall']
@@ -226,7 +227,7 @@ export default {
         //   urlList: ['shop']
         // },
         {
-          title: 'Fan票',
+          title: this.$t('home.fanTicket'),
           url: 'token',
           sup: '',
           urlList: ['token']
@@ -273,7 +274,7 @@ export default {
     this.getRecommend()
   },
   methods: {
-    ...mapActions(['getCurrentUser', 'signOut']),
+    ...mapActions(['getCurrentUser', 'signOut', 'resetAllStore']),
     ...mapActions('notification', ['getNotificationCounters']),
     postImport() {
       if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
@@ -294,18 +295,44 @@ export default {
     },
     btnsignOut() {
       if (confirm(this.$t('warning.confirmLogout'))) {
-        this.$utils.delCookie('ACCESS_TOKEN')
-        this.$utils.delCookie('idProvider')
-        store.clear()
-        sessionStorage.clear()
-        // this.$utils.deleteAllCookies()
-        this.$router.push({
-          name: 'article'
-        })
-        setTimeout(() => {
-          this.$userMsgChannel.postMessage('logout')
-          window.location.reload()
-        }, 1000)
+
+        // 出错后弹出框提示
+        const alertDialog = () => {
+          this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
+            showClose: false,
+            type: 'success',
+            callback: action => {
+              window.location.reload()
+            }
+          })
+        }
+
+        // 重置all store
+        this.resetAllStore()
+          .then(res => {
+            removeCookie('ACCESS_TOKEN')
+            removeCookie('idProvider')
+            removeCookie('referral')
+            store.clear()
+            sessionStorage.clear()
+
+            if (this.$route.name === 'article') {
+              this.$router.go(0)
+            } else {
+              this.$router.replace({
+                name: 'article'
+              })
+            }
+
+            // 通知刷新其他页面
+            setTimeout(() => {
+              this.$userMsgChannel.postMessage('logout')
+            }, 2000)
+
+          }).catch(err => {
+            console.log(err)
+            alertDialog()
+          })
       }
     },
     // 跳转搜索
@@ -375,9 +402,12 @@ export default {
 }
 .home-head {
   max-width: 1200px;
+  min-width: 800px;
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
 
   display: flex;
   justify-content: space-between;

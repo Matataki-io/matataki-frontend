@@ -2,21 +2,28 @@
 import backendAPI from '@/api/backend'
 import { accessTokenAPI } from '@/api/backend'
 
-export const state = () => ({
-  userConfig: {
-    // Identity Provider, IdP
-    idProvider: null
-  },
-  userInfo: {
-    accessToken: null, // 僅為通過 signIn 的
-    nickname: ''
-  },
-  loginModalShow: false,
-  twitterLoginMode: 'login', 
-  // mode值：login/bind，twitter登录回调地址固定，故需要全局设置
-  locales: ['zh', 'en'],
-  locale: 'zh'
-})
+// 工厂函数 getDefaultState 初始化、重置
+const getDefaultState = () => {
+  console.log('index')
+  return {
+    userConfig: {
+      // Identity Provider, IdP
+      idProvider: null
+    },
+    userInfo: {
+      accessToken: null, // 僅為通過 signIn 的
+      nickname: ''
+    },
+    loginModalShow: false,
+    twitterLoginMode: 'login',
+    // mode值：login/bind，twitter登录回调地址固定，故需要全局设置
+    locales: ['zh', 'en'],
+    locale: 'zh'
+  }
+}
+
+// 初始化
+export const state = getDefaultState
 
 export const getters = {
   currentUserInfo: (
@@ -103,6 +110,10 @@ export const mutations = {
     if (state.locales.includes(locale)) {
       state.locale = locale
     }
+  },
+  // 重置
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -361,5 +372,33 @@ export const actions = {
     const api = backendAPI
     api.accessToken = getters.currentUserInfo.accessToken
     return api.withdraw(data)
-  }
+  },
+  // 重置
+  resetState ({ commit }) {
+    commit('resetState')
+  },
+  // 重置所有状态
+  resetAllStore({ commit }) {
+    return new Promise((resolve, reject) => {
+      try {
+        // 清空all state
+        commit('resetState')
+        commit('user/resetState')
+        // commit('i18n/resetState')
+        commit('importArticle/resetState')
+        commit('metamask/resetState')
+        commit('notification/resetState')
+        commit('ontology/resetState')
+        commit('scatter/resetState')
+        commit('scatter/resetState')
+        commit('vnt/resetState')
+
+        // success
+        resolve()
+      } catch (error) {
+        // fail
+        reject(error)
+      }
+    })
+  },
 }

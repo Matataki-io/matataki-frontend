@@ -1,4 +1,9 @@
+<template>
+  <div></div>
+</template>
+
 <script>
-import Index from '~/pages/_lang/index'
-export default Index
+export default {
+  middleware: 'redirect',
+}
 </script>

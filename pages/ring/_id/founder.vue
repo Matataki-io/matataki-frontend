@@ -1,4 +1,20 @@
+<template>
+  <ringPage :onlyCreator="1" />
+</template>
+
 <script>
-import ringIdFounder from '~/pages/_lang/ring/_id/founder'
-export default ringIdFounder
+import debounce from 'lodash/debounce'
+import ringPage from '@/components/ring_page/index.vue'
+
+export default {
+  components: {
+    ringPage
+  },
+  data() {
+    return {
+    }
+  },
+  created() {
+  }
+}
 </script>

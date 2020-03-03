@@ -40,7 +40,6 @@ export const xssFilter = html => {
     'data-tools'
   ]
   whiteList.span = ['class', 'style']
-  whiteList.p = ['class', 'style']
   let aTag = ['class', 'style', 'href', 'data-url', 'target']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
@@ -69,45 +68,6 @@ export const xssFilter = html => {
   whiteList.ul.push(...ulTag)
   whiteList.section.push(...sectionTag)
 
-  let rulePush = [
-    {
-      tag: 'h1',
-      attributes: ['id', 'style']
-    },
-    {
-      tag: 'h2',
-      attributes: ['id', 'style']
-    },
-    {
-      tag: 'h3',
-      attributes: ['id', 'style']
-    },
-    {
-      tag: 'h4',
-      attributes: ['id', 'style']
-    },
-    {
-      tag: 'h5',
-      attributes: ['id', 'style']
-    },
-    {
-      tag: 'h6',
-      attributes: ['id', 'style']
-    },
-    {
-      tag: 'hr',
-      attributes: ['style']
-    },
-    {
-      tag: 'code',
-      attributes: ['style']
-    },
-    {
-      tag: 'pre',
-      attributes: ['style']
-    },
-  ]
-
   let ruleAdd = [
     {
       tag: 'figure',
@@ -133,10 +93,77 @@ export const xssFilter = html => {
       tag: 'td',
       attributes: ['style']
     },
+    {
+      tag: 'source',
+      attributes: ['src', 'type']
+    },
+    {
+      tag: 'input',
+      attributes: ['type', 'disabled', 'checked', 'class']
+    },
   ]
 
-  for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
+  let rulePush = [
+    {
+      tag: 'div',
+      attributes: ['class']
+    },
+    {
+      tag: 'h1',
+      attributes: ['id', 'style']
+    },
+    {
+      tag: 'h2',
+      attributes: ['id', 'style']
+    },
+    {
+      tag: 'h3',
+      attributes: ['id', 'style']
+    },
+    {
+      tag: 'h4',
+      attributes: ['id', 'style']
+    },
+    {
+      tag: 'h5',
+      attributes: ['id', 'style']
+    },
+    {
+      tag: 'h6',
+      attributes: ['id', 'style']
+    },
+    {
+      tag: 'p',
+      attributes: ['style']
+    },
+    {
+      tag: 'hr',
+      attributes: ['style']
+    },
+    {
+      tag: 'code',
+      attributes: ['class', 'style']
+    },
+    {
+      tag: 'pre',
+      attributes: ['style']
+    },
+    {
+      tag: 'ol',
+      attributes: ['style']
+    },
+    {
+      tag: 'ul',
+      attributes: ['class']
+    },
+    {
+      tag: 'li',
+      attributes: ['class']
+    },
+  ]
+
   for (const key of ruleAdd) whiteList[key.tag] = key.attributes
+  for (const key of rulePush) whiteList[key.tag].push(...key.attributes)
 
   const options = {
     whiteList,
@@ -149,10 +176,6 @@ export const xssFilter = html => {
         console.log(`Attr 不支持的标签属性，请联系客服：${tag}, ${name}, ${value}`)
       }
     },
-    // > 放过md引用
-    escapeHtml(html) {
-      return html.replace(/</g, '&lt;')
-    }
   }
   const myxss = new xss.FilterXSS(options)
 
@@ -211,5 +234,15 @@ export const xssImageProcess = html => {
         }
       }
     }
+  });
+}
+
+// 过滤html标签
+export const filterOutHtmlTags = (html, whiteList = []) => {
+  // 没有用markdownit渲染markdown文档, 因为可能造成不必要的消耗,(他只是一个摘要而已)
+  return xss(html, {
+    whiteList: whiteList,
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ["script"]
   });
 }

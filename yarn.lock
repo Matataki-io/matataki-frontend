@@ -703,9 +703,10 @@
   version "1.4.0"
   resolved "https://registry.npm.taobao.org/@csstools/convert-colors/download/@csstools/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
 
-"@kazupon/vue-i18n-loader@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.npm.taobao.org/@kazupon/vue-i18n-loader/download/@kazupon/vue-i18n-loader-0.5.0.tgz#64819fc9dbe21bac523e3436b7e15c32bcd33b92"
+"@intlify/vue-i18n-loader@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.npm.taobao.org/@intlify/vue-i18n-loader/download/@intlify/vue-i18n-loader-0.6.1.tgz#dbf7ab1d7ea3641396733b9827fed949644b1eeb"
+  integrity sha1-2/erHX6jZBOWczuYJ/7ZSWRLHus=
   dependencies:
     js-yaml "^3.13.1"
     json5 "^2.1.1"
@@ -6062,13 +6063,14 @@ number-to-bn@1.7.0:
     bn.js "4.11.6"
     strip-hex-prefix "1.0.0"
 
-nuxt-i18n@^6.3.0:
-  version "6.5.0"
-  resolved "https://registry.npm.taobao.org/nuxt-i18n/download/nuxt-i18n-6.5.0.tgz#dfadf5f8a658f8f5f677c8cc6eb981431951977c"
+nuxt-i18n@6.6.0:
+  version "6.6.0"
+  resolved "https://registry.npm.taobao.org/nuxt-i18n/download/nuxt-i18n-6.6.0.tgz#f7390d428ab54e4adada5bbc287b17682370f1fd"
+  integrity sha1-9zkNQoq1Tkra2lu8KHsXaCNw8f0=
   dependencies:
     "@babel/parser" "^7.5.5"
     "@babel/traverse" "^7.5.5"
-    "@kazupon/vue-i18n-loader" "^0.5.0"
+    "@intlify/vue-i18n-loader" "^0.6.1"
     cookie "^0.4.0"
     is-https "^1.0.0"
     js-cookie "^2.2.1"

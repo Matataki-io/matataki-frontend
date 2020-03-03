@@ -70,11 +70,11 @@
             <svg-icon class="github" icon-class="telegram" />
           </div>
         </el-tooltip>
-        <!-- <el-tooltip :content="$t('auth.twitterTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('Twitter')" class="oauth-bg bg-twitter">
+        <el-tooltip :content="$t('auth.twitterTitle')" class="item" effect="dark" placement="top">
+          <div @click="walletLogin('Twitter')" style="cursor: not-allowed;" class="oauth-bg bg-twitter">
             <svg-icon class="twitter" icon-class="twitter" />
           </div>
-        </el-tooltip> -->
+        </el-tooltip>
       </div>
     </div>
     <img v-if="referral" :alt="$t('auth.invite')" class="referral" src="@/assets/img/invite.png">
@@ -85,6 +85,7 @@
 /* eslint-disable */
 import { mapActions, mapGetters, mapState } from "vuex";
 import { idProvider } from "./icon.js";
+import { getCookie, setCookie } from '@/utils/cookie'
 
 export default {
   name: "LoginContent",
@@ -149,14 +150,17 @@ export default {
   watch: {
     // 登录框关闭 隐藏loading
     loginModalShow(newVal) {
-      if (!newVal) this.loading = false;
+      if (newVal) {
+        // 和移动端有点不一样, 这里借用这个func来执行 referral
+        this.getReferral();
+      } else {
+        this.loading = false;
+      }
+
     }
   },
   mounted() {
-    if (process.browser) {
-      this.isReferral();
-      this.getReferral();
-    }
+    if (process.browser) this.getReferral()
   },
   methods: {
     ...mapActions(["signIn"]),
@@ -184,7 +188,7 @@ export default {
       } else if (type === "Telegram") {
         this.telegramLogin();
       } else if (type === "Twitter") {
-        this.twitterLogin();
+        // this.twitterLogin();
       } else await this.signInx(type);
     },
     async signInx(type) {
@@ -283,25 +287,19 @@ export default {
     switchRegister() {
       this.$emit("switch");
     },
-    // 是否有推荐
-    isReferral() {
-      let search = window.location.search.slice(1);
-      let searchArr = search.split("&");
-      let searchFilter = searchArr.filter(i => i.includes("referral="));
-      // 有邀请id
-      if (searchFilter.length !== 0)
-        this.$utils.setCookie("referral", searchFilter[0].slice(9));
-      else {
-        // 如果没有邀请连接
-        // 检查是否有邀请id 有则删除
-        let referral = this.$utils.getCookie("referral");
-        if (referral) this.$utils.delCookie("referral");
-      }
-    },
     // 得到邀请状态
     getReferral() {
-      let referral = this.$utils.getCookie("referral");
-      if (referral) this.referral = true;
+      let search = window.location.search.slice(1)
+      let searchArr = search.split('&')
+      let searchFilter = searchArr.filter((i) => i.includes('referral='))
+      // 有邀请id
+      if (searchFilter.length) {
+        setCookie('referral', searchFilter[0].slice(9))
+        this.referral = true
+      } else {
+        let referral = getCookie('referral')
+        if (referral) this.referral = true
+      }
     }
   }
 };
@@ -397,7 +395,8 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  background: #00ACED;
+  // background: #00ACED;
+  background: #b2b2b2;
 }
 
 .referral {

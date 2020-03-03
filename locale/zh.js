@@ -106,6 +106,9 @@ export default {
     content: '请输入内容'
   },
   // components
+  header: {
+    newArticle: '写文章'
+  },
   auth: {
     eosWallet: 'EOS钱包',
     ontWallet: 'ONT钱包',
@@ -117,7 +120,7 @@ export default {
     ontType: 'ONT',
     vntTitle: 'VNT登录',
     githubTitle: 'GitHub登录',
-    twitterTitle: 'Twitter登录',
+    twitterTitle: 'Twitter登录（开发中）',
     ontDoc: '《如何使用ONT登录》',
     invite: '已邀请', //img
     viewWallet: '查看支持的钱包',
@@ -283,7 +286,12 @@ export default {
     stageDes32: '打造区块链永存知识数据库'
   },
   home: {
-    navHome: '首页',
+    creation: '创作',
+    share: '分享',
+    fanTicket: 'Fan票',
+    signOut: '登出',
+    signIn: '立即登录',
+
     navArticle: '文章',
     navShop: '商品',
     searchPlaceholder: '请输入搜索内容',
@@ -648,6 +656,7 @@ export default {
     followed_you: '关注了你'
   },
   footer: {
+    helpAndSupport: '帮助和支持',
     hellpbook: '使用手册',
     point: '平台积分',
     privacyPolicy: '隐私政策',

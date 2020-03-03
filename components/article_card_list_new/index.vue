@@ -1,81 +1,80 @@
 <template>
-  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" class="card" target="_blank">
-    <div class="bg">
+  <div class="card" >
+    <n-link :to="{ name: 'p-id', params: {id: card && card.id} }" target="_blank">
       <div class="article">
         <div class="container">
           <div class="article-title">
-            <h3 v-clampy="2" class="search-res">
-              <span v-if="card && card.status === 1" class="off-shelves">
-                （{{ $t('articleCard.deleted') }}）
-              </span>
-              <span v-html="xssTitle" />
-            </h3>
+            <span v-if="card && card.status === 1" class="off-shelves">
+              （{{ $t('articleCard.deleted') }}）
+            </span>
+            <n-link class="title search-res" v-html="xssTitle" :to="{ name: 'p-id', params: {id: card && card.id} }" target="_blank"></n-link>
           </div>
-          <div v-html="xssContent" class="content-text search-res" />
+          <div v-html="xssContent" class="content-text search-res"></div>
           <div class="des">
             <!-- 文章发布时间 -->
             <div class="date">
               {{ dateCard }}
             </div>
-            <span class="empty" />
-            <!-- 付费文章 -->
-            <img
-              v-if="card.require_holdtokens || card.require_buy"
-              class="lock-img"
-              src="@/assets/img/lock.png"
-              alt="lock"
-            ><span class="lock-text">{{ lock }}</span>
-            <!-- 阅读量 -->
-            <span class="data">
-              <i class="el-icon-view" />
-              {{ read }}
-            </span>
-            <!-- 点赞量 -->
-            <span class="data">
-              <svg-icon icon-class="like" />
-              {{ likes }}
-            </span>
-            <!-- 复制分享链接 -->
-            <a href="javascript:;">
-              <span @click="copyCode(clipboard(card))" class="copy">
-                <svg-icon icon-class="copy_mini" />
+            <div class="empty"></div>
+            <div>
+              <!-- 付费文章 -->
+              <img
+                v-if="card.require_holdtokens || card.require_buy"
+                class="lock-img"
+                src="@/assets/img/lock.png"
+                alt="lock" />
+              <span class="lock-text">{{ lock }}</span>
+              <!-- 阅读量 -->
+              <span class="data">
+                <i class="el-icon-view" />
+                {{ read }}
               </span>
-            </a>
+              <!-- 点赞量 -->
+              <span class="data">
+                <svg-icon icon-class="like" />
+                {{ likes }}
+              </span>
+              <!-- 复制分享链接 -->
+              <a href="javascript:;">
+                <span @click="copyCode(clipboard(card))" class="copy">
+                  <svg-icon icon-class="copy_mini" />
+                </span>
+              </a>
+            </div>
           </div>
         </div>
-
-        <div v-if="!hideAuthor" class="split-line" />
-        <!-- 适用于 首页, Fan圈 -->
-        <!-- 区分那种卡 -->
-        <div v-if="!hideAuthor" class="author">
-          <n-link :to=" {name: 'user-id', params: {id: Uid}} " target="_blank">
-            <avatar :size="'60px'" :src="avatarImg" class="avatar" />
-          </n-link>
-          <div class="username">
-            {{ card && (card.nickname || card.author || '') }}
+        <template v-if="!hideAuthor">
+          <div class="split-line"></div>
+          <!-- 适用于 首页, Fan圈 -->
+          <!-- 区分那种卡 -->
+          <div class="author">
+            <n-link :to="{ name: 'user-id', params: {id: card && card.uid} }" target="_blank">
+              <avatar :src="avatarImg" class="avatar"></avatar>
+            </n-link>
+            <n-link :to="{ name: 'user-id', params: {id: card && card.uid} }" target="_blank" class="username">
+              {{ card && (card.nickname || card.author || '') }}
+            </n-link>
+            <!-- 关注按钮 -->
+            <!-- <div class="follow">
+              <svg-icon
+                icon-class="add"
+              />
+            </div>-->
           </div>
-          <!-- 关注按钮 -->
-          <!-- <div class="follow">
-            <svg-icon
-              icon-class="add"
-            />
-          </div>-->
-        </div>
+        </template>
       </div>
-      <!-- 文章卡片内容 -->
-    </div>
-    <div style="width: 0;height: 0;" />
-  </n-link>
+    </n-link>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
 import moment from 'moment'
-import avatar from '@/components/avatar/index.vue'
+import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { tagColor } from '@/utils/tag'
-import { xssFilter } from '@/utils/xss'
+import { xssFilter, filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
@@ -103,12 +102,16 @@ export default {
     ...mapGetters(['isMe', 'currentUserInfo', 'isLogined']),
     xssTitle() {
       if (this.card.title) {
-        return xssFilter(this.card.title)
+        return filterOutHtmlTags(this.card.title, {
+          em: []
+        })
       } else return ''
     },
     xssContent() {
       if (this.card.short_content) {
-        return xssFilter(this.card.short_content)
+        return filterOutHtmlTags(this.card.short_content, {
+          em: []
+        })
       } else return ''
     },
     // cover() {
@@ -207,7 +210,19 @@ export default {
 <style lang="less" scoped>
 .card {
   display: block;
-  margin-bottom: 20px;
+  width: 100%;
+  background: #fff;
+  transition: all 0.3s;
+  border-radius: @br10;
+  margin: 20px 0;
+  box-sizing: border-box;
+  &:nth-child(1) {
+    margin-top: 0;
+  }
+  &:hover {
+    transform: translate(0, -4px);
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+  }
 }
 .imgObjectFitCover {
   width: 100%;
@@ -218,20 +233,26 @@ export default {
   flex: 1;
 }
 
-.bg {
-  width: 100%;
-  background: #fff;
-  transition: all 0.3s;
-  border-radius: @br10;
-  padding: 20px;
-  margin-top: 20px;
-  box-sizing: border-box;
-  &:nth-child(1) {
-    margin-top: 0;
-  }
-  &:hover {
-    transform: translate(0, -4px);
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+.article-title {
+  margin-bottom: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  .title {
+    font-size:20px;
+    font-weight:bold;
+    color:rgba(0,0,0,1);
+    line-height:28px;
+    max-height: 56px;
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    flex: 1;
   }
 }
 
@@ -242,6 +263,7 @@ export default {
   overflow: hidden;
 }
 .article {
+  padding: 20px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -294,11 +316,17 @@ export default {
   // margin-top: 29px;
   // margin-bottom: auto;
   margin: auto;
+  overflow: hidden;
+  text-align: center;
   .avatar {
-    flex: 0 0 30px;
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
     margin: auto;
   }
   .username {
+    display: inline-block;
+    width: 100%;
     margin-top: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
