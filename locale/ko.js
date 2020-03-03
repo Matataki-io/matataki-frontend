@@ -1,6 +1,7 @@
 export default {
     readMore: '阅读更多',
     viewMore: '查看更多',
+    hideMore: '收起更多',
     not: '暂无',
     notContent: '暂无内容',
     notProfile: '暂无简介',
@@ -12,6 +13,7 @@ export default {
     notShop: '暂无商品',
     notFollowContent: '暂无关注内容',
     notBuyHistory: '暂无购买记录',
+    noInfo: '暂无信息',
     setting: '设置',
     login: '登录',
     logout: '登出',
@@ -20,11 +22,11 @@ export default {
     transfer: '转让',
     delete: '删除',
     read: '阅读',
-    follow: '따르다',
-    notFollow: '따르지 않는다',
+    follow: '关注',
+    notFollow: '没有关注',
     fans: '粉丝',
     notFans: '没有粉丝',
-    unFollow: '팔로우 해제',
+    unFollow: '取消关注',
     following: '已关注',
     bookmark: '收藏',
     unbookmark: '已收藏',
@@ -41,9 +43,9 @@ export default {
     profile: '简介',
     done: '完成',
     avatar: '头像',
-    username: '사용자 이름',
-    nickname: '닉네임',
-    email: '이메일',
+    username: '用户名',
+    nickname: '昵称',
+    email: '邮箱',
     articleUtil: '篇',
     //公用名称
     referral: '助你量化社交影响力的价值，在这里对爱好的每一份投入都能获利！\n行业领先的区块链技术保证创作者权益不再被平台剥削！\n使用邀请链接注册的新用户即可领取500积分！\n持有积分未来可共享全平台收益！\n',
@@ -52,6 +54,9 @@ export default {
     gift: '转赠',
     detail: '明细',
     notice: '通知',
+    scanIt: '扫一扫',
+    qqSpace: 'QQ空间',
+    quote: '引用',
     success: {
         success: '成功',
         copy: '复制成功',
@@ -104,7 +109,14 @@ export default {
         profileNotExceedStr: '简介不能超过{0}位字符',
         strEnglishNumber: '{0}位字符,包含中文、英文、数字',
         username: '请输入昵称',
-        content: '请输入内容'
+        content: '请输入内容',
+        forgetPassword: '忘记密码',
+        resetPassword: '重置密码',
+        enterANewPassword: '请输入新密码',
+        enterTheNewPasswordAgain: '请在输入一遍新密码',
+        emailIsNot: '邮箱未注册',
+        passwordChangedSuccess: '密码修改成功，请重新登录',
+        passwordChangeFailed: '密码修改失败'
     },
     // components
     header: { newArticle: '写文章' },
@@ -119,6 +131,7 @@ export default {
         ontType: 'ONT',
         vntTitle: 'VNT登录',
         githubTitle: 'GitHub登录',
+        telegramTitle: 'Telegram登录',
         twitterTitle: 'Twitter登录（开发中）',
         ontDoc: '《如何使用ONT登录》',
         invite: '已邀请',
@@ -218,6 +231,8 @@ export default {
         oldUser: '感谢8月30日前注册的老用户支持，点击领取{0}积分',
         newUser: '新用户点击领取{0}积分',
         invite: '邀请好友有奖',
+        inviteNow: '立即邀请',
+        inviteReward: '每成功邀请一名好友注册可得666积分！',
         copyLink: '复制链接',
         inviteDes1: '每成功邀请一名好友注册可得{0}积分',
         inviteDes2: '好友发文你可以获得额外{0}积分',
@@ -225,11 +240,20 @@ export default {
         dailyPublishPoint: '每日发文奖励',
         dailyPublishPointDes: '每日发文最高可得{0}积分奖励',
         dailyReadPoint: '每日阅读奖励',
-        dailyReadPointDes: '每日阅读评价文章最高可得{0}积分奖励',
+        dailyReadPointDes: '每日阅读并评价文章最高可得{0}积分奖励',
         receiveSuccess: '领取成功',
         receiveFail: '领取失败',
         receiveProfileFail: '领取设置资料积分失败',
         receiveFeedbackFail: '领取老用户回馈积分失败'
+    },
+    inviteReward: {
+        enter: '进入瞬matataki',
+        title: '邀请有奖：',
+        text1: '每成功邀请一名好友注册可得666积分！',
+        text2: '新用户阅读5篇文章（30秒以上）并作出评价视为成功邀请。',
+        text3: '受邀好友每次发文你可以获得额外20积分！',
+        text4: '受邀好友每次阅读获得积分，你可额外获得其总额1/4的积分！',
+        text5: '持有积分未来可共享 瞬Matataki 全平台收益！'
     },
     about: {
         logo: '瞬MATATAKI',
@@ -305,7 +329,12 @@ export default {
         articleTagTitle: '文章标签',
         shopTagTitle: '商品标签',
         recommendAuthor: '推荐作者',
-        random: '换一换'
+        random: '换一换',
+        allCreation: '综合创作',
+        fanCircle: 'Fan圈',
+        myFocus: '我的关注',
+        ofFanCircle: '的Fan圈',
+        buyFanTickets: '购买Fan票'
     },
     sidebar: {
         article: '篇',
@@ -406,6 +435,7 @@ export default {
         invested: '已投资',
         investedEnd: '投资了',
         buy: '购买',
+        unlock: '解锁',
         buying: '购买中',
         buyEnd: '购买了',
         soldOut: '售罄',
@@ -515,7 +545,15 @@ export default {
         vntBuyAccount: '登陆的Vnt账号与支付账号不相同',
         shareWeibo: '微博',
         shareWechat: '扫一扫，分享到微信',
-        deleted: '文章已下架'
+        deleted: '文章已下架',
+        fulfillTheConditions: '达成条件即可阅读全文'
+    },
+    paidRead: {
+        already: '已',
+        article: '全文',
+        needToReach: '您需要达成以下解锁条件',
+        hasBeenReached: '您已达成以下解锁条件',
+        meetAllConditions: '满足全部条件后即可阅读全文。'
     },
     invite: {
         headerTitle: '我的邀请',
@@ -651,5 +689,42 @@ export default {
         orange: '橙皮书',
         scanCode: '扫码后备注“进群”',
         follow: '关注公众号'
+    },
+    social: {
+        relatedWebsites: '相关网站',
+        socialAccount: '社交账号',
+        forInformationOnly: '仅用于信息展示',
+        fillLink: '请填写网站链接，包含http(s)://'
+    },
+    sharehall: {
+        hall: '分享大厅',
+        feeling: '谈谈感想',
+        fillLink: '输入链接，包含http(s)://',
+        sharePublished: '分享已发布',
+        shareSlogan: '保存分享卡片把思考与灵感传达给更多的人',
+        save: '保存并分享卡片',
+        fillImpression: '请填写感想',
+        fillLink2: '请填写链接地址',
+        unpublished: '您有分享未发布，是否发布了再离开？',
+        toPost: '去发布',
+        noMore: '不要了',
+        canNotBeEmpty: '分享引用不能为空',
+        reRegister: '发生错误, 请您重新登录',
+        success: '发布成功',
+        error: '发布失败',
+        duplicateContent: '不能引用重复的内容',
+        detectionCompleted: '检测完成',
+        errorIncludeHttp: '请输入包含http(s)://的链接地址'
+    },
+    token: {
+        comprehensiveSort: '综合排序',
+        ascendingAlphabeticalOrder: '首字母升序',
+        descendingFirstLetter: '首字母降序',
+        ascendingTime: '时间升序',
+        descendingTime: '时间降序',
+        unitPrice: '单价',
+        liquidGold: '流动金',
+        turnover24h: '24h 成交额',
+        founder: '创始人'
     }
 };
