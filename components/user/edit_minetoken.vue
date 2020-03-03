@@ -87,9 +87,9 @@
         />
       </el-form-item>
 
-      <el-form-item label="相关网站" prop="">
+      <el-form-item :label="$t('social.relatedWebsites')" prop="">
         <div v-for="(item, index) in about" :key="index" class="fl ac about-input">
-          <el-input v-model="about[index]" class="input" placeholder="请填写网站链接，包含http(s)://" />
+          <el-input v-model="about[index]" class="input" :placeholder="$t('social.fillLink')" />
           <!-- <div v-if="index === 0" class="about-input-btn" @click="aboutAdd">
             <i class="el-icon-plus" />
           </div> -->
@@ -104,7 +104,7 @@
         </div>
       </el-form-item>
 
-      <el-form-item label="社交帐号" prop="">
+      <el-form-item :label="$t('social.socialAccount')" prop="">
         <div v-for="(item, index) in social" :key="index">
           <p class="social-title">
             {{ item.name }}

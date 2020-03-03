@@ -4,7 +4,7 @@
     <div slot="list" v-loading="loading">
       <div v-if="urls.length !== 0" class="websites">
         <h3 class="inline h3">
-          相关网站
+          {{ $t('social.relatedWebsites') }}
         </h3>
         <div class="inline url">
           <p v-for="(item, index ) in urls" :key="index">
@@ -14,7 +14,7 @@
       </div>
       <div v-if="social.length !== 0" class="social">
         <h3 class="inline h3">
-          社交账号
+          {{ $t('social.socialAccount') }}
         </h3>
         <div class="inline">
           <div v-for="(item, index) in social" :key="index" class="social-icons inline">
@@ -24,7 +24,7 @@
       </div>
       <div v-if="social.length === 0 && urls.length === 0 && loading === false" class="social no-data">
         <p>
-          暂无信息
+          {{ $t('noInfo') }}
         </p>
       </div>
     </div>

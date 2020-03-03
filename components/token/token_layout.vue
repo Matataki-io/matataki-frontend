@@ -185,19 +185,19 @@
 
         <div class="about">
           <h2 class="token-title">
-            相关网站
+            {{ $t('social.relatedWebsites') }}
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
               <a :href="formatUrl(item)" target="_blank">{{ item }}</a>
             </li>
           </ul>
-          <span v-else class="not">暂无</span>
+          <span v-else class="not">{{ $t('not') }}</span>
         </div>
 
         <div class="social">
           <h2 class="token-title">
-            社交账号
+            {{ $t('social.socialAccount') }}
           </h2>
 
           <div v-if="resourcesSocialss.length !== 0" class="social-btn">
@@ -205,7 +205,7 @@
               <socialIcon :show-tooltip="true" :icon="item.type" :content="item.content" />
             </div>
           </div>
-          <span v-else class="not">暂无</span>
+          <span v-else class="not">{{ $t('not') }}</span>
         </div>
 
         <div class="share">

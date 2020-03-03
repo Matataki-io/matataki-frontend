@@ -20,7 +20,7 @@
           </button>
         </div>
         <p v-if="!clicked">
-          已阅读{{ readTime }}
+          {{ $t('p.point') + reads }}
         </p>
         <template v-else>
           <p v-for="(item, i) in points.arr" :key="i">
@@ -47,7 +47,7 @@
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all}积分` : '积分' }}</a>
+      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all + $t('publish.point')}` : $t('publish.point') }}</a>
     </div>
   </div>
 </template>
