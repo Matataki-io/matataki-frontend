@@ -48,7 +48,7 @@
             <div class="flex">
               <span class="integral-title">
                 {{ $t('point.dailyReadPoint') }}
-                <el-tooltip class="item" effect="dark" content="每日阅读并评价最高可得100积分奖励！" placement="top-start">
+                <el-tooltip class="item" effect="dark" :content="$t('point.dailyReadPointDes', [100])" placement="top-start">
                   <svg-icon icon-class="anser" class="prompt-svg" />
                 </el-tooltip>
               </span>
@@ -63,7 +63,7 @@
             <div class="flex">
               <span class="integral-title">
                 {{ $t('point.dailyPublishPoint') }}
-                <el-tooltip class="item" effect="dark" content="每日发文最高可得300积分奖励！" placement="top-start">
+                <el-tooltip class="item" effect="dark" :content="$t('point.dailyPublishPointDes', [300])" placement="top-start">
                   <svg-icon icon-class="anser" class="prompt-svg" />
                 </el-tooltip>
               </span>
@@ -78,15 +78,15 @@
 
       <div class="invite">
         <div class="title">
-          邀请好友有奖
-          <el-tooltip class="item" effect="dark" content="每成功邀请一名好友注册可得666积分！" placement="top-end">
+          {{ $t('point.invite') }}
+          <el-tooltip class="item" effect="dark" :content="$t('point.inviteReward')" placement="top-end">
             <div class="prompt">
               <svg-icon icon-class="anser" class="prompt-svg" />
             </div>
           </el-tooltip>
         </div>
         <el-button @click="share" type="primary" size="small" class="invite-button">
-          立即邀请
+          {{ $t('point.inviteNow') }}
         </el-button>
       </div>
     </div>

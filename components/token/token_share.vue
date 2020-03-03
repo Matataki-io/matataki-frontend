@@ -40,12 +40,12 @@
       />
       <wechat v-if="pageType !== 2" :link="link" style="margin: 60px 0 0 0;" />
       <div v-else class="invite-synopsis">
-        邀请有奖：<br>
-        每成功邀请一名好友注册可得666积分！<br>
-        新用户阅读5篇文章（30秒以上）并作出评价视为成功邀请。<br>
-        受邀好友每次发文你可以获得额外20积分！<br>
-        受邀好友每次阅读获得积分，你可额外获得其总额1/4的积分！<br>
-        持有积分未来可共享 瞬Matataki 全平台收益！<br>
+        {{ $t('inviteReward.title') }}<br>
+        {{ $t('inviteReward.text1') }}<br>
+        {{ $t('inviteReward.text2') }}<br>
+        {{ $t('inviteReward.text3') }}<br>
+        {{ $t('inviteReward.text4') }}<br>
+        {{ $t('inviteReward.text5') }}<br>
       </div>
     </div>
     <!-- 截图分享 -->

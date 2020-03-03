@@ -16,7 +16,7 @@
         </router-link>
         <div @click="$emit('refClick', card)" class="card-quote">
           <svg-icon class="icon" icon-class="quote" />
-          <span>引用&nbsp;{{ card.beRefs ? card.beRefs.length : '' }}</span>
+          <span>{{ $t('quote') }}&nbsp;{{ card.beRefs ? card.beRefs.length : '' }}</span>
         </div>
       </div>
       <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content" target="_blank">
@@ -81,7 +81,7 @@
         </template>
       </div>
       <div v-if="shareListMore.length !== 0" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore" class="card-more">
-        <span>{{ toggleMore ? '收起更多' : '查看更多' }}</span><i class="el-icon-d-arrow-left icon" />
+        <span>{{ toggleMore ? $t('hideMore') : $t('viewMore') }}</span><i class="el-icon-d-arrow-left icon" />
       </div>
     </div>
   </div>

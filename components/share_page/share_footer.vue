@@ -10,7 +10,7 @@
       <div @click="pushShare">
         <svg-icon class="icon" icon-class="reference" />
       </div>
-      <p>引用</p>
+      <p>{{ $t('quote') }}</p>
     </div>
     <div class="icon-num">
       <div @click="$emit('share')">

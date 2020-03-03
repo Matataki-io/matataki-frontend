@@ -19,7 +19,7 @@
         <div class="bottom-tip">
           <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
-          <a @click="$emit('switch')" href="javascript:void(0);">忘记密码</a>
+          <a @click="$emit('switch')" href="javascript:void(0);">{{ $t('rule.forgetPassword')}}</a>
         </div>
       </el-form-item>
     </el-form>
@@ -65,7 +65,7 @@
             <svg-icon class="github" icon-class="github" />
           </div>
         </el-tooltip>
-        <el-tooltip content="Telegram登录" class="item" effect="dark" placement="top">
+        <el-tooltip :content="$t('auth.telegramTitle')" class="item" effect="dark" placement="top">
           <div @click="walletLogin('Telegram')" class="oauth-bg bg-tg">
             <svg-icon class="github" icon-class="telegram" />
           </div>

@@ -47,7 +47,7 @@
 
           <div v-if="!hasPaied && !isProduct && (isTokenArticle || isPriceArticle)" class="lock-line">
             <el-divider>
-              <span class="lock-text">达成条件即可阅读全文</span>
+              <span class="lock-text">{{ $t('p.fulfillTheConditions') }}</span>
             </el-divider>
             <svg-icon
               class="icon-arrow"
@@ -66,11 +66,11 @@
           </div>
           <div class="lock-info">
             <h3 class="lock-info-title">
-              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}全文` }}
+              {{ !hasPaied ? unlockText + $t('paidRead.article') : $t('paidRead.already') + unlockText + $t('paidRead.article') }}
             </h3>
             <h5 class="lock-info-subtitle">
-              {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
-              <el-tooltip class="item" effect="dark" content="满足全部条件后即可阅读全文。" placement="top-start">
+              {{ !hasPaied ? $t('paidRead.needToReach') : $t('paidRead.hasBeenReached') }}
+              <el-tooltip class="item" effect="dark" :content="$t('paidRead.meetAllConditions') " placement="top-start">
                 <svg-icon icon-class="anser" class="prompt-svg" />
               </el-tooltip>
             </h5>
@@ -263,7 +263,7 @@
                 <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
                   <svg-icon icon-class="reference" class="icon" />
                 </div>
-                <span>{{ '引用' }}</span>
+                <span>{{ $t('quote') }}</span>
               </div>
               <div @click="share" class="article-btn">
                 <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
@@ -746,9 +746,9 @@ export default {
     },
     unlockText() {
       if (this.isPriceArticle) {
-        return '购买'
+        return this.$t('p.buy')
       }
-      return '解锁'
+      return this.$t('p.unlock')
     },
     totalCny() {
       let result = 0

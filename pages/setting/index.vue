@@ -64,10 +64,10 @@
         <!-- 相关网站 -->
         <div class="social-div">
           <span class="title">
-            相关网站
+            {{ $t('social.relatedWebsites') }}
           </span>
           <div v-for="(item, index) in about" :key="index" class="fl ac about-input social-list">
-            <el-input v-model="about[index]" class="input" placeholder="请填写网站链接，包含http(s)://" />
+            <el-input v-model="about[index]" class="input" :placeholder="$t('social.fillLink')" />
             <div v-if="about.length > 1" @click="abountLess(index)" class="about-input-btn">
               <i class="el-icon-minus" />
             </div>
@@ -79,10 +79,10 @@
         <!-- 社交账号 -->
         <div class="social-div">
           <span class="title right0">
-            社交账号
+            {{ $t('social.socialAccount') }}
           </span>
           <span class="title-note">
-            仅用于信息展示
+            {{ $t('social.forInformationOnly') }}
           </span>
           <div v-for="(item, index) in social" :key="index" class="social-list">
             <p class="social-title">

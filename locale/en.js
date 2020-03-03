@@ -1,6 +1,7 @@
 export default {
   readMore: 'Read More',
   viewMore: 'View More',
+  hideMore: 'Collapse More',
   not: '暂无',
   notContent: 'No content',
   notProfile: 'No profile',
@@ -12,6 +13,7 @@ export default {
   notShop: 'No merchandise',
   notFollowContent: 'No connect from follow',
   notBuyHistory: 'No history',
+  noInfo: 'No information',
   setting: 'Settings',
   login: 'Sign In',
   logout: 'Log out',
@@ -45,12 +47,15 @@ export default {
   nickname: 'Nickname',
   email: 'E-mail',
   articleUtil: '篇', //公用名称
-  referral: 'Quantify the value of your social influence, and any investment in hobbies will be profitable!\n行业领先的区块链技术保证创作者权益不再被平台剥削！\nGot 500 points by invite link.\nHolding points could gain benefits of the whole web in the future!\n',
+  referral: 'Quantify the value of your social influence, and any investment in hobbies will be profitable!\nIndustry-leading blockchain technology guarantees that creators\' rights will no longer be exploited by the platform!\nGot 500 points by invite link.\nHolding points could gain benefits of the whole web in the future!\n',
   save: 'Save',
   transaction: 'Transaction',
   gift: 'Gift',
   detail: 'Detail',
   notice: 'Notice',
+  scanIt: 'scan it',
+  qqSpace: 'QQ space',
+  quote: 'Quote',
   success: {
     success: 'Success',
     copy: 'Copy successfully',
@@ -103,7 +108,14 @@ export default {
     profileNotExceedStr: 'Introduction cannot exceed {0} characters',
     strEnglishNumber: '{0} characters, including Chinese, English, numbers',
     username: 'Please enter a nickname',
-    content: 'Please enter content'
+    content: 'Please enter content',
+    forgetPassword: 'Forget password',
+    resetPassword: 'reset Password',
+    enterANewPassword: 'Please enter a new password',
+    enterTheNewPasswordAgain: 'Please enter the new password again',
+    emailIsNot: 'Email is not registered',
+    passwordChangedSuccess: 'Password changed successfully, please login again',
+    passwordChangeFailed: 'Password change failed'
   },
   // components
   header: {
@@ -120,6 +132,7 @@ export default {
     ontType: 'ONT',
     vntTitle: 'login with VNT',
     githubTitle: 'login with GitHub',
+    telegramTitle: 'login with Telegram',
     twitterTitle: 'login with Twitter (inDevelopment)',
     ontDoc: 'How to login with ONT',
     invite: 'Have invited', //img
@@ -220,6 +233,8 @@ export default {
     oldUser: 'Thanks for the support of the old users who registered before August 30, click to get {0} points',
     newUser: 'New users click to claim {0} points',
     invite: 'Invite friends with point ',
+    inviteNow: 'Invite now',
+    inviteReward: 'Every successful invitation to a friend to register will earn 666 points!',
     copyLink: 'copy link ',
     inviteDes1: '{0} points for each successful invitation',
     inviteDes2: 'Friends post you can get extra {0} points',
@@ -232,6 +247,15 @@ export default {
     receiveFail: 'Claim failed',
     receiveProfileFail: 'Failed to get set data points',
     receiveFeedbackFail: 'Failed to get old user feedback points'
+  },
+  inviteReward: {
+    enter: 'enter Matataki',
+    title: 'Invitations with prizes:',
+    text1: 'Every successful invitation to a friend to register will earn 666 points!',
+    text2: 'New users read 5 articles (more than 30 seconds) and make a review as a successful invitation.',
+    text3: 'You can get extra 20 points for each post you invite!',
+    text4: 'Every time an invited friend gets points for reading, you can get an extra 1/4 of the total points!',
+    text5: 'Holding points can be shared in the future Instant Matataki platform-wide revenue!',
   },
   about: {
     logo: '瞬MATATAKI', // img
@@ -318,7 +342,12 @@ export default {
     articleTagTitle: 'Article tags',
     shopTagTitle: 'Goods tags',
     recommendAuthor: 'Recommended Author',
-    random: 'Change'
+    random: 'Change',
+    allCreation: 'Composite creation',
+    fanCircle: 'Fan circle',
+    myFocus: 'My focus',
+    ofFanCircle: '\'s Fan circle',
+    buyFanTickets: 'Buy Fan tickets'
   },
   sidebar: {
     article: '篇', //公用名称
@@ -346,7 +375,7 @@ export default {
     editorTextArticlePublic: 'publish',
     editorTextArticleEditor: 'edit article',
     editorTextDraftEditor: 'edit draft',
-    publish: 'publish',
+    publish: 'Publish',
     identifyAndPublish: 'confirm and publish',
     sendBtnTextEditor: 'edit',
     transfer: 'transfer',
@@ -418,6 +447,7 @@ export default {
     invested: 'invested',
     investedEnd: 'has invested',
     buy: 'buy',
+    unlock: 'Unlock',
     buying: 'buying',
     buyEnd: 'bought',
     soldOut: 'sold out',
@@ -433,7 +463,7 @@ export default {
     commentPlaceholder: 'Please enter your message',
     commentPointPlaceholder: 'Please enter your comment',
     commentPointBtn: 'comment',
-    commentPointDes: 'point/条',
+    commentPointDes: 'Points/Article',
     commentContent: 'Comment content cannot be empty',
     commentSuccess: 'comment successfully',
     commentFail: 'comment failed',
@@ -531,7 +561,15 @@ export default {
     vntBuyAccount: 'The login Vnt account is not the same as the payment account',
     shareWeibo: 'Weibo',
     shareWechat: 'Scan and share to WeChat',
-    deleted: 'Article has been removed'
+    deleted: 'Article has been removed',
+    fulfillTheConditions: 'Read the full text when you meet the conditions'
+  },
+  paidRead: {
+    already: 'already ',
+    article: ' article',
+    needToReach: 'You need to meet the following unlock conditions',
+    hasBeenReached: 'You have reached the following unlock conditions',
+    meetAllConditions: 'The full text can be read after all the conditions are met.'
   },
   invite: {
     headerTitle: 'My invitation',
@@ -669,5 +707,41 @@ export default {
     orange: 'Orange Book',
     scanCode: 'Remark "into the group" after scanning the code',
     follow: 'Follow the public number'
+  },
+  social: {
+    relatedWebsites: 'Related websites',
+    socialAccount: 'Social account',
+    forInformationOnly: 'For information only',
+    fillLink: 'Please fill in the website link, including http(s)://'
+  },
+  sharehall: {
+    hall: 'Share hall',
+    feeling: 'Talk about feelings',
+    fillLink: 'Enter link, including http(s)://',
+    sharePublished: 'Share published',
+    shareSlogan: 'Save and share cards to spread thoughts and inspiration',
+    save: 'Save and share cards',
+    fillImpression: 'Please fill in the impression',
+    fillLink2: 'Please fill in the link address',
+    unpublished: 'You have unshared, have you posted and left?',
+    toPost: 'To post',
+    noMore: 'No more',
+    canNotBeEmpty: 'Shared reference cannot be empty',
+    reRegister: 'An error occurred, please log in again',
+    success: 'Published successfully',
+    error: 'Publishing failed',
+    duplicateContent: 'Cannot quote duplicate content',
+    detectionCompleted: 'Detection completed',
+  },
+  token: {
+    comprehensiveSort: 'Comprehensive sort',
+    ascendingAlphabeticalOrder: 'Ascending alphabetical order',
+    descendingFirstLetter: 'Descending first letter',
+    ascendingTime: 'Ascending time',
+    descendingTime: 'Descending time',
+    unitPrice: 'Unit price',
+    liquidGold: 'Liquid gold',
+    turnover24h: '24h Turnover',
+    founder: 'Founder'
   }
 }
