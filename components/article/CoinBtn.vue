@@ -20,7 +20,7 @@
           </button>
         </div>
         <p v-if="!clicked">
-          {{ $t('p.point') + reads }}
+          {{ $t('p.point') + readTime }}
         </p>
         <template v-else>
           <p v-for="(item, i) in points.arr" :key="i">
