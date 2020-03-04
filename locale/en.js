@@ -2,7 +2,7 @@ export default {
     readMore: 'Read More',
     viewMore: 'View More',
     hideMore: '收起更多',
-    not: '暂无',
+    not: 'Nothing',
     notContent: '暂无内容',
     notProfile: '暂无简介',
     notComment: '暂无评论',
