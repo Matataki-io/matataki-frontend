@@ -7,14 +7,14 @@
       <div class="card-info">
         <div>
           <h2 class="card-info-symbol">
-            {{ card.symbol || '暂无' }}
+            {{ card.symbol || $t('not') }}
           </h2>
         </div>
         <p class="card-info-name">
-          {{ card.name || '暂无' }}
+          {{ card.name || $t('not') }}
         </p>
         <p class="card-info-name brief">
-          {{ card.brief || '暂无' }}
+          {{ card.brief || $t('not') }}
         </p>
       </div>
       <div class="card-data">

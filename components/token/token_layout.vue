@@ -17,12 +17,12 @@
                 </p>
               </div>
               <div>
-                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">{{ $t('token.whatIsAFanTicket') }}</a>
               </div>
             </div>
             <div class="fl info-line">
               <div class="token-info-title">
-                创始人：
+                {{ $t('token.founder') }}：
               </div>
               <div>
                 <p class="token-info-sub">
@@ -36,7 +36,7 @@
             </div>
             <div class="fl info-line">
               <div class="token-info-title">
-                发布时间：
+                {{ $t('token.releaseTime') }}：
               </div>
               <div>
                 <p class="token-info-sub">
@@ -45,12 +45,10 @@
               </div>
             </div>
             <div class="fl info-line">
-              <div class="token-info-title">
-                简&emsp;介：
-              </div>
+              <div class="token-info-title" v-html="$t('token.introduction')" />
               <div>
                 <p class="token-info-sub">
-                  {{ minetokenToken.brief || '暂无' }}
+                  {{ minetokenToken.brief || $t('not') }}
                 </p>
               </div>
             </div>
@@ -91,7 +89,7 @@
           </h2>
           <p class="token-introduction">
             <!-- 开了wrap 这个span不能换行！ -->
-            <span class="wrap-open">{{ minetokenToken.introduction || '暂无' }}</span>
+            <span class="wrap-open">{{ minetokenToken.introduction || $t('not') }}</span>
           </p>
         </div>
 

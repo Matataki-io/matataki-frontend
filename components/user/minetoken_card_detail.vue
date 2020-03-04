@@ -61,10 +61,10 @@ export default {
       return typeList[type] || '其他'
     },
     from_nickname() {
-      return this.card.from_nickname || this.card.from_username || '此账号已注销'
+      return this.card.from_nickname || this.card.from_username || this.$t('error.accountHasBeenLoggedOut')
     },
     to_nickname() {
-      return this.card.to_nickname || this.card.to_username || '此账号已注销'
+      return this.card.to_nickname || this.card.to_username || this.$t('error.accountHasBeenLoggedOut')
     }
   },
   created() {},

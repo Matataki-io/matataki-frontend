@@ -36,7 +36,7 @@
             {{ $t('articleCard.investment') }}</span> -->
           <span class="data">
             {{ card.likes }}
-            推荐</span>
+            {{ $t('p.like')}}</span>
         </template>
         <!-- 商品卡销量和金额 -->
         <template v-else>
