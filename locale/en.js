@@ -51,7 +51,7 @@ export default {
     referral: 'Quantify the value of your social influence, and any investment in hobbies will be profitable!\nIndustry-leading blockchain technology guarantees that creators\' rights will no longer be exploited by the platform!\nGot 500 points when new user registered by invite link.\nHolding points could gain benefits of the whole web in the future!\n',
     save: 'Save',
     transaction: 'Transaction',
-    gift: '转赠',
+    gift: 'Transfer',
     detail: '明细',
     notice: '通知',
     scanIt: '扫一扫',
