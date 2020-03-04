@@ -42,7 +42,7 @@
             </span>
             <span class="data">
               {{ card.likes }}
-              推荐
+              {{ $t('p.like')}}
             </span>
             <!-- <span class="data">
               {{ card && card.ups || 0 }}

@@ -15,7 +15,7 @@
       <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
       <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
       <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
-      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || '暂无' }}</span>
+      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || $t('not') }}</span>
     </div>
     <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
       <i class="el-icon-close icon" />

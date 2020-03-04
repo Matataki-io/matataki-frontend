@@ -50,7 +50,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="创始人"
+            :label="$t('token.founder')"
           >
             <template slot-scope="scope">
               <span style="white-space: nowrap;">
@@ -70,58 +70,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- <table>
-          <th>
-            <td>Fan票</td>
-            <td>流通量</td>
-            <td>创始人</td>
-            <td></td>
-          </th>
-          <tbody>
-              <tr v-for="item in tokenList" :key="item.id">
-                <td>
-                  <div class="sc-fYxtnH cjqFX">
-                    <div class="favMUS">
-                      <img v-if="item.logo" :src="getImg(item.logo)" alt="logo">
-                    </div>
-                    <div class="sc-tilXH egNEUM">
-                      <span id="symbol">{{ item.symbol }}</span>
-                      <div class="sc-hEsumM iHXZgD">
-                        {{ item.name }}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <span>423,908</span>
-                </td>
-                <td>村朋克乐队...</td>
-                <td>  <el-button icon="el-icon-search" circle></el-button></td>
-              </tr>
-          </tbody>
-        </table> -->
-        <!-- <div v-for="item in tokenList" :key="item.id" class="sc-jnlKLf hDyKIS" @click="selectToken(item)">
-          <div class="sc-fYxtnH cjqFX">
-            <div class="favMUS">
-              <img v-if="item.logo" :src="getImg(item.logo)" alt="logo">
-            </div>
-            <div class="sc-tilXH egNEUM">
-              <span id="symbol">{{ item.symbol }}</span>
-              <div class="sc-hEsumM iHXZgD">
-                {{ item.name }}
-              </div>
-            </div>
-          </div>
-          <div class="sc-kafWEX bELmls">
-            <div class="sc-ktHwxA etGoql">
-              -
-            </div>
-            <div class="sc-cIShpX eAstpp" />
-          </div>
-        </div> -->
-        <!-- <div v-if="tokenList.length <= 0" class="noData">
-          😭暂无内容
-        </div> -->
         <div v-if="showLoadMore" class="loadmore">
           <span @click="loadMore">
             加载更多<i class="el-icon-arrow-down" />

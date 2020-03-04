@@ -8,7 +8,7 @@
         {{ name }}
       </n-link>
       <p class="fans">
-        {{ card.fans }}粉丝
+        {{ card.fans }} {{ $t('fans') }}
       </p>
     </div>
     <template v-if="!isMe(card.id)">

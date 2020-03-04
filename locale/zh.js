@@ -81,7 +81,9 @@ export default {
     codeSendFail: '验证码发送失败',
     registeredFail: '注册失败，请重试',
     pleaseLogin: '请先登录',
-    getDataError: '获取数据失败'
+    getDataError: '获取数据失败',
+    accountHasBeenLoggedOut: '此账号已注销',
+    networkError: '网络错误'
   },
   warning: {
     titleOrContent: '标题或正文不能为空',
@@ -154,7 +156,8 @@ export default {
     imgVeryBIg: '图片过大',
     autoCompressionFail: '自动压缩图片失败',
     uploadImgFail: '上传图片失败',
-    pleaseLogin: '请先登录'
+    pleaseLogin: '请先登录',
+    uploadBackgroundImg: '上传背景图'
   },
   pointCard: {
     read: '阅读文章奖励积分',
@@ -562,14 +565,32 @@ export default {
     shareWeibo: '微博',
     shareWechat: '扫一扫，分享到微信',
     deleted: '文章已下架',
-    fulfillTheConditions: '达成条件即可阅读全文'
+    fulfillTheConditions: '达成条件即可阅读全文',
+    quoted: '已引用',
+    summary: '摘要',
+    fold: '折叠',
+    expand: '展开',
+    articles: '篇',
+    cited: '被引用',
+    citeThisArticle: '引用本文',
+    times: '次',
+    failureToIncreasePoints: '阅读新文章增加积分失败',
   },
   paidRead: {
     already: '已',
     article: '全文',
     needToReach: '您需要达成以下解锁条件',
     hasBeenReached: '您已达成以下解锁条件',
-    meetAllConditions: '满足全部条件后即可阅读全文。'
+    meetAllConditions: '满足全部条件后即可阅读全文。',
+    pay: '支付',
+    purchaseHistory: '支付解锁的文章可在“购买记录”中永久查看。',
+    hold: '持有',
+    stillNeedToHold: '还需持有',
+    alreadyHeld: '已持有',
+    myArticles: '自己发布的文章',
+    totalAbout: '总计约',
+    tounlockThisArticle: '点击后支付即可一键解锁此文内容',
+    oneKey: '一键'
   },
   invite: {
     headerTitle: '我的邀请',
@@ -654,7 +675,8 @@ export default {
     userInformation: '个人信息',
     bookmark: '收藏',
     myBookmark: '我的收藏',
-    message: '私信'
+    message: '私信',
+    issuedFanTickets: '发行了Fan票的用户'
   },
   withdraw: {
     title: '提现',
@@ -743,6 +765,14 @@ export default {
     unitPrice: '单价',
     liquidGold: '流动金',
     turnover24h: '24h 成交额',
-    founder: '创始人'
+    founder: '创始人',
+    releaseTime: '发布时间',
+    introduction: '简&emsp;介：',
+    whatIsAFanTicket: '什么是Fan票?'
+  },
+  ipfsHash: {
+    link: 'IPFS地址',
+    publicNode: '公共节点',
+    slogan: '本文内容已上传星际文件存储系统「IPFS」，永久保存。'
   }
 }

@@ -55,10 +55,10 @@ export default {
       return moment(this.card.create_time).format('MMMDo HH:mm')
     },
     from_nickname() {
-      return this.card.from_nickname || this.card.from_username || '此账号已注销'
+      return this.card.from_nickname || this.card.from_username || this.$t('error.accountHasBeenLoggedOut')
     },
     to_nickname() {
-      return this.card.to_nickname || this.card.to_username || '此账号已注销'
+      return this.card.to_nickname || this.card.to_username || this.$t('error.accountHasBeenLoggedOut')
     }
   },
   created() {},

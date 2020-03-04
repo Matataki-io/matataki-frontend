@@ -28,7 +28,7 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          label="创始人"
+          :label="$t('token.founder')"
         >
           <template slot-scope="scope">
             <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block author">

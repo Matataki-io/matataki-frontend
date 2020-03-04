@@ -81,7 +81,9 @@ export default {
     codeSendFail: 'Verification code sending failed',
     registeredFail: 'Registration failed, please try again',
     pleaseLogin: 'Please log in first',
-    getDataError: 'Failed to get data'
+    getDataError: 'Failed to get data',
+    accountHasBeenLoggedOut: 'This account has been cancelled',
+    networkError: 'Network Error'
   },
   warning: {
     titleOrContent: 'Title or body cannot be empty',
@@ -154,7 +156,8 @@ export default {
     imgVeryBIg: 'Picture is too big',
     autoCompressionFail: 'Automatic image compression failed',
     uploadImgFail: 'Image upload failed',
-    pleaseLogin: 'Please log in first'
+    pleaseLogin: 'Please log in first',
+    uploadBackgroundImg: 'Upload background image'
   },
   pointCard: {
     read: 'Read article to reward points',
@@ -562,14 +565,32 @@ export default {
     shareWeibo: 'Weibo',
     shareWechat: 'Scan and share to WeChat',
     deleted: 'Article has been removed',
-    fulfillTheConditions: 'Read the full text when you meet the conditions'
+    fulfillTheConditions: 'Read the full text when you meet the conditions',
+    quoted: 'Quoted',
+    summary: 'Summary',
+    fold: 'Fold',
+    expand: 'Expand',
+    articles: 'articles',
+    cited: 'Cited',
+    citeThisArticle: 'Cite this article',
+    times: 'times',
+    failureToIncreasePoints: 'Reading new articles failed to increase points',
   },
   paidRead: {
     already: 'already ',
     article: ' article',
     needToReach: 'You need to meet the following unlock conditions',
     hasBeenReached: 'You have reached the following unlock conditions',
-    meetAllConditions: 'The full text can be read after all the conditions are met.'
+    meetAllConditions: 'The full text can be read after all the conditions are met.',
+    pay: 'Pay',
+    purchaseHistory: 'Payment unlocked articles can be viewed permanently in the Purchase History.',
+    hold: 'Hold',
+    stillNeedToHold: 'Still need to hold ',
+    alreadyHeld: 'Already held',
+    myArticles: 'My articles',
+    totalAbout: 'Total about ',
+    tounlockThisArticle: 'Pay after clicking to unlock this article',
+    oneKey: 'One-click '
   },
   invite: {
     headerTitle: 'My invitation',
@@ -579,7 +600,7 @@ export default {
     des2: 'Friends post you can get extra {0} points',
     des3: 'You can get extra 1 {0} by reading points.',
     des4: 'Note: Those who are not activated can complete activation after reading {0} articles and making comments, and you can receive extra {0} points after activation.',
-    loginViewList: 'Sign in to see the invitation list'
+    loginViewList: 'Sign in to see the invitation list',
   },
   tag: {
     now: 'New',
@@ -654,7 +675,8 @@ export default {
     userInformation: 'user information',
     bookmark: 'bookmark',
     myBookmark: 'myBookmark',
-    message: 'message'
+    message: 'message',
+    issuedFanTickets: 'Users who have issued Fan tickets'
   },
   withdraw: {
     title: 'withdraw',
@@ -742,6 +764,14 @@ export default {
     unitPrice: 'Unit price',
     liquidGold: 'Liquid gold',
     turnover24h: '24h Turnover',
-    founder: 'Founder'
+    founder: 'Founder',
+    releaseTime: 'Release time',
+    introduction: 'Introduction：',
+    whatIsAFanTicket: 'What is a Fan ticket?'
+  },
+  ipfsHash: {
+    link: 'IPFS address',
+    publicNode: 'Public node',
+    slogan: 'The content of this article has been uploaded to the interstellar file storage system "IPFS" and stored permanently.'
   }
 }

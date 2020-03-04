@@ -141,7 +141,7 @@ export default {
         return `购买文章${this.articleId}`
       } else {
         const type = this.order.items ? this.order.items.orderTokenItem.type : null
-        return typeOptions[type] || '暂无'
+        return typeOptions[type] || $t('not')
       }
     },
     cnyAmount() {
