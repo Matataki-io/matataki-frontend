@@ -3,7 +3,7 @@
     <div v-loading="loading" class="pillar">
       <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" />
       <div v-if="pull.list.length === 0 && !loading" class="no-data">
-        暂无数据
+        {{ $t('not') }}
       </div>
     </div>
     <user-pagination

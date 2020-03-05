@@ -27,10 +27,10 @@ export default {
   computed: {
     user() {
       return [
-        { title: 'Fan票持仓', icon: 'minetokens_details' },
-        { title: 'Fan票流水', icon: 'minetokens_detail' },
-        { title: '流动金持仓', icon: 'minetokens_details' },
-        { title: '流动金流水', icon: 'minetokens_detail' }
+        { title: this.$t('token.openPositions'), icon: 'minetokens_details' },
+        { title: this.$t('token.flow'), icon: 'minetokens_detail' },
+        { title: this.$t('token.liquidGoldPositions'), icon: 'minetokens_details' },
+        { title: this.$t('token.liquidGoldFlow'), icon: 'minetokens_detail' }
       ]
     }
   },

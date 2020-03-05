@@ -32,7 +32,7 @@
             <el-popover class="filter" placement="bottom-end" trigger="click">
               <el-button slot="reference" class="filter-button" type="text">
                 <div class="filter-header">
-                  <img class="filter-icon" src="@/assets/img/filter.svg">过滤
+                  <img class="filter-icon" src="@/assets/img/filter.svg">{{ $t('filter') }}
                 </div>
               </el-button>
               <div style="font-size: 16px">

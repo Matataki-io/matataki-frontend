@@ -145,7 +145,7 @@ export default {
           type: 'email',
           name: 'Email：',
           tooltip: '',
-          placeholder: '邮箱',
+          placeholder: this.$t('email'),
           url: '',
           value: ''
         },
@@ -154,25 +154,25 @@ export default {
           type: 'qq',
           name: 'QQ：',
           tooltip: '',
-          placeholder: 'QQ帐号',
+          placeholder: this.$t('thirdParty.qqAccount'),
           url: '',
           value: ''
         },
         {
           symbol: 'Wechat',
           type: 'wechat',
-          name: '微信：',
+          name: `${this.$t('thirdParty.wechat')}：`,
           tooltip: '',
-          placeholder: '微信号',
+          placeholder: this.$t('thirdParty.wechatAccount'),
           url: '',
           value: ''
         },
         {
           symbol: 'Weibo',
           type: 'weibo',
-          name: '微博：',
-          tooltip: '(https://www.weibo.com/<span>帐号</span>)',
-          placeholder: '微博用户名(不需要完整URL)',
+          name: `${this.$t('thirdParty.weibo')}：`,
+          tooltip: `(https://www.weibo.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: this.$t('thirdParty.weibo') + this.$t('thirdParty.usernameNoFullUrl'),
           url: 'https://www.weibo.com',
           value: ''
         },
@@ -181,7 +181,7 @@ export default {
           type: 'telegram',
           name: 'Telegram：',
           tooltip: '',
-          placeholder: 'Telegram用户名',
+          placeholder: `Telegram ${this.$t('username')}`,
           url: '',
           value: ''
         },
@@ -189,8 +189,8 @@ export default {
           symbol: 'Twitter',
           type: 'twitter',
           name: 'Twitter：',
-          tooltip: '(https://twitter.com/<span>帐号</span>)',
-          placeholder: 'Twitter用户名(不需要完整URL)',
+          tooltip: `(https://twitter.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: `Twitter${this.$t('thirdParty.usernameNoFullUrl')}`,
           url: 'https://twitter.com',
           value: ''
         },
@@ -198,8 +198,8 @@ export default {
           symbol: 'Facebook',
           type: 'facebook',
           name: 'Facebook：',
-          tooltip: '(https://facebook.com/<span>帐号</span>)',
-          placeholder: 'Facebook用户名(不需要完整URL)',
+          tooltip: `(https://facebook.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: `Facebook${this.$t('thirdParty.usernameNoFullUrl')}`,
           url: 'https://facebook.com',
           value: ''
         },
@@ -207,12 +207,10 @@ export default {
           symbol: 'Github',
           type: 'github',
           name: 'Github：',
-          tooltip: '(https://github.com/<span>帐号</span>)',
-          placeholder: 'Github用户名(不需要完整URL)',
+          tooltip: `(https://github.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: `Github${this.$t('thirdParty.usernameNoFullUrl')}`,
           url: 'https://github.com',
           value: ''
-          // resourcesSocialss: [],
-          // resourcesWebsites: [],
         }
       ]
     }

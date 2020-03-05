@@ -9,7 +9,7 @@
     <el-table-column
       :sort-orders="['ascending', 'descending']"
       prop="name"
-      label="持仓者"
+      :label="$t('token.positionHolder')"
       sortable="custom"
     >
       <template slot-scope="scope">
@@ -22,7 +22,7 @@
     <el-table-column
       :sort-orders="['descending', 'ascending']"
       prop="amount"
-      label="持仓量"
+      :label="$t('token.openInterest')"
       width="200"
       sortable="custom"
     >
