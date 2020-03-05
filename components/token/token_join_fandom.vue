@@ -2,9 +2,9 @@
   <div v-loading="loading" class="fandom-card">
     <div class="fl">
       <h2 class="token-title">
-        加入{{ tokenSymbol }}粉丝群
+        {{ $t('group.joinFanBase', [tokenSymbol]) }}
       </h2>
-      <a @click="showHelp = true" class="help-click">入群指南 <i class="el-icon-arrow-right" /></a>
+      <a @click="showHelp = true" class="help-click">{{ $t('group.enrollmentGuide') }} <i class="el-icon-arrow-right" /></a>
     </div>
     <!-- 列表 -->
     <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
@@ -18,15 +18,15 @@
           <span>（{{ fandom.groupSize }}人）</span>
         </div>
         <p class="condition">
-          持有的{{ tokenSymbol }}票 ≥{{ getMinBalance(fandom) }} 即可加群
+          {{ $t('group.conditions', [tokenSymbol, getMinBalance(fandom)])}}
         </p>
       </div>
       <div>
         <el-button v-if="!isLogined || getMinBalance(fandom) <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
-          加群
+          {{ $t('group.joinGroup') }}
         </el-button>
         <div v-else class="disable top10">
-          持票不足
+          {{ $t('group.insufficientTicket') }}
         </div>
       </div>
     </div>
@@ -43,66 +43,66 @@
     />
 
     <!-- [弹窗]入群指南 -->
-    <el-dialog :visible.sync="showHelp" width="360px" title="入群指南" center custom-class="fandom-popups-title">
+    <el-dialog :visible.sync="showHelp" width="360px" :title="$t('group.enrollmentGuide')" center custom-class="fandom-popups-title">
       <!-- <p class="subtitle">
         根据以下步骤操作加入Fan票的粉丝群
       </p> -->
       <div class="fl help-step top">
         <div class="help-text">
           <h3>
-            步骤
+            {{ $t('group.step') }}
             <svg-icon class="help-serial" icon-class="step1" />
           </h3>
           <p class="introduction">
-            绑定Telegram账号
+            {{ $t('group.bindTgAccount') }}
           </p>
-          <p>仅需要绑定一次</p>
+          <p>{{ $t('group.onlyNeedToBindOnce')}}</p>
         </div>
         <div v-if="bindStatus" class="help-touch">
           <a @click="accountSettings()">
-            账号变更
+            {{ $t('group.accountChange') }}
             <i class="el-icon-arrow-right" />
           </a>
           <div class="disable top20">
-            已绑定
+            {{ $t('group.alreadyBound') }}
           </div>
         </div>
         <div v-else class="help-touch">
           <el-button @click="setTelegram()" class="add-button top40">
-            绑定
+            {{ $t('group.bind') }}
           </el-button>
         </div>
       </div>
       <div class="fl help-step top">
         <div class="help-text">
           <h3>
-            步骤
+            {{ $t('group.step') }}
             <svg-icon class="help-serial" icon-class="step2" />
           </h3>
           <p class="introduction">
-            完成入群条件
+            {{ $t('group.completeTheEntryConditions') }}
           </p>
-          <p>购买并持有特定数量的Fan票</p>
+          <p>{{ $t('group.buyASpecificQuantity') }}</p>
         </div>
       </div>
       <div class="fl help-step">
         <div class="help-text">
           <h3>
-            步骤
+            {{ $t('group.step') }}
             <svg-icon class="help-serial" icon-class="step3" />
           </h3>
           <p class="introduction">
-            点击加群按钮
+            {{ $t('group.clickAddGroupButton') }}
           </p>
-          <p>根据机器人的引导入群</p>
+          <p>{{ $t('group.leadIntoTheGroup') }}</p>
         </div>
       </div>
       <p class="tips">
-        使用该功能需要“科学上网”
+        {{ $t('group.scientificInternet') }}
       </p>
     </el-dialog>
     <p class="tips">
-      {{ fandomData.length > 0 ? '使用该功能需要“科学上网”' : '暂无Fan票粉丝群' }}
+      {{ fandomData.length > 0 ? $t('group.scientificInternet') : $t('group.noFanTicketsYet') }}
     </p>
   </div>
 </template>
