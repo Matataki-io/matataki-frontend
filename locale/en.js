@@ -186,20 +186,20 @@ export default {
     articleCard: {
         read: 'Browse',
         sale: 'Sales',
-        investment: '投资',
-        saleUnit: 'EOS/份',
-        deleted: '已下架'
+        investment: 'investment',
+        saleUnit: 'EOS/unit',
+        deleted: 'Not available now'
     },
     articleFooter: {
-        received: '已领取',
-        like: '推荐',
-        likes: '已推荐',
-        unlike: '不推荐',
-        read_new: '阅读新文章',
+        received: 'received',
+        like: 'recommend',
+        likes: 'Recommended',
+        unlike: 'Not recommended',
+        read_new: 'read new articles',
         read_like: '用户阅读',
         read_dislike: '用户阅读',
-        commentDoneMessage: '评价成功，阅读积分奖励已领取',
-        readNew: '阅读新文章奖励{0}积分, 评价后可领取更多积分!',
+        commentDoneMessage: 'Commented successfully, reading bonus is received.',
+        readNew: 'Read new articles and earn {0} points, comment to get more points!',
         readNewFail: '阅读新文章增加积分失败'
     },
     assetCard: {
