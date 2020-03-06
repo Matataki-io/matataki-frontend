@@ -52,49 +52,49 @@
           <div class="tokens-list-header-left-column">
             <el-dropdown @command="toggleDropdown" trigger="click">
               <span :class="sort === selectedDropdown && 'active'" class="el-dropdown-link">
-                <span v-if="selectedDropdown === 'name-asc'">首字母升序</span>
-                <span v-else-if="selectedDropdown === 'name-desc'">首字母降序</span>
-                <span v-else-if="selectedDropdown === 'time-asc'">时间升序</span>
-                <span v-else-if="selectedDropdown === 'time-desc'">时间降序</span>
-                <span v-else>综合排序</span>
+                <span v-if="selectedDropdown === 'name-asc'">{{ $t('token.ascendingAlphabeticalOrder') }}</span>
+                <span v-else-if="selectedDropdown === 'name-desc'">{{ $t('token.descendingFirstLetter') }}</span>
+                <span v-else-if="selectedDropdown === 'time-asc'">{{ $t('token.ascendingTime') }}</span>
+                <span v-else-if="selectedDropdown === 'time-desc'">{{ $t('token.descendingTime') }}</span>
+                <span v-else>{{ $t('token.comprehensiveSort') }}</span>
                 <i v-if="selectedDropdown.includes('-asc')" class="el-icon-arrow-up el-icon--right" />
                 <i v-else class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="general">
-                  综合排序
+                  {{ $t('token.comprehensiveSort') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="name-asc">
-                  首字母升序
+                  {{ $t('token.ascendingAlphabeticalOrder') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="name-desc">
-                  首字母降序
+                  {{ $t('token.descendingFirstLetter') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="time-asc">
-                  时间升序
+                  {{ $t('token.ascendingTime') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="time-desc">
-                  时间降序
+                  {{ $t('token.descendingTime') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
           <div class="tokens-list-header-medium-column">
             <div :class="sort.startsWith('unit-price') && 'active'" @click="toggleSort('unit-price')" class="sub-column">
-              单价
+              {{ $t('token.unitPrice') }}
               <i class="el-icon-d-caret" />
             </div>
             <div :class="sort.startsWith('liquidity') && 'active'" @click="toggleSort('liquidity')" class="sub-column">
-              流动金
+              {{ $t('token.liquidGold') }}
               <i class="el-icon-d-caret" />
             </div>
             <div :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')" class="sub-column">
-              24h 成交额
+              {{ $t('token.turnover24h') }}
               <i class="el-icon-d-caret" />
             </div>
           </div>
           <div class="tokens-list-header-right-column">
-            创始人
+            {{ $t('token.founder') }}
           </div>
         </div>
       </div>

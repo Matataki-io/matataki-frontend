@@ -31,7 +31,7 @@
         <div class="share-bg">
           <svg-icon class="share-icon qzone" icon-class="qzone" />
         </div>
-        <p>QQ空间</p>
+        <p>{{ $t('qqSpace') }}</p>
       </div>
       <div @click="windowSmallOpen(socialLink.telegram)" class="share-btn">
         <div class="share-bg">

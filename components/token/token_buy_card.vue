@@ -2,7 +2,7 @@
   <div class="buy-card">
     <div class="buy-flex">
       <h2 class="token-title">
-        快捷购买
+        {{ $t('token.quickPurchase') }}
       </h2>
       <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange" /></span>
     </div>
@@ -10,17 +10,17 @@
       @input="inputChange"
       v-on:keypress.native="isNumber"
       v-model="form.output"
-      placeholder="输入购买数量"
+      :placeholder="$t('token.enterPurchaseQuantity')"
     >
       <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
       <el-button @click="pay" class="btn1">
-        立即支付
+        {{ $t('token.payImmediately') }}
       </el-button>
       <router-link :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
         <el-button class="btn2" type="primary">
-          交易Fan票
+          {{ $t('token.tradingFanTickets') }}
         </el-button>
       </router-link>
     </div>
@@ -77,12 +77,12 @@ export default {
         
         // 没有合约地址
         if (!this.token.contract_address) {
-          this.$message.error('Fan票正在部署中，请稍后过来操作!')
+          this.$message.error(this.$t('token.underDeployment'))
           return
         }
 
         if (this.$utils.isNull(this.form.output)) {
-          this.$message.error('请先输入购买数量')
+          this.$message.error(this.$t('token.enterTheNumber'))
         } else {
           // this.orderShow = true
           this.$store.dispatch('order/createOrder', {

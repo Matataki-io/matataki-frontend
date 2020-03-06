@@ -5,7 +5,7 @@
         <router-link :to="{name: 'token'}">
           <div class="add-card">
             <svg-icon icon-class="add1" />
-            <span>购买Fan票</span>
+            <span>{{ $t('home.buyFanTickets') }}</span>
           </div>
         </router-link>
         <fanCard v-for="(tokenCard, index) in tokenCards.list" :key="index" :card="tokenCard" />

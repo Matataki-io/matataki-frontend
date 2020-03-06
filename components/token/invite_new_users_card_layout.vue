@@ -29,16 +29,16 @@
               <!-- btn -->
               <qrcode :value="link" :options="{ width: '74' }" class="code" />
               <p class="qrcode-text">
-                扫一扫<br>
-                进入瞬matataki
+                {{ $t('scanIt') }}<br>
+                {{ $t('inviteReward.enter')}}
               </p>
               <div class="invite-synopsis">
-                邀请有奖：<br>
-                每成功邀请一名好友注册可得666积分！<br>
-                新用户阅读5篇文章（30秒以上）并作出评价视为成功邀请。<br>
-                受邀好友每次发文你可以获得额外20积分！<br>
-                受邀好友每次阅读获得积分，你可额外获得其总额1/4的积分！<br>
-                持有积分未来可共享 瞬Matataki 全平台收益！<br>
+                {{ $t('inviteReward.title') }}<br>
+                {{ $t('inviteReward.text1') }}<br>
+                {{ $t('inviteReward.text2') }}<br>
+                {{ $t('inviteReward.text3') }}<br>
+                {{ $t('inviteReward.text4') }}<br>
+                {{ $t('inviteReward.text5') }}<br>
               </div>
             </section>
           </div>
@@ -46,7 +46,7 @@
       </div>
     </div>
     <el-button @click="save" class="save" type="primary">
-      保存
+      {{ $t('save') }}
     </el-button>
   </div>
 </template>

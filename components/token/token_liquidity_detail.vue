@@ -2,22 +2,22 @@
   <div>
     <div class="header fl jsb">
       <div class="title">
-        方向&时间
+        {{ $t('token.directionAndTime') }}
       </div>
       <div class="amount">
-        Fan票
+        {{ $t('home.fanTicket')}}
       </div>
       <div class="amount">
-        金额
+        {{ $t('amount') }}
       </div>
       <div class="amount">
-        流动金Token
+        {{ $t('token.liquidGoldToken') }}
       </div>
     </div>
     <div v-loading="loading" class="pillar">
       <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" :token="token" />
       <div v-if="pull.list.length === 0 && !loading" class="no-data">
-        暂无数据
+        {{ $t('not') }}
       </div>
     </div>
     <user-pagination

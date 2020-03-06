@@ -64,7 +64,7 @@ export default {
         {
           type: 'email',
           icon: 'email', // 随时可换 防止影响
-          typename: '邮箱',
+          typename: this.$t('email'),
           username: '', // 最好后端混淆后返回
           loading: false,
           status: false,
@@ -74,7 +74,7 @@ export default {
         {
           type: 'weixin',
           icon: 'wechat', // 随时可换 防止影响
-          typename: '微信',
+          typename: this.$t('thirdParty.wechatAccount'),
           username: '', // 最好后端混淆后返回
           loading: false,
           status: false,

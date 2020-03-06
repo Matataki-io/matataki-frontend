@@ -18,7 +18,7 @@
               <el-dropdown v-if="isMe(article.uid)" @command="handleMoreAction" trigger="click">
                 <div class="more-setting">
                   <svg-icon class="more-icon-setting" icon-class="setting" />
-                  <span class="more-text-setting">设置</span>
+                  <span class="more-text-setting">{{ $t('setting') }}</span>
                 </div>
                 <el-dropdown-menu slot="dropdown" class="user-dorpdown">
                   <el-dropdown-item command="edit">
@@ -47,7 +47,7 @@
 
           <div v-if="!hasPaied && !isProduct && (isTokenArticle || isPriceArticle)" class="lock-line">
             <el-divider>
-              <span class="lock-text">达成条件即可阅读全文</span>
+              <span class="lock-text">{{ $t('p.fulfillTheConditions') }}</span>
             </el-divider>
             <svg-icon
               class="icon-arrow"
@@ -66,11 +66,11 @@
           </div>
           <div class="lock-info">
             <h3 class="lock-info-title">
-              {{ !hasPaied ? `${unlockText}全文` : `已${unlockText}全文` }}
+              {{ !hasPaied ? unlockText + $t('paidRead.article') : $t('paidRead.already') + unlockText + $t('paidRead.article') }}
             </h3>
             <h5 class="lock-info-subtitle">
-              {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
-              <el-tooltip class="item" effect="dark" content="满足全部条件后即可阅读全文。" placement="top-start">
+              {{ !hasPaied ? $t('paidRead.needToReach') : $t('paidRead.hasBeenReached') }}
+              <el-tooltip class="item" effect="dark" :content="$t('paidRead.meetAllConditions') " placement="top-start">
                 <svg-icon icon-class="anser" class="prompt-svg" />
               </el-tooltip>
             </h5>
@@ -78,18 +78,18 @@
               <ul>
                 <li v-if="isPriceArticle" class="fl">
                   <div class="fl price">
-                    支付
+                    {{ $t('paidRead.pay') }}
                     <span class="amount">{{ getArticlePrice }}</span>
                     <svg-icon icon-class="currency" class="avatar-cny" />
                     CNY
                   </div>
-                  <el-tooltip class="item" effect="dark" content="支付解锁的文章可在“购买记录”中永久查看。" placement="left">
+                  <el-tooltip class="item" effect="dark" :content="$t('paidRead.purchaseHistory')" placement="left">
                     <svg-icon icon-class="anser" />
                   </el-tooltip>
                 </li>
                 <li v-if="isTokenArticle" class="fl">
                   <div class="fl price">
-                    持有
+                    {{ $t('paidRead.hold') }}
                     <span class="amount">{{ needTokenAmount }}</span>
                     <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
                       <avatar :size="'16px'" :src="needTokenLogo" class="avatar-token" />
@@ -97,22 +97,22 @@
                     </router-link>
                   </div>
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? '还需持有' : '已持有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
                 </li>
               </ul>
             </p>
             <p v-else class="lock-info-des">
-              自己发布的文章
+              {{ $t('paidRead.myArticles')}}
             </p>
             <div v-if="!hasPaied" class="lock-bottom">
-              <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
-              <el-tooltip class="item" effect="dark" content="点击后支付即可一键解锁此文内容" placement="top-end">
+              <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span>
+              <el-tooltip class="item" effect="dark" :content="$t('paidRead.tounlockThisArticle')" placement="top-end">
                 <el-button
                   @click="wxpayArticle"
                   type="primary"
                   size="small"
                 >
-                  一键{{ unlockText }}
+                  {{ $t('paidRead.oneKey') + unlockText }}
                 </el-button>
               </el-tooltip>
             </div>
@@ -263,7 +263,7 @@
                 <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
                   <svg-icon icon-class="reference" class="icon" />
                 </div>
-                <span>{{ '引用' }}</span>
+                <span>{{ $t('quote') }}</span>
               </div>
               <div @click="share" class="article-btn">
                 <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
@@ -338,14 +338,14 @@
         <div class="related-container">
           <div class="fl afe jsb">
             <div>
-              <span class="related-title">已引用<span>{{ total }}</span></span>
+              <span class="related-title">{{ $t('p.quoted') }}<span>{{ total }}</span></span>
               <!-- <span class="related-rort">
                 正序
                 <svg-icon icon-class="sort" class="icon" />
               </span> -->
             </div>
             <div>
-              <span class="related-summary">摘要
+              <span class="related-summary">{{ $t('p.summary') }}
                 <el-switch
                   v-model="relatedSummary"
                   active-color="#542DE0"
@@ -387,7 +387,7 @@
                         <div v-if="!item.collapse" class="more-full" />
                       </transition>
                       <span @click.stop="item.collapse = !item.collapse">
-                        {{ item.collapse ? '折叠': '展开' }}
+                        {{ item.collapse ? $t('p.fold'): $t('p.expand') }}
                         <i class="el-icon-arrow-up arrow-up" /></span>
                     </div>
                   </div>
@@ -413,21 +413,21 @@
 
         <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
           <svg-icon icon-class="arrow" class="icon" />
-          <span v-if="!relatedLeftCollapse">已引用{{ total }}篇</span>
+          <span v-if="!relatedLeftCollapse">{{ $t('p.quoted') + total + $t('p.articles') }}</span>
         </div>
       </div>
       <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
         <div class="related-container">
           <div class="fl afe jsb">
             <div>
-              <span class="related-title">被引用<span>{{ beingTotal }}</span></span>
+              <span class="related-title">{{ $t('p.cited')}}<span>{{ beingTotal }}</span></span>
               <!-- <span class="related-rort">
                 正序
                 <svg-icon icon-class="sort" class="icon" />
               </span> -->
             </div>
             <el-button v-loading="relatedLoadingBtn" @click="posts" type="primary" size="small" icon="el-icon-link">
-              引用本文
+              {{ $t('p.citeThisArticle') }}
             </el-button>
           </div>
 
@@ -475,7 +475,7 @@
 
         <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
           <svg-icon icon-class="arrow" class="icon" />
-          <span v-if="!relatedRightCollapse">被引用{{ beingTotal }}次</span>
+          <span v-if="!relatedRightCollapse">{{ $t('p.cited') + beingTotal + $t('p.times') }}</span>
         </div>
       </div>
     </div>
@@ -746,9 +746,9 @@ export default {
     },
     unlockText() {
       if (this.isPriceArticle) {
-        return '购买'
+        return this.$t('p.buy')
       }
-      return '解锁'
+      return this.$t('p.unlock')
     },
     totalCny() {
       let result = 0
@@ -1225,8 +1225,8 @@ export default {
             if (res.code === 0) {
               this.$message.success(this.$t('articleFooter.readNew', [this.$point.readNew]))
               // console.log('阅读新文章增加积分成功')
-            } else console.log('阅读新文章增加积分失败')
-          }).catch(err => console.log(`阅读新文章增加积分失败${err}`))
+            } else console.log(this.$t('p.failureToIncreasePoints'))
+          }).catch(err => console.log(this.$t('p.failureToIncreasePoints') + err))
       }
     },
     wxpayArticle() {

@@ -30,17 +30,17 @@ export default {
       head: [
         {
           url: 'article',
-          lab: '综合创作',
+          lab: this.$t('home.allCreation'),
           href: '/article'
         },
         {
           url: 'article-token',
-          lab: 'Fan圈',
+          lab: this.$t('home.fanCircle'),
           href: '/article/token'
         },
         {
           url: 'article-follow',
-          lab: '我的关注',
+          lab: this.$t('home.myFocus'),
           href: '/article/follow'
         }
       ]

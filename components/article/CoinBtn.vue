@@ -12,15 +12,15 @@
         <div v-if="!clicked" class="btns-container">
           <button :disabled="clicked" @click="like" class="great-cointainer">
             <svg-icon icon-class="great" />
-            <span>推荐<em class="like">{{ article && article.likes }}</em></span>
+            <span>{{ $t('p.like')}}<em class="like">{{ article && article.likes }}</em></span>
           </button>
           <button :disabled="clicked" @click="dislike" class="bullshit-cointainer">
             <svg-icon icon-class="bullshit" />
-            <span>不推荐<em class="like">{{ article && article.dislikes }}</em></span>
+            <span>{{ $t('p.unlike')}}<em class="like">{{ article && article.dislikes }}</em></span>
           </button>
         </div>
         <p v-if="!clicked">
-          已阅读{{ readTime }}
+          {{ $t('p.point') + readTime }}
         </p>
         <template v-else>
           <p v-for="(item, i) in points.arr" :key="i">
@@ -47,7 +47,7 @@
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all}积分` : '积分' }}</a>
+      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all + $t('publish.point')}` : $t('publish.point') }}</a>
     </div>
   </div>
 </template>

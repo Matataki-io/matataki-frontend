@@ -1,7 +1,7 @@
 <template>
   <!-- v-show="!isLogin" -->
   <section class="resetPassword">
-    <h1>重置密码</h1>
+    <h1>{{ $t('rule.resetPassword') }}</h1>
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
       <el-form-item prop="email">
         <el-input
@@ -32,7 +32,7 @@
         <el-input
           v-model="registerForm.password"
           type="password"
-          placeholder="请输入新密码"
+          :placeholder="$t('rule.enterANewPassword')"
           show-password
         />
       </el-form-item>
@@ -40,13 +40,13 @@
         <el-input
           v-model="registerForm.repassword"
           type="password"
-          placeholder="请在输入一遍新密码"
+          :placeholder="$t('rule.enterTheNewPasswordAgain')"
           show-password
         />
       </el-form-item>
       <el-form-item class="ss-btn">
         <el-button @click="submitRegisterForm" type="primary">
-          重置密码
+          {{ $t('rule.resetPassword') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -66,7 +66,7 @@ export default {
       } else {
         const res = await this.$API.verifyEmail(value)
         if (!res.data) {
-          callback(new Error('邮箱未注册'))
+          callback(new Error(this.$t('rule.emailIsNot')))
         } else {
           callback()
         }
@@ -207,14 +207,14 @@ export default {
             const res = await this.$API.resetPassword(params)
             console.log(res)
             if (res.code === 0) {
-              this.successToast('密码修改成功，请重新登录')
+              this.successToast(this.$t('rule.passwordChangedSuccess'))
               this.$emit('switch')
             } else {
-              this.failToast('密码修改失败')
+              this.failToast(this.$t('rule.passwordChangeFailed'))
             }
             this.loading = false
           } catch (error) {
-            this.failToast('密码修改失败')
+            this.failToast(this.$t('rule.passwordChangeFailed'))
             this.loading = false
           }
         } else {
