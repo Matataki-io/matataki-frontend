@@ -811,11 +811,11 @@ export default {
         noFanTicketsYet: '暂无Fan票粉丝群'
     },
     thirdParty: {
-        account: '帐号',
-        wechat: '微信',
-        weibo: '微博',
-        wechatAccount: '微信号',
-        qqAccount: 'QQ帐号',
-        usernameNoFullUrl: '用户名(不需要完整URL)'
+        account: 'Account',
+        wechat: 'WeChat',
+        weibo: 'Weibo',
+        wechatAccount: 'WeChat account',
+        qqAccount: 'QQ account',
+        usernameNoFullUrl: 'Username (full URL not required)'
     }
 };
