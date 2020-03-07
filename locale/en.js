@@ -334,10 +334,10 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
-        random: 'Change',
+        random: 'Swap',
         allCreation: 'Composite creation',
         fanCircle: 'Fan circle',
-        myFocus: 'My focus',
+        myFocus: 'My follow',
         ofFanCircle: '\'s Fan circle',
         buyFanTickets: 'Buy Fan tickets'
     },
@@ -358,8 +358,8 @@ export default {
         buy: 'purchase history ',
         login: 'sign in',
         rule: 'rule',
-        tg: 'join Telegram',
-        billboard: 'Billboard',
+        tg: 'Join Telegram',
+        billboard: 'Smart Billboard',
         feedback: 'Feedback',
         language: '中文/English'
     },
