@@ -345,7 +345,7 @@ export default {
         if (this.username === (this.userData.nickname || this.userData.username)) delete requestData.nickname
         if (this.introduction === this.userData.introduction) delete requestData.introduction
 
-        await this.$backendAPI.setProfile(requestData)
+        await this.$API.setProfile(requestData)
 
         this.setProfile = false
       }
@@ -365,7 +365,7 @@ export default {
           })()
         }
 
-        await this.$backendAPI.setUserLinks(requestData)
+        await this.$API.setUserLinks(requestData)
 
         this.aboutModify = false
         this.socialModify = false

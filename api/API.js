@@ -318,14 +318,6 @@ export default {
       data: formdata
     })
   },
-  // 通过用户名搜索
-  searchUsername(username) {
-      return request.get('/user/search', {
-        params: {
-          q: username
-        }
-      })
-    },
   // 搜索推荐
   searchRecommend(params){
     return request('/search/recommend', params)
@@ -773,7 +765,17 @@ minetokenGetResources(tokenId) {
   getUserLinks({id}) {
     return request.get(`/user/${id}/links`);
   },
-
+  // 设置用户links
+  setUserLinks({websites, socialAccounts}) {
+    return request({
+      method: 'PUT',
+      url: '/user/links',
+      data: {
+        websites,
+        socialAccounts,
+      }
+    })
+  },
   //-------------文章支付使用开始-----------------
   wxNativePay(tradeNo, title) {
     return this.orderWxpay({
@@ -933,5 +935,59 @@ minetokenGetResources(tokenId) {
   // 常用候选列表
   historyUser(params) {
     return request.get(`/history/user`, { params })
-  }
+  },
+  // 文章转让
+  transferOwner(from, articleId, uid) {
+    // console.log(from, articleId, uid)
+    if (from === 'article') {
+      // 文章
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    } else if (from === 'draft') {
+      // 草稿
+      return request({
+        method: 'POST',
+        url: '/draft/transferOwner',
+        data: { draftid: articleId, uid }
+      })
+    } else {
+      // 其他
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    }
+  },
+  // 获取可用标签列表
+  getTags(type) {
+    return request.get('/tag/tags', {
+      params:{
+        type
+      }
+    })
+  },
+  // 删除文章
+  delArticle({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/post/${id}`
+    })
+  },
+  // 设置资料
+  setProfile({ nickname, introduction, email, accept }) {
+    return request({
+      method: 'POST',
+      url: '/user/setProfile',
+      data: {
+        nickname,
+        introduction,
+        email,
+        accept
+      }
+    })
+  },
 }

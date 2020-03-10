@@ -62,11 +62,6 @@ export default {
       default: -1
     }
   },
-  data() {
-    return {
-      transferModal: false
-    }
-  },
   computed: {
     ...mapGetters(['isMe']),
     avatarSrc() {
@@ -77,41 +72,6 @@ export default {
       return this.time ? moment(this.time).format('lll') : '00:00:00'
     },
   },
-  methods: {
-    // 下拉菜单 指令
-    handleMoreAction(command) {
-      this[command]()
-    },
-    // 删除
-    del() {
-      // 删除方法
-      const delFunc = async (id) => {
-        if (!id) return
-        try {
-          const res = await this.$backendAPI.delArticle({ id })
-          if (res.status === 200 && res.data.code === 0) {
-            this.$message({ duration: 2000, message: '删除成功' })
-            this.$router.push('/article')
-          }
-          else this.$message.error(res.data.message)
-        } catch (error) {
-          return console.error(error)
-        }
-      }
-      this.$confirm('该分享已上传至 IPFS 永久保存, 本次操作仅删除瞬MATATAKI中的显示。', this.$t('promptTitle'), {
-        distinguishCancelAndClose: true,
-        confirmButtonText: this.$t('confirm'),
-        cancelButtonText: this.$t('cancel')
-      })
-        .then(() => {
-          delFunc(this.id)
-        })
-        .catch((action) => {})
-    },
-    transfer() {
-      this.transferModal = true
-    },
-  }
 }
 </script>
 

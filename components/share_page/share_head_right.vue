@@ -53,12 +53,12 @@ export default {
       const delFunc = async (id) => {
         if (!id) return
         try {
-          const res = await this.$backendAPI.delArticle({ id })
-          if (res.status === 200 && res.data.code === 0) {
+          const res = await this.$API.delArticle({ id })
+          if (res.code === 0) {
             this.$message({ duration: 2000, message: '删除成功' })
             this.$router.push('/sharehall')
           }
-          else this.$message.error(res.data.message)
+          else this.$message.error(res.message)
         } catch (error) {
           return console.error(error)
         }
