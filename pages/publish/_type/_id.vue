@@ -1395,20 +1395,19 @@ export default {
     },
     // 获取标签
     async getTags() {
-      await this.$backendAPI
+      await this.$API
         .getTags()
         .then(res => {
           // console.log(649, res)
-          if (res.status === 200 && res.data.code === 0) {
-            const { data } = res.data
+          if (res.code === 0) {
             // 过滤商品标签 id <= 100
             const filterId = i => i.id <= 100
-            const filterTag = data.filter(filterId)
+            const filterTag = res.data.filter(filterId)
             // 过滤商品标签 id <= 100
 
             filterTag.map(i => (i.status = false))
             this.tagCards = filterTag
-          } else console.log(res.data.message)
+          } else console.log(res.message)
         })
         .catch(err => {
           console.log(err)

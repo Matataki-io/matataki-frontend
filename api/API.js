@@ -952,4 +952,12 @@ minetokenGetResources(tokenId) {
       })
     }
   },
+  // 获取可用标签列表
+  getTags(type) {
+    return request.get('/tag/tags', {
+      params:{
+        type
+      }
+    })
+  },
 }

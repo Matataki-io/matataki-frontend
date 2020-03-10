@@ -280,14 +280,6 @@ const API = {
 
     return axiosforApiServer.post('/login/github', params)
   },
-  // 获取可用标签列表
-  getTags(type) {
-    return axiosforApiServer.get('/tag/tags', {
-      params:{
-        type
-      }
-    })
-  },
 }
 
 export default API
