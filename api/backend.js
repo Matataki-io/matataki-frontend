@@ -227,42 +227,6 @@ const API = {
       ? axiosforApiServer.get(pullApiUrl[url], { params })
       : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
   },
-  // 迁移API
-  // async createDraft({ title, content, cover, fissionFactor, isOriginal, tags }) {
-  //   return this.accessBackend({
-  //     method: 'POST',
-  //     url: '/draft/save',
-  //     data: {
-  //       title,
-  //       content,
-  //       cover,
-  //       fissionFactor,
-  //       isOriginal,
-  //       tags
-  //     }
-  //   })
-  // },
-  // async updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags }) {
-  //   return this.accessBackend({
-  //     method: 'POST',
-  //     url: '/draft/save',
-  //     data: {
-  //       id,
-  //       title,
-  //       content,
-  //       cover,
-  //       fissionFactor,
-  //       isOriginal,
-  //       tags
-  //     }
-  //   })
-  // },
-  // async delDraft({ id }) {
-  //   return this.accessBackend({ method: 'DELETE', url: `/draft/${id}` })
-  // },
-  async getDraft({ id }) {
-    return this.accessBackend({ url: `/draft/${id}` })
-  },
   async setProfile({ nickname, introduction, email, accept }) {
     return this.accessBackend({
       method: 'POST',
@@ -324,48 +288,6 @@ const API = {
       }
     })
   },
-  // 文章转让
-  async transferOwner(from, articleId, uid) {
-    // console.log(from, articleId, uid)
-    if (from === 'article') {
-      // 文章
-      return this.accessBackend({
-        method: 'POST',
-        url: '/post/transferOwner',
-        data: { signid: articleId, uid }
-      })
-    } else if (from === 'draft') {
-      // 草稿
-      return this.accessBackend({
-        method: 'POST',
-        url: '/draft/transferOwner',
-        data: { draftid: articleId, uid }
-      })
-    } else {
-      // 其他
-      return this.accessBackend({
-        method: 'POST',
-        url: '/post/transferOwner',
-        data: { signid: articleId, uid }
-      })
-    }
-  },
-  // 通过用户名搜索
-  async searchUsername(username) {
-    return axiosforApiServer.get('/user/search', {
-      params: {
-        q: username
-      }
-    })
-  },
-  // 获取推荐文章或者商品
-  postsRecommend(channel) {
-    return axiosforApiServer.get('/posts/recommend', {
-      params: {
-        channel
-      }
-    })
-  }
 }
 
 export default API

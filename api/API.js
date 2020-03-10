@@ -318,14 +318,6 @@ export default {
       data: formdata
     })
   },
-  // 通过用户名搜索
-  searchUsername(username) {
-      return request.get('/user/search', {
-        params: {
-          q: username
-        }
-      })
-    },
   // 搜索推荐
   searchRecommend(params){
     return request('/search/recommend', params)
@@ -933,5 +925,31 @@ minetokenGetResources(tokenId) {
   // 常用候选列表
   historyUser(params) {
     return request.get(`/history/user`, { params })
-  }
+  },
+  // 文章转让
+  transferOwner(from, articleId, uid) {
+    // console.log(from, articleId, uid)
+    if (from === 'article') {
+      // 文章
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    } else if (from === 'draft') {
+      // 草稿
+      return request({
+        method: 'POST',
+        url: '/draft/transferOwner',
+        data: { draftid: articleId, uid }
+      })
+    } else {
+      // 其他
+      return request({
+        method: 'POST',
+        url: '/post/transferOwner',
+        data: { signid: articleId, uid }
+      })
+    }
+  },
 }

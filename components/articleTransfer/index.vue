@@ -224,12 +224,12 @@ export default {
       const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
 
       try {
-        const res = await this.$backendAPI.transferOwner(
+        const res = await this.$API.transferOwner(
           this.from,
           this.articleId,
           toId
         )
-        if (res.status === 200 && res.data.code === 0) {
+        if (res.code === 0) {
           this.$message.success(this.$t('p.articleTransferSuccess'))
 
           if (this.from === 'article' || this.from === 'draft') {
