@@ -852,10 +852,33 @@ export default {
         }
       }
     } else {
-      const content = await ipfsData($axios, info.data.hash)
-      return {
-        article: info.data,
-        post: content.data
+      const { hash } = info.data
+      // 有hash
+      if (hash) {
+        const res = await ipfsData($axios, hash)
+        if (res.code === 0) {
+          return {
+            article: info.data,
+            post: res.data
+          }
+        } else {
+          // 获取失败
+          return {
+            article: info.data,
+            post: {
+              content: info.data.short_content
+            }
+          }
+        }
+      } else {
+        // 没有hash
+        console.log('not hash')
+        return {
+          article: info.data,
+          post: {
+            content: info.data.short_content
+          }
+        }
       }
     }
   },
@@ -1000,7 +1023,12 @@ export default {
       if (!store.get('userVisible')) this.visiblePopover.visible2 = true
     },
     async getIpfsData() {
-      await this.$API.getIpfsData(this.article.hash)
+      const { hash } = this.article
+      if (!hash) {
+        console.log('not hash')
+        return
+      } else {
+        await this.$API.getIpfsData(hash)
         .then(res => {
           if (res.code === 0) {
             // 在获取ipfs内容后替换title, 因为数据库存储的title有上限
@@ -1012,6 +1040,7 @@ export default {
         }).catch(err => {
           console.log('err', err)
         })
+      }
     },
     async getArticleInfoFunc() {
       await this.$API.getArticleInfo(this.$route.params.id)
