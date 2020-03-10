@@ -1148,9 +1148,9 @@ export default {
       const delArticleFunc = async (id) => {
         if (!id) return fail(this.$t('p.noId'))
         try {
-          const response = await this.$backendAPI.delArticle({ id })
-          if (response.status === 200 && response.data.code === 0) delSuccess()
-          else fail(response.data.message)
+          const res = await this.$API.delArticle({ id })
+          if (res.code === 0) delSuccess()
+          else fail(res.message)
         } catch (error) {
           return fail(error)
         }

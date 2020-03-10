@@ -117,9 +117,6 @@ const API = {
       }
     )
   },
-  // async getArticleDatafromIPFS(hash) {
-  //   return axios.get(`${apiServer}/post/ipfs/${hash}`)
-  // },
   // 获取单篇文章的信息 by hash or id  需要 token 否则无法获取投资状态
   async getArticleInfo(hashOrId) {
     const reg = /^[0-9]*$/
@@ -147,28 +144,6 @@ const API = {
   async getUser({ id }) {
     return this.accessBackend({ url: `/user/${id}` })
   },
-  async sendComment({ comment, signId }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/post/comment',
-      // eslint-disable-next-line camelcase
-      data: { comment, sign_id: signId }
-    })
-  },
-  // be Used in Article Page
-  // async addReadAmount({ articlehash }) {
-  //   return this.accessBackend({
-  //     method: 'POST',
-  //     url: `/post/show/${articlehash}`
-  //   })
-  // },
-  // 删除文章
-  async delArticle({ id }) {
-    return this.accessBackend({
-      method: 'DELETE',
-      url: `/post/${id}`
-    })
-  },
   // 设置头像
   async uploadAvatar(data = { avatar: null }) {
     return this.accessBackend({
@@ -177,85 +152,6 @@ const API = {
       data
     })
   },
-  // 获取头像
-  // getAvatarImage(hash) {
-  //   return `${ssImgAddress}${hash}`
-  // },
-  // 上传图片 迁移到 API
-  // async uploadImage(type, data) {
-  //   const url = {
-  //     avatar: '/user/uploadAvatar',
-  //     artileCover: '/post/uploadImage'
-  //   }
-  //   const formdata = new FormData()
-  //   formdata.append('image', data)
-  //   return this.accessBackend({
-  //     method: 'POST',
-  //     url: url[type],
-  //     data: formdata
-  //   })
-  // },
-  // BasePull 分页组件
-  async getBackendData({ url, params }, needAccessToken = false) {
-    // 分页组件接口地址
-    const pullApiUrl = {
-      // home
-      homeTimeRanking: 'posts/timeRanking',
-      homeSupportsRanking: 'posts/supportsRanking',
-      homeScoreRanking: 'posts/scoreRanking',
-      homeAmountRankingEOS: 'posts/amountRanking',
-      homeAmountRankingONT: 'posts/amountRanking',
-      // article comments
-      commentsList: 'comment/comments',
-      // followlist
-      followsList: 'follow/follows',
-      fansList: 'follow/fans',
-      // asset
-      assetList: 'user/tokens',
-      // user articles
-      // 原创文章-使用 homeTimeRanking 接口 地址一样
-      userArticlesSupportedList: 'posts/supported',
-      // draftbox
-      draftboxList: 'draft/drafts',
-      // tag by id
-      getPostByTagById: 'posts/getPostByTag',
-      // buy
-      buyHistory: 'order/products'
-    }
-
-    return !needAccessToken
-      ? axiosforApiServer.get(pullApiUrl[url], { params })
-      : this.accessBackend({ url: `/${pullApiUrl[url]}`, params })
-  },
-  async setProfile({ nickname, introduction, email, accept }) {
-    return this.accessBackend({
-      method: 'POST',
-      url: '/user/setProfile',
-      data: {
-        nickname,
-        introduction,
-        email,
-        accept
-      }
-    })
-  },
-
-  async setUserLinks({websites, socialAccounts}) {
-    return this.accessBackend({
-      method: 'PUT',
-      url: '/user/links',
-      data: {
-        websites,
-        socialAccounts,
-      }
-    })
-  },
-  getUserLinks({id}) {
-    return this.accessBackend({url: `/user/${id}/links`});
-  },
-  // async getMyPost(id) {
-  //   return this.accessBackend({ url: `/mypost/${id}` })
-  // },
   // 获取账户资产列表 暂时没有EOS数据
   async getBalance() {
     return this.accessBackend({ url: '/user/balance' })

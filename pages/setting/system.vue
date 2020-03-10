@@ -68,8 +68,8 @@ export default {
       try {
         this.articleTransfer = status
         const accept = status ? 1 : 0
-        const res = await this.$backendAPI.setProfile({ accept })
-        if (res.status === 200 && res.data.code === 0) {
+        const res = await this.$API.setProfile({ accept })
+        if (res.code === 0) {
           this.$message({
             message: this.$t('success.success'),
             type: 'success'

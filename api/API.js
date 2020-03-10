@@ -765,7 +765,17 @@ minetokenGetResources(tokenId) {
   getUserLinks({id}) {
     return request.get(`/user/${id}/links`);
   },
-
+  // 设置用户links
+  setUserLinks({websites, socialAccounts}) {
+    return request({
+      method: 'PUT',
+      url: '/user/links',
+      data: {
+        websites,
+        socialAccounts,
+      }
+    })
+  },
   //-------------文章支付使用开始-----------------
   wxNativePay(tradeNo, title) {
     return this.orderWxpay({
@@ -957,6 +967,26 @@ minetokenGetResources(tokenId) {
     return request.get('/tag/tags', {
       params:{
         type
+      }
+    })
+  },
+  // 删除文章
+  delArticle({ id }) {
+    return request({
+      method: 'DELETE',
+      url: `/post/${id}`
+    })
+  },
+  // 设置资料
+  setProfile({ nickname, introduction, email, accept }) {
+    return request({
+      method: 'POST',
+      url: '/user/setProfile',
+      data: {
+        nickname,
+        introduction,
+        email,
+        accept
       }
     })
   },
