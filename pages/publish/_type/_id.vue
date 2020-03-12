@@ -189,7 +189,7 @@
               />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="tokenEditAuthority" size="small" disabled>
+          <el-checkbox v-model="tokenEditAuthority" size="small">
             设置持Fan票
           </el-checkbox>
         </div>
@@ -218,7 +218,7 @@
             </div>
           </div>
         </transition>
-        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;" disabled>
+        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;">
           设置支付
         </el-checkbox>
         <transition name="fade">
@@ -705,6 +705,21 @@ export default {
       }
       return tokenArr
     },
+    /** 持币编辑 */
+    editRequireToken() {
+      let tokenArr = []
+      if (this.tokenEditAuthority) {
+        // 持通证
+        // 获取当前选择的通证种
+        const token = this.readSelectOptions.filter(list => list.id === this.editSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [{
+          tokenId: token[0].id,
+          amount: toPrecision(this.editToken, 'cny', token[0].decimals)
+        }]
+      }
+      return tokenArr
+    },
     requireBuy() {
       const { type } = this.$route.params
       if (this.paymentToken === 0) return null
@@ -713,6 +728,19 @@ export default {
       } else {
         const data = {
           price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+        }
+        return data
+      }
+    },
+    /** 付费编辑 */
+    editRequireBuy() {
+      const { type } = this.$route.params
+      if (this.editPaymentToken === 0) return null
+      if (type === 'edit' && !this.buyEditAuthority) {
+        return null
+      } else {
+        const data = {
+          price: toPrecision(this.editPaymentToken, 'cny', 4) // 默认四位小数
         }
         return data
       }
@@ -895,6 +923,7 @@ export default {
       })
       // 获取文章信息
       const res = await this.$API.getMyPost(id).then(res => {
+        console.log('获取文章信息:', res)
         if (res.code === 0) {
           this.fissionNum = res.data.fission_factor / 1000
           this.signature = res.data.sign
@@ -911,11 +940,25 @@ export default {
             this.readSelectValue = res.data.tokens[0].id
           }
 
+          // 持通证编辑
+          if (res.data.editTokens && res.data.editTokens.length !== 0) {
+            this.tokenEditAuthority = true
+            this.editToken = precision(res.data.editTokens[0].amount, 'cny', res.data.editTokens[0].decimals)
+            this.editSelectValue = res.data.editTokens[0].id
+          }
+
           // 持通证支付
           if (res.data.prices && res.data.prices.length !== 0) {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
             this.readSummary = res.data.short_content
+            this.paymentSelectValue = -1
+          }
+
+          // 付费编辑
+          if (res.data.editPrices && res.data.editPrices.length !== 0) {
+            this.buyEditAuthority = true
+            this.editPaymentToken = precision(res.data.editPrices[0].price, res.data.editPrices[0].platform, res.data.editPrices[0].decimals)
             this.paymentSelectValue = -1
           }
 
@@ -1070,6 +1113,11 @@ export default {
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
+
+      //编辑权限
+      article.editRequireToken = this.editRequireToken
+      article.editRequireBuy = this.editRequireBuy
+
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed, success } = this
@@ -1149,6 +1197,11 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
+
+      // 编辑权限
+      article.editRequireToken = this.editRequireToken
+      article.editRequireBuy = this.editRequireBuy
+
       const { author } = article
       const { failed, success } = this
       try {
@@ -1236,11 +1289,23 @@ export default {
           else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
+        
+        // 持Fan票编辑
+        if (this.tokenEditAuthority) {
+          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+        }
 
         if (this.paymentTokenVisible) {
           if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
           else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        // 付费编辑
+        if (this.buyEditAuthority) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
         }
         // 发布文章
         this.fullscreenLoading = true
@@ -1265,10 +1330,22 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
+        // 持Fan票编辑
+        if (this.tokenEditAuthority) {
+          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+        }
+
         if (this.paymentTokenVisible) {
           if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
           else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        // 付费编辑
+        if (this.buyEditAuthority) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
         }
 
         this.fullscreenLoading = true

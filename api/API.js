@@ -194,7 +194,8 @@ export default {
     url,
     { signId = null, author, data, title, fissionFactor, 
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
-      requireToken, requireBuy }) {
+      requireToken, requireBuy,
+      editRequireToken = null, editRequireBuy = null }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -213,7 +214,8 @@ export default {
         cc_license,
         commentPayPoint,
         shortContent,
-        requireToken, requireBuy
+        requireToken, requireBuy,
+        editRequireToken, editRequireBuy
       },
       timeout: 30000
     })
