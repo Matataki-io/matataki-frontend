@@ -68,6 +68,7 @@ import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { tagColor } from '@/utils/tag'
 import { xssFilter } from '@/utils/xss'
+import utils from '@/utils/utils'
 
 export default {
   name: 'ArticleCard',
@@ -94,17 +95,18 @@ export default {
       type: String,
       default: '0'
     },
-    totalCny: {
-      type: Number,
-      default: 0
+    form: {
+      type: Object,
+      required: true
+    },
+    lockLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      isTokenArticle: true,
-      isPriceArticle: true,
       isProduct: false,
-      lockLoading: false,
     }
   },
   computed: {
@@ -115,9 +117,18 @@ export default {
       }
       return '解锁'
     },
+    // 是否是持通证文章
+    isTokenArticle() {
+      return (this.article.editTokens && this.article.editTokens.length !== 0)
+    },
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.editPrices && this.article.editPrices.length !== 0)
+    },
+    // 价格
     getArticlePrice() {
-      if (this.isPriceArticle && this.article.prices[0]) {
-        const ad = this.article.prices[0]
+      if (this.isPriceArticle && this.article.editPrices[0]) {
+        const ad = this.article.editPrices[0]
         return this.$utils.fromDecimal(ad.price)
       } else {
         return 0
@@ -125,33 +136,41 @@ export default {
     },
     // 需要多少Fan票
     needTokenAmount() {
-      if (this.article.tokens.length !== 0) {
-        return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
+      if (this.article.editTokens.length !== 0) {
+        return precision(this.article.editTokens[0].amount, 'CNY', this.article.editTokens[0].decimals)
       } else return 0
     },
     // Fan票ID
     needTokenId() {
-      if (this.article.tokens.length !== 0) {
-        return this.article.tokens[0].id
+      if (this.article.editTokens.length !== 0) {
+        return this.article.editTokens[0].id
       } else return -1
     },
     // 需要多少Fan票代号
     needTokenSymbol() {
-      if (this.article.tokens.length !== 0) {
-        return this.article.tokens[0].symbol
+      if (this.article.editTokens.length !== 0) {
+        return this.article.editTokens[0].symbol
       } else return ''
     },
     // 需要多少Fan票名称
     needTokenName() {
-      if (this.article.tokens.length !== 0) {
-        return this.article.tokens[0].name
+      if (this.article.editTokens.length !== 0) {
+        return this.article.editTokens[0].name
       } else return ''
     },
     // 需要多少Fan票LOGO
     needTokenLogo() {
-      if (this.article.tokens.length !== 0) {
-        return this.$ossProcess(this.article.tokens[0].logo)
+      if (this.article.editTokens.length !== 0) {
+        return this.$ossProcess(this.article.editTokens[0].logo)
       } else return ''
+    },
+    // 总价
+    totalCny() {
+      let result = 0
+      if (this.isTokenArticle) {
+        result += parseFloat(this.form.input || 0)
+      }
+      return utils.up2points(result + this.getArticlePrice)
     }
   },
   methods: {

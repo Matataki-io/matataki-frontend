@@ -121,12 +121,12 @@
 
         <!-- 编辑全文 -->
         <becomeAnArticleEditor
-          v-if="false"
           :article="article"
-          :hasPaied="hasPaied"
-          :tokenHasPaied="tokenHasPaied"
-          :differenceToken="differenceToken"
-          :totalCny="totalCny"
+          :hasPaied="editHasPaied"
+          :tokenHasPaied="editTokenHasPaied"
+          :differenceToken="editDifferenceToken"
+          :form="editForm"
+          :lockLoading="lockLoading"
         />
 
         <!-- sidebar -->
@@ -594,9 +594,16 @@ export default {
       comment: '', //评论内容
       currentProfile: Object.create(null),
       differenceToken: '0',
+      editDifferenceToken: '0',
       showLock: false,
       showOrderModal: false,
       form: {
+        input: '',
+        inputToken: CNY,
+        output: '',
+        outputToken: {}
+      },
+      editForm: {
         input: '',
         inputToken: CNY,
         output: '',
@@ -650,7 +657,10 @@ export default {
       isBookmarked: false,
       tokenHasPaied: false,
       priceHasPaied: false,
+      editTokenHasPaied: false,
+      editPriceHasPaied: false,
       hasPaied: true,
+      editHasPaied: true,
       lockLoading: true,
       articleIpfsArray: [], // ipfs hash
       resizeEvent: null
@@ -743,6 +753,14 @@ export default {
     // 是否是持通证文章
     isTokenArticle() {
       return (this.article.tokens && this.article.tokens.length !== 0)
+    },
+    // 是否是持通证文章
+    isTokenEditArticle() {
+      return (this.article.editTokens && this.article.editTokens.length !== 0)
+    },
+    // 是否是付费文章
+    isPriceEditArticle() {
+      return (this.article.editPrices && this.article.editPrices.length !== 0)
     },
     unlockText() {
       if (this.isPriceArticle) {
@@ -929,9 +947,15 @@ export default {
         this.lockLoading = false
         this.tokenHasPaied = false
         this.priceHasPaied = false
+        this.editTokenHasPaied = false
+        this.editPriceHasPaied = false
         this.hasPaied = false
+        this.editHasPaied = false
+        this.editHasPaied= false
         this.form.outputToken = this.article.tokens && this.article.tokens.length > 0 ? this.article.tokens[0] : {}
+        this.editForm.outputToken = this.article.editTokens && this.article.editTokens.length > 0 ? this.article.editTokens[0] : {}
         this.calPayFormParams()
+        this.calPayEditFormParams()
         return
       }
       const data = {
@@ -941,12 +965,16 @@ export default {
       await this.$API.currentProfile(data).then(res => {
         this.lockLoading = false
         if (res.code === 0) {
+          // console.log('这是currentProfile的数据：', res.data)
           this.currentProfile = res.data
-          this.form.outputToken = res.data.holdMineTokens && res.data.holdMineTokens.length > 0 ? res.data.holdMineTokens[0] : {}
-          // Object.assign(this.article, this.currentProfile)
-          // console.log('article', this.article)
+          if(res.data.holdMineTokens && res.data.holdMineTokens.length > 0 && this.article.tokens && this.article.tokens.length > 0)
+            this.form.outputToken = res.data.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)[0]
+          if(res.data.holdMineTokens && res.data.holdMineTokens.length > 0 && this.article.editTokens && this.article.editTokens.length > 0)
+            this.editForm.outputToken = res.data.holdMineTokens.filter(list => list.id === this.article.editTokens[0].id)[0]
           this.differenceTokenFunc()
+          this.editDifferenceTokenFunc()
           this.calPayFormParams()
+          this.calPayEditFormParams()
           this.getSupportStatus(res.data)
           this.isBookmarked = Boolean(res.data.is_bookmarked)
         } else if (res.code === 401) {
@@ -958,7 +986,7 @@ export default {
     },
     // 差多少token 变为字符界面显示截取 - 号
     differenceTokenFunc() {
-      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens) {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.tokens && this.article.tokens.length > 0) {
         const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
 
         // 获取有多少token
@@ -994,6 +1022,42 @@ export default {
           this.getIpfsData()
         } else {
           this.hasPaied = false
+        }
+      }
+    },
+
+    // 编辑文章差多少token
+    editDifferenceTokenFunc() {
+      if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0 && this.article.editTokens && this.article.editTokens.length > 0) {
+        const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.editTokens[0].id)
+
+        // 获取有多少token
+        const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+        let needTokenAmount = 0
+        // 获取需要多少token
+        if (this.article.editTokens && this.article.editTokens.length !== 0) {
+          needTokenAmount = this.article.editTokens[0].amount
+        }
+        // 减之后 换算
+        const amountToken = precision(amount - needTokenAmount, 'CNY', tokenName[0].decimals)
+
+        this.editDifferenceToken = amountToken < 0 ? amountToken + '' : '+' + precision(amount, 'CNY', tokenName[0].decimals)
+      } else this.editDifferenceToken = '0'
+      if (this.isMe(this.article.uid)) {
+        this.editTokenHasPaied = true
+        this.editPriceHasPaied = true
+        this.editHasPaied = true
+      } else {
+        if (this.isTokenEditArticle) {
+          this.editTokenHasPaied = Number(this.editDifferenceToken) > 0
+        } else this.editTokenHasPaied = true
+        if (this.isPriceEditArticle) {
+          this.editPriceHasPaied = Boolean(this.currentProfile.is_buy)
+        } else this.editPriceHasPaied = true
+        if (this.editPriceHasPaied && this.editTokenHasPaied) {
+          this.editHasPaied = true
+        } else {
+          this.editHasPaied = false
         }
       }
     },
@@ -1291,7 +1355,7 @@ export default {
         }
       }) */
     },
-    calPayFormParams() {
+    async calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
         if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
           const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.tokens[0].id)
@@ -1304,7 +1368,7 @@ export default {
           else this.form.output = utils.fromDecimal(needTokenAmount - amount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
           }
         } else {
           // 获取需要多少token
@@ -1312,30 +1376,68 @@ export default {
           this.form.output = utils.fromDecimal(needTokenAmount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
           }
         }
       }
     },
-    getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+
+    // 获取编辑权限需要多少钱
+    async calPayEditFormParams() {
+      if (this.article.editTokens && this.article.editTokens.length !== 0) {
+        if (this.currentProfile.holdMineTokens && this.currentProfile.holdMineTokens.length !== 0) {
+          const tokenName = this.currentProfile.holdMineTokens.filter(list => list.id === this.article.editTokens[0].id)
+          // 获取有多少token
+          const amount = tokenName.length !== 0 ? tokenName[0].amount : 0
+          // 获取需要多少token
+          const needTokenAmount = this.article.editTokens[0].amount
+          // 减之后 换算
+          if (needTokenAmount <= amount) this.editForm.output = 0
+          else this.editForm.output = utils.fromDecimal(needTokenAmount - amount)
+          const { inputToken, output, outputToken } = this.editForm
+          if (output > 0) {
+            console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
+            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
+          }
+        } else {
+          // 获取需要多少token
+          const needTokenAmount = this.article.editTokens[0].amount
+          this.editForm.output = utils.fromDecimal(needTokenAmount)
+          const { inputToken, output, outputToken } = this.editForm
+          if (output > 0) {
+            console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
+            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
+          }
+        }
+      }
+    },
+
+    async getInputAmount(inputTokenId, outputTokenId, outputAmount) {
       const deciaml = 4
       const _outputAmount = utils.toDecimal(outputAmount, deciaml)
-      this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount).then((res) => {
+      try {
+        console.log('收到的数据：', inputTokenId, outputTokenId, _outputAmount)
+        let res = await this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount)
         this.payBtnDisabled = false
         if (res.code === 0) {
           this.getInputAmountError = ''
           // rmb向上取整
           if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
-            this.form.input = parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
+            return parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
           } else {
-            this.form.input = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
+            return parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
           }
         } else {
           this.getInputAmountError = res.message
-          this.form.input = ''
+          console.error(res.message)
+          return ''
         }
-      })
+      } catch(err) {
+        console.error(err)
+        return ''
+      }
     },
+
     /**
      * 渲染关联内容 判断是否显示展开或折叠
      * 如果传递参数 循环所有, 否则判断单个
