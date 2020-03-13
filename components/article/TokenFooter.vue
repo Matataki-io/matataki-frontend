@@ -85,11 +85,11 @@ export default {
     readTime() {
       const time = this.time
       if (time < 60) {
-        return `${time}秒`
+        return ` ${time} ${this.$t('p.second')}`
       } else {
         const m = Math.floor(time / 60)
         const s = time - m * 60
-        if (s !== 0) return `${m}${this.$t('p.minute')}${s}${this.$t('p.second')}`
+        if (s !== 0) return ` ${m} ${this.$t('p.minute')} ${s} ${this.$t('p.second')}`
         else return `${m}${this.$t('p.minute')}`
       }
     },

@@ -8,7 +8,7 @@
       </el-image>
     </div>
     <div class="title">
-      {{ card.symbol }}的Fan圈
+      {{ card.symbol + $t('home.ofFanCircle') }}
     </div>
   </n-link>
 </template>

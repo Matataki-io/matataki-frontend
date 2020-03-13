@@ -20,20 +20,20 @@
             <svg-icon :icon-class="item.icon" class="icon" />
             <span class="typename">{{ item.typename }}</span>
             <span class="username">{{ item.username }}</span>
-            <span class="close">取消绑定</span>
+            <span class="close">{{ $t('thirdParty.unbind') }}</span>
             <svg-icon icon-class="correct" class="correct" />
             <svg-icon icon-class="close_thin" class="close_thin" />
           </div>
           <el-radio :value="accountRadio" :label="item.type" :disabled="item.disabled" @change="accountChangeFunc(item.type, idx)" style="margin-left: 10px;">
-            <span v-if="accountRadio === item.type">主账号</span>
+            <span v-if="accountRadio === item.type">{{ $t('thirdParty.mainAccount') }}</span>
             <span v-else>&nbsp;</span>
           </el-radio>
         </div>
         <p class="list-p">
-          瞬Matataki支持绑定尚未注册的账号，账号解绑后可再次被绑定。
+          {{ $t('thirdParty.bindExplanation1') }}
         </p>
         <p class="list-p">
-          已绑定的任意账号均可用于登录
+          {{ $t('thirdParty.bindExplanation2') }}
         </p>
       </div>
     </template>
@@ -64,7 +64,7 @@ export default {
         {
           type: 'email',
           icon: 'email', // 随时可换 防止影响
-          typename: '邮箱',
+          typename: this.$t('email'),
           username: '', // 最好后端混淆后返回
           loading: false,
           status: false,
@@ -74,7 +74,7 @@ export default {
         {
           type: 'weixin',
           icon: 'wechat', // 随时可换 防止影响
-          typename: '微信',
+          typename: this.$t('thirdParty.wechatAccount'),
           username: '', // 最好后端混淆后返回
           loading: false,
           status: false,
@@ -181,7 +181,7 @@ export default {
         }
       }).catch(err => {
         console.log(err)
-        this.$message.error(`绑定失败${params.platform.toUpperCase()}`)
+        this.$message.error(this.$t('thirdParty.bindFailed') + params.platform.toUpperCase())
       }).finally(() => {
         this.accountList[idx].loading = false
       })
@@ -193,7 +193,7 @@ export default {
           let idProvider = getCookie('idProvider').toLocaleLowerCase()
           idProvider = idProvider === 'metamask' ? 'eth' : idProvider
           if (idProvider === this.accountList[idx].type.toLocaleLowerCase()) {
-            this.$message.warning('解绑后需重新登录')
+            this.$message.warning(this.$t('thirdParty.loginAgainAfterUnbinding'))
             // this.signOut()
             this.$utils.delCookie('ACCESS_TOKEN')
             this.$utils.delCookie('idProvider')
@@ -213,7 +213,7 @@ export default {
             return accumulator + `<li>${item.error}</li>`
           }, '')
           msg += '</ul>'
-          this.$alert(msg, '账号风险提示', {
+          this.$alert(msg, this.$t('thirdParty.accountRiskWarning'), {
             dangerouslyUseHTMLString: true
           })
         } else {
@@ -221,7 +221,7 @@ export default {
         }
       }).catch(err => {
         console.log(err)
-        this.$message.error(`解除绑定失败${params.platform.toUpperCase()}`)
+        this.$message.error(this.$t('thirdParty.unbindingFailed') + params.platform.toUpperCase())
       }).finally(() => {
         this.accountList[idx].loading = false
       })
@@ -238,7 +238,7 @@ export default {
         }
       }).catch(err => {
         console.log(err)
-        this.$message.error(`解除绑定失败${params.platform.toUpperCase()}`)
+        this.$message.error(this.$t('thirdParty.unbindingFailed') + params.platform.toUpperCase())
       }).finally(() => {
         this.accountList[idx].loading = false
       })
@@ -269,7 +269,7 @@ export default {
         }
         openRequestedPopup(url, 'buildEmail')
       } else if (type === 'weixin') {
-        this.$message.warning(`PC端暂不支持${typename}绑定`)
+        this.$message.warning(this.$t('thirdParty.doesNotSupportBinding', [typename]))
       } else if (type === 'eth') {
         try {
           await this.$store.dispatch('metamask/fetchAccount')
@@ -284,9 +284,9 @@ export default {
         } catch (error) {
           console.log(error)
           if (error.message && error.code === 4001) {
-            if (error.message && error.message.includes('User denied account authorization')) this.$message.warning('用户拒绝帐户授权')
-            else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning('您拒绝了签名请求')
-            else this.$message.warning('签名失败')
+            if (error.message && error.message.includes('User denied account authorization')) this.$message.warning(this.$t('thirdParty.userDeniedAccountAuthorization'))
+            else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
+            else this.$message.warning(this.$t('thirdParty.signingFailed'))
           } else if (error.message) this.$message.warning(error.message)
           else this.$message.warning(error.toString())
         }
@@ -295,15 +295,15 @@ export default {
           // connect
           if (!this.scatter.isConnected) {
             const result = await this.$store.dispatch('scatter/connect')
-            if (!result) throw new Error('scatter连接失败')
+            if (!result) throw new Error(this.$t('thirdParty.scatterConnectionFailed'))
           }
           if (!this.scatter.isLoggingIn) {
             const result = await this.$store.dispatch('scatter/login')
-            if (!result) throw new Error('Scatter登录失败')
+            if (!result) throw new Error(this.$t('thirdParty.scatterLoginFailed'))
           }
           // get currentUsername
           const currentUsername = await this['scatter/currentUsername'] || ''
-          if (!currentUsername) throw new Error('Scatter获取账户信息失败')
+          if (!currentUsername) throw new Error('Scatter ' + this.$t('thirdParty.failedGetAccount'))
           // signature
           // 没有扩展
           const { publicKey, signature, username } = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [currentUsername] })
@@ -320,15 +320,15 @@ export default {
           // connect
             if (!this.scatter.isConnected) {
               const result = await this.$store.dispatch('scatter/connect')
-              if (!result) throw new Error('scatter连接失败')
+              if (!result) throw new Error(this.$t('thirdParty.scatterConnectionFailed'))
             }
             if (!this.scatter.isLoggingIn) {
               const result = await this.$store.dispatch('scatter/login')
-              if (!result) throw new Error('Scatter登录失败')
+              if (!result) throw new Error(this.$t('thirdParty.scatterLoginFailed'))
             }
             // get currentUsername
             const currentUsername = await this['scatter/currentUsername'] || ''
-            if (!currentUsername) throw new Error('Scatter获取账户信息失败')
+            if (!currentUsername) throw new Error(this.$t('thirdParty.scatterFailedGetAccount'))
             // signature
             // 没有扩展
             const { publicKey, signature, username } = await this.$store.dispatch('scatter/getSignature', { mode: 'Auth', rawSignData: [currentUsername] })
@@ -343,16 +343,16 @@ export default {
             console.log(error)
             if (error.isError) {
             // User rejected the signature request
-              this.$message.warning('您拒绝了签名请求')
-            } else if (error.toString().includes('\'name\' of null')) this.$message.warning('无法连接钱包, 请稍后再试')
-            else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning('用户不允许此应用连接到他们的Scatter')
+              this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
+            } else if (error.toString().includes('\'name\' of null')) this.$message.warning(this.$t('thirdParty.unableToConnect'))
+            else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning(this.$t('thirdParty.scatterAccessDenied'))
             else this.$message.warning(error.toString())
           }
         }
       } else if (type === 'ont') {
         try {
           const getAccount = await this.$store.dispatch('ontology/getAccount')
-          if (!getAccount) throw new Error('Ont获取账户信息失败')
+          if (!getAccount) throw new Error('Ont ' + this.$t('thirdParty.failedGetAccount'))
           // 没有扩展
           const { publicKey, signature, username } = await this.$store.dispatch('ontology/getSignature', { mode: 'Auth', rawSignData: [getAccount] })
           // console.log('🚀', signature)
@@ -364,13 +364,13 @@ export default {
           }, idx)
         } catch (error) {
           console.log(error)
-          if (error.message && error.message.includes('Could not establish connection')) this.$message.warning('无法建立连接')
-          else if (error === 'CANCELED') this.$message.warning('您取消了签名请求')
-          else this.$message.warning('您拒绝了签名请求')
+          if (error.message && error.message.includes('Could not establish connection')) this.$message.warning(this.$t('thirdParty.couldNotEstablishConnection'))
+          else if (error === 'CANCELED') this.$message.warning(this.$t('thirdParty.cancelSigningRequest'))
+          else this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
         }
       } else if (type === 'vnt') {
         const username = await this.$store.dispatch('vnt/bind')
-        if (!username) throw new Error('Vnt获取账户信息失败')
+        if (!username) throw new Error('Vnt' + this.$t('thirdParty.failedGetAccount'))
         await this.accountBild({
           platform: type.toLocaleLowerCase(),
           publickey: 'vnt',
@@ -384,23 +384,23 @@ export default {
         })
       } else if (type === 'telegram') {
         this.$router.push({ name: 'login-telegram' })
-      } else this.$message.warning('PC端暂不支持绑定')
+      } else this.$message.warning(this.$t('thirdParty.pcDoesNotSupportBinding'))
     },
     unbindFunc(type, typename, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (!this.accountList[idx].status) return this.$message.warning('请先绑定账号')
+      if (!this.accountList[idx].status) return this.$message.warning(this.$t('thirdParty.pleaseBindAccountFirst'))
       if (type === 'email') {
-        this.$prompt('此操作将取消账号绑定, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$prompt(this.$t('thirdParty.whetherToUnbind'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           inputValue: '',
-          inputPlaceholder: '请输入密码',
+          inputPlaceholder: this.$t('rule.passwordMessage'),
           inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
           inputValidator: function (value) {
             if (!value) return false
             else return true
           },
-          inputErrorMessage: '请输入密码'
+          inputErrorMessage: this.$t('rule.passwordMessage')
         }).then(({ value }) => {
           this.accountUnbild({
             platform: this.accountList[idx].type,
@@ -409,9 +409,9 @@ export default {
           }, idx)
         })
       } else {
-        this.$confirm('此操作将取消账号绑定, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('thirdParty.whetherToUnbind'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           type: 'warning'
         }).then(() => {
           this.accountUnbild({
@@ -456,19 +456,19 @@ export default {
     },
     accountChangeFunc(label, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      if (!this.accountList[idx].status) return this.$message.warning('绑定后才可设置为主账号')
+      if (!this.accountList[idx].status) return this.$message.warning(this.$t('thirdParty.unableToSetMasterAccount'))
       if (label === 'email') {
-        this.$prompt('请输入邮箱密码', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$prompt(this.$t('thirdParty.enterYourEmailPassword'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           inputValue: '',
-          inputPlaceholder: '请输入密码',
+          inputPlaceholder: this.$t('rule.passwordMessage'),
           inputType: 'password', // password 会默认填充账号(浏览器机制) 暂时明文显示吧
           inputValidator: function (value) {
             if (!value) return false
             else return true
           },
-          inputErrorMessage: '请输入密码'
+          inputErrorMessage: this.$t('rule.passwordMessage')
         }).then(({ value }) => {
           this.accountChange({
             platform: this.accountList[idx].type,
@@ -477,9 +477,9 @@ export default {
           }, idx)
         })
       } else {
-        this.$confirm('此操作将切换主账号, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('thirdParty.whetherToSwitchAccounts'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('confirm'),
+          cancelButtonText: this.$t('cancel'),
           type: 'warning'
         }).then(() => {
           console.log(this.accountList[idx])

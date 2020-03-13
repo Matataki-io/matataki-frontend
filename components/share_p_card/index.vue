@@ -5,7 +5,7 @@
     </div>
     <div class="card-content">
       <p :class="!shareCard && 'card-sharehall'" class="card-text">
-        {{ card.title || '暂无' }}
+        {{ card.title || $t('not') }}
       </p>
       <div class="card-more">
         <div v-if="cardType !== 'edit'" class="card-info">

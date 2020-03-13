@@ -63,14 +63,14 @@ export const actions = {
       commit('setLoginModal', true, { root:true })
       return
     }
-    const message = type === 1 ? '关注' : '取消关注'
+    const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
     try {
       if (type === 1) await API.follow(id)
       else await API.unfollow(id)
-      Message.success(`${message}成功`)
+      Message.success(`${message}${this.$t('success.success')}`)
       // this.followed = type === 1
     } catch (error) {
-      Message.error(`${message}失败`)
+      Message.error(`${message}${this.$t('error.fail')}`)
     }
     dispatch('refreshUser', {id})
   },

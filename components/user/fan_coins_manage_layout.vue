@@ -56,7 +56,7 @@
       简介
     </h2>
     <p class="token-sub">
-      {{ tokenDetailData.token.brief || '暂无' }}
+      {{ tokenDetailData.token.brief || $t('not') }}
     </p>
 
     <h2 class="token-title">
@@ -64,21 +64,21 @@
     </h2>
     <p class="token-sub">
       <!-- 开了wrap 这个span不能换行！ -->
-      <span class="wrap-open">{{ tokenDetailData.token.introduction || '暂无' }}</span>
+      <span class="wrap-open">{{ tokenDetailData.token.introduction || $t('not') }}</span>
     </p>
 
     <h2 class="token-title">
-      相关网站
+      {{ $t('social.relatedWebsites') }}
     </h2>
     <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
       <li v-for="(item, index) in resourcesWebsites" :key="index">
         <a :href="item" target="_blank">{{ item }}</a>
       </li>
     </ul>
-    <span v-else class="not">暂无</span>
+    <span v-else class="not">{{ $t('not') }}</span>
 
     <h2 class="token-title">
-      社交账号
+      {{ $t('social.socialAccount') }}
     </h2>
 
     <div v-if="resourcesSocialss.length !== 0" class="fl social">
@@ -92,7 +92,7 @@
         />
       </div>
     </div>
-    <span v-else class="not">暂无</span>
+    <span v-else class="not">{{ $t('not') }}</span>
 
     <h2 class="token-title">
       分享挂件

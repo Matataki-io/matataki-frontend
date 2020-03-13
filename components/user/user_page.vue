@@ -40,7 +40,7 @@
               v-if="tokenUser"
               class="tooltip"
               effect="dark"
-              content="发行了Fan票的用户"
+              :content="$t('user.issuedFanTickets')"
               placement="top"
             >
               <svg-icon class="tokens" icon-class="token" />
@@ -68,7 +68,7 @@
             <span class="follow-title">{{ $t('fans') }}</span>
           </router-link>
         </div>
-        <el-tooltip v-if="isMe(Number($route.params.id))" class="item" effect="dark" content="上传背景图" placement="top">
+        <el-tooltip v-if="isMe(Number($route.params.id))" class="item" effect="dark" :content="$t('imgUpload.uploadBackgroundImg')" placement="top">
           <bannerUpload
             :img-upload-done="imgUploadDone"
             :update-type="'banner'"

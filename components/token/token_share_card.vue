@@ -14,7 +14,7 @@
     <div class="content">
       <div class="list">
         <div class="list-title">
-          创始人：
+          {{ $t('token.founder') }}：
         </div>
         <div class="list-content">
           {{ minetokenUser.nickname || minetokenUser.username }}

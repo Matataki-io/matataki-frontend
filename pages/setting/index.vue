@@ -64,10 +64,10 @@
         <!-- 相关网站 -->
         <div class="social-div">
           <span class="title">
-            相关网站
+            {{ $t('social.relatedWebsites') }}
           </span>
           <div v-for="(item, index) in about" :key="index" class="fl ac about-input social-list">
-            <el-input v-model="about[index]" class="input" placeholder="请填写网站链接，包含http(s)://" />
+            <el-input v-model="about[index]" class="input" :placeholder="$t('social.fillLink')" />
             <div v-if="about.length > 1" @click="abountLess(index)" class="about-input-btn">
               <i class="el-icon-minus" />
             </div>
@@ -79,10 +79,10 @@
         <!-- 社交账号 -->
         <div class="social-div">
           <span class="title right0">
-            社交账号
+            {{ $t('social.socialAccount') }}
           </span>
           <span class="title-note">
-            仅用于信息展示
+            {{ $t('social.forInformationOnly') }}
           </span>
           <div v-for="(item, index) in social" :key="index" class="social-list">
             <p class="social-title">
@@ -145,7 +145,7 @@ export default {
           type: 'email',
           name: 'Email：',
           tooltip: '',
-          placeholder: '邮箱',
+          placeholder: this.$t('email'),
           url: '',
           value: ''
         },
@@ -154,25 +154,25 @@ export default {
           type: 'qq',
           name: 'QQ：',
           tooltip: '',
-          placeholder: 'QQ帐号',
+          placeholder: this.$t('thirdParty.qqAccount'),
           url: '',
           value: ''
         },
         {
           symbol: 'Wechat',
           type: 'wechat',
-          name: '微信：',
+          name: `${this.$t('thirdParty.wechat')}：`,
           tooltip: '',
-          placeholder: '微信号',
+          placeholder: this.$t('thirdParty.wechatAccount'),
           url: '',
           value: ''
         },
         {
           symbol: 'Weibo',
           type: 'weibo',
-          name: '微博：',
-          tooltip: '(https://www.weibo.com/<span>帐号</span>)',
-          placeholder: '微博用户名(不需要完整URL)',
+          name: `${this.$t('thirdParty.weibo')}：`,
+          tooltip: `(https://www.weibo.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: this.$t('thirdParty.weibo') + this.$t('thirdParty.usernameNoFullUrl'),
           url: 'https://www.weibo.com',
           value: ''
         },
@@ -181,7 +181,7 @@ export default {
           type: 'telegram',
           name: 'Telegram：',
           tooltip: '',
-          placeholder: 'Telegram用户名',
+          placeholder: `Telegram ${this.$t('username')}`,
           url: '',
           value: ''
         },
@@ -189,8 +189,8 @@ export default {
           symbol: 'Twitter',
           type: 'twitter',
           name: 'Twitter：',
-          tooltip: '(https://twitter.com/<span>帐号</span>)',
-          placeholder: 'Twitter用户名(不需要完整URL)',
+          tooltip: `(https://twitter.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: `Twitter${this.$t('thirdParty.usernameNoFullUrl')}`,
           url: 'https://twitter.com',
           value: ''
         },
@@ -198,8 +198,8 @@ export default {
           symbol: 'Facebook',
           type: 'facebook',
           name: 'Facebook：',
-          tooltip: '(https://facebook.com/<span>帐号</span>)',
-          placeholder: 'Facebook用户名(不需要完整URL)',
+          tooltip: `(https://facebook.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: `Facebook${this.$t('thirdParty.usernameNoFullUrl')}`,
           url: 'https://facebook.com',
           value: ''
         },
@@ -207,12 +207,10 @@ export default {
           symbol: 'Github',
           type: 'github',
           name: 'Github：',
-          tooltip: '(https://github.com/<span>帐号</span>)',
-          placeholder: 'Github用户名(不需要完整URL)',
+          tooltip: `(https://github.com/<span>${this.$t('thirdParty.account')}</span>)`,
+          placeholder: `Github${this.$t('thirdParty.usernameNoFullUrl')}`,
           url: 'https://github.com',
           value: ''
-          // resourcesSocialss: [],
-          // resourcesWebsites: [],
         }
       ]
     }
@@ -347,7 +345,7 @@ export default {
         if (this.username === (this.userData.nickname || this.userData.username)) delete requestData.nickname
         if (this.introduction === this.userData.introduction) delete requestData.introduction
 
-        await this.$backendAPI.setProfile(requestData)
+        await this.$API.setProfile(requestData)
 
         this.setProfile = false
       }
@@ -367,7 +365,7 @@ export default {
           })()
         }
 
-        await this.$backendAPI.setUserLinks(requestData)
+        await this.$API.setUserLinks(requestData)
 
         this.aboutModify = false
         this.socialModify = false

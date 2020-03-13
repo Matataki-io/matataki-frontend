@@ -96,10 +96,10 @@ export default {
   methods: {
     // 获取标签
     async getTags() {
-      await this.$backendAPI
+      await this.$API
         .getTags()
         .then((res) => {
-          if (res.status === 200 && res.data.code === 0) {
+          if (res.code === 0) {
             // console.log(res.data.data)
             // const tagArr = res.data.data
             // const tagArrPost = []
@@ -121,8 +121,8 @@ export default {
             // }
             // console.log(103, this.tagCards)
 
-            this.tagCards = res.data.data.filter(i => i.type === this.tagType)
-          } else console.log(res.data.message)
+            this.tagCards = res.data.filter(i => i.type === this.tagType)
+          } else console.log(res.message)
         })
         .catch((err) => {
           console.log(err)

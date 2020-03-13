@@ -7,7 +7,7 @@
   >
     <div class="components-ipfs_all">
       <p class="ipfs_all__title">
-        IPFS地址
+        {{ $t('ipfsHash.link') }}
       </p>
       <div v-if="hash" class="ipfs_all__address">
         <p>
@@ -16,10 +16,10 @@
         <svg-icon @click="copy(hash)" icon-class="copy" class="icon" />
       </div>
       <p v-else class="ipfs_all__not">
-        暂无
+        {{ $t('not') }}
       </p>
       <p class="ipfs_all__title">
-        公共节点
+        {{ $t('ipfsHash.publicNode') }}
       </p>
       <template v-if="hash">
         <div v-for="(item, index) in link" :key="index" class="ipfs_all__link">
@@ -30,10 +30,10 @@
         </div>
       </template>
       <p v-else class="ipfs_all__not">
-        暂无
+        {{ $t('not') }}
       </p>
       <p class="ipfs_all__description">
-        本文内容已上传星际文件存储系统「IPFS」，永久保存。
+        {{ $t('ipfsHash.slogan') }}
       </p>
     </div>
     <svg-icon slot="reference" icon-class="ipfs" class="ipfs_all__icon" />

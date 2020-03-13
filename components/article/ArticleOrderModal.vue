@@ -177,15 +177,15 @@ export default {
     tradeType() {
       const typeOptions = {
         add: '添加流动性',
-        buy_token_input: '购买Fan票',
-        buy_token_output: '购买Fan票',
+        buy_token_input: this.$t('home.buyFanTickets'),
+        buy_token_output: this.$t('home.buyFanTickets'),
         sale_token: '出售Fan票',
       };
       if (this.articleId) {
         return `购买文章${this.articleId}`
       } else {
         const type = this.order.items ? this.order.items.orderTokenItem.type : null
-        return typeOptions[type] || '暂无'
+        return typeOptions[type] || this.$t('not')
       }
       return `购买文章${this.articleId}`
     },

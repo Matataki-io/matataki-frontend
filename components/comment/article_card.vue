@@ -58,7 +58,7 @@ export default {
       return ''
     },
     nickname() {
-      return this.comment.nickname || this.comment.username || '此账号已注销'
+      return this.comment.nickname || this.comment.username || this.$t('error.accountHasBeenLoggedOut')
     }
   }
 }

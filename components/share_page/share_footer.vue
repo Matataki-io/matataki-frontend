@@ -10,7 +10,7 @@
       <div @click="pushShare">
         <svg-icon class="icon" icon-class="reference" />
       </div>
-      <p>引用</p>
+      <p>{{ $t('quote') }}</p>
     </div>
     <div class="icon-num">
       <div @click="$emit('share')">
@@ -22,13 +22,13 @@
       <div @click="$emit('like', 2)">
         <svg-icon :class="isLiked === 2 && 'active'" class="icon" icon-class="great-solid" />
       </div>
-      <p>推荐<span>{{ likes }}</span></p>
+      <p>{{ $t('p.like')}}<span>{{ likes }}</span></p>
     </div>
     <div class="icon-num">
       <div @click="$emit('like', 1)">
         <svg-icon :class="isLiked === 1 && 'active'" class="icon" icon-class="bullshit-solid" />
       </div>
-      <p>不推荐<span>{{ dislikes }}</span></p>
+      <p>{{ $t('p.unlike')}}<span>{{ dislikes }}</span></p>
     </div>
   </div>
 </template>

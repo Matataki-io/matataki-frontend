@@ -17,12 +17,12 @@
                 </p>
               </div>
               <div>
-                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">什么是Fan票?</a>
+                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">{{ $t('token.whatIsAFanTicket') }}</a>
               </div>
             </div>
             <div class="fl info-line">
               <div class="token-info-title">
-                创始人：
+                {{ $t('token.founder') }}：
               </div>
               <div>
                 <p class="token-info-sub">
@@ -36,7 +36,7 @@
             </div>
             <div class="fl info-line">
               <div class="token-info-title">
-                发布时间：
+                {{ $t('token.releaseTime') }}：
               </div>
               <div>
                 <p class="token-info-sub">
@@ -45,12 +45,10 @@
               </div>
             </div>
             <div class="fl info-line">
-              <div class="token-info-title">
-                简&emsp;介：
-              </div>
+              <div class="token-info-title" v-html="$t('token.summary')" />
               <div>
                 <p class="token-info-sub">
-                  {{ minetokenToken.brief || '暂无' }}
+                  {{ minetokenToken.brief || $t('not') }}
                 </p>
               </div>
             </div>
@@ -59,26 +57,26 @@
             <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
               <el-button class="link-btn" size="small">
                 <svg-icon icon-class="eth_mini" />
-                链上查看
+                {{ $t('token.viewOnChain') }}
               </el-button>
             </a>
             <router-link v-if="showTokenSetting" :to="{ name: 'editminetoken' }">
               <el-button class="btn" size="small" icon="el-icon-setting">
-                管理
+                {{ $t('token.edit') }}
               </el-button>
             </router-link>
             <el-button @click="shareModalShow = true" class="btn" size="small">
               <svg-icon icon-class="share_new" />
-              分享
+              {{ $t('share') }}
             </el-button>
           </div>
           <router-link v-if="isLogined" :to="{ name: 'tokens' }" tag="div" class="balance">
-            已持有：{{ balance }} {{ minetokenToken.symbol }}
+            {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
             <i class="el-icon-arrow-right" />
           </router-link>
         </div>
         <p v-if="!minetokenToken.contract_address" class="warning">
-          Fan票正在部署中，请耐心等候。
+          {{ $t('token.waitPatiently') }}
         </p>
       </div>
     </div>
@@ -87,17 +85,17 @@
       <el-col :span="17">
         <div class="introduction">
           <h2 class="token-title">
-            介绍
+            {{ $t('token.introduction') }}
           </h2>
           <p class="token-introduction">
             <!-- 开了wrap 这个span不能换行！ -->
-            <span class="wrap-open">{{ minetokenToken.introduction || '暂无' }}</span>
+            <span class="wrap-open">{{ minetokenToken.introduction || $t('not') }}</span>
           </p>
         </div>
 
         <div class="total">
           <h2 class="token-title">
-            数据统计
+            {{ $t('token.statistics') }}
           </h2>
           <div class="fl total-content">
             <div class="token-data">
@@ -106,7 +104,7 @@
                 <sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
-                发行总量
+                {{ $t('token.totalIssued') }}
               </p>
             </div>
 
@@ -118,7 +116,7 @@
                 <sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
-                流动金池
+                {{ $t('token.liquidGoldPool') }}
               </p>
             </div>
 
@@ -128,7 +126,7 @@
                 <sub>{{ minetokenToken.symbol }}</sub>
               </p>
               <p class="token-name">
-                24h成交量
+                {{ $t('token.volume24h') }}
               </p>
             </div>
 
@@ -138,7 +136,7 @@
                 <sub>CNY</sub>
               </p>
               <p class="token-name">
-                24h成交额
+                {{ $t('token.turnover24h') }}
               </p>
             </div>
 
@@ -147,7 +145,7 @@
                 {{ change }}
               </p>
               <p class="token-name">
-                24h涨跌幅
+                {{ $t('token.change24h') }}
               </p>
             </div>
 
@@ -157,7 +155,7 @@
                 <sub>CNY</sub>
               </p>
               <p class="token-name">
-                现价
+                {{ $t('token.currentPrice')}}
               </p>
             </div>
           </div>
@@ -185,19 +183,19 @@
 
         <div class="about">
           <h2 class="token-title">
-            相关网站
+            {{ $t('social.relatedWebsites') }}
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
             <li v-for="(item, index) in resourcesWebsites" :key="index">
               <a :href="formatUrl(item)" target="_blank">{{ item }}</a>
             </li>
           </ul>
-          <span v-else class="not">暂无</span>
+          <span v-else class="not">{{ $t('not') }}</span>
         </div>
 
         <div class="social">
           <h2 class="token-title">
-            社交账号
+            {{ $t('social.socialAccount') }}
           </h2>
 
           <div v-if="resourcesSocialss.length !== 0" class="social-btn">
@@ -205,19 +203,19 @@
               <socialIcon :show-tooltip="true" :icon="item.type" :content="item.content" />
             </div>
           </div>
-          <span v-else class="not">暂无</span>
+          <span v-else class="not">{{ $t('not') }}</span>
         </div>
 
         <div class="share">
           <h2 class="token-title">
-            分享挂件
+            {{ $t('token.shareWidget') }}
           </h2>
           <el-input
             v-model="tokenWidget"
             :rows="6"
             class="token-widget"
             type="textarea"
-            placeholder="请输入内容"
+            :placeholder="$t('rule.content')"
           />
         </div>
       </el-col>

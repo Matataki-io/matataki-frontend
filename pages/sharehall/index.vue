@@ -11,7 +11,7 @@
               size="mini"
               type="textarea"
               rows="6"
-              placeholder="谈谈感想"
+              :placeholder="$t('sharehall.feeling')"
             />
           </el-form-item>
         </el-form>
@@ -27,7 +27,7 @@
                 v-model="urlForm.url"
                 size="mini"
                 class="push-input"
-                placeholder="输入链接，包含http(s)://"
+                :placeholder="$t('sharehall.fillLink')"
               />
               <el-button @click="getUrlData('urlForm')" v-loading="urlLoading" type="primary" size="mini" class="g-button__black ">
                 <svg-icon icon-class="enter" class="icon" />
@@ -67,7 +67,7 @@
           <div class="push-btn">
             <el-button @click="pushShare('ruleForm')" v-loading.fullscreen.lock="fullscreenLoading" type="primary" class="g-button__black " size="mini">
               <svg-icon icon-class="edit" class="icon" />
-              发布
+              {{ $t('publish.publish') }}
             </el-button>
           </div>
         </el-form>
@@ -78,7 +78,7 @@
       <div class="sharehall-main">
         <div class="sharehall-head">
           <h3 class="sharehall-title">
-            分享大厅
+            {{ $t('sharehall.hall') }}
           </h3>
           <div class="sort">
             <span @click="value = options[0].value" :class="value === options[0].value && 'active'">{{ options[0].label }}</span>
@@ -100,7 +100,7 @@
         <div v-if="usersRecommendList.length !== 0" class="recommend-author">
           <div class="ra-head">
             <h3 class="sharehall-title">
-              推荐作者
+              {{ $t('home.recommendAuthor') }}
             </h3>
             <span @click="usersrecommend" class="ra-head-random">
               <div class="change">
@@ -125,10 +125,10 @@
       <div class="dialog-content">
         <img src="@/assets/img/done.png" alt="done" class="share-done">
         <h4 class="share-done__title">
-          分享已发布
+          {{ $t('sharehall.sharePublished') }}
         </h4>
         <p class="share-done__desciption">
-          保存分享卡片把思考与灵感传达给更多的人
+          {{ $t('sharehall.shareSlogan') }}
         </p>
         <div
           ref="shareCard"
@@ -138,7 +138,7 @@
           <img v-if="saveImg" :src="saveImg" alt="save">
         </div>
         <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
-          保存并分享卡片
+          {{ $t('sharehall.save') }}
         </el-button>
         <shareImage
           ref="shareImage"
@@ -181,7 +181,7 @@ export default {
       if (new RegExp('[a-zA-z]+://[^\\s]*').test(this.urlForm.url)) {
         callback()
       } else {
-        callback(new Error('请输入包含http(s)://的链接地址'))
+        callback(new Error(this.$t('sharehall.errorIncludeHttp')))
       }
     }
     return {
@@ -194,12 +194,12 @@ export default {
       },
       rules: {
         content: [
-          { required: true, message: '请填写感想', trigger: 'blur' }
+          { required: true, message: this.$t('sharehall.fillImpression'), trigger: 'blur' }
         ]
       },
       urlRules: {
         url: [
-          { required: true, message: '请填写链接地址', trigger: 'change' },
+          { required: true, message: this.$t('sharehall.fillLink2'), trigger: 'change' },
           { validator: httpTest, trigger: 'change' }
         ]
       },
@@ -214,11 +214,11 @@ export default {
       options: [ // 排序
         {
           value: 'time',
-          label: '最新'
+          label: this.$t('home.articleNavNow')
         },
         {
           value: 'hot',
-          label: '最热'
+          label: this.$t('home.articleNavHot')
         }
       ],
       value: this.$route.query.type || 'time', // 排序
@@ -299,9 +299,9 @@ export default {
       next()
     } else {
       try {
-        await this.$confirm('您有分享未发布，是否发布了再离开？', '提示', {
-          confirmButtonText: '去发布',
-          cancelButtonText: '不要了',
+        await this.$confirm(this.$t('sharehall.unpublished'), this.$t('promptTitle'), {
+          confirmButtonText: this.$t('sharehall.toPost'),
+          cancelButtonText: this.$t('sharehall.noMore'),
           type: 'warning',
           showClose: false,
           closeOnClickModal: false,
@@ -366,11 +366,11 @@ export default {
       if (await this.setpFunc(formName)) {
         // console.log('currentUserInfo', this.currentUserInfo)
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-        if (this.shareLinkList.length <= 0) return this.$message({ message: '分享引用不能为空', type: 'warning' })
+        if (this.shareLinkList.length <= 0) return this.$message({ message: this.$t('sharehall.canNotBeEmpty'), type: 'warning' })
         // 平台检测
         const idProvider = getCookie('idProvider')
         if (!idProvider) {
-          this.$message({ message: '发生错误, 请您重新登录', type: 'error' })
+          this.$message({ message: this.$t('sharehall.reRegister'), type: 'error' })
           this.$store.commit('setLoginModal', true)
           return false
         }
@@ -399,13 +399,13 @@ export default {
               this.pull.list.length = 0
               this.pull.time = Date.now()
               this.resetForm()
-              this.$message({ message: '发布成功', type: 'success' })
+              this.$message({ message: this.$t('sharehall.success'), type: 'success' })
             } else {
-              this.$message({ message: '发布失败', type: 'error' })
+              this.$message({ message: this.$t('sharehall.error'), type: 'error' })
             }
           }).catch(err => {
             console.log(err)
-            this.$message({ message: '发布失败', type: 'error' })
+            this.$message({ message: this.$t('sharehall.error'), type: 'error' })
           }).finally(() => {
             this.fullscreenLoading = false
           })
@@ -422,14 +422,14 @@ export default {
           return arr.filter(i => i.url === url).length !== 0
         }
 
-        if (urlIncludes(url, this.shareLinkList)) return this.$message({ message: '不能引用重复的内容', type: 'warning' })
+        if (urlIncludes(url, this.shareLinkList)) return this.$message({ message: this.$t('sharehall.duplicateContent'), type: 'warning' })
 
         // 自动检测url 获取标题 内容等
         this.urlLoading = true
         this.$API.extractRefTitle({ url })
           .then(res => {
             if (res.code === 0) {
-              this.$message({ message: '检测完成', type: 'success' })
+              this.$message({ message: this.$t('sharehall.detectionCompleted'), type: 'success' })
               res.data.url = url
               this.shareLinkList.push(res.data)
               // 清空数据
