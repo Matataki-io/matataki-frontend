@@ -48,7 +48,7 @@
         <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
         <el-tooltip effect="dark" content="点击后支付即可一键解锁此文内容" placement="top-end">
           <el-button
-            @click="wxpayArticle"
+            @click="wxpayEdit"
             type="primary"
             size="small"
           >
@@ -98,6 +98,10 @@ export default {
     form: {
       type: Object,
       required: true
+    },
+    inputAmountError: {
+      type: String,
+      default: ''
     },
     lockLoading: {
       type: Boolean,
@@ -174,8 +178,23 @@ export default {
     }
   },
   methods: {
-    wxpayArticle() {
-      this.$message.warning('警告哦，这个功能还在开发中')
+    // 购买编辑权限
+    wxpayEdit() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      if (this.inputAmountError) {
+        this.$message.error(this.inputAmountError)
+        return
+      }
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        type: 'buy_token_output',
+        needToken: this.isTokenArticle && !this.tokenHasPaied,
+        // needPrice: this.isPriceArticle && !this.priceHasPaied,
+        signId: this.article.id
+      })
     }
   }
 }

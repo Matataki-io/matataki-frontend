@@ -126,6 +126,7 @@
           :tokenHasPaied="editTokenHasPaied"
           :differenceToken="editDifferenceToken"
           :form="editForm"
+          :inputAmountError="getEditInputAmountError"
           :lockLoading="lockLoading"
         />
 
@@ -610,6 +611,7 @@ export default {
         outputToken: {}
       },
       getInputAmountError: '',
+      getEditInputAmountError: '',
       payBtnDisabled: true,
       relatedLeftCollapse: false, // 左侧关联
       relatedRightCollapse: false, // 右侧关联
@@ -754,11 +756,11 @@ export default {
     isTokenArticle() {
       return (this.article.tokens && this.article.tokens.length !== 0)
     },
-    // 是否是持通证文章
+    // 是否是持通证编辑文章
     isTokenEditArticle() {
       return (this.article.editTokens && this.article.editTokens.length !== 0)
     },
-    // 是否是付费文章
+    // 是否是付费编辑文章
     isPriceEditArticle() {
       return (this.article.editPrices && this.article.editPrices.length !== 0)
     },
@@ -1368,7 +1370,7 @@ export default {
           else this.form.output = utils.fromDecimal(needTokenAmount - amount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
           }
         } else {
           // 获取需要多少token
@@ -1376,7 +1378,7 @@ export default {
           this.form.output = utils.fromDecimal(needTokenAmount)
           const { inputToken, output, outputToken } = this.form
           if (output > 0) {
-            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.form.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getInputAmountError')
           }
         }
       }
@@ -1397,7 +1399,7 @@ export default {
           const { inputToken, output, outputToken } = this.editForm
           if (output > 0) {
             console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
-            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
           }
         } else {
           // 获取需要多少token
@@ -1406,13 +1408,13 @@ export default {
           const { inputToken, output, outputToken } = this.editForm
           if (output > 0) {
             console.log('传入的数据：', inputToken.id, outputToken.id, output, outputToken)
-            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output)
+            this.editForm.input = await this.getInputAmount(inputToken.id, outputToken.id, output, 'getEditInputAmountError')
           }
         }
       }
     },
 
-    async getInputAmount(inputTokenId, outputTokenId, outputAmount) {
+    async getInputAmount(inputTokenId, outputTokenId, outputAmount, errorTag) {
       const deciaml = 4
       const _outputAmount = utils.toDecimal(outputAmount, deciaml)
       try {
@@ -1420,7 +1422,8 @@ export default {
         let res = await this.$API.getInputAmount(inputTokenId, outputTokenId, _outputAmount)
         this.payBtnDisabled = false
         if (res.code === 0) {
-          this.getInputAmountError = ''
+
+          this[errorTag] = ''
           // rmb向上取整
           if (inputTokenId === 0 && parseFloat(res.data) >= 100) {
             return parseFloat(utils.formatCNY(res.data, deciaml)).toFixed(2)
@@ -1428,7 +1431,7 @@ export default {
             return parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
           }
         } else {
-          this.getInputAmountError = res.message
+          this[errorTag] = res.message
           console.error(res.message)
           return ''
         }
