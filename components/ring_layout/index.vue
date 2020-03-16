@@ -3,7 +3,11 @@
     <g-header />
     <div class="ring-logo">
       <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
-        <img v-if="logo" :src="logoSrc" :alt="symbol">
+        <img
+          v-if="logo"
+          :src="logoSrc"
+          :alt="symbol"
+        >
       </router-link>
     </div>
     <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
@@ -16,7 +20,12 @@
 
     <div class="ring-head">
       <div class="ring-title">
-        <router-link v-for="(tag, index) in tagList" :key="index" :to="{name: tag.url, params: { id: $route.params.id }}" :class="$route.name === tag.url && 'active'">
+        <router-link
+          v-for="(tag, index) in tagList"
+          :key="index"
+          :to="{name: tag.url, params: { id: $route.params.id }}"
+          :class="$route.name === tag.url && 'active'"
+        >
           {{ tag.label }}
         </router-link>
         <!-- <router-link :to="{name: 'ring'}">只看创始人</router-link> -->

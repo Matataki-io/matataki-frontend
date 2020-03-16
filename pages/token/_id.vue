@@ -1,9 +1,17 @@
 <template>
-  <layout v-model="tabPage" :minetoken-token="minetokenToken" :minetoken-user="minetokenUser" :minetoken-exchange="minetokenExchange">
+  <layout
+    v-model="tabPage"
+    :minetoken-token="minetokenToken"
+    :minetoken-user="minetokenUser"
+    :minetoken-exchange="minetokenExchange"
+  >
     <tokenFanCoins v-if="tabPage === 0" />
     <tokenFanCoinsDetail v-if="tabPage === 1" />
     <tokenLiquidity v-if="tabPage === 2" />
-    <tokenLiquidityDetail v-if="tabPage === 3" :token="minetokenToken" />
+    <tokenLiquidityDetail
+      v-if="tabPage === 3"
+      :token="minetokenToken"
+    />
   </layout>
 </template>
 

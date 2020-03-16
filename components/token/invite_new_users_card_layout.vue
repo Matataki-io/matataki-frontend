@@ -22,15 +22,35 @@
                 alt="matataki home background"
               >
               <!-- logo -->
-              <img class="home-logo" src="@/assets/img/index/logo.png" alt="logo">
-              <img class="home-sumary1" src="@/assets/img/index/invite_slogan1.png" alt="sumary">
-              <img class="home-sumary2" src="@/assets/img/index/invite_slogan2.png" alt="sumary">
-              <img class="home-sumary3" src="@/assets/img/index/invite_slogan3.png" alt="sumary">
+              <img
+                class="home-logo"
+                src="@/assets/img/index/logo.png"
+                alt="logo"
+              >
+              <img
+                class="home-sumary1"
+                src="@/assets/img/index/invite_slogan1.png"
+                alt="sumary"
+              >
+              <img
+                class="home-sumary2"
+                src="@/assets/img/index/invite_slogan2.png"
+                alt="sumary"
+              >
+              <img
+                class="home-sumary3"
+                src="@/assets/img/index/invite_slogan3.png"
+                alt="sumary"
+              >
               <!-- btn -->
-              <qrcode :value="link" :options="{ width: '74' }" class="code" />
+              <qrcode
+                :value="link"
+                :options="{ width: '74' }"
+                class="code"
+              />
               <p class="qrcode-text">
                 {{ $t('scanIt') }}<br>
-                {{ $t('inviteReward.enter')}}
+                {{ $t('inviteReward.enter') }}
               </p>
               <div class="invite-synopsis">
                 {{ $t('inviteReward.title') }}<br>
@@ -45,7 +65,11 @@
         </div>
       </div>
     </div>
-    <el-button @click="save" class="save" type="primary">
+    <el-button
+      class="save"
+      type="primary"
+      @click="save"
+    >
       {{ $t('save') }}
     </el-button>
   </div>

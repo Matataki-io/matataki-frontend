@@ -1,10 +1,18 @@
 <template>
-  <div v-if="isPublishCoins" class="coins-publish">
+  <div
+    v-if="isPublishCoins"
+    class="coins-publish"
+  >
     <div class="line" />
     <div class="fl ac jsb coins-head">
       <div class="fl ac">
         <div class="fl ac">
-          <avatar v-if="tokenCover" :src="tokenCover" size="30px" style="margin-right: 10px;" />
+          <avatar
+            v-if="tokenCover"
+            :src="tokenCover"
+            size="30px"
+            style="margin-right: 10px;"
+          />
           <h1>
             {{ tokenDetailData.token.symbol }}
             ({{
@@ -36,18 +44,27 @@
             编辑
           </el-button>
         </router-link>
-        <el-button @click="addCoins" size="small">
+        <el-button
+          size="small"
+          @click="addCoins"
+        >
           增发
         </el-button>
         <router-link :to="{name: 'exchange', hash: '#swap', query: { output: tokenDetailData.token.symbol }}">
-          <el-button size="small" type="primary">
+          <el-button
+            size="small"
+            type="primary"
+          >
             交易
           </el-button>
         </router-link>
       </div>
     </div>
 
-    <p v-if="!tokenDetailData.token.contract_address" class="warning">
+    <p
+      v-if="!tokenDetailData.token.contract_address"
+      class="warning"
+    >
       Fan票正在部署中，请耐心等候。
     </p>
     <!-- <div class="line" /> -->
@@ -70,18 +87,33 @@
     <h2 class="token-title">
       {{ $t('social.relatedWebsites') }}
     </h2>
-    <ul v-if="resourcesWebsites.length !== 0" class="about-nav">
-      <li v-for="(item, index) in resourcesWebsites" :key="index">
-        <a :href="item" target="_blank">{{ item }}</a>
+    <ul
+      v-if="resourcesWebsites.length !== 0"
+      class="about-nav"
+    >
+      <li
+        v-for="(item, index) in resourcesWebsites"
+        :key="index"
+      >
+        <a
+          :href="item"
+          target="_blank"
+        >{{ item }}</a>
       </li>
     </ul>
-    <span v-else class="not">{{ $t('not') }}</span>
+    <span
+      v-else
+      class="not"
+    >{{ $t('not') }}</span>
 
     <h2 class="token-title">
       {{ $t('social.socialAccount') }}
     </h2>
 
-    <div v-if="resourcesSocialss.length !== 0" class="fl social">
+    <div
+      v-if="resourcesSocialss.length !== 0"
+      class="fl social"
+    >
       <div class="social-btn">
         <socialIcon
           v-for="(item, index) in resourcesSocialss"
@@ -92,7 +124,10 @@
         />
       </div>
     </div>
-    <span v-else class="not">{{ $t('not') }}</span>
+    <span
+      v-else
+      class="not"
+    >{{ $t('not') }}</span>
 
     <h2 class="token-title">
       分享挂件
@@ -110,10 +145,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import { precision, toPrecision } from '@/utils/precisionConversion'
-import { testDecimal } from '@/utils/reg'
 import socialTypes from '@/config/social_types.js'
 import socialIcon from '@/components/social_icon/index.vue'
 

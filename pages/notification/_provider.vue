@@ -5,10 +5,21 @@
       <el-col :span="5">
         <nav>
           <ul>
-            <li v-for="(nav, index) in navItems" :key="nav.name" :class="{ active: active === index }" @click="setActive(index)">
-              <svg-icon :icon-class="nav.icon + (PROVIDERS.includes(nav.name) ? '' : '-gray')" class="icon" />
+            <li
+              v-for="(nav, index) in navItems"
+              :key="nav.name"
+              :class="{ active: active === index }"
+              @click="setActive(index)"
+            >
+              <svg-icon
+                :icon-class="nav.icon + (PROVIDERS.includes(nav.name) ? '' : '-gray')"
+                class="icon"
+              />
               <span class="name">{{ nav.text }}</span>
-              <span v-if="PROVIDERS.includes(nav.name)" class="count">+{{ notificationCounters[nav.name] || 0 }}</span>
+              <span
+                v-if="PROVIDERS.includes(nav.name)"
+                class="count"
+              >+{{ notificationCounters[nav.name] || 0 }}</span>
             </li>
           </ul>
         </nav>
@@ -17,11 +28,11 @@
         <NotificationList :notifications="notifications" />
         <div class="load-more">
           <buttonLoadMore
-            :typeIndex="1"
+            :type-index="1"
             :params="pull.params"
             :api-url="pull.apiUrl"
-            @buttonLoadMore="onFetch"
             return-type="Array"
+            @buttonLoadMore="onFetch"
           />
         </div>
       </el-col>

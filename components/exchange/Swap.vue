@@ -13,15 +13,18 @@
         <div class="jbRmQG">
           <input
             :value="form.input"
-            @input="inputChange"
-            @keypress="isNumber"
             class="gcotIA"
             type="number"
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
+            @input="inputChange"
+            @keypress="isNumber"
           >
-          <button @click="tlShow = true;field = 'inputToken'" class="iAoRgd">
+          <button
+            class="iAoRgd"
+            @click="tlShow = true;field = 'inputToken'"
+          >
             <span class="rTZzf">
               {{ form.inputToken.symbol || '选择Fan票' }}
               <i class="el-icon-arrow-down" />
@@ -33,7 +36,10 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="haryqg">
-        <i @click="swap" class="el-icon-bottom gHgbDu" />
+        <i
+          class="el-icon-bottom gHgbDu"
+          @click="swap"
+        />
       </div>
       <div class="jJSpkX" />
     </div>
@@ -50,15 +56,18 @@
         <div class="jbRmQG">
           <input
             :value="form.output"
-            @input="outputChange"
-            @keypress="isNumber"
             class="gcotIA"
             type="number"
             min="0"
             step="0.0001"
             placeholder="0.0"
+            @input="outputChange"
+            @keypress="isNumber"
           >
-          <button @click="tlShow = true;field = 'outputToken'" class="iAoRgd">
+          <button
+            class="iAoRgd"
+            @click="tlShow = true;field = 'outputToken'"
+          >
             <span class="rTZzf">
               {{ form.outputToken.symbol || '选择Fan票' }}
               <i class="el-icon-arrow-down" />
@@ -75,11 +84,17 @@
         <span v-else> - </span>
       </div>
     </div>
-    <div @click="detailShow = !detailShow" class="mHVYT">
+    <div
+      class="mHVYT"
+      @click="detailShow = !detailShow"
+    >
       <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
       <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" />
     </div>
-    <div v-show="detailShow" class="iUPTxf">
+    <div
+      v-show="detailShow"
+      class="iUPTxf"
+    >
       <div class="hRyusy">
         <div v-if="base === 'input'">
           你正在出售
@@ -104,7 +119,10 @@
           <span class="iDChvK">
             <span class="jbXIaP">{{ priceSlippage * 100 }}%</span>
           </span>
-          <el-tooltip placement="bottom" effect="light">
+          <el-tooltip
+            placement="bottom"
+            effect="light"
+          >
             <div slot="content">
               您的交易可能由于正常的价格波动而失败，<br>价格滑落区间将有助于您的交易成功
             </div>
@@ -114,13 +132,23 @@
       </div>
     </div>
     <div class="hGStes">
-      <button :disabled="btnDisabled" @click="onSubmit" class="jBltiI">
+      <button
+        :disabled="btnDisabled"
+        class="jBltiI"
+        @click="onSubmit"
+      >
         交易
       </button>
     </div>
-    <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
-    <TokenListModal v-model="tlShow" @selectToken="selectToken" />
-    <TradeLog :tokensId="tokensId" />
+    <OrderModal
+      v-model="orderShow"
+      :form="{...form,type,limitValue}"
+    />
+    <TokenListModal
+      v-model="tlShow"
+      @selectToken="selectToken"
+    />
+    <TradeLog :tokens-id="tokensId" />
   </div>
 </template>
 

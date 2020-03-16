@@ -1,6 +1,9 @@
 <template>
   <div class="outer">
-    <div ref="qr" class="qrcode" />
+    <div
+      ref="qr"
+      class="qrcode"
+    />
     <p>请使用微信扫描二维码进行支付</p>
   </div>
 </template>

@@ -1,7 +1,16 @@
 <template>
-  <router-link :to="{name: 'token-id', params: {id : token.id}}" class="token">
-    <div v-if="logo" class="minetoken">
-      <img :src="logo" alt="token-logo">
+  <router-link
+    :to="{name: 'token-id', params: {id : token.id}}"
+    class="token"
+  >
+    <div
+      v-if="logo"
+      class="minetoken"
+    >
+      <img
+        :src="logo"
+        alt="token-logo"
+      >
     </div>
   </router-link>
 </template>

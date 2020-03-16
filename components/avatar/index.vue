@@ -6,9 +6,19 @@
     }"
     class="g-avatar"
   >
-    <el-image :src="src" class="img-lazy" alt="avatar">
-      <div slot="error" class="image-slot">
-        <i :style="{ 'font-size': `calc(${ size } * 0.7)` }" class="el-icon-user-solid" />
+    <el-image
+      :src="src"
+      class="img-lazy"
+      alt="avatar"
+    >
+      <div
+        slot="error"
+        class="image-slot"
+      >
+        <i
+          :style="{ 'font-size': `calc(${ size } * 0.7)` }"
+          class="el-icon-user-solid"
+        />
       </div>
     </el-image>
   </div>

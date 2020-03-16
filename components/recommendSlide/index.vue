@@ -1,5 +1,8 @@
 <template>
-  <n-link :to="{name: 'p-id', params: {id: card.id}}" target="_blank">
+  <n-link
+    :to="{name: 'p-id', params: {id: card.id}}"
+    target="_blank"
+  >
     <div class="slide">
       <img
         v-if="cover"

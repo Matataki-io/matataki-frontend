@@ -1,23 +1,67 @@
 <template>
-  <router-link :to="cardUrl" @click.native="toggle" class="card" target="_blank">
+  <router-link
+    :to="cardUrl"
+    class="card"
+    target="_blank"
+    @click.native="toggle"
+  >
     <div class="card-info">
       <div class="card-info__user">
-        <avatar :src="avatarSrc" class="card-avatar" />
+        <avatar
+          :src="avatarSrc"
+          class="card-avatar"
+        />
         <span class="card-username">{{ username }}</span>
       </div>
-      <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
-        <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
-        <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+      <div
+        v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+        class="card-operate"
+      >
+        <svg-icon
+          class="icon"
+          icon-class="copy"
+          @click="copy(card.url, $event)"
+        />
+        <svg-icon
+          class="icon"
+          icon-class="quote"
+          @click="ref(card.url, $event)"
+        />
       </div>
     </div>
     <div class="card-content">
-      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
-      <svg-icon v-if="!shareCard" class="icon" icon-class="quotation_marks" />
-      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
-      <img v-if="shareCard" src="@/assets/img/quote.png" alt="quote" class="icon-img">
-      <span :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.summary || $t('not') }}</span>
+      <svg-icon
+        v-if="!shareCard"
+        class="icon"
+        icon-class="quotation_marks"
+      />
+      <svg-icon
+        v-if="!shareCard"
+        class="icon"
+        icon-class="quotation_marks"
+      />
+      <img
+        v-if="shareCard"
+        src="@/assets/img/quote.png"
+        alt="quote"
+        class="icon-img"
+      >
+      <img
+        v-if="shareCard"
+        src="@/assets/img/quote.png"
+        alt="quote"
+        class="icon-img"
+      >
+      <span
+        :class="!shareCard && 'card-sharehall'"
+        class="card-text"
+      >{{ card.summary || $t('not') }}</span>
     </div>
-    <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
+    <span
+      v-if="!shareCard && cardType === 'edit'"
+      class="card-remove"
+      @click="removeCard"
+    >
       <i class="el-icon-close icon" />
     </span>
   </router-link>

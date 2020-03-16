@@ -2,85 +2,125 @@
   <div class="card-share__content">
     <div class="card-share">
       <div class="card-info">
-        <router-link :to="{ name: 'user-id-share', params: { id: card.uid } }" :target="blank && '_blank'" class="card-info__left">
-          <avatar :src="avatarSrc" class="card-avatar" />
+        <router-link
+          :to="{ name: 'user-id-share', params: { id: card.uid } }"
+          :target="blank && '_blank'"
+          class="card-info__left"
+        >
+          <avatar
+            :src="avatarSrc"
+            class="card-avatar"
+          />
           <div class="card-author">
             <span class="card-username">{{ card.nickname || card.author }}</span>
             <div>
               <span class="card-date">{{ time }}</span>
               <span class="card-read">
-                <svg-icon class="icon" icon-class="eye_blod" />{{ card.read }}
+                <svg-icon
+                  class="icon"
+                  icon-class="eye_blod"
+                />{{ card.read }}
               </span>
             </div>
           </div>
         </router-link>
-        <div @click="$emit('refClick', card)" class="card-quote">
-          <svg-icon class="icon" icon-class="quote" />
+        <div
+          class="card-quote"
+          @click="$emit('refClick', card)"
+        >
+          <svg-icon
+            class="icon"
+            icon-class="quote"
+          />
           <span>{{ $t('quote') }}&nbsp;{{ card.beRefs ? card.beRefs.length : '' }}</span>
         </div>
       </div>
-      <router-link :to="{ name: 'share-id', params: { id: card.id } }" class="card-content" target="_blank">
-        <svg-icon class="icon" icon-class="quotation_marks" />
-        <svg-icon class="icon" icon-class="quotation_marks" />
-        <p v-html="card.short_content || '&nbsp;'" class="search-res" />
+      <router-link
+        :to="{ name: 'share-id', params: { id: card.id } }"
+        class="card-content"
+        target="_blank"
+      >
+        <svg-icon
+          class="icon"
+          icon-class="quotation_marks"
+        />
+        <svg-icon
+          class="icon"
+          icon-class="quotation_marks"
+        />
+        <p
+          class="search-res"
+          v-html="card.short_content || '&nbsp;'"
+        />
       </router-link>
     </div>
-    <div v-if="card.refs && card.refs.length !== 0" class="card-list">
+    <div
+      v-if="card.refs && card.refs.length !== 0"
+      class="card-list"
+    >
       <template v-for="(item, index) in card.refs.slice(0, 1)">
         <shareOuterCard
-          @ref="val => $emit('ref', val)"
-          :card="item"
           v-if="item.ref_sign_id === 0"
           :key="'shareOuterCard' + index"
+          :card="item"
           card-type="read"
           class="list-card"
+          @ref="val => $emit('ref', val)"
         />
         <sharePCard
-          @ref="val => $emit('ref', val)"
-          :card="item"
           v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
           :key="'sharePCard' + index"
+          :card="item"
           card-type="read"
           class="list-card"
+          @ref="val => $emit('ref', val)"
         />
         <shareInsideCard
-          @ref="val => $emit('ref', val)"
-          :card="item"
           v-else-if="item.ref_sign_id && item.channel_id === 3"
           :key="'shareInsideCard' + index"
+          :card="item"
           card-type="read"
           class="list-card"
+          @ref="val => $emit('ref', val)"
         />
       </template>
-      <div :class="toggleMore && 'open'" class="card-list__more">
+      <div
+        :class="toggleMore && 'open'"
+        class="card-list__more"
+      >
         <template v-for="(item, index) in shareListMore">
           <shareOuterCard
-            @ref="val => $emit('ref', val)"
-            :card="item"
             v-if="item.ref_sign_id === 0"
             :key="'shareOuterCard' + index"
+            :card="item"
             card-type="read"
             class="list-card"
+            @ref="val => $emit('ref', val)"
           />
           <sharePCard
-            @ref="val => $emit('ref', val)"
-            :card="item"
             v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
             :key="'shareOuterCard' + index"
+            :card="item"
             card-type="read"
             class="list-card"
+            @ref="val => $emit('ref', val)"
           />
           <shareInsideCard
-            @ref="val => $emit('ref', val)"
-            :card="item"
             v-else-if="item.ref_sign_id && item.channel_id === 3"
             :key="'shareOuterCard' + index"
+            :card="item"
             card-type="read"
             class="list-card"
+            @ref="val => $emit('ref', val)"
           />
         </template>
       </div>
-      <div v-if="shareListMore.length !== 0" :class="toggleMore && 'open'" @click="toggleMore = !toggleMore" class="card-more">
+      <div
+        v-if="shareListMore.length !== 0"
+        :class="toggleMore && 'open'"
+        class="card-more"
+        @click="toggleMore = !toggleMore"
+      >
         <span>{{ toggleMore ? $t('hideMore') : $t('viewMore') }}</span><i class="el-icon-d-arrow-left icon" />
       </div>
     </div>

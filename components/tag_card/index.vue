@@ -1,5 +1,9 @@
 <template>
-  <div :style="tagStyleObject" @click="toggleTagStatus(tagCardCopy.status)" class="tag-card">
+  <div
+    :style="tagStyleObject"
+    class="tag-card"
+    @click="toggleTagStatus(tagCardCopy.status)"
+  >
     {{ tagCardCopy.name }}
   </div>
 </template>

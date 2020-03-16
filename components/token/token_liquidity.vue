@@ -1,7 +1,14 @@
 <template>
   <div>
-    <div v-loading="loading" class="coins">
-      <minetokenCardLiquidity :card="pull.list" :decimals="4" @sort-changed="toggleSort" />
+    <div
+      v-loading="loading"
+      class="coins"
+    >
+      <minetokenCardLiquidity
+        :card="pull.list"
+        :decimals="4"
+        @sort-changed="toggleSort"
+      />
     </div>
     <user-pagination
       v-show="!loading"
@@ -12,9 +19,9 @@
       :page-size="10"
       :total="total"
       :need-access-token="true"
+      class="pagination"
       @paginationData="paginationData"
       @togglePage="togglePage"
-      class="pagination"
     />
   </div>
 </template>

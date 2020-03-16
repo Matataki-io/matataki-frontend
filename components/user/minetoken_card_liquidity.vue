@@ -2,9 +2,9 @@
   <el-table
     :data="card"
     :default-sort="{ prop: 'amount', order: 'descending' }"
-    @sort-change="onSortChanged"
     style="width: 100%"
     class="coins"
+    @sort-change="onSortChanged"
   >
     <el-table-column
       :sort-orders="['ascending', 'descending']"
@@ -13,8 +13,14 @@
       sortable="custom"
     >
       <template slot-scope="scope">
-        <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block avatar">
-          <avatar :src="cover(scope.row.avatar)" size="30px" />
+        <n-link
+          :to="{name: 'user-id', params: {id: scope.row.uid}}"
+          class="invite-block avatar"
+        >
+          <avatar
+            :src="cover(scope.row.avatar)"
+            size="30px"
+          />
           <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
         </n-link>
       </template>
@@ -36,7 +42,7 @@
 </template>
 
 <script>
-import { precision, toPrecision } from '@/utils/precisionConversion'
+import { precision } from '@/utils/precisionConversion'
 import avatar from '@/components/avatar/index.vue'
 
 export default {

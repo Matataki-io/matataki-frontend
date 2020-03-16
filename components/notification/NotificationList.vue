@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div v-for="(notification, index) in notifications" :key="index" class="card">
+    <div
+      v-for="(notification, index) in notifications"
+      :key="index"
+      class="card"
+    >
       <!-- Possible an eslint issue: https://github.com/vuejs/eslint-plugin-vue/issues/869 Remove next workaround if resolved -->
       <!-- eslint-disable-next-line vue/require-component-is -->
       <component
-        v-bind:is="COMPONENTS[notification.kind]"
+        :is="COMPONENTS[notification.kind]"
         :avatar="notification.avatar"
         :source="notification.source"
         :timestamp="notification.timestamp"

@@ -30,11 +30,17 @@
         {{ $t('publish.statement8') }}
       </p>
     </div>
-    <span slot="footer" class="dialog-footer">
+    <span
+      slot="footer"
+      class="dialog-footer"
+    >
       <el-button @click="closeButton(false)">
         {{ $t('cancel') }}
       </el-button>
-      <el-button @click="closeButton(true)" type="primary">
+      <el-button
+        type="primary"
+        @click="closeButton(true)"
+      >
         {{ $t('confirm') }}
       </el-button>
     </span>

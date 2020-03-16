@@ -1,16 +1,29 @@
 <template>
   <div class="outer">
-    <div ref="container" :class="{ 'white-bg': !canvas }">
-      <div ref="capture" v-if="!canvas" class="container">
+    <div
+      ref="container"
+      :class="{ 'white-bg': !canvas }"
+    >
+      <div
+        v-if="!canvas"
+        ref="capture"
+        class="container"
+      >
         <div class="header">
           <div class="info">
-            <avatar :src="shareInfo.avatar" size="40px" />
+            <avatar
+              :src="shareInfo.avatar"
+              size="40px"
+            />
             <span class="username">{{ shareInfo.name }}</span>
           </div>
           <p v-clampy="2">
             {{ shareInfo.title }}
           </p>
-          <div v-if="shareInfo.cover" class="full" />
+          <div
+            v-if="shareInfo.cover"
+            class="full"
+          />
           <div
             v-if="shareInfo.cover"
             :style="coverImage"
@@ -18,22 +31,47 @@
           />
         </div>
         <div class="content-container">
-          <p v-clampy="8" v-html="htmlStr" class="markdown-body" />
+          <p
+            v-clampy="8"
+            class="markdown-body"
+            v-html="htmlStr"
+          />
         </div>
         <div class="hide-article-box">
           —— {{ $t('p.sweepCodeView') }} ——
         </div>
         <section class="footer-share">
           <div class="flex">
-            <img class="logo" src="@/assets/img/share_logo.png" alt="logo">
-            <qrcode :value="shareInfo.shareLink" :options="{ width: '80' }" class="qrcode" />
+            <img
+              class="logo"
+              src="@/assets/img/share_logo.png"
+              alt="logo"
+            >
+            <qrcode
+              :value="shareInfo.shareLink"
+              :options="{ width: '80' }"
+              class="qrcode"
+            />
           </div>
-          <img class="des" src="@/assets/img/des_logo.png" alt="logo">
+          <img
+            class="des"
+            src="@/assets/img/des_logo.png"
+            alt="logo"
+          >
         </section>
       </div>
-      <img v-else :src="downloadLink" alt="" style="width: 100%;">
+      <img
+        v-else
+        :src="downloadLink"
+        alt=""
+        style="width: 100%;"
+      >
     </div>
-    <a @click="toCanvas" href="javascript:;" class="save-btn">
+    <a
+      href="javascript:;"
+      class="save-btn"
+      @click="toCanvas"
+    >
       {{ $t('p.downloadImg') }}
     </a>
   </div>

@@ -3,36 +3,66 @@
     :visible.sync="showModal"
     :lock-scroll="false"
     :show-close="false"
-    @close="change"
     width="400px"
     custom-class="gray-bg br10 p-share"
     center
+    @close="change"
   >
-    <div v-if="widgetModalStatus === 0" class="padding1">
+    <div
+      v-if="widgetModalStatus === 0"
+      class="padding1"
+    >
       <div class="widget-content-button">
-        <div @click="createWidget" class="widget-button">
+        <div
+          class="widget-button"
+          @click="createWidget"
+        >
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/widget.svg" alt="widget">
+            <img
+              src="@/assets/img/widget/widget.svg"
+              alt="widget"
+            >
           </div>
           <p>{{ $t('p.createWidget') }}</p>
         </div>
-        <div @click="widgetModalStatus = 4" class="widget-button">
+        <div
+          class="widget-button"
+          @click="widgetModalStatus = 4"
+        >
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/share.svg" alt="widget">
+            <img
+              src="@/assets/img/widget/share.svg"
+              alt="widget"
+            >
           </div>
           <p>{{ $t('p.createLongImg') }}</p>
         </div>
-        <div @click="copyCode(clipboard)" class="widget-button">
+        <div
+          class="widget-button"
+          @click="copyCode(clipboard)"
+        >
           <div class="widget-button-img">
-            <img src="@/assets/img/widget/link.svg" alt="link">
+            <img
+              src="@/assets/img/widget/link.svg"
+              alt="link"
+            >
           </div>
           <p>{{ $t('p.copyInviteLink') }}</p>
         </div>
       </div>
-      <SocialShare v-if="socialShow" :article="article" />
-      <wechat :link="shareLink" style="margin: 60px 0 0 0;" />
+      <SocialShare
+        v-if="socialShow"
+        :article="article"
+      />
+      <wechat
+        :link="shareLink"
+        style="margin: 60px 0 0 0;"
+      />
     </div>
-    <div v-if="widgetModalStatus === 1" class="padding1 widget-writecontent">
+    <div
+      v-if="widgetModalStatus === 1"
+      class="padding1 widget-writecontent"
+    >
       <p class="widget-title">
         {{ $t('p.createWidget') }}
       </p>
@@ -43,15 +73,26 @@
         placeholder="添加简介(选填)"
       />
       <div class="widget-footer">
-        <a @click="reviewHelp" class="help" href="javascript:;">
+        <a
+          class="help"
+          href="javascript:;"
+          @click="reviewHelp"
+        >
           {{ $t('p.widgetHelp') }}
         </a>
-        <a @click="createWidgetContent" class="create" href="javascript:;">
+        <a
+          class="create"
+          href="javascript:;"
+          @click="createWidgetContent"
+        >
           {{ $t('p.createWidget') }}
         </a>
       </div>
     </div>
-    <div v-if="widgetModalStatus === 2" class="padding1 widget-help">
+    <div
+      v-if="widgetModalStatus === 2"
+      class="padding1 widget-help"
+    >
       <p class="widget-help-title">
         {{ $t('p.articleWidgetHelp') }}
       </p>
@@ -69,15 +110,25 @@
         4.{{ $t('p.stepContent4') }}<br>
       </p>
 
-      <a @click="backPage" class="widget-help-button" href="javascript:;">
+      <a
+        class="widget-help-button"
+        href="javascript:;"
+        @click="backPage"
+      >
         {{ $t('p.confirmPopover') }}
       </a>
     </div>
-    <div v-if="widgetModalStatus === 3" class="padding1 widget-review">
+    <div
+      v-if="widgetModalStatus === 3"
+      class="padding1 widget-review"
+    >
       <p class="widget-title">
         {{ $t('p.widgetView') }}
       </p>
-      <div v-html="widgetContentIframe" class="widget-review-content" />
+      <div
+        class="widget-review-content"
+        v-html="widgetContentIframe"
+      />
       <p class="widget-review-des">
         {{ $t('p.widgetCopyDes') }}
       </p>
@@ -85,21 +136,32 @@
         id="codeIframe"
         v-model="widgetContentIframe"
         :rows="4"
-        @focus="selectValue($event)"
         class="widget-textarea"
         type="textarea"
         placeholder=""
+        @focus="selectValue($event)"
       />
       <div class="widget-footer">
-        <a @click="reviewHelp" class="help" href="javascript:;">
+        <a
+          class="help"
+          href="javascript:;"
+          @click="reviewHelp"
+        >
           {{ $t('p.widgetHelp') }}
         </a>
-        <a @click="copyCode(widgetContentIframe)" class="create" href="javascript:;">
+        <a
+          class="create"
+          href="javascript:;"
+          @click="copyCode(widgetContentIframe)"
+        >
           {{ $t('p.copyCode') }}
         </a>
       </div>
     </div>
-    <div v-if="widgetModalStatus === 4" class="padding2">
+    <div
+      v-if="widgetModalStatus === 4"
+      class="padding2"
+    >
       <QRCodeDialog
         :share-info="{
           title: article.title,
@@ -239,7 +301,7 @@ export default {
         }
       )
     },
-    selectValue(e) {
+    selectValue() {
       event.currentTarget.select()
     },
     resetStatus() {

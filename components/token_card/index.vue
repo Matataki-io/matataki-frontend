@@ -1,7 +1,13 @@
 <template>
-  <router-link :to="{name: 'token-id', params: { id: card.id }}" class="fl card">
+  <router-link
+    :to="{name: 'token-id', params: { id: card.id }}"
+    class="fl card"
+  >
     <div>
-      <avatar :src="cover" size="45px" />
+      <avatar
+        :src="cover"
+        size="45px"
+      />
     </div>
     <div class="fl cards-content">
       <div class="card-info">
@@ -35,8 +41,14 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac">
-          <avatar :src="coverUser" size="30px" />
+        <router-link
+          :to="{name: 'user-id', params: { id: card.uid }}"
+          class="fl ac"
+        >
+          <avatar
+            :src="coverUser"
+            size="30px"
+          />
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </router-link>
       </div>

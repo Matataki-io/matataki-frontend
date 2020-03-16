@@ -1,11 +1,22 @@
 <template>
   <div class="container">
     <div class="brick" />
-    <img class="error-gif" src="@/assets/img/500/01.gif" alt="error">
+    <img
+      class="error-gif"
+      src="@/assets/img/500/01.gif"
+      alt="error"
+    >
     <div class="info">
       <p>{{ $t('serverError') }}</p>
-      <a href="/" class="btn">{{ $t('backHome') }}</a>
-      <a href="https://support.qq.com/products/98576" target="_blank" class="btn">{{ $t('feedback') }}</a>
+      <a
+        href="/"
+        class="btn"
+      >{{ $t('backHome') }}</a>
+      <a
+        href="https://support.qq.com/products/98576"
+        target="_blank"
+        class="btn"
+      >{{ $t('feedback') }}</a>
     </div>
   </div>
 </template>

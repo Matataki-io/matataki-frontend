@@ -5,7 +5,7 @@
   "author": "matataki",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .eslintignore .",
     "precommit": "yarn lint",
     "dev": "nuxt",
     "build": "nuxt build",
@@ -66,7 +66,7 @@
     "@nuxtjs/style-resources": "^0.1.2",
     "babel-eslint": "10.0.3",
     "cross-env": "^5.2.0",
-    "eslint": "5.16.0",
+    "eslint": "6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-standard": "14.1.0",
     "eslint-plugin-html": "6.0.0",

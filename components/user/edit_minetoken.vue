@@ -11,45 +11,94 @@
         />
       </el-tooltip> -->
 
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/977">什么是Fan票?</a>
+      <a
+        class="help-link"
+        target="_blank"
+        href="https://www.matataki.io/p/977"
+      >什么是Fan票?</a>
       &nbsp;
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/980">如何发行Fan票?</a>
+      <a
+        class="help-link"
+        target="_blank"
+        href="https://www.matataki.io/p/980"
+      >如何发行Fan票?</a>
 
-      <div v-if="!isPost" class="click-box">
+      <div
+        v-if="!isPost"
+        class="click-box"
+      >
         <router-link :to="{name: 'token-id', params: { id: tokenId || 0}}">
           <el-button size="small">
             详情
           </el-button>
         </router-link>
-        <el-button @click="addCoins" :loading="addToLoading" size="small">
+        <el-button
+          :loading="addToLoading"
+          size="small"
+          @click="addCoins"
+        >
           增发
         </el-button>
         <router-link :to="{name: 'exchange', hash: '#swap', query: { output: form.symbol }}">
-          <el-button size="small" type="primary">
+          <el-button
+            size="small"
+            type="primary"
+          >
             交易
           </el-button>
         </router-link>
       </div>
     </div>
 
-    <el-form ref="form" :rules="rules" :model="form" class="input-form" label-width="80px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" class="input" placeholder="请输入Fan票名称" />
+    <el-form
+      ref="form"
+      :rules="rules"
+      :model="form"
+      class="input-form"
+      label-width="80px"
+    >
+      <el-form-item
+        label="名称"
+        prop="name"
+      >
+        <el-input
+          v-model="form.name"
+          class="input"
+          placeholder="请输入Fan票名称"
+        />
       </el-form-item>
 
-      <el-form-item label="缩写" prop="symbol">
-        <el-input v-model="form.symbol" :disabled="!isPost" class="input" placeholder="请输入Fan票缩写(发行后不可修改)" />
+      <el-form-item
+        label="缩写"
+        prop="symbol"
+      >
+        <el-input
+          v-model="form.symbol"
+          :disabled="!isPost"
+          class="input"
+          placeholder="请输入Fan票缩写(发行后不可修改)"
+        />
       </el-form-item>
-      <el-form-item label="图标" prop="logo">
-        <el-input v-model="form.logo" style="display: none;" class="input" />
+      <el-form-item
+        label="图标"
+        prop="logo"
+      >
+        <el-input
+          v-model="form.logo"
+          style="display: none;"
+          class="input"
+        />
         <img-upload
           v-show="!coinsCover"
           :img-upload-done="imgUploadDone"
-          @doneImageUpload="doneImageUpload"
           update-type="coins"
           class="coins-upload-content"
+          @doneImageUpload="doneImageUpload"
         >
-          <div slot="uploadButton" class="coins-upload">
+          <div
+            slot="uploadButton"
+            class="coins-upload"
+          >
             <i class="el-icon-plus add" />
           </div>
         </img-upload>
@@ -62,20 +111,42 @@
             fit="cover"
             class="tokens-image"
           />
-          <div @click="removeCoinsIcon" class="cover-full">
+          <div
+            class="cover-full"
+            @click="removeCoinsIcon"
+          >
             <i class="el-icon-delete remove" />
           </div>
         </div>
       </el-form-item>
       <!-- 编辑页面不需要显示 -->
-      <el-form-item v-if="isPost" label="发行数量" prop="number">
-        <el-input v-model="form.number" class="input" placeholder="请输入首次发行数量(最多发行1亿)" />
+      <el-form-item
+        v-if="isPost"
+        label="发行数量"
+        prop="number"
+      >
+        <el-input
+          v-model="form.number"
+          class="input"
+          placeholder="请输入首次发行数量(最多发行1亿)"
+        />
       </el-form-item>
 
-      <el-form-item label="简介" prop="brief">
-        <el-input v-model="form.brief" class="input" maxlength="50" placeholder="简介" />
+      <el-form-item
+        label="简介"
+        prop="brief"
+      >
+        <el-input
+          v-model="form.brief"
+          class="input"
+          maxlength="50"
+          placeholder="简介"
+        />
       </el-form-item>
-      <el-form-item label="介绍" prop="">
+      <el-form-item
+        label="介绍"
+        prop=""
+      >
         <el-input
           v-model="form.introduction"
           :rows="6"
@@ -87,25 +158,50 @@
         />
       </el-form-item>
 
-      <el-form-item :label="$t('social.relatedWebsites')" prop="">
-        <div v-for="(item, index) in about" :key="index" class="fl ac about-input">
-          <el-input v-model="about[index]" class="input" :placeholder="$t('social.fillLink')" />
+      <el-form-item
+        :label="$t('social.relatedWebsites')"
+        prop=""
+      >
+        <div
+          v-for="(item, index) in about"
+          :key="index"
+          class="fl ac about-input"
+        >
+          <el-input
+            v-model="about[index]"
+            class="input"
+            :placeholder="$t('social.fillLink')"
+          />
           <!-- <div v-if="index === 0" class="about-input-btn" @click="aboutAdd">
             <i class="el-icon-plus" />
           </div> -->
 
-          <div v-if="about.length > 1" @click="abountLess(index)" class="about-input-btn">
+          <div
+            v-if="about.length > 1"
+            class="about-input-btn"
+            @click="abountLess(index)"
+          >
             <i class="el-icon-minus" />
           </div>
         </div>
 
-        <div v-if="about.length < 5" @click="aboutAdd" class="about-input-btn add">
+        <div
+          v-if="about.length < 5"
+          class="about-input-btn add"
+          @click="aboutAdd"
+        >
           <i class="el-icon-plus" />
         </div>
       </el-form-item>
 
-      <el-form-item :label="$t('social.socialAccount')" prop="">
-        <div v-for="(item, index) in social" :key="index">
+      <el-form-item
+        :label="$t('social.socialAccount')"
+        prop=""
+      >
+        <div
+          v-for="(item, index) in social"
+          :key="index"
+        >
           <p class="social-title">
             {{ item.name }}
             <span v-html="item.tooltip" />
@@ -114,19 +210,34 @@
             <div class="social-icons">
               <socialIcon :icon="item.symbol" />
             </div>
-            <el-input v-model="item.value" :placeholder="item.placeholder" class="social-input" />
+            <el-input
+              v-model="item.value"
+              :placeholder="item.placeholder"
+              class="social-input"
+            />
           </div>
         </div>
       </el-form-item>
 
       <el-form-item style="margin:40px 0 0 0;">
-        <el-checkbox v-if="isPost" v-model="form.agree">
+        <el-checkbox
+          v-if="isPost"
+          v-model="form.agree"
+        >
           我声明Fan票为本人自愿发行，由本人承担一切法律责任
         </el-checkbox>
-        <el-button :disabled="!form.agree" @click="submitForm('form')" type="primary" class="publish-btn">
+        <el-button
+          :disabled="!form.agree"
+          type="primary"
+          class="publish-btn"
+          @click="submitForm('form')"
+        >
           {{ isPost ? '发行Fan票' : '保存' }}
         </el-button>
-        <p v-if="isPost" class="tips">
+        <p
+          v-if="isPost"
+          class="tips"
+        >
           创建Fan票过程需要上链，请耐心等候。
         </p>
       </el-form-item>

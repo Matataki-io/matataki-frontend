@@ -5,10 +5,20 @@
     </h2>
     <no-content-prompt :list="pull.articles">
       <template v-if="type === 2">
-        <CommentCard v-for="(itemChild, indexChild) in pull.articles" :key="indexChild" :comment="itemChild" :type="type" />
+        <CommentCard
+          v-for="(itemChild, indexChild) in pull.articles"
+          :key="indexChild"
+          :comment="itemChild"
+          :type="type"
+        />
       </template>
       <template v-else>
-        <articleCard v-for="(itemChild, indexChild) in pull.articles" :key="indexChild" :comment="itemChild" :type="type" />
+        <articleCard
+          v-for="(itemChild, indexChild) in pull.articles"
+          :key="indexChild"
+          :comment="itemChild"
+          :type="type"
+        />
       </template>
     </no-content-prompt>
     <buttonLoadMore
@@ -16,8 +26,8 @@
       :params="pull.params"
       :api-url="pull.apiUrl"
       :comment-request="reload"
-      @buttonLoadMore="buttonLoadMore"
       button-type="article-comment"
+      @buttonLoadMore="buttonLoadMore"
     >
       {{ $t('viewMore') }}
     </buttonLoadMore>

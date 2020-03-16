@@ -1,16 +1,31 @@
 <template>
-  <div v-loading="loading" class="fandom-card">
+  <div
+    v-loading="loading"
+    class="fandom-card"
+  >
     <div class="fl">
       <h2 class="token-title">
         {{ $t('group.joinFanBase', [tokenSymbol]) }}
       </h2>
-      <a @click="showHelp = true" class="help-click">{{ $t('group.enrollmentGuide') }} <i class="el-icon-arrow-right" /></a>
+      <a
+        class="help-click"
+        @click="showHelp = true"
+      >{{ $t('group.enrollmentGuide') }} <i class="el-icon-arrow-right" /></a>
     </div>
     <!-- 列表 -->
-    <div v-for="(fandom, index) in fandomList" :key="index" class="fl fandom-unit">
+    <div
+      v-for="(fandom, index) in fandomList"
+      :key="index"
+      class="fl fandom-unit"
+    >
       <div class="fandom-text">
         <div class="fl title">
-          <el-tooltip :content="fandom.title" class="item" effect="dark" placement="top">
+          <el-tooltip
+            :content="fandom.title"
+            class="item"
+            effect="dark"
+            placement="top"
+          >
             <h2>
               {{ fandom.title }}
             </h2>
@@ -18,14 +33,22 @@
           <span>（{{ fandom.groupSize }}人）</span>
         </div>
         <p class="condition">
-          {{ $t('group.conditions', [tokenSymbol, getMinBalance(fandom)])}}
+          {{ $t('group.conditions', [tokenSymbol, getMinBalance(fandom)]) }}
         </p>
       </div>
       <div>
-        <el-button v-if="!isLogined || getMinBalance(fandom) <= balance" @click="addFandom(fandom)" class="add-button top10" size="small">
+        <el-button
+          v-if="!isLogined || getMinBalance(fandom) <= balance"
+          class="add-button top10"
+          size="small"
+          @click="addFandom(fandom)"
+        >
           {{ $t('group.joinGroup') }}
         </el-button>
-        <div v-else class="disable top10">
+        <div
+          v-else
+          class="disable top10"
+        >
           {{ $t('group.insufficientTicket') }}
         </div>
       </div>
@@ -35,15 +58,21 @@
       v-if="fandomData.length > 5"
       :total="fandomData.length"
       :page-size="pageSize"
-      @current-change="handleCurrentChange"
       class="pagination"
       small
       background
       layout="prev, pager, next"
+      @current-change="handleCurrentChange"
     />
 
     <!-- [弹窗]入群指南 -->
-    <el-dialog :visible.sync="showHelp" width="360px" :title="$t('group.enrollmentGuide')" center custom-class="fandom-popups-title">
+    <el-dialog
+      :visible.sync="showHelp"
+      width="360px"
+      :title="$t('group.enrollmentGuide')"
+      center
+      custom-class="fandom-popups-title"
+    >
       <!-- <p class="subtitle">
         根据以下步骤操作加入Fan票的粉丝群
       </p> -->
@@ -51,14 +80,20 @@
         <div class="help-text">
           <h3>
             {{ $t('group.step') }}
-            <svg-icon class="help-serial" icon-class="step1" />
+            <svg-icon
+              class="help-serial"
+              icon-class="step1"
+            />
           </h3>
           <p class="introduction">
             {{ $t('group.bindTgAccount') }}
           </p>
-          <p>{{ $t('group.onlyNeedToBindOnce')}}</p>
+          <p>{{ $t('group.onlyNeedToBindOnce') }}</p>
         </div>
-        <div v-if="bindStatus" class="help-touch">
+        <div
+          v-if="bindStatus"
+          class="help-touch"
+        >
           <a @click="accountSettings()">
             {{ $t('group.accountChange') }}
             <i class="el-icon-arrow-right" />
@@ -67,8 +102,14 @@
             {{ $t('group.alreadyBound') }}
           </div>
         </div>
-        <div v-else class="help-touch">
-          <el-button @click="setTelegram()" class="add-button top40">
+        <div
+          v-else
+          class="help-touch"
+        >
+          <el-button
+            class="add-button top40"
+            @click="setTelegram()"
+          >
             {{ $t('group.bind') }}
           </el-button>
         </div>
@@ -77,7 +118,10 @@
         <div class="help-text">
           <h3>
             {{ $t('group.step') }}
-            <svg-icon class="help-serial" icon-class="step2" />
+            <svg-icon
+              class="help-serial"
+              icon-class="step2"
+            />
           </h3>
           <p class="introduction">
             {{ $t('group.completeTheEntryConditions') }}
@@ -89,7 +133,10 @@
         <div class="help-text">
           <h3>
             {{ $t('group.step') }}
-            <svg-icon class="help-serial" icon-class="step3" />
+            <svg-icon
+              class="help-serial"
+              icon-class="step3"
+            />
           </h3>
           <p class="introduction">
             {{ $t('group.clickAddGroupButton') }}
@@ -110,7 +157,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
-import utils from '@/utils/utils'
 
 export default {
   components: {

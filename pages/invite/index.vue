@@ -4,7 +4,10 @@
       <h2 class="tag-title">
         {{ $t('user.invite') }}
       </h2>
-      <div v-loading="loading" class="card-container invite">
+      <div
+        v-loading="loading"
+        class="card-container invite"
+      >
         <div class="line" />
         <el-table
           :data="pointLog.list"
@@ -15,8 +18,14 @@
             prop="username"
           >
             <template slot-scope="scope">
-              <n-link :to="{name: 'user-id', params: {id: scope.row.id}}" class="invite-block">
-                <avatar :src="cover(scope.row.avatar)" size="30px" />
+              <n-link
+                :to="{name: 'user-id', params: {id: scope.row.id}}"
+                class="invite-block"
+              >
+                <avatar
+                  :src="cover(scope.row.avatar)"
+                  size="30px"
+                />
                 <span class="username">{{ scope.row.username }}</span>
               </n-link>
             </template>
@@ -55,9 +64,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="true"
+        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
-        class="pagination"
       />
     </template>
     <template slot="nav">
@@ -125,11 +134,11 @@ export default {
       })
     },
     formatterDate(row, column) {
-      // console.log(row, column)
+      console.log(row, column)
       return row.date + 1
     },
     formatterPoint(row, column) {
-      // console.log(row, column)
+      console.log(row, column)
       return row.point + 11
     }
   }

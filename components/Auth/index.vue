@@ -3,32 +3,60 @@
     :visible.sync="showModal"
     :modal="true"
     :close-on-click-modal="false"
-    @closed="() => {step = 1; isLogin = true}"
     width="380px"
     custom-class="my-dialog br10"
+    @closed="() => {step = 1; isLogin = true}"
   >
-    <section v-show="step === 1" class="auth-main">
+    <section
+      v-show="step === 1"
+      class="auth-main"
+    >
       <div class="auth-title-container">
-        <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">
+        <span
+          :class="['auth-title', {'active':isLogin}]"
+          @click="isLogin=true"
+        >
           {{ $t('login') }}</span>
-        <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">
+        <span
+          :class="['auth-title', {'active':!isLogin}]"
+          @click="isLogin=false"
+        >
           {{ $t('registered') }}</span>
       </div>
       <div class="loginRegister">
-        <Login v-show="isLogin" @switch="step = 3" @hide="showModal = false" />
-        <Register v-show="!isLogin" @switch="isLogin = true" />
+        <Login
+          v-show="isLogin"
+          @switch="step = 3"
+          @hide="showModal = false"
+        />
+        <Register
+          v-show="!isLogin"
+          @switch="isLogin = true"
+        />
       </div>
     </section>
     <Wallet v-show="step === 2" />
-    <section v-show="step === 3" class="auth-main">
+    <section
+      v-show="step === 3"
+      class="auth-main"
+    >
       <ResetPassword @switch="step = 1;isLogin = true;" />
     </section>
-    <div @click="step === 1 ? (step = 2) : (step = 1)" class="footer-arrow">
-      <div v-if="step === 2 || step === 3" class="arrow">
+    <div
+      class="footer-arrow"
+      @click="step === 1 ? (step = 2) : (step = 1)"
+    >
+      <div
+        v-if="step === 2 || step === 3"
+        class="arrow"
+      >
         <i class="el-icon-arrow-left" />
       </div>
       <span>{{ step === 1 ? $t('auth.viewWallet') : $t('auth.backLogin') }}</span>
-      <div v-if="step === 1" class="arrow">
+      <div
+        v-if="step === 1"
+        class="arrow"
+      >
         <i class="el-icon-arrow-right" />
       </div>
     </div>

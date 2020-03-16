@@ -12,19 +12,34 @@
         >
           <div
             v-loading="item.loading"
-            @click="buildAccount(item.type, item.typename, idx)"
             :class="[item.type, item.status && 'bind']"
             :data-disabled="item.disabled"
             class="list-account"
+            @click="buildAccount(item.type, item.typename, idx)"
           >
-            <svg-icon :icon-class="item.icon" class="icon" />
+            <svg-icon
+              :icon-class="item.icon"
+              class="icon"
+            />
             <span class="typename">{{ item.typename }}</span>
             <span class="username">{{ item.username }}</span>
             <span class="close">{{ $t('thirdParty.unbind') }}</span>
-            <svg-icon icon-class="correct" class="correct" />
-            <svg-icon icon-class="close_thin" class="close_thin" />
+            <svg-icon
+              icon-class="correct"
+              class="correct"
+            />
+            <svg-icon
+              icon-class="close_thin"
+              class="close_thin"
+            />
           </div>
-          <el-radio :value="accountRadio" :label="item.type" :disabled="item.disabled" @change="accountChangeFunc(item.type, idx)" style="margin-left: 10px;">
+          <el-radio
+            :value="accountRadio"
+            :label="item.type"
+            :disabled="item.disabled"
+            style="margin-left: 10px;"
+            @change="accountChangeFunc(item.type, idx)"
+          >
             <span v-if="accountRadio === item.type">{{ $t('thirdParty.mainAccount') }}</span>
             <span v-else>&nbsp;</span>
           </el-radio>

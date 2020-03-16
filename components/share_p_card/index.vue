@@ -1,19 +1,41 @@
 <template>
-  <router-link :to="cardUrl" class="card" target="_blank">
-    <div v-if="card.cover" class="card-cover">
-      <img :src="coverSrc" :alt="card.title">
+  <router-link
+    :to="cardUrl"
+    class="card"
+    target="_blank"
+  >
+    <div
+      v-if="card.cover"
+      class="card-cover"
+    >
+      <img
+        :src="coverSrc"
+        :alt="card.title"
+      >
     </div>
     <div class="card-content">
-      <p :class="!shareCard && 'card-sharehall'" class="card-text">
+      <p
+        :class="!shareCard && 'card-sharehall'"
+        class="card-text"
+      >
         {{ card.title || $t('not') }}
       </p>
       <div class="card-more">
-        <div v-if="cardType !== 'edit'" class="card-info">
+        <div
+          v-if="cardType !== 'edit'"
+          class="card-info"
+        >
           <span v-if="!shareCard">
-            <svg-icon icon-class="eye" class="icon" />{{ card.real_read_count }}
+            <svg-icon
+              icon-class="eye"
+              class="icon"
+            />{{ card.real_read_count }}
           </span>
           <span v-if="!shareCard">
-            <svg-icon icon-class="like_thin" class="icon" />{{ card.likes }}
+            <svg-icon
+              icon-class="like_thin"
+              class="icon"
+            />{{ card.likes }}
           </span>
           <span v-if="!shareCard">
             <img
@@ -27,13 +49,28 @@
           <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
         </span> -->
         </div>
-        <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
-          <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
-          <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+        <div
+          v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+          class="card-operate"
+        >
+          <svg-icon
+            class="icon"
+            icon-class="copy"
+            @click="copy(card.url, $event)"
+          />
+          <svg-icon
+            class="icon"
+            icon-class="quote"
+            @click="ref(card.url, $event)"
+          />
         </div>
       </div>
     </div>
-    <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
+    <span
+      v-if="!shareCard && cardType === 'edit'"
+      class="card-remove"
+      @click="removeCard"
+    >
       <i class="el-icon-close icon" />
     </span>
   </router-link>

@@ -6,10 +6,18 @@
         class="comment-avatar"
         target="_blank"
       >
-        <avatar :src="avatar" size="30px"></avatar>
+        <avatar
+          :src="avatar"
+          size="30px"
+        />
       </n-link>
       <div>
-        <router-link :to="`/user/${comment.uid}`" class="comment-author" :class="!comment.username && 'logout'" target="_blank">
+        <router-link
+          :to="`/user/${comment.uid}`"
+          class="comment-author"
+          :class="!comment.username && 'logout'"
+          target="_blank"
+        >
           {{ nickname }}
           <span>
             {{ friendlyDate }}

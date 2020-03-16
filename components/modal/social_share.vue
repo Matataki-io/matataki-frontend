@@ -1,35 +1,65 @@
 <template>
   <div class="outer">
     <div class="share-btn-container">
-      <div @click="windowSmallOpen(socialLink.weibo)" class="share-btn">
+      <div
+        class="share-btn"
+        @click="windowSmallOpen(socialLink.weibo)"
+      >
         <div class="share-bg">
-          <svg-icon class="share-icon weibo" icon-class="weibo" />
+          <svg-icon
+            class="share-icon weibo"
+            icon-class="weibo"
+          />
         </div>
         <p>{{ $t('p.shareWeibo') }}</p>
       </div>
-      <div @click="windowSmallOpen(socialLink.facebook)" class="share-btn">
+      <div
+        class="share-btn"
+        @click="windowSmallOpen(socialLink.facebook)"
+      >
         <div class="share-bg">
-          <svg-icon class="share-icon facebook" icon-class="facebook" />
+          <svg-icon
+            class="share-icon facebook"
+            icon-class="facebook"
+          />
         </div>
         <p>Facebook</p>
       </div>
-      <div @click="windowSmallOpen(socialLink.twitter)" class="share-btn">
+      <div
+        class="share-btn"
+        @click="windowSmallOpen(socialLink.twitter)"
+      >
         <div class="share-bg">
-          <svg-icon class="share-icon twitter" icon-class="twitter" />
+          <svg-icon
+            class="share-icon twitter"
+            icon-class="twitter"
+          />
         </div>
         <p>Twitter</p>
       </div>
     </div>
     <div class="share-btn-container itop30">
-      <div @click="windowSmallOpen(socialLink.qq)" class="share-btn">
+      <div
+        class="share-btn"
+        @click="windowSmallOpen(socialLink.qq)"
+      >
         <div class="share-bg">
-          <svg-icon class="share-icon qq" icon-class="qq" />
+          <svg-icon
+            class="share-icon qq"
+            icon-class="qq"
+          />
         </div>
         <p>QQ</p>
       </div>
-      <div @click="windowSmallOpen(socialLink.qzone)" class="share-btn">
+      <div
+        class="share-btn"
+        @click="windowSmallOpen(socialLink.qzone)"
+      >
         <div class="share-bg">
-          <svg-icon class="share-icon qzone" icon-class="qzone" />
+          <svg-icon
+            class="share-icon qzone"
+            icon-class="qzone"
+          />
         </div>
         <p>{{ $t('qqSpace') }}</p>
       </div>

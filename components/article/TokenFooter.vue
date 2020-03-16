@@ -13,27 +13,47 @@
     <div class="btns-container">
       <slot />
       <div class="btn-outer">
-        <button :class="['great-cointainer', {'actived': type === 'great'}]" :disabled="clicked" @click="like">
+        <button
+          :class="['great-cointainer', {'actived': type === 'great'}]"
+          :disabled="clicked"
+          @click="like"
+        >
           <svg-icon icon-class="great-solid" />
         </button>
         <span>{{ $t('p.like') }}<em class="like">{{ article && article.likes }}</em></span>
       </div>
       <div class="btn-outer">
-        <button :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]" :disabled="clicked" @click="dislike">
+        <button
+          :class="['bullshit-cointainer', {'actived': type === 'bullshit'}]"
+          :disabled="clicked"
+          @click="dislike"
+        >
           <svg-icon icon-class="bullshit-solid" />
         </button>
         <span>{{ $t('p.unlike') }} <em class="like">{{ article && article.dislikes }}</em></span>
       </div>
     </div>
-    <div v-if="token.points.length !== 0 || !clicked" class="article-info">
-      <div v-if="!clicked" class="info1">
+    <div
+      v-if="token.points.length !== 0 || !clicked"
+      class="article-info"
+    >
+      <div
+        v-if="!clicked"
+        class="info1"
+      >
         <span>{{ $t('p.reads') }}{{ readTime }}</span>
       </div>
       <template v-else>
-        <div v-if="p.reading > 0" class="info1">
+        <div
+          v-if="p.reading > 0"
+          class="info1"
+        >
           <span>{{ $t('p.readAddPoint', [p.reading]) }}</span>
         </div>
-        <div v-if="p.reading_new > 0" class="info1">
+        <div
+          v-if="p.reading_new > 0"
+          class="info1"
+        >
           <span>{{ $t('p.newAddPoint', [p.reading_new]) }}</span>
         </div>
       </template>

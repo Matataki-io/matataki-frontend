@@ -5,7 +5,10 @@
     <div class="mw container-padding">
       <div class="token-detail">
         <div class="fl">
-          <avatar :src="logo" size="120px" />
+          <avatar
+            :src="logo"
+            size="120px"
+          />
           <div class="token-detail-info">
             <div class="fl info-line">
               <div class="token-info-title bold">
@@ -17,7 +20,11 @@
                 </p>
               </div>
               <div>
-                <a class="help-link" href="https://www.matataki.io/p/977" target="_blank">{{ $t('token.whatIsAFanTicket') }}</a>
+                <a
+                  class="help-link"
+                  href="https://www.matataki.io/p/977"
+                  target="_blank"
+                >{{ $t('token.whatIsAFanTicket') }}</a>
               </div>
             </div>
             <div class="fl info-line">
@@ -45,7 +52,10 @@
               </div>
             </div>
             <div class="fl info-line">
-              <div class="token-info-title" v-html="$t('token.summary')" />
+              <div
+                class="token-info-title"
+                v-html="$t('token.summary')"
+              />
               <div>
                 <p class="token-info-sub">
                   {{ minetokenToken.brief || $t('not') }}
@@ -54,28 +64,53 @@
             </div>
           </div>
           <div class="share-btn">
-            <a :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address" target="_blank">
-              <el-button class="link-btn" size="small">
+            <a
+              :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
+              target="_blank"
+            >
+              <el-button
+                class="link-btn"
+                size="small"
+              >
                 <svg-icon icon-class="eth_mini" />
                 {{ $t('token.viewOnChain') }}
               </el-button>
             </a>
-            <router-link v-if="showTokenSetting" :to="{ name: 'editminetoken' }">
-              <el-button class="btn" size="small" icon="el-icon-setting">
+            <router-link
+              v-if="showTokenSetting"
+              :to="{ name: 'editminetoken' }"
+            >
+              <el-button
+                class="btn"
+                size="small"
+                icon="el-icon-setting"
+              >
                 {{ $t('token.edit') }}
               </el-button>
             </router-link>
-            <el-button @click="shareModalShow = true" class="btn" size="small">
+            <el-button
+              class="btn"
+              size="small"
+              @click="shareModalShow = true"
+            >
               <svg-icon icon-class="share_new" />
               {{ $t('share') }}
             </el-button>
           </div>
-          <router-link v-if="isLogined" :to="{ name: 'tokens' }" tag="div" class="balance">
+          <router-link
+            v-if="isLogined"
+            :to="{ name: 'tokens' }"
+            tag="div"
+            class="balance"
+          >
             {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
             <i class="el-icon-arrow-right" />
           </router-link>
         </div>
-        <p v-if="!minetokenToken.contract_address" class="warning">
+        <p
+          v-if="!minetokenToken.contract_address"
+          class="warning"
+        >
           {{ $t('token.waitPatiently') }}
         </p>
       </div>
@@ -141,7 +176,10 @@
             </div>
 
             <div class="token-data">
-              <p :style="{color: color}" class="token-num">
+              <p
+                :style="{color: color}"
+                class="token-num"
+              >
                 {{ change }}
               </p>
               <p class="token-name">
@@ -155,7 +193,7 @@
                 <sub>CNY</sub>
               </p>
               <p class="token-name">
-                {{ $t('token.currentPrice')}}
+                {{ $t('token.currentPrice') }}
               </p>
             </div>
           </div>
@@ -179,18 +217,31 @@
         </router-link>-->
         <tokenBuyCard :token="minetokenToken" />
 
-        <TokenJoinFandom :token-symbol="minetokenToken.symbol || ''" :token-id="Number($route.params.id)" :balance="balance" />
+        <TokenJoinFandom
+          :token-symbol="minetokenToken.symbol || ''"
+          :token-id="Number($route.params.id)"
+          :balance="balance"
+        />
 
         <div class="about">
           <h2 class="token-title">
             {{ $t('social.relatedWebsites') }}
           </h2>
           <ul v-if="resourcesWebsites.length !== 0">
-            <li v-for="(item, index) in resourcesWebsites" :key="index">
-              <a :href="formatUrl(item)" target="_blank">{{ item }}</a>
+            <li
+              v-for="(item, index) in resourcesWebsites"
+              :key="index"
+            >
+              <a
+                :href="formatUrl(item)"
+                target="_blank"
+              >{{ item }}</a>
             </li>
           </ul>
-          <span v-else class="not">{{ $t('not') }}</span>
+          <span
+            v-else
+            class="not"
+          >{{ $t('not') }}</span>
         </div>
 
         <div class="social">
@@ -198,12 +249,26 @@
             {{ $t('social.socialAccount') }}
           </h2>
 
-          <div v-if="resourcesSocialss.length !== 0" class="social-btn">
-            <div v-for="(item, index) in resourcesSocialss" :key="index" class="circle">
-              <socialIcon :show-tooltip="true" :icon="item.type" :content="item.content" />
+          <div
+            v-if="resourcesSocialss.length !== 0"
+            class="social-btn"
+          >
+            <div
+              v-for="(item, index) in resourcesSocialss"
+              :key="index"
+              class="circle"
+            >
+              <socialIcon
+                :show-tooltip="true"
+                :icon="item.type"
+                :content="item.content"
+              />
             </div>
           </div>
-          <span v-else class="not">{{ $t('not') }}</span>
+          <span
+            v-else
+            class="not"
+          >{{ $t('not') }}</span>
         </div>
 
         <div class="share">

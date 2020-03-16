@@ -1,7 +1,10 @@
 <template>
   <div class="main">
     <g-header />
-    <div v-loading="loading" class="order outer-container">
+    <div
+      v-loading="loading"
+      class="order outer-container"
+    >
       <el-alert
         title="请仔细核对订单信息，如果有误请取消后再次尝试"
         effect="dark"
@@ -33,11 +36,27 @@
         </tbody>
       </table>
       <div class="order-item">
-        <el-table :data="orderItems" header-cell-class-name="grayHeader" style="width: 100%">
-          <el-table-column prop="name" label="品名" />
-          <el-table-column prop="operating" label="操作" />
-          <el-table-column prop="amount" label="数量" />
-          <el-table-column prop="total" label="小计" />
+        <el-table
+          :data="orderItems"
+          header-cell-class-name="grayHeader"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="name"
+            label="品名"
+          />
+          <el-table-column
+            prop="operating"
+            label="操作"
+          />
+          <el-table-column
+            prop="amount"
+            label="数量"
+          />
+          <el-table-column
+            prop="total"
+            label="小计"
+          />
         </el-table>
       </div>
       <div class="flexBox">
@@ -76,7 +95,11 @@
         </p>
       </div>
       <div class="btns">
-        <el-button @click="onSubmit" type="primary" class="pay-btn">
+        <el-button
+          type="primary"
+          class="pay-btn"
+          @click="onSubmit"
+        >
           确认支付
         </el-button>
       </div>

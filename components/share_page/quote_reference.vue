@@ -1,20 +1,36 @@
 <template>
   <div>
     <template v-for="(item, index) in pull.list">
-      <shareOuterCard :card="item" v-if="item.ref_sign_id === 0" :key="index" card-type="read" class="list-card" />
-      <sharePCard :card="item" v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1" :key="index" card-type="read" class="list-card" />
-      <shareInsideCard
-        :card="item"
-        v-else-if="item.ref_sign_id && item.channel_id === 3"
-        :toggleArticle="true"
-        @getArticle="getArticle"
+      <shareOuterCard
+        v-if="item.ref_sign_id === 0"
         :key="index"
+        :card="item"
         card-type="read"
         class="list-card"
       />
+      <sharePCard
+        v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+        :key="index"
+        :card="item"
+        card-type="read"
+        class="list-card"
+      />
+      <shareInsideCard
+        v-else-if="item.ref_sign_id && item.channel_id === 3"
+        :key="index"
+        :card="item"
+        :toggle-article="true"
+        card-type="read"
+        class="list-card"
+        @getArticle="getArticle"
+      />
     </template>
 
-    <div v-loading="loading" v-show="pull.list.length !== 0" class="pagination">
+    <div
+      v-show="pull.list.length !== 0"
+      v-loading="loading"
+      class="pagination"
+    >
       <user-pagination
         :url-replace="$route.params.id + ''"
         :current-page="currentPage"
@@ -23,14 +39,17 @@
         :page-size="pull.params.pagesize || 20"
         :total="total"
         :need-access-token="true"
-        @paginationData="paginationData"
-        @togglePage="togglePage"
         :reload="nowTime"
         :small="true"
-        :selectClass="'user-pagination-light'"
+        :select-class="'user-pagination-light'"
+        @paginationData="paginationData"
+        @togglePage="togglePage"
       />
     </div>
-    <p v-if="pull.list.length === 0" class="not-prompt">
+    <p
+      v-if="pull.list.length === 0"
+      class="not-prompt"
+    >
       暂无内容
     </p>
   </div>

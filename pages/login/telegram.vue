@@ -1,11 +1,14 @@
 <template>
-  <div v-loading="loading" class="tg-container">
+  <div
+    v-loading="loading"
+    class="tg-container"
+  >
     <TelegramLogin
-      @callback="login"
       :telegram-login="TELEGRAM_BOT_NAME"
       mode="callback"
       request-access="write"
       radius="6"
+      @callback="login"
     />
     <p class="tips">
       使用该功能需要“科学上网”

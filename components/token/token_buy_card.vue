@@ -7,24 +7,36 @@
       <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange" /></span>
     </div>
     <el-input
-      @input="inputChange"
-      v-on:keypress.native="isNumber"
       v-model="form.output"
       :placeholder="$t('token.enterPurchaseQuantity')"
+      @input="inputChange"
+      @keypress.native="isNumber"
     >
-      <span slot="suffix" class="el-input__icon suffix-text">= {{ form.input || 0 }} CNY</span>
+      <span
+        slot="suffix"
+        class="el-input__icon suffix-text"
+      >= {{ form.input || 0 }} CNY</span>
     </el-input>
     <div class="btns">
-      <el-button @click="pay" class="btn1">
+      <el-button
+        class="btn1"
+        @click="pay"
+      >
         {{ $t('token.payImmediately') }}
       </el-button>
       <router-link :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-        <el-button class="btn2" type="primary">
+        <el-button
+          class="btn2"
+          type="primary"
+        >
           {{ $t('token.tradingFanTickets') }}
         </el-button>
       </router-link>
     </div>
-    <OrderModal v-model="orderShow" :form="{...form,type,limitValue}" />
+    <OrderModal
+      v-model="orderShow"
+      :form="{...form,type,limitValue}"
+    />
   </div>
 </template>
 
@@ -60,7 +72,7 @@ export default {
   computed: {
     ...mapGetters(['isLogined']),
     limitValue() {
-      const { input, output } = this.form
+      const { input } = this.form
       if (!this.$utils.isNull(input)) {
         return (parseFloat(input) / (1 - this.priceSlippage)).toFixed(4)
       }
@@ -94,7 +106,7 @@ export default {
         this.$store.commit('setLoginModal', true)
       }
     },
-    inputChange: debounce(function (e) {
+    inputChange: debounce(function () {
 
       // 没有合约地址
       if (!this.token.contract_address) return
