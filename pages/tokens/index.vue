@@ -6,7 +6,10 @@
           {{ $t('user.buycoins') }}
         </h2>
 
-        <div v-loading="loading" class="card-container buycoins">
+        <div
+          v-loading="loading"
+          class="card-container buycoins"
+        >
           <div class="line" />
 
           <el-table
@@ -22,8 +25,14 @@
               label="Fan票"
             >
               <template slot-scope="scope">
-                <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac">
-                  <avatar :src="cover(scope.row.logo)" style="margin-right: 10px; min-width: 30px;" />
+                <router-link
+                  :to="{name: 'token-id', params: {id: scope.row.token_id}}"
+                  class="fl ac"
+                >
+                  <avatar
+                    :src="cover(scope.row.logo)"
+                    style="margin-right: 10px; min-width: 30px;"
+                  />
                   <span class="scope">{{ scope.row.symbol }}</span>
                 </router-link>
               </template>
@@ -43,7 +52,10 @@
               :label="$t('token.founder')"
             >
               <template slot-scope="scope">
-                <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block author">
+                <n-link
+                  :to="{name: 'user-id', params: {id: scope.row.uid}}"
+                  class="invite-block author"
+                >
                   <!-- <avatar :src="cover(scope.row.avatar)" /> -->
                   <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
                 </n-link>
@@ -61,7 +73,10 @@
             </el-table-column>
             <el-table-column type="expand">
               <template slot-scope="scope">
-                <tokensDetail v-if="expands[0] === scope.row.token_id" :id="scope.row.token_id" />
+                <tokensDetail
+                  v-if="expands[0] === scope.row.token_id"
+                  :id="scope.row.token_id"
+                />
               </template>
             </el-table-column>
             <el-table-column
@@ -72,27 +87,42 @@
               <template slot-scope="scope">
                 <div class="invite-block btn">
                   <!-- <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}"> -->
-                  <el-button @click="foldingClick(scope.row.token_id)" type="text" class="info-button" size="small">
-                    <span v-if="expands[0] !== scope.row.token_id" class="expand-button">
+                  <el-button
+                    type="text"
+                    class="info-button"
+                    size="small"
+                    @click="foldingClick(scope.row.token_id)"
+                  >
+                    <span
+                      v-if="expands[0] !== scope.row.token_id"
+                      class="expand-button"
+                    >
                       展开明细
                       <i class="el-icon-d-arrow-right i-spin-z90" />
                     </span>
-                    <span v-else class="expand-button">
+                    <span
+                      v-else
+                      class="expand-button"
+                    >
                       收起明细
                       <i class="el-icon-d-arrow-right i-spin-f90" />
                     </span>
                   </el-button>
                   <!-- </router-link> -->
                   <el-button
-                    @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
                     class="info-button"
                     style="margin: 0 10px;"
                     size="small"
+                    @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
                   >
                     {{ $t('gift') }}
                   </el-button>
                   <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
-                    <el-button type="primary" class="info-button" size="small">
+                    <el-button
+                      type="primary"
+                      class="info-button"
+                      size="small"
+                    >
                       {{ $t('transaction') }}
                     </el-button>
                   </router-link>
@@ -110,11 +140,16 @@
           :page-size="pointLog.params.pagesize"
           :total="total"
           :need-access-token="true"
+          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
-          class="pagination"
         />
-        <m-dialog v-model="giftDialog" width="600px" title="赠送Fan票" class="transfer-dialog">
+        <m-dialog
+          v-model="giftDialog"
+          width="600px"
+          title="赠送Fan票"
+          class="transfer-dialog"
+        >
           <el-form
             ref="form"
             v-loading="transferLoading"
@@ -129,10 +164,21 @@
               </p>
             </el-form-item>
             <el-form-item label="接受对象">
-              <el-input v-model="form.username" placeholder="请输入赠送的对象" size="small" style="z-index: 2;" />
+              <el-input
+                v-model="form.username"
+                placeholder="请输入赠送的对象"
+                size="small"
+                style="z-index: 2;"
+              />
               <!-- 常用候选对象列表 -->
               <template v-if="historyUser.length !== 0">
-                <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
+                <el-tag
+                  v-for="item in historyUser"
+                  :key="item.id"
+                  type="info"
+                  class="history-user__tag"
+                  @click="continueUser(item)"
+                >
                   {{
                     (item.nickname || item.username).length > 20
                       ? `${(item.nickname || item.username).slice(0, 20)}...`
@@ -141,26 +187,59 @@
                 </el-tag>
               </template>
               <!-- 搜索结果 -->
-              <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
-                <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
-                  <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
-                  <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
+              <div
+                v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
+                class="transfer—search__list"
+              >
+                <div
+                  v-for="item in searchUserList"
+                  :key="item.id"
+                  @click="continueUser(item)"
+                >
+                  <avatar
+                    :src="searchUserAvatar(item.avatar)"
+                    class="transfer—search__list__avatar"
+                  />
+                  <span
+                    class="search-result__tag "
+                    v-html="searchUserTitle(item.nickname || item.username)"
+                  />
                 </div>
               </div>
             </el-form-item>
             <!-- 结果 -->
             <transition name="result">
-              <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
-                <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
-                  <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
-                  <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
-                  <div @click="closeUser" class="gift-ful">
+              <el-form-item
+                v-if="!$utils.isNull(toUserInfo)"
+                label=""
+                prop=""
+              >
+                <router-link
+                  :to="{name: 'user-id', params: {id: toUserInfo.id}}"
+                  class="search-user"
+                  target="_blank"
+                >
+                  <avatar
+                    :src="searchUserAvatar(toUserInfo.avatar)"
+                    class="search-user-avatar"
+                  />
+                  <span
+                    class="search-result__tag "
+                    v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
+                  />
+                  <div
+                    class="gift-ful"
+                    @click="closeUser"
+                  >
                     <i class="el-icon-close" />
                   </div>
                 </router-link>
               </el-form-item>
             </transition>
-            <el-form-item label="发送数量" prop="tokens">
+            <el-form-item
+              label="发送数量"
+              prop="tokens"
+            >
               <el-input
                 v-model="form.tokens"
                 :max="form.max"
@@ -170,13 +249,24 @@
                 clearable
               />
             </el-form-item>
-            <p v-if="form.balance" class="balance">
+            <p
+              v-if="form.balance"
+              class="balance"
+            >
               余额&nbsp;{{ form.balance }}&nbsp;
-              <a @click="form.tokens = form.balance" href="javascript:;">全部转入</a>
+              <a
+                href="javascript:;"
+                @click="form.tokens = form.balance"
+              >全部转入</a>
             </p>
             <el-form-item>
               <div class="form-button">
-                <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
+                <el-button
+                  :disabled="$utils.isNull(toUserInfo)"
+                  type="primary"
+                  size="small"
+                  @click="submitForm('form')"
+                >
                   确定
                 </el-button>
               </div>

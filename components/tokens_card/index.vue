@@ -2,11 +2,18 @@
   <div>
     <div class="fl card-info">
       <div class="fl">
-        <router-link :to="{ name: 'user-id', params: { id: id } }" class="username">
+        <router-link
+          :to="{ name: 'user-id', params: { id: id } }"
+          class="username"
+        >
           {{ username || 'Zero' }}
         </router-link>
         <div class="tx-hash">
-          <txHash v-if="card.tx_hash" :hash="card.tx_hash" size="16px" />
+          <txHash
+            v-if="card.tx_hash"
+            :hash="card.tx_hash"
+            size="16px"
+          />
         </div>
         <div class="type">
           {{ type }}
@@ -14,7 +21,10 @@
         <div class="time">
           {{ time }}
         </div>
-        <div :style="{ color: color }" class="amount">
+        <div
+          :style="{ color: color }"
+          class="amount"
+        >
           {{ amount }}
           <span class="symbol">
             {{ card.symbol }}
@@ -22,7 +32,10 @@
         </div>
       </div>
     </div>
-    <div v-if="!end" class="solid-line" />
+    <div
+      v-if="!end"
+      class="solid-line"
+    />
   </div>
 </template>
 

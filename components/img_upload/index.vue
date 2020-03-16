@@ -2,15 +2,15 @@
   <div class="img-uplaod">
     <!-- 上传图片 -->
     <FileUpload
-      class="img-file"
-      ref="upload"
       v-if="isShowFileUpload"
+      ref="upload"
       v-model="files"
-      @input-file="inputFile"
-      @input-filter="inputFilter"
+      class="img-file"
       extensions="gif,jpg,jpeg,png,webp"
       accept="image/png,image/gif,image/jpeg,image/webp"
-    ></FileUpload>
+      @input-file="inputFile"
+      @input-filter="inputFilter"
+    />
 
     <!-- 编辑图片 modal -->
     <el-dialog
@@ -20,7 +20,10 @@
       width="400px"
       custom-class="img-upload-modal br10"
     >
-      <div slot="title" class="modal-header">
+      <div
+        slot="title"
+        class="modal-header"
+      >
         <p class="modal-header-title">
           {{ $t('imgUpload.title') }}
         </p>
@@ -28,16 +31,23 @@
           {{ $t('imgUpload.subtitle') }}
         </p>
       </div>
-      <div :style="computedStyleContent" class="modal-content">
+      <div
+        :style="computedStyleContent"
+        class="modal-content"
+      >
         <!-- 目前都只用了单文件上传, 所以裁剪取得files[0] 如果需要支持多图,请扩展组件 -->
-        <img ref="editImage" v-if="files.length && modal" :src="files[0].url">
+        <img
+          v-if="files.length && modal"
+          ref="editImage"
+          :src="files[0].url"
+        >
       </div>
       <el-button
         slot="footer"
         :loading="modalLoading"
-        @click.prevent="uploadButton"
         type="primary"
         class="save-button"
+        @click.prevent="uploadButton"
       >
         {{ buttonText }}
       </el-button>

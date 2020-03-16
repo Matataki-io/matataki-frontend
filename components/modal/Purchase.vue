@@ -1,11 +1,20 @@
 <template>
-  <el-dialog :visible.sync="showModal" :lock-scroll="false" width="400px" custom-class="br10">
+  <el-dialog
+    :visible.sync="showModal"
+    :lock-scroll="false"
+    width="400px"
+    custom-class="br10"
+  >
     <div class="buy-product-modal">
       <h1 class="title">
         {{ $t('p.buyShop') }}
       </h1>
       <div class="info-container">
-        <img :src="article.cover" alt="cover" class="cover">
+        <img
+          :src="article.cover"
+          alt="cover"
+          class="cover"
+        >
         <div class="info-inner">
           <div class="product-price">
             <span class="type-price">
@@ -25,7 +34,11 @@
             <span>
               {{ $t('p.amount') }}
             </span>
-            <el-input-number v-model="productNumber" size="mini" disabled />
+            <el-input-number
+              v-model="productNumber"
+              size="mini"
+              disabled
+            />
           </div>
         </div>
       </div>
@@ -40,7 +53,10 @@
         <span class="storage">
           {{ $t('p.remainingStock', [product.stock ]) }}
         </span>
-        <div @click="buyProduct" class="buy-btn">
+        <div
+          class="buy-btn"
+          @click="buyProduct"
+        >
           {{ $t('p.buy') }}
         </div>
       </div>

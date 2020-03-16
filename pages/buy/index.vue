@@ -7,7 +7,12 @@
       </h2>
       <div v-loading="loading">
         <no-content-prompt :list="articleCardData.articles">
-          <buy v-for="(item, index) in articleCardData.articles" :key="index" :buy="item" type="article" />
+          <buy
+            v-for="(item, index) in articleCardData.articles"
+            :key="index"
+            :buy="item"
+            type="article"
+          />
           <user-pagination
             v-show="!loading"
             :current-page="currentPage"
@@ -15,9 +20,9 @@
             :api-url="articleCardData.apiUrl"
             :page-size="articleCardData.params.pagesize"
             :total="total"
+            class="pagination"
             @paginationData="paginationData"
             @togglePage="togglePage"
-            class="pagination"
           />
         </no-content-prompt>
       </div>

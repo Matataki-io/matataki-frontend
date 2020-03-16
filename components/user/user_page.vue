@@ -1,23 +1,42 @@
 <template>
   <div class="user-page">
     <g-header />
-    <div v-if="userInfo.banner" class="banner user-page-banner">
-      <img :src="userInfo.banner" alt="banner">
+    <div
+      v-if="userInfo.banner"
+      class="banner user-page-banner"
+    >
+      <img
+        :src="userInfo.banner"
+        alt="banner"
+      >
     </div>
-    <div v-else class="default-banner user-page-banner">
-      <img src="@/assets/img/user_banner.png" alt="banner">
+    <div
+      v-else
+      class="default-banner user-page-banner"
+    >
+      <img
+        src="@/assets/img/user_banner.png"
+        alt="banner"
+      >
     </div>
     <div class="user-info user-page-info">
       <div class="user-info-center">
         <div class="fl ac jc token-avatar">
-          <avatar :src="userInfo.avatar" size="120px" class="avatar" />
+          <avatar
+            :src="userInfo.avatar"
+            size="120px"
+            class="avatar"
+          />
           <img
             v-if="tokenUser"
             class="token-link"
             src="@/assets/img/token_link.png"
             alt="token-link"
           >
-          <tokenAvatar v-if="tokenUser" :token="tokenData" />
+          <tokenAvatar
+            v-if="tokenUser"
+            :token="tokenData"
+          />
         </div>
         <div>
           <h1 class="username">
@@ -43,7 +62,10 @@
               :content="$t('user.issuedFanTickets')"
               placement="top"
             >
-              <svg-icon class="tokens" icon-class="token" />
+              <svg-icon
+                class="tokens"
+                icon-class="token"
+              />
             </el-tooltip>
           </h1>
         </div>
@@ -68,14 +90,26 @@
             <span class="follow-title">{{ $t('fans') }}</span>
           </router-link>
         </div>
-        <el-tooltip v-if="isMe(Number($route.params.id))" class="item" effect="dark" :content="$t('imgUpload.uploadBackgroundImg')" placement="top">
+        <el-tooltip
+          v-if="isMe(Number($route.params.id))"
+          class="item"
+          effect="dark"
+          :content="$t('imgUpload.uploadBackgroundImg')"
+          placement="top"
+        >
           <bannerUpload
             :img-upload-done="imgUploadDone"
             :update-type="'banner'"
-            @doneImageUpload="doneImageUpload"
             class="follow3"
+            @doneImageUpload="doneImageUpload"
           >
-            <el-button slot="uploadButton" size="small" class="ibutton" type="info" icon="el-icon-s-open" />
+            <el-button
+              slot="uploadButton"
+              size="small"
+              class="ibutton"
+              type="info"
+              icon="el-icon-s-open"
+            />
           </bannerUpload>
         </el-tooltip>
         <followBtn
@@ -83,12 +117,22 @@
           :id="Number($route.params.id)"
           class="follow"
         />
-        <router-link v-else :to="{name: 'setting'}">
-          <el-button size="small" class="follow edit">
+        <router-link
+          v-else
+          :to="{name: 'setting'}"
+        >
+          <el-button
+            size="small"
+            class="follow edit"
+          >
             {{ $t('user.editProfile') }}
           </el-button>
         </router-link>
-        <el-button @click="shareModalShow = true" size="small" class="follow2">
+        <el-button
+          size="small"
+          class="follow2"
+          @click="shareModalShow = true"
+        >
           <svg-icon icon-class="share_new" />
           {{ $t('share') }}
         </el-button>
@@ -156,7 +200,7 @@ export default {
   methods: {
     ...mapActions('user', ['refreshUser', 'followOrUnfollowUser']),
     async getMyUserData() {
-      const res = await this.$API
+      await this.$API
         .getMyUserData()
         .then(res => {
           const statusToken =
@@ -180,7 +224,7 @@ export default {
         })
         .catch(err => console.log('get token user error', err))
     },
-    doneImageUpload(res) {
+    doneImageUpload() {
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.$route.params.id })
     }

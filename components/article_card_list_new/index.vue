@@ -1,28 +1,43 @@
 <template>
-  <div class="card" >
-    <n-link :to="{ name: 'p-id', params: {id: card && card.id} }" target="_blank">
+  <div class="card">
+    <n-link
+      :to="{ name: 'p-id', params: {id: card && card.id} }"
+      target="_blank"
+    >
       <div class="article">
         <div class="container">
           <div class="article-title">
-            <span v-if="card && card.status === 1" class="off-shelves">
+            <span
+              v-if="card && card.status === 1"
+              class="off-shelves"
+            >
               （{{ $t('articleCard.deleted') }}）
             </span>
-            <n-link class="title search-res" v-html="xssTitle" :to="{ name: 'p-id', params: {id: card && card.id} }" target="_blank"></n-link>
+            <n-link
+              class="title search-res"
+              :to="{ name: 'p-id', params: {id: card && card.id} }"
+              target="_blank"
+              v-html="xssTitle"
+            />
           </div>
-          <div v-html="xssContent" class="content-text search-res"></div>
+          <div
+            class="content-text search-res"
+            v-html="xssContent"
+          />
           <div class="des">
             <!-- 文章发布时间 -->
             <div class="date">
               {{ dateCard }}
             </div>
-            <div class="empty"></div>
+            <div class="empty" />
             <div>
               <!-- 付费文章 -->
               <img
                 v-if="card.require_holdtokens || card.require_buy"
                 class="lock-img"
                 src="@/assets/img/lock.png"
-                alt="lock" />
+                alt="lock"
+              >
               <span class="lock-text">{{ lock }}</span>
               <!-- 阅读量 -->
               <span class="data">
@@ -36,7 +51,10 @@
               </span>
               <!-- 复制分享链接 -->
               <a href="javascript:;">
-                <span @click="copyCode(clipboard(card))" class="copy">
+                <span
+                  class="copy"
+                  @click="copyCode(clipboard(card))"
+                >
                   <svg-icon icon-class="copy_mini" />
                 </span>
               </a>
@@ -44,14 +62,24 @@
           </div>
         </div>
         <template v-if="!hideAuthor">
-          <div class="split-line"></div>
+          <div class="split-line" />
           <!-- 适用于 首页, Fan圈 -->
           <!-- 区分那种卡 -->
           <div class="author">
-            <n-link :to="{ name: 'user-id', params: {id: card && card.uid} }" target="_blank">
-              <avatar :src="avatarImg" class="avatar"></avatar>
+            <n-link
+              :to="{ name: 'user-id', params: {id: card && card.uid} }"
+              target="_blank"
+            >
+              <avatar
+                :src="avatarImg"
+                class="avatar"
+              />
             </n-link>
-            <n-link :to="{ name: 'user-id', params: {id: card && card.uid} }" target="_blank" class="username">
+            <n-link
+              :to="{ name: 'user-id', params: {id: card && card.uid} }"
+              target="_blank"
+              class="username"
+            >
               {{ card && (card.nickname || card.author || '') }}
             </n-link>
             <!-- 关注按钮 -->
@@ -68,13 +96,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo } from '@/utils/momentFun'
-import { tagColor } from '@/utils/tag'
-import { xssFilter, filterOutHtmlTags } from '@/utils/xss'
+import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',

@@ -1,9 +1,20 @@
 <template>
   <div class="banner-container mw">
     <div class="banner">
-      <n-link :to="{name: 'index'}" class="banner-logo">
-        <img class="logo" src="@/assets/img/m_logo_square.png" alt="logo">
-        <img class="slogan" src="@/assets/img/des_logo2.png" alt="slogan">
+      <n-link
+        :to="{name: 'index'}"
+        class="banner-logo"
+      >
+        <img
+          class="logo"
+          src="@/assets/img/m_logo_square.png"
+          alt="logo"
+        >
+        <img
+          class="slogan"
+          src="@/assets/img/des_logo2.png"
+          alt="slogan"
+        >
       </n-link>
       <div class="banner-data">
         <!-- <div class="data">
@@ -40,7 +51,10 @@
         </div>
 
         <div class="banner-img">
-          <img src="@/assets/img/pc_banner_img.png" alt="banner">
+          <img
+            src="@/assets/img/pc_banner_img.png"
+            alt="banner"
+          >
         </div>
 
         <div class="reward">
@@ -48,13 +62,27 @@
             <div class="flex">
               <span class="integral-title">
                 {{ $t('point.dailyReadPoint') }}
-                <el-tooltip class="item" effect="dark" :content="$t('point.dailyReadPointDes', [100])" placement="top-start">
-                  <svg-icon icon-class="anser" class="prompt-svg" />
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="$t('point.dailyReadPointDes', [100])"
+                  placement="top-start"
+                >
+                  <svg-icon
+                    icon-class="anser"
+                    class="prompt-svg"
+                  />
                 </el-tooltip>
               </span>
             </div>
             <div class="fl integral-progress">
-              <el-progress :percentage="pointStatusReadNum" :show-text="false" :stroke-width="5" class="progress" color="#542DE0" />
+              <el-progress
+                :percentage="pointStatusReadNum"
+                :show-text="false"
+                :stroke-width="5"
+                class="progress"
+                color="#542DE0"
+              />
               {{ pointStatusRead }}
             </div>
           </div>
@@ -63,13 +91,27 @@
             <div class="flex">
               <span class="integral-title">
                 {{ $t('point.dailyPublishPoint') }}
-                <el-tooltip class="item" effect="dark" :content="$t('point.dailyPublishPointDes', [300])" placement="top-start">
-                  <svg-icon icon-class="anser" class="prompt-svg" />
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="$t('point.dailyPublishPointDes', [300])"
+                  placement="top-start"
+                >
+                  <svg-icon
+                    icon-class="anser"
+                    class="prompt-svg"
+                  />
                 </el-tooltip>
               </span>
             </div>
             <div class="fl integral-progress">
-              <el-progress :percentage="pointStatusPostNum" :show-text="false" :stroke-width="5" class="progress" color="#542DE0" />
+              <el-progress
+                :percentage="pointStatusPostNum"
+                :show-text="false"
+                :stroke-width="5"
+                class="progress"
+                color="#542DE0"
+              />
               {{ pointStatusPost }}
             </div>
           </div>
@@ -79,13 +121,26 @@
       <div class="invite">
         <div class="title">
           {{ $t('point.invite') }}
-          <el-tooltip class="item" effect="dark" :content="$t('point.inviteReward')" placement="top-end">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="$t('point.inviteReward')"
+            placement="top-end"
+          >
             <div class="prompt">
-              <svg-icon icon-class="anser" class="prompt-svg" />
+              <svg-icon
+                icon-class="anser"
+                class="prompt-svg"
+              />
             </div>
           </el-tooltip>
         </div>
-        <el-button @click="share" type="primary" size="small" class="invite-button">
+        <el-button
+          type="primary"
+          size="small"
+          class="invite-button"
+          @click="share"
+        >
           {{ $t('point.inviteNow') }}
         </el-button>
       </div>
@@ -174,7 +229,7 @@ export default {
         this.$alert(this.$t('error.pleaseLogin'), '提示', {
           confirmButtonText: '确定',
           showClose: false,
-          callback: action => this.$store.commit('setLoginModal', true)
+          callback: () => this.$store.commit('setLoginModal', true)
         })
       }
     }

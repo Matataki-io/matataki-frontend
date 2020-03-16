@@ -1,12 +1,15 @@
 
 <template>
-  <userLayout :needFrame="false">
+  <userLayout :need-frame="false">
     <template slot="main">
       <div class="bookmark-container">
         <h2 class="tag-title">
           文章
         </h2>
-        <div slot="list" v-loading="loading">
+        <div
+          slot="list"
+          v-loading="loading"
+        >
           <no-content-prompt :list="pull.list">
             <articleCardListNew
               v-for="(item, index) in pull.list"
@@ -20,9 +23,9 @@
               :api-url="pull.apiUrl"
               :page-size="pull.params.pagesize"
               :total="total"
+              class="pagination"
               @paginationData="paginationData"
               @togglePage="togglePage"
-              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -31,24 +34,33 @@
         <h2 class="tag-title">
           分享
         </h2>
-        <div slot="list" v-loading="loadingShare">
+        <div
+          slot="list"
+          v-loading="loadingShare"
+        >
           <no-content-prompt :list="pullShare.list">
             <!-- 暂时处理  by xiaotian -->
             <!-- 下次功能调整重构 -->
             <router-link
-              :to="{name: 'share-id', params: {id: item.id}}"
               v-for="(item, index) in pullShare.list"
               :key="index"
+              :to="{name: 'share-id', params: {id: item.id}}"
               target="_blank"
               class="card-bookmark"
             >
               <p>{{ item.short_content }}</p>
               <div>
                 <span>
-                  <svg-icon class="icon" icon-class="eye" />{{ item.read }}
+                  <svg-icon
+                    class="icon"
+                    icon-class="eye"
+                  />{{ item.read }}
                 </span>
                 <span>
-                  <svg-icon class="icon" icon-class="like_thin" />{{ item.likes }}
+                  <svg-icon
+                    class="icon"
+                    icon-class="like_thin"
+                  />{{ item.likes }}
                 </span>
               </div>
             </router-link>
@@ -59,9 +71,9 @@
               :api-url="pullShare.apiUrl"
               :page-size="pullShare.params.pagesize"
               :total="totalShare"
+              class="pagination"
               @paginationData="paginationDataShare"
               @togglePage="togglePageShare"
-              class="pagination"
             />
           </no-content-prompt>
         </div>

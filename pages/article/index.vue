@@ -7,17 +7,36 @@
     <el-row class="container mw">
       <el-col :span="16">
         <div class="main article">
-          <articleTab :articleList="articleList" v-if="idx === 0" @setIdx="setIdx" :idx="idx" />
-          <tokenTab v-if="idx === 1" @setIdx="setIdx" :idx="idx" />
-          <followTab v-if="idx === 2" @setIdx="setIdx" :idx="idx" />
+          <articleTab
+            v-if="idx === 0"
+            :article-list="articleList"
+            :idx="idx"
+            @setIdx="setIdx"
+          />
+          <tokenTab
+            v-if="idx === 1"
+            :idx="idx"
+            @setIdx="setIdx"
+          />
+          <followTab
+            v-if="idx === 2"
+            :idx="idx"
+            @setIdx="setIdx"
+          />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="position-sticky top80">
-          <div v-if="usersRecommendList.length !== 0" class="recommend-author">
+          <div
+            v-if="usersRecommendList.length !== 0"
+            class="recommend-author"
+          >
             <div class="ra-head">
               <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-              <span @click="usersRecommend" class="ra-head-random">
+              <span
+                class="ra-head-random"
+                @click="usersRecommend"
+              >
                 <div class="change">
                   <svg-icon
                     :class="usersLoading && 'rotate'"
@@ -29,11 +48,18 @@
               </span>
             </div>
             <div class="ra-content">
-              <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
+              <r-a-list
+                v-for="item in usersRecommendList"
+                :key="item.id"
+                :card="item"
+              />
             </div>
           </div>
           <router-link :to="{name: 'token'}">
-            <img class="fan-entrance" src="@/assets/img/fan_entrance.png">
+            <img
+              class="fan-entrance"
+              src="@/assets/img/fan_entrance.png"
+            >
           </router-link>
         </div>
       </el-col>
@@ -43,11 +69,10 @@
 
 <script>
 import throttle from 'lodash/throttle'
-import debounce from 'lodash/debounce'
 import tokenTab from '@/components/article_page/token.vue'
 import followTab from '@/components/article_page/follow.vue'
 import articleTab from '@/components/article_page/article.vue'
-import { recommend, paginationData, getTags } from '@/api/async_data_api.js'
+import { recommend, paginationData } from '@/api/async_data_api.js'
 import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import RAList from '@/components/recommend_author_list'
 import swipe from '@/components/swipe/index.vue'

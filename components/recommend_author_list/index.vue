@@ -1,14 +1,32 @@
 <template>
   <div class="ra-list">
-    <n-link :to="{name: 'user-id', params: {id: card.id}}" target="_blank">
-      <avatar :src="avatarSrc" size="44px" />
+    <n-link
+      :to="{name: 'user-id', params: {id: card.id}}"
+      target="_blank"
+    >
+      <avatar
+        :src="avatarSrc"
+        size="44px"
+      />
     </n-link>
-    <n-link :to="{name: 'user-id', params: {id: card.id}}" target="_blank" class="name">
+    <n-link
+      :to="{name: 'user-id', params: {id: card.id}}"
+      target="_blank"
+      class="name"
+    >
       {{ card && card.nickname || card.username }}
     </n-link>
     <template v-if="!isMe(card.id)">
-      <el-button :class="!card.is_follow && 'black'" @click.stop="followOrUnFollow" size="small" class="follow">
-        <i v-if="!card.is_follow" class="el-icon-plus" />
+      <el-button
+        :class="!card.is_follow && 'black'"
+        size="small"
+        class="follow"
+        @click.stop="followOrUnFollow"
+      >
+        <i
+          v-if="!card.is_follow"
+          class="el-icon-plus"
+        />
         {{ followBtnText }}
       </el-button>
     </template>
@@ -16,7 +34,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar'
 
 export default {

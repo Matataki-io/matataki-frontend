@@ -1,29 +1,63 @@
 <template>
   <div class="coin-btn">
-    <div @mouseenter="enterBtn" @mouseleave="leaveBtn">
-      <Progress :p="time" :clicked="clicked">
+    <div
+      @mouseenter="enterBtn"
+      @mouseleave="leaveBtn"
+    >
+      <Progress
+        :p="time"
+        :clicked="clicked"
+      >
         <template slot="text">
-          <span v-show="!clicked" class="center-text">+ {{ readPoint }}</span>
-          <svg-icon v-show="type==='great'" icon-class="great-solid" class="center-icon" />
-          <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" class="center-icon" />
+          <span
+            v-show="!clicked"
+            class="center-text"
+          >+ {{ readPoint }}</span>
+          <svg-icon
+            v-show="type==='great'"
+            icon-class="great-solid"
+            class="center-icon"
+          />
+          <svg-icon
+            v-show="type==='bullshit'"
+            icon-class="bullshit-solid"
+            class="center-icon"
+          />
         </template>
       </Progress>
-      <div v-show="showTip" class="like-btn">
-        <div v-if="!clicked" class="btns-container">
-          <button :disabled="clicked" @click="like" class="great-cointainer">
+      <div
+        v-show="showTip"
+        class="like-btn"
+      >
+        <div
+          v-if="!clicked"
+          class="btns-container"
+        >
+          <button
+            :disabled="clicked"
+            class="great-cointainer"
+            @click="like"
+          >
             <svg-icon icon-class="great" />
-            <span>{{ $t('p.like')}}<em class="like">{{ article && article.likes }}</em></span>
+            <span>{{ $t('p.like') }}<em class="like">{{ article && article.likes }}</em></span>
           </button>
-          <button :disabled="clicked" @click="dislike" class="bullshit-cointainer">
+          <button
+            :disabled="clicked"
+            class="bullshit-cointainer"
+            @click="dislike"
+          >
             <svg-icon icon-class="bullshit" />
-            <span>{{ $t('p.unlike')}}<em class="like">{{ article && article.dislikes }}</em></span>
+            <span>{{ $t('p.unlike') }}<em class="like">{{ article && article.dislikes }}</em></span>
           </button>
         </div>
         <p v-if="!clicked">
           {{ $t('p.point') + readTime }}
         </p>
         <template v-else>
-          <p v-for="(item, i) in points.arr" :key="i">
+          <p
+            v-for="(item, i) in points.arr"
+            :key="i"
+          >
             {{ (item.text + item.amount) || 0 }}{{ $t('p.point') }}
           </p>
         </template>
@@ -47,7 +81,11 @@
       <svg-icon v-show="type==='bullshit'" icon-class="bullshit-solid" />
     </div> -->
     <div :class="['title-container', {'hidden': showTip}]">
-      <a class="title" href="/user/account/points" target="_blank">{{ clicked ? `+${points.all + $t('publish.point')}` : $t('publish.point') }}</a>
+      <a
+        class="title"
+        href="/user/account/points"
+        target="_blank"
+      >{{ clicked ? `+${points.all + $t('publish.point')}` : $t('publish.point') }}</a>
     </div>
   </div>
 </template>

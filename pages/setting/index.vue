@@ -10,15 +10,23 @@
           <img-upload
             :img-upload-done="imgUploadDone"
             :update-type="'avatar'"
-            @doneImageUpload="doneImageUpload"
             class="avatar"
+            @doneImageUpload="doneImageUpload"
           >
-            <div slot="uploadButton" class="user-avatar">
+            <div
+              slot="uploadButton"
+              class="user-avatar"
+            >
               <div class="edit">
                 <i class="el-icon-camera" />
                 {{ $t('avatar') }}
               </div>
-              <img slot="description" v-if="avatar" :src="avatar" alt="avatar">
+              <img
+                v-if="avatar"
+                slot="description"
+                :src="avatar"
+                alt="avatar"
+              >
             </div>
           </img-upload>
         </div>
@@ -66,13 +74,29 @@
           <span class="title">
             {{ $t('social.relatedWebsites') }}
           </span>
-          <div v-for="(item, index) in about" :key="index" class="fl ac about-input social-list">
-            <el-input v-model="about[index]" class="input" :placeholder="$t('social.fillLink')" />
-            <div v-if="about.length > 1" @click="abountLess(index)" class="about-input-btn">
+          <div
+            v-for="(item, index) in about"
+            :key="index"
+            class="fl ac about-input social-list"
+          >
+            <el-input
+              v-model="about[index]"
+              class="input"
+              :placeholder="$t('social.fillLink')"
+            />
+            <div
+              v-if="about.length > 1"
+              class="about-input-btn"
+              @click="abountLess(index)"
+            >
               <i class="el-icon-minus" />
             </div>
           </div>
-          <div v-if="about.length < 5" @click="aboutAdd" class="about-input-btn add">
+          <div
+            v-if="about.length < 5"
+            class="about-input-btn add"
+            @click="aboutAdd"
+          >
             <i class="el-icon-plus" />
           </div>
         </div>
@@ -84,7 +108,11 @@
           <span class="title-note">
             {{ $t('social.forInformationOnly') }}
           </span>
-          <div v-for="(item, index) in social" :key="index" class="social-list">
+          <div
+            v-for="(item, index) in social"
+            :key="index"
+            class="social-list"
+          >
             <p class="social-title">
               {{ item.name }}
               <span v-html="item.tooltip" />
@@ -93,13 +121,22 @@
               <div class="social-icons">
                 <socialIcon :icon="item.symbol" />
               </div>
-              <el-input v-model="item.value" :placeholder="item.placeholder" class="social-input" />
+              <el-input
+                v-model="item.value"
+                :placeholder="item.placeholder"
+                class="social-input"
+              />
             </div>
           </div>
         </div>
         <!-- 保存 -->
         <div class="line" />
-        <el-button :loading="loading" :class="(setProfile || aboutModify || socialModify) && 'active'" @click="save" class="save ">
+        <el-button
+          :loading="loading"
+          :class="(setProfile || aboutModify || socialModify) && 'active'"
+          class="save "
+          @click="save"
+        >
           {{ $t('save') }}
         </el-button>
       </div>
@@ -283,7 +320,7 @@ export default {
     checkSaveParams() {
       // 中文 字母 数字 1-12
       const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
-      const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+      // const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.username)) {
         throw this.$t('rule.strEnglishNumber', ['1-12'])
       } else if (this.introduction.length > 20) {
@@ -295,7 +332,7 @@ export default {
     },
     // 完成上传
     doneImageUpload(res) {
-      // console.log(res)
+      console.log(res)
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.currentUserInfo.id })
       this.getMyUserData()

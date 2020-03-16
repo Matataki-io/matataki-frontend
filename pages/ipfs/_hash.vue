@@ -12,18 +12,36 @@
         >
           {{ articleData.nickname || articleData.username || '&nbsp;' }}
         </n-link>
-        <time :datetime="articleData.create_time" itemprop="datePublished">{{ articleCreateTime }}</time>
-        <span itemprops="provider" itemscope="" itemtype="https://www.matataki.io/">
+        <time
+          :datetime="articleData.create_time"
+          itemprop="datePublished"
+        >{{ articleCreateTime }}</time>
+        <span
+          itemprops="provider"
+          itemscope=""
+          itemtype="https://www.matataki.io/"
+        >
           from <span itemprops="name">瞬MATATAKI</span>
-          <meta itemprops="url" content="https://www.matataki.io/">
+          <meta
+            itemprops="url"
+            content="https://www.matataki.io/"
+          >
         </span>
         <p itemprops="hash">
           {{ articleData.hash }}
         </p>
       </figure>
     </header>
-    <article v-if="showContent" v-html="compiledMarkdown" itemprop="articleBody" />
-    <article v-else v-html="articleIpfs.content" itemprop="articleBody" />
+    <article
+      v-if="showContent"
+      itemprop="articleBody"
+      v-html="compiledMarkdown"
+    />
+    <article
+      v-else
+      itemprop="articleBody"
+      v-html="articleIpfs.content"
+    />
   </main>
 </template>
 

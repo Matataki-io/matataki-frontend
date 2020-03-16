@@ -8,22 +8,29 @@
         <span class="title">{{ $t('user.transfer') }}</span>
         <el-switch
           v-model="isTransfer"
-          @change="changeTransfer"
           active-color="#542DE0"
+          @change="changeTransfer"
         />
       </div>
       <div class="list">
-        <el-button @click="clearCache" type="danger" icon="el-icon-delete">
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          @click="clearCache"
+        >
           一键清除缓存
         </el-button>
       </div>
 
       <div class="list">
-        <a class="href" target="_blank" href="https://www.yuque.com/matataki">
+        <a
+          class="href"
+          target="_blank"
+          href="https://www.yuque.com/matataki"
+        >
           帮助和支持
         </a>
       </div>
-
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -32,7 +39,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import store from '@/utils/store.js'
@@ -55,13 +62,14 @@ export default {
     ...mapActions(['resetAllStore']),
     // 获取用户信息 - 转让状态
     async getMyUserData() {
-      const res = await this.$API.getMyUserData().then(res => {
-        if (res.code === 0) {
-          this.isTransfer = !!res.data.accept
-        } else console.log('获取用户信息失败')
-      }).catch(err => {
-        console.log(`获取用户信息失败${err}`)
-      })
+      await this.$API.getMyUserData()
+        .then(res => {
+          if (res.code === 0) {
+            this.isTransfer = !!res.data.accept
+          } else console.log('获取用户信息失败')
+        }).catch(err => {
+          console.log(`获取用户信息失败${err}`)
+        })
     },
     // 改变转让状态
     async changeTransfer(status) {
@@ -91,7 +99,7 @@ export default {
         this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
           showClose: false,
           type: 'success',
-          callback: action => {
+          callback: () => {
             window.location.reload()
           }
         })
@@ -101,7 +109,7 @@ export default {
       const clear = () => {
         // 重置all store
         this.resetAllStore()
-          .then(res => {
+          .then(() => {
             clearAllCookie()
             // 防止没有清除干净
             removeCookie('ACCESS_TOKEN')

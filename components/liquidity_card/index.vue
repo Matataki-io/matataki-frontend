@@ -4,7 +4,11 @@
       <div class="fl">
         <div class="type">
           {{ type }}
-          <txHash v-if="card.tx_hash" :hash="card.tx_hash" size="16px" />
+          <txHash
+            v-if="card.tx_hash"
+            :hash="card.tx_hash"
+            size="16px"
+          />
         </div>
         <div class="time">
           {{ time }}
@@ -29,7 +33,10 @@
         </div>
       </div>
     </div>
-    <div v-if="!end" class="solid-line" />
+    <div
+      v-if="!end"
+      class="solid-line"
+    />
   </div>
 </template>
 

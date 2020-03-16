@@ -6,8 +6,8 @@
     <div class="token-content">
       <div
         :class="shareCardCheckedOne && 'active'"
-        @click="shareCardCheckedOne = true"
         class="share"
+        @click="shareCardCheckedOne = true"
       >
         <div
           ref="tokenCardOne"
@@ -21,8 +21,8 @@
       </div>
       <div
         :class="!shareCardCheckedOne && 'active'"
-        @click="shareCardCheckedOne = false"
         class="share"
+        @click="shareCardCheckedOne = false"
       >
         <div
           ref="tokenCardTwo"
@@ -36,7 +36,11 @@
         </div>
       </div>
     </div>
-    <el-button @click="save" class="save" type="primary">
+    <el-button
+      class="save"
+      type="primary"
+      @click="save"
+    >
       保存
     </el-button>
   </div>
@@ -114,7 +118,7 @@ export default {
         loading.close()
       })
     },
-    toggleShareCard(i) {
+    toggleShareCard() {
       this.shareCardCheckedOne = !this.shareCardCheckedOne
     }
   }

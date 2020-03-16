@@ -2,15 +2,27 @@
   <div class="app">
     <nuxt />
     <g-footer v-if="hideFooter" />
-    <back-to-top v-if="!hideBackTop" :visibility-height="300" :back-position="50" class="backtop" transition-name="fade">
+    <back-to-top
+      v-if="!hideBackTop"
+      :visibility-height="300"
+      :back-position="50"
+      class="backtop"
+      transition-name="fade"
+    >
       <svg-icon
         class="backtop-icon"
         icon-class="backtop"
       />
     </back-to-top>
-    <feedback v-if="!hideFeedback" :showPosition="100" />
+    <feedback
+      v-if="!hideFeedback"
+      :show-position="100"
+    />
     <AuthModal v-model="loginModalShow" />
-    <articleImport v-model="importModalShow" @importArticle="importArticle" />
+    <articleImport
+      v-model="importModalShow"
+      @importArticle="importArticle"
+    />
   </div>
 </template>
 

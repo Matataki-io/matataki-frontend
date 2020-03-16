@@ -1,12 +1,28 @@
 <template>
-  <router-link :to="{name: 'token-id', params: { id: card.id }}" class="fl token-card" tag="div">
+  <router-link
+    :to="{name: 'token-id', params: { id: card.id }}"
+    class="fl token-card"
+    tag="div"
+  >
     <div>
-      <avatar :src="cover" size="60px" />
+      <avatar
+        :src="cover"
+        size="60px"
+      />
     </div>
     <div class="card-info">
-      <h2 v-html="card.symbol" class="search-res" />
-      <p v-html="card.name" class="search-res" />
-      <p v-html="card.brief" class="search-res" />
+      <h2
+        class="search-res"
+        v-html="card.symbol"
+      />
+      <p
+        class="search-res"
+        v-html="card.name"
+      />
+      <p
+        class="search-res"
+        v-html="card.brief"
+      />
     </div>
     <div>
       <!-- <router-link :to="{name: 'user-id', params: { id: currentUserInfo.id }}" class="fl ac">
@@ -18,7 +34,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 export default {
   components: {

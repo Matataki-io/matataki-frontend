@@ -2,7 +2,7 @@
  * For MetaMask(ETH) Only
  */
 import BigNumber from 'bignumber.js'
-import { getToken, setToken, removeToken } from '../utils/auth'
+import { setToken, removeToken } from '../utils/auth'
 import { getSignatureForLogin } from '@/api/eth'
 import API from '@/api/API'
 

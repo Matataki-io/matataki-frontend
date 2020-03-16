@@ -21,6 +21,7 @@ module.exports = {
     // https://github.com/ElemeFE/eslint-config-elemefe/blob/master/rules.js
     // // https://cn.eslint.org/docs/rules/
     'no-console': 0,
-    indent : [1, 2, { 'SwitchCase': 1 }]
+    indent : [1, 2, { 'SwitchCase': 1 }],
+    'vue/no-v-html': 'off' // 关闭v-html检测
   }
 }

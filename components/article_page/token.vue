@@ -1,5 +1,8 @@
 <template>
-  <tab @setIdx="i => $emit('setIdx', i)" :idx="idx">
+  <tab
+    :idx="idx"
+    @setIdx="i => $emit('setIdx', i)"
+  >
     <div class="token-tap">
       <div>
         <router-link :to="{name: 'token'}">
@@ -8,7 +11,11 @@
             <span>{{ $t('home.buyFanTickets') }}</span>
           </div>
         </router-link>
-        <fanCard v-for="(tokenCard, index) in tokenCards.list" :key="index" :card="tokenCard" />
+        <fanCard
+          v-for="(tokenCard, index) in tokenCards.list"
+          :key="index"
+          :card="tokenCard"
+        />
       </div>
       <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
       <div class="load-more-button">
@@ -26,14 +33,10 @@
 </template>
 
 <script>
-import throttle from 'lodash/throttle'
-import debounce from 'lodash/debounce'
 import tab from './tab.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import fanCard from '@/components/fan_card/index.vue'
 
-import { recommend, paginationData, getTags, tokenTokenList } from '@/api/async_data_api.js'
-import { extractChar, regRemoveContent } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
 
 export default {

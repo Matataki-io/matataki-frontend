@@ -6,27 +6,50 @@
     :show-close="false"
     :center="widgetModalStatus === 0 ? true : false"
     :top="widgetModalStatus === 1 || widgetModalStatus === 4 ? '20px' : '15vh'"
-    @close="change"
     custom-class="gray-bg br10 p-share"
+    @close="change"
   >
     <!-- 主窗口 -->
-    <div v-if="widgetModalStatus === 0" class="padding1">
+    <div
+      v-if="widgetModalStatus === 0"
+      class="padding1"
+    >
       <div class="widget-content-button">
-        <div v-if="pageType !== 2" @click="widgetModalStatus = 3" class="widget-button">
+        <div
+          v-if="pageType !== 2"
+          class="widget-button"
+          @click="widgetModalStatus = 3"
+        >
           <div class="widget-button-img">
-            <img class="token-share-card" src="@/assets/img/token_share_widget.png" alt="widget">
+            <img
+              class="token-share-card"
+              src="@/assets/img/token_share_widget.png"
+              alt="widget"
+            >
           </div>
           <p>{{ $t('p.createWidget') }}</p>
         </div>
-        <div v-if="(minetokenToken !== null && pageType === 0) || pageType === 2" @click="reviewShareCard" class="widget-button">
+        <div
+          v-if="(minetokenToken !== null && pageType === 0) || pageType === 2"
+          class="widget-button"
+          @click="reviewShareCard"
+        >
           <div class="widget-button-img">
-            <img class="token-share-card" src="@/assets/img/token_share_card.png" alt="widget">
+            <img
+              class="token-share-card"
+              src="@/assets/img/token_share_card.png"
+              alt="widget"
+            >
           </div>
           <p>{{ $t('p.createLongImg') }}</p>
         </div>
         <div class="widget-button">
           <div @click="copyCode(shareLink)">
-            <img class="token-share" src="@/assets/img/token_share.png" alt="link">
+            <img
+              class="token-share"
+              src="@/assets/img/token_share.png"
+              alt="link"
+            >
           </div>
           <p>{{ $t('p.copyInviteLink') }}</p>
         </div>
@@ -38,8 +61,15 @@
         :summary="summary"
         :qq-title="qqTitle"
       />
-      <wechat v-if="pageType !== 2" :link="link" style="margin: 60px 0 0 0;" />
-      <div v-else class="invite-synopsis">
+      <wechat
+        v-if="pageType !== 2"
+        :link="link"
+        style="margin: 60px 0 0 0;"
+      />
+      <div
+        v-else
+        class="invite-synopsis"
+      >
         {{ $t('inviteReward.title') }}<br>
         {{ $t('inviteReward.text1') }}<br>
         {{ $t('inviteReward.text2') }}<br>
@@ -49,11 +79,20 @@
       </div>
     </div>
     <!-- 截图分享 -->
-    <div v-if="widgetModalStatus === 1 && minetokenToken !== null && pageType === 0" class="padding2">
-      <tokenShareCardLayout :minetoken-token="minetokenToken" :minetoken-user="minetokenUser" />
+    <div
+      v-if="widgetModalStatus === 1 && minetokenToken !== null && pageType === 0"
+      class="padding2"
+    >
+      <tokenShareCardLayout
+        :minetoken-token="minetokenToken"
+        :minetoken-user="minetokenUser"
+      />
     </div>
     <!-- widget使用说明 -->
-    <div v-if="widgetModalStatus === 2" class="padding1 widget-help">
+    <div
+      v-if="widgetModalStatus === 2"
+      class="padding1 widget-help"
+    >
       <p class="widget-help-title">
         {{ $t('p.articleWidgetHelp') }}
       </p>
@@ -71,16 +110,26 @@
         4.{{ $t('p.stepContent4') }}<br>
       </p>
 
-      <a @click="backWidget" class="widget-help-button" href="javascript:;">
+      <a
+        class="widget-help-button"
+        href="javascript:;"
+        @click="backWidget"
+      >
         {{ $t('p.confirmPopover') }}
       </a>
     </div>
     <!-- widget -->
-    <div v-if="widgetModalStatus === 3" class="padding1 widget-review">
+    <div
+      v-if="widgetModalStatus === 3"
+      class="padding1 widget-review"
+    >
       <p class="widget-title">
         {{ $t('p.widgetView') }}
       </p>
-      <div v-html="tokenWidget" class="widget-review-content" />
+      <div
+        class="widget-review-content"
+        v-html="tokenWidget"
+      />
       <p class="widget-review-des">
         {{ $t('p.widgetCopyDes') }}
       </p>
@@ -92,16 +141,27 @@
         placeholder="请输入内容"
       />
       <div class="widget-footer">
-        <a @click="reviewHelp" class="help" href="javascript:;">
+        <a
+          class="help"
+          href="javascript:;"
+          @click="reviewHelp"
+        >
           {{ $t('p.widgetHelp') }}
         </a>
-        <a @click="copyCode(tokenWidget)" class="create" href="javascript:;">
+        <a
+          class="create"
+          href="javascript:;"
+          @click="copyCode(tokenWidget)"
+        >
           {{ $t('p.copyCode') }}
         </a>
       </div>
     </div>
     <!-- 邀请新用户 -->
-    <div v-if="widgetModalStatus === 4 && pageType === 2" class="padding2">
+    <div
+      v-if="widgetModalStatus === 4 && pageType === 2"
+      class="padding2"
+    >
       <inviteNewUsersCardLayout />
     </div>
   </el-dialog>

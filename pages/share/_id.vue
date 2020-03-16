@@ -1,7 +1,13 @@
 <template>
-  <div @click.stop="hideClient" class="share">
+  <div
+    class="share"
+    @click.stop="hideClient"
+  >
     <g-header />
-    <div v-loading="loading" class="container-loading">
+    <div
+      v-loading="loading"
+      class="container-loading"
+    >
       <main class="container">
         <shareHeader
           :id="content.uid"
@@ -10,23 +16,26 @@
           :time="content.create_time"
           :read="content.read"
           :hash="content.hash"
-          :shareId="content.id"
+          :share-id="content.id"
         />
         <shareMain :content="shareContent" />
       </main>
       <shareFooter
         v-loading="footerLoading"
         :bookmarked="currentProfile.is_bookmarked"
-        :isLiked="Number(currentProfile.is_liked)"
+        :is-liked="Number(currentProfile.is_liked)"
         :likes="content.likes"
         :dislikes="content.dislikes"
+        class="footer"
         @bookmarked="bookmarked"
         @share="shareDialogVisible = true"
         @like="like"
-        class="footer"
       />
     </div>
-    <reference :show="true" :offSlidebar="offSlidebar">
+    <reference
+      :show="true"
+      :off-slidebar="offSlidebar"
+    >
       <template slot="left">
         <div class="reference-header">
           <span class="reference-header__title">
@@ -58,14 +67,28 @@
       <template slot="right-prompt">
         被引用<span>{{ berefernceTotal }}</span>
       </template>
-      <quoteReference slot="ref" :nowTime="nowTime" @getArticle="getArticle" />
-      <quoteBereference slot="beref" :nowTime="nowTime" @getArticle="getArticle" />
+      <quoteReference
+        slot="ref"
+        :now-time="nowTime"
+        @getArticle="getArticle"
+      />
+      <quoteBereference
+        slot="beref"
+        :now-time="nowTime"
+        @getArticle="getArticle"
+      />
     </reference>
-    <m-dialog v-model="shareDialogVisible" width="400px">
+    <m-dialog
+      v-model="shareDialogVisible"
+      width="400px"
+    >
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
         <div class="dialog-content__btn">
-          <div @click="shareImageShow" class="btn-icon">
+          <div
+            class="btn-icon"
+            @click="shareImageShow"
+          >
             <svg-icon icon-class="share_img" />
           </div>
           <p class="btn-text">
@@ -73,7 +96,10 @@
           </p>
         </div>
         <div class="dialog-content__btn">
-          <div @click="copy(shareLink)" class="btn-icon">
+          <div
+            class="btn-icon"
+            @click="copy(shareLink)"
+          >
             <svg-icon icon-class="copy3" />
           </div>
           <p class="btn-text">
@@ -87,13 +113,23 @@
         :qq-title="title"
         class="social-share"
       />
-      <wechat :link="link" style="margin: 60px 0 0 0;" />
+      <wechat
+        :link="link"
+        style="margin: 60px 0 0 0;"
+      />
     </m-dialog>
 
-    <m-dialog v-model="shareDoneCard" width="400px">
+    <m-dialog
+      v-model="shareDoneCard"
+      width="400px"
+    >
       <!-- 如果内容过多可以抽离 -->
       <div>
-        <img src="@/assets/img/done.png" alt="done" class="share-done">
+        <img
+          src="@/assets/img/done.png"
+          alt="done"
+          class="share-done"
+        >
         <h4 class="share-done__title">
           分享已发布
         </h4>
@@ -105,16 +141,26 @@
           v-loading="createShareLoading"
           class="share-card"
         >
-          <img v-if="saveImg" :src="saveImg" alt="save">
+          <img
+            v-if="saveImg"
+            :src="saveImg"
+            alt="save"
+          >
         </div>
-        <el-button :disabled="saveLoading" v-loading="saveLoading" @click="downloadShareImage" type="primary" class="share-card__btn">
+        <el-button
+          v-loading="saveLoading"
+          :disabled="saveLoading"
+          type="primary"
+          class="share-card__btn"
+          @click="downloadShareImage"
+        >
           保存并分享卡片
         </el-button>
         <shareImage
-          ref="shareImage"
           v-if="!saveImg"
+          ref="shareImage"
           :content="shareCard.content"
-          :avatarSrc="shareCard.avatarSrc"
+          :avatar-src="shareCard.avatarSrc"
           :username="shareCard.username"
           :reference="shareCard.reference"
           :url="shareCard.url"
@@ -333,8 +379,12 @@ export default {
         }).then(async () => {
           await this.$API.unbookmark(this.currentProfile.id)
             .then(res => {
-              this.$message({ type: 'success', message: '取消成功' })
-              this.currentProfile.is_bookmarked = 0
+              if (res.code === 0) {
+                this.$message({ type: 'success', message: '取消成功' })
+                this.currentProfile.is_bookmarked = 0
+              } else {
+                console.log(res.message)
+              }
             })
             .catch(err => console.log(err))
             .finally(() => {
@@ -346,8 +396,12 @@ export default {
       } else {
         await this.$API.bookmark(this.currentProfile.id)
           .then(res => {
-            this.$message({ type: 'success', message: '收藏成功' })
-            this.currentProfile.is_bookmarked = 1
+            if (res.code === 0) {
+              this.$message({ type: 'success', message: '收藏成功' })
+              this.currentProfile.is_bookmarked = 1
+            } else {
+              console.log(res.message)
+            }
           })
           .catch(err => console.log(err))
           .finally(() => {
@@ -391,6 +445,7 @@ export default {
     hideClient() {
       this.offSlidebar = Date.now()
     },
+    // eslint-disable-next-line no-unused-vars
     getArticle(id, popEvent) {
       // console.log(id, popEvent)
       this.$route.params.id = id

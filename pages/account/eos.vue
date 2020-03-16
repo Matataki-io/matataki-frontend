@@ -4,10 +4,22 @@
       <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <template v-if="viewStatus === 0">
-        <assets :assets="assets" @toggleWithdraw="status => viewStatus = status" type="EOS" class="assets-margin" />
-        <div v-loading="loading" class="card-container">
+        <assets
+          :assets="assets"
+          type="EOS"
+          class="assets-margin"
+          @toggleWithdraw="status => viewStatus = status"
+        />
+        <div
+          v-loading="loading"
+          class="card-container"
+        >
           <no-content-prompt :list="articleCardData.articles">
-            <assetCard v-for="(item, index) in articleCardData.articles" :key="index" :asset="item" />
+            <assetCard
+              v-for="(item, index) in articleCardData.articles"
+              :key="index"
+              :asset="item"
+            />
           </no-content-prompt>
         </div>
         <user-pagination
@@ -18,13 +30,17 @@
           :page-size="9"
           :total="total"
           :need-access-token="true"
+          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
-          class="pagination"
         />
       </template>
       <template v-else>
-        <withdraw @toggleWithdraw="status => viewStatus = status" @withdrawDone="viewStatus = 0" class="withdraw" />
+        <withdraw
+          class="withdraw"
+          @toggleWithdraw="status => viewStatus = status"
+          @withdrawDone="viewStatus = 0"
+        />
       </template>
     </template>
     <template slot="nav">

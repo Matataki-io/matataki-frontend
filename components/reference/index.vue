@@ -1,25 +1,45 @@
 <template>
   <div>
     <!-- 关联文章侧边栏 -->
-    <div :class="relatedLeftCollapse && 'open'" @click.stop class="related left">
+    <div
+      :class="relatedLeftCollapse && 'open'"
+      class="related left"
+      @click.stop
+    >
       <div class="related-container">
         <slot name="ref" />
       </div>
 
-      <div @click.stop="relatedLeftCollapse = !relatedLeftCollapse" class="related-arrow">
-        <svg-icon icon-class="arrow" class="icon" />
+      <div
+        class="related-arrow"
+        @click.stop="relatedLeftCollapse = !relatedLeftCollapse"
+      >
+        <svg-icon
+          icon-class="arrow"
+          class="icon"
+        />
         <span v-if="!relatedLeftCollapse">
           <slot name="left-prompt">已引用</slot>
         </span>
       </div>
     </div>
-    <div :class="relatedRightCollapse && 'open'" @click.stop class="related right">
+    <div
+      :class="relatedRightCollapse && 'open'"
+      class="related right"
+      @click.stop
+    >
       <div class="related-container">
         <slot name="beref" />
       </div>
 
-      <div @click.stop="relatedRightCollapse = !relatedRightCollapse" class="related-arrow">
-        <svg-icon icon-class="arrow" class="icon" />
+      <div
+        class="related-arrow"
+        @click.stop="relatedRightCollapse = !relatedRightCollapse"
+      >
+        <svg-icon
+          icon-class="arrow"
+          class="icon"
+        />
         <span v-if="!relatedRightCollapse">
           <slot name="right-prompt">被引用</slot>
         </span>
@@ -80,7 +100,7 @@ export default {
         const sliderWidth = ((clientWidth - 660) / 2)
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
-          relatedDom.forEach((ele, i) => {
+          relatedDom.forEach(ele => {
             // console.log(ele)
             ele.style.maxWidth = sliderWidth + 'px'
           })

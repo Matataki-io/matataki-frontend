@@ -1,7 +1,10 @@
 
 <template>
   <userPage>
-    <div slot="list" v-loading="loading">
+    <div
+      slot="list"
+      v-loading="loading"
+    >
       <no-content-prompt :list="articleCardData.articles">
         <fansCard
           v-for="(item, i) in articleCardData.articles"
@@ -19,9 +22,9 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
+          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
-          class="pagination"
         />
       </no-content-prompt>
     </div>

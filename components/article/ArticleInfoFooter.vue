@@ -2,14 +2,23 @@
   <div class="article-info">
     <div class="info1">
       <span>{{ $t('p.totalInvestment') }}</span>
-      <img src="@/assets/img/icon_EOS.svg" alt="eos">
+      <img
+        src="@/assets/img/icon_EOS.svg"
+        alt="eos"
+      >
       <span class="num">{{ totalSupportedAmount.eos }}</span>
-      <img src="@/assets/img/icon_ONT.svg" alt="eos">
+      <img
+        src="@/assets/img/icon_ONT.svg"
+        alt="eos"
+      >
       <span class="num">{{ totalSupportedAmount.ont }}</span>
     </div>
     <div class="info2">
       <span>{{ $t('p.fissionCoefficient') }}</span>
-      <img src="@/assets/img/liebian.svg" alt="">
+      <img
+        src="@/assets/img/liebian.svg"
+        alt=""
+      >
       <span class="num">{{ getDisplayedFissionFactor }}</span>
     </div>
   </div>
