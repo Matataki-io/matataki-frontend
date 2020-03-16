@@ -30,7 +30,7 @@
             <el-input
               v-model="username"
               :placeholder="$t('rule.username')"
-              maxlength="12"
+              maxlength="50"
               show-word-limit
               clearable
             />
@@ -55,7 +55,7 @@
               :rows="4"
               :placeholder="$t('rule.content')"
               type="textarea"
-              maxlength="20"
+              maxlength="200"
               show-word-limit
             />
           </div>
@@ -282,12 +282,12 @@ export default {
     // 输入框内容检测
     checkSaveParams() {
       // 中文 字母 数字 1-12
-      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
+      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,50}$/
       const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.username)) {
-        throw this.$t('rule.strEnglishNumber', ['1-12'])
-      } else if (this.introduction.length > 20) {
-        throw this.$t('rule.profileNotExceedStr', [20])
+        throw this.$t('rule.strEnglishNumber', ['1-50'])
+      } else if (this.introduction.length > 200) {
+        throw this.$t('rule.profileNotExceedStr', [200])
       }
     },
     setAvatarImage(hash) {
