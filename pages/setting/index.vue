@@ -319,8 +319,6 @@ export default {
     // 输入框内容检测
     checkSaveParams() {
       // 中文 字母 数字 1-12
-      // const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,12}$/
-      // const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,50}$/
       // const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.username)) {
