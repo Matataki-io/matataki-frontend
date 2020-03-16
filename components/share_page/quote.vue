@@ -82,7 +82,7 @@ export default {
         const sliderWidth = (clientWidth / 2) - 47
         if (sliderWidth < 580) {
           const relatedDom = document.querySelectorAll('.related')
-          relatedDom.forEach((ele, i) => {
+          relatedDom.forEach((ele) => {
             // console.log(ele)
             ele.style.maxWidth = sliderWidth + 'px'
           })

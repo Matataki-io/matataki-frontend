@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const toolbars = {
   public: {
     underline: true, // 下划线

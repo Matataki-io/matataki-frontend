@@ -303,8 +303,10 @@ export default {
     // eslint-disable-next-line no-unused-vars
     inputFile(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
+        //
       }
       if (!newFile && oldFile) {
+        //
       }
     }
   }

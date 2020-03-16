@@ -80,6 +80,7 @@ export const actions = {
       }
 
       // 判断网络
+      // eslint-disable-next-line no-unused-vars
       const getNetwork = async () => {
         try {
           const networkId = await networkUrl()
@@ -152,6 +153,7 @@ export const actions = {
     })
   },
 
+  // eslint-disable-next-line no-unused-vars
   bind({ commit }) {
     // TODO 优化
     return new Promise((resolve, reject) => {
@@ -178,6 +180,7 @@ export const actions = {
       }
 
       // 判断网络
+      // eslint-disable-next-line no-unused-vars
       const getNetwork = async () => {
         try {
           const networkId = await networkUrl()
@@ -240,6 +243,7 @@ export const actions = {
     })
   },
   // 转账
+  // eslint-disable-next-line no-unused-vars
   sendTransaction({ commit }, { data, value }) {
     return new Promise((resolve, reject) => {
       const transaction = coinbase => {
