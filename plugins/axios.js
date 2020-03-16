@@ -1,4 +1,4 @@
-export default function ({ $axios, redirect }, inject) {
+export default function ({ $axios, redirect }) {
   $axios.defaults.baseURL = process.env.VUE_APP_API
   $axios.onRequest((config) => {
     console.log('Making request to ' + config.url)
