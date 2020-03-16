@@ -10,12 +10,17 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: [
+    'eslint:recommended',
     'plugin:vue/essential',
-    'prettier',
-    'prettier/vue',
+    'plugin:vue/strongly-recommended',
+    'plugin:vue/recommended',
   ],
   rules: {
     quotes: [2, 'single'], // https://eslint.org/docs/2.0.0/rules/quotes
     semi: [2, 'never'], // https://eslint.org/docs/2.0.0/rules/semi
+    // https://github.com/ElemeFE/eslint-config-elemefe/blob/master/rules.js
+    // // https://cn.eslint.org/docs/rules/
+    'no-console': 0,
+    indent : [1, 2, { 'SwitchCase': 1 }]
   }
 }
