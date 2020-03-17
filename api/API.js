@@ -40,6 +40,10 @@ export default {
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
   },
+  // 获取可编辑的文章内容（检查我的文章，以及获取了编辑权限的文章）
+  getCanEditPost(id) {
+    return request.get(`/canEditPost/${id}`)
+  },
   // 获取文章的ipfs hash信息
   getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
   getImg(hash) {

@@ -56,6 +56,15 @@
           </el-button>
         </el-tooltip>
       </div>
+      <div v-else class="lock-bottom">
+        <el-button
+          @click="edit"
+          type="primary"
+          size="small"
+        >
+          编辑文章
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -195,6 +204,16 @@ export default {
         // needPrice: this.isPriceArticle && !this.priceHasPaied,
         signId: this.article.id
       })
+    },
+    edit() {
+      if(this.article && this.article.hash) {
+        this.$router.push({
+          name: 'publish-type-id',
+          params: { type: 'edit', id: this.article.id },
+          query: { hash: this.article.hash }
+        })
+      }
+      else this.$message.error('无法获取文章Hash')
     }
   }
 }

@@ -661,11 +661,12 @@ export default {
       total: 0,
       editorStyle: {},
       fullscreenLoading: false,
-      resizeEvent: null
+      resizeEvent: null,
+      authorId: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
       return this.$ossProcess(this.cover)
     },
@@ -922,15 +923,15 @@ export default {
         console.log('err', err)
       })
       // 获取文章信息
-      const res = await this.$API.getMyPost(id).then(res => {
-        console.log('获取文章信息:', res)
+      const res = await this.$API.getCanEditPost(id).then(res => {
+        console.log('获取文章信息:', id, res)
         if (res.code === 0) {
           this.fissionNum = res.data.fission_factor / 1000
           this.signature = res.data.sign
           this.cover = res.data.cover
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
-
+          this.authorId = res.data.uid
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -964,7 +965,7 @@ export default {
 
           this.setTag(res.data)
         } else {
-          this.$message.success(res.message)
+          this.$message.error(res.message)
           this.$router.push({ path: '/article' })
         }
       }).catch(err => {
@@ -1207,6 +1208,12 @@ export default {
       try {
         const res = await this.$API.editArticle({ article })
         if (res.code === 0) {
+          // 如果不是自己的文章，不设置阅读权限
+          if(!this.isMe(this.authorId)) {
+            success(res.data)
+            this.fullscreenLoading = false // remove full loading
+            return
+          }
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
           promiseArr.push(this.postMineTokens(res.data)) // 持通证阅读
