@@ -1,21 +1,30 @@
 <template>
   <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" v-loading="lockLoading" class="lock">
     <div class="lock-left">
-      <img v-if="!hasPaied" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+      <img v-if="!(hasPaied && hasPaiedRead)" class="lock-img" src="@/assets/img/lock.png" alt="lock">
       <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
     </div>
     <div class="lock-info">
       <h3 class="lock-info-title">
-        {{ !hasPaied ? `${unlockText}编辑权限` : `已${unlockText}编辑权限` }}
+        {{ !(hasPaied && hasPaiedRead) ? `${unlockText}编辑权限` : `已${unlockText}编辑权限` }}
       </h3>
       <h5 class="lock-info-subtitle">
-        {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
+        {{ !(hasPaied && hasPaiedRead) ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
         <el-tooltip effect="dark" content="满足全部条件后即可编辑文章。" placement="top-start">
           <svg-icon icon-class="anser" class="prompt-svg" />
         </el-tooltip>
       </h5>
       <p v-if="!isMe(article.uid)" class="lock-info-des">
         <ul>
+          <li v-if="isTollRead" class="fl">
+            <div class="fl price">
+              阅读权限
+              <svg-icon icon-class="read" class="avatar-read" />
+            </div>
+            <el-tooltip effect="dark" content="此文设有阅读限制，如果需要编辑必须获得阅读权限" placement="left">
+              <svg-icon icon-class="anser" />
+            </el-tooltip>
+          </li>
           <li v-if="isPriceArticle" class="fl">
             <div class="fl price">
               支付
@@ -46,7 +55,7 @@
       </p>
       <div v-if="!hasPaied" class="lock-bottom">
         <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
-        <el-tooltip effect="dark" content="点击后支付即可一键解锁此文内容" placement="top-end">
+        <el-tooltip effect="dark" content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文" placement="top-end">
           <el-button
             @click="wxpayEdit"
             type="primary"
@@ -57,10 +66,12 @@
         </el-tooltip>
       </div>
       <div v-else class="lock-bottom">
+        <span v-if="!hasPaiedRead" class="lock-bottom-total">此文设有阅读限制，如果需要编辑必须获得阅读权限</span>
         <el-button
           @click="edit"
           type="primary"
           size="small"
+          :disabled="!hasPaiedRead"
         >
           编辑文章
         </el-button>
@@ -90,12 +101,12 @@ export default {
       type: Object,
       required: true
     },
-    // 是否已解锁（购买）全文
+    // 是否已解锁（购买）编辑权限
     hasPaied: {
       type: Boolean,
       default: false
     },
-    // 是否已解锁（购买）全文
+    // 是否已解锁（购买）编辑权限
     tokenHasPaied: {
       type: Boolean,
       default: false
@@ -115,7 +126,18 @@ export default {
     lockLoading: {
       type: Boolean,
       default: false
+    },
+    // 是收费文章
+    isTollRead: {
+      type: Boolean,
+      default: false
+    },
+    // 已解锁阅读权限
+    hasPaiedRead: {
+      type: Boolean,
+      default: true
     }
+
   },
   data() {
     return {
@@ -278,6 +300,7 @@ export default {
     border-top: 1px solid #DBDBDB;
     margin-top: 10px;
     padding-top: 10px;
+    align-items:center;
     &-total {
       font-size: 14px;
       color: #B2B2B2;
@@ -306,6 +329,10 @@ export default {
   }
   &-cny {
     margin: 0 6px;
+  }
+  &-read {
+    margin: 0 6px 0 16px;
+    color: #848484;
   }
 }
 

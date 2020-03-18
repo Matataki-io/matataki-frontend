@@ -96,7 +96,7 @@
               />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="readauThority" size="small">
+          <el-checkbox v-model="readauThority" size="small" :disabled="prohibitEditingPrices">
             设置持Fan票
           </el-checkbox>
         </div>
@@ -104,7 +104,7 @@
           <div v-show="readauThority" class="fl ac">
             <div>
               <h3>Fan票类型</h3>
-              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable>
+              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable :disabled="prohibitEditingPrices">
                 <el-option
                   v-for="item in readSelectOptions"
                   :key="item.id"
@@ -121,6 +121,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -133,7 +134,7 @@
           </el-tooltip>
           <span>添加更多</span>
         </div>
-        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
+        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;" :disabled="prohibitEditingPrices">
           设置支付
         </el-checkbox>
         <transition name="fade">
@@ -157,6 +158,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -177,11 +179,11 @@
         </transition>
       </div>
 
-      <!-- 编辑权限 （功能开发中） -->
+      <!-- 编辑权限 -->
       <div class="post-content" style="width: 380px;">
         <div>
           <h3>
-            编辑权限 （功能开发中）
+            编辑权限 (实验功能)
             <el-tooltip effect="dark" content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。" placement="top-start">
               <svg-icon
                 class="help-icon"
@@ -189,7 +191,7 @@
               />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="tokenEditAuthority" size="small">
+          <el-checkbox v-model="tokenEditAuthority" size="small" :disabled="prohibitEditingPrices">
             设置持Fan票
           </el-checkbox>
         </div>
@@ -197,7 +199,7 @@
           <div v-show="tokenEditAuthority" class="fl ac">
             <div>
               <h3>Fan票类型</h3>
-              <el-select v-model="editSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable>
+              <el-select v-model="editSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable :disabled="prohibitEditingPrices">
                 <el-option
                   v-for="item in readSelectOptions"
                   :key="item.id"
@@ -214,11 +216,12 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
         </transition>
-        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;">
+        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;" disabled>
           设置支付
         </el-checkbox>
         <transition name="fade">
@@ -242,6 +245,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -329,14 +333,14 @@
     <div class="post-content">
       <h3>
         原创声明
-        <el-tooltip effect="dark" content="来设置你的文章版权信息" placement="top-start">
+        <el-tooltip effect="dark" content="来设置你的文章版权信息，发布后无法修改" placement="top-start">
           <svg-icon
             class="help-icon"
             icon-class="help"
           />
         </el-tooltip>
       </h3>
-      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
+      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original" :disabled="$route.params.type === 'edit'">
         {{ $t('publish.original') }}
       </el-checkbox>
       <div v-if="isOriginal" class="cc-licensing">
@@ -349,22 +353,22 @@
         <h3>
           请问您允许本作品被别人转载、节选、混编、二次创作吗？
         </h3>
-        <el-radio v-model="ccLicenseOptions.share" label="true">
+        <el-radio :disabled="$route.params.type === 'edit'" v-model="ccLicenseOptions.share" label="true">
           允许
         </el-radio>
-        <el-radio v-model="ccLicenseOptions.share" label="false">
+        <el-radio :disabled="$route.params.type === 'edit'" v-model="ccLicenseOptions.share" label="false">
           不允许
           <el-tooltip effect="dark" content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品" placement="top-start">
             <i class="el-icon-info" />
           </el-tooltip>
         </el-radio>
-        <el-radio v-model="ccLicenseOptions.share" label="SA">
+        <el-radio :disabled="$route.params.type === 'edit'" v-model="ccLicenseOptions.share" label="SA">
           仅允许采用本协议授权的二次创作
           <el-tooltip effect="dark" content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。" placement="top-start">
             <i class="el-icon-info" />
           </el-tooltip>
         </el-radio>
-        <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
+        <el-checkbox :disabled="$route.params.type === 'edit'" v-model="ccLicenseOptions.commercialUse" class="is-original">
           允许商业性使用
         </el-checkbox>
         <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
@@ -662,7 +666,8 @@ export default {
       editorStyle: {},
       fullscreenLoading: false,
       resizeEvent: null,
-      authorId: 0
+      authorId: 0,
+      prohibitEditingPrices: false
     }
   },
   computed: {
@@ -724,7 +729,7 @@ export default {
     requireBuy() {
       const { type } = this.$route.params
       if (this.paymentToken === 0) return null
-      if (type === 'edit' && !this.paymentTokenVisible) {
+      if (!this.paymentTokenVisible) {
         return null
       } else {
         const data = {
@@ -737,7 +742,7 @@ export default {
     editRequireBuy() {
       const { type } = this.$route.params
       if (this.editPaymentToken === 0) return null
-      if (type === 'edit' && !this.buyEditAuthority) {
+      if (!this.buyEditAuthority) {
         return null
       } else {
         const data = {
@@ -932,6 +937,7 @@ export default {
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
           this.authorId = res.data.uid
+          this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -948,7 +954,7 @@ export default {
             this.editSelectValue = res.data.editTokens[0].id
           }
 
-          // 持通证支付
+          // 付费阅读
           if (res.data.prices && res.data.prices.length !== 0) {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)

@@ -128,6 +128,8 @@
           :form="editForm"
           :inputAmountError="getEditInputAmountError"
           :lockLoading="lockLoading"
+          :isTollRead="isTokenArticle || isPriceArticle"
+          :hasPaiedRead="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
 
         <!-- sidebar -->
