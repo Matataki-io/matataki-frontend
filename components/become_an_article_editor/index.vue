@@ -125,7 +125,6 @@
             type="primary"
             size="small"
             @click="wxpayEdit"
-            @click="wxpayArticle"
           >
             一键{{ unlockText }}
           </el-button>

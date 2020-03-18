@@ -974,7 +974,6 @@ export default {
       return tokenArr
     },
     requireBuy() {
-      const { type } = this.$route.params
       if (this.paymentToken === 0) return null
       if (!this.paymentTokenVisible) {
         return null
@@ -987,7 +986,6 @@ export default {
     },
     /** 付费编辑 */
     editRequireBuy() {
-      const { type } = this.$route.params
       if (this.editPaymentToken === 0) return null
       if (!this.buyEditAuthority) {
         return null
@@ -1174,7 +1172,7 @@ export default {
         console.log('err', err)
       })
       // 获取文章信息
-      const res = await this.$API.getCanEditPost(id).then(res => {
+      await this.$API.getCanEditPost(id).then(res => {
         console.log('获取文章信息:', id, res)
         if (res.code === 0) {
           this.fissionNum = res.data.fission_factor / 1000
@@ -1454,7 +1452,6 @@ export default {
       article.editRequireToken = this.editRequireToken
       article.editRequireBuy = this.editRequireBuy
 
-      const { author } = article
       const { failed, success } = this
       try {
         const res = await this.$API.editArticle({ article })
