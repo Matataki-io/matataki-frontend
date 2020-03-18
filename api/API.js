@@ -40,6 +40,10 @@ export default {
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
   },
+  // 获取可编辑的文章内容（检查我的文章，以及获取了编辑权限的文章）
+  getCanEditPost(id) {
+    return request.get(`/canEditPost/${id}`)
+  },
   // 获取文章的ipfs hash信息
   getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
   getImg(hash) {
@@ -194,7 +198,8 @@ export default {
     url,
     { signId = null, author, data, title, fissionFactor, 
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
-      requireToken, requireBuy }) {
+      requireToken, requireBuy,
+      editRequireToken = null, editRequireBuy = null }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -213,7 +218,8 @@ export default {
         cc_license,
         commentPayPoint,
         shortContent,
-        requireToken, requireBuy
+        requireToken, requireBuy,
+        editRequireToken, editRequireBuy
       },
       timeout: 30000
     })

@@ -6,7 +6,7 @@
   >
     <div class="lock-left">
       <img
-        v-if="!hasPaied"
+        v-if="!(hasPaied && hasPaiedRead)"
         class="lock-img"
         src="@/assets/img/lock.png"
         alt="lock"
@@ -20,10 +20,10 @@
     </div>
     <div class="lock-info">
       <h3 class="lock-info-title">
-        {{ !hasPaied ? `${unlockText}编辑权限` : `已${unlockText}编辑权限` }}
+        {{ !(hasPaied && hasPaiedRead) ? `${unlockText}编辑权限` : `已${unlockText}编辑权限` }}
       </h3>
       <h5 class="lock-info-subtitle">
-        {{ !hasPaied ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
+        {{ !(hasPaied && hasPaiedRead) ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
         <el-tooltip
           effect="dark"
           content="满足全部条件后即可编辑文章。"
@@ -40,6 +40,25 @@
         class="lock-info-des"
       >
         <ul>
+          <li
+            v-if="isTollRead"
+            class="fl"
+          >
+            <div class="fl price">
+              阅读权限
+              <svg-icon
+                icon-class="read"
+                class="avatar-read"
+              />
+            </div>
+            <el-tooltip
+              effect="dark"
+              content="此文设有阅读限制，如果需要编辑必须获得阅读权限"
+              placement="left"
+            >
+              <svg-icon icon-class="anser" />
+            </el-tooltip>
+          </li>
           <li
             v-if="isPriceArticle"
             class="fl"
@@ -99,17 +118,34 @@
         <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
         <el-tooltip
           effect="dark"
-          content="点击后支付即可一键解锁此文内容"
+          content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文"
           placement="top-end"
         >
           <el-button
             type="primary"
             size="small"
-            @click="wxpayArticle"
+            @click="wxpayEdit"
           >
             一键{{ unlockText }}
           </el-button>
         </el-tooltip>
+      </div>
+      <div
+        v-else
+        class="lock-bottom"
+      >
+        <span
+          v-if="!hasPaiedRead"
+          class="lock-bottom-total"
+        >此文设有阅读限制，如果需要编辑必须获得阅读权限</span>
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="!hasPaiedRead"
+          @click="edit"
+        >
+          编辑文章
+        </el-button>
       </div>
     </div>
   </div>
@@ -119,6 +155,7 @@
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
+import utils from '@/utils/utils'
 
 export default {
   name: 'ArticleCard',
@@ -131,12 +168,12 @@ export default {
       type: Object,
       required: true
     },
-    // 是否已解锁（购买）全文
+    // 是否已解锁（购买）编辑权限
     hasPaied: {
       type: Boolean,
       default: false
     },
-    // 是否已解锁（购买）全文
+    // 是否已解锁（购买）编辑权限
     tokenHasPaied: {
       type: Boolean,
       default: false
@@ -145,17 +182,33 @@ export default {
       type: String,
       default: '0'
     },
-    totalCny: {
-      type: Number,
-      default: 0
+    form: {
+      type: Object,
+      required: true
+    },
+    inputAmountError: {
+      type: String,
+      default: ''
+    },
+    lockLoading: {
+      type: Boolean,
+      default: false
+    },
+    // 是收费文章
+    isTollRead: {
+      type: Boolean,
+      default: false
+    },
+    // 已解锁阅读权限
+    hasPaiedRead: {
+      type: Boolean,
+      default: true
     }
+
   },
   data() {
     return {
-      isTokenArticle: true,
-      isPriceArticle: true,
       isProduct: false,
-      lockLoading: false,
     }
   },
   computed: {
@@ -166,9 +219,18 @@ export default {
       }
       return '解锁'
     },
+    // 是否是持通证文章
+    isTokenArticle() {
+      return (this.article.editTokens && this.article.editTokens.length !== 0)
+    },
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.editPrices && this.article.editPrices.length !== 0)
+    },
+    // 价格
     getArticlePrice() {
-      if (this.isPriceArticle && this.article.prices[0]) {
-        const ad = this.article.prices[0]
+      if (this.isPriceArticle && this.article.editPrices[0]) {
+        const ad = this.article.editPrices[0]
         return this.$utils.fromDecimal(ad.price)
       } else {
         return 0
@@ -176,38 +238,71 @@ export default {
     },
     // 需要多少Fan票
     needTokenAmount() {
-      if (this.article.tokens.length !== 0) {
-        return precision(this.article.tokens[0].amount, 'CNY', this.article.tokens[0].decimals)
+      if (this.article.editTokens.length !== 0) {
+        return precision(this.article.editTokens[0].amount, 'CNY', this.article.editTokens[0].decimals)
       } else return 0
     },
     // Fan票ID
     needTokenId() {
-      if (this.article.tokens.length !== 0) {
-        return this.article.tokens[0].id
+      if (this.article.editTokens.length !== 0) {
+        return this.article.editTokens[0].id
       } else return -1
     },
     // 需要多少Fan票代号
     needTokenSymbol() {
-      if (this.article.tokens.length !== 0) {
-        return this.article.tokens[0].symbol
+      if (this.article.editTokens.length !== 0) {
+        return this.article.editTokens[0].symbol
       } else return ''
     },
     // 需要多少Fan票名称
     needTokenName() {
-      if (this.article.tokens.length !== 0) {
-        return this.article.tokens[0].name
+      if (this.article.editTokens.length !== 0) {
+        return this.article.editTokens[0].name
       } else return ''
     },
     // 需要多少Fan票LOGO
     needTokenLogo() {
-      if (this.article.tokens.length !== 0) {
-        return this.$ossProcess(this.article.tokens[0].logo)
+      if (this.article.editTokens.length !== 0) {
+        return this.$ossProcess(this.article.editTokens[0].logo)
       } else return ''
+    },
+    // 总价
+    totalCny() {
+      let result = 0
+      if (this.isTokenArticle) {
+        result += parseFloat(this.form.input || 0)
+      }
+      return utils.up2points(result + this.getArticlePrice)
     }
   },
   methods: {
-    wxpayArticle() {
-      this.$message.warning('警告哦，这个功能还在开发中')
+    // 购买编辑权限
+    wxpayEdit() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+      if (this.inputAmountError) {
+        this.$message.error(this.inputAmountError)
+        return
+      }
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        type: 'buy_token_output',
+        needToken: this.isTokenArticle && !this.tokenHasPaied,
+        // needPrice: this.isPriceArticle && !this.priceHasPaied,
+        signId: this.article.id
+      })
+    },
+    edit() {
+      if(this.article && this.article.hash) {
+        this.$router.push({
+          name: 'publish-type-id',
+          params: { type: 'edit', id: this.article.id },
+          query: { hash: this.article.hash }
+        })
+      }
+      else this.$message.error('无法获取文章Hash')
     }
   }
 }
@@ -272,6 +367,7 @@ export default {
     border-top: 1px solid #DBDBDB;
     margin-top: 10px;
     padding-top: 10px;
+    align-items:center;
     &-total {
       font-size: 14px;
       color: #B2B2B2;
@@ -300,6 +396,10 @@ export default {
   }
   &-cny {
     margin: 0 6px;
+  }
+  &-read {
+    margin: 0 6px 0 16px;
+    color: #848484;
   }
 }
 

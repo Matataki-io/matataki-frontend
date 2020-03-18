@@ -139,6 +139,7 @@
           <el-checkbox
             v-model="readauThority"
             size="small"
+            :disabled="prohibitEditingPrices"
           >
             设置持Fan票
           </el-checkbox>
@@ -156,6 +157,7 @@
                 placeholder="请选择"
                 style="width: 100%;"
                 filterable
+                :disabled="prohibitEditingPrices"
               >
                 <el-option
                   v-for="item in readSelectOptions"
@@ -173,6 +175,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -196,6 +199,7 @@
           v-model="paymentTokenVisible"
           size="small"
           style="margin-top: 10px;"
+          :disabled="prohibitEditingPrices"
         >
           设置支付
         </el-checkbox>
@@ -229,6 +233,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -249,14 +254,14 @@
         </transition>
       </div>
 
-      <!-- 编辑权限 （功能开发中） -->
+      <!-- 编辑权限 -->
       <div
         class="post-content"
         style="width: 380px;"
       >
         <div>
           <h3>
-            编辑权限 （功能开发中）
+            编辑权限 (实验功能)
             <el-tooltip
               effect="dark"
               content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
@@ -271,7 +276,7 @@
           <el-checkbox
             v-model="tokenEditAuthority"
             size="small"
-            disabled
+            :disabled="prohibitEditingPrices"
           >
             设置持Fan票
           </el-checkbox>
@@ -289,6 +294,7 @@
                 placeholder="请选择"
                 style="width: 100%;"
                 filterable
+                :disabled="prohibitEditingPrices"
               >
                 <el-option
                   v-for="item in readSelectOptions"
@@ -306,6 +312,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -348,6 +355,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -449,7 +457,7 @@
         原创声明
         <el-tooltip
           effect="dark"
-          content="来设置你的文章版权信息"
+          content="来设置你的文章版权信息，发布后无法修改"
           placement="top-start"
         >
           <svg-icon
@@ -461,6 +469,7 @@
       <el-checkbox
         v-model="isOriginal"
         class="is-original"
+        :disabled="$route.params.type === 'edit'"
         @change="originalChange"
       >
         {{ $t('publish.original') }}
@@ -484,12 +493,14 @@
         </h3>
         <el-radio
           v-model="ccLicenseOptions.share"
+          :disabled="$route.params.type === 'edit'"
           label="true"
         >
           允许
         </el-radio>
         <el-radio
           v-model="ccLicenseOptions.share"
+          :disabled="$route.params.type === 'edit'"
           label="false"
         >
           不允许
@@ -503,6 +514,7 @@
         </el-radio>
         <el-radio
           v-model="ccLicenseOptions.share"
+          :disabled="$route.params.type === 'edit'"
           label="SA"
         >
           仅允许采用本协议授权的二次创作
@@ -516,6 +528,7 @@
         </el-radio>
         <el-checkbox
           v-model="ccLicenseOptions.commercialUse"
+          :disabled="$route.params.type === 'edit'"
           class="is-original"
         >
           允许商业性使用
@@ -899,11 +912,13 @@ export default {
       total: 0,
       editorStyle: {},
       fullscreenLoading: false,
-      resizeEvent: null
+      resizeEvent: null,
+      authorId: 0,
+      prohibitEditingPrices: false
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
       return this.$ossProcess(this.cover)
     },
@@ -943,14 +958,40 @@ export default {
       }
       return tokenArr
     },
+    /** 持币编辑 */
+    editRequireToken() {
+      let tokenArr = []
+      if (this.tokenEditAuthority) {
+        // 持通证
+        // 获取当前选择的通证种
+        const token = this.readSelectOptions.filter(list => list.id === this.editSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [{
+          tokenId: token[0].id,
+          amount: toPrecision(this.editToken, 'cny', token[0].decimals)
+        }]
+      }
+      return tokenArr
+    },
     requireBuy() {
-      const { type } = this.$route.params
       if (this.paymentToken === 0) return null
-      if (type === 'edit' && !this.paymentTokenVisible) {
+      if (!this.paymentTokenVisible) {
         return null
       } else {
         const data = {
           price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+        }
+        return data
+      }
+    },
+    /** 付费编辑 */
+    editRequireBuy() {
+      if (this.editPaymentToken === 0) return null
+      if (!this.buyEditAuthority) {
+        return null
+      } else {
+        const data = {
+          price: toPrecision(this.editPaymentToken, 'cny', 4) // 默认四位小数
         }
         return data
       }
@@ -1131,14 +1172,16 @@ export default {
         console.log('err', err)
       })
       // 获取文章信息
-      await this.$API.getMyPost(id).then(res => {
+      await this.$API.getCanEditPost(id).then(res => {
+        console.log('获取文章信息:', id, res)
         if (res.code === 0) {
           this.fissionNum = res.data.fission_factor / 1000
           this.signature = res.data.sign
           this.cover = res.data.cover
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
-
+          this.authorId = res.data.uid
+          this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -1148,7 +1191,14 @@ export default {
             this.readSelectValue = res.data.tokens[0].id
           }
 
-          // 持通证支付
+          // 持通证编辑
+          if (res.data.editTokens && res.data.editTokens.length !== 0) {
+            this.tokenEditAuthority = true
+            this.editToken = precision(res.data.editTokens[0].amount, 'cny', res.data.editTokens[0].decimals)
+            this.editSelectValue = res.data.editTokens[0].id
+          }
+
+          // 付费阅读
           if (res.data.prices && res.data.prices.length !== 0) {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
@@ -1156,9 +1206,16 @@ export default {
             this.paymentSelectValue = -1
           }
 
+          // 付费编辑
+          if (res.data.editPrices && res.data.editPrices.length !== 0) {
+            this.buyEditAuthority = true
+            this.editPaymentToken = precision(res.data.editPrices[0].price, res.data.editPrices[0].platform, res.data.editPrices[0].decimals)
+            this.paymentSelectValue = -1
+          }
+
           this.setTag(res.data)
         } else {
-          this.$message.success(res.message)
+          this.$message.error(res.message)
           this.$router.push({ path: '/article' })
         }
       }).catch(err => {
@@ -1307,6 +1364,11 @@ export default {
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
+
+      //编辑权限
+      article.editRequireToken = this.editRequireToken
+      article.editRequireBuy = this.editRequireBuy
+
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       const { failed } = this
@@ -1385,10 +1447,21 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
+
+      // 编辑权限
+      article.editRequireToken = this.editRequireToken
+      article.editRequireBuy = this.editRequireBuy
+
       const { failed, success } = this
       try {
         const res = await this.$API.editArticle({ article })
         if (res.code === 0) {
+          // 如果不是自己的文章，不设置阅读权限
+          if(!this.isMe(this.authorId)) {
+            success(res.data)
+            this.fullscreenLoading = false // remove full loading
+            return
+          }
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
           promiseArr.push(this.postMineTokens(res.data)) // 持通证阅读
@@ -1471,11 +1544,23 @@ export default {
           else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
+        
+        // 持Fan票编辑
+        if (this.tokenEditAuthority) {
+          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+        }
 
         if (this.paymentTokenVisible) {
           if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
           else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        // 付费编辑
+        if (this.buyEditAuthority) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
         }
         // 发布文章
         this.fullscreenLoading = true
@@ -1500,10 +1585,22 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
+        // 持Fan票编辑
+        if (this.tokenEditAuthority) {
+          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+        }
+
         if (this.paymentTokenVisible) {
           if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
           else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        // 付费编辑
+        if (this.buyEditAuthority) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
         }
 
         this.fullscreenLoading = true
