@@ -11,9 +11,9 @@
           {{ item.lab }}
         </li>
       </ul>
-      <slot name="sort"></slot>
+      <slot name="sort" />
     </div>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

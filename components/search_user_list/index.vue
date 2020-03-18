@@ -1,11 +1,18 @@
 <template>
   <div class="user-list">
     <n-link :to="{name: 'user-id', params: {id: card.id}}">
-      <avatar :src="avatarSrc" size="80px" class="avatar" />
+      <avatar
+        :src="avatarSrc"
+        size="80px"
+        class="avatar"
+      />
     </n-link>
     <div class="user-info">
       <n-link :to="{name: 'user-id', params: {id: card.id}}">
-        <p v-html="userTitle" class="user-title" />
+        <p
+          class="user-title"
+          v-html="userTitle"
+        />
       </n-link>
       <p class="user-num">
         <span>{{ $t('follow') }}: {{ card && card.follows }}</span>
@@ -17,8 +24,15 @@
       </p>
     </div>
     <template v-if="!isMe(card.id)">
-      <el-button :class="!card.is_follow && 'black'" @click.stop="followOrUnFollow" class="follow">
-        <i v-if="!card.is_follow" class="el-icon-plus" />
+      <el-button
+        :class="!card.is_follow && 'black'"
+        class="follow"
+        @click.stop="followOrUnFollow"
+      >
+        <i
+          v-if="!card.is_follow"
+          class="el-icon-plus"
+        />
         {{ followBtnText }}
       </el-button>
     </template>
@@ -26,7 +40,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import { xssFilter } from '@/utils/xss'
 

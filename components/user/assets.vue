@@ -9,13 +9,25 @@
         <span class="total-money">{{ playerincome }}</span>
       </div>
       <div style="text-align: right;">
-        <el-button :disabled="isWithdrawDisabled" @click="$emit('toggleWithdraw', 1)" size="small" class="btn">
+        <el-button
+          :disabled="isWithdrawDisabled"
+          size="small"
+          class="btn"
+          @click="$emit('toggleWithdraw', 1)"
+        >
           {{ $t('withdraw.title') }}
         </el-button>
-        <el-button @click="giftDialogShow = true" v-if="isShowTransfer" size="small">
+        <el-button
+          v-if="isShowTransfer"
+          size="small"
+          @click="giftDialogShow = true"
+        >
           转账
         </el-button>
-        <p v-if="isWithdrawDisabled" class="mark-text">
+        <p
+          v-if="isWithdrawDisabled"
+          class="mark-text"
+        >
           提现功能暂未开放
         </p>
       </div>
@@ -39,7 +51,10 @@
       </div>
     </div>
     <div class="line" />
-    <giftDialog v-model="giftDialogShow" :balance="playerincome" />
+    <giftDialog
+      v-model="giftDialogShow"
+      :balance="playerincome"
+    />
   </div>
 </template>
 

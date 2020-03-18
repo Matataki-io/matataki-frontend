@@ -1,8 +1,18 @@
 <template>
   <div>
-    <div v-loading="loading" class="pillar">
-      <minetokenDetailCard v-for="item in pull.list" :key="item.id" :card="item" />
-      <div v-if="pull.list.length === 0 && !loading" class="no-data">
+    <div
+      v-loading="loading"
+      class="pillar"
+    >
+      <minetokenDetailCard
+        v-for="item in pull.list"
+        :key="item.id"
+        :card="item"
+      />
+      <div
+        v-if="pull.list.length === 0 && !loading"
+        class="no-data"
+      >
         {{ $t('not') }}
       </div>
     </div>
@@ -15,9 +25,9 @@
       :page-size="10"
       :total="total"
       :need-access-token="true"
+      class="pagination"
       @paginationData="paginationData"
       @togglePage="togglePage"
-      class="pagination"
     />
   </div>
 </template>

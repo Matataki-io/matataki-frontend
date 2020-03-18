@@ -4,8 +4,8 @@
     <div class="money">
       <p class="money-title">
         <i
-          @click="$emit('toggleWithdraw', 0)"
           class="el-icon-arrow-left"
+          @click="$emit('toggleWithdraw', 0)"
         />
         {{ $t('withdraw.balance') }}
       </p>
@@ -16,7 +16,11 @@
     <div class="line" />
 
     <div class="withdraw-content">
-      <div v-for="(item, index) in withdrawData.list" :key="index" class="withdraw-content-list">
+      <div
+        v-for="(item, index) in withdrawData.list"
+        :key="index"
+        class="withdraw-content-list"
+      >
         <p class="withdraw-content-title">
           {{ item.title }}
           <span>{{ item.titleDes }}</span>
@@ -32,11 +36,17 @@
     </div>
 
     <div class="withdraw-des">
-      <p v-for="(item, index) in withdrawData.des" :key="index">
+      <p
+        v-for="(item, index) in withdrawData.des"
+        :key="index"
+      >
         {{ item }}
       </p>
     </div>
-    <button @click="withdrawButton" class="with">
+    <button
+      class="with"
+      @click="withdrawButton"
+    >
       {{ $t('withdraw.title') }}
     </button>
   </div>

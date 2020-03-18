@@ -3,7 +3,11 @@
   <div class="card fl ac jsb">
     <div class="fl content">
       <div class="cover">
-        <img :src="cover" :onerror="defaultCover" alt="cover">
+        <img
+          :src="cover"
+          :onerror="defaultCover"
+          alt="cover"
+        >
       </div>
       <div class="fl jc fdc info">
         <h3 class="title">
@@ -14,7 +18,11 @@
         </p>
       </div>
     </div>
-    <a @click.stop="$emit('del', index)" class="del" href="javascript:;">{{ $t('delete') }}</a>
+    <a
+      class="del"
+      href="javascript:;"
+      @click.stop="$emit('del', index)"
+    >{{ $t('delete') }}</a>
   </div>
 </template>
 

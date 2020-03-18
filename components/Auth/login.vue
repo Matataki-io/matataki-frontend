@@ -1,8 +1,19 @@
 <template>
-  <section v-loading="loading" class="login">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="ss-form">
+  <section
+    v-loading="loading"
+    class="login"
+  >
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="ss-form"
+    >
       <el-form-item prop="email">
-        <el-input v-model="loginForm.email" :placeholder="$t('rule.loginEmailMessage')" />
+        <el-input
+          v-model="loginForm.email"
+          :placeholder="$t('rule.loginEmailMessage')"
+        />
       </el-form-item>
       <el-form-item prop="password">
         <el-input
@@ -13,13 +24,19 @@
         />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button @click="submitLoginForm" type="primary">
+        <el-button
+          type="primary"
+          @click="submitLoginForm"
+        >
           {{ $t('login') }}
         </el-button>
         <div class="bottom-tip">
           <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
           <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
-          <a @click="$emit('switch')" href="javascript:void(0);">{{ $t('rule.forgetPassword')}}</a>
+          <a
+            href="javascript:void(0);"
+            @click="$emit('switch')"
+          >{{ $t('rule.forgetPassword') }}</a>
         </div>
       </el-form-item>
     </el-form>
@@ -28,27 +45,71 @@
         {{ $t('auth.otherAccount') }}
       </h1>
       <div class="oauth">
-        <el-tooltip :content="$t('auth.vntTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('Vnt')" class="oauth-bg bg-blue1">
-            <svg-icon class="vnt" icon-class="vnt" />
+        <el-tooltip
+          :content="$t('auth.vntTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-blue1"
+            @click="walletLogin('Vnt')"
+          >
+            <svg-icon
+              class="vnt"
+              icon-class="vnt"
+            />
           </div>
         </el-tooltip>
 
-        <el-tooltip :content="$t('auth.eosTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('EOS')" class="oauth-bg bg-gray">
-            <svg-icon class="eos" icon-class="eos_login" />
+        <el-tooltip
+          :content="$t('auth.eosTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('EOS')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="eos_login"
+            />
           </div>
         </el-tooltip>
 
-        <el-tooltip :content="$t('auth.metamaskTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('MetaMask')" class="oauth-bg bg-gray">
-            <svg-icon class="eos" icon-class="metamask" />
+        <el-tooltip
+          :content="$t('auth.metamaskTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('MetaMask')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="metamask"
+            />
           </div>
         </el-tooltip>
 
-        <el-tooltip :content="$t('auth.ontType')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('ONT')" class="oauth-bg bg-blue">
-            <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
+        <el-tooltip
+          :content="$t('auth.ontType')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-blue"
+            @click="walletLogin('ONT')"
+          >
+            <img
+              src="@/assets/img/icon_logo_ont.svg"
+              alt="ONT"
+            >
           </div>
         </el-tooltip>
         <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
@@ -60,24 +121,63 @@
         </el-tooltip>-->
       </div>
       <div class="oauth">
-        <el-tooltip :content="$t('auth.githubTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('GitHub')" class="oauth-bg bg-purple">
-            <svg-icon class="github" icon-class="github" />
+        <el-tooltip
+          :content="$t('auth.githubTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-purple"
+            @click="walletLogin('GitHub')"
+          >
+            <svg-icon
+              class="github"
+              icon-class="github"
+            />
           </div>
         </el-tooltip>
-        <el-tooltip :content="$t('auth.telegramTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('Telegram')" class="oauth-bg bg-tg">
-            <svg-icon class="github" icon-class="telegram" />
+        <el-tooltip
+          :content="$t('auth.telegramTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-tg"
+            @click="walletLogin('Telegram')"
+          >
+            <svg-icon
+              class="github"
+              icon-class="telegram"
+            />
           </div>
         </el-tooltip>
-        <el-tooltip :content="$t('auth.twitterTitle')" class="item" effect="dark" placement="top">
-          <div @click="walletLogin('Twitter')" style="cursor: not-allowed;" class="oauth-bg bg-twitter">
-            <svg-icon class="twitter" icon-class="twitter" />
+        <el-tooltip
+          :content="$t('auth.twitterTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            style="cursor: not-allowed;"
+            class="oauth-bg bg-twitter"
+            @click="walletLogin('Twitter')"
+          >
+            <svg-icon
+              class="twitter"
+              icon-class="twitter"
+            />
           </div>
         </el-tooltip>
       </div>
     </div>
-    <img v-if="referral" :alt="$t('auth.invite')" class="referral" src="@/assets/img/invite.png">
+    <img
+      v-if="referral"
+      :alt="$t('auth.invite')"
+      class="referral"
+      src="@/assets/img/invite.png"
+    >
   </section>
 </template>
 

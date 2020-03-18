@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const paginationUrl = {
   // 两端需要同步更新
   // home

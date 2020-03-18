@@ -2,11 +2,14 @@
   <el-button
     v-if="!isMe(id)"
     :class="!userInfo.followed ? 'black' : 'unsubscribe'"
-    @click.stop="followOrUnFollow"
     size="small"
     class="btn"
+    @click.stop="followOrUnFollow"
   >
-    <i v-if="!userInfo.followed" class="el-icon-plus" />
+    <i
+      v-if="!userInfo.followed"
+      class="el-icon-plus"
+    />
     {{ userInfo.followed ? $t('following') : $t('follow') }}
   </el-button>
 </template>

@@ -1,8 +1,19 @@
 <template>
   <transition name="fade">
-    <el-tooltip v-if="show" class="item" effect="dark" :content="$t('sidebar.feedback') + '?'" placement="left">
+    <el-tooltip
+      v-if="show"
+      class="item"
+      effect="dark"
+      :content="$t('sidebar.feedback') + '?'"
+      placement="left"
+    >
       <!-- 84254 -->
-      <a class="feedback" href="https://support.qq.com/product/98576" target="_blank" title="反馈">
+      <a
+        class="feedback"
+        href="https://support.qq.com/product/98576"
+        target="_blank"
+        title="反馈"
+      >
         <svg-icon
           class="icon-feedback"
           icon-class="tgc"

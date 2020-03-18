@@ -6,10 +6,17 @@
         class="comment-avatar"
         target="_blank"
       >
-        <avatar :src="avatar" size="30px"></avatar>
+        <avatar
+          :src="avatar"
+          size="30px"
+        />
       </n-link>
       <div class="comment-head">
-        <router-link :to="`/user/${comment.uid}`" class="comment-author" target="_blank">
+        <router-link
+          :to="`/user/${comment.uid}`"
+          class="comment-author"
+          target="_blank"
+        >
           {{ comment.nickname || comment.username }}
         </router-link>
         {{ action }}

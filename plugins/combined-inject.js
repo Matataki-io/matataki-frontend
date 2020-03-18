@@ -7,6 +7,7 @@ import utils from '@/utils/utils'
 import publishMethods from '@/utils/publish_methods'
 import ossProcess from '@/utils/oss_process'
 
+// eslint-disable-next-line no-unused-vars
 export default ({ app }, inject) => {
   inject('API', API)
   inject('backendAPI', backendAPI)

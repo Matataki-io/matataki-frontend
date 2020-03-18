@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="hYLPFg">
-      <div @click="psShow = true" class="caRvnP">
+      <div
+        class="caRvnP"
+        @click="psShow = true"
+      >
         <span class="gclSjj">{{ poolSelected.text }}</span>
         <i class="el-icon-arrow-down" />
       </div>
@@ -19,19 +22,25 @@
           </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
-        <div v-if="isDelete" class="jbRmQG">
+        <div
+          v-if="isDelete"
+          class="jbRmQG"
+        >
           <div />
           <input
             :value="form.output"
-            @input="outputChange"
-            @keypress="isNumber"
             class="gcotIA"
             type="number"
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
+            @input="outputChange"
+            @keypress="isNumber"
           >
-          <button @click="tlShow = true;field = 'outputToken'" class="iAoRgd">
+          <button
+            class="iAoRgd"
+            @click="tlShow = true;field = 'outputToken'"
+          >
             <span class="rTZzf">
               {{ form.outputToken.symbol || '选择Fan票' }}
               <i class="el-icon-arrow-down" />
@@ -39,16 +48,19 @@
           </button>
         </div>
         <!--------------------- 删除流动金代码结束 ---------------------->
-        <div v-else class="jbRmQG">
+        <div
+          v-else
+          class="jbRmQG"
+        >
           <input
             :value="form.input"
-            @input="inputChange"
-            @keypress="isNumber"
             class="gcotIA"
             type="number"
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
+            @input="inputChange"
+            @keypress="isNumber"
           >
           <button class="iAoRgd">
             <span class="rTZzf">
@@ -62,8 +74,14 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="haryqg">
-        <i v-if="isDelete" class="el-icon-bottom gHgbDu" />
-        <i v-else class="el-icon-plus gHgbDu" />
+        <i
+          v-if="isDelete"
+          class="el-icon-bottom gHgbDu"
+        />
+        <i
+          v-else
+          class="el-icon-plus gHgbDu"
+        />
       </div>
       <div class="jJSpkX" />
     </div>
@@ -79,7 +97,10 @@
           </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
-        <div v-if="isDelete" class="cHbrWc">
+        <div
+          v-if="isDelete"
+          class="cHbrWc"
+        >
           <template v-if="outputPoolSize.cny_amount !== 0">
             <div class="kroqsf">
               {{ outputPoolSize.cny_amount.toFixed(4) }} CNY
@@ -93,20 +114,26 @@
           </template>
         </div>
         <!--------------------- 删除流动金代码结束 ---------------------->
-        <div v-else class="jbRmQG">
+        <div
+          v-else
+          class="jbRmQG"
+        >
           <div />
           <input
             :readonly="outputReadOnly"
             :value="form.output"
-            @input="outputChange"
-            @keypress="isNumber"
             class="gcotIA"
             type="number"
             min="0"
             step="0.000000000000000001"
             placeholder="0.0"
+            @input="outputChange"
+            @keypress="isNumber"
           >
-          <button @click="tlShow = true;field = 'outputToken'" class="iAoRgd">
+          <button
+            class="iAoRgd"
+            @click="tlShow = true;field = 'outputToken'"
+          >
             <span class="rTZzf">
               {{ form.outputToken.symbol || '选择Fan票' }}
               <i class="el-icon-arrow-down" />
@@ -133,11 +160,19 @@
         <span v-else> - </span>
       </div>
     </div>
-    <div v-if="!isDelete" @click="detailShow = !detailShow" class="mHVYT">
+    <div
+      v-if="!isDelete"
+      class="mHVYT"
+      @click="detailShow = !detailShow"
+    >
       <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
       <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" />
     </div>
-    <div v-show="detailShow" v-if="!isDelete" class="iUPTxf">
+    <div
+      v-show="detailShow"
+      v-if="!isDelete"
+      class="iUPTxf"
+    >
       <div class="hRyusy">
         <div>
           你正在添加
@@ -165,14 +200,31 @@
     </div>
     <!-- 提交 -->
     <div class="hGStes">
-      <button :disabled="btnDisabled" @click="onSubmit" class="jBltiI">
+      <button
+        :disabled="btnDisabled"
+        class="jBltiI"
+        @click="onSubmit"
+      >
         {{ poolSelected.text }}
       </button>
     </div>
-    <OrderModal v-model="orderShow" :form="{...form, type: 'add', limitValue, youMintTokenAmount}" />
-    <TokenListModal v-model="tlShow" :addon="false" @selectToken="selectToken" />
-    <PoolSelectModal v-model="psShow" @selectPool="selectPool" />
-    <TradeLog :tokensId="tokensId" type="liquidity" />
+    <OrderModal
+      v-model="orderShow"
+      :form="{...form, type: 'add', limitValue, youMintTokenAmount}"
+    />
+    <TokenListModal
+      v-model="tlShow"
+      :addon="false"
+      @selectToken="selectToken"
+    />
+    <PoolSelectModal
+      v-model="psShow"
+      @selectPool="selectPool"
+    />
+    <TradeLog
+      :tokens-id="tokensId"
+      type="liquidity"
+    />
   </div>
 </template>
 
@@ -265,7 +317,7 @@ export default {
       }
     },
     btnDisabled() {
-      const { input, inputToken, output, outputToken } = this.form
+      const { input, output, outputToken } = this.form
       const { outputPoolSize } = this
       // 检查余额情况
       if (!this.checkBalance(false)) {

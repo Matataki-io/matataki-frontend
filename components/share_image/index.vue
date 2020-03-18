@@ -1,19 +1,33 @@
 <template>
   <div class="share-image">
-    <img class="share-image__head" src="@/assets/img/share_image_head.png" alt="share_image_head">
+    <img
+      class="share-image__head"
+      src="@/assets/img/share_image_head.png"
+      alt="share_image_head"
+    >
     <div class="share-image__content">
       <p class="share-image__text">
         {{ contentSlice || '&nbsp;' }}
       </p>
-      <img class="ref" src="@/assets/img/share_ref.png" alt="ref">
+      <img
+        class="ref"
+        src="@/assets/img/share_ref.png"
+        alt="ref"
+      >
     </div>
     <div class="share-image__user">
-      <avatar :src="avatarSrc" class="avatar" />
+      <avatar
+        :src="avatarSrc"
+        class="avatar"
+      />
       <span>{{ username.length > 12 ? username.slice(0, 12) + '...': username }}</span>
     </div>
     <div class="share-image__ref">
       <template v-for="(item, index) in reference">
-        <div :key="index" class="ref-index">
+        <div
+          :key="index"
+          class="ref-index"
+        >
           <div class="ref-index__line" />
           <div class="ref-index__number">
             {{ index+1 }}
@@ -21,37 +35,49 @@
         </div>
 
         <shareOuterCard
-          :card="item"
           v-if="item.ref_sign_id === 0"
           :key="'shareInsideCard' + index"
+          :card="item"
           :idx="index"
-          :shareCard="true"
+          :share-card="true"
           :card-type="cardType"
           class="list-card"
         />
         <sharePCard
-          :card="item"
           v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
           :key="'shareInsideCard' + index"
+          :card="item"
           :idx="index"
-          :shareCard="true"
+          :share-card="true"
           :card-type="cardType"
           class="list-card"
         />
         <shareInsideCard
-          :card="item"
           v-else-if="item.ref_sign_id && item.channel_id === 3"
           :key="'shareOuterCard' + index"
+          :card="item"
           :idx="index"
-          :shareCard="true"
+          :share-card="true"
           :card-type="cardType"
           class="list-card"
         />
       </template>
     </div>
-    <img src="@/assets/img/share_image_logo.png" alt="share-image__logo" class="share-image__logo">
-    <img src="@/assets/img/share_image_description.png" alt="share-image__description" class="share-image__description">
-    <qrcode :value="url" :options="{ width: 64 }" class="share-image__code" />
+    <img
+      src="@/assets/img/share_image_logo.png"
+      alt="share-image__logo"
+      class="share-image__logo"
+    >
+    <img
+      src="@/assets/img/share_image_description.png"
+      alt="share-image__description"
+      class="share-image__description"
+    >
+    <qrcode
+      :value="url"
+      :options="{ width: 64 }"
+      class="share-image__code"
+    />
     <p class="share-image__code__description">
       扫码查看分享详情
     </p>

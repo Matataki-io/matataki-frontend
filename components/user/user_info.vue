@@ -1,18 +1,38 @@
 <template>
   <div class="info">
     <div class="cover">
-      <img src="@/assets/img/article_bg.svg" alt="cover">
+      <img
+        src="@/assets/img/article_bg.svg"
+        alt="cover"
+      >
     </div>
     <div class="avatar-content">
-      <avatar :src="userInfo.avatar" class="avatar" />
-      <div v-if="iconType" :class="iconType" class="info-type">
-        <svg-icon :title="$t('user.accountType')" :icon-class="iconType" class="icon-type" />
+      <avatar
+        :src="userInfo.avatar"
+        class="avatar"
+      />
+      <div
+        v-if="iconType"
+        :class="iconType"
+        class="info-type"
+      >
+        <svg-icon
+          :title="$t('user.accountType')"
+          :icon-class="iconType"
+          class="icon-type"
+        />
       </div>
     </div>
     <h3 class="author">
       {{ userTitle }}
-      <router-link v-if="$route.name !== 'setting'" :to="{ name: 'setting' }">
-        <svg-icon class="icon-edit" icon-class="edit" />
+      <router-link
+        v-if="$route.name !== 'setting'"
+        :to="{ name: 'setting' }"
+      >
+        <svg-icon
+          class="icon-edit"
+          icon-class="edit"
+        />
       </router-link>
     </h3>
 
@@ -21,7 +41,11 @@
     </p>
     <div class="follow-fan">
       <div class="data">
-        <n-link :to="{name: 'user-id-follow', params: {id: nowId}}" class="num" tag="p">
+        <n-link
+          :to="{name: 'user-id-follow', params: {id: nowId}}"
+          class="num"
+          tag="p"
+        >
           {{ userInfo.follows || 0 }}
         </n-link>
         <p class="title">
@@ -29,7 +53,11 @@
         </p>
       </div>
       <div class="data">
-        <n-link :to="{name: 'user-id-fan', params: {id: nowId}}" class="num" tag="p">
+        <n-link
+          :to="{name: 'user-id-fan', params: {id: nowId}}"
+          class="num"
+          tag="p"
+        >
           {{ userInfo.fans || 0 }}
         </n-link>
         <p class="title">
@@ -42,11 +70,11 @@
       <!-- 个人主页 -->
       <button
         v-if="!isMe($route.params.id)"
+        class="button"
         @click="followOrUnfollowUser({
           id: $route.params.id,
           type: userInfo.followed ? 0 : 1
         })"
-        class="button"
       >
         {{ userInfo.followed ? $t('unFollow') : $t('follow') }}
       </button>

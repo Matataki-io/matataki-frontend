@@ -7,13 +7,23 @@
     custom-class="my-dialog br10"
   >
     <div class="feedback-outer">
-      <img :src="fbImg" alt="" class="icon">
-      <div v-if="p.reading > 0" class="feedback-title">
+      <img
+        :src="fbImg"
+        alt=""
+        class="icon"
+      >
+      <div
+        v-if="p.reading > 0"
+        class="feedback-title"
+      >
         <p>
           {{ $t('p.readArticlePoint', [p.reading]) }}
         </p>
       </div>
-      <div v-if="p.reading_new > 0" class="feedback-title">
+      <div
+        v-if="p.reading_new > 0"
+        class="feedback-title"
+      >
         <p>
           {{ $t('p.readNewArticleNPoint', [p.reading_new]) }}
         </p>

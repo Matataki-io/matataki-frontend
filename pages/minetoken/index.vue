@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 import minetoken from '@/components/user/fan_coins_manage_layout'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'

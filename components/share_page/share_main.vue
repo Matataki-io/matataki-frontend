@@ -1,7 +1,13 @@
 <template>
   <div class="share-main">
-    <svg-icon class="icon" icon-class="quotation_marks" />
-    <svg-icon class="icon" icon-class="quotation_marks" />
+    <svg-icon
+      class="icon"
+      icon-class="quotation_marks"
+    />
+    <svg-icon
+      class="icon"
+      icon-class="quotation_marks"
+    />
     <p>{{ content }}</p>
   </div>
 </template>

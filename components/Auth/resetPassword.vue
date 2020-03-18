@@ -2,7 +2,12 @@
   <!-- v-show="!isLogin" -->
   <section class="resetPassword">
     <h1>{{ $t('rule.resetPassword') }}</h1>
-    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
+    <el-form
+      ref="registerForm"
+      :model="registerForm"
+      :rules="registerRules"
+      class="ss-form"
+    >
       <el-form-item prop="email">
         <el-input
           v-model="registerForm.email"
@@ -10,7 +15,10 @@
           type=""
         />
       </el-form-item>
-      <input type="text" class="is-hidden" />
+      <input
+        type="text"
+        class="is-hidden"
+      >
       <el-form-item prop="smscode">
         <div class="code-contaniner">
           <el-input
@@ -21,8 +29,8 @@
           <el-button
             :loading="loading"
             :disabled="!!timer || loading"
-            @click="sendCode"
             type="primary"
+            @click="sendCode"
           >
             {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
           </el-button>
@@ -45,7 +53,10 @@
         />
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button @click="submitRegisterForm" type="primary">
+        <el-button
+          type="primary"
+          @click="submitRegisterForm"
+        >
           {{ $t('rule.resetPassword') }}
         </el-button>
       </el-form-item>

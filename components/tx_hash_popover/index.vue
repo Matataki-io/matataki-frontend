@@ -9,14 +9,29 @@
       <p class="tx_hash__title">
         链上查看
       </p>
-      <div v-if="hash" class="tx_hash__address">
-        <a :href="link + hash" target="_blank">
+      <div
+        v-if="hash"
+        class="tx_hash__address"
+      >
+        <a
+          :href="link + hash"
+          target="_blank"
+        >
           Hash: {{ hash }}
         </a>
-        <svg-icon @click="copy(hash)" icon-class="copy" class="icon" />
+        <svg-icon
+          icon-class="copy"
+          class="icon"
+          @click="copy(hash)"
+        />
       </div>
     </div>
-    <svg-icon slot="reference" :style="{ 'font-size': size }" icon-class="eth_mini2" class="eth_mini_icon" />
+    <svg-icon
+      slot="reference"
+      :style="{ 'font-size': size }"
+      icon-class="eth_mini2"
+      class="eth_mini_icon"
+    />
   </el-popover>
 </template>
 

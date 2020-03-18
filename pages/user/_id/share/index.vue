@@ -1,15 +1,18 @@
 
 <template>
   <userPage>
-    <div slot="list" v-loading="loading">
+    <div
+      slot="list"
+      v-loading="loading"
+    >
       <no-content-prompt :list="articleCardData.articles">
         <shareCard
           v-for="(item, index) in articleCardData.articles"
           :key="index"
           :card="item"
           :blank="false"
-          @refClick="pushShare"
           class="list-card"
+          @refClick="pushShare"
         />
         <user-pagination
           v-show="!loading"
@@ -18,9 +21,9 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
+          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
-          class="pagination"
         />
       </no-content-prompt>
     </div>

@@ -1,16 +1,16 @@
 <template>
   <el-button
     v-if="showBtn"
-    @click="fanCoins"
     size="small"
     class="fan-coins"
+    @click="fanCoins"
   >
     {{ fanCoinsBtn }}
   </el-button>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {

@@ -7,9 +7,15 @@
     width="500px"
     custom-class="br10 nopadding"
   >
-    <div v-loading="loading" class="container">
+    <div
+      v-loading="loading"
+      class="container"
+    >
       <div class="padding20">
-        <img src="@/assets/img/m_logo.png" alt="logo">
+        <img
+          src="@/assets/img/m_logo.png"
+          alt="logo"
+        >
         <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
         <table class="order-table">
           <tbody>
@@ -56,7 +62,10 @@
       <div class="balanceBox">
         <div class="flexBox padding20">
           <div>
-            <el-tooltip placement="bottom" effect="light">
+            <el-tooltip
+              placement="bottom"
+              effect="light"
+            >
               <div slot="content">
                 您的交易可能由于正常的价格波动而失败，<br>
                 预期价格波动区间将有助于您的交易成功。<br>
@@ -68,7 +77,10 @@
           </div>
           <div>
             <span class="money-label">
-              <el-tooltip placement="bottom" effect="light">
+              <el-tooltip
+                placement="bottom"
+                effect="light"
+              >
                 <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br>多支付的金额会保留在您的CNY账户中。</div>
                 <i class="el-icon-question" />
               </el-tooltip>
@@ -79,7 +91,10 @@
         </div>
         <div class="flexBox padding20 bgGray">
           <div>
-            <el-checkbox v-model="useBalance" @change="useBalanceChange">
+            <el-checkbox
+              v-model="useBalance"
+              @change="useBalanceChange"
+            >
               使用余额（{{ balance }} CNY）
             </el-checkbox>
           </div>
@@ -90,9 +105,18 @@
           <div><span class="money-label">应付：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
         </div>
       </div>
-      <QRCode v-if="needPay > 0" :pay-link="order.code_url" />
-      <div v-else class="payBtnBox">
-        <el-button @click="confirmPay" type="primary">
+      <QRCode
+        v-if="needPay > 0"
+        :pay-link="order.code_url"
+      />
+      <div
+        v-else
+        class="payBtnBox"
+      >
+        <el-button
+          type="primary"
+          @click="confirmPay"
+        >
           确认支付
         </el-button>
       </div>

@@ -2,7 +2,10 @@
   <div class="card">
     <div class="card-info">
       <span class="card-type">{{ assetType }}</span>
-      <h2 :style="{ color: `${assetColor}` }" class="card-pricing">
+      <h2
+        :style="{ color: `${assetColor}` }"
+        class="card-pricing"
+      >
         {{ assetAmount }}
       </h2>
     </div>
@@ -10,23 +13,35 @@
       <span class="card-date">{{ friendlyDate }}</span>
     </div>
     <div class="card-info">
-      <span v-if="!isWithdraw" class="card-title">{{ assetTitle }}</span>
-      <span v-else class="card-title">
+      <span
+        v-if="!isWithdraw"
+        class="card-title"
+      >{{ assetTitle }}</span>
+      <span
+        v-else
+        class="card-title"
+      >
         <div
           v-if="asset.toaddress"
-          @click="copyInfo(asset.toaddress)"
           class="copy-list"
+          @click="copyInfo(asset.toaddress)"
         >
           {{ asset.toaddress }}
-          <svg-icon class="icon" icon-class="copy" />
+          <svg-icon
+            class="icon"
+            icon-class="copy"
+          />
         </div>
         <div
           v-if="asset.trx"
-          @click="copyInfo(asset.trx)"
           class="copy-list"
+          @click="copyInfo(asset.trx)"
         >
           {{ asset.trx }}
-          <svg-icon class="icon" icon-class="copy" />
+          <svg-icon
+            class="icon"
+            icon-class="copy"
+          />
         </div>
       </span>
     </div>

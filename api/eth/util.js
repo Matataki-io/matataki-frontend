@@ -1,4 +1,3 @@
-import Web3 from 'web3'
 /**
 * Connect 函数
 * 从 MetaMask v7 开始, 隐私模式默认开启

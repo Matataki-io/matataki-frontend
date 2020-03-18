@@ -1,8 +1,22 @@
 <template>
-  <div v-if="(isTokenArticle || isPriceArticle) && !isProduct" v-loading="lockLoading" class="lock">
+  <div
+    v-if="(isTokenArticle || isPriceArticle) && !isProduct"
+    v-loading="lockLoading"
+    class="lock"
+  >
     <div class="lock-left">
-      <img v-if="!(hasPaied && hasPaiedRead)" class="lock-img" src="@/assets/img/lock.png" alt="lock">
-      <img v-else class="lock-img" src="@/assets/img/unlock.png" alt="lock">
+      <img
+        v-if="!(hasPaied && hasPaiedRead)"
+        class="lock-img"
+        src="@/assets/img/lock.png"
+        alt="lock"
+      >
+      <img
+        v-else
+        class="lock-img"
+        src="@/assets/img/unlock.png"
+        alt="lock"
+      >
     </div>
     <div class="lock-info">
       <h3 class="lock-info-title">
@@ -10,38 +24,79 @@
       </h3>
       <h5 class="lock-info-subtitle">
         {{ !(hasPaied && hasPaiedRead) ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
-        <el-tooltip effect="dark" content="满足全部条件后即可编辑文章。" placement="top-start">
-          <svg-icon icon-class="anser" class="prompt-svg" />
+        <el-tooltip
+          effect="dark"
+          content="满足全部条件后即可编辑文章。"
+          placement="top-start"
+        >
+          <svg-icon
+            icon-class="anser"
+            class="prompt-svg"
+          />
         </el-tooltip>
       </h5>
-      <p v-if="!isMe(article.uid)" class="lock-info-des">
+      <p
+        v-if="!isMe(article.uid)"
+        class="lock-info-des"
+      >
         <ul>
-          <li v-if="isTollRead" class="fl">
+          <li
+            v-if="isTollRead"
+            class="fl"
+          >
             <div class="fl price">
               阅读权限
-              <svg-icon icon-class="read" class="avatar-read" />
+              <svg-icon
+                icon-class="read"
+                class="avatar-read"
+              />
             </div>
-            <el-tooltip effect="dark" content="此文设有阅读限制，如果需要编辑必须获得阅读权限" placement="left">
+            <el-tooltip
+              effect="dark"
+              content="此文设有阅读限制，如果需要编辑必须获得阅读权限"
+              placement="left"
+            >
               <svg-icon icon-class="anser" />
             </el-tooltip>
           </li>
-          <li v-if="isPriceArticle" class="fl">
+          <li
+            v-if="isPriceArticle"
+            class="fl"
+          >
             <div class="fl price">
               支付
               <span class="amount">{{ getArticlePrice }}</span>
-              <svg-icon icon-class="currency" class="avatar-cny" />
+              <svg-icon
+                icon-class="currency"
+                class="avatar-cny"
+              />
               CNY
             </div>
-            <el-tooltip effect="dark" content="支付解锁的文章可在“购买记录”中永久查看。" placement="left">
+            <el-tooltip
+              effect="dark"
+              content="支付解锁的文章可在“购买记录”中永久查看。"
+              placement="left"
+            >
               <svg-icon icon-class="anser" />
             </el-tooltip>
           </li>
-          <li v-if="isTokenArticle" class="fl">
+          <li
+            v-if="isTokenArticle"
+            class="fl"
+          >
             <div class="fl price">
               持有
               <span class="amount">{{ needTokenAmount }}</span>
-              <router-link :to="{name: 'token-id', params:{ id:needTokenId }}" target="_blank" class="fl">
-                <avatar :size="'16px'" :src="needTokenLogo" class="avatar-token" />
+              <router-link
+                :to="{name: 'token-id', params:{ id:needTokenId }}"
+                target="_blank"
+                class="fl"
+              >
+                <avatar
+                  :size="'16px'"
+                  :src="needTokenLogo"
+                  class="avatar-token"
+                />
                 {{ needTokenSymbol }}（{{ needTokenName }}）
               </router-link>
             </div>
@@ -50,28 +105,45 @@
           </li>
         </ul>
       </p>
-      <p v-else class="lock-info-des">
+      <p
+        v-else
+        class="lock-info-des"
+      >
         自己发布的文章
       </p>
-      <div v-if="!hasPaied" class="lock-bottom">
+      <div
+        v-if="!hasPaied"
+        class="lock-bottom"
+      >
         <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
-        <el-tooltip effect="dark" content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文" placement="top-end">
+        <el-tooltip
+          effect="dark"
+          content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文"
+          placement="top-end"
+        >
           <el-button
-            @click="wxpayEdit"
             type="primary"
             size="small"
+            @click="wxpayEdit"
+            @click="wxpayArticle"
           >
             一键{{ unlockText }}
           </el-button>
         </el-tooltip>
       </div>
-      <div v-else class="lock-bottom">
-        <span v-if="!hasPaiedRead" class="lock-bottom-total">此文设有阅读限制，如果需要编辑必须获得阅读权限</span>
+      <div
+        v-else
+        class="lock-bottom"
+      >
+        <span
+          v-if="!hasPaiedRead"
+          class="lock-bottom-total"
+        >此文设有阅读限制，如果需要编辑必须获得阅读权限</span>
         <el-button
-          @click="edit"
           type="primary"
           size="small"
           :disabled="!hasPaiedRead"
+          @click="edit"
         >
           编辑文章
         </el-button>
@@ -81,13 +153,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
-import moment from 'moment'
+import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
-import { isNDaysAgo } from '@/utils/momentFun'
-import { tagColor } from '@/utils/tag'
-import { xssFilter } from '@/utils/xss'
 import utils from '@/utils/utils'
 
 export default {

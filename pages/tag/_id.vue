@@ -2,14 +2,20 @@
   <div class="tag-page">
     <g-header />
     <el-row class="container mw mt40">
-      <el-col :span="mainNavTypeIndex === 0 ? 16 : 18" class="main article not-padding">
+      <el-col
+        :span="mainNavTypeIndex === 0 ? 16 : 18"
+        class="main article not-padding"
+      >
         <!-- 导航部分 -->
         <div class="main-nav padding-10">
           <span class="active">{{ $t('tag.contain') }}<em>{{ articleCardData[0].title }}</em>{{ $t('tag.tags') }}{{ tagType === 'product' ? $t('tag.shop') : $t('tag.article') }}</span>
         </div>
         <!-- 导航部分 end -->
         <!-- 空div控制内容 -->
-        <div v-for="(item, index) in articleCardData" :key="index">
+        <div
+          v-for="(item, index) in articleCardData"
+          :key="index"
+        >
           <el-row>
             <no-content-prompt :list="item.articles">
               <el-col
@@ -23,13 +29,21 @@
                   :type-index="1"
                   :card-type="'commodity-card tag'"
                 />
-                <articleCardListNew v-else :card="itemChild" />
+                <articleCardListNew
+                  v-else
+                  :card="itemChild"
+                />
               </el-col>
             </no-content-prompt>
           </el-row>
           <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
           <div class="load-more-button">
-            <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" @buttonLoadMore="buttonLoadMore" />
+            <buttonLoadMore
+              :type-index="index"
+              :params="item.params"
+              :api-url="item.apiUrl"
+              @buttonLoadMore="buttonLoadMore"
+            />
           </div>
         </div>
 
@@ -37,10 +51,17 @@
       </el-col>
       <!-- 空div控制内容 end -->
 
-      <el-col :span="mainNavTypeIndex === 0 ? 8 : 6" class="tags article">
+      <el-col
+        :span="mainNavTypeIndex === 0 ? 8 : 6"
+        class="tags article"
+      >
         <div class="tags-right">
           <span>{{ $t('tag.moreTag') }}</span>
-          <tags :type-index="mainNavTypeIndex" :tag-cards="tagCards" class="tags-container" />
+          <tags
+            :type-index="mainNavTypeIndex"
+            :tag-cards="tagCards"
+            class="tags-container"
+          />
         </div>
       </el-col>
     </el-row>

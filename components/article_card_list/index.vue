@@ -1,13 +1,30 @@
 <template>
-  <n-link :to="{name: 'p-id', params: {id: card && card.id}}" class="card" target="_blank">
+  <n-link
+    :to="{name: 'p-id', params: {id: card && card.id}}"
+    class="card"
+    target="_blank"
+  >
     <div class="bg">
       <div class="article">
         <!-- 适用于 首页, 商品页, 标签页 -->
         <!-- 区分那种卡 -->
         <div class="cover">
-          <el-image v-if="cover" :src="cover" class="img-lazy" lazy alt="cover" />
-          <img v-else src="@/assets/img/article_bg.svg" alt="cover">
-          <div v-if="card && card.status === 1" class="overlay">
+          <el-image
+            v-if="cover"
+            :src="cover"
+            class="img-lazy"
+            lazy
+            alt="cover"
+          />
+          <img
+            v-else
+            src="@/assets/img/article_bg.svg"
+            alt="cover"
+          >
+          <div
+            v-if="card && card.status === 1"
+            class="overlay"
+          >
             <div class="circle">
               {{ $t('articleCard.deleted') }}
             </div>
@@ -21,7 +38,11 @@
               target="_blank"
               class="author"
             >
-              <avatar :size="'30px'" :src="avatarImg" class="avatar" />
+              <avatar
+                :size="'30px'"
+                :src="avatarImg"
+                class="avatar"
+              />
               <span class="username">
                 {{ card && (card.nickname || card.author || '') }}
               </span>
@@ -32,7 +53,10 @@
             </div>
           </div>
           <div class="article-title">
-            <h3 v-html="xssTitle" class="search-res" />
+            <h3
+              class="search-res"
+              v-html="xssTitle"
+            />
           </div>
           <div class="des">
             <!-- 文章卡阅读和投资 -->
@@ -42,12 +66,17 @@
             </span>
             <span class="data">
               {{ card.likes }}
-              {{ $t('p.like')}}
+              {{ $t('p.like') }}
             </span>
             <!-- <span class="data">
               {{ card && card.ups || 0 }}
               投资</span> -->
-            <img v-if="card.require_holdtokens || card.require_buy" class="lock-img" src="@/assets/img/lock.png" alt="lock">
+            <img
+              v-if="card.require_holdtokens || card.require_buy"
+              class="lock-img"
+              src="@/assets/img/lock.png"
+              alt="lock"
+            >
 
             <span class="empty" />
             <!-- 暂时用文章页代替跳转地址 -->
@@ -63,7 +92,12 @@
         </div>
       </div>
       <!-- 文章卡片内容 -->
-      <div v-if="isSearchCard" v-clampy="4" v-html="xssContent" class="content-text search-res" />
+      <div
+        v-if="isSearchCard"
+        v-clampy="4"
+        class="content-text search-res"
+        v-html="xssContent"
+      />
     </div>
     <div style="width: 0;height: 0;" />
   </n-link>
@@ -75,7 +109,6 @@ import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo } from '@/utils/momentFun'
-import { tagColor } from '@/utils/tag'
 import { xssFilter } from '@/utils/xss'
 
 export default {

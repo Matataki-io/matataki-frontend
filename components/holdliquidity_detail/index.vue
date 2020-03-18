@@ -1,11 +1,22 @@
 <template>
   <div slot="main">
-    <div v-loading="loading" class="card-container">
+    <div
+      v-loading="loading"
+      class="card-container"
+    >
       <no-content-prompt :list="pointLog.list">
-        <liquidityCard v-for="(item, index) in pointLog.list" :key="index" :card="item" :end="index === pointLog.list.length-1" />
+        <liquidityCard
+          v-for="(item, index) in pointLog.list"
+          :key="index"
+          :card="item"
+          :end="index === pointLog.list.length-1"
+        />
       </no-content-prompt>
     </div>
-    <div v-if="loading || total > pointLog.params.pagesize" class="pagination">
+    <div
+      v-if="loading || total > pointLog.params.pagesize"
+      class="pagination"
+    >
       <user-pagination
         v-show="!loading"
         :current-page="currentPage"
@@ -14,11 +25,11 @@
         :page-size="5"
         :total="total"
         :need-access-token="true"
+        :small="true"
+        :select-class="'user-pagination-light'"
+        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
-        :small="true"
-        :selectClass="'user-pagination-light'"
-        class="pagination"
       />
     </div>
   </div>

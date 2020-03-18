@@ -1,9 +1,18 @@
 <template>
   <div class="banner mw">
     <div class="bg">
-      <img src="@/assets/img/home_logo.png" alt="logo">
-      <img src="@/assets/img/pc_banner.png" alt="banner">
-      <img src="@/assets/img/pc_banner_img.png" alt="banner">
+      <img
+        src="@/assets/img/home_logo.png"
+        alt="logo"
+      >
+      <img
+        src="@/assets/img/pc_banner.png"
+        alt="banner"
+      >
+      <img
+        src="@/assets/img/pc_banner_img.png"
+        alt="banner"
+      >
     </div>
   </div>
 </template>

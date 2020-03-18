@@ -2,11 +2,26 @@
   <div class="main exchange">
     <g-header />
     <div class="outer-container">
-      <img class="ma-banner" src="@/assets/img/exchange-banner.png" alt="banner">
-      <a class="help-link" target="_blank" href="https://www.matataki.io/p/981">如何交易Fan票?</a>
+      <img
+        class="ma-banner"
+        src="@/assets/img/exchange-banner.png"
+        alt="banner"
+      >
+      <a
+        class="help-link"
+        target="_blank"
+        href="https://www.matataki.io/p/981"
+      >如何交易Fan票?</a>
       <div class="p-w">
-        <el-tabs v-model="tab" @tab-click="tabClick" type="border-card">
-          <el-tab-pane label="交易" name="#swap">
+        <el-tabs
+          v-model="tab"
+          type="border-card"
+          @tab-click="tabClick"
+        >
+          <el-tab-pane
+            label="交易"
+            name="#swap"
+          >
             <Swap />
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
@@ -14,7 +29,10 @@
               <a href="/tokens">跳转到我的Fan票页面</a>
             </div>
           </el-tab-pane> -->
-          <el-tab-pane label="流动金池" name="#pool">
+          <el-tab-pane
+            label="流动金池"
+            name="#pool"
+          >
             <Pool />
           </el-tab-pane>
         </el-tabs>
@@ -39,8 +57,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined'])
-  },
-  async asyncData({ $axios }) {
   },
   created() {},
   mounted() {
