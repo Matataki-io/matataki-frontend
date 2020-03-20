@@ -5,15 +5,12 @@
       v-if="isShowFileUpload"
       ref="upload"
       v-model="files"
+      class="img-file"
       extensions="gif,jpg,jpeg,png,webp"
       accept="image/png,image/gif,image/jpeg,image/webp"
       @input-file="inputFile"
       @input-filter="inputFilter"
-    >
-      <slot name="uploadButton">
-        <Button>{{ $t('imgUpload.btn') }}</Button>
-      </slot>
-    </FileUpload>
+    />
 
     <!-- 编辑图片 modal -->
     <el-dialog
@@ -82,12 +79,6 @@ export default {
       type: Number,
       default: 5
     },
-    // 是否上传完成
-    imgUploadDone: {
-      type: Number,
-      default: 0,
-      required: true
-    },
     // 比列
     aspectRatio: {
       type: Number,
@@ -96,8 +87,23 @@ export default {
     // 上传类型
     updateType: {
       type: String,
-      required: true
-    }
+      required: false
+    },
+    // 打开窗口
+    open: {
+      type: Number,
+      default: 0
+    },
+    // 图片预览的宽度
+    viewWidth: {
+      type: String,
+      default: '240px'
+    },
+    // 图片预览的高度
+    viewHeight: {
+      type: String,
+      default: '240px'
+    },    
   },
   data() {
     return {
@@ -112,20 +118,22 @@ export default {
   },
   computed: {
     computedStyleContent() {
-      if (this.updateType === 'artileCover') {
-        return {
-          width: '240px',
-          height: '120px'
-        }
-      } else {
-        return {
-          width: '240px',
-          height: '240px'
-        }
+      return {
+        width: this.viewWidth,
+        height: this.viewHeight
       }
     }
   },
   watch: {
+    open() {
+      try {
+        // 利用file调用图片上传
+        const file = document.querySelector('.img-uplaod .img-file input[type="file"]')
+        file.click()
+      } catch (error) {
+        console.log(error)
+      }
+    },
     // 显示modal
     modal(value) {
       if (value) {
@@ -154,11 +162,6 @@ export default {
         this.cropper = false
       }
     },
-    // 上传完成
-    imgUploadDone() {
-      this.modal = false
-      this.modalLoading = false
-    }
   },
   mounted() {
     this.isShowFileUpload = true
@@ -259,10 +262,12 @@ export default {
         // console.log(this.files[0]);
         const res = await this.$API.uploadImage(this.updateType, file)
         if (res.code === 0) {
-          this.$emit('doneImageUpload', {
+          this.$emit('done', {
             type: this.updateType,
-            data: res
+            data: res.data
           })
+          this.modal = false
+          this.modalLoading = false
         } else {
           this.modalLoading = false
           this.$message.error({
@@ -301,23 +306,82 @@ export default {
         //
       }
       if (!newFile && oldFile) {
-        // 
+        //
       }
     }
   }
 }
 </script>
 
-<style lang="less" src="./index.less">
-// 覆盖图像上传modal样式 无法使用scoped
-</style>
-
 <style lang="less">
-.img-uplaod .file-uploads .file-uploads-html4 input, .file-uploads.file-uploads-html5 label {
-  cursor: pointer;
+// 覆盖图像上传modal样式 无法使用scoped
+@import './cropper.less';
+
+// 覆盖图像上传modal样式 无法使用scoped
+.img-upload-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal{
+        top: 0;
+    }
+
+    .ivu-modal-header {
+        border-bottom: none;
+    }
+    .modal-header {
+        text-align: center;
+        &-title {
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-align: center;
+        }
+        &-subtitle {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #8590a6;
+            text-align: center;
+        }
+    }
+    .ivu-modal-content {
+        overflow: hidden;
+    }
+    .ivu-modal-body {
+        margin: 0 40px;
+        padding: 0;
+    }
+    .modal-content {
+        width: 240px;
+        height: 240px;
+        margin: 4px auto 40px;
+        overflow: hidden;
+        border: 1px solid #6bb3ff;
+    }
+
+    .ivu-modal-footer {
+        border-top: none;
+    }
+
+    .save-button {
+        display: block;
+        margin: 0 auto 20px;
+        text-align: center;
+        width: 220px;
+        background-color: @purpleDark;
+        border-color: @purpleDark;
+    }
 }
-.img-uplaod .file-uploads {
-  width: 100%;
-  height: 100%;
+
+</style>
+<style lang="less" scoped>
+// 藏起来
+.img-file {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  opacity: 0;
 }
 </style>

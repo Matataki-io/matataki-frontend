@@ -1,6 +1,9 @@
 <template>
   <transition :name="transitionName">
-    <div v-show="visible" @click="backToTop">
+    <div
+      v-show="visible"
+      @click="backToTop"
+    >
       <slot />
     </div>
   </transition>

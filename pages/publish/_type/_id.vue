@@ -1,5 +1,8 @@
 <template>
-  <div @click.stop="closeDropdown" class="new-post">
+  <div
+    class="new-post"
+    @click.stop="closeDropdown"
+  >
     <div class="edit-content">
       <div class="edit-head">
         <input
@@ -10,24 +13,51 @@
           clearable
           maxlength="50"
         >
-        <span v-html="saveDraft" class="save-tips" />
-        <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}" class="save-draft">
+        <span
+          class="save-tips"
+          v-html="saveDraft"
+        />
+        <router-link
+          :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+          class="save-draft"
+        >
           草稿
         </router-link>
-        <div @click="importVisible = true" class="import-button">
-          <svg-icon class="import-icon" icon-class="import" />
+        <div
+          class="import-button"
+          @click="importVisible = true"
+        >
+          <svg-icon
+            class="import-icon"
+            icon-class="import"
+          />
           {{ $t('publish.importArticle') }}
         </div>
 
-        <div v-loading.fullscreen.lock="fullscreenLoading" @click="sendThePost" class="post">
+        <div
+          v-loading.fullscreen.lock="fullscreenLoading"
+          class="post"
+          @click="sendThePost"
+        >
           {{ $t('publish.publish') }}
         </div>
 
-        <el-dropdown slot="more" v-if="isShowTransfer" @command="handleMoreAction" trigger="click">
+        <el-dropdown
+          v-if="isShowTransfer"
+          slot="more"
+          trigger="click"
+          @command="handleMoreAction"
+        >
           <div class="more-icon">
-            <svg-icon class="icon" icon-class="more" />
+            <svg-icon
+              class="icon"
+              icon-class="more"
+            />
           </div>
-          <el-dropdown-menu slot="dropdown" class="user-dorpdown">
+          <el-dropdown-menu
+            slot="dropdown"
+            class="user-dorpdown"
+          >
             <el-dropdown-item command="transfer">
               {{ $t('publish.transfer') }}
             </el-dropdown-item>
@@ -35,7 +65,10 @@
         </el-dropdown>
       </div>
 
-      <div :style="editorStyle" class="mavonEditor">
+      <div
+        :style="editorStyle"
+        class="mavonEditor"
+      >
         <no-ssr>
           <mavon-editor
             ref="md"
@@ -44,9 +77,9 @@
             :box-shadow="false"
             :autofocus="false"
             :placeholder="$t('publish.contentPlaceholder')"
-            @imgAdd="$imgAdd"
             :style="editorStyle"
             class="editor"
+            @imgAdd="$imgAdd"
           />
         </no-ssr>
       </div>
@@ -85,26 +118,47 @@
         </el-button>
       </div> -->
 
-      <div class="post-content" style="width: 380px;">
+      <div
+        class="post-content"
+        style="width: 380px;"
+      >
         <div>
           <h3>
             阅读权限
-            <el-tooltip effect="dark" content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。" placement="top-start">
+            <el-tooltip
+              effect="dark"
+              content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
+              placement="top-start"
+            >
               <svg-icon
                 class="help-icon"
                 icon-class="help"
               />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="readauThority" size="small">
+          <el-checkbox
+            v-model="readauThority"
+            size="small"
+            :disabled="prohibitEditingPrices"
+          >
             设置持Fan票
           </el-checkbox>
         </div>
         <transition name="fade">
-          <div v-show="readauThority" class="fl ac">
+          <div
+            v-show="readauThority"
+            class="fl ac"
+          >
             <div>
               <h3>Fan票类型</h3>
-              <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable>
+              <el-select
+                v-model="readSelectValue"
+                size="small"
+                placeholder="请选择"
+                style="width: 100%;"
+                filterable
+                :disabled="prohibitEditingPrices"
+              >
                 <el-option
                   v-for="item in readSelectOptions"
                   :key="item.id"
@@ -121,26 +175,48 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
         </transition>
-        <div v-show="readauThority" class="related-add">
-          <el-tooltip effect="dark" content="多Fan票解锁正在开发中" placement="top">
+        <div
+          v-show="readauThority"
+          class="related-add"
+        >
+          <el-tooltip
+            effect="dark"
+            content="多Fan票解锁正在开发中"
+            placement="top"
+          >
             <div class="add-icon disable">
               <i class="el-icon-plus" />
             </div>
           </el-tooltip>
           <span>添加更多</span>
         </div>
-        <el-checkbox v-model="paymentTokenVisible" size="small" style="margin-top: 10px;">
+        <el-checkbox
+          v-model="paymentTokenVisible"
+          size="small"
+          style="margin-top: 10px;"
+          :disabled="prohibitEditingPrices"
+        >
           设置支付
         </el-checkbox>
         <transition name="fade">
-          <div v-show="paymentTokenVisible" class="fl ac">
+          <div
+            v-show="paymentTokenVisible"
+            class="fl ac"
+          >
             <div>
               <h3>支付类型</h3>
-              <el-select v-model="paymentSelectValue" disabled size="small" placeholder="请选择" style="width: 100%;">
+              <el-select
+                v-model="paymentSelectValue"
+                disabled
+                size="small"
+                placeholder="请选择"
+                style="width: 100%;"
+              >
                 <el-option
                   v-for="item in paymentSelectOptions"
                   :key="item.id"
@@ -157,6 +233,7 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
@@ -177,27 +254,48 @@
         </transition>
       </div>
 
-      <!-- 编辑权限 （功能开发中） -->
-      <div class="post-content" style="width: 380px;">
+      <!-- 编辑权限 -->
+      <div
+        class="post-content"
+        style="width: 380px;"
+      >
         <div>
           <h3>
-            编辑权限 （功能开发中）
-            <el-tooltip effect="dark" content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。" placement="top-start">
+            编辑权限 (实验功能)
+            <el-tooltip
+              effect="dark"
+              content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
+              placement="top-start"
+            >
               <svg-icon
                 class="help-icon"
                 icon-class="help"
               />
             </el-tooltip>
           </h3>
-          <el-checkbox v-model="tokenEditAuthority" size="small" disabled>
+          <el-checkbox
+            v-model="tokenEditAuthority"
+            size="small"
+            :disabled="prohibitEditingPrices"
+          >
             设置持Fan票
           </el-checkbox>
         </div>
         <transition name="fade">
-          <div v-show="tokenEditAuthority" class="fl ac">
+          <div
+            v-show="tokenEditAuthority"
+            class="fl ac"
+          >
             <div>
               <h3>Fan票类型</h3>
-              <el-select v-model="editSelectValue" size="small" placeholder="请选择" style="width: 100%;" filterable>
+              <el-select
+                v-model="editSelectValue"
+                size="small"
+                placeholder="请选择"
+                style="width: 100%;"
+                filterable
+                :disabled="prohibitEditingPrices"
+              >
                 <el-option
                   v-for="item in readSelectOptions"
                   :key="item.id"
@@ -214,18 +312,33 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
         </transition>
-        <el-checkbox v-model="buyEditAuthority" size="small" style="margin-top: 10px;" disabled>
+        <el-checkbox
+          v-model="buyEditAuthority"
+          size="small"
+          style="margin-top: 10px;"
+          disabled
+        >
           设置支付
         </el-checkbox>
         <transition name="fade">
-          <div v-show="buyEditAuthority" class="fl ac">
+          <div
+            v-show="buyEditAuthority"
+            class="fl ac"
+          >
             <div>
               <h3>支付类型</h3>
-              <el-select v-model="paymentSelectValue" disabled size="small" placeholder="请选择" style="width: 100%;">
+              <el-select
+                v-model="paymentSelectValue"
+                disabled
+                size="small"
+                placeholder="请选择"
+                style="width: 100%;"
+              >
                 <el-option
                   v-for="item in paymentSelectOptions"
                   :key="item.id"
@@ -242,13 +355,17 @@
                 :max="100000000"
                 size="small"
                 placeholder="请输入内容"
+                :disabled="prohibitEditingPrices"
               />
             </div>
           </div>
         </transition>
       </div>
 
-      <div v-if="$route.params.type !== 'edit'" class="set-item fl ac">
+      <div
+        v-if="$route.params.type !== 'edit'"
+        class="set-item fl ac"
+      >
         <span class="set-title">
           {{ $t('publish.commentTitle') }}
         </span>
@@ -308,20 +425,29 @@
             :img-upload-done="imgUploadDone"
             :aspect-ratio="2 / 1"
             :update-type="'artileCover'"
-            @doneImageUpload="doneImageUpload"
             class="cover-upload"
+            @doneImageUpload="doneImageUpload"
           >
-            <img slot="uploadButton" class="cover-add" src="@/assets/img/add.svg" alt="add">
+            <img
+              slot="uploadButton"
+              class="cover-add"
+              src="@/assets/img/add.svg"
+              alt="add"
+            >
           </img-upload>
           <img
             v-show="cover"
-            @click.prevent="removeCover"
             class="cover-btn"
             src="@/assets/img/del.svg"
             alt="remove"
+            @click.prevent="removeCover"
           >
           <div v-show="cover">
-            <img :src="coverEditor" class="cover-img" alt="cover">
+            <img
+              :src="coverEditor"
+              class="cover-img"
+              alt="cover"
+            >
           </div>
         </div>
       </div>
@@ -329,42 +455,82 @@
     <div class="post-content">
       <h3>
         原创声明
-        <el-tooltip effect="dark" content="来设置你的文章版权信息" placement="top-start">
+        <el-tooltip
+          effect="dark"
+          content="来设置你的文章版权信息，发布后无法修改"
+          placement="top-start"
+        >
           <svg-icon
             class="help-icon"
             icon-class="help"
           />
         </el-tooltip>
       </h3>
-      <el-checkbox v-model="isOriginal" @change="originalChange" class="is-original">
+      <el-checkbox
+        v-model="isOriginal"
+        class="is-original"
+        :disabled="$route.params.type === 'edit'"
+        @change="originalChange"
+      >
         {{ $t('publish.original') }}
       </el-checkbox>
-      <div v-if="isOriginal" class="cc-licensing">
+      <div
+        v-if="isOriginal"
+        class="cc-licensing"
+      >
         <h3>
           Creative Commons 授权许可协议
-          <el-tooltip effect="dark" content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。" placement="top-start">
+          <el-tooltip
+            effect="dark"
+            content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。"
+            placement="top-start"
+          >
             <i class="el-icon-info" />
           </el-tooltip>
         </h3>
         <h3>
           请问您允许本作品被别人转载、节选、混编、二次创作吗？
         </h3>
-        <el-radio v-model="ccLicenseOptions.share" label="true">
+        <el-radio
+          v-model="ccLicenseOptions.share"
+          :disabled="$route.params.type === 'edit'"
+          label="true"
+        >
           允许
         </el-radio>
-        <el-radio v-model="ccLicenseOptions.share" label="false">
+        <el-radio
+          v-model="ccLicenseOptions.share"
+          :disabled="$route.params.type === 'edit'"
+          label="false"
+        >
           不允许
-          <el-tooltip effect="dark" content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品" placement="top-start">
+          <el-tooltip
+            effect="dark"
+            content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品"
+            placement="top-start"
+          >
             <i class="el-icon-info" />
           </el-tooltip>
         </el-radio>
-        <el-radio v-model="ccLicenseOptions.share" label="SA">
+        <el-radio
+          v-model="ccLicenseOptions.share"
+          :disabled="$route.params.type === 'edit'"
+          label="SA"
+        >
           仅允许采用本协议授权的二次创作
-          <el-tooltip effect="dark" content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。" placement="top-start">
+          <el-tooltip
+            effect="dark"
+            content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。"
+            placement="top-start"
+          >
             <i class="el-icon-info" />
           </el-tooltip>
         </el-radio>
-        <el-checkbox v-model="ccLicenseOptions.commercialUse" class="is-original">
+        <el-checkbox
+          v-model="ccLicenseOptions.commercialUse"
+          :disabled="$route.params.type === 'edit'"
+          class="is-original"
+        >
           允许商业性使用
         </el-checkbox>
         <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
@@ -395,8 +561,18 @@
             class="related-input"
             placeholder="输入链接（可自动检测本站文章），包含http(s)://"
           >
-            <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-              <img @click="extractRefTitle(-1)" class="auto-test" src="@/assets/img/auto_test.png" alt="auto test">
+            <el-tooltip
+              slot="suffix"
+              effect="dark"
+              content="自动检测"
+              placement="top"
+            >
+              <img
+                class="auto-test"
+                src="@/assets/img/auto_test.png"
+                alt="auto test"
+                @click="extractRefTitle(-1)"
+              >
             </el-tooltip>
           </el-input>
           <el-input
@@ -417,7 +593,10 @@
             rows="6"
           />
           <div class="related-add">
-            <div @click="addDraftsReferences" class="add-icon">
+            <div
+              class="add-icon"
+              @click="addDraftsReferences"
+            >
               <i class="el-icon-plus" />
             </div>
             <span>添加引用</span>
@@ -426,15 +605,30 @@
 
         <div v-loading="loading">
           <no-content-prompt :list="pull.list">
-            <div v-for="(item, index) in relatedList" :key="item.number" v-loading="item.loading" class="related-list">
+            <div
+              v-for="(item, index) in relatedList"
+              :key="item.number"
+              v-loading="item.loading"
+              class="related-list"
+            >
               <template v-if="item.edit">
                 <el-input
                   v-model="item.urlInput"
                   class="related-input"
                   placeholder="输入链接（可自动检测本站文章），包含http(s)://"
                 >
-                  <el-tooltip slot="suffix" effect="dark" content="自动检测" placement="top">
-                    <img @click="extractRefTitle(index)" alt="auto test" class="auto-test" src="@/assets/img/auto_test.png">
+                  <el-tooltip
+                    slot="suffix"
+                    effect="dark"
+                    content="自动检测"
+                    placement="top"
+                  >
+                    <img
+                      alt="auto test"
+                      class="auto-test"
+                      src="@/assets/img/auto_test.png"
+                      @click="extractRefTitle(index)"
+                    >
                   </el-tooltip>
                 </el-input>
                 <el-input
@@ -456,13 +650,22 @@
                 />
                 <div class="related-add">
                   <div class="fl ac">
-                    <div @click="remakeRelated(index)" class="add-icon">
+                    <div
+                      class="add-icon"
+                      @click="remakeRelated(index)"
+                    >
                       <svg-icon icon-class="cancel" />
                     </div>
                     <span>取消修改</span>
                   </div>
-                  <div class="fl ac" style="margin-left: 20px;">
-                    <div @click="confirmRelated(index)" class="add-icon">
+                  <div
+                    class="fl ac"
+                    style="margin-left: 20px;"
+                  >
+                    <div
+                      class="add-icon"
+                      @click="confirmRelated(index)"
+                    >
                       <i class="el-icon-plus" />
                     </div>
                     <span>确认修改</span>
@@ -471,29 +674,65 @@
               </template>
 
               <template v-else>
-                <div :class="!item.content && 'no-margin-bottom'" class="related-list-title">
+                <div
+                  :class="!item.content && 'no-margin-bottom'"
+                  class="related-list-title"
+                >
                   <div class="fl jsb">
                     <div class="fl ac related-7">
                       <div class="related-list-link">
-                        <a :href="item.url" target="_blank">{{ item.title }}</a>
+                        <a
+                          :href="item.url"
+                          target="_blank"
+                        >{{ item.title }}</a>
                       </div>
                     </div>
                     <div class="fl ac jfe related-3">
-                      <el-tooltip class="related-edit" effect="dark" content="修改" placement="top">
-                        <svg-icon @click="editRelated(index, item.number)" class="related-icon-icon" icon-class="pencli" />
+                      <el-tooltip
+                        class="related-edit"
+                        effect="dark"
+                        content="修改"
+                        placement="top"
+                      >
+                        <svg-icon
+                          class="related-icon-icon"
+                          icon-class="pencli"
+                          @click="editRelated(index, item.number)"
+                        />
                       </el-tooltip>
 
-                      <el-tooltip effect="dark" content="删除" placement="top">
-                        <svg-icon @click="removeRelated(index, item.number)" class="related-icon-icon" icon-class="delete" />
+                      <el-tooltip
+                        effect="dark"
+                        content="删除"
+                        placement="top"
+                      >
+                        <svg-icon
+                          class="related-icon-icon"
+                          icon-class="delete"
+                          @click="removeRelated(index, item.number)"
+                        />
                       </el-tooltip>
                       <span class="related-id">{{ item.number }}</span>
                     </div>
                   </div>
                   <div class="fl ac related-link">
-                    <a class="link" href="javascript:void(0);">{{ item.url }}</a>
-                    <svg-icon @click="copyCode(item.url)" class="icon-copy" icon-class="copy1" />
-                    <a :href="item.url" target="_blank">
-                      <svg-icon class="icon-share" icon-class="share1" />
+                    <a
+                      class="link"
+                      href="javascript:void(0);"
+                    >{{ item.url }}</a>
+                    <svg-icon
+                      class="icon-copy"
+                      icon-class="copy1"
+                      @click="copyCode(item.url)"
+                    />
+                    <a
+                      :href="item.url"
+                      target="_blank"
+                    >
+                      <svg-icon
+                        class="icon-share"
+                        icon-class="share1"
+                      />
                     </a>
                   </div>
                 </div>
@@ -501,9 +740,15 @@
                   <div class="related-list-content">
                     <span class="wrap-open">{{ item.content }}</span>
                   </div>
-                  <div v-if="item.showCollapse" class="related-more">
+                  <div
+                    v-if="item.showCollapse"
+                    class="related-more"
+                  >
                     <transition name="fade">
-                      <div v-if="!item.collapse" class="more-full" />
+                      <div
+                        v-if="!item.collapse"
+                        class="more-full"
+                      />
                     </transition>
                     <span @click="item.collapse = !item.collapse">
                       {{ item.collapse ? '折叠': '展开' }}
@@ -522,9 +767,9 @@
               :page-size="pull.params.pagesize"
               :total="total"
               :reload="pull.reload"
+              class="pagination"
               @paginationData="paginationData"
               @togglePage="togglePage"
-              class="pagination"
             />
           </no-content-prompt>
         </div>
@@ -537,8 +782,15 @@
       :from="$route.params.type"
       @toggleDone="allowLeave = true"
     />
-    <articleImport v-model="importVisible" :open-new-page="false" @res="importRes" />
-    <statement :visible="statementVisible" @close="closeStatement" />
+    <articleImport
+      v-model="importVisible"
+      :open-new-page="false"
+      @res="importRes"
+    />
+    <statement
+      :visible="statementVisible"
+      @close="closeStatement"
+    />
   </div>
 </template>
 
@@ -557,7 +809,6 @@ import articleTransfer from '@/components/articleTransfer'
 import articleImport from '@/components/article_import/index.vue'
 import statement from '@/components/statement/index.vue'
 
-import { getCookie } from '@/utils/cookie'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 
 import userPagination from '@/components/user/user_pagination.vue'
@@ -661,11 +912,13 @@ export default {
       total: 0,
       editorStyle: {},
       fullscreenLoading: false,
-      resizeEvent: null
+      resizeEvent: null,
+      authorId: 0,
+      prohibitEditingPrices: false
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
       return this.$ossProcess(this.cover)
     },
@@ -705,14 +958,40 @@ export default {
       }
       return tokenArr
     },
+    /** 持币编辑 */
+    editRequireToken() {
+      let tokenArr = []
+      if (this.tokenEditAuthority) {
+        // 持通证
+        // 获取当前选择的通证种
+        const token = this.readSelectOptions.filter(list => list.id === this.editSelectValue)
+        // 目前只用上传一种数据格式
+        tokenArr = [{
+          tokenId: token[0].id,
+          amount: toPrecision(this.editToken, 'cny', token[0].decimals)
+        }]
+      }
+      return tokenArr
+    },
     requireBuy() {
-      const { type } = this.$route.params
       if (this.paymentToken === 0) return null
-      if (type === 'edit' && !this.paymentTokenVisible) {
+      if (!this.paymentTokenVisible) {
         return null
       } else {
         const data = {
           price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
+        }
+        return data
+      }
+    },
+    /** 付费编辑 */
+    editRequireBuy() {
+      if (this.editPaymentToken === 0) return null
+      if (!this.buyEditAuthority) {
+        return null
+      } else {
+        const data = {
+          price: toPrecision(this.editPaymentToken, 'cny', 4) // 默认四位小数
         }
         return data
       }
@@ -828,7 +1107,6 @@ export default {
     // 更新草稿方法
     updateDraftFunc: debounce(function () {
       const {
-        currentUserInfo,
         title,
         markdownData: content,
         fissionFactor,
@@ -894,14 +1172,16 @@ export default {
         console.log('err', err)
       })
       // 获取文章信息
-      const res = await this.$API.getMyPost(id).then(res => {
+      await this.$API.getCanEditPost(id).then(res => {
+        console.log('获取文章信息:', id, res)
         if (res.code === 0) {
           this.fissionNum = res.data.fission_factor / 1000
           this.signature = res.data.sign
           this.cover = res.data.cover
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
-
+          this.authorId = res.data.uid
+          this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -911,7 +1191,14 @@ export default {
             this.readSelectValue = res.data.tokens[0].id
           }
 
-          // 持通证支付
+          // 持通证编辑
+          if (res.data.editTokens && res.data.editTokens.length !== 0) {
+            this.tokenEditAuthority = true
+            this.editToken = precision(res.data.editTokens[0].amount, 'cny', res.data.editTokens[0].decimals)
+            this.editSelectValue = res.data.editTokens[0].id
+          }
+
+          // 付费阅读
           if (res.data.prices && res.data.prices.length !== 0) {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
@@ -919,9 +1206,16 @@ export default {
             this.paymentSelectValue = -1
           }
 
+          // 付费编辑
+          if (res.data.editPrices && res.data.editPrices.length !== 0) {
+            this.buyEditAuthority = true
+            this.editPaymentToken = precision(res.data.editPrices[0].price, res.data.editPrices[0].platform, res.data.editPrices[0].decimals)
+            this.paymentSelectValue = -1
+          }
+
           this.setTag(res.data)
         } else {
-          this.$message.success(res.message)
+          this.$message.error(res.message)
           this.$router.push({ path: '/article' })
         }
       }).catch(err => {
@@ -1070,11 +1364,15 @@ export default {
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
+
+      //编辑权限
+      article.editRequireToken = this.editRequireToken
+      article.editRequireBuy = this.editRequireBuy
+
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
-      const { failed, success } = this
+      const { failed } = this
       try {
-        const { author } = article
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })
         if (response.code !== 0) throw new Error(response.message)
@@ -1091,7 +1389,7 @@ export default {
               if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
               if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
               promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
-              Promise.all(promiseArr).then(res => {
+              Promise.all(promiseArr).then(() => {
                 this.success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
                 this.fullscreenLoading = false // remove full loading
               }).catch(err => {
@@ -1149,11 +1447,21 @@ export default {
       article.tags = this.setArticleTag(this.tagCards)
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
-      const { author } = article
+
+      // 编辑权限
+      article.editRequireToken = this.editRequireToken
+      article.editRequireBuy = this.editRequireBuy
+
       const { failed, success } = this
       try {
         const res = await this.$API.editArticle({ article })
         if (res.code === 0) {
+          // 如果不是自己的文章，不设置阅读权限
+          if(!this.isMe(this.authorId)) {
+            success(res.data)
+            this.fullscreenLoading = false // remove full loading
+            return
+          }
           // 发送完成开始设置阅读权限 因为需要返回的id
           const promiseArr = []
           promiseArr.push(this.postMineTokens(res.data)) // 持通证阅读
@@ -1216,7 +1524,7 @@ export default {
 
       if (this.fissionFactor === '') this.fissionFactor = 2 // 用户不填写裂变系数则默认为2
       this.allowLeave = true
-      const { type, id } = this.$route.params
+      const { type } = this.$route.params
 
       const {
         currentUserInfo,
@@ -1236,11 +1544,23 @@ export default {
           else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
+        
+        // 持Fan票编辑
+        if (this.tokenEditAuthority) {
+          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+        }
 
         if (this.paymentTokenVisible) {
           if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
           else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        // 付费编辑
+        if (this.buyEditAuthority) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
         }
         // 发布文章
         this.fullscreenLoading = true
@@ -1265,10 +1585,22 @@ export default {
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
         }
 
+        // 持Fan票编辑
+        if (this.tokenEditAuthority) {
+          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
+          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+        }
+
         if (this.paymentTokenVisible) {
           if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
           else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
           else if (!this.readSummary) return this.$message.warning('请填写摘要')
+        }
+
+        // 付费编辑
+        if (this.buyEditAuthority) {
+          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
         }
 
         this.fullscreenLoading = true
@@ -1481,7 +1813,7 @@ export default {
     },
     // 确定管理编辑
     confirmRelated(i) {
-      const { id, type } = this.$route.params
+      const { type } = this.$route.params
       if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('引用文章链接或标题不能为空!!!')
       const data = {
         url: this.relatedList[i].urlInput,
@@ -1522,7 +1854,7 @@ export default {
     },
     // 删除关联
     removeRelated(i, number) {
-      const { id, type } = this.$route.params
+      const { type } = this.$route.params
       const resSuccess = res => {
         // 提交数据等判断
         if (res.code === 0) {
@@ -1551,7 +1883,7 @@ export default {
       }
     },
     editRelated(i, number) {
-      const { id, type } = this.$route.params
+      const { type } = this.$route.params
       const resSuccess = res => {
         if (res.code === 0) {
           this.relatedList[i].urlInput = res.data.url

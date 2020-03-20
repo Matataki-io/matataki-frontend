@@ -4,7 +4,10 @@
       {{ $t('user.point') }}
     </h2>
     <div class="line" />
-    <div v-loading="loading" class="card-container">
+    <div
+      v-loading="loading"
+      class="card-container"
+    >
       <no-content-prompt :list="pointLog.list">
         <div class="point-card">
           <span class="title">{{ $t('user.remainingPoints') }}</span>
@@ -12,7 +15,11 @@
             {{ amount }}
           </h1>
         </div>
-        <pointCard v-for="(item, index) in pointLog.list" :key="index" :asset="item" />
+        <pointCard
+          v-for="(item, index) in pointLog.list"
+          :key="index"
+          :asset="item"
+        />
       </no-content-prompt>
     </div>
     <user-pagination
@@ -23,9 +30,9 @@
       :page-size="pointLog.params.pagesize"
       :total="total"
       :need-access-token="true"
+      class="pagination"
       @paginationData="paginationData"
       @togglePage="togglePage"
-      class="pagination"
     />
   </div>
 </template>

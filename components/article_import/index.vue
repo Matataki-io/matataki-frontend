@@ -3,11 +3,14 @@
     :visible.sync="visible"
     :show-close="false"
     :close-on-click-modal="false"
-    @close="$emit('close')"
     width="460px"
     custom-class="import br10"
+    @close="$emit('close')"
   >
-    <el-input v-model="url" :placeholder="$t('publish.importInput')" />
+    <el-input
+      v-model="url"
+      :placeholder="$t('publish.importInput')"
+    />
     <p class="des gray">
       {{ $t('publish.importDes1') }}
     </p>
@@ -20,11 +23,19 @@
         {{ $t('publish.importAgree') }}
       </el-checkbox>
     </div>
-    <span slot="footer" class="dialog-footer">
+    <span
+      slot="footer"
+      class="dialog-footer"
+    >
       <el-button @click="visible = false">
         {{ $t('cancel') }}
       </el-button>
-      <el-button :loading="loading" :disabled="!statement" @click="importFunc" type="primary">
+      <el-button
+        :loading="loading"
+        :disabled="!statement"
+        type="primary"
+        @click="importFunc"
+      >
         {{ $t('confirm') }}
       </el-button>
     </span>

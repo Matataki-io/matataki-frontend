@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     async getMyUserData() {
-      const res = await this.$API.getMyUserData().then(res => {
+      await this.$API.getMyUserData().then(res => {
         const statusToken = (res.data.status & this.$userStatus.hasMineTokenPermission)
         if (res.code === 0 && statusToken) this.tokens = true
       }).catch(err => {

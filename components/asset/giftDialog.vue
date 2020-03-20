@@ -1,6 +1,9 @@
 <template>
-  <m-dialog v-model="giftDialog" width="600px" title="转账">
-
+  <m-dialog
+    v-model="giftDialog"
+    width="600px"
+    title="转账"
+  >
     <el-form
       ref="form"
       v-loading="transferLoading"
@@ -10,10 +13,21 @@
       class="gift-form"
     >
       <el-form-item label="接受对象">
-        <el-input v-model="form.username" placeholder="请输入转账的对象" size="small" style="z-index: 2;" />
+        <el-input
+          v-model="form.username"
+          placeholder="请输入转账的对象"
+          size="small"
+          style="z-index: 2;"
+        />
         <!-- 常用候选对象列表 -->
         <template v-if="historyUser.length !== 0">
-          <el-tag v-for="item in historyUser" :key="item.id" @click="continueUser(item)" type="info" class="history-user__tag">
+          <el-tag
+            v-for="item in historyUser"
+            :key="item.id"
+            type="info"
+            class="history-user__tag"
+            @click="continueUser(item)"
+          >
             {{
               (item.nickname || item.username).length > 20
                 ? `${(item.nickname || item.username).slice(0, 20)}...`
@@ -22,26 +36,59 @@
           </el-tag>
         </template>
         <!-- 搜索结果 -->
-        <div v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)" class="transfer—search__list">
-          <div v-for="item in searchUserList" :key="item.id" @click="continueUser(item)">
-            <avatar :src="searchUserAvatar(item.avatar)" class="transfer—search__list__avatar" />
-            <span v-html="searchUserTitle(item.nickname || item.username)" class="search-result__tag " />
+        <div
+          v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
+          class="transfer—search__list"
+        >
+          <div
+            v-for="item in searchUserList"
+            :key="item.id"
+            @click="continueUser(item)"
+          >
+            <avatar
+              :src="searchUserAvatar(item.avatar)"
+              class="transfer—search__list__avatar"
+            />
+            <span
+              class="search-result__tag "
+              v-html="searchUserTitle(item.nickname || item.username)"
+            />
           </div>
         </div>
       </el-form-item>
       <!-- 结果 -->
       <transition name="result">
-        <el-form-item v-if="!$utils.isNull(toUserInfo)" label="" prop="">
-          <router-link :to="{name: 'user-id', params: {id: toUserInfo.id}}" class="search-user" target="_blank">
-            <avatar :src="searchUserAvatar(toUserInfo.avatar)" class="search-user-avatar" />
-            <span v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)" class="search-result__tag " />
-            <div @click="closeUser" class="gift-ful">
+        <el-form-item
+          v-if="!$utils.isNull(toUserInfo)"
+          label=""
+          prop=""
+        >
+          <router-link
+            :to="{name: 'user-id', params: {id: toUserInfo.id}}"
+            class="search-user"
+            target="_blank"
+          >
+            <avatar
+              :src="searchUserAvatar(toUserInfo.avatar)"
+              class="search-user-avatar"
+            />
+            <span
+              class="search-result__tag "
+              v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
+            />
+            <div
+              class="gift-ful"
+              @click="closeUser"
+            >
               <i class="el-icon-close" />
             </div>
           </router-link>
         </el-form-item>
       </transition>
-      <el-form-item label="发送数量" prop="amount">
+      <el-form-item
+        label="发送数量"
+        prop="amount"
+      >
         <el-input
           v-model="form.amount"
           :max="form.max"
@@ -51,13 +98,24 @@
           clearable
         />
       </el-form-item>
-      <p v-if="balance" class="balance">
+      <p
+        v-if="balance"
+        class="balance"
+      >
         余额&nbsp;{{ balance }}&nbsp;
-        <a @click="form.amount = balance" href="javascript:;">全部转入</a>
+        <a
+          href="javascript:;"
+          @click="form.amount = balance"
+        >全部转入</a>
       </p>
       <el-form-item>
         <div class="form-button">
-          <el-button :disabled="$utils.isNull(toUserInfo)" @click="submitForm('form')" type="primary" size="small">
+          <el-button
+            :disabled="$utils.isNull(toUserInfo)"
+            type="primary"
+            size="small"
+            @click="submitForm('form')"
+          >
             确定
           </el-button>
         </div>
@@ -67,7 +125,7 @@
 </template>
 
 <script>
-import { precision, toPrecision } from '@/utils/precisionConversion'
+import { toPrecision } from '@/utils/precisionConversion'
 import debounce from 'lodash/debounce'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
@@ -214,7 +272,7 @@ export default {
       this.$alert(`${message}，点击确定刷新`, '温馨提示', {
         showClose: false,
         type: 'success',
-        callback: action => {
+        callback: () => {
           this.$router.go(0)
         }
       })

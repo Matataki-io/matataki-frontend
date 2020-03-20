@@ -1,31 +1,66 @@
 <template>
-  <el-dialog :visible.sync="showModal" :modal="true" width="320px" custom-class="my-dialog br10">
-    <section v-if="step === 1" class="step">
+  <el-dialog
+    :visible.sync="showModal"
+    :modal="true"
+    width="320px"
+    custom-class="my-dialog br10"
+  >
+    <section
+      v-if="step === 1"
+      class="step"
+    >
       <h1 class="step-title">
         选择授权方式
       </h1>
       <div class="btns">
-        <button @click="walletLogin('EOS')" class="btn-base bg-black">
+        <button
+          class="btn-base bg-black"
+          @click="walletLogin('EOS')"
+        >
           <div class="eos-logo">
-            <img src="@/assets/img/eos_icon.svg" alt="EOS">
+            <img
+              src="@/assets/img/eos_icon.svg"
+              alt="EOS"
+            >
           </div>
           <span>EOS 登录</span>
         </button>
-        <button @click="walletLogin('ONT')" class="btn-base bg-blue">
-          <img src="@/assets/img/icon_logo_ont.svg" alt="ONT">
+        <button
+          class="btn-base bg-blue"
+          @click="walletLogin('ONT')"
+        >
+          <img
+            src="@/assets/img/icon_logo_ont.svg"
+            alt="ONT"
+          >
           <span>ONT 登录</span>
         </button>
-        <button @click="walletLogin('GitHub')" class="btn-base bg-purple">
-          <img src="@/assets/img/github.png" alt="github">
+        <button
+          class="btn-base bg-purple"
+          @click="walletLogin('GitHub')"
+        >
+          <img
+            src="@/assets/img/github.png"
+            alt="github"
+          >
           <span>Github 登录</span>
         </button>
         <div class="guide">
-          <a target="_blank" href="https://www.matataki.io/p/515">EOS登录指南</a>
-          <a target="_blank" href="https://www.matataki.io/p/516">ONT登录指南</a>
+          <a
+            target="_blank"
+            href="https://www.matataki.io/p/515"
+          >EOS登录指南</a>
+          <a
+            target="_blank"
+            href="https://www.matataki.io/p/516"
+          >ONT登录指南</a>
         </div>
       </div>
     </section>
-    <section v-if="step === 2" class="step">
+    <section
+      v-if="step === 2"
+      class="step"
+    >
       <h1 class="step-title">
         EOS钱包
       </h1>
@@ -36,7 +71,10 @@
           :href="itemWallet.href"
           target="_blank"
         >
-          <img :src="itemWallet.url" :alt="itemWallet.alt">
+          <img
+            :src="itemWallet.url"
+            :alt="itemWallet.alt"
+          >
         </a>
       </div>
       <h1 class="step-title">
@@ -49,16 +87,28 @@
           :href="itemWallet.href"
           target="_blank"
         >
-          <img :src="itemWallet.url" :alt="itemWallet.alt">
+          <img
+            :src="itemWallet.url"
+            :alt="itemWallet.alt"
+          >
         </a>
       </div>
     </section>
-    <div @click="step === 1 ? (step = 2) : (step = 1)" class="footer-arrow">
-      <div v-if="step === 2" class="arrow">
+    <div
+      class="footer-arrow"
+      @click="step === 1 ? (step = 2) : (step = 1)"
+    >
+      <div
+        v-if="step === 2"
+        class="arrow"
+      >
         <i class="el-icon-arrow-left" />
       </div>
       <span>{{ step === 1 ? '查看支持的钱包' : '返回登录' }}</span>
-      <div v-if="step === 1" class="arrow">
+      <div
+        v-if="step === 1"
+        class="arrow"
+      >
         <i class="el-icon-arrow-right" />
       </div>
     </div>

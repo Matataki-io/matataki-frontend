@@ -1,19 +1,50 @@
 <template>
-  <a :href="card.url" target="_blank" class="card">
-    <div v-if="card.cover" class="card-cover">
-      <img :src="coverSrc" :alt="card.title">
+  <a
+    :href="card.url"
+    target="_blank"
+    class="card"
+  >
+    <div
+      v-if="card.cover"
+      class="card-cover"
+    >
+      <img
+        :src="coverSrc"
+        :alt="card.title"
+      >
     </div>
     <div>
       <div class="card-operate">
-        <p :class="!shareCard && 'card-sharehall'" class="card-text">{{ card.title || $t('not') }}</p>
-        <div v-if="cardType !== 'edit' && $route.name === 'sharehall'" class="card-operate">
-          <svg-icon @click="copy(card.url, $event)" class="icon" icon-class="copy" />
-          <svg-icon @click="ref(card.url, $event)" class="icon" icon-class="quote" />
+        <p
+          :class="!shareCard && 'card-sharehall'"
+          class="card-text"
+        >{{ card.title || $t('not') }}</p>
+        <div
+          v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+          class="card-operate"
+        >
+          <svg-icon
+            class="icon"
+            icon-class="copy"
+            @click="copy(card.url, $event)"
+          />
+          <svg-icon
+            class="icon"
+            icon-class="quote"
+            @click="ref(card.url, $event)"
+          />
         </div>
       </div>
-      <p :class="!shareCard && 'card-sharehall'" class="card-summary">{{ card.summary || $t('not') }}</p>
+      <p
+        :class="!shareCard && 'card-sharehall'"
+        class="card-summary"
+      >{{ card.summary || $t('not') }}</p>
     </div>
-    <span v-if="!shareCard && cardType === 'edit'" @click="removeCard" class="card-remove">
+    <span
+      v-if="!shareCard && cardType === 'edit'"
+      class="card-remove"
+      @click="removeCard"
+    >
       <i class="el-icon-close icon" />
     </span>
   </a>

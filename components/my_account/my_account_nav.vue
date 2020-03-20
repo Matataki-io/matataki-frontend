@@ -1,13 +1,17 @@
 <template>
   <div class="info">
-    <router-link v-for="(tag, index) in tagsList" :to="{ name: tag.url }" :key="index" :class="$route.name === tag.url && 'active'">
+    <router-link
+      v-for="(tag, index) in tagsList"
+      :key="index"
+      :to="{ name: tag.url }"
+      :class="$route.name === tag.url && 'active'"
+    >
       {{ tag.title }}
     </router-link>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -64,7 +68,7 @@ export default {
       })
     },
     async getMyUserData() {
-      const res = await this.$API.getMyUserData().then(res => {
+      await this.$API.getMyUserData().then(res => {
         const statusToken = (res.data.status & this.$userStatus.hasMineTokenPermission)
         if (res.code === 0 && statusToken) this.tokens = true
       }).catch(err => {

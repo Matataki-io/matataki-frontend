@@ -3,10 +3,16 @@
   <userPage>
     <template slot="list">
       <div class="buy-tab">
-        <router-link :to="{ name: 'user-id-buy', params: { id: $route.params.id } }" :class="$route.name === 'user-id-buy' && 'active'">
+        <router-link
+          :to="{ name: 'user-id-buy', params: { id: $route.params.id } }"
+          :class="$route.name === 'user-id-buy' && 'active'"
+        >
           文章
         </router-link>
-        <router-link :to="{ name: 'user-id-buy-other', params: { id: $route.params.id } }" :class="$route.name === 'user-id-buy-other' && 'active'">
+        <router-link
+          :to="{ name: 'user-id-buy-other', params: { id: $route.params.id } }"
+          :class="$route.name === 'user-id-buy-other' && 'active'"
+        >
           其他
         </router-link>
       </div>

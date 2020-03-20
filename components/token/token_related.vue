@@ -4,7 +4,11 @@
       <h2 class="title">
         {{ $t('token.relatedCreations') }}
       </h2>
-      <el-dropdown @command="toggleDropdown" class="sort" trigger="click">
+      <el-dropdown
+        class="sort"
+        trigger="click"
+        @command="toggleDropdown"
+      >
         <span class="el-dropdown-link">
           <span v-if="pull.params.sort === 'popular-desc'">{{ $t('token.sortByPopularity') }}</span>
           <span v-else-if="pull.params.sort === 'time-desc'">{{ $t('token.sortByTime') }}</span>
@@ -19,14 +23,29 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-popover class="filter" placement="bottom-end" trigger="click">
-        <el-button slot="reference" class="filter-button" type="text">
+      <el-popover
+        class="filter"
+        placement="bottom-end"
+        trigger="click"
+      >
+        <el-button
+          slot="reference"
+          class="filter-button"
+          type="text"
+        >
           <div class="filter-header">
-            <img class="filter-icon" src="@/assets/img/filter.svg">{{ $t('filter') }}
+            <img
+              class="filter-icon"
+              src="@/assets/img/filter.svg"
+            >{{ $t('filter') }}
           </div>
         </el-button>
         <div style="font-size: 16px">
-          <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
+          <el-checkbox-group
+            v-model="checkedFilter"
+            :min="1"
+            @change="handleCheckedFilterChanged"
+          >
             <div style="margin-bottom: 8px">
               <el-checkbox label="1">
                 {{ $t('token.visibleTicket') }}
@@ -44,7 +63,10 @@
 
     <div class="list">
       <div v-loading="loading">
-        <no-content-prompt :prompt="$t('notArticle')" :list="articles">
+        <no-content-prompt
+          :prompt="$t('notArticle')"
+          :list="articles"
+        >
           <articleCardListNew
             v-for="(item, index) in articles"
             :key="index"
@@ -61,9 +83,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="false"
+        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
-        class="pagination"
       />
     </div>
   </div>
@@ -111,7 +133,7 @@ export default {
     buttonLoadMore(res) {
       this.articles = this.articles.concat(res.data.list)
     },
-    handleCheckedFilterChanged(value) {
+    handleCheckedFilterChanged() {
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(function () {

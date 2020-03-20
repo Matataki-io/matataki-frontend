@@ -1,30 +1,66 @@
 <template>
   <section class="register">
-    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="ss-form">
+    <el-form
+      ref="registerForm"
+      :model="registerForm"
+      :rules="registerRules"
+      class="ss-form"
+    >
       <el-form-item prop="email">
-        <el-input v-model="registerForm.email" :placeholder="$t('rule.loginEmailMessage')" type="" />
+        <el-input
+          v-model="registerForm.email"
+          :placeholder="$t('rule.loginEmailMessage')"
+          type=""
+        />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="registerForm.password" :placeholder="$t('rule.setPassword')" type="password" show-password />
+        <el-input
+          v-model="registerForm.password"
+          :placeholder="$t('rule.setPassword')"
+          type="password"
+          show-password
+        />
       </el-form-item>
       <el-form-item prop="repassword">
-        <el-input v-model="registerForm.repassword" :placeholder="$t('rule.setPasswordAgain')" type="password" show-password />
+        <el-input
+          v-model="registerForm.repassword"
+          :placeholder="$t('rule.setPasswordAgain')"
+          type="password"
+          show-password
+        />
       </el-form-item>
       <el-form-item prop="smscode">
         <div class="code-contaniner">
-          <el-input v-model="registerForm.smscode" :placeholder="$t('rule.emailCode')" autocomplete="off" />
-          <el-button :loading="loading" :disabled="!!timer || loading" @click="sendCode" type="primary">
+          <el-input
+            v-model="registerForm.smscode"
+            :placeholder="$t('rule.emailCode')"
+            autocomplete="off"
+          />
+          <el-button
+            :loading="loading"
+            :disabled="!!timer || loading"
+            type="primary"
+            @click="sendCode"
+          >
             {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
           </el-button>
         </div>
       </el-form-item>
       <el-form-item class="ss-btn">
-        <el-button @click="submitRegisterForm" type="primary">
+        <el-button
+          type="primary"
+          @click="submitRegisterForm"
+        >
           {{ $t('registered') }}
         </el-button>
       </el-form-item>
     </el-form>
-    <img v-if="referral" class="referral" src="@/assets/img/invite.png" alt="$t('auth.invite')">
+    <img
+      v-if="referral"
+      class="referral"
+      src="@/assets/img/invite.png"
+      alt="$t('auth.invite')"
+    >
   </section>
 </template>
 

@@ -1,7 +1,6 @@
 import API from './ontology'
 import * as config from '@/config'
 
-// eslint-disable-next-line import/prefer-default-export
 export const recordOrder = async ({
   owner = null,
   oId = null,
@@ -46,7 +45,6 @@ export const recordOrder = async ({
   return response
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const recordShare = async ({
   owner = null,
   signId = null,

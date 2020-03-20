@@ -1,0 +1,5 @@
+# eslint lint 忽略
+static
+node_modules/
+# i18n
+locale

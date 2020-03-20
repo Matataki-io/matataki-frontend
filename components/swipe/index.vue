@@ -1,16 +1,29 @@
 <template>
-  <div ref="swipe" class="swipe">
+  <div
+    ref="swipe"
+    class="swipe"
+  >
     <el-carousel
       :interval="3000"
-      @change="swipeChange"
       trigger="click"
       type="card"
       height="390px"
       arrow="always"
+      @change="swipeChange"
     >
-      <el-carousel-item v-for="(item, index) in card" :key="index">
-        <div @click="viewP(index, item.id)" class="swipe-content">
-          <img v-if="item.cover" :src="cover(item.cover)" :alt="item.title">
+      <el-carousel-item
+        v-for="(item, index) in card"
+        :key="index"
+      >
+        <div
+          class="swipe-content"
+          @click="viewP(index, item.id)"
+        >
+          <img
+            v-if="item.cover"
+            :src="cover(item.cover)"
+            :alt="item.title"
+          >
           <p>{{ item.title }}</p>
           <div class="full" />
         </div>
@@ -20,8 +33,6 @@
 </template>
 
 <script>
-import { recommend } from '@/api/async_data_api.js'
-
 export default {
   props: {
     card: {

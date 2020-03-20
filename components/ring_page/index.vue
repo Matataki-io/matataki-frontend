@@ -8,7 +8,10 @@
       trigger="click"
     >
       <div>
-        <el-checkbox-group v-model="sortCheckList" @change="sortChange">
+        <el-checkbox-group
+          v-model="sortCheckList"
+          @change="sortChange"
+        >
           <el-checkbox
             v-for="(item, idx) in sortList"
             :key="idx"
@@ -20,13 +23,19 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <span slot="reference" class="head-sort">
+      <span
+        slot="reference"
+        class="head-sort"
+      >
         <i class="el-icon-s-operation" />筛选
       </span>
     </el-popover>
 
     <div class="list">
-      <no-content-prompt :prompt="this.$t('not') " :list="pull.list">
+      <no-content-prompt
+        :prompt="this.$t('not') "
+        :list="pull.list"
+      >
         <articleCardListNew
           v-for="item in pull.list"
           :key="item.id"
@@ -39,7 +48,7 @@
           :url-replace="$route.params.id + ''"
           :params="pull.params"
           :api-url="pull.apiUrl"
-          :autoRequestTime="pull.autoRequestTime"
+          :auto-request-time="pull.autoRequestTime"
           @buttonLoadMore="buttonLoadMore"
         />
       </div>

@@ -1,36 +1,88 @@
 <template>
   <div class="container">
     <div class="email">
-      <img src="@/assets/img/m_logo.png" class="logo" alt="logo">
+      <img
+        src="@/assets/img/m_logo.png"
+        class="logo"
+        alt="logo"
+      >
       <h1>绑定邮箱</h1>
-      <div v-if="setp === 0" class="step">
+      <div
+        v-if="setp === 0"
+        class="step"
+      >
         <p class="setp-title">
           请输入邮箱账号
         </p>
-        <el-form ref="emailAddress" :rules="rules" :model="emailAddress" @submit.native.prevent>
-          <el-form-item label="" prop="email">
-            <el-input v-model="emailAddress.email" @change="emailAddressOnSubmit('emailAddress')" placeholder="请输入邮箱账号" clearable />
+        <el-form
+          ref="emailAddress"
+          :rules="rules"
+          :model="emailAddress"
+          @submit.native.prevent
+        >
+          <el-form-item
+            label=""
+            prop="email"
+          >
+            <el-input
+              v-model="emailAddress.email"
+              placeholder="请输入邮箱账号"
+              clearable
+              @change="emailAddressOnSubmit('emailAddress')"
+            />
           </el-form-item>
-          <el-button v-loading="nextLoading" @click="emailAddressOnSubmit('emailAddress')">
+          <el-button
+            v-loading="nextLoading"
+            @click="emailAddressOnSubmit('emailAddress')"
+          >
             下一步
           </el-button>
         </el-form>
       </div>
-      <div v-if="setp === 1" class="step">
-        <el-form ref="emailPass" :rules="rulesPass" :model="emailPass">
-          <el-form-item label="" prop="pass">
+      <div
+        v-if="setp === 1"
+        class="step"
+      >
+        <el-form
+          ref="emailPass"
+          :rules="rulesPass"
+          :model="emailPass"
+        >
+          <el-form-item
+            label=""
+            prop="pass"
+          >
             <p class="setp-title">
               请设置密码
             </p>
-            <el-input v-model="emailPass.pass" type="text" placeholder="请设置密码" show-password />
+            <el-input
+              v-model="emailPass.pass"
+              type="text"
+              placeholder="请设置密码"
+              show-password
+            />
           </el-form-item>
-          <el-form-item label="" prop="code">
+          <el-form-item
+            label=""
+            prop="code"
+          >
             <p class="setp-title code">
               请输入验证码
             </p>
             <div class="setp-code">
-              <el-input v-model="emailPass.code" type="text" maxlength="6" placeholder="请输入验证码" />
-              <el-button :loading="codeLoading" :disabled="!!timer || codeLoading" @click="sendCode" type="primary" class="btn">
+              <el-input
+                v-model="emailPass.code"
+                type="text"
+                maxlength="6"
+                placeholder="请输入验证码"
+              />
+              <el-button
+                :loading="codeLoading"
+                :disabled="!!timer || codeLoading"
+                type="primary"
+                class="btn"
+                @click="sendCode"
+              >
                 {{ timer ? `${count}S` : '获取邮箱验证码' }}
               </el-button>
             </div>
@@ -38,7 +90,11 @@
           <el-button @click="setp--">
             上一步
           </el-button>
-          <el-button v-loading="loading" @click="emailPassOnSubmit('emailPass')" type="primary">
+          <el-button
+            v-loading="loading"
+            type="primary"
+            @click="emailPassOnSubmit('emailPass')"
+          >
             立即绑定
           </el-button>
         </el-form>
@@ -48,7 +104,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { getCookie } from '@/utils/cookie'
 
 export default {

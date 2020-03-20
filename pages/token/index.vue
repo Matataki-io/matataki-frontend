@@ -50,15 +50,27 @@
         >什么是Fan票?</a> -->
         <div class="tokens-list-header">
           <div class="tokens-list-header-left-column">
-            <el-dropdown @command="toggleDropdown" trigger="click">
-              <span :class="sort === selectedDropdown && 'active'" class="el-dropdown-link">
+            <el-dropdown
+              trigger="click"
+              @command="toggleDropdown"
+            >
+              <span
+                :class="sort === selectedDropdown && 'active'"
+                class="el-dropdown-link"
+              >
                 <span v-if="selectedDropdown === 'name-asc'">{{ $t('token.ascendingAlphabeticalOrder') }}</span>
                 <span v-else-if="selectedDropdown === 'name-desc'">{{ $t('token.descendingFirstLetter') }}</span>
                 <span v-else-if="selectedDropdown === 'time-asc'">{{ $t('token.ascendingTime') }}</span>
                 <span v-else-if="selectedDropdown === 'time-desc'">{{ $t('token.descendingTime') }}</span>
                 <span v-else>{{ $t('token.comprehensiveSort') }}</span>
-                <i v-if="selectedDropdown.includes('-asc')" class="el-icon-arrow-up el-icon--right" />
-                <i v-else class="el-icon-arrow-down el-icon--right" />
+                <i
+                  v-if="selectedDropdown.includes('-asc')"
+                  class="el-icon-arrow-up el-icon--right"
+                />
+                <i
+                  v-else
+                  class="el-icon-arrow-down el-icon--right"
+                />
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="general">
@@ -80,15 +92,27 @@
             </el-dropdown>
           </div>
           <div class="tokens-list-header-medium-column">
-            <div :class="sort.startsWith('unit-price') && 'active'" @click="toggleSort('unit-price')" class="sub-column">
+            <div
+              :class="sort.startsWith('unit-price') && 'active'"
+              class="sub-column"
+              @click="toggleSort('unit-price')"
+            >
               {{ $t('token.unitPrice') }}
               <i class="el-icon-d-caret" />
             </div>
-            <div :class="sort.startsWith('liquidity') && 'active'" @click="toggleSort('liquidity')" class="sub-column">
+            <div
+              :class="sort.startsWith('liquidity') && 'active'"
+              class="sub-column"
+              @click="toggleSort('liquidity')"
+            >
               {{ $t('token.liquidGold') }}
               <i class="el-icon-d-caret" />
             </div>
-            <div :class="sort.startsWith('exchange') && 'active'" @click="toggleSort('exchange')" class="sub-column">
+            <div
+              :class="sort.startsWith('exchange') && 'active'"
+              class="sub-column"
+              @click="toggleSort('exchange')"
+            >
               {{ $t('token.turnover24h') }}
               <i class="el-icon-d-caret" />
             </div>
@@ -99,9 +123,16 @@
         </div>
       </div>
 
-      <div v-loading="loading" class="card-container">
+      <div
+        v-loading="loading"
+        class="card-container"
+      >
         <no-content-prompt :list="pull.list">
-          <tokenCard v-for="(item, index) in pull.list" :key="index" :card="item" />
+          <tokenCard
+            v-for="(item, index) in pull.list"
+            :key="index"
+            :card="item"
+          />
         </no-content-prompt>
       </div>
       <user-pagination
@@ -112,9 +143,9 @@
         :page-size="10"
         :total="total"
         :need-access-token="true"
+        class="pagination"
         @paginationData="paginationData"
         @togglePage="togglePage"
-        class="pagination"
       />
     </div>
   </div>
@@ -195,9 +226,9 @@ export default {
       }
 
       this.currentPage = 1
-      const query = {
-        sort
-      }
+      // const query = {
+      //   sort
+      // }
       this.pull.list = []
 
       this.sort = sort

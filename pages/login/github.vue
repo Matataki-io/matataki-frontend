@@ -1,10 +1,13 @@
 <template>
-  <div v-loading="loading" style="height: 100%;" element-loading-text="登录中..." />
+  <div
+    v-loading="loading"
+    style="height: 100%;"
+    element-loading-text="登录中..."
+  />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import { getCookie, removeCookie } from '@/utils/cookie'
 
 export default {
   layout: 'empty',
@@ -57,13 +60,8 @@ export default {
           this.$router.push({ name: 'setting-account' })
         })
       } else {
-        // 移除github cookie
-        // const removeCookies = () => {
-        //   const idProvider = getCookie('idProvider')
-        //   if (idProvider.toLocaleLowerCase() === 'github') removeCookie('idProvider')
-        // }
         this.signIn({ code, idProvider: 'GitHub' })
-          .then(res => {
+          .then(() => {
             this.$backendAPI.accessToken = this.currentUserInfo.accessToken
           })
           .catch(() => {})

@@ -2,24 +2,40 @@
   <div class="article-ipfs">
     <p>
       {{ $t('p.ipfsTitle') }}
-      <el-tooltip :content="$t('p.ipfsContent')" class="item" effect="dark" placement="top-start">
+      <el-tooltip
+        :content="$t('p.ipfsContent')"
+        class="item"
+        effect="dark"
+        placement="top-start"
+      >
         <svg-icon
           class="help-icon"
           icon-class="help"
         />
       </el-tooltip>
     </p>
-    <div v-if="isHide" class="ipfs-hash">
-      <router-link :to="{name: 'ipfs-hash', params: {hash: hash}}" class="ipfs" target="_blank">
+    <div
+      v-if="isHide"
+      class="ipfs-hash"
+    >
+      <router-link
+        :to="{name: 'ipfs-hash', params: {hash: hash}}"
+        class="ipfs"
+        target="_blank"
+      >
         IPFS Hash: {{ hash || 'Loading...' }}
       </router-link>
       <svg-icon
-        @click="copyText(getCopyIpfsHash)"
         class="copy-hash"
         icon-class="copy"
+        @click="copyText(getCopyIpfsHash)"
       />
     </div>
-    <img class="ipfs-img" src="@/assets/img/ipfs.png" alt="ipfs">
+    <img
+      class="ipfs-img"
+      src="@/assets/img/ipfs.png"
+      alt="ipfs"
+    >
   </div>
 </template>
 

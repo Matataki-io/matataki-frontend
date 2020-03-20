@@ -1,13 +1,34 @@
 <template>
   <div>
-    <div v-show="status === 'loading'" v-loading="status === 'loading'" class="telegram-loading" />
-    <div v-show="status === 'error'" class="telegram-error">
+    <div
+      v-show="status === 'loading'"
+      v-loading="status === 'loading'"
+      class="telegram-loading"
+    />
+    <div
+      v-show="status === 'error'"
+      class="telegram-error"
+    >
       <i class="el-icon-refresh" />
-      <a @click="createScript" href="javascript:;">重试</a>
+      <a
+        href="javascript:;"
+        @click="createScript"
+      >重试</a>
     </div>
-    <div ref="telegram" v-show="status === 'completed'" />
-    <a v-show="status === 'completed'" class="telegram-toggleaccount" href="https://www.matataki.io/p/2465" target="_blank">
-      切换账号教程<svg-icon icon-class="share3" class="icon" />
+    <div
+      v-show="status === 'completed'"
+      ref="telegram"
+    />
+    <a
+      v-show="status === 'completed'"
+      class="telegram-toggleaccount"
+      href="https://www.matataki.io/p/2465"
+      target="_blank"
+    >
+      切换账号教程<svg-icon
+        icon-class="share3"
+        class="icon"
+      />
     </a>
   </div>
 </template>

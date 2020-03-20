@@ -1,7 +1,14 @@
 <template>
   <div style="width: 100%;">
-    <div v-if="!hasList" class="not-content">
-      <img v-if="isShowImg" src="@/assets/img/not_content_prompt.png" alt="notContent">
+    <div
+      v-if="!hasList"
+      class="not-content"
+    >
+      <img
+        v-if="isShowImg"
+        src="@/assets/img/not_content_prompt.png"
+        alt="notContent"
+      >
       <p>
         {{ prompt }}
       </p>

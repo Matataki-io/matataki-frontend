@@ -6,11 +6,23 @@
     <!-- 首页内容 轮播和推荐 -->
     <el-row class="recommend mw">
       <template v-for="(item, index) in recommendList">
-        <el-col v-if="index === 0" :key="index" :span="16">
+        <el-col
+          v-if="index === 0"
+          :key="index"
+          :span="16"
+        >
           <recommendSlide :card="item" />
         </el-col>
-        <el-col v-else :key="index" :span="8">
-          <articleCard :type-index="0" :card="item" card-type="recommend-card" />
+        <el-col
+          v-else
+          :key="index"
+          :span="8"
+        >
+          <articleCard
+            :type-index="0"
+            :card="item"
+            card-type="recommend-card"
+          />
         </el-col>
       </template>
     </el-row>
@@ -29,14 +41,29 @@
               @click="nowMainIndex = index"
             >{{ itme.title }}</span>
 
-            <el-popover class="filter" placement="bottom-end" trigger="click">
-              <el-button slot="reference" class="filter-button" type="text">
+            <el-popover
+              class="filter"
+              placement="bottom-end"
+              trigger="click"
+            >
+              <el-button
+                slot="reference"
+                class="filter-button"
+                type="text"
+              >
                 <div class="filter-header">
-                  <img class="filter-icon" src="@/assets/img/filter.svg">{{ $t('filter') }}
+                  <img
+                    class="filter-icon"
+                    src="@/assets/img/filter.svg"
+                  >{{ $t('filter') }}
                 </div>
               </el-button>
               <div style="font-size: 16px">
-                <el-checkbox-group v-model="checkedFilter" :min="1" @change="handleCheckedFilterChanged">
+                <el-checkbox-group
+                  v-model="checkedFilter"
+                  :min="1"
+                  @change="handleCheckedFilterChanged"
+                >
                   <div style="margin-bottom: 8px">
                     <el-checkbox label="1">
                       免费
@@ -59,8 +86,15 @@
           <!-- 导航部分 end -->
           <!-- 空div控制内容 -->
           <no-content-prompt :list="articleCardData">
-            <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
-              <no-content-prompt :prompt="promptComputed(index)" :list="item.articles">
+            <div
+              v-for="(item, index) in articleCardData"
+              v-show="nowMainIndex === index"
+              :key="index"
+            >
+              <no-content-prompt
+                :prompt="promptComputed(index)"
+                :list="item.articles"
+              >
                 <articleCardList
                   v-for="itemChild in item.articles"
                   :key="itemChild.id"
@@ -69,7 +103,13 @@
               </no-content-prompt>
               <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
               <div class="load-more-button">
-                <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
+                <buttonLoadMore
+                  :type-index="index"
+                  :params="item.params"
+                  :api-url="item.apiUrl"
+                  :is-atuo-request="item.isAtuoRequest"
+                  @buttonLoadMore="buttonLoadMore"
+                />
               </div>
             <!-- end -->
             </div>
@@ -82,21 +122,39 @@
         <div class="position-sticky top80">
           <div class="tags article">
             <span>{{ $t('home.articleTagTitle') }}</span>
-            <tags :type-index="0" :tag-cards="tagCards" class="tags-container" />
+            <tags
+              :type-index="0"
+              :tag-cards="tagCards"
+              class="tags-container"
+            />
           </div>
 
-          <div v-if="usersRecommendList.length !== 0" class="recommend-author">
+          <div
+            v-if="usersRecommendList.length !== 0"
+            class="recommend-author"
+          >
             <div class="ra-head">
               <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-              <span @click="usersrecommend" class="ra-head-random">
+              <span
+                class="ra-head-random"
+                @click="usersrecommend"
+              >
                 <div class="change">
-                  <svg-icon :class="usersLoading && 'rotate'" class="change-icon" icon-class="change" />
+                  <svg-icon
+                    :class="usersLoading && 'rotate'"
+                    class="change-icon"
+                    icon-class="change"
+                  />
                 </div>
                 <span>{{ $t('home.random') }}</span>
               </span>
             </div>
             <div class="ra-content">
-              <r-a-list v-for="item in usersRecommendList" :key="item.id" :card="item" />
+              <r-a-list
+                v-for="item in usersRecommendList"
+                :key="item.id"
+                :card="item"
+              />
             </div>
           </div>
         </div>
@@ -217,7 +275,7 @@ export default {
     } catch (error) {
       console.log(error)
       return { initData }
-    };
+    }
   },
   created() {
     this.recommendList = this.initData.recommend
@@ -257,7 +315,7 @@ export default {
     promptComputed(index) {
       return index === 2 ? this.$t('notFollowContent') : this.$t('notArticle')
     },
-    handleCheckedFilterChanged(value) {
+    handleCheckedFilterChanged() {
       this.onCheckedFilterChanged()
     },
     onCheckedFilterChanged: debounce(async function () {

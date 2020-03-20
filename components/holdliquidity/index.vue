@@ -4,7 +4,10 @@
       持有的流动金
     </h2>
 
-    <div v-loading="loading" class="card-container buycoins">
+    <div
+      v-loading="loading"
+      class="card-container buycoins"
+    >
       <div class="line" />
 
       <el-table
@@ -20,8 +23,15 @@
           label="Fan票"
         >
           <template slot-scope="scope">
-            <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac">
-              <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
+            <router-link
+              :to="{name: 'token-id', params: {id: scope.row.token_id}}"
+              class="fl ac"
+            >
+              <avatar
+                :src="cover(scope.row.logo)"
+                size="30px"
+                style="margin-right: 10px;"
+              />
               <span class="scope">{{ scope.row.symbol }}({{ scope.row.name }})</span>
             </router-link>
           </template>
@@ -31,7 +41,10 @@
           :label="$t('token.founder')"
         >
           <template slot-scope="scope">
-            <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block author">
+            <n-link
+              :to="{name: 'user-id', params: {id: scope.row.uid}}"
+              class="invite-block author"
+            >
               <!-- <avatar :src="cover(scope.row.avatar)" size="30px" /> -->
               <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
             </n-link>
@@ -49,7 +62,10 @@
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <holdliquidityDetail v-if="expands[0] === scope.row.token_id" :id="scope.row.token_id" />
+            <holdliquidityDetail
+              v-if="expands[0] === scope.row.token_id"
+              :id="scope.row.token_id"
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -59,18 +75,34 @@
         >
           <template slot-scope="scope">
             <div class="invite-block btn">
-              <el-button @click="foldingClick(scope.row.token_id)" type="text" class="info-button" size="small" style="margin-right: 10px;">
-                <span v-if="expands[0] !== scope.row.token_id" class="expand-button">
+              <el-button
+                type="text"
+                class="info-button"
+                size="small"
+                style="margin-right: 10px;"
+                @click="foldingClick(scope.row.token_id)"
+              >
+                <span
+                  v-if="expands[0] !== scope.row.token_id"
+                  class="expand-button"
+                >
                   展开明细
                   <i class="el-icon-d-arrow-right i-spin-z90" />
                 </span>
-                <span v-else class="expand-button">
+                <span
+                  v-else
+                  class="expand-button"
+                >
                   收起明细
                   <i class="el-icon-d-arrow-right i-spin-f90" />
                 </span>
               </el-button>
               <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
-                <el-button type="primary" class="info-button" size="small">
+                <el-button
+                  type="primary"
+                  class="info-button"
+                  size="small"
+                >
                   {{ $t('transaction') }}
                 </el-button>
               </router-link>
@@ -88,9 +120,9 @@
       :page-size="pointLog.params.pagesize"
       :total="total"
       :need-access-token="true"
+      class="pagination"
       @paginationData="paginationData"
       @togglePage="togglePage"
-      class="pagination"
     />
   </div>
 </template>
@@ -139,6 +171,7 @@ export default {
       }
       return ((parseFloat(balance) / parseFloat(total)) * 100).toFixed(2) + '%'
     },
+    // eslint-disable-next-line no-unused-vars
     liquidity(balance, decimals = 4) {
       return this.$utils.fromDecimal(balance, 4)
     },

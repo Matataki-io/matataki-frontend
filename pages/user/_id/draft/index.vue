@@ -1,7 +1,10 @@
 
 <template>
   <userPage>
-    <div slot="list" v-loading="loading">
+    <div
+      slot="list"
+      v-loading="loading"
+    >
       <no-content-prompt :list="articleCardData.articles">
         <n-link
           v-for="(item, index) in articleCardData.articles"
@@ -25,9 +28,9 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
+          class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
-          class="pagination"
         />
       </no-content-prompt>
     </div>

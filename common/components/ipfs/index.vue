@@ -10,10 +10,17 @@
       </p>
       <p class="ipfs-link">
         IPFS Hash: {{ hash }}
-        <svg-icon @click="copy(hash)" icon-class="copy" />
+        <svg-icon
+          icon-class="copy"
+          @click="copy(hash)"
+        />
       </p>
     </div>
-    <svg-icon slot="reference" icon-class="ipfs" class="ipfs" />
+    <svg-icon
+      slot="reference"
+      icon-class="ipfs"
+      class="ipfs"
+    />
   </el-popover>
 </template>
 

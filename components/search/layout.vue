@@ -1,9 +1,18 @@
 <template>
   <div class="search">
-    <g-header :search-query-val="searchQueryVal" @search="search" />
+    <g-header
+      :search-query-val="searchQueryVal"
+      @search="search"
+    />
     <div class="search-container">
       <div class="search-head fl">
-        <p v-for="(tag, index) in tagList" :key="index" @click="toggleType(index)" :class="searchType === index && 'active'" replace>
+        <p
+          v-for="(tag, index) in tagList"
+          :key="index"
+          :class="searchType === index && 'active'"
+          replace
+          @click="toggleType(index)"
+        >
           {{ tag.label }}
           <span>
             {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
@@ -11,7 +20,10 @@
         </p>
       </div>
 
-      <div v-loading="loading" v-show="searchQueryValLen">
+      <div
+        v-show="searchQueryValLen"
+        v-loading="loading"
+      >
         <!-- 文章 -->
         <template v-if="searchType === 0">
           <articleCardListNew
@@ -27,8 +39,8 @@
             :key="index"
             :card="item"
             :blank="false"
-            @refClick="pushShare"
             class="share-card"
+            @refClick="pushShare"
           />
         </template>
         <!-- Fan票 -->
@@ -39,7 +51,10 @@
             :card="item"
           />
         </template>
-        <div v-else-if="searchType === 3" class="search-list">
+        <div
+          v-else-if="searchType === 3"
+          class="search-list"
+        >
           <!-- 用户 -->
           <searchUserList
             v-for="item in articleCardData[3].articles"
@@ -61,7 +76,10 @@
           />
         </div>
       </div>
-      <p v-show="!searchQueryValLen" class="not-val">
+      <p
+        v-show="!searchQueryValLen"
+        class="not-val"
+      >
         {{ $t('search.notResult') }}
       </p>
     </div>

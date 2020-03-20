@@ -1,13 +1,27 @@
 <template>
   <div>
-    <NotificationSource :avatar="avatar" :id="source" :name="message" route="user-id" />
+    <NotificationSource
+      :id="source"
+      :avatar="avatar"
+      :name="message"
+      route="user-id"
+    />
     <div class="message">
       <p><b>{{ message }}</b> {{ $t('notification.followed_you') }}</p>
       <NotificationTime :timestamp="timestamp" />
     </div>
     <div class="action">
-      <el-button :disabled="followed || !followAction" @click.stop="follow" class="follow" size="small">
-        <svg-icon v-if="followAction" class="icon" icon-class="add" />
+      <el-button
+        :disabled="followed || !followAction"
+        class="follow"
+        size="small"
+        @click.stop="follow"
+      >
+        <svg-icon
+          v-if="followAction"
+          class="icon"
+          icon-class="add"
+        />
         {{ actionText }}
       </el-button>
     </div>

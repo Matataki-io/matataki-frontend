@@ -7,16 +7,32 @@
       </span>
     </div>
 
-    <div :class="type === 'article' && 'no-padding'" class="container">
+    <div
+      :class="type === 'article' && 'no-padding'"
+      class="container"
+    >
       <!-- 文章卡片 其他卡片 -->
-      <router-link :to="{name: 'p-id', params: { id: type === 'article' ? buy.id : buy.sign_id }}" class="cover">
-        <img v-if="buyCover" :src="buyCover" alt="cover">
+      <router-link
+        :to="{name: 'p-id', params: { id: type === 'article' ? buy.id : buy.sign_id }}"
+        class="cover"
+      >
+        <img
+          v-if="buyCover"
+          :src="buyCover"
+          alt="cover"
+        >
       </router-link>
       <div class="info">
-        <router-link :to="{name: 'p-id', params: { id: type === 'article' ? buy.id : buy.sign_id }}" class="title">
+        <router-link
+          :to="{name: 'p-id', params: { id: type === 'article' ? buy.id : buy.sign_id }}"
+          class="title"
+        >
           {{ buy && buy.title }}
         </router-link>
-        <p v-if="type === 'article'" class="author">
+        <p
+          v-if="type === 'article'"
+          class="author"
+        >
           {{ buy && (buy.nickname || buy.author) }}
         </p>
         <p class="money">
@@ -34,9 +50,17 @@
     </div>
 
     <template v-if="type === 'other'">
-      <div v-for="(item, index) in buy && buy.digital_copy" :key="index" class="copy">
+      <div
+        v-for="(item, index) in buy && buy.digital_copy"
+        :key="index"
+        class="copy"
+      >
         <span>{{ item }}</span>
-        <svg-icon @click.stop="copyText(item)" class="copy-button" icon-class="copy" />
+        <svg-icon
+          class="copy-button"
+          icon-class="copy"
+          @click.stop="copyText(item)"
+        />
       </div>
     </template>
   </div>

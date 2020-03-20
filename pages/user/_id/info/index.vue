@@ -1,28 +1,55 @@
 
 <template>
   <userPage>
-    <div slot="list" v-loading="loading">
-      <div v-if="urls.length !== 0" class="websites">
+    <div
+      slot="list"
+      v-loading="loading"
+    >
+      <div
+        v-if="urls.length !== 0"
+        class="websites"
+      >
         <h3 class="inline h3">
           {{ $t('social.relatedWebsites') }}
         </h3>
         <div class="inline url">
-          <p v-for="(item, index ) in urls" :key="index">
-            <a :href="formatUrl(item)" target="_blank" class="link">{{ item }} </a>
+          <p
+            v-for="(item, index ) in urls"
+            :key="index"
+          >
+            <a
+              :href="formatUrl(item)"
+              target="_blank"
+              class="link"
+            >{{ item }} </a>
           </p>
         </div>
       </div>
-      <div v-if="social.length !== 0" class="social">
+      <div
+        v-if="social.length !== 0"
+        class="social"
+      >
         <h3 class="inline h3">
           {{ $t('social.socialAccount') }}
         </h3>
         <div class="inline">
-          <div v-for="(item, index) in social" :key="index" class="social-icons inline">
-            <socialIcon :icon="item.icon" :show-tooltip="true" :content="item.content" />
+          <div
+            v-for="(item, index) in social"
+            :key="index"
+            class="social-icons inline"
+          >
+            <socialIcon
+              :icon="item.icon"
+              :show-tooltip="true"
+              :content="item.content"
+            />
           </div>
         </div>
       </div>
-      <div v-if="social.length === 0 && urls.length === 0 && loading === false" class="social no-data">
+      <div
+        v-if="social.length === 0 && urls.length === 0 && loading === false"
+        class="social no-data"
+      >
         <p>
           {{ $t('noInfo') }}
         </p>

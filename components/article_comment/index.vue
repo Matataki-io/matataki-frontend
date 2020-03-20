@@ -1,19 +1,27 @@
 <template>
   <div class="fl comment-input">
-    <avatar :src="avatarSrc" size="40px" class="avatar" />
+    <avatar
+      :src="avatarSrc"
+      size="40px"
+      class="avatar"
+    />
     <div class="comment-container">
       <el-input
         v-model="comment"
         :autosize="{ minRows: 4}"
         :placeholder="$t('p.commentPointPlaceholder')"
-        @keyup.native="postCommentKeyup"
         type="textarea"
         maxlength="500"
         show-word-limit
+        @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac jfe">
         <span class="btn-des">{{ article.comment_pay_point }}{{ $t('p.commentPointDes') }}</span>
-        <el-button @click="postComment" size="small" class="btn">
+        <el-button
+          size="small"
+          class="btn"
+          @click="postComment"
+        >
           {{ $t('p.commentPointBtn') }}
         </el-button>
       </div>
@@ -22,7 +30,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import avatar from '@/components/avatar/index'
 

@@ -3,13 +3,13 @@
     :total="total"
     :page-size="pageSize"
     :current-page.sync="currentPageCopy"
-    @prev-click="prevClick"
-    @next-click="nextClick"
-    @current-change="currentChange"
     :small="small"
     :class="selectClass"
     layout="prev, pager, next"
     background
+    @prev-click="prevClick"
+    @next-click="nextClick"
+    @current-change="currentChange"
   />
 </template>
 
@@ -74,14 +74,14 @@ export default {
       this.currentPageData(this.apiUrl, this.params, newVal)
     },
     params: {
-      handler(newVal) {
+      handler() {
         this.currentPageCopy = this.currentPage
         this.currentPageData(this.apiUrl, this.params, this.currentPage)
       },
       deep: true
     },
     // 刷新 改变当前页数和重新请求
-    reload(newVal) {
+    reload() {
       this.currentPageCopy = this.currentPage
       this.reloadFunc()
     }

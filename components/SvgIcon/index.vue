@@ -4,11 +4,16 @@
   <div
     v-if="isExternal"
     :style="styleExternalIcon"
-    v-on="$listeners"
     class="svg-external-icon svg-icon"
+    v-on="$listeners"
   />
   <!-- eslint-disable-next-line vue/valid-template-root -->
-  <svg v-else :class="svgClass" v-on="$listeners" aria-hidden="true">
+  <svg
+    v-else
+    :class="svgClass"
+    aria-hidden="true"
+    v-on="$listeners"
+  >
     <use :xlink:href="iconName" />
   </svg>
 </template>

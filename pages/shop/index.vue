@@ -6,18 +6,33 @@
     <div class="recommend mw">
       <el-row>
         <template v-for="(item, index) in recommendList">
-          <el-col v-if="index === 0" :key="index" :span="16">
+          <el-col
+            v-if="index === 0"
+            :key="index"
+            :span="16"
+          >
             <recommendSlide :card="item" />
           </el-col>
-          <el-col v-else :key="index" :span="8">
-            <articleCard :type-index="1" :card="item" card-type="recommend-card" />
+          <el-col
+            v-else
+            :key="index"
+            :span="8"
+          >
+            <articleCard
+              :type-index="1"
+              :card="item"
+              card-type="recommend-card"
+            />
           </el-col>
         </template>
       </el-row>
     </div>
     <!-- <banner /> -->
     <el-row class="container mw">
-      <el-col :span="18" class="not-padding">
+      <el-col
+        :span="18"
+        class="not-padding"
+      >
         <div class="main commodity">
           <!-- 导航部分 -->
           <div class="main-nav padding-10">
@@ -31,7 +46,11 @@
           <!-- 导航部分 end -->
           <!-- 空div控制内容 -->
           <no-content-prompt :list="articleCardData">
-            <div v-for="(item, index) in articleCardData" v-show="nowMainIndex === index" :key="index">
+            <div
+              v-for="(item, index) in articleCardData"
+              v-show="nowMainIndex === index"
+              :key="index"
+            >
               <div style="overflow: hidden;">
                 <el-col
                   v-for="(itemChild, indexChild) in item.articles"
@@ -47,7 +66,13 @@
               </div>
               <!-- 这里结构和 commodity有点不一样 如果有影响,可以选择将上面的card包裹 -->
               <div class="load-more-button">
-                <buttonLoadMore :type-index="index" :params="item.params" :api-url="item.apiUrl" :is-atuo-request="item.isAtuoRequest" @buttonLoadMore="buttonLoadMore" />
+                <buttonLoadMore
+                  :type-index="index"
+                  :params="item.params"
+                  :api-url="item.apiUrl"
+                  :is-atuo-request="item.isAtuoRequest"
+                  @buttonLoadMore="buttonLoadMore"
+                />
               </div>
               <!-- end -->
             </div>
@@ -58,7 +83,11 @@
       <el-col :span="6">
         <div class="tags commodity position-sticky top80">
           <span>{{ $t('home.shopTagTitle') }}</span>
-          <tags :type-index="1" :tag-cards="tagCards" class="tags-container" />
+          <tags
+            :type-index="1"
+            :tag-cards="tagCards"
+            class="tags-container"
+          />
         </div>
       </el-col>
     </el-row>
@@ -139,7 +168,7 @@ export default {
     } catch (error) {
       console.log(error)
       return { initData }
-    };
+    }
   },
   created() {
     this.recommendList = this.initData.recommend

@@ -28,8 +28,8 @@
       <el-input
         v-model="amount"
         :placeholder="$t('p.investmentAmountPlaceholder')"
-        @input="handleChange(amount)"
         class="comment-container"
+        @input="handleChange(amount)"
       />
       <el-input
         v-model="comment"
@@ -39,7 +39,10 @@
         class="comment-container"
       />
       <div class="invest-container">
-        <div @click="investProduct" class="invest-btn">
+        <div
+          class="invest-btn"
+          @click="investProduct"
+        >
           {{ $t('p.investment') }}
         </div>
       </div>

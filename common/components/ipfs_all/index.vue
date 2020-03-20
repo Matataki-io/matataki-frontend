@@ -9,34 +9,61 @@
       <p class="ipfs_all__title">
         {{ $t('ipfsHash.link') }}
       </p>
-      <div v-if="hash" class="ipfs_all__address">
+      <div
+        v-if="hash"
+        class="ipfs_all__address"
+      >
         <p>
           IPFS Hash: {{ hash }}
         </p>
-        <svg-icon @click="copy(hash)" icon-class="copy" class="icon" />
+        <svg-icon
+          icon-class="copy"
+          class="icon"
+          @click="copy(hash)"
+        />
       </div>
-      <p v-else class="ipfs_all__not">
+      <p
+        v-else
+        class="ipfs_all__not"
+      >
         {{ $t('not') }}
       </p>
       <p class="ipfs_all__title">
         {{ $t('ipfsHash.publicNode') }}
       </p>
       <template v-if="hash">
-        <div v-for="(item, index) in link" :key="index" class="ipfs_all__link">
-          <a :href="item + hash" target="_blank">
+        <div
+          v-for="(item, index) in link"
+          :key="index"
+          class="ipfs_all__link"
+        >
+          <a
+            :href="item + hash"
+            target="_blank"
+          >
             {{ item }}{{ hash }}
           </a>
-          <svg-icon icon-class="arrow" class="icon" />
+          <svg-icon
+            icon-class="arrow"
+            class="icon"
+          />
         </div>
       </template>
-      <p v-else class="ipfs_all__not">
+      <p
+        v-else
+        class="ipfs_all__not"
+      >
         {{ $t('not') }}
       </p>
       <p class="ipfs_all__description">
         {{ $t('ipfsHash.slogan') }}
       </p>
     </div>
-    <svg-icon slot="reference" icon-class="ipfs" class="ipfs_all__icon" />
+    <svg-icon
+      slot="reference"
+      icon-class="ipfs"
+      class="ipfs_all__icon"
+    />
   </el-popover>
 </template>
 
