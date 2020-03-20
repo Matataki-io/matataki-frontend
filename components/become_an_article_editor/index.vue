@@ -45,7 +45,7 @@
             class="fl"
           >
             <div class="fl price">
-              阅读权限
+              解锁本文阅读权限
               <svg-icon
                 icon-class="read"
                 class="avatar-read"
@@ -398,7 +398,7 @@ export default {
     margin: 0 6px;
   }
   &-read {
-    margin: 0 6px 0 16px;
+    margin: 0 6px;
     color: #848484;
   }
 }
