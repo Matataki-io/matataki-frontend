@@ -65,24 +65,19 @@
         </el-dropdown>
       </div>
 
-      <div
-        :style="editorStyle"
-        class="mavonEditor"
-      >
-        <no-ssr>
-          <mavon-editor
-            ref="md"
-            v-model="markdownData"
-            :toolbars="toolbars"
-            :box-shadow="false"
-            :autofocus="false"
-            :placeholder="$t('publish.contentPlaceholder')"
-            :style="editorStyle"
-            class="editor"
-            @imgAdd="$imgAdd"
-          />
-        </no-ssr>
-      </div>
+      <no-ssr>
+        <mavon-editor
+          ref="md"
+          v-model="markdownData"
+          :toolbars="toolbars"
+          :box-shadow="false"
+          :autofocus="false"
+          :placeholder="$t('publish.contentPlaceholder')"
+          :style="editorStyle"
+          class="editor"
+          @imgAdd="$imgAdd"
+        />
+      </no-ssr>
 
       <!-- 备份 -->
       <!-- <div class="post-content">
@@ -540,7 +535,9 @@
       <p>
         {{ $t('publish.tagTitle') }}
       </p>
-      <div class="tag-content">
+      <div
+        class="tag-content"
+      >
         <tag-card
           v-for="(item, index) in tagCards"
           :key="index"
@@ -2112,6 +2109,8 @@ export default {
 <style scoped lang="less" src="../Publish.less"></style>
 <style lang="less">
 .editor {
+  padding: 44px 0 0 0;
+  border: none !important;
   .v-note-wrapper .v-note-op {
     border: none !important;
   }
@@ -2129,10 +2128,10 @@ export default {
   }
   // 工具栏
   .v-note-op {
-    // position: fixed;
-    // top: 118px;
-    // left: 0;
-    // right: 0;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
     border-top: 1px solid #eee !important;
     border-bottom: 1px solid #eee !important;
     box-sizing: border-box;
