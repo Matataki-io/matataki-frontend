@@ -7,7 +7,8 @@ export const toolbars = {
     header: true, // 标题
     imagelink: true, // 图片链接
     preview: true, // 预览
-    help: true
+    help: true,
+    line: true,
   },
   pc: {
     quote: true, // 引用

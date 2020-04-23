@@ -69,7 +69,6 @@
         <mavon-editor
           ref="md"
           v-model="markdownData"
-          :toolbars="toolbars"
           :box-shadow="false"
           :autofocus="false"
           :placeholder="$t('publish.contentPlaceholder')"
@@ -796,7 +795,7 @@
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
-import { toolbars } from '@/config/toolbars' // 编辑器配置
+// import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { strTrim } from '@/utils/reg'
 
 import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
@@ -828,7 +827,7 @@ export default {
       author: '',
       markdownData: '',
       fissionFactor: 2000,
-      toolbars: {},
+      // toolbars: {},
       screenWidth: 1000,
       fissionNum: 2,
       cover: '',
@@ -1051,7 +1050,7 @@ export default {
     this.getTags()
     this.getAllTokens()
     this.renderRelatedListContent()
-    this.setToolBar()
+    // this.setToolBar()
 
     if (process.browser) {
       this._resizeEditor()
@@ -1690,9 +1689,9 @@ export default {
         image.src = imgfile.miniurl
       }
     },
-    setToolBar() {
-      this.toolbars = Object.assign(toolbars.public, toolbars.pc)
-    },
+    // setToolBar() {
+    //   this.toolbars = Object.assign(toolbars.public, toolbars.pc)
+    // },
     // 上传完成
     doneImageUpload(res) {
       // console.log(res);
