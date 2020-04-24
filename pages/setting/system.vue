@@ -31,6 +31,15 @@
           帮助和支持
         </a>
       </div>
+      <div class="list">
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          @click="downPosts"
+        >
+          下载我的所有文章（zip）
+        </el-button>
+      </div>
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -60,6 +69,9 @@ export default {
   },
   methods: {
     ...mapActions(['resetAllStore']),
+    async downPosts() {
+      await this.$API.downpost()
+    },
     // 获取用户信息 - 转让状态
     async getMyUserData() {
       await this.$API.getMyUserData()
