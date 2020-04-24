@@ -67,7 +67,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo']),
     downloaderUrl() {
-      return `${process.env.VUE_APP_API}/dev/down/${this.currentUserInfo.id}posts`
+      return `${process.env.VUE_APP_API}/dev/down/${this.currentUserInfo.id}/posts`
     }
   },
   mounted() {
