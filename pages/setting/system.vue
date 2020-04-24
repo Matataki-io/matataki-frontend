@@ -62,17 +62,19 @@ export default {
   },
   data() {
     return {
-      isTransfer: true
+      isTransfer: true,
+      downloaderUrl: ''
     }
   },
-  computed: {
+  /* computed: {
     downloaderUrl() {
       const token = getCookie('ACCESS_TOKEN')
       return `${process.env.VUE_APP_API}/dev/down/posts?token=${token}`
     }
-  },
+  }, */
   mounted() {
     this.getMyUserData()
+    this.downloaderUrl = `${process.env.VUE_APP_API}/dev/down/posts?token=${getCookie('ACCESS_TOKEN')}`
   },
   methods: {
     ...mapActions(['resetAllStore']),
