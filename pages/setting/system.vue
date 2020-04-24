@@ -32,13 +32,13 @@
         </a>
       </div>
       <div class="list">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          @click="downPosts"
+        <a
+          class="href"
+          target="_blank"
+          :href="downloaderUrl"
         >
           下载我的所有文章（zip）
-        </el-button>
+        </a>
       </div>
     </template>
     <template slot="nav">
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import store from '@/utils/store.js'
@@ -62,6 +62,12 @@ export default {
   data() {
     return {
       isTransfer: true
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo']),
+    downloaderUrl() {
+      return `${process.env.VUE_APP_API}/dev/down/${this.currentUserInfo.id}posts`
     }
   },
   mounted() {
