@@ -715,8 +715,8 @@ export default {
         follow: 'Follow the public number'
     },
     social: {
-        relatedWebsites: 'Related websites',
-        socialAccount: 'Social account',
+        relatedWebsites: 'Websites',
+        socialAccount: 'Social',
         forInformationOnly: 'For information only',
         fillLink: 'Please fill in the website link, including http(s)://'
     },
