@@ -5,8 +5,8 @@
         {{ $t('user.userInformation') }}
       </h2>
       <div class="set-main">
-        <div class="list center">
-          <span class="title">{{ $t('avatar') }}</span>
+        <div class="item list center">
+          <span class="item-label title">{{ $t('avatar') }}</span>
           <img-upload
             :img-upload-done="imgUploadDone"
             :update-type="'avatar'"
@@ -30,8 +30,8 @@
             </div>
           </img-upload>
         </div>
-        <div class="list center">
-          <span class="title">
+        <div class="item list center">
+          <span class="item-label title">
             {{ $t('nickname') }}
           </span>
           <div class="input">
@@ -55,8 +55,8 @@
             />
           </div>
         </div> -->
-        <div class="list">
-          <span class="title">{{ $t('profile') }}</span>
+        <div class="item list">
+          <span class="item-label title">{{ $t('profile') }}</span>
           <div class="input">
             <el-input
               v-model="introduction"
@@ -68,69 +68,71 @@
             />
           </div>
         </div>
-        <div class="line" />
         <!-- 相关网站 -->
-        <div class="social-div">
-          <span class="title">
+        <div class="item social-div">
+          <span class="item-label title">
             {{ $t('social.relatedWebsites') }}
           </span>
-          <div
-            v-for="(item, index) in about"
-            :key="index"
-            class="fl ac about-input social-list"
-          >
-            <el-input
-              v-model="about[index]"
-              class="input"
-              :placeholder="$t('social.fillLink')"
-            />
+          <div>
             <div
-              v-if="about.length > 1"
-              class="about-input-btn"
-              @click="abountLess(index)"
+              v-for="(item, index) in about"
+              :key="index"
+              class="fl ac about-input social-list"
             >
-              <i class="el-icon-minus" />
+              <el-input
+                v-model="about[index]"
+                class="input"
+                :placeholder="$t('social.fillLink')"
+              />
+              <div
+                v-if="about.length > 1"
+                class="about-input-btn less"
+                @click="abountLess(index)"
+              >
+                <i class="el-icon-minus" />
+              </div>
             </div>
-          </div>
-          <div
-            v-if="about.length < 5"
-            class="about-input-btn add"
-            @click="aboutAdd"
-          >
-            <i class="el-icon-plus" />
+            <div
+              v-if="about.length < 5"
+              class="about-input-btn add"
+              @click="aboutAdd"
+            >
+              <i class="el-icon-plus" />
+            </div>
           </div>
         </div>
         <!-- 社交账号 -->
-        <div class="social-div">
-          <span class="title right0">
+        <div class="item social-div">
+          <span class="item-label title right0">
             {{ $t('social.socialAccount') }}
           </span>
-          <span class="title-note">
-            {{ $t('social.forInformationOnly') }}
-          </span>
-          <div
-            v-for="(item, index) in social"
-            :key="index"
-            class="social-list"
-          >
-            <p class="social-title">
-              {{ item.name }}
-              <span v-html="item.tooltip" />
-            </p>
-            <div class="fl">
-              <div class="social-icons">
-                <socialIcon :icon="item.symbol" />
+          <div>
+            <span class="title-note">
+              {{ $t('social.forInformationOnly') }}
+            </span>
+            <div
+              v-for="(item, index) in social"
+              :key="index"
+              class="social-list"
+            >
+              <p class="social-title">
+                {{ item.name }}
+                <span v-html="item.tooltip" />
+              </p>
+              <div class="fl">
+                <div class="social-icons">
+                  <socialIcon :icon="item.symbol" />
+                </div>
+                <el-input
+                  v-model="item.value"
+                  :placeholder="item.placeholder"
+                  class="social-input"
+                />
               </div>
-              <el-input
-                v-model="item.value"
-                :placeholder="item.placeholder"
-                class="social-input"
-              />
             </div>
           </div>
         </div>
         <!-- 保存 -->
-        <div class="line" />
         <el-button
           :loading="loading"
           :class="(setProfile || aboutModify || socialModify) && 'active'"
@@ -468,7 +470,7 @@ export default {
   }
 }
 .title-note {
-  font-size:12px;
+  font-size:14px;
   font-weight:400;
   color:#b2b2b2;
   line-height:28px;
@@ -549,7 +551,7 @@ export default {
   color:rgba(0,0,0,1);
   line-height:20px;
   span {
-    span {
+    /deep/ span {
       color: red;
     }
   }
@@ -563,9 +565,6 @@ export default {
 .social-div {
   padding-top: 24px;
   padding-bottom: 34px;
-  .social-list {
-    margin-left: 56px;
-  }
 }
 .about-input {
   margin: 0 0 10px;
@@ -582,10 +581,10 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  margin: 0 0 0 10px;
+  margin: 0;
   cursor: pointer;
-  &.add {
-    margin-left: 56px;
+  &.less {
+    margin-left: 10px;
   }
 }
 .set-main {
@@ -596,5 +595,16 @@ export default {
   font-size: 20px;
   padding-left: 10px;
   margin: 0;
+}
+
+
+.item {
+  display: flex;
+  &-label {
+    display: block;
+    width: 100px;
+    flex: 0 0 100px;
+    margin-right: 10px;
+  }
 }
 </style>
