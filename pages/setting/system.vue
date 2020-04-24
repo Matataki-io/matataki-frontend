@@ -48,11 +48,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import store from '@/utils/store.js'
 import { removeCookie, clearAllCookie } from '@/utils/cookie'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -65,9 +66,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo']),
     downloaderUrl() {
-      return `${process.env.VUE_APP_API}/dev/down/${this.currentUserInfo.id}/posts`
+      const token = getCookie('ACCESS_TOKEN')
+      return `${process.env.VUE_APP_API}/dev/down/posts?token=${token}`
     }
   },
   mounted() {
