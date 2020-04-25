@@ -65,24 +65,19 @@
         </el-dropdown>
       </div>
 
-      <div
-        :style="editorStyle"
-        class="mavonEditor"
-      >
-        <no-ssr>
-          <mavon-editor
-            ref="md"
-            v-model="markdownData"
-            :toolbars="toolbars"
-            :box-shadow="false"
-            :autofocus="false"
-            :placeholder="$t('publish.contentPlaceholder')"
-            :style="editorStyle"
-            class="editor"
-            @imgAdd="$imgAdd"
-          />
-        </no-ssr>
-      </div>
+      <no-ssr>
+        <mavon-editor
+          ref="md"
+          v-model="markdownData"
+          :box-shadow="false"
+          :autofocus="false"
+          :placeholder="$t('publish.contentPlaceholder')"
+          :style="editorStyle"
+          class="editor"
+          image-upload-action="customize"
+          :image-upload-fn="imageUploadFn"
+        />
+      </no-ssr>
 
       <!-- 备份 -->
       <!-- <div class="post-content">
@@ -540,7 +535,9 @@
       <p>
         {{ $t('publish.tagTitle') }}
       </p>
-      <div class="tag-content">
+      <div
+        class="tag-content"
+      >
         <tag-card
           v-for="(item, index) in tagCards"
           :key="index"
@@ -798,7 +795,7 @@
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
-import { toolbars } from '@/config/toolbars' // 编辑器配置
+// import { toolbars } from '@/config/toolbars' // 编辑器配置
 import { strTrim } from '@/utils/reg'
 
 import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
@@ -830,7 +827,7 @@ export default {
       author: '',
       markdownData: '',
       fissionFactor: 2000,
-      toolbars: {},
+      // toolbars: {},
       screenWidth: 1000,
       fissionNum: 2,
       cover: '',
@@ -1053,7 +1050,7 @@ export default {
     this.getTags()
     this.getAllTokens()
     this.renderRelatedListContent()
-    this.setToolBar()
+    // this.setToolBar()
 
     if (process.browser) {
       this._resizeEditor()
@@ -1621,6 +1618,19 @@ export default {
       else if (type === 'edit') editPost()
       else draftPost() // 错误的路由, 当发布文章处理
     },
+    async imageUploadFn(file) {
+      try {
+        const res = await this.$API.ossUploadImage('article', file)
+        if (res.code === 0) {
+          return this.$API.getImg(res.data)
+        } else {
+          console.log(res.message)
+        }
+        return
+      } catch (e) { 
+        console.log(e)
+      }
+    },
     $imgAdd(pos, imgfile) {
       // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
       // 不要在页面组件写具体实现，谢谢合作 - Frank
@@ -1679,9 +1689,9 @@ export default {
         image.src = imgfile.miniurl
       }
     },
-    setToolBar() {
-      this.toolbars = Object.assign(toolbars.public, toolbars.pc)
-    },
+    // setToolBar() {
+    //   this.toolbars = Object.assign(toolbars.public, toolbars.pc)
+    // },
     // 上传完成
     doneImageUpload(res) {
       // console.log(res);
@@ -2112,72 +2122,9 @@ export default {
 <style scoped lang="less" src="../Publish.less"></style>
 <style lang="less">
 .editor {
-  .v-note-wrapper .v-note-op {
-    border: none !important;
-  }
-  .content-input-wrapper {
-    background-color: #f8f9fa !important;
-    padding: 30px !important;
-  }
-  // 外层容器
-  .v-show-content {
-    padding: 30px !important;
-  }
-  .v-note-edit.divarea-wrapper {
-    overflow-y: auto !important;
-    border-right: 1px solid #ddd !important;
-  }
-  // 工具栏
-  .v-note-op {
-    // position: fixed;
-    // top: 118px;
-    // left: 0;
-    // right: 0;
-    border-top: 1px solid #eee !important;
-    border-bottom: 1px solid #eee !important;
-    box-sizing: border-box;
-  }
-  // 内容
-  .v-note-panel {
-    // padding-top: 44px;
-    border-top: none !important;
-    border-right: none !important;
-    border-left: none !important;
-    border-bottom: 1px solid #eee !important;
-  }
   // 工具栏按钮 去掉样式
   [type='button'] {
     -webkit-appearance: none;
-  }
-  // 工具栏样式下拉阴影
-  .op-image.popup-dropdown,
-  .op-header.popup-dropdown {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 0px !important;
-  }
-  .v-show-content.scroll-style {
-  background-color: #fff !important;
-  }
-  .v-note-edit.divarea-wrapper.scroll-style {
-    background-color: #f8f9fa;
-  }
-  .auto-textarea-input.no-border.no-resize {
-    background-color: #f8f9fa;
-  }
-  .v-note-op .v-left-item,
-  .v-note-op .v-right-item {
-    flex: none !important;
-    display: flex;
-    align-items: center;
-  }
-  .v-note-op .v-right-item {
-    max-width: auto !important;
-  }
-  .op-icon-divider {
-    height: 18px !important;
-  }
-  .op-icon {
-    margin-left: 3px !important;
-    margin-right: 3px !important;
   }
 }
 </style>

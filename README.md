@@ -51,6 +51,12 @@ $ yarn generate
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
 
+## i18n
+Pc：https://crowdin.com/project/mttk
+
+Mobile: https://crowdin.com/project/matataki-mobile
+
+
 ## Config
 IDE Eslint Config
  - vsCode [举例](https://juejin.im/post/59097cd7a22b9d0065fb61d2)

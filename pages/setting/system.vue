@@ -31,6 +31,15 @@
           帮助和支持
         </a>
       </div>
+      <div class="list">
+        <a
+          class="href"
+          target="_blank"
+          :href="downloaderUrl"
+        >
+          下载我的所有文章（zip）
+        </a>
+      </div>
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -44,6 +53,7 @@ import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import store from '@/utils/store.js'
 import { removeCookie, clearAllCookie } from '@/utils/cookie'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
@@ -52,14 +62,25 @@ export default {
   },
   data() {
     return {
-      isTransfer: true
+      isTransfer: true,
+      downloaderUrl: ''
     }
   },
+  /* computed: {
+    downloaderUrl() {
+      const token = getCookie('ACCESS_TOKEN')
+      return `${process.env.VUE_APP_API}/dev/down/posts?token=${token}`
+    }
+  }, */
   mounted() {
     this.getMyUserData()
+    this.downloaderUrl = `${process.env.VUE_APP_API}/dev/down/posts?token=${getCookie('ACCESS_TOKEN')}`
   },
   methods: {
     ...mapActions(['resetAllStore']),
+    async downPosts() {
+      await this.$API.downpost()
+    },
     // 获取用户信息 - 转让状态
     async getMyUserData() {
       await this.$API.getMyUserData()
