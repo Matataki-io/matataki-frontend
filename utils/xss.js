@@ -157,7 +157,7 @@ export const xssFilter = html => {
   let rulePush = [
     {
       tag: 'div',
-      attributes: ['class']
+      attributes: ['class', 'hold']
     },
     {
       tag: 'h1',
