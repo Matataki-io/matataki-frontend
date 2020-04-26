@@ -39,8 +39,8 @@ export const xssFilter = html => {
     'data-id',
     'data-tools'
   ]
-  whiteList.span = ['class', 'style']
-  let aTag = ['class', 'style', 'href', 'data-url', 'target']
+  whiteList.span = ['class', 'style', 'aria-hidden']
+  let aTag = ['class', 'style', 'href', 'data-url', 'target', 'id']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
   whiteList.img.push('style')
@@ -50,7 +50,6 @@ export const xssFilter = html => {
 
   let brTag = ['style']
   let strongTag = ['style']
-  let h2Tag = ['style']
   let svgTag = ['svg', 'x', 'y', 'viewbox', 'width', 'style', 'g', 'line', 'xmlns']
   let lineTag = ['style', 'x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'stroke-width', 'stroke-miterlimit']
   let gTag = ['style']
@@ -59,7 +58,6 @@ export const xssFilter = html => {
   let sectionTag = ['style']
   whiteList.br.push(...brTag)
   whiteList.strong.push(...strongTag)
-  whiteList.h2.push(...h2Tag)
 
   whiteList.svg = [...svgTag]
   whiteList.g = [...gTag]
@@ -79,7 +77,7 @@ export const xssFilter = html => {
     },
     {
       tag: 'blockquote',
-      attributes: ['style']
+      attributes: ['style', 'class']
     },
     {
       tag: 'em',
@@ -101,6 +99,54 @@ export const xssFilter = html => {
       tag: 'input',
       attributes: ['type', 'disabled', 'checked', 'class']
     },
+    {
+      tag: 'math',
+      attributes: ''
+    },
+    {
+      tag: 'math',
+      attributes: ''
+    },
+    {
+      tag: 'semantics',
+      attributes: ''
+    },
+    {
+      tag: 'annotation',
+      attributes: 'encoding'
+    },
+    {
+      tag: 'mrow',
+      attributes: ''
+    },
+    {
+      tag: 'mn',
+      attributes: ''
+    },
+    {
+      tag: 'mo',
+      attributes: ''
+    },
+    {
+      tag: 'mi',
+      attributes: ''
+    },
+    {
+      tag: 'msub',
+      attributes: ''
+    },
+    {
+      tag: 'msubsup',
+      attributes: ''
+    },
+    {
+      tag: 'mtext',
+      attributes: ''
+    },
+    {
+      tag: 'munderover',
+      attributes: ''
+    }
   ]
 
   let rulePush = [
@@ -110,35 +156,35 @@ export const xssFilter = html => {
     },
     {
       tag: 'h1',
-      attributes: ['id', 'style']
+      attributes: ['id', 'style', 'class']
     },
     {
       tag: 'h2',
-      attributes: ['id', 'style']
+      attributes: ['id', 'style', 'class']
     },
     {
       tag: 'h3',
-      attributes: ['id', 'style']
+      attributes: ['id', 'style', 'class']
     },
     {
       tag: 'h4',
-      attributes: ['id', 'style']
+      attributes: ['id', 'style', 'class']
     },
     {
       tag: 'h5',
-      attributes: ['id', 'style']
+      attributes: ['id', 'style', 'class']
     },
     {
       tag: 'h6',
-      attributes: ['id', 'style']
+      attributes: ['id', 'style', 'class']
     },
     {
       tag: 'p',
-      attributes: ['style']
+      attributes: ['style', 'class']
     },
     {
       tag: 'hr',
-      attributes: ['style']
+      attributes: ['style', 'class']
     },
     {
       tag: 'code',
@@ -150,7 +196,7 @@ export const xssFilter = html => {
     },
     {
       tag: 'ol',
-      attributes: ['style']
+      attributes: ['style', 'class']
     },
     {
       tag: 'ul',
@@ -158,6 +204,14 @@ export const xssFilter = html => {
     },
     {
       tag: 'li',
+      attributes: ['class', 'id']
+    },
+    {
+      tag: 'sup',
+      attributes: ['class']
+    },
+    {
+      tag: 'table',
       attributes: ['class']
     },
   ]

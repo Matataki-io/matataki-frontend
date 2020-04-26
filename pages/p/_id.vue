@@ -16,7 +16,7 @@
           class="TitleImage"
         >
           <img
-            :src="cover"
+            v-lazy="cover"
             alt="cover"
           >
         </div>
@@ -979,9 +979,6 @@ export default {
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
       ],
-      link: [
-        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css' }
-      ]
     }
   },
   computed: {
@@ -1003,9 +1000,11 @@ export default {
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       if (process.browser) {
 
-        const markdownIt = this.$mavonEditor.markdownIt
+        const markdownItEditor = this.$mavonEditor.markdownIt
+        const { content } = this.post
 
-        let md = markdownIt.render(this.post.content)
+        let md = markdownItEditor.render(content)
+
         return this.$utils.compose(xssImageProcess, xssFilter)(md)
       } else {
         let md = markdownIt.render(this.post.content)
@@ -1207,6 +1206,13 @@ export default {
       if (!store.get('likeVisible')) this.visiblePopover.visible = true
       this.shareCount()
       // this.showOrderModal = true
+
+      // 暂时这里触发计算属性.... 要改要改
+      setTimeout(() => {
+        if (process.browser) {
+          this.post.content += ' '
+        }
+      }, 1000)
     })
 
     this.renderRelatedListContent()
