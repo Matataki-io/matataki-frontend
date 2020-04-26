@@ -243,9 +243,9 @@ export default {
   border-radius: @br10;
   margin: 20px 0;
   box-sizing: border-box;
-  &:nth-child(1) {
-    margin-top: 0;
-  }
+  // &:nth-child(1) {
+  //   margin-top: 0;
+  // }
   &:hover {
     transform: translate(0, -4px);
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);

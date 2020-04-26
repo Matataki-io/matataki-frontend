@@ -28,14 +28,17 @@ export default {
       `${endpoint.wx}?url=${url}`
     )
   },
+  // 推荐信息
+  recommend(params) { return request.get('/posts/recommend', { params }) },
   getArticleInfo(hashOrId) {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
     return request.get(`/${url}/${hashOrId}`)
   },
   // 通过hash获取文章内容
-  getIpfsData(hash) {
-    return request.get(`/post/ipfs/${hash}`)
+  getIpfsData(hash, edit = false) {
+    const params = edit ? { params: {edit: true} } : {}
+    return request.get(`/post/ipfs/${hash}`, params)
   },
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
