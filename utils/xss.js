@@ -185,7 +185,7 @@ export const xssFilter = html => {
     },
     {
       tag: 'p',
-      attributes: ['style', 'class']
+      attributes: ['style', 'class', 'hold']
     },
     {
       tag: 'hr',
