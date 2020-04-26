@@ -5,19 +5,12 @@
     class="token-card"
   >
     <div class="img-frame">
-      <el-image
+      <img
         v-if="logo"
-        :src="logo"
+        v-lazy="logo"
         :alt="card.symbol"
         class="img-frame"
       >
-        <div slot="error">
-          <img
-            :alt="card.symbol"
-            src="@/assets/img/share-bg.svg"
-          >
-        </div>
-      </el-image>
     </div>
     <div class="title">
       {{ card.symbol + $t('home.ofFanCircle') }}

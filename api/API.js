@@ -28,6 +28,8 @@ export default {
       `${endpoint.wx}?url=${url}`
     )
   },
+  // 推荐信息
+  recommend(params) { return request.get('/posts/recommend', { params }) },
   getArticleInfo(hashOrId) {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'

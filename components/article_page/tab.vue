@@ -5,10 +5,13 @@
         <li
           v-for="(item, index) in head"
           :key="index"
-          :class="index === idx && 'active'"
-          @click="setNav(index)"
         >
-          {{ item.lab }}
+          <router-link
+            :class="index === idx && 'active'"
+            :to="{name: item.url}"
+          >
+            {{ item.lab }}
+          </router-link>
         </li>
       </ul>
       <slot name="sort" />
@@ -22,7 +25,7 @@ export default {
   props: {
     idx: {
       type: Number,
-      default: 0
+      required: true
     }
   },
   data() {
@@ -31,33 +34,25 @@ export default {
         {
           url: 'article',
           lab: this.$t('home.allCreation'),
-          href: '/article'
         },
         {
-          url: 'article-token',
+          url: 'article-circle',
           lab: this.$t('home.fanCircle'),
-          href: '/article/token'
         },
         {
           url: 'article-follow',
           lab: this.$t('home.myFocus'),
-          href: '/article/follow'
         }
       ]
     }
   },
-  methods: {
-    setNav(i) {
-      this.$emit('setIdx', i)
-    }
-  }
 }
 </script>
 
 <style lang="less" scoped>
 .main-head__nav {
-  height: 50px;
-  margin: 0 0 20px;
+  // height: 50px;
+  // margin: 0 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -68,22 +63,24 @@ export default {
     display: flex;
     align-items: center;
     li {
-      font-size: 20px;
-      color:rgba(0,0,0,1);
-      line-height:1;
-      cursor: pointer;
-      transition: all .3s;
-      font-weight:400;
-      margin: 0 30px 0 0;
-      padding: 0;
-      text-decoration: none;
-      &.active {
-        font-weight: bold;
-      }
-      em {
+      a {
         font-size: 20px;
-        font-style: normal;
-        color: @purpleDark;
+        color:rgba(0,0,0,1);
+        line-height:1;
+        cursor: pointer;
+        transition: all .3s;
+        font-weight:400;
+        margin: 0 30px 0 0;
+        padding: 0;
+        text-decoration: none;
+        &.active {
+          font-weight: bold;
+        }
+        em {
+          font-size: 20px;
+          font-style: normal;
+          color: @purpleDark;
+        }
       }
     }
   }

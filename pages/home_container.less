@@ -3,21 +3,25 @@
   display: flex;
   justify-content: space-between;
   margin-top: 60px;
-  .spanStyle{
+
+  .spanStyle {
     font-size: 20px;
-    color:rgba(0,0,0,1);
-    line-height:1;
+    color: rgba(0, 0, 0, 1);
+    line-height: 1;
     cursor: pointer;
     transition: all .3s;
   }
+
   .main {
     display: flex;
     flex-direction: column;
-    &.article{
+
+    &.article {
       // max-width: 787px;
       // flex: 0 0 787px;
     }
-    &.commodity{
+
+    &.commodity {
       // max-width: 890px;
       // flex: 0 0 890px;
       // .commodity-card-content {
@@ -26,24 +30,28 @@
       // }
     }
   }
+
   .tags {
-    &.article{
+    &.article {
       // max-width: 374px;
       // flex: 0 0 374px;
     }
-    &.commodity{
+
+    &.commodity {
       // max-width: 270px;
       // flex: 0 0 270px;
     }
+
     &-container {
       margin-top: 20px;
       background: #fff;
       border-radius: @br10;
       padding: 10px;
     }
+
     span {
       .spanStyle();
-      font-weight:bold;
+      font-weight: bold;
     }
   }
 
@@ -71,10 +79,12 @@
         padding: 0;
         color: #606266;
       }
+
       &-header {
         display: flex;
         align-items: center;
       }
+
       &-icon {
         width: 22px;
         height: 22px;
@@ -85,10 +95,12 @@
 
   .recommend-author {
     padding-bottom: 20px;
+
     .ra-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .change {
         width: 20px;
         height: 20px;
@@ -98,26 +110,31 @@
         align-items: center;
         justify-content: center;
         margin-right: 6px;
+
         &-icon {
           width: 72%;
         }
       }
+
       .ra-head-title {
         .spanStyle();
         font-weight: bold;
       }
+
       .ra-head-random {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size:16px;
-        font-weight:bold;
-        color:@purpleDark;;
+        font-size: 16px;
+        font-weight: bold;
+        color: @purpleDark;
+        ;
         cursor: pointer;
       }
     }
+
     .ra-content {
-      background:rgba(255,255,255,1);
+      background: rgba(255, 255, 255, 1);
       border-radius: @br10;
       padding: 10px 20px;
       margin-top: 34px;
