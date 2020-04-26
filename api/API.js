@@ -998,4 +998,7 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  downpost() {
+    return request.get('/dev/down/posts')
+  }
 }
