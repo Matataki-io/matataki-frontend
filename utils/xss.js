@@ -237,8 +237,6 @@ export const xssFilter = html => {
     },
   }
 
-  console.log('----------------------------------');
-  console.log('options', options);
   const myxss = new xss.FilterXSS(options)
 
   return myxss.process(html)
