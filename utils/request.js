@@ -73,11 +73,12 @@ _axios.interceptors.response.use(
         })
       }
       if (error.message.includes('Network Error')) {
-        Message.closeAll()
-        Message({
-          message: '网络错误',
-          type: 'error'
-        })
+        // Message.closeAll()
+        // Message({
+        //   message: '网络错误',
+        //   type: 'error'
+        // })
+        console.log('Network Error')
       }
       // loadingInstance.close()
       return Promise.reject(error);

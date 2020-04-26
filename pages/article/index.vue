@@ -1,111 +1,115 @@
 <template>
-  <div class="home">
-    <g-header />
-    <swipe :card="recommendList" />
-    <!-- 首页内容 轮播和推荐 -->
-    <banner-matataki class="home-banner" />
-    <el-row class="container mw">
-      <el-col :span="16">
-        <div class="main article">
-          <articleTab
-            v-if="idx === 0"
-            :article-list="articleList"
-            :idx="idx"
-            @setIdx="setIdx"
-          />
-          <tokenTab
-            v-if="idx === 1"
-            :idx="idx"
-            @setIdx="setIdx"
-          />
-          <followTab
-            v-if="idx === 2"
-            :idx="idx"
-            @setIdx="setIdx"
-          />
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="position-sticky top80">
-          <div
-            v-if="usersRecommendList.length !== 0"
-            class="recommend-author"
-          >
-            <div class="ra-head">
-              <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-              <span
-                class="ra-head-random"
-                @click="usersRecommend"
-              >
-                <div class="change">
-                  <svg-icon
-                    :class="usersLoading && 'rotate'"
-                    class="change-icon"
-                    icon-class="change"
-                  />
-                </div>
-                <span>{{ $t('home.random') }}</span>
-              </span>
-            </div>
-            <div class="ra-content">
-              <r-a-list
-                v-for="item in usersRecommendList"
-                :key="item.id"
-                :card="item"
-              />
-            </div>
-          </div>
-          <router-link :to="{name: 'token'}">
-            <img
-              class="fan-entrance"
-              src="@/assets/img/fan_entrance.png"
-            >
-          </router-link>
-        </div>
-      </el-col>
-    </el-row>
+  <div class="article-container">
+    <div class="article-head">
+      <tab :idx="0" />
+      <div
+        class="sort"
+      >
+        <span
+          :class="sortValue === options[0].value && 'active'"
+          @click="sortValue = options[0].value"
+        >{{ options[0].label }}</span>
+        &nbsp;/&nbsp;
+        <span
+          :class="sortValue === options[1].value && 'active'"
+          @click="sortValue = options[1].value"
+        >{{ options[1].label }}</span>
+      </div>
+    </div>
+    <articleCardListNew
+      v-for="item in articleCardData[sortValue].articles"
+      :key="item.id"
+      :card="item"
+    />
+    <div class="load-more-button">
+      <buttonLoadMore
+        :type-index="0"
+        :params="articleCardData[sortValue].params"
+        :api-url="articleCardData[sortValue].apiUrl"
+        :is-atuo-request="articleCardData[sortValue].isAtuoRequest"
+        :auto-request-time="articleCardData[sortValue].autoRequestTime"
+        @buttonLoadMore="buttonLoadMore"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import throttle from 'lodash/throttle'
-import tokenTab from '@/components/article_page/token.vue'
-import followTab from '@/components/article_page/follow.vue'
-import articleTab from '@/components/article_page/article.vue'
-import { recommend, paginationData } from '@/api/async_data_api.js'
-import bannerMatataki from '@/components/banner/banner_matataki.vue'
-import RAList from '@/components/recommend_author_list'
-import swipe from '@/components/swipe/index.vue'
+import debounce from 'lodash/debounce'
+// import articleCard from '@/components/articleCard/index.vue'
+import tab from '@/components/article_page/tab'
+import articleCardListNew from '@/components/article_card_list_new/index.vue'
+import buttonLoadMore from '@/components/button_load_more/index.vue'
+import { paginationData } from '@/api/async_data_api.js'
 
 export default {
   transition: 'page',
   components: {
-    bannerMatataki,
-    RAList,
-    swipe,
-    articleTab,
-    tokenTab,
-    followTab
+    // articleCard,
+    articleCardListNew,
+    buttonLoadMore,
+    tab
+  },
+  props: {
+    idx: {
+      type: Number,
+      default: 0
+    }
   },
   data() {
     return {
-      idx: 0,
-      usersRecommendList: [],
-      usersLoading: false,
+      articleCardData: [
+        {
+          params: {
+            channel: 1,
+            filter: null,
+            extra: 'short_content'
+          },
+          apiUrl: 'homeScoreRanking',
+          articles: [],
+          autoRequestTime: 0,
+          isAtuoRequest: false
+        },
+        {
+          params: {
+            channel: 1,
+            filter: null,
+            extra: 'short_content'
+          },
+          apiUrl: 'homeTimeRanking',
+          articles: [],
+          autoRequestTime: 0,
+          isAtuoRequest: false
+        }
+      ],
+      checkedFilter: ['1', '2', '4'],
+      options: [{
+        value: 0,
+        label: this.$t('home.articleNavHotTitle')
+      }, {
+        value: 1,
+        label: this.$t('home.articleNavNowTitle')
+      }],
+      sortValue: 0
+    }
+  },
+  computed: {
+    filter() {
+      let result = 0
+      for (const item of this.checkedFilter) {
+        result |= parseInt(item)
+      }
+      return result
+    }
+  },
+  watch: {
+    sortValue(value) {
+      this.articleCardData[value].articles = []
+      this.articleCardData[value].autoRequestTime = Date.now()
     }
   },
   async asyncData({ $axios }) {
-    let recommendList = []
     let articleList = []
-    // 推荐
-    try {
-      const res = await recommend($axios, 1)
-      if (res.code === 0) recommendList = res.data
-      else throw new Error(res.message)
-    } catch (error) {
-      console.log('error', error)
-      for (let i = 0; i < 5; i++) recommendList.push({ cover: '', title: '', id: -1 })
-    }
 
     try {
       // 内容列表
@@ -124,65 +128,89 @@ export default {
       console.log('error', error)
     }
 
-    return { recommendList, articleList }
+    return { articleList }
   },
   created() {
+    if (this.articleList.length !== 0) {
+      this.articleCardData[0].articles = this.articleList
+    }
   },
   mounted() {
-    if (process.browser) {
-      this.usersRecommend()
-    }
   },
   methods: {
-    // 获取推荐作者
-    usersRecommend: throttle(async function () {
-      this.usersLoading = true
-      const params = {
-        amount: 3
+    // 点击更多按钮返回的数据
+    buttonLoadMore(res) {
+      if (res.data && res.data.list && res.data.list.length !== 0) {
+        this.articleCardData[this.sortValue].articles = this.articleCardData[this.sortValue].articles.concat(res.data.list)
       }
-      await this.$API
-        .usersRecommend(params)
-        .then(res => {
-          if (res.code === 0) {
-            this.usersRecommendList = res.data
-          } else {
-            console.log(`获取推荐用户失败${res.code}, ${res.message}`)
-          }
-        })
-        .catch(err => {
-          console.log(`获取推荐用户失败${err}`)
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.usersLoading = false
-          }, 300)
-        })
-    }, 800),
-    setIdx(i) {
-      this.idx = i
-    }
+    },
+    handleCheckedFilterChanged() {
+      this.onCheckedFilterChanged()
+    },
+    onCheckedFilterChanged: debounce(async function () {
+      // This page drives me crazy!!!
+
+      this.articleCardData[this.sortValue].params.filter = this.filter
+
+      try {
+        const res = await this.$API.getBackendData(
+          { url: this.articleCardData[this.sortValue].apiUrl, params: this.articleCardData[this.sortValue].params },
+          false
+        )
+        if (res.code !== 0) console.error(res.message)
+        else if (res.data && res.data.list && res.data.list.length !== 0) {
+          this.articleCardData[this.sortValue].articles = res.data.list
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }, 500)
   }
 }
 </script>
-<style lang="less" scoped src="../index.less"></style>
-<style lang="less" scoped src="../home_container.less"></style>
 
 <style lang="less" scoped>
-@keyframes rotate {
-  0% {
-    transform: rotate(0);
+.filter {
+  margin-right: 0px;
+  &-header {
+    display: flex;
+    align-items: center;
   }
-  100% {
-    transform: rotate(360deg);
+  &-icon {
+    font: 22px;
+    color: #000;
+    margin-right: 6px;
+  }
+  .filter-icon {
+    width: 22px;
+  }
+  span {
+    font: 14px;
+    color: #000;
   }
 }
-
-.rotate {
-  animation: rotate 0.8s ease-in-out infinite;
+.article-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.home-banner {
-  margin-top: 10px;
+.sort-articles {
+  width: 100px;
 }
 
+.sort {
+  display: flex;
+  align-items: center;
+  span {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    &.active {
+      font-weight: bold;
+      color: @purpleDark;
+    }
+  }
+}
 </style>
