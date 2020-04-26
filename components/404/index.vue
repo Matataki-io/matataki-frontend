@@ -10,6 +10,9 @@
     </div>
     <div class="info">
       <p>{{ $t('notPage') }}</p>
+      <p class="back">
+        三秒后自动返回首页...
+      </p>
       <a
         href="/"
         class="btn"
@@ -22,6 +25,22 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      timer: null
+    }
+  },
+  created() {
+    clearTimeout(this.timer)
+    this.timer = setTimeout(() => {
+      this.$router.push('/')
+    }, 3000)
+  }
+}
+</script>
 
 <style scoped>
 .btn{
@@ -173,5 +192,13 @@
 .info p{
     font-size: 20px;
     color: #ffffff;
+}
+
+.info .back {
+    padding: 0;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 16px;
 }
 </style>

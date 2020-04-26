@@ -88,6 +88,7 @@ export default {
     // '~/plugins/i18n.js',
     '~/plugins/components.js',
     '@/plugins/vue_directive.js',
+    '@/plugins/vue_lazyload.js',
     { src: '~/plugins/broadcastchannel.js', mode: 'client' },
     { src: '~/plugins/router.js', mode: 'client', ssr: false },
     { src: '@/plugins/element-ui', ssr: true },
@@ -125,6 +126,7 @@ export default {
   ** Build configuration
   */
   build: {
+    // analyze: true,
     cache: true,
     parallel: true,
     // CSS提取

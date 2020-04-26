@@ -1,5 +1,5 @@
 // 动态加载第三方js
-export default (src) => {
+export default (src, async = true) => {
   return new Promise((resolve, reject) => {
     const scriptAll = document.getElementsByTagName('script')
     const hasScript = [].slice.call(scriptAll).some(i => i.src === src)
@@ -9,6 +9,7 @@ export default (src) => {
     }
     const script = document.createElement('script')
     script.src = src
+    script.async = async
     document.body.appendChild(script)
 
     script.onload = resolve

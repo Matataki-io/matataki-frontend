@@ -4,31 +4,39 @@
 @import './main.less';
 @import './dialog.less';
 @import 'transition.less';
-html,body{
+
+html,
+body {
   height: 100%;
 }
+
 .fontFamily {
   font-family: "PingFang SC", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial,
-  "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal",
-  "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei",
-  "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+    "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN Normal",
+    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei",
+    "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
-*{
+
+* {
   -webkit-tap-highlight-color: transparent;
 }
+
 body {
   background: #F7F7F7;
   .fontFamily()
 }
+
 #__nuxt,
 #__layout,
 .app {
   height: 100%;
 }
+
 // 覆盖github markdown css
 .markdown-body {
-  .fontFamily()!important
+  .fontFamily() !important
 }
+
 /* 加载更多提示 */
 .loading-stat {
   margin: 10px;
@@ -44,35 +52,45 @@ body {
   // padding-right: 15px;
   margin: 0 auto;
 }
+
 /* 全局 markdown 文字加粗覆盖样式
 因为导入的样式优先级低于了默认的样式 导致安卓机型 600 不加粗
 使用 bolder 覆盖 */
 .markdown-body strong,
-.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
   font-weight: bolder !important;
 }
 
 /* modal居中，单独的全局css才能覆盖 */
-.modalCenter{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.modalCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    .ivu-modal{
-        top: 0;
-    }
+  .ivu-modal {
+    top: 0;
+  }
 }
+
 .markdown-body {
   ul {
     list-style: disc;
   }
+
   ol {
     list-style: decimal;
   }
 }
+
 .ivu-modal-content {
   border-radius: @br10;
 }
+
 .more-icon {
   width: 60px;
   height: 60px;
@@ -82,11 +100,14 @@ body {
   // background: #ffffff;
   box-sizing: border-box;
   user-select: none;
+
   .icon {
     font-size: 2rem;
   }
+
   &:hover {
     background: @purpleDark;
+
     .icon {
       color: #ffffff;
     }
@@ -96,9 +117,11 @@ body {
 a {
   text-decoration: none;
 }
+
 .zindex-3000 {
-  z-index:3000 !important;
+  z-index: 3000 !important;
 }
+
 .gray-bg {
   background-color: #F1F1F1;
 }
@@ -109,25 +132,32 @@ a {
 .stickyTop (@top: 0) {
   top: @top
 }
+
 .position-sticky {
   position: sticky;
-  margin-top: 16px;
+
+  // margin-top: 16px;
   &.top0 {
     .stickyTop();
   }
+
   &.top20 {
     .stickyTop(20px);
   }
+
   &.top70 {
     .stickyTop(70px);
   }
+
   &.top80 {
     .stickyTop(80px);
   }
+
   &.top380 {
     .stickyTop(380px);
   }
 }
+
 // tag position sticky end
 
 .my-dialog {
@@ -141,12 +171,16 @@ a {
     background: #F1F1F1;
   }
 }
+
 .ss-btn {
   button {
     width: 300px;
     background-color: #000000;
     border-color: #000000;
-    &:hover, &:active, &:focus {
+
+    &:hover,
+    &:active,
+    &:focus {
       background-color: #333333;
       border-color: #333333;
     }
@@ -158,23 +192,29 @@ a {
   line-height: 1.8;
   font-size: 18px;
 }
-.article-content > * {
+
+.article-content>* {
   margin-top: 20px !important;
   margin-bottom: 24px !important;
 }
+
 .article-content * {
   max-width: 100%;
 }
+
 // 文章详情 内容样式 end
 
 // lazy img cover
-.img-lazy .el-image__error, .el-image__inner, .el-image__placeholder {
+.img-lazy .el-image__error,
+.el-image__inner,
+.el-image__placeholder {
   object-fit: cover;
 }
 
 .el-button--purple {
   background-color: @purpleDark;
   border-color: @purpleDark;
+
   &:hover {
     background-color: @purpleDark;
     border-color: @purpleDark;
@@ -186,25 +226,32 @@ a {
 // flex
 .fl {
   display: flex;
+
   &.fdc {
     flex-direction: column;
   }
+
   &.ac {
     align-items: center;
   }
+
   &.afe {
     align-items: flex-end;
   }
+
   &.jc {
     justify-content: center;
   }
+
   &.jsb {
     justify-content: space-between;
   }
+
   &.jfe {
     justify-content: flex-end;
   }
 }
+
 // 公用css end
 
 // black btn
@@ -212,7 +259,10 @@ a {
   background-color: #000 !important;
   color: #fff !important;
   border-color: #000 !important;
-  &:hover, &:active, &:focus {
+
+  &:hover,
+  &:active,
+  &:focus {
     background-color: #000 !important;
     border-color: #000 !important;
     color: #fff !important;

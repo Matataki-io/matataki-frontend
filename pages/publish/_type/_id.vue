@@ -1159,7 +1159,7 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      await this.$API.getIpfsData(hash).then(res => {
+      await this.$API.getIpfsData(hash, true).then(res => {
         if (res.code === 0) {
           // 设置文章内容
           this.title = res.data.title

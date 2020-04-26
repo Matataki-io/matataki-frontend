@@ -21,7 +21,7 @@
         >
           <img
             v-if="item.cover"
-            :src="cover(item.cover)"
+            v-lazy="cover(item.cover)"
             :alt="item.title"
           >
           <p>{{ item.title }}</p>
