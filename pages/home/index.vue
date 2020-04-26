@@ -471,7 +471,7 @@ export default {
           'https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js',
           'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
         ]
-        const PromiseLoadScript = scriptSrc.map(i => loadScript(i))
+        const PromiseLoadScript = scriptSrc.map(i => loadScript(i, false))
         let timer = null
         Promise.all(PromiseLoadScript)
           .then(res => {
