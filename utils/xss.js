@@ -12,6 +12,11 @@ export const xssFilter = html => {
 
   xss.cssFilter.options.whiteList['justify-content'] = true
   xss.cssFilter.options.whiteList['flex'] = true
+  xss.cssFilter.options.whiteList['left'] = true
+  xss.cssFilter.options.whiteList['right'] = true
+  xss.cssFilter.options.whiteList['top'] = true
+  xss.cssFilter.options.whiteList['bottom'] = true
+  xss.cssFilter.options.whiteList['height'] = true
 
   whiteList.iframe = [
     'id',
@@ -231,6 +236,7 @@ export const xssFilter = html => {
       }
     },
   }
+
   const myxss = new xss.FilterXSS(options)
 
   return myxss.process(html)
