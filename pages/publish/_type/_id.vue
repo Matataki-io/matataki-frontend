@@ -76,6 +76,7 @@
           class="editor"
           image-upload-action="customize"
           :image-upload-fn="imageUploadFn"
+          :encryption="encryption"
         />
       </no-ssr>
 
@@ -911,7 +912,9 @@ export default {
       fullscreenLoading: false,
       resizeEvent: null,
       authorId: 0,
-      prohibitEditingPrices: false
+      prohibitEditingPrices: false,
+      // 加密语法
+      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n\n[else]\n\n预览内容\n\n[/read]\n'
     }
   },
   computed: {
