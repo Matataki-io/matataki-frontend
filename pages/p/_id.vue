@@ -821,6 +821,9 @@ import becomeAnArticleEditor from '@/components/become_an_article_editor/index.v
 
 import userPagination from '@/components/user/user_pagination.vue'
 
+import lockSvg from '@/assets/img/lock.svg'
+import unlockSvg from '@/assets/img/unlock.svg'
+
 const markdownIt = require('markdown-it')({
   html: true,
   breaks: true
@@ -1124,10 +1127,14 @@ export default {
         this.visiblePopover.visible1 = true
         clearInterval(this.timerShare)
       }
-    }
+    },
     // '$route'(to, from) {
     //   document.title = to.meta.title || 'Your Website'
     // }
+    compiledMarkdown() {
+      console.log('111111, htmldom')
+      this.setAllHideContentStyle()
+    }
   },
 
   async asyncData({ $axios, route, req }) {
@@ -1205,14 +1212,8 @@ export default {
       // undefined false 显示
       if (!store.get('likeVisible')) this.visiblePopover.visible = true
       this.shareCount()
+      this.renderRelatedListContent()
       // this.showOrderModal = true
-
-      // 暂时这里触发计算属性.... 要改要改
-      setTimeout(() => {
-        if (process.browser) {
-          this.post.content += ' '
-        }
-      }, 1000)
     })
 
     this.renderRelatedListContent()
@@ -1221,6 +1222,7 @@ export default {
     this.resizeEvent = throttle(this.setRelatedSlider, 300)
     window.addEventListener('resize', this.resizeEvent)
     window.addEventListener('popstate', this._popstateEvent)
+    this.setAllHideContentStyle()
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeEvent)
@@ -2020,6 +2022,72 @@ export default {
         }).catch(err => {
           console.log('err', err)
         })
+    },
+    setAllHideContentStyle() {
+      this.$nextTick(() => {
+        const unlockPrompts = document.getElementsByClassName('unlock-prompt')
+        const unlockContents = document.getElementsByClassName('unlock-content')
+
+        for(let i = 0; i < unlockPrompts.length; i++) {
+          this.setUnlockPromptStyle(unlockPrompts[i])
+        }
+        for(let i = 0; i < unlockContents.length; i++) {
+          this.setUnlockContentStyle(unlockContents[i])
+        }
+      })
+    },
+    setUnlockPromptStyle(unlockPrompt) {
+      const hold = this.attrMines(unlockPrompt.getAttribute('hold'))
+      const need = this.attrMines(unlockPrompt.getAttribute('need'))
+      let list = ''
+      for(let i = 0; i < need.length; i++) {
+        const difference = hold[i] ? (need[i].amount - hold[i].amount) : need[i].amount
+        list += `
+        <div class="condition fl">
+          <p style="flex: 1">
+            持有：${need[i].amount / 10000 } ${need[i].token}
+          </p>
+          <p class="condition-difference">
+            还需持有${ difference > 0 ? difference / 10000 : 0 } ${need[i].token}
+          </p>
+        </div>
+        `
+      }
+      unlockPrompt.innerHTML = `
+        <div class="lock-bg">
+          <img
+            src="${lockSvg}" alt="lock"
+          />
+        </div>
+        <div>
+          <h4 class="condition-title">
+            隐藏内容
+          </h4>
+          ${list}
+          ${unlockPrompt.innerHTML ? '<hr />' : ''}
+        </div>
+      ` + unlockPrompt.innerHTML
+    },
+    setUnlockContentStyle(unlockContent) {
+      unlockContent.innerHTML = `
+        <div class="lock-bg">
+          <img
+            src="${unlockSvg}" alt="lock"
+          />
+        </div>
+      ` + unlockContent.innerHTML
+    },
+    attrMines(val) {
+      const reg = /([A-Z]+)\s*(\d*\.?\d*)/g
+      let β = []
+      if (val) {
+        let $ = reg.exec(val)
+        while ($ != null) {
+          β.push({ token: $[1], amount: Number($[2]) * 10000 })
+          $ = reg.exec(val)
+        }
+      }
+      return β
     }
   }
 
