@@ -1155,7 +1155,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('info', info)
+    console.log('info', info.data.short_content)
 
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
@@ -1172,6 +1172,7 @@ export default {
       if (hash) {
         const res = await ipfsData($axios, hash)
         if (res.code === 0) {
+          console.log('return', res.data)
           return {
             article: info.data,
             post: res.data
@@ -1198,6 +1199,7 @@ export default {
     }
   },
   mounted() {
+    console.log('文章内容：', this.post.content)
     this.setAvatar()
     this.addReadAmount()
     this.handleFocus()
@@ -2064,9 +2066,9 @@ export default {
             隐藏内容
           </h4>
           ${list}
-          ${unlockPrompt.innerHTML ? '<hr />' : ''}
+          ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? '<hr />' : ''}
         </div>
-      ` + unlockPrompt.innerHTML
+      ` + (unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML : '')
     },
     setUnlockContentStyle(unlockContent) {
       unlockContent.innerHTML = `
