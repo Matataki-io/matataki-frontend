@@ -1199,7 +1199,9 @@ export default {
     }
   },
   mounted() {
-    console.log('文章内容：', this.post.content)
+    window.unlock = () => {
+      this.$message.warning('一键解锁功能正在开发中')
+    }
     this.setAvatar()
     this.addReadAmount()
     this.handleFocus()
@@ -2025,6 +2027,7 @@ export default {
           console.log('err', err)
         })
     },
+    /** 遍历所有的持币可见内容 */
     setAllHideContentStyle() {
       this.$nextTick(() => {
         const unlockPrompts = document.getElementsByClassName('unlock-prompt')
@@ -2038,38 +2041,52 @@ export default {
         }
       })
     },
+    /** 持币可见未解锁的样式 */
     setUnlockPromptStyle(unlockPrompt) {
-      const hold = this.attrMines(unlockPrompt.getAttribute('hold'))
-      const need = this.attrMines(unlockPrompt.getAttribute('need'))
+      const need = JSON.parse(unlockPrompt.getAttribute('data-need'))
+      if(!need) return
+      const hold = JSON.parse(unlockPrompt.getAttribute('data-hold')) || []
+
+      // 条件列表
       let list = ''
       for(let i = 0; i < need.length; i++) {
         const difference = hold[i] ? (need[i].amount - hold[i].amount) : need[i].amount
         list += `
         <div class="condition fl">
           <p style="flex: 1">
-            持有：${need[i].amount / 10000 } ${need[i].token}
+            持有：${need[i].amount / 10000 }
+            <a href="/token/${need[i].id}">
+            <img src="${this.$ossProcess(need[i].logo)}" alt="logo">
+            ${need[i].symbol}(${need[i].name})
+            </a>
           </p>
           <p class="condition-difference">
-            还需持有${ difference > 0 ? difference / 10000 : 0 } ${need[i].token}
+            ${ difference < 1 && hold[i] ? '已持有' : '还需持有' }${ difference < 1 && hold[i] ? hold[i].amount : difference / 10000 } ${need[i].symbol}
           </p>
         </div>
         `
       }
+      // 整体的html
       unlockPrompt.innerHTML = `
         <div class="lock-bg">
           <img
             src="${lockSvg}" alt="lock"
           />
         </div>
+        ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML + '\n<hr />' : ''}
         <div>
-          <h4 class="condition-title">
-            隐藏内容
-          </h4>
+          <div class="fl">
+            <h4 class="condition-title">
+              隐藏内容，满足以下条件解锁:
+            </h4>
+            <button class="condition-button" onclick="unlock()">
+              解锁
+            </button>
+          </div>
           ${list}
-          ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? '<hr />' : ''}
-        </div>
-      ` + (unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML : '')
+        </div>`
     },
+    /** 持币可见解锁后的样式 */
     setUnlockContentStyle(unlockContent) {
       unlockContent.innerHTML = `
         <div class="lock-bg">
@@ -2078,18 +2095,6 @@ export default {
           />
         </div>
       ` + unlockContent.innerHTML
-    },
-    attrMines(val) {
-      const reg = /([A-Z]+)\s*(\d*\.?\d*)/g
-      let β = []
-      if (val) {
-        let $ = reg.exec(val)
-        while ($ != null) {
-          β.push({ token: $[1], amount: Number($[2]) * 10000 })
-          $ = reg.exec(val)
-        }
-      }
-      return β
     }
   }
 

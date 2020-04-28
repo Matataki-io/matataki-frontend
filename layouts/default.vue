@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AuthModal from '@/components/Auth/index.vue'
 import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
@@ -49,11 +50,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
     loginModalShow: {
       get() {
         return this.$store.state.loginModalShow
       },
       set(v) {
+        if(v && this.isLogined) return
+
         this.$store.commit('setLoginModal', v)
       }
     },
@@ -76,7 +80,17 @@ export default {
       return this.$route.name === 'publish-type-id'
     }
   },
+  watch: {
+    isLogined(val) {
+      if(val) this.loginModalShow = false
+    }
+  },
   created() {
+    if(this.$route.query.referral && !this.isLogined) {
+      setTimeout(()=> {
+        this.loginModalShow = true
+      }, 100)
+    }
   },
   mounted() {
     this.$store.dispatch('testLogin')
