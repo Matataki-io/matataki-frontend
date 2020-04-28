@@ -132,16 +132,43 @@
     .unlock();
     .condition-title {
       margin-top: 10px;
+      flex: 1;
+    }
+    .condition-button {
+      background-color: #542DE0;
+      width:60px;
+      height:30px;
+      border-radius:6px;
+      font-size:14px;
+      line-height:20px;
+      color:white;
+      border:none;
     }
     .condition {
+      margin-bottom: 16px;
+      &:last-child {
+        margin-bottom: 0;
+      }
       p {
         color: #B2B2B2;
         font-size:16px;
         line-height:22px;
+        margin-bottom: 0;
         &.condition-difference {
           font-size:14px;
           line-height:20px;
         }
+      }
+      a {
+        font-size:16px;
+        color: #542DE0;
+        line-height:22px;
+        text-decoration: blink;
+      }
+      img {
+        width:16px;
+        height:16px;
+        border-radius:50%;
       }
     }
   }
