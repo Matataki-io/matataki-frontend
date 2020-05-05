@@ -402,7 +402,6 @@ import throttle from 'lodash/throttle'
 import avatar from '@/components/avatar/index.vue'
 import loadScript from '@/utils/load_script'
 export default {
-  middleware: 'redirect',
   head: function () {
     return {
       script: [
