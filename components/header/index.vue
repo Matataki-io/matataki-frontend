@@ -271,19 +271,6 @@ export default {
           urlList: ['article', 'ring-id']
         },
         {
-          title: this.$t('home.share'),
-          url: 'sharehall',
-          sup: '',
-          urlList: ['sharehall']
-        },
-        // 隐藏导航栏的商品选项
-        // {
-        //   title: this.$t('home.navShop'),
-        //   url: 'shop',
-        //   sup: '',
-        //   urlList: ['shop']
-        // },
-        {
           title: this.$t('home.fanTicket'),
           url: 'token',
           sup: '',
