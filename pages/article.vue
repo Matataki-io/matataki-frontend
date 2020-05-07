@@ -3,12 +3,12 @@
     <g-header />
     <swipe :card="recommendList" />
     <!-- 首页内容 轮播和推荐 -->
-    <banner-matataki class="home-banner" />
-    <el-row class="container mw">
-      <el-col :span="16">
+    <!-- <banner-matataki class="home-banner" /> -->
+    <div class="container">
+      <div class="col-6">
         <router-view />
-      </el-col>
-      <el-col :span="8">
+      </div>
+      <div class="col-3">
         <div class="position-sticky top80">
           <div class="recommend-author">
             <div class="ra-head">
@@ -42,30 +42,23 @@
             >
           </router-link>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import throttle from 'lodash/throttle'
-// import tokenTab from '@/components/article_page/token.vue'
-// import followTab from '@/components/article_page/follow.vue'
-// import articleTab from '@/components/article_page/article.vue'
-// import { recommend, paginationData } from '@/api/async_data_api.js'
-import bannerMatataki from '@/components/banner/banner_matataki.vue'
+// import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import RAList from '@/components/recommend_author_list'
 import swipe from '@/components/swipe/index.vue'
 
 export default {
   transition: 'page',
   components: {
-    bannerMatataki,
+    // bannerMatataki,
     RAList,
     swipe,
-    // articleTab,
-    // tokenTab,
-    // followTab
   },
   data() {
     return {
@@ -76,28 +69,6 @@ export default {
       articleList: []
     }
   },
-  // async asyncData({ $axios }) {
-  //   let articleList = []
-
-  //   try {
-  //     // 内容列表
-  //     const params = {
-  //       channel: 1,
-  //       extra: 'short_content'
-  //     }
-  //     const resPagination = await paginationData(
-  //       $axios,
-  //       'homeScoreRanking',
-  //       params
-  //     )
-  //     if (resPagination.code === 0) articleList = resPagination.data.list
-  //     else throw new Error(resPagination.message)
-  //   } catch (error) {
-  //     console.log('error', error)
-  //   }
-
-  //   return { recommendList, articleList }
-  // },
   created() {
     if (process.browser) {
       this.recommendFn()
@@ -156,9 +127,9 @@ export default {
 }
 
 .now-title {
-  font-size:20px;
-  font-weight:bold;
-  color:rgba(0,0,0,1);
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 1);
   text-align: left;
   margin: 0 0 0 20px;
   &.nav-hide {
@@ -179,22 +150,43 @@ export default {
 .container {
   display: flex;
   justify-content: space-between;
-  margin-top: 60px;
-  .spanStyle{
+  max-width: 1200px;
+  width: 100%;
+  margin: 60px auto 0;
+  &::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+  }
+  .col-6 {
+    width: 66.666%;
+    padding: 0 10px;
+    float: left;
+    box-sizing: border-box;
+  }
+  .col-3 {
+    width: 33.333%;
+    padding: 0 10px;
+    float: left;
+    box-sizing: border-box;
+  }
+  .spanStyle {
     font-size: 20px;
-    color:rgba(0,0,0,1);
-    line-height:1;
+    color: rgba(0, 0, 0, 1);
+    line-height: 1;
     cursor: pointer;
-    transition: all .3s;
+    transition: all 0.3s;
   }
   .main {
     display: flex;
     flex-direction: column;
-    &.article{
+    &.article {
       // max-width: 787px;
       // flex: 0 0 787px;
     }
-    &.commodity{
+    &.commodity {
       // max-width: 890px;
       // flex: 0 0 890px;
       // .commodity-card-content {
@@ -204,11 +196,11 @@ export default {
     }
   }
   .tags {
-    &.article{
+    &.article {
       // max-width: 374px;
       // flex: 0 0 374px;
     }
-    &.commodity{
+    &.commodity {
       // max-width: 270px;
       // flex: 0 0 270px;
     }
@@ -220,7 +212,7 @@ export default {
     }
     span {
       .spanStyle();
-      font-weight:bold;
+      font-weight: bold;
     }
   }
 
@@ -287,14 +279,14 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size:16px;
-        font-weight:bold;
-        color:@purpleDark;;
+        font-size: 16px;
+        font-weight: bold;
+        color: @purpleDark;
         cursor: pointer;
       }
     }
     .ra-content {
-      background:rgba(255,255,255,1);
+      background: rgba(255, 255, 255, 1);
       border-radius: @br10;
       padding: 10px 20px;
       margin-top: 20px;
@@ -311,6 +303,18 @@ export default {
 .fan-entrance {
   width: 60px;
   height: 71px;
+}
+
+// 页面小于
+@media screen and (max-width: 768px) {
+  .container {
+    .col-6 {
+      width: 100%;
+    }
+    .col-3 {
+      display: none;
+    }
+  }
 }
 </style>
 
@@ -331,5 +335,4 @@ export default {
 .home-banner {
   margin-top: 10px;
 }
-
 </style>
