@@ -1,19 +1,22 @@
+@width: 850px;
+
+
 .main {
   .minHeight();
+  max-width: @width;
+  width: 100%;
+  margin: 0 auto;
 }
 
 
 
-@width: 850px;
 
 .container {
-  width: @width;
   margin: 0 auto;
   // background: #fff;
 }
 
 .p-w {
-  width: @width;
   margin: 0 auto;
 }
 
@@ -57,7 +60,7 @@
 }
 
 .btns {
-  width: 500px;
+  max-width: 500px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -74,7 +77,6 @@
 .TitleImage {
   display: block;
   margin: 16px auto 0;
-  width: @width;
   height: 420px;
   overflow: hidden;
 
@@ -93,7 +95,7 @@
 
 .Post-Header {
   overflow: hidden;
-  width: @width;
+  width: 100%;
   margin: 0 auto;
   padding: 0 20px 20px;
   background: #fff;
@@ -103,72 +105,85 @@
 
 .article-content {
   margin-top: 20px;
+
   .unlock {
     background-color: #F7F7F7;
     padding: 20px;
-    border-radius:6px;
+    border-radius: 6px;
     position: relative;
+
     .lock-bg {
       background-color: #B2B2B2;
-      width:20px;
-      height:20px;
-      border-radius:6px 0px 6px 0px;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px 0px 6px 0px;
       display: flex;
       justify-content: center;
       align-items: center;
       position: absolute;
       left: 0px;
       top: 0px;
+
       img {
         background-color: #fff0;
         color: #fff;
       }
     }
   }
+
   /deep/ .unlock-content {
     .unlock();
   }
+
   /deep/ .unlock-prompt {
     .unlock();
+
     .condition-title {
       margin-top: 10px;
       flex: 1;
     }
+
     .condition-button {
       background-color: #542DE0;
-      width:60px;
-      height:30px;
-      border-radius:6px;
-      font-size:14px;
-      line-height:20px;
-      color:white;
-      border:none;
+      width: 60px;
+      height: 30px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 20px;
+      color: white;
+      border: none;
     }
+
     .condition {
       margin-bottom: 16px;
+
       &:last-child {
         margin-bottom: 0;
       }
+
       p {
         color: #B2B2B2;
-        font-size:16px;
-        line-height:22px;
+        font-size: 16px;
+        line-height: 22px;
         margin-bottom: 0;
+
         &.condition-difference {
-          font-size:14px;
-          line-height:20px;
+          font-size: 14px;
+          line-height: 20px;
         }
       }
+
       a {
-        font-size:16px;
+        font-size: 16px;
         color: #542DE0;
-        line-height:22px;
+        line-height: 22px;
         text-decoration: blink;
       }
+
       img {
-        width:16px;
-        height:16px;
-        border-radius:50%;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
       }
     }
   }

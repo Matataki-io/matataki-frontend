@@ -5,9 +5,7 @@
       @popoverVisible="poopverDone('visible2')"
     />
 
-    <div
-      v-if="article.status === 0"
-    >
+    <div v-if="article.status === 0">
       <div class="container">
         <!-- 文章封面 -->
         <div
