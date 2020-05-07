@@ -4,7 +4,7 @@
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {
-  console.log('scatter')
+  // console.log('scatter')
   return {
     // account 是個物件, .name 才是帳號名
     account: null,

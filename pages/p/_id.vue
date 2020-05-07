@@ -5,10 +5,7 @@
       @popoverVisible="poopverDone('visible2')"
     />
 
-    <div
-      v-if="article.status === 0"
-      @click.stop="documentClick"
-    >
+    <div v-if="article.status === 0">
       <div class="container">
         <!-- 文章封面 -->
         <div
@@ -229,111 +226,6 @@
           :is-toll-read="isTokenArticle || isPriceArticle"
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
-
-        <!-- sidebar -->
-        <div class="sidebar">
-          <div
-            v-if="isProduct"
-            class="article-btn"
-            @click="buy"
-          >
-            <div class="icon-container yellow">
-              <svg-icon
-                icon-class="purchase"
-                class="icon"
-              />
-            </div>
-            <span>{{ $t('p.buyShop') }}</span>
-          </div>
-          <!-- 投资按钮 -->
-          <!-- <div v-if="isProduct" @click="invest" class="article-btn">
-            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-              <svg-icon icon-class="invest" class="icon" />
-            </div>
-            <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-          </div> -->
-
-          <!-- <div
-            v-if="!isProduct"
-            class="comment fl ac fdc"
-            >
-            <div class="comment-block">
-              <svg-icon icon-class="comment" class="comment-icon" />
-            </div>
-            <span>评论</span>
-            </div> -->
-
-          <div
-            class="article-btn"
-            @click="share"
-          >
-            <el-popover
-              v-model="visiblePopover.visible1"
-              placement="right"
-              width="300"
-              trigger="manual"
-            >
-              <p>{{ $t('p.sharePopover') }}</p>
-              <div style="text-align: right; margin: 0">
-                <el-button
-                  class="el-button--purple"
-                  type="primary"
-                  size="mini"
-                  @click="poopverDone('visible1')"
-                >
-                  {{ $t('p.confirmPopover') }}
-                </el-button>
-              </div>
-
-              <div
-                slot="reference"
-              >
-                <div
-                  :class="isProduct ? 'yellow' : 'blue'"
-                  class="icon-container blue"
-                >
-                  <svg-icon
-                    icon-class="share"
-                    class="icon"
-                  />
-                </div>
-                <span>{{ $t('share') }}</span>
-              </div>
-            </el-popover>
-          </div>
-
-          <el-popover
-            v-model="visiblePopover.visible"
-            placement="right"
-            width="300"
-            trigger="manual"
-          >
-            <p>{{ $t('p.likePopover') }}</p>
-            <div style="text-align: right; margin: 0">
-              <el-button
-                class="el-button--purple"
-                type="primary"
-                size="mini"
-                @click="poopverDone('visible')"
-              >
-                {{ $t('p.confirmPopover') }}
-              </el-button>
-            </div>
-            <div
-              slot="reference"
-            >
-              <CoinBtn
-                v-if="!isProduct"
-                :time="timeCount"
-                :token="ssToken"
-                :article="article"
-                style="margin-top: 40px;"
-                @like="like"
-                @dislike="dislike"
-              />
-            </div>
-          </el-popover>
-        </div>
       </div>
 
       <div class="p-w btns-container">
@@ -410,21 +302,6 @@
                   />
                 </div>
                 <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
-              </div>
-              <div
-                class="article-btn"
-                @click="pushShare"
-              >
-                <div
-                  :class="isProduct ? 'yellow' : 'blue'"
-                  class="icon-container blue"
-                >
-                  <svg-icon
-                    icon-class="reference"
-                    class="icon"
-                  />
-                </div>
-                <span>{{ $t('quote') }}</span>
               </div>
               <div
                 class="article-btn"
@@ -524,245 +401,6 @@
         :form="{...form, type: 'buy_token_output', limitValue}"
         :trade-no="tradeNo"
       />
-      <!-- 关联文章侧边栏 -->
-      <div
-        :class="relatedLeftCollapse && 'open'"
-        class="related left"
-        @click.stop
-      >
-        <div class="related-container">
-          <div class="fl afe jsb">
-            <div>
-              <span class="related-title">{{ $t('p.quoted') }}<span>{{ total }}</span></span>
-              <!-- <span class="related-rort">
-                正序
-                <svg-icon icon-class="sort" class="icon" />
-              </span> -->
-            </div>
-            <div>
-              <span class="related-summary">{{ $t('p.summary') }}
-                <el-switch
-                  v-model="relatedSummary"
-                  active-color="#542DE0"
-                />
-              </span>
-            </div>
-          </div>
-
-          <div
-            slot="list"
-            v-loading="loading"
-          >
-            <no-content-prompt :list="pull.list">
-              <div
-                v-for="(item, index) in relatedList"
-                :key="index"
-                class="related-list"
-              >
-                <div
-                  :class="!item.content || !relatedSummary && 'no-margin-bottom'"
-                  class="related-list-title"
-                >
-                  <div class="fl jsb">
-                    <div class="fl ac related-7">
-                      <div class="related-list-link">
-                        <a
-                          v-if="item.ref_sign_id !== 0 && item.channel_id === 1"
-                          :href="item.url"
-                          @click="toggleArticle(item.ref_sign_id, $event)"
-                        >{{ item.title }}</a>
-                        <a
-                          v-else
-                          :href="item.url"
-                          target="_blank"
-                        >{{ item.title }}</a>
-                      </div>
-                    </div>
-                    <div class="fl ac jfe related-3">
-                      <span class="related-id">{{ item.number }}</span>
-                    </div>
-                  </div>
-                  <div class="fl ac related-link">
-                    <a
-                      class="link"
-                      href="javascript:void(0);"
-                    >{{ item.url }}</a>
-                    <svg-icon
-                      class="icon-copy"
-                      icon-class="copy2"
-                      @click="copyCode(item.url)"
-                    />
-                    <a
-                      :href="item.url"
-                      target="_blank"
-                    >
-                      <svg-icon
-                        class="icon-share"
-                        icon-class="jump"
-                      />
-                    </a>
-                  </div>
-                </div>
-                <transition>
-                  <div
-                    v-if="relatedSummary"
-                    :class="!item.collapse && 'open'"
-                  >
-                    <div class="related-list-content">
-                      <span class="wrap-open">{{ item.summary }}</span>
-                    </div>
-                    <div
-                      v-if="item.showCollapse"
-                      class="related-more"
-                    >
-                      <transition name="fade">
-                        <div
-                          v-if="!item.collapse"
-                          class="more-full"
-                        />
-                      </transition>
-                      <span @click.stop="item.collapse = !item.collapse">
-                        {{ item.collapse ? $t('p.fold'): $t('p.expand') }}
-                        <i class="el-icon-arrow-up arrow-up" /></span>
-                    </div>
-                  </div>
-                </transition>
-              </div>
-
-              <user-pagination
-                v-show="!loading"
-                :current-page="currentPage"
-                :params="pull.params"
-                :api-url="pull.apiUrl"
-                :url-replace="$route.params.id + ''"
-                :page-size="pull.params.pagesize"
-                :total="total"
-                :reload="pull.reload"
-                class="pagination"
-                @paginationData="paginationData"
-                @togglePage="togglePage"
-              />
-            </no-content-prompt>
-          </div>
-        </div>
-
-        <div
-          class="related-arrow"
-          @click.stop="relatedLeftCollapse = !relatedLeftCollapse"
-        >
-          <svg-icon
-            icon-class="arrow"
-            class="icon"
-          />
-          <span v-if="!relatedLeftCollapse">{{ $t('p.quoted') + total + $t('p.articles') }}</span>
-        </div>
-      </div>
-      <div
-        :class="relatedRightCollapse && 'open'"
-        class="related right"
-        @click.stop
-      >
-        <div class="related-container">
-          <div class="fl afe jsb">
-            <div>
-              <span class="related-title">{{ $t('p.cited') }}<span>{{ beingTotal }}</span></span>
-              <!-- <span class="related-rort">
-                正序
-                <svg-icon icon-class="sort" class="icon" />
-              </span> -->
-            </div>
-            <el-button
-              v-loading="relatedLoadingBtn"
-              type="primary"
-              size="small"
-              icon="el-icon-link"
-              @click="posts"
-            >
-              {{ $t('p.citeThisArticle') }}
-            </el-button>
-          </div>
-
-          <div
-            slot="list"
-            v-loading="beingLoading"
-          >
-            <no-content-prompt :list="beingPull.list">
-              <div
-                v-for="(item, index) in beingRelatedList"
-                :key="index"
-                class="related-list"
-              >
-                <div class="related-list-title no-margin-bottom">
-                  <div class="fl jsb">
-                    <div class="fl ac related-7">
-                      <div class="related-list-link">
-                        <a
-                          v-if="item.sign_id !== 0 && item.channel_id === 1"
-                          :href="cardUrl(item)"
-                          @click="toggleArticle(item.sign_id, $event)"
-                        >{{ cardTitle(item) }}</a>
-                        <a
-                          v-else
-                          :href="cardUrl(item)"
-                          target="_blank"
-                        >{{ cardTitle(item) }}</a>
-                      </div>
-                    </div>
-                    <!-- <div class="fl ac jfe related-3">
-                      <span class="related-id">{{ item.number }}</span>
-                    </div> -->
-                  </div>
-                  <div class="fl ac related-link">
-                    <a
-                      class="link"
-                      href="javascript:void(0);"
-                    >{{ cardUrl(item) }}</a>
-                    <svg-icon
-                      class="icon-copy"
-                      icon-class="copy2"
-                      @click="copyCode(cardUrl(item))"
-                    />
-                    <a
-                      :href="cardUrl(item)"
-                      target="_blank"
-                    >
-                      <svg-icon
-                        class="icon-share"
-                        icon-class="jump"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <user-pagination
-                v-show="!beingLoading"
-                :current-page="beingCurrentPage"
-                :params="beingPull.params"
-                :api-url="beingPull.apiUrl"
-                :url-replace="$route.params.id + ''"
-                :page-size="beingPull.params.pagesize"
-                :total="beingTotal"
-                :reload="beingPull.reload"
-                class="pagination"
-                @paginationData="beingPaginationData"
-                @togglePage="beingTogglePage"
-              />
-            </no-content-prompt>
-          </div>
-        </div>
-
-        <div
-          class="related-arrow"
-          @click.stop="relatedRightCollapse = !relatedRightCollapse"
-        >
-          <svg-icon
-            icon-class="arrow"
-            class="icon"
-          />
-          <span v-if="!relatedRightCollapse">{{ $t('p.cited') + beingTotal + $t('p.times') }}</span>
-        </div>
-      </div>
     </div>
     <div
       v-else
@@ -804,12 +442,11 @@ import InvestModal from '@/components/modal/Invest'
 import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
-import CoinBtn from '@/components/article/CoinBtn'
 import TokenFooter from '@/components/article/TokenFooter'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import { ipfsData } from '@/api/async_data_api.js'
-import { extractChar, regRemoveContent } from '@/utils/reg'
+import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import store from '@/utils/store.js'
 import OrderModal from '@/components/article/ArticleOrderModal'
@@ -818,8 +455,6 @@ import utils from '@/utils/utils'
 import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
 import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
-
-import userPagination from '@/components/user/user_pagination.vue'
 
 import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
@@ -844,12 +479,10 @@ export default {
     ArticleFooter,
     // articleIpfs,
     articleTransfer,
-    CoinBtn,
     TokenFooter,
     // FeedbackModal,
     commentInput,
     OrderModal,
-    userPagination,
     becomeAnArticleEditor,
     avatar
   },
@@ -905,8 +538,6 @@ export default {
       getInputAmountError: '',
       getEditInputAmountError: '',
       payBtnDisabled: true,
-      relatedLeftCollapse: false, // 左侧关联
-      relatedRightCollapse: false, // 右侧关联
       relatedSummary: true, // 关联摘要
       relatedList: [
         // {
@@ -1204,7 +835,6 @@ export default {
 
     this.setAvatar()
     this.addReadAmount()
-    this.handleFocus()
     this.getCurrentProfile()
     this.getArticleIpfs()
     // if (!document.hidden) {
@@ -1225,21 +855,15 @@ export default {
     this.setRelatedSlider()
     this.resizeEvent = throttle(this.setRelatedSlider, 300)
     window.addEventListener('resize', this.resizeEvent)
-    window.addEventListener('popstate', this._popstateEvent)
     this.setAllHideContentStyle()
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeEvent)
-    window.removeEventListener('popstate', this._popstateEvent)
 
     clearInterval(this.timer)
     clearInterval(this.timerShare)
   },
   methods: {
-    _popstateEvent() {
-      this.toggleArticle(window.location.href, null, true)
-      // console.log(111, this.$route.params, window.location, history)
-    },
     // 增加文章阅读量
     async addReadAmount() {
       await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
@@ -1422,7 +1046,7 @@ export default {
     like() {
       this.showUserPopover()
       this.$API.like(this.article.id, {
-        time: this.timeCount
+        time: 0
       }).then(res => {
         if (res.code === 0) {
           clearInterval(this.timer)
@@ -1445,7 +1069,7 @@ export default {
     dislike() {
       this.showUserPopover()
       this.$API.dislike(this.article.id, {
-        time: this.timeCount
+        time: 0
       }).then(res => {
         if (res.code === 0) {
           clearInterval(this.timer)
@@ -1483,21 +1107,7 @@ export default {
       if (this.timer === null && !this.likedOrDisLiked) {
         this.timer = setInterval(() => {
           this.timeCount++
-          // console.log('计时', this.timeCount)
         }, 1000)
-      }
-    },
-    handleFocus() {
-      // https://github.com/hehongwei44/my-blog/issues/184
-      window.onfocus = () => {
-        // console.log('页面激活')
-        clearInterval(this.timer)
-        if (this.isReading) this.reading()
-      }
-      window.onblur = () => {
-        // console.log('页面隐藏')
-        clearInterval(this.timer)
-        this.timer = null
       }
     },
     handleMoreAction(command) {
@@ -1795,102 +1405,6 @@ export default {
         }
       })
     },
-    // 隐藏侧边关联栏
-    documentClick() {
-      this.relatedLeftCollapse = false
-      this.relatedRightCollapse = false
-    },
-    paginationData(res) {
-      this.total = res.data.count || 0
-      this.relatedList.length = 0
-      res.data.list.map(i => {
-        i.collapse = false
-        i.showCollapse = true
-        this.relatedList.push(i)
-      })
-      this.pull.list = res.data.list
-      this.loading = false
-
-      this.renderRelatedListContent()
-    },
-    togglePage(i) {
-      this.loading = true
-      this.pull.list = []
-      this.currentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
-      })
-    },
-    beingPaginationData(res) {
-      this.beingTotal = res.data.count || 0
-      this.beingRelatedList.length = 0
-      res.data.list.map(i => {
-        i.collapse = false
-        i.showCollapse = true
-        this.beingRelatedList.push(i)
-      })
-      this.beingPull.list = res.data.list
-      this.beingLoading = false
-
-      this.renderRelatedListContent()
-    },
-    beingTogglePage(i) {
-      this.beingLoading = true
-      this.beingPull.list = []
-      this.beingCurrentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
-      })
-    },
-    // 关联本文
-    async posts() {
-      if (this.isLogined) {
-        // 生成草稿
-        // 添加关联
-        const addRelated = (id) => {
-          this.relatedLoadingBtn = true
-          const data = {
-            url: window.location.href,
-            title: this.article.title,
-            summary: regRemoveContent(xssFilter(this.post.content)).slice(0, 500) // 500 字
-          }
-          this.$API.draftsReferences(id, data).then(res => {
-            if (res.code === 0) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: id } })
-            else this.$message.error(res.message)
-          }).catch(err => {
-            console.log('err', err)
-          }).finally(() => {
-            this.relatedLoadingBtn = false
-          })
-        }
-
-        // 不需要处理其他内容 如果其他内容变动会自动生成草稿
-        await this.$API.createDraft({
-          title: '',
-          content: '',
-          cover: '',
-          commentPayPoint: 1,
-          fissionFactor: 2000,
-          is_original: 0,
-          tags: ''
-        })
-          .then(res => {
-            if (res.code === 0) {
-              // 添加关联
-              addRelated(res.data)
-            } else this.$message.error(res.message)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-
-        // 跳转页面
-      } else this.$store.commit('setLoginModal', true)
-    },
     copyCode(code) {
       this.$copyText(code).then(
         () => {
@@ -1928,15 +1442,6 @@ export default {
       const currentUrlList = urlList[process.env.NODE_ENV]
       return currentUrlList.includes(linkHost)
     },
-    // 切换文章
-    toggleArticle(id, e, popEvent = false) {
-      if (e && e.preventDefault) e.preventDefault()
-      else if (e && e.stopPropagation) e.stopPropagation()
-      const url = `${process.env.VUE_APP_URL}/p/${id}`
-      if (id !== 0) this.getArticle(id, popEvent)
-      else window.open(url)
-      return false
-    },
     // 切换文章 得到文章信息
     async getArticle(id, popEvent) {
       await this.$API.getArticleInfo(id)
@@ -1966,7 +1471,6 @@ export default {
             // mounted
             this.setAvatar() // 头像
             this.addReadAmount() // 增加阅读量
-            this.handleFocus()
 
             // dom加载完提示 推荐/不推荐
             this.$nextTick(() => {
@@ -2008,27 +1512,6 @@ export default {
           this.$message.error(this.$t('error.copy'))
         }
       )
-    },
-    // 移动端是写在组件内, 用的 computed , 这里是写在页面, 写词重构的时候修改
-    cardTitle(card) {
-      // eslint-disable-next-line camelcase
-      const { channel_id, title, summary } = card
-      // eslint-disable-next-line camelcase
-      return channel_id === 1 ? title : channel_id === 3 ? summary : title
-    },
-    cardUrl(card) {
-      // eslint-disable-next-line camelcase
-      const { channel_id, sign_id } = card
-      // eslint-disable-next-line camelcase
-      const routerName = channel_id === 1 ? 'p' : channel_id === 3 ? 'share' : 'p'
-      // eslint-disable-next-line camelcase
-      return `${process.env.VUE_APP_URL}/${routerName}/${sign_id}`
-    },
-    pushShare() {
-      // 优化体验, 大厅取这个key
-      sessionStorage.setItem('articleRef', this.$route.params.id)
-      const routeUrl = this.$router.resolve({ name: 'sharehall' })
-      window.open(routeUrl.href)
     },
     // 获取文章的ipfs hash信息
     async getArticleIpfs(id = this.$route.params.id) {

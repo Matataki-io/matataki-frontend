@@ -16,6 +16,16 @@ module.exports = {
     'plugin:vue/recommended',
   ],
   rules: {
+    "vue/singleline-html-element-content-newline": ["error", {
+      "ignores": ["p", "span", "time", "a"]
+    }],
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": 3,
+      "multiline": {
+        "max": 1,
+        "allowFirstLine": false
+      }
+    }],
     quotes: [2, 'single'], // https://eslint.org/docs/2.0.0/rules/quotes
     semi: [2, 'never'], // https://eslint.org/docs/2.0.0/rules/semi
     // https://github.com/ElemeFE/eslint-config-elemefe/blob/master/rules.js

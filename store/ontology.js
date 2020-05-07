@@ -5,7 +5,7 @@ import API from '@/api/ontology'
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {
-  console.log('ontology')
+  // console.log('ontology')
   return {
     account: null,
     balance: {
