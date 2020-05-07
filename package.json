@@ -17,6 +17,7 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
     "@clampy-js/vue-clampy": "^1.0.6",
+    "@matataki/editor": "1.0.0",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@sentry/browser": "5.9.1",
@@ -39,7 +40,6 @@
     "markdown-it": "^9.0.1",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-katex": "^2.0.3",
-    "mavon-editor-matataki": "3.0.10",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.0.0",
