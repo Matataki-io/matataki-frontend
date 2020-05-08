@@ -226,9 +226,12 @@
               </n-link>
             </li>
             <li>
-              <a href="javascript:;">
+              <n-link
+                :to="{name: 'setting', params:{id: currentUserInfo.id}}"
+                class="link"
+              >
                 {{ $t('home.account') }}
-              </a>
+              </n-link>
             </li>
 
             <li @click="btnsignOut">
