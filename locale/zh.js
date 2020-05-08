@@ -385,7 +385,7 @@ export default {
     sendBtnTextEditor: '修改',
     transfer: '转让',
     titlePlaceholder: '请输入你的文章标题...',
-    contentPlaceholder: '请输入 Markdown 格式的文字开始编辑',
+    contentPlaceholder: '在此输入内容\n支持Markdown、HTML标签、独创的内容加密语法（点击上方的小锁）\n\n现在就开始编辑吧！',
     commentTitle: '评论价格',
     commentContent: '用户需要向您支付对应的积分才可评论(1-99999)',
     point: '积分',

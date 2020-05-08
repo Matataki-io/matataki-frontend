@@ -628,7 +628,7 @@ export default {
       authorId: 0,
       prohibitEditingPrices: false,
       // 加密语法
-      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n\n[else]\n\n预览内容\n\n[/read]\n'
+      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n> [📔使用说明](https://www.yuque.com/matataki/matataki/giw9u4)\n\n[else]\n\n预览内容\n\n[/read]\n'
     }
   },
   computed: {
