@@ -4,10 +4,11 @@
     class="swipe"
   >
     <el-carousel
+      :key="key"
       :interval="3000"
       trigger="click"
       :type="swipeType"
-      height="390px"
+      :height="swipeHeight"
       arrow="always"
       @change="swipeChange"
     >
@@ -33,6 +34,8 @@
 </template>
 
 <script>
+import throttle from 'lodash/throttle'
+
 export default {
   props: {
     card: {
@@ -43,10 +46,38 @@ export default {
   data() {
     return {
       swipeIndex: 0,
-      swipeType: 'card' // card
+      swipeHeight: '400px',
+      swipeType: 'card', // card
+      resizeEvent: null,
+      key: 1
     }
   },
+  created() {
+    if (process.browser) {
+      this.$nextTick(() => {
+        this.resizeInit()
+        this.resizeEvent = throttle(this.resizeInit, 300)
+        window.addEventListener('resize', this.resizeEvent)
+      })
+    }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeEvent)
+  },
   methods: {
+    resizeInit() {
+      let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+      console.log('clientWidth', clientWidth)
+      // let swipeCard = document.querySelector('.swipe .el-carousel__item--card.is-active')
+      if (clientWidth < 768) {
+        this.swipeType = ''
+        this.swipeHeight = Math.round(clientWidth / 2.6) + 'px'
+        this.key++ // 组件重新渲染
+      } else {
+        this.swipeType = 'card'
+        this.swipeHeight = '400px'
+      }
+    },
     cover(src) {
       return src ? this.$ossProcess(src, { h: 390 }) : ''
     },
@@ -74,9 +105,10 @@ export default {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding-top: 20px;
+  padding: 20px 10px 0;
   overflow: hidden;
   border-radius: 10px;
+  box-sizing: border-box;
   &-content {
     width: 100%;
     height: 100%;
@@ -134,8 +166,8 @@ export default {
 <style lang="less">
 .swipe {
   .el-carousel__item--card.is-active {
-    width: 760px;
-    transform: translateX(220px) scale(1) !important;
+    // width: 760px;
+    // transform: translateX(220px) scale(1) !important;
     .full {
       height: 120px;
       top: auto;
@@ -165,6 +197,19 @@ export default {
 
   .el-carousel__indicators {
     overflow: hidden;
+  }
+}
+</style>
+
+
+<style lang="less" scoped>
+// 大于1200
+@media screen and (min-width: 1200px) {
+  .swipe /deep/ {
+    .el-carousel__item--card.is-active {
+      width: 760px;
+      transform: translateX(210px) scale(1) !important;
+    }
   }
 }
 </style>
