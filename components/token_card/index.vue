@@ -106,6 +106,7 @@ export default {
   border-bottom: 1px solid #dbdbdb;
   color: #000;
   text-decoration: none;
+  overflow: hidden;
   // &:nth-last-child(1) {
   //   border-bottom: 1px solid #dbdbdb;
   // }
@@ -116,7 +117,7 @@ export default {
 }
 
 .card-info {
-  width: 360px;
+  width: 31%;
   &-symbol {
     font-size:20px;
     font-weight:400;
@@ -142,7 +143,7 @@ export default {
 }
 
 .card-data {
-  width: calc(100% - 660px);
+  width: 43%;
 
   &-column {
     float: left;
@@ -159,7 +160,7 @@ export default {
 }
 
 .card-user {
-  width: 300px;
+  width: 26%;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
