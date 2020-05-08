@@ -16,7 +16,6 @@
         @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac jfe">
-        <span class="btn-des">{{ article.comment_pay_point }}{{ $t('p.commentPointDes') }}</span>
         <el-button
           size="small"
           class="btn"
