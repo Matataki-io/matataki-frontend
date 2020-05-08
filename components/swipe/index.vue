@@ -212,4 +212,13 @@ export default {
     }
   }
 }
+
+// 小于768
+@media screen and (max-width: 768px){
+  .swipe {
+    .swipe-content p {
+      font-size: 20px;
+    }
+  }
+}
 </style>
