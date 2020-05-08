@@ -428,7 +428,7 @@
 </template>
 
 <script>
-import throttle from 'lodash/throttle'
+// import throttle from 'lodash/throttle'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
@@ -538,23 +538,6 @@ export default {
       getInputAmountError: '',
       getEditInputAmountError: '',
       payBtnDisabled: true,
-      relatedSummary: true, // 关联摘要
-      relatedList: [
-        // {
-        //   url: 'http://localhost:8080/publish/draft/create',
-        //   title: '1区块链文娱产品形态猜想：文化概念的区块链化',
-        //   content: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。',
-        //   collapse: false,
-        //   showCollapse: true
-        // }
-      ],
-      beingRelatedList: [
-      //   {
-      //     url: 'http://localhost:8080/publish/draft/create',
-      //     title: '1区块链文娱产品形态猜想：文化概念的区块链化',
-      //     content: '解决了区块链有具有商商业前品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态有没有具有商业前景的产品形态？已经可行的落地路径呢？陈浩结合二次元行业的经验，设计出了以ERC721和“文化概念”为核心的“galgame+文学”社区产品。这或许是可供文娱类项目参考的思路之一。'
-      //   },
-      ],
       pull: {
         params: {
           pagesize: 20
@@ -746,7 +729,6 @@ export default {
   watch: {
     timeCount(v) {
       if (!this.postsIdReadnewStatus && v >= 30) {
-        this.postsIdReadnew()
         this.postsIdReadnewStatus = true
       }
       if (v >= 150) {
@@ -786,7 +768,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    console.log('info', info.data.short_content)
+    // console.log('info', info.data.short_content)
 
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
@@ -803,7 +785,7 @@ export default {
       if (hash) {
         const res = await ipfsData($axios, hash)
         if (res.code === 0) {
-          console.log('return', res.data)
+          // console.log('return', res.data)
           return {
             article: info.data,
             post: res.data
@@ -819,7 +801,7 @@ export default {
         }
       } else {
         // 没有hash
-        console.log('not hash')
+        // console.log('not hash')
         return {
           article: info.data,
           post: {
@@ -846,20 +828,13 @@ export default {
       // undefined false 显示
       if (!store.get('likeVisible')) this.visiblePopover.visible = true
       this.shareCount()
-      this.renderRelatedListContent()
       // this.showOrderModal = true
     })
 
-    this.renderRelatedListContent()
 
-    this.setRelatedSlider()
-    this.resizeEvent = throttle(this.setRelatedSlider, 300)
-    window.addEventListener('resize', this.resizeEvent)
     this.setAllHideContentStyle()
   },
   destroyed() {
-    window.removeEventListener('resize', this.resizeEvent)
-
     clearInterval(this.timer)
     clearInterval(this.timerShare)
   },
@@ -1222,19 +1197,6 @@ export default {
         this.commentRequest = Date.now()
       }, 3000)
     },
-    postsIdReadnew() {
-      const isNDaysAgo = this.$utils.isNDaysAgo(3, this.article.create_time)
-      if (this.article.is_readnew !== 1 && !isNDaysAgo) {
-        // console.log('阅读新文章增加积分')
-        this.$API.postsIdReadnew(this.article.id, this.timeCount)
-          .then(res => {
-            if (res.code === 0) {
-              this.$message.success(this.$t('articleFooter.readNew', [this.$point.readNew]))
-              // console.log('阅读新文章增加积分成功')
-            } else console.log(this.$t('p.failureToIncreasePoints'))
-          }).catch(err => console.log(this.$t('p.failureToIncreasePoints') + err))
-      }
-    },
     wxpayArticle() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
@@ -1366,141 +1328,6 @@ export default {
           error: ''
         }
       }
-    },
-
-    /**
-     * 渲染关联内容 判断是否显示展开或折叠
-     * 如果传递参数 循环所有, 否则判断单个
-     */
-    renderRelatedListContent(i) {
-      this.$nextTick(() => {
-        if (i) {
-          const ele = document.querySelectorAll('.related-list-content')[i]
-          if (!ele) return
-          if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
-          else this.relatedList[i].showCollapse = true
-        } else {
-          const relatedList = document.querySelectorAll('.related-list-content')
-          if (!relatedList) return
-          relatedList.forEach((ele, i) => {
-            // console.log(ele.clientHeight)
-            if (!this.relatedList[i]) return
-            if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
-            else this.relatedList[i].showCollapse = true
-          })
-        }
-      })
-    },
-    setRelatedSlider() {
-      this.$nextTick(() => {
-        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        // 10 + 37
-        const sliderWidth = (clientWidth / 2) - 47
-        if (sliderWidth < 580) {
-          const relatedDom = document.querySelectorAll('.related')
-          relatedDom.forEach((ele) => {
-            // console.log(ele)
-            ele.style.maxWidth = sliderWidth + 'px'
-          })
-        }
-      })
-    },
-    copyCode(code) {
-      this.$copyText(code).then(
-        () => {
-          this.$message.success(this.$t('success.copy'))
-        },
-        () => {
-          this.$message.error(this.$t('error.copy'))
-        }
-      )
-    },
-    // 判断文章关联链接是本站还是外站
-    currentSite(link) {
-      const reg = /(\w+):\/\/([^/:]+)(:\d*)?([^# ]*)/
-      const linkArr = link.match(reg)
-      const prot = linkArr && linkArr[3] ? linkArr[3] : ''
-      const linkHost = linkArr ? linkArr[1] + '://' + linkArr[2] + prot : ''
-
-      // 地址
-      const urlList = {
-        development: [
-          process.env.VUE_APP_URL,
-          process.env.VUE_APP_PC_URL,
-          process.env.WX_SHARE_HOST,
-          'http://localhost:8080',
-          'https://localhost:8080',
-          'http://127.0.0.1:8080'
-        ],
-        production: [
-          process.env.VUE_APP_URL,
-          process.env.VUE_APP_PC_URL,
-          process.env.WX_SHARE_HOST
-        ]
-      }
-
-      const currentUrlList = urlList[process.env.NODE_ENV]
-      return currentUrlList.includes(linkHost)
-    },
-    // 切换文章 得到文章信息
-    async getArticle(id, popEvent) {
-      await this.$API.getArticleInfo(id)
-        .then(res => {
-          if (res.code === 0) {
-            this.article = res.data
-
-            // 切换 url不刷新
-            this.$route.params.id = res.data.id
-            if (!popEvent) {
-              const url = window.location.origin + '/p/' + res.data.id
-              history.pushState({}, '', url)
-            }
-            // 判断是否为付费阅读文章
-            if (((res.data.tokens && res.data.tokens.length !== 0) || (res.data.prices && res.data.prices.length > 0)) && !this.isProduct) {
-              this.post.content = res.data.short_content
-            } else {
-              // 切换文章 得到ipfs内容
-              this.getIpfsData(res.data.hash)
-            }
-
-            // 有写是写在组件内的, 通过props传递的参数判断是否切换文章
-
-            // created
-            this.getCurrentProfile(res.data.id)
-            this.getArticleIpfs(res.data.id)
-            // mounted
-            this.setAvatar() // 头像
-            this.addReadAmount() // 增加阅读量
-
-            // dom加载完提示 推荐/不推荐
-            this.$nextTick(() => {
-              this.ssToken = {
-                points: [],
-                dislikes: 0,
-                likes: 0,
-                is_liked: 0
-              }
-
-              // 清空两个定时器
-              clearInterval(this.timerShare)
-              this.timerShare = null
-              this.timeCountShare = 0
-
-              clearInterval(this.timer)
-              this.timer = null
-              this.timeCount = 0
-              this.shareCount()
-
-              this.loading = this.beingLoading = true
-              this.pull.reload = this.beingPull.reload = Date.now()
-            })
-          } else {
-            this.$message.warning(res.message)
-          }
-          console.log('res', res)
-        }).catch(err => {
-          console.log('err', err)
-        })
     },
 
     copyText(getCopyIpfsHash) {
