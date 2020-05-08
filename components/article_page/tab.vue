@@ -98,9 +98,6 @@ export default {
 @media screen and (max-width: 768px) {
   .main-head__nav .nav-title {
     display: block;
-    li a {
-      font-size: 14px;
-    }
   }
 }
 </style>
