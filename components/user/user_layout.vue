@@ -34,9 +34,9 @@ export default {
 .user-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
   max-width: 1200px;
   width: 100%;
+  margin: 20px auto 0;
 }
 .user-main {
   // width: 890px;
