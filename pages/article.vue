@@ -308,6 +308,7 @@ export default {
 // 页面小于
 @media screen and (max-width: 768px) {
   .container {
+    margin-top: 20px;
     .col-6 {
       width: 100%;
     }

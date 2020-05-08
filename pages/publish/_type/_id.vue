@@ -114,307 +114,249 @@
         </el-button>
       </div> -->
 
-      <div
-        class="post-content"
-        style="width: 380px;"
-      >
-        <div>
-          <h3>
-            阅读权限
+      <div class="post-content">
+        <div style="width: 380px;">
+          <div>
+            <h3>
+              阅读权限
+              <el-tooltip
+                effect="dark"
+                content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
+            </h3>
+            <el-checkbox
+              v-model="readauThority"
+              size="small"
+              :disabled="prohibitEditingPrices"
+            >
+              设置持Fan票
+            </el-checkbox>
+          </div>
+          <transition name="fade">
+            <div
+              v-show="readauThority"
+              class="fl ac"
+            >
+              <div>
+                <h3>Fan票类型</h3>
+                <el-select
+                  v-model="readSelectValue"
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                  filterable
+                  :disabled="prohibitEditingPrices"
+                >
+                  <el-option
+                    v-for="item in readSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>持Fan票数量</h3>
+                <el-input
+                  v-model="readToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
+                />
+              </div>
+            </div>
+          </transition>
+          <div v-show="readauThority" class="related-add">
             <el-tooltip
               effect="dark"
-              content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
-              placement="top-start"
+              content="多Fan票解锁正在开发中"
+              placement="top"
             >
-              <svg-icon
-                class="help-icon"
-                icon-class="help"
-              />
+              <div class="add-icon disable">
+                <i class="el-icon-plus" />
+              </div>
             </el-tooltip>
-          </h3>
+            <span>添加更多</span>
+          </div>
           <el-checkbox
-            v-model="readauThority"
+            v-model="paymentTokenVisible"
             size="small"
+            style="margin-top: 10px;"
             :disabled="prohibitEditingPrices"
           >
-            设置持Fan票
+            设置支付
           </el-checkbox>
-        </div>
-        <transition name="fade">
-          <div
-            v-show="readauThority"
-            class="fl ac"
-          >
-            <div>
-              <h3>Fan票类型</h3>
-              <el-select
-                v-model="readSelectValue"
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-                filterable
-                :disabled="prohibitEditingPrices"
-              >
-                <el-option
-                  v-for="item in readSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
+          <transition name="fade">
+            <div
+              v-show="paymentTokenVisible"
+              class="fl ac"
+            >
+              <div>
+                <h3>支付类型</h3>
+                <el-select
+                  v-model="paymentSelectValue"
+                  disabled
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                >
+                  <el-option
+                    v-for="item in paymentSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>支付数量</h3>
+                <el-input
+                  v-model="paymentToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
                 />
-              </el-select>
+              </div>
             </div>
-            <div style="margin-left: 10px;">
-              <h3>持Fan票数量</h3>
+          </transition>
+          <transition name="fade">
+            <div v-show="readauThority || paymentTokenVisible">
+              <h3>内容摘要</h3>
               <el-input
-                v-model="readToken"
-                :min="1"
-                :max="100000000"
+                v-model="readSummary"
+                :autosize="{ minRows: 6, maxRows: 12}"
                 size="small"
+                type="textarea"
                 placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
+                maxlength="300"
+                show-word-limit
               />
             </div>
-          </div>
-        </transition>
-        <div
-          v-show="readauThority"
-          class="related-add"
-        >
-          <el-tooltip
-            effect="dark"
-            content="多Fan票解锁正在开发中"
-            placement="top"
-          >
-            <div class="add-icon disable">
-              <i class="el-icon-plus" />
-            </div>
-          </el-tooltip>
-          <span>添加更多</span>
+          </transition>
         </div>
-        <el-checkbox
-          v-model="paymentTokenVisible"
-          size="small"
-          style="margin-top: 10px;"
-          :disabled="prohibitEditingPrices"
-        >
-          设置支付
-        </el-checkbox>
-        <transition name="fade">
-          <div
-            v-show="paymentTokenVisible"
-            class="fl ac"
-          >
-            <div>
-              <h3>支付类型</h3>
-              <el-select
-                v-model="paymentSelectValue"
-                disabled
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-              >
-                <el-option
-                  v-for="item in paymentSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </div>
-            <div style="margin-left: 10px;">
-              <h3>支付数量</h3>
-              <el-input
-                v-model="paymentToken"
-                :min="1"
-                :max="100000000"
-                size="small"
-                placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
-              />
-            </div>
-          </div>
-        </transition>
-        <transition name="fade">
-          <div v-show="readauThority || paymentTokenVisible">
-            <h3>内容摘要</h3>
-            <el-input
-              v-model="readSummary"
-              :autosize="{ minRows: 6, maxRows: 12}"
-              size="small"
-              type="textarea"
-              placeholder="请输入内容"
-              maxlength="300"
-              show-word-limit
-            />
-          </div>
-        </transition>
       </div>
 
       <!-- 编辑权限 -->
-      <div
-        class="post-content"
-        style="width: 380px;"
-      >
-        <div>
-          <h3>
-            编辑权限 (实验功能)
-            <el-tooltip
-              effect="dark"
-              content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
-              placement="top-start"
+      <div class="post-content">
+        <div style="width: 380px;">
+          <div>
+            <h3>
+              编辑权限 (实验功能)
+              <el-tooltip
+                effect="dark"
+                content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
+            </h3>
+            <el-checkbox
+              v-model="tokenEditAuthority"
+              size="small"
+              :disabled="prohibitEditingPrices"
             >
-              <svg-icon
-                class="help-icon"
-                icon-class="help"
-              />
-            </el-tooltip>
-          </h3>
+              设置持Fan票
+            </el-checkbox>
+          </div>
+          <transition name="fade">
+            <div
+              v-show="tokenEditAuthority"
+              class="fl ac"
+            >
+              <div>
+                <h3>Fan票类型</h3>
+                <el-select
+                  v-model="editSelectValue"
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                  filterable
+                  :disabled="prohibitEditingPrices"
+                >
+                  <el-option
+                    v-for="item in readSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>持Fan票数量</h3>
+                <el-input
+                  v-model="editToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
+                />
+              </div>
+            </div>
+          </transition>
           <el-checkbox
-            v-model="tokenEditAuthority"
+            v-model="buyEditAuthority"
             size="small"
-            :disabled="prohibitEditingPrices"
+            style="margin-top: 10px;"
+            disabled
           >
-            设置持Fan票
+            设置支付
           </el-checkbox>
+          <transition name="fade">
+            <div
+              v-show="buyEditAuthority"
+              class="fl ac"
+            >
+              <div>
+                <h3>支付类型</h3>
+                <el-select
+                  v-model="paymentSelectValue"
+                  disabled
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                >
+                  <el-option
+                    v-for="item in paymentSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>支付数量</h3>
+                <el-input
+                  v-model="editPaymentToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
+                />
+              </div>
+            </div>
+          </transition>
         </div>
-        <transition name="fade">
-          <div
-            v-show="tokenEditAuthority"
-            class="fl ac"
-          >
-            <div>
-              <h3>Fan票类型</h3>
-              <el-select
-                v-model="editSelectValue"
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-                filterable
-                :disabled="prohibitEditingPrices"
-              >
-                <el-option
-                  v-for="item in readSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </div>
-            <div style="margin-left: 10px;">
-              <h3>持Fan票数量</h3>
-              <el-input
-                v-model="editToken"
-                :min="1"
-                :max="100000000"
-                size="small"
-                placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
-              />
-            </div>
-          </div>
-        </transition>
-        <el-checkbox
-          v-model="buyEditAuthority"
-          size="small"
-          style="margin-top: 10px;"
-          disabled
-        >
-          设置支付
-        </el-checkbox>
-        <transition name="fade">
-          <div
-            v-show="buyEditAuthority"
-            class="fl ac"
-          >
-            <div>
-              <h3>支付类型</h3>
-              <el-select
-                v-model="paymentSelectValue"
-                disabled
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-              >
-                <el-option
-                  v-for="item in paymentSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </div>
-            <div style="margin-left: 10px;">
-              <h3>支付数量</h3>
-              <el-input
-                v-model="editPaymentToken"
-                :min="1"
-                :max="100000000"
-                size="small"
-                placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
-              />
-            </div>
-          </div>
-        </transition>
       </div>
 
-      <div
-        v-if="$route.params.type !== 'edit'"
-        class="set-item fl ac"
-      >
-        <span class="set-title">
-          {{ $t('publish.commentTitle') }}
-        </span>
-        <span class="set-des">
-          {{ $t('publish.commentContent') }}
-        </span>
-        <el-input-number
-          v-model="commentPayPoint"
-          :min="1"
-          :max="99999"
-          style="width: 110px"
-          controls-position="right"
-          class="price-point"
-          size="mini"
-          label="评论价格"
-          step-strictly
-        />
-        <span class="input-number">
-          {{ $t('publish.point') }}
-        </span>
-      </div>
-      <!-- <div v-if="editorMode !== 'edit'" class="fission">
-        <p>
-          裂变系数
-          <el-tooltip
-
-            effect="light"
-            content="决定每名投资者的收益上限 = 投资金额 * 裂变系数 裂变系数越大投资者的收益预期越高"
-            placement="top-start"
-          >
-            <span class="question">?</span>
-          </el-tooltip>
-        </p>
-        <div v-if="editorMode !== 'edit'" class="fission-num-slider">
-          <el-slider
-            v-model="fissionNum"
-            class="fission-num-slider2"
-            :min="1"
-            :max="2"
-            :step="0.1"
-          />
-        </div>
-        <div class="fission-num-Input">
-          {{ fissionNum }}
-        </div>
-      </div> -->
       <div class="cover-container">
         <div class="cover">
           <p>
             {{ $t('publish.coverTitle') }}
-            <span class="cover-tip">
-              {{ $t('publish.coverDes') }}
-            </span>
           </p>
           <img-upload
             v-show="!cover"
