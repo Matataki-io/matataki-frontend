@@ -68,7 +68,6 @@ export default {
     resizeInit() {
       let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
       console.log('clientWidth', clientWidth)
-      // let swipeCard = document.querySelector('.swipe .el-carousel__item--card.is-active')
       if (clientWidth < 768) {
         this.swipeType = ''
         this.swipeHeight = Math.round(clientWidth / 2.6) + 'px'

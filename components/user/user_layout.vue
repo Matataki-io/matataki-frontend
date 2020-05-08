@@ -1,7 +1,7 @@
 <template>
   <div class="user user-layout">
     <g-header />
-    <el-row class="user-container mw">
+    <el-row class="user-container">
       <el-col :span="4">
         <div class="account-nav position-sticky top70">
           <slot name="nav" />
@@ -35,6 +35,8 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  max-width: 1200px;
+  width: 100%;
 }
 .user-main {
   // width: 890px;
@@ -55,5 +57,21 @@ export default {
 
 .position-sticky {
   margin-top: 0px;
+}
+
+// 小于768
+@media screen and (max-width: 768px){
+  .user-container {
+    display: block;
+  }
+  .user-container /deep/ {
+    .el-col-4 {
+    width: 100%;
+    margin-bottom: 10px;
+    }
+    .el-col-20 {
+      width: 100%;
+    }
+  }
 }
 </style>
