@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav fl">
+  <nav class="nav">
     <router-link
       v-for="(item, index) in navList"
       :key="index"
@@ -45,10 +45,11 @@ export default {
 
 <style lang="less" scoped>
 .nav {
-  width: 570px;
   text-align: center;
   margin: 0 auto;
   padding: 20px 0 10px;
+  display: block;
+  flex-wrap: wrap;
   a {
     font-size: 18px;
     line-height:33px;
@@ -57,6 +58,12 @@ export default {
     flex: 1;
     cursor: pointer;
     color: #333;
+    &:nth-of-type(1) {
+      margin-left: 0;
+    }
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
     &.active {
       font-weight:bold;
       color:rgba(0,0,0,1);
