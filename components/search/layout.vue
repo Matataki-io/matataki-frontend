@@ -32,32 +32,21 @@
             :card="item"
           />
         </template>
-        <!-- 分享 -->
-        <template v-else-if="searchType === 1">
-          <shareCard
-            v-for="(item, index) in articleCardData[1].articles"
-            :key="index"
-            :card="item"
-            :blank="false"
-            class="share-card"
-            @refClick="pushShare"
-          />
-        </template>
         <!-- Fan票 -->
-        <template v-else-if="searchType === 2">
+        <template v-else-if="searchType === 1">
           <tokenCard
-            v-for="item in articleCardData[2].articles"
+            v-for="item in articleCardData[1].articles"
             :key="item.id"
             :card="item"
           />
         </template>
         <div
-          v-else-if="searchType === 3"
+          v-else-if="searchType === 2"
           class="search-list"
         >
           <!-- 用户 -->
           <searchUserList
-            v-for="item in articleCardData[3].articles"
+            v-for="item in articleCardData[2].articles"
             :key="item.id"
             :card="item"
             @updateList="updateList"
@@ -91,7 +80,6 @@ import { strTrim } from '@/utils/reg'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import searchUserList from '@/components/search_user_list/index.vue'
 import userPagination from '@/components/user/user_pagination.vue'
-import shareCard from '@/components/share_card/index.vue'
 import tokenCard from '@/components/token_card/search_token.vue'
 
 export default {
@@ -99,7 +87,6 @@ export default {
     articleCardListNew,
     searchUserList,
     userPagination,
-    shareCard,
     tokenCard
   },
   data() {
@@ -113,16 +100,6 @@ export default {
             type: 'post'
           },
           apiUrl: 'searchArticleList',
-          articles: [],
-          count: 0,
-          isAtuoRequest: false
-        },
-        {
-          params: {
-            channel: 1,
-            type: 'post'
-          },
-          apiUrl: 'searchShareList',
           articles: [],
           count: 0,
           isAtuoRequest: false
@@ -152,9 +129,6 @@ export default {
       tagList: [
         {
           label: this.$t('search.optionText11')
-        },
-        {
-          label: this.$t('search.optionText12')
         },
         {
           label: this.$t('search.optionText13')
@@ -253,12 +227,6 @@ export default {
         } else getDataFail(res.message)
       } catch (error) { getDataFail() }
     },
-    /** 分享引用 */
-    pushShare(card) {
-      // 优化体验, 大厅取这个key
-      sessionStorage.setItem('shareRef', card.id)
-      this.$router.push({ name: 'sharehall' })
-    }
   }
 }
 </script>
