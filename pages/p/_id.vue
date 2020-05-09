@@ -1,9 +1,6 @@
 <template>
   <div class="main">
-    <g-header
-      :popover-visible="visiblePopover.visible2"
-      @popoverVisible="poopverDone('visible2')"
-    />
+    <g-header />
 
     <div v-if="article.status === 0">
       <div class="container">
@@ -347,7 +344,6 @@ import CommentList from '@/components/comment/List'
 import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
-import store from '@/utils/store.js'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
@@ -404,15 +400,6 @@ export default {
         likes: 0,
         is_liked: 0
       },
-      // feedbackShow: false,
-      // 三个引导提示的状态
-      visiblePopover: {
-        visible: false,
-        visible1: false,
-        visible2: false
-      },
-      timerShare: null, // 分享计时器
-      timeCountShare: 0, // 分享计时
       article: Object.create(null),
       post: Object.create(null),
       postsIdReadnewStatus: false, // 新文章阅读是否上报
@@ -635,17 +622,7 @@ export default {
         clearInterval(this.timer)
       }
     },
-    timeCountShare(v) {
-      if (v >= 60 && !store.get('shareVisible')) {
-        this.visiblePopover.visible1 = true
-        clearInterval(this.timerShare)
-      }
-    },
-    // '$route'(to, from) {
-    //   document.title = to.meta.title || 'Your Website'
-    // }
     compiledMarkdown() {
-      console.log('111111, htmldom')
       this.setAllHideContentStyle()
     }
   },
@@ -719,30 +696,15 @@ export default {
     this.addReadAmount()
     this.getCurrentProfile()
     this.getArticleIpfs()
-    // if (!document.hidden) {
-    //   this.reading()
-    // }
-
-    // dom加载完提示 推荐/不推荐
-    this.$nextTick(() => {
-      // undefined false 显示
-      if (!store.get('likeVisible')) this.visiblePopover.visible = true
-      this.shareCount()
-      // this.showOrderModal = true
-    })
-
 
     this.setAllHideContentStyle()
   },
   destroyed() {
     clearInterval(this.timer)
-    clearInterval(this.timerShare)
   },
   methods: {
     // 增加文章阅读量
-    async addReadAmount() {
-      await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
-    },
+    async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
       if (!getCookie('ACCESS_TOKEN')) {
@@ -864,26 +826,7 @@ export default {
       }
     },
 
-    shareCount() {
-      this.timerShare = setInterval(() => {
-        this.timeCountShare++
-        // console.log(this.timeCountShare)
-      }, 1000)
-    },
-    // 提示点击确定后
-    poopverDone(visible) {
-      // likeVisible shareVisible userVisible
-      if (visible === 'visible') {
-        store.set('likeVisible', true)
-        this.visiblePopover.visible = false
-      } else if (visible === 'visible1') {
-        store.set('shareVisible', true)
-        this.visiblePopover.visible1 = false
-      } else if (visible === 'visible2') {
-        store.set('userVisible', true)
-        this.visiblePopover.visible2 = false
-      }
-    },
+
     async getIpfsData() {
       const { hash } = this.article
       if (!hash) {

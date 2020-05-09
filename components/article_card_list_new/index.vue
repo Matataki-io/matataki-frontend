@@ -215,9 +215,7 @@ export default {
         : articleUrl
       return `《${article.title}》by ${article.nickname ||
         article.author ||
-        ''} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t(
-        'p.clipboardText2'
-      )}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
+        ''} \n${shareLink}\n${this.$t('p.clipboardText1')} \n`
     },
     copyCode(code) {
       console.log(code)
