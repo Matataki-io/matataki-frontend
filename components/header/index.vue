@@ -12,31 +12,23 @@
           alt="logo"
         ></a>
         <!-- nav -->
-        <template v-for="(item, index) in nav">
-          <router-link
-            :key="index"
-            :style="customizeHeaderTextColorComputed"
-            :class="item.urlList.includes($route.name) && 'active'"
-            :to="{name: item.url}"
-            class="nav"
-          >
-            {{ item.title }}
-            <sup
-              v-if="item.sup"
-              style="color: orange;"
-            >{{ item.sup }}</sup>
-          </router-link>
-        </template>
-        <!-- <a
+        <router-link
+          v-for="(item, index) in nav"
+          :key="index"
+          :style="customizeHeaderTextColorComputed"
+          :class="item.urlList.includes($route.name) && 'active'"
+          :to="{name: item.url}"
           class="nav"
-          href="javascript:;"
-          @click="writeP"
         >
-          导入文章
-        </a> -->
+          {{ item.title }}
+          <sup
+            v-if="item.sup"
+            style="color: orange;"
+          >{{ item.sup }}</sup>
+        </router-link>
       </div>
 
-      <div class="head-flex">
+      <div class="pc head-flex">
         <div class="search">
           <input
             v-model="searchInput"
@@ -84,32 +76,11 @@
           >
             <svg-icon
               :style="customizeHeaderIconColorComputed"
-              style="margin: 0 0 0 18px"
-              class="create notification"
+              class="notification create"
               icon-class="bell"
             />
           </n-link>
         </el-tooltip>
-
-        <el-popover
-          v-model="visible"
-          placement="bottom"
-          width="300"
-          trigger="manual"
-        >
-          <p>{{ $t('home.pointPopover') }}</p>
-          <div style="text-align: right; margin: 0">
-            <el-button
-              class="el-button--purple"
-              type="primary"
-              size="mini"
-              @click="$emit('popoverVisible', false)"
-            >
-              {{ $t('home.pointPopoverConfirm') }}
-            </el-button>
-          </div>
-          <point slot="reference" />
-        </el-popover>
         <el-tooltip
           class="item"
           effect="dark"
@@ -170,16 +141,7 @@
                 {{ $t('home.account') }}
               </el-dropdown-item>
             </n-link>
-            <!-- <n-link :to="{name: 'tokens' }" class="link">
-              <el-dropdown-item>
-                我的Fan票
-              </el-dropdown-item>
-            </n-link>
-            <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
-              <el-dropdown-item>
-                {{ $t('home.setting') }}
-              </el-dropdown-item>
-            </n-link> -->
+  
             <div
               class="link"
               @click="btnsignOut"
@@ -197,7 +159,98 @@
           @click="login"
         >{{ $t('home.signIn') }}</a>
         <slot name="more" />
-        <language />
+        <language class="language" />
+      </div>
+      <div class="mobile">
+        <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
+        <ul v-show="toggleMenu" class="menu-ul">
+          <li>
+            <div class="search">
+              <input
+                v-model="searchInput"
+                :placeholder="$t('home.searchPlaceholder')"
+                type="text"
+                class="input"
+                autocomplete="off"
+                readonly
+                onfocus="this.removeAttribute('readonly')"
+                onblur="this.setAttribute('readonly', 'readonly')"
+                @keyup.enter="jutmpToSearch"
+                @focus="searchFcous = true"
+                @blur="inputBlur"
+              >
+
+              <svg-icon
+                class="icon-search"
+                icon-class="search"
+                @click.stop="jutmpToSearch"
+              />
+              <ul
+                v-if="searchRecommendList.length !== 0 && searchFcous"
+                class="search-list"
+              >
+                <li
+                  v-for="(item, index) in searchRecommendList"
+                  :key="index"
+                  @click.stop="jutmpToSearchRecommend(item.word)"
+                >
+                  <a href="javascript:;">{{ item.word }}</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <n-link to="/notification">
+              通知中心
+            </n-link>
+          </li>
+
+          <li @click="postImport">
+            <a href="javascript:;">{{ $t('publish.importArticle') }}</a>
+          </li>
+
+          <li @click="writeP">
+            <a href="javascript:;">
+              {{ $t('header.newArticle') }}
+            </a>
+          </li>
+
+
+          <template v-if="isLogined">
+            <li>
+              <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                <div class="fl ac">
+                  <c-avatar :src="avatar" />
+                  <span class="username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
+                </div>
+              </n-link>
+            </li>
+            <li>
+              <n-link
+                :to="{name: 'setting', params:{id: currentUserInfo.id}}"
+                class="link"
+              >
+                {{ $t('home.account') }}
+              </n-link>
+            </li>
+
+            <li @click="btnsignOut">
+              <a href="javascript:;">
+                {{ $t('home.signOut') }}
+              </a>
+            </li>
+          </template>
+          <li v-else @click="login">
+            <a href="javascript:;">
+              {{ $t('home.signIn') }}
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;">
+              <language />
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </header>
@@ -206,7 +259,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
-import point from './point'
 import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
@@ -220,7 +272,6 @@ export default {
   name: 'HomeHead',
   components: {
     // avatarComponents,
-    point,
     language
   },
   props: {
@@ -256,7 +307,8 @@ export default {
       searchFcous: false,
       searchInput: this.searchQueryVal,
       visible: this.popoverVisible,
-      searchRecommendList: []
+      searchRecommendList: [],
+      toggleMenu: false, // 菜单切换
     }
   },
   computed: {
@@ -270,19 +322,6 @@ export default {
           sup: '',
           urlList: ['article', 'ring-id']
         },
-        {
-          title: this.$t('home.share'),
-          url: 'sharehall',
-          sup: '',
-          urlList: ['sharehall']
-        },
-        // 隐藏导航栏的商品选项
-        // {
-        //   title: this.$t('home.navShop'),
-        //   url: 'shop',
-        //   sup: '',
-        //   urlList: ['shop']
-        // },
         {
           title: this.$t('home.fanTicket'),
           url: 'token',
@@ -459,7 +498,7 @@ export default {
 }
 .home-head {
   max-width: 1200px;
-  min-width: 800px;
+  // min-width: 800px;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -529,9 +568,9 @@ export default {
 
 .search {
   position: relative;
-  width:200px;
-  background:rgba(241,241,241,1);
-  border-radius:4px;
+  width: 200px;
+  background: rgba(241, 241, 241, 1);
+  border-radius: 4px;
   display: flex;
   box-sizing: border-box;
   margin: 0 10px 0 0;
@@ -542,8 +581,8 @@ export default {
     outline: none;
     background-color: transparent;
 
-    font-size:14px;
-    color:rgba(0,0,0,1);
+    font-size: 14px;
+    color: rgba(0, 0, 0, 1);
   }
   .icon-search {
     width: 20px;
@@ -562,12 +601,13 @@ export default {
   background: #fff;
   width: 100%;
   max-height: 280px;
-  background: rgba(255,255,255,1);
-  box-shadow: 0px 4px 16px 0px rgba(0,0,0,0.16);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
   border-radius: 4px;
   overflow: auto;
   padding: 0;
   margin: 0;
+  z-index: 99;
   li {
     list-style: none;
     &:hover {
@@ -586,11 +626,12 @@ export default {
     }
   }
 }
-
+.language {
+  margin-left: 16px;
+}
 </style>
 
 <style lang="less">
-
 // 覆盖下拉框
 .user-dorpdown {
   max-width: 150px;
@@ -622,7 +663,8 @@ export default {
   .el-dropdown-menu__item--divided:before {
     display: none;
   }
-  .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover  {
+  .el-dropdown-menu__item:focus,
+  .el-dropdown-menu__item:not(.is-disabled):hover {
     background-color: @purpleDark;
     color: #fff;
     .link {
@@ -657,14 +699,14 @@ export default {
   margin-left: 10px;
   cursor: pointer;
 }
-.badge{
+.badge {
   position: relative;
-  &::after{
-    content: '';
+  &::after {
+    content: "";
     width: 10px;
     height: 10px;
     border-radius: 10px;
-    background: rgba(251,104,119,1);
+    background: rgba(251, 104, 119, 1);
     position: absolute;
     z-index: 1000;
     right: 0%;
@@ -684,6 +726,64 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.menu {
+  cursor: pointer;
+  font-size: 30px;
+  color: #000;
+  &-ul {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 0 10px 20px;
+    margin: 0;
+    list-style: none;
+    li {
+      border-bottom: 1px solid #dfdfdf;
+      padding: 0;
+      font-size: 14px;
+      color: #333;
+      font-weight: 400;
+      cursor: pointer;
+
+      &:nth-last-child(1) {
+        border-bottom: none;
+      }
+      a {
+        display: block;
+        padding: 10px 0;
+        color: #333;
+      }
+
+      .username {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+// 页面大于
+@media screen and (min-width: 801px) {
+  .header {
+    .mobile {
+      display: none;
+    }
+  }
+}
+// 页面小于
+@media screen and (max-width: 800px) {
+  .header {
+    .pc {
+      display: none;
+    }
+    .search {
+      width: 100%;
+      margin: 10px 0;
+    }
   }
 }
 </style>

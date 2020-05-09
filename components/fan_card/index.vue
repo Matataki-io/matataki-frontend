@@ -44,7 +44,8 @@ export default {
 </script>
 <style lang="less" scoped>
   .token-card {
-    width:177px;
+    width: calc(25% - 18px);
+    min-width: 140px;
     height:239px;
     border-radius: 10px;
     background:white;

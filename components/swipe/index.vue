@@ -4,10 +4,11 @@
     class="swipe"
   >
     <el-carousel
+      :key="key"
       :interval="3000"
       trigger="click"
-      type="card"
-      height="390px"
+      :type="swipeType"
+      :height="swipeHeight"
       arrow="always"
       @change="swipeChange"
     >
@@ -33,6 +34,8 @@
 </template>
 
 <script>
+import throttle from 'lodash/throttle'
+
 export default {
   props: {
     card: {
@@ -42,10 +45,38 @@ export default {
   },
   data() {
     return {
-      swipeIndex: 0
+      swipeIndex: 0,
+      swipeHeight: '400px',
+      swipeType: 'card', // card
+      resizeEvent: null,
+      key: 1
     }
   },
+  created() {
+    if (process.browser) {
+      this.$nextTick(() => {
+        this.resizeInit()
+        this.resizeEvent = throttle(this.resizeInit, 300)
+        window.addEventListener('resize', this.resizeEvent)
+      })
+    }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeEvent)
+  },
   methods: {
+    resizeInit() {
+      let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+      console.log('clientWidth', clientWidth)
+      if (clientWidth < 768) {
+        this.swipeType = ''
+        this.swipeHeight = Math.round(clientWidth / 2.6) + 'px'
+        this.key++ // 组件重新渲染
+      } else {
+        this.swipeType = 'card'
+        this.swipeHeight = '400px'
+      }
+    },
     cover(src) {
       return src ? this.$ossProcess(src, { h: 390 }) : ''
     },
@@ -70,9 +101,13 @@ export default {
 
 <style lang="less" scoped>
 .swipe {
-  width: 1200px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding-top: 20px;
+  padding: 20px 10px 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-sizing: border-box;
   &-content {
     width: 100%;
     height: 100%;
@@ -87,80 +122,102 @@ export default {
       object-fit: cover;
     }
     p {
+      position: absolute;
+      bottom: 40px;
+      left: 50px;
+      right: 40px;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0;
+      z-index: 10;
+      opacity: 0.5;
+      padding: 0 0 0 15px;
+      &::before {
+        display: block;
+        content: "";
+        width: 5px;
+        // height: 30px;
+        background: #fff;
         position: absolute;
-        bottom: 40px;
-        left: 50px;
-        right: 40px;
-        font-size: 26px;
-        font-weight: bold;
-        letter-spacing: 1px;
-        color: #ffffff;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        margin: 0;
-        z-index: 10;
-        opacity: 0.5;
-        padding: 0 0 0 15px;
-        &::before {
-          display: block;
-          content: '';
-          width: 5px;
-          // height: 30px;
-          background: #fff;
-          position: absolute;
-          left: 0;
-          top: 0;
-          bottom: 0;
-        }
-      }
-      .full {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9;
+        top: 0;
+        bottom: 0;
       }
+    }
+    .full {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9;
+    }
   }
 }
 </style>
 
 <style lang="less">
-  .swipe {
-    .el-carousel__item--card.is-active {
-      width: 760px;
-      transform: translateX(220px) scale(1) !important;
-      .full {
-          height: 120px;
-          top: auto;
-          background: linear-gradient(0, rgba(0,0,0,0.5) 0, transparent 100%);
-      }
-      p {
-        opacity: 1;
-      }
+.swipe {
+  .el-carousel__item--card.is-active {
+    // width: 760px;
+    // transform: translateX(220px) scale(1) !important;
+    .full {
+      height: 120px;
+      top: auto;
+      background: linear-gradient(0, rgba(0, 0, 0, 0.5) 0, transparent 100%);
     }
-    .el-carousel__arrow {
-      background: transparent;
-      font-size: 32px;
-    }
-
-    .el-carousel__indicator {
-      .el-carousel__button {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-      }
-      &.is-active {
-        .el-carousel__button {
-          background-color: #542DE0;
-        }
-      }
-    }
-
-    .el-carousel__indicators {
-      overflow: hidden;
+    p {
+      opacity: 1;
     }
   }
+  .el-carousel__arrow {
+    background: transparent;
+    font-size: 32px;
+  }
+
+  .el-carousel__indicator {
+    .el-carousel__button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    &.is-active {
+      .el-carousel__button {
+        background-color: #542de0;
+      }
+    }
+  }
+
+  .el-carousel__indicators {
+    overflow: hidden;
+  }
+}
+</style>
+
+
+<style lang="less" scoped>
+// 大于1200
+@media screen and (min-width: 1200px) {
+  .swipe /deep/ {
+    .el-carousel__item--card.is-active {
+      width: 760px;
+      transform: translateX(210px) scale(1) !important;
+    }
+  }
+}
+
+// 小于768
+@media screen and (max-width: 768px){
+  .swipe {
+    .swipe-content p {
+      font-size: 20px;
+    }
+  }
+}
 </style>

@@ -8,7 +8,7 @@ import API from '@/api/API'
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {
-  console.log('metamask')
+  // console.log('metamask')
   return {
     account: null,
     balances: {

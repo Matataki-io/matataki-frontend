@@ -2,6 +2,7 @@
   <el-pagination
     :total="total"
     :page-size="pageSize"
+    :pager-count="pagerCount"
     :current-page.sync="currentPageCopy"
     :small="small"
     :class="selectClass"
@@ -14,6 +15,8 @@
 </template>
 
 <script>
+// import throttle from 'lodash/throttle'
+
 export default {
   props: {
     currentPage: { // 当前页数
@@ -63,7 +66,9 @@ export default {
   },
   data() {
     return {
-      currentPageCopy: this.currentPage
+      currentPageCopy: this.currentPage,
+      resizeEvent: null,
+      pagerCount: 7,
     }
   },
   computed: {
@@ -88,8 +93,30 @@ export default {
   },
   created() {
     this.currentPageData(this.apiUrl, this.params, this.currentPage)
+
+    if (process.browser) {
+      this.$nextTick(() => {
+        // this.resizeInit()
+        // this.resizeEvent = throttle(this.resizeInit, 300)
+        // window.addEventListener('resize', this.resizeEvent)
+      })
+    }
+  },
+  destroyed() {
+    // window.removeEventListener('resize', this.resizeEvent)
   },
   methods: {
+    resizeInit() {
+      let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+      console.log('clientWidth', clientWidth)
+      if (clientWidth < 510) {
+        //
+        this.pagerCount = 2
+      } else {
+        //
+        this.pagerCount = 7
+      }
+    },
     // 得到总页数
     totalPage() {},
     async currentPageData(url, params, page) {

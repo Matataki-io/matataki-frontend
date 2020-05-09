@@ -114,307 +114,249 @@
         </el-button>
       </div> -->
 
-      <div
-        class="post-content"
-        style="width: 380px;"
-      >
-        <div>
-          <h3>
-            阅读权限
+      <div class="post-content">
+        <div style="width: 380px;">
+          <div>
+            <h3>
+              阅读权限
+              <el-tooltip
+                effect="dark"
+                content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
+            </h3>
+            <el-checkbox
+              v-model="readauThority"
+              size="small"
+              :disabled="prohibitEditingPrices"
+            >
+              设置持Fan票
+            </el-checkbox>
+          </div>
+          <transition name="fade">
+            <div
+              v-show="readauThority"
+              class="fl ac"
+            >
+              <div>
+                <h3>Fan票类型</h3>
+                <el-select
+                  v-model="readSelectValue"
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                  filterable
+                  :disabled="prohibitEditingPrices"
+                >
+                  <el-option
+                    v-for="item in readSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>持Fan票数量</h3>
+                <el-input
+                  v-model="readToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
+                />
+              </div>
+            </div>
+          </transition>
+          <div v-show="readauThority" class="related-add">
             <el-tooltip
               effect="dark"
-              content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
-              placement="top-start"
+              content="多Fan票解锁正在开发中"
+              placement="top"
             >
-              <svg-icon
-                class="help-icon"
-                icon-class="help"
-              />
+              <div class="add-icon disable">
+                <i class="el-icon-plus" />
+              </div>
             </el-tooltip>
-          </h3>
+            <span>添加更多</span>
+          </div>
           <el-checkbox
-            v-model="readauThority"
+            v-model="paymentTokenVisible"
             size="small"
+            style="margin-top: 10px;"
             :disabled="prohibitEditingPrices"
           >
-            设置持Fan票
+            设置支付
           </el-checkbox>
-        </div>
-        <transition name="fade">
-          <div
-            v-show="readauThority"
-            class="fl ac"
-          >
-            <div>
-              <h3>Fan票类型</h3>
-              <el-select
-                v-model="readSelectValue"
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-                filterable
-                :disabled="prohibitEditingPrices"
-              >
-                <el-option
-                  v-for="item in readSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
+          <transition name="fade">
+            <div
+              v-show="paymentTokenVisible"
+              class="fl ac"
+            >
+              <div>
+                <h3>支付类型</h3>
+                <el-select
+                  v-model="paymentSelectValue"
+                  disabled
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                >
+                  <el-option
+                    v-for="item in paymentSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>支付数量</h3>
+                <el-input
+                  v-model="paymentToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
                 />
-              </el-select>
+              </div>
             </div>
-            <div style="margin-left: 10px;">
-              <h3>持Fan票数量</h3>
+          </transition>
+          <transition name="fade">
+            <div v-show="readauThority || paymentTokenVisible">
+              <h3>内容摘要</h3>
               <el-input
-                v-model="readToken"
-                :min="1"
-                :max="100000000"
+                v-model="readSummary"
+                :autosize="{ minRows: 6, maxRows: 12}"
                 size="small"
+                type="textarea"
                 placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
+                maxlength="300"
+                show-word-limit
               />
             </div>
-          </div>
-        </transition>
-        <div
-          v-show="readauThority"
-          class="related-add"
-        >
-          <el-tooltip
-            effect="dark"
-            content="多Fan票解锁正在开发中"
-            placement="top"
-          >
-            <div class="add-icon disable">
-              <i class="el-icon-plus" />
-            </div>
-          </el-tooltip>
-          <span>添加更多</span>
+          </transition>
         </div>
-        <el-checkbox
-          v-model="paymentTokenVisible"
-          size="small"
-          style="margin-top: 10px;"
-          :disabled="prohibitEditingPrices"
-        >
-          设置支付
-        </el-checkbox>
-        <transition name="fade">
-          <div
-            v-show="paymentTokenVisible"
-            class="fl ac"
-          >
-            <div>
-              <h3>支付类型</h3>
-              <el-select
-                v-model="paymentSelectValue"
-                disabled
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-              >
-                <el-option
-                  v-for="item in paymentSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </div>
-            <div style="margin-left: 10px;">
-              <h3>支付数量</h3>
-              <el-input
-                v-model="paymentToken"
-                :min="1"
-                :max="100000000"
-                size="small"
-                placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
-              />
-            </div>
-          </div>
-        </transition>
-        <transition name="fade">
-          <div v-show="readauThority || paymentTokenVisible">
-            <h3>内容摘要</h3>
-            <el-input
-              v-model="readSummary"
-              :autosize="{ minRows: 6, maxRows: 12}"
-              size="small"
-              type="textarea"
-              placeholder="请输入内容"
-              maxlength="300"
-              show-word-limit
-            />
-          </div>
-        </transition>
       </div>
 
       <!-- 编辑权限 -->
-      <div
-        class="post-content"
-        style="width: 380px;"
-      >
-        <div>
-          <h3>
-            编辑权限 (实验功能)
-            <el-tooltip
-              effect="dark"
-              content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
-              placement="top-start"
+      <div class="post-content">
+        <div style="width: 380px;">
+          <div>
+            <h3>
+              编辑权限 (实验功能)
+              <el-tooltip
+                effect="dark"
+                content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
+            </h3>
+            <el-checkbox
+              v-model="tokenEditAuthority"
+              size="small"
+              :disabled="prohibitEditingPrices"
             >
-              <svg-icon
-                class="help-icon"
-                icon-class="help"
-              />
-            </el-tooltip>
-          </h3>
+              设置持Fan票
+            </el-checkbox>
+          </div>
+          <transition name="fade">
+            <div
+              v-show="tokenEditAuthority"
+              class="fl ac"
+            >
+              <div>
+                <h3>Fan票类型</h3>
+                <el-select
+                  v-model="editSelectValue"
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                  filterable
+                  :disabled="prohibitEditingPrices"
+                >
+                  <el-option
+                    v-for="item in readSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>持Fan票数量</h3>
+                <el-input
+                  v-model="editToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
+                />
+              </div>
+            </div>
+          </transition>
           <el-checkbox
-            v-model="tokenEditAuthority"
+            v-model="buyEditAuthority"
             size="small"
-            :disabled="prohibitEditingPrices"
+            style="margin-top: 10px;"
+            disabled
           >
-            设置持Fan票
+            设置支付
           </el-checkbox>
+          <transition name="fade">
+            <div
+              v-show="buyEditAuthority"
+              class="fl ac"
+            >
+              <div>
+                <h3>支付类型</h3>
+                <el-select
+                  v-model="paymentSelectValue"
+                  disabled
+                  size="small"
+                  placeholder="请选择"
+                  style="width: 100%;"
+                >
+                  <el-option
+                    v-for="item in paymentSelectOptions"
+                    :key="item.id"
+                    :label="item.symbol + '-' + item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </div>
+              <div style="margin-left: 10px;">
+                <h3>支付数量</h3>
+                <el-input
+                  v-model="editPaymentToken"
+                  :min="1"
+                  :max="100000000"
+                  size="small"
+                  placeholder="请输入内容"
+                  :disabled="prohibitEditingPrices"
+                />
+              </div>
+            </div>
+          </transition>
         </div>
-        <transition name="fade">
-          <div
-            v-show="tokenEditAuthority"
-            class="fl ac"
-          >
-            <div>
-              <h3>Fan票类型</h3>
-              <el-select
-                v-model="editSelectValue"
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-                filterable
-                :disabled="prohibitEditingPrices"
-              >
-                <el-option
-                  v-for="item in readSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </div>
-            <div style="margin-left: 10px;">
-              <h3>持Fan票数量</h3>
-              <el-input
-                v-model="editToken"
-                :min="1"
-                :max="100000000"
-                size="small"
-                placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
-              />
-            </div>
-          </div>
-        </transition>
-        <el-checkbox
-          v-model="buyEditAuthority"
-          size="small"
-          style="margin-top: 10px;"
-          disabled
-        >
-          设置支付
-        </el-checkbox>
-        <transition name="fade">
-          <div
-            v-show="buyEditAuthority"
-            class="fl ac"
-          >
-            <div>
-              <h3>支付类型</h3>
-              <el-select
-                v-model="paymentSelectValue"
-                disabled
-                size="small"
-                placeholder="请选择"
-                style="width: 100%;"
-              >
-                <el-option
-                  v-for="item in paymentSelectOptions"
-                  :key="item.id"
-                  :label="item.symbol + '-' + item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </div>
-            <div style="margin-left: 10px;">
-              <h3>支付数量</h3>
-              <el-input
-                v-model="editPaymentToken"
-                :min="1"
-                :max="100000000"
-                size="small"
-                placeholder="请输入内容"
-                :disabled="prohibitEditingPrices"
-              />
-            </div>
-          </div>
-        </transition>
       </div>
 
-      <div
-        v-if="$route.params.type !== 'edit'"
-        class="set-item fl ac"
-      >
-        <span class="set-title">
-          {{ $t('publish.commentTitle') }}
-        </span>
-        <span class="set-des">
-          {{ $t('publish.commentContent') }}
-        </span>
-        <el-input-number
-          v-model="commentPayPoint"
-          :min="1"
-          :max="99999"
-          style="width: 110px"
-          controls-position="right"
-          class="price-point"
-          size="mini"
-          label="评论价格"
-          step-strictly
-        />
-        <span class="input-number">
-          {{ $t('publish.point') }}
-        </span>
-      </div>
-      <!-- <div v-if="editorMode !== 'edit'" class="fission">
-        <p>
-          裂变系数
-          <el-tooltip
-
-            effect="light"
-            content="决定每名投资者的收益上限 = 投资金额 * 裂变系数 裂变系数越大投资者的收益预期越高"
-            placement="top-start"
-          >
-            <span class="question">?</span>
-          </el-tooltip>
-        </p>
-        <div v-if="editorMode !== 'edit'" class="fission-num-slider">
-          <el-slider
-            v-model="fissionNum"
-            class="fission-num-slider2"
-            :min="1"
-            :max="2"
-            :step="0.1"
-          />
-        </div>
-        <div class="fission-num-Input">
-          {{ fissionNum }}
-        </div>
-      </div> -->
       <div class="cover-container">
         <div class="cover">
           <p>
             {{ $t('publish.coverTitle') }}
-            <span class="cover-tip">
-              {{ $t('publish.coverDes') }}
-            </span>
           </p>
           <img-upload
             v-show="!cover"
@@ -548,231 +490,6 @@
       </div>
     </div>
 
-    <div class="set-item">
-      <span class="set-title">添加引用文章
-        <span class="set-des">可选</span>
-      </span>
-      <div class="related">
-        <div v-loading="relatedLoading">
-          <el-input
-            v-model="relatedLink"
-            class="related-input"
-            placeholder="输入链接（可自动检测本站文章），包含http(s)://"
-          >
-            <el-tooltip
-              slot="suffix"
-              effect="dark"
-              content="自动检测"
-              placement="top"
-            >
-              <img
-                class="auto-test"
-                src="@/assets/img/auto_test.png"
-                alt="auto test"
-                @click="extractRefTitle(-1)"
-              >
-            </el-tooltip>
-          </el-input>
-          <el-input
-            v-model="relatedTitle"
-            type="text"
-            class="related-input"
-            placeholder="输入标题"
-            maxlength="50"
-            show-word-limit
-          />
-          <el-input
-            v-model="relatedContent"
-            class="related-input"
-            type="textarea"
-            placeholder="推荐理由或摘要（选填）"
-            maxlength="500"
-            show-word-limit
-            rows="6"
-          />
-          <div class="related-add">
-            <div
-              class="add-icon"
-              @click="addDraftsReferences"
-            >
-              <i class="el-icon-plus" />
-            </div>
-            <span>添加引用</span>
-          </div>
-        </div>
-
-        <div v-loading="loading">
-          <no-content-prompt :list="pull.list">
-            <div
-              v-for="(item, index) in relatedList"
-              :key="item.number"
-              v-loading="item.loading"
-              class="related-list"
-            >
-              <template v-if="item.edit">
-                <el-input
-                  v-model="item.urlInput"
-                  class="related-input"
-                  placeholder="输入链接（可自动检测本站文章），包含http(s)://"
-                >
-                  <el-tooltip
-                    slot="suffix"
-                    effect="dark"
-                    content="自动检测"
-                    placement="top"
-                  >
-                    <img
-                      alt="auto test"
-                      class="auto-test"
-                      src="@/assets/img/auto_test.png"
-                      @click="extractRefTitle(index)"
-                    >
-                  </el-tooltip>
-                </el-input>
-                <el-input
-                  v-model="item.titleInput"
-                  type="text"
-                  class="related-input"
-                  placeholder="输入标题"
-                  maxlength="50"
-                  show-word-limit
-                />
-                <el-input
-                  v-model="item.contentInput"
-                  class="related-input"
-                  type="textarea"
-                  placeholder="推荐理由或摘要（选填）"
-                  maxlength="500"
-                  show-word-limit
-                  rows="6"
-                />
-                <div class="related-add">
-                  <div class="fl ac">
-                    <div
-                      class="add-icon"
-                      @click="remakeRelated(index)"
-                    >
-                      <svg-icon icon-class="cancel" />
-                    </div>
-                    <span>取消修改</span>
-                  </div>
-                  <div
-                    class="fl ac"
-                    style="margin-left: 20px;"
-                  >
-                    <div
-                      class="add-icon"
-                      @click="confirmRelated(index)"
-                    >
-                      <i class="el-icon-plus" />
-                    </div>
-                    <span>确认修改</span>
-                  </div>
-                </div>
-              </template>
-
-              <template v-else>
-                <div
-                  :class="!item.content && 'no-margin-bottom'"
-                  class="related-list-title"
-                >
-                  <div class="fl jsb">
-                    <div class="fl ac related-7">
-                      <div class="related-list-link">
-                        <a
-                          :href="item.url"
-                          target="_blank"
-                        >{{ item.title }}</a>
-                      </div>
-                    </div>
-                    <div class="fl ac jfe related-3">
-                      <el-tooltip
-                        class="related-edit"
-                        effect="dark"
-                        content="修改"
-                        placement="top"
-                      >
-                        <svg-icon
-                          class="related-icon-icon"
-                          icon-class="pencli"
-                          @click="editRelated(index, item.number)"
-                        />
-                      </el-tooltip>
-
-                      <el-tooltip
-                        effect="dark"
-                        content="删除"
-                        placement="top"
-                      >
-                        <svg-icon
-                          class="related-icon-icon"
-                          icon-class="delete"
-                          @click="removeRelated(index, item.number)"
-                        />
-                      </el-tooltip>
-                      <span class="related-id">{{ item.number }}</span>
-                    </div>
-                  </div>
-                  <div class="fl ac related-link">
-                    <a
-                      class="link"
-                      href="javascript:void(0);"
-                    >{{ item.url }}</a>
-                    <svg-icon
-                      class="icon-copy"
-                      icon-class="copy1"
-                      @click="copyCode(item.url)"
-                    />
-                    <a
-                      :href="item.url"
-                      target="_blank"
-                    >
-                      <svg-icon
-                        class="icon-share"
-                        icon-class="share1"
-                      />
-                    </a>
-                  </div>
-                </div>
-                <div :class="!item.collapse && 'open'">
-                  <div class="related-list-content">
-                    <span class="wrap-open">{{ item.content }}</span>
-                  </div>
-                  <div
-                    v-if="item.showCollapse"
-                    class="related-more"
-                  >
-                    <transition name="fade">
-                      <div
-                        v-if="!item.collapse"
-                        class="more-full"
-                      />
-                    </transition>
-                    <span @click="item.collapse = !item.collapse">
-                      {{ item.collapse ? '折叠': '展开' }}
-                      <i class="el-icon-arrow-up arrow-up" /></span>
-                  </div>
-                </div>
-              </template>
-            </div>
-            <!-- todo 如果id不是数字, 不让列表请求 -->
-            <user-pagination
-              v-show="!loading"
-              :url-replace="$route.params.id + ''"
-              :current-page="currentPage"
-              :params="pull.params"
-              :api-url="pull.apiUrl"
-              :page-size="pull.params.pagesize"
-              :total="total"
-              :reload="pull.reload"
-              class="pagination"
-              @paginationData="paginationData"
-              @togglePage="togglePage"
-            />
-          </no-content-prompt>
-        </div>
-      </div>
-    </div>
     <article-transfer
       v-if="isShowTransfer"
       v-model="transferModal"
@@ -809,8 +526,6 @@ import statement from '@/components/statement/index.vue'
 
 import { toPrecision, precision } from '@/utils/precisionConversion'
 
-import userPagination from '@/components/user/user_pagination.vue'
-
 export default {
   name: 'NewPost',
   components: {
@@ -819,7 +534,6 @@ export default {
     articleTransfer,
     articleImport,
     statement,
-    userPagination
   },
   data() {
     return {
@@ -914,7 +628,7 @@ export default {
       authorId: 0,
       prohibitEditingPrices: false,
       // 加密语法
-      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n\n[else]\n\n预览内容\n\n[/read]\n'
+      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n> [📔使用说明](https://www.yuque.com/matataki/matataki/giw9u4)\n\n[else]\n\n预览内容\n\n[/read]\n'
     }
   },
   computed: {
@@ -1052,7 +766,6 @@ export default {
 
     this.getTags()
     this.getAllTokens()
-    this.renderRelatedListContent()
     // this.setToolBar()
 
     if (process.browser) {
@@ -1621,6 +1334,7 @@ export default {
       else if (type === 'edit') editPost()
       else draftPost() // 错误的路由, 当发布文章处理
     },
+    // 图片上传的回调方法
     async imageUploadFn(file) {
       try {
         const res = await this.$API.ossUploadImage('article', file)
@@ -1632,64 +1346,6 @@ export default {
         return
       } catch (e) { 
         console.log(e)
-      }
-    },
-    $imgAdd(pos, imgfile) {
-      // 想要更换默认的 uploader， 请在 src/api/imagesUploader.js 修改 currentImagesUploader
-      // 不要在页面组件写具体实现，谢谢合作 - Frank
-      if (imgfile.type === 'image/gif') {
-        this.$API
-          .ossUploadImage('article', imgfile)
-          .then(res => {
-            if (res.code === 0) {
-              this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
-            } else {
-              this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
-            }
-          })
-          .catch(err => {
-            if (err.response.status === 401) {
-              this.$message.error({ message: '请登录后上传图片' })
-              this.$store.commit('setLoginModal', true)
-            } else {
-              console.log('err', err)
-            }
-            this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
-          })
-      } else {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-        const image = new Image()
-        image.onload = () => {
-          canvas.width = image.width
-          canvas.height = image.height
-          ctx.drawImage(image, 0, 0)
-          canvas.toBlob(
-            blob => {
-              this.$API
-                .ossUploadImage('article', blob)
-                .then(res => {
-                  if (res.code === 0) {
-                    this.$refs.md.$img2Url(pos, this.$API.getImg(res.data))
-                  } else {
-                    this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
-                  }
-                })
-                .catch(err => {
-                  if (err.response.status === 401) {
-                    this.$message.error({ message: '请登录后上传图片' })
-                    this.$store.commit('setLoginModal', true)
-                  } else {
-                    console.log('err', err)
-                  }
-                  this.$refs.md.$img2Url(pos, '上传图片失败,请重试')
-                })
-            },
-            imgfile.type,
-            0.3
-          )
-        }
-        image.src = imgfile.miniurl
       }
     },
     // setToolBar() {
@@ -1794,322 +1450,6 @@ export default {
       this.title = res.title
       this.markdownData = res.content
       this.cover = res.cover
-    },
-    /**
-     * 渲染关联内容 判断是否显示展开或折叠
-     * 如果传递参数 循环所有, 否则判断单个
-     */
-    renderRelatedListContent(i) {
-      this.$nextTick(() => {
-        if (i >= 0) {
-          const ele = document.querySelectorAll('.related-list-content')[i]
-          if (!ele) return
-          if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
-          else this.relatedList[i].showCollapse = true
-        } else {
-          const relatedList = document.querySelectorAll('.related-list-content')
-          if (!relatedList) return
-          relatedList.forEach((ele, i) => {
-            if (!this.relatedList[i]) return
-            if (ele.clientHeight < 80) this.relatedList[i].showCollapse = false
-            else this.relatedList[i].showCollapse = true
-          })
-        }
-      })
-    },
-    // 取消关联编辑
-    remakeRelated(i) {
-      this.relatedList[i].urlInput = this.relatedList[i].url
-      this.relatedList[i].titleInput = this.relatedList[i].title
-      this.relatedList[i].contentInput = this.relatedList[i].content
-      this.relatedList[i].edit = false
-    },
-    // 确定管理编辑
-    confirmRelated(i) {
-      const { type } = this.$route.params
-      if (!this.relatedList[i].urlInput || !this.relatedList[i].titleInput) return this.$message.warning('引用文章链接或标题不能为空!!!')
-      const data = {
-        url: this.relatedList[i].urlInput,
-        title: this.relatedList[i].titleInput,
-        summary: this.relatedList[i].contentInput
-      }
-
-      const resSuccess = res => {
-        if (res.code === 0) {
-          this.relatedList[i].url = this.relatedList[i].urlInput
-          this.relatedList[i].title = this.relatedList[i].titleInput
-          this.relatedList[i].content = this.relatedList[i].contentInput
-          this.relatedList[i].edit = false
-          this.renderRelatedListContent(i)
-          this.$message.success(res.message)
-        } else {
-          this.$message.success(res.message)
-        }
-      }
-
-      if (type === 'draft') {
-        // 如果没有草稿id 不会有列表
-        this.$API.draftsReferences(this.$route.params.id, data).then(res => {
-          resSuccess(res)
-        }).catch(err => {
-          console.log('err', err)
-        })
-      } else if (type === 'edit') {
-        // 如果没有草稿id 不会有列表
-        this.$API.postsReferences(this.$route.params.id, data).then(res => {
-          resSuccess(res)
-        }).catch(err => {
-          console.log('err', err)
-        })
-      } else {
-        this.$message.warning('请返回主页重新进入操作!!!')
-      }
-    },
-    // 删除关联
-    removeRelated(i, number) {
-      const { type } = this.$route.params
-      const resSuccess = res => {
-        // 提交数据等判断
-        if (res.code === 0) {
-          this.relatedList.splice(i, 1) // 客户端移除
-          this.$message.success(res.message)
-        } else {
-          this.$message.success(res.message)
-        }
-      }
-      if (type === 'draft') {
-        // 如果没有草稿id 不会有列表
-        this.$API.removeDraftsReferences(this.$route.params.id, number).then(res => {
-          resSuccess(res)
-        }).catch(err => {
-          console.log('err', err)
-        })
-      } else if (type === 'edit') {
-        // 如果没有草稿id 不会有列表
-        this.$API.removePostsReferences(this.$route.params.id, number).then(res => {
-          resSuccess(res)
-        }).catch(err => {
-          console.log('err', err)
-        })
-      } else {
-        this.$message.warning('请返回主页重新进入操作!!!')
-      }
-    },
-    editRelated(i, number) {
-      const { type } = this.$route.params
-      const resSuccess = res => {
-        if (res.code === 0) {
-          this.relatedList[i].urlInput = res.data.url
-          this.relatedList[i].titleInput = res.data.title
-          this.relatedList[i].contentInput = res.data.summary
-
-          this.relatedList[i].edit = !this.relatedList[i].edit
-        } else {
-          this.$message.warning(res.message)
-        }
-      }
-      if (type === 'draft') {
-        // 如果没有草稿id 不会有列表
-        this.$API.getDraftsReferences(this.$route.params.id, number).then(res => {
-          resSuccess(res)
-        }).catch(err => {
-          console.log('err', err)
-        })
-      } else if (type === 'edit') {
-        // 如果没有草稿id 不会有列表
-        this.$API.getPostsReferences(this.$route.params.id, number).then(res => {
-          resSuccess(res)
-        }).catch(err => {
-          console.log('err', err)
-        })
-      } else {
-        this.$message.warning('请返回主页重新进入操作!!!')
-      }
-    },
-    // 自动检测url 获取标题 内容等
-    extractRefTitle(i) {
-      console.log(i)
-      if (i >= 0) {
-        const data = {
-          url: this.relatedList[i].urlInput
-        }
-        this.relatedList[i].loading = true
-        this.$API.extractRefTitle(data)
-          .then(res => {
-            if (res.code === 0) {
-              this.relatedList[i].titleInput = res.data.title
-              this.relatedList[i].contentInput = res.data.summary
-              this.$message.success('检测完成')
-            } else {
-              this.$message.warning(res.message)
-            }
-          }).catch(err => {
-            console.log('获取信息失败', err)
-          }).finally(() => {
-            this.relatedList[i].loading = false
-          })
-      } else {
-        const data = {
-          url: this.relatedLink
-        }
-        this.relatedLoading = true
-        this.$API.extractRefTitle(data)
-          .then(res => {
-            if (res.code === 0) {
-              this.relatedTitle = res.data.title
-              this.relatedContent = res.data.summary
-              this.$message.success('检测完成')
-            } else {
-              this.$message.warning(res.message)
-            }
-          }).catch(err => {
-            console.log('获取信息失败', err)
-          }).finally(() => {
-            this.relatedLoading = false
-          })
-      }
-    },
-    // 添加草稿资源
-    async addDraftsReferences() {
-      const { id, type } = this.$route.params
-
-      if (!this.relatedLink || !this.relatedTitle) return this.$message.warning('引用文章链接或标题不能为空!!!')
-      const data = {
-        url: this.relatedLink,
-        title: this.relatedTitle,
-        summary: this.relatedContent
-      }
-
-      const resSuccess = res => {
-        if (res.code === 0) {
-          this.pull.reload = Date.now() // 刷新list
-          this.relatedLink = this.relatedTitle = this.relatedContent = '' // 清空内容
-          this.$message.success(res.message)
-        } else {
-          this.$message.success(res.message)
-        }
-      }
-
-      if (type === 'draft') { // 草稿
-        // 判断是否为数字
-
-        const addRelated = (id) => {
-          let draftId = null
-          if (id) {
-            draftId = id
-          } else {
-            draftId = this.$route.params.id
-          }
-          this.relatedLoading = true
-          this.$API.draftsReferences(draftId, data).then(res => {
-            resSuccess(res)
-          }).catch(err => {
-            console.log('err', err)
-          }).finally(() => {
-            this.relatedLoading = false
-          })
-        }
-
-        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
-          addRelated()
-        } else { // 说明没有草稿id
-          // 创建草稿
-
-          // 不需要处理其他内容 如果其他内容变动会自动生成草稿
-          await this.$API.createDraft({
-            title: '',
-            content: '',
-            cover: '',
-            commentPayPoint: 1,
-            fissionFactor: 2000,
-            is_original: 0,
-            tags: ''
-          })
-            .then(res => {
-              if (res.code === 0) {
-                // 同上草稿自动创建后成功的处理方式
-
-                this.$route.params.id = res.data
-                this.id = res.data
-
-                const url = window.location.origin + '/publish/draft/' + res.data
-                history.pushState({}, '', url)
-
-                // 草稿创建成功, 允许list请求
-                this.pull.params = {
-                  pagesize: 5
-                }
-                // 同上草稿自动创建后成功的处理方式
-
-                // 添加关联
-                addRelated(res.data)
-              } else this.$message.error(res.message)
-            })
-            .catch(err => {
-              console.log(err)
-            })
-        }
-      } else if (type === 'edit') { // 编辑
-        // 判断是否为数字
-        if (typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) {
-          this.relatedLoading = true
-          this.$API.postsReferences(id, data).then(res => {
-            resSuccess(res)
-          }).catch(err => {
-            console.log('err', err)
-          }).finally(() => {
-            this.relatedLoading = false
-          })
-        } else { // 说明没有草稿id
-          this.$message.warning('请先填写文章内容!!!')
-        }
-      } else { // 都不是
-        this.$message.warning('请返回主页重新进入操作!!!')
-      }
-    },
-    paginationData(res) {
-      // console.log(res)
-      this.total = res.data.count || 0
-      this.relatedList.length = 0
-      res.data.list.map(i => {
-        this.relatedList.push({
-          url: i.url,
-          urlInput: i.url,
-          title: i.title,
-          titleInput: i.title,
-          content: i.summary,
-          contentInput: i.summary,
-          number: i.number,
-          collapse: false,
-          showCollapse: true,
-          edit: false,
-          loading: false
-        })
-      })
-      this.pull.list = res.data.list
-      this.loading = false
-
-      this.renderRelatedListContent()
-    },
-    togglePage(i) {
-      this.loading = true
-      this.pull.list = []
-      this.currentPage = i
-      this.$router.push({
-        query: {
-          page: i
-        }
-      })
-    },
-    copyCode(code) {
-      this.$copyText(code).then(
-        () => {
-          this.$message.success(this.$t('success.copy'))
-        },
-        () => {
-          this.$message.error(this.$t('error.copy'))
-        }
-      )
     },
     async generateBullshit() {
       const 扯淡生成器 = import('@/api/bullshit-generator.js')

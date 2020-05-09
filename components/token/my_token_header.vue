@@ -94,12 +94,13 @@ export default {
 
 <style scoped lang="less">
 .token-card {
-  width: 1160px;
+  width: 100%;
   margin: 20px auto 20px;
   padding: 20px;
   background: @white;
   border-radius: @br10;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
   cursor: pointer;
   .card-info {
     -webkit-box-flex: 1;
@@ -120,7 +121,7 @@ export default {
       line-height: 20px;
       padding: 0;
       margin: 4px 0 0 0;
-      width: 400px;
+      max-width: 400px;
     }
   }
   .card-username {
