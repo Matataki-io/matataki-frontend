@@ -51,6 +51,7 @@ export default {
   margin: 0 auto;
   padding: 0;
   display: flex;
+  flex-wrap: wrap;
   a {
     font-size: 18px;
     line-height:33px;
