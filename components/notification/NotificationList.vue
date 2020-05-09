@@ -43,7 +43,7 @@ export default {
     height: 80px;
     border-radius: 10px;
     padding: 20px;
-    margin: 0 0 20px 20px;
+    margin: 0 0 20px;
     box-sizing: border-box;
     background: rgba(255,255,255,1);
     position: relative;

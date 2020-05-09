@@ -1,7 +1,7 @@
 <template>
   <div class="notification">
     <g-header />
-    <el-row class="mw notification-container">
+    <el-row class="notification-container">
       <el-col :span="5">
         <nav>
           <ul>
@@ -101,5 +101,25 @@ export default {
   width: 300px !important;
   height: 40px !important;
   font-size: 16px !important;
+}
+.notification-container /deep/ {
+  .el-col-5 {
+    padding: 0 10px;
+  }
+  .el-col-19 {
+    padding: 0 10px;
+  }
+}
+// 小于768
+@media screen and (max-width: 768px){
+  .notification-container /deep/ {
+    .el-col-5 {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .el-col-19 {
+      width: 100%;
+    }
+  }
 }
 </style>
