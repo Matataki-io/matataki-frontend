@@ -137,6 +137,15 @@ export default {
   flex: 1;
   // min-height: 150px;
 }
+// 小于860
+@media screen and (max-width: 860px){
+  .avatar {
+    display: none;
+  }
+  .comment-container {
+    padding: 0 10px;
+  }
+}
 </style>
 
 <style lang="less">
