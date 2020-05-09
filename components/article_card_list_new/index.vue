@@ -445,9 +445,8 @@ export default {
   overflow: hidden;
   word-break: break-all;
   height: 40px;
-  /*!autoprefixer:off*/
   -webkit-box-orient: vertical; // 不怕兼容问题吗????
-  /*autoprefixer:on*/
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
   display: -webkit-box;
