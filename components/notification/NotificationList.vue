@@ -47,6 +47,8 @@ export default {
     box-sizing: border-box;
     background: rgba(255,255,255,1);
     position: relative;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+
     /deep/ .soruce-avatar{
       position: absolute;
       top: 20px;
