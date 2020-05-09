@@ -23,7 +23,7 @@
             <h1 class="Post-Title">
               {{ article.title }}
             </h1>
-            <div class="fl ac jsb">
+            <div class="fl ac jsb article-header">
               <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
               <UserInfoHeader
                 class="article-author"
@@ -1376,3 +1376,13 @@ export default {
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+// 小于500
+@media screen and (max-width: 500px){
+  .article-header {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+</style>
