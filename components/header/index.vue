@@ -295,18 +295,12 @@ export default {
       type: String,
       default: ''
     },
-    // 用户提示
-    popoverVisible: {
-      type: Boolean,
-      default: false
-    }
   },
   data() {
     return {
       avatar: '',
       searchFcous: false,
       searchInput: this.searchQueryVal,
-      visible: this.popoverVisible,
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
     }
@@ -350,10 +344,6 @@ export default {
   watch: {
     isLogined(newState) {
       if (newState) this.refreshUser()
-    },
-    // 监听提示状态
-    popoverVisible(newVal) {
-      this.visible = newVal
     },
     searchQueryVal(newVal) {
       this.searchInput = newVal

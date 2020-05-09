@@ -215,9 +215,7 @@ export default {
         : articleUrl
       return `《${article.title}》by ${article.nickname ||
         article.author ||
-        ''} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t(
-        'p.clipboardText2'
-      )}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
+        ''} \n${shareLink}\n${this.$t('p.clipboardText1')} \n`
     },
     copyCode(code) {
       console.log(code)
@@ -447,9 +445,7 @@ export default {
   overflow: hidden;
   word-break: break-all;
   height: 40px;
-  /*!autoprefixer:off*/
-  -webkit-box-orient: vertical; // 不怕兼容问题吗????
-  /*autoprefixer:on*/
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
   display: -webkit-box;
