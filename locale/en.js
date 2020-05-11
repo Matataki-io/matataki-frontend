@@ -789,7 +789,21 @@ export default {
     ipfsHash: {
         link: 'IPFS address',
         publicNode: 'Public node',
-        slogan: 'The content of this article has been uploaded to the interstellar file storage system "IPFS" and stored permanently.'
+        slogan: 'The content of this article has been uploaded to the interstellar file storage system "IPFS" and stored permanently.',
+        historyBtn: '历史记录',
+        history: {
+            title: '文章历史记录',
+            selectNode: '请选择预览节点',
+            table: {
+                hash: 'IPFS 哈希',
+                createdAt: '创建于',
+                action: '动作'
+            },
+            action: {
+                copy: '复制',
+                preview: '查看'
+            }
+        }
     },
     group: {
         joinFanBase: 'Join {0} fan base',
