@@ -1,70 +1,103 @@
 <template>
-  <el-popover
-    placement="top"
-    trigger="hover"
-    class="components-ipfs_all"
-    width="370"
-  >
-    <div class="components-ipfs_all">
-      <p class="ipfs_all__title">
-        {{ $t('ipfsHash.link') }}
-      </p>
-      <div
-        v-if="hash"
-        class="ipfs_all__address"
+  <div class="ipfs">
+    <el-dialog
+      :title="historyDialogTitle"
+      :visible.sync="dialogVisible"
+      width="60%"
+    >
+      <span>文章的历史记录</span>
+      <el-table
+        :data="articleIpfsInfomation"
+        height="400"
+        border
+        style="width: 100%"
       >
-        <p>
-          IPFS Hash: {{ hash }}
-        </p>
-        <svg-icon
-          icon-class="copy"
-          class="icon"
-          @click="copy(hash)"
+        <el-table-column
+          prop="id"
+          label="#"
+          width="70"
         />
-      </div>
-      <p
-        v-else
-        class="ipfs_all__not"
-      >
-        {{ $t('not') }}
-      </p>
-      <p class="ipfs_all__title">
-        {{ $t('ipfsHash.publicNode') }}
-      </p>
-      <template v-if="hash">
+        <el-table-column
+          prop="htmlHash"
+          label="IPFS Hash"
+          width="460"
+        />
+        <el-table-column
+          prop="datetime"
+          label="创建于"
+        />
+      </el-table>
+    </el-dialog>
+    <el-popover
+      placement="top"
+      trigger="hover"
+      class="components-ipfs_all"
+      width="370"
+    >
+      <div class="components-ipfs_all">
+        <p class="ipfs_all__title">
+          {{ $t('ipfsHash.link') }}
+          <span style="float: right;">
+            <el-button type="text" @click="dialogVisible = true">历史记录</el-button>
+          </span>
+        </p>
         <div
-          v-for="(item, index) in link"
-          :key="index"
-          class="ipfs_all__link"
+          v-if="hash"
+          class="ipfs_all__address"
         >
-          <a
-            :href="item + hash"
-            target="_blank"
-          >
-            {{ item }}{{ hash }}
-          </a>
+          <p>
+            IPFS Hash: {{ hash }}
+          </p>
           <svg-icon
-            icon-class="arrow"
+            icon-class="copy"
             class="icon"
+            @click="copy(hash)"
           />
         </div>
-      </template>
-      <p
-        v-else
-        class="ipfs_all__not"
-      >
-        {{ $t('not') }}
-      </p>
-      <p class="ipfs_all__description">
-        {{ $t('ipfsHash.slogan') }}
-      </p>
-    </div>
-    <svg-icon
-      slot="reference"
-      icon-class="ipfs"
-      class="ipfs_all__icon"
-    />
-  </el-popover>
+        <p
+          v-else
+          class="ipfs_all__not"
+        >
+          {{ $t('not') }}
+        </p>
+        <p class="ipfs_all__title">
+          {{ $t('ipfsHash.publicNode') }}
+        </p>
+        <template v-if="hash">
+          <div
+            v-for="(item, index) in link"
+            :key="index"
+            class="ipfs_all__link"
+          >
+            <a
+              :href="item + hash"
+              target="_blank"
+            >
+              {{ item }}{{ hash }}
+            </a>
+            <svg-icon
+              icon-class="arrow"
+              class="icon"
+            />
+          </div>
+        </template>
+        <p
+          v-else
+          class="ipfs_all__not"
+        >
+          {{ $t('not') }}
+        </p>
+        <p class="ipfs_all__description">
+          {{ $t('ipfsHash.slogan') }}
+        </p>
+      </div>
+      <svg-icon
+        slot="reference"
+        icon-class="ipfs"
+        class="ipfs_all__icon"
+      />
+    </el-popover>
+  </div>
 </template>
 
 <script>
@@ -77,6 +110,7 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
       link: [
         'https://ipfs.smartsignature.io/ipfs/',
         'https://ipfs.io/ipfs/',
@@ -86,7 +120,19 @@ export default {
   },
   computed: {
     hash() {
-      return this.articleIpfsArray.length !== 0 ? this.articleIpfsArray[this.articleIpfsArray.length - 1].htmlHash : ''
+      return this.articleIpfsArray.length !== 0 ? this.articleIpfsArray[0].htmlHash : ''
+    },
+    articleIpfsInfomation() {
+      return this.articleIpfsArray
+        .slice() // clone array so no side effect on the original array
+        .sort((a,b) => (b.id - a.id))
+        .map(item => {
+          const datetime = new Date(item.createdAt).toLocaleString()
+          return { ...item, datetime }
+        })
+    },
+    historyDialogTitle() {
+      return 'IPFS Hash 历史记录'
     }
   },
   methods: {
