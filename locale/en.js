@@ -790,18 +790,18 @@ export default {
         link: 'IPFS address',
         publicNode: 'Public node',
         slogan: 'The content of this article has been uploaded to the interstellar file storage system "IPFS" and stored permanently.',
-        historyBtn: '历史记录',
+        historyBtn: 'Trace',
         history: {
-            title: '文章历史记录',
-            selectNode: '请选择预览节点',
+            title: 'History of modification',
+            selectNode: 'Select your IPFS Node',
             table: {
-                hash: 'IPFS 哈希',
-                createdAt: '创建于',
-                action: '动作'
+                hash: 'IPFS Hash',
+                createdAt: 'Created At',
+                action: 'Actions'
             },
             action: {
-                copy: '复制',
-                preview: '查看'
+                copy: 'Copy',
+                preview: 'Preview'
             }
         }
     },
