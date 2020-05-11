@@ -223,16 +223,7 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
-      <!-- sidebar -->
-      <sidebar
-        :bookmarked="isBookmarked ? 1 : 0"
-        :is-liked="Number(ssToken.is_liked)"
-        :likes="article.likes"
-        :dislikes="article.dislikes"
-        @like="likeEvent"
-        @bookmarked="toggleBookmark"
-        @share="share"
-      />
+
 
 
       <!-- tag 标签 -->
@@ -251,6 +242,17 @@
           {{ item.name }}
         </router-link>
       </div>
+
+      <!-- sidebar -->
+      <sidebar
+        :bookmarked="isBookmarked ? 1 : 0"
+        :is-liked="Number(ssToken.is_liked)"
+        :likes="article.likes"
+        :dislikes="article.dislikes"
+        @like="likeEvent"
+        @bookmarked="toggleBookmark"
+        @share="share"
+      />
 
       <!-- 内容居中 -->
       <div class="p-w">

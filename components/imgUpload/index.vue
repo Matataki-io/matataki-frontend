@@ -17,6 +17,7 @@
 
     <!-- 编辑图片 modal -->
     <el-dialog
+      :append-to-body="appendToBody"
       :visible.sync="modal"
       :close-on-click-modal="false"
       :lock-scroll="false"
@@ -97,6 +98,11 @@ export default {
     updateType: {
       type: String,
       required: true
+    },
+    // Dialog 自身是否插入至 body 元素上。嵌套的 Dialog 必须指定该属性并赋值为 true
+    appendToBody: {
+      type: Boolean,
+      required: false
     }
   },
   data() {
