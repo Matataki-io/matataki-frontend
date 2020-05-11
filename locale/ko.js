@@ -789,7 +789,21 @@ export default {
     ipfsHash: {
         link: 'IPFS地址',
         publicNode: '公共节点',
-        slogan: '本文内容已上传星际文件存储系统「IPFS」，永久保存。'
+        slogan: '本文内容已上传星际文件存储系统「IPFS」，永久保存。',
+        historyBtn: '历史记录',
+        history: {
+            title: '文章历史记录',
+            selectNode: '请选择预览节点',
+            table: {
+                hash: 'IPFS 哈希',
+                createdAt: '创建于',
+                action: '动作'
+            },
+            action: {
+                copy: '复制',
+                preview: '查看'
+            }
+        }
     },
     group: {
         joinFanBase: '加入{0}粉丝群',
