@@ -5,53 +5,7 @@
       :visible.sync="dialogVisible"
       width="60%"
     >
-      <p>
-        请选择预览节点：
-        <el-radio
-          v-model="historyPreviewSelect"
-          label="mttk"
-        >
-          Matataki
-        </el-radio>
-        <el-radio
-          v-model="historyPreviewSelect"
-          label="infura"
-        >
-          Infura
-        </el-radio>
-        <el-radio
-          v-model="historyPreviewSelect"
-          label="ipfs"
-        >
-          IPFS官方
-        </el-radio>
-      </p>
-      <el-table
-        :data="articleIpfsInfomation"
-        height="400"
-        border
-        style="width: 100%"
-      >
-        <el-table-column prop="id" label="#" width="70" />
-        <el-table-column prop="htmlHash" label="IPFS Hash" width="460" />
-        <el-table-column prop="datetime" label="创建于" />
-        <el-table-column fixed="right" label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="copy(scope.row.htmlHash)"
-            >
-              复制
-            </el-button>
-            <a :href="scope.row.preview" target="_blank">
-              <el-button type="text" size="small">
-                查看
-              </el-button>
-            </a>
-          </template>
-        </el-table-column>
-      </el-table>
+      <ArticleHistory :article-ipfs-array="articleIpfsArray" />
     </el-dialog>
     <el-popover
       placement="top"
@@ -66,7 +20,7 @@
             <el-button
               type="text"
               @click="dialogVisible = true"
-            >历史记录</el-button>
+            >{{ $t('ipfsHash.historyBtn') }}</el-button>
           </span>
         </p>
         <div v-if="hash" class="ipfs_all__address">
@@ -102,7 +56,11 @@
 </template>
 
 <script>
+import ArticleHistory from './history'
 export default {
+  components: {
+    ArticleHistory
+  },
   props: {
     articleIpfsArray: {
       type: Array,
@@ -117,12 +75,6 @@ export default {
         'https://ipfs.io/ipfs/',
         'https://ipfs.infura.io/ipfs/'
       ],
-      historyPreviewSelect: 'mttk',
-      ipfsNodeMap: {
-        mttk: 'https://ipfs.mttk.net/ipfs/',
-        ipfs: 'https://ipfs.io/ipfs/',
-        infura: 'https://ipfs.infura.io/ipfs/'
-      }
     }
   },
   computed: {
@@ -131,22 +83,9 @@ export default {
         ? this.articleIpfsArray[0].htmlHash
         : ''
     },
-    articleIpfsInfomation() {
-      return this.articleIpfsArray
-        .slice() // clone array so no side effect on the original array
-        .sort((a, b) => b.id - a.id)
-        .map(item => {
-          const datetime = new Date(item.createdAt).toLocaleString()
-          const preview = `${this.selectedNode}${item.htmlHash}`
-          return { ...item, datetime, preview }
-        })
-    },
     historyDialogTitle() {
-      return 'IPFS Hash 历史记录'
+      return this.$t('ipfsHash.history.title')
     },
-    selectedNode() {
-      return this.ipfsNodeMap[this.historyPreviewSelect]
-    }
   },
   methods: {
     copy(val) {
