@@ -6,7 +6,27 @@
       width="60%"
     >
       <span>文章的历史记录</span>
-      <p> Todo </p>
+      <el-table
+        :data="articleIpfsInfomation"
+        height="400"
+        border
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="id"
+          label="#"
+          width="70"
+        />
+        <el-table-column
+          prop="htmlHash"
+          label="IPFS Hash"
+          width="460"
+        />
+        <el-table-column
+          prop="datetime"
+          label="创建于"
+        />
+      </el-table>
     </el-dialog>
     <el-popover
       placement="top"
@@ -101,6 +121,15 @@ export default {
   computed: {
     hash() {
       return this.articleIpfsArray.length !== 0 ? this.articleIpfsArray[0].htmlHash : ''
+    },
+    articleIpfsInfomation() {
+      return this.articleIpfsArray
+        .slice() // clone array so no side effect on the original array
+        .sort((a,b) => (b.id - a.id))
+        .map(item => {
+          const datetime = new Date(item.createdAt).toLocaleString()
+          return { ...item, datetime }
+        })
     },
     historyDialogTitle() {
       return 'IPFS Hash 历史记录'
