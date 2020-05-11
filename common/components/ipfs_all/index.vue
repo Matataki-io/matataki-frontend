@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     hash() {
-      return this.articleIpfsArray.length !== 0 ? this.articleIpfsArray[this.articleIpfsArray.length - 1].htmlHash : ''
+      return this.articleIpfsArray.length !== 0 ? this.articleIpfsArray[0].htmlHash : ''
     }
   },
   methods: {
