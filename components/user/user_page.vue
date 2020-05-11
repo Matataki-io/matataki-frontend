@@ -275,7 +275,7 @@ export default {
     margin-bottom: 20px;
   }
   &-center {
-    width: 766px;
+    max-width: 766px;
     height: 100%;
     margin: 0 auto;
     padding: 1px 10px 0;
@@ -379,10 +379,14 @@ export default {
 }
 
 .article {
-  width: 766px;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 0 10px;
   box-sizing: border-box;
+}
+.user-page-content {
+  max-width: 766px;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 </style>

@@ -5,11 +5,9 @@
     </div>
     <div class="token-tap">
       <div>
-        <router-link :to="{name: 'token'}">
-          <div class="add-card">
-            <svg-icon icon-class="add1" />
-            <span>{{ $t('home.buyFanTickets') }}</span>
-          </div>
+        <router-link :to="{name: 'token'}" class="add-card">
+          <svg-icon icon-class="add1" />
+          <span>{{ $t('home.buyFanTickets') }}</span>
         </router-link>
         <fanCard
           v-for="(tokenCard, index) in tokenCards.list"
@@ -113,8 +111,10 @@ export default {
       color: #dbdbdb;
       overflow: hidden;
       text-decoration: none;
-      width: 175px;
+      width: calc(25% - 18px);
+      min-width: 140px;
       height: 237px;
+      box-sizing: border-box;
       span {
         font-size: 12px;
         margin: 4px 0 0;

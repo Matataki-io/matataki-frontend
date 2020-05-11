@@ -6,31 +6,23 @@
         target="_blank"
       >
         <avatar
-          :size="'38px'"
+          :size="'50px'"
           :src="avatarSrc"
           class="Avatar"
         />
       </router-link>
       <div class="AuthorInfo-content">
-        <router-link
-          :to="`/user/${article.uid}`"
-          target="_blank"
-        >
-          <span class="UserLink AuthorInfo-name">
-            {{ avatarName || '&nbsp;' }}
-          </span>
+        <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
+          {{ avatarName || '&nbsp;' }}
         </router-link>
-        <span class="Post-Time">{{ $t('p.publishFrom') }}{{ time }}</span>
-        <span class="View-Num">
-          <svg-icon
-            class="icon"
-            icon-class="read"
-          />
-          {{ article.read || 0 }}</span>
+        <div class="fl ac">
+          <span class="Post-Time">{{ time }}</span>
+          <span class="View-Num"><svg-icon class="icon" icon-class="read" />{{ article.read || 0 }}</span>
+          <ipfsAll :article-ipfs-array="articleIpfsArray" />
+          &nbsp;
+          <span class="article-head__ipfs">IPFS</span>
+        </div>
       </div>
-      <ipfsAll :article-ipfs-array="articleIpfsArray" />
-      &nbsp;
-      <span class="article-head__ipfs">IPFS</span>
     </div>
     <template v-if="!isMe(article.uid)">
       <el-button
@@ -94,8 +86,7 @@ export default {
     },
     time() {
       const { create_time: createTime } = this.article
-      const time = moment(createTime)
-      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+      return createTime ? moment(createTime).format('YYYY-MM-DD HH:mm') : ''
     }
   },
   watch: {
@@ -168,9 +159,7 @@ export default {
   width: 38px;
 }
 .AuthorInfo-content {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
+  margin: 0 10px;
 }
 .Post-Author {
   display: flex;
@@ -183,28 +172,26 @@ export default {
     align-items: center;
   }
   .AuthorInfo-name {
-    margin-left: 14px;
     font-size:18px;
     font-weight:500;
     color:rgba(0,0,0,1);
-    line-height:33px;
+    margin: 0 0 4px 0;
+    display: block;
   }
 }
 .Post-Time {
-  margin-left: 18px;
   font-weight:400;
   color:rgba(178,178,178,1);
-  line-height:33px;
 }
 .View-Num {
   font-weight:400;
   color:rgba(178,178,178,1);
-  line-height:33px;
-  margin-left: 18px;
+  margin: 0 10px;
   display: flex;
   align-items: center;
+  font-size: 14px;
   .icon {
-    font-size: 22px;
+    font-size: 18px;
     margin-right: 6px;
   }
 }

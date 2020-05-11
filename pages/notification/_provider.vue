@@ -1,8 +1,8 @@
 <template>
   <div class="notification">
     <g-header />
-    <el-row class="mw notification-container">
-      <el-col :span="5">
+    <el-row class="notification-container">
+      <el-col :span="6">
         <nav>
           <ul>
             <li
@@ -24,7 +24,7 @@
           </ul>
         </nav>
       </el-col>
-      <el-col :span="19">
+      <el-col :span="18">
         <NotificationList :notifications="notifications" />
         <div class="load-more">
           <buttonLoadMore
@@ -101,5 +101,25 @@ export default {
   width: 300px !important;
   height: 40px !important;
   font-size: 16px !important;
+}
+.notification-container /deep/ {
+  .el-col-6 {
+    padding: 0 10px;
+  }
+  .el-col-18 {
+    padding: 0 10px;
+  }
+}
+// 小于768
+@media screen and (max-width: 768px){
+  .notification-container /deep/ {
+    .el-col-6 {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .el-col-18 {
+      width: 100%;
+    }
+  }
 }
 </style>

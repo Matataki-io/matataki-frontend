@@ -2,7 +2,7 @@
   <div class="token">
     <g-header />
 
-    <div class="mw container-padding">
+    <div class="container-padding">
       <div class="token-detail">
         <div class="fl">
           <avatar
@@ -116,7 +116,7 @@
       </div>
     </div>
 
-    <el-row class="mw token-container">
+    <el-row class="token-container">
       <el-col :span="17">
         <div class="introduction">
           <h2 class="token-title">
@@ -494,6 +494,15 @@ export default {
   .minHeight();
 }
 
+.container-padding {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
 .token-detail {
   position: relative;
   margin: 20px auto 0;
@@ -539,22 +548,28 @@ export default {
   .btn {
     padding: 7px 21px;
     font-size: 14px;
-    border-radius:6px;
+    border-radius: 6px;
     margin-left: 5px;
   }
   .link-btn {
     padding: 7px 7px;
     font-size: 14px;
-    border-radius:6px;
+    border-radius: 6px;
   }
 }
 
 .token-container {
+  max-width: 1200px;
+  width: 100%;
   margin: 20px auto 40px;
-  padding-left: 10px;
-  padding-right: 10px;
+
   .el-col-17 {
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .el-col-7 {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 
@@ -710,10 +725,10 @@ export default {
   text-decoration: underline;
   margin-left: 20px;
 }
-.balance{
+.balance {
   position: absolute;
-  font-weight:400;
-  font-size:16px;
+  font-weight: 400;
+  font-size: 16px;
   right: 20px;
   top: 20px;
   cursor: pointer;
@@ -729,5 +744,18 @@ export default {
   margin: 20px 0 0;
   font-size: 16px;
   color: red;
+}
+
+// 小于992
+@media screen and (max-width: 992px) {
+  .token-container {
+    .el-col-17 {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .el-col-7 {
+      width: 100%;
+    }
+  }
 }
 </style>

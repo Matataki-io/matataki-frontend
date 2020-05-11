@@ -114,7 +114,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background:rgba(255,255,255,1);
+  background: rgba(255, 255, 255, 1);
   border-radius: @br10;
   margin: 20px 0;
   padding: 20px;
@@ -131,17 +131,18 @@ export default {
   .user-title {
     padding: 0;
     margin: 4px 0;
-    font-size:20px;
-    font-weight:500;
+    font-size: 20px;
+    font-weight: 500;
     color: #333;
-  cursor: pointer;
+    cursor: pointer;
   }
-  .user-num,  .user-des  {
+  .user-num,
+  .user-des {
     padding: 0;
     margin: 4px 0;
-    font-size:16px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
   }
   .user-num {
     margin: 6px 0;
@@ -158,7 +159,6 @@ export default {
 </style>
 
 <style lang="less">
-
 .user-title em {
   font-size: 20px;
   font-style: inherit;

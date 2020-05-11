@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown class="language">
+  <el-dropdown class="language-toggle">
     <span class="el-dropdown-link">
       {{ currentLanguage }}<i class="el-icon-arrow-down el-icon--right" />
     </span>
@@ -46,8 +46,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.language {
-  margin-left: 16px;
+.language-toggle {
   span {
     display: block;
   }

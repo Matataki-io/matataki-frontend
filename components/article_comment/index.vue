@@ -16,7 +16,6 @@
         @keyup.native="postCommentKeyup"
       />
       <div class="btn-container fl ac jfe">
-        <span class="btn-des">{{ article.comment_pay_point }}{{ $t('p.commentPointDes') }}</span>
         <el-button
           size="small"
           class="btn"
@@ -137,6 +136,15 @@ export default {
   // background-color: #fff;
   flex: 1;
   // min-height: 150px;
+}
+// 小于860
+@media screen and (max-width: 860px){
+  .avatar {
+    display: none;
+  }
+  .comment-container {
+    padding: 0 10px;
+  }
 }
 </style>
 

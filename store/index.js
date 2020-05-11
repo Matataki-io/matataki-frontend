@@ -4,7 +4,7 @@ import { accessTokenAPI } from '@/api/backend'
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {
-  console.log('index')
+  // console.log('index')
   return {
     userConfig: {
       // Identity Provider, IdP

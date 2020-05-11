@@ -65,11 +65,11 @@ export default {
     li {
       a {
         font-size: 20px;
-        color:rgba(0,0,0,1);
-        line-height:1;
+        color: rgba(0, 0, 0, 1);
+        line-height: 1;
         cursor: pointer;
-        transition: all .3s;
-        font-weight:400;
+        transition: all 0.3s;
+        font-weight: 400;
         margin: 0 30px 0 0;
         padding: 0;
         text-decoration: none;
@@ -84,6 +84,20 @@ export default {
       }
     }
   }
+}
 
+// 小于992
+@media screen and (max-width: 992px) {
+  .main-head__nav .nav-title li a {
+    font-size: 16px;
+    margin: 0 10px 0 0;
+  }
+}
+
+// 小于768
+@media screen and (max-width: 768px) {
+  .main-head__nav .nav-title {
+    display: block;
+  }
 }
 </style>

@@ -1,26 +1,24 @@
 <template>
   <div class="comment-container">
-    <h2 class="comment-title">
+    <h2 v-if="pull.articles.length !== 0" class="comment-title">
       {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.commentLength }}
     </h2>
-    <no-content-prompt :list="pull.articles">
-      <template v-if="type === 2">
-        <CommentCard
-          v-for="(itemChild, indexChild) in pull.articles"
-          :key="indexChild"
-          :comment="itemChild"
-          :type="type"
-        />
-      </template>
-      <template v-else>
-        <articleCard
-          v-for="(itemChild, indexChild) in pull.articles"
-          :key="indexChild"
-          :comment="itemChild"
-          :type="type"
-        />
-      </template>
-    </no-content-prompt>
+    <template v-if="type === 2">
+      <CommentCard
+        v-for="(itemChild, indexChild) in pull.articles"
+        :key="indexChild"
+        :comment="itemChild"
+        :type="type"
+      />
+    </template>
+    <template v-else>
+      <articleCard
+        v-for="(itemChild, indexChild) in pull.articles"
+        :key="indexChild"
+        :comment="itemChild"
+        :type="type"
+      />
+    </template>
     <buttonLoadMore
       :type-index="0"
       :params="pull.params"
@@ -110,5 +108,14 @@ export default {
 
 .comment-container {
   margin-bottom: 40px;
+  margin-left: 60px;
+}
+
+// 小于860
+@media screen and (max-width: 860px){
+.comment-container {
+  margin-left: 0;
+  padding: 0 10px;
+}
 }
 </style>

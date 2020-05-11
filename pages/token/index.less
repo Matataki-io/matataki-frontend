@@ -2,6 +2,11 @@
 
 .token {
   .minHeight();
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 60px 10px 0;
+  box-sizing: border-box;
 }
 
 .tokens {
@@ -20,19 +25,21 @@
 
 .token-info {
   width: 50%;
+
   &-symbol {
-    font-size:20px;
-    font-weight:400;
+    font-size: 20px;
+    font-weight: 400;
     color: @black;
-    line-height:28px;
+    line-height: 28px;
     padding: 0;
     margin: 0;
   }
+
   &-name {
-    font-size:14px;
-    font-weight:400;
-    color:@gray;
-    line-height:20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: @gray;
+    line-height: 20px;
     padding: 0;
     margin: 4px 0 0 0;
   }
@@ -45,24 +52,28 @@
   align-items: flex-end;
   flex-direction: column;
 }
+
 .token-username {
   margin-left: 6px;
-  font-size:14px;
-  font-weight:400;
+  font-size: 14px;
+  font-weight: 400;
   color: @black;
-  line-height:20px;
+  line-height: 20px;
 }
+
 .token-user-icon {
   padding: 40px 0;
 }
 
 .tokens-list {
-  width: @width;
+  width: 100%;
   margin: 20px auto 40px;
   padding: 20px;
   background: @white;
   border-radius: @br10;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+
   .help-link {
     font-size: 14px;
     color: #868686;
@@ -74,7 +85,7 @@
   width: 100%;
   font-size: 16px;
   color: @gray;
-  line-height:28px;
+  line-height: 28px;
 
   .el-dropdown-link {
     color: @gray;
@@ -89,22 +100,24 @@
   }
 
   &-left-column {
-    width: 415px;
+    width: 35%;
 
     .el-dropdown {
       font-size: 16px;
     }
   }
+
   &-medium-column {
-    width: 445px;
+    width: 39%;
     text-align: center;
 
     .sub-column {
       width: 33%;
     }
   }
+
   &-right-column {
-    width: 300px;
+    width: 26%;
     text-align: right;
   }
 }

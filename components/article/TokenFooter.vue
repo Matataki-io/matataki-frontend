@@ -33,14 +33,8 @@
         <span>{{ $t('p.unlike') }} <em class="like">{{ article && article.dislikes }}</em></span>
       </div>
     </div>
-    <div
-      v-if="token.points.length !== 0 || !clicked"
-      class="article-info"
-    >
-      <div
-        v-if="!clicked"
-        class="info1"
-      >
+    <!-- <div v-if="token.points.length !== 0 || !clicked" class="article-info">
+      <div v-if="!clicked" class="info1">
         <span>{{ $t('p.reads') }}{{ readTime }}</span>
       </div>
       <template v-else>
@@ -57,7 +51,7 @@
           <span>{{ $t('p.newAddPoint', [p.reading_new]) }}</span>
         </div>
       </template>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -101,17 +95,6 @@ export default {
         return 'bullshit'
       }
       return 'title'
-    },
-    readTime() {
-      const time = this.time
-      if (time < 60) {
-        return ` ${time} ${this.$t('p.second')}`
-      } else {
-        const m = Math.floor(time / 60)
-        const s = time - m * 60
-        if (s !== 0) return ` ${m} ${this.$t('p.minute')} ${s} ${this.$t('p.second')}`
-        else return `${m}${this.$t('p.minute')}`
-      }
     },
     p() {
       const { points } = this.token

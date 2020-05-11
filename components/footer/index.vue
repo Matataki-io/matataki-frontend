@@ -169,11 +169,11 @@ export default {}
 
 <style lang="less" scoped>
 .footer {
-    height: 180px;
-    background: #333333;
-    padding-top: 52px;
-    padding-bottom: 52px;
-    box-sizing: border-box;
+  height: 180px;
+  background: #333333;
+  padding-top: 52px;
+  padding-bottom: 52px;
+  box-sizing: border-box;
   &-content {
     max-width: 1200px;
     height: 100%;
@@ -205,16 +205,14 @@ export default {}
     .href {
       margin-right: 20px;
       text-decoration: none;
-      font-size:14px;
-      color:rgba(178,178,178,1);
-      line-height:22px;
+      font-size: 14px;
+      color: rgba(178, 178, 178, 1);
+      line-height: 22px;
       &:hover {
         color: #fff;
       }
     }
-
   }
-
 }
 
 .icon {
@@ -233,7 +231,7 @@ export default {}
     border-radius: 6px;
     padding: 14px;
     box-sizing: border-box;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     &-img {
       text-align: center;
     }
@@ -250,7 +248,7 @@ export default {}
       left: 50%;
       transform: translate(-50%, 0);
       display: block;
-      content: '';
+      content: "";
       width: 0;
       height: 0;
       border: 10px solid #fff;
@@ -269,41 +267,41 @@ export default {}
     width: 28px;
     height: 23px;
     position: relative;
-    background-image: url('../../assets/img/footer_wechat.svg');
+    background-image: url("../../assets/img/footer_wechat.svg");
     &:hover {
-      background-image: url('../../assets/img/footer_wechat_active.svg');
+      background-image: url("../../assets/img/footer_wechat_active.svg");
     }
   }
   &.github-icon {
     width: 22px;
     height: 24px;
-    background-image: url('../../assets/img/footer_github.svg');
+    background-image: url("../../assets/img/footer_github.svg");
     &:hover {
-      background-image: url('../../assets/img/footer_github_active.svg');
+      background-image: url("../../assets/img/footer_github_active.svg");
     }
   }
-  &.telegram-icon{
+  &.telegram-icon {
     width: 25px;
     height: 21px;
-    background-image: url('../../assets/img/footer_telegram.svg');
+    background-image: url("../../assets/img/footer_telegram.svg");
     &:hover {
-      background-image: url('../../assets/img/footer_telegram_active.svg');
+      background-image: url("../../assets/img/footer_telegram_active.svg");
     }
   }
-  &.twitter-icon{
+  &.twitter-icon {
     width: 24px;
     height: 24px;
-    color: #B2B2B2;
+    color: #b2b2b2;
     &:hover {
-      color: #00ACED;
+      color: #00aced;
     }
   }
-  &.facebook-icon{
+  &.facebook-icon {
     width: 24px;
     height: 24px;
-    background-image: url('../../assets/img/footer_facebook.svg');
+    background-image: url("../../assets/img/footer_facebook.svg");
     &:hover {
-      background-image: url('../../assets/img/footer_facebook_active.svg');
+      background-image: url("../../assets/img/footer_facebook_active.svg");
     }
   }
 }
@@ -316,11 +314,11 @@ export default {}
 
 .link {
   margin: 10px 0 0;
-  font-size:14px;
-  color:rgba(178,178,178,1);
-  line-height:22px;
+  font-size: 14px;
+  color: rgba(178, 178, 178, 1);
+  line-height: 22px;
   a {
-    color:rgba(178,178,178,1);
+    color: rgba(178, 178, 178, 1);
     text-decoration: none;
     margin: 0 4px;
     &:nth-child(1) {
@@ -331,7 +329,22 @@ export default {}
     }
   }
 }
-
+// 小于1200
+@media screen and (max-width: 1200px) {
+  .footer {
+    .footer-c4 {
+      text-align: center;
+      .logo {
+        display: block;
+        margin: 0 auto 10px;
+      }
+      .icon.wechat-icon {
+        margin-left: 0;
+      }
+    }
+  }
+}
+// 小于900
 @media (max-width: 900px) {
   .footer {
     height: auto;
@@ -340,6 +353,19 @@ export default {}
     flex-direction: column;
     .content {
       margin-bottom: 20px;
+      .nav {
+        justify-content: center;
+        .href:nth-last-of-type(1) {
+          margin-right: 0;
+        }
+      }
+    }
+    .footer-c6 {
+      width: 90%;
+      text-align: center;
+    }
+    .footer-c4 {
+      width: 90%;
     }
   }
 }
