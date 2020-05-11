@@ -26,6 +26,22 @@
           prop="datetime"
           label="创建于"
         />
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="copy(scope.row.htmlHash)">
+              复制
+            </el-button>
+            <a :href="scope.row.preview" target="_blank">
+              <el-button type="text" size="small">
+                查看
+              </el-button>
+            </a>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
     <el-popover
@@ -112,7 +128,7 @@ export default {
     return {
       dialogVisible: false,
       link: [
-        'https://ipfs.smartsignature.io/ipfs/',
+        'https://ipfs.mttk.net/ipfs/',
         'https://ipfs.io/ipfs/',
         'https://ipfs.infura.io/ipfs/'
       ]
@@ -128,7 +144,9 @@ export default {
         .sort((a,b) => (b.id - a.id))
         .map(item => {
           const datetime = new Date(item.createdAt).toLocaleString()
-          return { ...item, datetime }
+          const ipfsNode = this.link[0]
+          const preview = `${ipfsNode}${item.htmlHash}`
+          return { ...item, datetime, preview }
         })
     },
     historyDialogTitle() {
