@@ -90,12 +90,7 @@
       @close="closeStatement"
     />
     <!-- 设置 发布 dialog -->
-    <m-dialog
-      v-model="settingDialog"
-      class="set-m-dialog"
-      width="600px"
-      title="设置"
-    >
+    <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
         <h3 class="set-title">
           基础设置
@@ -235,7 +230,12 @@
           </div>
         </div>
         <div v-if="settingDialogMode === 'setting'">
-          <el-button type="danger" size="medium" @click="delArticle">
+          <el-button
+            v-if="isShowTransfer"
+            type="danger"
+            size="medium"
+            @click="delArticle"
+          >
             删除此篇
           </el-button>
           <el-button
@@ -522,8 +522,14 @@
             立即发布
           </el-button>
         </div>
+
+        <svg-icon
+          class="close-icon"
+          icon-class="close_thin"
+          @click="settingDialog = false"
+        />
       </div>
-    </m-dialog>
+    </div>
   </div>
 </template>
 
