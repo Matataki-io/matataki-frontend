@@ -376,6 +376,32 @@
 
 
 // setting dialog
+.set-m-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  z-index: 10;
+
+  .set-dialog {
+    max-width: 620px;
+    padding: 0 10px;
+    margin: 40px auto 0;
+    box-sizing: border-box;
+    position: relative;
+
+    .close-icon {
+      position: absolute;
+      right: 0;
+      top: -20px;
+      cursor: pointer;
+      padding: 10px;
+    }
+  }
+}
+
 .set-m-dialog /deep/ .el-dialog {
   margin-top: 10px !important;
 }
