@@ -545,6 +545,7 @@ import statement from '@/components/statement/index.vue'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 
 export default {
+  layout: 'empty',
   name: 'NewPost',
   components: {
     imgUpload,
