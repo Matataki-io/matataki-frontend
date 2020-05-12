@@ -19,13 +19,19 @@
       style="width: 100%"
     >
       <el-table-column prop="id" label="#" width="70" />
-      <el-table-column prop="htmlHash" :label="$t('ipfsHash.history.table.hash')" width="460" />
+      <el-table-column prop="htmlHash" :label="$t('ipfsHash.history.table.hash')" width="460">
+        <template slot-scope="scope">
+          {{ scope.row.htmlHash }}
+          <svg-icon
+            class="copy-hash"
+            icon-class="copy"
+            @click="copy(scope.row.htmlHash)"
+          />
+        </template>
+      </el-table-column>
       <el-table-column prop="datetime" :label="$t('ipfsHash.history.table.createdAt')" />
       <el-table-column fixed="right" :label="$t('ipfsHash.history.table.action')" width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="copy(scope.row.htmlHash)">
-            {{ $t('ipfsHash.history.action.copy') }}
-          </el-button>
           <a :href="scope.row.preview" target="_blank">
             <el-button type="text" size="small">
               {{ $t('ipfsHash.history.action.preview') }}
@@ -80,3 +86,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.copy-hash {
+  cursor: pointer;
+}
+</style>
