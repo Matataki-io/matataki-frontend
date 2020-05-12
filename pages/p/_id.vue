@@ -314,12 +314,8 @@
         <span>{{ $t('p.deleted') }}</span>
       </div>
       <div class="ipfs-hash">
-        <svg-icon
-          class="copy-hash"
-          icon-class="copy"
-          @click="copyText(article.hash)"
-        />
-        <span>Hash: {{ article.hash }}</span>
+        <!-- article history start here -->
+        <ArticleHistory :article-ipfs-array="articleIpfsArray" />
       </div>
     </div>
   </div>
@@ -350,6 +346,7 @@ import utils from '@/utils/utils'
 import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
 import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
+import ArticleHistory from '@/common/components/ipfs_all/history.vue'
 
 import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
@@ -373,6 +370,7 @@ export default {
     PurchaseModal,
     UserInfoHeader,
     ArticleFooter,
+    ArticleHistory,
     // articleIpfs,
     articleTransfer,
     // FeedbackModal,
