@@ -1,5 +1,6 @@
 <template>
   <div class="history">
+    <p>{{ $t('ipfsHash.history.description') }}</p>
     <p>
       {{ $t('ipfsHash.history.selectNode') }}
       <el-radio v-model="historyPreviewSelect" label="mttk">
