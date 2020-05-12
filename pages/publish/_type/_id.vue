@@ -8,6 +8,7 @@
         <svg-icon
           class="back-icon"
           icon-class="back1"
+          @click="backRouter"
         />
         <input
           v-model="title"
@@ -92,6 +93,19 @@
     <!-- 设置 发布 dialog -->
     <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
+        <h3 class="set-title">
+          预览设置
+        </h3>
+        <div class="set-content">
+          <el-button round size="medium" @click="goPreview">
+            立即预览
+          </el-button>
+          <el-button round size="medium" @click="copyPreview">
+            复制链接
+          </el-button>
+          <p class="preview">将此链接发送给他人, 可以提前预览您还未发布的草稿(24h有效)</p>
+        </div>
+        
         <h3 class="set-title">
           基础设置
         </h3>
@@ -1487,7 +1501,7 @@ export default {
       const del = async () => {
         let res = null
         if (this.$route.params.type === 'edit') {
-          res = await this.$utils.factoryRequest(this.$API.delArticle({ id }))
+          // res = await this.$utils.factoryRequest(this.$API.delArticle({ id }))
         } else if (this.$route.params.type === 'draft') {
           res = await this.$utils.factoryRequest(this.$API.delDraft({ id }))
         } else {
@@ -1515,11 +1529,52 @@ export default {
     // 文章 || 草稿 转让
     transferArticle() {
       const id = this.$route.params.id
-      console.log('1', id)
       if (id === 'create' || !Number(id)) return
-      console.log('2', id)
 
       this.transferModal = true
+    },
+    // 返回上一页
+    backRouter() {
+      this.$router.go(-1)
+    },
+
+    // 允许草稿预览
+    async previewSetId(id) {
+      try {
+        const res = await this.$API.previewSetId({ id })
+        if (res.code === 0) {
+          return true
+        } else {
+          this.$message.error(res.message)
+          return false
+        }
+      } catch (e) {
+        console.log(e)
+        return false
+      }
+    },
+    // 立即预览
+    async goPreview() {
+      const id = this.$route.params.id
+      if (id === 'create' || !Number(id)) return
+
+      const res = this.previewSetId(this.$route.params.id)
+      if (res) {
+        window.open(`${window.location.origin}/preview/${this.$route.params.id}`)
+      }
+    },
+    // 复制预览链接
+    async copyPreview() {
+      const id = this.$route.params.id
+      if (id === 'create' || !Number(id)) return
+
+      const res = this.previewSetId(this.$route.params.id)
+      if (res) {
+        this.$copyText(`${window.location.origin}/preview/${this.$route.params.id}`).then(
+          () => this.$message.success(this.$t('success.copy')),
+          () => this.$message.error(this.$t('error.copy'))
+        )
+      }
     }
   }
 }
