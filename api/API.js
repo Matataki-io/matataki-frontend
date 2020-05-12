@@ -1001,5 +1001,10 @@ minetokenGetResources(tokenId) {
   },
   downpost() {
     return request.get('/dev/down/posts')
-  }
+  },
+  // preview
+  // 设置预览id
+  previewSetId(data) { return request.post('/preview', data) },
+  // 获取预览内容
+  previewDraft(id) { return request.get(`/preview/${id}`)},
 }
