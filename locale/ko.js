@@ -793,6 +793,7 @@ export default {
         historyBtn: '历史记录',
         history: {
             title: '文章历史记录',
+            description: '以下是这篇文章在 IPFS 的历史记录',
             selectNode: '请选择预览节点',
             table: {
                 hash: 'IPFS 哈希',
