@@ -506,6 +506,28 @@
           </div>
         </div>
 
+        <h4 class="set-subtitle">
+          是否公开文章历史记录 <el-tooltip
+            effect="dark"
+            content="开启公开文章历史记录权限后，任何人都可以看到你这篇文章的历史版本。"
+            placement="top-start"
+          >
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
+          </el-tooltip>
+        </h4>
+        <div class="set-content">
+          <el-radio v-model="isHideHistory" :label="true">
+            仅自己可见
+          </el-radio>
+          <br>
+          <el-radio v-model="isHideHistory" :label="false">
+            公开可见
+          </el-radio>
+        </div>
+
         <div class="set-footer">
           <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
             <el-button size="medium">
@@ -633,7 +655,8 @@ export default {
       // 阅读权限
       readConfigRadio: 'all',
       // 编辑权限
-      editConfigRadio: 'all'
+      editConfigRadio: 'all',
+      isHideHistory: true,
     }
   },
   computed: {
