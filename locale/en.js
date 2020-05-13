@@ -793,15 +793,16 @@ export default {
         historyBtn: 'Trace',
         history: {
             title: 'History of modification',
-            selectNode: 'Select your IPFS Node',
+            description: '以下是这篇文章在 IPFS 的历史记录',
+            selectNode: '请选择预览节点',
             table: {
-                hash: 'IPFS Hash',
-                createdAt: 'Created At',
-                action: 'Actions'
+                hash: 'IPFS 哈希',
+                createdAt: '创建于',
+                action: '动作'
             },
             action: {
-                copy: 'Copy',
-                preview: 'Preview'
+                copy: '复制',
+                preview: '查看'
             }
         }
     },
