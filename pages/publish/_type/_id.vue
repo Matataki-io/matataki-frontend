@@ -519,11 +519,11 @@
           </el-tooltip>
         </h4>
         <div class="set-content">
-          <el-radio v-model="isHideHistory" :label="true">
+          <el-radio v-model="ipfs_hide" :label="true">
             仅自己可见
           </el-radio>
           <br>
-          <el-radio v-model="isHideHistory" :label="false">
+          <el-radio v-model="ipfs_hide" :label="false">
             公开可见
           </el-radio>
         </div>
@@ -656,7 +656,7 @@ export default {
       readConfigRadio: 'all',
       // 编辑权限
       editConfigRadio: 'all',
-      isHideHistory: true,
+      ipfs_hide: true,
     }
   },
   computed: {
@@ -1111,6 +1111,7 @@ export default {
 
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
+      article.ipfs_hide = this.ipfs_hide
       const { failed } = this
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
@@ -1187,6 +1188,8 @@ export default {
       // 编辑权限
       article.editRequireToken = this.editRequireToken
       article.editRequireBuy = this.editRequireBuy
+      // History 权限
+      article.ipfs_hide = this.ipfs_hide
 
       const { failed, success } = this
       try {
