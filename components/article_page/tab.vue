@@ -36,13 +36,17 @@ export default {
           lab: this.$t('home.allCreation'),
         },
         {
-          url: 'article-circle',
-          lab: this.$t('home.fanCircle'),
+          url: 'article-latest',
+          lab: this.$t('home.latestCreation'),
         },
-        {
-          url: 'article-follow',
-          lab: this.$t('home.myFocus'),
-        }
+        // {
+        //   url: 'article-circle',
+        //   lab: this.$t('home.fanCircle'),
+        // },
+        // {
+        //   url: 'article-follow',
+        //   lab: this.$t('home.myFocus'),
+        // }
       ]
     }
   },
@@ -97,7 +101,11 @@ export default {
 // 小于768
 @media screen and (max-width: 768px) {
   .main-head__nav .nav-title {
-    display: block;
+    font-size: 16px;
+    margin: 0 10px 0 0;
+    li {
+      margin: 0 25px 0 0;
+    }
   }
 }
 </style>
