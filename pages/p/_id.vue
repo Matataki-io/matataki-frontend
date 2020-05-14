@@ -2,7 +2,7 @@
   <div class="main">
     <g-header />
 
-    <div v-if="article.status === 0">
+    <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
         <div
@@ -20,6 +20,13 @@
             <h1 class="Post-Title">
               {{ article.title }}
             </h1>
+            <el-alert
+              v-if="isDeleted"
+              title="这篇文章已隐藏"
+              type="info"
+              description="加密文章只有你本人可见，普通文章仅作者和知晓文章IPFS哈希的人可见"
+              show-icon
+            />
             <div class="fl ac jsb article-header">
               <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
               <UserInfoHeader
@@ -29,7 +36,7 @@
                 :is-hide="isHideIpfsHash"
               />
               <el-dropdown
-                v-if="isMe(article.uid)"
+                v-if="isMe(article.uid) && !isDeleted"
                 trigger="click"
                 @command="handleMoreAction"
               >
@@ -486,7 +493,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'currentUserInfo']),
     articleTimeISO() {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
@@ -518,6 +525,17 @@ export default {
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
       return null
+    },
+    havePermission() {
+      if (!this.article) return null
+      if (this.isDeleted) {
+        return this.isMe(this.article.uid)
+      }
+      return this.article.status === 0 
+    },
+    isDeleted() {
+      if (!this.article) return null
+      return this.article.status === 1
     },
     avatarSrc() {
       if (this.currentUserInfo.avatar) return this.$ossProcess(this.currentUserInfo.avatar)
