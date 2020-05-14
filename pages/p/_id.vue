@@ -2,7 +2,7 @@
   <div class="main">
     <g-header />
 
-    <div v-if="article.status === 0">
+    <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
         <div
@@ -486,7 +486,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'currentUserInfo']),
     articleTimeISO() {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
@@ -518,6 +518,13 @@ export default {
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
       return null
+    },
+    havePermission() {
+      if (!this.article) return null
+      if (this.article.status === 1) {
+        return this.article.uid === this.currentUserInfo.id
+      }
+      return this.article.status === 0 
     },
     avatarSrc() {
       if (this.currentUserInfo.avatar) return this.$ossProcess(this.currentUserInfo.avatar)
