@@ -334,6 +334,7 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
+        popularArticles: 'Recommend Author',
         random: 'Swap',
         allCreation: 'Composite creation',
         fanCircle: 'Fan circle',
