@@ -44,7 +44,6 @@ export default {
     font-size: 20px;
     font-weight: 600;
     color: black;
-    line-height: 28px;
     margin: 0 0 20px;
   }
   .pa-list {
