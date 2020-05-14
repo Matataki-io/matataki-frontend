@@ -190,7 +190,7 @@ export default {
         sale: 'sale',
         investment: 'investment',
         saleUnit: 'EOS/unit',
-        deleted: 'deleted'
+        deleted: '已站内隐藏'
     },
     articleFooter: {
         received: 'received',
@@ -551,7 +551,7 @@ export default {
         vntBuyAccount: 'The login Vnt account is not the same as the payment account',
         shareWeibo: 'Weibo',
         shareWechat: 'Scan and share to WeChat',
-        deleted: 'Article has been removed',
+        deleted: '文章已经站内隐藏',
         fulfillTheConditions: 'Read the full text when you meet the conditions',
         quoted: 'Quoted',
         summary: 'Summary',
