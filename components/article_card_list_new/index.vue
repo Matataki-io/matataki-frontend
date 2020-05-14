@@ -7,12 +7,6 @@
       <div class="article">
         <div class="container">
           <div class="article-title">
-            <span
-              v-if="card && card.status === 1"
-              class="off-shelves"
-            >
-              （{{ $t('articleCard.deleted') }}）
-            </span>
             <n-link
               class="title search-res"
               :to="{ name: 'p-id', params: {id: card && card.id} }"
@@ -25,6 +19,12 @@
             v-html="xssContent"
           />
           <div class="des">
+            <div
+              v-if="card && card.status === 1"
+              class="off-shelves"
+            >
+              {{ $t('articleCard.deleted') }}
+            </div>
             <!-- 文章发布时间 -->
             <div class="date">
               {{ dateCard }}
@@ -398,6 +398,17 @@ export default {
   display: flex;
   margin: 20px 0 0 0;
   padding: 0;
+  .off-shelves {
+    background: #b3b3b3;
+    color: #FFF;
+    border-radius: 4px;
+    text-align: center;
+    flex: 0 0 120px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    margin-right: 10px;
+  }
   .title {
     cursor: pointer;
     font-size: 16px;

@@ -192,7 +192,7 @@ export default {
     sale: '销量',
     investment: '投资',
     saleUnit: 'EOS/份',
-    deleted: '已下架'
+    deleted: '已站内隐藏'
   },
   articleFooter: {
     received: '已领取',
@@ -566,7 +566,7 @@ export default {
     vntBuyAccount: '登陆的Vnt账号与支付账号不相同',
     shareWeibo: '微博',
     shareWechat: '扫一扫，分享到微信',
-    deleted: '文章已下架',
+    deleted: '文章已经站内隐藏',
     fulfillTheConditions: '达成条件即可阅读全文',
     quoted: '已引用',
     summary: '摘要',
