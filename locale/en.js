@@ -334,12 +334,13 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
-        random: 'Swap',
-        allCreation: 'Composite creation',
-        fanCircle: 'Fan circle',
-        myFocus: 'My follow',
-        ofFanCircle: '\'s Fan circle',
-        buyFanTickets: 'Buy Fan tickets'
+        popularArticles: '热门文章',
+        random: '换一换',
+        allCreation: '综合创作',
+        fanCircle: 'Fan圈',
+        myFocus: '我的关注',
+        ofFanCircle: '的Fan圈',
+        buyFanTickets: '购买Fan票'
     },
     sidebar: {
         article: 'piece',
