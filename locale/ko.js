@@ -303,7 +303,7 @@ export default {
         stageDes32: '打造区块链永存知识数据库'
     },
     home: {
-        creation: '创作',
+        creation: '发现',
         share: '分享',
         fanTicket: 'Fan票',
         signOut: '登出',
