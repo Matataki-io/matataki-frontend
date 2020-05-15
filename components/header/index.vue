@@ -72,11 +72,12 @@
         >
           <n-link
             :class="{ badge: hasNewNotification }"
+            class="create"
             to="/notification"
           >
             <svg-icon
               :style="customizeHeaderIconColorComputed"
-              class="notification create"
+              class="notification"
               icon-class="bell"
             />
           </n-link>
@@ -517,6 +518,10 @@ export default {
     cursor: pointer;
     margin: 0 20px 0 0;
     color: #000;
+    .notification {
+    width: 100%;
+    height: 100%;
+    }
   }
   &-avatar {
     width: 30px;

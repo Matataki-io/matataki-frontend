@@ -77,7 +77,7 @@ export default {
   async created() {
     if (process.browser) {
       this.recommendList = await this.recommendFn(1,11)
-      // 列表第五条之后的文章放到侧边栏的热门文章中展示
+      // 列表第五条之后的文章放到侧边栏的不要错过中展示
       this.popularlist = this.recommendList.splice(5, 6)
       this.usersRecommend()
     }
