@@ -58,7 +58,7 @@
         </header>
         <section class="screen1-block__text">
           <div class="screen1-block__text__content">
-            <h1>我们帮助 自由 的创作者<br>获得更多收入<br>& 建立 公开 永存 的数字作品库</h1>
+            <h1>我们帮助 自由 的创作者<br>获得更多收入<br>& <span>建立 公开 永存</span> 的数字作品库</h1>
             <p>
               所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个节点上，实现作品的分布式存储，无需担心被和谐删档，你的数据只属于你自己。
               <br>
@@ -101,7 +101,7 @@
           :height="swipeHeight"
           indicator-position="outside"
           trigger="click"
-          :interval="300000"
+          :interval="5000"
         >
           <el-carousel-item v-for="item in Math.ceil(supporters.length / 2)" :key="item">
             <div class="swipe">
@@ -145,7 +145,7 @@
           :height="swipeHeight"
           indicator-position="outside"
           trigger="click"
-          :interval="300000"
+          :interval="5000"
         >
           <el-carousel-item v-for="(supporter, index) in supporters" :key="index">
             <div class="swipe">
