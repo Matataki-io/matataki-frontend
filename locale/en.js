@@ -303,7 +303,7 @@ export default {
         stageDes32: 'Building a blockchain permanent knowledge database'
     },
     home: {
-        creation: 'Creation',
+        creation: '发现',
         share: 'Share',
         fanTicket: 'FanTicket',
         signOut: 'Sign out',
