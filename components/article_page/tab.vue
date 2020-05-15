@@ -43,10 +43,10 @@ export default {
         //   url: 'article-circle',
         //   lab: this.$t('home.fanCircle'),
         // },
-        // {
-        //   url: 'article-follow',
-        //   lab: this.$t('home.myFocus'),
-        // }
+        {
+          url: 'article-follow',
+          lab: this.$t('home.myFocus'),
+        }
       ]
     }
   },

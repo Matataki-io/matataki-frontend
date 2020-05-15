@@ -58,7 +58,7 @@
         </header>
         <section class="screen1-block__text">
           <div class="screen1-block__text__content">
-            <h1>我们帮助 自由 的创作者<br>获得更多收入<br>& <span>建立 公开 永存</span> 的数字作品库</h1>
+            <h1>我们帮助 自由 的创作者<br>获得更多收入<br>& <span>自由 公开 永存</span> 的数字作品库</h1>
             <p>
               所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个节点上，实现作品的分布式存储，无需担心被和谐删档，你的数据只属于你自己。
               <br>
