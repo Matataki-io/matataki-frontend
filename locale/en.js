@@ -334,7 +334,7 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
-        popularArticles: '热门文章',
+        popularArticles: '不要错过',
         random: '换一换',
         allCreation: '最热作品',
         latestCreation: '最新作品',
