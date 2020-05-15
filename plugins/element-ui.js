@@ -37,7 +37,8 @@ import {
   Radio,
   Alert,
   Carousel,
-  CarouselItem
+  CarouselItem,
+  Badge
 } from 'element-ui'
 
 Vue.use(Row)
@@ -76,6 +77,7 @@ Vue.use(Radio)
 Vue.use(Alert)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
+Vue.use(Badge)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

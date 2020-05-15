@@ -303,7 +303,7 @@ export default {
         stageDes32: '打造区块链永存知识数据库'
     },
     home: {
-        creation: '创作',
+        creation: '发现',
         share: '分享',
         fanTicket: 'Fan票',
         signOut: '登出',
@@ -334,12 +334,14 @@ export default {
         articleTagTitle: '文章标签',
         shopTagTitle: '商品标签',
         recommendAuthor: '推荐作者',
+        popularArticles: '不要错过',
         random: '换一换',
-        allCreation: '综合创作',
+        allCreation: '最热作品',
+        latestCreation: '最新作品',
         fanCircle: 'Fan圈',
         myFocus: '我的关注',
         ofFanCircle: '的Fan圈',
-        buyFanTickets: '购买Fan票'
+        buyFanTickets: '购买Fan票',
     },
     sidebar: {
         article: '篇',
@@ -789,7 +791,22 @@ export default {
     ipfsHash: {
         link: 'IPFS地址',
         publicNode: '公共节点',
-        slogan: '本文内容已上传星际文件存储系统「IPFS」，永久保存。'
+        slogan: '本文内容已上传星际文件存储系统「IPFS」，永久保存。',
+        historyBtn: '历史记录',
+        history: {
+            title: '文章历史记录',
+            description: '以下是这篇文章在 IPFS 的历史记录',
+            selectNode: '请选择预览节点',
+            table: {
+                hash: 'IPFS 哈希',
+                createdAt: '创建于',
+                action: '动作'
+            },
+            action: {
+                copy: '复制',
+                preview: '查看'
+            }
+        }
     },
     group: {
         joinFanBase: '加入{0}粉丝群',

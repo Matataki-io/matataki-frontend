@@ -290,6 +290,7 @@ export default {
           this.$message.success(this.$t('p.articleTransferSuccess'))
 
           if (this.from === 'article' || this.from === 'draft') {
+            this.$emit('toggleDone') // 编辑页面离开
             this.$router.push({ name: 'article' })
           } else if (this.from === 'share') {
             this.$router.push({ name: 'sharehall' })

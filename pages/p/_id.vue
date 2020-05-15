@@ -1,11 +1,8 @@
 <template>
   <div class="main">
-    <g-header
-      :popover-visible="visiblePopover.visible2"
-      @popoverVisible="poopverDone('visible2')"
-    />
+    <g-header />
 
-    <div v-if="article.status === 0">
+    <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
         <div
@@ -19,13 +16,27 @@
         </div>
         <article class="Post-Header">
           <header>
-            <div class="fl ac jsb">
-              <!-- 标题 -->
-              <h1 class="Post-Title">
-                {{ article.title }}
-              </h1>
+            <!-- 标题 -->
+            <h1 class="Post-Title">
+              {{ article.title }}
+            </h1>
+            <el-alert
+              v-if="isDeleted"
+              title="这篇文章已隐藏"
+              type="info"
+              description="加密文章只有你本人可见，普通文章仅作者和知晓文章IPFS哈希的人可见"
+              show-icon
+            />
+            <div class="fl ac jsb article-header">
+              <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
+              <UserInfoHeader
+                class="article-author"
+                :article="article"
+                :article-ipfs-array="articleIpfsArray"
+                :is-hide="isHideIpfsHash"
+              />
               <el-dropdown
-                v-if="isMe(article.uid)"
+                v-if="isMe(article.uid) && !isDeleted"
                 trigger="click"
                 @command="handleMoreAction"
               >
@@ -52,15 +63,7 @@
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
-            <!-- 文章信息 头像 昵称 时间 阅读量 关注 -->
-            <UserInfoHeader
-              :article="article"
-              :article-ipfs-array="articleIpfsArray"
-              :is-hide="isHideIpfsHash"
-            />
           </header>
-          <!-- ipfs -->
-          <!-- <articleIpfs :is-hide="isHideIpfsHash" :hash="article.hash" /> -->
           <!-- 文章内容 -->
           <no-ssr>
             <mavon-editor
@@ -228,106 +231,8 @@
         />
       </div>
 
-      <div class="p-w btns-container">
-        <div
-          ref="actionBtns"
-          :class="isProduct && 'btns-center'"
-          class="btns"
-        >
-          <!-- 商品 -->
-          <!-- 分享 投资 购买 -->
-          <div
-            v-if="isProduct"
-            class="article-btn article-btn-margin"
-            @click="share"
-          >
-            <div
-              :class="isProduct ? 'yellow' : 'blue'"
-              class="icon-container blue"
-            >
-              <svg-icon
-                icon-class="share"
-                class="icon"
-              />
-            </div>
-            <span> {{ $t('share') }}</span>
-          </div>
-          <div
-            v-if="isProduct"
-            class="article-btn article-btn-margin"
-            @click="buy"
-          >
-            <div class="icon-container yellow">
-              <svg-icon
-                icon-class="purchase"
-                class="icon"
-              />
-            </div>
-            <span>{{ $t('p.buyShop') }}</span>
-          </div>
-          <!-- 投资商品 -->
-          <!-- <div v-if="isProduct" @click="invest" class="article-btn">
-            <div :class="isProduct ? 'yellow' : 'blue'" class="icon-container blue">
-              <svg-icon icon-class="invest" class="icon" />
-            </div>
-            <span>{{ isProduct ? (isSupport ? this.$t('p.invested') : this.$t('p.investShop')) : (isSupport ? this.$t('p.invested') : this.$t('p.investArticle')) }}</span>
-          </div> -->
 
-          <!-- 文章 -->
-          <!-- 分享 推荐 不推荐 -->
 
-          <!-- 文章下方的功能按钮, 由于修改的之前的代码, share模块用插槽的形式写入 -->
-          <TokenFooter
-            v-if="!isProduct"
-            :time="timeCount"
-            :token="ssToken"
-            :article="article"
-            @like="like"
-            @dislike="dislike"
-          >
-            <!-- slot 插槽写入 -->
-            <template>
-              <div
-                class="article-btn"
-                @click="toggleBookmark"
-              >
-                <div
-                  v-if="!isProduct"
-                  :class="{ actived: isBookmarked }"
-                  class="icon-container blue"
-                >
-                  <svg-icon
-                    :icon-class="'bookmark-solid'"
-                    class="icon"
-                  />
-                </div>
-                <span>{{ !isBookmarked ? $t('bookmark') : $t('unbookmark') }}</span>
-              </div>
-              <div
-                class="article-btn"
-                @click="share"
-              >
-                <div
-                  :class="isProduct ? 'yellow' : 'blue'"
-                  class="icon-container blue"
-                >
-                  <svg-icon
-                    icon-class="share"
-                    class="icon"
-                  />
-                </div>
-                <span>{{ $t('share') }}</span>
-              </div>
-            </template>
-          </TokenFooter>
-        </div>
-        <!-- 商品页面下面的详情信息 -->
-        <ArticleInfoFooter
-          v-if="isProduct"
-          :article="article"
-          class="product"
-        />
-      </div>
       <!-- tag 标签 -->
       <div
         v-if="isShowTags"
@@ -345,6 +250,17 @@
         </router-link>
       </div>
 
+      <!-- sidebar -->
+      <sidebar
+        :bookmarked="isBookmarked ? 1 : 0"
+        :is-liked="Number(ssToken.is_liked)"
+        :likes="article.likes"
+        :dislikes="article.dislikes"
+        @like="likeEvent"
+        @bookmarked="toggleBookmark"
+        @share="share"
+      />
+
       <!-- 内容居中 -->
       <div class="p-w">
         <!-- 评论内容 -->
@@ -354,7 +270,6 @@
           @doneComment="commentRequest = Date.now()"
         />
         <CommentList
-          :class="!isProduct && 'has-comment-input'"
           :comment-request="commentRequest"
           :sign-id="article.id"
           :type="article.channel_id"
@@ -394,34 +309,22 @@
         from="article"
       />
 
-      <!-- 阅读文章积分提示框 目前已经去除 -->
-      <!-- <FeedbackModal v-model="feedbackShow" :points="ssToken.points" /> -->
       <OrderModal
         v-model="showOrderModal"
         :form="{...form, type: 'buy_token_output', limitValue}"
         :trade-no="tradeNo"
       />
     </div>
-    <div
-      v-else
-      class="container deleted"
-    >
+    <div v-else class="container deleted">
       <div>
-        <img
-          src="@/assets/img/deleted.png"
-          alt="deleted"
-        >
+        <img src="@/assets/img/deleted.png" alt="deleted">
       </div>
       <div class="message">
         <span>{{ $t('p.deleted') }}</span>
       </div>
       <div class="ipfs-hash">
-        <svg-icon
-          class="copy-hash"
-          icon-class="copy"
-          @click="copyText(article.hash)"
-        />
-        <span>Hash: {{ article.hash }}</span>
+        <!-- article history start here -->
+        <ArticleHistory :article-ipfs-array="articleIpfsArray" />
       </div>
     </div>
   </div>
@@ -433,31 +336,31 @@ import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
 import { xssFilter, xssImageProcess } from '@/utils/xss'
-import CommentList from '@/components/comment/List'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
-import ArticleInfoFooter from '@/components/article/ArticleInfoFooter'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
 import InvestModal from '@/components/modal/Invest'
 import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
-import TokenFooter from '@/components/article/TokenFooter'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
+import CommentList from '@/components/comment/List'
 import { ipfsData } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
-import store from '@/utils/store.js'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
 import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
 import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
+import ArticleHistory from '@/common/components/ipfs_all/history.vue'
 
 import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
+
+import sidebar from '@/components/p_page/sidebar'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -475,16 +378,16 @@ export default {
     ShareModal,
     PurchaseModal,
     UserInfoHeader,
-    ArticleInfoFooter,
     ArticleFooter,
+    ArticleHistory,
     // articleIpfs,
     articleTransfer,
-    TokenFooter,
     // FeedbackModal,
     commentInput,
     OrderModal,
     becomeAnArticleEditor,
-    avatar
+    avatar,
+    sidebar
   },
   data() {
     return {
@@ -504,15 +407,6 @@ export default {
         likes: 0,
         is_liked: 0
       },
-      // feedbackShow: false,
-      // 三个引导提示的状态
-      visiblePopover: {
-        visible: false,
-        visible1: false,
-        visible2: false
-      },
-      timerShare: null, // 分享计时器
-      timeCountShare: 0, // 分享计时
       article: Object.create(null),
       post: Object.create(null),
       postsIdReadnewStatus: false, // 新文章阅读是否上报
@@ -599,7 +493,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
+    ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'currentUserInfo']),
     articleTimeISO() {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
@@ -631,6 +525,17 @@ export default {
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
       return null
+    },
+    havePermission() {
+      if (!this.article) return null
+      if (this.isDeleted) {
+        return this.isMe(this.article.uid)
+      }
+      return this.article.status === 0 
+    },
+    isDeleted() {
+      if (!this.article) return null
+      return this.article.status === 1
     },
     avatarSrc() {
       if (this.currentUserInfo.avatar) return this.$ossProcess(this.currentUserInfo.avatar)
@@ -735,17 +640,7 @@ export default {
         clearInterval(this.timer)
       }
     },
-    timeCountShare(v) {
-      if (v >= 60 && !store.get('shareVisible')) {
-        this.visiblePopover.visible1 = true
-        clearInterval(this.timerShare)
-      }
-    },
-    // '$route'(to, from) {
-    //   document.title = to.meta.title || 'Your Website'
-    // }
     compiledMarkdown() {
-      console.log('111111, htmldom')
       this.setAllHideContentStyle()
     }
   },
@@ -768,7 +663,7 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('info', info.data.short_content)
+    // console.log('info', info.data)
 
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
@@ -819,30 +714,15 @@ export default {
     this.addReadAmount()
     this.getCurrentProfile()
     this.getArticleIpfs()
-    // if (!document.hidden) {
-    //   this.reading()
-    // }
-
-    // dom加载完提示 推荐/不推荐
-    this.$nextTick(() => {
-      // undefined false 显示
-      if (!store.get('likeVisible')) this.visiblePopover.visible = true
-      this.shareCount()
-      // this.showOrderModal = true
-    })
-
 
     this.setAllHideContentStyle()
   },
   destroyed() {
     clearInterval(this.timer)
-    clearInterval(this.timerShare)
   },
   methods: {
     // 增加文章阅读量
-    async addReadAmount() {
-      await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
-    },
+    async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
       if (!getCookie('ACCESS_TOKEN')) {
@@ -964,30 +844,7 @@ export default {
       }
     },
 
-    shareCount() {
-      this.timerShare = setInterval(() => {
-        this.timeCountShare++
-        // console.log(this.timeCountShare)
-      }, 1000)
-    },
-    // 提示点击确定后
-    poopverDone(visible) {
-      // likeVisible shareVisible userVisible
-      if (visible === 'visible') {
-        store.set('likeVisible', true)
-        this.visiblePopover.visible = false
-      } else if (visible === 'visible1') {
-        store.set('shareVisible', true)
-        this.visiblePopover.visible1 = false
-      } else if (visible === 'visible2') {
-        store.set('userVisible', true)
-        this.visiblePopover.visible2 = false
-      }
-    },
-    // 推荐或不推荐显示 用户popover提示
-    showUserPopover() {
-      if (!store.get('userVisible')) this.visiblePopover.visible2 = true
-    },
+
     async getIpfsData() {
       const { hash } = this.article
       if (!hash) {
@@ -1017,9 +874,23 @@ export default {
           console.log('err', err)
         })
     },
+    likeEvent(res) {
+      if (Number(this.ssToken.is_liked) === 1 || Number(this.ssToken.is_liked) === 2) {
+        console.log('已经操作过了')
+        return
+      }
+      if (res === 2) {
+        // 点赞
+        this.like()
+      } else if (res === 1) {
+        // 不推荐
+        this.dislike()
+      } else {
+        //
+      }
+    },
     // 推荐
     like() {
-      this.showUserPopover()
       this.$API.like(this.article.id, {
         time: 0
       }).then(res => {
@@ -1028,11 +899,10 @@ export default {
           this.ssToken.is_liked = 2
           this.ssToken.points = res.data
           // this.feedbackShow = true
-          this.$message.success(this.$t('articleFooter.commentDoneMessage'))
 
           this.getArticleInfoFunc() // 更新文章信息
         } else {
-          this.$message.error(`${this.$t('articleFooter.like')},${this.$t('error.fail')}`)
+          console.log(res.message)
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -1042,7 +912,6 @@ export default {
     },
     // 不推荐
     dislike() {
-      this.showUserPopover()
       this.$API.dislike(this.article.id, {
         time: 0
       }).then(res => {
@@ -1051,11 +920,10 @@ export default {
           this.ssToken.is_liked = 1
           this.ssToken.points = res.data
           // this.feedbackShow = true
-          this.$message.success(this.$t('articleFooter.commentDoneMessage'))
 
           this.getArticleInfoFunc() // 更新文章信息
         } else {
-          this.$message.error(`${this.$t('articleFooter.unlike')},${this.$t('error.fail')}`)
+          console.log(res.message)
         }
       }).catch((error) => {
         if (error.response.status === 401) {
@@ -1469,3 +1337,13 @@ export default {
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+// 小于500
+@media screen and (max-width: 500px){
+  .article-header {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+</style>

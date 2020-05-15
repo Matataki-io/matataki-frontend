@@ -17,7 +17,7 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
     "@clampy-js/vue-clampy": "^1.0.6",
-    "@matataki/editor": "1.0.5",
+    "@matataki/editor": "1.0.7",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@sentry/browser": "5.9.1",

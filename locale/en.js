@@ -334,8 +334,10 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
+        popularArticles: 'Recommend Author',
         random: 'Swap',
-        allCreation: 'Composite creation',
+        allCreation: 'Popular works',
+        latestCreation: 'Latest works',
         fanCircle: 'Fan circle',
         myFocus: 'My follow',
         ofFanCircle: '\'s Fan circle',
@@ -373,7 +375,7 @@ export default {
         sendBtnTextEditor: 'edit',
         transfer: 'transfer',
         titlePlaceholder: 'Please enter your article title...',
-        contentPlaceholder: 'Please enter text in Markdown format to start editing',
+        contentPlaceholder: '在此输入内容\n支持Markdown、HTML标签、独创的内容加密语法（点击上方的小锁）\n\n现在就开始编辑吧！',
         commentTitle: 'Review price',
         commentContent: 'Users need to pay you the corresponding points to comment(1-99999)',
         point: 'point',
@@ -789,7 +791,22 @@ export default {
     ipfsHash: {
         link: 'IPFS address',
         publicNode: 'Public node',
-        slogan: 'The content of this article has been uploaded to the interstellar file storage system "IPFS" and stored permanently.'
+        slogan: 'The content of this article has been uploaded to the interstellar file storage system "IPFS" and stored permanently.',
+        historyBtn: 'Trace',
+        history: {
+            title: 'History of modification',
+            description: '以下是这篇文章在 IPFS 的历史记录',
+            selectNode: '请选择预览节点',
+            table: {
+                hash: 'IPFS 哈希',
+                createdAt: '创建于',
+                action: '动作'
+            },
+            action: {
+                copy: '复制',
+                preview: '查看'
+            }
+        }
     },
     group: {
         joinFanBase: 'Join {0} fan base',

@@ -10,7 +10,7 @@
       </div>
       <div class="col-3">
         <div class="position-sticky top80">
-          <div class="recommend-author">
+          <!-- <div class="recommend-author">
             <div class="ra-head">
               <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
               <span
@@ -34,7 +34,9 @@
                 :card="item"
               />
             </div>
-          </div>
+          </div> -->
+          <popularArticles :list="popularlist" />
+
           <router-link :to="{name: 'token'}">
             <img
               class="fan-entrance"
@@ -50,44 +52,50 @@
 <script>
 import throttle from 'lodash/throttle'
 // import bannerMatataki from '@/components/banner/banner_matataki.vue'
-import RAList from '@/components/recommend_author_list'
+// import RAList from '@/components/recommend_author_list'
 import swipe from '@/components/swipe/index.vue'
+import popularArticles from '@/components/popularArticles/index.vue'
 
 export default {
   transition: 'page',
   components: {
     // bannerMatataki,
-    RAList,
+    // RAList,
     swipe,
+    popularArticles
   },
   data() {
     return {
       idx: 0,
       usersRecommendList: [{},{},{},{},{}],
       usersLoading: false,
-      recommendList: [], 
+      recommendList: [],
+      popularlist: [],
       articleList: []
     }
   },
-  created() {
+  async created() {
     if (process.browser) {
-      this.recommendFn()
+      this.recommendList = await this.recommendFn(1,11)
+      // 列表第五条之后的文章放到侧边栏的不要错过中展示
+      this.popularlist = this.recommendList.splice(5, 6)
       this.usersRecommend()
     }
   },
   mounted() {
   },
   methods: {
-    async recommendFn() {
-      await this.$API.recommend({
-        channel: 1
-      }).then(res => {
+    async recommendFn(channel = 1, amount = 5) {
+      try{
+        const res = await this.$API.recommend({channel, amount})
+        
         if (res.code === 0) {
-          this.recommendList = res.data
+          return res.data
         }
-      }).catch(e => {
-        console.log(e)
-      })
+      }catch(e) {
+        console.error(e)
+      }
+      return []
     },
     // 获取推荐作者
     usersRecommend: throttle(async function () {
@@ -131,7 +139,7 @@ export default {
   font-weight: bold;
   color: rgba(0, 0, 0, 1);
   text-align: left;
-  margin: 0 0 0 20px;
+  margin: 0 0 0 20px; 
   &.nav-hide {
     padding-top: 50px;
   }

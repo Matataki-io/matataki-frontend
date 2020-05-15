@@ -5,6 +5,11 @@
   >
     <div class="edit-content">
       <div class="edit-head">
+        <svg-icon
+          class="back-icon"
+          icon-class="back1"
+          @click="backRouter"
+        />
         <input
           v-model="title"
           :placeholder="$t('publish.titlePlaceholder')"
@@ -36,33 +41,19 @@
 
         <div
           v-loading.fullscreen.lock="fullscreenLoading"
+          class="setting"
+          @click="showSettingDialog('setting')"
+        >
+          {{ $t('setting') }}
+        </div>
+
+        <div
+          v-loading.fullscreen.lock="fullscreenLoading"
           class="post"
-          @click="sendThePost"
+          @click="showSettingDialog('publish')"
         >
           {{ $t('publish.publish') }}
         </div>
-
-        <el-dropdown
-          v-if="isShowTransfer"
-          slot="more"
-          trigger="click"
-          @command="handleMoreAction"
-        >
-          <div class="more-icon">
-            <svg-icon
-              class="icon"
-              icon-class="more"
-            />
-          </div>
-          <el-dropdown-menu
-            slot="dropdown"
-            class="user-dorpdown"
-          >
-            <el-dropdown-item command="transfer">
-              {{ $t('publish.transfer') }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
       </div>
 
       <no-ssr>
@@ -79,416 +70,9 @@
           :encryption="encryption"
         />
       </no-ssr>
-
-      <!-- 备份 -->
-      <!-- <div class="post-content">
-        <h3>持通证阅读</h3>
-        <el-checkbox v-model="readauThority" size="small">
-          设置阅读权限
-        </el-checkbox>
-        <div v-show="readauThority">
-          <h3>持通证数量</h3>
-          <el-input v-model="readToken" size="small" placeholder="请输入内容" />
-          <h3>持通证类型</h3>
-          <el-select v-model="readSelectValue" size="small" placeholder="请选择" style="width: 100%;">
-            <el-option
-              v-for="item in readSelectOptions"
-              :key="item.id"
-              :label="item.symbol + '-' + item.name"
-              :value="item.id"
-            />
-          </el-select>
-          <h3>内容摘要</h3>
-          <el-input
-            v-model="readSummary"
-            size="small"
-            type="textarea"
-            :autosize="{ minRows: 6, maxRows: 12}"
-            placeholder="请输入内容"
-            maxlength="300"
-            show-word-limit
-          />
-        </div>
-        <el-button plain size="small" class="post-btn" @click="sendThePost">
-          {{ $t('publish.identifyAndPublish') }}
-        </el-button>
-      </div> -->
-
-      <div class="post-content">
-        <div style="width: 380px;">
-          <div>
-            <h3>
-              阅读权限
-              <el-tooltip
-                effect="dark"
-                content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
-                placement="top-start"
-              >
-                <svg-icon
-                  class="help-icon"
-                  icon-class="help"
-                />
-              </el-tooltip>
-            </h3>
-            <el-checkbox
-              v-model="readauThority"
-              size="small"
-              :disabled="prohibitEditingPrices"
-            >
-              设置持Fan票
-            </el-checkbox>
-          </div>
-          <transition name="fade">
-            <div
-              v-show="readauThority"
-              class="fl ac"
-            >
-              <div>
-                <h3>Fan票类型</h3>
-                <el-select
-                  v-model="readSelectValue"
-                  size="small"
-                  placeholder="请选择"
-                  style="width: 100%;"
-                  filterable
-                  :disabled="prohibitEditingPrices"
-                >
-                  <el-option
-                    v-for="item in readSelectOptions"
-                    :key="item.id"
-                    :label="item.symbol + '-' + item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </div>
-              <div style="margin-left: 10px;">
-                <h3>持Fan票数量</h3>
-                <el-input
-                  v-model="readToken"
-                  :min="1"
-                  :max="100000000"
-                  size="small"
-                  placeholder="请输入内容"
-                  :disabled="prohibitEditingPrices"
-                />
-              </div>
-            </div>
-          </transition>
-          <div v-show="readauThority" class="related-add">
-            <el-tooltip
-              effect="dark"
-              content="多Fan票解锁正在开发中"
-              placement="top"
-            >
-              <div class="add-icon disable">
-                <i class="el-icon-plus" />
-              </div>
-            </el-tooltip>
-            <span>添加更多</span>
-          </div>
-          <el-checkbox
-            v-model="paymentTokenVisible"
-            size="small"
-            style="margin-top: 10px;"
-            :disabled="prohibitEditingPrices"
-          >
-            设置支付
-          </el-checkbox>
-          <transition name="fade">
-            <div
-              v-show="paymentTokenVisible"
-              class="fl ac"
-            >
-              <div>
-                <h3>支付类型</h3>
-                <el-select
-                  v-model="paymentSelectValue"
-                  disabled
-                  size="small"
-                  placeholder="请选择"
-                  style="width: 100%;"
-                >
-                  <el-option
-                    v-for="item in paymentSelectOptions"
-                    :key="item.id"
-                    :label="item.symbol + '-' + item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </div>
-              <div style="margin-left: 10px;">
-                <h3>支付数量</h3>
-                <el-input
-                  v-model="paymentToken"
-                  :min="1"
-                  :max="100000000"
-                  size="small"
-                  placeholder="请输入内容"
-                  :disabled="prohibitEditingPrices"
-                />
-              </div>
-            </div>
-          </transition>
-          <transition name="fade">
-            <div v-show="readauThority || paymentTokenVisible">
-              <h3>内容摘要</h3>
-              <el-input
-                v-model="readSummary"
-                :autosize="{ minRows: 6, maxRows: 12}"
-                size="small"
-                type="textarea"
-                placeholder="请输入内容"
-                maxlength="300"
-                show-word-limit
-              />
-            </div>
-          </transition>
-        </div>
-      </div>
-
-      <!-- 编辑权限 -->
-      <div class="post-content">
-        <div style="width: 380px;">
-          <div>
-            <h3>
-              编辑权限 (实验功能)
-              <el-tooltip
-                effect="dark"
-                content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
-                placement="top-start"
-              >
-                <svg-icon
-                  class="help-icon"
-                  icon-class="help"
-                />
-              </el-tooltip>
-            </h3>
-            <el-checkbox
-              v-model="tokenEditAuthority"
-              size="small"
-              :disabled="prohibitEditingPrices"
-            >
-              设置持Fan票
-            </el-checkbox>
-          </div>
-          <transition name="fade">
-            <div
-              v-show="tokenEditAuthority"
-              class="fl ac"
-            >
-              <div>
-                <h3>Fan票类型</h3>
-                <el-select
-                  v-model="editSelectValue"
-                  size="small"
-                  placeholder="请选择"
-                  style="width: 100%;"
-                  filterable
-                  :disabled="prohibitEditingPrices"
-                >
-                  <el-option
-                    v-for="item in readSelectOptions"
-                    :key="item.id"
-                    :label="item.symbol + '-' + item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </div>
-              <div style="margin-left: 10px;">
-                <h3>持Fan票数量</h3>
-                <el-input
-                  v-model="editToken"
-                  :min="1"
-                  :max="100000000"
-                  size="small"
-                  placeholder="请输入内容"
-                  :disabled="prohibitEditingPrices"
-                />
-              </div>
-            </div>
-          </transition>
-          <el-checkbox
-            v-model="buyEditAuthority"
-            size="small"
-            style="margin-top: 10px;"
-            disabled
-          >
-            设置支付
-          </el-checkbox>
-          <transition name="fade">
-            <div
-              v-show="buyEditAuthority"
-              class="fl ac"
-            >
-              <div>
-                <h3>支付类型</h3>
-                <el-select
-                  v-model="paymentSelectValue"
-                  disabled
-                  size="small"
-                  placeholder="请选择"
-                  style="width: 100%;"
-                >
-                  <el-option
-                    v-for="item in paymentSelectOptions"
-                    :key="item.id"
-                    :label="item.symbol + '-' + item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </div>
-              <div style="margin-left: 10px;">
-                <h3>支付数量</h3>
-                <el-input
-                  v-model="editPaymentToken"
-                  :min="1"
-                  :max="100000000"
-                  size="small"
-                  placeholder="请输入内容"
-                  :disabled="prohibitEditingPrices"
-                />
-              </div>
-            </div>
-          </transition>
-        </div>
-      </div>
-
-      <div class="cover-container">
-        <div class="cover">
-          <p>
-            {{ $t('publish.coverTitle') }}
-          </p>
-          <img-upload
-            v-show="!cover"
-            :img-upload-done="imgUploadDone"
-            :aspect-ratio="2 / 1"
-            :update-type="'artileCover'"
-            class="cover-upload"
-            @doneImageUpload="doneImageUpload"
-          >
-            <img
-              slot="uploadButton"
-              class="cover-add"
-              src="@/assets/img/add.svg"
-              alt="add"
-            >
-          </img-upload>
-          <img
-            v-show="cover"
-            class="cover-btn"
-            src="@/assets/img/del.svg"
-            alt="remove"
-            @click.prevent="removeCover"
-          >
-          <div v-show="cover">
-            <img
-              :src="coverEditor"
-              class="cover-img"
-              alt="cover"
-            >
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="post-content">
-      <h3>
-        原创声明
-        <el-tooltip
-          effect="dark"
-          content="来设置你的文章版权信息，发布后无法修改"
-          placement="top-start"
-        >
-          <svg-icon
-            class="help-icon"
-            icon-class="help"
-          />
-        </el-tooltip>
-      </h3>
-      <el-checkbox
-        v-model="isOriginal"
-        class="is-original"
-        :disabled="$route.params.type === 'edit'"
-        @change="originalChange"
-      >
-        {{ $t('publish.original') }}
-      </el-checkbox>
-      <div
-        v-if="isOriginal"
-        class="cc-licensing"
-      >
-        <h3>
-          Creative Commons 授权许可协议
-          <el-tooltip
-            effect="dark"
-            content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。"
-            placement="top-start"
-          >
-            <i class="el-icon-info" />
-          </el-tooltip>
-        </h3>
-        <h3>
-          请问您允许本作品被别人转载、节选、混编、二次创作吗？
-        </h3>
-        <el-radio
-          v-model="ccLicenseOptions.share"
-          :disabled="$route.params.type === 'edit'"
-          label="true"
-        >
-          允许
-        </el-radio>
-        <el-radio
-          v-model="ccLicenseOptions.share"
-          :disabled="$route.params.type === 'edit'"
-          label="false"
-        >
-          不允许
-          <el-tooltip
-            effect="dark"
-            content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品"
-            placement="top-start"
-          >
-            <i class="el-icon-info" />
-          </el-tooltip>
-        </el-radio>
-        <el-radio
-          v-model="ccLicenseOptions.share"
-          :disabled="$route.params.type === 'edit'"
-          label="SA"
-        >
-          仅允许采用本协议授权的二次创作
-          <el-tooltip
-            effect="dark"
-            content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。"
-            placement="top-start"
-          >
-            <i class="el-icon-info" />
-          </el-tooltip>
-        </el-radio>
-        <el-checkbox
-          v-model="ccLicenseOptions.commercialUse"
-          :disabled="$route.params.type === 'edit'"
-          class="is-original"
-        >
-          允许商业性使用
-        </el-checkbox>
-        <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
-      </div>
-    </div>
-    <div class="tag">
-      <p>
-        {{ $t('publish.tagTitle') }}
-      </p>
-      <div
-        class="tag-content"
-      >
-        <tag-card
-          v-for="(item, index) in tagCards"
-          :key="index"
-          :tag-card="item"
-          @toggleTagStatus="toggleTagStatus"
-        />
-      </div>
-    </div>
+
+
 
     <article-transfer
       v-if="isShowTransfer"
@@ -506,6 +90,482 @@
       :visible="statementVisible"
       @close="closeStatement"
     />
+    <!-- 设置 发布 dialog -->
+    <div v-show="settingDialog" class="set-m-dialog">
+      <div class="set-dialog">
+        <h3 class="set-title">
+          预览设置
+        </h3>
+        <div class="set-content">
+          <el-button round size="medium" @click="goPreview">
+            立即预览
+          </el-button>
+          <el-button round size="medium" @click="copyPreview">
+            复制链接
+          </el-button>
+          <p class="preview">将此链接发送给他人, 可以提前预览您还未发布的草稿(24h有效)</p>
+        </div>
+        
+        <h3 class="set-title">
+          基础设置
+        </h3>
+        <h4 class="set-subtitle">
+          {{ $t('publish.coverTitle') }}
+        </h4>
+        <div class="set-content">
+          <div class="cover">
+            <img-upload
+              v-show="!cover"
+              :append-to-body="true"
+              :img-upload-done="imgUploadDone"
+              :aspect-ratio="2 / 1"
+              :update-type="'artileCover'"
+              class="cover-upload"
+              @doneImageUpload="doneImageUpload"
+            >
+              <img
+                slot="uploadButton"
+                class="cover-add"
+                src="@/assets/img/add.svg"
+                alt="add"
+              >
+            </img-upload>
+
+            <div v-show="cover">
+              <img
+                :src="coverEditor"
+                class="cover-img"
+                alt="cover"
+              >
+            </div>
+            <img
+              v-show="cover"
+              class="cover-btn"
+              src="@/assets/img/del.svg"
+              alt="remove"
+              @click.prevent="removeCover"
+            >
+          </div>
+        </div>
+        <h4 class="set-subtitle">
+          {{ $t('publish.tagTitle') }}
+        </h4>
+        <div class="set-content">
+          <tag-card
+            v-for="(item, index) in tagCards"
+            :key="index"
+            :tag-card="item"
+            @toggleTagStatus="toggleTagStatus"
+          />
+        </div>
+        <h4 class="set-subtitle">
+          原创声明
+          <el-tooltip
+            effect="dark"
+            content="来设置你的文章版权信息，发布后无法修改"
+            placement="top-start"
+          >
+            <svg-icon class="help-icon" icon-class="help" />
+          </el-tooltip>
+        </h4>
+        <div class="set-content">
+          <div class="post-content">
+            <el-checkbox
+              v-model="isOriginal"
+              class="is-original"
+              :disabled="$route.params.type === 'edit'"
+              @change="originalChange"
+            >
+              {{ $t('publish.original') }}
+            </el-checkbox>
+            <div
+              v-if="isOriginal"
+              class="cc-licensing"
+            >
+              <h3>
+                Creative Commons 授权许可协议
+                <el-tooltip
+                  effect="dark"
+                  content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。"
+                  placement="top-start"
+                >
+                  <i class="el-icon-info" />
+                </el-tooltip>
+              </h3>
+              <h3>
+                请问您允许本作品被别人转载、节选、混编、二次创作吗？
+              </h3>
+              <el-radio
+                v-model="ccLicenseOptions.share"
+                :disabled="$route.params.type === 'edit'"
+                label="true"
+              >
+                允许
+              </el-radio>
+              <br>
+              <el-radio
+                v-model="ccLicenseOptions.share"
+                :disabled="$route.params.type === 'edit'"
+                label="false"
+              >
+                不允许
+                <el-tooltip
+                  effect="dark"
+                  content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品"
+                  placement="top-start"
+                >
+                  <i class="el-icon-info" />
+                </el-tooltip>
+              </el-radio>
+              <br>
+              <el-radio
+                v-model="ccLicenseOptions.share"
+                :disabled="$route.params.type === 'edit'"
+                label="SA"
+              >
+                仅允许采用本协议授权的二次创作
+                <el-tooltip
+                  effect="dark"
+                  content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。"
+                  placement="top-start"
+                >
+                  <i class="el-icon-info" />
+                </el-tooltip>
+              </el-radio>
+              <el-checkbox
+                v-model="ccLicenseOptions.commercialUse"
+                :disabled="$route.params.type === 'edit'"
+                class="is-original"
+              >
+                允许商业性使用
+              </el-checkbox>
+              <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
+            </div>
+          </div>
+        </div>
+        <div v-if="settingDialogMode === 'setting'">
+          <el-button
+            v-if="isShowTransfer"
+            type="danger"
+            size="medium"
+            @click="delArticle"
+          >
+            删除此篇
+          </el-button>
+          <el-button
+            v-if="isShowTransfer"
+            type="danger"
+            size="medium" 
+            @click="transferArticle"
+          >
+            转让草稿
+          </el-button>
+        </div>
+        <h3 class="set-title">
+          权限设置
+        </h3>
+        <h4 class="set-subtitle">
+          阅读权限设置
+          <el-tooltip
+            effect="dark"
+            content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
+            placement="top-start"
+          >
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
+          </el-tooltip>
+        </h4>
+        <div class="set-content">
+          <el-radio v-model="readConfigRadio" label="all">
+            所有人可见
+          </el-radio>
+          <br>
+          <el-radio v-model="readConfigRadio" label="some">
+            部分人可见
+          </el-radio>
+
+          <div v-show="readConfigRadio === 'some'" class="post-content root-setting">
+            <div style="width: 380px;">
+              <div>
+                <el-checkbox
+                  v-model="readauThority"
+                  size="small"
+                  :disabled="prohibitEditingPrices"
+                >
+                  设置持Fan票
+                </el-checkbox>
+              </div>
+              <transition name="fade">
+                <div
+                  v-show="readauThority"
+                  class="fl ac"
+                >
+                  <div>
+                    <h3>Fan票类型</h3>
+                    <el-select
+                      v-model="readSelectValue"
+                      size="small"
+                      placeholder="请选择"
+                      style="width: 100%;"
+                      filterable
+                      :disabled="prohibitEditingPrices"
+                    >
+                      <el-option
+                        v-for="item in readSelectOptions"
+                        :key="item.id"
+                        :label="item.symbol + '-' + item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </div>
+                  <div style="margin-left: 10px;">
+                    <h3>持Fan票数量</h3>
+                    <el-input
+                      v-model="readToken"
+                      :min="1"
+                      :max="100000000"
+                      size="small"
+                      placeholder="请输入内容"
+                      :disabled="prohibitEditingPrices"
+                    />
+                  </div>
+                </div>
+              </transition>
+              <div v-show="readauThority" class="related-add">
+                <el-tooltip
+                  effect="dark"
+                  content="多Fan票解锁正在开发中"
+                  placement="top"
+                >
+                  <div class="add-icon disable">
+                    <i class="el-icon-plus" />
+                  </div>
+                </el-tooltip>
+                <span>添加更多</span>
+              </div>
+              <el-checkbox
+                v-model="paymentTokenVisible"
+                size="small"
+                style="margin-top: 10px;"
+                :disabled="prohibitEditingPrices"
+              >
+                设置支付
+              </el-checkbox>
+              <transition name="fade">
+                <div
+                  v-show="paymentTokenVisible"
+                  class="fl ac"
+                >
+                  <div>
+                    <h3>支付类型</h3>
+                    <el-select
+                      v-model="paymentSelectValue"
+                      disabled
+                      size="small"
+                      placeholder="请选择"
+                      style="width: 100%;"
+                    >
+                      <el-option
+                        v-for="item in paymentSelectOptions"
+                        :key="item.id"
+                        :label="item.symbol + '-' + item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </div>
+                  <div style="margin-left: 10px;">
+                    <h3>支付数量</h3>
+                    <el-input
+                      v-model="paymentToken"
+                      :min="1"
+                      :max="100000000"
+                      size="small"
+                      placeholder="请输入内容"
+                      :disabled="prohibitEditingPrices"
+                    />
+                  </div>
+                </div>
+              </transition>
+              <transition name="fade">
+                <div v-show="readauThority || paymentTokenVisible">
+                  <h3>内容摘要</h3>
+                  <el-input
+                    v-model="readSummary"
+                    :autosize="{ minRows: 6, maxRows: 12}"
+                    size="small"
+                    type="textarea"
+                    placeholder="请输入内容"
+                    maxlength="300"
+                    show-word-limit
+                  />
+                </div>
+              </transition>
+            </div>
+          </div>
+        </div>
+        <h4 class="set-subtitle">
+          编辑权限设置(实验功能) <el-tooltip
+            effect="dark"
+            content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
+            placement="top-start"
+          >
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
+          </el-tooltip>
+        </h4>
+        <div class="set-content">
+          <el-radio v-model="editConfigRadio" label="all">
+            仅自己可编辑
+          </el-radio>
+          <br>
+          <el-radio v-model="editConfigRadio" label="some">
+            部分人可编辑
+          </el-radio>
+
+          <div v-show="editConfigRadio === 'some'" class="post-content root-setting">
+            <div style="width: 380px;">
+              <div>
+                <el-checkbox
+                  v-model="tokenEditAuthority"
+                  size="small"
+                  :disabled="prohibitEditingPrices"
+                >
+                  设置持Fan票
+                </el-checkbox>
+              </div>
+              <transition name="fade">
+                <div
+                  v-show="tokenEditAuthority"
+                  class="fl ac"
+                >
+                  <div>
+                    <h3>Fan票类型</h3>
+                    <el-select
+                      v-model="editSelectValue"
+                      size="small"
+                      placeholder="请选择"
+                      style="width: 100%;"
+                      filterable
+                      :disabled="prohibitEditingPrices"
+                    >
+                      <el-option
+                        v-for="item in readSelectOptions"
+                        :key="item.id"
+                        :label="item.symbol + '-' + item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </div>
+                  <div style="margin-left: 10px;">
+                    <h3>持Fan票数量</h3>
+                    <el-input
+                      v-model="editToken"
+                      :min="1"
+                      :max="100000000"
+                      size="small"
+                      placeholder="请输入内容"
+                      :disabled="prohibitEditingPrices"
+                    />
+                  </div>
+                </div>
+              </transition>
+              <el-checkbox
+                v-model="buyEditAuthority"
+                size="small"
+                style="margin-top: 10px;"
+                disabled
+              >
+                设置支付
+              </el-checkbox>
+              <transition name="fade">
+                <div
+                  v-show="buyEditAuthority"
+                  class="fl ac"
+                >
+                  <div>
+                    <h3>支付类型</h3>
+                    <el-select
+                      v-model="paymentSelectValue"
+                      disabled
+                      size="small"
+                      placeholder="请选择"
+                      style="width: 100%;"
+                    >
+                      <el-option
+                        v-for="item in paymentSelectOptions"
+                        :key="item.id"
+                        :label="item.symbol + '-' + item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </div>
+                  <div style="margin-left: 10px;">
+                    <h3>支付数量</h3>
+                    <el-input
+                      v-model="editPaymentToken"
+                      :min="1"
+                      :max="100000000"
+                      size="small"
+                      placeholder="请输入内容"
+                      :disabled="prohibitEditingPrices"
+                    />
+                  </div>
+                </div>
+              </transition>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="set-subtitle">
+          是否公开文章历史记录 <el-tooltip
+            effect="dark"
+            content="开启公开文章历史记录权限后，任何人都可以看到你这篇文章的历史版本。"
+            placement="top-start"
+          >
+            <svg-icon
+              class="help-icon"
+              icon-class="help"
+            />
+          </el-tooltip>
+        </h4>
+        <div class="set-content">
+          <el-radio v-model="ipfs_hide" :label="true">
+            仅自己可见
+          </el-radio>
+          <br>
+          <el-radio v-model="ipfs_hide" :label="false">
+            公开可见
+          </el-radio>
+        </div>
+
+        <div class="set-footer">
+          <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
+            <el-button size="medium">
+              返回草稿箱
+            </el-button>
+          </router-link>
+          
+          <el-button
+            type="primary"
+            size="medium"
+            style="margin-left: 10px;"
+            @click="sendThePost"
+          >
+            立即发布
+          </el-button>
+        </div>
+
+        <svg-icon
+          class="close-icon"
+          icon-class="close_thin"
+          @click="settingDialog = false"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -527,6 +587,7 @@ import statement from '@/components/statement/index.vue'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 
 export default {
+  layout: 'empty',
   name: 'NewPost',
   components: {
     imgUpload,
@@ -593,32 +654,6 @@ export default {
       ], // 支付tokenlist
       paymentSelectValue: -1, // 支付tokenlist show value
       readSummary: '',
-      relatedLink: '',
-      relatedTitle: '',
-      relatedContent: '',
-      relatedLoading: false,
-      relatedList: [
-        // {
-        //   url: '',
-        //   urlInput: '',
-        //   title: ',
-        //   titleInput: '',
-        //   content: '',
-        //   contentInput: '',
-        //   collapse: false,
-        //   showCollapse: true,
-        //   edit: false
-        // }
-      ],
-      pull: {
-        params: {
-          // 没有id是时候不请求list
-          // pagesize: 5
-        },
-        apiUrl: this.$route.params.type === 'draft' ? 'draftsReferences' : 'postsReferences',
-        list: [],
-        reload: 0
-      },
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
       total: 0,
@@ -628,7 +663,14 @@ export default {
       authorId: 0,
       prohibitEditingPrices: false,
       // 加密语法
-      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n> [📔使用说明](https://www.yuque.com/matataki/matataki/giw9u4)\n\n[else]\n\n预览内容\n\n[/read]\n'
+      encryption: '\n\n[read hold="SYMBOL amount"]\n\n隐藏内容\n> [📔使用说明](https://www.yuque.com/matataki/matataki/giw9u4)\n\n[else]\n\n预览内容\n\n[/read]\n',
+      settingDialog: false, // 设置 发布页面dialog
+      settingDialogMode: '', // setting publish
+      // 阅读权限
+      readConfigRadio: 'all',
+      // 编辑权限
+      editConfigRadio: 'all',
+      ipfs_hide: true,
     }
   },
   computed: {
@@ -709,7 +751,7 @@ export default {
         }
         return data
       }
-    }
+    },
   },
   watch: {
     fissionNum() {
@@ -774,17 +816,6 @@ export default {
       window.addEventListener('resize', this.resizeEvent)
     }
 
-    // 判断当前
-    // 如果是草稿 并且有id请求list, 如果没有下面创建草稿之后会请求list
-    if (type === 'draft' && typeof parseInt(id) === 'number' && !isNaN(parseInt(id))) { // 草稿
-      this.pull.params = {
-        pagesize: 5
-      }
-    } else if (type === 'edit') { // 编辑
-      this.pull.params = {
-        pagesize: 5
-      }
-    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -809,7 +840,7 @@ export default {
     _resizeEditor() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
       this.editorStyle = {
-        height: `${clientHeight - 110}px`
+        height: `${clientHeight - 60}px`
       }
     },
     // watch 监听草稿更新
@@ -850,12 +881,6 @@ export default {
         })
       }
     }, 500),
-    handleMoreAction(command) {
-      this[command]()
-    },
-    transfer() {
-      this.transferModal = true
-    },
     unload($event) {
       // 刷新页面 关闭页面有提示
       // https://jsfiddle.net/jbf4vL7h/29/
@@ -886,7 +911,7 @@ export default {
       })
       // 获取文章信息
       await this.$API.getCanEditPost(id).then(res => {
-        console.log('获取文章信息:', id, res)
+        // console.log('获取文章信息:', id, res)
         if (res.code === 0) {
           this.fissionNum = res.data.fission_factor / 1000
           this.signature = res.data.sign
@@ -911,6 +936,7 @@ export default {
             this.editSelectValue = res.data.editTokens[0].id
           }
 
+
           // 付费阅读
           if (res.data.prices && res.data.prices.length !== 0) {
             this.paymentTokenVisible = true
@@ -925,6 +951,21 @@ export default {
             this.editPaymentToken = precision(res.data.editPrices[0].price, res.data.editPrices[0].platform, res.data.editPrices[0].decimals)
             this.paymentSelectValue = -1
           }
+
+          // 有 持通证阅读 || 付费阅读 展示单选区域
+          if (this.readauThority || this.paymentTokenVisible) {
+            this.readConfigRadio = 'some'
+          } else {
+            this.readConfigRadio = 'all'
+          }
+
+          //有 持通证编辑 || 付费编辑
+          if (this.tokenEditAuthority || this.buyEditAuthority) {
+            this.editConfigRadio = 'some'
+          } else {
+            this.editConfigRadio = 'all'
+          }
+
 
           this.setTag(res.data)
         } else {
@@ -1084,6 +1125,7 @@ export default {
 
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
+      article.ipfs_hide = this.ipfs_hide
       const { failed } = this
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
@@ -1144,10 +1186,6 @@ export default {
           const url = window.location.origin + '/publish/draft/' + res.data
           history.pushState({}, '', url)
 
-          // 草稿创建成功, 允许list请求
-          this.pull.params = {
-            pagesize: 5
-          }
         } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }).catch(err => {
         console.log(err)
@@ -1164,6 +1202,8 @@ export default {
       // 编辑权限
       article.editRequireToken = this.editRequireToken
       article.editRequireBuy = this.editRequireBuy
+      // History 权限
+      article.ipfs_hide = this.ipfs_hide
 
       const { failed, success } = this
       try {
@@ -1233,9 +1273,24 @@ export default {
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed(this.$t('warning.titleOrContent'))
 
+      // 没有封面
       if (!this.cover) return this.failed(this.$t('warning.cover'))
 
-      if (this.fissionFactor === '') this.fissionFactor = 2 // 用户不填写裂变系数则默认为2
+      // 用户不填写裂变系数则默认为2
+      if (this.fissionFactor === '') this.fissionFactor = 2
+
+      // 检查阅读权限 如果当前是全部可见 修改复选框
+      if (this.readConfigRadio === 'all') {
+        this.readauThority = false
+        this.paymentTokenVisible = false
+      }
+
+      // 检查编辑权限 如果当前是全部可见 修改复选框
+      if (this.editConfigRadio === 'all') {
+        this.tokenEditAuthority = false
+        this.buyEditAuthority = false
+      }
+
       this.allowLeave = true
       const { type } = this.$route.params
 
@@ -1457,6 +1512,95 @@ export default {
       this.cover = '/image/2019/11/20/ebf10fad1a4a2e8e77f33140a1411b09.jpg'
       const { 生成文章 } = await 扯淡生成器
       this.markdownData = 生成文章()
+    },
+    // 显示设置 发布dialog
+    showSettingDialog(val) {
+      this.settingDialogMode = val
+      this.settingDialog = true
+    },
+    // 删除这篇 文章||草稿
+    delArticle() {
+      // 判断有没有id
+      const id = this.$route.params.id
+      if (id === 'create' || !Number(id)) return
+
+      const del = async () => {
+        let res = null
+        if (this.$route.params.type === 'edit') {
+          // res = await this.$utils.factoryRequest(this.$API.delArticle({ id }))
+        } else if (this.$route.params.type === 'draft') {
+          res = await this.$utils.factoryRequest(this.$API.delDraft({ id }))
+        } else {
+        //
+        }
+        if (res) {
+          this.allowLeave = true
+          this.$message.success(res.message)
+          this.$router.push({
+            name: 'article'
+          })
+        }
+      }
+
+      this.$confirm('是否删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        del()
+      }).catch(() => {
+      })
+
+    },
+    // 文章 || 草稿 转让
+    transferArticle() {
+      const id = this.$route.params.id
+      if (id === 'create' || !Number(id)) return
+
+      this.transferModal = true
+    },
+    // 返回上一页
+    backRouter() {
+      this.$router.go(-1)
+    },
+
+    // 允许草稿预览
+    async previewSetId(id) {
+      try {
+        const res = await this.$API.previewSetId({ id })
+        if (res.code === 0) {
+          return true
+        } else {
+          this.$message.error(res.message)
+          return false
+        }
+      } catch (e) {
+        console.log(e)
+        return false
+      }
+    },
+    // 立即预览
+    async goPreview() {
+      const id = this.$route.params.id
+      if (id === 'create' || !Number(id)) return
+
+      const res = this.previewSetId(this.$route.params.id)
+      if (res) {
+        window.open(`${window.location.origin}/preview/${this.$route.params.id}`)
+      }
+    },
+    // 复制预览链接
+    async copyPreview() {
+      const id = this.$route.params.id
+      if (id === 'create' || !Number(id)) return
+
+      const res = this.previewSetId(this.$route.params.id)
+      if (res) {
+        this.$copyText(`${window.location.origin}/preview/${this.$route.params.id}`).then(
+          () => this.$message.success(this.$t('success.copy')),
+          () => this.$message.error(this.$t('error.copy'))
+        )
+      }
     }
   }
 }

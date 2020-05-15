@@ -68,5 +68,20 @@ export default {
     }
 
     return fn.reduce((a, b) => (...args) => a(b(...args)))
+  },
+  // 工厂函数 返回接口数据
+  async factoryRequest(api) {
+    try {
+      const res = await api
+      if (res.code === 0) {
+        return res
+      } else {
+        console.log(res.message)
+        return
+      }
+    } catch (error) {
+      console.log(error)
+      return
+    }
   }
 };

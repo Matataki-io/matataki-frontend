@@ -72,11 +72,12 @@
         >
           <n-link
             :class="{ badge: hasNewNotification }"
+            class="create"
             to="/notification"
           >
             <svg-icon
               :style="customizeHeaderIconColorComputed"
-              class="notification create"
+              class="notification"
               icon-class="bell"
             />
           </n-link>
@@ -295,18 +296,12 @@ export default {
       type: String,
       default: ''
     },
-    // 用户提示
-    popoverVisible: {
-      type: Boolean,
-      default: false
-    }
   },
   data() {
     return {
       avatar: '',
       searchFcous: false,
       searchInput: this.searchQueryVal,
-      visible: this.popoverVisible,
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
     }
@@ -350,10 +345,6 @@ export default {
   watch: {
     isLogined(newState) {
       if (newState) this.refreshUser()
-    },
-    // 监听提示状态
-    popoverVisible(newVal) {
-      this.visible = newVal
     },
     searchQueryVal(newVal) {
       this.searchInput = newVal
@@ -527,6 +518,10 @@ export default {
     cursor: pointer;
     margin: 0 20px 0 0;
     color: #000;
+    .notification {
+    width: 100%;
+    height: 100%;
+    }
   }
   &-avatar {
     width: 30px;
