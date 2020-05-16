@@ -192,7 +192,7 @@ export default {
     sale: '销量',
     investment: '投资',
     saleUnit: 'EOS/份',
-    deleted: '已下架'
+    deleted: '已站内隐藏'
   },
   articleFooter: {
     received: '已领取',
@@ -315,7 +315,7 @@ export default {
     stageDes32: '打造区块链永存知识数据库'
   },
   home: {
-    creation: '创作',
+    creation: '发现',
     share: '分享',
     fanTicket: 'Fan票',
     signOut: '登出',
@@ -347,8 +347,10 @@ export default {
     articleTagTitle: '文章标签',
     shopTagTitle: '商品标签',
     recommendAuthor: '推荐作者',
+    popularArticles: '不要错过',
     random: '换一换',
-    allCreation: '综合创作',
+    allCreation: '最热作品',
+    latestCreation: '最新作品',
     fanCircle: 'Fan圈',
     myFocus: '我的关注',
     ofFanCircle: '的Fan圈',
@@ -566,7 +568,7 @@ export default {
     vntBuyAccount: '登陆的Vnt账号与支付账号不相同',
     shareWeibo: '微博',
     shareWechat: '扫一扫，分享到微信',
-    deleted: '文章已下架',
+    deleted: '文章已经站内隐藏',
     fulfillTheConditions: '达成条件即可阅读全文',
     quoted: '已引用',
     summary: '摘要',

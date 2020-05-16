@@ -2,7 +2,7 @@
   <div class="article-container">
     <div class="article-head">
       <tab :idx="0" />
-      <div
+      <!-- <div
         class="sort"
       >
         <span
@@ -14,7 +14,7 @@
           :class="sortValue === options[1].value && 'active'"
           @click="sortValue = options[1].value"
         >{{ options[1].label }}</span>
-      </div>
+      </div> -->
     </div>
     <articleCardListNew
       v-for="item in articleCardData[sortValue].articles"

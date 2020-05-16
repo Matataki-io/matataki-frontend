@@ -1,389 +1,288 @@
 <template>
-  <div class="main">
-    <!-- home -->
-    <section
-      ref="home"
-      class="home"
-    >
-      <!-- logo -->
-      <img
-        ref="logo"
-        class="home-logo"
-        src="@/assets/img/index/logo.png"
-        alt="logo"
-      >
-      <img
-        ref="sumary"
-        class="home-sumary"
-        src="@/assets/img/index/sumary.png"
-        alt="sumary"
-      >
-      <!-- btn -->
-      <div
-        ref="btnMenu"
-        class="btn-menu"
-      >
-        <div
-          class="btn"
-          @click="showMoreMenu"
-        >
-          <svg-icon
-            icon-class="add"
-          />
-        </div>
-        <div class="btn-list">
-          <router-link :to="{name: 'article'}">
-            <svg-icon
-              class="btn-list_btn"
-              icon-class="article"
-            />
-          </router-link>
-          <router-link :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }">
-            <svg-icon
-              class="btn-list_btn"
-              icon-class="write_index"
-            />
-          </router-link>
-          <router-link :to="{name: 'token'}">
-            <svg-icon
-              class="btn-list_btn"
-              icon-class="fan"
-            />
-          </router-link>
-          <router-link :to="{name: 'exchange'}">
-            <svg-icon
-              class="btn-list_btn"
-              icon-class="exchange_home"
-            />
-          </router-link>
-        </div>
-      </div>
-      <!-- background -->
-      <img
-        class="home-background__left"
-        src="@/assets/img/index/main_bg_left.png"
-        alt="matataki home background"
-      >
-      <img
-        class="home-background__right"
-        src="@/assets/img/index/main_bg_right.png"
-        alt="matataki home background"
-      >
-    </section>
-
-    <!-- story -->
-    <section class="story ">
-      <div>
-        <!-- story 1 -->
-        <section
-          ref="storyOne"
-          class="component-story story-left story_01"
-        >
-          <section class="component-story__header">
-            <article class="component-story__inner">
-              <figure class="component-story__inner__title">
+  <div class="home">
+    <!-- screen1 -->
+    <section class="screen1">
+      <section class="screen1-main">
+        <header>
+          <img src="@/assets/img/home/logo.png" alt="logo" class="logo">
+          <div>
+            <el-dropdown
+              v-if="isLogined"
+              class="user-menu"
+            >
+              <div class="user-avatar">
                 <img
-                  src="@/assets/img/index/passion.png"
-                  alt="passion"
+                  v-if="avatar"
+                  :src="avatar"
+                  alt="user avatar"
                 >
-              </figure>
-              <div class="visual-wrap">
-                <figure>
-                  <img
-                    src="@/assets/img/index/story_passion.png"
-                    alt="passion"
-                  >
-                </figure>
               </div>
-            </article>
-          </section>
-          <section class="component-story__summary">
-            <article class="component-story__inner">
-              <figure class="component-story__summary__title">
-                <img
-                  src="@/assets/img/index/sotry_passion_title.png"
-                  alt="passion"
-                >
-              </figure>
-              <ul>
-                <li>
-                  <p class="summary">
-                    我所热爱的就是最大的。
-                  </p>
-                </li>
-                <li>
-                  <p class="summary">
-                    在未来，我们与AI有什么不同？是生生不息的热爱、探索与执着让我们如此不同！
-                  </p>
-                </li>
-                <li>
-                  <p class="summary">
-                    投资执着和努力创作的人，未来，一个人就是一家“公司”。
-                  </p>
-                </li>
-              </ul>
-            </article>
-          </section>
-        </section>
-
-        <!-- story 2 -->
-        <section
-          ref="storyTwo"
-          class="component-story story-right story_02"
-        >
-          <section class="component-story__header">
-            <article class="component-story__inner">
-              <figure class="component-story__inner__title">
-                <img
-                  src="@/assets/img/index/sustainability.png"
-                  alt="sustainability"
-                >
-              </figure>
-              <div class="visual-wrap">
-                <figure>
-                  <img
-                    src="@/assets/img/index/story_sustainability.png"
-                    alt="sustainability"
-                  >
-                </figure>
-              </div>
-            </article>
-          </section>
-          <section class="component-story__summary">
-            <article class="component-story__inner">
-              <figure class="component-story__summary__title">
-                <img
-                  src="@/assets/img/index/sotry_sustainability_title.png"
-                  alt="sustainability"
-                >
-              </figure>
-              <ul>
-                <li>
-                  <p class="summary">
-                    利用区块链为创作数据确权，数据资产完全归属作者，不再被平台剥夺、剥削。
-                  </p>
-                </li>
-                <li>
-                  <p class="summary">
-                    完善的区块链价值工具集，保证作者的创作价值触达更多爱好者，用社区的力量反哺创作，用创作的价值壮大社区。
-                  </p>
-                </li>
-                <li>
-                  <p class="summary">
-                    区块链上价值透明可传导，保证衍生创作持续输血原作，让优秀的创作生生不息。
-                  </p>
-                </li>
-              </ul>
-            </article>
-          </section>
-        </section>
-
-        <!-- story 3 -->
-        <section
-          ref="storyThree"
-          class="component-story story-left story_03"
-        >
-          <section class="component-story__header">
-            <article class="component-story__inner">
-              <figure class="component-story__inner__title">
-                <img
-                  src="@/assets/img/index/boundary.png"
-                  alt="boundary"
-                >
-              </figure>
-              <div class="visual-wrap">
-                <figure>
-                  <img
-                    src="@/assets/img/index/story_boundary.png"
-                    alt="boundary"
-                  >
-                </figure>
-              </div>
-            </article>
-          </section>
-          <section class="component-story__summary">
-            <article class="component-story__inner">
-              <figure class="component-story__summary__title">
-                <img
-                  src="@/assets/img/index/sotry_boundary_title.png"
-                  alt="boundary"
-                >
-              </figure>
-              <ul>
-                <li>
-                  <p class="summary">
-                    思想高度多样化的群体，智能水平能够超越多年训练的专家
-                  </p>
-                </li>
-                <li>
-                  <p class="summary">
-                    社交媒体快速抢占我们的注意力，而思考和学习需要慢时间，如何让慢的事情高质量变快？
-                  </p>
-                </li>
-                <li>
-                  <p class="summary">
-                    市场和经济系统能够奖励优秀的思想，合作能够快速传播思想和带来思想的进化，<b>“市场激励”</b>加<b>“合作”</b>能让群体的“慢”思考变快，提升社会中每个人的能力和收益。
-                  </p>
-                </li>
-              </ul>
-            </article>
-          </section>
-        </section>
-      </div>
-    </section>
-
-    <div
-      ref="evaluation"
-      class="evaluation_section_div"
-    >
-      <section class="evaluation_section">
-        <div class="evaluation">
-          <i
-            class="el-icon-arrow-left arrow"
-            @click="pageTurning(-1)"
-          />
-          <n-link
-            :to=" {name: 'user-id', params: {id: userReviews[pageNum].id}} "
-            target="_blank"
-            class="author"
-          >
-            <avatar
-              :size="'50px'"
-              :src="userReviews[pageNum].avatar"
-              class="avatar"
-            />
-          </n-link>
-          <div class="bubble">
-            <p class="name">
-              {{ userReviews[pageNum].name }}：
-            </p>
-            <p class="content">
-              <img
-                src="@/assets/img/index/double_quotes_left.png"
-                class="left"
-                alt="double_quotes_left"
+              <el-dropdown-menu
+                slot="dropdown"
+                class="user-dorpdown"
               >
-              {{ userReviews[pageNum].content }}
-              <img
-                src="@/assets/img/index/double_quotes_right.png"
-                class="right"
-                alt="double_quotes_right"
-              >
+                <n-link
+                  :to="{name: 'user-id', params:{id: currentUserInfo.id}}"
+                  class="link"
+                >
+                  <el-dropdown-item>
+                    {{ currentUserInfo.nickname || currentUserInfo.name }}
+                  </el-dropdown-item>
+                </n-link>
+                <n-link
+                  :to="{name: 'setting', params:{id: currentUserInfo.id}}"
+                  class="link"
+                >
+                  <el-dropdown-item>
+                    {{ $t('home.account') }}
+                  </el-dropdown-item>
+                </n-link>
+      
+                <div
+                  class="link"
+                  @click="btnsignOut"
+                >
+                  <el-dropdown-item>
+                    {{ $t('home.signOut') }}
+                  </el-dropdown-item>
+                </div>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <a
+              v-else
+              href="javascript:;"
+              class="login-btn"
+              @click="login"
+            >注册/登录</a>
+          </div>
+        </header>
+        <section class="screen1-block__text">
+          <div class="screen1-block__text__content">
+            <h1>我们帮助 自由 的创作者<br>获得更多收入<br>& <span>自由 公开 永存</span> 的数字作品库</h1>
+            <p>
+              所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个节点上，实现作品的分布式存储，无需担心被和谐删档，你的数据只属于你自己。
+              <br>
+              Matataki希望围绕 有趣的话题、深度思考，吸引有独立精神的创作者，构建独特的内容价值网络，依托于区块链技术搭建稳固优质社群平台，保护创作内容版权；配合独特算法让优质内容浮现，以数字货币和粉丝通证让创作者、参与者获得持续回报。
             </p>
           </div>
-          <i
-            class="el-icon-arrow-right arrow"
-            @click="pageTurning(1)"
-          />
-        </div>
+
+          <section class="screen1-block__btn">
+            <a href="javascript:;" class="screen1-btn create" @click="writeP">立即创作</a>
+            <router-link :to="{name: 'article'}" class="screen1-btn subscribe">
+              探索作品
+            </router-link>
+            <!-- <a href="javascript:;" class="screen1-more">订阅我们</a> -->
+          </section>
+        </section>
+        <section class="screen1-block__img">
+          <img src="@/assets/img/home/home_screen1_img.png" alt="img">
+        </section>
       </section>
-    </div>
 
-    <!-- roadmap -->
-    <section class="roadmap">
-      <section class="roadmap-content">
-        <div class="roadmap-block">
-          <img
-            class="roadmap-bg"
-            src="@/assets/img/index/roadmap.png"
-            alt="roadmap-background"
-          >
-          <!-- <img class="roadmap-text" src="@/assets/img/index/roadmap_text.png" alt="roadmap-text"> -->
-        </div>
-        <section class="roadmap-time">
-          <div class="roadmap-time__block">
-            <h4>
-              <img
-                src="@/assets/img/index/2019Q4.png"
-                alt="2019.Q4"
-              >
-            </h4>
-            <ul>
-              <li>
-                <p class="sumary">
-                  用户创作数据区块链时间戳确权，为原创作品保驾护航。
-                </p>
-              </li>
-              <li>
-                <p class="sumary">
-                  去中心化存储协议保证数据资产权益完全归用户所有。
-                </p>
-              </li>
-              <li>
-                <p class="sumary">
-                  Fan票 数据价值量化系统上线，丰富数据的商业化应用场景，为创作者商业变现赋能。
-                </p>
-              </li>
-            </ul>
-          </div>
-          <div class="roadmap-time__block">
-            <h4>
-              <img
-                src="@/assets/img/index/2020Q1.png"
-                alt="2020.Q1"
-              >
-            </h4>
-            <ul>
-              <li>
-                <p class="sumary">
-                  FanDAOs 创作者社群去中心化协作工具集上线，帮助创作社群自发、高效运转，让社群专注价值生产。
-                </p>
-              </li>
-            </ul>
-          </div>
-          <div class="roadmap-time__block">
-            <h4>
-              <img
-                src="@/assets/img/index/2020Q2.png"
-                alt="2020.Q2"
-              >
-            </h4>
-            <div class="leftFrame">
-              <ul>
-                <li>
-                  <p class="sumary">
-                    上线零工经济系统。
+      <div class="screen1-bc">
+        <img src="@/assets/img/home/home_screen1_icon1.png" alt="icon">
+        <img src="@/assets/img/home/home_screen1_icon2.png" alt="icon">
+        <img src="@/assets/img/home/home_screen1_icon3.png" alt="icon">
+        <img src="@/assets/img/home/home_screen1_icon4.png" alt="icon">
+        <img src="@/assets/img/home/home_screen1_icon5.png" alt="icon">
+        <img src="@/assets/img/home/home_screen1_icon6.png" alt="icon">
+      </div>
+    </section>
+
+    <!-- screen2 -->
+    <section class="screen2">
+      <h3 class="screen-title">
+        TA们也在使用Matataki
+      </h3>
+      <section class="screen2-content">
+        <el-carousel
+          v-if="swipeMode === 'double'"
+          class="swipe-carousel"
+          :height="swipeHeight"
+          indicator-position="outside"
+          trigger="click"
+          :interval="5000"
+        >
+          <el-carousel-item v-for="item in Math.ceil(supporters.length / 2)" :key="item">
+            <div class="swipe">
+              <template>
+                <div v-for="(supporter, index) in supportersX2(item)" :key="index" class="swipe-block">
+                  <!-- <div class="swipe-tag">
+                    已入驻365天
+                  </div> -->
+
+                  <router-link :to="{name: 'user-id', params: { id: supporter.id } }" target="_blank">
+                    <section class="swipe-head">
+                      <c-avatar :src="imgUrl(supporter.avatar)" />
+                      <section class="swipe-head-info">
+                        <p class="swipe-info-title">{{ supporter.nickname }}</p>
+                        <p class="swipe-info-sub">{{ supporter.signature }}</p>
+                      </section>
+                    </section>
+                  </router-link>
+                  <p class="swipe-text">
+                    {{ supporter.slogan }}
                   </p>
-                </li>
-                <li>
-                  <p class="sumary">
-                    完善去中心化存储激励协议层。
+                  <div class="swipe-line" />
+                  <p class="swipe-publish">
+                    <span>{{ supporter.numPosts }}</span>篇文章已发表
                   </p>
-                </li>
-              </ul>
+                  <router-link :to="{name: 'p-id', params: { id: supporter.post.id } }" target="_blank">
+                    <div class="swipe-article">
+                      <div class="swipe-article-full" />
+                      <img :src="imgUrl(supporter.post.cover)" alt="cover">
+                      <p class="swipe-article-text">{{ supporter.post.title }}</p>
+                    </div>
+                  </router-link>
+                </div>
+              </template>
             </div>
-          </div>
-          <div class="roadmap-time__block">
-            <h4>
-              <img
-                src="@/assets/img/index/2020Q3.png"
-                alt="2020.Q3"
-              >
-            </h4>
-            <ul>
-              <li>
-                <p class="sumary">
-                  全面开放平台API，提供完善的开发工具套件，平台转向社区化运营。
-                </p>
-              </li>
-            </ul>
-          </div>
-          <div class="roadmap-time__block">
-            <h4>
-              <img
-                src="@/assets/img/index/2020Q4.png"
-                alt="2020.Q4"
-              >
-            </h4>
-            <ul>
-              <li>
-                <p class="sumary">
-                  “人类知识共享、创新计划”上线，建设全网开放、通用的语义网络数据集。
-                </p>
-              </li>
-            </ul>
-          </div>
-          <div class="roadmap-time__line" />
+          </el-carousel-item>
+        </el-carousel>
+        <el-carousel
+          v-if="swipeMode === 'single'"
+          class="swipe-carousel"
+          :height="swipeHeight"
+          indicator-position="outside"
+          trigger="click"
+          :interval="5000"
+        >
+          <el-carousel-item v-for="(supporter, index) in supporters" :key="index">
+            <div class="swipe">
+              <template>
+                <div class="swipe-block single">
+                  <!-- <div class="swipe-tag">
+                    已入驻340天
+                  </div> -->
+
+                  <router-link :to="{name: 'user-id', params: { id: supporter.id } }" target="_blank">
+                    <section class="swipe-head">
+                      <c-avatar :src="imgUrl(supporter.avatar)" />
+                      <section class="swipe-head-info">
+                        <p class="swipe-info-title">{{ supporter.nickname }}</p>
+                        <p class="swipe-info-sub">{{ supporter.signature }}</p>
+                      </section>
+                    </section>
+                  </router-link>
+                  <p class="swipe-text">
+                    {{ supporter.slogan }}
+                  </p>
+                  <div class="swipe-line" />
+                  <p class="swipe-publish">
+                    <span>{{ supporter.numPosts }}</span>篇文章已发表
+                  </p>
+                  <router-link :to="{name: 'p-id', params: { id: supporter.post.id } }" target="_blank">
+                    <div class="swipe-article">
+                      <div class="swipe-article-full" />
+                      <img :src="imgUrl(supporter.post.cover)" alt="cover">
+                      <p class="swipe-article-text">{{ supporter.post.title }}</p>
+                    </div>
+                  </router-link>
+                </div>
+              </template>
+            </div>
+          </el-carousel-item>
+        </el-carousel>
+      </section>
+    </section>
+
+    <!-- screen3 -->
+    <section class="screen3">
+      <div class="screen3-bc">
+        <img src="@/assets/img/home/home_screen3_icon1.png" alt="icon">
+      </div>
+      <h3 class="screen-title">
+        为什么要在Matataki上创作？
+      </h3>
+      <section class="screen3-content">
+        <section class="screen3-block">
+          <img src="@/assets/img/home/home_screen3_1.png" alt="icon">
+          <h4>永久保存<br>只管放心发表</h4>
+          <p>无需担心被和谐，你创造的内容被永久存储在IPFS分布式网络上，且无法被任何人进行再次修改，方便在其他平台日后维权。</p>
+        </section>
+        <section class="screen3-block">
+          <img src="@/assets/img/home/home_screen3_2.png" alt="icon">
+          <h4>自由创作<br>尺度收放自如</h4>
+          <p>功能强大的内容编辑器，没有人可以影响您的创作自由，一切尽在自己掌控之中。您也可以允许自己的真粉们向自己提出建议的特权。</p>
+        </section>
+        <section class="screen3-block">
+          <img src="@/assets/img/home/home_screen3_3.png" alt="icon">
+          <h4>个人通证<br>数字社交货币</h4>
+          <p>让粉丝们使用你发行的个人通证来解锁文章！你的个人通证的价值将不断增加！粉丝通证不仅仅是你的专属货币，也是粉丝们作为同行者的印记。</p>
+        </section>
+        <section class="screen3-block">
+          <img src="@/assets/img/home/home_screen3_4.png" alt="icon">
+          <h4>潜在收入<br>内容付费和打赏</h4>
+          <p>你的任何文章都可设置付费解锁，不要低估粉丝对您作品的喜爱，只要是优质作品，即使需要付费，他们也会常有付费动力！甚至用个人通证打赏。</p>
+        </section>
+      </section>
+    </section>
+
+
+    <!-- screen4 -->
+    <section class="screen4">
+      <h3 class="screen-title">
+        三步 使用 MATATAKI
+      </h3>
+      <section class="screen4-content">
+        <section class="screen4-block">
+          <h4>1.创建内容</h4>
+          <p>无需担心被和谐，你创造的内容被永久存储在IPFS分布式网络上，且无法被任何人进行再次修改，方便在其他平台日后维权。</p>
+          <img src="@/assets/img/home/home_screen4_1.png" alt="icon">
+        </section>
+        <img src="@/assets/img/home/home_screen4_arrow.png" alt="screen" class="screen4-arrow">
+        <section class="screen4-block">
+          <h4>2.分享链接</h4>
+          <p>将你的作品连接分享到你的粉丝大本营，如微博、公众号、微信群等。</p>
+          <img src="@/assets/img/home/home_screen4_2.png" alt="icon">
+        </section>
+        <img src="@/assets/img/home/home_screen4_arrow.png" alt="screen" class="screen4-arrow">
+        <section class="screen4-block">
+          <h4>3.获得收益</h4>
+          <p>当你设置付费可见的内容被查看了，当即获得收益。优秀的作品甚至可以收到额外打赏。</p>
+          <img src="@/assets/img/home/home_screen4_3.png" alt="icon">
+        </section>
+      </section>
+
+      <p class="screen4-title">每一篇自由的创作都应该被永远记录 <span>—— 瞬Matataki</span></p>
+      <p class="screen4-btn">
+        <router-link :to="{name: 'article'}" class="screen4-btn">探索更多</router-link>
+      </p>
+    </section>
+
+    <!-- screen5 -->
+    <!-- <section class="screen5">
+      <h3 class="screen-title">
+        订阅 瞬Matataki 资讯
+      </h3>
+      <section class="screen5-content">
+        <input type="text" placeholder="请输入您的邮箱">
+        <a href="javascript:;">订阅我们</a>
+      </section>
+    </section> -->
+
+    <!-- screen6 -->
+    <section class="screen6">
+      <h3>Q & A</h3>
+      <section class="screen6-content">
+        <section class="screen6-block">
+          <h4>1 个人通证 与 瞬Matataki 的关系？</h4>
+          <p>个人通证是一种由个人发行的数字货币，在 瞬Matataki 上也被叫做Fan票，主要被用于支付解锁与你相关的个人创作内容。同时还可以被用作为“粉丝令牌”，只要持有一定数量也可以解锁一些你的创作内容。瞬Matataki 是首个引用了 个人通证 作为支付手段和核心验证手段的 内容创作平台。未来 瞬Matataki 也会开发出更多基于个人通证的有趣使用场景。更多说明可以查看<a href="https://www.matataki.io/p/977?invite=9" target="_blank">这篇</a></p>
+        </section>
+
+        <section class="screen6-block">
+          <h4>2 使用Matataki的优势在哪？</h4>
+          <p>瞬Matataki 对于创作者来说是个绝佳 且 安全的内容创作平台：我们没有签约和入驻，对于内容和发布的频次我们页没有任何限制。内置了强大的Markdown编辑器，并且支持直接导入您在其他多个内容平台上的作品。利用 去中心化存储技术强力保障您的作品安全，免受和谐之苦！您只管 自由 创作！</p>
+        </section>
+
+        <section class="screen6-block">
+          <h4>3 瞬Matataki 是否收费？</h4>
+          <p>瞬Matataki 对于所有用户都是完全免费使用的。涉及到链上交易部分将会通过钱包扣除必要的交易手续费。</p>
+        </section>
+
+        <section class="screen6-block">
+          <h4>4 我的作品如果被侵权了怎么办？</h4>
+          <p>在Matataki的所有文章都使用区块链技术盖上了时间戳，并且无法被篡改。这将可以作为有力证据在维权的时候使用。我们正在逐步推出社区治理系统，加强对于侵权内容的管控。</p>
         </section>
       </section>
     </section>
@@ -391,264 +290,195 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
+import { mapGetters, mapActions } from 'vuex'
+import { removeCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 import throttle from 'lodash/throttle'
-import avatar from '@/components/avatar/index.vue'
-import loadScript from '@/utils/load_script'
+
 export default {
-  head: function () {
-    return {
-      script: [
-      // { src: '/gsap.min.js' },
-      // { src: '/ScrollMagic.min.js' },
-      // { src: '/animation.gsap.min.js' }
-      // { src: '/debug.addIndicators.min.js' }
-      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js' },
-      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js' }
-      // { src: 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js' }
-      ]
-    }
-  },
-  components: {
-    avatar
-  },
   data() {
     return {
-      pageNum: 0,
-      aComment: {
-        avatar: '',
-        name: '',
-        content: ''
-      },
-      userReviews: [
+      resizeEvent: null,
+      swipeMode: '', // single double
+      swipeHeight: '720px', // 高度
+      avatar: '',
+      supporters: [
         {
           id: 82,
-          avatar: this.$ossProcess('/avatar/2019/09/06/b4b75ec1f3ab19c74aab668579535848.jpeg'),
-          name: 'Ponge',
-          content: '优美流畅的UI，方便易用的编辑方式（支持Markdown）是Matataki最吸引我的两个地方。这里没有404，这里没有敏感词，但是这里有无限的可能。粉丝经济、电商……不知道未来Matataki会走向何方，但是每一个“瞬”间都值得“留链”。'
+          nickname: 'Ponge',
+          avatar: '/avatar/2019/09/06/b4b75ec1f3ab19c74aab668579535848.jpeg',
+          signature: '金融从业，专注投资',
+          slogan: 'Matataki是我遇到对markdown支持最好的内容写作平台，让作者能够安心于内容创作，把排版美化的工作放心地交给它（手机端和网页端呈现都很好）。平台虽然不大，但能看出开发者的良苦用心，widget的设计、引用的嵌入、Fan票的设立……一步步走来，能够看到开发者对于创作者的尊重，也能看到开发者的认真与执着。既希望网站能够在有朝一日被更多的创作者发现并喜爱，又有点私心地希望这个宝藏网站不为人所知。哈哈，说了这么多，你不来试试吗？',
+          numPosts: 28,
+          post: {
+            id: 3459,
+            title: '《随机漫步的傻瓜》读书笔记',
+            cover: '/image/2020/04/19/e06e9d228e70c153d03179412fad42b5.jpg'
+          }
+        },
+        {
+          id: 1187,
+          nickname: '赛博佛客',
+          avatar: '/avatar/2019/12/08/63ffa3218e0671194d7cc3b25f4259eb.jpg',
+          signature: '机械先驱，人类叛徒，世界属于AI，区块链幻想家',
+          slogan: 'Matataki，是我使用过最为方便的上链应用。不再需要我手动进行16进制转换，添加交易数据还要设置各种各样的gas。同时也是个人代币发行展示运作的开拓者。',
+          numPosts: 3,
+          post: {
+            id: 2231,
+            title: '全民记者时代——【新闻链&真相链】经济模型设计讨论',
+            cover: '/image/2020/02/05/c739f378900a108236fac587498e53d7.png'
+          }
         },
         {
           id: 967,
-          avatar: this.$ossProcess('/avatar/2019/11/15/ceac57a33b012302d637f8d9f2927d3d.jpeg'),
-          name: '加菲众',
-          content: '迄今为止，Matataki是内容价值领域最易用直观的产品。小岛和他的团队已经寻得了内容通证化的最优路径。'
-        },
-        {
-          id: 176,
-          avatar: this.$ossProcess('/avatar/2019/08/24/12526397d587c80fcca7f58924d1cc33.png'),
-          name: '筷子手',
-          content: '用区块链把读者和作者更加紧密地联系起来，这是一个自由写作的平台。山海皆升平，偏偏爱重庆，关注「筷子手」，带你了解最地道的重庆。'
+          nickname: '加菲众',
+          avatar: '/avatar/2019/11/15/ceac57a33b012302d637f8d9f2927d3d.jpeg',
+          signature: '著名音乐电台DJ、科技活动主持人、动静科技创始人',
+          slogan: '迄今为止，Matataki是内容价值领域最易用直观的产品。小岛和他的团队已经寻得了内容通证化的最优路径。',
+          numPosts: 15,
+          post: {
+            id: 3376,
+            title: '鲍勃·迪伦全新单曲《最邪恶的谋杀》——中文翻译及图文注释',
+            cover: '/image/2020/04/10/568089e6058733234ea746309a224f74.jpeg'
+          }
         },
         {
           id: 989,
-          avatar: this.$ossProcess('/avatar/2019/11/17/d1c06bec2210f293fa1a8a0576a54efd.jpg'),
-          name: 'udspj',
-          content: '程序员日常漫画做了很多年，虽然已经完成出本的愿望（我没有跟QB交易），但出本上瘾正在企划2本新刊，身在11区也能通过matataki发行阿宅币在国内贩售新的漫画内容真是太棒了~~~'
-        },
-        {
-          id: 775,
-          avatar: this.$ossProcess('/avatar/2019/12/14/51f801a26860752f34dc233e256e03e5.png'),
-          name: '行者说币',
-          content: '几个月前，我在各种区块链内容、中心化写作平台高频发文，收到仙女座科技工作人员的信息，从此展开与瞬之间的缘分。我认为，瞬是一个做事情的团队。瞬Matataki 采用的是IPFS协议，星际文件存储系统，随着用户量的增多，就会产生大量节点，我们作为其中一个节点，可以利用自己的闲置硬盘存储他人的作品，当然，一个作品提交到IPFS网络，就会被复制成很多分、分割成很多片，存储在不同节点中，每个节点都无法查看具体信息，这样，就保证了，创作者的作品由大家共同存储，同时无法篡改，具备公信力。单一或者部分节点受到毁灭性打击也不影响作者从其他备份节点取得完整作品，具有很好的安全性。'
+          nickname: 'UDSPJ',
+          avatar: '/avatar/2019/11/17/d1c06bec2210f293fa1a8a0576a54efd.jpg',
+          signature: '一个废宅',
+          slogan: '最近需要合适的内容付费平台来更新文章或漫画，Matataki可以选择对单篇进行一次性支付或者对持有一定量Fan票的用户开放部分帖子阅读权限，对读者而言持有Fan票后可以永久阅读一部分内容。',
+          numPosts: 38,
+          post: {
+            id: 1263,
+            title: '漫画小教程：摇曳露营×Dijkstra最短路径',
+            cover: '/image/2019/11/26/266b169068088e42e73e0fb86e89bc4b.jpg'
+          }
         }
-      ],
-      resizeEvent: null,
-      scrollEvent: null
+      ]
     }
   },
-  mounted() {
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  watch: {
+    isLogined(newState) {
+      if (newState) this.refreshUser()
+    },
+  },
+  created() {
+    this.init()
     if (process.browser) {
       this.$nextTick(() => {
-        const scriptSrc = [
-          'https://cdn.bootcss.com/gsap/latest/TweenMax.min.js',
-          'https://cdn.bootcss.com/ScrollMagic/2.0.7/ScrollMagic.min.js',
-          'https://cdn.bootcss.com/ScrollMagic/2.0.7/plugins/animation.gsap.min.js'
-        ]
-        const PromiseLoadScript = scriptSrc.map(i => loadScript(i, false))
-        let timer = null
-        Promise.all(PromiseLoadScript)
-          .then(res => {
-            console.log('done', res)
-            clearInterval(timer)
-            timer = setInterval(() => {
-              if (TweenMax && ScrollMagic) {
-                this.initScrollAnimation()
-                this.setDefaultStyle()
-                clearInterval(timer)
-              }
-            }, 300)
-          })
-          .catch(err => {
-            console.log('error', err)
-          })
-
-        this.resizeEvent = throttle(this.resizeHomeHeight, 300)
-        this.scrollEvent = throttle(this.scrollTop, 300)
+        this.initSwipe()
+        this.resizeEvent = throttle(this.initSwipe, 300)
         window.addEventListener('resize', this.resizeEvent)
-        window.addEventListener('scroll', this.scrollEvent)
-
-        this.resizeHomeHeight()
       })
     }
-    this.aComment = this.userReviews[this.pageNum]
+    if (this.isLogined) this.refreshUser()
+    this.getAllNumArticles()
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeEvent)
-    window.removeEventListener('scroll', this.scrollEvent)
   },
   methods: {
-    initScrollAnimation() {
-      const initStory = () => {
-        const componentStory = document.querySelectorAll('.component-story')
-        const controller = new ScrollMagic.Controller()
-        // const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-
-        componentStory.forEach(el => {
-          const childHeaderInner = el.querySelector('.component-story__header .component-story__inner')
-          const childSumaryInner = el.querySelector('.component-story__summary .component-story__inner')
-          const tl = new TimelineMax()
-
-          // tl.to(el, 1, { z: 0, ease: Linear.easeNone }, 'story')
-          tl.to(childHeaderInner, 1, { y: '30%', ease: Linear.easeNone }, 'story')
-          tl.to(childSumaryInner, 1, { y: '-90%', ease: Linear.easeNone }, 'story')
-
-          // tl.to('.roadmap .roadmap-time__block', 1, { z: 0, y: -20, ease: Linear.easeNone })
-
-          new ScrollMagic.Scene({
-            triggerElement: el,
-            triggerHook: 1,
-            duration: '200%'
-          // offset: -clientHeight
-          })
-            .setTween(tl)
-            // .addIndicators({
-            //   colorTrigger: 'black',
-            //   colorStart: 'black',
-            //   colorEnd: 'black',
-            //   indent: 10
-            // })
-            .addTo(controller)
-        })
-      }
-
-      const initRoadmap = () => {
-        const controller = new ScrollMagic.Controller()
-        const roadmap = document.querySelector('.roadmap')
-        const roadmapBlock = roadmap.querySelectorAll('.roadmap-time__block')
-        const tl = new TimelineMax()
-
-        roadmapBlock.forEach((el, i) => {
-          tl.to(el, 0.3, {
-            x: function () {
-              return i % 2 === 0 ? 0 : '100%'
-            },
-            y: 0,
-            opacity: 1,
-            ease: Linear.easeNone
-          })
-        })
-
-        new ScrollMagic.Scene({
-          triggerElement: roadmap
-          // triggerHook: 1,
-          // duration: '160%'
-        // offset: -clientHeight
-        })
-          .setTween(tl)
-          // .addIndicators({
-          // colorTrigger: 'black',
-          // colorStart: 'black',
-          // colorEnd: 'black',
-          // indent: 10
-          // })
-          .addTo(controller)
-      }
-      try {
-        initStory()
-        initRoadmap()
-      } catch (error) {
-        console.log(error)
-      }
+    ...mapActions(['getCurrentUser', 'signOut', 'resetAllStore']),
+    ...mapActions('notification', ['getNotificationCounters']),
+    async init() {
     },
-    resizeHomeHeight() {
-      const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-      const heightop = 367
-      if (clientHeight < 800) {
-        this.$refs.evaluation.style['padding-top'] = '0px'
-        this.$refs.evaluation.style.height = '780px'
-        return false
-      } else {
-        this.$refs.home.style.height = clientHeight + 'px'
-        const top = (clientHeight / 2) - (heightop + 108)
-        this.$refs.evaluation.style['padding-top'] = top + 'px'
-        this.$refs.evaluation.style.height = ((clientHeight - heightop) - top) + 'px'
-        // this.$refs.evaluation.style.height = clientHeight + 'px'
-      }
+    async refreshUser() {
+      const { avatar } = await this.getCurrentUser()
+      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
+      await this.getNotificationCounters()
     },
-    setDefaultStyle() {
+    // 初始化轮播图 
+    initSwipe() {
       try {
-        const tl = new TimelineMax()
-        tl.set('.story', {
-          perspective: 1000
-        })
-        // tl.set('.component-story', {
-        //   z: -40
-        // })
-        tl.set('.component-story .component-story__header .component-story__inner', {
-          y: '-10%'
-        })
-        tl.set('.roadmap .roadmap-time__block', {
-          y: 20,
-          opacity: 0
-        })
-      } catch (error) {
-        console.log('error', error)
-      }
-    },
-    // 首页第一屏按钮点击显示菜单
-    showMoreMenu() {
-      const btnMenu = document.querySelector('.btn-menu')
-      try {
-        btnMenu.classList.contains('open') ? btnMenu.classList.remove('open') : btnMenu.classList.add('open')
-      } catch (error) {
-        // 万一遇到ie不支持 💀💀💀
-        let classVal = btnMenu.getAttribute('class')
-        // includes 通杀????
-        const hasClass = classVal.includes ? classVal.includes('open') : false
-        if (hasClass) {
-          classVal = classVal.replace('open', '').trim()
+        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+        console.log('clientWidth', clientWidth)
+        if (clientWidth < 800) {
+          this.swipeMode = 'single'
         } else {
-          classVal = classVal.concat(' open')
+          this.swipeMode = 'double'
         }
-        btnMenu.setAttribute('class', classVal)
+
+        if (clientWidth < 540) {
+          this.swipeHeight = '480px'
+        } else {
+          this.swipeHeight = '720px'
+        }
+      } catch(e) {
+        console.log(e)
       }
     },
-    /** 翻页 */
-    pageTurning(num) {
-      this.pageNum = (num + this.pageNum + this.userReviews.length) % this.userReviews.length
-      this.aComment = this.userReviews[this.pageNum]
+    supportersX2(index) {
+      const indexX2 = (index - 1) * 2
+      let list = []
+      for (let i = indexX2; i < indexX2 + 2; i++) {
+        if(this.supporters[i]) list.push(this.supporters[i])
+      }
+      return list
     },
-    /** 滚动后展开按钮 */
-    scrollTop() {
-      try {
-        const btnMenu = document.querySelector('.btn-menu')
-        if (!btnMenu) return
-        const scroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageXOffset
-        const btnVisible = btnMenu.classList.contains('open')
-        if (scroll >= 100 && !btnVisible) {
-          this.showMoreMenu()
+    imgUrl(src) {
+      return src ? this.$ossProcess(src) : ''
+    },
+    login() {
+      this.$store.commit('setLoginModal', true)
+      this.$emit('login')
+    },
+    btnsignOut() {
+      if (confirm(this.$t('warning.confirmLogout'))) {
+
+        // 出错后弹出框提示
+        const alertDialog = () => {
+          this.$alert('很抱歉，退出登录失败，点击确定刷新', '温馨提示', {
+            showClose: false,
+            type: 'success',
+            callback: () => {
+              window.location.reload()
+            }
+          })
         }
-        if (scroll < 100 && btnVisible) {
-          this.showMoreMenu()
-        }
-      } catch (error) {
-        console.log(error)
+
+        // 重置all store
+        this.resetAllStore()
+          .then(() => {
+            removeCookie('ACCESS_TOKEN')
+            removeCookie('idProvider')
+            removeCookie('referral')
+            store.clear()
+            sessionStorage.clear()
+
+            this.$router.go(0)
+            // 通知刷新其他页面
+            setTimeout(() => {
+              this.$userMsgChannel.postMessage('logout')
+            }, 2000)
+
+          }).catch(err => {
+            console.log(err)
+            alertDialog()
+          })
+      }
+    },
+    writeP() {
+      if (this.isLogined) this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
+      else this.login()
+    },
+    async getNumArticles(id) {
+      const res = await this.$API.getNumArticles(id)
+      let count = 0
+      if(res.code === 0) count = res.data.count
+      return count
+    },
+    async getAllNumArticles() {
+      for(let i = 0; i < this.supporters.length; i++) {
+        const numPosts = await this.getNumArticles(this.supporters[i].id)
+        if(numPosts) this.supporters[i].numPosts = numPosts
       }
     }
   }
 }
 </script>
 
-<style scoped lang="less" src="./index.less">
-
-</style>
+<style lang="less" scoped src="./index.less"></style>
