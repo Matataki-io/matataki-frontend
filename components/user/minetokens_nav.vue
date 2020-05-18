@@ -54,7 +54,7 @@ export default {
   flex-wrap: wrap;
   a {
     font-size: 18px;
-    line-height:33px;
+    line-height: 33px;
     text-decoration: none;
     margin-right: 40px;
     cursor: pointer;
@@ -68,25 +68,36 @@ export default {
       margin-right: 0;
     }
     &.active {
-      font-weight:bold;
-      color:rgba(0,0,0,1);
+      font-weight: bold;
+      color: rgba(0, 0, 0, 1);
     }
   }
 }
 
 .icon-tokens {
-  width:60px;
-  height:60px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  &.minetokens_detail{
-    background: #542DE0;
+  &.minetokens_detail {
+    background: #542de0;
   }
-  &.minetokens_details{
-    background: #F7B500;
+  &.minetokens_details {
+    background: #f7b500;
+  }
+}
+
+// <600
+@media screen and (max-width: 600px) {
+  .nav a {
+    font-size: 16px;
+    line-height: 26px;
+    display: block;
+    width: 100%;
+    text-align: left;
   }
 }
 </style>

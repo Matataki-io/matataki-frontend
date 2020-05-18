@@ -389,4 +389,23 @@ export default {
   margin: 0 auto;
   padding: 0 10px;
 }
+
+// <600
+@media screen and (max-width: 600px){
+  .user-page-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .user-info-center {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .user-info .follow {
+    right: 20px;
+  }
+  .user-info .follow2 {
+    right: 20px;
+  }
+}
 </style>

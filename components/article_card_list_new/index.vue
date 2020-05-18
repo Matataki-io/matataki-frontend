@@ -45,12 +45,12 @@
                 {{ read }}
               </span>
               <!-- 点赞量 -->
-              <span class="data">
+              <span class="data like">
                 <svg-icon icon-class="like" />
                 {{ likes }}
               </span>
               <!-- 复制分享链接 -->
-              <a href="javascript:;">
+              <a href="javascript:;" class="copy-tag">
                 <span
                   class="copy"
                   @click="copyCode(clipboard(card))"
@@ -264,10 +264,10 @@ export default {
   display: flex;
   align-items: center;
   .title {
-    font-size:20px;
-    font-weight:bold;
-    color:rgba(0,0,0,1);
-    line-height:28px;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 1);
+    line-height: 28px;
     max-height: 56px;
     overflow: hidden;
 
@@ -400,7 +400,7 @@ export default {
   padding: 0;
   .off-shelves {
     background: #b3b3b3;
-    color: #FFF;
+    color: #fff;
     border-radius: 4px;
     text-align: center;
     flex: 0 0 120px;
@@ -431,6 +431,8 @@ export default {
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
     line-height: 22px;
+    display: flex;
+    align-items: center;
   }
   .copy {
     font-size: 14px;
@@ -451,11 +453,11 @@ export default {
   font-size: 14px;
   font-weight: 400;
   color: #b2b2b2;
-  line-height: 1.5;
+  line-height: 20px;
   letter-spacing: 1px;
   overflow: hidden;
   word-break: break-all;
-  height: 40px;
+  max-height: 40px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
@@ -472,6 +474,51 @@ export default {
   line-height: 22px;
   margin: 0 18px 0 0;
   font-weight: bold;
+}
+
+// 小于600
+@media screen and (max-width: 600px) {
+  .split-line,
+  .copy-tag,
+  .author {
+    display: none;
+  }
+
+  .card {
+    margin: 20px 0;
+    border-radius: 0;
+    background-color: transparent;
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+  .article {
+    padding: 0;
+  }
+
+  .article-title .title {
+    font-size: 16px;
+    line-height: 20px;
+    max-height: 40px;
+  }
+
+  .content-text {
+    font-size: 13px;
+    line-height: 18px;
+    max-height: 36px;
+  }
+  .des {
+    margin: 10px 0 0 0;
+    .data {
+      &.like {
+        margin-right: 0;
+      }
+    }
+    .date {
+      font-size: 12px;
+    }
+  }
 }
 </style>
 

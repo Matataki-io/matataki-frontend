@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <div class="fl jsb">
+    <div class="fl jsb card-content">
       <div class="title">
-        <div class="fl">
+        <div class="fl ac">
           <router-link
             :to="{ name: 'user-id', params: { id: card.from_uid } }"
             class="username"
@@ -98,7 +98,7 @@ export default {
   position: relative;
   text-align: left;
   width: 100%;
-  border-bottom: 1px solid #DBDBDB;
+  border-bottom: 1px solid #dbdbdb;
   & > div {
     margin: 4px 0;
   }
@@ -116,10 +116,10 @@ export default {
   width: 335px;
 }
 .username {
-  font-size:18px;
-  font-weight:400;
-  color:rgba(0,0,0,1);
-  line-height:28px;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 28px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -136,25 +136,50 @@ export default {
   margin: 2px 0;
 }
 .amount {
-  font-size:18px;
-  font-weight:500;
-  color:rgba(0,0,0,1);
-  line-height:28px;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  line-height: 28px;
   padding-right: 10px;
   width: 140px;
   p {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
-    line-height:22px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
+    line-height: 22px;
     margin: 10px 0;
   }
 }
 .time {
-  font-size:14px;
-  font-weight:400;
-  color:rgba(178,178,178,1);
-  line-height:22px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
+  line-height: 22px;
   margin: 10px 0;
+}
+// <600
+@media screen and (max-width: 600px) {
+  .title,
+  .amount {
+    display: block;
+    width: 100%;
+  }
+
+  .card-content {
+    display: block;
+  }
+
+  .time {
+    margin: 0;
+  }
+
+  .amount {
+    padding-right: 0;
+    margin-top: 10px;
+    p {
+      margin: 0;
+      display: inline;
+    }
+  }
 }
 </style>
