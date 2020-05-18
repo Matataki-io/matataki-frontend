@@ -92,6 +92,8 @@ export default {
     { src: '~/plugins/broadcastchannel.js', mode: 'client' },
     { src: '~/plugins/router.js', mode: 'client', ssr: false },
     { src: '@/plugins/element-ui', ssr: true },
+    { src: '@/plugins/vant_ui', ssr: true },
+    { src: '@/plugins/nossr', ssr: false },
     { src: '@/plugins/vue-mavon-editor', ssr: false },
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false },
     // { src: '~/plugins/fundebug.js', ssr: false },
@@ -166,7 +168,8 @@ export default {
         /zh-cn/
       )
       // new BundleAnalyzerPlugin()
-    ]
+    ],
+
   },
   server: {
     port: 8080, // default: 3000
