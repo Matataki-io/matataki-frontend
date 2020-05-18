@@ -325,6 +325,12 @@ export default {
     }
   }
 }
+// 小于600
+@media screen and (max-width: 600px) {
+  .home {
+    background-color: #fff;
+  }
+}
 </style>
 
 <style lang="less" scoped>
