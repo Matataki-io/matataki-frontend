@@ -125,3 +125,29 @@
 .card-container {
   margin: 20px 0 40px;
 }
+
+// <880
+@media screen and (max-width: 880px) {
+  .tokens-list-header-right-column {
+    display: none;
+  }
+
+  .tokens-list-header-medium-column {
+    width: 65%;
+  }
+}
+
+// < 580
+@media screen and (max-width: 580px) {
+
+  .tokens-list-header-left-column,
+  .tokens-list-header-medium-column,
+  .tokens-list-header-right-column {
+    float: none;
+    width: 100%;
+  }
+
+  .tokens-list-header-medium-column {
+    margin-top: 10px;
+  }
+}
