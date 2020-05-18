@@ -190,7 +190,7 @@ export default {
         sale: 'sale',
         investment: 'investment',
         saleUnit: 'EOS/unit',
-        deleted: 'deleted'
+        deleted: '已站内隐藏'
     },
     articleFooter: {
         received: 'received',
@@ -303,7 +303,7 @@ export default {
         stageDes32: 'Building a blockchain permanent knowledge database'
     },
     home: {
-        creation: 'Creation',
+        creation: '发现',
         share: 'Share',
         fanTicket: 'FanTicket',
         signOut: 'Sign out',
@@ -334,7 +334,7 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
-        popularArticles: 'Recommend Author',
+        popularArticles: 'Popular Articles',
         random: 'Swap',
         allCreation: 'Popular works',
         latestCreation: 'Latest works',
@@ -552,7 +552,7 @@ export default {
         vntBuyAccount: 'The login Vnt account is not the same as the payment account',
         shareWeibo: 'Weibo',
         shareWechat: 'Scan and share to WeChat',
-        deleted: 'Article has been removed',
+        deleted: '文章已经站内隐藏',
         fulfillTheConditions: 'Read the full text when you meet the conditions',
         quoted: 'Quoted',
         summary: 'Summary',
