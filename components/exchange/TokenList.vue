@@ -6,7 +6,7 @@
     :before-close="handleClose"
     title="选择Fan票"
     width="600px"
-    custom-class="br10 black-theme-dialog"
+    custom-class="br10 black-theme-dialog token-list"
   >
     <div class="container">
       <div class="csvLqB">
@@ -27,6 +27,7 @@
         element-loading-background="rgba(0, 0, 0, 0.3)"
       >
         <el-table
+          v-if="tableConfig.mode === 'all'"
           :data="tokenList"
           height="50vh"
           style="width: 100%"
@@ -35,6 +36,7 @@
           <el-table-column
             width="250px"
             label="Fan票"
+            class="test123"
           >
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -92,6 +94,46 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <el-table
+          v-if="tableConfig.mode === 'simplify'"
+          :data="tokenList"
+          height="50vh"
+          style="width: 100%"
+          @row-click="selectToken"
+        >
+          <el-table-column
+            label="Fan票"
+            class="test123"
+          >
+            <template slot-scope="scope">
+              <div class="sc-fYxtnH cjqFX">
+                <div class="favMUS">
+                  <avatar
+                    v-if="scope.row.logo"
+                    :src="getImg(scope.row.logo)"
+                    size="30px"
+                  />
+                </div>
+                <div class="sc-tilXH egNEUM">
+                  <span id="symbol">{{ scope.row.symbol }}</span>
+                  <div class="sc-hEsumM iHXZgD">
+                    {{ scope.row.name }}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="流通量"
+          >
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row.amount || '暂无流通量' }}
+              </span>
+            </template>
+          </el-table-column>
+        </el-table>
         <div
           v-if="showLoadMore"
           class="loadmore"
@@ -110,6 +152,7 @@
 import { CNY } from './consts.js'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
+import throttle from 'lodash/throttle'
 
 export default {
   name: 'TokenListModal',
@@ -158,11 +201,27 @@ export default {
       page: 1,
       pagesize: 100,
       count: 0,
-      loading: false
+      loading: false,
+      resizeEvent: null,
+      tableConfig: {
+        mode: '', // simplify all
+      }
+    }
+  },
+  created() {
+    if (process.browser) {
+      this.$nextTick(() => {
+        this.initTokenList()
+        this.resizeEvent = throttle(this.initTokenList, 300)
+        window.addEventListener('resize', this.resizeEvent)
+      })
     }
   },
   mounted() {
     this.getAllToken()
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeEvent)
   },
   methods: {
     getImg(url) {
@@ -221,7 +280,25 @@ export default {
         item.amount = utils.fromDecimal(item.amount)
       })
       return list
-    }
+    },
+        // 初始化list
+    initTokenList() {
+      try {
+        const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+        // console.log('clientWidth', clientWidth)
+        if (clientWidth <= 600) {
+          this.tableConfig = {
+            mode: 'simplify'
+          }
+        } else {
+          this.tableConfig = {
+            mode: 'all'
+          }
+        }
+      } catch(e) {
+        console.log(e)
+      }
+    },
   }
 }
 </script>
@@ -254,7 +331,7 @@ export default {
 </style>
 <style scoped lang="less">
 ::placeholder {
-  color: #B2B2B2;
+  color: #b2b2b2;
 }
 .container {
   .favMUS {
@@ -270,7 +347,7 @@ export default {
   }
   .search-box {
     font-size: 1.5rem;
-    color: #B2B2B2;
+    color: #b2b2b2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,7 +380,7 @@ export default {
   }
 
   .iHXZgD {
-    color: #B2B2B2;
+    color: #b2b2b2;
   }
 
   .bELmls {
@@ -322,11 +399,11 @@ export default {
     line-height: 1.5rem;
     color: rgb(123, 123, 123);
   }
-    .csvLqB {
+  .csvLqB {
     display: flex;
     -webkit-box-pack: start;
     justify-content: flex-start;
-    background-color: #F1F1F1;
+    background-color: #f1f1f1;
     flex-flow: row nowrap;
     padding: 0.5rem 1.5rem;
   }
@@ -338,7 +415,7 @@ export default {
     min-height: 2.5rem;
     text-align: left;
     padding-left: 1.6rem;
-    background-color: #F1F1F1;
+    background-color: #f1f1f1;
     outline: none;
     border-width: initial;
     border-style: none;
@@ -372,7 +449,7 @@ export default {
   }
   .loadmore {
     text-align: center;
-    color: #409EFF;
+    color: #409eff;
     padding: 1rem;
     span {
       cursor: pointer;
@@ -382,6 +459,15 @@ export default {
     text-align: center;
     margin-top: 15vh;
     font-size: 1.2rem;
+  }
+}
+</style>
+
+<style lang="less" scoped>
+// <600
+@media screen and (max-width: 600px) {
+  /deep/ .token-list {
+    max-width: 90% !important;
   }
 }
 </style>

@@ -15,7 +15,7 @@
         <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
           {{ avatarName || '&nbsp;' }}
         </router-link>
-        <div class="fl ac">
+        <div class="fl ac author-info">
           <span class="Post-Time">{{ time }}</span>
           <span class="View-Num"><svg-icon class="icon" icon-class="read" />{{ article.read || 0 }}</span>
           <ipfsAll :article-ipfs-array="articleIpfsArray" />
@@ -213,5 +213,9 @@ export default {
   font-weight:bold;
   color:rgba(84,45,224,1);
   line-height:14px;
+}
+
+.author-info {
+  flex-wrap: wrap;
 }
 </style>

@@ -331,6 +331,11 @@ export default {
         this.$API.wxJsapiPay(tradeNo, openid, this.tradeType).then(res => {
           this.loading = false
           this.weakWeixinPay(res)
+        }).catch(e => {
+          console.log(e)
+          this.loading = false
+          const message = e.response.data.message || '失败'
+          this.$message.error(message)
         })
       } else {
         // 弹出NATIVE支付二维码
@@ -426,7 +431,7 @@ export default {
 .outer-container {
   background: white;
   padding: 20px;
-  width: 600px;
+  max-width: 600px;
   margin: 20px auto 40px;
   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.16);
   position: relative;

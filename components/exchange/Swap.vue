@@ -1,5 +1,6 @@
 <template>
   <div>
+    <slot name="help" />
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="OpDFW">
