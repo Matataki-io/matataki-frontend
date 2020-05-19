@@ -108,7 +108,7 @@ export default {
   methods: {
     resizeInit() {
       let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
-      console.log('clientWidth', clientWidth)
+      // console.log('clientWidth', clientWidth)
       if (clientWidth < 510) {
         //
         this.pagerCount = 2

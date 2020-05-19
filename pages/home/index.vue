@@ -58,7 +58,7 @@
         </header>
         <section class="screen1-block__text">
           <div class="screen1-block__text__content">
-            <h1>我们帮助 自由 的创作者<br>获得更多收入<br>& <span>自由 公开 永存</span> 的数字作品库</h1>
+            <h1>我们帮助 <span>自由</span> 的创作者<br>获得更多收入<br>& 建立 <span>公开 永存</span> 的数字作品库</h1>
             <p>
               所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个节点上，实现作品的分布式存储，无需担心被和谐删档，你的数据只属于你自己。
               <br>
@@ -272,7 +272,7 @@
 
         <section class="screen6-block">
           <h4>2 使用Matataki的优势在哪？</h4>
-          <p>瞬Matataki 对于创作者来说是个绝佳 且 安全的内容创作平台：我们没有签约和入驻，对于内容和发布的频次我们页没有任何限制。内置了强大的Markdown编辑器，并且支持直接导入您在其他多个内容平台上的作品。利用 去中心化存储技术强力保障您的作品安全，免受和谐之苦！您只管 自由 创作！</p>
+          <p>瞬Matataki 对于创作者来说是个绝佳 且 安全的内容创作平台：我们没有签约和入驻，对于内容和发布的频次我们也没有任何限制。内置了强大的Markdown编辑器，并且支持直接导入您在其他多个内容平台上的作品。利用 去中心化存储技术强力保障您的作品安全，免受和谐之苦！您只管 自由 创作！</p>
         </section>
 
         <section class="screen6-block">
@@ -395,7 +395,7 @@ export default {
     initSwipe() {
       try {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        console.log('clientWidth', clientWidth)
+        // console.log('clientWidth', clientWidth)
         if (clientWidth < 800) {
           this.swipeMode = 'single'
         } else {

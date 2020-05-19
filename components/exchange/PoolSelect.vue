@@ -4,7 +4,7 @@
     :visible.sync="showModal"
     :lock-scroll="false"
     width="450px"
-    custom-class="br10 black-theme-dialog"
+    custom-class="br10 black-theme-dialog pool-select"
   >
     <div class="container br10">
       <button
@@ -113,6 +113,13 @@ export default {
     border-color: initial;
     border-image: initial;
     outline: none;
+  }
+}
+
+// <600
+@media screen and (max-width: 600px) {
+  /deep/ .pool-select {
+    max-width: 90% !important;
   }
 }
 </style>

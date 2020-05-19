@@ -7,11 +7,6 @@
         src="@/assets/img/exchange-banner.png"
         alt="banner"
       >
-      <a
-        class="help-link"
-        target="_blank"
-        href="https://www.matataki.io/p/981"
-      >如何交易Fan票?</a>
       <div class="p-w">
         <el-tabs
           v-model="tab"
@@ -22,7 +17,15 @@
             label="交易"
             name="#swap"
           >
-            <Swap />
+            <Swap>
+              <div slot="help" class="help">
+                <a
+                  class="help-link"
+                  target="_blank"
+                  href="https://www.matataki.io/p/981"
+                >如何交易Fan票?</a>
+              </div>
+            </Swap>
           </el-tab-pane>
           <!-- <el-tab-pane label="赠送">
             <div style="color: white;text-align: center;">
@@ -33,7 +36,15 @@
             label="流动金池"
             name="#pool"
           >
-            <Pool />
+            <Pool>
+              <div slot="help" class="help">
+                <a
+                  class="help-link"
+                  target="_blank"
+                  href="https://www.matataki.io/p/981"
+                >如何交易Fan票?</a>
+              </div>
+            </Pool>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -124,7 +135,7 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
   .el-tabs__item {
     display: flex;
@@ -172,22 +183,25 @@ export default {
 }
 @width: 650px;
 .outer-container {
-  padding-top: 20px;
-  width: 766px;
+  max-width: 800px;
+  padding: 20px 10px 0;
   margin: auto;
   position: relative;
+  box-sizing: border-box;
 }
 .p-w  {
-  width: @width;
+  max-width: @width;
+  width: 100%;
   margin: 20px auto 0 auto;
+}
+.help {
+  text-align: right;
+  margin-bottom: 10px;
 }
 .help-link {
   font-size: 14px;
   color: @gray;
   text-decoration: underline;
-  position: absolute;
-  right: 80px;
-  top: 320px;
   z-index: 10;
 }
 </style>

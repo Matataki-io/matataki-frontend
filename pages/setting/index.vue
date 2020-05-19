@@ -452,28 +452,28 @@ export default {
   background-color: #eee;
 }
 .list {
-    margin: 40px 0;
-    padding: 0;
-    display: flex;
-    &.center {
-      align-items: center;
-    }
+  margin: 40px 0;
+  padding: 0;
+  display: flex;
+  &.center {
+    align-items: center;
+  }
 }
 .title {
-  font-size:18px;
-  font-weight:400;
-  color:#333;
-  line-height:28px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #333;
+  line-height: 28px;
   margin-right: 20px;
   &.right0 {
     margin-right: 0;
   }
 }
 .title-note {
-  font-size:14px;
-  font-weight:400;
-  color:#b2b2b2;
-  line-height:28px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #b2b2b2;
+  line-height: 28px;
 }
 
 @avatarWidth: 90px;
@@ -498,7 +498,7 @@ export default {
   &:hover .edit {
     display: flex;
   }
-  .edit{
+  .edit {
     display: none;
     cursor: pointer;
     position: absolute;
@@ -510,7 +510,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,.6);
+    background: rgba(0, 0, 0, 0.6);
     font-size: 14px;
     .el-icon-camera {
       font-size: 24px;
@@ -529,8 +529,8 @@ export default {
 }
 .save {
   display: block;
-  width:200px;
-  height:40px;
+  width: 200px;
+  height: 40px;
   border-radius: @borderRadius6;
   border: none;
   outline: none;
@@ -546,10 +546,10 @@ export default {
 .social-title {
   padding: 0;
   margin: 12px 0 10px 60px;
-  font-size:14px;
-  font-weight:400;
-  color:rgba(0,0,0,1);
-  line-height:20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 20px;
   span {
     /deep/ span {
       color: red;
@@ -558,6 +558,7 @@ export default {
 }
 .social-icons {
   width: 60px;
+  flex: 0 0 60px;
 }
 .social-input {
   width: 340px;
@@ -597,7 +598,6 @@ export default {
   margin: 0;
 }
 
-
 .item {
   display: flex;
   &-label {
@@ -605,6 +605,39 @@ export default {
     width: 100px;
     flex: 0 0 100px;
     margin-right: 10px;
+  }
+}
+
+// < 640
+@media screen and (max-width: 640px) {
+  .item {
+    display: block;
+    width: 100%;
+    &-label {
+      margin-right: 0;
+      margin-bottom: 4px;
+    }
+  }
+
+  .input,
+  .about-input .input,
+  .social-input {
+    width: 100%;
+  }
+  .set-main,
+  .tag-title {
+    padding-left: 0;
+  }
+
+  .list {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .social-div {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 </style>
