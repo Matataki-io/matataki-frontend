@@ -426,7 +426,7 @@ export default {
 .outer-container {
   background: white;
   padding: 20px;
-  width: 600px;
+  max-width: 600px;
   margin: 20px auto 40px;
   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.16);
   position: relative;
