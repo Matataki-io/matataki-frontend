@@ -138,6 +138,22 @@
           </div>
         </el-tooltip>
         <el-tooltip
+          :content="$t('auth.wechatTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-green"
+            @click="getWeixinCode"
+          >
+            <svg-icon
+              class="github"
+              icon-class="weixin"
+            />
+          </div>
+        </el-tooltip>
+        <el-tooltip
           :content="$t('auth.telegramTitle')"
           class="item"
           effect="dark"
@@ -400,7 +416,25 @@ export default {
         let referral = getCookie('referral')
         if (referral) this.referral = true
       }
-    }
+    },
+    // 微信登录
+    getWeixinCode() {
+      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+      if(isWeixin()) {
+        this.setPathToSession('wechatFrom')
+        this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
+      } else {
+        this.$message.error('请在微信中打开此网页')
+      }
+    },
+    setPathToSession(name) {
+      if (window.sessionStorage) {
+        const { pathname, search, hash } = window.location
+        sessionStorage.setItem(name, pathname + search + hash)
+      } else {
+        console.log('don\'t support sessionStorage')
+      }
+    },
   }
 };
 </script>
@@ -456,6 +490,7 @@ export default {
       font-size: 22px;
       color: #fff;
     }
+    
     .flexCenter();
     .oauth-bg {
       cursor: pointer;
