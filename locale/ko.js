@@ -135,6 +135,7 @@ export default {
         ontType: 'ONT',
         vntTitle: 'VNT登录',
         githubTitle: 'GitHub登录',
+        wechatTitle: '微信登录',
         telegramTitle: 'Telegram登录',
         twitterTitle: 'Twitter登录（开发中）',
         ontDoc: '《如何使用ONT登录》',

@@ -135,6 +135,7 @@ export default {
         ontType: 'ONT',
         vntTitle: 'login with VNT',
         githubTitle: 'login with GitHub',
+        wechatTitle: 'login with Wechat',
         telegramTitle: 'login with Telegram',
         twitterTitle: 'Log in with Twitter (under development)',
         ontDoc: 'How to login with ONT',

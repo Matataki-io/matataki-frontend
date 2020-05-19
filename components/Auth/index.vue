@@ -4,7 +4,7 @@
     :modal="true"
     :close-on-click-modal="false"
     width="380px"
-    custom-class="my-dialog br10"
+    custom-class="my-dialog br10 auth-dialog"
     @closed="() => {step = 1; isLogin = true}"
   >
     <section
@@ -110,4 +110,14 @@ export default {
 </script>
 
 <style src="./auth.less" lang="less" scoped>
+</style>
+
+
+<style lang="less" scoped>
+// <420
+@media screen and (max-width: 420px) {
+  /deep/ .auth-dialog {
+    width: 90% !important;
+  }
+}
 </style>
