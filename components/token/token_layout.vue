@@ -63,50 +63,51 @@
               </div>
             </div>
           </div>
-          <div class="share-btn">
-            <a
-              :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
-              target="_blank"
+        </div>
+        <router-link
+          v-if="isLogined"
+          :to="{ name: 'tokens' }"
+          tag="div"
+          class="balance"
+        >
+          {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
+          <i class="el-icon-arrow-right" />
+        </router-link>
+        <div class="share-btn">
+          <a
+            :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
+            target="_blank"
+          >
+            <el-button
+              class="link-btn"
+              size="small"
             >
-              <el-button
-                class="link-btn"
-                size="small"
-              >
-                <svg-icon icon-class="eth_mini" />
-                {{ $t('token.viewOnChain') }}
-              </el-button>
-            </a>
-            <router-link
-              v-if="showTokenSetting"
-              :to="{ name: 'editminetoken' }"
-            >
-              <el-button
-                class="btn"
-                size="small"
-                icon="el-icon-setting"
-              >
-                {{ $t('token.edit') }}
-              </el-button>
-            </router-link>
+              <svg-icon icon-class="eth_mini" />
+              {{ $t('token.viewOnChain') }}
+            </el-button>
+          </a>
+          <router-link
+            v-if="showTokenSetting"
+            :to="{ name: 'editminetoken' }"
+          >
             <el-button
               class="btn"
               size="small"
-              @click="shareModalShow = true"
+              icon="el-icon-setting"
             >
-              <svg-icon icon-class="share_new" />
-              {{ $t('share') }}
+              {{ $t('token.edit') }}
             </el-button>
-          </div>
-          <router-link
-            v-if="isLogined"
-            :to="{ name: 'tokens' }"
-            tag="div"
-            class="balance"
-          >
-            {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
-            <i class="el-icon-arrow-right" />
           </router-link>
+          <el-button
+            class="btn"
+            size="small"
+            @click="shareModalShow = true"
+          >
+            <svg-icon icon-class="share_new" />
+            {{ $t('share') }}
+          </el-button>
         </div>
+ 
         <p
           v-if="!minetokenToken.contract_address"
           class="warning"
@@ -758,4 +759,47 @@ export default {
     }
   }
 }
+
+// <600
+@media screen and (max-width: 600px){
+  .token-title {
+    font-size: 20px;
+  }
+  .balance,
+  .share-btn {
+    position: initial;
+    margin-top: 10px;
+  }
+  .token-detail {
+    padding: 10px;
+  }
+  .token-detail-info {
+    width: 100%;
+  }
+  .token-detail /deep/ .g-avatar {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .token-info-title.bold {
+    font-size: 20px;
+  }
+  .token-detail-info,
+  .balance {
+    font-size: 14px;
+  }
+
+  .token-introduction {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .token-data {
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
 </style>

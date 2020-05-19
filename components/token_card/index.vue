@@ -3,7 +3,7 @@
     :to="{name: 'token-id', params: { id: card.id }}"
     class="fl card"
   >
-    <div>
+    <div class="token-cover">
       <avatar
         :src="cover"
         size="45px"
@@ -26,17 +26,17 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ unitPrice }} CNY
+            <span>{{ $t('token.unitPrice') }}:</span> {{ unitPrice }} CNY
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ cnyReserve }} CNY
+            <span>{{ $t('token.liquidGold') }}:</span>  {{ cnyReserve }} CNY
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            {{ exchangeAmount }} CNY
+            <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} CNY
           </p>
         </div>
       </div>
@@ -119,18 +119,18 @@ export default {
 .card-info {
   width: 31%;
   &-symbol {
-    font-size:20px;
-    font-weight:400;
+    font-size: 20px;
+    font-weight: 400;
     color: @black;
-    line-height:28px;
+    line-height: 28px;
     padding: 0;
     margin: 0;
   }
   &-name {
-    font-size:14px;
-    font-weight:400;
-    color:@gray;
-    line-height:20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: @gray;
+    line-height: 20px;
     padding: 0;
     margin: 4px 0 0 0;
     &.brief {
@@ -156,6 +156,9 @@ export default {
     font-size: 16px;
     margin: 0;
     line-height: 76px;
+    span {
+      display: none;
+    }
   }
 }
 
@@ -168,10 +171,10 @@ export default {
 }
 .card-username {
   margin-left: 6px;
-  font-size:14px;
-  font-weight:400;
+  font-size: 14px;
+  font-weight: 400;
   color: @black;
-  line-height:20px;
+  line-height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 250px;
@@ -183,5 +186,61 @@ export default {
 }
 .card-create-time {
   margin: auto 0 0 auto;
+}
+
+// <880
+@media screen and (max-width: 880px) {
+  .card-user {
+    display: none;
+  }
+  .card-data {
+    width: 69%;
+  }
+}
+// <600
+@media screen and (max-width: 600px) {
+  .token-cover {
+    display: none;
+  }
+
+  .cards-content {
+    margin-left: 0;
+  }
+
+  .card-info {
+    width: 35%;
+  }
+  .card-data {
+    width: 65%;
+  }
+}
+
+// < 580
+@media screen and (max-width: 580px) {
+  .cards-content {
+    display: block;
+    .card-info {
+      width: 100%;
+    }
+    .card-info-symbol {
+          font-size: 18px;
+    line-height: 20px;
+    }
+    .card-data {
+      width: 100%;
+      margin-top: 10px;
+      .card-data-column {
+        float: none;
+        width: 100%;
+      }
+      .card-data-amount {
+        line-height: 1.5;
+        text-align: left;
+        span {
+          display: inline;
+        }
+      }
+    }
+  }
 }
 </style>

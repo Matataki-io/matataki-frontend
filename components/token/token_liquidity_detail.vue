@@ -124,4 +124,14 @@ export default {
     width: 150px;
   }
 }
+
+// <600
+@media screen and (max-width: 600px) {
+  .header {
+    .title,
+    .amount {
+      width: auto;
+    }
+  }
+}
 </style>

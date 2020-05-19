@@ -1,35 +1,64 @@
 <template>
-  <div
-    ref="swipe"
-    class="swipe"
-  >
-    <el-carousel
-      :key="key"
-      :interval="3000"
-      trigger="click"
-      :type="swipeType"
-      :height="swipeHeight"
-      arrow="always"
-      @change="swipeChange"
+  <div>
+    <div
+      ref="swipe"
+      class="swipe"
     >
-      <el-carousel-item
+      <el-carousel
+        v-if="swipeMode === 'pc'"
+        :key="key"
+        :interval="300000"
+        trigger="click"
+        :type="swipeType"
+        :height="swipeHeight"
+        arrow="always"
+        class="pc"
+        @change="swipeChange"
+      >
+        <el-carousel-item
+          v-for="(item, index) in card"
+          :key="index"
+        >
+          <div
+            class="swipe-content"
+            @click="viewP(index, item.id)"
+          >
+            <img
+              v-if="item.cover"
+              v-lazy="cover(item.cover)"
+              :alt="item.title"
+            >
+            <p>{{ item.title }}</p>
+            <div class="full" />
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+    <van-swipe
+      v-if="swipeMode === 'mobile'"
+      :autoplay="300000"
+      indicator-color="#542DE0"
+      :height="170"
+      class="mobile"
+    >
+      <van-swipe-item
         v-for="(item, index) in card"
         :key="index"
       >
         <div
-          class="swipe-content"
-          @click="viewP(index, item.id)"
+          class="swip-container"
+          @click="viewPM(item.id)"
         >
           <img
             v-if="item.cover"
-            v-lazy="cover(item.cover)"
+            :src="cover(item.cover)"
             :alt="item.title"
           >
           <p>{{ item.title }}</p>
           <div class="full" />
         </div>
-      </el-carousel-item>
-    </el-carousel>
+      </van-swipe-item>
+    </van-swipe>
   </div>
 </template>
 
@@ -49,7 +78,8 @@ export default {
       swipeHeight: '400px',
       swipeType: 'card', // card
       resizeEvent: null,
-      key: 1
+      key: 1,
+      swipeMode: ''
     }
   },
   created() {
@@ -76,6 +106,11 @@ export default {
         this.swipeType = 'card'
         this.swipeHeight = '400px'
       }
+      if (clientWidth < 600) {
+        this.swipeMode = 'mobile'
+      } else {
+        this.swipeMode = 'pc'
+      }
     },
     cover(src) {
       return src ? this.$ossProcess(src, { h: 390 }) : ''
@@ -94,7 +129,15 @@ export default {
         })
         window.open(href, '_blank')
       }
-    }
+    },
+    viewPM(id) {
+      this.$router.push({
+        name: 'p-id',
+        params: {
+          id: id
+        }
+      })
+    },
   }
 }
 </script>
@@ -104,9 +147,7 @@ export default {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px 10px 0;
   overflow: hidden;
-  border-radius: 10px;
   box-sizing: border-box;
   &-content {
     width: 100%;
@@ -157,6 +198,75 @@ export default {
       left: 0;
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 9;
+    }
+  }
+}
+.pc {
+  margin: 20px 10px;
+}
+.mobile {
+  margin: 20px 20px 10px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  /deep/ .van-swipe-item {
+    box-sizing: border-box;
+    .swip-container {
+      overflow: hidden;
+      background: #f1f1f1;
+      border: 1px solid #f1f1f1;
+      box-sizing: border-box;
+      height: 100%;
+      position: relative;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      p {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 1);
+        line-height: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        z-index: 10;
+        margin: 0;
+        padding: 0 0 0 8px;
+        &::before {
+          display: block;
+          content: "";
+          width: 2px;
+          // height: 30px;
+          background: #fff;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+        }
+      }
+      .full {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9;
+        height: 60px;
+        top: auto;
+        background: linear-gradient(0, rgba(0, 0, 0, 0.5) 0, transparent 100%);
+      }
+    }
+  }
+  /deep/ .van-swipe__indicators {
+    bottom: 2px;
+    .van-swipe__indicator {
+      background: #dbdbdb;
+      opacity: 1;
     }
   }
 }
@@ -213,9 +323,12 @@ export default {
 }
 
 // 小于768
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
   .swipe {
     .swipe-content p {
+      bottom: 30px;
+      left: 20px;
+      right: 20px;
       font-size: 20px;
     }
   }

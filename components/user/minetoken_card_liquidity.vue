@@ -82,36 +82,47 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
-.invite-block.avatar{
+.invite-block.avatar {
   display: flex;
   align-items: center;
 }
 .username {
   margin-left: 10px;
   font-size: 16px;
-  color:#333;
+  color: #333;
   flex: 1;
 }
 .time {
   font-size: 16px;
-  color:#333;
+  color: #333;
 }
 .point {
   font-size: 16px;
   font-weight: bold;
-  color:rgba(251,104,119,1);
+  color: rgba(251, 104, 119, 1);
 }
 
+// <600
+@media screen and (max-width: 600px) {
+  .invite-block.avatar {
+    /deep/ .g-avatar {
+      display: none;
+    }
+    .username {
+      margin-left: 0;
+    }
+  }
+}
 </style>
 
 <style lang="less">
 .coins {
-  .el-table th>.cell {
+  .el-table th > .cell {
     font-size: 16px !important;
     font-weight: 400 !important;
   }
-  .el-table td, .el-table th.is-leaf {
+  .el-table td,
+  .el-table th.is-leaf {
     border-bottom: none;
   }
   .el-table::before {

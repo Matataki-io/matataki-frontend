@@ -319,10 +319,18 @@ export default {
     margin-top: 20px;
     .col-6 {
       width: 100%;
+      padding-left: 20px;
+      padding-right: 20px;
     }
     .col-3 {
       display: none;
     }
+  }
+}
+// 小于600
+@media screen and (max-width: 600px) {
+  .home {
+    background-color: #fff;
   }
 }
 </style>
