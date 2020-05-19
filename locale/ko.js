@@ -135,6 +135,7 @@ export default {
         ontType: 'ONT',
         vntTitle: 'VNT登录',
         githubTitle: 'GitHub登录',
+        wechatTitle: '微信登录',
         telegramTitle: 'Telegram登录',
         twitterTitle: 'Twitter登录（开发中）',
         ontDoc: '《如何使用ONT登录》',
@@ -341,7 +342,7 @@ export default {
         fanCircle: 'Fan圈',
         myFocus: '我的关注',
         ofFanCircle: '的Fan圈',
-        buyFanTickets: '购买Fan票',
+        buyFanTickets: '购买Fan票'
     },
     sidebar: {
         article: '篇',
