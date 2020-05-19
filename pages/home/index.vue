@@ -395,7 +395,7 @@ export default {
     initSwipe() {
       try {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
-        console.log('clientWidth', clientWidth)
+        // console.log('clientWidth', clientWidth)
         if (clientWidth < 800) {
           this.swipeMode = 'single'
         } else {

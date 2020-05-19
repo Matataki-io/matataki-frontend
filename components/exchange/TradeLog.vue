@@ -1,6 +1,6 @@
 <template>
   <div class="trade">
-    <div class="hYLPFg">
+    <div class="hYLPFg swap-log">
       <div class="header">
         <div class="token-info">
           <avatar
@@ -21,7 +21,7 @@
         <span><span :class="changeClass">{{ change }}</span> 24h涨跌</span>
         <span><span class="black">{{ volume }}</span> 24h成交</span>
       </div>
-      <div class="jJSpkX" />
+      <!-- <div class="jJSpkX" /> -->
     </div>
     <div class="kvFQhz">
       <div class="iNUelT">
@@ -296,7 +296,7 @@ export default {
         align-items: center;
         justify-content: center;
         .icon {
-          color: #B2B2B2;
+          color: #b2b2b2;
           font-size: 10px;
         }
       }
@@ -323,6 +323,44 @@ export default {
   }
   .black {
     color: #000000;
+  }
+
+  .swap-log {
+    border-radius: 0.625rem 0.625rem 0 0;
+  }
+}
+
+// <600
+@media screen and (max-width: 600px) {
+  .trade {
+    .header {
+      font-size: 13px;
+      flex-wrap: wrap;
+      .token-info {
+        width: 100%;
+        flex: 0 0 100%;
+        margin-bottom: 6px;
+      }
+    }
+
+    .content {
+      display: block;
+      /deep/ .el-tabs {
+        margin-top: 30px;
+      }
+      /deep/ .el-table {
+        font-size: 12px;
+      }
+
+      .title {
+    top: 10px;
+    font-size: 13px;
+      }
+
+      .btn {
+        top: 4px;
+      }
+    }
   }
 }
 </style>
@@ -357,12 +395,12 @@ export default {
   }
 }
 .trade-log-header {
-  color: #542DE0;
+  color: #542de0;
   font-weight: 400;
-  border-bottom: 0!important;
+  border-bottom: 0 !important;
 }
 .trade-log-row {
-  border-bottom: 0!important;
-  padding: 2px 0!important;
+  border-bottom: 0 !important;
+  padding: 2px 0 !important;
 }
 </style>
