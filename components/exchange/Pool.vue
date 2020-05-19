@@ -1,5 +1,6 @@
 <template>
   <div>
+    <slot name="help" />
     <div class="hYLPFg">
       <div
         class="caRvnP"
