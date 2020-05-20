@@ -1,6 +1,10 @@
 <template>
   <router-link :to="url">
-    <div class="card">
+    <div
+      :class="bgColor !== '#F1F1F1' && 'shadow'"
+      class="card"
+      :style="`background-color: ${bgColor};`"
+    >
       <!-- 文章 -->
       <div v-if="mode === 'post'" class="fl post">
         <div class="post-cover">
@@ -36,9 +40,16 @@
           class="avatar"
         />
         <div class="user-info">
-          {{ nickname }}
-          <p class="user-introduction">
-            {{ user.introduction }}
+          <div class="fl user-info-top">
+            <h4>
+              {{ nickname }}
+            </h4>
+            <p>
+              {{ dateCard }} {{ action ? actionLabels[action] : '' }}
+            </p>
+          </div>
+          <p>
+            {{ user.introduction || '暂无简介' }}
           </p>
         </div>
         <div v-if="!isMe(user.id)" class="user-button">
@@ -63,7 +74,9 @@
 </template>
 <script>
 
-import { mapGetters, mapActions } from 'vuex'
+import moment from 'moment'
+import { isNDaysAgo } from '@/utils/momentFun'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -81,10 +94,27 @@ export default {
     post: {
       type: Object,
       default:  null
-    }
+    },
+    bgColor: {
+      type: String,
+      default:  '#F1F1F1'
+    },
+    createTime: {
+      type: String,
+      default:  ''
+    },
+    action: {
+      type: String,
+      default:  ''
+    },
   },
   data() {
     return {
+      actionLabels: {
+        like: '推荐了你的文章',
+        comment: '评论了你的文章',
+        follow: '关注了你'
+      }
     }
   },
   computed: {
@@ -99,9 +129,9 @@ export default {
       return this.post.likes
     },
     read() {
-      if (!this.post || !this.post.read) return 0
-      if (this.post.read > 9999) { return Math.round(this.post.read / 10000) + '万' }
-      return this.post.read
+      if (!this.post || !this.post.real_read_count) return 0
+      if (this.post.real_read_count > 9999) { return Math.round(this.post.real_read_count / 10000) + '万' }
+      return this.post.real_read_count
     },
     url() {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
@@ -116,31 +146,48 @@ export default {
       return ''
     },
     nickname() {
-      console.log(this.user)
       if(!this.user) return ''
       return this.user.nickname || this.user.username
     },
+    dateCard() {
+      if(!this.createTime) return ''
+      const time = moment(this.createTime)
+      return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
   },
   methods: {
-    ...mapActions('user', ['followOrUnfollowUser']),
     followOrUnFollow() {
       if (this.user.is_follow) {
         this.$confirm(this.$t('p.confirmUnFollowMessage'), this.$t('promptTitle'), {
           confirmButtonText: this.$t('confirm'),
           cancelButtonText: this.$t('cancel'),
           type: 'warning'
-        }).then(() => this.followOrUnfollowUser({
-          id: this.id,
-          type: 0
-        }))
-      } else {
-        this.followOrUnfollowUser({
-          id: this.id,
-          type: 1
+        }).then(() => {
+          this.followOrUnfollowUser(this.user.id, 0)
         })
+      } else {
+        this.followOrUnfollowUser(this.user.id, 1)
+      }
+    },
+    async followOrUnfollowUser(id, type) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      const message = type === 1 ? this.$t('follow') : this.$t('unFollow')
+
+      try {
+        let res = null
+        if (type === 1) res = await this.$API.follow(id)
+        else res = await this.$API.unfollow(id)
+        if (res.code === 0) {
+          this.$message.success(`${message}${this.$t('success.success')}`)
+
+          this.user.is_follow = type === 1
+        } else {
+          this.$message.error(`${message}${this.$t('error.fail')}`)
+        }
+      } catch (error) {
+        this.$message.error(`${message}${this.$t('error.fail')}`)
       }
     }
-
   }
 }
 </script>
@@ -148,8 +195,10 @@ export default {
 .card {
   height: 60px;
   border-radius: 8px;
-  background-color: #F1F1F1;
   padding: 10px;
+  &.shadow {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
   .post {
     &-cover {
       width: 120px;
@@ -184,44 +233,41 @@ export default {
     }
   }
   .user {
+    align-items: center;
     .avatar {
       width: 60px !important;
       height: 60px !important;
+      min-width: 60px;
       background: #eee;
-      z-index: 1;
-      position: relative;
+      margin-right: 14px;
     }
     &-info {
-      max-width: 400px;
       flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-right: 20px;
-      margin-left: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: blank;
-      .name {
-        font-size: 16px;
-        color: #000;
-        line-height: 22px;
-        margin-bottom: 5px;
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
-        cursor: pointer;
+      &-top {
+        h4 {
+          font-size: 16px;
+          color: black;
+          line-height: 22px;
+          margin: 0;
+          margin-right: 10px;
+        }
+        p {
+          font-size: 14px;
+          color: #B2B2B2;
+          line-height: 20px;
+          margin: 0;
+        }
       }
-    }
-    &-introduction {
-      font-size: 14px;
-      color: @gray;
-      line-height: 17px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
+      p {
+        font-size: 14px;
+        color: #B2B2B2;
+        line-height: 20px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
     }
 
     &-follow {
@@ -233,9 +279,9 @@ export default {
     }
     &-button {
       display: flex;
-      flex: 1;
       justify-content: flex-end;
       align-items: center;
+      margin-left: 20px;
     }
   }
 }
