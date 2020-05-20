@@ -2,7 +2,12 @@
   <div class="notification">
     <g-header />
     <el-row class="notification-container">
-      <el-col :span="16">
+      <el-col v-show="!showDetails" :span="16">
+        <div class="notification-topbar">
+          <h3>
+            通知
+          </h3>
+        </div>
         <notifyCard
           v-for="(item, index) in notifications"
           :key="index"
@@ -10,6 +15,7 @@
           :user="getUser(item.user_id)"
           :post="getPost(item)"
           :comment="getComment(item)"
+          @openDetails="openDetails"
         />
         <div class="load-more">
           <buttonLoadMore
@@ -18,6 +24,45 @@
             :api-url="pull.apiUrl"
             return-type="Object"
             @buttonLoadMore="buttonLoadMore"
+          />
+        </div>
+      </el-col>
+      <el-col v-if="showDetails" :span="16" class="detail">
+        <div class="fl detail-topbar">
+          <div class="detail-topbar-back" @click="closeDetails">
+            <i class="el-icon-arrow-left" />
+          </div>
+          <h3>
+            {{ actionDetailLabels[detailsIndex.action] }}
+          </h3>
+        </div>
+        <div style="margin-bottom: 30px;">
+          <objectCard
+            v-if="detailsIndex.objectType === 'article'"
+            mode="post"
+            :post="posts.find(post => post.id === detailsIndex.objectId)"
+            bg-color="white"
+          />
+        </div>
+        <div v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'">
+          <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
+            <objectCard
+              mode="user"
+              :user="item.user"
+              :create-time="item.create_time"
+              :action="item.action"
+              bg-color="white"
+            />
+          </div>
+        </div>
+
+        <div class="load-more">
+          <buttonLoadMore
+            :type-index="0"
+            :params="detailPull.params"
+            :api-url="detailPull.apiUrl"
+            return-type="Object"
+            @buttonLoadMore="detailLoadMore"
           />
         </div>
       </el-col>
@@ -50,10 +95,12 @@
 import { mapState, mapActions } from 'vuex'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
+import objectCard from '@/components/notification/objectCard.vue'
+
 const PROVIDERS = ['follow']
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMore, notifyCard },
+  components: { buttonLoadMore, notifyCard, objectCard },
   data() {
     const active = this.$route.params.provider && PROVIDERS.indexOf(this.$route.params.provider) >= 0 ? PROVIDERS.indexOf(this.$route.params.provider) : 0
     return {
@@ -66,10 +113,18 @@ export default {
         { name: 'message', text: this.$t('user.message'), icon: 'message' },
         { name: 'notice', text: this.$t('notice'), icon: 'notice' }
       ],
+      showDetails: false,
       notifications: [],
       users: [],
       posts: [],
-      comments: []
+      comments: [],
+      detailsIndex: null,
+      notificationDetails: [],
+      actionDetailLabels: {
+        like: '推荐详情',
+        comment: '评论详情',
+        follow: '关注详情'
+      }
     }
   },
   computed: {
@@ -81,6 +136,15 @@ export default {
       return {
         apiUrl: 'notifyCenter',
         params: { pagesize: 20, startId: 0 }
+      }
+    },
+    detailPull() {
+      return {
+        apiUrl: 'notifyDetails',
+        params: {
+          pagesize: 20,
+          ...this.detailsIndex
+        }
       }
     }
   },
@@ -100,6 +164,11 @@ export default {
         this.users.push(...res.data.users)
         this.posts.push(...res.data.posts)
         this.comments.push(...res.data.comments)
+      }
+    },
+    detailLoadMore(res) {
+      if(res.data) {
+        this.notificationDetails.push(...res.data.list)
       }
     },
     deduplication(array1) {
@@ -123,6 +192,14 @@ export default {
         return this.comments.find(comment => comment.id === commentId)
       }
       return null
+    },
+    openDetails(data) {
+      this.detailsIndex = data
+      this.showDetails = true
+    },
+    closeDetails() {
+      this.showDetails = false
+      this.notificationDetails = []
     }
   }
 }
