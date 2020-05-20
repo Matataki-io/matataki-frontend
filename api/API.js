@@ -334,7 +334,7 @@ export default {
   },
   // 推荐作者||用户
   usersRecommend(params){
-    return request('/users/recommend', params)
+    return request('/users/recommend', { params })
   },
   // 获取任务状态
   userPointStatus() {

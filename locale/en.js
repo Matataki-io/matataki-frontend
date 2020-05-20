@@ -306,6 +306,7 @@ export default {
     home: {
         creation: '发现',
         share: 'Share',
+        dynamic: 'Dynamic',
         fanTicket: 'FanTicket',
         signOut: 'Sign out',
         signIn: 'Sign in',

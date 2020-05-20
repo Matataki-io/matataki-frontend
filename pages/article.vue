@@ -10,31 +10,6 @@
       </div>
       <div class="col-3">
         <div class="position-sticky top80">
-          <!-- <div class="recommend-author">
-            <div class="ra-head">
-              <span class="ra-head-title">{{ $t('home.recommendAuthor') }}</span>
-              <span
-                class="ra-head-random"
-                @click="usersRecommend"
-              >
-                <div class="change">
-                  <svg-icon
-                    :class="usersLoading && 'rotate'"
-                    class="change-icon"
-                    icon-class="change"
-                  />
-                </div>
-                <span>{{ $t('home.random') }}</span>
-              </span>
-            </div>
-            <div class="ra-content">
-              <r-a-list
-                v-for="item in usersRecommendList"
-                :key="item.id"
-                :card="item"
-              />
-            </div>
-          </div> -->
           <popularArticles :list="popularlist" />
 
           <router-link :to="{name: 'token'}">
@@ -52,7 +27,6 @@
 <script>
 import throttle from 'lodash/throttle'
 // import bannerMatataki from '@/components/banner/banner_matataki.vue'
-// import RAList from '@/components/recommend_author_list'
 import swipe from '@/components/swipe/index.vue'
 import popularArticles from '@/components/popularArticles/index.vue'
 
@@ -60,7 +34,6 @@ export default {
   transition: 'page',
   components: {
     // bannerMatataki,
-    // RAList,
     swipe,
     popularArticles
   },

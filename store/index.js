@@ -330,7 +330,7 @@ export const actions = {
     const {
       data: { data }
     } = await api.getUser({ id: currentUserInfo.id })
-    console.info(data)
+    // console.info(data)
     commit('setNickname', data.nickname)
     return data
   },
