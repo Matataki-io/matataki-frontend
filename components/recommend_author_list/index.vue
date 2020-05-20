@@ -6,7 +6,7 @@
     >
       <avatar
         :src="avatarSrc"
-        size="44px"
+        size="45px"
       />
     </n-link>
     <n-link
@@ -98,7 +98,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 20px 0 0;
+  &:nth-child(1) {
+    padding-top: 0;
+  }
   .name {
     font-size:16px;
     letter-spacing: 1px;
@@ -109,6 +112,10 @@ export default {
     white-space: nowrap;
     margin-right: 10px;
     margin-left: 10px;
+  }
+
+  /deep/ .g-avatar {
+    box-sizing: border-box;
   }
 }
 
