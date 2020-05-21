@@ -26,6 +26,7 @@
               动态时间轴
             </h3>
           </section>
+          <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
           <dynamicCard
             v-for="item in pull.list"
             :key="item.id"
@@ -355,8 +356,8 @@ export default {
 }
 
 .recommend {
-    position: sticky;
-    top: 80px;
+  position: sticky;
+  top: 80px;
   .ra-head {
     display: flex;
     justify-content: space-between;
@@ -438,5 +439,124 @@ export default {
 
 .dynamic-card {
   margin-top: 20px;
+}
+
+.not-content {
+  text-align: center;
+  margin: 40px 0 0 0;
+  font-size: 16px;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+// 页面小于
+@media screen and (max-width: 992px) {
+  .welcome-people {
+    left: -40px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .row {
+    .col-6 {
+      width: 100%;
+    }
+    .col-3 {
+      display: none;
+    }
+  }
+  .banner-people {
+    left: -30px;
+    top: auto;
+    bottom: 0;
+    height: 60%;
+  }
+  .banner-decoration {
+    height: 40%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .dynamic-card {
+    margin-top: 10px;
+  }
+
+  .head {
+    display: none;
+  }
+
+  .banner {
+    height: 140px;
+    margin-top: 20px;
+  }
+  .banner-title {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .banner-description {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 10px 0 0 0;
+  }
+
+  .banner-people,
+  .banner-decoration {
+    display: none;
+  }
+  .row {
+    margin-top: 20px;
+  }
+
+  .welcome {
+    height: 240px;
+    margin-top: 0;
+  }
+
+  .welcome-people {
+    top: auto;
+    bottom: 0;
+    height: 80%;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .welcome-text {
+    margin-top: 10px;
+  }
+  .welcome-description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .welcome-description-time {
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .banner-title {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .banner-description {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 10px 0 0 0;
+  }
+  .welcome {
+    align-items: center;
+    padding-right: 0;
+  }
+  .welcome-text {
+    text-align: center;
+  }
+  .welcome-people {
+    display: none;
+  }
+  .welcome-description-time {
+    margin-right: 0;
+  }
 }
 </style>
