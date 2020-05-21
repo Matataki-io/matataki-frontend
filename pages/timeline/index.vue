@@ -1,5 +1,5 @@
 <template>
-  <div class="dynamic">
+  <div class="timeline">
     <g-header />
     <!-- -- -->
     <!-- banner -->
@@ -30,7 +30,7 @@
           <dynamicCard
             v-for="item in pull.list"
             :key="item.id"
-            class="dynamic-card"
+            class="timeline-card"
             :card="item"
           />
           <div class="load-more-button">
@@ -200,7 +200,7 @@ export default {
 
 
 <style lang="less" scoped>
-.dynamic {
+.timeline {
   .minHeight();
 }
 
@@ -437,7 +437,7 @@ export default {
   margin-top: 10px;
 }
 
-.dynamic-card {
+.timeline-card {
   margin-top: 20px;
 }
 
@@ -476,7 +476,7 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .dynamic-card {
+  .timeline-card {
     margin-top: 10px;
   }
 
