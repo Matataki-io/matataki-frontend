@@ -36,7 +36,7 @@
             {{ actionDetailLabels[detailsIndex.action] }}
           </h3>
         </div>
-        <div style="margin-bottom: 30px;">
+        <div style="margin-bottom: 20px;">
           <objectCard
             v-if="detailsIndex.objectType === 'article'"
             mode="post"
@@ -44,16 +44,20 @@
             bg-color="white"
           />
         </div>
-        <div v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'">
-          <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
-            <objectCard
-              mode="user"
-              :user="item.user"
-              :create-time="item.create_time"
-              :action="item.action"
-              bg-color="white"
-            />
-          </div>
+        <el-divider />
+        <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
+          <objectCard
+            v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'"
+            mode="user"
+            :user="item.user"
+            :create-time="item.create_time"
+            :action="item.action"
+            bg-color="white"
+          />
+          <commentCard
+            v-if="detailsIndex.action === 'comment'"
+            :card="item"
+          />
         </div>
 
         <div class="load-more">
@@ -96,11 +100,12 @@ import { mapState, mapActions } from 'vuex'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
+import commentCard from '@/components/notification/commentCard.vue'
 
 const PROVIDERS = ['follow']
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMore, notifyCard, objectCard },
+  components: { buttonLoadMore, notifyCard, objectCard, commentCard },
   data() {
     const active = this.$route.params.provider && PROVIDERS.indexOf(this.$route.params.provider) >= 0 ? PROVIDERS.indexOf(this.$route.params.provider) : 0
     return {
@@ -120,11 +125,13 @@ export default {
       comments: [],
       detailsIndex: null,
       notificationDetails: [],
+      pagePosition: 0,
       actionDetailLabels: {
         like: '推荐详情',
         comment: '评论详情',
         follow: '关注详情'
-      }
+      },
+      noRead: Number(this.$route.params.noRead) || 0
     }
   },
   computed: {
@@ -164,6 +171,8 @@ export default {
         this.users.push(...res.data.users)
         this.posts.push(...res.data.posts)
         this.comments.push(...res.data.comments)
+        // 标记已读
+        this.markRead(res.data.list)
       }
     },
     detailLoadMore(res) {
@@ -194,12 +203,23 @@ export default {
       return null
     },
     openDetails(data) {
+      this.pagePosition = document.documentElement.scrollTop
       this.detailsIndex = data
       this.showDetails = true
     },
     closeDetails() {
       this.showDetails = false
       this.notificationDetails = []
+      setTimeout(() => window.scroll(0, this.pagePosition), 100)
+    },
+    /** 标记已读 */
+    markRead(notifications) {
+      if(this.noRead) return
+      let notifyIds = []
+      notifications.forEach(item => {
+        if(item.state === 0) notifyIds.push(item.id)
+      })
+      if(notifyIds.length > 0) this.$API.notifyMarkRead(notifyIds)
     }
   }
 }

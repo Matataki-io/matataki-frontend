@@ -1019,5 +1019,17 @@ minetokenGetResources(tokenId) {
         pagesize: 1
       }
     })
+  },
+
+  notifyMarkRead(notifyIds) {
+    return request({
+      method: 'put',
+      url: `/notify/event`,
+      data: { ids: notifyIds }
+    })
+  },
+
+  getNotifyUnreadQuantity() {
+    return request.get(`/notify/event/quantity`)
   }
 }

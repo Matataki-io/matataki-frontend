@@ -71,15 +71,21 @@
           placement="bottom"
         >
           <n-link
-            :class="{ badge: hasNewNotification }"
             class="create"
             to="/notification"
           >
-            <svg-icon
-              :style="customizeHeaderIconColorComputed"
-              class="notification"
-              icon-class="bell"
-            />
+            <el-badge
+              :value="notifyUnreadQuantity"
+              :hidden="notifyUnreadQuantity === 0"
+              :max="99"
+              class="item"
+            >
+              <svg-icon
+                :style="customizeHeaderIconColorComputed"
+                class="notification"
+                icon-class="bell"
+              />
+            </el-badge>
           </n-link>
         </el-tooltip>
         <el-tooltip
@@ -142,7 +148,7 @@
                 {{ $t('home.account') }}
               </el-dropdown-item>
             </n-link>
-  
+
             <div
               class="link"
               @click="btnsignOut"
@@ -304,11 +310,11 @@ export default {
       searchInput: this.searchQueryVal,
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
+      notifyUnreadQuantity: 0
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
-    ...mapGetters('notification', ['hasNewNotification']),
     nav() {
       return [
         {
@@ -356,7 +362,7 @@ export default {
       this.searchInput = newVal
     },
     async $route() {
-      if (this.isLogined) await this.getNotificationCounters()
+      if (this.isLogined) await this.getNotifyUnreadQuantity()
     }
   },
   created() {
@@ -368,7 +374,12 @@ export default {
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut', 'resetAllStore']),
-    ...mapActions('notification', ['getNotificationCounters']),
+    async getNotifyUnreadQuantity() {
+      const res = await this.$API.getNotifyUnreadQuantity()
+      if(res.code === 0) {
+        this.notifyUnreadQuantity = res.data
+      }
+    },
     postImport() {
       if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
       else this.login()
@@ -380,7 +391,7 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
-      await this.getNotificationCounters()
+      await this.getNotifyUnreadQuantity()
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -525,8 +536,8 @@ export default {
     margin: 0 20px 0 0;
     color: #000;
     .notification {
-    width: 100%;
-    height: 100%;
+    width: 24px;
+    height: 24px;
     }
   }
   &-avatar {
