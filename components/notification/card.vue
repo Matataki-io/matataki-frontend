@@ -9,21 +9,28 @@
     <div class="notify-right">
       <div class="fl notify-right-header">
         <!-- 头像 -->
-        <router-link :to="{name: 'user-id', params:{id: user.id}}">
-          <c-avatar :src="avatar" class="avatar" />
-          <div v-if="card.total > 1" class="round-silhouette" />
-        </router-link>
+        <div @click.stop>
+          <router-link :to="{name: 'user-id', params:{id: user.id}}">
+            <c-avatar :src="avatar" class="avatar" />
+            <div v-if="card.total > 1" class="round-silhouette" />
+          </router-link>
+        </div>
         <!-- 时间 -->
-        <p>
+        <p class="header-date">
           {{ dateCard }}
+        </p>
+        <p class="header-read" :class="card.state || 'unread'">
+          {{ card.state ? '已读' : '未读' }}
         </p>
       </div>
       <div class="fl notify-right-title">
         <!-- 事件发送者 -->
         <h4>
-          <router-link :to="{name: 'user-id', params:{id: user.id}}">
-            {{ nickname }}
-          </router-link>
+          <span @click.stop>
+            <router-link :to="{name: 'user-id', params:{id: user.id}}">
+              {{ nickname }}
+            </router-link>
+          </span>
           {{ totalLabel }}
         </h4>
         <!-- 行为 -->
@@ -37,7 +44,7 @@
       </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
       <!-- 对象卡片 -->
-      <div>
+      <div @click.stop>
         <objectCard
           :mode="mode"
           :user="user"
@@ -161,10 +168,8 @@ export default {
     margin-left: 10px;
     &-header {
       align-items: center;
-      justify-content: space-between;
       margin-bottom: 10px;
       p {
-        text-align: right;
         font-size: 16px;
         color: #B2B2B2;
         line-height: 22px;
@@ -177,6 +182,21 @@ export default {
         z-index: 1;
         position: relative;
         border:2px solid white;
+      }
+      .header-date {
+        flex: 1;
+        text-align: right;
+        font-size: 16px;
+        color: #B2B2B2;
+        line-height: 22px;
+        margin: 0;
+      }
+      .header-read {
+        color: #B2B2B2;
+        margin-left: 10px;
+        &.unread {
+          color: #FB6877;
+        }
       }
     }
     &-title {
