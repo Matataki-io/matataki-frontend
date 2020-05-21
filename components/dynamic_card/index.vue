@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <router-link class="card" :to="{ name: 'p-id', params: {id: card.id} }" target="_blank">
     <!-- head -->
     <section class="card-head">
       <c-avatar :src="avatarImg" />
@@ -43,7 +43,7 @@
         </div>
       </div>
     </section>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -101,6 +101,7 @@ export default {
   border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
+  display: block;
 }
 
 .card-head {
@@ -214,6 +215,41 @@ export default {
   .lock-img {
     margin: 0 4px 0 0;
     height: 14px;
+  }
+}
+//  < 600
+@media screen and (max-width: 600px) {
+  .card-main {
+    margin: 10px 0;
+  }
+  .card-cover {
+    width: 140px;
+    height: 70px;
+    flex: 0 0 140px;
+  }
+
+  .card-text .card-title {
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  .card-text .card-content {
+    max-height: 40px;
+    -webkit-line-clamp: 2;
+  }
+
+  .card-name,
+  .card-description {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .card-cover {
+    display: none;
+  }
+  .card-text {
+    margin-left: 0;
   }
 }
 </style>

@@ -318,10 +318,10 @@ export default {
           urlList: ['article', 'ring-id']
         },
         {
-          title: this.$t('home.dynamic'),
-          url: 'dynamic',
+          title: this.$t('home.timeline'),
+          url: 'timeline',
           sup: '',
-          urlList: ['dynamic']
+          urlList: ['timeline']
         },
         {
           title: this.$t('home.fanTicket'),
