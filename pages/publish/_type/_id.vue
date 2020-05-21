@@ -93,10 +93,10 @@
     <!-- 设置 发布 dialog -->
     <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
-        <h3 class="set-title">
+        <h3 v-if="isShowDraftPreview" class="set-title">
           预览设置
         </h3>
-        <div class="set-content">
+        <div v-if="isShowDraftPreview" class="set-content">
           <el-button round size="medium" @click="goPreview">
             立即预览
           </el-button>
@@ -679,6 +679,10 @@ export default {
       return this.$ossProcess(this.cover)
     },
     isShowTransfer() {
+      return this.$route.params.type === 'draft'
+    },
+    // 显示预览链接
+    isShowDraftPreview() {
       return this.$route.params.type === 'draft'
     },
     isDevelopmentMode() {
@@ -1583,7 +1587,10 @@ export default {
     // 立即预览
     async goPreview() {
       const id = this.$route.params.id
-      if (id === 'create' || !Number(id)) return
+      if (id === 'create' || !Number(id)) {
+        this.$message.warning('先写点什么吧!')
+        return
+      }
 
       const res = this.previewSetId(this.$route.params.id)
       if (res) {
@@ -1593,7 +1600,10 @@ export default {
     // 复制预览链接
     async copyPreview() {
       const id = this.$route.params.id
-      if (id === 'create' || !Number(id)) return
+      if (id === 'create' || !Number(id)) {
+        this.$message.warning('先写点什么吧!')
+        return
+      }
 
       const res = this.previewSetId(this.$route.params.id)
       if (res) {

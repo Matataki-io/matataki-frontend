@@ -10,6 +10,14 @@
       <header>
         <!-- 标题 -->
         <h1>{{ article.title }}</h1>
+        <el-alert
+          title="当前处于预览模式"
+          type="info"
+          :description="draftTimeEnd"
+          show-icon
+          :closable="false"
+          style="margin-bottom: 20px;"
+        />
         <div class="fl ac">
           <router-link v-if="avatar" :to="{ name: 'user-id', params: {id: article.uid}}" target="_blank">
             <c-avatar :src="avatar" />
@@ -61,7 +69,8 @@ import moment from 'moment'
 export default {
   data(){
     return {
-      article: Object.create(null)
+      article: Object.create(null),
+      draftTime: 0
     }
   },
   computed: {
@@ -97,6 +106,17 @@ export default {
     time() {
       let time = this.article.update_time
       return time ? moment(time).format('YYYY-MM-DD HH:mm') : ''
+    },
+    // 剩余时间
+    draftTimeEnd() {
+      let time = this.draftTime
+      if (time === 0) {
+        return '预览链接24h后失效'
+      } else {
+        let h = parseInt(time / 60 / 60 % 24)
+        let m = parseInt(time / 60 % 60)
+        return `预览链接${h}小时${m}分钟后失效`
+      }
     }
   },
   created() {
@@ -104,6 +124,7 @@ export default {
       this.$nextTick(() => {
         this.init()
       })
+      this.previewDraftTime(this.$route.params.id)
     }
   },
   methods: {
@@ -123,6 +144,19 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    // 草稿时间
+    async previewDraftTime(id) {
+      await this.$API.previewDraftTime(id)
+        .then(res => {
+          if (res.code === 0) {
+            this.draftTime = res.data
+          } else {
+            console.log(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
     }
   }
 }

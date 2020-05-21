@@ -1008,6 +1008,8 @@ minetokenGetResources(tokenId) {
   previewSetId(data) { return request.post('/preview', data) },
   // 获取预览内容
   previewDraft(id) { return request.get(`/preview/${id}`)},
+  // 获取预览时间
+  previewDraftTime(id) { return request.get(`/previewTime/${id}`)},
 
   getNumArticles(id) {
     return request.get(`posts/timeRanking`, {
