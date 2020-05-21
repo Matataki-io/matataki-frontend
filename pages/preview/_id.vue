@@ -113,12 +113,8 @@ export default {
       if (time === 0) {
         return '预览链接24h后失效'
       } else {
-        let createTime = Math.round(1590051080341 / 1000)
-        let endTIme = createTime + 86400 // 60 * 60 * 24
-        let nowTime = Math.round(Date.now() / 1000)
-        let endTimeSubNowTime = endTIme - nowTime
-        let h = Math.round(endTimeSubNowTime / 60 / 60 % 24)
-        let m = Math.round(endTimeSubNowTime / 60 % 60)
+        let h = parseInt(time / 60 / 60 % 24)
+        let m = parseInt(time / 60 % 60)
         return `预览链接${h}小时${m}分钟后失效`
       }
     }
