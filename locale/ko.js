@@ -306,7 +306,7 @@ export default {
     home: {
         creation: '发现',
         share: '分享',
-        dynamic: '动态',
+        timeline: '动态',
         fanTicket: 'Fan票',
         signOut: '登出',
         signIn: '立即登录',
