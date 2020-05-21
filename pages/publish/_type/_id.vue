@@ -158,6 +158,34 @@
             @toggleTagStatus="toggleTagStatus"
           />
         </div>
+        <!-- tag -->
+        <h4 class="set-subtitle">
+          添加标签<span class="tag">（还可以添加2个标签）</span>
+        </h4>
+        <div class="set-content">
+          <ul class="tag-list">
+            <li
+              v-for="(item, index) in tag"
+              :key="index"
+              class="tag-item"
+              @click="removeTag(index)"
+            >
+              {{ item }}
+              <svg-icon icon-class="close_thin" class="icon" />
+            </li>
+            <li v-show="tag.length < tagMaxLen">
+              <input
+                ref="tagRef"
+                v-model="tagVal"
+                class="tag-input"
+                type="text"
+                maxlength="20"
+                @keyup.enter="addTag"
+              >
+              <span class="tag-tip">按回车Enter创建标签</span>
+            </li>
+          </ul>
+        </div>
         <h4 class="set-subtitle">
           原创声明
           <el-tooltip
@@ -622,6 +650,9 @@ export default {
       },
       modalMode: null, // header 判断点击的 back 还是 home
       tagCards: [], // 文章标签
+      tag: [], // 标签
+      tagVal: '', // 标签内容
+      tagMaxLen: 10, // 最大标签数
       articleData: {}, // 文章数据
       transferButton: false, // 转让按钮
       transferModal: false, // 转让弹框
@@ -785,6 +816,17 @@ export default {
       handler() {
         if (!this.autoUpdateDfaftTags) return
         this.updateDraftWatch()
+      }
+    },
+    // 监听tag设置width
+    tagVal(val) {
+      const tag = this.$refs.tagRef
+      const width = (val.length + 1 ) * 12
+
+      if (val && width > 104) {
+        tag.style.width = (width <= 282 ? width : 282) + 'px'
+      } else {
+        tag.style.width = '104px'
       }
     }
   },
@@ -1612,6 +1654,17 @@ export default {
           () => this.$message.error(this.$t('error.copy'))
         )
       }
+    },
+    // 添加标签
+    addTag() {
+      if (this.tagVal) {
+        this.tag.push(this.tagVal)
+        this.tagVal = ''
+      }
+    },
+    // 删除标签
+    removeTag(i) {
+      this.tag.splice(i, 1)
     }
   }
 }
