@@ -27,7 +27,7 @@
             </h3>
           </section>
           <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
-          <dynamicCard
+          <timelineCard
             v-for="item in pull.list"
             :key="item.id"
             class="timeline-card"
@@ -102,13 +102,13 @@ import throttle from 'lodash/throttle'
 
 import { mapGetters, mapActions } from 'vuex'
 
-import dynamicCard from '@/components/dynamic_card/index.vue'
+import timelineCard from '@/components/timeline_card/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 
 export default {
   components: {
-    dynamicCard,
+    timelineCard,
     buttonLoadMore,
     RAList
   },

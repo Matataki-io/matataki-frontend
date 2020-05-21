@@ -12,10 +12,12 @@
     <n-link
       :to="{name: 'user-id', params: {id: card.id}}"
       target="_blank"
-      class="name"
+      class="info"
     >
-      {{ card && card.nickname || card.username }}
+      <p class="username"> {{ card && card.nickname || card.username }}</p>
+      <p class="introduction"> {{ card.introduction }}</p>
     </n-link>
+    
     <template v-if="!isMe(card.id)">
       <el-button
         :class="!card.is_follow && 'black'"
@@ -102,16 +104,37 @@ export default {
   &:nth-child(1) {
     padding-top: 0;
   }
-  .name {
-    font-size:16px;
-    letter-spacing: 1px;
-    color:#333;
+  .username {
+    font-size: 16px;
     flex: 1;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 1);
+    line-height: 22px;
+    padding: 0;
+    margin: 0;
+  }
+  .introduction {
+    color: #333;
+    flex: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
+    line-height: 20px;
+    padding: 0;
+    margin: 3px 0 0 0;
+  }
+  .info {
     margin-right: 10px;
     margin-left: 10px;
+    flex: 1;
+    overflow: hidden;
+    display: block;
   }
 
   /deep/ .g-avatar {
