@@ -1,8 +1,14 @@
-@width: 940px;
+@width: 1160px;
 
 .notification {
   .minHeight();
   margin: 0 auto;
+  &-topbar {
+    margin-bottom: 20px;
+    h3 {
+      margin: 0;
+    }
+  }
 }
 
 .notification-container {
@@ -63,6 +69,33 @@ nav {
         color: #000;
         font-weight: bold;
       }
+    }
+  }
+}
+
+.detail {
+  &-topbar {
+    margin-bottom: 20px;
+    &-back {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+      }
+      i {
+        font-weight: 600;
+        font-size: 20px;
+      }
+    }
+    h3 {
+      margin: 0;
     }
   }
 }

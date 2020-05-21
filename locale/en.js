@@ -141,13 +141,13 @@ export default {
         ontDoc: 'How to login with ONT',
         invite: 'Have invited',
         //img
-        viewWallet: 'checkout supported wallets',
-        backLogin: 'Back to login',
-        firstLogin: 'First login to get {0} point！',
-        pcLoginViewPointDetail: 'view point detail on desktop version',
-        otherAccount: 'Third-party account login',
-        loginWarning: 'Contents of different accounts are not interoperable',
-        getEmailCode: 'Get Email verification code'
+        viewWallet: '查看支持的钱包',
+        backLogin: '返回登录',
+        firstLogin: '首次登录领{0}积分！',
+        pcLoginViewPointDetail: '在PC版登陆后查看积分详情',
+        otherAccount: '第三方账号登录',
+        loginWarning: '不同帐号内容不互通',
+        getEmailCode: '获取邮箱验证码'
     },
     imgUpload: {
         btn: 'Upload',
@@ -336,14 +336,14 @@ export default {
         articleTagTitle: 'Article tags',
         shopTagTitle: 'Goods tags',
         recommendAuthor: 'Recommended Author',
-        popularArticles: 'Popular Articles',
-        random: 'Swap',
-        allCreation: 'Popular works',
-        latestCreation: 'Latest works',
-        fanCircle: 'Fan circle',
-        myFocus: 'My follow',
-        ofFanCircle: '\'s Fan circle',
-        buyFanTickets: 'Buy Fan tickets'
+        popularArticles: '不要错过',
+        random: '换一换',
+        allCreation: '最热作品',
+        latestCreation: '最新作品',
+        fanCircle: 'Fan圈',
+        myFocus: '我的关注',
+        ofFanCircle: '的Fan圈',
+        buyFanTickets: '购买Fan票'
     },
     sidebar: {
         article: 'piece',

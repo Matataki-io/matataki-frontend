@@ -919,6 +919,7 @@ export default {
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
           this.authorId = res.data.uid
+          this.ipfs_hide = Boolean(res.data.ipfs_hide)
           this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
