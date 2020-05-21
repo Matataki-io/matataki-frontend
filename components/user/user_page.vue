@@ -256,7 +256,7 @@ export default {
 }
 .default-banner {
   height: 290px;
-  background-color: #C8D7FF;
+  background-color: #c8d7ff;
   box-sizing: border-box;
   img {
     height: 100%;
@@ -267,7 +267,6 @@ export default {
 
 .user-info {
   width: 100%;
-  height: 240px;
   background-color: #fff;
   box-sizing: border-box;
   .token-avatar {
@@ -278,7 +277,7 @@ export default {
     max-width: 766px;
     height: 100%;
     margin: 0 auto;
-    padding: 1px 10px 0;
+    padding: 1px 10px 20px;
     text-align: center;
     position: relative;
     box-sizing: border-box;
@@ -328,6 +327,8 @@ export default {
     line-height: 22px;
     padding: 0;
     margin: 10px 0 20px;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
   .follow-block {
     margin: 0 34px;
@@ -391,7 +392,35 @@ export default {
 }
 
 // <600
-@media screen and (max-width: 600px){
+@media screen and (max-width: 600px) {
+  .banner {
+    height: 200px;
+  }
+  .user-info {
+    .token-avatar {
+      margin-top: -32px;
+    }
+    .avatar {
+      border: 2px solid #fff;
+      width: 60px !important;
+      height: 60px !important;
+    }
+    .token-link {
+      width: 25px;
+      height: 10px;
+    }
+  }
+  .token {
+    width: 60px;
+    height: 60px;
+  }
+
+  .token .minetoken {
+    width: 36px;
+    height: 36px;
+    margin: -5px 0 0 -5px;
+  }
+
   .user-page-content {
     padding-left: 20px;
     padding-right: 20px;
