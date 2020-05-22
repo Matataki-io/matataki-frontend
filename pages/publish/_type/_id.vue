@@ -147,25 +147,15 @@
             >
           </div>
         </div>
-        <h4 class="set-subtitle">
-          {{ $t('publish.tagTitle') }}
-        </h4>
-        <div class="set-content">
-          <tag-card
-            v-for="(item, index) in tagCards"
-            :key="index"
-            :tag-card="item"
-            @toggleTagStatus="toggleTagStatus"
-          />
-        </div>
         <!-- tag -->
         <h4 class="set-subtitle">
-          添加标签<span class="tag">（还可以添加2个标签）</span>
+          <!-- {{ $t('publish.tagTitle') }} -->
+          添加标签<span class="tag">（还可以添加{{ tagMaxLen - tags.length }}个标签）</span>
         </h4>
         <div class="set-content">
           <ul class="tag-list">
             <li
-              v-for="(item, index) in tag"
+              v-for="(item, index) in tags"
               :key="index"
               class="tag-item"
               @click="removeTag(index)"
@@ -173,7 +163,7 @@
               {{ item }}
               <svg-icon icon-class="close_thin" class="icon" />
             </li>
-            <li v-show="tag.length < tagMaxLen">
+            <li v-show="tags.length < tagMaxLen">
               <input
                 ref="tagRef"
                 v-model="tagVal"
@@ -606,20 +596,19 @@ import { strTrim } from '@/utils/reg'
 
 import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
 import imgUpload from '@/components/imgUpload' // 图片上传
-import tagCard from '@/components/tag_card'
 import articleTransfer from '@/components/articleTransfer'
 
 import articleImport from '@/components/article_import/index.vue'
 import statement from '@/components/statement/index.vue'
 
 import { toPrecision, precision } from '@/utils/precisionConversion'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   layout: 'empty',
   name: 'NewPost',
   components: {
     imgUpload,
-    tagCard,
     articleTransfer,
     articleImport,
     statement,
@@ -649,8 +638,7 @@ export default {
         button: [this.$t('publish.modalTextButton1'), this.$t('publish.modalTextButton2')]
       },
       modalMode: null, // header 判断点击的 back 还是 home
-      tagCards: [], // 文章标签
-      tag: [], // 标签
+      tags: [], // 标签
       tagVal: '', // 标签内容
       tagMaxLen: 10, // 最大标签数
       articleData: {}, // 文章数据
@@ -662,7 +650,6 @@ export default {
       statementVisible: false, // 原创声明
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
-      autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章自动保存至',
       readContent: false,
       readauThority: false, // 持通证阅读
@@ -811,10 +798,10 @@ export default {
     isOriginal() {
       this.updateDraftWatch()
     },
-    tagCards: {
+    // 标签改变
+    tags: {
       deep: true,
       handler() {
-        if (!this.autoUpdateDfaftTags) return
         this.updateDraftWatch()
       }
     },
@@ -852,7 +839,6 @@ export default {
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
-    this.getTags()
     this.getAllTokens()
     // this.setToolBar()
 
@@ -938,12 +924,6 @@ export default {
       // 如果允许关闭 或者 内容都为空
       return this.allowLeave || (!strTrim(this.title) && !strTrim(this.markdownData))
     },
-    setTag(data) {
-      this.articleData = data // 设置文章数据
-      // 编辑的时候设置tag状态
-      const { id } = this.$route.params
-      if (id !== 'edit') this.setTagStatus()
-    },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
       await this.$API.getIpfsData(hash, true).then(res => {
@@ -967,6 +947,9 @@ export default {
           this.authorId = res.data.uid
           this.ipfs_hide = Boolean(res.data.ipfs_hide)
           this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
+
+          this.tags = res.data.tags.map(i => i.name)
+          
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -1014,7 +997,6 @@ export default {
           }
 
 
-          this.setTag(res.data)
         } else {
           this.$message.error(res.message)
           this.$router.push({ path: '/article' })
@@ -1036,7 +1018,8 @@ export default {
         this.isOriginal = Boolean(res.is_original)
         this.commentPayPoint = res.comment_pay_point
 
-        this.setTag(res)
+        this.tags = res.tags
+
       }).catch(err => {
         console.log(err)
         this.$message.error('获取草稿内容失败')
@@ -1146,22 +1129,11 @@ export default {
         return false
       }
     },
-    // 文章标签 tag
-    setArticleTag(tagCards) {
-      let tags = ''
-      const tagCardsFilter = tagCards.filter(i => i.status === true)
-      if (tagCardsFilter.length !== 0) {
-        tagCardsFilter.map((i, index) => {
-          if (index === 0) tags += i.id
-          else tags += `,${i.id}`
-        })
-      }
-      return tags
-    },
     // 发布文章
     async publishArticle(article) {
       // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
+      article.tags = this.tags
+
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
@@ -1220,7 +1192,8 @@ export default {
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       this.allowLeave = true
-      article.tags = this.setArticleTag(this.tagCards)
+      article.tags = this.tags
+
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       await this.$API.createDraft(article).then(res => {
@@ -1242,7 +1215,7 @@ export default {
     // 编辑文章
     async editArticle(article) {
       // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
+      article.tags = this.tags
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
 
@@ -1300,7 +1273,8 @@ export default {
 
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
+      article.tags = this.tags
+
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       try {
@@ -1315,7 +1289,10 @@ export default {
     // 发布||修改按钮
     sendThePost() {
       // 没有登录 点击发布按钮都提示登录  编辑获取内容的时候会被前面的func拦截并返回home page
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!getCookie('ACCESS_TOKEN')) {
+        this.$store.commit('setLoginModal', true)
+        return 
+      }
 
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed(this.$t('warning.titleOrContent'))
@@ -1382,6 +1359,7 @@ export default {
 
         const data = { title, author, content }
         // this.fullscreenLoading = false // remove full loading
+
         this.publishArticle({
           author,
           title,
@@ -1495,46 +1473,6 @@ export default {
       if (this.modalMode === 'back') this.$router.go(-1)
       else if (this.modalMode === 'home') this.$router.push({ path: '/' })
       else this.$router.go(-1)
-    },
-    // 获取标签
-    async getTags() {
-      await this.$API
-        .getTags()
-        .then(res => {
-          // console.log(649, res)
-          if (res.code === 0) {
-            // 过滤商品标签 id <= 100
-            const filterId = i => i.id <= 100
-            const filterTag = res.data.filter(filterId)
-            // 过滤商品标签 id <= 100
-
-            filterTag.map(i => (i.status = false))
-            this.tagCards = filterTag
-          } else console.log(res.message)
-        })
-        .catch(err => {
-          console.log(err)
-        }).finally(() => {
-          this.autoUpdateDfaftTags = true
-        })
-    },
-    // 切换状态
-    toggleTagStatus(data) {
-      const tagCardsIndex = this.tagCards.findIndex(i => i.id === data.id)
-      if (tagCardsIndex === -1) return
-      this.tagCards.map(i => (i.status = false))
-      this.tagCards[tagCardsIndex].status = data.status
-      // console.log(this.tagCards, data)
-    },
-    // 设置标签状态
-    setTagStatus() {
-      const tagCardsCopy = this.tagCards
-      this.articleData.tags.map(i => {
-        tagCardsCopy.map((j, index) => {
-          if (i.id === j.id) tagCardsCopy[index].status = true
-        })
-      })
-      this.tagCards = tagCardsCopy
     },
     // 关闭原创声明框
     closeStatement(val) {
@@ -1658,13 +1596,13 @@ export default {
     // 添加标签
     addTag() {
       if (this.tagVal) {
-        this.tag.push(this.tagVal)
+        this.tags.push(this.tagVal)
         this.tagVal = ''
       }
     },
     // 删除标签
     removeTag(i) {
-      this.tag.splice(i, 1)
+      this.tags.splice(i, 1)
     }
   }
 }
