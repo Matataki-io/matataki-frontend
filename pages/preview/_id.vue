@@ -43,21 +43,6 @@
         />
       </article>
     </div>
-    <!-- tag 标签 -->
-    <div
-      v-if="isShowTags"
-      style="margin-bottom: 20px;"
-    >
-      <router-link
-        v-for="(item, index) in article.tags"
-        :key="index"
-        :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
-        style="margin-right: 10px;"
-        class="tag-card"
-      >
-        {{ item.name }}
-      </router-link>
-    </div>
   </div>
 </template>
 
@@ -93,10 +78,6 @@ export default {
       } else {
         return ''
       }
-    },
-    // 是否显示标签
-    isShowTags() {
-      return this.article.tags && this.article.tags.length !== 0
     },
     // 头绪
     avatar() {
