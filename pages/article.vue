@@ -12,12 +12,12 @@
         <div class="position-sticky top80">
           <popularArticles :list="popularlist" />
 
-          <router-link :to="{name: 'token'}">
+          <!-- <router-link :to="{name: 'token'}">
             <img
               class="fan-entrance"
               src="@/assets/img/fan_entrance.png"
             >
-          </router-link>
+          </router-link> -->
         </div>
       </div>
     </div>

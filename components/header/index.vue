@@ -29,6 +29,9 @@
       </div>
 
       <div class="pc head-flex">
+        <div class="qq-tips">
+          请加我们官方QQ群：766605671
+        </div>
         <div class="search">
           <input
             v-model="searchInput"
@@ -88,7 +91,7 @@
             </el-badge>
           </n-link>
         </el-tooltip>
-        <el-tooltip
+        <!-- <el-tooltip
           class="item"
           effect="dark"
           :content="$t('publish.importArticle')"
@@ -114,7 +117,7 @@
             icon-class="write"
             @click="writeP"
           />
-        </el-tooltip>
+        </el-tooltip> -->
 
         <el-dropdown
           v-if="isLogined"
@@ -166,7 +169,14 @@
           @click="login"
         >{{ $t('home.signIn') }}</a>
         <slot name="more" />
-        <language class="language" />
+        <a v-if="isLogined" class="btn write-btn" @click="writeP">
+          <svg-icon
+            class="write-icon"
+            icon-class="write"
+          />
+          写文章
+        </a>
+        <!-- <language class="language" /> -->
       </div>
       <div class="mobile">
         <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
@@ -252,11 +262,11 @@
               {{ $t('home.signIn') }}
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="javascript:;">
               <language />
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -266,7 +276,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
-import language from './language'
+// import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
@@ -279,7 +289,7 @@ export default {
   name: 'HomeHead',
   components: {
     // avatarComponents,
-    language
+    // language
   },
   props: {
     // 自定义头部背景
@@ -490,6 +500,45 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.qq-tips {
+  margin-right: 20px;
+  color: #B2B2B2;
+  font-size: 14px;
+}
+.user-menu  {
+  margin-right: 20px;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px;
+  font-size: 14px;
+  line-height: 1.42857;
+  border-radius: 4px;
+  user-select: none;
+}
+.write-btn {
+  float: right;
+  width: 100px;
+  // height: 40px;
+  line-height: 24px;
+  // margin: 0 12px;
+  border-radius: 20px;
+  font-size: 15px;
+  color: #fff;
+  background-color: #542DE0;
+  .write-icon {
+    color: #fff;
+  }
+}
 .header {
   width: 100%;
   height: 60px;
@@ -533,7 +582,7 @@ export default {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    margin: 0 20px 0 0;
+    margin: 0 20px;
     color: #000;
     .notification {
     width: 24px;
