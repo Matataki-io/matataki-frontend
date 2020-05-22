@@ -982,6 +982,8 @@ minetokenGetResources(tokenId) {
   },
   // 获取某篇文章的标签 
   tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
+  // 获取热门标签
+  tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
   // 删除文章
   delArticle({ id }) {
     return request({

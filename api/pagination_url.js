@@ -79,5 +79,5 @@ export const paginationUrl = {
   // Fan 票相关创作
   minetokenRelated: 'minetoken/:id/related',
   // 分享列表
-  share: 'share'
+  share: 'share',
 }
