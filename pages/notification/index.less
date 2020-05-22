@@ -5,8 +5,11 @@
   margin: 0 auto;
   &-topbar {
     margin-bottom: 20px;
-    h3 {
-      margin: 0;
+    &-title {
+      font-size: 20px;
+      color: black;
+      line-height: 28px;
+      margin: 0 0 20px 0;
     }
   }
 }
@@ -26,48 +29,27 @@
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04)
 }
 
-nav {
-  background: rgba(255, 255, 255, 1);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      font-size: 20px;
-      color: #B2B2B2;
-      margin: 20px 0;
-
-      &:first-child {
-        margin-top: 0;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      svg {
-        margin-right: 10px;
-      }
-
-      span {
-        display: inline-block;
-        line-height: 28px;
-      }
-
-      span.count {
-        font-size: 14px;
-        vertical-align: middle;
-        float: right;
-      }
-
-      &.active span.name {
-        color: #000;
-        font-weight: bold;
+.option {
+  margin-bottom: 20px;
+  &-title {
+    font-size: 20px;
+    color: black;
+    line-height: 28px;
+    margin: 0 0 20px 0;
+  }
+  &-card {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+    &-button {
+      display: flex;
+      justify-content: center;
+    }
+    .checkbox-group {
+      flex-wrap: wrap;
+      .checkbox {
+        margin: 0 12px 10px 12px;
       }
     }
   }
@@ -98,4 +80,13 @@ nav {
       margin: 0;
     }
   }
+}
+
+.noData {
+  background: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  padding: 40px 20px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+  margin-bottom: 20px;
+  text-align: center;
 }
