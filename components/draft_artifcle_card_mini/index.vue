@@ -2,7 +2,7 @@
   <!-- 卡片适用于 个人主页设置页 -->
   <div class="card fl ac jsb">
     <div class="fl content">
-      <div class="cover">
+      <div v-if="cover" class="cover">
         <img
           :src="cover"
           :onerror="defaultCover"
@@ -71,7 +71,6 @@ export default {
   }
   .info {
     overflow: hidden;
-    margin-left: 10px;
     margin-right: 10px;
     flex: 1;
   }
@@ -83,6 +82,7 @@ export default {
   background:rgba(0,0,0,0.05);
   border-radius: @borderRadius6;
   overflow: hidden;
+  margin-right: 10px;
   img {
     width: 100%;
     height: 100%;
