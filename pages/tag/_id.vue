@@ -80,7 +80,7 @@ export default {
     // 热门标签
     async tagsHotest() {
       await this.$API.tagsHotest({
-        pagesize: 20
+        pagesize: 40
       }).then(res => {
         if (res.code === 0) {
           console.log(res)
@@ -189,6 +189,13 @@ export default {
     .col-3 {
       display: none;
     }
+  }
+}
+
+// 小于600
+@media screen and (max-width: 600px) {
+  .tag {
+    background-color: #fff;
   }
 }
 </style>
