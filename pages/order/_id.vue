@@ -320,6 +320,14 @@ export default {
       const { tradeNo } = this
       // 当前是否处于微信浏览器中
       if (this.isInWeixin) {
+
+        // 在微信中并且域名为备案域名 VUE_APP_WX_URL
+        if (window.location.origin !== process.env.VUE_APP_WX_URL) {
+          this.loading = false
+          this.$message.warning(`请移步${process.env.VUE_APP_WX_URL}操作`)
+          return
+        }
+
         let openid = ''
         if (this.isWeixinAccount) {
           // 微信账号直接使用JSAPI微信支付

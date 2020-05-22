@@ -766,6 +766,7 @@ header {
     line-height: 30px;
     padding: 0 0 0 16px;
     margin: 0;
+
     a {
       color: #744dff;
       text-decoration: underline;
@@ -935,8 +936,7 @@ header {
 
 // 小于
 @media screen and (max-width: 540px) {
-
-  header {
+  .screen1 .screen1-main header {
     padding: 50px 0 0 0;
 
     .logo {
@@ -954,8 +954,17 @@ header {
 
   }
 
+  .screen1 .screen1-main {
+    height: 620px;
+  }
+
+
+  .screen1-block__btn {
+    margin-top: 40px;
+  }
+
   .screen1 .screen1-bc {
-    height: 150px;
+    height: 140px;
     left: calc((100vw - 1200px) / 2 + 630px);
 
     img {
@@ -966,11 +975,12 @@ header {
   .screen1-block__text h1 {
     font-size: 24px;
     line-height: 40px;
-    margin: 160px 0 0 0;
+    margin: 70px 0 0 0;
   }
 
   .screen1-block__text p {
     font-size: 14px;
+    margin-top: 20px;
   }
 
   .screen1-block__btn .screen1-btn {
@@ -1034,6 +1044,7 @@ header {
   overflow: hidden;
   user-select: none;
   border: 1px solid #ddd;
+
   img {
     width: 100%;
     height: 100%;
@@ -1045,6 +1056,7 @@ header {
   cursor: pointer;
   font-size: 30px;
   color: #000;
+
   &-ul {
     position: absolute;
     top: 60px;
@@ -1055,6 +1067,7 @@ header {
     padding: 0 10px 20px;
     margin: 0;
     list-style: none;
+
     li {
       border-bottom: 1px solid #dfdfdf;
       padding: 0;
@@ -1066,6 +1079,7 @@ header {
       &:nth-last-child(1) {
         border-bottom: none;
       }
+
       a {
         display: block;
         padding: 10px 0;
@@ -1075,6 +1089,17 @@ header {
       .username {
         margin-left: 10px;
       }
+    }
+  }
+}
+.qq-notice {
+  margin-top: 2rem;
+  p {
+    font-weight: bolder;
+    color: #542DE0;
+    font-size: 16px;
+    a {
+      color: #542DE0;
     }
   }
 }

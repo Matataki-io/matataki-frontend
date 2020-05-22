@@ -306,6 +306,7 @@ export default {
     home: {
         creation: '发现',
         share: '分享',
+        timeline: '动态',
         fanTicket: 'Fan票',
         signOut: '登出',
         signIn: '立即登录',
@@ -342,7 +343,7 @@ export default {
         fanCircle: 'Fan圈',
         myFocus: '我的关注',
         ofFanCircle: '的Fan圈',
-        buyFanTickets: '购买Fan票',
+        buyFanTickets: '购买Fan票'
     },
     sidebar: {
         article: '篇',

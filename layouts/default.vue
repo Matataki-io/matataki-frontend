@@ -1,9 +1,9 @@
 <template>
   <div class="app">
     <nuxt />
-    <lazy-component>
-      <g-footer v-if="hideFooter" />
-    </lazy-component>
+    <!-- <lazy-component> -->
+    <g-footer v-if="hideFooter" />
+    <!-- </lazy-component> -->
     <back-to-top
       v-if="!hideBackTop"
       :visibility-height="300"

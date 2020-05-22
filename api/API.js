@@ -334,7 +334,7 @@ export default {
   },
   // 推荐作者||用户
   usersRecommend(params){
-    return request('/users/recommend', params)
+    return request('/users/recommend', { params })
   },
   // 获取任务状态
   userPointStatus() {
@@ -980,6 +980,10 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  // 获取某篇文章的标签 
+  tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
+  // 获取热门标签
+  tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
   // 删除文章
   delArticle({ id }) {
     return request({
@@ -1008,6 +1012,8 @@ minetokenGetResources(tokenId) {
   previewSetId(data) { return request.post('/preview', data) },
   // 获取预览内容
   previewDraft(id) { return request.get(`/preview/${id}`)},
+  // 获取预览时间
+  previewDraftTime(id) { return request.get(`/previewTime/${id}`)},
 
   getNumArticles(id) {
     return request.get(`posts/timeRanking`, {
@@ -1017,5 +1023,24 @@ minetokenGetResources(tokenId) {
         pagesize: 1
       }
     })
+  },
+
+  notifyMarkRead(notifyIds) {
+    return request({
+      method: 'put',
+      url: `/notify/event`,
+      data: { ids: notifyIds }
+    })
+  },
+
+  notifyMarkReadAll() {
+    return request({
+      method: 'put',
+      url: `/notify/event/all`
+    })
+  },
+
+  getNotifyUnreadQuantity() {
+    return request.get(`/notify/event/quantity`)
   }
 }

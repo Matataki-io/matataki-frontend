@@ -72,8 +72,12 @@ export const paginationUrl = {
   userBookmarks: 'user/bookmarks',
   // 通知
   notifications: '/notification/fetch',
+  // 获取汇总后的消息列表
+  notifyCenter: '/notify/event',
+  // 获取汇总后的消息列表
+  notifyDetails: '/notify/event/detail',
   // Fan 票相关创作
   minetokenRelated: 'minetoken/:id/related',
   // 分享列表
-  share: 'share'
+  share: 'share',
 }

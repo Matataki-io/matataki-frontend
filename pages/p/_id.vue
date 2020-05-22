@@ -235,15 +235,13 @@
 
       <!-- tag 标签 -->
       <div
-        v-if="isShowTags"
-        class="p-w"
-        style="margin-bottom: 20px;"
+        v-if="tags.length !== 0"
+        class="p-w tag-list"
       >
         <router-link
-          v-for="(item, index) in article.tags"
+          v-for="(item, index) in tags"
           :key="index"
-          :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
-          style="margin-right: 10px;"
+          :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name,}}"
           class="tag-card"
         >
           {{ item.name }}
@@ -465,7 +463,8 @@ export default {
       editHasPaied: true,
       lockLoading: true,
       articleIpfsArray: [], // ipfs hash
-      resizeEvent: null
+      resizeEvent: null,
+      tags: [] // 文章标签
     }
   },
   head() {
@@ -546,9 +545,6 @@ export default {
     },
     likedOrDisLiked() {
       return parseInt(this.ssToken.is_liked) !== 0
-    },
-    isShowTags() {
-      return this.article.tags && this.article.tags.length !== 0
     },
     getArticlePrice() {
       if (this.isPriceArticle) {
@@ -713,6 +709,7 @@ export default {
     this.setAvatar()
     this.addReadAmount()
     this.getCurrentProfile()
+    this.getTags()
     this.getArticleIpfs()
 
     this.setAllHideContentStyle()
@@ -843,7 +840,6 @@ export default {
         }
       }
     },
-
 
     async getIpfsData() {
       const { hash } = this.article
@@ -1330,6 +1326,20 @@ export default {
         console.error(e)
         this.$message.error('订单创建失败')
       }
+    },
+    // 获取文章标签
+    async getTags() {
+      await this.$API.tagsById({
+        id: this.$route.params.id
+      }).then(res => {
+        if (res.code === 0) {
+          this.tags = res.data
+        } else {
+          console.log(res.message)
+        }
+      }).catch(e => {
+        console.log(e)
+      })
     }
   }
 
