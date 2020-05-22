@@ -107,6 +107,7 @@ export default {
     },
     totalLabel() {
       if(this.card.total < 2) return ''
+      if(this.card.action === 'comment') return ''
       return `和其他${this.card.total - 1}位用户`
     },
     content() {
@@ -151,11 +152,12 @@ export default {
   display: flex;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  &:hover {
-    .view-all{
-      visibility: visible;
-    }
-  }
+  // 悬浮显示“查看全部”的文字
+  // &:hover {
+  //   .view-all{
+  //     visibility: visible;
+  //   }
+  // }
   &-type {
     width: 30px;
     svg {
@@ -226,7 +228,8 @@ export default {
         line-height: 22px;
         margin: 0;
         text-align: right;
-        visibility: hidden;
+        // 隐藏“查看全部”的文字
+        // visibility: hidden;
       }
     }
     &-content {

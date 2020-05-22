@@ -4,7 +4,7 @@
     <el-row class="notification-container">
       <el-col v-show="!showDetails" :span="16">
         <div class="notification-topbar">
-          <h3>
+          <h3 class="notification-topbar-title">
             通知
           </h3>
         </div>
@@ -17,6 +17,9 @@
           :comment="getComment(item)"
           @openDetails="openDetails"
         />
+        <div v-if="notifications.length === 0" class="noData">
+          {{ $t('notContent') }}
+        </div>
         <div class="load-more">
           <buttonLoadMore
             :type-index="0"
@@ -71,53 +74,72 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <nav>
-          <ul>
-            <li
-              v-for="(nav, index) in navItems"
-              :key="nav.name"
-              :class="{ active: active === index }"
-              @click="setActive(index)"
+        <!-- 消息筛选 -->
+        <div class="option">
+          <h3 class="option-title">
+            消息筛选
+          </h3>
+          <div class="option-card">
+            <!-- <el-checkbox
+              v-model="checkAll"
+              :indeterminate="isIndeterminate"
+              @change="handleCheckAllChange"
             >
-              <svg-icon
-                :icon-class="nav.icon + (PROVIDERS.includes(nav.name) ? '' : '-gray')"
-                class="icon"
-              />
-              <span class="name">{{ nav.text }}</span>
-              <span
-                v-if="PROVIDERS.includes(nav.name)"
-                class="count"
-              >+{{ notificationCounters[nav.name] || 0 }}</span>
-            </li>
-          </ul>
-        </nav>
+              全选
+            </el-checkbox> -->
+            <el-checkbox-group
+              v-model="checkedCities"
+              class="fl checkbox-group"
+              @change="handleCheckedCitiesChange"
+            >
+              <el-checkbox
+                v-for="city in cities"
+                :key="city"
+                disabled
+                class="checkbox"
+                :label="city"
+              >
+                {{ city }}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
+        </div>
+        <!-- 查看模式 -->
+        <div class="option">
+          <h3 class="option-title">
+            查看模式
+          </h3>
+          <div class="option-card">
+            <el-radio v-model="viewMode" disabled label="all">
+              查看全部
+            </el-radio>
+            <el-radio v-model="viewMode" disabled label="unread">
+              只看未读
+            </el-radio>
+            <el-divider />
+            <div class="option-card-button">
+              <el-button size="medium" plain @click="notifyMarkReadAll">
+                <svg-icon icon-class="read-all" />
+                全部标记为已读
+              </el-button>
+            </div>
+          </div>
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
 import commentCard from '@/components/notification/commentCard.vue'
 
-const PROVIDERS = ['follow']
 export default {
   name: 'NotificationPage',
   components: { buttonLoadMore, notifyCard, objectCard, commentCard },
   data() {
-    const active = this.$route.params.provider && PROVIDERS.indexOf(this.$route.params.provider) >= 0 ? PROVIDERS.indexOf(this.$route.params.provider) : 0
     return {
-      PROVIDERS,
-      active,
-      navItems: [
-        { name: 'follow', text: this.$t('sidebar.fans'), icon: 'follow' },
-        { name: 'recommend', text: this.$t('p.read_like'), icon: 'recommend' },
-        { name: 'comment', text: this.$t('p.commentPointBtn'), icon: 'comment' },
-        { name: 'message', text: this.$t('user.message'), icon: 'message' },
-        { name: 'notice', text: this.$t('notice'), icon: 'notice' }
-      ],
       showDetails: false,
       notifications: [],
       users: [],
@@ -131,57 +153,48 @@ export default {
         comment: '评论详情',
         follow: '关注详情'
       },
-      noRead: Number(this.$route.params.noRead) || 0
+      checkAll: true,
+      checkedCities: [],
+      cities: ['评论信息', '推荐信息', '关注信息', '打赏信息', '发文信息', '系统通知'],
+      isIndeterminate: true,
+      viewMode: 'all',
+      startId: 0
     }
   },
   computed: {
-    ...mapState('notification', ['notificationCounters']),
-    provider() {
-      return PROVIDERS[this.active]
-    },
     pull() {
       return {
         apiUrl: 'notifyCenter',
-        params: { pagesize: 20, startId: 0 }
+        params: { pagesize: 20, startId: this.startId }
       }
     },
     detailPull() {
       return {
         apiUrl: 'notifyDetails',
-        params: {
-          pagesize: 20,
-          ...this.detailsIndex
-        }
+        params: { pagesize: 20, ...this.detailsIndex }
       }
     }
   },
   created() {
-    this.getNotificationCounters()
+    this.handleCheckAllChange(true)
   },
   methods: {
-    ...mapActions('notification', ['getNotificationCounters']),
-    setActive(index) {
-      if (!this.navItems[index] || !this.PROVIDERS.includes(this.navItems[index].name)) return
-      this.active = index
-      this.page = 1
-    },
     buttonLoadMore(res) {
-      if(res.data) {
+      if(res.data && res.data.list.length > 0 ) {
         this.notifications.push(...res.data.list)
         this.users.push(...res.data.users)
         this.posts.push(...res.data.posts)
         this.comments.push(...res.data.comments)
         // 标记已读
         this.markRead(res.data.list)
+        // 设定起始查询位置
+        if(!this.startId) this.startId = res.data.list[0].id
       }
     },
     detailLoadMore(res) {
-      if(res.data) {
+      if(res.data && res.data.list.length > 0 ) {
         this.notificationDetails.push(...res.data.list)
       }
-    },
-    deduplication(array1) {
-      return [...new Set(array1)]
     },
     getUser(userId) {
       if(this.users && this.users.length > 0)
@@ -204,6 +217,7 @@ export default {
     },
     openDetails(data) {
       this.pagePosition = document.documentElement.scrollTop
+      window.scroll(0, 0)
       this.detailsIndex = data
       this.showDetails = true
     },
@@ -214,13 +228,30 @@ export default {
     },
     /** 标记已读 */
     markRead(notifications) {
-      if(this.noRead) return
       let notifyIds = []
       notifications.forEach(item => {
         if(item.state === 0) notifyIds.push(item.id)
       })
       if(notifyIds.length > 0) this.$API.notifyMarkRead(notifyIds)
-    }
+    },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? this.cities : []
+      this.isIndeterminate = false
+    },
+    handleCheckedCitiesChange(value) {
+      console.log(value)
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.cities.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length
+    },
+    async notifyMarkReadAll() {
+      const res = await this.$API.notifyMarkReadAll()
+      if(res.code === 0) {
+        this.$message.success(this.$t('success.success'))
+        this.$router.go(0)
+      }
+      else this.$message.error(this.$t('error.fail'))
+    },
   }
 }
 </script>
@@ -246,6 +277,12 @@ export default {
     .el-col-8 {
       width: 100%;
       margin-bottom: 10px;
+
+      // 先隐藏一下
+      display:block;
+      overflow: hidden;
+      width: 0;
+      height: 0;
     }
     .el-col-16 {
       width: 100%;

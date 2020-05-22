@@ -1033,6 +1033,13 @@ minetokenGetResources(tokenId) {
     })
   },
 
+  notifyMarkReadAll() {
+    return request({
+      method: 'put',
+      url: `/notify/event/all`
+    })
+  },
+
   getNotifyUnreadQuantity() {
     return request.get(`/notify/event/quantity`)
   }
