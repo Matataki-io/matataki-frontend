@@ -93,7 +93,7 @@
     <!-- 设置 发布 dialog -->
     <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
-        <h3 v-if="isShowDraftPreview" class="set-title">
+        <!-- <h3 v-if="isShowDraftPreview" class="set-title">
           预览设置
         </h3>
         <div v-if="isShowDraftPreview" class="set-content">
@@ -104,11 +104,11 @@
             复制链接
           </el-button>
           <p class="preview">将此链接发送给他人, 可以提前预览您还未发布的草稿(24h有效)</p>
-        </div>
+        </div> -->
         
-        <h3 class="set-title">
+        <h1 class="set-title">
           基础设置
-        </h3>
+        </h1>
         <h4 class="set-subtitle">
           {{ $t('publish.coverTitle') }}
         </h4>
@@ -261,7 +261,7 @@
             </div>
           </div>
         </div>
-        <div v-if="settingDialogMode === 'setting'">
+        <!-- <div v-if="settingDialogMode === 'setting'">
           <el-button
             v-if="isShowTransfer"
             type="danger"
@@ -278,10 +278,10 @@
           >
             转让草稿
           </el-button>
-        </div>
-        <h3 class="set-title">
+        </div> -->
+        <h1 class="set-title set-title-border">
           权限设置
-        </h3>
+        </h1>
         <h4 class="set-subtitle">
           阅读权限设置
           <el-tooltip
@@ -561,12 +561,32 @@
         </div>
 
         <div class="set-footer">
-          <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
+          <el-button size="medium" @click="goPreview">
+            立即预览
+          </el-button>
+          <!-- <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
             <el-button size="medium">
               返回草稿箱
             </el-button>
-          </router-link>
-          
+          </router-link> -->
+          <template v-if="settingDialogMode === 'setting'">
+            <el-button
+              v-if="isShowTransfer"
+              type="danger"
+              size="medium"
+              @click="delArticle"
+            >
+              删除此篇
+            </el-button>
+            <el-button
+              v-if="isShowTransfer"
+              type="danger"
+              size="medium" 
+              @click="transferArticle"
+            >
+              转让草稿
+            </el-button>
+          </template>
           <el-button
             type="primary"
             size="medium"
