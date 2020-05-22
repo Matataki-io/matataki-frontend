@@ -97,6 +97,9 @@
             DeFi.wtf
           </a>
         </p>
+        <p>
+          <language />
+        </p>
       </div>
       <div class="footer-c4">
         <div>
@@ -105,6 +108,16 @@
             src="@/assets/img/footer_logo1.png"
             alt="logo"
           >
+          <a
+            target="_blank"
+            href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t"
+            title="群号：766605671"
+          >
+            <svg-icon
+              class="icon qq-icon"
+              icon-class="qq"
+            />
+          </a>
           <div class="icon wechat-icon">
             <div class="wechat">
               <div class="wechat-img">
@@ -139,7 +152,7 @@
           >
             <div class="icon telegram-icon" />
           </a>
-          <a
+          <!-- <a
             target="_blank"
             href="https://twitter.com/realmatataki"
           >
@@ -153,10 +166,10 @@
             href="https://www.facebook.com/MatatakiOfficial/"
           >
             <div class="icon facebook-icon" />
-          </a>
+          </a> -->
         </div>
         <p class="copyright">
-          Copyright © 2018-2019 ANDOROMEDA TECH.ltd
+          Copyright © 2018-2020 ANDOROMEDA TECH.ltd
         </p>
       </div>
     </div>
@@ -164,7 +177,12 @@
 </template>
 
 <script>
-export default {}
+import language from '../header/language'
+export default {
+  components: {
+    language
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -304,6 +322,14 @@ export default {}
       background-image: url("../../assets/img/footer_facebook_active.svg");
     }
   }
+  &.qq-icon {
+    width: 28px;
+    height: 28px;
+    color: #b2b2b2;
+    &:hover {
+      color: #12b7f5;
+    }
+  }
 }
 .copyright {
   font-size: 14px;
@@ -328,6 +354,10 @@ export default {}
       color: #fff;
     }
   }
+}
+.footer-content {
+  flex-direction: row;
+  align-items: flex-start;
 }
 // 小于1200
 @media screen and (max-width: 1200px) {
