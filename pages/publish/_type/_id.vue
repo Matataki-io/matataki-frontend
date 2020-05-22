@@ -561,7 +561,7 @@
         </div>
 
         <div class="set-footer">
-          <el-button size="medium" @click="goPreview">
+          <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
             立即预览
           </el-button>
           <!-- <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
