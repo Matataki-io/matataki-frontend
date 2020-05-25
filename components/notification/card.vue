@@ -23,7 +23,7 @@
           {{ card.state ? '已读' : '未读' }}
         </p>
       </div>
-      <div class="fl notify-right-title">
+      <div class="notify-right-title">
         <!-- 事件发送者 -->
         <h4>
           <span @click.stop>
@@ -33,14 +33,16 @@
           </span>
           {{ totalLabel }}
         </h4>
-        <!-- 行为 -->
-        <p>
-          {{ actionLabel }}
-        </p>
-        <p v-if="card.total > 1" class="view-all">
-          查看全部
-          <i class="el-icon-arrow-right" />
-        </p>
+        <div class="fl" style="flex: 1;">
+          <!-- 行为 -->
+          <p>
+            {{ actionLabel }}
+          </p>
+          <p v-if="card.total > 1" class="view-all">
+            查看全部
+            <i class="el-icon-arrow-right" />
+          </p>
+        </div>
       </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
       <!-- 对象卡片 -->
@@ -203,6 +205,7 @@ export default {
     }
     &-title {
       margin-bottom: 10px;
+      display: flex;
       h4 {
         font-size: 16px;
         color: black;
@@ -248,6 +251,32 @@ export default {
     position: absolute;
     left: 15px;
     top: 0px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .notify-right-title {
+    display: block;
+    h4 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+    }
+    .view-all {
+      font-size: 14px;
+    }
+  }
+  .notify-right-header {
+    .header-read {
+      font-size: 14px;
+    }
+    .header-date {
+      font-size: 14px;
+    }
+  }
+  .notify-right-content {
+    font-size: 14px;
   }
 }
 </style>
