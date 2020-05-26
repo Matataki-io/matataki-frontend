@@ -10,7 +10,7 @@
       <div class="fl notify-right-header">
         <!-- 头像 -->
         <div @click.stop>
-          <router-link :to="{name: 'user-id', params:{id: user.id}}">
+          <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
             <c-avatar :src="avatar" class="avatar" />
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
@@ -27,7 +27,7 @@
         <!-- 事件发送者 -->
         <h4>
           <span @click.stop>
-            <router-link :to="{name: 'user-id', params:{id: user.id}}">
+            <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
               {{ nickname }}
             </router-link>
           </span>
