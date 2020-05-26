@@ -121,13 +121,7 @@ export default {
     },
     async createDraft(article) {
       await this.$API
-        .createDraft({
-          ...article,
-          commentPayPoint: 1,
-          fissionFactor: 2000,
-          is_original: 0,
-          tags: ''
-        })
+        .createDraft(article)
         .then(res => {
           if (res.code === 0) {
             this.$message.success(this.$t('publish.importSuccess'))

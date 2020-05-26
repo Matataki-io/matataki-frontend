@@ -345,7 +345,7 @@
                       :min="1"
                       :max="100000000"
                       size="small"
-                      placeholder="请输入内容"
+                      placeholder="请输入数量"
                       :disabled="prohibitEditingPrices"
                     />
                   </div>
@@ -588,6 +588,14 @@
             </el-button>
           </template>
           <el-button
+            v-if="$route.params.type === 'edit'"
+            size="medium"
+            style="margin-left: 10px;"
+            @click="saveAsDraft"
+          >
+            另存为草稿
+          </el-button>
+          <el-button
             type="primary"
             size="medium"
             style="margin-left: 10px;"
@@ -714,7 +722,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
-      return this.$ossProcess(this.cover)
+      return this.cover ? this.$ossProcess(this.cover) : ''
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'
@@ -812,7 +820,7 @@ export default {
     commentPayPoint() {
       this.updateDraftWatch()
     },
-    cover() {
+    coverEditor() {
       this.updateDraftWatch()
     },
     isOriginal() {
@@ -835,7 +843,32 @@ export default {
       } else {
         tag.style.width = '104px'
       }
-    }
+    },
+    // 协议
+    CCLicenseCredit() { this.updateDraftWatch() },
+    // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
+    readConfigRadio() { this.updateDraftWatch() },
+    readauThority() { this.updateDraftWatch() },
+    readSelectValue() { this.updateDraftWatch() },
+    readToken() { this.updateDraftWatch() },
+
+    // 阅读权限 支付阅读
+    paymentTokenVisible() { this.updateDraftWatch() },
+    paymentToken() { this.updateDraftWatch() },
+
+    // 摘要
+    readSummary() { this.updateDraftWatch() },
+
+    // 编辑权限 单选 设置复选 选择框 数量
+    editConfigRadio() { this.updateDraftWatch() },
+    tokenEditAuthority() { this.updateDraftWatch() },
+    editSelectValue() { this.updateDraftWatch() },
+    editToken() { this.updateDraftWatch() },
+    
+    // 是否公开
+    ipfs_hide() { this.updateDraftWatch() },
+
+
   },
   created() {
     // 编辑文章不会自动保存
@@ -906,31 +939,50 @@ export default {
         title,
         markdownData: content,
         fissionFactor,
-        cover
+        cover,
+        tags
       } = this
-      const isOriginal = Number(this.isOriginal)
+      const is_original = Number(this.isOriginal)
       const { type, id } = this.$route.params
 
       if (type === 'draft' && id === 'create') {
         // console.log('创建草稿')
-        this.autoCreateDraft({
+        let data = {
           title,
           content,
           fissionFactor,
           cover,
-          isOriginal
-        })
+          is_original,
+          tags,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide : 0,
+          requireToken : [], // 阅读 持币
+          requireBuy : [], // 阅读 购买
+          editRequireToken : [], // 编辑 持币
+        }
+        this.autoCreateDraft(this.draftFactory(data))
       } else if (type === 'draft' && id !== 'create') {
         // console.log('更新草稿')
         // 草稿箱编辑 更新
-        this.autoUpdateDraft({
+        let data = {
           id: this.id,
           title,
           content,
           fissionFactor,
           cover,
-          isOriginal
-        })
+          is_original,
+          tags,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide : 0,
+          requireToken : [], // 阅读 持币
+          requireBuy : [], // 阅读 购买
+          editRequireToken : [], // 编辑 持币
+        }
+        this.autoUpdateDraft(this.draftFactory(data))
       }
     }, 500),
     unload($event) {
@@ -969,6 +1021,8 @@ export default {
           this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
 
           this.tags = res.data.tags.map(i => i.name)
+
+          this.setCCLicense(res.data.cc_license)
           
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
@@ -1030,19 +1084,69 @@ export default {
     // 得到草稿箱内容 by id
     async getDraft(id) {
       await this.$API.getDraft({ id }).then(res => {
-        this.fissionNum = res.fission_factor ? res.fission_factor / 1000 : 2
-        this.cover = res.cover
-        this.title = res.title
-        this.markdownData = res.content
-        this.id = id
-        this.isOriginal = Boolean(res.is_original)
-        this.commentPayPoint = res.comment_pay_point
+        if (res.code === 0) {
+          let { data } = res
+          this.fissionNum = data.fission_factor ? data.fission_factor / 1000 : 2
+          this.cover = data.cover
+          this.title = data.title
+          this.markdownData = data.content
+          this.id = data.id
+          this.isOriginal = Boolean(data.is_original)
+          this.commentPayPoint = data.comment_pay_point
 
-        this.tags = res.tags
+          this.tags = data.tags
+          this.ipfs_hide = Boolean(data.ipfs_hide)
 
+
+          this.setCCLicense(data.cc_license)
+
+          // 持通证阅读
+          if (data.require_holdtokens.length !== 0) {
+            this.readauThority = true
+            this.readToken = precision(data.require_holdtokens[0].amount, 'CNY', 4)
+            this.readSummary = data.short_content
+            this.readSelectValue = data.require_holdtokens[0].token_id
+          }
+
+          // 付费阅读
+          if (data.require_buy.length !== 0) {
+            this.paymentTokenVisible = true
+            this.paymentToken = precision(data.require_buy[0].amount, 'CNY', 4)
+            this.readSummary = data.short_content
+            this.paymentSelectValue = -1
+          }
+
+          // 持通证编辑
+          if (data.editor_require_holdtokens.length !== 0) {
+            this.tokenEditAuthority = true
+            this.editToken = precision(data.editor_require_holdtokens[0].amount, 'CNY', 4)
+            this.editSelectValue = res.data.editor_require_holdtokens[0].token_id
+          }
+
+          // 暂无付费编辑
+
+
+          // 有 持通证阅读 || 付费阅读 展示单选区域
+          if (this.readauThority || this.paymentTokenVisible) {
+            this.readConfigRadio = 'some'
+          } else {
+            this.readConfigRadio = 'all'
+          }
+
+          //有 持通证编辑 || 付费编辑
+          if (this.tokenEditAuthority || this.buyEditAuthority) {
+            this.editConfigRadio = 'some'
+          } else {
+            this.editConfigRadio = 'all'
+          }
+
+
+
+        } else {
+          console.log(res.message)
+        }
       }).catch(err => {
         console.log(err)
-        this.$message.error('获取草稿内容失败')
       }).finally(() => {
         this.autoUpdateDfaft = true
       })
@@ -1165,7 +1269,6 @@ export default {
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
-      const { failed } = this
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })
@@ -1176,35 +1279,26 @@ export default {
           signId: response.data
         }
         if (this.$route.params.id) {
-          this.$API.draftsReferencesPublish(this.$route.params.id, data).then(res => {
-            if (res.code === 0) {
+          const res = await this.$API.draftsReferencesPublish(this.$route.params.id, data)
+          if (res.code === 0) {
             // 发送完成开始设置阅读权限 因为需要返回的id
-              const promiseArr = []
-              if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
-              if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
-              promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
-              Promise.all(promiseArr).then(() => {
-                this.success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
-                this.fullscreenLoading = false // remove full loading
-              }).catch(err => {
-                console.log('err', err)
-                this.$message.error(err)
-                this.fullscreenLoading = false // remove full loading
-              })
-            } else {
-              this.$message.error(res.message)
-              throw new Error(res.message)
-            }
-          }).catch(err => {
-            this.$message.error(err)
+            const promiseArr = []
+            if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
+            if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
+            promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
+            await Promise.all(promiseArr) // 上面的方法里面判断了code 所以这里就不需要判断了
+            this.success(response.data)
             this.fullscreenLoading = false // remove full loading
-          })
+          } else {
+            throw new Error(res.message)
+          }
+        } else {
+          throw new Error('没有文章ID')
         }
       } catch (error) {
-        console.error(error)
+        console.log(error)
         this.fullscreenLoading = false // remove full loading
-        failed(error)
-        throw error
+        this.$message.error(error.toString())
       }
     },
     // 自动创建草稿
@@ -1212,10 +1306,6 @@ export default {
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       this.allowLeave = true
-      article.tags = this.tags
-
-      // 设置积分
-      article.commentPayPoint = this.commentPayPoint
       await this.$API.createDraft(article).then(res => {
         if (res.code === 0) {
           this.saveDraft = '文章自动保存至'
@@ -1290,13 +1380,7 @@ export default {
     // 更新草稿
     async autoUpdateDraft(article) {
       this.allowLeave = true
-
       this.saveDraft = '保存中...'
-      // 设置文章标签 🏷️
-      article.tags = this.tags
-
-      // 设置积分
-      article.commentPayPoint = this.commentPayPoint
       try {
         const res = await this.$API.updateDraft(article)
         if (res.code === 0) {
@@ -1317,8 +1401,11 @@ export default {
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed(this.$t('warning.titleOrContent'))
 
-      // 没有封面
-      if (!this.cover) return this.failed(this.$t('warning.cover'))
+      // 没有封面 (开发者模式不强制封面 浪费oss空间)
+      if (!this.isDevelopmentMode && !this.cover) {
+        this.failed(this.$t('warning.cover'))
+        return
+      }
 
       // 用户不填写裂变系数则默认为2
       if (this.fissionFactor === '') this.fissionFactor = 2
@@ -1615,14 +1702,144 @@ export default {
     },
     // 添加标签
     addTag() {
-      if (this.tagVal) {
-        this.tags.push(this.tagVal)
+      const val = this.tagVal.trim()
+      if (val) {
+        this.tags.push(val)
         this.tagVal = ''
       }
     },
     // 删除标签
     removeTag(i) {
       this.tags.splice(i, 1)
+    },
+    // 另存为草稿
+    saveAsDraft() {
+
+      const confirmSaveAsDraft = () => {
+        const {
+          title, // 标题
+          markdownData: content, // 内容
+          fissionFactor, // 系数
+          cover, // 封面
+          tags, // 标签
+        } = this
+
+        const is_original = Number(this.isOriginal) // 原创声明
+
+        let data = {
+          title,
+          content,
+          cover,
+          fissionFactor,
+          is_original,
+          tags,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide: 0,
+          requireToken: [],
+          requireBuy: [],
+          editRequireToken: [],
+        }
+
+        data = this.draftFactory(data)
+
+        let promiseArr = [
+          this.$API.createDraft(data),
+          this.$API.delArticle({ id: this.$route.params.id })
+        ]
+        Promise.all(promiseArr).then(res => {
+        // 判断是否错误
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].code !== 0) {
+              this.$message.error(res[i].message)
+              return
+            }
+          }
+
+          // 操作完成后
+          this.allowLeave = true
+          this.$message.success(res[0].message)
+          this.$router.push({name: 'user-id-draft', params: {id: Number(this.currentUserInfo.id)}})
+          console.log(res)
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+
+      this.$confirm('是否另存为草稿?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        confirmSaveAsDraft()
+      }).catch(() => {})
+
+    },
+    // 设置协议
+    setCCLicense(cc) {
+      // 不允许商业使用 复选框
+      if (cc === 'BY-NC') {
+        // 允许
+        this.ccLicenseOptions.share = 'true'
+        this.ccLicenseOptions.commercialUse = false
+      } else if (cc === 'BY-NC-ND') {
+        // 不允许
+        this.ccLicenseOptions.share = 'false'
+        this.ccLicenseOptions.commercialUse = false
+      } else if (cc === 'BY-NC-SA') {
+        // 允许采用本协议授权的二次创作
+        this.ccLicenseOptions.share = 'SA'
+        this.ccLicenseOptions.commercialUse = false
+        // 允许商业使用 复选框
+      } else if (cc === 'BY') {
+        // 允许
+        this.ccLicenseOptions.share = 'true'
+        this.ccLicenseOptions.commercialUse = true
+      } else if (cc === 'BY-ND') {
+        // 不允许
+        this.ccLicenseOptions.share = 'false'
+        this.ccLicenseOptions.commercialUse = true
+      } else if (cc === 'BY-SA') {
+        // 允许采用本协议授权的二次创作
+        this.ccLicenseOptions.share = 'SA'
+        this.ccLicenseOptions.commercialUse = true
+      } else {
+        //
+        console.log('未知协议不处理', cc)
+      }
+      console.log('当前协议', cc)
+    },
+    // 草稿对象加工
+    draftFactory(data) {
+      // 设置ipfs显示
+      data.ipfs_hide = Boolean(this.ipfs_hide)
+
+      // 阅读权限设置
+      if (this.readConfigRadio === 'some') {
+        data.requireToken = this.requireToken
+      }
+
+      // 支付阅读
+      if (this.paymentTokenVisible) {
+        data.requireBuy = [
+          {
+            tokenId: 0, // 默认四位小数
+            amount: toPrecision(this.paymentToken, 'cny', 4), // 默认四位小数
+          }
+        ]
+      }
+
+      // 编辑权限
+      if (this.editConfigRadio === 'some') {
+        data.editRequireToken = this.editRequireToken
+      }
+
+      // 设置摘要
+      if (this.readConfigRadio === 'some' || this.paymentTokenVisible) {
+        data.short_content = this.readSummary
+      }
+      return data
     }
   }
 }
