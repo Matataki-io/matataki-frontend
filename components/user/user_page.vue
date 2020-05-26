@@ -190,12 +190,17 @@ export default {
     ...mapGetters(['isMe'])
   },
   created() {
-    if (!this.$route.params.id) this.$router.go(-1)
     // this.getMyUserData()
   },
   mounted() {
-    this.refreshUser({ id: this.$route.params.id })
-    this.tokenUserId(this.$route.params.id)
+    if (process.browser) {
+      if (!this.$route.params.id) this.$router.go(-1)
+
+      this.$nextTick(() => {
+        this.refreshUser({ id: this.$route.params.id })
+        this.tokenUserId(this.$route.params.id)
+      })
+    }
   },
   methods: {
     ...mapActions('user', ['refreshUser', 'followOrUnfollowUser']),
