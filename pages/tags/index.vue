@@ -25,14 +25,18 @@
         <el-table :data="tagsData" style="width: 100%" @row-click="rowClick">
           <el-table-column label="标签名称">
             <template slot-scope="scope">
-              # {{ scope.row.name }}
+              <span class="tag-icon">#</span> <span class="tag-name">{{ scope.row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="num"
             label="数量"
             width="100"
-          />
+          >
+            <template slot-scope="scope">
+              <span class="tag-num">{{ scope.row.num }}</span>
+            </template>
+          </el-table-column>
         </el-table>
         <user-pagination
           v-show="!pull.loading"
@@ -185,6 +189,15 @@ export default {
   overflow: hidden;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.tag-name {
+  color: #333;
+}
+.tag-icon {
+  color: #b3b3b3;
+}
+.tag-num {
+  color: rgb(179, 179, 179);
 }
 
 .pagination {
