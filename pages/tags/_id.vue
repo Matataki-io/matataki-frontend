@@ -33,7 +33,7 @@
               v-for="(item, index) in tags"
               :key="index"
               class="tag-item"
-              :to="{name: 'tag-id', params: { id: item.id }, query: { name: item.name }}"
+              :to="{name: 'tags-id', params: { id: item.id }, query: { name: item.name }}"
             >
               {{ item.name }}
             </router-link>

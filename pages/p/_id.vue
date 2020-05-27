@@ -241,7 +241,7 @@
         <router-link
           v-for="(item, index) in tags"
           :key="index"
-          :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name,}}"
+          :to=" {name: 'tags-id', params: {id: item.id}, query: {name: item.name,}}"
           class="tag-card"
         >
           {{ item.name }}

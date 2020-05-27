@@ -80,4 +80,8 @@ export const paginationUrl = {
   minetokenRelated: 'minetoken/:id/related',
   // 分享列表
   share: 'share',
+  // 标签最热
+  tagsHottest: 'tags/hotest',
+  // 标签最新
+  tagsLatest: 'tags/latest',
 }
