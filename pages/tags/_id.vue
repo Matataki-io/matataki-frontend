@@ -5,7 +5,7 @@
       <div class="col-6">
         <section class="head">
           <h3 class="head-title">
-            {{ $t('tag.contain') }}<em>{{ $route.query.name }}</em>{{ $t('tag.tags') }}
+            <span># {{ $route.query.name }}</span>
           </h3>
         </section>
         <articleCardListNew
@@ -26,18 +26,22 @@
       <div class="col-3 sticky">
         <section class="head">
           <h3 class="head-title">
-            {{ $t('tag.moreTag') }}
+            热门主题
           </h3>
-          <section class="tag-list">
-            <router-link
-              v-for="(item, index) in tags"
-              :key="index"
-              class="tag-item"
-              :to="{name: 'tags-id', params: { id: item.id }, query: { name: item.name }}"
-            >
-              {{ item.name }}
-            </router-link>
-          </section>
+          <router-link :to="{name: 'tags'}">
+            查看全部
+            <svg-icon icon-class="arrow" class="icon" />
+          </router-link>
+        </section>
+        <section class="tag-list">
+          <router-link
+            v-for="(item, index) in tags"
+            :key="index"
+            class="tag-item"
+            :to="{name: 'tags-id', params: { id: item.id }, query: { name: item.name }}"
+          >
+            {{ item.name }}
+          </router-link>
         </section>
       </div>
     </div>
@@ -110,7 +114,7 @@ export default {
 .row {
   max-width: 1200px;
   width: 100%;
-  margin: 20px auto 0;
+  margin: 40px auto 0;
   padding-bottom: 40px;
   &::after {
     content: "";
@@ -135,14 +139,32 @@ export default {
 
 .head {
   height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   &-title {
     margin: 0;
     padding: 0;
     margin-right: 30px;
     font-size: 18px;
-    em {
-      font-style: normal;
-      color: @purpleDark;
+    color: #000;
+  }
+  a {
+    font-size:14px;
+    font-weight:500;
+    color:rgba(178,178,178,1);
+    line-height:20px;
+    &:hover {
+      text-decoration: underline;
+      .icon {
+        transform: translateX(2px);
+      }
+    }
+    .icon {
+      line-height:20px;
+      font-size: 12px;
+      margin-bottom: 1px;
+      transition: transform .2s;
     }
   }
 }
