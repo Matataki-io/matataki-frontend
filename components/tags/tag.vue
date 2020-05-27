@@ -1,6 +1,6 @@
 <template>
   <n-link
-    :to=" {name: 'tag-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
+    :to=" {name: 'tags-id', params: {id: tag.id}, query: {name: tag.name, type: tag.type}} "
     class="tag"
   >
     <div
