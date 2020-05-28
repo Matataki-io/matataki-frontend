@@ -14,11 +14,12 @@
           <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
           <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
         </div>
-        <el-input
+        <el-autocomplete
           v-model="tagSearchVal"
-          placeholder="请输入内容"
-          clearable
           class="tags-search"
+          :fetch-suggestions="querySearchAsync"
+          placeholder="请输入搜索内容"
+          @select="handleSelect"
         />
       </div>
       <div class="tag-table">
@@ -56,6 +57,7 @@
 </template>
 <script>
 import userPagination from '@/components/user/user_pagination.vue'
+import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   components: {
@@ -76,7 +78,7 @@ export default {
         },
         apiUrl: 'tagsHottest',
         list: []
-      }
+      },
     }
   },
   methods: {
@@ -111,6 +113,36 @@ export default {
       this.pull.reload = Date.now()
       this.mode = val
 
+    },
+    async querySearchAsync(queryString, cb) {
+      if (queryString.trim()) {
+        const res = await this.$utils.factoryRequest(this.$API.search('tag', { word:  this.tagSearchVal}))
+
+        if (!res) {
+          cb([])
+          return
+        }
+
+        const list = res.data.list.map(i => {
+          return {
+            value: filterOutHtmlTags(i.name),
+            address: i.id
+          }
+        })
+        cb(list)
+      } else {
+        cb([])
+      }
+    },
+
+    handleSelect(item) {
+      if (item && item.address) {
+        this.$router.push({
+          name: 'tags-id',
+          params: { id: item.address },
+          query: { name: item.value }
+        })
+      }
     }
   }
 }
@@ -134,6 +166,8 @@ export default {
   background-color: #eaeaea;
   position: relative;
   overflow: hidden;
+  border-radius: 10px;
+
   img {
     width: 100%;
     height: 100%;
