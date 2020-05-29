@@ -243,7 +243,6 @@ export default {
     }
     &-info {
       flex: 1;
-      width: 100px;
       &-top {
         h4 {
           font-size: 16px;
@@ -251,9 +250,10 @@ export default {
           line-height: 22px;
           margin: 0;
           margin-right: 10px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
           overflow: hidden;
-          text-overflow: ellipsis;
-          white-space:nowrap;
         }
         &-other {
           font-size: 14px;
