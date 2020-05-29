@@ -94,7 +94,7 @@ export default {
           loading: false,
           status: false,
           is_main: 0,
-          disabled: true
+          disabled: false
         },
         {
           type: 'eth',
@@ -284,7 +284,17 @@ export default {
         }
         openRequestedPopup(url, 'buildEmail')
       } else if (type === 'weixin') {
-        this.$message.warning(this.$t('thirdParty.doesNotSupportBinding', [typename]))
+        // 判断是否在微信中
+        // TODO: 
+        if (this.$utils.isInWeixin()) {
+          // 在微信中并且域名为备案域名 VUE_APP_WX_URL
+          if (window.location.origin !== process.env.VUE_APP_WX_URL) {
+            this.$message.warning(`请移步${process.env.VUE_APP_WX_URL}操作`)
+            return
+          }
+        } else {
+          this.$message.warning(this.$t('thirdParty.doesNotSupportBinding', [typename]))
+        }
       } else if (type === 'eth') {
         try {
           await this.$store.dispatch('metamask/fetchAccount')
@@ -511,12 +521,12 @@ export default {
 
 <style lang="less" scoped>
 .list {
-  margin-left: 10px;
 }
 .list-account {
   display: flex;
   align-items: center;
-  width: 335px;
+  max-width: 335px;
+  width: calc(100% - 80px); // 76px + 偏差
   // height: 40px;
   background-color: #eee;
   color: #fff;
@@ -693,8 +703,6 @@ export default {
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  margin: 0;
+  margin: 0 0 10px;
 }
 </style>

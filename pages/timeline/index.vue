@@ -91,6 +91,16 @@
             :card="item"
           />
         </div>
+        <section class="head ra-head tag">
+          <h3 class="head-title">
+            推荐标签
+          </h3>
+          <router-link :to="{name: 'tags'}">
+            查看全部
+            <svg-icon icon-class="arrow" class="icon" />
+          </router-link>
+        </section>
+        <tagsHot />
       </div>
     </div>
   </div>
@@ -105,12 +115,14 @@ import { mapGetters, mapActions } from 'vuex'
 import timelineCard from '@/components/timeline_card/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
+import tagsHot from '@/components/tags/tags_hot.vue'
 
 export default {
   components: {
     timelineCard,
     buttonLoadMore,
-    RAList
+    RAList,
+    tagsHot
   },
   data() {
     return {
@@ -385,6 +397,31 @@ export default {
       color: @purpleDark;
       cursor: pointer;
     }
+  }
+  .tag {
+    margin-top: 20px;
+    a {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(178, 178, 178, 1);
+      line-height: 20px;
+      &:hover {
+        text-decoration: underline;
+        .icon {
+          transform: translateX(2px);
+        }
+      }
+      .icon {
+        line-height: 20px;
+        font-size: 12px;
+        margin-bottom: 1px;
+        transition: transform 0.2s;
+      }
+    }
+  }
+  // 组件的
+  .tag-list {
+    margin: 20px 0 0 0;
   }
   .ra-content {
     background: rgba(255, 255, 255, 1);
