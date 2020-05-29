@@ -132,6 +132,7 @@ export default {
       this.pull.reload = Date.now()
       this.mode = val
     },
+    // 自动搜索
     async querySearchAsync(queryString, cb) {
       if (queryString.trim()) {
         const res = await this.$utils.factoryRequest(this.$API.search('tag', { 
@@ -155,7 +156,7 @@ export default {
         cb([])
       }
     },
-
+    // 备选项选择
     handleSelect(item) {
       if (item && item.address) {
         this.searchTags(item.value)
@@ -201,7 +202,6 @@ export default {
     // 返回到所有
     backAll() {
       this.reset()
-
     }
   }
 }
