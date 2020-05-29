@@ -31,7 +31,9 @@
               {{ nickname }}
             </router-link>
           </span>
-          {{ totalLabel }}
+          <span class="notify-quantity">
+            {{ totalLabel }}
+          </span>
         </h4>
         <div class="fl" style="flex: 1;">
           <!-- 行为 -->
@@ -211,8 +213,16 @@ export default {
         color: black;
         line-height: 22px;
         margin: 0 10px 0 0;
+        display: flex;
+        .notify-quantity {
+          white-space: nowrap;
+        }
         a {
           color: black;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
           &:hover {
             text-decoration: underline;
           }  
@@ -223,13 +233,14 @@ export default {
         color: #B2B2B2;
         line-height: 22px;
         margin: 0;
+        white-space: nowrap;
       }
       .view-all {
         flex: 1;
         font-size: 16px;
         color: #542DE0;
         line-height: 22px;
-        margin: 0;
+        margin: 0 0 0 20px;
         text-align: right;
         // 隐藏“查看全部”的文字
         // visibility: hidden;

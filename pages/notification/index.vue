@@ -3,10 +3,21 @@
     <g-header />
     <el-row class="notification-container">
       <el-col v-show="!showDetails" :span="16">
-        <div class="notification-topbar">
+        <div class="fl notification-topbar">
           <h3 class="notification-topbar-title">
-            通知
+            消息
           </h3>
+          <div class="notification-topbar-button">
+            <el-button
+              size="mini"
+              :disabled="showDetails"
+              plain
+              @click="notifyMarkReadAll"
+            >
+              <svg-icon icon-class="read-all" />
+              全部标记为已读
+            </el-button>
+          </div>
         </div>
         <notifyCard
           v-for="(item, index) in notifications"
@@ -74,14 +85,14 @@
           />
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" :class="showDetails && 'details-hide'">
         <!-- 消息筛选 -->
         <div class="option">
           <h3 class="option-title">
             消息筛选
           </h3>
           <div class="option-card">
-            <el-checkbox
+            <!-- <el-checkbox
               v-model="checkAll"
               :indeterminate="isIndeterminate"
               :disabled="showDetails"
@@ -89,7 +100,7 @@
               @change="handleCheckAllChange"
             >
               全选
-            </el-checkbox>
+            </el-checkbox> -->
             <el-checkbox-group
               v-model="checkedCities"
               class="fl checkbox-group"
@@ -119,17 +130,19 @@
             <el-radio v-model="viewMode" :disabled="showDetails" label="unread">
               只看未读
             </el-radio>
-            <el-divider />
-            <div class="option-card-button">
-              <el-button
-                size="medium"
-                :disabled="showDetails"
-                plain
-                @click="notifyMarkReadAll"
-              >
-                <svg-icon icon-class="read-all" />
-                全部标记为已读
-              </el-button>
+            <div class="button-hide">
+              <el-divider />
+              <div class="option-card-button">
+                <el-button
+                  size="medium"
+                  :disabled="showDetails"
+                  plain
+                  @click="notifyMarkReadAll"
+                >
+                  <svg-icon icon-class="read-all" />
+                  全部标记为已读
+                </el-button>
+              </div>
             </div>
           </div>
         </div>
@@ -222,7 +235,7 @@ export default {
         this.comments.push(...res.data.comments)
         this.notifications.push(...res.data.list)
         // 标记已读
-        // this.markRead(res.data.list)
+        this.markRead(res.data.list)
         // 设定起始查询位置
         if(!this.startId) this.startId = res.data.list[0].id
       }
@@ -336,17 +349,20 @@ export default {
   }
 }
 // 小于768
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
   .notification-container /deep/ {
+    display: flex;
+    flex-direction: column-reverse;
     .el-col-8 {
       width: 100%;
       margin-bottom: 10px;
 
-      // 先隐藏一下
       display:block;
-      overflow: hidden;
-      width: 0;
-      height: 0;
+      &.details-hide {
+        overflow: hidden;
+        width: 0;
+        height: 0;
+      }
     }
     .el-col-16 {
       width: 100%;
