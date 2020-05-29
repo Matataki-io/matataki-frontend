@@ -183,6 +183,7 @@ export default {
       }
       a {
         position: relative;
+        display: block;
       }
       .avatar {
         z-index: 1;
