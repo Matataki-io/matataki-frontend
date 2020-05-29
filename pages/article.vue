@@ -11,13 +11,16 @@
       <div class="col-3">
         <div class="position-sticky top80">
           <popularArticles :list="popularlist" />
-
-          <!-- <router-link :to="{name: 'token'}">
-            <img
-              class="fan-entrance"
-              src="@/assets/img/fan_entrance.png"
-            >
-          </router-link> -->
+          <section class="head ra-head tag">
+            <h3 class="head-title">
+              推荐标签
+            </h3>
+            <router-link :to="{name: 'tags'}">
+              查看全部
+              <svg-icon icon-class="arrow" class="icon" />
+            </router-link>
+          </section>
+          <tagsHot />
         </div>
       </div>
     </div>
@@ -29,13 +32,15 @@ import throttle from 'lodash/throttle'
 // import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import swipe from '@/components/swipe/index.vue'
 import popularArticles from '@/components/popularArticles/index.vue'
+import tagsHot from '@/components/tags/tags_hot.vue'
 
 export default {
   transition: 'page',
   components: {
     // bannerMatataki,
     swipe,
-    popularArticles
+    popularArticles,
+    tagsHot
   },
   data() {
     return {
@@ -112,7 +117,7 @@ export default {
   font-weight: bold;
   color: rgba(0, 0, 0, 1);
   text-align: left;
-  margin: 0 0 0 20px; 
+  margin: 0 0 0 20px;
   &.nav-hide {
     padding-top: 50px;
   }
@@ -133,9 +138,9 @@ export default {
   justify-content: space-between;
   max-width: 1200px;
   width: 100%;
-  margin: 60px auto 0;
+  margin: 20px auto 0;
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 0;
     height: 0;
@@ -286,10 +291,70 @@ export default {
   height: 71px;
 }
 
+.head {
+  height: 24px;
+  &-title {
+    margin: 0;
+    padding: 0;
+  }
+}
+.ra-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .change {
+    width: 20px;
+    height: 20px;
+    background: @purpleDark;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+    &-icon {
+      width: 72%;
+    }
+  }
+  .ra-head-random {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: @purpleDark;
+    cursor: pointer;
+  }
+}
+.tag {
+  margin-top: 20px;
+  a {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(178, 178, 178, 1);
+    line-height: 20px;
+    &:hover {
+      text-decoration: underline;
+      .icon {
+        transform: translateX(2px);
+      }
+    }
+    .icon {
+      line-height: 20px;
+      font-size: 12px;
+      margin-bottom: 1px;
+      transition: transform 0.2s;
+    }
+  }
+}
+// 组件的
+.tag-list {
+  margin: 20px 0 0 0;
+}
 // 页面小于
 @media screen and (max-width: 768px) {
   .container {
-    margin-top: 20px;
+    // margin-top: 20px;
     .col-6 {
       width: 100%;
       padding-left: 20px;

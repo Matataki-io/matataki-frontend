@@ -39,7 +39,6 @@ export default {
 
 <style lang="less">
 .poular-articles {
-  padding-bottom: 20px;
   .pa-head-title {
     font-size: 20px;
     font-weight: 600;
