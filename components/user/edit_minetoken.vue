@@ -403,9 +403,9 @@ export default {
         if (res.code === 0) {
           if (res.data.token) {
             if (this.isPost) {
-              // this.$router.push({
-              //   name: 'editminetoken'
-              // })
+              this.$router.push({
+                name: 'editminetoken'
+              })
             } else {
               const { token } = res.data
               this.form.name = token.name
