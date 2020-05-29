@@ -92,7 +92,7 @@
             消息筛选
           </h3>
           <div class="option-card">
-            <el-checkbox
+            <!-- <el-checkbox
               v-model="checkAll"
               :indeterminate="isIndeterminate"
               :disabled="showDetails"
@@ -100,7 +100,7 @@
               @change="handleCheckAllChange"
             >
               全选
-            </el-checkbox>
+            </el-checkbox> -->
             <el-checkbox-group
               v-model="checkedCities"
               class="fl checkbox-group"

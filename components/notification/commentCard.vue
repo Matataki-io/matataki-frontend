@@ -102,6 +102,10 @@ export default {
           margin-right: 10px;
           a {
             color: black;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
             &:hover {
               text-decoration: underline;
             }
@@ -112,8 +116,10 @@ export default {
           color: #B2B2B2;
           line-height: 20px;
           margin: 0;
+          white-space: nowrap;
           &.action {
             flex: 1;
+            margin-right: 5px;
           }
         }
       }
