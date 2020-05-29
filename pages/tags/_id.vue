@@ -8,6 +8,10 @@
             <span># {{ $route.query.name }}</span>
           </h3>
         </section>
+        <div class="tags-text">
+          <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
+          <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
+        </div>
         <articleCardListNew
           v-for="(item, index) in pull.list"
           :key="index"
@@ -63,7 +67,8 @@ export default {
         list: [],
         isAtuoRequest: true
       },
-      tags: []
+      tags: [],
+      mode: 'hot',
     }
   },
   mounted() {
@@ -129,6 +134,26 @@ export default {
   }
 }
 
+.tags-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(178, 178, 178, 1);
+  line-height: 28px;
+  padding: 0;
+  margin: 0 40px 0 0;
+  cursor: pointer;
+  &:nth-last-child(1) {
+    margin-right: 0;
+  }
+  &.active {
+    color: #000000;
+  }
+}
+.tags-text {
+  margin-top: 20px;
+  flex: 1;
+}
+
 .head {
   height: 24px;
   display: flex;
@@ -164,6 +189,7 @@ export default {
 .tag-list {
   margin: 20px 0 0 0;
 }
+
 .sticky {
   position: sticky;
   top: 80px;
