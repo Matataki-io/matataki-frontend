@@ -7,11 +7,11 @@
           <h3 class="head-title">
             <span># {{ $route.query.name }}</span>
           </h3>
+          <div class="tags-text">
+            <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
+            <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
+          </div>
         </section>
-        <div class="tags-text">
-          <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
-          <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
-        </div>
         <articleCardListNew
           v-for="(item, index) in pull.list"
           :key="index"
@@ -23,6 +23,7 @@
             :params="pull.params"
             :api-url="pull.apiUrl"
             :is-atuo-request="pull.isAtuoRequest"
+            :auto-request-time="pull.reload"
             @buttonLoadMore="buttonLoadMore"
           />
         </div>
@@ -61,11 +62,14 @@ export default {
         params: {
           pagesize: 20,
           tagid: this.$route.params.id,
-          extra: 'short_content'
+          extra: 'short_content',
+          orderBy: 'hot_score',
+          order: 'desc'
         },
         apiUrl: 'getPostByTagById',
         list: [],
-        isAtuoRequest: true
+        isAtuoRequest: true,
+        reload: 0
       },
       tags: [],
       mode: 'hot',
@@ -97,7 +101,20 @@ export default {
     buttonLoadMore(res) {
       // console.log(res)
       if (res.data && res.data.list && res.data.list.length !== 0) this.pull.list = this.pull.list.concat(res.data.list)
-    }
+    },
+    // 切换
+    toggleTag(val) {
+      if (val === 'hot') {
+        this.pull.params.orderBy = 'hot_score'
+      } else if (val === 'new') {
+        this.pull.params.orderBy = 'create_time'
+      } else {
+        this.pull.params.orderBy = 'hot_score'
+      }
+      this.mode = val
+      this.pull.list = []
+      this.pull.reload = Date.now()
+    },
   }
 }
 </script>
@@ -135,12 +152,11 @@ export default {
 }
 
 .tags-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: rgba(178, 178, 178, 1);
-  line-height: 28px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #b2b2b2;
   padding: 0;
-  margin: 0 40px 0 0;
+  margin: 0 20px 0 0;
   cursor: pointer;
   &:nth-last-child(1) {
     margin-right: 0;
@@ -150,8 +166,7 @@ export default {
   }
 }
 .tags-text {
-  margin-top: 20px;
-  flex: 1;
+  // flex: 1;
 }
 
 .head {
@@ -162,7 +177,7 @@ export default {
   &-title {
     margin: 0;
     padding: 0;
-    margin-right: 30px;
+    margin-right: 10px;
     font-size: 18px;
     color: #000;
   }

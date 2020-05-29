@@ -112,7 +112,6 @@ export default {
       this.pull.total = 0
       this.pull.reload = Date.now()
       this.mode = val
-
     },
     async querySearchAsync(queryString, cb) {
       if (queryString.trim()) {
