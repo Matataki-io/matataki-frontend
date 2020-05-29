@@ -11,8 +11,18 @@
       </div>
       <div class="tags-head">
         <div class="tags-text">
-          <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
-          <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
+          <span
+            v-show="searchResultShow"
+            class="tags-title"
+            :class="mode === 'hot' && 'active'"
+            @click="toggleTag('hot')"
+          >最热</span>
+          <span
+            v-show="searchResultShow"
+            class="tags-title"
+            :class="mode === 'new' && 'active'"
+            @click="toggleTag('new')"
+          >最新</span>
         </div>
         <el-autocomplete
           v-model="tagSearchVal"
@@ -20,6 +30,7 @@
           :fetch-suggestions="querySearchAsync"
           placeholder="请输入搜索内容"
           @select="handleSelect"
+          @keyup.enter.native="searchTag"
         />
       </div>
       <div class="tag-table">
@@ -40,7 +51,7 @@
           </el-table-column>
         </el-table>
         <user-pagination
-          v-show="!pull.loading"
+          v-show="searchResultShow && !pull.loading"
           :current-page="pull.currentPage"
           :params="pull.params"
           :api-url="pull.apiUrl"
@@ -67,6 +78,8 @@ export default {
     return {
       tagSearchVal: '',
       tagsData: [],
+      searchResult: [],
+      searchResultShow: true,
       mode: 'hot',
       pull: {
         loading: false,
@@ -128,6 +141,7 @@ export default {
             address: i.id
           }
         })
+        this.searchResult = res.data.list
         cb(list)
       } else {
         cb([])
@@ -136,11 +150,28 @@ export default {
 
     handleSelect(item) {
       if (item && item.address) {
-        this.$router.push({
-          name: 'tags-id',
-          params: { id: item.address },
-          query: { name: item.value }
+        // this.$router.push({
+        //   name: 'tags-id',
+        //   params: { id: item.address },
+        //   query: { name: item.value }
+        // })
+        this.searchResultShow = false
+        this.tagsData = this.searchResult.map(i => {
+          return {
+            name: filterOutHtmlTags(i.name),
+            num: i.num,
+            id: i.id
+          }
         })
+      }
+    },
+    // 搜索tag enter event
+    searchTag() {
+      if (!this.tagSearchVal) {
+        this.searchResultShow = true
+        this.searchResult = []
+        this.tagsData = []
+        this.toggleTag(this.mode)
       }
     }
   }
