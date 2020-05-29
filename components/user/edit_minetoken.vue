@@ -201,6 +201,7 @@
         <div
           v-for="(item, index) in social"
           :key="index"
+          class="social-item"
         >
           <p class="social-title">
             {{ item.name }}
@@ -402,9 +403,9 @@ export default {
         if (res.code === 0) {
           if (res.data.token) {
             if (this.isPost) {
-              this.$router.push({
-                name: 'editminetoken'
-              })
+              // this.$router.push({
+              //   name: 'editminetoken'
+              // })
             } else {
               const { token } = res.data
               this.form.name = token.name
@@ -581,22 +582,22 @@ export default {
 <style lang="less" scoped>
 .coins-head {
   h1 {
-    font-size:24px;
-    font-weight:600;
-    color:rgba(0,0,0,1);
-    line-height:33px;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
+    line-height: 33px;
     padding: 0;
     margin: 0;
   }
   .help-icon {
-    color:rgba(219,219,219,1);
+    color: rgba(219, 219, 219, 1);
     margin-left: 10px;
     margin-right: 10px;
   }
   .help-link {
-    font-size:14px;
+    font-size: 14px;
     color: #868686;
-    line-height:20px;
+    line-height: 20px;
     text-decoration: underline;
     margin-left: 10px;
   }
@@ -662,17 +663,14 @@ export default {
 .input-form {
   margin-top: 30px;
   .input {
-    width: 400px;
+    max-width: 400px;
   }
   .social-input {
-    width: 340px;
+    max-width: 340px;
   }
 }
 .publish-btn {
   display: block;
-  // width: 100px;
-  // background: @purpleDark;
-  // border-color: @purpleDark;
 }
 
 .tokens-image {
@@ -681,6 +679,7 @@ export default {
 }
 .about-input {
   margin: 0 0 10px;
+  width: 100%;
 }
 .about-input-btn {
   width: 24px;
@@ -697,13 +696,17 @@ export default {
     margin-left: 0;
   }
 }
+.social-item {
+  display: inline-block;
+  width: 100%;
+}
 .social-title {
   padding: 0;
   margin: 12px 0 10px 60px;
-  font-size:14px;
-  font-weight:400;
-  color:rgba(0,0,0,1);
-  line-height:20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 20px;
   span {
     span {
       color: red;
@@ -716,7 +719,6 @@ export default {
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  padding-left: 10px;
   margin: 0;
 }
 .tips {
@@ -726,10 +728,49 @@ export default {
   color: #848484;
   font-size: 14px;
 }
+
+@media screen and (max-width: 640px) {
+  .coins-head {
+    display: block;
+  }
+  .coins-head .click-box {
+    margin-right: 0;
+    margin-top: 10px;
+    text-align: left;
+    flex: none;
+  }
+  .coins-head .help-link {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+
+  .input-form {
+    /deep/ .el-form-item__label {
+      display: block;
+      text-align: left;
+      float: left;
+    }
+    /deep/ .el-form-item__content {
+      margin-left: 0 !important;
+    }
+    /deep/ .el-checkbox {
+      width: 100%;
+      overflow: hidden;
+    }
+    /deep/ .el-checkbox__label {
+      white-space: initial;
+    }
+  }
+  .publish-btn {
+    min-width: 200px;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
 </style>
 
 <style>
 .social-title span span {
-  color:red;
+  color: red;
 }
 </style>
