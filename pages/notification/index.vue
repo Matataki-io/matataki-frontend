@@ -59,7 +59,7 @@
             bg-color="white"
           />
         </div>
-        <el-divider />
+        <el-divider v-if="detailsIndex.objectType === 'article'" />
         <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
           <objectCard
             v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'"
@@ -85,7 +85,7 @@
           />
         </div>
       </el-col>
-      <el-col :span="8" :class="showDetails && 'details-hide'">
+      <el-col :span="8" class="filter-notify" :class="showDetails && 'details-hide'">
         <!-- 消息筛选 -->
         <div class="option">
           <h3 class="option-title">
@@ -334,6 +334,10 @@ export default {
 </script>
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped>
+.filter-notify {
+  position: sticky;
+  top: 80px;
+}
 .load-more /deep/ button.btn {
   margin: 50px auto !important;
   width: 300px !important;
@@ -350,6 +354,9 @@ export default {
 }
 // 小于768
 @media screen and (max-width: 768px) {
+  .filter-notify {
+    position: static;
+  }
   .notification-container /deep/ {
     display: flex;
     flex-direction: column-reverse;
