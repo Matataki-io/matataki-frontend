@@ -30,7 +30,6 @@ export default {
         pagesize: 40
       }).then(res => {
         if (res.code === 0) {
-          console.log(res)
           this.tags = res.data.list
         } else {
           console.log(res.message)

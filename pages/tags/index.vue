@@ -23,6 +23,12 @@
             :class="mode === 'new' && 'active'"
             @click="toggleTag('new')"
           >最新</span>
+          <svg-icon
+            v-show="!searchResultShow"
+            icon-class="arrow"
+            class="head-arrow"
+            @click="backAll"
+          />
         </div>
         <el-autocomplete
           v-model="tagSearchVal"
@@ -33,7 +39,7 @@
           @keyup.enter.native="searchTag"
         />
       </div>
-      <div class="tag-table">
+      <div v-loading="loading" class="tag-table">
         <el-table :data="tagsData" style="width: 100%" @row-click="rowClick">
           <el-table-column label="标签名称">
             <template slot-scope="scope">
@@ -76,9 +82,9 @@ export default {
   },
   data() {
     return {
+      loading: false,
       tagSearchVal: '',
       tagsData: [],
-      searchResult: [],
       searchResultShow: true,
       mode: 'hot',
       pull: {
@@ -128,7 +134,10 @@ export default {
     },
     async querySearchAsync(queryString, cb) {
       if (queryString.trim()) {
-        const res = await this.$utils.factoryRequest(this.$API.search('tag', { word:  this.tagSearchVal}))
+        const res = await this.$utils.factoryRequest(this.$API.search('tag', { 
+          word:  this.tagSearchVal,
+          pagesize: 5
+        }))
 
         if (!res) {
           cb([])
@@ -141,7 +150,6 @@ export default {
             address: i.id
           }
         })
-        this.searchResult = res.data.list
         cb(list)
       } else {
         cb([])
@@ -150,29 +158,50 @@ export default {
 
     handleSelect(item) {
       if (item && item.address) {
-        // this.$router.push({
-        //   name: 'tags-id',
-        //   params: { id: item.address },
-        //   query: { name: item.value }
-        // })
-        this.searchResultShow = false
-        this.tagsData = this.searchResult.map(i => {
+        this.searchTags(item.value)
+      }
+    },
+    // 搜索标签
+    async searchTags(word) {
+      this.loading = true
+      this.searchResultShow = false
+
+      const res = await this.$utils.factoryRequest(this.$API.search('tag', { 
+        word:  word,
+        pagesize: 9999,
+      }))
+      if (res) {
+        this.tagsData = res.data.list.map(i => {
           return {
             name: filterOutHtmlTags(i.name),
             num: i.num,
             id: i.id
           }
         })
+      } else {
+        this.tagsData = []
       }
+      this.loading = false
+    },
+    // 重置
+    reset() {
+      this.searchResultShow = true
+      this.tagsData = []
+      this.tagSearchVal = ''
+      this.toggleTag(this.mode)
     },
     // 搜索tag enter event
     searchTag() {
-      if (!this.tagSearchVal) {
-        this.searchResultShow = true
-        this.searchResult = []
-        this.tagsData = []
-        this.toggleTag(this.mode)
+      if (this.tagSearchVal.trim()) {
+        this.searchTags(this.tagSearchVal)
+      } else {
+        this.reset()
       }
+    },
+    // 返回到所有
+    backAll() {
+      this.reset()
+
     }
   }
 }
@@ -220,6 +249,12 @@ export default {
       color: #b2b2b2;
     }
   }
+}
+.head-arrow {
+  transform: rotate(180deg);
+  cursor: pointer;
+  color: #333;
+  font-size: 16px;
 }
 .tags-head {
   display: flex;

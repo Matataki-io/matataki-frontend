@@ -71,32 +71,12 @@ export default {
         isAtuoRequest: true,
         reload: 0
       },
-      tags: [],
       mode: 'hot',
     }
   },
   mounted() {
-    this.init()
   },
   methods: {
-    init() {
-      this.tagsHotest()
-    },
-    // 热门标签
-    async tagsHotest() {
-      await this.$API.tagsHotest({
-        pagesize: 40
-      }).then(res => {
-        if (res.code === 0) {
-          console.log(res)
-          this.tags = res.data.list
-        } else {
-          console.log(res.message)
-        }
-      }).catch(e => {
-        console.log(e)
-      })
-    },
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
