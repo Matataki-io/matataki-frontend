@@ -18,12 +18,14 @@
                 {{ nickname }}
               </router-link>
             </h4>
-            <p class="action">
-              评论了你的文章
-            </p>
-            <p>
-              {{ dateCard }}
-            </p>
+            <div class="fl" style="flex: 1;">
+              <p class="action">
+                评论了你的文章
+              </p>
+              <p>
+                {{ dateCard }}
+              </p>
+            </div>
           </div>
           <p class="user-info-content" v-html="card.comment.comment" />
         </div>
@@ -100,6 +102,10 @@ export default {
           margin-right: 10px;
           a {
             color: black;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
             &:hover {
               text-decoration: underline;
             }
@@ -110,8 +116,10 @@ export default {
           color: #B2B2B2;
           line-height: 20px;
           margin: 0;
+          white-space: nowrap;
           &.action {
             flex: 1;
+            margin-right: 5px;
           }
         }
       }
@@ -122,6 +130,42 @@ export default {
         white-space: pre-wrap;
         margin: 0;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    .user {
+      .avatar {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px;
+        background: #eee;
+        margin-right: 14px;
+      }
+      &-info {
+        &-top {
+          display: block;
+          h4 {
+            font-size: 14px;
+          }
+        }
+        p {
+          font-size: 12px;
+        }
+        &-content {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  .user-details {
+    .user-info-top {
+      display: block;
+    }
+    .introduction {
+      display: none !important;
     }
   }
 }

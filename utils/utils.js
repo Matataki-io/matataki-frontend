@@ -83,5 +83,10 @@ export default {
       console.log(error)
       return
     }
-  }
+  },
+  // 是否处于微信浏览器
+  isInWeixin() {
+    const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
+    return isWeixin()
+  },
 };

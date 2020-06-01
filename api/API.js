@@ -243,36 +243,19 @@ export default {
     return this._sendArticle('/post/edit', article)
   },
   // 创建草稿
-  createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
+  createDraft(data) {
     return request({
       method: 'POST',
       url: '/draft/save',
-      data: {
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
+      data
     })
   },
   // 更新草稿
-  updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
+  updateDraft(data) {
     return request({
       method: 'POST',
       url: '/draft/save',
-      data: {
-        id,
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
+      data
     })
   },
   getDraft({ id }) {

@@ -10,7 +10,7 @@
       <div class="fl notify-right-header">
         <!-- 头像 -->
         <div @click.stop>
-          <router-link :to="{name: 'user-id', params:{id: user.id}}">
+          <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
             <c-avatar :src="avatar" class="avatar" />
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
@@ -23,24 +23,28 @@
           {{ card.state ? '已读' : '未读' }}
         </p>
       </div>
-      <div class="fl notify-right-title">
+      <div class="notify-right-title">
         <!-- 事件发送者 -->
         <h4>
           <span @click.stop>
-            <router-link :to="{name: 'user-id', params:{id: user.id}}">
+            <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
               {{ nickname }}
             </router-link>
           </span>
-          {{ totalLabel }}
+          <span class="notify-quantity">
+            {{ totalLabel }}
+          </span>
         </h4>
-        <!-- 行为 -->
-        <p>
-          {{ actionLabel }}
-        </p>
-        <p v-if="card.total > 1" class="view-all">
-          查看全部
-          <i class="el-icon-arrow-right" />
-        </p>
+        <div class="fl" style="flex: 1;">
+          <!-- 行为 -->
+          <p>
+            {{ actionLabel }}
+          </p>
+          <p v-if="card.total > 1" class="view-all">
+            查看全部
+            <i class="el-icon-arrow-right" />
+          </p>
+        </div>
       </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
       <!-- 对象卡片 -->
@@ -179,6 +183,7 @@ export default {
       }
       a {
         position: relative;
+        display: block;
       }
       .avatar {
         z-index: 1;
@@ -203,13 +208,22 @@ export default {
     }
     &-title {
       margin-bottom: 10px;
+      display: flex;
       h4 {
         font-size: 16px;
         color: black;
         line-height: 22px;
         margin: 0 10px 0 0;
+        display: flex;
+        .notify-quantity {
+          white-space: nowrap;
+        }
         a {
           color: black;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
           &:hover {
             text-decoration: underline;
           }  
@@ -220,13 +234,14 @@ export default {
         color: #B2B2B2;
         line-height: 22px;
         margin: 0;
+        white-space: nowrap;
       }
       .view-all {
         flex: 1;
         font-size: 16px;
         color: #542DE0;
         line-height: 22px;
-        margin: 0;
+        margin: 0 0 0 20px;
         text-align: right;
         // 隐藏“查看全部”的文字
         // visibility: hidden;
@@ -248,6 +263,32 @@ export default {
     position: absolute;
     left: 15px;
     top: 0px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .notify-right-title {
+    display: block;
+    h4 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+    }
+    .view-all {
+      font-size: 14px;
+    }
+  }
+  .notify-right-header {
+    .header-read {
+      font-size: 14px;
+    }
+    .header-date {
+      font-size: 14px;
+    }
+  }
+  .notify-right-content {
+    font-size: 14px;
   }
 }
 </style>

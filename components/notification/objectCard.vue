@@ -39,16 +39,16 @@
           :src="avatar"
           class="avatar"
         />
-        <div class="user-info">
+        <div class="user-info" :class="dateCard && 'user-details'">
           <div class="fl user-info-top">
             <h4>
               {{ nickname }}
             </h4>
-            <p>
+            <p class="user-info-top-other">
               {{ dateCard }} {{ action ? actionLabels[action] : '' }}
             </p>
           </div>
-          <p>
+          <p class="introduction">
             {{ user.introduction || '暂无简介' }}
           </p>
         </div>
@@ -250,15 +250,20 @@ export default {
           line-height: 22px;
           margin: 0;
           margin-right: 10px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
         }
-        p {
+        &-other {
           font-size: 14px;
           color: #B2B2B2;
           line-height: 20px;
           margin: 0;
+          white-space: nowrap;
         }
       }
-      p {
+      .introduction {
         font-size: 14px;
         color: #B2B2B2;
         line-height: 20px;
@@ -282,6 +287,64 @@ export default {
       justify-content: flex-end;
       align-items: center;
       margin-left: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    height: 42px;
+    .post {
+      &-cover {
+        width: 80px;
+        min-width: 80px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      h4 {
+        font-size: 14px;
+        line-height: 16px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        height: 16px;
+        margin-bottom: 5px;
+      }
+    }
+    .user {
+      .avatar {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px;
+        background: #eee;
+        margin-right: 14px;
+      }
+      &-info {
+        &-top {
+          h4 {
+            font-size: 14px;
+          }
+          &-other {
+            font-size: 12px;
+          }
+        }
+        .introduction {
+          font-size: 12px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+  .user-details {
+    .user-info-top {
+      display: block;
+    }
+    .introduction {
+      display: none !important;
     }
   }
 }

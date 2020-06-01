@@ -772,7 +772,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@7.x", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.9.6"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
   integrity sha512-64AF1xY3OAkFHqOb9s4jpgk1Mm5vDZ4L3acHvAml+53nO1XbXLuDodsVpO4OIUsmemlUHMxNdYMNJmsvOwLrvQ==
@@ -845,10 +845,10 @@
     js-yaml "^3.13.1"
     json5 "^2.1.1"
 
-"@matataki/editor@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/@matataki/editor/-/editor-1.0.5.tgz#134a1a1915ee0de8684dee2cd6ec2e253bd67475"
-  integrity sha512-z/tPBPRjYVN0vfPhVO+KNt/h2bzNVmdaR2zoQjgUBaiZZX6q3eb6ALB4K9nmvs9GoGB6wEXpBNphRXtlqQHKKA==
+"@matataki/editor@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@matataki/editor/-/editor-1.0.8.tgz#1413cc1e2aa853e88e769909bf70d86c0357db9d"
+  integrity sha512-C+q6Kd6e0tyHArQ7KVUVmxU8Srn4iTE3civHFkS/CmigDCfdrxTuJwCl9gzhph7Y+Rz+dXJykT/v1QqQV+xfOA==
   dependencies:
     animejs "3.2.0"
     codemirror "5.42.0"
@@ -1303,6 +1303,16 @@
     lodash "^4.17.15"
     semver "^6.3.0"
     tsutils "^3.17.1"
+
+"@vant/icons@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@vant/icons/-/icons-1.2.1.tgz#309fecb97a4989866f045ce676b545c454701c8f"
+  integrity sha512-5ivsKQR4ySbdBW5UPoQDVqO6rdc1um3rvq/0VL+ZSA7Y3MdBQ3E4/NL0hoAY5/sZZeYfIDKEP21gpjUzdeEDQQ==
+
+"@vant/touch-emulator@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@vant/touch-emulator/-/touch-emulator-1.2.0.tgz#486300b23e57db9ce9231a04e0a0c621c68692d8"
+  integrity sha512-sJ97zU85zOq51qoi7+CpBEcOyH3CitjP1KC7/GQwqaurUJni+EP7/F9n0HMnAh8GXMjgtgDBNJ5z48x+coNKYQ==
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"
@@ -3681,10 +3691,10 @@ electron-to-chromium@^1.3.413:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.432.tgz#3bf7b191978ff2e8bc3caf811bb52b1e9f9eab25"
   integrity sha512-/GdNhXyLP5Yl2322CUX/+Xi8NhdHBqL6lD9VJVKjH6CjoPGakvwZ5CpKgj/oOlbzuWWjOvMjDw1bBuAIRCNTlw==
 
-element-ui@^2.10.1:
-  version "2.13.1"
-  resolved "https://registry.npmjs.org/element-ui/-/element-ui-2.13.1.tgz#0cb1a45cf27aa61c601defbe192740ac5cb9df7c"
-  integrity sha512-jyvJmXa2c6ElRc4NOw4V1vnjHsvfzTRhbwElZ68CyF9by2F64B+AJRzujg/HJgXCimHwd2g1Av9D04EP3mWymg==
+element-ui@2.13.2:
+  version "2.13.2"
+  resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.13.2.tgz#582bf47aaaaaafe23ea1958fae217a687ad06447"
+  integrity sha512-r761DRPssMPKDiJZWFlG+4e4vr0cRG/atKr3Eqr8Xi0tQMNbtmYU1QXvFnKiFPFFGkgJ6zS6ASkG+sellcoHlQ==
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"
@@ -10343,6 +10353,16 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
+vant@2.8.2:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/vant/-/vant-2.8.2.tgz#b4e875f6b0bf2d8b08c823888bd93aaae162962d"
+  integrity sha512-ZXDVuKfmTXhGDfFXQsbPL3IXpDcLDIfTc3NVAk1DF14v7VCYrhOEkgGjd03Dz8m83qhuQgWUVPL+tql+hAJQSw==
+  dependencies:
+    "@babel/runtime" "7.x"
+    "@vant/icons" "1.2.1"
+    "@vue/babel-helper-vue-jsx-merge-props" "^1.0.0"
+    vue-lazyload "1.2.3"
+
 vary@^1, vary@^1.1.2, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
@@ -10444,6 +10464,11 @@ vue-i18n@^8.12.0, vue-i18n@^8.14.1:
   version "8.17.5"
   resolved "https://registry.npmjs.org/vue-i18n/-/vue-i18n-8.17.5.tgz#e34ceda4273a83be94c392358a227d66b76acb12"
   integrity sha512-gijXwvyTH3aeJhuq8EoQ9SDDlm1mgJexNccSK1ctalxsa6C7ifbWiH7V/YGfm9WJ7udYoD8ezfZdazxxvKvKYw==
+
+vue-lazyload@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/vue-lazyload/-/vue-lazyload-1.2.3.tgz#901f9ec15c7e6ca78781a2bae4a343686bdedb2c"
+  integrity sha512-DC0ZwxanbRhx79tlA3zY5OYJkH8FYp3WBAnAJbrcuoS8eye1P73rcgAZhyxFSPUluJUTelMB+i/+VkNU/qVm7g==
 
 vue-lazyload@1.3.3:
   version "1.3.3"

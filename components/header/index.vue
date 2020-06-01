@@ -70,7 +70,7 @@
           v-if="isLogined"
           class="item"
           effect="dark"
-          content="通知中心"
+          content="消息中心"
           placement="bottom"
         >
           <n-link
@@ -179,7 +179,14 @@
         <!-- <language class="language" /> -->
       </div>
       <div class="mobile">
-        <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
+        <el-badge
+          :value="notifyUnreadQuantity"
+          :hidden="notifyUnreadQuantity === 0"
+          :max="99"
+          class="item"
+        >
+          <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
+        </el-badge>
         <ul v-show="toggleMenu" class="menu-ul">
           <li>
             <div class="search">
@@ -218,7 +225,10 @@
           </li>
           <li>
             <n-link to="/notification">
-              通知中心
+              消息中心
+              <span v-if="numMessagesLabel" class="news">
+                {{ numMessagesLabel }}
+              </span>
             </n-link>
           </li>
 
@@ -362,6 +372,10 @@ export default {
     customizeHeaderLogoColorComputed() {
       if (this.customizeHeaderLogo === 'white') return homeLogoWhile
       else return homeLogo
+    },
+    numMessagesLabel() {
+      if(!this.notifyUnreadQuantity) return ''
+      return `（${this.notifyUnreadQuantity}条新消息）`
     }
   },
   watch: {
@@ -826,6 +840,9 @@ export default {
       }
     }
   }
+}
+.news {
+  color: #F56C6C;
 }
 // 页面大于
 @media screen and (min-width: 801px) {
