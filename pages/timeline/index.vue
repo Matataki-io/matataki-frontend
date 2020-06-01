@@ -91,7 +91,6 @@
             :card="item"
           />
         </div>
-        <tagsHot />
       </div>
     </div>
   </div>
