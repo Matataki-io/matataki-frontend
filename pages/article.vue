@@ -13,7 +13,7 @@
           <popularArticles :list="popularlist" />
           <section class="head ra-head tag">
             <h3 class="head-title">
-              推荐标签
+              热门标签
             </h3>
             <router-link :to="{name: 'tags'}">
               查看全部
