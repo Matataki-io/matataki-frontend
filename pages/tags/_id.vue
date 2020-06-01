@@ -6,6 +6,10 @@
         <section class="head">
           <h3 class="head-title">
             <span># {{ $route.query.name }}</span>
+            <router-link :to="{name: 'tags'}" class="title-link">
+              查看全部
+              <svg-icon icon-class="arrow" class="icon" />
+            </router-link>
           </h3>
           <div class="tags-text">
             <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
@@ -148,7 +152,10 @@ export default {
 .tags-text {
   // flex: 1;
 }
-
+.title-link {
+  margin-left: 10px;
+  display: none;
+}
 .head {
   height: 24px;
   display: flex;
@@ -199,6 +206,9 @@ export default {
     .col-3 {
       display: none;
     }
+  }
+  .title-link {
+    display: initial;
   }
 }
 
