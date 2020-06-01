@@ -6,9 +6,10 @@
     />
     <div class="search-container">
       <div class="search-head fl">
-        <p
+        <span
           v-for="(tag, index) in tagList"
           :key="index"
+          class="head-title"
           :class="searchType === index && 'active'"
           replace
           @click="toggleType(index)"
@@ -17,7 +18,7 @@
           <span>
             {{ articleCardData[index].count > 99 ? '99+' : articleCardData[index].count }}
           </span>
-        </p>
+        </span>
       </div>
 
       <div
