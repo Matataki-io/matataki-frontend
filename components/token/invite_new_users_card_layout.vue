@@ -94,12 +94,6 @@ export default {
       return ''
     }
   },
-  watch: {
-  },
-  mounted() {
-    console.log(document.querySelector('.p-share').offsetLeft)
-    console.log(document.querySelector('.p-share').offsetTop)
-  },
   methods: {
     save() {
       this.toCanvas('inviteCard')
