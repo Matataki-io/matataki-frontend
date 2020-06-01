@@ -481,7 +481,7 @@ export default {
   }
 
   .head {
-    display: none;
+    // display: none;
   }
 
   .banner {

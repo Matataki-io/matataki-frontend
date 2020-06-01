@@ -278,6 +278,7 @@
             </a>
           </li> -->
         </ul>
+        <div v-if="toggleMenu" class="menu-full" @click="toggleMenu = !toggleMenu" />
       </div>
     </div>
   </header>
@@ -843,6 +844,18 @@ export default {
 }
 .news {
   color: #F56C6C;
+}
+.menu-ul {
+  z-index: 2;
+}
+.menu-full {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 60px;
+  background-color: rgba(0,0,0,.4);
+  z-index: 1;
 }
 // 页面大于
 @media screen and (min-width: 801px) {

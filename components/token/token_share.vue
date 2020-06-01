@@ -1,12 +1,11 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    :width="width"
     :lock-scroll="false"
     :show-close="false"
     :center="widgetModalStatus === 0 ? true : false"
     :top="widgetModalStatus === 1 || widgetModalStatus === 4 ? '20px' : '15vh'"
-    custom-class="gray-bg br10 p-share"
+    :custom-class="dialogCustomClass"
     @close="change"
   >
     <!-- 主窗口 -->
@@ -208,14 +207,19 @@ export default {
       showModal: false,
       // 0 默认 1 widget
       widgetModalStatus: 0
-
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo']),
-    width() {
-      if (this.widgetModalStatus === 1) { return '800px' } else if (this.pageType === 2) return '480px'
-      else return '400px'
+    dialogCustomClass() {
+      let className = 'gray-bg br10 token-share-dialog '
+      if (this.widgetModalStatus === 1) { 
+        return className + 'image'
+      } else if (this.pageType === 2) {
+        return className + 'list'
+      } else {
+        return className + 'list'
+      }
     },
     shareLink() {
       const slogan = [
@@ -460,11 +464,22 @@ p {
   line-height: 20px;
   font-weight: 400;
 }
-</style>
 
-<style lang="less">
-.p-share .el-dialog__header,
-.p-share .el-dialog__body {
+/deep/ .token-share-dialog.list {
+  width: 400px;
+}
+/deep/ .token-share-dialog.image {
+  width: 800px;
+}
+
+/deep/ .token-share-dialog .el-dialog__header,
+/deep/ .token-share-dialog .el-dialog__body {
   padding: 0;
+}
+
+@media screen and (max-width: 460px) {
+  /deep/ .token-share-dialog.list {
+    width: 350px;
+  }
 }
 </style>
