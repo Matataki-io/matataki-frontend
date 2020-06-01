@@ -1746,7 +1746,7 @@ export default {
 
         let promiseArr = [
           this.$API.createDraft(data),
-          this.$API.delArticle({ id: this.$route.params.id })
+          // this.$API.delArticle({ id: this.$route.params.id }) // 创建完成 不删除文章
         ]
         Promise.all(promiseArr).then(res => {
         // 判断是否错误
@@ -1760,7 +1760,7 @@ export default {
           // 操作完成后
           this.allowLeave = true
           this.$message.success(res[0].message)
-          this.$router.push({name: 'user-id-draft', params: {id: Number(this.currentUserInfo.id)}})
+          // this.$router.push({name: 'user-id-draft', params: {id: Number(this.currentUserInfo.id)}})
           console.log(res)
         }).catch(e => {
           console.log(e)
