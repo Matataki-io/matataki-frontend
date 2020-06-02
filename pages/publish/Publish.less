@@ -74,7 +74,7 @@
 
   .edit-title {
     flex: 1;
-    padding: 14px 10px;
+    padding: 0 10px;
     border: none;
     outline: none;
     background: transparent;
@@ -324,6 +324,7 @@
   border: 1px solid @gray;
   border-radius: 2px;
   color: @gray;
+  cursor: pointer;
 }
 
 
@@ -424,6 +425,7 @@
   margin: 20px 0 10px;
   padding: 20px 0;
 }
+
 .set-title-border {
   border-top: 1px solid #DBDBDB;
 }
@@ -521,4 +523,65 @@
   margin-left: 6px;
   font-size: 12px;
   font-weight: 400;
+}
+
+
+.draft-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.draft-save-tips {
+  color: #B2B2B2;
+  font-size: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.draft-save-draft {
+  margin: 0 10px 0 8px;
+  padding: 0 6px;
+  color: inherit;
+  font-size: 12px;
+  text-decoration: none;
+  border: 1px solid #B2B2B2;
+  border-radius: 2px;
+  color: #B2B2B2;
+  display: block;
+  height: 20px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+
+  .save-tips,
+  .save-draft,
+  .import-button {
+    display: none;
+  }
+
+  .edit-head {
+    height: 46px;
+
+    .edit-title {
+      padding: 0;
+      font-size: 14px;
+    }
+  }
+
+  .back-icon {
+    padding: 10px 6px;
+  }
+
+  .post {
+    font-size: 12px;
+  }
+
+  .setting {
+    font-size: 12px;
+  }
 }
