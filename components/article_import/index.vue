@@ -3,8 +3,7 @@
     :visible.sync="visible"
     :show-close="false"
     :close-on-click-modal="false"
-    width="460px"
-    custom-class="import br10"
+    custom-class="import br10 import-article"
     @close="$emit('close')"
   >
     <el-input
@@ -166,6 +165,18 @@ export default {
     &:nth-of-type(1) {
       margin-bottom: 30px;
     }
+  }
+}
+
+</style>
+<style lang="less" scoped>
+/deep/ .import-article {
+  width: 460px;
+}
+
+@media screen and (max-width: 480px) {
+  /deep/ .import-article {
+    width: 360px;
   }
 }
 </style>
