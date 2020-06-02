@@ -7,7 +7,7 @@
       </h1>
       <div class="widget-content">
         <div class="cover jumpPage">
-          <img :src="cover" alt="cover">
+          <img v-if="cover" :src="cover" alt="cover">
         </div>
         <p class="widget-des">{{ content }}</p>
       </div>
@@ -112,6 +112,7 @@ export default {
   flex: 0 0 140px;
   margin-right: 10px;
   overflow: hidden;
+  background-color: #a9a9a9;
   img {
     width: 100%;
     height: 100%;
@@ -220,7 +221,6 @@ export default {
 @media screen and (max-width: 600px) {
 .widget-content .cover {
     width: 70px;
-    height: 70px;
     flex: 0 0 70px;
   }
 }
