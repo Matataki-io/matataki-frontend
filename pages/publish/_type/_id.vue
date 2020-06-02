@@ -68,7 +68,34 @@
           image-upload-action="customize"
           :image-upload-fn="imageUploadFn"
           :encryption="encryption"
-        />
+          @tool-mobile-import="toolMobileImport"
+        >
+          <div slot="tool-mobile" class="draft-btn">
+            <span
+              class="draft-save-tips"
+              v-html="saveDraft"
+            />
+            <router-link
+              :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+              class="draft-save-draft"
+            >
+              草稿
+            </router-link>
+          </div>
+  
+          <div slot="tool-view-mobile" class="draft-btn">
+            <span
+              class="draft-save-tips"
+              v-html="saveDraft"
+            />
+            <router-link
+              :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+              class="draft-save-draft"
+            >
+              草稿
+            </router-link>
+          </div>
+        </mavon-editor>
       </no-ssr>
     </div>
 
@@ -924,8 +951,9 @@ export default {
     ...mapActions(['getSignatureOfArticle']),
     _resizeEditor() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
       this.editorStyle = {
-        height: `${clientHeight - 60}px`
+        height: `${clientHeight - (clientWidth < 768 ? 47 : 60)}px`
       }
     },
     // watch 监听草稿更新
@@ -1840,6 +1868,9 @@ export default {
         data.short_content = this.readSummary
       }
       return data
+    },
+    toolMobileImport() {
+      this.importVisible = true
     }
   }
 }
