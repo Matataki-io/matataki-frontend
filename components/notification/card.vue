@@ -1,10 +1,11 @@
 <template>
   <div :style="mode === 'hide' && 'cursor:default'" class="notify" @click="openDetails">
-    <div v-if="svgType !== 'annouce'" class="notify-type">
+    <div class="notify-type">
       <!-- 通知类型图标 -->
       <svg-icon v-if="svgType === 'like'" class="icon-search" icon-class="notify_recommend" />
       <svg-icon v-else-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
       <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
+      <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
@@ -14,7 +15,6 @@
             <c-avatar :src="avatar" class="avatar" />
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
-          <svg-icon v-else class="icon-search" icon-class="notify_annouce" />
         </div>
         <!-- 时间 -->
         <p class="header-date">
