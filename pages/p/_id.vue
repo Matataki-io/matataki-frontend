@@ -16,6 +16,7 @@
         </div>
         <article class="Post-Header">
           <header>
+            <img src="/img/matatakiselected@2x.png" class="matataki-selected"  v-if="isRecommend" />
             <!-- 标题 -->
             <h1 class="Post-Title">
               {{ article.title }}
@@ -502,6 +503,9 @@ export default {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    isRecommend() {
+      return Boolean(this.article.is_recommend)
     },
     compiledMarkdown() {
       // 前提: 都在自己的平台下
@@ -1359,5 +1363,8 @@ export default {
   .Post-Title {
     font-size: 22px;
   }
+}
+.matataki-selected {
+  width: 180px;
 }
 </style>
