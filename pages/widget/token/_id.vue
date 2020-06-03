@@ -1,28 +1,34 @@
 <template>
-  <router-link class="container" :to="{ name: 'user-id', params: { id: $route.params.id } }" target="_blank">
+  <router-link class="container" :to="{ name: 'token-id', params: { id: $route.params.id } }" target="_blank">
     <div class="widget">
       <img class="logo" src="@/assets/img/widget/share_logo.png" alt="logo">
       <div class="widget-content">
         <div class="token">
-          <img class="token-cover" :src="avatar" alt="cover">
+          <img class="token-cover" :src="logo" alt="cover">
         </div>
         <div class="token-info">
           <div class="token-info-line">
+            <div class="token-title bold">
+              {{ tokenData.token.symbol || '暂无' }}
+            </div>
+            <div class="token-sub">
+              {{ tokenData.token.name || '暂无' }}
+            </div>
+          </div>
+          <div class="token-info-line">
             <div class="token-title">
-              {{ userData.nickname || userData.username || '暂无昵称' }}
+              创始人：
+            </div>
+            <div class="token-sub">
+              {{ tokenData.user.nickname || tokenData.user.username || '暂无' }}
             </div>
           </div>
           <div class="token-info-line">
-            <div class="token-sub">
-              关注：{{ userData.follows || 0 }}
-              &nbsp;
-              &nbsp;
-              粉丝：{{ userData.fans || 0 }}
+            <div class="token-title">
+              简&emsp;介：
             </div>
-          </div>
-          <div class="token-info-line">
             <div class="token-sub">
-              简介：{{ userData.introduction || '暂无' }}
+              {{ tokenData.token.brief || '暂无' }}
             </div>
           </div>
         </div>
@@ -42,22 +48,22 @@ export default {
     }
   },
   computed: {
-    avatar() {
-      return this.userData.avatar ?  this.$ossProcess(this.userData.avatar, { h: 120 }) : ''
+    logo() {
+      return this.tokenData.token.logo ?  this.$ossProcess(this.tokenData.token.logo, { h: 120 }) : ''
     }
   
   },
   async asyncData({ $axios, route }) {
     let id = route.params.id
     try {
-      const res = await $axios.get(`/user/${id}`)
+      const res = await $axios.get(`/minetoken/${id}`)
       if (res.code === 0) {
-        return { userData: res.data }
+        return { tokenData: res.data }
       } else {
-        return { userData: {} }
+        return { tokenData: {} }
       }
     } catch(e) {
-      return { userData: {} }
+      return { tokenData: {} }
     }
   },
   created() {
@@ -67,9 +73,6 @@ export default {
       }
     }
   },
-  methods: {
-
-  }
 }
 </script>
 
@@ -91,19 +94,28 @@ export default {
     top: 10px;
     width: 26px;
     height: 26px;
+  }
+  .footer {
+    font-size:12px;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:17px;
+    margin: 20px 0 10px;
+    display: inline-block;
+  }
+  .token {
+    flex: 0 0 90px;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid #ececec;
+    box-sizing: border-box;;
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-  }
-  .footer {
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 1);
-    line-height: 17px;
-    margin: 20px 0 10px;
-    display: inline-block;
   }
 }
 
@@ -111,31 +123,25 @@ export default {
   color: #fff;
   margin-left: 10px;
   flex: 1;
-  overflow: hidden;
 }
 
 .token-info-line {
   display: flex;
   margin: 6px 0;
-  font-size: 14px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 1);
-  line-height: 20px;
+  font-size:14px;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+  line-height:20px;
 }
 .token-title {
-  font-size: 20px;
-  color: rgba(255, 255, 255, 1);
-  font-weight: bold;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 80%;
-  line-height: 28px;
-  text-decoration: none;
+  flex: 0 0 60px;
+  &.bold {
+    font-weight: bold;
+  }
 }
 
 .token-sub {
-  padding: 0;
+  padding: 0 0 0 6px;
   word-break: break-all;
 }
 
@@ -144,7 +150,7 @@ export default {
   margin: 6px 0 0 0;
   font-size: 16px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255,255,255,1);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -152,22 +158,7 @@ export default {
 
 .widget-content {
   display: flex;
-  /* align-items: center; */
-  /* justify-content: space-between; */
-  .token {
-    flex: 0 0 90px;
-    width: 90px;
-    height: 90px;
-    overflow: hidden;
-    border-radius: 50%;
-    border: 1px solid #ececec;
-    box-sizing: border-box;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
+  width: 100%;
 }
 
 .widget-content .cover {
@@ -188,20 +179,43 @@ export default {
   margin: 0;
   font-size: 14px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255,255,255,1);
   line-height: 24px;
 }
 .widget .author {
   font-size: 12px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255,255,255,1);
   padding: 0 150px 0 0;
   margin: 10px 0 0 0;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
+.widget .readorups {
+  position: absolute;
+  bottom: -18px;
+  right: 14px;
+  background-color: #542de0;
+  color: #fff;
+  border-radius: 3px;
+  padding: 10px 6px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
+  display: flex;
+}
 
+.widget .readorups span {
+  margin: 0 4px;
+  font-size: 12px;
+  font-weight:500;
+  color:rgba(255,255,255,1);
+  display: flex;
+  align-items: center;
+}
+.widget .readorups span img {
+  height: 12px;
+  margin-right: 4px;
+}
 
 
 @media screen and (max-width: 600px) {
@@ -215,5 +229,4 @@ export default {
   }
 }
 
-/* 上线前需要添加前缀和压缩 */
 </style>
