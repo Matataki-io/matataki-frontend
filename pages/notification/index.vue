@@ -25,6 +25,7 @@
           :card="item"
           :user="getUser(item.user_id)"
           :post="getPost(item)"
+          :annouce="getAnnouce(item)"
           :comment="getComment(item)"
           @openDetails="openDetails"
         />
@@ -165,6 +166,7 @@ export default {
       notifications: [],
       users: [],
       posts: [],
+      announcements: [],
       comments: [],
       detailsIndex: null,
       notificationDetails: [],
@@ -189,6 +191,10 @@ export default {
         {
           key: 'like',
           label: '推荐信息'
+        },
+        {
+          key: 'annouce',
+          label: '公告信息'
         }
       ],
       actions: null,
@@ -232,6 +238,7 @@ export default {
       if(res.data && res.data.list.length > 0 ) {
         this.users.push(...res.data.users)
         this.posts.push(...res.data.posts)
+        this.announcements.push(...res.data.announcements)
         this.comments.push(...res.data.comments)
         this.notifications.push(...res.data.list)
         // 标记已读
@@ -251,9 +258,21 @@ export default {
       return null
     },
     getPost(notify) {
-      if(this.posts && this.posts.length > 0 && notify.object_type === 'article') {
-        const postId = notify.object_id
+      if(this.posts && this.posts.length > 0) {
+        let postId
+        if(notify.object_type === 'article')
+          postId = notify.object_id
+        else if(notify.object_type === 'announcement' && notify.remark)
+          postId = notify.remark
+        else return null
+
         return this.posts.find(post => post.id === postId)
+      }
+      return null
+    },
+    getAnnouce(notify) {
+      if(this.announcements && this.announcements.length > 0 && notify.action === 'annouce') {
+        return this.announcements.find(announcement => announcement.id === notify.object_id)
       }
       return null
     },
