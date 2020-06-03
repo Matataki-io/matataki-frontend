@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <router-link class="container" :to="{ name: 'p-id', params: { id: $route.params.id }, query: { invite: $route.query.invite, referral: $route.query.referral } }" target="_blank">
     <div class="widget">
       <img class="logo" src="@/assets/img/widget/share_logo.png" alt="logo">
       <h1 class="jumpPage">
@@ -17,7 +17,7 @@
         <span><img src="@/assets/img/widget/ups.svg" alt="ups">{{ articleData.likes || 0 }}</span>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -67,6 +67,7 @@ export default {
 .container {
   height: 176px; 
   /* iframe 有边框不会出现滚动条 */
+  display: block;
 }
 
 .widget {
