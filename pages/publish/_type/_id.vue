@@ -626,6 +626,7 @@
             type="primary"
             size="medium"
             style="margin-left: 10px;"
+            :class="settingDialogMode === 'setting' && 'set'"
             @click="sendThePost"
           >
             立即发布

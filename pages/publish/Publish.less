@@ -416,6 +416,7 @@
 .set-footer {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   margin: 20px 0 0;
 }
 
@@ -583,5 +584,21 @@
 
   .setting {
     font-size: 12px;
+  }
+}
+
+
+@media screen and (max-width: 540px) {
+  .set-m-dialog .set-dialog {
+    padding: 0px 20px 40px;
+  }
+
+  .set-footer /deep/ .el-button.set {
+    margin-top: 10px;
+  }
+
+  .set-m-dialog .set-dialog .close-icon {
+    right: 10px;
+    top: 0px;
   }
 }
