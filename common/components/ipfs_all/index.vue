@@ -3,7 +3,7 @@
     <el-dialog
       :title="historyDialogTitle"
       :visible.sync="dialogVisible"
-      width="60%"
+      class="history-dialog"
     >
       <ArticleHistory :article-ipfs-array="articleIpfsArray" />
     </el-dialog>
@@ -183,4 +183,25 @@ export default {
 //   color: @purpleDark;
 //   line-height:14px;
 // }
+
+.history-dialog {
+  /deep/ .el-dialog {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .history-dialog {
+    /deep/ .el-dialog {
+      width: 80%;
+    }
+  }
+}
+@media screen and (max-width: 560px) {
+  .history-dialog {
+    /deep/ .el-dialog {
+      width: 90%;
+    }
+  }
+}
 </style>

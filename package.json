@@ -19,7 +19,7 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
     "@clampy-js/vue-clampy": "^1.0.6",
-    "@matataki/editor": "1.0.8",
+    "@matataki/editor": "1.2.2",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@sentry/browser": "5.9.1",
@@ -32,7 +32,7 @@
     "cropperjs": "^1.5.4",
     "cyanobridge": "^0.1.0",
     "dom-to-image": "2.6.0",
-    "element-ui": "^2.10.1",
+    "element-ui": "2.13.2",
     "eosjs": "^16.0.9",
     "gsap": "3.0.1",
     "html2canvas": "^1.0.0-rc.3",

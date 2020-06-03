@@ -110,7 +110,7 @@ export default {
   components: {
     timelineCard,
     buttonLoadMore,
-    RAList
+    RAList,
   },
   data() {
     return {
@@ -481,7 +481,7 @@ export default {
   }
 
   .head {
-    display: none;
+    // display: none;
   }
 
   .banner {

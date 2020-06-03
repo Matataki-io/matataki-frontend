@@ -25,6 +25,7 @@
           :card="item"
           :user="getUser(item.user_id)"
           :post="getPost(item)"
+          :annouce="getAnnouce(item)"
           :comment="getComment(item)"
           @openDetails="openDetails"
         />
@@ -59,7 +60,7 @@
             bg-color="white"
           />
         </div>
-        <el-divider />
+        <el-divider v-if="detailsIndex.objectType === 'article'" />
         <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
           <objectCard
             v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'"
@@ -85,14 +86,14 @@
           />
         </div>
       </el-col>
-      <el-col :span="8" :class="showDetails && 'details-hide'">
+      <el-col :span="8" class="filter-notify" :class="showDetails && 'details-hide'">
         <!-- 消息筛选 -->
         <div class="option">
           <h3 class="option-title">
             消息筛选
           </h3>
           <div class="option-card">
-            <el-checkbox
+            <!-- <el-checkbox
               v-model="checkAll"
               :indeterminate="isIndeterminate"
               :disabled="showDetails"
@@ -100,7 +101,7 @@
               @change="handleCheckAllChange"
             >
               全选
-            </el-checkbox>
+            </el-checkbox> -->
             <el-checkbox-group
               v-model="checkedCities"
               class="fl checkbox-group"
@@ -165,6 +166,7 @@ export default {
       notifications: [],
       users: [],
       posts: [],
+      announcements: [],
       comments: [],
       detailsIndex: null,
       notificationDetails: [],
@@ -189,6 +191,10 @@ export default {
         {
           key: 'like',
           label: '推荐信息'
+        },
+        {
+          key: 'annouce',
+          label: '公告信息'
         }
       ],
       actions: null,
@@ -232,6 +238,7 @@ export default {
       if(res.data && res.data.list.length > 0 ) {
         this.users.push(...res.data.users)
         this.posts.push(...res.data.posts)
+        this.announcements.push(...res.data.announcements)
         this.comments.push(...res.data.comments)
         this.notifications.push(...res.data.list)
         // 标记已读
@@ -251,9 +258,21 @@ export default {
       return null
     },
     getPost(notify) {
-      if(this.posts && this.posts.length > 0 && notify.object_type === 'article') {
-        const postId = notify.object_id
+      if(this.posts && this.posts.length > 0) {
+        let postId
+        if(notify.object_type === 'article')
+          postId = notify.object_id
+        else if(notify.object_type === 'announcement' && notify.remark)
+          postId = notify.remark
+        else return null
+
         return this.posts.find(post => post.id === postId)
+      }
+      return null
+    },
+    getAnnouce(notify) {
+      if(this.announcements && this.announcements.length > 0 && notify.action === 'annouce') {
+        return this.announcements.find(announcement => announcement.id === notify.object_id)
       }
       return null
     },
@@ -334,6 +353,10 @@ export default {
 </script>
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less" scoped>
+.filter-notify {
+  position: sticky;
+  top: 80px;
+}
 .load-more /deep/ button.btn {
   margin: 50px auto !important;
   width: 300px !important;
@@ -350,6 +373,9 @@ export default {
 }
 // 小于768
 @media screen and (max-width: 768px) {
+  .filter-notify {
+    position: static;
+  }
   .notification-container /deep/ {
     display: flex;
     flex-direction: column-reverse;

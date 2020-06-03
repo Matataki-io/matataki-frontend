@@ -11,17 +11,35 @@
       </div>
       <div class="tags-head">
         <div class="tags-text">
-          <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
-          <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
+          <span
+            v-show="searchResultShow"
+            class="tags-title"
+            :class="mode === 'hot' && 'active'"
+            @click="toggleTag('hot')"
+          >最热</span>
+          <span
+            v-show="searchResultShow"
+            class="tags-title"
+            :class="mode === 'new' && 'active'"
+            @click="toggleTag('new')"
+          >最新</span>
+          <svg-icon
+            v-show="!searchResultShow"
+            icon-class="arrow"
+            class="head-arrow"
+            @click="backAll"
+          />
         </div>
-        <el-input
+        <el-autocomplete
           v-model="tagSearchVal"
-          placeholder="请输入内容"
-          clearable
           class="tags-search"
+          :fetch-suggestions="querySearchAsync"
+          placeholder="请输入搜索内容"
+          @select="handleSelect"
+          @keyup.enter.native="searchTag"
         />
       </div>
-      <div class="tag-table">
+      <div v-loading="loading" class="tag-table">
         <el-table :data="tagsData" style="width: 100%" @row-click="rowClick">
           <el-table-column label="标签名称">
             <template slot-scope="scope">
@@ -39,7 +57,7 @@
           </el-table-column>
         </el-table>
         <user-pagination
-          v-show="!pull.loading"
+          v-show="searchResultShow && !pull.loading"
           :current-page="pull.currentPage"
           :params="pull.params"
           :api-url="pull.apiUrl"
@@ -56,6 +74,7 @@
 </template>
 <script>
 import userPagination from '@/components/user/user_pagination.vue'
+import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   components: {
@@ -63,8 +82,10 @@ export default {
   },
   data() {
     return {
+      loading: false,
       tagSearchVal: '',
       tagsData: [],
+      searchResultShow: true,
       mode: 'hot',
       pull: {
         loading: false,
@@ -76,7 +97,7 @@ export default {
         },
         apiUrl: 'tagsHottest',
         list: []
-      }
+      },
     }
   },
   methods: {
@@ -110,7 +131,77 @@ export default {
       this.pull.total = 0
       this.pull.reload = Date.now()
       this.mode = val
+    },
+    // 自动搜索
+    async querySearchAsync(queryString, cb) {
+      if (queryString.trim()) {
+        const res = await this.$utils.factoryRequest(this.$API.search('tag', { 
+          word:  this.tagSearchVal,
+          pagesize: 5
+        }))
 
+        if (!res) {
+          cb([])
+          return
+        }
+
+        const list = res.data.list.map(i => {
+          return {
+            value: filterOutHtmlTags(i.name),
+            address: i.id
+          }
+        })
+        cb(list)
+      } else {
+        cb([])
+      }
+    },
+    // 备选项选择
+    handleSelect(item) {
+      if (item && item.address) {
+        this.searchTags(item.value)
+      }
+    },
+    // 搜索标签
+    async searchTags(word) {
+      this.loading = true
+      this.searchResultShow = false
+
+      const res = await this.$utils.factoryRequest(this.$API.search('tag', { 
+        word:  word,
+        pagesize: 9999,
+      }))
+      if (res) {
+        this.tagsData = res.data.list.map(i => {
+          return {
+            name: filterOutHtmlTags(i.name),
+            num: i.num,
+            id: i.id
+          }
+        })
+      } else {
+        this.tagsData = []
+      }
+      this.loading = false
+    },
+    // 重置
+    reset() {
+      this.searchResultShow = true
+      this.tagsData = []
+      this.tagSearchVal = ''
+      this.toggleTag(this.mode)
+    },
+    // 搜索tag enter event
+    searchTag() {
+      if (this.tagSearchVal.trim()) {
+        this.searchTags(this.tagSearchVal)
+      } else {
+        this.reset()
+      }
+    },
+    // 返回到所有
+    backAll() {
+      this.reset()
     }
   }
 }
@@ -134,6 +225,8 @@ export default {
   background-color: #eaeaea;
   position: relative;
   overflow: hidden;
+  border-radius: 10px;
+
   img {
     width: 100%;
     height: 100%;
@@ -156,6 +249,12 @@ export default {
       color: #b2b2b2;
     }
   }
+}
+.head-arrow {
+  transform: rotate(180deg);
+  cursor: pointer;
+  color: #333;
+  font-size: 16px;
 }
 .tags-head {
   display: flex;

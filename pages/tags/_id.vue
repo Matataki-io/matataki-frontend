@@ -6,7 +6,15 @@
         <section class="head">
           <h3 class="head-title">
             <span># {{ $route.query.name }}</span>
+            <router-link :to="{name: 'tags'}" class="title-link">
+              查看全部
+              <svg-icon icon-class="arrow" class="icon" />
+            </router-link>
           </h3>
+          <div class="tags-text">
+            <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
+            <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
+          </div>
         </section>
         <articleCardListNew
           v-for="(item, index) in pull.list"
@@ -19,6 +27,7 @@
             :params="pull.params"
             :api-url="pull.apiUrl"
             :is-atuo-request="pull.isAtuoRequest"
+            :auto-request-time="pull.reload"
             @buttonLoadMore="buttonLoadMore"
           />
         </div>
@@ -33,16 +42,7 @@
             <svg-icon icon-class="arrow" class="icon" />
           </router-link>
         </section>
-        <section class="tag-list">
-          <router-link
-            v-for="(item, index) in tags"
-            :key="index"
-            class="tag-item"
-            :to="{name: 'tags-id', params: { id: item.id }, query: { name: item.name }}"
-          >
-            {{ item.name }}
-          </router-link>
-        </section>
+        <tagsHot />
       </div>
     </div>
   </div>
@@ -52,12 +52,13 @@
 <script>
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
-
+import tagsHot from '@/components/tags/tags_hot.vue'
 
 export default {
   components: {
     articleCardListNew,
-    buttonLoadMore
+    buttonLoadMore,
+    tagsHot
   },
   data() {
     return {
@@ -65,42 +66,39 @@ export default {
         params: {
           pagesize: 20,
           tagid: this.$route.params.id,
-          extra: 'short_content'
+          extra: 'short_content',
+          orderBy: 'hot_score',
+          order: 'desc'
         },
         apiUrl: 'getPostByTagById',
         list: [],
-        isAtuoRequest: true
+        isAtuoRequest: true,
+        reload: 0
       },
-      tags: []
+      mode: 'hot',
     }
   },
   mounted() {
-    this.init()
   },
   methods: {
-    init() {
-      this.tagsHotest()
-    },
-    // 热门标签
-    async tagsHotest() {
-      await this.$API.tagsHotest({
-        pagesize: 40
-      }).then(res => {
-        if (res.code === 0) {
-          console.log(res)
-          this.tags = res.data.list
-        } else {
-          console.log(res.message)
-        }
-      }).catch(e => {
-        console.log(e)
-      })
-    },
     // 点击更多按钮返回的数据
     buttonLoadMore(res) {
       // console.log(res)
       if (res.data && res.data.list && res.data.list.length !== 0) this.pull.list = this.pull.list.concat(res.data.list)
-    }
+    },
+    // 切换
+    toggleTag(val) {
+      if (val === 'hot') {
+        this.pull.params.orderBy = 'hot_score'
+      } else if (val === 'new') {
+        this.pull.params.orderBy = 'create_time'
+      } else {
+        this.pull.params.orderBy = 'hot_score'
+      }
+      this.mode = val
+      this.pull.list = []
+      this.pull.reload = Date.now()
+    },
   }
 }
 </script>
@@ -137,6 +135,27 @@ export default {
   }
 }
 
+.tags-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: #b2b2b2;
+  padding: 0;
+  margin: 0 20px 0 0;
+  cursor: pointer;
+  &:nth-last-child(1) {
+    margin-right: 0;
+  }
+  &.active {
+    color: #000000;
+  }
+}
+.tags-text {
+  // flex: 1;
+}
+.title-link {
+  margin-left: 10px;
+  display: none;
+}
 .head {
   height: 24px;
   display: flex;
@@ -145,7 +164,7 @@ export default {
   &-title {
     margin: 0;
     padding: 0;
-    margin-right: 30px;
+    margin-right: 10px;
     font-size: 18px;
     color: #000;
   }
@@ -168,35 +187,11 @@ export default {
     }
   }
 }
-
+// 组件的
 .tag-list {
   margin: 20px 0 0 0;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
-  .tag-item {
-    text-align: center;
-    transition: all .3s;
-    margin: 0 10px 8px 0;
-    background: #e4e4e4;
-    border-radius: 100px;
-    padding: 0 12px;
-    border: 1px solid #e4e4e4;
-      font-size: 12px;
-      color: #505050;
-      line-height: 22px;
-      vertical-align: middle;
-      z-index: 10;
-      display: inline-block;
-      height: 22px;
-
-    &:hover {
-      border-color: @purpleDark;
-      color: @purpleDark;
-    }
-  }
 }
+
 .sticky {
   position: sticky;
   top: 80px;
@@ -211,6 +206,9 @@ export default {
     .col-3 {
       display: none;
     }
+  }
+  .title-link {
+    display: initial;
   }
 }
 

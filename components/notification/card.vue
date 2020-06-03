@@ -1,16 +1,17 @@
 <template>
-  <div class="notify" @click="openDetails">
+  <div :style="mode === 'hide' && 'cursor:default'" class="notify" @click="openDetails">
     <div class="notify-type">
       <!-- 通知类型图标 -->
       <svg-icon v-if="svgType === 'like'" class="icon-search" icon-class="notify_recommend" />
-      <svg-icon v-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
-      <svg-icon v-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
+      <svg-icon v-else-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
+      <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
+      <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
         <!-- 头像 -->
         <div @click.stop>
-          <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
+          <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: user.id || 0}}">
             <c-avatar :src="avatar" class="avatar" />
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
@@ -23,7 +24,7 @@
           {{ card.state ? '已读' : '未读' }}
         </p>
       </div>
-      <div class="notify-right-title">
+      <div v-if="card.action !== 'annouce'" class="notify-right-title">
         <!-- 事件发送者 -->
         <h4>
           <span @click.stop>
@@ -31,7 +32,9 @@
               {{ nickname }}
             </router-link>
           </span>
-          {{ totalLabel }}
+          <span class="notify-quantity">
+            {{ totalLabel }}
+          </span>
         </h4>
         <div class="fl" style="flex: 1;">
           <!-- 行为 -->
@@ -44,9 +47,14 @@
           </p>
         </div>
       </div>
+      <div v-else class="notify-right-title">
+        <h4>
+          {{ announcementTitle }}
+        </h4>
+      </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
       <!-- 对象卡片 -->
-      <div @click.stop>
+      <div v-if="mode !== 'hide'" @click.stop>
         <objectCard
           :mode="mode"
           :user="user"
@@ -79,6 +87,10 @@ export default {
       type: Object,
       default:  null
     },
+    annouce: {
+      type: Object,
+      default:  null
+    },
     comment: {
       type: Object,
       default: null
@@ -89,7 +101,8 @@ export default {
       actionLabels: {
         like: '推荐了你的文章',
         comment: '评论了你的文章',
-        follow: '关注了你'
+        follow: '关注了你',
+        annouce: ''
       }
     }
   },
@@ -101,28 +114,55 @@ export default {
       if (this.user && this.user.avatar) return this.$ossProcess(this.user.avatar)
       return ''
     },
+    /** 行为标签 */
     actionLabel() {
       return this.actionLabels[this.card.action]
     },
     nickname() {
       return this.user.nickname || this.user.username
     },
+    /** 折叠数量 */
     totalLabel() {
       if(this.card.total < 2) return ''
       if(this.card.action === 'comment') return ''
       return `和其他${this.card.total - 1}位用户`
     },
-    content() {
-      if(this.comment === null || this.card.total > 1) return ''
-      return this.comment.comment
+    announcementTitle() {
+      if(this.card.action !== 'annouce') return ''
+      return this.annouce.title
     },
+    /** 内容 */
+    content() {
+      const { action } = this.card
+      if (action === 'comment') {
+        // 评论
+        if (this.comment === null || this.card.total > 1) return ''
+        return this.comment.comment
+      }
+      else if (action === 'annouce') {
+        // 公告
+        if (this.annouce === null) return ''
+        return this.annouce.content
+      }
+      return ''
+    },
+    /** 格式化时间 */
     dateCard() {
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
+    /** 子卡片显示模式 */
     mode() {
-      if(this.card.action === 'comment' || this.card.action === 'like' ) return 'post'
-      else return 'user'
+      if (['comment', 'like', 'annouce'].includes(this.card.action)) {
+        // 使用文章卡片，如果文章对象是空的则不显示
+        if(!this.post) return 'hide'
+        else return 'post'
+      }
+      else {
+        // 使用用户卡片，如果用户对象是空的则不显示
+        if (!this.user) return 'hide'
+        else return 'user'
+      }
     }
   },
   methods: {
@@ -138,6 +178,8 @@ export default {
       })
     },
     openObject() {
+      if(this.mode === 'hide') return
+
       const url = this.mode === 'post' ? {name: 'p-id', params:{id: this.post.id}} : {name: 'user-id', params:{id: this.user.id}}
       this.$router.push(url)
     }
@@ -162,6 +204,7 @@ export default {
   // }
   &-type {
     width: 30px;
+    margin-right: 10px;
     svg {
       width: 30px;
       height: 30px;
@@ -169,7 +212,6 @@ export default {
   }
   &-right {
     flex: 1;
-    margin-left: 10px;
     &-header {
       align-items: center;
       margin-bottom: 10px;
@@ -181,6 +223,12 @@ export default {
       }
       a {
         position: relative;
+        display: block;
+        height: 34px;
+      }
+      svg {
+        width: 30px;
+        height: 30px;
       }
       .avatar {
         z-index: 1;
@@ -211,8 +259,16 @@ export default {
         color: black;
         line-height: 22px;
         margin: 0 10px 0 0;
+        display: flex;
+        .notify-quantity {
+          white-space: nowrap;
+        }
         a {
           color: black;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
           &:hover {
             text-decoration: underline;
           }  
@@ -223,13 +279,14 @@ export default {
         color: #B2B2B2;
         line-height: 22px;
         margin: 0;
+        white-space: nowrap;
       }
       .view-all {
         flex: 1;
         font-size: 16px;
         color: #542DE0;
         line-height: 22px;
-        margin: 0;
+        margin: 0 0 0 20px;
         text-align: right;
         // 隐藏“查看全部”的文字
         // visibility: hidden;

@@ -3,7 +3,6 @@
     :visible.sync="showModal"
     :lock-scroll="false"
     :show-close="false"
-    width="400px"
     custom-class="gray-bg br10 p-share"
     center
     @close="change"
@@ -216,7 +215,7 @@ export default {
       widgetContent: '',
       widgetContentIframe: '',
       socialShow: false,
-      shareLink: process.env.VUE_APP_URL
+      shareLink: process.env.VUE_APP_URL,
     }
   },
   computed: {
@@ -325,5 +324,17 @@ export default {
 .p-share .el-dialog__header,
 .p-share .el-dialog__body {
   padding: 0;
+}
+</style>
+
+<style lang="less" scoped>
+/deep/ .p-share {
+  width: 400px;
+}
+
+@media screen and (max-width: 460px) {
+  /deep/ .p-share {
+    width: 350px;
+  }
 }
 </style>

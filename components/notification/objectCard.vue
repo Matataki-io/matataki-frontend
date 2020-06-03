@@ -44,7 +44,7 @@
             <h4>
               {{ nickname }}
             </h4>
-            <p class="">
+            <p class="user-info-top-other">
               {{ dateCard }} {{ action ? actionLabels[action] : '' }}
             </p>
           </div>
@@ -250,15 +250,20 @@ export default {
           line-height: 22px;
           margin: 0;
           margin-right: 10px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
         }
-        p {
+        &-other {
           font-size: 14px;
           color: #B2B2B2;
           line-height: 20px;
           margin: 0;
+          white-space: nowrap;
         }
       }
-      p {
+      .introduction {
         font-size: 14px;
         color: #B2B2B2;
         line-height: 20px;
@@ -320,8 +325,11 @@ export default {
           h4 {
             font-size: 14px;
           }
+          &-other {
+            font-size: 12px;
+          }
         }
-        p {
+        .introduction {
           font-size: 12px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
