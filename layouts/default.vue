@@ -131,15 +131,15 @@ export default {
 <style lang="less" scoped>
 .app .backtop {
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background: @purpleDark;
   cursor: pointer;
   z-index: 99;
-  font-size: 18px;
+  font-size: 14px;
   position: fixed;
   right: 40px;
-  bottom: 110px;
+  bottom: 90px;
   color: #fff;
   display: flex;
   align-items: center;

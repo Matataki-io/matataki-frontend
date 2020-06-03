@@ -67,8 +67,8 @@ export default {
 .feedback {
   border-radius: 50%;
   position: fixed;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   color: #fff;
   background: @purpleDark;
   cursor: pointer;
@@ -86,7 +86,7 @@ export default {
     opacity: 0.9;
   }
   .icon-feedback {
-    font-size: 30px;
+    font-size: 22px;
     color: #fff;
   }
 }

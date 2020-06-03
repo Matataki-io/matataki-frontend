@@ -5,14 +5,8 @@
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
-        <div
-          v-if="cover"
-          class="TitleImage"
-        >
-          <img
-            v-lazy="cover"
-            alt="cover"
-          >
+        <div v-if="cover" class="TitleImage">
+          <img v-lazy="cover" alt="cover">
         </div>
         <article class="Post-Header">
           <header>
