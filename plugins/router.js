@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { getCookie } from '@/utils/cookie'
+// import wechatShare from './wechat_share'
 
 export default ({ app }) => {
   app.router.beforeEach((to, from, next) => {
@@ -17,6 +18,9 @@ export default ({ app }) => {
     else next()
   })
   app.router.afterEach((to) => {
+    // Vue.nextTick(() => {
+    //   wechatShare({})
+    // })
     const autoAlertLoginPage = [] // 进入页面没有登陆则弹出信息框
     // 需要登陆的页面没有登陆, 弹出登陆框
     if (autoAlertLoginPage.includes(to.name) && !getCookie('ACCESS_TOKEN')) {

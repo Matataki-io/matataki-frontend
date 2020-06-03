@@ -19,7 +19,7 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
     "@clampy-js/vue-clampy": "^1.0.6",
-    "@matataki/editor": "1.2.2",
+    "@matataki/editor": "1.2.4",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@sentry/browser": "5.9.1",
@@ -55,6 +55,7 @@
     "scatterjs-plugin-eosjs": "^1.5.1",
     "store": "2.0.12",
     "vant": "2.8.2",
+    "vconsole": "3.3.4",
     "vue-clipboard2": "^0.3.0",
     "vue-content-loader": "^0.2.2",
     "vue-html2canvas": "0.0.4",
@@ -63,6 +64,7 @@
     "vue-scroll-reveal": "^1.0.11",
     "vue-upload-component": "^2.8.20",
     "web3": "^1.2.2",
+    "weixin-js-sdk": "1.6.0",
     "xss": "^1.0.6"
   },
   "devDependencies": {
