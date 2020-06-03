@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <router-link class="container" :to="{ name: 'p-id', params: { id: $route.params.id }, query: { invite: $route.query.invite, referral: $route.query.referral } }" target="_blank">
     <div class="widget">
       <img class="logo" src="@/assets/img/widget/share_logo.png" alt="logo">
       <h1 class="jumpPage">
@@ -17,7 +17,7 @@
         <span><img src="@/assets/img/widget/ups.svg" alt="ups">{{ articleData.likes || 0 }}</span>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -67,6 +67,7 @@ export default {
 .container {
   height: 176px; 
   /* iframe 有边框不会出现滚动条 */
+  display: block;
 }
 
 .widget {
@@ -170,53 +171,6 @@ export default {
 }
 
 
-.jumpPage {
-  cursor: pointer;
-}
-
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-}
-.spinner {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.spinner > div {
-  width: 6px;
-  height: 100%;
-  background-color: #4facfe;
-  display: inline-block;
-  /* animation: scaleAnimation 0 timing-function delay iteration-count direction fill-mode; */
-  animation: scaleAnimation 1.2s infinite ease-in-out;
-}
-
-.spinner .spinner-rect2 {
-  animation-delay: -1.1s;
-}
-.spinner .spinner-rect3 {
-  animation-delay: -1s;
-}
-.spinner .spinner-rect4 {
-  animation-delay: -0.9s;
-}
-.spinner .spinner-rect5 {
-  animation-delay: -0.8s;
-}
-
-@keyframes scaleAnimation {
-  0%, 100% {
-    transform: scaleY(0.4);
-  }
-  50% {
-    transform: scaleY(1);
-  }
-}
 
 @media screen and (max-width: 600px) {
 .widget-content .cover {
