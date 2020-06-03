@@ -16,7 +16,7 @@
         </div>
         <article class="Post-Header">
           <header>
-            <img src="/img/matatakiselected@2x.png" class="matataki-selected"  v-if="isRecommend" />
+            <img src="@/assets/img/matatakiselected@2x.png" class="matataki-selected"  v-if="isRecommend" />
             <!-- 标题 -->
             <h1 class="Post-Title">
               {{ article.title }}
