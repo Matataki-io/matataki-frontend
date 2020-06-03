@@ -74,7 +74,7 @@ export default {
     './assets/css/index.less'
   ],
   router: {
-    // middleware: 'lang'
+    // middleware: ''
   },
   /*
   ** Plugins to load before mounting the App
