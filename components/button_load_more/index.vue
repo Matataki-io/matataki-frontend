@@ -157,4 +157,14 @@ export default {
     text-decoration: underline;
   }
 }
+
+@media screen and (max-width: 540px) {
+  .load-more.btn {
+    font-size: 14px;
+    width: 140px;
+    height: 40px;
+    border-radius: 3px;
+    font-weight: 400;
+  }
+}
 </style>
