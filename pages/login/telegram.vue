@@ -31,6 +31,7 @@ export default {
   },
   computed: {
     domainEnv() {
+      if (!process.client) { return null }
       switch(window.location.hostname) {
         case 'www.matataki.io': return 'desktop'
         case 'matataki.io': return 'mobile'
