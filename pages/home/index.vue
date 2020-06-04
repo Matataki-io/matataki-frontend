@@ -299,6 +299,7 @@ import store from '@/utils/store.js'
 import throttle from 'lodash/throttle'
 
 export default {
+  layout: 'home',
   data() {
     return {
       resizeEvent: null,
