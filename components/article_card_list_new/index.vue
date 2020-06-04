@@ -242,7 +242,7 @@ export default {
   border-radius: @br10;
   margin: 20px 0;
   box-sizing: border-box;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   // &:nth-child(1) {
   //   margin-top: 0;
   // }
