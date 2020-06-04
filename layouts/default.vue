@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <g-header />
+    <g-header v-if="!hideHeader" />
     <nuxt />
     <!-- <lazy-component> -->
     <g-footer v-if="hideFooter" />
@@ -79,6 +79,9 @@ export default {
     },
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
+    },
+    hideHeader() {
+      return this.$route.name === 'home'
     }
   },
   watch: {
