@@ -165,5 +165,13 @@ export default {
 .app-container {
   padding-top: 60px;
   min-height: calc(100% - 240px);
+  // footer 高度是不固定的 后面考虑调整
+}
+
+@media screen and (max-width: 540px) {
+  .app-container {
+    padding-top: 50px;
+    min-height: calc(100% - 230px);
+  }
 }
 </style>
