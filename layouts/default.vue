@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <g-header />
     <nuxt />
     <!-- <lazy-component> -->
     <g-footer v-if="hideFooter" />

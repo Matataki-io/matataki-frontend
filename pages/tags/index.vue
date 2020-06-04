@@ -1,8 +1,5 @@
 <template>
   <div class="tags">
-    <!-- header -->
-    <g-header />
-
     <div class="tags-main">
       <!-- banner -->
       <div class="tags-banner">

@@ -1,6 +1,5 @@
 <template>
   <div class="notification">
-    <g-header />
     <el-row class="notification-container">
       <el-col v-show="!showDetails" :span="16">
         <div class="fl notification-topbar">

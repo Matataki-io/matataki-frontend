@@ -1,6 +1,5 @@
 <template>
   <div class="ring">
-    <g-header />
     <div class="ring-logo">
       <router-link :to="{name: 'token-id', params: { id: $route.params.id }}">
         <img

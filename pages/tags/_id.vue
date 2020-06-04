@@ -1,6 +1,5 @@
 <template>
   <div class="tag">
-    <g-header />
     <div class="row">
       <div class="col-6">
         <section class="head">

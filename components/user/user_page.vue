@@ -1,6 +1,5 @@
 <template>
   <div class="user-page">
-    <g-header />
     <div
       v-if="userInfo.banner"
       class="banner user-page-banner"

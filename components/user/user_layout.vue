@@ -1,6 +1,5 @@
 <template>
   <div class="user user-layout">
-    <g-header />
     <el-row class="user-container">
       <el-col :span="4">
         <div class="account-nav position-sticky top70">

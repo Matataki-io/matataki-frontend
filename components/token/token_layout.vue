@@ -1,7 +1,5 @@
 <template>
   <div class="token">
-    <g-header />
-
     <div class="container-padding">
       <div class="token-detail">
         <div class="fl">

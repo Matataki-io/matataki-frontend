@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <g-header />
     <swipe :card="recommendList" />
     <!-- 首页内容 轮播和推荐 -->
     <!-- <banner-matataki class="home-banner" /> -->

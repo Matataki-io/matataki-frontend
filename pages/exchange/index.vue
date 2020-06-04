@@ -1,6 +1,5 @@
 <template>
   <div class="main exchange">
-    <g-header />
     <div class="outer-container">
       <img
         class="ma-banner"

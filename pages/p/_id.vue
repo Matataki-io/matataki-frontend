@@ -1,7 +1,5 @@
 <template>
   <div class="main">
-    <g-header />
-
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
