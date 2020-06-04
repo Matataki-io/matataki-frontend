@@ -3,13 +3,15 @@
     v-loading="loading"
     class="tg-container"
   >
-    <TelegramLogin
-      :telegram-login="TELEGRAM_BOT_NAME"
-      mode="callback"
-      request-access="write"
-      radius="6"
-      @callback="login"
-    />
+    <no-ssr>
+      <TelegramLogin
+        :telegram-login="TELEGRAM_BOT_NAME"
+        mode="callback"
+        request-access="write"
+        radius="6"
+        @callback="login"
+      />
+    </no-ssr>
     <p class="tips">
       使用该功能需要“科学上网”
     </p>
@@ -31,7 +33,7 @@ export default {
   },
   computed: {
     domainEnv() {
-      if (!process.client) { return null }
+      // if (!process.browser) { return 'desktop' }
       switch(window.location.hostname) {
         case 'www.matataki.io': return 'desktop'
         case 'matataki.io': return 'mobile'
