@@ -76,6 +76,23 @@ export default {
   router: {
     // middleware: 'lang'
   },
+  render: {
+    csp: {
+      reportOnly: true,
+      hashAlgorithm: 'sha256',
+      policies: {
+        'default-src': ["'self'"],
+        'img-src': ['https:', '*.google-analytics.com'],
+        'worker-src': ["'self'", `blob:`, 'telegram.org'],
+        'style-src': ["'self'", "'unsafe-inline'", 'telegram.org'],
+        'script-src': ["'self'", "'unsafe-inline'", 'telegram.org', '*.google-analytics.com', 'hm.baidu.com', "'unsafe-eval'"],
+        'connect-src': ['sentry.io', '*.google-analytics.com', 'hm.baidu.com'],
+        'form-action': ["'self'"],
+        'frame-ancestors': ["'none'"],
+        'object-src': ["'none'"],
+      }
+    }
+  },
   /*
   ** Plugins to load before mounting the App
   */
