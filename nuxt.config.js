@@ -78,6 +78,7 @@ export default {
   },
   render: {
     csp: {
+      addMeta: true,
       reportOnly: true,
       hashAlgorithm: 'sha256',
       policies: {
