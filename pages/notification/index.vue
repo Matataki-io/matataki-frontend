@@ -87,62 +87,64 @@
         </div>
       </el-col>
       <el-col :span="8" class="filter-notify" :class="showDetails && 'details-hide'">
-        <!-- 消息筛选 -->
-        <div class="option">
-          <h3 class="option-title">
-            消息筛选
-          </h3>
-          <div class="option-card">
-            <!-- <el-checkbox
-              v-model="checkAll"
-              :indeterminate="isIndeterminate"
-              :disabled="showDetails"
-              class="checkbox-all"
-              @change="handleCheckAllChange"
-            >
-              全选
-            </el-checkbox> -->
-            <el-checkbox-group
-              v-model="checkedCities"
-              class="fl checkbox-group"
-              @change="handleCheckedCitiesChange"
-            >
-              <el-checkbox
-                v-for="action in actionTypes"
-                :key="action.key"
+        <div class="filter-notify-card">
+          <!-- 消息筛选 -->
+          <div class="option">
+            <h3 class="option-title">
+              消息筛选
+            </h3>
+            <div class="option-card">
+              <!-- <el-checkbox
+                v-model="checkAll"
+                :indeterminate="isIndeterminate"
                 :disabled="showDetails"
-                class="checkbox"
-                :label="action.key"
+                class="checkbox-all"
+                @change="handleCheckAllChange"
               >
-                {{ action.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </div>
-        </div>
-        <!-- 查看模式 -->
-        <div class="option">
-          <h3 class="option-title">
-            查看模式
-          </h3>
-          <div class="option-card">
-            <el-radio v-model="viewMode" :disabled="showDetails" label="all">
-              查看全部
-            </el-radio>
-            <el-radio v-model="viewMode" :disabled="showDetails" label="unread">
-              只看未读
-            </el-radio>
-            <div class="button-hide">
-              <el-divider />
-              <div class="option-card-button">
-                <el-button
-                  size="medium"
+                全选
+              </el-checkbox> -->
+              <el-checkbox-group
+                v-model="checkedCities"
+                class="fl checkbox-group"
+                @change="handleCheckedCitiesChange"
+              >
+                <el-checkbox
+                  v-for="action in actionTypes"
+                  :key="action.key"
                   :disabled="showDetails"
-                  plain
-                  @click="notifyMarkReadAll"
+                  class="checkbox"
+                  :label="action.key"
                 >
-                  <svg-icon icon-class="read-all" />
-                  全部标记为已读
-                </el-button>
+                  {{ action.label }}
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </div>
+          <!-- 查看模式 -->
+          <div class="option no-bottom">
+            <h3 class="option-title">
+              查看模式
+            </h3>
+            <div class="option-card">
+              <el-radio v-model="viewMode" :disabled="showDetails" label="all">
+                查看全部
+              </el-radio>
+              <el-radio v-model="viewMode" :disabled="showDetails" label="unread">
+                只看未读
+              </el-radio>
+              <div class="button-hide">
+                <el-divider />
+                <div class="option-card-button">
+                  <el-button
+                    size="medium"
+                    :disabled="showDetails"
+                    plain
+                    @click="notifyMarkReadAll"
+                  >
+                    <svg-icon icon-class="read-all" />
+                    全部标记为已读
+                  </el-button>
+                </div>
               </div>
             </div>
           </div>
@@ -375,13 +377,19 @@ export default {
 @media screen and (max-width: 768px) {
   .filter-notify {
     position: static;
+    &-card {
+      background: rgba(255, 255, 255, 1);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+    }
   }
   .notification-container /deep/ {
     display: flex;
     flex-direction: column-reverse;
     .el-col-8 {
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
 
       display:block;
       &.details-hide {

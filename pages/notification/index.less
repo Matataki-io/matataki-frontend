@@ -104,6 +104,9 @@
 }
 
 @media screen and (max-width: 768px) {
+  .notification-container {
+    margin: 10px auto;
+  }
   .notification-topbar {
     justify-content: space-between;
     &-title {
@@ -124,9 +127,13 @@
     }
   }
   .option {
+    &.no-bottom {
+      margin-bottom: 0;
+    }
     &-title {
-      font-size: 16px;
+      font-size: 14px;
       line-height: 20px;
+      margin-bottom: 10px;
     }
     &-card {
       background: none;
