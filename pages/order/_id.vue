@@ -432,9 +432,6 @@ export default {
 }
 </style>
 <style scoped lang="less">
-.main {
-  .minHeight();
-}
 .outer-container {
   background: white;
   padding: 20px;

@@ -27,9 +27,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user {
-  .minHeight();
-}
 .user-container {
   display: flex;
   justify-content: space-between;

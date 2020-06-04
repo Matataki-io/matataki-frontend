@@ -177,7 +177,6 @@ export default {
   width: 100%;
 }
 .main {
-  .minHeight();
   background: @bg-color;
 }
 @width: 650px;

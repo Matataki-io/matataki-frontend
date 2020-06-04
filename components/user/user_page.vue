@@ -237,9 +237,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user-page {
-  .minHeight();
-}
 .banner {
   height: 290px;
   background-color: #ffffff;

@@ -1,16 +1,18 @@
 @width: 1160px;
 
 .notification {
-  .minHeight();
   margin: 0 auto;
+
   &-topbar {
     margin-bottom: 20px;
+
     &-title {
       font-size: 20px;
       color: black;
       line-height: 28px;
       margin: 0;
     }
+
     &-button {
       overflow: hidden;
       width: 0;
@@ -36,27 +38,33 @@
 
 .option {
   margin-bottom: 20px;
+
   &-title {
     font-size: 20px;
     color: black;
     line-height: 28px;
     margin: 0 0 20px 0;
   }
+
   &-card {
     background: rgba(255, 255, 255, 1);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+
     &-button {
       display: flex;
       justify-content: center;
     }
+
     .checkbox-group {
       flex-wrap: wrap;
+
       .checkbox {
         margin: 0 12px 10px 12px;
       }
     }
+
     .checkbox-all {
       margin: 0 12px 10px 12px;
     }
@@ -67,6 +75,7 @@
   &-topbar {
     margin-bottom: 20px;
     align-items: center;
+
     &-back {
       width: 22px;
       height: 22px;
@@ -75,16 +84,19 @@
       align-items: center;
       margin-right: 10px;
       cursor: pointer;
+
       &:hover {
         background-color: white;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         border-radius: 8px;
       }
+
       i {
         font-weight: 600;
         font-size: 20px;
       }
     }
+
     h3 {
       margin: 0;
       font-size: 20px;
@@ -106,44 +118,54 @@
 @media screen and (max-width: 768px) {
   .notification-topbar {
     justify-content: space-between;
+
     &-title {
       font-size: 16px;
       margin: 0;
     }
+
     &-button {
       overflow: auto;
       width: auto;
       height: auto;
     }
   }
+
   .detail-topbar {
     align-items: flex-end;
+
     h3 {
       font-size: 16px;
       line-height: 20px;
     }
   }
+
   .option {
     &-title {
       font-size: 16px;
       line-height: 20px;
     }
+
     &-card {
       background: none;
       border-radius: 0;
       padding: 0;
       box-shadow: none;
+
       .button-hide {
         overflow: hidden;
         width: 0;
         height: 0;
       }
+
       .checkbox-group {
         flex-wrap: wrap;
+
         .checkbox {
           margin: 0 12px 10px 0;
         }
       }
+
       .checkbox-all {
         margin: 0 12px 10px 0;
       }

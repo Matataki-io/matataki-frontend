@@ -198,9 +198,6 @@ export default {
 
 
 <style lang="less" scoped>
-.timeline {
-  .minHeight();
-}
 
 ._mv() {
   max-width: 1200px;
