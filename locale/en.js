@@ -378,6 +378,7 @@ export default {
         transfer: 'transfer',
         titlePlaceholder: 'Please enter your article title...',
         contentPlaceholder: '在此输入内容\n支持Markdown、HTML标签、独创的内容加密语法（点击上方的小锁）\n\n现在就开始编辑吧！',
+        contentPlaceholderMobile: '在此输入内容\n支持Markdown、HTML标签、独创的内容加密语法（点击下方的小锁）\n\n现在就开始编辑吧！',
         commentTitle: 'Review price',
         commentContent: 'Users need to pay you the corresponding points to comment(1-99999)',
         point: 'point',
