@@ -1,6 +1,5 @@
 <template>
   <div class="commodity">
-    <g-header />
     <banner-matataki class="shop-banner" />
     <!-- 首页内容 轮播和推荐 -->
     <div class="recommend mw">

@@ -1,6 +1,5 @@
 <template>
   <div class="preview">
-    <g-header />
     <div ref="container" class="container">
       <!-- 文章封面 -->
       <div v-if="cover" class="TitleImage">

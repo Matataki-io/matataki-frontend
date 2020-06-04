@@ -1,7 +1,5 @@
 <template>
   <div class="timeline">
-    <g-header />
-    <!-- -- -->
     <!-- banner -->
     <div v-if="isLogined && Number(userInfo.follows) > 0" class="banner">
       <section class="banner-main">

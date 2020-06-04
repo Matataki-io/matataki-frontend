@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <g-header />
     <div
       v-loading="loading"
       class="order outer-container"
