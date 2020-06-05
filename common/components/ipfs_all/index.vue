@@ -11,7 +11,7 @@
       placement="top"
       trigger="hover"
       class="components-ipfs_all"
-      width="370"
+      popper-class="ipfs-popover"
     >
       <div class="components-ipfs_all">
         <p class="ipfs_all__title">
@@ -190,6 +190,7 @@ export default {
   }
 }
 
+
 @media screen and (max-width: 992px) {
   .history-dialog {
     /deep/ .el-dialog {
@@ -202,6 +203,19 @@ export default {
     /deep/ .el-dialog {
       width: 90%;
     }
+  }
+}
+
+
+</style>
+
+<style lang="less">
+.ipfs-popover {
+  width: 370px;
+}
+@media screen and (max-width: 410px) {
+  .ipfs-popover {
+    width: 90%;
   }
 }
 </style>

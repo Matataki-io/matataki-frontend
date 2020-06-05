@@ -1,24 +1,26 @@
-
 .widget-help {
   padding: 0 20px;
+
   &-title {
-    font-size:16px;
-    font-weight:600;
-    color:rgba(0,0,0,1);
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
     text-align: center;
     padding: 0;
     margin: 0 0 20px 0;
   }
+
   &-content {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(45,45,45,1);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(45, 45, 45, 1);
     text-align: justify;
     line-height: 1.5;
     padding: 0;
     margin: 0 0 20px 0;
   }
-  &::after{
+
+  &::after {
     display: block;
     content: '';
     clear: both;
@@ -30,8 +32,8 @@
 
 .transfer-help {
   display: block;
-  font-size:12px;
-  font-weight:500;
+  font-size: 12px;
+  font-weight: 500;
   color: @purpleDark;
   cursor: pointer;
   padding: 0;
@@ -50,24 +52,28 @@
   border-radius: 0 0 8px 8px;
   z-index: 1;
   padding: 4px 0 0 0;
+
   &__avatar {
     margin-right: 10px;
     flex: 0 0 30px;
   }
-  & > div {
+
+  &>div {
     width: 100%;
     margin: 0;
     padding: 5px 20px;
     display: flex;
     align-items: center;
     box-sizing: border-box;
+
     &:hover {
       background: #f1f1f1;
     }
+
     span {
-      font-size:14px;
-      font-weight:400;
-      color:rgba(178,178,178,1);
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(178, 178, 178, 1);
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -80,20 +86,23 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
+
   &-avatar {
     width: 40px;
     height: 40px;
     margin-right: 10px;
     flex: 0 0 40px;
   }
+
   span {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
+
   .gift-ful {
     cursor: pointer;
     position: absolute;
@@ -111,6 +120,7 @@
 .form-button {
   display: flex;
   justify-content: flex-end;
+
   button {
     padding-left: 40px;
     padding-right: 40px;
@@ -122,6 +132,7 @@
 .result-leave-active {
   transition: opacity .2s;
 }
+
 .result-enter,
 .result-leave-to {
   opacity: 0
@@ -131,4 +142,14 @@
 .history-user__tag {
   cursor: pointer;
   margin: 0 10px 0 0;
+}
+
+.transfer-dialog /deep/ .el-dialog {
+  width: 600px !important;
+}
+
+@media screen and (max-width: 620px) {
+  .transfer-dialog /deep/ .el-dialog {
+    width: 90% !important;
+  }
 }
