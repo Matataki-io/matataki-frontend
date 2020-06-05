@@ -4,6 +4,7 @@
     :show-close="false"
     :close-on-click-modal="false"
     custom-class="import br10 import-article"
+    title="导入文章"
     @close="$emit('close')"
   >
     <el-input
@@ -147,12 +148,7 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-.import .el-dialog__header {
-  padding: 0;
-}
-
+<style lang="less" scoped>
 .import {
   .des {
     font-size: 14px;
@@ -168,15 +164,16 @@ export default {
   }
 }
 
-</style>
-<style lang="less" scoped>
+/deep/ .import .el-dialog__header {
+  text-align: center;
+}
 /deep/ .import-article {
   width: 460px;
 }
 
 @media screen and (max-width: 480px) {
   /deep/ .import-article {
-    width: 360px;
+    width: 90%;
   }
 }
 </style>
