@@ -2,7 +2,6 @@
   <m-dialog
     v-model="showModal"
     :title="dialogTitle"
-    width="600px"
     class="transfer-dialog"
   >
     <el-form
