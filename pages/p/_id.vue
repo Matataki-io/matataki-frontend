@@ -1403,6 +1403,7 @@ export default {
   }
 }
 .matataki-selected {
-  width: 180px;
+  width: 56px;
+  margin-top: 20px;
 }
 </style>
