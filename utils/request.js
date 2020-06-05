@@ -4,6 +4,8 @@
 import axios from "axios";
 import { Loading, Message } from 'element-ui';
 import utils from './utils'
+import { removeCookie, clearAllCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -56,12 +58,37 @@ _axios.interceptors.response.use(
       console.log(error.message)
 
       if (error.message.includes('status code 401')) {
-        Message.closeAll()
-        Message({
-          message: '登录状态异常,请重新登录',
-          type: 'error'
-        })
-        if (process.browser && window && window.$nuxt) window.$nuxt.$store.commit('setLoginModal', true)
+        console.log('登录状态异常,请重新登录')
+        // Message.closeAll()
+        // Message({
+        //   message: '登录状态异常,请重新登录',
+        //   type: 'error'
+        // })
+
+        if (process.browser && window && window.$nuxt) {
+
+          // window.$nuxt.$store.commit('setLoginModal', true)
+          
+          try {
+            // 重置all store
+            window.$nuxt.$store.dispatch('resetAllStore')
+            .then(() => {
+              clearAllCookie()
+              // 防止没有清除干净
+              removeCookie('ACCESS_TOKEN')
+              removeCookie('idProvider')
+              removeCookie('referral')
+              store.clearAll()
+              sessionStorage.clear()
+            }).catch(err => {
+              console.log(err)
+              removeCookie('ACCESS_TOKEN')
+            })
+          } catch(e) {
+            console.log(e)
+            removeCookie('ACCESS_TOKEN')
+          }
+        }
       }
 
       // 超时处理
