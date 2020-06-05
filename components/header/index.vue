@@ -884,7 +884,7 @@ export default {
     }
     .nav {
       font-size: 16px;
-      font-weight: 400;
+      font-weight: 500;
     }
   }
   .home-head-notlogin {
