@@ -1389,20 +1389,3 @@ export default {
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
-
-<style lang="less" scoped>
-// 小于600
-@media screen and (max-width: 600px){
-  .article-header {
-    flex-direction: column;
-    align-items: flex-end;
-  }
-
-  .Post-Title {
-    font-size: 22px;
-  }
-}
-.matataki-selected {
-  width: 180px;
-}
-</style>

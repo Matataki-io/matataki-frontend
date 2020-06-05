@@ -168,6 +168,14 @@ export default {
   // footer 高度是不固定的 后面考虑调整
 }
 
+@media screen and (max-width: 768px) {
+  .app {
+    .backtop {
+      right: 10px;
+    }
+  }
+}
+
 @media screen and (max-width: 540px) {
   .app-container {
     padding-top: 50px;
