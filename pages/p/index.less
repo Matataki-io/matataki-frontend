@@ -1,7 +1,6 @@
 @width: 850px;
 
 .main {
-  .minHeight();
   max-width: @width;
   width: 100%;
   margin: 0 auto;
@@ -21,7 +20,9 @@
   height: 60px;
   width: 60px;
   margin-left: 10px;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   i {
     font-size: 1.5rem;
@@ -71,6 +72,7 @@
   background: #fff;
   padding: 20px;
   padding-bottom: 0px;
+  max-height: 440px;
 
   img {
     width: 100%;
@@ -207,7 +209,9 @@
   text-align: center;
   cursor: pointer;
   // z-index: 10;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
 
   span {
@@ -220,7 +224,9 @@
     border-radius: 50%;
     margin-bottom: 10px;
     background: #f1f1f1;
-    .flexCenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .icon {
       width: auto;

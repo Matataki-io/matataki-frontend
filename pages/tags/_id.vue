@@ -104,9 +104,6 @@ export default {
 
 
 <style lang="less" scoped>
-.tag {
-  .minHeight();
-}
 
 .row {
   max-width: 1200px;

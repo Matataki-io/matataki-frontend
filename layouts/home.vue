@@ -1,12 +1,8 @@
 <template>
   <div class="app">
-    <g-header v-if="!hideHeader" />
-    <nuxt class="app-container" />
-    <!-- <lazy-component> -->
-    <g-footer v-if="hideFooter" />
-    <!-- </lazy-component> -->
+    <nuxt />
+    <g-footer />
     <back-to-top
-      v-if="!hideBackTop"
       :visibility-height="300"
       :back-position="50"
       class="backtop"
@@ -17,15 +13,8 @@
         icon-class="backtop"
       />
     </back-to-top>
-    <feedback
-      v-if="!hideFeedback"
-      :show-position="100"
-    />
+    <feedback :show-position="100" />
     <AuthModal v-model="loginModalShow" />
-    <articleImport
-      v-model="importModalShow"
-      @importArticle="importArticle"
-    />
   </div>
 </template>
 
@@ -33,7 +22,6 @@
 import { mapGetters } from 'vuex'
 import AuthModal from '@/components/Auth/index.vue'
 import BackToTop from '@/components/BackToTop'
-import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
 export default {
@@ -42,7 +30,6 @@ export default {
     gFooter: footer,
     AuthModal,
     BackToTop,
-    articleImport,
     feedback
   },
   data() {
@@ -62,27 +49,6 @@ export default {
         this.$store.commit('setLoginModal', v)
       }
     },
-    importModalShow: {
-      get() {
-        return this.$store.state.importArticle.importModalShow
-      },
-      set(v) {
-        this.$store.commit('importArticle/setImportModal', v)
-      }
-    },
-    hideBackTop() {
-      return this.$route.name === 'publish-type-id'
-    },
-    hideFooter() {
-      const hide = ['publish-type-id', 'login-github', 'index']
-      return !hide.includes(this.$route.name)
-    },
-    hideFeedback() {
-      return this.$route.name === 'publish-type-id'
-    },
-    hideHeader() {
-      return this.$route.name === 'home'
-    }
   },
   watch: {
     isLogined(val) {
@@ -103,8 +69,6 @@ export default {
     }
   },
   methods: {
-    importArticle() {
-    },
     removeOverflowHide() {
       // 这段代码也是无奈之举
       // 这里的代码, 如果没有找到为什么会设置 overflow hideen, 就删除了的话, 就等着加班吧 !!!
@@ -159,19 +123,6 @@ export default {
     &-icon {
       color: #fff;
     }
-  }
-}
-
-.app-container {
-  padding-top: 60px;
-  min-height: calc(100% - 240px);
-  // footer 高度是不固定的 后面考虑调整
-}
-
-@media screen and (max-width: 540px) {
-  .app-container {
-    padding-top: 50px;
-    min-height: calc(100% - 230px);
   }
 }
 </style>

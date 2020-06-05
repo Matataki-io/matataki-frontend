@@ -61,12 +61,16 @@ export default {
   box-sizing: border-box;
   font-size: 16px;
   width: 400px;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .info1 {
     margin-right: 40px;
   }
   .info2, .info1 {
-    .flexCenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
     img {
       margin: 0 5px 0 10px;
     }

@@ -198,9 +198,6 @@ export default {
 
 
 <style lang="less" scoped>
-.timeline {
-  .minHeight();
-}
 
 ._mv() {
   max-width: 1200px;
@@ -389,6 +386,7 @@ export default {
     border-radius: @br10;
     padding: 20px;
     margin-top: 20px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   }
 }
 

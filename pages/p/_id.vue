@@ -8,7 +8,7 @@
         </div>
         <article class="Post-Header">
           <header>
-            <img src="@/assets/img/matatakiselected@2x.png" class="matataki-selected"  v-if="isRecommend" />
+            <img v-if="isRecommend" src="@/assets/img/matatakiselected@2x.png" class="matataki-selected">
             <!-- 标题 -->
             <h1 class="Post-Title">
               {{ article.title }}
@@ -326,7 +326,7 @@
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
-import { xssFilter, xssImageProcess } from '@/utils/xss'
+import { xssFilter, xssImageProcess, filterOutHtmlTags } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -698,17 +698,25 @@ export default {
       }
     }
   },
+  created() {
+    if (process.browser) {
+      this.setWxShare()
+    }
+  },
   mounted() {
-    // read语法的解锁方法，需要使用onclick触发
-    window.unlock = (need, hold) => this.unlock(need, hold)
+    if (process.browser) {
+      // read语法的解锁方法，需要使用onclick触发
+      window.unlock = (need, hold) => this.unlock(need, hold)
 
-    this.setAvatar()
-    this.addReadAmount()
-    this.getCurrentProfile()
-    this.getTags()
-    this.getArticleIpfs()
+      this.setAvatar()
+      this.addReadAmount()
+      this.getCurrentProfile()
+      this.getTags()
+      this.getArticleIpfs()
 
-    this.setAllHideContentStyle()
+      this.setAllHideContentStyle()
+    }
+
   },
   destroyed() {
     clearInterval(this.timer)
@@ -1336,7 +1344,45 @@ export default {
       }).catch(e => {
         console.log(e)
       })
-    }
+    },
+    // 设置微信分享
+    setWxShare() {
+      let desc = ''
+      try {
+        // 解析html
+        const markdownIt = this.$mavonEditor.markdownIt
+        let md = markdownIt.render(this.post.content)
+        // 过滤所有的html标签
+        desc = this.$utils.compose(filterOutHtmlTags)(md)
+      } catch (error) {
+        console.log(error)
+        // 提取内容 删除多余的标签
+        const regRemoveContent = (str) => {
+          // 去除空格
+          const strTrim = str => str.replace(/\s+/g, '')
+          // 去除标签
+          const regRemoveTag = str => str.replace(/<[^>]+>/gi, '')
+          // 去除markdown img
+          const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
+          // 去除 markdown 标签
+          // eslint-disable-next-line no-useless-escape
+          const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
+
+          const regRemoveTagResult = regRemoveTag(str)
+          const regRemoveMarkdownImgResult = regRemoveMarkdownImg(regRemoveTagResult)
+          const regRemoveMarkdownTagResult = regRemoveMarkdownTag(regRemoveMarkdownImgResult)
+          return strTrim(regRemoveMarkdownTagResult)
+        }
+        // 出错就用原来的正则过滤
+        desc = regRemoveContent(this.post.content)
+      }
+
+      this.$wechatShare({
+        title: this.article.title,
+        desc: desc,
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
+      })
+    },
   }
 
 }
