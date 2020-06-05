@@ -169,6 +169,9 @@ export default {
 }
 /deep/ .import-article {
   width: 460px;
+  .el-dialog__body {
+    padding-top: 10px !important;
+  }
 }
 
 @media screen and (max-width: 480px) {
