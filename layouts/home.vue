@@ -125,4 +125,11 @@ export default {
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .app {
+    .backtop {
+      right: 10px;
+    }
+  }
+}
 </style>

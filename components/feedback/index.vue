@@ -90,4 +90,10 @@ export default {
     color: #fff;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .feedback {
+    right: 10px;
+  }
+}
 </style>

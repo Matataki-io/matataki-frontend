@@ -5,9 +5,8 @@
     :show-close="false"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
-    width="600px"
     center
-    custom-class="br10"
+    custom-class="br10 statement-dialog"
   >
     <div class="text-content">
       <p>
@@ -82,6 +81,16 @@ export default {
   p {
     font-size: 14px;
     line-height: 1.5;
+  }
+}
+
+/deep/ .statement-dialog {
+  width: 600px;
+}
+
+@media screen and (max-width: 620px) {
+  /deep/ .statement-dialog {
+    width: 90%;
   }
 }
 </style>
