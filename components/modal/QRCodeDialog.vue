@@ -86,6 +86,11 @@ import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   name: 'QRCodeDialog',
+  head: {
+    script: [
+      { src: '/bowl.min.js' }
+    ]
+  },
   props: {
     shareInfo: {
       type: Object,
@@ -125,6 +130,11 @@ export default {
     // 离开删除插入的a dom
     let downloadImg = document.querySelector('#downloadImg')
     if (downloadImg) downloadImg.remove()
+  },
+  created() {
+    if (process.browser) {
+      this.injectScript()
+    }
   },
   methods: {
     filterStr(str) {
@@ -171,6 +181,19 @@ export default {
         loading.close()
         this.$message(this.$t('p.createFail'))
       })
+    },
+    injectScript() {
+      try {
+        var bowl = new Bowl()
+        bowl.add([
+          { url: '/html2canvas.min.js', key: 'html2canvas' }
+        ])
+        bowl.inject().then(() => {
+          console.log('success')
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

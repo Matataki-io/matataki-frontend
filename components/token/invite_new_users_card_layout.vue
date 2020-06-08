@@ -79,6 +79,11 @@ import { mapGetters } from 'vuex'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
+  head: {
+    script: [
+      { src: '/bowl.min.js' }
+    ]
+  },
   components: {
     qrcode: VueQrcode
   },
@@ -92,6 +97,11 @@ export default {
     link() {
       if (process.browser && this.currentUserInfo && this.currentUserInfo.id) return `${window.location.origin}?referral=${this.currentUserInfo.id}`
       return ''
+    }
+  },
+  created() {
+    if (process.browser) {
+      this.injectScript()
     }
   },
   methods: {
@@ -133,6 +143,20 @@ export default {
       }).finally(() => {
         loading.close()
       })
+    },
+    injectScript() {
+      try {
+        // eslint-disable-next-line no-undef
+        var bowl = new Bowl()
+        bowl.add([
+          { url: '/html2canvas.min.js', key: 'html2canvas' }
+        ])
+        bowl.inject().then(() => {
+          console.log('success')
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
