@@ -6,7 +6,7 @@
       :comment="itemChild"
       :type="1"
     />
-    <div v-show="!viewMore && count > pageSize" class="view-more">
+    <div v-show="!viewMore && count > 3" class="view-more">
       共<b>{{ count }}</b>条回复, 
       <a class="btn-more" @click="viewMore = true">点击查看</a>
     </div>
