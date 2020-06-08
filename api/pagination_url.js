@@ -7,7 +7,8 @@ export const paginationUrl = {
   homeAmountRankingEOS: 'posts/amountRanking',
   homeAmountRankingONT: 'posts/amountRanking',
   // article comments
-  commentsList: 'comment/comments',
+  // commentsList: 'comment/comments',
+  commentsList: 'comment/getComments',
   // followlist
   followsList: 'follow/follows',
   fansList: 'follow/fans',
