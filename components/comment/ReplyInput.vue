@@ -10,6 +10,7 @@
         v-model="comment"
         :autosize="{ minRows: 3}"
         :placeholder="placeholder"
+        :autofocus="true"
         type="textarea"
         maxlength="500"
         show-word-limit
