@@ -150,10 +150,13 @@ export default {
   &.itop30 {
     margin-top: 30px;
   }
-  .flexCenter();
+  display: flex;
+  align-items: center;
   justify-content: space-around;
   .share-btn {
-    .flexCenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
     cursor: pointer;
     .share-icon {
@@ -164,7 +167,9 @@ export default {
 .wx-share {
   text-align: center;
   margin-top: 60px;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   .qrcode {
     background: #ffffff;
@@ -195,28 +200,28 @@ p {
     width: 50%;
   }
   .weibo {
-    color: #FF5722;
+    color: #ff5722;
   }
   .facebook {
-    color: #3C5999;
+    color: #3c5999;
   }
   .twitter {
-    color: #00ACED;
+    color: #00aced;
   }
   .telegram {
     color: #36aae8;
   }
   .qq {
-    color: #4CAFE9;
+    color: #4cafe9;
   }
   .qzone {
-    color: #FAB619;
+    color: #fab619;
   }
 }
 .code {
   margin-top: 30px;
   .icon {
-    color: #24DB5A;
+    color: #24db5a;
     font-size: 22px;
     margin-left: 4px;
   }

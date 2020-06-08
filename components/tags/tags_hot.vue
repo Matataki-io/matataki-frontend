@@ -27,7 +27,7 @@ export default {
     // 热门标签
     async tagsHotest() {
       await this.$API.tagsHotest({
-        pagesize: 40
+        pagesize: 20
       }).then(res => {
         if (res.code === 0) {
           this.tags = res.data.list

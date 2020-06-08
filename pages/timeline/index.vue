@@ -1,7 +1,5 @@
 <template>
   <div class="timeline">
-    <g-header />
-    <!-- -- -->
     <!-- banner -->
     <div v-if="isLogined && Number(userInfo.follows) > 0" class="banner">
       <section class="banner-main">
@@ -200,9 +198,6 @@ export default {
 
 
 <style lang="less" scoped>
-.timeline {
-  .minHeight();
-}
 
 ._mv() {
   max-width: 1200px;
@@ -391,6 +386,7 @@ export default {
     border-radius: @br10;
     padding: 20px;
     margin-top: 20px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -481,7 +477,7 @@ export default {
   }
 
   .head {
-    display: none;
+    // display: none;
   }
 
   .banner {

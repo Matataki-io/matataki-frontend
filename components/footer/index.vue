@@ -381,10 +381,14 @@ export default {
   }
   .footer-content {
     flex-direction: column;
+    align-items: center;
     .content {
       margin-bottom: 20px;
       .nav {
         justify-content: center;
+        .href {
+          margin: 0 10px;
+        }
         .href:nth-last-of-type(1) {
           margin-right: 0;
         }

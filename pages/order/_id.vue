@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <g-header />
     <div
       v-loading="loading"
       class="order outer-container"
@@ -433,9 +432,6 @@ export default {
 }
 </style>
 <style scoped lang="less">
-.main {
-  .minHeight();
-}
 .outer-container {
   background: white;
   padding: 20px;

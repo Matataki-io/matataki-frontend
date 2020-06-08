@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <g-header />
     <swipe :card="recommendList" />
     <!-- 首页内容 轮播和推荐 -->
     <!-- <banner-matataki class="home-banner" /> -->
@@ -109,7 +108,6 @@ export default {
 // 这里是index commodity的style
 .home {
   min-height: 100%;
-  margin-top: 60px;
 }
 
 .now-title {
@@ -121,10 +119,6 @@ export default {
   &.nav-hide {
     padding-top: 50px;
   }
-}
-
-.home-content {
-  .minHeight();
 }
 
 .recommend-top80 {

@@ -845,15 +845,16 @@
     js-yaml "^3.13.1"
     json5 "^2.1.1"
 
-"@matataki/editor@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@matataki/editor/-/editor-1.0.8.tgz#1413cc1e2aa853e88e769909bf70d86c0357db9d"
-  integrity sha512-C+q6Kd6e0tyHArQ7KVUVmxU8Srn4iTE3civHFkS/CmigDCfdrxTuJwCl9gzhph7Y+Rz+dXJykT/v1QqQV+xfOA==
+"@matataki/editor@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@matataki/editor/-/editor-1.2.5.tgz#9ba60ac0a4c9ff7bbb18c3425dfbbf1dbf6ff9dd"
+  integrity sha512-2w+ioaRQZRvaTPNie27fptxXa2t0cnTn+7Fsb5/4MyUzgyWLOU4VQxfJ8w8qjwjlbRfjYkGoweLEPUGmB4rO3Q==
   dependencies:
     animejs "3.2.0"
     codemirror "5.42.0"
     highlight.js "^9.11.0"
     highlight.js-async-webpack "^1.0.4"
+    vconsole "3.3.4"
     velocity-animate "1.5.2"
     vue-codemirror "4.0.6"
     xiaotian-codemirror "5.53.0"
@@ -6989,11 +6990,6 @@ normalize-wheel@^1.0.1:
   resolved "https://registry.npmjs.org/normalize-wheel/-/normalize-wheel-1.0.1.tgz#aec886affdb045070d856447df62ecf86146ec45"
   integrity sha1-rsiGr/2wRQcNhWRH32Ls+GFG7EU=
 
-normalize.css@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.npmjs.org/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
-  integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
-
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -10368,6 +10364,11 @@ vary@^1, vary@^1.1.2, vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
+vconsole@3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/vconsole/-/vconsole-3.3.4.tgz#a7dacd8887b3d3e902e8d18425cda56c34e77f51"
+  integrity sha512-9yihsic96NPoMLQx/lCQwH9d89H0bbMW3LZPzo/t4yGQcS1X+vTCe9OHm1XSH7WNxzGDmcSwBiKLsFGwvJpQBg==
+
 velocity-animate@1.5.2:
   version "1.5.2"
   resolved "https://registry.npmjs.org/velocity-animate/-/velocity-animate-1.5.2.tgz#5a351d75fca2a92756f5c3867548b873f6c32105"
@@ -10932,6 +10933,11 @@ webpackbar@^4.0.0:
     std-env "^2.2.1"
     text-table "^0.2.0"
     wrap-ansi "^6.0.0"
+
+weixin-js-sdk@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/weixin-js-sdk/-/weixin-js-sdk-1.6.0.tgz#ff50484d8118ce1208f11248cf4a1c0831577514"
+  integrity sha512-3IYQH7aalJGFJrwdT3epvTdR1MboMiH7vIZ5BRL2eYOJ12BNah7csoMkmSZzkq1+l92sSq29XdTCVjCJoK2sBQ==
 
 whatwg-fetch@>=0.10.0:
   version "3.0.0"

@@ -3,13 +3,15 @@
     v-loading="loading"
     class="tg-container"
   >
-    <TelegramLogin
-      :telegram-login="TELEGRAM_BOT_NAME"
-      mode="callback"
-      request-access="write"
-      radius="6"
-      @callback="login"
-    />
+    <no-ssr>
+      <TelegramLogin
+        :telegram-login="TELEGRAM_BOT_NAME"
+        mode="callback"
+        request-access="write"
+        radius="6"
+        @callback="login"
+      />
+    </no-ssr>
     <p class="tips">
       使用该功能需要“科学上网”
     </p>
@@ -26,7 +28,30 @@ export default {
   data() {
     return {
       loading: false,
-      TELEGRAM_BOT_NAME: process.env.TELEGRAM_BOT_NAME
+      // TELEGRAM_BOT_NAME: process.env.TELEGRAM_BOT_NAME
+    }
+  },
+  computed: {
+    domainEnv() {
+      // if (!process.browser) { return 'desktop' }
+      switch(window.location.hostname) {
+        case 'www.matataki.io': return 'desktop'
+        case 'matataki.io': return 'mobile'
+        case 'www.matataki.cn': return 'desktop-cn'
+        case 'matataki.cn': return 'mobile-cn'
+        case 'wwwtest.smartsignature.io': return 'desktop'
+        case 'test.smartsignature.io': return 'mobile'
+        case 'sstest.frontenduse.top': return 'wechat'
+        case 'smartsignature.frontenduse.top': return 'wechat'
+        default: return 'local'
+      }
+    },
+    TELEGRAM_BOT_NAME() {
+        switch(this.domainEnv) {
+          case 'mobile': return process.env.TELEGRAM_BOT_ROOT_NAME
+          case 'wechat': return process.env.TELEGRAM_BOT_IN_WX
+          default: return process.env.TELEGRAM_BOT_NAME
+        }
     }
   },
   methods: {

@@ -3,6 +3,7 @@
     <n-link
       :to="{ name: 'p-id', params: {id: card && card.id} }"
       target="_blank"
+      class="card-link"
     >
       <div class="article">
         <div class="container">
@@ -100,7 +101,7 @@ import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
-import { isNDaysAgo } from '@/utils/momentFun'
+import { isNDaysAgo, isThisYear } from '@/utils/momentFun'
 import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
@@ -181,6 +182,10 @@ export default {
     dateCard() {
       if (!this.card) return ''
       const time = moment(this.card.create_time)
+      if (!isThisYear(time)) {
+        // return time.format('YYYY MMMDo HH:mm')
+        return time.format('lll')
+      }
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     likes() {
@@ -241,12 +246,16 @@ export default {
   border-radius: @br10;
   margin: 20px 0;
   box-sizing: border-box;
+  // box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   // &:nth-child(1) {
   //   margin-top: 0;
   // }
   &:hover {
     transform: translate(0, -4px);
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+  }
+  .card-link {
+    display: block;
   }
 }
 .imgObjectFitCover {
@@ -426,7 +435,7 @@ export default {
   .date {
     text-align: left;
     color: #b2b2b2;
-    flex: 0 0 120px;
+    flex: 0 0 150px;
     font-size: 14px;
     font-weight: 400;
     color: rgba(178, 178, 178, 1);

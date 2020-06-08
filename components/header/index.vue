@@ -52,10 +52,7 @@
             icon-class="search"
             @click.stop="jutmpToSearch"
           />
-          <ul
-            v-if="searchRecommendList.length !== 0 && searchFcous"
-            class="search-list"
-          >
+          <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
             <li
               v-for="(item, index) in searchRecommendList"
               :key="index"
@@ -209,10 +206,7 @@
                 icon-class="search"
                 @click.stop="jutmpToSearch"
               />
-              <ul
-                v-if="searchRecommendList.length !== 0 && searchFcous"
-                class="search-list"
-              >
+              <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
                 <li
                   v-for="(item, index) in searchRecommendList"
                   :key="index"
@@ -278,6 +272,7 @@
             </a>
           </li> -->
         </ul>
+        <div v-if="toggleMenu" class="menu-full" @click="toggleMenu = !toggleMenu" />
       </div>
     </div>
   </header>
@@ -387,6 +382,7 @@ export default {
     },
     async $route() {
       if (this.isLogined) await this.getNotifyUnreadQuantity()
+      this.toggleMenu = false
     }
   },
   created() {
@@ -625,6 +621,7 @@ export default {
     background: #000;
     border-radius: 6px;
     text-decoration: none;
+    margin-left: 10px;
   }
   .nav {
     font-size: 18px;
@@ -814,7 +811,7 @@ export default {
     left: 0;
     right: 0;
     background: #fff;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
     padding: 0 10px 20px;
     margin: 0;
     list-style: none;
@@ -831,7 +828,7 @@ export default {
       }
       a {
         display: block;
-        padding: 10px 0;
+        padding: 10px;
         color: #333;
       }
 
@@ -843,6 +840,18 @@ export default {
 }
 .news {
   color: #F56C6C;
+}
+.menu-ul {
+  z-index: 2;
+}
+.menu-full {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 60px;
+  background-color: rgba(0,0,0,.4);
+  z-index: 1;
 }
 // 页面大于
 @media screen and (min-width: 801px) {
@@ -862,6 +871,54 @@ export default {
       width: 100%;
       margin: 10px 0;
     }
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .home-head {
+    padding-left: 20px;
+    padding-right: 10px;
+    .logo {
+      height: 30px;
+    }
+    .nav {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+  .home-head-notlogin {
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .qq-tips {
+    font-size: 13px;
+  }
+  .search .input {
+    font-size: 12px;
+  }
+  .search .icon-search {
+    width: 16px;
+    height: 16px;
+  }
+  .write-btn {
+    width: 80px;
+    line-height: 20px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header {
+    height: 50px;
+  }
+  .menu-ul,
+  .menu-full {
+    top: 50px;
+  }
+
+  .search-list {
+    top: 40px;
   }
 }
 </style>

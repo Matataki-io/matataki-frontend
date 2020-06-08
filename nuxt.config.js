@@ -69,12 +69,10 @@ export default {
   ** Global CSS
   */
   css: [
-    'normalize.css',
-    'element-ui/lib/theme-chalk/index.css',
     './assets/css/index.less'
   ],
   router: {
-    // middleware: 'lang'
+    // middleware: ''
   },
   /*
   ** Plugins to load before mounting the App

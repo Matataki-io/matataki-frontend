@@ -1,6 +1,7 @@
 <template>
   <div class="app">
-    <nuxt />
+    <g-header v-if="!hideHeader" />
+    <nuxt class="app-container" />
     <!-- <lazy-component> -->
     <g-footer v-if="hideFooter" />
     <!-- </lazy-component> -->
@@ -78,6 +79,9 @@ export default {
     },
     hideFeedback() {
       return this.$route.name === 'publish-type-id'
+    },
+    hideHeader() {
+      return this.$route.name === 'home'
     }
   },
   watch: {
@@ -94,7 +98,9 @@ export default {
   },
   mounted() {
     this.$store.dispatch('testLogin')
-    this.removeOverflowHide()
+    if (process.browser) {
+      this.removeOverflowHide()
+    }
   },
   methods: {
     importArticle() {
@@ -129,29 +135,51 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.app .backtop {
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  background: @purpleDark;
-  cursor: pointer;
-  z-index: 99;
-  font-size: 18px;
-  position: fixed;
-  right: 40px;
-  bottom: 110px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &-icon {
+.app {
+  .backtop {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: @purpleDark;
+    cursor: pointer;
+    z-index: 99;
+    font-size: 14px;
+    position: fixed;
+    right: 40px;
+    bottom: 90px;
     color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &-icon {
+      color: #fff;
+    }
   }
 }
 
+.app-container {
+  padding-top: 60px;
+  min-height: calc(100% - 240px);
+  // footer 高度是不固定的 后面考虑调整
+}
+
+@media screen and (max-width: 768px) {
+  .app {
+    .backtop {
+      right: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .app-container {
+    padding-top: 50px;
+    min-height: calc(100% - 230px);
+  }
+}
 </style>

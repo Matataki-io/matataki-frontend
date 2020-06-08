@@ -1,6 +1,5 @@
 <template>
   <div class="main exchange">
-    <g-header />
     <div class="outer-container">
       <img
         class="ma-banner"
@@ -178,7 +177,6 @@ export default {
   width: 100%;
 }
 .main {
-  .minHeight();
   background: @bg-color;
 }
 @width: 650px;

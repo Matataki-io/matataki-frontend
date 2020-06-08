@@ -94,8 +94,6 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('用户的信息：', res)
-    // 判断是否为付费阅读文章
     if (res.code === 0) {
       return {
         userData: res.data || Object.create(null)
@@ -104,7 +102,20 @@ export default {
       console.error(res.message)
     }
   },
+  created() {
+    if (process.browser) {
+      this.setWeChatShare()
+    }
+  },
   methods: {
+    // 设置微信分享
+    setWeChatShare() {
+      this.$wechatShare({
+        title: `${this.userData.nickname || this.userData.username}的个人主页`,
+        desc: this.userData.introduction || '暂无',
+        imgUrl: this.userData.avatar ? this.$ossProcess(this.userData.avatar) : ''
+      })
+    },
     paginationData(res) {
       this.articleCardData.articles = res.data.list
       this.total = res.data.count || 0

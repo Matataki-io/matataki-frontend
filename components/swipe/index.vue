@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="swipe-wrapper">
     <div
       ref="swipe"
       class="swipe"
@@ -143,6 +143,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.swipe-wrapper {
+  overflow: hidden;
+}
 .swipe {
   max-width: 1200px;
   width: 100%;

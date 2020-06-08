@@ -1,8 +1,5 @@
 <template>
   <div class="tags">
-    <!-- header -->
-    <g-header />
-
     <div class="tags-main">
       <!-- banner -->
       <div class="tags-banner">
@@ -207,9 +204,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.tags {
-  .minHeight();
-}
 
 .tags-main {
   max-width: 760px;

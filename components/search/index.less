@@ -1,41 +1,42 @@
-
-.search {
-  .minHeight()
-}
 .search-head {
   margin: 40px 0 20px;
   display: flex;
-  p {
+
+  .head-title {
     color: rgba(178, 178, 178, 1);
     font-size: 20px;
     font-weight: 600;
     line-height: 28px;
-    margin: 0 5px 0 0;
+    margin: 0 40px 0 0;
     cursor: pointer;
+
     &.active {
       color: #000;
     }
+
     span {
       display: inline-block;
       color: #B2B2B2;
-      font-size:16px;
-      font-weight:400;
-      line-height:22px;
-      width: 70px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22px;
     }
   }
 }
+
 .search-title {
   display: inline-block;
-  font-size:24px;
-  font-weight:600;
+  font-size: 24px;
+  font-weight: 600;
   color: #000;
   padding: 0;
   margin: 0;
+
   span {
-    color:@purpleDark;
+    color: @purpleDark;
   }
 }
+
 .search-container {
   max-width: 910px;
   margin: 0 auto;
@@ -71,5 +72,12 @@
 
   &:nth-child(1) {
     margin-top: 0;
+  }
+}
+
+
+@media screen and (max-width: 540px) {
+  .search-head .head-title {
+    margin-right: 20px;
   }
 }

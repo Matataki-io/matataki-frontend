@@ -67,14 +67,6 @@ export default {
       shareCardCheckedOne: true
     }
   },
-  computed: {
-  },
-  watch: {
-  },
-  mounted() {
-    console.log(document.querySelector('.p-share').offsetLeft)
-    console.log(document.querySelector('.p-share').offsetTop)
-  },
   methods: {
     save() {
       if (this.shareCardCheckedOne) this.toCanvas('tokenCardOne')

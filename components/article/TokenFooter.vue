@@ -155,10 +155,12 @@ export default {
     border-radius: 50%;
     box-sizing: border-box;
     margin-bottom: 10px;
-    .flexCenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     user-select: none;
-    background: #F1F1F1;
+    background: #f1f1f1;
     color: @purpleDark;
     border: none;
     span {
@@ -181,7 +183,9 @@ export default {
   }
 }
 .info-container {
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   text-align: center;
 }
@@ -192,11 +196,13 @@ export default {
   border-radius: 60%;
   box-sizing: border-box;
   border: 4px solid @purpleDark;
-  background: #F1F1F1;
+  background: #f1f1f1;
   color: @purpleDark;
   font-size: 20px;
   font-weight: 700;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
   cursor: pointer;
   &:hover {
@@ -225,27 +231,32 @@ export default {
   box-sizing: border-box;
   font-size: 16px;
   width: 500px;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .info1 {
     text-align: center;
   }
-  .info1+.info1 {
+  .info1 + .info1 {
     margin-left: 20px;
   }
-  .info2, .info1 {
-    .flexCenter();
+  .info2,
+  .info1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     img {
       margin: 0 5px 0 10px;
     }
     .num {
-      color:  @purpleDark;
+      color: @purpleDark;
       font-weight: 700;
     }
   }
 }
 
 .like {
-  font-size:16px;
+  font-size: 16px;
   color: @purpleDark;
   font-style: normal;
   margin-left: 4px;

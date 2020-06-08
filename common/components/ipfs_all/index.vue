@@ -3,7 +3,7 @@
     <el-dialog
       :title="historyDialogTitle"
       :visible.sync="dialogVisible"
-      width="60%"
+      class="history-dialog"
     >
       <ArticleHistory :article-ipfs-array="articleIpfsArray" />
     </el-dialog>
@@ -11,7 +11,7 @@
       placement="top"
       trigger="hover"
       class="components-ipfs_all"
-      width="370"
+      popper-class="ipfs-popover"
     >
       <div class="components-ipfs_all">
         <p class="ipfs_all__title">
@@ -183,4 +183,39 @@ export default {
 //   color: @purpleDark;
 //   line-height:14px;
 // }
+
+.history-dialog {
+  /deep/ .el-dialog {
+    width: 60%;
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .history-dialog {
+    /deep/ .el-dialog {
+      width: 80%;
+    }
+  }
+}
+@media screen and (max-width: 560px) {
+  .history-dialog {
+    /deep/ .el-dialog {
+      width: 90%;
+    }
+  }
+}
+
+
+</style>
+
+<style lang="less">
+.ipfs-popover {
+  width: 370px;
+}
+@media screen and (max-width: 410px) {
+  .ipfs-popover {
+    width: 90%;
+  }
+}
 </style>

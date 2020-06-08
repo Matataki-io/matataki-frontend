@@ -1,7 +1,5 @@
 <template>
   <div class="token">
-    <g-header />
-
     <div class="container-padding">
       <div class="token-detail">
         <div class="fl">
@@ -491,10 +489,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.token {
-  .minHeight();
-}
-
 .container-padding {
   max-width: 1200px;
   width: 100%;

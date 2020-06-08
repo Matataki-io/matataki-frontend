@@ -233,7 +233,7 @@ export default {
   top: 30px;
   left: 30px;
   padding: 10px 36px;
-  background: #F1F1F1;
+  background: #f1f1f1;
   z-index: 99;
   font-size: 14px;
   border-radius: 6px;
@@ -250,7 +250,9 @@ export default {
     }
   }
   .btns-container {
-    .flexCenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .btn-base {
     font-size: 14px;
@@ -258,7 +260,9 @@ export default {
     border-radius: 6px;
     box-sizing: border-box;
     border: 1px solid @purpleDark;
-    .flexCenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 30px;
     cursor: pointer;
     user-select: none;
@@ -279,7 +283,9 @@ export default {
   }
 }
 .coin-btn {
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   position: relative;
 }
@@ -290,11 +296,13 @@ export default {
   border-radius: 60%;
   box-sizing: border-box;
   border: 4px solid @purpleDark;
-  background: #F1F1F1;
+  background: #f1f1f1;
   color: @purpleDark;
   font-size: 20px;
   font-weight: 700;
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
   cursor: pointer;
   &:hover {
@@ -317,7 +325,7 @@ export default {
 }
 
 .like {
-  font-size:16px;
+  font-size: 16px;
   font-style: normal;
   margin-left: 4px;
 }

@@ -176,7 +176,7 @@ export default {
     font-weight:500;
     color:rgba(0,0,0,1);
     margin: 0 0 4px 0;
-    display: block;
+    display: inline-block;
   }
 }
 .Post-Time {
@@ -217,5 +217,24 @@ export default {
 
 .author-info {
   flex-wrap: wrap;
+}
+@media screen and (max-width: 600px) {
+  .Post-Author .Avatar {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .Post-Author .AuthorInfo-name {
+    font-size: 16px;
+    margin: 0;
+  }
+  .Post-Time, .View-Num {
+    font-size: 12px;
+  }
+  .article-head__ipfs {
+    font-size: 12px;
+  }
+  /deep/ .components-ipfs_all .ipfs_all__icon {
+    vertical-align: initial;
+  }
 }
 </style>

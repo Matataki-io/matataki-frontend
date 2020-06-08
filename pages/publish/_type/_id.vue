@@ -62,13 +62,40 @@
           v-model="markdownData"
           :box-shadow="false"
           :autofocus="false"
-          :placeholder="$t('publish.contentPlaceholder')"
+          :placeholder="editorPlaceholder"
           :style="editorStyle"
           class="editor"
           image-upload-action="customize"
           :image-upload-fn="imageUploadFn"
           :encryption="encryption"
-        />
+          @tool-mobile-import="toolMobileImport"
+        >
+          <div slot="tool-mobile" class="draft-btn">
+            <span
+              class="draft-save-tips"
+              v-html="saveDraft"
+            />
+            <router-link
+              :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+              class="draft-save-draft"
+            >
+              草稿
+            </router-link>
+          </div>
+  
+          <div slot="tool-view-mobile" class="draft-btn">
+            <span
+              class="draft-save-tips"
+              v-html="saveDraft"
+            />
+            <router-link
+              :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+              class="draft-save-draft"
+            >
+              草稿
+            </router-link>
+          </div>
+        </mavon-editor>
       </no-ssr>
     </div>
 
@@ -599,6 +626,7 @@
             type="primary"
             size="medium"
             style="margin-left: 10px;"
+            :class="settingDialogMode === 'setting' && 'set'"
             @click="sendThePost"
           >
             立即发布
@@ -717,6 +745,7 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
+      editorPlaceholder: ''
     }
   },
   computed: {
@@ -873,6 +902,15 @@ export default {
   created() {
     // 编辑文章不会自动保存
     if (this.$route.params.type === 'edit') this.saveDraft = ''
+
+    if (process.browser) {
+      this._resizeEditor()
+      this.resizeEvent = throttle(this._resizeEditor, 300)
+      window.addEventListener('resize', this.resizeEvent)
+
+      this.setEditorPlaceholder()
+    }
+
   },
   mounted() {
     const { type, id } = this.$route.params
@@ -895,12 +933,6 @@ export default {
     this.getAllTokens()
     // this.setToolBar()
 
-    if (process.browser) {
-      this._resizeEditor()
-      this.resizeEvent = throttle(this._resizeEditor, 300)
-      window.addEventListener('resize', this.resizeEvent)
-    }
-
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -922,10 +954,20 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    // 设置编辑器提示字
+    setEditorPlaceholder() {
+      const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+      if (clientWidth < 768) {
+        this.editorPlaceholder = this.$t('publish.contentPlaceholderMobile')
+      } else {
+        this.editorPlaceholder = this.$t('publish.contentPlaceholder')
+      }
+    },
     _resizeEditor() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
       this.editorStyle = {
-        height: `${clientHeight - 60}px`
+        height: `${clientHeight - (clientWidth < 768 ? 47 : 60)}px`
       }
     },
     // watch 监听草稿更新
@@ -1840,6 +1882,9 @@ export default {
         data.short_content = this.readSummary
       }
       return data
+    },
+    toolMobileImport() {
+      this.importVisible = true
     }
   }
 }
