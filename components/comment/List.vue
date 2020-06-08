@@ -1,7 +1,7 @@
 <template>
   <div class="comment-container">
     <h2 v-if="pull.articles.length !== 0" class="comment-title">
-      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.commentLength }}
+      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.allcount }} 
     </h2>
     <!-- <template v-if="type === 2">
       <CommentCard
@@ -60,7 +60,8 @@ export default {
         },
         apiUrl: 'commentsList',
         articles: [],
-        commentLength: 0
+        commentLength: 0,
+        allcount: 0
       },
       reload: this.commentRequest
     }
@@ -91,6 +92,7 @@ export default {
           this.pull.articles = this.pull.articles.concat(res.data.list)
         }
         this.pull.commentLength = res.data.count
+        this.pull.allcount = res.data.allcount
       }
     }
   }

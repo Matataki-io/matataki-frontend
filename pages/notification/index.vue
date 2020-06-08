@@ -196,6 +196,10 @@ export default {
         {
           key: 'annouce',
           label: '公告信息'
+        },
+        {
+          key: 'reply',
+          label: '回复信息'
         }
       ],
       actions: null,
