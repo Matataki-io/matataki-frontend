@@ -6,7 +6,7 @@ import { ContentLoader } from 'vue-content-loader'
 import moment from 'moment'
 import '@/icons'
 Vue.prototype.moment = moment
-moment.locale('zh-CN')
+moment.updateLocale('zh-CN')
 Vue.use(clampy)
 Vue.use(VueClipboard)
 
