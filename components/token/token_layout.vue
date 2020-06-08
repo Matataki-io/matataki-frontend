@@ -489,10 +489,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.token {
-  .minHeight();
-}
-
 .container-padding {
   max-width: 1200px;
   width: 100%;

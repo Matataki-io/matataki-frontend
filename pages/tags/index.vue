@@ -204,9 +204,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.tags {
-  .minHeight();
-}
 
 .tags-main {
   max-width: 760px;

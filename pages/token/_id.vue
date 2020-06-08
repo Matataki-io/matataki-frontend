@@ -89,7 +89,20 @@ export default {
       console.error(res.message)
     }
   },
+  created() {
+    if (process.browser) {
+      this.setWeChatShare()
+    }
+  },
   methods: {
+    // 设置微信分享
+    setWeChatShare() {
+      this.$wechatShare({
+        title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
+        desc: this.minetokenToken.brief || '暂无',
+        imgUrl: this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
+      })
+    },
   }
 }
 </script>
