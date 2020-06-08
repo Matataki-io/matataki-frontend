@@ -20,6 +20,9 @@
         >
           {{ nickname }}
         </router-link>
+        <span v-if="comment.reply_uid" class="text-con">回复 
+          <router-link :to="`/user/${comment.reply_uid}`" target="_blank"> @{{ comment.reply_nickname }} </router-link>
+        </span>
         <span class="time">
           {{ friendlyDate }}
         </span>
@@ -31,6 +34,7 @@
           />
           <span>{{ comment.like_num }}</span>
         </span> -->
+
         <span class="reply" @click="showInput = !showInput">回复</span>
         <p class="comment-content wrap-open">
           <!-- 开了wrap 这个span不能换行！ -->
@@ -164,6 +168,18 @@ export default {
     &:hover {
       color: #00a1d6;
     }
+  }
+}
+.text-con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  a {
+    outline: none;
+    color: #00a1d6;
+    text-decoration: none;
+    cursor: pointer;
   }
 }
 </style>
