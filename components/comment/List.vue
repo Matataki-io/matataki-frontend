@@ -68,7 +68,8 @@ export default {
         commentLength: 0,
         allcount: 0
       },
-      reload: this.commentRequest
+      reload: this.commentRequest,
+      commentId: 0
     }
   },
   computed: {
@@ -104,9 +105,10 @@ export default {
     },
     goCommentAnchor() {
       if(!this.commentAnchor) return
-      const commentId = this.commentAnchor
+      if(this.commentId) return
+      this.commentId = this.commentAnchor
       this.$nextTick(() => {
-        this.goAnchor('comment' + commentId) 
+        this.goAnchor('comment' + this.commentId)
       })
     },
     goAnchor(id) {
