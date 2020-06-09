@@ -119,6 +119,7 @@ export default {
   ** Build configuration
   */
   build: {
+    // publicPath: 'http://matataki-client.oss-cn-shanghai.aliyuncs.com/dist/',
     // analyze: true,
     cache: true,
     parallel: true,

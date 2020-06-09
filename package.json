@@ -65,6 +65,7 @@
     "@nuxtjs/eslint-config": "^0.0.1",
     "@nuxtjs/eslint-module": "^0.0.1",
     "@nuxtjs/style-resources": "^0.1.2",
+    "ali-oss": "6.9.0",
     "babel-eslint": "10.0.3",
     "cross-env": "^5.2.0",
     "eslint": "6.8.0",
