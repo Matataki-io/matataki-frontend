@@ -153,12 +153,12 @@ export default {
 
 <style lang="less" scoped>
 .social-icons {
-  width: 60px;
+  margin: 10px 10px 0 0;
 }
 .inline {
-  display: inline-flex;
+  display: inline-block;
   &.h3 {
-    margin-right: 20px;
+    margin: 0 20px 0 0;
   }
   &.url {
     display: inline-table;
