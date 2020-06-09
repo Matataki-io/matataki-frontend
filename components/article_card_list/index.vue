@@ -81,7 +81,7 @@
             <span class="empty" />
             <!-- 暂时用文章页代替跳转地址 -->
             <n-link
-              :to=" {name: 'tag-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
+              :to=" {name: 'tags-id', params: {id: tagId}, query: { name: tagName, type: tagType}} "
               target="_blank"
               class="title"
             >

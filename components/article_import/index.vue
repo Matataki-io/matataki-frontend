@@ -3,8 +3,8 @@
     :visible.sync="visible"
     :show-close="false"
     :close-on-click-modal="false"
-    width="460px"
-    custom-class="import br10"
+    custom-class="import br10 import-article"
+    title="导入文章"
     @close="$emit('close')"
   >
     <el-input
@@ -121,13 +121,7 @@ export default {
     },
     async createDraft(article) {
       await this.$API
-        .createDraft({
-          ...article,
-          commentPayPoint: 1,
-          fissionFactor: 2000,
-          is_original: 0,
-          tags: ''
-        })
+        .createDraft(article)
         .then(res => {
           if (res.code === 0) {
             this.$message.success(this.$t('publish.importSuccess'))
@@ -154,12 +148,7 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-.import .el-dialog__header {
-  padding: 0;
-}
-
+<style lang="less" scoped>
 .import {
   .des {
     font-size: 14px;
@@ -172,6 +161,22 @@ export default {
     &:nth-of-type(1) {
       margin-bottom: 30px;
     }
+  }
+}
+
+/deep/ .import .el-dialog__header {
+  text-align: center;
+}
+/deep/ .import-article {
+  width: 460px;
+  .el-dialog__body {
+    padding-top: 10px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /deep/ .import-article {
+    width: 90%;
   }
 }
 </style>

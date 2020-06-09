@@ -62,13 +62,40 @@
           v-model="markdownData"
           :box-shadow="false"
           :autofocus="false"
-          :placeholder="$t('publish.contentPlaceholder')"
+          :placeholder="editorPlaceholder"
           :style="editorStyle"
           class="editor"
           image-upload-action="customize"
           :image-upload-fn="imageUploadFn"
           :encryption="encryption"
-        />
+          @tool-mobile-import="toolMobileImport"
+        >
+          <div slot="tool-mobile" class="draft-btn">
+            <span
+              class="draft-save-tips"
+              v-html="saveDraft"
+            />
+            <router-link
+              :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+              class="draft-save-draft"
+            >
+              草稿
+            </router-link>
+          </div>
+  
+          <div slot="tool-view-mobile" class="draft-btn">
+            <span
+              class="draft-save-tips"
+              v-html="saveDraft"
+            />
+            <router-link
+              :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
+              class="draft-save-draft"
+            >
+              草稿
+            </router-link>
+          </div>
+        </mavon-editor>
       </no-ssr>
     </div>
 
@@ -93,10 +120,10 @@
     <!-- 设置 发布 dialog -->
     <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
-        <h3 class="set-title">
+        <!-- <h3 v-if="isShowDraftPreview" class="set-title">
           预览设置
         </h3>
-        <div class="set-content">
+        <div v-if="isShowDraftPreview" class="set-content">
           <el-button round size="medium" @click="goPreview">
             立即预览
           </el-button>
@@ -104,11 +131,11 @@
             复制链接
           </el-button>
           <p class="preview">将此链接发送给他人, 可以提前预览您还未发布的草稿(24h有效)</p>
-        </div>
+        </div> -->
         
-        <h3 class="set-title">
+        <h1 class="set-title">
           基础设置
-        </h3>
+        </h1>
         <h4 class="set-subtitle">
           {{ $t('publish.coverTitle') }}
         </h4>
@@ -147,16 +174,34 @@
             >
           </div>
         </div>
+        <!-- tag -->
         <h4 class="set-subtitle">
-          {{ $t('publish.tagTitle') }}
+          <!-- {{ $t('publish.tagTitle') }} -->
+          添加标签<span class="tag">（还可以添加{{ tagMaxLen - tags.length }}个标签）</span>
         </h4>
         <div class="set-content">
-          <tag-card
-            v-for="(item, index) in tagCards"
-            :key="index"
-            :tag-card="item"
-            @toggleTagStatus="toggleTagStatus"
-          />
+          <ul class="tag-list">
+            <li
+              v-for="(item, index) in tags"
+              :key="index"
+              class="tag-item"
+              @click="removeTag(index)"
+            >
+              {{ item }}
+              <svg-icon icon-class="close_thin" class="icon" />
+            </li>
+            <li v-show="tags.length < tagMaxLen">
+              <input
+                ref="tagRef"
+                v-model="tagVal"
+                class="tag-input"
+                type="text"
+                maxlength="20"
+                @keyup.enter="addTag"
+              >
+              <span class="tag-tip">按回车Enter创建标签</span>
+            </li>
+          </ul>
         </div>
         <h4 class="set-subtitle">
           原创声明
@@ -243,7 +288,7 @@
             </div>
           </div>
         </div>
-        <div v-if="settingDialogMode === 'setting'">
+        <!-- <div v-if="settingDialogMode === 'setting'">
           <el-button
             v-if="isShowTransfer"
             type="danger"
@@ -260,10 +305,10 @@
           >
             转让草稿
           </el-button>
-        </div>
-        <h3 class="set-title">
+        </div> -->
+        <h1 class="set-title set-title-border">
           权限设置
-        </h3>
+        </h1>
         <h4 class="set-subtitle">
           阅读权限设置
           <el-tooltip
@@ -327,7 +372,7 @@
                       :min="1"
                       :max="100000000"
                       size="small"
-                      placeholder="请输入内容"
+                      placeholder="请输入数量"
                       :disabled="prohibitEditingPrices"
                     />
                   </div>
@@ -543,16 +588,45 @@
         </div>
 
         <div class="set-footer">
-          <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
+          <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
+            立即预览
+          </el-button>
+          <!-- <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
             <el-button size="medium">
               返回草稿箱
             </el-button>
-          </router-link>
-          
+          </router-link> -->
+          <template v-if="settingDialogMode === 'setting'">
+            <el-button
+              v-if="isShowTransfer"
+              type="danger"
+              size="medium"
+              @click="delArticle"
+            >
+              删除此篇
+            </el-button>
+            <el-button
+              v-if="isShowTransfer"
+              type="danger"
+              size="medium" 
+              @click="transferArticle"
+            >
+              转让草稿
+            </el-button>
+          </template>
+          <el-button
+            v-if="$route.params.type === 'edit'"
+            size="medium"
+            style="margin-left: 10px;"
+            @click="saveAsDraft"
+          >
+            另存为草稿
+          </el-button>
           <el-button
             type="primary"
             size="medium"
             style="margin-left: 10px;"
+            :class="settingDialogMode === 'setting' && 'set'"
             @click="sendThePost"
           >
             立即发布
@@ -578,20 +652,19 @@ import { strTrim } from '@/utils/reg'
 
 import { convertLicenseToChinese, CreativeCommonsLicenseGenerator } from '@/utils/creative_commons'
 import imgUpload from '@/components/imgUpload' // 图片上传
-import tagCard from '@/components/tag_card'
 import articleTransfer from '@/components/articleTransfer'
 
 import articleImport from '@/components/article_import/index.vue'
 import statement from '@/components/statement/index.vue'
 
 import { toPrecision, precision } from '@/utils/precisionConversion'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   layout: 'empty',
   name: 'NewPost',
   components: {
     imgUpload,
-    tagCard,
     articleTransfer,
     articleImport,
     statement,
@@ -621,7 +694,9 @@ export default {
         button: [this.$t('publish.modalTextButton1'), this.$t('publish.modalTextButton2')]
       },
       modalMode: null, // header 判断点击的 back 还是 home
-      tagCards: [], // 文章标签
+      tags: [], // 标签
+      tagVal: '', // 标签内容
+      tagMaxLen: 10, // 最大标签数
       articleData: {}, // 文章数据
       transferButton: false, // 转让按钮
       transferModal: false, // 转让弹框
@@ -631,7 +706,6 @@ export default {
       statementVisible: false, // 原创声明
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
-      autoUpdateDfaftTags: false, // 是否自动更新草稿标签
       saveDraft: '文章自动保存至',
       readContent: false,
       readauThority: false, // 持通证阅读
@@ -671,14 +745,19 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
+      editorPlaceholder: ''
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
-      return this.$ossProcess(this.cover)
+      return this.cover ? this.$ossProcess(this.cover) : ''
     },
     isShowTransfer() {
+      return this.$route.params.type === 'draft'
+    },
+    // 显示预览链接
+    isShowDraftPreview() {
       return this.$route.params.type === 'draft'
     },
     isDevelopmentMode() {
@@ -770,23 +849,68 @@ export default {
     commentPayPoint() {
       this.updateDraftWatch()
     },
-    cover() {
+    coverEditor() {
       this.updateDraftWatch()
     },
     isOriginal() {
       this.updateDraftWatch()
     },
-    tagCards: {
+    // 标签改变
+    tags: {
       deep: true,
       handler() {
-        if (!this.autoUpdateDfaftTags) return
         this.updateDraftWatch()
       }
-    }
+    },
+    // 监听tag设置width
+    tagVal(val) {
+      const tag = this.$refs.tagRef
+      const width = (val.length + 1 ) * 12
+
+      if (val && width > 104) {
+        tag.style.width = (width <= 282 ? width : 282) + 'px'
+      } else {
+        tag.style.width = '104px'
+      }
+    },
+    // 协议
+    CCLicenseCredit() { this.updateDraftWatch() },
+    // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
+    readConfigRadio() { this.updateDraftWatch() },
+    readauThority() { this.updateDraftWatch() },
+    readSelectValue() { this.updateDraftWatch() },
+    readToken() { this.updateDraftWatch() },
+
+    // 阅读权限 支付阅读
+    paymentTokenVisible() { this.updateDraftWatch() },
+    paymentToken() { this.updateDraftWatch() },
+
+    // 摘要
+    readSummary() { this.updateDraftWatch() },
+
+    // 编辑权限 单选 设置复选 选择框 数量
+    editConfigRadio() { this.updateDraftWatch() },
+    tokenEditAuthority() { this.updateDraftWatch() },
+    editSelectValue() { this.updateDraftWatch() },
+    editToken() { this.updateDraftWatch() },
+    
+    // 是否公开
+    ipfs_hide() { this.updateDraftWatch() },
+
+
   },
   created() {
     // 编辑文章不会自动保存
     if (this.$route.params.type === 'edit') this.saveDraft = ''
+
+    if (process.browser) {
+      this._resizeEditor()
+      this.resizeEvent = throttle(this._resizeEditor, 300)
+      window.addEventListener('resize', this.resizeEvent)
+
+      this.setEditorPlaceholder()
+    }
+
   },
   mounted() {
     const { type, id } = this.$route.params
@@ -806,15 +930,8 @@ export default {
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
-    this.getTags()
     this.getAllTokens()
     // this.setToolBar()
-
-    if (process.browser) {
-      this._resizeEditor()
-      this.resizeEvent = throttle(this._resizeEditor, 300)
-      window.addEventListener('resize', this.resizeEvent)
-    }
 
   },
   beforeRouteLeave(to, from, next) {
@@ -837,10 +954,20 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    // 设置编辑器提示字
+    setEditorPlaceholder() {
+      const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+      if (clientWidth < 768) {
+        this.editorPlaceholder = this.$t('publish.contentPlaceholderMobile')
+      } else {
+        this.editorPlaceholder = this.$t('publish.contentPlaceholder')
+      }
+    },
     _resizeEditor() {
       const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
+      const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
       this.editorStyle = {
-        height: `${clientHeight - 60}px`
+        height: `${clientHeight - (clientWidth < 768 ? 47 : 60)}px`
       }
     },
     // watch 监听草稿更新
@@ -854,31 +981,50 @@ export default {
         title,
         markdownData: content,
         fissionFactor,
-        cover
+        cover,
+        tags
       } = this
-      const isOriginal = Number(this.isOriginal)
+      const is_original = Number(this.isOriginal)
       const { type, id } = this.$route.params
 
       if (type === 'draft' && id === 'create') {
         // console.log('创建草稿')
-        this.autoCreateDraft({
+        let data = {
           title,
           content,
           fissionFactor,
           cover,
-          isOriginal
-        })
+          is_original,
+          tags,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide : 0,
+          requireToken : [], // 阅读 持币
+          requireBuy : [], // 阅读 购买
+          editRequireToken : [], // 编辑 持币
+        }
+        this.autoCreateDraft(this.draftFactory(data))
       } else if (type === 'draft' && id !== 'create') {
         // console.log('更新草稿')
         // 草稿箱编辑 更新
-        this.autoUpdateDraft({
+        let data = {
           id: this.id,
           title,
           content,
           fissionFactor,
           cover,
-          isOriginal
-        })
+          is_original,
+          tags,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide : 0,
+          requireToken : [], // 阅读 持币
+          requireBuy : [], // 阅读 购买
+          editRequireToken : [], // 编辑 持币
+        }
+        this.autoUpdateDraft(this.draftFactory(data))
       }
     }, 500),
     unload($event) {
@@ -891,12 +1037,6 @@ export default {
     changed() {
       // 如果允许关闭 或者 内容都为空
       return this.allowLeave || (!strTrim(this.title) && !strTrim(this.markdownData))
-    },
-    setTag(data) {
-      this.articleData = data // 设置文章数据
-      // 编辑的时候设置tag状态
-      const { id } = this.$route.params
-      if (id !== 'edit') this.setTagStatus()
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
@@ -919,7 +1059,13 @@ export default {
           this.signId = res.data.id
           this.isOriginal = Boolean(res.data.is_original)
           this.authorId = res.data.uid
+          this.ipfs_hide = Boolean(res.data.ipfs_hide)
           this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
+
+          this.tags = res.data.tags.map(i => i.name)
+
+          this.setCCLicense(res.data.cc_license)
+          
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -967,7 +1113,6 @@ export default {
           }
 
 
-          this.setTag(res.data)
         } else {
           this.$message.error(res.message)
           this.$router.push({ path: '/article' })
@@ -981,18 +1126,69 @@ export default {
     // 得到草稿箱内容 by id
     async getDraft(id) {
       await this.$API.getDraft({ id }).then(res => {
-        this.fissionNum = res.fission_factor ? res.fission_factor / 1000 : 2
-        this.cover = res.cover
-        this.title = res.title
-        this.markdownData = res.content
-        this.id = id
-        this.isOriginal = Boolean(res.is_original)
-        this.commentPayPoint = res.comment_pay_point
+        if (res.code === 0) {
+          let { data } = res
+          this.fissionNum = data.fission_factor ? data.fission_factor / 1000 : 2
+          this.cover = data.cover
+          this.title = data.title
+          this.markdownData = data.content
+          this.id = data.id
+          this.isOriginal = Boolean(data.is_original)
+          this.commentPayPoint = data.comment_pay_point
 
-        this.setTag(res)
+          this.tags = data.tags
+          this.ipfs_hide = Boolean(data.ipfs_hide)
+
+
+          this.setCCLicense(data.cc_license)
+
+          // 持通证阅读
+          if (data.require_holdtokens.length !== 0) {
+            this.readauThority = true
+            this.readToken = precision(data.require_holdtokens[0].amount, 'CNY', 4)
+            this.readSummary = data.short_content
+            this.readSelectValue = data.require_holdtokens[0].token_id
+          }
+
+          // 付费阅读
+          if (data.require_buy.length !== 0) {
+            this.paymentTokenVisible = true
+            this.paymentToken = precision(data.require_buy[0].amount, 'CNY', 4)
+            this.readSummary = data.short_content
+            this.paymentSelectValue = -1
+          }
+
+          // 持通证编辑
+          if (data.editor_require_holdtokens.length !== 0) {
+            this.tokenEditAuthority = true
+            this.editToken = precision(data.editor_require_holdtokens[0].amount, 'CNY', 4)
+            this.editSelectValue = res.data.editor_require_holdtokens[0].token_id
+          }
+
+          // 暂无付费编辑
+
+
+          // 有 持通证阅读 || 付费阅读 展示单选区域
+          if (this.readauThority || this.paymentTokenVisible) {
+            this.readConfigRadio = 'some'
+          } else {
+            this.readConfigRadio = 'all'
+          }
+
+          //有 持通证编辑 || 付费编辑
+          if (this.tokenEditAuthority || this.buyEditAuthority) {
+            this.editConfigRadio = 'some'
+          } else {
+            this.editConfigRadio = 'all'
+          }
+
+
+
+        } else {
+          console.log(res.message)
+        }
       }).catch(err => {
         console.log(err)
-        this.$message.error('获取草稿内容失败')
       }).finally(() => {
         this.autoUpdateDfaft = true
       })
@@ -1099,22 +1295,11 @@ export default {
         return false
       }
     },
-    // 文章标签 tag
-    setArticleTag(tagCards) {
-      let tags = ''
-      const tagCardsFilter = tagCards.filter(i => i.status === true)
-      if (tagCardsFilter.length !== 0) {
-        tagCardsFilter.map((i, index) => {
-          if (index === 0) tags += i.id
-          else tags += `,${i.id}`
-        })
-      }
-      return tags
-    },
     // 发布文章
     async publishArticle(article) {
       // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
+      article.tags = this.tags
+
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
@@ -1126,7 +1311,6 @@ export default {
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
-      const { failed } = this
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })
@@ -1137,35 +1321,26 @@ export default {
           signId: response.data
         }
         if (this.$route.params.id) {
-          this.$API.draftsReferencesPublish(this.$route.params.id, data).then(res => {
-            if (res.code === 0) {
+          const res = await this.$API.draftsReferencesPublish(this.$route.params.id, data)
+          if (res.code === 0) {
             // 发送完成开始设置阅读权限 因为需要返回的id
-              const promiseArr = []
-              if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
-              if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
-              promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
-              Promise.all(promiseArr).then(() => {
-                this.success(response.data, `${this.$t('publish.publishArticleSuccess', [this.$point.publish])}`)
-                this.fullscreenLoading = false // remove full loading
-              }).catch(err => {
-                console.log('err', err)
-                this.$message.error(err)
-                this.fullscreenLoading = false // remove full loading
-              })
-            } else {
-              this.$message.error(res.message)
-              throw new Error(res.message)
-            }
-          }).catch(err => {
-            this.$message.error(err)
+            const promiseArr = []
+            if (this.readauThority) promiseArr.push(this.postMineTokens(response.data)) // 持通证阅读
+            if (this.paymentTokenVisible) promiseArr.push(this.articlePrices(response.data)) // 支付通证
+            promiseArr.push(this.delDraft(this.$route.params.id)) // 删除草稿
+            await Promise.all(promiseArr) // 上面的方法里面判断了code 所以这里就不需要判断了
+            this.success(response.data)
             this.fullscreenLoading = false // remove full loading
-          })
+          } else {
+            throw new Error(res.message)
+          }
+        } else {
+          throw new Error('没有文章ID')
         }
       } catch (error) {
-        console.error(error)
+        console.log(error)
         this.fullscreenLoading = false // remove full loading
-        failed(error)
-        throw error
+        this.$message.error(error.toString())
       }
     },
     // 自动创建草稿
@@ -1173,9 +1348,6 @@ export default {
       this.saveDraft = '保存中...'
       // 设置文章标签 🏷️
       this.allowLeave = true
-      article.tags = this.setArticleTag(this.tagCards)
-      // 设置积分
-      article.commentPayPoint = this.commentPayPoint
       await this.$API.createDraft(article).then(res => {
         if (res.code === 0) {
           this.saveDraft = '文章自动保存至'
@@ -1195,7 +1367,7 @@ export default {
     // 编辑文章
     async editArticle(article) {
       // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
+      article.tags = this.tags
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
 
@@ -1250,12 +1422,7 @@ export default {
     // 更新草稿
     async autoUpdateDraft(article) {
       this.allowLeave = true
-
       this.saveDraft = '保存中...'
-      // 设置文章标签 🏷️
-      article.tags = this.setArticleTag(this.tagCards)
-      // 设置积分
-      article.commentPayPoint = this.commentPayPoint
       try {
         const res = await this.$API.updateDraft(article)
         if (res.code === 0) {
@@ -1268,13 +1435,19 @@ export default {
     // 发布||修改按钮
     sendThePost() {
       // 没有登录 点击发布按钮都提示登录  编辑获取内容的时候会被前面的func拦截并返回home page
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!getCookie('ACCESS_TOKEN')) {
+        this.$store.commit('setLoginModal', true)
+        return 
+      }
 
       // 标题或内容为空时
       if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed(this.$t('warning.titleOrContent'))
 
-      // 没有封面
-      if (!this.cover) return this.failed(this.$t('warning.cover'))
+      // 没有封面 (开发者模式不强制封面 浪费oss空间)
+      if (!this.isDevelopmentMode && !this.cover) {
+        this.failed(this.$t('warning.cover'))
+        return
+      }
 
       // 用户不填写裂变系数则默认为2
       if (this.fissionFactor === '') this.fissionFactor = 2
@@ -1335,6 +1508,7 @@ export default {
 
         const data = { title, author, content }
         // this.fullscreenLoading = false // remove full loading
+
         this.publishArticle({
           author,
           title,
@@ -1449,46 +1623,6 @@ export default {
       else if (this.modalMode === 'home') this.$router.push({ path: '/' })
       else this.$router.go(-1)
     },
-    // 获取标签
-    async getTags() {
-      await this.$API
-        .getTags()
-        .then(res => {
-          // console.log(649, res)
-          if (res.code === 0) {
-            // 过滤商品标签 id <= 100
-            const filterId = i => i.id <= 100
-            const filterTag = res.data.filter(filterId)
-            // 过滤商品标签 id <= 100
-
-            filterTag.map(i => (i.status = false))
-            this.tagCards = filterTag
-          } else console.log(res.message)
-        })
-        .catch(err => {
-          console.log(err)
-        }).finally(() => {
-          this.autoUpdateDfaftTags = true
-        })
-    },
-    // 切换状态
-    toggleTagStatus(data) {
-      const tagCardsIndex = this.tagCards.findIndex(i => i.id === data.id)
-      if (tagCardsIndex === -1) return
-      this.tagCards.map(i => (i.status = false))
-      this.tagCards[tagCardsIndex].status = data.status
-      // console.log(this.tagCards, data)
-    },
-    // 设置标签状态
-    setTagStatus() {
-      const tagCardsCopy = this.tagCards
-      this.articleData.tags.map(i => {
-        tagCardsCopy.map((j, index) => {
-          if (i.id === j.id) tagCardsCopy[index].status = true
-        })
-      })
-      this.tagCards = tagCardsCopy
-    },
     // 关闭原创声明框
     closeStatement(val) {
       // console.log(val)
@@ -1582,7 +1716,10 @@ export default {
     // 立即预览
     async goPreview() {
       const id = this.$route.params.id
-      if (id === 'create' || !Number(id)) return
+      if (id === 'create' || !Number(id)) {
+        this.$message.warning('先写点什么吧!')
+        return
+      }
 
       const res = this.previewSetId(this.$route.params.id)
       if (res) {
@@ -1592,7 +1729,10 @@ export default {
     // 复制预览链接
     async copyPreview() {
       const id = this.$route.params.id
-      if (id === 'create' || !Number(id)) return
+      if (id === 'create' || !Number(id)) {
+        this.$message.warning('先写点什么吧!')
+        return
+      }
 
       const res = this.previewSetId(this.$route.params.id)
       if (res) {
@@ -1601,6 +1741,150 @@ export default {
           () => this.$message.error(this.$t('error.copy'))
         )
       }
+    },
+    // 添加标签
+    addTag() {
+      const val = this.tagVal.trim()
+      if (val) {
+        this.tags.push(val)
+        this.tagVal = ''
+      }
+    },
+    // 删除标签
+    removeTag(i) {
+      this.tags.splice(i, 1)
+    },
+    // 另存为草稿
+    saveAsDraft() {
+
+      const confirmSaveAsDraft = () => {
+        const {
+          title, // 标题
+          markdownData: content, // 内容
+          fissionFactor, // 系数
+          cover, // 封面
+          tags, // 标签
+        } = this
+
+        const is_original = Number(this.isOriginal) // 原创声明
+
+        let data = {
+          title,
+          content,
+          cover,
+          fissionFactor,
+          is_original,
+          tags,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide: 0,
+          requireToken: [],
+          requireBuy: [],
+          editRequireToken: [],
+        }
+
+        data = this.draftFactory(data)
+
+        let promiseArr = [
+          this.$API.createDraft(data),
+          // this.$API.delArticle({ id: this.$route.params.id }) // 创建完成 不删除文章
+        ]
+        Promise.all(promiseArr).then(res => {
+        // 判断是否错误
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].code !== 0) {
+              this.$message.error(res[i].message)
+              return
+            }
+          }
+
+          // 操作完成后
+          this.allowLeave = true
+          this.$message.success(res[0].message)
+          // this.$router.push({name: 'user-id-draft', params: {id: Number(this.currentUserInfo.id)}})
+          console.log(res)
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+
+      this.$confirm('是否另存为草稿?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        confirmSaveAsDraft()
+      }).catch(() => {})
+
+    },
+    // 设置协议
+    setCCLicense(cc) {
+      // 不允许商业使用 复选框
+      if (cc === 'BY-NC') {
+        // 允许
+        this.ccLicenseOptions.share = 'true'
+        this.ccLicenseOptions.commercialUse = false
+      } else if (cc === 'BY-NC-ND') {
+        // 不允许
+        this.ccLicenseOptions.share = 'false'
+        this.ccLicenseOptions.commercialUse = false
+      } else if (cc === 'BY-NC-SA') {
+        // 允许采用本协议授权的二次创作
+        this.ccLicenseOptions.share = 'SA'
+        this.ccLicenseOptions.commercialUse = false
+        // 允许商业使用 复选框
+      } else if (cc === 'BY') {
+        // 允许
+        this.ccLicenseOptions.share = 'true'
+        this.ccLicenseOptions.commercialUse = true
+      } else if (cc === 'BY-ND') {
+        // 不允许
+        this.ccLicenseOptions.share = 'false'
+        this.ccLicenseOptions.commercialUse = true
+      } else if (cc === 'BY-SA') {
+        // 允许采用本协议授权的二次创作
+        this.ccLicenseOptions.share = 'SA'
+        this.ccLicenseOptions.commercialUse = true
+      } else {
+        //
+        console.log('未知协议不处理', cc)
+      }
+      console.log('当前协议', cc)
+    },
+    // 草稿对象加工
+    draftFactory(data) {
+      // 设置ipfs显示
+      data.ipfs_hide = Boolean(this.ipfs_hide)
+
+      // 阅读权限设置
+      if (this.readConfigRadio === 'some') {
+        data.requireToken = this.requireToken
+      }
+
+      // 支付阅读
+      if (this.paymentTokenVisible) {
+        data.requireBuy = [
+          {
+            tokenId: 0, // 默认四位小数
+            amount: toPrecision(this.paymentToken, 'cny', 4), // 默认四位小数
+          }
+        ]
+      }
+
+      // 编辑权限
+      if (this.editConfigRadio === 'some') {
+        data.editRequireToken = this.editRequireToken
+      }
+
+      // 设置摘要
+      if (this.readConfigRadio === 'some' || this.paymentTokenVisible) {
+        data.short_content = this.readSummary
+      }
+      return data
+    },
+    toolMobileImport() {
+      this.importVisible = true
     }
   }
 }

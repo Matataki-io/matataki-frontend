@@ -1,21 +1,14 @@
 <template>
   <div class="main">
-    <g-header />
-
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
-        <div
-          v-if="cover"
-          class="TitleImage"
-        >
-          <img
-            v-lazy="cover"
-            alt="cover"
-          >
+        <div v-if="cover" class="TitleImage">
+          <img v-lazy="cover" alt="cover">
         </div>
         <article class="Post-Header">
           <header>
+            <img v-if="isRecommend" src="@/assets/img/matatakiselected@2x.png" class="matataki-selected">
             <!-- 标题 -->
             <h1 class="Post-Title">
               {{ article.title }}
@@ -235,15 +228,13 @@
 
       <!-- tag 标签 -->
       <div
-        v-if="isShowTags"
-        class="p-w"
-        style="margin-bottom: 20px;"
+        v-if="tags.length !== 0"
+        class="p-w tag-list"
       >
         <router-link
-          v-for="(item, index) in article.tags"
+          v-for="(item, index) in tags"
           :key="index"
-          :to=" {name: 'tag-id', params: {id: item.id}, query: {name: item.name, type: item.type}}"
-          style="margin-right: 10px;"
+          :to=" {name: 'tags-id', params: {id: item.id}, query: {name: item.name,}}"
           class="tag-card"
         >
           {{ item.name }}
@@ -267,10 +258,8 @@
         <commentInput
           v-if="!isProduct"
           :article="article"
-          @doneComment="commentRequest = Date.now()"
         />
         <CommentList
-          :comment-request="commentRequest"
           :sign-id="article.id"
           :type="article.channel_id"
         />
@@ -335,7 +324,7 @@
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
-import { xssFilter, xssImageProcess } from '@/utils/xss'
+import { xssFilter, xssImageProcess, filterOutHtmlTags } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -398,7 +387,6 @@ export default {
       purchaseModalShow: false,
       oldOffSetTop: 0,
       isSupport: false, // 是否赞赏, 重新通过token请求文章数据
-      commentRequest: 0,
       timer: null,
       timeCount: 0,
       ssToken: {
@@ -465,7 +453,8 @@ export default {
       editHasPaied: true,
       lockLoading: true,
       articleIpfsArray: [], // ipfs hash
-      resizeEvent: null
+      resizeEvent: null,
+      tags: [] // 文章标签
     }
   },
   head() {
@@ -503,6 +492,9 @@ export default {
       const { create_time: createTime } = this.article
       const time = moment(createTime)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    isRecommend() {
+      return Boolean(this.article.is_recommend)
     },
     compiledMarkdown() {
       // 前提: 都在自己的平台下
@@ -546,9 +538,6 @@ export default {
     },
     likedOrDisLiked() {
       return parseInt(this.ssToken.is_liked) !== 0
-    },
-    isShowTags() {
-      return this.article.tags && this.article.tags.length !== 0
     },
     getArticlePrice() {
       if (this.isPriceArticle) {
@@ -706,16 +695,25 @@ export default {
       }
     }
   },
+  created() {
+    if (process.browser) {
+      this.setWxShare()
+    }
+  },
   mounted() {
-    // read语法的解锁方法，需要使用onclick触发
-    window.unlock = (need, hold) => this.unlock(need, hold)
+    if (process.browser) {
+      // read语法的解锁方法，需要使用onclick触发
+      window.unlock = (need, hold) => this.unlock(need, hold)
 
-    this.setAvatar()
-    this.addReadAmount()
-    this.getCurrentProfile()
-    this.getArticleIpfs()
+      this.setAvatar()
+      this.addReadAmount()
+      this.getCurrentProfile()
+      this.getTags()
+      this.getArticleIpfs()
 
-    this.setAllHideContentStyle()
+      this.setAllHideContentStyle()
+    }
+
   },
   destroyed() {
     clearInterval(this.timer)
@@ -843,7 +841,6 @@ export default {
         }
       }
     },
-
 
     async getIpfsData() {
       const { hash } = this.article
@@ -1062,7 +1059,7 @@ export default {
     },
     payDone() {
       setTimeout(() => {
-        this.commentRequest = Date.now()
+        this.$store.commit('setCommentRequest')
       }, 3000)
     },
     wxpayArticle() {
@@ -1330,24 +1327,62 @@ export default {
         console.error(e)
         this.$message.error('订单创建失败')
       }
-    }
+    },
+    // 获取文章标签
+    async getTags() {
+      await this.$API.tagsById({
+        id: this.$route.params.id
+      }).then(res => {
+        if (res.code === 0) {
+          this.tags = res.data
+        } else {
+          console.log(res.message)
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    // 设置微信分享
+    setWxShare() {
+      let desc = ''
+      try {
+        // 解析html
+        const markdownIt = this.$mavonEditor.markdownIt
+        let md = markdownIt.render(this.post.content)
+        // 过滤所有的html标签
+        desc = this.$utils.compose(filterOutHtmlTags)(md)
+      } catch (error) {
+        console.log(error)
+        // 提取内容 删除多余的标签
+        const regRemoveContent = (str) => {
+          // 去除空格
+          const strTrim = str => str.replace(/\s+/g, '')
+          // 去除标签
+          const regRemoveTag = str => str.replace(/<[^>]+>/gi, '')
+          // 去除markdown img
+          const regRemoveMarkdownImg = str => str.replace(/!\[.*?\]\((.*?)\)/gi, '')
+          // 去除 markdown 标签
+          // eslint-disable-next-line no-useless-escape
+          const regRemoveMarkdownTag = str => str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/gi, '')
+
+          const regRemoveTagResult = regRemoveTag(str)
+          const regRemoveMarkdownImgResult = regRemoveMarkdownImg(regRemoveTagResult)
+          const regRemoveMarkdownTagResult = regRemoveMarkdownTag(regRemoveMarkdownImgResult)
+          return strTrim(regRemoveMarkdownTagResult)
+        }
+        // 出错就用原来的正则过滤
+        desc = regRemoveContent(this.post.content)
+      }
+
+      this.$wechatShare({
+        title: this.article.title,
+        desc: desc,
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
+      })
+    },
   }
 
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
-
-<style lang="less" scoped>
-// 小于600
-@media screen and (max-width: 600px){
-  .article-header {
-    flex-direction: column;
-    align-items: flex-end;
-  }
-
-  .Post-Title {
-    font-size: 22px;
-  }
-}
-</style>

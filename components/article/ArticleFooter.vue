@@ -63,6 +63,7 @@ export default {
     line-height: 1.5;
     padding: 0;
     margin: 10px 0 0;
+    word-break: break-all;
   }
   .is-original {
     padding: 0;

@@ -73,6 +73,9 @@
             </router-link>
             <!-- <a href="javascript:;" class="screen1-more">订阅我们</a> -->
           </section>
+          <section class="qq-notice">
+            <p>请加入我们的官QQ群：<a href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t" rel="noopener noreferrer" target="_blank">766605671</a></p>
+          </section>
         </section>
         <section class="screen1-block__img">
           <img src="@/assets/img/home/home_screen1_img.png" alt="img">
@@ -296,6 +299,7 @@ import store from '@/utils/store.js'
 import throttle from 'lodash/throttle'
 
 export default {
+  layout: 'home',
   data() {
     return {
       resizeEvent: null,

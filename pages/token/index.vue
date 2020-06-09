@@ -1,7 +1,6 @@
 <template>
   <div class="token">
     <myTokenHeader />
-    <g-header />
     <!-- <div class="fl tokens">
       <avatar size="45px" />
       <div class="fl tokens-content">

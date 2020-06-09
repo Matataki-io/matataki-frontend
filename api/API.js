@@ -243,36 +243,19 @@ export default {
     return this._sendArticle('/post/edit', article)
   },
   // 创建草稿
-  createDraft({ title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
+  createDraft(data) {
     return request({
       method: 'POST',
       url: '/draft/save',
-      data: {
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
+      data
     })
   },
   // 更新草稿
-  updateDraft({ id, title, content, cover, fissionFactor, isOriginal, tags, commentPayPoint }) {
+  updateDraft(data) {
     return request({
       method: 'POST',
       url: '/draft/save',
-      data: {
-        id,
-        title,
-        content,
-        cover,
-        fissionFactor,
-        is_original: isOriginal,
-        tags,
-        commentPayPoint
-      }
+      data
     })
   },
   getDraft({ id }) {
@@ -334,7 +317,7 @@ export default {
   },
   // 推荐作者||用户
   usersRecommend(params){
-    return request('/users/recommend', params)
+    return request('/users/recommend', { params })
   },
   // 获取任务状态
   userPointStatus() {
@@ -980,6 +963,10 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  // 获取某篇文章的标签 
+  tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
+  // 获取热门标签
+  tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
   // 删除文章
   delArticle({ id }) {
     return request({
@@ -1008,6 +995,8 @@ minetokenGetResources(tokenId) {
   previewSetId(data) { return request.post('/preview', data) },
   // 获取预览内容
   previewDraft(id) { return request.get(`/preview/${id}`)},
+  // 获取预览时间
+  previewDraftTime(id) { return request.get(`/previewTime/${id}`)},
 
   getNumArticles(id) {
     return request.get(`posts/timeRanking`, {
@@ -1016,6 +1005,42 @@ minetokenGetResources(tokenId) {
         page: 1,
         pagesize: 1
       }
+    })
+  },
+
+  notifyMarkRead(notifyIds) {
+    return request({
+      method: 'put',
+      url: `/notify/event`,
+      data: { ids: notifyIds }
+    })
+  },
+
+  notifyMarkReadAll() {
+    return request({
+      method: 'put',
+      url: `/notify/event/all`
+    })
+  },
+
+  getNotifyUnreadQuantity() {
+    return request.get(`/notify/event/quantity`)
+  },
+  reply(signId, replyId, comment) {
+    return request({
+      method: 'POST',
+      url: '/comment/reply',
+      data: {
+        signId,
+        comment,
+        replyId
+      }
+    })
+  },
+  likeComment(id) {
+    return request({
+      method: 'PUT',
+      url: `/comment/like/${id}`,
     })
   }
 }

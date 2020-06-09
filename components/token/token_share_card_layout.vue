@@ -49,6 +49,11 @@
 import tokenShareCard from './token_share_card'
 
 export default {
+  head: {
+    script: [
+      { src: '/bowl.min.js' }
+    ]
+  },
   components: {
     tokenShareCard
   },
@@ -67,13 +72,10 @@ export default {
       shareCardCheckedOne: true
     }
   },
-  computed: {
-  },
-  watch: {
-  },
-  mounted() {
-    console.log(document.querySelector('.p-share').offsetLeft)
-    console.log(document.querySelector('.p-share').offsetTop)
+  created() {
+    if (process.browser) {
+      this.injectScript()
+    }
   },
   methods: {
     save() {
@@ -120,6 +122,20 @@ export default {
     },
     toggleShareCard() {
       this.shareCardCheckedOne = !this.shareCardCheckedOne
+    },
+    injectScript() {
+      try {
+        // eslint-disable-next-line no-undef
+        var bowl = new Bowl()
+        bowl.add([
+          { url: '/html2canvas.min.js', key: 'html2canvas' }
+        ])
+        bowl.inject().then(() => {
+          console.log('success')
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

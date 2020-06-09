@@ -1,6 +1,5 @@
 <template>
   <div class="user user-layout">
-    <g-header />
     <el-row class="user-container">
       <el-col :span="4">
         <div class="account-nav position-sticky top70">
@@ -28,9 +27,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user {
-  .minHeight();
-}
 .user-container {
   display: flex;
   justify-content: space-between;

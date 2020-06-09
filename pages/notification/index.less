@@ -1,8 +1,24 @@
-@width: 940px;
+@width: 1160px;
 
 .notification {
-  .minHeight();
   margin: 0 auto;
+
+  &-topbar {
+    margin-bottom: 20px;
+
+    &-title {
+      font-size: 20px;
+      color: black;
+      line-height: 28px;
+      margin: 0;
+    }
+
+    &-button {
+      overflow: hidden;
+      width: 0;
+      height: 0;
+    }
+  }
 }
 
 .notification-container {
@@ -20,48 +36,145 @@
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04)
 }
 
-nav {
+.option {
+  margin-bottom: 20px;
+
+  &-title {
+    font-size: 20px;
+    color: black;
+    line-height: 28px;
+    margin: 0 0 20px 0;
+  }
+
+  &-card {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+
+    &-button {
+      display: flex;
+      justify-content: center;
+    }
+
+    .checkbox-group {
+      flex-wrap: wrap;
+
+      .checkbox {
+        margin: 0 12px 10px 12px;
+      }
+    }
+
+    .checkbox-all {
+      margin: 0 12px 10px 12px;
+    }
+  }
+}
+
+.detail {
+  &-topbar {
+    margin-bottom: 20px;
+    align-items: center;
+
+    &-back {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+      }
+
+      i {
+        font-weight: 600;
+        font-size: 20px;
+      }
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 20px;
+      color: black;
+      line-height: 28px;
+    }
+  }
+}
+
+.noData {
   background: rgba(255, 255, 255, 1);
   border-radius: 10px;
-  padding: 20px;
+  padding: 40px 20px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+@media screen and (max-width: 768px) {
+  .notification-container {
+    margin: 10px auto;
+  }
+  .notification-topbar {
+    justify-content: space-between;
 
-    li {
-      font-size: 20px;
-      color: #B2B2B2;
-      margin: 20px 0;
+    &-title {
+      font-size: 16px;
+      margin: 0;
+    }
 
-      &:first-child {
-        margin-top: 0;
+    &-button {
+      overflow: auto;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .detail-topbar {
+    align-items: flex-end;
+
+    h3 {
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+
+  .option {
+    &.no-bottom {
+      margin-bottom: 0;
+    }
+    &-title {
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+
+    &-card {
+      background: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+
+      .button-hide {
+        overflow: hidden;
+        width: 0;
+        height: 0;
       }
 
-      &:last-child {
-        margin-bottom: 0;
+      .checkbox-group {
+        flex-wrap: wrap;
+
+        .checkbox {
+          margin: 0 12px 10px 0;
+        }
       }
 
-      svg {
-        margin-right: 10px;
-      }
-
-      span {
-        display: inline-block;
-        line-height: 28px;
-      }
-
-      span.count {
-        font-size: 14px;
-        vertical-align: middle;
-        float: right;
-      }
-
-      &.active span.name {
-        color: #000;
-        font-weight: bold;
+      .checkbox-all {
+        margin: 0 12px 10px 0;
       }
     }
   }

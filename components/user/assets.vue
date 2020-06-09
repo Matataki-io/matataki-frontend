@@ -120,11 +120,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.flexCenter{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 .line {
   width: 100%;
   height: 1px;
@@ -134,7 +129,9 @@ export default {
   padding: 0 10px;
 }
 .total {
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   &-left {
     display: flex;
     flex-direction: column;
@@ -146,8 +143,8 @@ export default {
     line-height: 1;
   }
   &-money {
-    font-size:24px;
-    color:rgba(0,0,0,1);
+    font-size: 24px;
+    color: rgba(0, 0, 0, 1);
     margin-top: 20px;
   }
   .btn:not([disabled]) {
@@ -163,15 +160,17 @@ export default {
 }
 
 .total-list {
-  .flexCenter();
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 20px 0;
   &-block {
     display: flex;
     flex-direction: column;
     position: relative;
     flex: 1;
-    &:nth-child(n+2)::before{
-      content: '';
+    &:nth-child(n + 2)::before {
+      content: "";
       position: absolute;
       left: 0;
       top: 20px;
@@ -183,12 +182,12 @@ export default {
   }
   &-money {
     font-size: 24px;
-    color: rgba(251,104,119,1);
+    color: rgba(251, 104, 119, 1);
     margin-top: 20px;
   }
   &-title {
     font-size: 16px;
-    color:#333;
+    color: #333;
   }
 }
 </style>

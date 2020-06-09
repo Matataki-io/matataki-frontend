@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="swipe-wrapper">
     <div
       ref="swipe"
       class="swipe"
@@ -7,7 +7,7 @@
       <el-carousel
         v-if="swipeMode === 'pc'"
         :key="key"
-        :interval="300000"
+        :interval="3000"
         trigger="click"
         :type="swipeType"
         :height="swipeHeight"
@@ -36,7 +36,7 @@
     </div>
     <van-swipe
       v-if="swipeMode === 'mobile'"
-      :autoplay="300000"
+      :autoplay="3000"
       indicator-color="#542DE0"
       :height="170"
       class="mobile"
@@ -143,6 +143,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.swipe-wrapper {
+  overflow: hidden;
+}
 .swipe {
   max-width: 1200px;
   width: 100%;

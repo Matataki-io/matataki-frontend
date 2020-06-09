@@ -18,7 +18,8 @@ const getDefaultState = () => {
     twitterLoginMode: 'login',
     // mode值：login/bind，twitter登录回调地址固定，故需要全局设置
     locales: ['zh', 'en'],
-    locale: 'zh'
+    locale: 'zh',
+    commentRequest: 0
   }
 }
 
@@ -114,6 +115,9 @@ export const mutations = {
   // 重置
   resetState (state) {
     Object.assign(state, getDefaultState())
+  },
+  setCommentRequest(state) {
+    state.commentRequest = Date.now()
   }
 }
 
@@ -330,7 +334,7 @@ export const actions = {
     const {
       data: { data }
     } = await api.getUser({ id: currentUserInfo.id })
-    console.info(data)
+    // console.info(data)
     commit('setNickname', data.nickname)
     return data
   },

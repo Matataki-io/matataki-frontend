@@ -153,7 +153,9 @@ import moment from 'moment'
 const interval = 5000
 export default {
   name: 'OrderModal',
-  components: {QRCode},
+  components: {
+    QRCode
+  },
   props: {
     tradeNo: {
       type: String,

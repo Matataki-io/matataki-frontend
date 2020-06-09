@@ -3,7 +3,6 @@
     :visible.sync="showModal"
     :lock-scroll="false"
     :show-close="false"
-    width="400px"
     custom-class="gray-bg br10 p-share"
     center
     @close="change"
@@ -216,7 +215,7 @@ export default {
       widgetContent: '',
       widgetContentIframe: '',
       socialShow: false,
-      shareLink: process.env.VUE_APP_URL
+      shareLink: process.env.VUE_APP_URL,
     }
   },
   computed: {
@@ -224,10 +223,9 @@ export default {
     clipboard() {
       const { article, currentUserInfo } = this
       const { protocol, host } = window.location
-      // console.debug(this.article);
       const articleUrl = `${protocol}//${host}/p/${article.id}`
       const shareLink = this.isLogined ? `${articleUrl}/?invite=${currentUserInfo.id}&referral=${currentUserInfo.id}` : articleUrl
-      return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t('p.clipboardText1')} \n ${this.$t('p.clipboardText2')}${this.$point.regInvitee}${this.$t('p.clipboardText3')}`
+      return `《${article.title}》by ${article.nickname || article.username} \n${shareLink}\n${this.$t('p.clipboardText1')}`
     },
     id() {
       return this.article.id
@@ -325,5 +323,17 @@ export default {
 .p-share .el-dialog__header,
 .p-share .el-dialog__body {
   padding: 0;
+}
+</style>
+
+<style lang="less" scoped>
+/deep/ .p-share {
+  width: 400px;
+}
+
+@media screen and (max-width: 460px) {
+  /deep/ .p-share {
+    width: 350px;
+  }
 }
 </style>

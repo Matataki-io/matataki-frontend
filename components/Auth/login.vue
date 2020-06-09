@@ -421,6 +421,13 @@ export default {
     getWeixinCode() {
       const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
       if(isWeixin()) {
+
+        // 在微信中并且域名为备案域名 VUE_APP_WX_URL
+        if (window.location.origin !== process.env.VUE_APP_WX_URL) {
+          this.$message.warning(`请移步${process.env.VUE_APP_WX_URL}操作`)
+          return
+        }
+
         this.setPathToSession('wechatFrom')
         this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
       } else {
@@ -490,11 +497,15 @@ export default {
       font-size: 22px;
       color: #fff;
     }
-    
-    .flexCenter();
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .oauth-bg {
       cursor: pointer;
-      .flexCenter();
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 32px;
       height: 32px;
       border-radius: 50%;

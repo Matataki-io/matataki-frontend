@@ -1,23 +1,25 @@
 <template>
   <div class="history">
     <p>{{ $t('ipfsHash.history.description') }}</p>
-    <p>
+    <div class="note">
       {{ $t('ipfsHash.history.selectNode') }}
-      <el-radio v-model="historyPreviewSelect" label="mttk">
-        Matataki
-      </el-radio>
-      <el-radio v-model="historyPreviewSelect" label="infura">
-        Infura
-      </el-radio>
-      <el-radio v-model="historyPreviewSelect" label="ipfs">
-        IPFS.io
-      </el-radio>
-    </p>
+      <div class="note-item">
+        <el-radio v-model="historyPreviewSelect" label="mttk">
+          Matataki
+        </el-radio>
+        <el-radio v-model="historyPreviewSelect" label="infura">
+          Infura
+        </el-radio>
+        <el-radio v-model="historyPreviewSelect" label="ipfs">
+          IPFS.io
+        </el-radio>
+      </div>
+    </div>
     <el-table
       :data="articleIpfsInfomation"
       height="400"
       border
-      style="width: 100%"
+      style="width: 100%;"
     >
       <el-table-column prop="id" label="#" width="70" />
       <el-table-column prop="htmlHash" :label="$t('ipfsHash.history.table.hash')" width="460">
@@ -87,9 +89,27 @@ export default {
   }
 }
 </script>
-
-<style scoped>
+<style lang="less" scoped>
+.note {
+  margin-bottom: 10px;
+}
+.note-item {
+  display: inline-block;
+  margin-left: 10px;
+}
 .copy-hash {
   cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+  .note-item {
+    display: block;
+    margin-left: 0;
+    margin: 10px;
+    /deep/ .el-radio {
+      margin-right: 10px;
+    }
+  }
+  
 }
 </style>

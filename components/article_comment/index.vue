@@ -87,7 +87,8 @@ export default {
           if (res.code === 0) {
             this.$message.success(this.$t('p.commentSuccess'))
             this.comment = ''
-            this.$emit('doneComment')
+            this.$store.commit('setCommentRequest')
+            // this.$emit('doneComment')
           } else this.$message.error(res.message)
         })
         .catch(e => {

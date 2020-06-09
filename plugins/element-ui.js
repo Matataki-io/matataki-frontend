@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import '../assets/theme/index.css'
+// import '../assets/theme/index.css'
+import '../static/theme/index.css'
 import {
   Row,
   Col,
@@ -38,7 +39,8 @@ import {
   Alert,
   Carousel,
   CarouselItem,
-  Badge
+  Badge,
+  Autocomplete
 } from 'element-ui'
 
 Vue.use(Row)
@@ -78,6 +80,7 @@ Vue.use(Alert)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.use(Badge)
+Vue.use(Autocomplete)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

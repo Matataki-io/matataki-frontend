@@ -29,6 +29,9 @@
       </div>
 
       <div class="pc head-flex">
+        <div class="qq-tips">
+          请加我们官方QQ群：766605671
+        </div>
         <div class="search">
           <input
             v-model="searchInput"
@@ -49,10 +52,7 @@
             icon-class="search"
             @click.stop="jutmpToSearch"
           />
-          <ul
-            v-if="searchRecommendList.length !== 0 && searchFcous"
-            class="search-list"
-          >
+          <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
             <li
               v-for="(item, index) in searchRecommendList"
               :key="index"
@@ -67,22 +67,28 @@
           v-if="isLogined"
           class="item"
           effect="dark"
-          content="通知中心"
+          content="消息中心"
           placement="bottom"
         >
           <n-link
-            :class="{ badge: hasNewNotification }"
             class="create"
             to="/notification"
           >
-            <svg-icon
-              :style="customizeHeaderIconColorComputed"
-              class="notification"
-              icon-class="bell"
-            />
+            <el-badge
+              :value="notifyUnreadQuantity"
+              :hidden="notifyUnreadQuantity === 0"
+              :max="99"
+              class="item"
+            >
+              <svg-icon
+                :style="customizeHeaderIconColorComputed"
+                class="notification"
+                icon-class="bell"
+              />
+            </el-badge>
           </n-link>
         </el-tooltip>
-        <el-tooltip
+        <!-- <el-tooltip
           class="item"
           effect="dark"
           :content="$t('publish.importArticle')"
@@ -108,7 +114,7 @@
             icon-class="write"
             @click="writeP"
           />
-        </el-tooltip>
+        </el-tooltip> -->
 
         <el-dropdown
           v-if="isLogined"
@@ -142,7 +148,7 @@
                 {{ $t('home.account') }}
               </el-dropdown-item>
             </n-link>
-  
+
             <div
               class="link"
               @click="btnsignOut"
@@ -160,10 +166,24 @@
           @click="login"
         >{{ $t('home.signIn') }}</a>
         <slot name="more" />
-        <language class="language" />
+        <a v-if="isLogined" class="btn write-btn" @click="writeP">
+          <svg-icon
+            class="write-icon"
+            icon-class="write"
+          />
+          写文章
+        </a>
+        <!-- <language class="language" /> -->
       </div>
       <div class="mobile">
-        <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
+        <el-badge
+          :value="notifyUnreadQuantity"
+          :hidden="notifyUnreadQuantity === 0"
+          :max="99"
+          class="item"
+        >
+          <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
+        </el-badge>
         <ul v-show="toggleMenu" class="menu-ul">
           <li>
             <div class="search">
@@ -186,10 +206,7 @@
                 icon-class="search"
                 @click.stop="jutmpToSearch"
               />
-              <ul
-                v-if="searchRecommendList.length !== 0 && searchFcous"
-                class="search-list"
-              >
+              <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
                 <li
                   v-for="(item, index) in searchRecommendList"
                   :key="index"
@@ -202,7 +219,10 @@
           </li>
           <li>
             <n-link to="/notification">
-              通知中心
+              消息中心
+              <span v-if="numMessagesLabel" class="news">
+                {{ numMessagesLabel }}
+              </span>
             </n-link>
           </li>
 
@@ -246,12 +266,13 @@
               {{ $t('home.signIn') }}
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="javascript:;">
               <language />
             </a>
-          </li>
+          </li> -->
         </ul>
+        <div v-if="toggleMenu" class="menu-full" @click="toggleMenu = !toggleMenu" />
       </div>
     </div>
   </header>
@@ -260,7 +281,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import homeLogo from '@/assets/img/home_logo.png' // 因为tag页面不需要换颜色了, 可以逐步删掉props
-import language from './language'
+// import language from './language'
 import homeLogo from '@/assets/img/m_logo_square.png'
 import homeLogoWhile from '@/assets/img/home_logo_white.png'
 // import avatarComponents from '@/components/avatar/index.vue'
@@ -273,7 +294,7 @@ export default {
   name: 'HomeHead',
   components: {
     // avatarComponents,
-    language
+    // language
   },
   props: {
     // 自定义头部背景
@@ -304,11 +325,11 @@ export default {
       searchInput: this.searchQueryVal,
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
+      notifyUnreadQuantity: 0
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
-    ...mapGetters('notification', ['hasNewNotification']),
     nav() {
       return [
         {
@@ -316,6 +337,12 @@ export default {
           url: 'article',
           sup: '',
           urlList: ['article', 'ring-id']
+        },
+        {
+          title: this.$t('home.timeline'),
+          url: 'timeline',
+          sup: '',
+          urlList: ['timeline']
         },
         {
           title: this.$t('home.fanTicket'),
@@ -340,6 +367,10 @@ export default {
     customizeHeaderLogoColorComputed() {
       if (this.customizeHeaderLogo === 'white') return homeLogoWhile
       else return homeLogo
+    },
+    numMessagesLabel() {
+      if(!this.notifyUnreadQuantity) return ''
+      return `（${this.notifyUnreadQuantity}条新消息）`
     }
   },
   watch: {
@@ -350,7 +381,8 @@ export default {
       this.searchInput = newVal
     },
     async $route() {
-      if (this.isLogined) await this.getNotificationCounters()
+      if (this.isLogined) await this.getNotifyUnreadQuantity()
+      this.toggleMenu = false
     }
   },
   created() {
@@ -362,7 +394,12 @@ export default {
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut', 'resetAllStore']),
-    ...mapActions('notification', ['getNotificationCounters']),
+    async getNotifyUnreadQuantity() {
+      const res = await this.$API.getNotifyUnreadQuantity()
+      if(res.code === 0) {
+        this.notifyUnreadQuantity = res.data
+      }
+    },
     postImport() {
       if (this.isLogined) this.$store.commit('importArticle/setImportModal', true)
       else this.login()
@@ -374,7 +411,7 @@ export default {
     async refreshUser() {
       const { avatar } = await this.getCurrentUser()
       if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
-      await this.getNotificationCounters()
+      await this.getNotifyUnreadQuantity()
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -473,6 +510,45 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.qq-tips {
+  margin-right: 20px;
+  color: #B2B2B2;
+  font-size: 14px;
+}
+.user-menu  {
+  margin-right: 20px;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px;
+  font-size: 14px;
+  line-height: 1.42857;
+  border-radius: 4px;
+  user-select: none;
+}
+.write-btn {
+  float: right;
+  width: 100px;
+  // height: 40px;
+  line-height: 24px;
+  // margin: 0 12px;
+  border-radius: 20px;
+  font-size: 15px;
+  color: #fff;
+  background-color: #542DE0;
+  .write-icon {
+    color: #fff;
+  }
+}
 .header {
   width: 100%;
   height: 60px;
@@ -516,11 +592,11 @@ export default {
     width: 24px;
     height: 24px;
     cursor: pointer;
-    margin: 0 20px 0 0;
+    margin: 0 20px;
     color: #000;
     .notification {
-    width: 100%;
-    height: 100%;
+    width: 24px;
+    height: 24px;
     }
   }
   &-avatar {
@@ -545,6 +621,7 @@ export default {
     background: #000;
     border-radius: 6px;
     text-decoration: none;
+    margin-left: 10px;
   }
   .nav {
     font-size: 18px;
@@ -734,7 +811,7 @@ export default {
     left: 0;
     right: 0;
     background: #fff;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
     padding: 0 10px 20px;
     margin: 0;
     list-style: none;
@@ -751,7 +828,7 @@ export default {
       }
       a {
         display: block;
-        padding: 10px 0;
+        padding: 10px;
         color: #333;
       }
 
@@ -760,6 +837,21 @@ export default {
       }
     }
   }
+}
+.news {
+  color: #F56C6C;
+}
+.menu-ul {
+  z-index: 2;
+}
+.menu-full {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 60px;
+  background-color: rgba(0,0,0,.4);
+  z-index: 1;
 }
 // 页面大于
 @media screen and (min-width: 801px) {
@@ -779,6 +871,54 @@ export default {
       width: 100%;
       margin: 10px 0;
     }
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .home-head {
+    padding-left: 20px;
+    padding-right: 10px;
+    .logo {
+      height: 30px;
+    }
+    .nav {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+  .home-head-notlogin {
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .qq-tips {
+    font-size: 13px;
+  }
+  .search .input {
+    font-size: 12px;
+  }
+  .search .icon-search {
+    width: 16px;
+    height: 16px;
+  }
+  .write-btn {
+    width: 80px;
+    line-height: 20px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header {
+    height: 50px;
+  }
+  .menu-ul,
+  .menu-full {
+    top: 50px;
+  }
+
+  .search-list {
+    top: 40px;
   }
 }
 </style>

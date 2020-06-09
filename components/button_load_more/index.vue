@@ -10,6 +10,7 @@
   </el-button>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     typeIndex: {
@@ -35,10 +36,6 @@ export default {
       type: String,
       default: 'Object'
     },
-    commentRequest: {
-      type: Number,
-      default: 0
-    },
     // 自动请求
     autoRequestTime: {
       type: Number,
@@ -60,6 +57,9 @@ export default {
       isLoadEnd: false,
       page: this.params.page || 1 // 分页
     }
+  },
+  computed: {
+    ...mapState(['commentRequest']),
   },
   watch: {
     // 自动请求 通过time++
@@ -155,6 +155,16 @@ export default {
     margin: 20px auto;
     padding: 0;
     text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .load-more.btn {
+    font-size: 14px;
+    width: 140px;
+    height: 40px;
+    border-radius: 3px;
+    font-weight: 400;
   }
 }
 </style>

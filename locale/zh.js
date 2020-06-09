@@ -318,6 +318,7 @@ export default {
   home: {
     creation: '发现',
     share: '分享',
+    timeline: '动态',
     fanTicket: 'Fan票',
     signOut: '登出',
     signIn: '立即登录',
@@ -389,6 +390,7 @@ export default {
     transfer: '转让',
     titlePlaceholder: '请输入你的文章标题...',
     contentPlaceholder: '在此输入内容\n支持Markdown、HTML标签、独创的内容加密语法（点击上方的小锁）\n\n现在就开始编辑吧！',
+    contentPlaceholderMobile: '在此输入内容\n支持Markdown、HTML标签、独创的内容加密语法（点击下方的小锁）\n\n现在就开始编辑吧！',
     commentTitle: '评论价格',
     commentContent: '用户需要向您支付对应的积分才可评论(1-99999)',
     point: '积分',

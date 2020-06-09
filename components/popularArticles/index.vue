@@ -39,18 +39,20 @@ export default {
 
 <style lang="less">
 .poular-articles {
-  padding-bottom: 20px;
   .pa-head-title {
     font-size: 20px;
     font-weight: 600;
     color: black;
     margin: 0 0 20px;
+    height: 24px;
   }
   .pa-list {
     min-height: 200px;
     border-radius: 10px;
     background-color: white;
     padding: 20px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+    
     &-card {
       transition: all 0.1s ease-in 0.1s;
       margin-bottom: 20px;
