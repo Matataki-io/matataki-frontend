@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <div class="comment-info">
+    <div :id="'comment' + comment.id" class="comment-info">
       <n-link
         :to="{name: 'user-id', params: {id : comment.uid}}"
         class="comment-avatar"

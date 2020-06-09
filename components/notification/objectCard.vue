@@ -144,7 +144,7 @@ export default {
     },
     url() {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
-      else if(this.mode === 'reply') return {}
+      else if(this.mode === 'reply') return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
       return {name: 'user-id', params:{id: this.user.id}}
     },
     followBtnText() {
