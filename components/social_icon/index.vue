@@ -89,7 +89,7 @@ export default {
           name: 'Telegram：',
           tooltip: '',
           placeholder: `Telegram ${this.$t('username')}`,
-          url: '',
+          url: 'https://telegram.me/',
           value: ''
         },
         {
