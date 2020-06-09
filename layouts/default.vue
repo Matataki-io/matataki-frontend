@@ -8,19 +8,16 @@
     <back-to-top
       v-if="!hideBackTop"
       :visibility-height="300"
-      :back-position="50"
+      :back-position="100"
       class="backtop"
       transition-name="fade"
     >
       <svg-icon
         class="backtop-icon"
-        icon-class="backtop"
+        icon-class="back_top"
       />
     </back-to-top>
-    <feedback
-      v-if="!hideFeedback"
-      :show-position="100"
-    />
+    <feedback v-if="!hideFeedback" :show-position="100" />
     <AuthModal v-model="loginModalShow" />
     <articleImport
       v-model="importModalShow"
@@ -137,27 +134,28 @@ export default {
 <style lang="less" scoped>
 .app {
   .backtop {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: @purpleDark;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
     z-index: 99;
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 90px;
-    color: #fff;
+    bottom: 95px;
+    color: #B2B2B2;
     display: flex;
     align-items: center;
     justify-content: center;
-    // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.05);
+    border-radius: 4px;
     &:hover {
       opacity: 0.9;
     }
 
     &-icon {
-      color: #fff;
+      color: #B2B2B2;
+      font-size: 24px;
     }
   }
 }
@@ -171,7 +169,13 @@ export default {
 @media screen and (max-width: 768px) {
   .app {
     .backtop {
-      right: 10px;
+      width: 30px;
+      height: 30px;
+      right: 20px;
+      bottom: 80px;
+      &-icon {
+        font-size: 16px;
+      }
     }
   }
 }
