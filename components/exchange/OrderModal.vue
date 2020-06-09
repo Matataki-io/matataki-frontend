@@ -132,7 +132,9 @@ import utils from '@/utils/utils'
 const interval = 5000
 export default {
   name: 'OrderModal',
-  components: {QRCode},
+  components: {
+    QRCode
+  },
   props: {
     value: {
       type: Boolean,
