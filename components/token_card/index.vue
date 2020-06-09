@@ -120,7 +120,7 @@ export default {
   width: 31%;
   &-symbol {
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 500;
     color: @black;
     line-height: 28px;
     padding: 0;
@@ -199,14 +199,6 @@ export default {
 }
 // <600
 @media screen and (max-width: 600px) {
-  .token-cover {
-    display: none;
-  }
-
-  .cards-content {
-    margin-left: 0;
-  }
-
   .card-info {
     width: 35%;
   }
@@ -217,14 +209,23 @@ export default {
 
 // < 580
 @media screen and (max-width: 580px) {
+  .token-cover {
+    /deep/ .g-avatar {
+      width: 30px !important;
+      height: 30px !important;
+    }
+  }
   .cards-content {
     display: block;
     .card-info {
       width: 100%;
     }
     .card-info-symbol {
-          font-size: 18px;
-    line-height: 20px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .card-info-name {
+      font-size: 12px;
     }
     .card-data {
       width: 100%;
@@ -232,6 +233,13 @@ export default {
       .card-data-column {
         float: none;
         width: 100%;
+        .card-data-amount {
+          font-size:14px;
+          font-weight:400;
+          color:rgba(0,0,0,1);
+          line-height:20px;
+          margin: 10px 0 0 0;
+        }
       }
       .card-data-amount {
         line-height: 1.5;

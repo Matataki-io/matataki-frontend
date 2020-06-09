@@ -4,7 +4,8 @@
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 60px 10px 0;
+  padding-left: 10px;
+  padding-right: 10px;
   box-sizing: border-box;
 }
 
@@ -139,6 +140,10 @@
 // < 580
 @media screen and (max-width: 580px) {
 
+  .tokens-list-header-left-column .el-dropdown {
+    font-size: 14px;
+  }
+
   .tokens-list-header-left-column,
   .tokens-list-header-medium-column,
   .tokens-list-header-right-column {
@@ -148,5 +153,15 @@
 
   .tokens-list-header-medium-column {
     margin-top: 10px;
+  }
+
+  .tokens-list-header-medium-column {
+    .sub-column:nth-child(1) {
+      text-align: left;
+    }
+
+    .sub-column:nth-last-child(1) {
+      text-align: right;
+    }
   }
 }
