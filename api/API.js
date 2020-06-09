@@ -105,11 +105,11 @@ export default {
       }
   },
   async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return request.post(`/login/captcha?email=${email}`, {
+    return request.post(`/login/captcha`, {
       geetest_challenge,
       geetest_validate,
       geetest_seccode
-    }, { noLoading: true })
+    }, { noLoading: true, params: { email } })
 
     return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
