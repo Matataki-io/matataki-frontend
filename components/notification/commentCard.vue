@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'p-id', params:{id: card.object_id}}">
+  <router-link :to="card.object_type === 'article' ? {name: 'p-id', params:{id: card.object_id}} : {}">
     <div
       class="card"
     >
