@@ -123,7 +123,7 @@ export default {
         passwordChangeFailed: '密码修改失败'
     },
     // components
-    header: { newArticle: '写文章' },
+    header: { newArticle: '创作文章' },
     auth: {
         eosWallet: 'EOS钱包',
         ontWallet: 'ONT钱包',
@@ -308,7 +308,7 @@ export default {
         share: '分享',
         timeline: '动态',
         fanTicket: 'Fan票',
-        signOut: '登出',
+        signOut: '登出账户',
         signIn: '立即登录',
         navArticle: '文章',
         navShop: '商品',
