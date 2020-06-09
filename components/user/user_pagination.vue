@@ -2,11 +2,10 @@
   <el-pagination
     :total="total"
     :page-size="pageSize"
-    :pager-count="pagerCount"
     :current-page.sync="currentPageCopy"
     :small="small"
     :class="selectClass"
-    layout="prev, pager, next"
+    :layout="layout"
     background
     @prev-click="prevClick"
     @next-click="nextClick"
@@ -15,7 +14,7 @@
 </template>
 
 <script>
-// import throttle from 'lodash/throttle'
+import throttle from 'lodash/throttle'
 
 export default {
   props: {
@@ -68,7 +67,7 @@ export default {
     return {
       currentPageCopy: this.currentPage,
       resizeEvent: null,
-      pagerCount: 7,
+      layout: '',
     }
   },
   computed: {
@@ -96,25 +95,22 @@ export default {
 
     if (process.browser) {
       this.$nextTick(() => {
-        // this.resizeInit()
-        // this.resizeEvent = throttle(this.resizeInit, 300)
-        // window.addEventListener('resize', this.resizeEvent)
+        this.resizeInit()
+        this.resizeEvent = throttle(this.resizeInit, 300)
+        window.addEventListener('resize', this.resizeEvent)
       })
     }
   },
   destroyed() {
-    // window.removeEventListener('resize', this.resizeEvent)
+    window.removeEventListener('resize', this.resizeEvent)
   },
   methods: {
     resizeInit() {
       let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
-      // console.log('clientWidth', clientWidth)
-      if (clientWidth < 510) {
-        //
-        this.pagerCount = 2
+      if (clientWidth < 540) {
+        this.layout = 'prev, next, jumper'
       } else {
-        //
-        this.pagerCount = 7
+        this.layout = 'prev, pager, next'
       }
     },
     // 得到总页数
