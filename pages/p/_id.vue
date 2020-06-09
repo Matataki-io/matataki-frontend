@@ -258,10 +258,8 @@
         <commentInput
           v-if="!isProduct"
           :article="article"
-          @doneComment="commentRequest = Date.now()"
         />
         <CommentList
-          :comment-request="commentRequest"
           :sign-id="article.id"
           :type="article.channel_id"
         />
@@ -389,7 +387,6 @@ export default {
       purchaseModalShow: false,
       oldOffSetTop: 0,
       isSupport: false, // 是否赞赏, 重新通过token请求文章数据
-      commentRequest: 0,
       timer: null,
       timeCount: 0,
       ssToken: {
@@ -1062,7 +1059,7 @@ export default {
     },
     payDone() {
       setTimeout(() => {
-        this.commentRequest = Date.now()
+        this.$store.commit('setCommentRequest')
       }, 3000)
     },
     wxpayArticle() {

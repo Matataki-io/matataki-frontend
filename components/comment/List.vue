@@ -1,9 +1,9 @@
 <template>
   <div class="comment-container">
     <h2 v-if="pull.articles.length !== 0" class="comment-title">
-      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.commentLength }}
+      {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.allcount }} 
     </h2>
-    <template v-if="type === 2">
+    <!-- <template v-if="type === 2">
       <CommentCard
         v-for="(itemChild, indexChild) in pull.articles"
         :key="indexChild"
@@ -11,14 +11,15 @@
         :type="type"
       />
     </template>
-    <template v-else>
+    <template v-else> -->
+    <div v-for="(itemChild, indexChild) in pull.articles" :key="indexChild" class="comment-outer">
       <articleCard
-        v-for="(itemChild, indexChild) in pull.articles"
-        :key="indexChild"
         :comment="itemChild"
         :type="type"
       />
-    </template>
+      <ReplyList v-if="itemChild.replyList.length > 0" :list="itemChild.replyList" />
+    </div>
+    <!-- </template> -->
     <buttonLoadMore
       :type-index="0"
       :params="pull.params"
@@ -33,13 +34,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import CommentCard from './Card'
+import { mapState, mapGetters } from 'vuex'
+// import CommentCard from './Card'
 import articleCard from './article_card'
+import ReplyList from './ReplyList'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 export default {
-  components: { CommentCard, buttonLoadMore, articleCard },
+  components: { buttonLoadMore, articleCard, ReplyList },
   props: {
     signId: {
       type: Number,
@@ -49,10 +51,6 @@ export default {
       type: Number, // 2是商品 1是文章
       required: true
     },
-    commentRequest: {
-      type: Number,
-      default: 0
-    }
   },
   data() {
     return {
@@ -62,12 +60,14 @@ export default {
         },
         apiUrl: 'commentsList',
         articles: [],
-        commentLength: 0
+        commentLength: 0,
+        allcount: 0
       },
       reload: this.commentRequest
     }
   },
   computed: {
+    ...mapState(['commentRequest']),
     ...mapGetters(['currentUserInfo'])
   },
   watch: {
@@ -92,6 +92,7 @@ export default {
           this.pull.articles = this.pull.articles.concat(res.data.list)
         }
         this.pull.commentLength = res.data.count
+        this.pull.allcount = res.data.allcount
       }
     }
   }
@@ -99,6 +100,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.comment-outer:not(:last-child) {
+  border-bottom: 1px solid #e5e9ef;
+}
 .comment-title {
   font-size: 18px;
   padding: 0;

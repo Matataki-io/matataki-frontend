@@ -1025,5 +1025,22 @@ minetokenGetResources(tokenId) {
 
   getNotifyUnreadQuantity() {
     return request.get(`/notify/event/quantity`)
+  },
+  reply(signId, replyId, comment) {
+    return request({
+      method: 'POST',
+      url: '/comment/reply',
+      data: {
+        signId,
+        comment,
+        replyId
+      }
+    })
+  },
+  likeComment(id) {
+    return request({
+      method: 'PUT',
+      url: `/comment/like/${id}`,
+    })
   }
 }

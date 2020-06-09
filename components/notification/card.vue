@@ -102,7 +102,8 @@ export default {
         like: '推荐了你的文章',
         comment: '评论了你的文章',
         follow: '关注了你',
-        annouce: ''
+        annouce: '',
+        reply: '回复了你的评论'
       }
     }
   },
@@ -158,7 +159,9 @@ export default {
         if(!this.post) return 'hide'
         else return 'post'
       }
-      else {
+      else if (this.card.action === 'reply') {
+        return 'reply'
+      } else {
         // 使用用户卡片，如果用户对象是空的则不显示
         if (!this.user) return 'hide'
         else return 'user'
