@@ -1,7 +1,8 @@
 <template>
   <div class="outer">
-    <div
-      ref="qr"
+    <qrcode
+      :value="payLink"
+      :options="{ width: '150' }"
       class="qrcode"
     />
     <p>请使用微信扫描二维码进行支付</p>
@@ -9,43 +10,17 @@
 </template>
 
 <script>
-/* eslint-disable */
+import VueQrcode from '@chenfengyuan/vue-qrcode'
+
 export default {
   name: 'QRCode',
+  components: {
+    qrcode: VueQrcode
+  },
   props: {
     payLink: {
       type: String,
       default: ''
-    }
-  },
-  components: {
-  },
-  data() {
-    return {
-    }
-  },
-  computed: {
-  },
-  watch: {
-    payLink(url) {
-      this.$refs.qr.innerHTML = ''
-      this.genQRCode(url)
-    }
-  },
-  mounted() {
-    this.genQRCode(this.payLink)
-  },
-  methods: {
-    genQRCode(url) {
-      new QRCode(this.$refs.qr, {
-        color: {
-          dark: '#542DE0',  // Blue dots
-          light: '#0000' // Transparent background
-        },
-        text: url,
-        width: 150,
-        height: 150,
-      });
     }
   }
 }

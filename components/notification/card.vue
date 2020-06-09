@@ -6,6 +6,7 @@
       <svg-icon v-else-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
       <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
       <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
+      <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
@@ -59,6 +60,7 @@
           :mode="mode"
           :user="user"
           :post="post"
+          :comment="commentObject"
         />
       </div>
     </div>
@@ -92,6 +94,10 @@ export default {
       default:  null
     },
     comment: {
+      type: Object,
+      default: null
+    },
+    commentObject: {
       type: Object,
       default: null
     }
@@ -135,7 +141,7 @@ export default {
     /** 内容 */
     content() {
       const { action } = this.card
-      if (action === 'comment') {
+      if (action === 'comment' || action === 'reply') {
         // 评论
         if (this.comment === null || this.card.total > 1) return ''
         return this.comment.comment
@@ -154,23 +160,19 @@ export default {
     },
     /** 子卡片显示模式 */
     mode() {
-      if (['comment', 'like', 'annouce'].includes(this.card.action)) {
-        // 使用文章卡片，如果文章对象是空的则不显示
-        if(!this.post) return 'hide'
-        else return 'post'
-      }
-      else if (this.card.action === 'reply') {
-        return 'reply'
-      } else {
-        // 使用用户卡片，如果用户对象是空的则不显示
-        if (!this.user) return 'hide'
-        else return 'user'
-      }
+      if (['comment', 'like', 'annouce'].includes(this.card.action) && this.post)
+        return 'post' // 文章
+      else if (this.card.action === 'reply' && this.commentObject)
+        return 'reply' // 回复
+      else if(this.card.action === 'follow' && this.user)
+        return 'user' // 用户
+      else return 'hide' // 隐藏
     }
   },
   methods: {
     openDetails() {
       if(this.card.total < 2) return this.openObject()
+      if(this.action === 'annouce') return
 
       this.$emit('openDetails', {
         startId: this.card.id,
@@ -183,7 +185,23 @@ export default {
     openObject() {
       if(this.mode === 'hide') return
 
-      const url = this.mode === 'post' ? {name: 'p-id', params:{id: this.post.id}} : {name: 'user-id', params:{id: this.user.id}}
+      let url
+      switch (this.mode) {
+        case 'post':
+          if (this.card.action === 'comment')
+            url = {name: 'p-id', params: {id: this.post.id}, query: {comment: this.comment.id}}
+          else url = {name: 'p-id', params: {id: this.post.id}}
+          break
+        case 'user':
+          url = {name: 'user-id', params: {id: this.user.id}}
+          break
+        case 'reply':
+          url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          break
+        default:
+          url = {}
+          break
+      }
       this.$router.push(url)
     }
   }

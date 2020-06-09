@@ -51,6 +51,11 @@ export default {
       type: Number, // 2是商品 1是文章
       required: true
     },
+    // 锚点：不等于0时，评论加载完成后跳转到所指评论
+    commentAnchor: {
+      type: Number,
+      default: 0
+    },
   },
   data() {
     return {
@@ -63,7 +68,8 @@ export default {
         commentLength: 0,
         allcount: 0
       },
-      reload: this.commentRequest
+      reload: this.commentRequest,
+      commentId: 0
     }
   },
   computed: {
@@ -93,7 +99,28 @@ export default {
         }
         this.pull.commentLength = res.data.count
         this.pull.allcount = res.data.allcount
+
+        this.goCommentAnchor()
       }
+    },
+    goCommentAnchor() {
+      if(!this.commentAnchor) return
+      if(this.commentId) return
+      this.commentId = this.commentAnchor
+      this.$nextTick(() => {
+        this.goAnchor('comment' + this.commentId)
+      })
+    },
+    goAnchor(id) {
+      var anchor = document.getElementById(id)
+      if(!anchor) return
+
+      const offsetTop = anchor.offsetTop - 100
+
+      // chrome, firefox, safari
+      document.body.scrollTop = offsetTop
+      document.documentElement.scrollTop = offsetTop
+      window.pageYOffset = offsetTop
     }
   }
 }

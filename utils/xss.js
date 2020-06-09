@@ -306,3 +306,16 @@ export const filterOutHtmlTags = (html, whiteList = []) => {
     stripIgnoreTagBody: ["script"]
   });
 }
+
+// 处理文章 link 增加 属性, 新页面打开
+export const processLink = html => {
+  return xss(html, {
+    onTagAttr: function(tag, name, value, isWhiteAttr) {
+      // 为 a 并且有 href 则添加 target
+      if (tag === "a" && name === "href") {
+        let val = xss.friendlyAttrValue(value)
+        return `${name}=${val} target='_blank' rel='noreferrer noopener'`
+      }
+    }
+  });
+}

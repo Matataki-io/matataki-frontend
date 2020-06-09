@@ -50,14 +50,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    script: [
-      { src: '/html2canvas.min.js' },
-      { src: '/qrcode.min.js' },
-      { src: '/gt.js' }
-      // { src: '/gsap.min.js' },
-      // { src: '/ScrollMagic.min.js' },
-      // { src: '/animation.gsap.min.js' }
-    ]
+    script: []
   },
   /*
   ** Customize the progress-bar color
@@ -126,6 +119,7 @@ export default {
   ** Build configuration
   */
   build: {
+    // publicPath: 'http://matataki-client.oss-cn-shanghai.aliyuncs.com/dist/',
     // analyze: true,
     cache: true,
     parallel: true,

@@ -262,6 +262,7 @@
         <CommentList
           :sign-id="article.id"
           :type="article.channel_id"
+          :comment-anchor="commentAnchor"
         />
       </div>
 
@@ -324,7 +325,7 @@
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
-import { xssFilter, xssImageProcess, filterOutHtmlTags } from '@/utils/xss'
+import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -454,7 +455,8 @@ export default {
       lockLoading: true,
       articleIpfsArray: [], // ipfs hash
       resizeEvent: null,
-      tags: [] // 文章标签
+      tags: [], // 文章标签
+      commentAnchor: Number(this.$route.query.comment) || 0 //评论锚点
     }
   },
   head() {
@@ -508,7 +510,7 @@ export default {
 
         let md = markdownItEditor.render(content)
 
-        return this.$utils.compose(xssImageProcess, xssFilter)(md)
+        return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
       } else {
         let md = markdownIt.render(this.post.content)
         return this.$utils.compose(xssImageProcess, xssFilter)(md)

@@ -69,6 +69,11 @@
           </a>
         </div>
       </div>
+      <div v-if="mode === 'reply'" class="fl reply">
+        <p>
+          {{ content }}
+        </p>
+      </div>
     </div>
   </router-link>
 </template>
@@ -92,6 +97,10 @@ export default {
       default: null
     },
     post: {
+      type: Object,
+      default:  null
+    },
+    comment: {
       type: Object,
       default:  null
     },
@@ -135,6 +144,7 @@ export default {
     },
     url() {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
+      else if(this.mode === 'reply') return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
       return {name: 'user-id', params:{id: this.user.id}}
     },
     followBtnText() {
@@ -154,6 +164,10 @@ export default {
       const time = moment(this.createTime)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
+    content() {
+      if(!this.comment) return ''
+      return this.comment.comment
+    }
   },
   methods: {
     followOrUnFollow() {
@@ -289,6 +303,20 @@ export default {
       margin-left: 20px;
     }
   }
+  .reply {
+    padding: 10px;
+    p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      font-size: 14px;
+      font-weight: 400;
+      color: #B2B2B2;
+      line-height: 20px;
+      margin: 0;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -337,6 +365,9 @@ export default {
           overflow: hidden;
         }
       }
+    }
+    .reply {
+      padding: 0;
     }
   }
   .user-details {

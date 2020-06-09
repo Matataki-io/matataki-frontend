@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <div class="comment-info">
+    <div :id="'comment' + comment.id" class="comment-info">
       <n-link
         :to="{name: 'user-id', params: {id : comment.uid}}"
         class="comment-avatar"
@@ -20,7 +20,7 @@
         >
           {{ nickname }}
         </router-link>
-        <span v-if="comment.reply_uid" class="text-con">回复 
+        <span v-if="comment.reply_uid" class="text-con">回复
           <router-link :to="`/user/${comment.reply_uid}`" target="_blank"> @{{ comment.reply_nickname }} </router-link>
         </span>
         <span class="time">
@@ -35,7 +35,7 @@
           <span>{{ comment.like_num }}</span>
         </span> -->
 
-        <span class="reply" @click="showInput = !showInput">回复</span>
+        <span class="reply" @click="switchShowInput">回复</span>
         <p class="comment-content wrap-open">
           <!-- 开了wrap 这个span不能换行！ -->
           <span class="wrap-open">{{ displayMessage }}</span>
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import moment from 'moment'
 import avatar from '@/components/avatar/index'
 import replyInput from './ReplyInput'
@@ -75,6 +77,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
     displayMessage() {
       // console.log('comment', this.comment.comment)
       return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
@@ -94,6 +97,11 @@ export default {
   methods: {
     likeComment() {
       this.$API.likeComment(this.comment.id)
+    },
+    switchShowInput() {
+      if(!this.isLogined) return this.$store.commit('setLoginModal', true)
+
+      this.showInput = !this.showInput
     }
   }
 }
