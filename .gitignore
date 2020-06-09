@@ -90,4 +90,7 @@ sw.*
 
 coverage
 _format
-static
+
+
+
+ali_oss_build.js
