@@ -625,6 +625,10 @@ export default {
   padding: 0;
   margin: 0;
   sub {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
     bottom: 0;
   }
 }
