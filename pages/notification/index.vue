@@ -26,6 +26,7 @@
           :post="getPost(item)"
           :annouce="getAnnouce(item)"
           :comment="getComment(item)"
+          :comment-object="getCommentObject(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
@@ -53,13 +54,14 @@
         </div>
         <div style="margin-bottom: 20px;">
           <objectCard
-            v-if="detailsIndex.objectType === 'article'"
-            mode="post"
+            v-if="detailsIndex.objectType === 'article' || detailsIndex.objectType === 'comment'"
+            :mode="detailsIndex.objectType === 'article' ? 'post' : 'reply'"
             :post="posts.find(post => post.id === detailsIndex.objectId)"
+            :comment="comments.find(comment => comment.id === detailsIndex.objectId)"
             bg-color="white"
           />
         </div>
-        <el-divider v-if="detailsIndex.objectType === 'article'" />
+        <el-divider v-if="detailsIndex.objectType === 'article' || detailsIndex.objectType === 'comment'" />
         <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
           <objectCard
             v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'"
@@ -70,7 +72,7 @@
             bg-color="white"
           />
           <commentCard
-            v-if="detailsIndex.action === 'comment'"
+            v-if="detailsIndex.action === 'comment' || detailsIndex.action === 'reply'"
             :card="item"
           />
         </div>
@@ -175,7 +177,8 @@ export default {
       actionDetailLabels: {
         like: '推荐详情',
         comment: '评论详情',
-        follow: '关注详情'
+        follow: '关注详情',
+        reply: '回复详情'
       },
       checkAll: true,
       checkedCities: [],
@@ -282,8 +285,15 @@ export default {
       return null
     },
     getComment(notify) {
-      if(this.comments && this.comments.length > 0 && notify.action === 'comment') {
+      if(this.comments && this.comments.length > 0 && (notify.action === 'comment' || notify.action === 'reply')) {
         const commentId = notify.remark
+        return this.comments.find(comment => comment.id === commentId)
+      }
+      return null
+    },
+    getCommentObject(notify) {
+      if(this.comments && this.comments.length > 0 && notify.object_type === 'comment') {
+        const commentId = notify.object_id
         return this.comments.find(comment => comment.id === commentId)
       }
       return null
