@@ -262,6 +262,7 @@
         <CommentList
           :sign-id="article.id"
           :type="article.channel_id"
+          :comment-anchor="commentAnchor"
         />
       </div>
 
@@ -454,7 +455,8 @@ export default {
       lockLoading: true,
       articleIpfsArray: [], // ipfs hash
       resizeEvent: null,
-      tags: [] // 文章标签
+      tags: [], // 文章标签
+      commentAnchor: Number(this.$route.query.comment) || 0 //评论锚点
     }
   },
   head() {

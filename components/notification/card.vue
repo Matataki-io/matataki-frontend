@@ -172,6 +172,7 @@ export default {
   methods: {
     openDetails() {
       if(this.card.total < 2) return this.openObject()
+      if(this.action === 'annouce') return
 
       this.$emit('openDetails', {
         startId: this.card.id,
@@ -184,7 +185,23 @@ export default {
     openObject() {
       if(this.mode === 'hide') return
 
-      const url = this.mode === 'post' ? {name: 'p-id', params:{id: this.post.id}} : {name: 'user-id', params:{id: this.user.id}}
+      let url
+      switch (this.mode) {
+        case 'post':
+          if (this.card.action === 'comment')
+            url = {name: 'p-id', params: {id: this.post.id}, query: {comment: this.comment.id}}
+          else url = {name: 'p-id', params: {id: this.post.id}}
+          break
+        case 'user':
+          url = {name: 'user-id', params: {id: this.user.id}}
+          break
+        case 'reply':
+          url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          break
+        default:
+          url = {}
+          break
+      }
       this.$router.push(url)
     }
   }

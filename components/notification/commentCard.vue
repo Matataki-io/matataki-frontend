@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="card.object_type === 'article' ? {name: 'p-id', params:{id: card.object_id}} : {}">
+  <router-link :to="url">
     <div
       class="card"
     >
@@ -20,7 +20,7 @@
             </h4>
             <div class="fl" style="flex: 1;">
               <p class="action">
-                评论了你的文章
+                {{ actionLabels[card.action] }}
               </p>
               <p>
                 {{ dateCard }}
@@ -51,9 +51,8 @@ export default {
   data() {
     return {
       actionLabels: {
-        like: '推荐了你的文章',
-        comment: '评论了你的文章',
-        follow: '关注了你'
+        reply: '回复了你的评论',
+        comment: '评论了你的文章'
       }
     }
   },
@@ -71,6 +70,9 @@ export default {
       const time = moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
+    url() {
+      return {name: 'p-id', params: {id: this.card.comment.sign_id}, query: {comment: this.card.comment.id}}
+    }
   },
   methods: {
   }
