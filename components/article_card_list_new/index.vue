@@ -407,6 +407,7 @@ export default {
   display: flex;
   margin: 20px 0 0 0;
   padding: 0;
+  flex-wrap: wrap;
   .off-shelves {
     background: #b3b3b3;
     color: #fff;

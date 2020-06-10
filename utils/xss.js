@@ -290,7 +290,7 @@ export const xssImageProcess = html => {
 
           }
           // console.log('url', url)
-          return `${name}=${url} alt=${url}`
+          return `${name}='${url}' alt='${url}'`
         }
       }
     }
@@ -314,7 +314,7 @@ export const processLink = html => {
       // 为 a 并且有 href 则添加 target
       if (tag === "a" && name === "href") {
         let val = xss.friendlyAttrValue(value)
-        return `${name}=${val} target='_blank' rel='noreferrer noopener'`
+        return `${name}='${val}' target='_blank' rel='noreferrer noopener'`
       }
     }
   });
