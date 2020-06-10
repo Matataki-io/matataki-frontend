@@ -89,4 +89,8 @@ export default {
     const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
     return isWeixin()
   },
+  // 处于io/cn
+  isDomain(url) {
+    return new RegExp(url).test(window.location.hostname.toLowerCase())
+  },
 };

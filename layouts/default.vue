@@ -97,6 +97,7 @@ export default {
     this.$store.dispatch('testLogin')
     if (process.browser) {
       this.removeOverflowHide()
+      this.testDomain()
     }
   },
   methods: {
@@ -126,6 +127,25 @@ export default {
           }
         }
       }, 1000)
+    },
+    // 检测域名
+    testDomain() {
+      try {
+        console.log('NODE_ENV', process.env.NODE_ENV)
+        
+        // 开发模式不管
+        if (process.env.NODE_ENV === 'development') return
+        // 在微信里面不管  
+        if (this.$utils.isInWeixin()) return
+
+        let IO = process.env.VUE_APP_DOMAIN_IO
+        let isIo = this.$utils.isDomain(IO)
+        if (!isIo) {
+          this.$message(`建议您去前往${IO}体验完整功能~`)
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
