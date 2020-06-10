@@ -31,6 +31,7 @@
             />
             <span>{{ item.content }}</span>
             <a v-if="socialUrl(item.type, item.content)" :href="socialUrl(item.type, item.content)" target="_blank">跳转</a>
+            <a v-else href="Javascript:;" @click="copyCode(item.content)">复制</a>
           </div>
         </div>
       </template>
@@ -138,6 +139,7 @@ export default {
     // 返回社交链接
     socialUrl(type, content) {
       let list = {
+        'email': 'mailto:',
         'weibo': 'https://www.weibo.com/',
         'telegram': 'https://telegram.me/',
         'twitter': 'https://twitter.com/',
@@ -146,6 +148,16 @@ export default {
       }
       let listType = list[type.toLocaleLowerCase()]
       return listType ? listType + content : ''
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message.success(this.$t('success.copy'))
+        },
+        () => {
+          this.$message.error(this.$t('error.copy'))
+        }
+      )
     }
   }
 }
