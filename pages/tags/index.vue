@@ -281,7 +281,7 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 .tag-name {
   color: #333;
