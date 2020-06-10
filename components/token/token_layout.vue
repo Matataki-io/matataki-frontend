@@ -262,6 +262,8 @@
                 :icon="item.type"
                 :content="item.content"
               />
+              <span>{{ item.content }}</span>
+              <a v-if="socialUrl(item.type, item.content)" :href="socialUrl(item.type, item.content)" target="_blank">跳转</a>
             </div>
           </div>
           <span
@@ -484,6 +486,18 @@ export default {
       const isHttps = url.indexOf('https://')
       if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
       return url
+    },
+    // 返回社交链接
+    socialUrl(type, content) {
+      let list = {
+        'weibo': 'https://www.weibo.com/',
+        'telegram': 'https://telegram.me/',
+        'twitter': 'https://twitter.com/',
+        'facebook': 'https://facebook.com/',
+        'github': 'https://github.com/'
+      }
+      let listType = list[type.toLocaleLowerCase()]
+      return listType ? listType + content : ''
     }
   }
 }
@@ -688,6 +702,18 @@ export default {
   &:nth-child(6n) {
     margin-right: 0;
   }
+  span {
+    margin-left: 10px;
+    font-size: 14px;
+    display: none;
+  }
+  a {
+    margin-left: 10px;
+    font-size: 14px;
+    text-decoration: underline;
+    color: #333;
+    display: none;
+  }
 }
 .circle-btn {
   width: 40px;
@@ -745,6 +771,14 @@ export default {
   color: red;
 }
 
+@media screen and (max-width: 1200px) {
+  .social-btn .circle {
+    &:nth-child(6n) {
+      margin-right: 10px;
+    }
+  }
+}
+
 // 小于992
 @media screen and (max-width: 992px) {
   .token-container {
@@ -798,6 +832,18 @@ export default {
     text-align: center;
   }
 }
+
+@media screen and (max-width: 540px) {
+  .social-btn .circle {
+    width: 100%;
+    justify-content: flex-start;
+    span,
+    a {
+      display: inherit;
+    }
+  }
+}
+
 
 
 </style>
