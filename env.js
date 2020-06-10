@@ -18,8 +18,8 @@ module.exports = {
     TWITTER_APP_KEY: 'LdQ6moi0sfGzsPBtVMxjPhbeq',
     FANDOM_SERVER_API: 'https://fanpiao-bot-data.web.app',
     VUE_APP_WX_URL: 'https://sstest.frontenduse.top',
-    // VUE_APP_DOMAIN_IO: 'matataki.io', // 前端用来判断在 io 还是非 io
-    VUE_APP_DOMAIN_IO: 'localhost', // 前端用来判断在 io 还是非 io
+    VUE_APP_DOMAIN_IO: 'matataki.io', // 前端用来判断在 io 还是非 io
+    // VUE_APP_DOMAIN_IO: 'localhost', // 前端用来判断在 io 还是非 io
     VUE_APP_DOMAIN_CN: 'matataki.cn', // 前端用来判断在 cn 还是非 cn
   },
   production: {
