@@ -64,7 +64,7 @@ export default {
         try {
           const res = await this.$API.delArticle({ id })
           if (res.code === 0) {
-            this.$message({ duration: 2000, message: '删除成功' })
+            this.$message({ showClose: true, duration: 2000, message: '删除成功' })
             this.$router.push('/sharehall')
           }
           else this.$message.error(res.message)

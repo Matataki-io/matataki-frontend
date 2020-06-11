@@ -112,12 +112,13 @@ export default {
       this.$copyText(text).then(
         () => {
           this.$message({
+            showClose: true,
             message: this.$t('success.copy'),
             type: 'success'
           })
         },
         () => {
-          this.$message.error(this.$t('error.copy'))
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
     },

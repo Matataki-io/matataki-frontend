@@ -93,7 +93,7 @@ export default {
     },
     checkLogin() {
       if (!this.isLogined) {
-        this.$message({ message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
+        this.$message({ showClose: true, message: this.$t('error.pleaseLogin'), type: 'info', customClass: 'zindex-3000' })
         this.$store.commit('setLoginModal', true)
         return false
       }

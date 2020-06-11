@@ -342,7 +342,11 @@ export default {
           console.log(e)
           this.loading = false
           const message = e.response.data.message || '失败'
-          this.$message.error(message)
+          this.$message({
+            showClose: true,
+            message: message,
+            type: 'error'
+          })
         })
       } else {
         // 弹出NATIVE支付二维码

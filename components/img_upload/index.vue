@@ -283,11 +283,13 @@ export default {
         this.modalLoading = false
         if (error.toString().includes('code 401')) {
           this.$message({
+            showClose: true,
             duration: 1000,
             message: this.$t('error.pleaseLogin')
           })
         } else {
           this.$message({
+            showClose: true,
             duration: 1000,
             message: this.$t('error.uploadImgFail')
           })

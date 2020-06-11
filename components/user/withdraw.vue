@@ -274,6 +274,7 @@ export default {
           .then(res => {
             if (res.status === 200 && res.data.code === 0) {
               this.$message({
+                showClose: true,
                 message: this.$t('withdraw.success'),
                 type: 'success'
               })

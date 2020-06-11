@@ -739,6 +739,9 @@ export default {
       }
     }
   }
+  /deep/ .el-loading-mask {
+    z-index: 1;
+  }
 }
 .list-p{
   font-size: 12px;

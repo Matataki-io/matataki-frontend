@@ -57,8 +57,8 @@ export default {
   methods: {
     copy(val) {
       this.$copyText(val).then(
-        () => this.$message.success(this.$t('success.copy')),
-        () => this.$message.error(this.$t('error.copy'))
+        () => this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' }),
+        () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
       )
     }
   }
