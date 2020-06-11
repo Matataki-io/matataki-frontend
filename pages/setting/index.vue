@@ -417,6 +417,7 @@ export default {
         this.refreshUser({ id: this.currentUserInfo.id })
         this.getMyUserData()
         this.$message({
+          showClose: true,
           message: this.$t('success.success'),
           type: 'success'
         })

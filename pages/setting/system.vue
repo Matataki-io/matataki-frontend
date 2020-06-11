@@ -100,6 +100,7 @@ export default {
         const res = await this.$API.setProfile({ accept })
         if (res.code === 0) {
           this.$message({
+            showClose: true,
             message: this.$t('success.success'),
             type: 'success'
           })
