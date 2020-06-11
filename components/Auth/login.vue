@@ -418,19 +418,11 @@ export default {
     },
     // 微信登录
     getWeixinCode() {
-      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-      if(isWeixin()) {
-
-        // 在微信中并且域名为备案域名 VUE_APP_WX_URL
-        if (window.location.origin !== process.env.VUE_APP_WX_URL) {
-          this.$message.warning(`请移步${process.env.VUE_APP_WX_URL}操作`)
-          return
-        }
-
+      if(this.$utils.isInWeixin()) {
         this.setPathToSession('wechatFrom')
         this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
       } else {
-        this.$message.error('请在微信中打开此网页')
+        this.$message.error('请在微信中操作')
       }
     },
     // 检测域名

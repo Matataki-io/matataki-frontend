@@ -265,7 +265,11 @@ export default {
         console.log('don\'t support sessionStorage')
       }
     },
+    // 绑定方法
     async bindFunc(type, typename, idx) {
+      if (this.accountList[idx].loading) return
+      this.accountList[idx].loading = true
+
       if (type === 'email') {
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
         // const url = 'http://localhost:8080/login/email'
@@ -285,15 +289,11 @@ export default {
         openRequestedPopup(url, 'buildEmail')
       } else if (type === 'weixin') {
         // 判断是否在微信中
-        // TODO: 
         if (this.$utils.isInWeixin()) {
-          // 在微信中并且域名为备案域名 VUE_APP_WX_URL
-          if (window.location.origin !== process.env.VUE_APP_WX_URL) {
-            this.$message.warning(`请移步${process.env.VUE_APP_WX_URL}操作`)
-            return
-          }
+          this.setPathToSession('wechatFrom', 'buildAccount')
+          this.$router.push({ name: 'login-weixin' })
         } else {
-          this.$message.warning(this.$t('thirdParty.doesNotSupportBinding', [typename]))
+          this.$message(this.$t('请在微信内操作'))
         }
       } else if (type === 'eth') {
         try {
@@ -312,8 +312,14 @@ export default {
             if (error.message && error.message.includes('User denied account authorization')) this.$message.warning(this.$t('thirdParty.userDeniedAccountAuthorization'))
             else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
             else this.$message.warning(this.$t('thirdParty.signingFailed'))
-          } else if (error.message) this.$message.warning(error.message)
-          else this.$message.warning(error.toString())
+          } else if (error.message) {
+            this.$message.warning(`请在钱包环境下操作,  错误信息${error.message}`)
+            console.log(error.message)
+          }
+          else {
+            this.$message.warning(`请在钱包环境下操作,  错误信息${error.toString()}`)
+            console.log(error.toString())
+          }
         }
       } else if (type === 'eos') {
         try {
@@ -371,7 +377,10 @@ export default {
               this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
             } else if (error.toString().includes('\'name\' of null')) this.$message.warning(this.$t('thirdParty.unableToConnect'))
             else if (error.message && error.message.includes('The user did not allow this app to connect to their Scatter')) this.$message.warning(this.$t('thirdParty.scatterAccessDenied'))
-            else this.$message.warning(error.toString())
+            else {
+              this.$message.warning(`请在钱包环境下操作,  错误信息${error.toString()}`)
+              console.log(error.toString())
+            }
           }
         }
       } else if (type === 'ont') {
@@ -389,28 +398,43 @@ export default {
           }, idx)
         } catch (error) {
           console.log(error)
-          if (error.message && error.message.includes('Could not establish connection')) this.$message.warning(this.$t('thirdParty.couldNotEstablishConnection'))
-          else if (error === 'CANCELED') this.$message.warning(this.$t('thirdParty.cancelSigningRequest'))
-          else this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
+          let errText = ''
+          if (error.message && error.message.includes('Could not establish connection')) errText = this.$t('thirdParty.couldNotEstablishConnection')
+          else if (error === 'CANCELED') errText = this.$t('thirdParty.cancelSigningRequest')
+          else errText = this.$t('thirdParty.rejectSigningRequest')
+
+          this.$message.warning(`请在钱包环境下操作,  错误信息${errText}`)
+
         }
       } else if (type === 'vnt') {
-        const username = await this.$store.dispatch('vnt/bind')
-        if (!username) throw new Error('Vnt' + this.$t('thirdParty.failedGetAccount'))
-        await this.accountBild({
-          platform: type.toLocaleLowerCase(),
-          publickey: 'vnt',
-          sign: 'vnt',
-          username: username
-        }, idx)
+        try {
+          const username = await this.$store.dispatch('vnt/bind')
+          if (!username) throw new Error('Vnt' + this.$t('thirdParty.failedGetAccount'))
+          await this.accountBild({
+            platform: type.toLocaleLowerCase(),
+            publickey: 'vnt',
+            sign: 'vnt',
+            username: username
+          }, idx)
+        } catch(e) {
+          this.$message.warning(`请在钱包环境下操作,  错误信息${e.toString()}`)
+        }
       } else if (type === 'github') {
+        if (!this.testDomain()) return
+
         this.setPathToSession('githubFrom', 'buildAccount')
         this.$router.push({
           name: 'login-github'
         })
       } else if (type === 'telegram') {
+        if (!this.testDomain()) return
+
         this.$router.push({ name: 'login-telegram' })
       } else this.$message.warning(this.$t('thirdParty.pcDoesNotSupportBinding'))
+      
+      this.accountList[idx].loading = false
     },
+    // 解绑
     unbindFunc(type, typename, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (!this.accountList[idx].status) return this.$message.warning(this.$t('thirdParty.pleaseBindAccountFirst'))
@@ -446,13 +470,18 @@ export default {
         })
       }
     },
+    // 绑定账号
     buildAccount: debounce(function (type, typename, idx) {
       if (this.accountList[idx].disabled) return
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       // if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
-      if (this.accountList[idx].status) this.unbindFunc(type, typename, idx)
-      else this.bindFunc(type, typename, idx)
+      if (this.accountList[idx].status) {
+        this.unbindFunc(type, typename, idx)
+      } else {
+        this.bindFunc(type, typename, idx)
+      }
     }, 300),
+    // 得到账号列表
     getAccountList() {
       this.$API.accountList().then(res => {
         if (res.code === 0) {
@@ -479,6 +508,7 @@ export default {
         console.log('err', err)
       })
     },
+    // 修改账号绑定
     accountChangeFunc(label, idx) {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
       if (!this.accountList[idx].status) return this.$message.warning(this.$t('thirdParty.unableToSetMasterAccount'))
@@ -513,6 +543,20 @@ export default {
             account: this.accountList[idx].username
           }, idx)
         })
+      }
+    },
+    // 检测域名
+    testDomain() {
+      try {
+        let IO = process.env.VUE_APP_DOMAIN_IO
+        let isIo = this.$utils.isDomain(IO)
+        if (!isIo) {
+          this.$message(`建议您去前往${IO}体验完整功能~`)
+        }
+        return isIo
+      } catch (e) {
+        console.log(e)
+        return false
       }
     }
   }

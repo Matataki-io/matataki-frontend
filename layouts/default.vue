@@ -35,6 +35,11 @@ import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
 export default {
   name: 'Default',
+  head: {
+    script: [
+      { src: '/bowl.min.js' }
+    ]
+  },
   components: {
     gFooter: footer,
     AuthModal,
@@ -97,7 +102,8 @@ export default {
     this.$store.dispatch('testLogin')
     if (process.browser) {
       this.removeOverflowHide()
-      this.testDomain()
+      // this.testDomain()
+      this.injectScript()
     }
   },
   methods: {
@@ -143,6 +149,20 @@ export default {
         if (!isIo) {
           this.$message(`建议您去前往${IO}体验完整功能~`)
         }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    injectScript() {
+      try {
+        // eslint-disable-next-line no-undef
+        var bowl = new Bowl()
+        bowl.add([
+          { url: '/bowl.min.js', key: 'bowl' }
+        ])
+        bowl.inject().then(() => {
+          console.log('success')
+        })
       } catch (e) {
         console.log(e)
       }
