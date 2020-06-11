@@ -180,8 +180,6 @@
 import { mapGetters } from 'vuex'
 import QRCodeDialog from './QRCodeDialog'
 import SocialShare from './SocialShare'
-import { strTrim } from '@/utils/reg' // 开发用
-import { urlAddress } from '@/api/backend'
 import wechat from '@/components/scan/wechat.vue'
 
 export default {
@@ -261,7 +259,7 @@ export default {
       if (newVal === 3 && !this.widgetContent) {
         let invite = this.currentUserInfo.id
         invite = invite ? `&invite=${invite}&referral=${invite}` : ''
-        this.widgetContentIframe = `<iframe width="100%" height="180" src='${urlAddress}/widget/?id=${this.id}${invite}' frameborder=0></iframe>`
+        this.widgetContentIframe = `<iframe width="100%" height="180" src='${window.location.origin}/widget/?id=${this.id}${invite}' frameborder=0></iframe>`
       }
     },
     widgetContent(newVal) {
@@ -269,8 +267,8 @@ export default {
       let invite = this.currentUserInfo.id
       invite = invite ? `&invite=${invite}&referral=${invite}` : ''
       // 去前后空格防止空内容
-      if (strTrim(newVal)) content = `&content=${newVal}`
-      this.widgetContentIframe = `<iframe width="100%" height="180" src='${urlAddress}/widget/?id=${this.id}${content}${invite}' frameborder=0></iframe>`
+      if (newVal.trim()) content = `&content=${newVal}`
+      this.widgetContentIframe = `<iframe width="100%" height="180" src='${window.location.origin}/widget/?id=${this.id}${content}${invite}' frameborder=0></iframe>`
     }
   },
   mounted() {

@@ -232,9 +232,9 @@ export default {
     link() {
       if (process.browser) {
         const slogan = [
-          `${process.env.VUE_APP_URL}/token/${this.$route.params.id}`,
-          `${process.env.VUE_APP_URL}/user/${this.$route.params.id}`,
-          `${process.env.VUE_APP_URL}?referral=${this.currentUserInfo.id}`
+          `${window.location.origin}/token/${this.$route.params.id}`,
+          `${window.location.origin}/user/${this.$route.params.id}`,
+          `${window.location.origin}?referral=${this.currentUserInfo.id}`
         ]
         return slogan[this.pageType]
       } else return process.env.VUE_APP_URL
@@ -244,8 +244,8 @@ export default {
     },
     tokenWidget() {
       return ([
-        `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id || 0}' frameborder=0></iframe>`,
-        `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/user/?id=${this.$route.params.id || 0}' frameborder=0></iframe>`,
+        `<iframe width="100%" height="200px" src='${window.location.origin}/widget/token/?id=${this.$route.params.id || 0}' frameborder=0></iframe>`,
+        `<iframe width="100%" height="200px" src='${window.location.origin}/widget/user/?id=${this.$route.params.id || 0}' frameborder=0></iframe>`,
         ''
       ])[this.pageType]
     },
