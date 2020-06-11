@@ -5,7 +5,7 @@
       :options="{ width: '150' }"
       class="qrcode"
     />
-    <p>请使用微信扫描二维码进行支付</p>
+    <p class="text">请使用微信扫描二维码进行支付</p>
   </div>
 </template>
 
@@ -28,7 +28,6 @@ export default {
 
 <style lang="less" scoped>
 .outer {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,5 +37,10 @@ export default {
   background: #ffffff;
   width: 150px;
   height: 150px;
+}
+.text {
+  padding: 0;
+  margin: 20px 0 0 0;
+  font-size: 14px;
 }
 </style>

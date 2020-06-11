@@ -9,6 +9,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  layout: 'empty',
   name: 'WeixinLogin',
   data() {
     return {
