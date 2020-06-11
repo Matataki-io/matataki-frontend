@@ -31,12 +31,7 @@
           {{ $t('login') }}
         </el-button>
         <div class="bottom-tip">
-          <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
-          <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
-          <a
-            href="javascript:void(0);"
-            @click="$emit('switch')"
-          >{{ $t('rule.forgetPassword') }}</a>
+          <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('rule.forgetPassword') }}</a>
         </div>
       </el-form-item>
     </el-form>
@@ -447,15 +442,11 @@ export default {
 .bottom-tip {
   width: 100%;
   font-size: 14px;
-  float: right;
   line-height: 20px;
   margin-top: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  .red {
-    color: #fb6877;
-  }
 }
 .oauth-box {
   display: flex;
