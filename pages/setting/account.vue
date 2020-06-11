@@ -420,18 +420,18 @@ export default {
           this.$message.warning(`请在钱包环境下操作,  错误信息${e.toString()}`)
         }
       } else if (type === 'github') {
-        if (!this.testDomain()) return
-
-        this.setPathToSession('githubFrom', 'buildAccount')
-        this.$router.push({
-          name: 'login-github'
-        })
+        if (this.testDomain()) {
+          this.setPathToSession('githubFrom', 'buildAccount')
+          this.$router.push({
+            name: 'login-github'
+          })
+        }
       } else if (type === 'telegram') {
-        if (!this.testDomain()) return
-
-        this.$router.push({ name: 'login-telegram' })
+        if (this.testDomain()) {
+          this.$router.push({ name: 'login-telegram' })
+        }
       } else this.$message.warning(this.$t('thirdParty.pcDoesNotSupportBinding'))
-      
+
       this.accountList[idx].loading = false
     },
     // 解绑
