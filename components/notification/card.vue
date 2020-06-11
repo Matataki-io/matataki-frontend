@@ -7,6 +7,7 @@
       <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
       <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
       <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
+      <svg-icon v-else-if="svgType === 'transfer'" class="icon-search" icon-class="notify_transfer" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
@@ -61,6 +62,7 @@
           :user="user"
           :post="post"
           :comment="commentObject"
+          :token="transferLog"
         />
       </div>
     </div>
@@ -70,6 +72,7 @@
 
 import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
+import { precision } from '@/utils/precisionConversion'
 import objectCard from '@/components/notification/objectCard.vue'
 
 export default {
@@ -100,6 +103,10 @@ export default {
     commentObject: {
       type: Object,
       default: null
+    },
+    transferLog: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -109,7 +116,8 @@ export default {
         comment: '评论了你的文章',
         follow: '关注了你',
         annouce: '',
-        reply: '回复了你的评论'
+        reply: '回复了你的评论',
+        transfer: '向你转账'
       }
     }
   },
@@ -140,7 +148,7 @@ export default {
     },
     /** 内容 */
     content() {
-      const { action } = this.card
+      const { action, object_type } = this.card
       if (action === 'comment' || action === 'reply') {
         // 评论
         if (this.comment === null || this.card.total > 1) return ''
@@ -150,6 +158,14 @@ export default {
         // 公告
         if (this.annouce === null) return ''
         return this.annouce.content
+      }
+      else if (action === 'transfer' && this.transferLog) {
+        // 转账
+        const amount = this.tokenAmount(this.transferLog.amount, this.transferLog.decimals)
+        if(object_type === 'cnyWallet') // CNY
+          return `${amount} ${this.transferLog.symbol}`
+        else if(object_type === 'tokenWallet') // Token
+          return `${amount} ${this.transferLog.symbol}`
       }
       return ''
     },
@@ -166,13 +182,14 @@ export default {
         return 'reply' // 回复
       else if(this.card.action === 'follow' && this.user)
         return 'user' // 用户
+      else if(this.card.action === 'transfer' && this.transferLog)
+        return 'token'
       else return 'hide' // 隐藏
     }
   },
   methods: {
     openDetails() {
-      if(this.card.total < 2) return this.openObject()
-      if(this.action === 'annouce') return
+      if(this.card.total < 2 || this.card.action === 'annouce') return this.openObject()
 
       this.$emit('openDetails', {
         startId: this.card.id,
@@ -198,11 +215,19 @@ export default {
         case 'reply':
           url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
           break
+        case 'token':
+          if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
+          else url = {name: 'token-id', params: {id: this.transferLog.token_id}}
+          break
         default:
           url = {}
           break
       }
       this.$router.push(url)
+    },
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
   }
 }

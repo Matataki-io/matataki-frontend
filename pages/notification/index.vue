@@ -27,6 +27,7 @@
           :annouce="getAnnouce(item)"
           :comment="getComment(item)"
           :comment-object="getCommentObject(item)"
+          :transfer-log="getTransferLog(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
@@ -171,6 +172,8 @@ export default {
       posts: [],
       announcements: [],
       comments: [],
+      assetsLogs: [],
+      minetokensLogs: [],
       detailsIndex: null,
       notificationDetails: [],
       pagePosition: 0,
@@ -203,6 +206,10 @@ export default {
         {
           key: 'reply',
           label: '回复信息'
+        },
+        {
+          key: 'transfer',
+          label: '转账信息'
         }
       ],
       actions: null,
@@ -249,6 +256,8 @@ export default {
         this.announcements.push(...res.data.announcements)
         this.comments.push(...res.data.comments)
         this.notifications.push(...res.data.list)
+        this.assetsLogs.push(...res.data.assetsLog)
+        this.minetokensLogs.push(...res.data.minetokensLog)
         // 标记已读
         this.markRead(res.data.list)
         // 设定起始查询位置
@@ -296,6 +305,14 @@ export default {
         const commentId = notify.object_id
         return this.comments.find(comment => comment.id === commentId)
       }
+      return null
+    },
+    getTransferLog(notify) {
+      const logId = notify.object_id
+      if(notify.object_type === 'cnyWallet' && this.assetsLogs.length > 0)
+        return this.assetsLogs.find(assetsLog => assetsLog.id === logId)
+      else if(notify.object_type === 'tokenWallet' && this.minetokensLogs.length > 0)
+        return this.minetokensLogs.find(minetokensLog => minetokensLog.id === logId)
       return null
     },
     openDetails(data) {
