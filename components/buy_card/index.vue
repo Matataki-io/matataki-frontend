@@ -118,7 +118,7 @@ export default {
           })
         },
         () => {
-          this.$message.error(this.$t('error.copy'))
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
     },

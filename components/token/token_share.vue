@@ -280,10 +280,10 @@ export default {
     copyCode(code) {
       this.$copyText(code).then(
         () => {
-          this.$message.success(this.$t('success.copy'))
+          this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' })
         },
         () => {
-          this.$message.error(this.$t('error.copy'))
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
     },

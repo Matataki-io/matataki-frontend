@@ -1737,8 +1737,12 @@ export default {
       const res = this.previewSetId(this.$route.params.id)
       if (res) {
         this.$copyText(`${window.location.origin}/preview/${this.$route.params.id}`).then(
-          () => this.$message.success(this.$t('success.copy')),
-          () => this.$message.error(this.$t('error.copy'))
+          () => this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          }),
+          () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         )
       }
     },
