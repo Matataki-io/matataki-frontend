@@ -103,6 +103,7 @@ export default {
     if (process.browser) {
       this.removeOverflowHide()
       // this.testDomain()
+      console.log('NODE_ENV', process.env.NODE_ENV)
       this.injectScript()
     }
   },
