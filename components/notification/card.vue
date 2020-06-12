@@ -6,6 +6,7 @@
       <svg-icon v-else-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
       <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
       <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
+      <svg-icon v-else-if="svgType === 'featured'" class="icon-search" icon-class="notify_featured" />
       <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
       <svg-icon v-else-if="svgType === 'transfer'" class="icon-search" icon-class="notify_transfer" />
     </div>
@@ -123,6 +124,7 @@ export default {
   },
   computed: {
     svgType() {
+      if(this.card.object_type === 'featuredArticles') return 'featured'
       return this.card.action
     },
     avatar() {
@@ -144,7 +146,9 @@ export default {
     },
     announcementTitle() {
       if(this.card.action !== 'annouce') return ''
-      return this.annouce.title
+      if (this.card.object_type === 'announcement') return this.annouce.title
+      if (this.card.object_type === 'featuredArticles') return '你的文章已被瞬Matataki评为精选作品'
+      return ''
     },
     /** 内容 */
     content() {
@@ -156,7 +160,7 @@ export default {
       }
       else if (action === 'annouce') {
         // 公告
-        if (this.annouce === null) return ''
+        if (object_type !== 'announcement' || this.annouce === null) return ''
         return this.annouce.content
       }
       else if (action === 'transfer' && this.transferLog) {
