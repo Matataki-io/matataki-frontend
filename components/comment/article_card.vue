@@ -155,7 +155,7 @@ export default {
   line-height: 26px;
   font-size: 12px;
   &:hover {
-    color: #00a1d6;
+    color: #542DE0;
     background: #e5e9ef;
   }
 }
@@ -174,7 +174,7 @@ export default {
     cursor: pointer;
     font-size: 16px;
     &:hover {
-      color: #00a1d6;
+      color: #542DE0;
     }
   }
 }
@@ -185,7 +185,7 @@ export default {
   white-space: nowrap;
   a {
     outline: none;
-    color: #00a1d6;
+    color: #542DE0;
     text-decoration: none;
     cursor: pointer;
   }
