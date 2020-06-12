@@ -96,7 +96,7 @@
               消息筛选
             </h3>
             <div class="option-card">
-              <!-- <el-checkbox
+              <el-checkbox
                 v-model="checkAll"
                 :indeterminate="isIndeterminate"
                 :disabled="showDetails"
@@ -104,7 +104,8 @@
                 @change="handleCheckAllChange"
               >
                 全选
-              </el-checkbox> -->
+              </el-checkbox>
+              <el-divider />
               <el-checkbox-group
                 v-model="checkedCities"
                 class="fl checkbox-group"
@@ -189,27 +190,27 @@ export default {
       actionTypes: [
         {
           key: 'follow',
-          label: '关注信息'
+          label: '关注'
         },
         {
           key: 'comment',
-          label: '评论信息'
+          label: '评论'
         },
         {
           key: 'like',
-          label: '推荐信息'
+          label: '推荐'
         },
         {
           key: 'annouce',
-          label: '系统信息'
+          label: '系统'
         },
         {
           key: 'reply',
-          label: '回复信息'
+          label: '回复'
         },
         {
           key: 'transfer',
-          label: '转账信息'
+          label: '转账'
         }
       ],
       actions: null,
