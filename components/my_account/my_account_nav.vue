@@ -63,7 +63,7 @@ export default {
             }
           }
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
         }
       })
     },

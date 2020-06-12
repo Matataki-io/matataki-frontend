@@ -437,17 +437,19 @@ export default {
       })
     },
     successNotice(text) {
-      this.$message.success({
+      this.$message({
         message: text,
         duration: 4000,
-        showClose: true
+        showClose: true,
+        type: 'success'
       })
     },
     errorNotice(text) {
-      this.$message.error({
+      this.$message({
         message: text,
         duration: 4000,
-        showClose: true
+        showClose: true,
+        type: 'error'
       })
     }
   }

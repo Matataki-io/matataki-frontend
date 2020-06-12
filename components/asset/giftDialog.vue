@@ -257,7 +257,7 @@ export default {
             this.giftDialog = false
             this.alert('转账成功')
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
           }
         })
         .catch(err => {
@@ -302,7 +302,7 @@ export default {
           }
         } else {
           // 失败
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         // 出错

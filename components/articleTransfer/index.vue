@@ -337,7 +337,7 @@ export default {
           }
         } else {
           // 失败
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         // 出错

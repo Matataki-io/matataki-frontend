@@ -89,7 +89,7 @@ export default {
             this.comment = ''
             this.$store.commit('setCommentRequest')
             // this.$emit('doneComment')
-          } else this.$message.error(res.message)
+          } else this.$message({ showClose: true, message: res.message, type: 'error' })
         })
         .catch(e => {
           console.log('评论失败', e)

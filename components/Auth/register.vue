@@ -221,7 +221,7 @@ export default {
               this.$emit('switch')
               this.isLogin = true
             } else {
-              this.$message.error(res.message)
+              this.$message({ showClose: true, message: res.message, type: 'error' })
             }
           } catch (error) {
             this.$message.error(this.$t('error.registeredFail'))

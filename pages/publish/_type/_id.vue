@@ -1045,7 +1045,7 @@ export default {
           // 设置文章内容
           this.title = res.data.title
           this.markdownData = res.data.content
-        } else this.$message.warning(res.message)
+        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
       }).catch(err => {
         console.log('err', err)
       })
@@ -1114,7 +1114,7 @@ export default {
 
 
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.$router.push({ path: '/article' })
         }
       }).catch(err => {
@@ -1400,7 +1400,7 @@ export default {
             this.fullscreenLoading = false // remove full loading
           })
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           throw new Error(res.message)
         }
       } catch (error) {
@@ -1669,7 +1669,7 @@ export default {
         }
         if (res) {
           this.allowLeave = true
-          this.$message.success(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'success'})
           this.$router.push({
             name: 'article'
           })
@@ -1705,7 +1705,7 @@ export default {
         if (res.code === 0) {
           return true
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           return false
         }
       } catch (e) {

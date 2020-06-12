@@ -515,7 +515,7 @@ export default {
             this.resourcesSocialss = socialFilterEmpty
             this.resourcesWebsites = res.data.websites
           } else {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
           }
         })
         .catch(err => {

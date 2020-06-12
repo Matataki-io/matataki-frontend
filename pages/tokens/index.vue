@@ -421,7 +421,7 @@ export default {
       this.$API.transferMinetoken(data)
         .then(res => {
           if (res.code === 0) {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
             this.reload = Date.now()
 
             // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
@@ -431,7 +431,7 @@ export default {
             this.form.balance = Number(endAmount)
             this.form.max = Number(endAmount)
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
           }
         }).catch(err => {
           console.log(err)
@@ -509,7 +509,7 @@ export default {
           }
         } else {
           // 失败
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         // 出错

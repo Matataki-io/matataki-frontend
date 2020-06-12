@@ -105,13 +105,13 @@ export default {
             type: 'success'
           })
         } else {
-          this.$message.error(this.$t('error.fail'))
+          this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
           this.articleTransfer = !status
         }
       } catch (error) {
         this.articleTransfer = !status
         console.log(`转让状态错误${error}`)
-        this.$message.error(this.$t('error.fail'))
+        this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
       }
     },
     clearCache() {
