@@ -201,7 +201,7 @@ export default {
         },
         {
           key: 'annouce',
-          label: '公告信息'
+          label: '系统信息'
         },
         {
           key: 'reply',
@@ -277,7 +277,7 @@ export default {
     getPost(notify) {
       if(this.posts && this.posts.length > 0) {
         let postId
-        if(notify.object_type === 'article')
+        if(notify.object_type === 'article' || notify.object_type === 'featuredArticles' )
           postId = notify.object_id
         else if(notify.object_type === 'announcement' && notify.remark)
           postId = notify.remark
