@@ -19,7 +19,7 @@ export default {
     },
     width: {
       type: String,
-      default: '90%'
+      default: '50%'
     },
     value: {
       type: Boolean,
