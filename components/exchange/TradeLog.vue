@@ -240,7 +240,7 @@ export default {
           this.minetokenUser = res.data.user || Object.create(null)
           this.minetokenExchange = res.data.exchange || Object.create(null)
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
         }
       })
         .catch(err => {

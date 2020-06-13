@@ -47,11 +47,11 @@ export default {
       }
     },
     TELEGRAM_BOT_NAME() {
-        switch(this.domainEnv) {
-          case 'mobile': return process.env.TELEGRAM_BOT_ROOT_NAME
-          case 'wechat': return process.env.TELEGRAM_BOT_IN_WX
-          default: return process.env.TELEGRAM_BOT_NAME
-        }
+      switch(this.domainEnv) {
+        case 'mobile': return process.env.TELEGRAM_BOT_ROOT_NAME
+        case 'wechat': return process.env.TELEGRAM_BOT_IN_WX
+        default: return process.env.TELEGRAM_BOT_NAME
+      }
     }
   },
   methods: {
@@ -89,9 +89,9 @@ export default {
         })
         .then(res => {
           if (res.code === 0) {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
           } else {
-            this.$message.warning(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'warning'})
           }
           this.$router.back(-1)
         })

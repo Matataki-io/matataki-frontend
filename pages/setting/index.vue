@@ -428,7 +428,8 @@ export default {
           this.$message.error(error.response.data.message)
         } else {
           console.error(`修改信息失败 catch error ${error}`)
-          this.$message.error(this.$t('error.fail'))
+          this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
+          this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
         }
       } finally {
         this.loading = false

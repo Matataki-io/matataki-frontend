@@ -127,7 +127,7 @@ export default {
             this.form.input = ''
           }
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.form.input = ''
         }
       })

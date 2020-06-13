@@ -420,7 +420,7 @@ export default {
             }
           }
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
         }
       })
     },
@@ -447,10 +447,10 @@ export default {
       const res = await this.$API.minetokenMint(data)
       this.addToLoading = false
       if (res.code === 0) {
-        this.$message.success(res.message)
+        this.$message({ showClose: true, message: res.message, type: 'success'})
         this.tokenDetail()
       } else {
-        this.$message.error(res.message)
+        this.$message({ showClose: true, message: res.message, type: 'error' })
       }
     },
     async minetokenResources(id) {
@@ -485,7 +485,7 @@ export default {
       await this.$API.minetokenCreate(data)
         .then(res => {
           if (res.code === 0) this.minetokenDone(res.data)
-          else this.$message.error(res.message)
+          else this.$message({ showClose: true, message: res.message, type: 'error' })
         })
     },
     async minetokenGetResources(id) {
@@ -503,7 +503,7 @@ export default {
           // this.resourcesWebsites = res.data.websites
           this.about = res.data.websites.length > 0 ? res.data.websites : ['']
         } else {
-          this.$message.success(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'success'})
         }
       })
         .catch(err => {

@@ -356,7 +356,7 @@ export default {
         this.$message.success(this.$t('success.success'))
         this.$router.go(0)
       }
-      else this.$message.error(this.$t('error.fail'))
+      else this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
     },
     updateList() {
       this.loading = true

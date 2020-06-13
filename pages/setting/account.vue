@@ -189,10 +189,10 @@ export default {
       this.accountList[idx].loading = true
       this.$API.accountBind(params).then(res => {
         if (res.code === 0) {
-          this.$message.success(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'success'})
           this.getAccountList()
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         console.log(err)
@@ -219,7 +219,7 @@ export default {
               window.location.reload()
             }, 300)
           } else {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
             this.getAccountList()
           }
         } else if (res.code === 999) {
@@ -232,7 +232,7 @@ export default {
             dangerouslyUseHTMLString: true
           })
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         console.log(err)
@@ -246,10 +246,10 @@ export default {
       this.$API.accountChange(params).then(res => {
         if (res.code === 0) {
           this.accountRadio = this.accountList[idx].type
-          this.$message.success(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'success'})
           this.getAccountList()
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         console.log(err)

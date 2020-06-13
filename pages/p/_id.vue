@@ -857,7 +857,7 @@ export default {
               this.article.title = res.data.title
               this.post.content = res.data.content
             } else {
-              this.$message.warning(res.message)
+              this.$message({ showClose: true, message: res.message, type: 'warning'})
             }
           }).catch(err => {
             console.log('err', err)
@@ -868,7 +868,7 @@ export default {
       await this.$API.getArticleInfo(this.$route.params.id)
         .then(res => {
           if (res.code === 0) this.article = res.data
-          else this.$message.warning(res.message)
+          else this.$message({ showClose: true, message: res.message, type: 'warning'})
         }).catch(err => {
           console.log('err', err)
         })
@@ -1043,7 +1043,7 @@ export default {
       await this.$API.getUser(this.article.uid).then((res) => {
         if (res.code === 0) {
           this.avatar = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
-        } else this.$message.warning(res.message)
+        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
       }).catch(err => {
         console.log('err', err)
       })

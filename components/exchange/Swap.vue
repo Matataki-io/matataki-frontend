@@ -394,7 +394,7 @@ export default {
         if (res.code === 0) {
           this.form.output = parseFloat(utils.fromDecimal(res.data, deciaml)).toFixed(4)
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.form.output = ''
         }
       })
@@ -412,7 +412,7 @@ export default {
           }
           this.checkBalance()
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.form.input = ''
         }
       })

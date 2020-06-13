@@ -244,7 +244,7 @@ export default {
             })
           }
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
         }
       })
     },
@@ -256,7 +256,7 @@ export default {
           this.resourcesSocialss = socialFilterEmpty
           this.resourcesWebsites = res.data.websites
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       })
         .catch(err => {
@@ -271,9 +271,9 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.tokenDetail()
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
           }
         })
     },

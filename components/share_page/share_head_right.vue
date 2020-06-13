@@ -67,7 +67,7 @@ export default {
             this.$message({ showClose: true, duration: 2000, message: '删除成功' })
             this.$router.push('/sharehall')
           }
-          else this.$message.error(res.message)
+          else this.$message({ showClose: true, message: res.message, type: 'error' })
         } catch (error) {
           return console.error(error)
         }
