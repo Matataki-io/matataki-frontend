@@ -196,6 +196,12 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@media screen and (max-width: 600px) {
+  .token-title  {
+    font-size: 20px;
+  }
+}
 </style>
 <style lang="less">
 .buy-card {

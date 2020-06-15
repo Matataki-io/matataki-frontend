@@ -33,12 +33,14 @@
             <div class="empty" />
             <div class="fl ac">
               <!-- 付费文章 -->
-              <img
-                v-if="card.require_holdtokens || card.require_buy"
-                class="lock-img"
-                src="@/assets/img/lock.png"
-                alt="lock"
-              >
+              <div class="lock-img-container">
+                <img
+                  v-if="card.require_holdtokens || card.require_buy"
+                  class="lock-img"
+                  src="@/assets/img/lock.png"
+                  alt="lock"
+                >
+              </div>
               <span class="lock-text">{{ lock }}</span>
               <!-- 阅读量 -->
               <span class="data">
@@ -477,7 +479,10 @@ export default {
   text-overflow: ellipsis;
   display: -webkit-box;
 }
-
+.lock-img-container {
+  display: flex;
+  align-items: center;
+}
 .lock-img {
   margin: 0 10px 0 0;
   height: 16px;
@@ -539,16 +544,16 @@ export default {
     height: 14px;
   }
   .article-title {
-    margin-bottom: 5px;
     .title {
       font-size: 14px;
     }
   }
-  .content-text {
+
+  .content-text,
+  .lock-text,
+  .des .data,
+  .des .data.like {
     font-size: 12px;
-  }
-  .des {
-    margin: 5px 0 0 0;
   }
 }
 </style>
