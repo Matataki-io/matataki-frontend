@@ -145,6 +145,12 @@ export default {
 <style lang="less" scoped>
 .swipe-wrapper {
   overflow: hidden;
+  min-height: 477px;
+}
+@media screen and (max-width: 768px) {
+  .swipe-wrapper {
+    min-height: 200px;
+  }
 }
 .swipe {
   max-width: 1200px;
