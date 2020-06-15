@@ -313,7 +313,7 @@ export default {
             else if (error.message && error.message.includes('MetaMask Message Signature: User denied message signature')) this.$message.warning(this.$t('thirdParty.rejectSigningRequest'))
             else this.$message.warning(this.$t('thirdParty.signingFailed'))
           } else if (error.message) {
-            this.$message.warning(`请在钱包环境下操作,  错误信息${error.message}`)
+            this.$message({ showClose: true, message: `请在钱包环境下操作,  错误信息${error.message}`, type: 'warning'})
             console.log(error.message)
           }
           else {

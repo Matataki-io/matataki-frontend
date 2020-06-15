@@ -31,7 +31,7 @@
               {{ dateCard }}
             </div>
             <div class="empty" />
-            <div>
+            <div class="fl ac">
               <!-- 付费文章 -->
               <img
                 v-if="card.require_holdtokens || card.require_buy"
@@ -186,7 +186,7 @@ export default {
         // return time.format('YYYY MMMDo HH:mm')
         return time.format('lll')
       }
-      return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+      return isNDaysAgo(2, time) ? time.format('YYYY-MM-DD HH:mm') : time.fromNow()
     },
     likes() {
       if (!this.card || !this.card.likes) return 0
@@ -479,8 +479,8 @@ export default {
 }
 
 .lock-img {
-  margin: 0 4px 0 0;
-  height: 20px;
+  margin: 0 10px 0 0;
+  height: 16px;
 }
 .lock-text {
   color: #b2b2b2;
@@ -499,9 +499,9 @@ export default {
   }
 
   .card {
-    margin: 20px 0;
-    border-radius: 0;
-    background-color: transparent;
+      margin: 10px 0;
+      padding: 20px;
+      border-radius: 8px;
     &:hover {
       transform: none;
       box-shadow: none;
@@ -532,6 +532,23 @@ export default {
     .date {
       font-size: 12px;
     }
+  }
+}
+@media screen and (max-width: 540px) {
+  .lock-img {
+    height: 14px;
+  }
+  .article-title {
+    margin-bottom: 5px;
+    .title {
+      font-size: 14px;
+    }
+  }
+  .content-text {
+    font-size: 12px;
+  }
+  .des {
+    margin: 5px 0 0 0;
   }
 }
 </style>

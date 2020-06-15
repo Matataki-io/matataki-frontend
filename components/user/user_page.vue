@@ -422,20 +422,5 @@ export default {
     margin: -5px 0 0 -5px;
   }
 
-  .user-page-content {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .user-info-center {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .user-info .follow {
-    right: 20px;
-  }
-  .user-info .follow2 {
-    right: 20px;
-  }
 }
 </style>

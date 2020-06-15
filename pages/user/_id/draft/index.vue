@@ -91,10 +91,10 @@ export default {
               message: '删除成功!'
             })
           } else {
-            this.$message.error('删除错误')
+            this.$message({ showClose: true, message: '删除错误', type: 'error'})
           }
         } catch (error) {
-          this.$message.error('删除错误')
+          this.$message({ showClose: true, message: '删除错误', type: 'error'})
         }
       }
 
