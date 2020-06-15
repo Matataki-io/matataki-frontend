@@ -484,7 +484,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.$utils.isNull(this.toUserInfo)) {
-            this.$message.warning('请选择用户')
+            this.$message({ showClose: true, message: '请选择用户', type: 'warning'})
           } else {
             this.transferMinetoken()
           }
@@ -545,7 +545,7 @@ export default {
           this.searchUserList = res.data.list
           if (res.data.list.length === 0) {
             // 没有结果
-            this.$message.warning('没有搜索结果')
+            this.$message({ showClose: true, message: '没有搜索结果', type: 'warning'})
           }
         } else {
           // 失败

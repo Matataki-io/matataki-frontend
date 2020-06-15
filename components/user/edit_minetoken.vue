@@ -566,7 +566,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
-        if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message.warning('发行总量不能超过一亿')
+        if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message({ showClose: true, message: '发行总量不能超过一亿', type: 'warning'})
         if (Number(value) > 0) {
           this.form.number = Number(value)
           this.minetokenMint()
