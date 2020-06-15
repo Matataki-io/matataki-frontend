@@ -442,6 +442,12 @@ a{
   padding: 0;
   margin: 10px 0 0;
 }
+
+@media screen and (max-width: 600px) {
+  .token-title  {
+    font-size: 20px;
+  }
+}
 </style>
 
 <style lang="less">
