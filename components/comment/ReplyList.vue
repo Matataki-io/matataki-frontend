@@ -80,7 +80,7 @@ export default {
     padding: 2px 3px;
     border-radius: 4px;
     outline: none;
-    color: #00a1d6;
+    color: #542DE0;
     text-decoration: none;
     cursor: pointer;
   }
