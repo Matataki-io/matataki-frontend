@@ -1,51 +1,40 @@
 
 <template>
   <userPage>
-    <div
-      slot="list"
-      v-loading="loading"
-    >
-      <div
-        v-if="urls.length !== 0"
-        class="websites"
-      >
-        <h3 class="inline h3">
+    <div slot="list" v-loading="loading" class="user-info-content">
+      <template v-if="urls.length !== 0">
+        <h3 class="title">
           {{ $t('social.relatedWebsites') }}
         </h3>
-        <div class="inline url">
-          <p
-            v-for="(item, index ) in urls"
-            :key="index"
-          >
-            <a
-              :href="formatUrl(item)"
-              target="_blank"
-              class="link"
-            >{{ item }} </a>
-          </p>
-        </div>
-      </div>
-      <div
-        v-if="social.length !== 0"
-        class="social"
-      >
-        <h3 class="inline h3">
+        <a
+          v-for="(item, index ) in urls"
+          :key="index"
+          :href="formatUrl(item)"
+          target="_blank"
+          class="websites-link"
+        >{{ item }} </a>
+      </template>
+      <template v-if="social.length !== 0">
+        <h3 class="title">
           {{ $t('social.socialAccount') }}
         </h3>
-        <div class="inline">
+        <div class="social-btn">
           <div
             v-for="(item, index) in social"
             :key="index"
-            class="social-icons inline"
+            class="circle"
           >
             <socialIcon
               :icon="item.icon"
               :show-tooltip="true"
               :content="item.content"
             />
+            <span>{{ item.content }}</span>
+            <a v-if="socialUrl(item.type, item.content)" :href="socialUrl(item.type, item.content)" target="_blank">跳转</a>
+            <a v-else href="Javascript:;" @click="copyCode(item.content)">复制</a>
           </div>
         </div>
-      </div>
+      </template>
       <div
         v-if="social.length === 0 && urls.length === 0 && loading === false"
         class="social no-data"
@@ -146,36 +135,57 @@ export default {
       const isHttps = url.indexOf('https://')
       if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
       return url
+    },
+    // 返回社交链接
+    socialUrl(type, content) {
+      let list = {
+        'email': 'mailto:',
+        'weibo': 'https://www.weibo.com/',
+        'telegram': 'https://telegram.me/',
+        'twitter': 'https://twitter.com/',
+        'facebook': 'https://facebook.com/',
+        'github': 'https://github.com/'
+      }
+      let listType = list[type.toLocaleLowerCase()]
+      return listType ? listType + content : ''
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.user-info-content {
+  padding-bottom: 100px;
+}
 .social-icons {
   margin: 10px 10px 0 0;
 }
-.inline {
-  display: inline-block;
-  &.h3 {
-    margin: 0 20px 0 0;
-  }
-  &.url {
-    display: inline-table;
-  }
-  a {
+.title {
+  margin: 20px 0 0 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.websites-link {
+    display: inline-block;
+    width: 100%;
     text-decoration: underline;
-  }
-  a:link {color:black}
-  a:visited {color: black}
-  a:hover {color:dimgrey}
-  a:active {color: darkgray}
-}
-.websites {
-  margin-bottom: 20px;
-}
-.social {
-  padding-bottom: 100px;
+    color: #333;
+    font-size: 16px;
+    margin: 10px 0 0;
 }
 .no-data {
   text-align: center;
@@ -185,4 +195,41 @@ export default {
     color:rgba(178,178,178,1);
   }
 }
+
+.social-btn {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+
+}
+.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 10px 10px 0;
+  span {
+    margin-left: 10px;
+    font-size: 14px;
+    display: none;
+  }
+  a {
+    margin-left: 10px;
+    font-size: 14px;
+    text-decoration: underline;
+    color: #333;
+    display: none;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .social-btn .circle {
+    width: 100%;
+    justify-content: flex-start;
+    span,
+    a {
+      display: inherit;
+    }
+  }
+}
+
 </style>

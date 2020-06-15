@@ -27,6 +27,7 @@
           :annouce="getAnnouce(item)"
           :comment="getComment(item)"
           :comment-object="getCommentObject(item)"
+          :transfer-log="getTransferLog(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
@@ -95,7 +96,7 @@
               消息筛选
             </h3>
             <div class="option-card">
-              <!-- <el-checkbox
+              <el-checkbox
                 v-model="checkAll"
                 :indeterminate="isIndeterminate"
                 :disabled="showDetails"
@@ -103,7 +104,8 @@
                 @change="handleCheckAllChange"
               >
                 全选
-              </el-checkbox> -->
+              </el-checkbox>
+              <el-divider />
               <el-checkbox-group
                 v-model="checkedCities"
                 class="fl checkbox-group"
@@ -171,6 +173,8 @@ export default {
       posts: [],
       announcements: [],
       comments: [],
+      assetsLogs: [],
+      minetokensLogs: [],
       detailsIndex: null,
       notificationDetails: [],
       pagePosition: 0,
@@ -186,23 +190,27 @@ export default {
       actionTypes: [
         {
           key: 'follow',
-          label: '关注信息'
+          label: '关注'
         },
         {
           key: 'comment',
-          label: '评论信息'
+          label: '评论'
         },
         {
           key: 'like',
-          label: '推荐信息'
+          label: '推荐'
         },
         {
           key: 'annouce',
-          label: '公告信息'
+          label: '系统'
         },
         {
           key: 'reply',
-          label: '回复信息'
+          label: '回复'
+        },
+        {
+          key: 'transfer',
+          label: '转账'
         }
       ],
       actions: null,
@@ -249,6 +257,8 @@ export default {
         this.announcements.push(...res.data.announcements)
         this.comments.push(...res.data.comments)
         this.notifications.push(...res.data.list)
+        this.assetsLogs.push(...res.data.assetsLog)
+        this.minetokensLogs.push(...res.data.minetokensLog)
         // 标记已读
         this.markRead(res.data.list)
         // 设定起始查询位置
@@ -268,7 +278,7 @@ export default {
     getPost(notify) {
       if(this.posts && this.posts.length > 0) {
         let postId
-        if(notify.object_type === 'article')
+        if(notify.object_type === 'article' || notify.object_type === 'featuredArticles' )
           postId = notify.object_id
         else if(notify.object_type === 'announcement' && notify.remark)
           postId = notify.remark
@@ -296,6 +306,14 @@ export default {
         const commentId = notify.object_id
         return this.comments.find(comment => comment.id === commentId)
       }
+      return null
+    },
+    getTransferLog(notify) {
+      const logId = notify.object_id
+      if(notify.object_type === 'cnyWallet' && this.assetsLogs.length > 0)
+        return this.assetsLogs.find(assetsLog => assetsLog.id === logId)
+      else if(notify.object_type === 'tokenWallet' && this.minetokensLogs.length > 0)
+        return this.minetokensLogs.find(minetokensLog => minetokensLog.id === logId)
       return null
     },
     openDetails(data) {
@@ -338,7 +356,7 @@ export default {
         this.$message.success(this.$t('success.success'))
         this.$router.go(0)
       }
-      else this.$message.error(this.$t('error.fail'))
+      else this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
     },
     updateList() {
       this.loading = true

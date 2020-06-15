@@ -13,7 +13,7 @@
       <el-table
         :data="pointLog.list"
         :expand-row-keys="expands"
-        class="hide-expand-button"
+        class="hide-expand-button hold-table"
         style="width: 100%"
         row-key="token_id"
         @sort-change="sortChange"
@@ -110,6 +110,42 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <ul class="hold-list">
+        <li class="hold-header">
+          <span>Fan票</span>
+          <span @click="sortChangeM">我的流动金Token<i class="el-icon-d-caret" /></span>
+        </li>
+        <li v-for="(item, index) in pointLog.list" :key="index">
+          <div class="item">
+            <router-link :to="{name: 'token-id', params: {id: item.token_id}}" class="fl ac item-name">
+              <avatar :src="cover(item.logo)" />
+              <span>{{ item.symbol }}</span>
+            </router-link>
+
+            <span class="item-amount">{{ liquidity(item.liquidity_balance, item.decimals) }} ({{ percent(item.liquidity_balance, item.total_supply) }})</span>
+
+            <div class="item-btn">
+              <span class="item-more" @click="foldingClick(item.token_id)">
+                <!-- {{ expands[0] !== item.token_id ? '展开明细' : '收起明细' }} -->
+                <i class="el-icon-d-arrow-right item-more-icon" :class="expands[0] !== item.token_id && 'active'" />
+              </span>
+              <router-link :to="{name: 'exchange', hash: '#swap', query: { output: item.symbol }}">
+                <el-button
+                  type="primary"
+                  size="mini"
+                >
+                  {{ $t('transaction') }}
+                </el-button>
+              </router-link>
+            </div>
+          </div>
+          <holdliquidityDetail
+            v-if="expands[0] === item.token_id"
+            :id="item.token_id"
+          />
+        </li>
+      </ul>
     </div>
     <user-pagination
       v-show="!loading"
@@ -209,7 +245,13 @@ export default {
           this.pointLog.params.order = 0
       }
       this.togglePage(1)
-    }
+    },
+    // 移动端排序
+    sortChangeM() {
+      let order = this.pointLog.params.order
+      this.pointLog.params.order = (++order) % 3
+      this.reload = Date.now()
+    } 
   }
 }
 </script>
@@ -303,6 +345,65 @@ export default {
     }
   }
 }
+
+.hold-header {
+  span {
+    font-size: 14px;
+    color: #909399;
+    margin-right: 40px;
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
+  }
+}
+.hold-list {
+  display: none;
+  margin-top: 20px;
+  li {
+    list-style: none;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  .item-name {
+    color: #333;
+    span {
+      font-size: 12px;
+      margin-left: 4px;
+    }
+  }
+  .item-amount {
+    color: #333;
+    font-size: 12px;
+  }
+  .item-btn {
+    display: flex;
+    align-items: center;
+  }
+  .item-more {
+    font-size: 12px;
+    color: #542de0;
+    padding: 0 4px 0 4px;
+    .item-more-icon {
+      transform: rotate(-90deg);
+      &.active {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .hold-table {
+    display: none;
+  }
+  .hold-list {
+    display: block;
+  }
+}
+
 </style>
 
 <style lang="less">

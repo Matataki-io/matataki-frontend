@@ -6,16 +6,13 @@
           {{ $t('user.buycoins') }}
         </h2>
 
-        <div
-          v-loading="loading"
-          class="card-container buycoins"
-        >
+        <div v-loading="loading" class="card-container buycoins">
           <div class="line" />
 
           <el-table
             :data="pointLog.list"
             :expand-row-keys="expands"
-            class="hide-expand-button"
+            class="hide-expand-button hold-table"
             style="width: 100%"
             row-key="token_id"
             @sort-change="sortChange"
@@ -130,6 +127,50 @@
               </template>
             </el-table-column>
           </el-table>
+
+
+          <ul class="hold-list">
+            <li class="hold-header">
+              <span>Fan票</span>
+              <span @click="sortChangeM">持仓量<i class="el-icon-d-caret" /></span>
+            </li>
+            <li v-for="(item, index) in pointLog.list" :key="index">
+              <div class="item">
+                <router-link :to="{name: 'token-id', params: {id: item.token_id}}" class="fl ac item-name">
+                  <avatar :src="cover(item.logo)" />
+                  <span>{{ item.symbol }}</span>
+                </router-link>
+
+                <span class="item-amount">{{ tokenAmount(item.amount, item.decimals) }}</span>
+
+                <div class="item-btn">
+                  <span class="item-more" @click="foldingClick(item.token_id)">
+                    <!-- {{ expands[0] !== item.token_id ? '展开明细' : '收起明细' }} -->
+                    <i class="el-icon-d-arrow-right item-more-icon" :class="expands[0] !== item.token_id && 'active'" />
+                  </span>
+                  <el-button
+                    style="margin: 0 4px;"
+                    size="mini"
+                    @click="showGift(item.symbol, item.token_id, tokenAmount(item.amount, item.decimals), item.decimals )"
+                  >
+                    {{ $t('gift') }}
+                  </el-button>
+                  <router-link :to="{name: 'exchange', hash: '#swap', query: { output: item.symbol }}">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                    >
+                      {{ $t('transaction') }}
+                    </el-button>
+                  </router-link>
+                </div>
+              </div>
+              <tokensDetail
+                v-if="expands[0] === item.token_id"
+                :id="item.token_id"
+              />
+            </li>
+          </ul>
         </div>
         <user-pagination
           v-show="!loading"
@@ -146,7 +187,6 @@
         />
         <m-dialog
           v-model="giftDialog"
-          width="600px"
           title="赠送Fan票"
           class="transfer-dialog"
         >
@@ -326,7 +366,7 @@ export default {
           order: 0
         },
         apiUrl: 'tokenTokenList',
-        list: []
+        list: [],
       },
       currentPage: Number(this.$route.query.tokensPage) || 1,
       loading: false, // 加载数据
@@ -421,7 +461,7 @@ export default {
       this.$API.transferMinetoken(data)
         .then(res => {
           if (res.code === 0) {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
             this.reload = Date.now()
 
             // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
@@ -431,7 +471,7 @@ export default {
             this.form.balance = Number(endAmount)
             this.form.max = Number(endAmount)
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
           }
         }).catch(err => {
           console.log(err)
@@ -444,7 +484,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.$utils.isNull(this.toUserInfo)) {
-            this.$message.warning('请选择用户')
+            this.$message({ showClose: true, message: '请选择用户', type: 'warning'})
           } else {
             this.transferMinetoken()
           }
@@ -505,11 +545,11 @@ export default {
           this.searchUserList = res.data.list
           if (res.data.list.length === 0) {
             // 没有结果
-            this.$message.warning('没有搜索结果')
+            this.$message({ showClose: true, message: '没有搜索结果', type: 'warning'})
           }
         } else {
           // 失败
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         // 出错
@@ -545,6 +585,7 @@ export default {
       })
     },
     sortChange(sort) {
+      console.log('sort', sort)
       switch(sort.order) {
         case 'ascending':
           this.pointLog.params.order = 1
@@ -556,7 +597,13 @@ export default {
           this.pointLog.params.order = 0
       }
       this.togglePage(1)
-    }
+    },
+    // 移动端排序
+    sortChangeM() {
+      let order = this.pointLog.params.order
+      this.pointLog.params.order = (++order) % 3
+      this.reload = Date.now()
+    } 
   }
 }
 </script>
@@ -633,10 +680,10 @@ export default {
   font-size: 14px;
   .i-spin {
     &-z90 {
-          transform: rotate(90deg)
+      transform: rotate(90deg)
     }
     &-f90 {
-          transform: rotate(-90deg)
+      transform: rotate(-90deg)
     }
   }
 }
@@ -747,6 +794,75 @@ export default {
 .result-leave-to {
   opacity: 0
 }
+
+.hold-header {
+  span {
+    font-size: 14px;
+    color: #909399;
+    margin-right: 40px;
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
+  }
+}
+
+.hold-list {
+  display: none;
+  margin-top: 20px;
+  li {
+    list-style: none;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  .item-name {
+    color: #333;
+    span {
+      font-size: 12px;
+      margin-left: 4px;
+    }
+  }
+  .item-amount {
+    color: #333;
+    font-size: 12px;
+  }
+  .item-btn {
+    display: flex;
+    align-items: center;
+  }
+  .item-more {
+    font-size: 12px;
+    color: #542de0;
+    padding: 0 4px 0 4px;
+    .item-more-icon {
+      transform: rotate(-90deg);
+      &.active {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+.transfer-dialog /deep/ .el-dialog {
+  width: 600px !important;
+}
+@media screen and (max-width: 768px) {
+  .hold-table {
+    display: none;
+  }
+  .hold-list {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .transfer-dialog /deep/ .el-dialog {
+    width: 90% !important;
+  }
+}
+
 </style>
 
 <style lang="less">

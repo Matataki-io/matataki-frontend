@@ -626,7 +626,7 @@
             type="primary"
             size="medium"
             style="margin-left: 10px;"
-            :class="settingDialogMode === 'setting' && 'set'"
+            :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
             @click="sendThePost"
           >
             立即发布
@@ -1045,7 +1045,7 @@ export default {
           // 设置文章内容
           this.title = res.data.title
           this.markdownData = res.data.content
-        } else this.$message.warning(res.message)
+        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
       }).catch(err => {
         console.log('err', err)
       })
@@ -1114,7 +1114,7 @@ export default {
 
 
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.$router.push({ path: '/article' })
         }
       }).catch(err => {
@@ -1400,7 +1400,7 @@ export default {
             this.fullscreenLoading = false // remove full loading
           })
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           throw new Error(res.message)
         }
       } catch (error) {
@@ -1481,27 +1481,27 @@ export default {
       // 草稿发送
       const draftPost = () => {
         if (this.readauThority) {
-          if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
-          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
-          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+          if (!this.readSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
+          else if (!(Number(this.readToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
+          else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
         
         // 持Fan票编辑
         if (this.tokenEditAuthority) {
-          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
-          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+          if (!this.editSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
+          else if (!(Number(this.editToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
         }
 
         if (this.paymentTokenVisible) {
-          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
-          else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
-          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          else if (!(Number(this.paymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
+          else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
 
         // 付费编辑
         if (this.buyEditAuthority) {
-          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
-          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
+          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
         // 发布文章
         this.fullscreenLoading = true
@@ -1522,27 +1522,27 @@ export default {
       // 编辑发送
       const editPost = () => {
         if (this.readauThority) {
-          if (!this.readSelectValue) return this.$message.warning('请选择持通证类型')
-          else if (!(Number(this.readToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
-          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+          if (!this.readSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
+          else if (!(Number(this.readToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
+          else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
 
         // 持Fan票编辑
         if (this.tokenEditAuthority) {
-          if (!this.editSelectValue) return this.$message.warning('请选择持通证类型')
-          else if (!(Number(this.editToken) > 0)) return this.$message.warning('持通证数量设置不能小于0')
+          if (!this.editSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
+          else if (!(Number(this.editToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
         }
 
         if (this.paymentTokenVisible) {
-          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
-          else if (!(Number(this.paymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
-          else if (!this.readSummary) return this.$message.warning('请填写摘要')
+          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          else if (!(Number(this.paymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
+          else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
 
         // 付费编辑
         if (this.buyEditAuthority) {
-          if (!this.paymentSelectValue) return this.$message.warning('请选择支付类型')
-          else if (!(Number(this.editPaymentToken) > 0)) return this.$message.warning('支付数量设置不能小于0')
+          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
 
         this.fullscreenLoading = true
@@ -1669,7 +1669,7 @@ export default {
         }
         if (res) {
           this.allowLeave = true
-          this.$message.success(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'success'})
           this.$router.push({
             name: 'article'
           })
@@ -1705,7 +1705,7 @@ export default {
         if (res.code === 0) {
           return true
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           return false
         }
       } catch (e) {
@@ -1717,7 +1717,7 @@ export default {
     async goPreview() {
       const id = this.$route.params.id
       if (id === 'create' || !Number(id)) {
-        this.$message.warning('先写点什么吧!')
+        this.$message({ showClose: true, message: '先写点什么吧!', type: 'warning'})
         return
       }
 
@@ -1730,15 +1730,19 @@ export default {
     async copyPreview() {
       const id = this.$route.params.id
       if (id === 'create' || !Number(id)) {
-        this.$message.warning('先写点什么吧!')
+        this.$message({ showClose: true, message: '先写点什么吧!', type: 'warning'})
         return
       }
 
       const res = this.previewSetId(this.$route.params.id)
       if (res) {
         this.$copyText(`${window.location.origin}/preview/${this.$route.params.id}`).then(
-          () => this.$message.success(this.$t('success.copy')),
-          () => this.$message.error(this.$t('error.copy'))
+          () => this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          }),
+          () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         )
       }
     },

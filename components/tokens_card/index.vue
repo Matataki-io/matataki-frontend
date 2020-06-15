@@ -1,41 +1,58 @@
 <template>
-  <div>
+  <div class="card">
     <div class="fl card-info">
-      <div class="fl">
-        <router-link
-          :to="{ name: 'user-id', params: { id: id } }"
-          class="username"
-        >
-          {{ username || 'Zero' }}
-        </router-link>
-        <div class="tx-hash">
+      <router-link
+        :to="{ name: 'user-id', params: { id: id } }"
+        class="username"
+      >
+        {{ username || 'Zero' }}
+      </router-link>
+      <div class="tx-hash">
+        <txHash
+          v-if="card.tx_hash"
+          :hash="card.tx_hash"
+          size="16px"
+        />
+      </div>
+      <div class="type">
+        {{ type }}
+      </div>
+      <div class="time">
+        {{ time }}
+      </div>
+      <div
+        :style="{ color: color }"
+        class="amount"
+      >
+        {{ amount }}
+        <span class="symbol">
+          {{ card.symbol }}
+        </span>
+      </div>
+    </div>
+    <div class="card-m">
+      <div class="fl ac jsb line">
+        <div>
+          <router-link :to="{ name: 'user-id', params: { id: id } }" class="card-m-name">
+            {{ username || 'Zero' }}
+          </router-link>
           <txHash
             v-if="card.tx_hash"
             :hash="card.tx_hash"
             size="16px"
+            class="card-m-icon"
           />
         </div>
-        <div class="type">
-          {{ type }}
-        </div>
-        <div class="time">
-          {{ time }}
-        </div>
-        <div
-          :style="{ color: color }"
-          class="amount"
-        >
-          {{ amount }}
-          <span class="symbol">
-            {{ card.symbol }}
-          </span>
+        <time class="card-m-time">{{ time }}</time>
+      </div>
+      <div class="fl ac jsb line-bottom">
+        <span class="card-m-type">{{ type }}</span>
+        <div>
+          <span class="card-m-amount" :style="{ color: color }">{{ amount }}</span>
+          <span class="card-m-symbol"> {{ card.symbol }}</span>
         </div>
       </div>
     </div>
-    <div
-      v-if="!end"
-      class="solid-line"
-    />
   </div>
 </template>
 
@@ -62,7 +79,7 @@ export default {
   computed: {
     ...mapGetters(['isMe']),
     time() {
-      return moment(this.card.create_time).format('MMMDo HH:mm')
+      return moment(this.card.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
     id() {
       if (this.isMe(this.card.from_uid)) {
@@ -132,15 +149,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.solid-line {
-  background-color: #B2B2B2;
-  width: 900px;
-  height: 1px;
-  margin: 0 auto;
+.card {
+
 }
 .card-info {
-  flex: 1;
-  flex-direction: column;
   margin: 0 20px;
   padding: 14px 0;
 }
@@ -185,5 +197,77 @@ export default {
   font-weight:400;
   color:#B2B2B2;
   line-height:22px;
+}
+
+.card {
+  .card-m .line-bottom,
+  .card-info  {
+    border-bottom: 1px solid #B2B2B2;
+  }
+
+  &:nth-last-child(1) .card-m .line-bottom,
+  &:nth-last-child(1) .card-info {
+    border-bottom: none;
+  }
+}
+
+.card-m {
+  display: none;
+  padding: 0 20px;
+  margin: 0 -20px;
+  background: #f1f1f1;
+
+
+
+  .line {
+    padding: 20px 0 10px;
+  }
+  .line-bottom {
+    padding: 10px 0 20px;
+  }
+  &-name {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(0,0,0,1);
+    line-height:20px;
+    overflow: hidden;
+    max-width: 120px;
+    margin-right: 4px;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &-time,
+  &-type,
+  &-symbol {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(178,178,178,1);
+    line-height:20px;
+  }
+  &-amount {
+    font-size:14px;
+    font-weight:500;
+    color:#333;
+    line-height:20px;
+    margin-right: 4px;
+  }
+  &-icon {
+    .eth_mini_icon {
+      vertical-align: inherit;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    background: #f1f1f1;
+  }
+  .card-info {
+    display: none;
+  }
+  .card-m {
+    display: block;
+  }
 }
 </style>

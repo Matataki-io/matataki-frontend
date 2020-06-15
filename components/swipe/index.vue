@@ -36,9 +36,9 @@
     </div>
     <van-swipe
       v-if="swipeMode === 'mobile'"
-      :autoplay="3000"
+      :autoplay="30000"
       indicator-color="#542DE0"
-      :height="170"
+      :height="200"
       class="mobile"
     >
       <van-swipe-item
@@ -145,6 +145,12 @@ export default {
 <style lang="less" scoped>
 .swipe-wrapper {
   overflow: hidden;
+  min-height: 477px;
+}
+@media screen and (max-width: 768px) {
+  .swipe-wrapper {
+    min-height: 200px;
+  }
 }
 .swipe {
   max-width: 1200px;
@@ -208,8 +214,8 @@ export default {
   margin: 20px 10px;
 }
 .mobile {
-  margin: 20px 20px 10px;
-  border-radius: 10px;
+  margin: 10px 10px 0;
+  // border-radius: 10px;
   box-sizing: border-box;
   /deep/ .van-swipe-item {
     box-sizing: border-box;
@@ -218,8 +224,10 @@ export default {
       background: #f1f1f1;
       border: 1px solid #f1f1f1;
       box-sizing: border-box;
-      height: 100%;
+      height: 170px;
       position: relative;
+      border-radius: 10px;
+      overflow: hidden;
       img {
         width: 100%;
         height: 100%;
@@ -266,7 +274,6 @@ export default {
     }
   }
   /deep/ .van-swipe__indicators {
-    bottom: 2px;
     .van-swipe__indicator {
       background: #dbdbdb;
       opacity: 1;

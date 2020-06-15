@@ -137,8 +137,8 @@ export default {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
       this.$copyText(val).then(
-        () => this.$message.success(this.$t('success.copy')),
-        () => this.$message.error(this.$t('error.copy'))
+        () => this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' }),
+        () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
       )
       return false
     },

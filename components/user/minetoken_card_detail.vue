@@ -91,7 +91,7 @@ export default {
   margin: 10px 0;
   box-sizing: border-box;
   background-color: #fff;
-  padding: 16px 0;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -144,5 +144,19 @@ export default {
   font-weight:400;
   color:rgba(178,178,178,1);
   line-height:22px;
+}
+
+@media screen and (max-width: 540px) {
+  .card > div {
+    margin: 2px 0;
+  }
+  .username,
+  .time {
+    font-size: 12px;
+  }
+  .amount,
+  .symbol {
+    font-size: 14px;
+  }
 }
 </style>

@@ -31,12 +31,7 @@
           {{ $t('login') }}
         </el-button>
         <div class="bottom-tip">
-          <span class="red">{{ $t('auth.firstLogin', [$point.loginNew]) }}</span>
-          <!-- <a href="javascript:void(0);">忘记密码</a> |  -->
-          <a
-            href="javascript:void(0);"
-            @click="$emit('switch')"
-          >{{ $t('rule.forgetPassword') }}</a>
+          <a href="javascript:void(0);" @click="$emit('switch')">{{ $t('rule.forgetPassword') }}</a>
         </div>
       </el-form-item>
     </el-form>
@@ -198,17 +193,15 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { mapActions, mapGetters, mapState } from "vuex";
-import { idProvider } from "./icon.js";
+import { mapActions, mapGetters, mapState } from 'vuex'
 import { getCookie, setCookie } from '@/utils/cookie'
 
 export default {
-  name: "LoginContent",
+  name: 'LoginContent',
   data() {
     const checkEmail = async (rule, value, callback) => {
-      if (value === "") {
-        return callback(new Error(this.$t("rule.loginEmailMessage")));
+      if (value === '') {
+        return callback(new Error(this.$t('rule.loginEmailMessage')))
       } else {
         // const res = await this.$API.verifyEmail(value)
         // if (res.data) {
@@ -216,51 +209,51 @@ export default {
         // } else {
         //   callback(new Error('邮箱尚未注册'))
         // }
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loginForm: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
       loginRules: {
         email: [
-          { validator: checkEmail, trigger: "blur" },
+          { validator: checkEmail, trigger: 'blur' },
           {
-            type: "email",
-            message: this.$t("rule.emailMessage"),
-            trigger: ["blur", "change"]
+            type: 'email',
+            message: this.$t('rule.emailMessage'),
+            trigger: ['blur', 'change']
           }
         ],
         password: [
           {
             required: true,
-            message: this.$t("rule.passwordMessage"),
-            trigger: "blur"
+            message: this.$t('rule.passwordMessage'),
+            trigger: 'blur'
           },
           {
             min: 8,
             max: 16,
-            message: this.$t("rule.passwordLengthMessage", [8, 16]),
-            trigger: "blur"
+            message: this.$t('rule.passwordLengthMessage', [8, 16]),
+            trigger: 'blur'
           }
         ]
       },
       referral: false,
       loading: false
-    };
+    }
   },
   computed: {
-    ...mapState(["userConfig", "loginModalShow"]),
-    ...mapGetters(["currentUserInfo"]),
+    ...mapState(['userConfig', 'loginModalShow']),
+    ...mapGetters(['currentUserInfo']),
     wxloginHref() {
-      const appid = "wx95829b6a2307300b";
-      const redirectUri = `${process.env.WX_SHARE_HOST}`;
-      const scope = "snsapi_login";
+      const appid = 'wx95829b6a2307300b'
+      const redirectUri = `${process.env.WX_SHARE_HOST}`
+      const scope = 'snsapi_login'
       return `https://open.weixin.qq.com/connect/qrconnect?appid=${appid}&redirect_uri=${encodeURIComponent(
         redirectUri
-      )}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`;
+      )}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`
     }
   },
   watch: {
@@ -268,9 +261,9 @@ export default {
     loginModalShow(newVal) {
       if (newVal) {
         // 和移动端有点不一样, 这里借用这个func来执行 referral
-        this.getReferral();
+        this.getReferral()
       } else {
-        this.loading = false;
+        this.loading = false
       }
 
     }
@@ -279,9 +272,9 @@ export default {
     if (process.browser) this.getReferral()
   },
   methods: {
-    ...mapActions(["signIn"]),
-    ...mapActions("vnt", ["login"]),
-    ...mapActions("metamask", ["fetchAccount", "login"]),
+    ...mapActions(['signIn']),
+    ...mapActions('vnt', ['login']),
+    ...mapActions('metamask', ['fetchAccount', 'login']),
     setPathToSession(name) {
       if (window.sessionStorage) {
         const { pathname, search, hash } = window.location
@@ -292,74 +285,75 @@ export default {
     },
     async walletLogin(type) {
       this.setPathToSession('githubFrom')
-      if (type === "GitHub") {
-        this.$router.push({
-          name: "login-github"
-        });
-        return;
-      } else if (type === "Vnt") {
-        this.vntLogin();
-      } else if (type === "MetaMask") {
-        this.loginWithMetaMask();
-      } else if (type === "Telegram") {
-        this.telegramLogin();
-      } else if (type === "Twitter") {
+      if (type === 'GitHub') {
+        if (!this.testDomain()) return
+        this.$router.push({ name: 'login-github'})
+        return
+      } else if (type === 'Vnt') {
+        this.vntLogin()
+      } else if (type === 'MetaMask') {
+        this.loginWithMetaMask()
+      } else if (type === 'Telegram') {
+        if (!this.testDomain()) return
+        this.telegramLogin()
+      } else if (type === 'Twitter') {
+        if (!this.testDomain()) return
         // this.twitterLogin();
-      } else await this.signInx(type);
+      } else await this.signInx(type)
     },
     async signInx(type) {
       try {
-        await this.signIn({ idProvider: type });
-        this.$store.commit("setLoginModal", false);
-        this.$backendAPI.accessToken = this.currentUserInfo.accessToken;
-        window.location.reload(); // 登录完成刷新一次
+        await this.signIn({ idProvider: type })
+        this.$store.commit('setLoginModal', false)
+        this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+        window.location.reload() // 登录完成刷新一次
       } catch (error) {
         try {
-          await this.signIn({ idProvider: type });
-          this.$store.commit("setLoginModal", false);
-          this.$backendAPI.accessToken = this.currentUserInfo.accessToken;
-          window.location.reload(); // 登录完成刷新一次
+          await this.signIn({ idProvider: type })
+          this.$store.commit('setLoginModal', false)
+          this.$backendAPI.accessToken = this.currentUserInfo.accessToken
+          window.location.reload() // 登录完成刷新一次
         } catch (err) {
-          console.log("signInx 错误", err);
-          this.$message.error(this.$t("error.loginFail"));
+          console.log('signInx 错误', err)
+          this.$message.error(this.$t('error.loginFail'))
         }
       }
     },
     async vntLogin() {
-      this.loading = true;
+      this.loading = true
       try {
-        let res = await this.$store.dispatch("vnt/login");
-        this.$store.commit("setUserConfig", { idProvider: "Vnt" });
-        this.loading = false;
-        this.$message.closeAll();
-        this.$message.success(res);
-        await this.$store.commit("setLoginModal", false);
-        window.location.reload();
+        let res = await this.$store.dispatch('vnt/login')
+        this.$store.commit('setUserConfig', { idProvider: 'Vnt' })
+        this.loading = false
+        this.$message.closeAll()
+        this.$message.success(res)
+        await this.$store.commit('setLoginModal', false)
+        window.location.reload()
       } catch (error) {
-        this.loading = false;
-        this.$message.closeAll();
-        this.$message.error(error.toString());
+        this.loading = false
+        this.$message.closeAll()
+        this.$message.error(error.toString())
       }
     },
     async loginWithMetaMask() {
-      this.loading = true;
-      this.fetchAccount();
+      this.loading = true
+      this.fetchAccount()
       try {
-        let res = await this.$store.dispatch("metamask/login");
-        this.$store.commit("setUserConfig", { idProvider: "MetaMask" });
-        this.loading = false;
-        this.$message.closeAll();
-        this.$message.success(res);
-        await this.$store.commit("setLoginModal", false);
-        window.location.reload();
+        let res = await this.$store.dispatch('metamask/login')
+        this.$store.commit('setUserConfig', { idProvider: 'MetaMask' })
+        this.loading = false
+        this.$message.closeAll()
+        this.$message.success(res)
+        await this.$store.commit('setLoginModal', false)
+        window.location.reload()
       } catch (error) {
-        console.error(error);
-        this.loading = false;
-        this.$message.closeAll();
+        console.error(error)
+        this.loading = false
+        this.$message.closeAll()
         if (error.message) {
-          this.$message.error(error.message);
+          this.$message.error(error.message)
         } else {
-          this.$message.error(error.toString());
+          this.$message.error(error.toString())
         }
       }
     },
@@ -380,28 +374,28 @@ export default {
             const res = await this.$API.login({
               username: this.loginForm.email,
               password: this.loginForm.password
-            });
+            })
             if (res.code === 0) {
-              this.$store.commit("setAccessToken", res.data);
-              this.$store.commit("setUserConfig", { idProvider: "Email" });
-              this.$message.success(this.$t("success.loginSuccess"));
-              this.$emit("hide");
-              this.$userMsgChannel.postMessage("login")
-              window.location.reload(); // 登录完成刷新一次
+              this.$store.commit('setAccessToken', res.data)
+              this.$store.commit('setUserConfig', { idProvider: 'Email' })
+              this.$message.success(this.$t('success.loginSuccess'))
+              this.$emit('hide')
+              this.$userMsgChannel.postMessage('login')
+              window.location.reload() // 登录完成刷新一次
             } else {
-              this.$message.error(this.$t("error.loginFailPasswordOrAccount"));
+              this.$message.error(this.$t('error.loginFailPasswordOrAccount'))
             }
           } catch (error) {
-            this.$message.error(this.$t("error.loginFail"));
+            this.$message.error(this.$t('error.loginFail'))
           }
         } else {
           // console.log('error submit!!')
-          return false;
+          return false
         }
-      });
+      })
     },
     switchRegister() {
-      this.$emit("switch");
+      this.$emit('switch')
     },
     // 得到邀请状态
     getReferral() {
@@ -419,46 +413,40 @@ export default {
     },
     // 微信登录
     getWeixinCode() {
-      const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
-      if(isWeixin()) {
-
-        // 在微信中并且域名为备案域名 VUE_APP_WX_URL
-        if (window.location.origin !== process.env.VUE_APP_WX_URL) {
-          this.$message.warning(`请移步${process.env.VUE_APP_WX_URL}操作`)
-          return
-        }
-
+      if(this.$utils.isInWeixin()) {
         this.setPathToSession('wechatFrom')
         this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
       } else {
-        this.$message.error('请在微信中打开此网页')
+        this.$message.error('请在微信中操作')
       }
     },
-    setPathToSession(name) {
-      if (window.sessionStorage) {
-        const { pathname, search, hash } = window.location
-        sessionStorage.setItem(name, pathname + search + hash)
-      } else {
-        console.log('don\'t support sessionStorage')
+    // 检测域名
+    testDomain() {
+      try {
+        let IO = process.env.VUE_APP_DOMAIN_IO
+        let isIo = this.$utils.isDomain(IO)
+        if (!isIo) {
+          this.$message(`建议您去前往${IO}体验完整功能~`)
+        }
+        return isIo
+      } catch (e) {
+        console.log(e)
+        return false
       }
-    },
+    }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
 .bottom-tip {
   width: 100%;
   font-size: 14px;
-  float: right;
   line-height: 20px;
   margin-top: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  .red {
-    color: #fb6877;
-  }
 }
 .oauth-box {
   display: flex;

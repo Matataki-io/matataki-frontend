@@ -69,10 +69,35 @@
           </a>
         </div>
       </div>
+      <!-- 回复/评论 -->
       <div v-if="mode === 'reply'" class="fl reply">
         <p>
           {{ content }}
         </p>
+      </div>
+      <!-- token -->
+      <div v-if="mode === 'token'" class="fl token">
+        <div class="token-logo">
+          <el-image
+            class="token-logo-img"
+            :src="tokenLogo"
+            lazy
+            alt="cover"
+          />
+        </div>
+        <div v-if="token.symbol !== 'CNY'" class="token-right">
+          <h4>
+            {{ token.name }} 「{{ token.symbol }}」
+          </h4>
+          <p>
+            {{ token.brief }}
+          </p>
+        </div>
+        <div v-else class="token-right">
+          <h4>
+            CNY
+          </h4>
+        </div>
       </div>
     </div>
   </router-link>
@@ -103,6 +128,10 @@ export default {
     comment: {
       type: Object,
       default:  null
+    },
+    token: {
+      type: Object,
+      default: null
     },
     bgColor: {
       type: String,
@@ -145,6 +174,8 @@ export default {
     url() {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
       else if(this.mode === 'reply') return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+      else if(this.mode === 'token' && this.token.symbol === 'CNY') return {name: 'account'}
+      else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id}}
       return {name: 'user-id', params:{id: this.user.id}}
     },
     followBtnText() {
@@ -167,7 +198,12 @@ export default {
     content() {
       if(!this.comment) return ''
       return this.comment.comment
-    }
+    },
+    tokenLogo() {
+      if (!this.token) return ''
+      if (this.token.symbol === 'CNY') return require('@/assets/img/notify_cny.png')
+      return this.token.logo ? this.$ossProcess(this.token.logo, { h: 60 }) : ''
+    },
   },
   methods: {
     followOrUnFollow() {
@@ -192,14 +228,14 @@ export default {
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
-          this.$message.success(`${message}${this.$t('success.success')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('success.success')}`, type: 'success'})
 
           this.user.is_follow = type === 1
         } else {
-          this.$message.error(`${message}${this.$t('error.fail')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
         }
       } catch (error) {
-        this.$message.error(`${message}${this.$t('error.fail')}`)
+        this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
       }
     }
   }
@@ -317,6 +353,47 @@ export default {
       margin: 0;
     }
   }
+  .token {
+    &-logo {
+      width: 60px !important;
+      height: 60px !important;
+      min-width: 60px;
+      background: #eee;
+      margin-right: 14px;
+      &-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+    &-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      h4 {
+        font-size: 16px;
+        color: black;
+        line-height: 21px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #B2B2B2;
+        line-height: 20px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -368,6 +445,21 @@ export default {
     }
     .reply {
       padding: 0;
+    }
+    .token {
+      &-logo {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px;
+      }
+      &-right {
+        h4 {
+          font-size: 14px;
+        }
+        p {
+          font-size: 12px;
+        }
+      }
     }
   }
   .user-details {

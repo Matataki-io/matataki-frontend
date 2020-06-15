@@ -200,13 +200,13 @@ export default {
         }
         this.$API.accountBind(params).then(res => {
           if (res.code === 0) {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
             if (window.opener) {
               window.opener.location.reload()
               window.close()
             }
           } else {
-            this.$message.warning(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'warning'})
           }
         }).catch(err => {
           console.log(err)

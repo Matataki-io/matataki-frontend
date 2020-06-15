@@ -92,7 +92,7 @@ export default {
   margin: 10px 0;
   box-sizing: border-box;
   background-color: #fff;
-  padding: 16px 0;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -182,4 +182,12 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 540px) {
+  .username,
+  .amount {
+    font-size: 14px;
+  }
+}
+
 </style>

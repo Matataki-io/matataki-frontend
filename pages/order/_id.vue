@@ -221,6 +221,7 @@ export default {
   mounted() {
     this.getOrderData()
     this.getUserBalance()
+    this.getWeixinOpenId()
   },
   beforeDestroy() {
     clearInterval(this.timer)
@@ -342,7 +343,11 @@ export default {
           console.log(e)
           this.loading = false
           const message = e.response.data.message || '失败'
-          this.$message.error(message)
+          this.$message({
+            showClose: true,
+            message: message,
+            type: 'error'
+          })
         })
       } else {
         // 弹出NATIVE支付二维码
@@ -356,6 +361,27 @@ export default {
         })
       }
       const openid = this.currentUserInfo.name
+    },
+    getWeixinOpenId() {
+      if (!this.isInWeixin) return
+      if (this.isWeixinAccount) return
+      if (store.get('WX_OPENID')) return
+      const { code, state } = this.$route.query
+      if (!code || state !== 'weixin') {
+        const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
+        const appid = 'wx95829b6a2307300b'
+        const scope = 'snsapi_base'
+        const redirectUri = `${VUE_APP_WX_URL}${this.$route.path}`
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+          redirectUri
+        )}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
+      } else {
+        this.$API.getWeixinOpenId(code).then(res => {
+          if (res.openid) {
+            store.set('WX_OPENID', res.openid)
+          }
+        })
+      }
     },
     // 唤起JS微信支付
     weakWeixinPay(order) {

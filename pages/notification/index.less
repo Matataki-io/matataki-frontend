@@ -58,15 +58,22 @@
     }
 
     .checkbox-group {
-      flex-wrap: wrap;
+      display: grid;
+      justify-content: space-between;
+      grid-template-columns: repeat(auto-fill, 60px);
+      grid-gap: 10px;
 
       .checkbox {
-        margin: 0 12px 10px 12px;
+        margin-top: 5px;
       }
     }
 
     .checkbox-all {
-      margin: 0 12px 10px 12px;
+      margin: 0;
+    }
+
+    .el-divider--horizontal {
+      margin: 10px 0;
     }
   }
 }
@@ -163,18 +170,6 @@
         overflow: hidden;
         width: 0;
         height: 0;
-      }
-
-      .checkbox-group {
-        flex-wrap: wrap;
-
-        .checkbox {
-          margin: 0 12px 10px 0;
-        }
-      }
-
-      .checkbox-all {
-        margin: 0 12px 10px 0;
       }
     }
   }

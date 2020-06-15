@@ -3,7 +3,7 @@
     placement="top"
     trigger="hover"
     class="components-ipfs_all"
-    width="370"
+    popper-class="tx-hash-popover"
   >
     <div class="components-ipfs_all">
       <p class="tx_hash__title">
@@ -57,8 +57,8 @@ export default {
   methods: {
     copy(val) {
       this.$copyText(val).then(
-        () => this.$message.success(this.$t('success.copy')),
-        () => this.$message.error(this.$t('error.copy'))
+        () => this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' }),
+        () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
       )
     }
   }
@@ -100,6 +100,19 @@ export default {
       font-size: 16px;
       cursor: pointer;
     }
+  }
+}
+
+</style>
+
+<style lang="less">
+.tx-hash-popover {
+  width: 370px;
+}
+
+@media screen and (max-width: 390px) {
+  .tx-hash-popover {
+    width: 90%;
   }
 }
 </style>

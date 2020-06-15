@@ -8,14 +8,14 @@
     <div class="comment-container">
       <el-input
         v-model="comment"
-        :autosize="{ minRows: 4}"
+        :autosize="{ minRows: 3}"
         :placeholder="$t('p.commentPointPlaceholder')"
         type="textarea"
         maxlength="500"
         show-word-limit
         @keyup.native="postCommentKeyup"
       />
-      <div class="btn-container fl ac jfe">
+      <!-- <div class="btn-container fl ac jfe">
         <el-button
           size="small"
           class="btn"
@@ -23,8 +23,11 @@
         >
           {{ $t('p.commentPointBtn') }}
         </el-button>
-      </div>
+      </div> -->
     </div>
+    <button type="submit" class="comment-submit" @click="postComment">
+      发表评论
+    </button>
   </div>
 </template>
 
@@ -89,7 +92,7 @@ export default {
             this.comment = ''
             this.$store.commit('setCommentRequest')
             // this.$emit('doneComment')
-          } else this.$message.error(res.message)
+          } else this.$message({ showClose: true, message: res.message, type: 'error' })
         })
         .catch(e => {
           console.log('评论失败', e)
@@ -107,6 +110,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.comment-submit {
+  padding: 4px 15px;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 60px;
+  vertical-align: top;
+  cursor: pointer;
+  background-color: #000;
+  border: 1px solid #000;
+  transition: .1s;
+  user-select: none;
+  outline: none;
+  margin-left: 10px;
+  &:hover {
+    background: #333;
+    border-color: #333;
+  }
+}
 .comment-input {
   margin-top: 40px;
   margin-bottom: 20px;

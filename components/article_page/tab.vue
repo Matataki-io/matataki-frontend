@@ -67,18 +67,19 @@ export default {
     display: flex;
     align-items: center;
     li {
+      margin: 0 40px 0 0;
       a {
         font-size: 20px;
-        color: rgba(0, 0, 0, 1);
         line-height: 1;
         cursor: pointer;
         transition: all 0.3s;
-        font-weight: 400;
-        margin: 0 30px 0 0;
+        font-weight: 500;
+        margin: 0;
         padding: 0;
         text-decoration: none;
+        color: #B2B2B2;
         &.active {
-          font-weight: bold;
+          color: rgba(0, 0, 0, 1);
         }
         em {
           font-size: 20px;
@@ -94,17 +95,15 @@ export default {
 @media screen and (max-width: 992px) {
   .main-head__nav .nav-title li a {
     font-size: 16px;
-    margin: 0 10px 0 0;
   }
 }
 
-// 小于768
-@media screen and (max-width: 768px) {
-  .main-head__nav .nav-title {
-    font-size: 16px;
-    margin: 0 10px 0 0;
-    li {
-      margin: 0 25px 0 0;
+
+@media screen and (max-width: 540px) {
+  .main-head__nav .nav-title li {
+    margin-right: 20px;
+    a {
+      font-size: 14px;
     }
   }
 }

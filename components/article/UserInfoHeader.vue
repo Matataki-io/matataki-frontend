@@ -108,7 +108,7 @@ export default {
           this.info.is_follow = res.data.is_follow
           this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         console.log(`获取关注状态失败${err}`)
@@ -135,15 +135,15 @@ export default {
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
-          this.$message.success(`${message}${this.$t('success.success')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('success.success')}`, type: 'success'})
           this.info.is_follow = type === 1
           // 在获取一次防止出错
           this.getUserInfo(this.article.uid)
         } else {
-          this.$message.error(`${message}${this.$t('error.fail')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
         }
       } catch (error) {
-        this.$message.error(`${message}${this.$t('error.fail')}`)
+        this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
       }
     }
   }

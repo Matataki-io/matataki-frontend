@@ -9,7 +9,6 @@
           v-for="(item, index) in pointLog.list"
           :key="index"
           :card="item"
-          :end="index === pointLog.list.length-1"
         />
       </no-content-prompt>
     </div>

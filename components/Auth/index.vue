@@ -24,9 +24,6 @@
           {{ $t('registered') }}</span>
       </div>
       <div class="loginRegister">
-        <h4 v-if="$route.query.referral && !isLogin">
-          新注册用户立即领取300积分 {{ isLogined }}
-        </h4>
         <Login
           v-show="isLogin"
           @switch="step = 3"
