@@ -921,6 +921,7 @@ export default {
   .token-detail /deep/ .g-avatar {
     width: 60px !important;
     height: 60px !important;
+    flex: 0 0 60px;
   }
 
   .token-info-title.bold {

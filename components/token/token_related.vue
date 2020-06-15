@@ -212,4 +212,10 @@ export default {
   clear: left;
   margin-top: 20px;
 }
+
+@media screen and (max-width: 600px) {
+  .container .header .title {
+    font-size: 20px;
+  }
+}
 </style>
