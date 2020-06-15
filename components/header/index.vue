@@ -327,7 +327,7 @@ export default {
           title: this.$t('home.creation'),
           url: 'article',
           sup: '',
-          urlList: ['article', 'ring-id']
+          urlList: ['article', 'article-latest', 'ring-id']
         },
         {
           title: this.$t('home.timeline'),
@@ -937,7 +937,7 @@ export default {
 
 @media screen and (max-width: 992px) {
   .home-head {
-    padding-left: 20px;
+    padding-left: 10px;
     padding-right: 10px;
     .logo {
       height: 30px;

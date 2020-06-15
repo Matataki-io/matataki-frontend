@@ -499,9 +499,9 @@ export default {
   }
 
   .card {
-    margin: 20px 0;
-    border-radius: 0;
-    background-color: transparent;
+      margin: 10px 0;
+      padding: 20px;
+      border-radius: 8px;
     &:hover {
       transform: none;
       box-shadow: none;
@@ -537,6 +537,18 @@ export default {
 @media screen and (max-width: 540px) {
   .lock-img {
     height: 14px;
+  }
+  .article-title {
+    margin-bottom: 5px;
+    .title {
+      font-size: 14px;
+    }
+  }
+  .content-text {
+    font-size: 12px;
+  }
+  .des {
+    margin: 5px 0 0 0;
   }
 }
 </style>
