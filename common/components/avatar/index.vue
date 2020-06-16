@@ -3,17 +3,30 @@
     <img
       v-show="src"
       :src="src"
+      :onerror="defaultAvatar"
+      alt="avatar"
+    >
+    <img
+      v-show="!src"
+      :src="defaultAvatar"
       alt="avatar"
     >
   </div>
 </template>
 
 <script>
+import defaultAvatar from '@/assets/img/default_avatar.png'
+
 export default {
   props: {
     src: {
       type: String,
       default: ''
+    }
+  },
+  data() {
+    return {
+      defaultAvatar
     }
   }
 }
@@ -32,6 +45,7 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background-color: #f1f1f1;
   }
 }
 </style>
