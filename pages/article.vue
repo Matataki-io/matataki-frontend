@@ -46,7 +46,7 @@ export default {
       idx: 0,
       usersRecommendList: [{},{},{},{},{}],
       usersLoading: false,
-      recommendList: [],
+      recommendList: [{},{},{},{},{}],
       popularlist: [],
       articleList: []
     }

@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     cover(src) {
-      return src ? this.$ossProcess(src, { h: 390 }) : ''
+      return src ? this.$ossProcess(src, { h: 80 }) : ''
     }
   }
 }
