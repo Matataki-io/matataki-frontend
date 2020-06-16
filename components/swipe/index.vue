@@ -5,7 +5,6 @@
       class="swipe"
     >
       <el-carousel
-        v-if="swipeMode === 'pc'"
         :key="key"
         :interval="3000"
         trigger="click"
@@ -35,7 +34,6 @@
       </el-carousel>
     </div>
     <van-swipe
-      v-if="swipeMode === 'mobile'"
       :autoplay="30000"
       indicator-color="#542DE0"
       :height="200"
@@ -148,6 +146,12 @@ export default {
   min-height: 477px;
 }
 @media screen and (max-width: 768px) {
+  .pc {
+    display: none;
+  }
+  .mobile {
+    display: block !important;
+  }
   .swipe-wrapper {
     min-height: 200px;
   }
@@ -214,6 +218,7 @@ export default {
   margin: 20px 10px;
 }
 .mobile {
+  display: none;
   margin: 10px 10px 0;
   // border-radius: 10px;
   box-sizing: border-box;
