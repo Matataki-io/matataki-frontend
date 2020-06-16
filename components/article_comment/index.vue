@@ -166,7 +166,7 @@ export default {
   .avatar {
     display: none;
   }
-  .comment-container {
+  .comment-input {
     padding: 0 10px;
   }
 }
