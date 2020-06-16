@@ -122,7 +122,7 @@
             <div class="wechat">
               <div class="wechat-img">
                 <img
-                  src="@/assets/img/wechat-group.png"
+                  src="@/assets/img/wechat-group1.png"
                   alt="code"
                 >
                 <p class="wechat-title">
