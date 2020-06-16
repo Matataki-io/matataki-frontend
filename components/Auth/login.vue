@@ -426,7 +426,7 @@ export default {
         let IO = process.env.VUE_APP_DOMAIN_IO
         let isIo = this.$utils.isDomain(IO)
         if (!isIo) {
-          this.$message(`建议您去前往${IO}体验完整功能~`)
+          this.$message(`请使用非微信浏览器访问 ${IO} 使用该功能`)
         }
         return isIo
       } catch (e) {

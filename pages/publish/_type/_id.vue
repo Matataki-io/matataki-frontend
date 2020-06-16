@@ -1516,7 +1516,7 @@ export default {
           fissionFactor,
           cover,
           isOriginal,
-          shortContent: this.readSummary
+          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
         })
       }
       // 编辑发送
@@ -1555,7 +1555,7 @@ export default {
           fissionFactor,
           cover,
           isOriginal,
-          shortContent: this.readSummary
+          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
         })
       }
 
