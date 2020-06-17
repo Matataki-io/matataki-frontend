@@ -1,13 +1,12 @@
 <template>
   <div class="components-avatar">
     <img
-      v-show="src"
+      v-if="src"
       :src="src"
-      :onerror="defaultAvatar"
       alt="avatar"
     >
     <img
-      v-show="!src"
+      v-else
       :src="defaultAvatar"
       alt="avatar"
     >
