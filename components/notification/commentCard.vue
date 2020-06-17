@@ -35,7 +35,6 @@
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
 
 export default {
@@ -67,7 +66,7 @@ export default {
     },
     dateCard() {
       if(!this.card.create_time) return ''
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     url() {

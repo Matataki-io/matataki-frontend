@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 
@@ -92,7 +91,7 @@ export default {
   computed: {
     ...mapGetters(['isMe']),
     time() {
-      return moment(this.card.create_time).format('YYYY-MM-DD HH:mm:ss')
+      return this.moment(this.card.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
     cnyAmount() {
       const { liquidity, cny_amount, decimals } = this.card

@@ -33,7 +33,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import shareHeadRight from '@/components/share_page/share_head_right'
 export default {
@@ -81,7 +80,7 @@ export default {
       return ''
     },
     timeFormat() {
-      return this.time ? moment(this.time).format('lll') : '00:00:00'
+      return this.time ? this.moment(this.time).format('lll') : '00:00:00'
     },
   },
 }

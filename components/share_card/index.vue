@@ -128,7 +128,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
@@ -161,7 +160,7 @@ export default {
       else return []
     },
     time() {
-      return moment(this.card.create_time).format('lll')
+      return this.moment(this.card.create_time).format('lll')
     },
     avatarSrc() {
       if (this.card.avatar) return this.$ossProcess(this.card.avatar, { h: 60 })

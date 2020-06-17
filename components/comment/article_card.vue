@@ -55,7 +55,6 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import moment from 'moment'
 import avatar from '@/components/avatar/index'
 import replyInput from './ReplyInput'
 
@@ -83,7 +82,7 @@ export default {
       return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
     },
     friendlyDate() {
-      const time = moment(this.comment.create_time)
+      const time = this.moment(this.comment.create_time)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     avatar() {
