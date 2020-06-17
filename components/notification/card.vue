@@ -71,7 +71,6 @@
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { precision } from '@/utils/precisionConversion'
 import objectCard from '@/components/notification/objectCard.vue'
@@ -176,7 +175,7 @@ export default {
     /** 格式化时间 */
     dateCard() {
       // 优先采用notify_time
-      const time = moment(this.card.notify_time || this.card.create_time)
+      const time = this.moment(this.card.notify_time || this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     /** 子卡片显示模式 */

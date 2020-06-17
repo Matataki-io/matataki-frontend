@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { xssFilter } from '@/utils/xss'
 import { ipfsData, ipfsArticleData } from '@/api/async_data_api.js'
 
@@ -92,7 +91,7 @@ export default {
   },
   computed: {
     articleCreateTime() {
-      return moment(this.articleData.create_time).format('YYYY-MM-DD HH:mm')
+      return this.moment(this.articleData.create_time).format('YYYY-MM-DD HH:mm')
     },
     compiledMarkdown() {
       return markdownIt.render(xssFilter(this.articleIpfs.content))

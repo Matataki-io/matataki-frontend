@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 // import { isNDaysAgo } from '@/common/methods';
 import { precision } from '@/utils/precisionConversion'
 import txHash from '@/components/tx_hash_popover/index'
@@ -54,7 +53,7 @@ export default {
   },
   computed: {
     time() {
-      return moment(this.card.create_time).format('MMMDo HH:mm')
+      return this.moment(this.card.create_time).format('MMMDo HH:mm')
     },
     amount() {
       const tokenamount = precision(this.card.amount, 'CNY', this.card.decimals)

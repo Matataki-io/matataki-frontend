@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 import txHash from '@/components/tx_hash_popover/index'
@@ -79,7 +78,7 @@ export default {
   computed: {
     ...mapGetters(['isMe']),
     time() {
-      return moment(this.card.create_time).format('YYYY-MM-DD HH:mm:ss')
+      return this.moment(this.card.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
     id() {
       if (this.isMe(this.card.from_uid)) {

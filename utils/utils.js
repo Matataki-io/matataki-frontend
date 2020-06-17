@@ -1,5 +1,6 @@
 /* eslint-disable */
 import moment from 'moment'
+
 export default {
   setCookie(name, value, days = 1) {
     let d = new Date();
