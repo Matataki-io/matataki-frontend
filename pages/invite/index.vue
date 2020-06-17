@@ -76,8 +76,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import userPagination from '@/components/user/user_pagination.vue'
@@ -110,7 +108,7 @@ export default {
   },
   methods: {
     createTime(time) {
-      return moment(time).format('MMMDo HH:mm')
+      return this.moment(time).format('MMMDo HH:mm')
     },
     cover(cover) {
       return cover ? this.$ossProcess(cover) : ''

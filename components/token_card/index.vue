@@ -56,7 +56,6 @@
   </router-link>
 </template>
 <script>
-import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
@@ -94,7 +93,7 @@ export default {
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     friendlyDate() {
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
   }

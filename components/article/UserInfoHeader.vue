@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
 import ipfsAll from '@/common/components/ipfs_all/index.vue'
@@ -86,7 +85,7 @@ export default {
     },
     time() {
       const { create_time: createTime } = this.article
-      return createTime ? moment(createTime).format('YYYY-MM-DD HH:mm') : ''
+      return createTime ? this.moment(createTime).format('YYYY-MM-DD HH:mm') : ''
     }
   },
   watch: {

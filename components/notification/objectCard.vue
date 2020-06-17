@@ -104,7 +104,6 @@
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { mapGetters } from 'vuex'
 
@@ -192,7 +191,7 @@ export default {
     },
     dateCard() {
       if(!this.createTime) return ''
-      const time = moment(this.createTime)
+      const time = this.moment(this.createTime)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     content() {
