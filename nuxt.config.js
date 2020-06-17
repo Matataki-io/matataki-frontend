@@ -73,7 +73,6 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~/plugins/combined-inject.js',
-    // '~/plugins/element-ui',
     '~/plugins/vue_plugins.js',
     '~/plugins/vue_components.js',
     // '~/plugins/i18n.js',
