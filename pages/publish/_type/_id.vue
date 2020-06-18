@@ -761,7 +761,7 @@ export default {
       return this.$route.params.type === 'draft'
     },
     isDevelopmentMode() {
-      return process.env.NODE_ENV === 'development'
+      return process.env.NODE_ENV !== 'production'
     },
     CCLicenseCredit() {
       if (!this.isOriginal) return null //非原创不适用

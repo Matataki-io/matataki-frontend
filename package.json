@@ -11,7 +11,7 @@
 
     "build-dev": "cross-env NODE_ENV=development nuxt build",
     "build-test": "cross-env NODE_ENV=testing nuxt build && node ali_oss_build.js",
-    "build-prod": "cross-env NODE_ENV=production nuxt build",
+    "build-prod": "cross-env NODE_ENV=production nuxt build && node ali_oss_build_prod.js",
 
     "start-dev": "cross-env NODE_ENV=development nuxt start",
     "start-test": "cross-env NODE_ENV=testing nuxt start",
