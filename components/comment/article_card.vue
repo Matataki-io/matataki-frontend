@@ -114,6 +114,9 @@ export default {
 .comment-info {
   display: flex;
   align-items: flex-start;
+  &.play-prompt {
+    animation: prompt 3s;
+  }
 }
 .comment-avatar {
   margin-right: 10px;
@@ -188,5 +191,25 @@ export default {
     text-decoration: none;
     cursor: pointer;
   }
+}
+
+@keyframes prompt
+{
+10% {
+  border-radius: 10px;
+  box-shadow: none;
+}
+20%  {
+  background: white;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+}
+90%  {
+  background: white;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+}
+0% {
+  border-radius: 10px;
+  box-shadow: none;
+}
 }
 </style>
