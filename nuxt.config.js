@@ -123,6 +123,24 @@ export default {
   build: {
     publicPath: cdnPublicPath(NODE_ENV),
     // analyze: true,
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          editor: {
+            test: /node_modules[\\/]@matataki\/editor/,
+            chunks: 'all',
+            priority: 20,
+            name: true
+          },
+          elementui: {
+            test: /node_modules[\\/]element-ui/,
+            chunks: 'all',
+            priority: 20,
+            name: true
+          },
+        }
+      }
+    },
     cache: true,
     parallel: true,
     // CSS提取
