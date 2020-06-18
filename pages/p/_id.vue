@@ -350,6 +350,7 @@ import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
 
+
 const markdownIt = require('markdown-it')({
   html: true,
   breaks: true
@@ -502,16 +503,26 @@ export default {
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       if (process.browser) {
+        try {
+          const markdownItEditor = this.$mavonEditor.markdownIt
+          const { content } = this.post
 
-        const markdownItEditor = this.$mavonEditor.markdownIt
-        const { content } = this.post
+          let md = markdownItEditor.render(content)
 
-        let md = markdownItEditor.render(content)
-
-        return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+        } catch (e) {
+          console.log('1', e)
+          let md = markdownIt.render(this.post.content)
+          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+        }
       } else {
-        let md = markdownIt.render(this.post.content)
-        return this.$utils.compose(xssImageProcess, xssFilter)(md)
+        try {
+          let md = markdownIt.render(this.post.content)
+          return this.$utils.compose(xssImageProcess, xssFilter)(md)
+        } catch (e) {
+          console.log('2', e)
+          return this.post.content
+        }
       }
     },
     cover() {
