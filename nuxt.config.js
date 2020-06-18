@@ -4,23 +4,26 @@ import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 import i18n from './plugins/i18n'
+import ENV from './env'
 
-import env from './env'
-function genENV() {
-  const keys = Object.keys(env.production)
-  const result = {}
-  keys.forEach((item) => {
-    result[item] = env[process.env.NODE_ENV][item]
-  })
-  return result
-}
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
+const NODE_ENV = process.env.NODE_ENV
+console.log(NODE_ENV)
+
+function cdnPublicPath (env) {
+  const list = {
+    'development': '/_nuxt/',
+    'testing': 'https://cdntest.frontenduse.top',
+    'production': 'https://cdn.frontenduse.top',
+  }
+  return list[env] || '/_nuxt/'
+}
+
 export default {
-  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -118,7 +121,7 @@ export default {
   ** Build configuration
   */
   build: {
-    publicPath: 'https://cdntest.frontenduse.top',
+    publicPath: cdnPublicPath(NODE_ENV),
     // analyze: true,
     cache: true,
     parallel: true,
@@ -175,5 +178,5 @@ export default {
 
     }
   },
-  env: genENV()
+  env: ENV[process.env.NODE_ENV]
 }
