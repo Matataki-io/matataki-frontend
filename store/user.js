@@ -31,7 +31,8 @@ export const mutations = {
       accounts,
       articles,
       supports,
-      drafts
+      drafts,
+      create_time
     } = data
     state.userInfo = {
       email: email,
@@ -42,7 +43,8 @@ export const mutations = {
       name: nickname || username,
       avatar: avatar ? API.getImg(avatar) : '',
       banner: banner ? API.getImg(banner) : '',
-      stats: { accounts, articles, supports, drafts }
+      stats: { accounts, articles, supports, drafts },
+      create_time: create_time
     }
   },
   // 重置
