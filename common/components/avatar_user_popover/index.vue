@@ -128,7 +128,27 @@ export default {
       return this.tokenInfo.logo ? this.$ossProcess(this.tokenInfo.logo, { h: 60 }) : ''
     }
   },
+  mounted() {
+    if (process.browser) {
+      this.$nextTick(() => {
+        this.isHide()
+      })
+    }
+  },
   methods: {
+    // 小屏幕隐藏
+    isHide() {
+      try {
+        let clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+        if (clientWidth < 540) {
+          this.disabled = true
+        } else {
+          this.disabled = false
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async show() {
       
       // 如果已经有数据了 不加载loading, 但是会请求接口来保证数据是最新的
