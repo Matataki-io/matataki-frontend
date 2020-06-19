@@ -667,7 +667,8 @@ export default {
         bookmark: 'bookmark',
         myBookmark: 'myBookmark',
         message: 'message',
-        issuedFanTickets: 'Users who have issued Fan tickets'
+        issuedFanTickets: 'Users who have issued Fan tickets',
+        registrationTime: 'Registration time'
     },
     withdraw: {
         title: 'withdraw',
