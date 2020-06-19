@@ -9,68 +9,45 @@
     @hide="hide"
   >
     <div v-loading="loading" class="popover">
-      <router-link class="avatar-popover" :to="{name: 'user-id', params: { id: userId }}" target="_blank">
-        <img
-          v-if="userAvatar"
-          :src="userAvatar"
-          alt="avatar"
-        >
-        <img
-          v-else
-          :src="defaultAvatar"
-          alt="avatar"
-        >
+      <router-link class="avatar-popover" :to="{name: 'token-id', params: { id: tokenId }}" target="_blank">
+        <img v-if="tokenLogo" :src="tokenLogo" alt="logo">
+        <img v-else :src="defaultAvatar" alt="logo">
       </router-link>
       <div class="username">
-        <router-link :to="{name: 'user-id', params: { id: userId }}" target="_blank">
-          {{ userInfo.nickname || userInfo.username }}
+        <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank">
+          {{ tokenInfo.name }}
         </router-link>
       </div>
-      <p class="introduction">{{ userInfo.introduction }}</p>
+      <p class="introduction">{{ tokenInfo.brief }}</p>
       <div class="user-data">
-        <router-link :to="{name: 'user-id-follow', params: { id: userId }}" target="_blank" class="user-data-block">
-          <p class="user-data-number">{{ userInfo.follows || 0 }}</p>
-          <p class="user-data-title">关注</p>
+        <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
+          <p class="user-data-number">{{ exchangeInfo.price || 0 }}<span>CNY</span></p>
+          <p class="user-data-title">当前现价</p>
         </router-link>
-        <router-link :to="{name: 'user-id-fan', params: { id: userId }}" target="_blank" class="user-data-block">
-          <p class="user-data-number">{{ userInfo.fans || 0 }}</p>
-          <p class="user-data-title">粉丝</p>
+        <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
+          <p class="user-data-number">{{ exchangeAmount || 0 }}<span>CNY</span></p>
+          <p class="user-data-title">24h成交额</p>
         </router-link>
       </div>
       <div class="user-btn">
-        <a href="javascript:;" @click="transfer">
-          <svg-icon icon-class="user_avatar_popover_zhuanzhang" class="icon" />
-          转账</a>
-        <a
-          v-if="userInfo.is_follow"
-          v-loading="followLoading"
-          href="javascript:;"
-          @click="unFollow"
-        >
-          已关注</a>
-        <a
-          v-else
-          v-loading="followLoading"
-          href="javascript:;"
-          @click="follow"
-        >
-          <svg-icon icon-class="user_avatar_popover_follow" class="icon" />
-          关注</a>
+        <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank">
+          查看详情
+        </router-link>
       </div>
-      <div v-if="tokenInfo.id" class="line" />
-      <div v-if="tokenInfo.id" class="user-token">
+      <div class="line" />
+      <div class="user-token">
         <div class="token">
-          <router-link :to="{name: 'token-id', params: { id: tokenInfo.id }}" target="_blank" class="token-cover">
-            <img v-if="tokenLogo" :src="tokenLogo" alt="logo">
+          <router-link :to="{name: 'user-id', params: { id: userInfo.id }}" target="_blank" class="token-cover">
+            <img v-if="userAvatar" :src="userAvatar" alt="logo">
           </router-link>
           <div class="token-info">
-            <router-link :to="{name: 'token-id', params: { id: tokenInfo.id }}" target="_blank" class="token-name">
-              {{ tokenInfo.name }}
+            <router-link :to="{name: 'user-id', params: { id: userInfo.id }}" target="_blank" class="token-name">
+              {{ userInfo.nickname || userInfo.username }}
             </router-link>
-            <p class="token-introduction">{{ tokenInfo.brief }}</p>
+            <p class="token-introduction">{{ userInfo.introduction }}</p>
           </div>
         </div>
-        <router-link class="token-go" :to="{name: 'token-id', params: { id: tokenInfo.id }}" target="_blank">
+        <router-link class="user-go" :to="{name: 'user-id', params: { id: userInfo.id }}" target="_blank">
           <svg-icon icon-class="user_avatar_popover_go" class="icon" />
         </router-link>
       </div>
@@ -80,13 +57,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import defaultAvatar from '@/assets/img/default_avatar.png'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   props: {
     // user id
-    userId: {
+    tokenId: {
       type: Number,
       required: true
     },
@@ -101,10 +78,10 @@ export default {
       defaultAvatar,
       userInfo: Object.create(null),
       tokenInfo: Object.create(null),
+      exchangeInfo: Object.create(null),
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
     userAvatar() {
       if (!this.userInfo) return ''
       return this.userInfo.avatar ? this.$ossProcess(this.userInfo.avatar, { h: 90 }) : ''
@@ -112,7 +89,15 @@ export default {
     tokenLogo() {
       if (!this.tokenInfo) return ''
       return this.tokenInfo.logo ? this.$ossProcess(this.tokenInfo.logo, { h: 60 }) : ''
-    }
+    },
+    exchangeAmount() {
+      const tokenAmount = precision(
+        this.exchangeInfo.amount_24h || 0,
+        'CNY',
+        this.tokenInfo.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenAmount, 4)
+    },
   },
   mounted() {
     if (process.browser) {
@@ -138,9 +123,10 @@ export default {
     async show() {
 
       // 如果传进来的和历史记录的id不一样则手动清空
-      if (this.userId !== this.currentId) {
+      if (this.tokenId !== this.currentId) {
         this.userInfo = {}
         this.tokenInfo = {}
+        this.exchangeInfo = {}
       }
       
       // 如果已经有数据了 不加载loading, 但是会请求接口来保证数据是最新的
@@ -149,87 +135,24 @@ export default {
       }
 
       // 获取用户信息
-      const res = await this.$utils.factoryRequest(this.$API.getUser(this.userId))
+      const res = await this.$utils.factoryRequest(this.$API.minetokenId(this.tokenId))
       if (res) {
-        this.userInfo = res.data
-        this.currentId = this.userId
+        this.userInfo = res.data.user || {}
+        this.tokenInfo = res.data.token || {}
+        this.exchangeInfo = res.data.exchange || {}
+
+        this.currentId = this.tokenId
       } else {
         this.userInfo = Object.create(null)
+        this.tokenInfo = Object.create(null)
+        this.exchangeInfo = Object.create(null)
       }
 
       this.loading = false
-
-      // 获取是否有 token
-      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(this.userId))
-      // not token, data is null
-      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
     hide() {
       console.log('hide')
     },
-    // 转账
-    transfer() {
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-
-      if (this.currentUserInfo.id === this.userId) {
-        this.$message({
-          showClose: true,
-          message: '不能给自己转账',
-          type: 'warning'
-        })
-        return
-      }
-      this.$message('调用全局转账')
-
-    },
-    // 关注
-    async follow() {
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-
-      if (this.currentUserInfo.id === this.userId) {
-        this.$message({
-          showClose: true,
-          message: '不能关注自己',
-          type: 'warning'
-        })
-        return
-      }
-
-      this.followLoading = true 
-
-      const res = await this.$utils.factoryRequest(this.$API.follow(this.userId))
-      if (res) {
-        this.userInfo.is_follow = true
-      } else {
-        this.$message({
-          showClose: true,
-          message: this.$t('error.fail'),
-          type: 'error'
-        })
-      }
-
-      this.followLoading = false 
-
-    },
-    // 取消关注
-    async unFollow() {
-      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-
-      this.followLoading = true 
-
-      const res = await this.$utils.factoryRequest(this.$API.unfollow(this.userId))
-      if (res) {
-        this.userInfo.is_follow = false
-      } else {
-        this.$message({
-          showClose: true,
-          message: this.$t('error.fail'),
-          type: 'error'
-        })
-      }
-
-      this.followLoading = false 
-    }
   }
 }
 </script>
@@ -301,6 +224,13 @@ export default {
     line-height: 22px;
     padding: 0;
     margin: 0;
+    span {
+      font-size:10px;
+      font-weight:400;
+      color:rgba(178,178,178,1);
+      line-height:14px;
+      margin-left: 5px;
+    }
   }
   .user-data-title {
     font-size: 12px;
@@ -405,7 +335,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.token-go {
+.user-go {
   flex: 0 0 20px;
   width: 20px;
   height: 20px;

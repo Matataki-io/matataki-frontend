@@ -4,10 +4,9 @@
     class="fl card"
   >
     <div class="token-cover">
-      <avatar
-        :src="cover"
-        size="45px"
-      />
+      <c-token-popover :token-id="Number(card.id)">
+        <avatar :src="cover" size="45px" />
+      </c-token-popover>
     </div>
     <div class="fl cards-content">
       <div class="card-info">
