@@ -4,10 +4,9 @@
       :to="{name: 'user-id', params: {id: card.id}}"
       target="_blank"
     >
-      <avatar
-        :src="avatarSrc"
-        size="45px"
-      />
+      <c-user-popover :user-id="Number(card.id)">
+        <avatar :src="avatarSrc" size="45px" />
+      </c-user-popover>
     </n-link>
     <n-link
       :to="{name: 'user-id', params: {id: card.id}}"

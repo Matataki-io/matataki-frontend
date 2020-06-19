@@ -41,14 +41,10 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link
-          :to="{name: 'user-id', params: { id: card.uid }}"
-          class="fl ac"
-        >
-          <avatar
-            :src="coverUser"
-            size="30px"
-          />
+        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
+          <c-user-popover :user-id="Number(card.uid)">
+            <c-avatar :src="coverUser" size="30px" />
+          </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </router-link>
       </div>
