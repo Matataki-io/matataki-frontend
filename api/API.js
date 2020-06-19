@@ -1042,5 +1042,9 @@ minetokenGetResources(tokenId) {
       method: 'PUT',
       url: `/comment/like/${id}`,
     })
+  },
+  getCommentIndexById(id) {
+    return request.get(`/comment/index/${id}`)
   }
+
 }
