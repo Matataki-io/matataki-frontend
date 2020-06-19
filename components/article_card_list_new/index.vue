@@ -125,11 +125,17 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      chosenHtml: '<span class="article-chosen">精选</span> '
+    }
+  },
   computed: {
     ...mapGetters(['isMe', 'currentUserInfo', 'isLogined']),
     xssTitle() {
       if (this.card.title) {
-        return filterOutHtmlTags(this.card.title, {
+        const chosenHtml = this.card.is_recommend ? this.chosenHtml : ''
+        return chosenHtml + filterOutHtmlTags(this.card.title, {
           em: []
         })
       } else return ''
@@ -556,9 +562,32 @@ export default {
 </style>
 
 <style lang="less">
-.search-res em {
-  font-weight: bold;
-  font-style: normal;
-  color: @purpleDark;
+.search-res {
+  .article-chosen {
+    background: #F7B500;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    line-height: 23px;
+    height: 22px;
+    border-radius: 4px;
+    padding: 0px 5px;
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
+  em {
+    font-weight: bold;
+    font-style: normal;
+    color: @purpleDark;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .search-res {
+    .article-chosen {
+      line-height: 18px;
+      height: 17px;
+    }
+  }
 }
 </style>

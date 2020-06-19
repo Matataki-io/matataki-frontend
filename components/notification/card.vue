@@ -168,9 +168,12 @@ export default {
         // 转账
         const amount = this.tokenAmount(this.transferLog.amount, this.transferLog.decimals)
         if(object_type === 'cnyWallet') // CNY
-          return `${amount} ${this.transferLog.symbol}`
-        else if(object_type === 'tokenWallet') // Token
-          return `${amount} ${this.transferLog.symbol}`
+          return `金额：${amount} ${this.transferLog.symbol}`
+        else if(object_type === 'tokenWallet') { // Token
+          let content = `金额：${amount} ${this.transferLog.symbol}`
+          if(this.transferLog.memo) content += `\n转账备注：${this.transferLog.memo}`
+          return content
+        }
       }
       return ''
     },
