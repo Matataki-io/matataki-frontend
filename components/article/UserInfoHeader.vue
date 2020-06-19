@@ -5,11 +5,9 @@
         :to="{name: 'user-id', params: {id : article.uid}}"
         target="_blank"
       >
-        <c-avatar-user-popover
-          :src="avatarSrc"
-          class="Avatar"
-          :user-id="Number(article.uid)"
-        />
+        <c-user-popover :user-id="Number(article.uid)">
+          <c-avatar :src="avatarSrc" class="Avatar" />
+        </c-user-popover>
       </router-link>
       <div class="AuthorInfo-content">
         <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
@@ -149,10 +147,8 @@ export default {
 
 <style scoped lang="less">
 .Avatar {
-  /deep/ .c-avatar {
-    width: 50px;
-    height: 50px;
-  }
+  width: 50px;
+  height: 50px;
 }
 .AuthorInfo-content {
   margin: 0 10px;

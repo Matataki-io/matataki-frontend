@@ -75,7 +75,8 @@
         </router-link>
       </div>
     </div>
-    <div slot="reference" class="c-avatar">
+    <slot slot="reference" />
+    <!-- <div slot="reference" class="c-avatar">
       <img
         v-if="src"
         :src="src"
@@ -86,7 +87,7 @@
         :src="defaultAvatar"
         alt="avatar"
       >
-    </div>
+    </div> -->
   </el-popover>
 </template>
 

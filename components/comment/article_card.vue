@@ -6,10 +6,9 @@
         class="comment-avatar"
         target="_blank"
       >
-        <c-avatar-user-popover
-          :src="avatar"
-          :user-id="Number(comment.uid)"
-        />
+        <c-user-popover :user-id="Number(comment.uid)">
+          <c-avatar :src="avatar" />
+        </c-user-popover>
       </n-link>
       <div>
         <router-link
