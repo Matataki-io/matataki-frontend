@@ -73,10 +73,12 @@
               :to="{ name: 'user-id', params: {id: card && card.uid} }"
               target="_blank"
             >
-              <avatar
-                :src="avatarImg"
-                class="avatar"
-              />
+              <c-user-popover :user-id="Number(card.uid)">
+                <c-avatar
+                  :src="avatarImg" 
+                  class="avatar"
+                />
+              </c-user-popover>
             </n-link>
             <n-link
               :to="{ name: 'user-id', params: {id: card && card.uid} }"
@@ -100,16 +102,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo, isThisYear } from '@/utils/momentFun'
 import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
-  components: {
-    avatar
-  },
   props: {
     // 卡片数据
     card: {

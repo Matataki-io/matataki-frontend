@@ -3,10 +3,9 @@
     <div class="container-padding">
       <div class="token-detail">
         <div class="fl">
-          <avatar
-            :src="logo"
-            size="120px"
-          />
+          <c-token-popover :token-id="Number(minetokenToken.id)">
+            <avatar :src="logo" size="120px" />
+          </c-token-popover>
           <div class="token-detail-info">
             <div class="fl info-line">
               <div class="token-info-title bold">

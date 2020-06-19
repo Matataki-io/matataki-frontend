@@ -2,7 +2,9 @@
   <router-link class="card" :to="{ name: 'p-id', params: {id: card.id} }" target="_blank">
     <!-- head -->
     <section class="card-head">
-      <c-avatar :src="avatarImg" />
+      <c-user-popover :user-id="Number(card.uid)">
+        <c-avatar :src="avatarImg" />
+      </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>
       <span class="card-description">发布了新作品</span>
     </section>

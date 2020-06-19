@@ -15,7 +15,9 @@
         <!-- 头像 -->
         <div @click.stop>
           <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: user.id || 0}}">
-            <c-avatar :src="avatar" class="avatar" />
+            <c-user-popover :user-id="Number(user.id)">
+              <c-avatar :src="avatar" class="avatar" />
+            </c-user-popover>
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
         </div>
