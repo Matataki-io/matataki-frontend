@@ -108,6 +108,7 @@ export default {
   },
   data() {
     return {
+      currentId: -1,
       loading: false,
       followLoading: false,
       model: false,
@@ -150,6 +151,12 @@ export default {
       }
     },
     async show() {
+
+      // 如果传进来的和历史记录的id不一样则手动清空
+      if (this.userId !== this.currentId) {
+        this.userInfo = {}
+        this.tokenInfo = {}
+      }
       
       // 如果已经有数据了 不加载loading, 但是会请求接口来保证数据是最新的
       if (this.$utils.isNull(this.userInfo)) {
@@ -158,7 +165,12 @@ export default {
 
       // 获取用户信息
       const res = await this.$utils.factoryRequest(this.$API.getUser(this.userId))
-      this.userInfo = res ? res.data : {}
+      if (res) {
+        this.userInfo = res.data
+        this.currentId = this.userId
+      } else {
+        this.userInfo = Object.create(null)
+      }
 
       this.loading = false
 

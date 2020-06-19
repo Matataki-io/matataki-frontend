@@ -6,9 +6,9 @@
         class="comment-avatar"
         target="_blank"
       >
-        <avatar
+        <c-avatar-user-popover
           :src="avatar"
-          size="30px"
+          :user-id="Number(comment.uid)"
         />
       </n-link>
       <div>
@@ -54,14 +54,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import avatar from '@/components/avatar/index'
 import replyInput from './ReplyInput'
 
 export default {
   name: 'CommentCard',
   components: {
-    avatar,
     replyInput
   },
   props: {
