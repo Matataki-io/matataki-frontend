@@ -583,4 +583,13 @@ export default {
     color: @purpleDark;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .search-res {
+    .article-chosen {
+      line-height: 18px;
+      height: 17px;
+    }
+  }
+}
 </style>
