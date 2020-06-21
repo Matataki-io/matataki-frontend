@@ -107,6 +107,22 @@
             >
           </div>
         </el-tooltip>
+        <el-tooltip
+          :content="$t('auth.facebookTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-facebook"
+            @click="walletLogin('Twitter')"
+          >
+            <svg-icon
+              class="facebook"
+              icon-class="facebook"
+            />
+          </div>
+        </el-tooltip>
         <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
           <a :href="wxloginHref" class="oauth-bg bg-green">
             <div>
@@ -171,13 +187,28 @@
           placement="top"
         >
           <div
-            style="cursor: not-allowed;"
             class="oauth-bg bg-twitter"
             @click="walletLogin('Twitter')"
           >
             <svg-icon
               class="twitter"
               icon-class="twitter"
+            />
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          :content="$t('auth.googleTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-google"
+            @click="walletLogin('Twitter')"
+          >
+            <svg-icon
+              class="google"
+              icon-class="google"
             />
           </div>
         </el-tooltip>
@@ -485,6 +516,14 @@ export default {
       font-size: 22px;
       color: #fff;
     }
+    .facebook{
+      font-size: 22px;
+      color: #fff;
+    }
+    .google{
+      font-size: 21px;
+      color: #fff;
+    }
 
     display: flex;
     align-items: center;
@@ -529,8 +568,14 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  // background: #00ACED;
-  background: #b2b2b2;
+  background: #00ACED;
+  // background: #b2b2b2;
+}
+.bg-google {
+  background: #4285f4;
+}
+.bg-facebook {
+  background: #1977f3;
 }
 
 .referral {
