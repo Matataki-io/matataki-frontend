@@ -58,6 +58,10 @@
         </h4>
       </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
+      <p v-if="noComment && !content" class="notify-right-content no-data">
+        <i class="el-icon-delete" />
+        此条评论已被删除
+      </p>
       <!-- 对象卡片 -->
       <div v-if="mode !== 'hide'" @click.stop>
         <objectCard
@@ -183,11 +187,15 @@ export default {
       const time = this.moment(this.card.notify_time || this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
+    /** 判断：是评论或回复类型、条目数等予1，并且评论对象缺失 */
+    noComment() {
+      return (this.card.action === 'comment' || this.card.action === 'reply') && this.card.total === 1 && !this.comment
+    },
     /** 子卡片显示模式 */
     mode() {
       if (['comment', 'like', 'annouce'].includes(this.card.action) && this.post)
         return 'post' // 文章
-      else if (this.card.action === 'reply' && this.commentObject)
+      else if (this.card.action === 'reply')
         return 'reply' // 回复
       else if(this.card.action === 'follow' && this.user)
         return 'user' // 用户
@@ -214,7 +222,7 @@ export default {
       let url
       switch (this.mode) {
         case 'post':
-          if (this.card.action === 'comment')
+          if (this.card.action === 'comment' && this.comment)
             url = {name: 'p-id', params: {id: this.post.id}, query: {comment: this.comment.id}}
           else url = {name: 'p-id', params: {id: this.post.id}}
           break
@@ -222,7 +230,9 @@ export default {
           url = {name: 'user-id', params: {id: this.user.id}}
           break
         case 'reply':
-          url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          if (this.comment)
+            url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          else url = {}
           break
         case 'token':
           if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
@@ -352,6 +362,10 @@ export default {
       color: black;
       line-height: 30px;
       white-space: pre-wrap;
+      &.no-data {
+        white-space: normal;
+        color: #b2b2b2;
+      }
     }
   }
   .round-silhouette {

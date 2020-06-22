@@ -1057,11 +1057,16 @@ minetokenGetResources(tokenId) {
   getCommentIndexById(id) {
     return request.get(`/comment/index/${id}`)
   },
+  // 文章打赏
   rewardArticle(pid, data) {
     return request({
       method: 'POST',
       url: `/posts/${pid}/reward`,
       data
     })
+  },
+  /** 删除一条评论 */
+  deleteComment(id) {
+    return request.delete(`/comment/delete/${id}`)
   }
 }

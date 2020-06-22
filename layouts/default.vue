@@ -19,6 +19,7 @@
     </back-to-top>
     <feedback v-if="!hideFeedback" :show-position="100" />
     <AuthModal v-model="loginModalShow" />
+    <TransferDialog v-model="transferDialogShow" :user-data="transferUserData" />
     <articleImport
       v-model="importModalShow"
       @importArticle="importArticle"
@@ -34,6 +35,7 @@ import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
 import { getCookie } from '@/utils/cookie'
+import TransferDialog from '@/components/TransferDialog'
 
 export default {
   name: 'Default',
@@ -47,7 +49,8 @@ export default {
     AuthModal,
     BackToTop,
     articleImport,
-    feedback
+    feedback,
+    TransferDialog
   },
   data() {
     return {
@@ -72,6 +75,24 @@ export default {
       },
       set(v) {
         this.$store.commit('importArticle/setImportModal', v)
+      }
+    },
+    // 转账 dialog show
+    transferDialogShow: {
+      get() {
+        return this.$store.state.transferDialog.transferDialog
+      },
+      set(v) {
+        this.$store.commit('transferDialog/setTransferDialog', v)
+        if (!v) {
+          this.$store.commit('transferDialog/setTransferUserData', Object.create(null))
+        }
+      }
+    },
+    // 转账 dialog user data
+    transferUserData: {
+      get() {
+        return this.$store.state.transferDialog.transferUserData
       }
     },
     hideBackTop() {

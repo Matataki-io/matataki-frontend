@@ -26,7 +26,11 @@
               </p>
             </div>
           </div>
-          <p class="user-info-content" v-html="card.comment.comment" />
+          <p v-if="comment !== false" class="user-info-content" v-html="comment" />
+          <p v-else class="user-info-content no-data">
+            <i class="el-icon-delete" />
+            此条评论已被删除
+          </p>
         </div>
       </div>
     </div>
@@ -69,7 +73,14 @@ export default {
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     url() {
-      return {name: 'p-id', params: {id: this.card.comment.sign_id}, query: {comment: this.card.comment.id}}
+      if(this.card && this.card.comment)
+        return {name: 'p-id', params: {id: this.card.comment.sign_id}, query: {comment: this.card.comment.id}}
+      else return {}
+    },
+    comment() {
+      if(this.card && this.card.comment)
+        return this.card.comment.comment
+      else return false
     }
   },
   methods: {
@@ -129,6 +140,10 @@ export default {
         line-height: 30px;
         white-space: pre-wrap;
         margin: 0;
+        &.no-data {
+          white-space: normal;
+          color: #b2b2b2;
+        }
       }
     }
   }

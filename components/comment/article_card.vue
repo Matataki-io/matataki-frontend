@@ -10,31 +10,57 @@
           <c-avatar :src="avatar" />
         </c-user-popover>
       </n-link>
-      <div>
-        <router-link
-          :to="`/user/${comment.uid}`"
-          class="comment-author"
-          :class="!comment.username && 'logout'"
-          target="_blank"
-        >
-          {{ nickname }}
-        </router-link>
-        <span v-if="comment.reply_uid" class="text-con">回复
-          <router-link :to="`/user/${comment.reply_uid}`" target="_blank"> @{{ comment.reply_nickname }} </router-link>
-        </span>
-        <span class="time">
-          {{ friendlyDate }}
-        </span>
-        <!-- <span class="like-container">
-          <svg-icon
-            class="icon"
-            icon-class="like"
-            @click="likeComment"
-          />
-          <span>{{ comment.like_num }}</span>
-        </span> -->
+      <div class="comment-main">
+        <div class="fl comment-header">
+          <router-link
+            :to="`/user/${comment.uid}`"
+            class="comment-author"
+            :class="!comment.username && 'logout'"
+            target="_blank"
+          >
+            {{ nickname }}
+          </router-link>
+          <span v-if="comment.reply_uid" class="text-con">
+            回复
+          </span>
+          <router-link
+            v-if="comment.reply_uid"
+            :to="`/user/${comment.reply_uid}`"
+            class="text-con-a"
+            target="_blank"
+          >
+            @{{ comment.reply_nickname }}
+          </router-link>
+          <span class="time">
+            {{ friendlyDate }}
+          </span>
+          <!-- <span class="like-container">
+            <svg-icon
+              class="icon"
+              icon-class="like"
+              @click="likeComment"
+            />
+            <span>{{ comment.like_num }}</span>
+          </span> -->
 
-        <span class="reply" @click="switchShowInput">回复</span>
+          <span class="reply" @click="switchShowInput">回复</span>
+          <span class="flex1-scaffold" />
+          <!-- 更多操作 -->
+          <el-dropdown
+            v-if="isMe(comment.uid)"
+            trigger="click"
+            @command="dropdownCommand"
+          >
+            <span class="more-options">
+              <i class="el-icon-more" />
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="delete">
+                删除
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <p class="comment-content wrap-open">
           <!-- 开了wrap 这个span不能换行！ -->
           <span class="wrap-open">{{ displayMessage }}</span>
@@ -72,7 +98,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'isMe']),
     displayMessage() {
       // console.log('comment', this.comment.comment)
       return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
@@ -97,6 +123,23 @@ export default {
       if(!this.isLogined) return this.$store.commit('setLoginModal', true)
 
       this.showInput = !this.showInput
+    },
+    dropdownCommand(command) {
+      if(command === 'delete') this.deleteComment()
+    },
+    async deleteComment() {
+      try {
+        const result = await this.$API.deleteComment(this.comment.id)
+        if(result.code === 0) {
+          this.$message.success(this.$t('success.success'))
+          this.$store.commit('setCommentRequest')
+        }
+        else this.$message.error(result.message)
+      }
+      catch (e) {
+        this.$message.success(this.$t('error.fail'))
+        console.error(e)
+      }
     }
   }
 }
@@ -117,14 +160,20 @@ export default {
 .comment-avatar {
   margin-right: 10px;
 }
+.comment-main {
+  flex: 1;
+}
 .comment-author {
   color: #000000;
   font-size: 14px;
   line-height: 20px;
   word-break: break-word;
   padding: 0;
-  margin: 4px 0;
-  display: inline-block;
+  margin: 4px 5px 4px 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
   &.logout {
     color: #b2b2b2;
   }
@@ -132,6 +181,9 @@ export default {
     color: #9c9c9c;
     margin-left: 10px;
   }
+}
+.comment-header {
+  align-items: baseline;
 }
 .comment-content {
   color: #000000;
@@ -144,7 +196,7 @@ export default {
 .wrap-open {
   white-space: pre-wrap;
 }
-.reply {
+.clickable {
   padding: 0 5px;
   border-radius: 4px;
   cursor: pointer;
@@ -152,16 +204,27 @@ export default {
   color: #99a2aa;
   line-height: 26px;
   font-size: 12px;
+  white-space: nowrap;
   &:hover {
     color: #542DE0;
     background: #e5e9ef;
   }
+}
+.reply {
+  .clickable();
+}
+.more-options {
+  .clickable();
+}
+.flex1-scaffold {
+  flex: 1;
 }
 .time {
   color: #99a2aa;
   line-height: 26px;
   font-size: 12px;
   margin-right: 20px;
+  white-space: nowrap;
 }
 .like-container {
   color: #99a2aa;
@@ -181,11 +244,20 @@ export default {
   font-size: 14px;
   line-height: 20px;
   white-space: nowrap;
-  a {
+  margin-right: 5px;
+  &-a {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
     outline: none;
     color: #542DE0;
     text-decoration: none;
+    margin-right: 5px;
     cursor: pointer;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
   }
 }
 

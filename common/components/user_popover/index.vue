@@ -101,6 +101,8 @@ export default {
       defaultAvatar,
       userInfo: Object.create(null),
       tokenInfo: Object.create(null),
+      giftDialog: false, // 转账 dialog
+      userData: {} // 转账用户信息
     }
   },
   computed: {
@@ -179,8 +181,11 @@ export default {
         })
         return
       }
-      this.$message('调用全局转账')
-
+      let data = Object.assign({}, this.userInfo)
+      data.id = this.userId
+      console.log('data', data)
+      this.$store.commit('transferDialog/setTransferUserData', data)
+      this.$store.commit('transferDialog/setTransferDialog', true)
     },
     // 关注
     async follow() {
