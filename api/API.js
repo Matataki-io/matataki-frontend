@@ -1043,8 +1043,18 @@ minetokenGetResources(tokenId) {
       url: `/comment/like/${id}`,
     })
   },
+  searchToken(word, page = 1, pagesize = 20) {
+    return request({
+      method: 'GET',
+      url: '/search/token',
+      params: {
+        word,
+        page,
+        pagesize,
+      }
+    })
+  },
   getCommentIndexById(id) {
     return request.get(`/comment/index/${id}`)
   }
-
 }
