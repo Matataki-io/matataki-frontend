@@ -225,6 +225,7 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <RewardFooter v-if="!isMe(article.uid)" :user-data="{ id: article.uid }" />
 
 
 
@@ -350,6 +351,7 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import RewardFooter from '@/components//article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
 
 import { getCookie } from '@/utils/cookie'
@@ -382,6 +384,7 @@ export default {
     becomeAnArticleEditor,
     avatar,
     sidebar,
+    RewardFooter,
     fontSize
   },
   data() {
