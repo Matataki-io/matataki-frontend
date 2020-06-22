@@ -71,10 +71,10 @@ export default {
       }
     })
   },
-  async follow(uid) {
+  follow(uid) {
     return request.post('/follow/follow', { uid })
   },
-  async unfollow(uid) {
+  unfollow(uid) {
     return request.post('/follow/unfollow', { uid })
   },
   async getMyUserData () {
@@ -1053,5 +1053,8 @@ minetokenGetResources(tokenId) {
         pagesize,
       }
     })
+  },
+  getCommentIndexById(id) {
+    return request.get(`/comment/index/${id}`)
   }
 }

@@ -12,9 +12,6 @@ export const apiServer = process.env.VUE_APP_API
 
 const ssImgAddress = 'https://ssimg.frontenduse.top'
 
-// 代理使用地址
-// export const apiServerAdders = process.env.NODE_ENV === 'development' ? '/' : process.env.VUE_APP_API;
-// https://github.com/axios/axios/issues/535
 const axiosforApiServer = axios.create({
   baseURL: apiServer,
   headers: { Accept: '*/*', lang: 'zh' },

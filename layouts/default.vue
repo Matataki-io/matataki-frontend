@@ -33,6 +33,8 @@ import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
+import { getCookie } from '@/utils/cookie'
+
 export default {
   name: 'Default',
   head: {
@@ -86,25 +88,15 @@ export default {
       return this.$route.name === 'home'
     }
   },
-  watch: {
-    isLogined(val) {
-      if(val) this.loginModalShow = false
-    }
-  },
-  created() {
-    if(this.$route.query.referral && !this.isLogined) {
-      setTimeout(()=> {
-        this.loginModalShow = true
-      }, 100)
-    }
-  },
   mounted() {
     this.$store.dispatch('testLogin')
     if (process.browser) {
       this.removeOverflowHide()
       // this.testDomain()
       console.log('NODE_ENV', process.env.NODE_ENV)
+      console.log('NODE_ENV', process.env.NODE)
       this.injectScript()
+      this.debug()
     }
   },
   methods: {
@@ -164,6 +156,14 @@ export default {
         bowl.inject().then(() => {
           console.log('success')
         })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 开启调试
+    debug() {
+      try {
+        getCookie('VConsole') === 'true' && new this.$VConsole()
       } catch (e) {
         console.log(e)
       }

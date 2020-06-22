@@ -6,10 +6,9 @@
       <!-- 用户 -->
       <div class="fl user">
         <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
-          <c-avatar
-            :src="avatar"
-            class="avatar"
-          />
+          <c-user-popover :user-id="Number(card.user.id)">
+            <c-avatar :src="avatar" class="avatar" />
+          </c-user-popover>
         </router-link>
         <div class="user-info">
           <div class="fl user-info-top">

@@ -15,7 +15,9 @@
         <!-- 头像 -->
         <div @click.stop>
           <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: user.id || 0}}">
-            <c-avatar :src="avatar" class="avatar" />
+            <c-user-popover :user-id="Number(user.id)">
+              <c-avatar :src="avatar" class="avatar" />
+            </c-user-popover>
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
         </div>
@@ -166,9 +168,12 @@ export default {
         // 转账
         const amount = this.tokenAmount(this.transferLog.amount, this.transferLog.decimals)
         if(object_type === 'cnyWallet') // CNY
-          return `${amount} ${this.transferLog.symbol}`
-        else if(object_type === 'tokenWallet') // Token
-          return `${amount} ${this.transferLog.symbol}`
+          return `金额：${amount} ${this.transferLog.symbol}`
+        else if(object_type === 'tokenWallet') { // Token
+          let content = `金额：${amount} ${this.transferLog.symbol}`
+          if(this.transferLog.memo) content += `\n转账备注：${this.transferLog.memo}`
+          return content
+        }
       }
       return ''
     },

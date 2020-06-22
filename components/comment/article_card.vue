@@ -6,10 +6,9 @@
         class="comment-avatar"
         target="_blank"
       >
-        <avatar
-          :src="avatar"
-          size="30px"
-        />
+        <c-user-popover :user-id="Number(comment.uid)">
+          <c-avatar :src="avatar" />
+        </c-user-popover>
       </n-link>
       <div>
         <router-link
@@ -54,14 +53,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
-import avatar from '@/components/avatar/index'
 import replyInput from './ReplyInput'
 
 export default {
   name: 'CommentCard',
   components: {
-    avatar,
     replyInput
   },
   props: {
@@ -114,6 +110,9 @@ export default {
 .comment-info {
   display: flex;
   align-items: flex-start;
+  &.play-prompt {
+    animation: prompt 3s;
+  }
 }
 .comment-avatar {
   margin-right: 10px;
@@ -188,5 +187,25 @@ export default {
     text-decoration: none;
     cursor: pointer;
   }
+}
+
+@keyframes prompt
+{
+10% {
+  border-radius: 10px;
+  box-shadow: none;
+}
+20%  {
+  background: white;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+}
+90%  {
+  background: white;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+}
+0% {
+  border-radius: 10px;
+  box-shadow: none;
+}
 }
 </style>

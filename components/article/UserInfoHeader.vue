@@ -5,11 +5,9 @@
         :to="{name: 'user-id', params: {id : article.uid}}"
         target="_blank"
       >
-        <avatar
-          :size="'50px'"
-          :src="avatarSrc"
-          class="Avatar"
-        />
+        <c-user-popover :user-id="Number(article.uid)">
+          <c-avatar :src="avatarSrc" class="Avatar" />
+        </c-user-popover>
       </router-link>
       <div class="AuthorInfo-content">
         <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
@@ -43,12 +41,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import avatar from '@/components/avatar/index.vue'
 import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
 export default {
   components: {
-    avatar,
     ipfsAll
   },
   props: {
@@ -151,11 +147,8 @@ export default {
 
 <style scoped lang="less">
 .Avatar {
-  background: #fff;
-  border-radius: 50%;
-  vertical-align: top;
-  height: 38px;
-  width: 38px;
+  width: 50px;
+  height: 50px;
 }
 .AuthorInfo-content {
   margin: 0 10px;
@@ -219,8 +212,10 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .Post-Author .Avatar {
-    width: 30px !important;
-    height: 30px !important;
+    /deep/ .c-avatar {
+      width: 30px;
+      height: 30px;
+    }
   }
   .Post-Author .AuthorInfo-name {
     font-size: 16px;

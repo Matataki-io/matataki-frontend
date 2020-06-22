@@ -683,7 +683,8 @@ export default {
     bookmark: '收藏',
     myBookmark: '我的收藏',
     message: '私信',
-    issuedFanTickets: '发行了Fan票的用户'
+    issuedFanTickets: '发行了Fan票的用户',
+    registrationTime: '注册时间'
   },
   withdraw: {
     title: '提现',
