@@ -7,8 +7,8 @@
       />
     </button>
     <p class="reward-tip">喜欢就打赏Fan票吧～</p>
-    <p class="reward-list-tip">- {{ rewardCount }}位瞬Matataki用户已打赏 -</p>
-    <div class="recommended-designer-avatar-wrap js-recommended-avatar">
+    <p v-if="rewardCount > 0" class="reward-list-tip">- {{ rewardCount }}位瞬Matataki用户已打赏 -</p>
+    <div v-if="rewardCount > 0" class="recommended-designer-avatar-wrap js-recommended-avatar">
       <div v-for="(item, i) of list" :key="i" class="avatar-container-40">
         <a :href="`/user/${item.from_uid}`" :title="item.nickname" class="avatar-container_face">
           <img :src="$API.getImg(item.avatar)">
@@ -74,6 +74,7 @@ export default {
     },
     success() {
       this.showSuccess = true
+      this.getRewardList()
     },
     reward() {
       if (this.isLogined) {
