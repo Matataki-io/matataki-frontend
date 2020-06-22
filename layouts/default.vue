@@ -88,18 +88,6 @@ export default {
       return this.$route.name === 'home'
     }
   },
-  watch: {
-    isLogined(val) {
-      if(val) this.loginModalShow = false
-    }
-  },
-  created() {
-    if(this.$route.query.referral && !this.isLogined) {
-      setTimeout(()=> {
-        this.loginModalShow = true
-      }, 100)
-    }
-  },
   mounted() {
     this.$store.dispatch('testLogin')
     if (process.browser) {
