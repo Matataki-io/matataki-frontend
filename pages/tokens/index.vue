@@ -185,135 +185,8 @@
           @paginationData="paginationData"
           @togglePage="togglePage"
         />
-        <m-dialog
-          v-model="giftDialog"
-          title="赠送Fan票"
-          class="transfer-dialog"
-        >
-          <el-form
-            ref="form"
-            v-loading="transferLoading"
-            :model="form"
-            :rules="rules"
-            label-width="70px"
-            class="gift-form"
-          >
-            <el-form-item label="Fan票">
-              <p class="tokenname">
-                {{ form.tokenname }}
-              </p>
-            </el-form-item>
-            <el-form-item label="接受对象">
-              <el-input
-                v-model="form.username"
-                placeholder="请输入赠送的对象"
-                size="small"
-                style="z-index: 2;"
-              />
-              <!-- 常用候选对象列表 -->
-              <template v-if="historyUser.length !== 0">
-                <el-tag
-                  v-for="item in historyUser"
-                  :key="item.id"
-                  type="info"
-                  class="history-user__tag"
-                  @click="continueUser(item)"
-                >
-                  {{
-                    (item.nickname || item.username).length > 20
-                      ? `${(item.nickname || item.username).slice(0, 20)}...`
-                      : item.nickname || item.username
-                  }}
-                </el-tag>
-              </template>
-              <!-- 搜索结果 -->
-              <div
-                v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
-                class="transfer—search__list"
-              >
-                <div
-                  v-for="item in searchUserList"
-                  :key="item.id"
-                  @click="continueUser(item)"
-                >
-                  <avatar
-                    :src="searchUserAvatar(item.avatar)"
-                    class="transfer—search__list__avatar"
-                  />
-                  <span
-                    class="search-result__tag "
-                    v-html="searchUserTitle(item.nickname || item.username)"
-                  />
-                </div>
-              </div>
-            </el-form-item>
-            <!-- 结果 -->
-            <transition name="result">
-              <el-form-item
-                v-if="!$utils.isNull(toUserInfo)"
-                label=""
-                prop=""
-              >
-                <router-link
-                  :to="{name: 'user-id', params: {id: toUserInfo.id}}"
-                  class="search-user"
-                  target="_blank"
-                >
-                  <avatar
-                    :src="searchUserAvatar(toUserInfo.avatar)"
-                    class="search-user-avatar"
-                  />
-                  <span
-                    class="search-result__tag "
-                    v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
-                  />
-                  <div
-                    class="gift-ful"
-                    @click="closeUser"
-                  >
-                    <i class="el-icon-close" />
-                  </div>
-                </router-link>
-              </el-form-item>
-            </transition>
-            <el-form-item
-              label="发送数量"
-              prop="tokens"
-            >
-              <el-input
-                v-model="form.tokens"
-                :max="form.max"
-                :min="form.min"
-                placeholder="请输入数量"
-                size="small"
-                clearable
-              />
-            </el-form-item>
-            <p
-              v-if="form.balance"
-              class="balance"
-            >
-              余额&nbsp;{{ form.balance }}&nbsp;
-              <a
-                href="javascript:;"
-                @click="form.tokens = form.balance"
-              >全部转入</a>
-            </p>
-            <el-form-item>
-              <div class="form-button">
-                <el-button
-                  :disabled="$utils.isNull(toUserInfo)"
-                  type="primary"
-                  size="small"
-                  @click="submitForm('form')"
-                >
-                  确定
-                </el-button>
-              </div>
-            </el-form-item>
-          </el-form>
-        </m-dialog>
       </div>
+      <TransferDialog v-model="giftDialog" :form2="form" />
       <!-- 流动金 -->
       <holdliquidity />
     </template>
@@ -330,9 +203,10 @@ import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
-import { precision, toPrecision } from '@/utils/precisionConversion'
+import { precision } from '@/utils/precisionConversion'
 import holdliquidity from '@/components/holdliquidity/index.vue'
 import tokensDetail from '@/components/tokens_detail/index.vue'
+import TransferDialog from '@/components/TransferDialog'
 
 export default {
   components: {
@@ -341,7 +215,8 @@ export default {
     userPagination,
     holdliquidity,
     tokensDetail,
-    avatar
+    avatar,
+    TransferDialog
   },
   data() {
     const validateToken = (rule, value, callback) => {
@@ -405,13 +280,6 @@ export default {
     }
   },
   watch: {
-    giftDialog(newVal) {
-      if (newVal) {
-        this.historyUserFunc('token')
-      } else {
-        this.formEmpty()
-      }
-    },
     searchUserName() {
       this.searchUser()
     }
@@ -444,69 +312,6 @@ export default {
       this.$router.push({
         query
       })
-    },
-    transferMinetoken() {
-      const toUserInfo = this.toUserInfo
-      if (this.$utils.isNull(toUserInfo)) return
-
-      const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
-      this.transferLoading = true
-
-      const data = {
-        tokenId: this.form.tokenId,
-        to: toId,
-        amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
-      }
-      this.$API.transferMinetoken(data)
-        .then(res => {
-          if (res.code === 0) {
-            this.$message({ showClose: true, message: res.message, type: 'success'})
-            this.reload = Date.now()
-
-            // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
-            const toAmount = toPrecision(this.form.tokens, 'CNY', this.form.decimals)
-            const currentAmount = toPrecision(this.form.balance, 'CNY', this.form.decimals)
-            const endAmount = precision(currentAmount - toAmount, 'CNY', this.form.decimals)
-            this.form.balance = Number(endAmount)
-            this.form.max = Number(endAmount)
-          } else {
-            this.$message({ showClose: true, message: res.message, type: 'error' })
-          }
-        }).catch(err => {
-          console.log(err)
-          this.$message.error('赠送token失败')
-        }).finally(() => {
-          this.transferLoading = false
-        })
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (this.$utils.isNull(this.toUserInfo)) {
-            this.$message({ showClose: true, message: '请选择用户', type: 'warning'})
-          } else {
-            this.transferMinetoken()
-          }
-        } else return false
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    formEmpty() {
-      this.form.tokenname = ''
-      this.form.username = ''
-      this.form.useravatar = ''
-      this.form.userId = ''
-      this.form.tokenId = ''
-      this.form.decimals = ''
-      this.form.tokens = ''
-      this.form.max = 99999999
-      this.form.balance = 0
-      this.$refs.form.resetFields()
-
-      this.searchUserList = [] // 搜索结果
-      this.toUserInfo = null
     },
     closeUser(e) {
       if (e && e.preventDefault) e.preventDefault()
