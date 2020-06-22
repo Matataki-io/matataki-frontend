@@ -1056,5 +1056,9 @@ minetokenGetResources(tokenId) {
   },
   getCommentIndexById(id) {
     return request.get(`/comment/index/${id}`)
+  },
+  /** 删除一条评论 */
+  deleteComment(id) {
+    return request.delete(`/comment/delete/${id}`)
   }
 }
