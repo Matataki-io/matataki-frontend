@@ -352,7 +352,8 @@ import unlockSvg from '@/assets/img/unlock.svg'
 import sidebar from '@/components/p_page/sidebar'
 import fontSize from '@/components/p_page/font_size'
 
-import { setCookie, getCookie } from '@/utils/cookie'
+import { getCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 
 
 const markdownIt = require('markdown-it')({
@@ -690,7 +691,7 @@ export default {
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
-      setCookie('p_font_size', newVal)
+      store.set('p_font_size', newVal)
     } 
   },
 
@@ -1451,7 +1452,7 @@ export default {
     // 设置文章默认文字大小
     setFontSize() {
       try {
-        let fontSize = getCookie('p_font_size')
+        let fontSize = store.get('p_font_size')
         if (fontSize) {
           this.fontSizeVal = Number(fontSize)
         }

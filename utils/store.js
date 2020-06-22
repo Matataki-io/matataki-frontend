@@ -17,7 +17,7 @@ export default {
     // 清除全部缓存时不会清空白名单内容
     // 白名单
     // likeVisible shareVisible userVisible 文章详情的新手引导
-    const whitelist = ['likeVisible', 'shareVisible', 'userVisible']
+    const whitelist = ['likeVisible', 'shareVisible', 'userVisible', 'p_font_size']
     store.each((value, key) => !whitelist.includes(key) && store.remove(key))
   }
 }
