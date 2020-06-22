@@ -223,6 +223,7 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <RewardFooter v-if="!isMe(article.uid)" :user-data="{ id: article.uid }" />
 
 
 
@@ -349,6 +350,7 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import RewardFooter from '@/components//article/RewardFooter'
 
 
 const markdownIt = require('markdown-it')({
@@ -376,7 +378,8 @@ export default {
     OrderModal,
     becomeAnArticleEditor,
     avatar,
-    sidebar
+    sidebar,
+    RewardFooter,
   },
   data() {
     return {

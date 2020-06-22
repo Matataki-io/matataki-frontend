@@ -1056,5 +1056,12 @@ minetokenGetResources(tokenId) {
   },
   getCommentIndexById(id) {
     return request.get(`/comment/index/${id}`)
+  },
+  rewardArticle(pid, data) {
+    return request({
+      method: 'POST',
+      url: `/posts/${pid}/reward`,
+      data
+    })
   }
 }
