@@ -57,6 +57,7 @@
               </el-dropdown>
             </div>
           </header>
+          <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
           <no-ssr>
             <mavon-editor
@@ -67,6 +68,7 @@
           <div
             v-highlight
             class="markdown-body article-content"
+            :class="fontSizeComputed"
             v-html="compiledMarkdown"
           />
           <!-- 文章页脚 声明 是否原创 -->
@@ -340,7 +342,6 @@ import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
-import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
 import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
 import ArticleHistory from '@/common/components/ipfs_all/history.vue'
@@ -349,6 +350,9 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import fontSize from '@/components/p_page/font_size'
+
+import { setCookie, getCookie } from '@/utils/cookie'
 
 
 const markdownIt = require('markdown-it')({
@@ -376,7 +380,8 @@ export default {
     OrderModal,
     becomeAnArticleEditor,
     avatar,
-    sidebar
+    sidebar,
+    fontSize
   },
   data() {
     return {
@@ -455,7 +460,8 @@ export default {
       articleIpfsArray: [], // ipfs hash
       resizeEvent: null,
       tags: [], // 文章标签
-      commentAnchor: Number(this.$route.query.comment) || 0 //评论锚点
+      commentAnchor: Number(this.$route.query.comment) || 0, //评论锚点
+      fontSizeVal: 1
     }
   },
   head() {
@@ -629,6 +635,45 @@ export default {
         if (this.article.require_holdtokens || this.article.require_buy) return false
         return true
       }
+    },
+    // 动态返回文章字号大小
+    // >992 16 18 20 22 24
+    // >600 <=992 14 16 18 20 22
+    // <- 600 12 14 16 18 20
+    // 第二个标准值是css文章的默认字体大小
+    fontSizeComputed() {
+      try {
+        let list = {}
+        let clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+        if (clientWidth <= 992 && clientWidth > 600) {
+          list = {
+            0: 'font14',
+            1: '',
+            2: 'font18',
+            3: 'font20',
+            4: 'font22',
+          }
+        } else if (clientWidth <= 600) {
+          list = {
+            0: 'font12',
+            1: '',
+            2: 'font16',
+            3: 'font18',
+            4: 'font20',
+          }
+        } else {
+          list = {
+            0: 'font16',
+            1: '',
+            2: 'font20',
+            3: 'font22',
+            4: 'font24',
+          }
+        }
+        return list[this.fontSizeVal] || ''
+      } catch(e) {
+        return ''
+      }
     }
   },
   watch: {
@@ -642,7 +687,11 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
-    }
+    },
+    // 保存font size 选择
+    fontSizeVal(newVal) {
+      setCookie('p_font_size', newVal)
+    } 
   },
 
   async asyncData({ $axios, route, req }) {
@@ -723,6 +772,10 @@ export default {
       this.getArticleIpfs()
 
       this.setAllHideContentStyle()
+
+      this.$nextTick(() => {
+        this.setFontSize()
+      })
     }
 
   },
@@ -1395,6 +1448,17 @@ export default {
         imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
       })
     },
+    // 设置文章默认文字大小
+    setFontSize() {
+      try {
+        let fontSize = getCookie('p_font_size')
+        if (fontSize) {
+          this.fontSizeVal = Number(fontSize)
+        }
+      } catch(e) {
+        console.log(e)
+      }
+    }
   }
 
 }
