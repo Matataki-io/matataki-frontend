@@ -203,7 +203,7 @@ export default {
 .TitleImage {
   display: block;
   margin: 0 auto;
-  height: 420px;
+  max-height: 344px;
   overflow: hidden;
   background: #fff;
   padding: 20px;
