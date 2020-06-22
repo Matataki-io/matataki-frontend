@@ -23,15 +23,10 @@
           label="Fan票"
         >
           <template slot-scope="scope">
-            <router-link
-              :to="{name: 'token-id', params: {id: scope.row.token_id}}"
-              class="fl ac"
-            >
-              <avatar
-                :src="cover(scope.row.logo)"
-                size="30px"
-                style="margin-right: 10px;"
-              />
+            <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac" target="_blank">
+              <c-token-popover :token-id="Number(scope.row.token_id)">
+                <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
+              </c-token-popover>
               <span class="scope">{{ scope.row.symbol }}({{ scope.row.name }})</span>
             </router-link>
           </template>
