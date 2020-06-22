@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    title="赠送Fan票"
+    title="转账"
     custom-class="br10"
     width="380px"
   >
@@ -196,6 +196,10 @@ export default {
           balance: 0
         }
       }
+    },
+    userData: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -251,6 +255,7 @@ export default {
       if (val) {
         this.historyUserFunc('token')
         this.initForm()
+        this.initUser()
       } else {
         this.formEmpty()
       }
@@ -265,6 +270,10 @@ export default {
   mounted() {
   },
   methods: {
+    initUser() {
+      if (!this.userData) return
+      this.toUserInfo = this.userData
+    },
     getUserBalance(tokenId) {
       this.$API.getUserBalance(tokenId).then((res) => {
         if (res.code === 0) {
@@ -298,6 +307,7 @@ export default {
       }
     },
     initForm() {
+      if (!this.form2) return
       this.form.tokenname = this.form2.tokenname
       this.form.tokenId = this.form2.tokenId
       this.form.decimals = this.form2.decimals
