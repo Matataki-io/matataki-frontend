@@ -7,6 +7,19 @@
       />
     </button>
     <p class="reward-tip">喜欢就打赏Fan票吧～</p>
+    <p v-if="rewardCount > 0" class="reward-list-tip">- {{ rewardCount }}位瞬Matataki用户已打赏 -</p>
+    <div v-if="rewardCount > 0" class="recommended-designer-avatar-wrap js-recommended-avatar">
+      <div v-for="(item, i) of list" :key="i" class="avatar-container-40">
+        <a :href="`/user/${item.from_uid}`" :title="item.nickname" class="avatar-container_face">
+          <img :src="$API.getImg(item.avatar)">
+        </a>
+      </div>
+      <div v-if="leftCount > 0 && !showAll" class="avatar-container-40">
+        <button class="left-count" @click="showAll = true">
+          +{{ leftCount }}
+        </button>
+      </div>
+    </div>
     <RewardDialog v-model="show" :user-data="userData" @success="success" />
     <RewardSuccess v-model="showSuccess" />
   </div>
@@ -30,15 +43,38 @@ export default {
   data() {
     return {
       show: false,
-      showSuccess: false
+      showSuccess: false,
+      rewardList: [],
+      rewardCount: 0,
+      pagesize: 8,
+      showAll: false
     }
   },
   computed: {
     ...mapGetters(['isLogined']),
+    leftCount() {
+      return Number(this.rewardCount) - Number(this.pagesize)
+    },
+    list() {
+      if (this.showAll) {
+        return this.rewardList
+      }
+      return this.rewardList.slice(0, this.pagesize)
+    }
+  },
+  mounted() {
+    this.getRewardList()
   },
   methods: {
+    getRewardList() {
+      this.$API.getRewardList(this.$route.params.id).then(res => {
+        this.rewardList = res.data.list
+        this.rewardCount = res.data.count
+      })
+    },
     success() {
       this.showSuccess = true
+      this.getRewardList()
     },
     reward() {
       if (this.isLogined) {
@@ -55,6 +91,43 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.recommended-designer-avatar-wrap {
+  width: max-content;
+  max-width: 600px;
+  height: 60px;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  display: flex;
+  flex-flow: wrap;
+  .avatar-container-40 {
+    margin: 20px 10px 0;
+    width: 40px;
+    position: relative;
+  }
+  .left-count {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: block;
+    background: #542DE0;
+    color: #ffffff;
+    text-align: center;
+    line-height: 36px;
+    cursor: pointer;
+    border: none;
+  }
+  .avatar-container_face {
+    border-radius: 50%;
+    display: block;
+    background: #F2F2F2;
+    >img {
+      border-radius: 50%;
+      display: block;
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
 .reward-container {
   display: flex;
   align-items: center;
@@ -80,7 +153,11 @@ export default {
   }
   .reward-tip {
     color: #000000;
-    font-size: 16px;
+    font-size: 18px;
+  }
+  .reward-list-tip {
+    color: #B2B2B2;
+    font-size: 14px;
   }
 }
 </style>
