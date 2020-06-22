@@ -1065,6 +1065,16 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  getRewardList(pid, page = 1, pagesize = 1000) {
+    return request({
+      method: 'GET',
+      url: `/posts/${pid}/reward`,
+      params: {
+        page,
+        pagesize,
+      }
+    })
+  },
   /** 删除一条评论 */
   deleteComment(id) {
     return request.delete(`/comment/delete/${id}`)
