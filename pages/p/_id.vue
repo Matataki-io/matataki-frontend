@@ -225,6 +225,7 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <!-- 赞赏 -->
       <RewardFooter :user-data="{ id: article.uid }" />
 
 
@@ -262,11 +263,18 @@
           v-if="!isProduct"
           :article="article"
         />
+
+        <div class="comment-reward">
+          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentRewardCount[0] }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">赞赏<span>{{ commentRewardCount[1] }}</span></span>
+        </div>
         <CommentList
+          v-if="commentRewardTab === 0"
           :sign-id="article.id"
           :type="article.channel_id"
           :comment-anchor="commentAnchor"
         />
+        <commentReward v-if="commentRewardTab === 1" />
       </div>
 
       <InvestModal
@@ -353,10 +361,10 @@ import unlockSvg from '@/assets/img/unlock.svg'
 import sidebar from '@/components/p_page/sidebar'
 import RewardFooter from '@/components/article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
+import commentReward from '@/components/p_page/reward'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
-
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -385,7 +393,8 @@ export default {
     avatar,
     sidebar,
     RewardFooter,
-    fontSize
+    fontSize,
+    commentReward
   },
   data() {
     return {
@@ -465,7 +474,9 @@ export default {
       resizeEvent: null,
       tags: [], // 文章标签
       commentAnchor: Number(this.$route.query.comment) || 0, //评论锚点
-      fontSizeVal: 1
+      fontSizeVal: 1,
+      commentRewardTab: 0, // 评论赞赏切换
+      commentRewardCount: [0, 0] // 评论赞赏次数
     }
   },
   head() {
@@ -512,28 +523,23 @@ export default {
       // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
-      if (process.browser) {
-        try {
+      try {
+        if (process.browser) {
           const markdownItEditor = this.$mavonEditor.markdownIt
           const { content } = this.post
 
           let md = markdownItEditor.render(content)
 
           return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
-        } catch (e) {
-          console.log('1', e)
-          let md = markdownIt.render(this.post.content)
-          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
-        }
-      } else {
-        try {
+        } else {
           let md = markdownIt.render(this.post.content)
           return this.$utils.compose(xssImageProcess, xssFilter)(md)
-        } catch (e) {
-          console.log('2', e)
-          return this.post.content
         }
+      } catch (e) {
+        return this.post.content
       }
+
+
     },
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
@@ -779,6 +785,7 @@ export default {
 
       this.$nextTick(() => {
         this.setFontSize()
+        this.getCommentRewardCount()
       })
     }
 
@@ -1427,6 +1434,7 @@ export default {
         console.log(error)
         // 提取内容 删除多余的标签
         const regRemoveContent = (str) => {
+          if (!str) return str
           // 去除空格
           const strTrim = str => str.replace(/\s+/g, '')
           // 去除标签
@@ -1462,6 +1470,24 @@ export default {
       } catch(e) {
         console.log(e)
       }
+    },
+    // 获取评论和赞赏次数
+    async getCommentRewardCount() {
+      const commentResult = await this.$utils.factoryRequest(this.$API.commentGetComments({
+        signid: this.$route.params.id
+      }))
+      const rewardResult = await this.$utils.factoryRequest(this.$API.getRewardList(this.$route.params.id))
+
+      let arr = [0, 0]
+      if (commentResult) {
+        arr[0] = commentResult.data.allcount
+      }
+
+      if (commentResult) {
+        arr[1] = rewardResult.data.count
+      }
+
+      this.commentRewardCount = arr
     }
   }
 

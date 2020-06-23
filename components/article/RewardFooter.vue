@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     getRewardList() {
-      this.$API.getRewardList( this.$route.params.id, 1, 9999)
+      this.$API.getRewardList(this.$route.params.id, 1, 9999)
         .then(res => {
           let list = uniqBy(res.data.list, 'from_uid')
           this.rewardList = list
