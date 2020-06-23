@@ -43,9 +43,7 @@
           clearable
         />
       </el-form-item>
-      <p
-        class="balance"
-      >
+      <p class="balance">
         余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
         <a
           v-if="form.balance"

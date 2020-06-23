@@ -106,6 +106,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@media screen and (max-width: 540px) {
+  .recommended-designer-avatar-wrap {
+    justify-content: center;
+  }
+}
 .recommended-designer-avatar-wrap {
   max-width: 500px;
   margin: 0 auto 20px;
