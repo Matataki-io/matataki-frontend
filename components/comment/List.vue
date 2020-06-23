@@ -1,8 +1,8 @@
 <template>
   <div v-loading="loading" class="comment-container">
-    <h2 v-if="pull.articles.length !== 0" class="comment-title">
+    <!-- <h2 v-if="pull.articles.length !== 0" class="comment-title">
       {{ type === 2 ? $t('p.likeList') : $t('p.commentPointBtn') }} {{ pull.allcount }} 
-    </h2>
+    </h2> -->
     <!-- <template v-if="type === 2">
       <CommentCard
         v-for="(itemChild, indexChild) in pull.articles"

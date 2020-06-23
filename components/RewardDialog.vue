@@ -3,6 +3,7 @@
     :visible.sync="showModal"
     title="打赏作者"
     custom-class="reward-dialog br10"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="form"
@@ -43,9 +44,7 @@
           clearable
         />
       </el-form-item>
-      <p
-        class="balance"
-      >
+      <p class="balance">
         余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
         <a
           v-if="form.balance"
@@ -53,10 +52,7 @@
           @click="form.amount = form.balance"
         >全部转入</a>
       </p>
-      <el-form-item
-        label="留言"
-        prop="message"
-      >
+      <el-form-item label="留言">
         <el-input
           v-model="form.message"
           type="textarea"
@@ -127,10 +123,6 @@ export default {
         amount: [
           { required: true, validator: validateToken, trigger: ['blur', 'change'] }
         ],
-        message: [
-          { required: true, message: '请输入留言内容', trigger: 'blur' },
-          { min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur' }
-        ],
       },
       
       transferLoading: false,
@@ -181,6 +173,7 @@ export default {
 
       const toId = this.$utils.isNull(userData) ? -1 : userData.id
       this.transferLoading = true
+      this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 
       const data = {
         tokenId: this.form.tokenId,
@@ -205,7 +198,7 @@ export default {
           }
         }).catch(err => {
           console.log(err)
-          this.$message.error('赠送token失败')
+          this.$message.error('赞赏失败')
         }).finally(() => {
           this.transferLoading = false
           this.showModal = false

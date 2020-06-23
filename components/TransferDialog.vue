@@ -2,15 +2,15 @@
   <el-dialog
     :visible.sync="showModal"
     title="转账"
-    custom-class="br10"
-    width="380px"
+    custom-class="transfer-dialog br10"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="form"
       v-loading="transferLoading"
       :model="form"
       :rules="rules"
-      label-width="40px"
+      label-width="60px"
       class="gift-form"
     >
       <el-form-item label="对象">
@@ -85,33 +85,27 @@
           </router-link>
         </el-form-item>
       </transition>
-      <el-form-item label="类型">
+      <el-form-item label="类型" prop="tokenId">
         <el-select
-          :value="selectedToken.symbol"
+          v-model="form.tokenId"
           filterable
-          remote
-          clear
-          placeholder="请输入关键词"
-          :remote-method="remoteMethod"
-          :loading="searchTokenLoading"
-          class="mttk-select"
+          placeholder="请选择" 
+          style="width: 100%"
           @change="changeTokenSelect"
         >
           <el-option
             v-for="item in tokenOptions"
-            :key="item.symbol"
-            :label="item.symbol"
-            :value="item"
+            :key="item.token_id"
+            :label="item.symbol + '-' + item.name"
+            :value="item.token_id"
           >
             <div class="token-container">
-              <img :src="$API.getImg(item.logo)" :alt="item.symbol" class="token-logo">
-              <span class="token-symbol" v-html="item.symbol" />
+              <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
+              <span class="token-symbol">{{ item.symbol }}</span>
+              <span class="token-symbol">{{ tokenAmount(item.amount, item.decimals) }}</span>
             </div>
           </el-option>
         </el-select>
-        <!-- <p class="tokenname">
-          {{ form.tokenname }}
-        </p> -->
       </el-form-item>
       <el-form-item
         label="数量"
@@ -135,31 +129,26 @@
           @click="form.tokens = form.balance"
         >全部转入</a>
       </p>
-      <el-form-item
-        label="留言"
-        prop="memo"
-      >
+      <el-form-item label="留言">
         <el-input
           v-model="form.memo"
           type="textarea"
           :rows="3"
           placeholder="请写下想对作者说的话（选填）"
           size="small"
-          maxlength="20"
+          maxlength="500"
           show-word-limit
         />
       </el-form-item>
-      <el-form-item>
-        <div class="form-button">
-          <el-button
-            :disabled="$utils.isNull(toUserInfo)"
-            type="primary"
-            @click="submitForm('form')"
-          >
-            确定
-          </el-button>
-        </div>
-      </el-form-item>
+      <div class="form-button">
+        <el-button
+          :disabled="$utils.isNull(toUserInfo)"
+          type="primary"
+          @click="submitForm('form')"
+        >
+          确定
+        </el-button>
+      </div>
     </el-form>
   </el-dialog>
   <!-- </m-dialog> -->
@@ -232,7 +221,10 @@ export default {
       },
       rules: {
         tokens: [
-          { validator: validateToken, trigger: ['blur', 'change'] }
+          { required: true, validator: validateToken, trigger: ['blur', 'change'] }
+        ],
+        tokenId: [
+          { required: true, message: '请选择类型', trigger: 'change' }
         ]
       },
       searchUserList: [], // 搜索结果
@@ -240,7 +232,6 @@ export default {
       historyUser: [], // 历史转让用户
       transferLoading: false,
       tokenOptions: [],
-      searchTokenLoading: false,
       selectedToken: {}
     }
   },
@@ -256,6 +247,7 @@ export default {
         this.historyUserFunc('token')
         this.initForm()
         this.initUser()
+        this.tokenTokenList()
       } else {
         this.formEmpty()
       }
@@ -282,29 +274,29 @@ export default {
         }
       })
     },
-    tokenAmount(amount, decimals) {
-      const tokenamount = precision(amount, 'CNY', decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+
+    changeTokenSelect(id) {
+      this.form.tokenId = id
+      this.getUserBalance(id)
     },
-    changeTokenSelect(token) {
-      this.selectedToken = token
-      this.form.tokenId = token.id
-      this.getUserBalance(token.id)
-    },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.searchTokenLoading = true
-        this.$API.searchToken(query).then((res) => {
-          this.searchTokenLoading = false
-          if (res.code === 0) {
-            this.tokenOptions = res.data.list
-          } else {
-            this.tokenOptions = []
-          }
-        })
-      } else {
-        this.tokenOptions = []
+    /**
+     * 获取所有token
+     */
+    async tokenTokenList() {
+      let data = {
+        pagesize: 999,
+        order: 0
       }
+      await this.$API.tokenTokenList(data).then(res => {
+        if (res.code === 0) {
+          this.tokenOptions = res.data.list
+        } else {
+          this.tokenOptions = []
+        }
+      }).catch(err => {
+        console.log(err)
+        this.tokenOptions = []
+      })
     },
     initForm() {
       if (!this.form2) return
@@ -313,10 +305,6 @@ export default {
       this.form.decimals = this.form2.decimals
       this.form.max = this.form2.max
       this.form.balance = this.form2.balance
-      this.selectedToken = {
-        id: this.form2.tokenId,
-        symbol: this.form2.tokenname,
-      }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -347,7 +335,14 @@ export default {
       if (this.$utils.isNull(toUserInfo)) return
 
       const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
+
+      if (!this.form.tokenId) {
+        this.$message({ showClose: true, message: '请选择类型', type: 'info' })
+        return
+      }
+
       this.transferLoading = true
+      this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 
       const data = {
         tokenId: this.form.tokenId,
@@ -358,7 +353,7 @@ export default {
       this.$API.transferMinetoken(data)
         .then(res => {
           if (res.code === 0) {
-            this.$message({ showClose: true, message: res.message, type: 'success'})
+            this.$message({ showClose: true, message: '转账成功', type: 'success'})
             this.reload = Date.now()
 
             // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
@@ -372,7 +367,7 @@ export default {
           }
         }).catch(err => {
           console.log(err)
-          this.$message.error('赠送token失败')
+          this.$message.error('转账失败')
         }).finally(() => {
           this.transferLoading = false
           this.showModal = false
@@ -445,6 +440,14 @@ export default {
       this.searchUserList = [] // 搜索结果
       this.toUserInfo = null
     },
+    // logo 
+    tokenLogo(cover) {
+      return cover ? this.$ossProcess(cover) : ''
+    },
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
   }
 }
 </script>
@@ -481,9 +484,9 @@ export default {
 .form-button {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
   button {
-    padding-left: 40px;
-    padding-right: 40px;
+    width: 200px;
   }
 }
 
@@ -564,11 +567,12 @@ export default {
   cursor: pointer;
   margin: 0 10px 0 0;
 }
-.transfer-dialog /deep/ .el-dialog {
-  width: 600px !important;
+
+/deep/ .transfer-dialog {
+  width: 380px !important;
 }
 @media screen and (max-width: 640px) {
-  .transfer-dialog /deep/ .el-dialog {
+  /deep/ .transfer-dialog {
     width: 90% !important;
   }
 }

@@ -1,6 +1,11 @@
 <template>
   <div class="reward-container">
-    <button class="reward-btn" @click="reward">
+    <button
+      class="reward-btn"
+      :disabled="isMe(userData.id)"
+      :title="isMe(userData.id) && '不能给自己赞赏~'"
+      @click="reward"
+    >
       <svg-icon
         icon-class="shang"
         class="reward-icon"
@@ -10,9 +15,16 @@
     <p v-if="rewardCount > 0" class="reward-list-tip">- {{ rewardCount }}位瞬Matataki用户已打赏 -</p>
     <div v-if="rewardCount > 0" class="recommended-designer-avatar-wrap js-recommended-avatar">
       <div v-for="(item, i) of list" :key="i" class="avatar-container-30">
-        <a :href="`/user/${item.from_uid}`" :title="item.nickname" class="avatar-container_face">
-          <img :src="$API.getImg(item.avatar)">
-        </a>
+        <c-user-popover :user-id="Number(item.from_uid)">
+          <router-link
+            :to="{name: 'user-id', params: { id: item.from_uid }}"
+            :title="item.nickname"
+            class="avatar-container_face"
+            target="_blank"
+          >
+            <img :src="$API.getImg(item.avatar)">
+          </router-link>
+        </c-user-popover>
       </div>
       <div v-if="leftCount > 0 && !showAll" class="avatar-container-30">
         <button class="left-count" @click="showAll = true">
@@ -57,7 +69,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'isMe']),
     leftCount() {
       return Number(this.rewardCount) - Number(this.pagesize)
     },
@@ -73,7 +85,7 @@ export default {
   },
   methods: {
     getRewardList() {
-      this.$API.getRewardList( this.$route.params.id, 1, 9999)
+      this.$API.getRewardList(this.$route.params.id, 1, 9999)
         .then(res => {
           let list = uniqBy(res.data.list, 'from_uid')
           this.rewardList = list
@@ -99,6 +111,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@media screen and (max-width: 540px) {
+  .recommended-designer-avatar-wrap {
+    justify-content: center;
+  }
+}
 .recommended-designer-avatar-wrap {
   max-width: 500px;
   margin: 0 auto 20px;
@@ -159,6 +176,9 @@ export default {
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.25);
     &:hover {
       background-color: rgba(84, 45, 224, 0.9);
+    }
+    &:disabled {
+      background-color: #a1a1a1;
     }
   }
   .reward-icon {

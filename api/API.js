@@ -1082,5 +1082,9 @@ minetokenGetResources(tokenId) {
   /** 删除一条评论 */
   deleteComment(id) {
     return request.delete(`/comment/delete/${id}`)
+  },
+  // 获取评论列表
+  commentGetComments(params) {
+    return request.get(`/comment/getComments`, { params } )
   }
 }
