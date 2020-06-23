@@ -3,6 +3,7 @@
     :visible.sync="showModal"
     title="转账"
     custom-class="transfer-dialog br10"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="form"

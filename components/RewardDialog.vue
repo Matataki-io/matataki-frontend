@@ -3,6 +3,7 @@
     :visible.sync="showModal"
     title="打赏作者"
     custom-class="reward-dialog br10"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="form"
