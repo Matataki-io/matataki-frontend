@@ -35,10 +35,9 @@
       </div>
       <!-- 用户 -->
       <div v-if="mode === 'user'" class="fl user">
-        <c-avatar
-          :src="avatar"
-          class="avatar"
-        />
+        <c-user-popover :user-id="Number(user.id)">
+          <c-avatar :src="avatar" class="avatar" />
+        </c-user-popover>
         <div class="user-info" :class="dateCard && 'user-details'">
           <div class="fl user-info-top">
             <h4>

@@ -22,7 +22,7 @@
             class="avatar-container_face"
             target="_blank"
           >
-            <img :src="$API.getImg(item.avatar)">
+            <c-avatar :src="avatar(item.avatar)" />
           </router-link>
         </c-user-popover>
       </div>
@@ -106,6 +106,9 @@ export default {
           type: 'warning'
         })
       }
+    },
+    avatar(src) {
+      return src ? this.$ossProcess(src, { h: 60 }) : ''
     }
   }
 }
