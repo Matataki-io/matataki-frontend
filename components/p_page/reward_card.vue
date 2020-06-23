@@ -1,8 +1,10 @@
 <template>
   <div class="card">
-    <router-link :to="{name: 'user-id', params: { id: card.from_uid }}" target="_blank">
-      <c-avatar :src="cover" />
-    </router-link>
+    <c-user-popover :user-id="Number(card.from_uid)">
+      <router-link :to="{name: 'user-id', params: { id: card.from_uid }}" target="_blank">
+        <c-avatar :src="cover" />
+      </router-link>
+    </c-user-popover>
     <router-link :to="{name: 'user-id', params: { id: card.from_uid }}" target="_blank" class="username">
       {{ card.nickname || card.username }}
     </router-link>
