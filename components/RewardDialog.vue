@@ -204,7 +204,7 @@ export default {
           }
         }).catch(err => {
           console.log(err)
-          this.$message.error('赠送token失败')
+          this.$message.error('赞赏失败')
         }).finally(() => {
           this.transferLoading = false
           this.showModal = false

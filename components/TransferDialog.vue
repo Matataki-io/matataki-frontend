@@ -2,8 +2,7 @@
   <el-dialog
     :visible.sync="showModal"
     title="转账"
-    custom-class="br10"
-    width="380px"
+    custom-class="transfer-dialog br10"
   >
     <el-form
       ref="form"
@@ -87,31 +86,25 @@
       </transition>
       <el-form-item label="类型">
         <el-select
-          :value="selectedToken.symbol"
+          v-model="form.tokenId"
           filterable
-          remote
-          clear
-          placeholder="请输入关键词"
-          :remote-method="remoteMethod"
-          :loading="searchTokenLoading"
-          class="mttk-select"
+          placeholder="请选择" 
+          style="width: 100%"
           @change="changeTokenSelect"
         >
           <el-option
             v-for="item in tokenOptions"
-            :key="item.symbol"
-            :label="item.symbol"
-            :value="item"
+            :key="item.token_id"
+            :label="item.symbol + '-' + item.name"
+            :value="item.token_id"
           >
             <div class="token-container">
-              <img :src="$API.getImg(item.logo)" :alt="item.symbol" class="token-logo">
-              <span class="token-symbol" v-html="item.symbol" />
+              <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
+              <span class="token-symbol">{{ item.symbol }}</span>
+              <span class="token-symbol">{{ tokenAmount(item.amount, item.decimals) }}</span>
             </div>
           </el-option>
         </el-select>
-        <!-- <p class="tokenname">
-          {{ form.tokenname }}
-        </p> -->
       </el-form-item>
       <el-form-item
         label="数量"
@@ -145,7 +138,7 @@
           :rows="3"
           placeholder="请写下想对作者说的话（选填）"
           size="small"
-          maxlength="20"
+          maxlength="500"
           show-word-limit
         />
       </el-form-item>
@@ -240,7 +233,6 @@ export default {
       historyUser: [], // 历史转让用户
       transferLoading: false,
       tokenOptions: [],
-      searchTokenLoading: false,
       selectedToken: {}
     }
   },
@@ -256,6 +248,7 @@ export default {
         this.historyUserFunc('token')
         this.initForm()
         this.initUser()
+        this.tokenTokenList()
       } else {
         this.formEmpty()
       }
@@ -282,29 +275,29 @@ export default {
         }
       })
     },
-    tokenAmount(amount, decimals) {
-      const tokenamount = precision(amount, 'CNY', decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+
+    changeTokenSelect(id) {
+      this.form.tokenId = id
+      this.getUserBalance(id)
     },
-    changeTokenSelect(token) {
-      this.selectedToken = token
-      this.form.tokenId = token.id
-      this.getUserBalance(token.id)
-    },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.searchTokenLoading = true
-        this.$API.searchToken(query).then((res) => {
-          this.searchTokenLoading = false
-          if (res.code === 0) {
-            this.tokenOptions = res.data.list
-          } else {
-            this.tokenOptions = []
-          }
-        })
-      } else {
-        this.tokenOptions = []
+    /**
+     * 获取所有token
+     */
+    async tokenTokenList() {
+      let data = {
+        pagesize: 999,
+        order: 0
       }
+      await this.$API.tokenTokenList(data).then(res => {
+        if (res.code === 0) {
+          this.tokenOptions = res.data.list
+        } else {
+          this.tokenOptions = []
+        }
+      }).catch(err => {
+        console.log(err)
+        this.tokenOptions = []
+      })
     },
     initForm() {
       if (!this.form2) return
@@ -313,10 +306,6 @@ export default {
       this.form.decimals = this.form2.decimals
       this.form.max = this.form2.max
       this.form.balance = this.form2.balance
-      this.selectedToken = {
-        id: this.form2.tokenId,
-        symbol: this.form2.tokenname,
-      }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -348,6 +337,7 @@ export default {
 
       const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
       this.transferLoading = true
+      this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 
       const data = {
         tokenId: this.form.tokenId,
@@ -358,7 +348,7 @@ export default {
       this.$API.transferMinetoken(data)
         .then(res => {
           if (res.code === 0) {
-            this.$message({ showClose: true, message: res.message, type: 'success'})
+            this.$message({ showClose: true, message: '转账成功', type: 'success'})
             this.reload = Date.now()
 
             // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
@@ -372,7 +362,7 @@ export default {
           }
         }).catch(err => {
           console.log(err)
-          this.$message.error('赠送token失败')
+          this.$message.error('转账失败')
         }).finally(() => {
           this.transferLoading = false
           this.showModal = false
@@ -444,6 +434,14 @@ export default {
 
       this.searchUserList = [] // 搜索结果
       this.toUserInfo = null
+    },
+    // logo 
+    tokenLogo(cover) {
+      return cover ? this.$ossProcess(cover) : ''
+    },
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
   }
 }
@@ -564,11 +562,12 @@ export default {
   cursor: pointer;
   margin: 0 10px 0 0;
 }
-.transfer-dialog /deep/ .el-dialog {
-  width: 600px !important;
+
+/deep/ .transfer-dialog {
+  width: 380px !important;
 }
 @media screen and (max-width: 640px) {
-  .transfer-dialog /deep/ .el-dialog {
+  /deep/ .transfer-dialog {
     width: 90% !important;
   }
 }
