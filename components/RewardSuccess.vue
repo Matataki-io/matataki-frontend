@@ -4,11 +4,12 @@
     title=""
     :close-on-click-modal="false"
     :show-close="false"
-    custom-class="br10"
-    width="380px"
+    custom-class="reward-dialog br10"
   >
     <div class="reward-success">
-      <img src="@/assets/img/zan.png" alt="zan">
+      <div class="image">
+        <img src="@/assets/img/zan.png" alt="zan">
+      </div>
       <h1>打赏成功！</h1>
       <p class="success-tip">你的鼓励会成为作者的动力，感谢打赏！</p>
       <el-button
@@ -55,8 +56,11 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  img {
+  .image {
     width: 152px;
+    img {
+      width: 100%;
+    }
   }
   h1 {
     font-size: 20px;
@@ -78,5 +82,14 @@ export default {
   line-height: 22px;
   padding: 0;
   margin: 0;
+}
+
+/deep/ .reward-dialog {
+  width: 380px !important;
+}
+@media screen and (max-width: 640px) {
+  /deep/ .reward-dialog {
+    width: 90% !important;
+  }
 }
 </style>
