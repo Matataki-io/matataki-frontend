@@ -50,7 +50,7 @@
             <i class="el-icon-arrow-left" />
           </div>
           <h3>
-            {{ actionDetailLabels[detailsIndex.action] }}
+            {{ actionDetailLabel }}
           </h3>
         </div>
         <div style="margin-bottom: 20px;">
@@ -74,6 +74,10 @@
           />
           <commentCard
             v-if="detailsIndex.action === 'comment' || detailsIndex.action === 'reply'"
+            :card="item"
+          />
+          <rewardCard
+            v-else-if="detailsIndex.action === 'transfer' && detailsIndex.objectType === 'article'"
             :card="item"
           />
         </div>
@@ -161,10 +165,11 @@ import buttonLoadMore from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
 import commentCard from '@/components/notification/commentCard.vue'
+import rewardCard from '@/components/notification/rewardCard.vue'
 
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMore, notifyCard, objectCard, commentCard },
+  components: { buttonLoadMore, notifyCard, objectCard, commentCard, rewardCard },
   data() {
     return {
       showDetails: false,
@@ -182,7 +187,8 @@ export default {
         like: '推荐详情',
         comment: '评论详情',
         follow: '关注详情',
-        reply: '回复详情'
+        reply: '回复详情',
+        reward: '打赏详情'
       },
       checkAll: true,
       checkedCities: [],
@@ -210,7 +216,7 @@ export default {
         },
         {
           key: 'transfer',
-          label: '转账'
+          label: '交易'
         }
       ],
       actions: null,
@@ -236,6 +242,12 @@ export default {
         apiUrl: 'notifyDetails',
         params: { pagesize: 20, ...this.detailsIndex }
       }
+    },
+    actionDetailLabel() {
+      if(!this.detailsIndex) return ''
+      const { action, objectType } = this.detailsIndex
+      if (action === 'transfer' && objectType === 'article') return this.actionDetailLabels.reward
+      return this.actionDetailLabels[action]
     }
   },
   watch: {
@@ -310,10 +322,15 @@ export default {
     },
     getTransferLog(notify) {
       const logId = notify.object_id
+      if(notify.action !== 'transfer') return null
+
       if(notify.object_type === 'cnyWallet' && this.assetsLogs.length > 0)
         return this.assetsLogs.find(assetsLog => assetsLog.id === logId)
       else if(notify.object_type === 'tokenWallet' && this.minetokensLogs.length > 0)
         return this.minetokensLogs.find(minetokensLog => minetokensLog.id === logId)
+      else if(notify.object_type === 'article' && this.minetokensLogs.length > 0)
+        return this.minetokensLogs.find(minetokensLog => minetokensLog.id === notify.remark)
+
       return null
     },
     openDetails(data) {
