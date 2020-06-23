@@ -51,10 +51,7 @@
           @click="form.amount = form.balance"
         >全部转入</a>
       </p>
-      <el-form-item
-        label="留言"
-        prop="message"
-      >
+      <el-form-item label="留言">
         <el-input
           v-model="form.message"
           type="textarea"
@@ -124,10 +121,6 @@ export default {
         ],
         amount: [
           { required: true, validator: validateToken, trigger: ['blur', 'change'] }
-        ],
-        message: [
-          { message: '请输入留言内容', trigger: 'blur' },
-          { min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur' }
         ],
       },
       

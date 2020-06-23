@@ -9,7 +9,7 @@
       v-loading="transferLoading"
       :model="form"
       :rules="rules"
-      label-width="40px"
+      label-width="60px"
       class="gift-form"
     >
       <el-form-item label="对象">
@@ -84,7 +84,7 @@
           </router-link>
         </el-form-item>
       </transition>
-      <el-form-item label="类型">
+      <el-form-item label="类型" prop="tokenId">
         <el-select
           v-model="form.tokenId"
           filterable
@@ -128,10 +128,7 @@
           @click="form.tokens = form.balance"
         >全部转入</a>
       </p>
-      <el-form-item
-        label="留言"
-        prop="memo"
-      >
+      <el-form-item label="留言">
         <el-input
           v-model="form.memo"
           type="textarea"
@@ -142,17 +139,15 @@
           show-word-limit
         />
       </el-form-item>
-      <el-form-item>
-        <div class="form-button">
-          <el-button
-            :disabled="$utils.isNull(toUserInfo)"
-            type="primary"
-            @click="submitForm('form')"
-          >
-            确定
-          </el-button>
-        </div>
-      </el-form-item>
+      <div class="form-button">
+        <el-button
+          :disabled="$utils.isNull(toUserInfo)"
+          type="primary"
+          @click="submitForm('form')"
+        >
+          确定
+        </el-button>
+      </div>
     </el-form>
   </el-dialog>
   <!-- </m-dialog> -->
@@ -225,7 +220,10 @@ export default {
       },
       rules: {
         tokens: [
-          { validator: validateToken, trigger: ['blur', 'change'] }
+          { required: true, validator: validateToken, trigger: ['blur', 'change'] }
+        ],
+        tokenId: [
+          { required: true, message: '请选择类型', trigger: 'change' }
         ]
       },
       searchUserList: [], // 搜索结果
@@ -485,9 +483,9 @@ export default {
 .form-button {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
   button {
-    padding-left: 40px;
-    padding-right: 40px;
+    width: 200px;
   }
 }
 
