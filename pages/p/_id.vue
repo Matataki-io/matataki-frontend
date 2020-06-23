@@ -266,7 +266,7 @@
 
         <div class="comment-reward">
           <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentRewardCount[0] }}</span></span>
-          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">赞赏<span>{{ commentRewardCount[1] }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ commentRewardCount[1] }}</span></span>
         </div>
         <CommentList
           v-if="commentRewardTab === 0"
