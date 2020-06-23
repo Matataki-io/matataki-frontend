@@ -1,44 +1,41 @@
 <template>
-  <router-link :to="url">
-    <div
-      class="card"
-    >
-      <!-- 用户 -->
-      <div class="fl user">
-        <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
-          <c-user-popover :user-id="Number(card.user.id)">
-            <c-avatar :src="avatar" class="avatar" />
-          </c-user-popover>
-        </router-link>
-        <div class="user-info">
-          <div class="fl user-info-top">
-            <h4>
-              <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
-                {{ nickname }}
-              </router-link>
-            </h4>
-            <div class="fl" style="flex: 1;">
-              <p class="action">
-                {{ actionLabels[card.action] }}
-              </p>
-              <p>
-                {{ dateCard }}
-              </p>
-            </div>
+  <!-- <router-link :to="url"> -->
+  <div
+    class="card"
+  >
+    <!-- 用户 -->
+    <div class="fl user">
+      <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
+        <c-user-popover :user-id="Number(card.user.id)">
+          <c-avatar :src="avatar" class="avatar" />
+        </c-user-popover>
+      </router-link>
+      <div class="user-info">
+        <div class="fl user-info-top">
+          <h4>
+            <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
+              {{ nickname }}
+            </router-link>
+          </h4>
+          <div class="fl" style="flex: 1;">
+            <p class="action">
+              打赏了
+            </p>
+            <p>
+              {{ dateCard }}
+            </p>
           </div>
-          <p v-if="comment !== false" class="user-info-content" v-html="comment" />
-          <p v-else class="user-info-content no-data">
-            <i class="el-icon-delete" />
-            此条评论已被删除
-          </p>
         </div>
+        <p v-if="content !== false" class="user-info-content" v-html="content" />
       </div>
     </div>
-  </router-link>
+  </div>
+  <!-- </router-link> -->
 </template>
 <script>
 
 import { isNDaysAgo } from '@/utils/momentFun'
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
@@ -52,10 +49,6 @@ export default {
   },
   data() {
     return {
-      actionLabels: {
-        reply: '回复了你的评论',
-        comment: '评论了你的文章'
-      }
     }
   },
   computed: {
@@ -72,18 +65,24 @@ export default {
       const time = this.moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
-    url() {
-      if(this.card && this.card.comment)
-        return {name: 'p-id', params: {id: this.card.comment.sign_id}, query: {comment: this.card.comment.id}}
-      else return {}
-    },
-    comment() {
-      if(this.card && this.card.comment)
-        return this.card.comment.comment
-      else return false
+    // url() {
+    //   if(this.card && this.card.comment)
+    //     return {name: 'p-id', params: {id: this.card.comment.sign_id}, query: {comment: this.card.comment.id}}
+    //   else return {}
+    // },
+    content() {
+      const log = this.card.minetokensLog
+      const amount = this.tokenAmount(log.amount, log.decimals)
+      let content = `金额：${amount} ${log.symbol}`
+      if(log.memo) content += `\n留言：${log.memo}`
+      return content
     }
   },
   methods: {
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    }
   }
 }
 </script>
