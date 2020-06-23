@@ -5,22 +5,38 @@
 </p>
 
 <h1 align="center">瞬 MATATAKI</h1>
-<h4 align="center">发布瞬间，灵感永存</h4>
-<h4 align="center">一个永久存储和版权确权的内容平台</h4>
+<h4 align="center">我们帮助 自由 的创作者</h4>
+<h4 align="center">获得更多收入</h4>
+<h4 align="center">& 建立 公开 永存 的数字作品库</h4>
 <div align="center">
 
 瞬MATATAKI是一个保护创作者权益的高质量内容平台</br>
-通过IPFS协议保障内容的永久可访问和确权信息可查询</br>
-使用了通证经济来激励创作者、探索者、布道者共建未来的超级知识链接网络
+所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个节点上，实现作品的永久可访问，无需担心被和谐删档，你的数据只属于你自己。</br>
+Matataki希望围绕 有趣的话题、深度思考，吸引有独立精神的创作者，构建独特的内容价值网络，依托于区块链技术搭建稳固优质社群平台，保护创作内容版权；配合独特算法让优质内容浮现，以数字货币和粉丝通证让创作者、参与者获得持续回报。
 
 </div>
 
 ## ✨ 特性
 
-- 版权永久记录，时间戳高效确权
-- 灵活且强大的去中心化登录和支付系统
-- IPFS存储内容，永久记录不删除
-- 平台积分奖励，与生态共建者共赢
+永久保存
+——只管放心发表
+
+无需担心被和谐，你创造的内容被永久存储在IPFS分布式网络上，且无法被任何人进行再次修改，方便在其他平台日后维权。
+
+自由创作
+——尺度收放自如
+
+功能强大的内容编辑器，没有人可以影响您的创作自由，一切尽在自己掌控之中。您也可以允许自己的真粉们向自己提出建议的特权。
+
+个人通证
+——数字社交货币
+
+让粉丝们使用你发行的个人通证来解锁文章！你的个人通证的价值将不断增加！粉丝通证不仅仅是你的专属货币，也是粉丝们作为同行者的印记。
+
+潜在收入
+——内容付费和打赏
+
+你的任何文章都可设置付费解锁，不要低估粉丝对您作品的喜爱，只要是优质作品，即使需要付费，他们也会常有付费动力！甚至用个人通证打赏。
 
 # Where to access?
 
@@ -29,8 +45,6 @@
 
 - Other Resources: [Backend Repo](https://github.com/smart-signature/smart-signature-backend) | [Backend Doc](https://github.com/smart-signature/smart-signature-backend/blob/master/doc.md) | [Contract](https://github.com/smart-signature/smart-signature-EOS-contract) | [Documentation about Project](https://shimo.im/docs/UOYT3DqklCYBbzny) | [Whitepaper (Draft)](https://hackmd.io/Q3KNkxjgSwKRJ5cfBL2I4g)
 
-<del>目前项目本体开发转为私有，大部分文档和Repo内容已经失效。</br></del>
-如果对 Repo 感兴趣，欢迎`star`和`clone`
 
 ## Build Setup
 
