@@ -351,7 +351,7 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
-import RewardFooter from '@/components//article/RewardFooter'
+import RewardFooter from '@/components/article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
 
 import { getCookie } from '@/utils/cookie'
