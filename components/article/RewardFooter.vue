@@ -10,9 +10,16 @@
     <p v-if="rewardCount > 0" class="reward-list-tip">- {{ rewardCount }}位瞬Matataki用户已打赏 -</p>
     <div v-if="rewardCount > 0" class="recommended-designer-avatar-wrap js-recommended-avatar">
       <div v-for="(item, i) of list" :key="i" class="avatar-container-30">
-        <a :href="`/user/${item.from_uid}`" :title="item.nickname" class="avatar-container_face">
-          <img :src="$API.getImg(item.avatar)">
-        </a>
+        <c-user-popover :user-id="Number(item.from_uid)">
+          <router-link
+            :to="{name: 'user-id', params: { id: item.from_uid }}"
+            :title="item.nickname"
+            class="avatar-container_face"
+            target="_blank"
+          >
+            <img :src="$API.getImg(item.avatar)">
+          </router-link>
+        </c-user-popover>
       </div>
       <div v-if="leftCount > 0 && !showAll" class="avatar-container-30">
         <button class="left-count" @click="showAll = true">
