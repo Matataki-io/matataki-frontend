@@ -126,7 +126,7 @@ export default {
           { required: true, validator: validateToken, trigger: ['blur', 'change'] }
         ],
         message: [
-          { required: true, message: '请输入留言内容', trigger: 'blur' },
+          { message: '请输入留言内容', trigger: 'blur' },
           { min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur' }
         ],
       },
