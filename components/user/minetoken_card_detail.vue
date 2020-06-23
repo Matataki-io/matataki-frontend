@@ -2,24 +2,30 @@
   <div class="card">
     <div class="fl jsb">
       <div class="from-to">
-        <router-link
-          :to="{ name: 'user-id', params: { id: card.from_uid } }"
-          class="username"
-          :class="!card.from_username && 'logout'"
-        >
-          {{ from_nickname }}
-        </router-link>
+        <c-user-popover :user-id="Number(card.from_uid)">
+          <router-link
+            :to="{ name: 'user-id', params: { id: card.from_uid } }"
+            class="username"
+            :class="!card.from_username && 'logout'"
+            target="_blank"
+          >
+            {{ from_nickname }}
+          </router-link>
+        </c-user-popover>
         <svg-icon
           icon-class="transfer"
           class="info-icon"
         />
-        <router-link
-          :to="{ name: 'user-id', params: { id: card.to_uid } }"
-          class="username"
-          :class="!card.to_username && 'logout'"
-        >
-          {{ to_nickname }}
-        </router-link>
+        <c-user-popover :user-id="Number(card.to_uid)">
+          <router-link
+            :to="{ name: 'user-id', params: { id: card.to_uid } }"
+            class="username"
+            :class="!card.to_username && 'logout'"
+            target="_blank"
+          >
+            {{ to_nickname }}
+          </router-link>
+        </c-user-popover>
         <txHash
           v-if="card.tx_hash"
           :hash="card.tx_hash"
