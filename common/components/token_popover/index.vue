@@ -31,7 +31,8 @@
       </div>
       <div class="user-btn">
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank">
-          查看详情
+          <span class="view">查看详情</span>
+          <span class="transaction">立即交易</span>
         </router-link>
       </div>
       <div class="line" />
@@ -225,10 +226,10 @@ export default {
     padding: 0;
     margin: 0;
     span {
-      font-size:10px;
-      font-weight:400;
-      color:rgba(178,178,178,1);
-      line-height:14px;
+      font-size: 10px;
+      font-weight: 400;
+      color: rgba(178, 178, 178, 1);
+      line-height: 14px;
       margin-left: 5px;
     }
   }
@@ -273,6 +274,15 @@ export default {
     &:hover {
       background-color: #000;
       color: #fff;
+      .view {
+        display: none;
+      }
+      .transaction {
+        display: inherit;
+      }
+    }
+    .transaction {
+      display: none;
     }
   }
 }
