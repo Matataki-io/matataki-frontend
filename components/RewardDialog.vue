@@ -181,6 +181,7 @@ export default {
 
       const toId = this.$utils.isNull(userData) ? -1 : userData.id
       this.transferLoading = true
+      this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 
       const data = {
         tokenId: this.form.tokenId,
