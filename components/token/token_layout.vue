@@ -30,11 +30,11 @@
               </div>
               <div>
                 <p class="token-info-sub">
-                  <router-link
-                    :to="{name: 'user-id', params: {id: minetokenToken.uid}}"
-                  >
-                    {{ minetokenUser.nickname || minetokenUser.username }}
-                  </router-link>
+                  <c-user-popover :user-id="Number(minetokenToken.uid)">
+                    <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                      {{ minetokenUser.nickname || minetokenUser.username }}
+                    </router-link>
+                  </c-user-popover>
                 </p>
               </div>
             </div>
