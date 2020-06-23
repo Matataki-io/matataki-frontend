@@ -55,12 +55,28 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  img {
+    width: 152px;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 1);
+    line-height: 28px;
+    padding: 0;
+    margin: 36px 0 20px;
+  }
 }
 .success-btn {
   width: 200px;
+  margin-top: 40px;
 }
 .success-tip {
-  margin: 20px 0 40px 0;
   font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 22px;
+  padding: 0;
+  margin: 0;
 }
 </style>
