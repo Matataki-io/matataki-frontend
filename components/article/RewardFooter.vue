@@ -1,6 +1,11 @@
 <template>
   <div class="reward-container">
-    <button class="reward-btn" @click="reward">
+    <button
+      class="reward-btn"
+      :disabled="isMe(userData.id)"
+      :title="isMe(userData.id) && '不能给自己赞赏~'"
+      @click="reward"
+    >
       <svg-icon
         icon-class="shang"
         class="reward-icon"
@@ -64,7 +69,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'isMe']),
     leftCount() {
       return Number(this.rewardCount) - Number(this.pagesize)
     },
@@ -171,6 +176,9 @@ export default {
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.25);
     &:hover {
       background-color: rgba(84, 45, 224, 0.9);
+    }
+    &:disabled {
+      background-color: #a1a1a1;
     }
   }
   .reward-icon {

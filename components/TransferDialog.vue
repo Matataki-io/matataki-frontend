@@ -336,6 +336,12 @@ export default {
       if (this.$utils.isNull(toUserInfo)) return
 
       const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
+
+      if (!this.form.tokenId) {
+        this.$message({ showClose: true, message: '请选择类型', type: 'info' })
+        return
+      }
+
       this.transferLoading = true
       this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 

@@ -225,7 +225,7 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
-      <RewardFooter v-if="!isMe(article.uid)" :user-data="{ id: article.uid }" />
+      <RewardFooter :user-data="{ id: article.uid }" />
 
 
 
