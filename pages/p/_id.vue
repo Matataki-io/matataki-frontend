@@ -259,20 +259,19 @@
       <!-- 内容居中 -->
       <div class="p-w">
         <!-- 评论内容 -->
-        <commentInput
-          v-if="!isProduct"
-          :article="article"
-        />
+        <commentInput v-if="!isProduct" :article="article" @success="getCommentCount" />
 
         <div class="comment-reward">
           <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentCount }}</span></span>
           <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ rewardCount }}</span></span>
         </div>
+        <!-- 这里的 success 通过 孙组件一层层上传发过来的事件 -->
         <CommentList
           v-if="commentRewardTab === 0"
           :sign-id="article.id"
           :type="article.channel_id"
           :comment-anchor="commentAnchor"
+          @success="getCommentCount"
         />
         <commentReward v-if="commentRewardTab === 1" />
       </div>
@@ -1494,7 +1493,7 @@ export default {
     async getCommentRewardCount() {
       await this.getCommentCount()
       await this.getRewardCount()
-    }
+    },
   }
 
 }

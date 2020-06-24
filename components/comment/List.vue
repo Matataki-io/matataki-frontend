@@ -16,12 +16,14 @@
       <articleCard
         :comment="itemChild"
         :type="type"
+        @success="$emit('success')"
       />
       <ReplyList
         v-if="itemChild.replyList.length > 0"
         :list="itemChild.replyList"
         :page-size="replyPageSize"
         :default-page="getDefaultPage(indexChild)"
+        @success="$emit('success')"
       />
     </div>
     <!-- </template> -->

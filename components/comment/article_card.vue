@@ -72,7 +72,7 @@
       v-if="showInput"
       :reply-id="comment.id"
       :reply-username="nickname"
-      @doneReply="showInput = false"
+      @doneReply="doneReply"
     />
   </div>
 </template>
@@ -133,6 +133,7 @@ export default {
         if(result.code === 0) {
           this.$message.success(this.$t('success.success'))
           this.$store.commit('setCommentRequest')
+          this.$emit('success')
         }
         else this.$message.error(result.message)
       }
@@ -140,6 +141,10 @@ export default {
         this.$message.success(this.$t('error.fail'))
         console.error(e)
       }
+    },
+    doneReply() {
+      this.showInput = false
+      this.$emit('success')
     }
   }
 }
