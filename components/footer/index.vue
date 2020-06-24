@@ -193,6 +193,8 @@ export default {
   padding-top: 52px;
   padding-bottom: 52px;
   box-sizing: border-box;
+  padding-bottom: calc(52px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(52px + env(safe-area-inset-bottom));
   &-content {
     max-width: 1200px;
     height: 100%;

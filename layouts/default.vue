@@ -203,7 +203,7 @@ export default {
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 95px;
+    bottom: 115px;
     color: #B2B2B2;
     display: flex;
     align-items: center;
@@ -211,6 +211,8 @@ export default {
     background: rgba(255,255,255,1);
     box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.05);
     border-radius: 4px;
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
     &:hover {
       opacity: 0.9;
     }
@@ -234,7 +236,7 @@ export default {
       width: 30px;
       height: 30px;
       right: 20px;
-      bottom: 80px;
+      bottom: 100px;
       &-icon {
         font-size: 16px;
       }
