@@ -117,6 +117,7 @@ export default {
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 1;
             overflow: hidden;
+            word-break:break-all;
             &:hover {
               text-decoration: underline;
             }

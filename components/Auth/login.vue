@@ -26,6 +26,7 @@
       <el-form-item class="ss-btn">
         <el-button
           type="primary"
+          native-type="submit"
           @click="submitLoginForm"
         >
           {{ $t('login') }}
@@ -39,82 +40,6 @@
       <h1 class="oauth-title">
         {{ $t('auth.otherAccount') }}
       </h1>
-      <div class="oauth">
-        <el-tooltip
-          :content="$t('auth.vntTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-blue1"
-            @click="walletLogin('Vnt')"
-          >
-            <svg-icon
-              class="vnt"
-              icon-class="vnt"
-            />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip
-          :content="$t('auth.eosTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-gray"
-            @click="walletLogin('EOS')"
-          >
-            <svg-icon
-              class="eos"
-              icon-class="eos_login"
-            />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip
-          :content="$t('auth.metamaskTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-gray"
-            @click="walletLogin('MetaMask')"
-          >
-            <svg-icon
-              class="eos"
-              icon-class="metamask"
-            />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip
-          :content="$t('auth.ontType')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-blue"
-            @click="walletLogin('ONT')"
-          >
-            <img
-              src="@/assets/img/icon_logo_ont.svg"
-              alt="ONT"
-            >
-          </div>
-        </el-tooltip>
-        <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
-          <a :href="wxloginHref" class="oauth-bg bg-green">
-            <div>
-              <svg-icon class="github" icon-class="weixin" />
-            </div>
-          </a>
-        </el-tooltip>-->
-      </div>
       <div class="oauth">
         <el-tooltip
           :content="$t('auth.githubTitle')"
@@ -181,6 +106,83 @@
             />
           </div>
         </el-tooltip>
+      </div>
+      <div class="oauth">
+        <el-tooltip
+          :content="$t('auth.metamaskTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('MetaMask')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="metamask"
+            />
+          </div>
+        </el-tooltip>
+        
+        <el-tooltip
+          :content="$t('auth.eosTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('EOS')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="eos_login"
+            />
+          </div>
+        </el-tooltip>
+
+
+
+        <el-tooltip
+          :content="$t('auth.ontType')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-blue"
+            @click="walletLogin('ONT')"
+          >
+            <img
+              src="@/assets/img/icon_logo_ont.svg"
+              alt="ONT"
+            >
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          :content="$t('auth.vntTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-blue1"
+            @click="walletLogin('Vnt')"
+          >
+            <svg-icon
+              class="vnt"
+              icon-class="vnt"
+            />
+          </div>
+        </el-tooltip>
+        <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
+          <a :href="wxloginHref" class="oauth-bg bg-green">
+            <div>
+              <svg-icon class="github" icon-class="weixin" />
+            </div>
+          </a>
+        </el-tooltip>-->
       </div>
     </div>
     <img

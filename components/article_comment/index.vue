@@ -92,6 +92,7 @@ export default {
             this.comment = ''
             this.$store.commit('setCommentRequest')
             // this.$emit('doneComment')
+            this.$emit('success')
           } else this.$message({ showClose: true, message: res.message, type: 'error' })
         })
         .catch(e => {

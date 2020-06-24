@@ -11,55 +11,51 @@
         </c-user-popover>
       </n-link>
       <div class="comment-main">
-        <div class="fl comment-header">
-          <router-link
-            :to="`/user/${comment.uid}`"
-            class="comment-author"
-            :class="!comment.username && 'logout'"
-            target="_blank"
-          >
-            {{ nickname }}
-          </router-link>
-          <span v-if="comment.reply_uid" class="text-con">
-            回复
-          </span>
-          <router-link
-            v-if="comment.reply_uid"
-            :to="`/user/${comment.reply_uid}`"
-            class="text-con-a"
-            target="_blank"
-          >
-            @{{ comment.reply_nickname }}
-          </router-link>
-          <span class="time">
-            {{ friendlyDate }}
-          </span>
-          <!-- <span class="like-container">
-            <svg-icon
-              class="icon"
-              icon-class="like"
-              @click="likeComment"
-            />
-            <span>{{ comment.like_num }}</span>
-          </span> -->
-
-          <span class="reply" @click="switchShowInput">回复</span>
-          <span class="flex1-scaffold" />
-          <!-- 更多操作 -->
-          <el-dropdown
-            v-if="isMe(comment.uid)"
-            trigger="click"
-            @command="dropdownCommand"
-          >
-            <span class="more-options">
-              <i class="el-icon-more" />
+        <div class="comment-header">
+          <div class="fl nickname-bar">
+            <router-link
+              :to="`/user/${comment.uid}`"
+              class="comment-author"
+              :class="!comment.username && 'logout'"
+              target="_blank"
+            >
+              {{ nickname }}
+            </router-link>
+            <span v-if="comment.reply_uid" class="text-con">
+              回复
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="delete">
-                删除
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+            <router-link
+              v-if="comment.reply_uid"
+              :to="`/user/${comment.reply_uid}`"
+              class="text-con-a"
+              target="_blank"
+            >
+              @{{ comment.reply_nickname }}
+            </router-link>
+          </div>
+          <div class="fl function-bar">
+            <span class="time">
+              {{ friendlyDate }}
+            </span>
+
+            <span class="reply" @click="switchShowInput">回复</span>
+            <span class="flex1-scaffold" />
+            <!-- 更多操作 -->
+            <el-dropdown
+              v-if="isMe(comment.uid)"
+              trigger="click"
+              @command="dropdownCommand"
+            >
+              <span class="more-options">
+                <i class="el-icon-more" />
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="delete">
+                  删除
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
         <p class="comment-content wrap-open">
           <!-- 开了wrap 这个span不能换行！ -->
@@ -72,7 +68,7 @@
       v-if="showInput"
       :reply-id="comment.id"
       :reply-username="nickname"
-      @doneReply="showInput = false"
+      @doneReply="doneReply"
     />
   </div>
 </template>
@@ -105,7 +101,7 @@ export default {
     },
     friendlyDate() {
       const time = this.moment(this.comment.create_time)
-      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+      return time.format('MMMDo HH:mm')
     },
     avatar() {
       if (this.comment.avatar) return this.$ossProcess(this.comment.avatar)
@@ -133,6 +129,7 @@ export default {
         if(result.code === 0) {
           this.$message.success(this.$t('success.success'))
           this.$store.commit('setCommentRequest')
+          this.$emit('success')
         }
         else this.$message.error(result.message)
       }
@@ -140,6 +137,10 @@ export default {
         this.$message.success(this.$t('error.fail'))
         console.error(e)
       }
+    },
+    doneReply() {
+      this.showInput = false
+      this.$emit('success')
     }
   }
 }
@@ -174,6 +175,7 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
+  word-break:break-all;
   &.logout {
     color: #b2b2b2;
   }
@@ -184,6 +186,13 @@ export default {
 }
 .comment-header {
   align-items: baseline;
+  display: flex;
+  .function-bar {
+    flex: 1;
+  }
+  .nickname-bar {
+    align-items: baseline;
+  }
 }
 .comment-content {
   color: #000000;
@@ -258,6 +267,7 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     overflow: hidden;
+    word-break:break-all;
   }
 }
 
@@ -279,5 +289,11 @@ export default {
   border-radius: 10px;
   box-shadow: none;
 }
+}
+
+@media screen and (max-width: 600px) {
+  .comment-header {
+    display: block;
+  }
 }
 </style>
