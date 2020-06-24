@@ -26,6 +26,7 @@
       <el-form-item class="ss-btn">
         <el-button
           type="primary"
+          native-type="submit"
           @click="submitLoginForm"
         >
           {{ $t('login') }}
