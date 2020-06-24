@@ -40,6 +40,7 @@ export default {
   overflow: hidden;
   user-select: none;
   border: 1px solid #ddd;
+  box-sizing: border-box;
   img {
     width: 100%;
     height: 100%;
