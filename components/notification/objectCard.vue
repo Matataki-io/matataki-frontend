@@ -35,10 +35,9 @@
       </div>
       <!-- 用户 -->
       <div v-if="mode === 'user'" class="fl user">
-        <c-avatar
-          :src="avatar"
-          class="avatar"
-        />
+        <c-user-popover :user-id="Number(user.id)">
+          <c-avatar :src="avatar" class="avatar" />
+        </c-user-popover>
         <div class="user-info" :class="dateCard && 'user-details'">
           <div class="fl user-info-top">
             <h4>
@@ -71,8 +70,12 @@
       </div>
       <!-- 回复/评论 -->
       <div v-if="mode === 'reply'" class="fl reply">
-        <p>
+        <p v-if="content !== false">
           {{ content }}
+        </p>
+        <p v-else>
+          <i class="el-icon-delete" />
+          此条评论已被删除
         </p>
       </div>
       <!-- token -->
@@ -104,7 +107,6 @@
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { mapGetters } from 'vuex'
 
@@ -173,10 +175,11 @@ export default {
     },
     url() {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
-      else if(this.mode === 'reply') return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+      else if(this.mode === 'reply' && this.comment) return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
       else if(this.mode === 'token' && this.token.symbol === 'CNY') return {name: 'account'}
       else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id}}
-      return {name: 'user-id', params:{id: this.user.id}}
+      else if(this.mode === 'user') return {name: 'user-id', params:{id: this.user.id}}
+      return {}
     },
     followBtnText() {
       if(!this.user) return ''
@@ -192,11 +195,11 @@ export default {
     },
     dateCard() {
       if(!this.createTime) return ''
-      const time = moment(this.createTime)
+      const time = this.moment(this.createTime)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     content() {
-      if(!this.comment) return ''
+      if(!this.comment) return false
       return this.comment.comment
     },
     tokenLogo() {
@@ -248,6 +251,7 @@ export default {
   padding: 10px;
   &.shadow {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    padding: 20px;
   }
   .post {
     &-cover {
@@ -351,6 +355,9 @@ export default {
       color: #B2B2B2;
       line-height: 20px;
       margin: 0;
+      .no-data {
+        color: #b2b2b2;
+      }
     }
   }
   .token {

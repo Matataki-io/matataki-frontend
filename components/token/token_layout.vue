@@ -3,10 +3,9 @@
     <div class="container-padding">
       <div class="token-detail">
         <div class="fl">
-          <avatar
-            :src="logo"
-            size="120px"
-          />
+          <c-token-popover :token-id="Number(minetokenToken.id)">
+            <avatar :src="logo" size="120px" />
+          </c-token-popover>
           <div class="token-detail-info">
             <div class="fl info-line">
               <div class="token-info-title bold">
@@ -31,11 +30,11 @@
               </div>
               <div>
                 <p class="token-info-sub">
-                  <router-link
-                    :to="{name: 'user-id', params: {id: minetokenToken.uid}}"
-                  >
-                    {{ minetokenUser.nickname || minetokenUser.username }}
-                  </router-link>
+                  <c-user-popover :user-id="Number(minetokenToken.uid)">
+                    <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                      {{ minetokenUser.nickname || minetokenUser.username }}
+                    </router-link>
+                  </c-user-popover>
                 </p>
               </div>
             </div>
@@ -355,7 +354,6 @@
   </div>
 </template>
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
@@ -472,7 +470,7 @@ export default {
       else return 'rgb(153, 153, 153)'
     },
     friendlyDate() {
-      return moment(this.minetokenToken.create_time).format('lll')
+      return this.moment(this.minetokenToken.create_time).format('lll')
     }
   },
   watch: {

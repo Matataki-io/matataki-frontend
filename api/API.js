@@ -71,10 +71,10 @@ export default {
       }
     })
   },
-  async follow(uid) {
+  follow(uid) {
     return request.post('/follow/follow', { uid })
   },
-  async unfollow(uid) {
+  unfollow(uid) {
     return request.post('/follow/unfollow', { uid })
   },
   async getMyUserData () {
@@ -395,6 +395,10 @@ export default {
   },
   wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0, pay_cny_amount }) {
     return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity, pay_cny_amount })
+  },
+  // mine 个人的token list
+  tokenTokenList(data) {
+    return request.get('/token/tokenlist', { data })
   },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
@@ -1042,5 +1046,45 @@ minetokenGetResources(tokenId) {
       method: 'PUT',
       url: `/comment/like/${id}`,
     })
+  },
+  searchToken(word, page = 1, pagesize = 20) {
+    return request({
+      method: 'GET',
+      url: '/search/token',
+      params: {
+        word,
+        page,
+        pagesize,
+      }
+    })
+  },
+  getCommentIndexById(id) {
+    return request.get(`/comment/index/${id}`)
+  },
+  // 文章打赏
+  rewardArticle(pid, data) {
+    return request({
+      method: 'POST',
+      url: `/posts/${pid}/reward`,
+      data
+    })
+  },
+  getRewardList(pid, page = 1, pagesize = 1000) {
+    return request({
+      method: 'GET',
+      url: `/posts/${pid}/reward`,
+      params: {
+        page,
+        pagesize,
+      }
+    })
+  },
+  /** 删除一条评论 */
+  deleteComment(id) {
+    return request.delete(`/comment/delete/${id}`)
+  },
+  // 获取评论列表
+  commentGetComments(params) {
+    return request.get(`/comment/getComments`, { params } )
   }
 }

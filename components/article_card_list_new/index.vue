@@ -73,10 +73,12 @@
               :to="{ name: 'user-id', params: {id: card && card.uid} }"
               target="_blank"
             >
-              <avatar
-                :src="avatarImg"
-                class="avatar"
-              />
+              <c-user-popover :user-id="Number(card.uid)">
+                <c-avatar
+                  :src="avatarImg" 
+                  class="avatar"
+                />
+              </c-user-popover>
             </n-link>
             <n-link
               :to="{ name: 'user-id', params: {id: card && card.uid} }"
@@ -100,17 +102,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import moment from 'moment'
-import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo, isThisYear } from '@/utils/momentFun'
 import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
-  components: {
-    avatar
-  },
   props: {
     // 卡片数据
     card: {
@@ -128,11 +125,17 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      chosenHtml: '<span class="article-chosen">精选</span> '
+    }
+  },
   computed: {
     ...mapGetters(['isMe', 'currentUserInfo', 'isLogined']),
     xssTitle() {
       if (this.card.title) {
-        return filterOutHtmlTags(this.card.title, {
+        const chosenHtml = this.card.is_recommend ? this.chosenHtml : ''
+        return chosenHtml + filterOutHtmlTags(this.card.title, {
           em: []
         })
       } else return ''
@@ -183,7 +186,7 @@ export default {
     },
     dateCard() {
       if (!this.card) return ''
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       if (!isThisYear(time)) {
         // return time.format('YYYY MMMDo HH:mm')
         return time.format('lll')
@@ -559,9 +562,32 @@ export default {
 </style>
 
 <style lang="less">
-.search-res em {
-  font-weight: bold;
-  font-style: normal;
-  color: @purpleDark;
+.search-res {
+  .article-chosen {
+    background: #F7B500;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    line-height: 23px;
+    height: 22px;
+    border-radius: 4px;
+    padding: 0px 5px;
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
+  em {
+    font-weight: bold;
+    font-style: normal;
+    color: @purpleDark;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .search-res {
+    .article-chosen {
+      line-height: 18px;
+      height: 17px;
+    }
+  }
 }
 </style>

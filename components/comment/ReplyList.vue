@@ -16,6 +16,7 @@
         hide-on-single-page
         layout="total, prev, pager, next"
         :page-size="pageSize"
+        :current-page="pageIndex"
         :pager-count="5"
         :total="count"
         @current-change="handleCurrentChange"
@@ -35,13 +36,21 @@ export default {
       type: Array,
       required: true,
       default: () => []
+    },
+    // 指定这个将会默认翻到这一页
+    defaultPage: {
+      type: Number,
+      default: 0
+    },
+    pageSize: {
+      type: Number,
+      default: 10
     }
   },
   data() {
     return {
       viewMore: false,
-      pageIndex: 1,
-      pageSize: 10
+      pageIndex: 1
     }
   },
   computed: {
@@ -50,6 +59,9 @@ export default {
       return this.list.length
     },
     replyList() {
+      // 第一次打开时，如果有defaultPage则跳转到defaultPage所指的页码。第一次打开是通过viewMore变量来判断的，避免之后翻页时还会触发这个跳转
+      if(this.defaultPage && !this.viewMore) this.handleCurrentChange(this.defaultPage)
+
       if (!this.viewMore) return this.list.slice(0, 3)
       const { pageIndex, pageSize } = this
       const start = (pageIndex - 1) * pageSize
@@ -60,6 +72,7 @@ export default {
   },
   methods: {
     handleCurrentChange(val) {
+      this.viewMore = true
       this.pageIndex = val
     },
   }

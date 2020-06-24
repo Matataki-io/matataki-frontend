@@ -8,11 +8,18 @@
     "lint": "eslint --ext .js,.vue --ignore-path .eslintignore .",
     "precommit": "yarn lint",
     "dev": "nuxt",
-    "build": "nuxt build",
+
     "build-dev": "cross-env NODE_ENV=development nuxt build",
-    "start": "nuxt start",
-    "start-aws-testing": "nuxt start --hostname 0.0.0.0 --port 8180",
-    "start-aws-prod": "nuxt start --hostname 0.0.0.0 --port 8190",
+    "build-test": "cross-env NODE_ENV=testing nuxt build && node ali_oss_build.js",
+    "build-prod": "cross-env NODE_ENV=production nuxt build && node ali_oss_build_prod.js",
+
+    "start-dev": "cross-env NODE_ENV=development nuxt start",
+    "start-test": "cross-env NODE_ENV=testing nuxt start",
+    "start-prod": "cross-env NODE_ENV=production nuxt start",
+
+    "start-aws-testing": "cross-env NODE_ENV=testing nuxt start --hostname 0.0.0.0 --port 8180",
+    "start-aws-prod": "cross-env NODE_ENV=production nuxt start --hostname 0.0.0.0 --port 8190",
+
     "generate": "nuxt generate",
     "svgo": "svgo -f icons/filter --config=icons/svgo.yml"
   },

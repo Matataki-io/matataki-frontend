@@ -119,7 +119,6 @@
 <script>
 /* eslint-disable */
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 import QRCode from '@/components/exchange/Qrcode'
 import utils from '@/utils/utils'
 import store from '@/utils/store.js'
@@ -172,7 +171,7 @@ export default {
       } else return 0
     },
     friendlyTime() {
-      return moment(this.order.create_time).format('YYYY-MM-DD HH:mm:ss')
+      return this.moment(this.order.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
     // 是否是微信账户
     isWeixinAccount() {

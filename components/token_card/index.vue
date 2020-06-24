@@ -4,10 +4,9 @@
     class="fl card"
   >
     <div class="token-cover">
-      <avatar
-        :src="cover"
-        size="45px"
-      />
+      <c-token-popover :token-id="Number(card.id)">
+        <avatar :src="cover" size="45px" />
+      </c-token-popover>
     </div>
     <div class="fl cards-content">
       <div class="card-info">
@@ -41,14 +40,10 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link
-          :to="{name: 'user-id', params: { id: card.uid }}"
-          class="fl ac"
-        >
-          <avatar
-            :src="coverUser"
-            size="30px"
-          />
+        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
+          <c-user-popover :user-id="Number(card.uid)">
+            <c-avatar :src="coverUser" size="30px" />
+          </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </router-link>
       </div>
@@ -56,7 +51,6 @@
   </router-link>
 </template>
 <script>
-import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
@@ -94,7 +88,7 @@ export default {
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     friendlyDate() {
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
   }

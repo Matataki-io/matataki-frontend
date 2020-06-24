@@ -192,9 +192,6 @@ export default {
   .avatar {
     display: none;
   }
-  .comment-container {
-    padding: 0 10px;
-  }
 }
 </style>
 

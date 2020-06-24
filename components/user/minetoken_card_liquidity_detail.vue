@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 import txHash from '@/components/tx_hash_popover/index'
 
@@ -68,7 +67,7 @@ export default {
   },
   computed: {
     time() {
-      return moment(this.card.create_time).format('MMMDo HH:mm')
+      return this.moment(this.card.create_time).format('MMMDo HH:mm')
     },
     from_nickname() {
       return this.card.from_nickname || this.card.from_username || this.$t('error.accountHasBeenLoggedOut')

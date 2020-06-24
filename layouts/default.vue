@@ -19,6 +19,7 @@
     </back-to-top>
     <feedback v-if="!hideFeedback" :show-position="100" />
     <AuthModal v-model="loginModalShow" />
+    <TransferDialog v-model="transferDialogShow" :user-data="transferUserData" />
     <articleImport
       v-model="importModalShow"
       @importArticle="importArticle"
@@ -33,6 +34,9 @@ import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
+import { getCookie } from '@/utils/cookie'
+import TransferDialog from '@/components/TransferDialog'
+
 export default {
   name: 'Default',
   head: {
@@ -45,7 +49,8 @@ export default {
     AuthModal,
     BackToTop,
     articleImport,
-    feedback
+    feedback,
+    TransferDialog
   },
   data() {
     return {
@@ -72,6 +77,24 @@ export default {
         this.$store.commit('importArticle/setImportModal', v)
       }
     },
+    // 转账 dialog show
+    transferDialogShow: {
+      get() {
+        return this.$store.state.transferDialog.transferDialog
+      },
+      set(v) {
+        this.$store.commit('transferDialog/setTransferDialog', v)
+        if (!v) {
+          this.$store.commit('transferDialog/setTransferUserData', Object.create(null))
+        }
+      }
+    },
+    // 转账 dialog user data
+    transferUserData: {
+      get() {
+        return this.$store.state.transferDialog.transferUserData
+      }
+    },
     hideBackTop() {
       return this.$route.name === 'publish-type-id'
     },
@@ -86,25 +109,15 @@ export default {
       return this.$route.name === 'home'
     }
   },
-  watch: {
-    isLogined(val) {
-      if(val) this.loginModalShow = false
-    }
-  },
-  created() {
-    if(this.$route.query.referral && !this.isLogined) {
-      setTimeout(()=> {
-        this.loginModalShow = true
-      }, 100)
-    }
-  },
   mounted() {
     this.$store.dispatch('testLogin')
     if (process.browser) {
       this.removeOverflowHide()
       // this.testDomain()
       console.log('NODE_ENV', process.env.NODE_ENV)
+      console.log('NODE_ENV', process.env.NODE)
       this.injectScript()
+      this.debug()
     }
   },
   methods: {
@@ -148,7 +161,7 @@ export default {
         let IO = process.env.VUE_APP_DOMAIN_IO
         let isIo = this.$utils.isDomain(IO)
         if (!isIo) {
-          this.$message(`建议您去前往${IO}体验完整功能~`)
+          this.$message(`请使用非微信浏览器访问 ${IO} 使用该功能`)
         }
       } catch (e) {
         console.log(e)
@@ -164,6 +177,14 @@ export default {
         bowl.inject().then(() => {
           console.log('success')
         })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 开启调试
+    debug() {
+      try {
+        getCookie('VConsole') === 'true' && new this.$VConsole()
       } catch (e) {
         console.log(e)
       }

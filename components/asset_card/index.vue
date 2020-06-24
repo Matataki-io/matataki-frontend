@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 // import { isNDaysAgo } from '@/common/methods';
 import { precision } from '@/utils/precisionConversion'
 
@@ -68,7 +67,7 @@ export default {
       // const timeZoneOffset = moment(time.getTime() - time.getTimezoneOffset() * 60000 * (isAppleSlave ? 0 : 1));
       // return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow();
 
-      return moment(this.asset.create_time).format('MMMDo HH:mm')
+      return this.moment(this.asset.create_time).format('MMMDo HH:mm')
     },
     assetAmount() {
       const pointTypes = {

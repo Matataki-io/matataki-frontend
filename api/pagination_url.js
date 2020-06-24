@@ -85,4 +85,6 @@ export const paginationUrl = {
   tagsHottest: 'tags/hotest',
   // 标签最新
   tagsLatest: 'tags/latest',
+  // 赞赏
+  postsReward: 'posts/:id/reward'
 }

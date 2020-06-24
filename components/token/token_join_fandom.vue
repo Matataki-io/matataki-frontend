@@ -274,7 +274,12 @@ export default {
         const { data } = res
         this.loading = false
         if (data.status) {
-          this.fandomData = data.result
+          const processed = data.result.map(({ requirement, ...item }) => {
+            const _requirement = requirement
+            _requirement.minetoken.amount = Number(_requirement.minetoken.amount) / 10000
+            return { ...item, requirement: _requirement }
+          })
+          this.fandomData = processed
         } else {
           console.log('获取粉丝群列表失败', data.error)
         }

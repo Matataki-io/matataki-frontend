@@ -48,7 +48,6 @@
 
 <script>
 import { xssFilter, xssImageProcess } from '@/utils/xss'
-import moment from 'moment'
 
 export default {
   data(){
@@ -85,7 +84,7 @@ export default {
     // 时间
     time() {
       let time = this.article.update_time
-      return time ? moment(time).format('YYYY-MM-DD HH:mm') : ''
+      return time ? this.moment(time).format('YYYY-MM-DD HH:mm') : ''
     },
     // 剩余时间
     draftTimeEnd() {
@@ -204,7 +203,7 @@ export default {
 .TitleImage {
   display: block;
   margin: 0 auto;
-  height: 420px;
+  max-height: 344px;
   overflow: hidden;
   background: #fff;
   padding: 20px;

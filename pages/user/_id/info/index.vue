@@ -35,20 +35,28 @@
           </div>
         </div>
       </template>
-      <div
+      <template>
+        <h3 class="title">
+          {{ $t('user.registrationTime') }}
+        </h3>
+        <p>{{ create_time }}</p>
+      </template>
+      <!-- <div
         v-if="social.length === 0 && urls.length === 0 && loading === false"
         class="social no-data"
       >
         <p>
           {{ $t('noInfo') }}
         </p>
-      </div>
+      </div> -->
     </div>
   </userPage>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import moment from 'moment'
+
+import { mapState, mapActions } from 'vuex'
 import userPage from '@/components/user/user_page.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 
@@ -107,12 +115,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo'])
+    ...mapState({
+      userInfo: state => state.user.userInfo
+    }),
+    create_time() {
+      if(this.userInfo && this.userInfo.create_time) {
+        return moment(this.userInfo.create_time).format('YYYY-MM-DD')
+      }
+      else return '-- -- --'
+    }
   },
   mounted() {
     this.getMyUserLinks()
+    this.$nextTick(() => {
+      this.refreshUser({ id: this.$route.params.id })
+    })
   },
   methods: {
+    ...mapActions('user', ['refreshUser']),
     async getMyUserLinks() {
       this.loading = true
       try {

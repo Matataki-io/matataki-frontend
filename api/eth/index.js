@@ -1,4 +1,6 @@
-import Web3 from 'web3'
+// import Web3 from 'web3'
+// const Web3 = import(/* webpackChunkName: "web3" */ 'web3')
+
 import { fetchId, connect } from './util'
 /**
  * @author Frank Wei<frank@frankwei.xyz>
@@ -9,9 +11,10 @@ import { fetchId, connect } from './util'
 if (process.browser) {
   // window is undefined 因为nuxt.js在服务器端渲染
   // 服务器渲染环境时 process.browser 为 false，浏览器端为true
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
     if (window.ethereum && window.web3) {
       // Modern dapp browsers...
+      const { default: Web3 } = await import(/* webpackChunkName: "web3" */ 'web3')
       window.web3 = new Web3(window.ethereum)
       try {
         // await connect()
@@ -20,6 +23,7 @@ if (process.browser) {
         // @todo: handle User denied account access...
       }
     } else if (window.web3) {
+      const { default: Web3 } = await import(/* webpackChunkName: "web3" */ 'web3')
       // Legacy dapp browsers...
       window.web3 = new Web3(window.web3.currentProvider)
       // Acccounts always exposed
