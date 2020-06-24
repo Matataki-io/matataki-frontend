@@ -180,12 +180,11 @@ export default {
     margin: 0;
     max-width: 100%;
     z-index: 99;
-    padding-bottom: calc(constant(safe-area-inset-bottom));
-    padding-bottom: calc(env(safe-area-inset-bottom));
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 0;
-    height: 50px;
+    padding-bottom: calc(2px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(2px + env(safe-area-inset-bottom));
     border-top: 1px solid #f1f1f1;
     box-shadow: 0 0 10px 0 rgba(0,0,0,.05);
     .icon-num > div {
