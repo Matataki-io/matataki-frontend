@@ -11,55 +11,51 @@
         </c-user-popover>
       </n-link>
       <div class="comment-main">
-        <div class="fl comment-header">
-          <router-link
-            :to="`/user/${comment.uid}`"
-            class="comment-author"
-            :class="!comment.username && 'logout'"
-            target="_blank"
-          >
-            {{ nickname }}
-          </router-link>
-          <span v-if="comment.reply_uid" class="text-con">
-            回复
-          </span>
-          <router-link
-            v-if="comment.reply_uid"
-            :to="`/user/${comment.reply_uid}`"
-            class="text-con-a"
-            target="_blank"
-          >
-            @{{ comment.reply_nickname }}
-          </router-link>
-          <span class="time">
-            {{ friendlyDate }}
-          </span>
-          <!-- <span class="like-container">
-            <svg-icon
-              class="icon"
-              icon-class="like"
-              @click="likeComment"
-            />
-            <span>{{ comment.like_num }}</span>
-          </span> -->
-
-          <span class="reply" @click="switchShowInput">回复</span>
-          <span class="flex1-scaffold" />
-          <!-- 更多操作 -->
-          <el-dropdown
-            v-if="isMe(comment.uid)"
-            trigger="click"
-            @command="dropdownCommand"
-          >
-            <span class="more-options">
-              <i class="el-icon-more" />
+        <div class="comment-header">
+          <div class="fl nickname-bar">
+            <router-link
+              :to="`/user/${comment.uid}`"
+              class="comment-author"
+              :class="!comment.username && 'logout'"
+              target="_blank"
+            >
+              {{ nickname }}
+            </router-link>
+            <span v-if="comment.reply_uid" class="text-con">
+              回复
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="delete">
-                删除
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+            <router-link
+              v-if="comment.reply_uid"
+              :to="`/user/${comment.reply_uid}`"
+              class="text-con-a"
+              target="_blank"
+            >
+              @{{ comment.reply_nickname }}
+            </router-link>
+          </div>
+          <div class="fl function-bar">
+            <span class="time">
+              {{ friendlyDate }}
+            </span>
+
+            <span class="reply" @click="switchShowInput">回复</span>
+            <span class="flex1-scaffold" />
+            <!-- 更多操作 -->
+            <el-dropdown
+              v-if="isMe(comment.uid)"
+              trigger="click"
+              @command="dropdownCommand"
+            >
+              <span class="more-options">
+                <i class="el-icon-more" />
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="delete">
+                  删除
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
         <p class="comment-content wrap-open">
           <!-- 开了wrap 这个span不能换行！ -->
@@ -189,6 +185,13 @@ export default {
 }
 .comment-header {
   align-items: baseline;
+  display: flex;
+  .function-bar {
+    flex: 1;
+  }
+  .nickname-bar {
+    align-items: baseline;
+  }
 }
 .comment-content {
   color: #000000;
@@ -284,5 +287,11 @@ export default {
   border-radius: 10px;
   box-shadow: none;
 }
+}
+
+@media screen and (max-width: 600px) {
+  .comment-header {
+    display: block;
+  }
 }
 </style>
