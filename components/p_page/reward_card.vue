@@ -5,14 +5,18 @@
         <c-avatar :src="cover" />
       </router-link>
     </c-user-popover>
-    <router-link :to="{name: 'user-id', params: { id: card.from_uid }}" target="_blank" class="username">
-      {{ card.nickname || card.username }}
-    </router-link>
-    <span class="action">打赏了</span>
-    <router-link :to="{name: 'token-id', params: { id: card.token_id }}" target="_blank" class="token">
-      {{ tokenAmount }}{{ card.symbol }}
-    </router-link>
-    <time class="time">{{ time }}</time>
+    <div class="card-min">
+      <router-link :to="{name: 'user-id', params: { id: card.from_uid }}" target="_blank" class="username">
+        {{ card.nickname || card.username }}
+      </router-link>
+      <div class="card-min-amount">
+        <span class="action">打赏了</span>
+        <router-link :to="{name: 'token-id', params: { id: card.token_id }}" target="_blank" class="token">
+          {{ tokenAmount }}{{ card.symbol }}
+        </router-link>
+      </div>
+      <time class="time">{{ time }}</time>
+    </div>
   </div>
 </template>
 <script>
@@ -48,40 +52,71 @@ export default {
 .card {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  .username {
-    font-size: 16px;
-    font-weight: 600;
-    color: rgba(51, 51, 51, 1);
-    line-height: 22px;
-    padding: 0;
-    margin: 0 10px;
-    text-decoration: none;
+  &-min {
+    display: flex;
+    margin-left: 10px;
+    .username {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(51, 51, 51, 1);
+      line-height: 22px;
+      padding: 0;
+      margin-right: 10px;
+      text-decoration: none;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      word-break:break-all;
+    }
+    &-amount {
+      display: flex;
+      .action {
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(178, 178, 178, 1);
+        line-height: 22px;
+        padding: 0;
+        margin: 0;
+        white-space: nowrap;
+      }
+      .token {
+        font-size: 16px;
+        font-weight: 500;
+        color: rgba(84, 45, 224, 1);
+        line-height: 22px;
+        padding: 0;
+        margin: 0 10px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+    }
+    .time {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(178, 178, 178, 1);
+      line-height: 22px;
+      padding: 0;
+      margin: 0;
+      white-space: nowrap;
+    }
   }
-  .action {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(178, 178, 178, 1);
-    line-height: 22px;
-    padding: 0;
-    margin: 0;
-  }
-  .token {
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(84, 45, 224, 1);
-    line-height: 22px;
-    padding: 0;
-    margin: 0 10px;
-    text-decoration: none;
-  }
-  .time {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(178, 178, 178, 1);
-    line-height: 22px;
-    padding: 0;
-    margin: 0;
+}
+@media screen and (max-width: 860px) {
+  .card {
+    align-items: flex-start;
+    &-min {
+      display: block;
+      .bottom5px {
+        margin-bottom: 5px;
+      }
+      .username {
+        .bottom5px();
+      }
+      &-amount {
+        .bottom5px();
+      }
+    }
   }
 }
 </style>
