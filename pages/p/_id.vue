@@ -226,7 +226,7 @@
         />
       </div>
       <!-- 赞赏 -->
-      <RewardFooter :user-data="{ id: article.uid }" />
+      <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
 
 
 
@@ -265,8 +265,8 @@
         />
 
         <div class="comment-reward">
-          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentRewardCount[0] }}</span></span>
-          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ commentRewardCount[1] }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentCount }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ rewardCount }}</span></span>
         </div>
         <CommentList
           v-if="commentRewardTab === 0"
@@ -476,7 +476,8 @@ export default {
       commentAnchor: Number(this.$route.query.comment) || 0, //评论锚点
       fontSizeVal: 1,
       commentRewardTab: 0, // 评论赞赏切换
-      commentRewardCount: [0, 0] // 评论赞赏次数
+      commentCount: 0, // 评论次数
+      rewardCount: 0 // 赞赏次数
     }
   },
   head() {
@@ -1471,23 +1472,28 @@ export default {
         console.log(e)
       }
     },
-    // 获取评论和赞赏次数
-    async getCommentRewardCount() {
+    // 评论数
+    async getCommentCount() {
       const commentResult = await this.$utils.factoryRequest(this.$API.commentGetComments({
         signid: this.$route.params.id
       }))
-      const rewardResult = await this.$utils.factoryRequest(this.$API.getRewardList(this.$route.params.id))
-
-      let arr = [0, 0]
-      if (commentResult) {
-        arr[0] = commentResult.data.allcount
-      }
 
       if (commentResult) {
-        arr[1] = rewardResult.data.count
+        this.commentCount = commentResult.data.allcount
       }
+    },
+    // 赞赏数
+    async getRewardCount() {
+      const rewardResult = await this.$utils.factoryRequest(this.$API.getRewardList(this.$route.params.id, 1, 1))
 
-      this.commentRewardCount = arr
+      if (rewardResult) {
+        this.rewardCount = rewardResult.data.count
+      }
+    },
+    // 获取评论和赞赏次数
+    async getCommentRewardCount() {
+      await this.getCommentCount()
+      await this.getRewardCount()
     }
   }
 

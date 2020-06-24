@@ -95,6 +95,7 @@ export default {
     success() {
       this.showSuccess = true
       this.getRewardList()
+      this.$emit('success')
     },
     reward() {
       if (this.isLogined) {
