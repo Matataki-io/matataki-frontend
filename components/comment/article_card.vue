@@ -175,6 +175,7 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
+  word-break:break-all;
   &.logout {
     color: #b2b2b2;
   }
@@ -266,6 +267,7 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     overflow: hidden;
+    word-break:break-all;
   }
 }
 

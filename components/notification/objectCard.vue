@@ -308,6 +308,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
         }
         &-other {
           font-size: 14px;
@@ -387,6 +388,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
       }
       p {
         font-size: 14px;
@@ -398,6 +400,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
       }
     }
   }
@@ -420,6 +423,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
         height: 16px;
         margin-bottom: 5px;
       }
@@ -447,6 +451,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
         }
       }
     }
