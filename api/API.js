@@ -397,8 +397,8 @@ export default {
     return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity, pay_cny_amount })
   },
   // mine 个人的token list
-  tokenTokenList(data) {
-    return request.get('/token/tokenlist', { data })
+  tokenTokenList(params) {
+    return request.get('/token/tokenlist', { params })
   },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
