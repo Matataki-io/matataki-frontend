@@ -12,6 +12,7 @@
           :href="formatUrl(item)"
           target="_blank"
           class="websites-link"
+          rel="noopener noreferrer"
         >{{ item }} </a>
       </template>
       <template v-if="social.length !== 0">
