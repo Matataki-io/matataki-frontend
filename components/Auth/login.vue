@@ -487,6 +487,14 @@ export default {
       font-size: 22px;
       color: #fff;
     }
+    .facebook{
+      font-size: 22px;
+      color: #fff;
+    }
+    .google{
+      font-size: 21px;
+      color: #fff;
+    }
 
     display: flex;
     align-items: center;
@@ -531,8 +539,14 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  // background: #00ACED;
-  background: #b2b2b2;
+  background: #00ACED;
+  // background: #b2b2b2;
+}
+.bg-google {
+  background: #4285f4;
+}
+.bg-facebook {
+  background: #1977f3;
 }
 
 .referral {
