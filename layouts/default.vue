@@ -19,6 +19,7 @@
     </back-to-top>
     <feedback v-if="!hideFeedback" :show-position="100" />
     <AuthModal v-model="loginModalShow" />
+    <TransferDialog v-model="transferDialogShow" :user-data="transferUserData" />
     <articleImport
       v-model="importModalShow"
       @importArticle="importArticle"
@@ -34,6 +35,7 @@ import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
 import { getCookie } from '@/utils/cookie'
+import TransferDialog from '@/components/TransferDialog'
 
 export default {
   name: 'Default',
@@ -47,7 +49,8 @@ export default {
     AuthModal,
     BackToTop,
     articleImport,
-    feedback
+    feedback,
+    TransferDialog
   },
   data() {
     return {
@@ -74,6 +77,24 @@ export default {
         this.$store.commit('importArticle/setImportModal', v)
       }
     },
+    // 转账 dialog show
+    transferDialogShow: {
+      get() {
+        return this.$store.state.transferDialog.transferDialog
+      },
+      set(v) {
+        this.$store.commit('transferDialog/setTransferDialog', v)
+        if (!v) {
+          this.$store.commit('transferDialog/setTransferUserData', Object.create(null))
+        }
+      }
+    },
+    // 转账 dialog user data
+    transferUserData: {
+      get() {
+        return this.$store.state.transferDialog.transferUserData
+      }
+    },
     hideBackTop() {
       return this.$route.name === 'publish-type-id'
     },
@@ -86,18 +107,6 @@ export default {
     },
     hideHeader() {
       return this.$route.name === 'home'
-    }
-  },
-  watch: {
-    isLogined(val) {
-      if(val) this.loginModalShow = false
-    }
-  },
-  created() {
-    if(this.$route.query.referral && !this.isLogined) {
-      setTimeout(()=> {
-        this.loginModalShow = true
-      }, 100)
     }
   },
   mounted() {
@@ -194,7 +203,7 @@ export default {
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 95px;
+    bottom: 115px;
     color: #B2B2B2;
     display: flex;
     align-items: center;
@@ -202,6 +211,8 @@ export default {
     background: rgba(255,255,255,1);
     box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.05);
     border-radius: 4px;
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
     &:hover {
       opacity: 0.9;
     }
@@ -225,7 +236,7 @@ export default {
       width: 30px;
       height: 30px;
       right: 20px;
-      bottom: 80px;
+      bottom: 100px;
       &-icon {
         font-size: 16px;
       }

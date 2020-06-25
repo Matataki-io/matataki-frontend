@@ -13,14 +13,10 @@
       sortable="custom"
     >
       <template slot-scope="scope">
-        <n-link
-          :to="{name: 'user-id', params: {id: scope.row.uid}}"
-          class="invite-block avatar"
-        >
-          <avatar
-            :src="cover(scope.row.avatar)"
-            size="30px"
-          />
+        <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block avatar" target="_blank">
+          <c-user-popover :user-id="Number(scope.row.uid)">
+            <avatar :src="cover(scope.row.avatar)" size="30px" />
+          </c-user-popover>
           <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
         </n-link>
       </template>

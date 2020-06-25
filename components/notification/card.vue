@@ -9,6 +9,7 @@
       <svg-icon v-else-if="svgType === 'featured'" class="icon-search" icon-class="notify_featured" />
       <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
       <svg-icon v-else-if="svgType === 'transfer'" class="icon-search" icon-class="notify_transfer" />
+      <svg-icon v-else-if="svgType === 'reward'" class="icon-search" icon-class="notify_reward" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
@@ -58,6 +59,10 @@
         </h4>
       </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
+      <p v-if="noComment && !content" class="notify-right-content no-data">
+        <i class="el-icon-delete" />
+        此条评论已被删除
+      </p>
       <!-- 对象卡片 -->
       <div v-if="mode !== 'hide'" @click.stop>
         <objectCard
@@ -119,14 +124,18 @@ export default {
         follow: '关注了你',
         annouce: '',
         reply: '回复了你的评论',
-        transfer: '向你转账'
+        transfer: '向你转账',
+        reward: '打赏了你'
       }
     }
   },
   computed: {
+    /** 消息标签 */
     svgType() {
-      if(this.card.object_type === 'featuredArticles') return 'featured'
-      return this.card.action
+      const { action, object_type } = this.card
+      if(object_type === 'featuredArticles') return 'featured'
+      else if(action === 'transfer' && object_type === 'article') return 'reward'
+      return action
     },
     avatar() {
       if (this.user && this.user.avatar) return this.$ossProcess(this.user.avatar)
@@ -134,7 +143,10 @@ export default {
     },
     /** 行为标签 */
     actionLabel() {
-      return this.actionLabels[this.card.action]
+      const { action, object_type } = this.card
+      if(action === 'transfer' && object_type === 'article') return this.actionLabels.reward
+
+      return this.actionLabels[action]
     },
     nickname() {
       return this.user.nickname || this.user.username
@@ -164,14 +176,14 @@ export default {
         if (object_type !== 'announcement' || this.annouce === null) return ''
         return this.annouce.content
       }
-      else if (action === 'transfer' && this.transferLog) {
+      else if (action === 'transfer' && this.transferLog && this.card.total === 1) {
         // 转账
         const amount = this.tokenAmount(this.transferLog.amount, this.transferLog.decimals)
         if(object_type === 'cnyWallet') // CNY
           return `金额：${amount} ${this.transferLog.symbol}`
-        else if(object_type === 'tokenWallet') { // Token
+        else if(object_type === 'tokenWallet' || object_type === 'article') { // Token
           let content = `金额：${amount} ${this.transferLog.symbol}`
-          if(this.transferLog.memo) content += `\n转账备注：${this.transferLog.memo}`
+          if(this.transferLog.memo) content += `\n留言：${this.transferLog.memo}`
           return content
         }
       }
@@ -183,16 +195,21 @@ export default {
       const time = this.moment(this.card.notify_time || this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
+    /** 判断：是评论或回复类型、条目数等予1，并且评论对象缺失 */
+    noComment() {
+      return (this.card.action === 'comment' || this.card.action === 'reply') && this.card.total === 1 && !this.comment
+    },
     /** 子卡片显示模式 */
     mode() {
       if (['comment', 'like', 'annouce'].includes(this.card.action) && this.post)
         return 'post' // 文章
-      else if (this.card.action === 'reply' && this.commentObject)
+      else if (this.card.action === 'reply')
         return 'reply' // 回复
       else if(this.card.action === 'follow' && this.user)
         return 'user' // 用户
       else if(this.card.action === 'transfer' && this.transferLog)
-        return 'token'
+        if(this.card.object_type === 'article') return 'post' // 打赏文章
+        else return 'token' // Fan票或者CNY
       else return 'hide' // 隐藏
     }
   },
@@ -214,7 +231,7 @@ export default {
       let url
       switch (this.mode) {
         case 'post':
-          if (this.card.action === 'comment')
+          if (this.card.action === 'comment' && this.comment)
             url = {name: 'p-id', params: {id: this.post.id}, query: {comment: this.comment.id}}
           else url = {name: 'p-id', params: {id: this.post.id}}
           break
@@ -222,7 +239,9 @@ export default {
           url = {name: 'user-id', params: {id: this.user.id}}
           break
         case 'reply':
-          url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          if (this.comment)
+            url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          else url = {}
           break
         case 'token':
           if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
@@ -324,6 +343,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
           &:hover {
             text-decoration: underline;
           }  
@@ -352,6 +372,10 @@ export default {
       color: black;
       line-height: 30px;
       white-space: pre-wrap;
+      &.no-data {
+        white-space: normal;
+        color: #b2b2b2;
+      }
     }
   }
   .round-silhouette {

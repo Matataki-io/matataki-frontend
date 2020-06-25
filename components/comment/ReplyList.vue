@@ -5,6 +5,7 @@
       :key="indexChild"
       :comment="itemChild"
       :type="1"
+      @success="$emit('success')"
     />
     <div v-show="!viewMore && count > 3" class="view-more">
       共<b>{{ count }}</b>条回复, 

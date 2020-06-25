@@ -57,6 +57,7 @@
               </el-dropdown>
             </div>
           </header>
+          <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
           <no-ssr>
             <mavon-editor
@@ -67,6 +68,7 @@
           <div
             v-highlight
             class="markdown-body article-content"
+            :class="fontSizeComputed"
             v-html="compiledMarkdown"
           />
           <!-- 文章页脚 声明 是否原创 -->
@@ -223,6 +225,8 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <!-- 赞赏 -->
+      <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
 
 
 
@@ -255,15 +259,21 @@
       <!-- 内容居中 -->
       <div class="p-w">
         <!-- 评论内容 -->
-        <commentInput
-          v-if="!isProduct"
-          :article="article"
-        />
+        <commentInput v-if="!isProduct" :article="article" @success="getCommentCount" />
+
+        <div class="comment-reward">
+          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentCount }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ rewardCount }}</span></span>
+        </div>
+        <!-- 这里的 success 通过 孙组件一层层上传发过来的事件 -->
         <CommentList
+          v-if="commentRewardTab === 0"
           :sign-id="article.id"
           :type="article.channel_id"
           :comment-anchor="commentAnchor"
+          @success="getCommentCount"
         />
+        <commentReward v-if="commentRewardTab === 1" />
       </div>
 
       <InvestModal
@@ -340,7 +350,6 @@ import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
-import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
 import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
 import ArticleHistory from '@/common/components/ipfs_all/history.vue'
@@ -349,7 +358,12 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import RewardFooter from '@/components/article/RewardFooter'
+import fontSize from '@/components/p_page/font_size'
+import commentReward from '@/components/p_page/reward'
 
+import { getCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -376,7 +390,10 @@ export default {
     OrderModal,
     becomeAnArticleEditor,
     avatar,
-    sidebar
+    sidebar,
+    RewardFooter,
+    fontSize,
+    commentReward
   },
   data() {
     return {
@@ -455,7 +472,11 @@ export default {
       articleIpfsArray: [], // ipfs hash
       resizeEvent: null,
       tags: [], // 文章标签
-      commentAnchor: Number(this.$route.query.comment) || 0 //评论锚点
+      commentAnchor: Number(this.$route.query.comment) || 0, //评论锚点
+      fontSizeVal: 1,
+      commentRewardTab: 0, // 评论赞赏切换
+      commentCount: 0, // 评论次数
+      rewardCount: 0 // 赞赏次数
     }
   },
   head() {
@@ -502,28 +523,23 @@ export default {
       // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
-      if (process.browser) {
-        try {
+      try {
+        if (process.browser) {
           const markdownItEditor = this.$mavonEditor.markdownIt
           const { content } = this.post
 
           let md = markdownItEditor.render(content)
 
           return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
-        } catch (e) {
-          console.log('1', e)
-          let md = markdownIt.render(this.post.content)
-          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
-        }
-      } else {
-        try {
+        } else {
           let md = markdownIt.render(this.post.content)
           return this.$utils.compose(xssImageProcess, xssFilter)(md)
-        } catch (e) {
-          console.log('2', e)
-          return this.post.content
         }
+      } catch (e) {
+        return this.post.content
       }
+
+
     },
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
@@ -629,6 +645,45 @@ export default {
         if (this.article.require_holdtokens || this.article.require_buy) return false
         return true
       }
+    },
+    // 动态返回文章字号大小
+    // >992 16 18 20 22 24
+    // >600 <=992 14 16 18 20 22
+    // <- 600 12 14 16 18 20
+    // 第二个标准值是css文章的默认字体大小
+    fontSizeComputed() {
+      try {
+        let list = {}
+        let clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+        if (clientWidth <= 992 && clientWidth > 600) {
+          list = {
+            0: 'font14',
+            1: '',
+            2: 'font18',
+            3: 'font20',
+            4: 'font22',
+          }
+        } else if (clientWidth <= 600) {
+          list = {
+            0: 'font12',
+            1: '',
+            2: 'font16',
+            3: 'font18',
+            4: 'font20',
+          }
+        } else {
+          list = {
+            0: 'font16',
+            1: '',
+            2: 'font20',
+            3: 'font22',
+            4: 'font24',
+          }
+        }
+        return list[this.fontSizeVal] || ''
+      } catch(e) {
+        return ''
+      }
     }
   },
   watch: {
@@ -642,7 +697,11 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
-    }
+    },
+    // 保存font size 选择
+    fontSizeVal(newVal) {
+      store.set('p_font_size', newVal)
+    } 
   },
 
   async asyncData({ $axios, route, req }) {
@@ -723,6 +782,11 @@ export default {
       this.getArticleIpfs()
 
       this.setAllHideContentStyle()
+
+      this.$nextTick(() => {
+        this.setFontSize()
+        this.getCommentRewardCount()
+      })
     }
 
   },
@@ -1370,6 +1434,7 @@ export default {
         console.log(error)
         // 提取内容 删除多余的标签
         const regRemoveContent = (str) => {
+          if (!str) return str
           // 去除空格
           const strTrim = str => str.replace(/\s+/g, '')
           // 去除标签
@@ -1394,6 +1459,40 @@ export default {
         desc: desc,
         imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
       })
+    },
+    // 设置文章默认文字大小
+    setFontSize() {
+      try {
+        let fontSize = store.get('p_font_size')
+        if (fontSize) {
+          this.fontSizeVal = Number(fontSize)
+        }
+      } catch(e) {
+        console.log(e)
+      }
+    },
+    // 评论数
+    async getCommentCount() {
+      const commentResult = await this.$utils.factoryRequest(this.$API.commentGetComments({
+        signid: this.$route.params.id
+      }))
+
+      if (commentResult) {
+        this.commentCount = commentResult.data.allcount
+      }
+    },
+    // 赞赏数
+    async getRewardCount() {
+      const rewardResult = await this.$utils.factoryRequest(this.$API.getRewardList(this.$route.params.id, 1, 1))
+
+      if (rewardResult) {
+        this.rewardCount = rewardResult.data.count
+      }
+    },
+    // 获取评论和赞赏次数
+    async getCommentRewardCount() {
+      await this.getCommentCount()
+      await this.getRewardCount()
     },
   }
 

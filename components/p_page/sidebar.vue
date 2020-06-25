@@ -163,10 +163,47 @@ export default {
       }
     }
   }
-    .share-footer {
-      /deep/ .el-badge__content.is-fixed {
-        display: block;
+  .share-footer {
+    /deep/ .el-badge__content.is-fixed {
+      display: block;
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .share-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    margin: 0;
+    max-width: 100%;
+    z-index: 99;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 0;
+    padding-bottom: calc(2px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(2px + env(safe-area-inset-bottom));
+    border-top: 1px solid #f1f1f1;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.05);
+    .icon-num > div {
+      box-shadow: none;
+      width: 30px;
+      height: 30px;
+    }
+    .icon {
+      font-size: 20px;
+    }
+    .icon-num p {
+      font-size: 12px;
+      line-height: inherit;
+      margin: 0;
+      span {
+        font-size: 12px;
+        line-height: inherit;
       }
     }
+  }
 }
 </style>

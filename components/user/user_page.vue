@@ -129,6 +129,14 @@
         </router-link>
         <el-button
           size="small"
+          class="transfer"
+          @click="giftDialog = true"
+        >
+          <i class="el-icon-money" />
+          转账
+        </el-button>
+        <el-button
+          size="small"
           class="follow2"
           @click="shareModalShow = true"
         >
@@ -150,6 +158,7 @@
       :img="userInfo.avatar"
       @input="val => shareModalShow = val"
     />
+    <TransferDialog v-model="giftDialog" :user-data="userData2" />
   </div>
 </template>
 
@@ -162,6 +171,7 @@ import followBtn from '@/components/follow_btn'
 import Share from '@/components/token/token_share.vue'
 
 import bannerUpload from '@/components/bannerUpload/index.vue'
+import TransferDialog from '@/components/TransferDialog'
 
 export default {
   components: {
@@ -170,7 +180,14 @@ export default {
     userPageNav,
     tokenAvatar,
     Share,
-    bannerUpload
+    bannerUpload,
+    TransferDialog
+  },
+  props: {
+    userData: {
+      type: Object,
+      default: null
+    }
   },
   data() {
     return {
@@ -179,14 +196,25 @@ export default {
       tokenUser: false,
       tokenData: Object.create(null),
       shareModalShow: false,
-      imgUploadDone: 0 // 图片是否上传完成
+      imgUploadDone: 0, // 图片是否上传完成
+      giftDialog: false
     }
   },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
     }),
-    ...mapGetters(['isMe'])
+    ...mapGetters(['isMe']),
+    userData2() {
+      if (this.userData) {
+        return {
+          ...this.userData,
+          id: Number(this.$route.params.id)
+        }
+      } else {
+        return null
+      }
+    }
   },
   created() {
     // this.getMyUserData()
@@ -350,10 +378,15 @@ export default {
     padding: 0;
     margin: 0;
   }
+  .transfer {
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+  }
   .follow2 {
     position: absolute;
     right: 10px;
-    bottom: 30px;
+    bottom: 40px;
   }
   .follow3 {
     position: absolute;
@@ -372,7 +405,7 @@ export default {
   .follow {
     position: absolute;
     right: 10px;
-    bottom: 70px;
+    bottom: 80px;
     &.edit {
       padding-left: 11px;
       padding-right: 11px;

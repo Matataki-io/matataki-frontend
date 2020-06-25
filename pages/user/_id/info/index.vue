@@ -35,20 +35,20 @@
           </div>
         </div>
       </template>
-      <template v-if="urls.length !== 0">
+      <template>
         <h3 class="title">
           {{ $t('user.registrationTime') }}
         </h3>
         <p>{{ create_time }}</p>
       </template>
-      <div
+      <!-- <div
         v-if="social.length === 0 && urls.length === 0 && loading === false"
         class="social no-data"
       >
         <p>
           {{ $t('noInfo') }}
         </p>
-      </div>
+      </div> -->
     </div>
   </userPage>
 </template>
