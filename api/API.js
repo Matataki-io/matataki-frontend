@@ -918,7 +918,7 @@ minetokenGetResources(tokenId) {
     })
   },
   // twitter 登录
-  twitterLoginPrepare(data) {
+  twitterLoginPrepare() {
     return request({
       method: 'GET',
       url: '/login/twitter/prepare'
