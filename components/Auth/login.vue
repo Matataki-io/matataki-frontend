@@ -96,7 +96,6 @@
           placement="top"
         >
           <div
-            style="cursor: not-allowed;"
             class="oauth-bg bg-twitter"
             @click="walletLogin('Twitter')"
           >
@@ -124,7 +123,7 @@
             />
           </div>
         </el-tooltip>
-        
+
         <el-tooltip
           :content="$t('auth.eosTitle')"
           class="item"
@@ -299,8 +298,7 @@ export default {
         if (!this.testDomain()) return
         this.telegramLogin()
       } else if (type === 'Twitter') {
-        if (!this.testDomain()) return
-        // this.twitterLogin();
+        this.twitterLogin()
       } else await this.signInx(type)
     },
     async signInx(type) {

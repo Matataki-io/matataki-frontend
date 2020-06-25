@@ -199,7 +199,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, data, title, fissionFactor, 
+    { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
       editRequireToken = null, editRequireBuy = null, ipfs_hide = true }) {
@@ -614,7 +614,7 @@ minetokenGetResources(tokenId) {
       method: 'post',
       url: '/exchange/addLiquidityBalance',
       data: {
-        tokenId, cny_amount, token_amount, min_liquidity, max_tokens, deadline 
+        tokenId, cny_amount, token_amount, min_liquidity, max_tokens, deadline
       }
     })
   },
@@ -918,6 +918,12 @@ minetokenGetResources(tokenId) {
     })
   },
   // twitter 登录
+  twitterLoginPrepare() {
+    return request({
+      method: 'GET',
+      url: '/login/twitter/prepare'
+    })
+  },
   twitterLogin(data) {
     return request({
       method: 'POST',
@@ -967,7 +973,7 @@ minetokenGetResources(tokenId) {
       }
     })
   },
-  // 获取某篇文章的标签 
+  // 获取某篇文章的标签
   tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
   // 获取热门标签
   tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
