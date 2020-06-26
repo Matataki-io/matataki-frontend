@@ -156,16 +156,16 @@ export default {
           is_main: 0,
           disabled: false
         },
-        // {
-        //   type: 'twitter',
-        //   icon: 'twitter', // 随时可换 防止影响
-        //   typename: 'Twitter',
-        //   username: '', // 最好后端混淆后返回
-        //   loading: false,
-        //   status: false,
-        //   is_main: 0,
-        //   disabled: false
-        // }
+        {
+          type: 'twitter',
+          icon: 'twitter', // 随时可换 防止影响
+          typename: 'Twitter',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        }
       ]
     }
   },
@@ -429,6 +429,10 @@ export default {
       } else if (type === 'telegram') {
         if (this.testDomain()) {
           this.$router.push({ name: 'login-telegram' })
+        }
+      } else if (type === 'twitter') {
+        if (this.testDomain()) {
+          this.$router.push({ name: 'login-twitter' })
         }
       } else this.$message.warning(this.$t('thirdParty.pcDoesNotSupportBinding'))
 
