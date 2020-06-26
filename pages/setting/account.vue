@@ -430,6 +430,10 @@ export default {
         if (this.testDomain()) {
           this.$router.push({ name: 'login-telegram' })
         }
+      } else if (type === 'twitter') {
+        if (this.testDomain()) {
+          this.$router.push({ name: 'login-twitter' })
+        }
       } else this.$message.warning(this.$t('thirdParty.pcDoesNotSupportBinding'))
 
       this.accountList[idx].loading = false
