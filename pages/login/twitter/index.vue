@@ -19,9 +19,9 @@ export default {
     }
   },
   async mounted() {
-      const response = await this.$API.twitterLoginPrepare()
+    const response = await this.$API.twitterLoginPrepare()
 
-      window.location.href = 'https://api.twitter.com/oauth/authenticate?oauth_token=' + response.data
+    window.location.href = 'https://api.twitter.com/oauth/authenticate?oauth_token=' + response.data
   },
   methods: {
   }
