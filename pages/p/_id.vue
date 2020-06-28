@@ -67,6 +67,7 @@
           </no-ssr>
           <div
             v-highlight
+            v-viewer="viewerOptions"
             class="markdown-body article-content"
             :class="fontSizeComputed"
             v-html="compiledMarkdown"
@@ -476,7 +477,8 @@ export default {
       fontSizeVal: 1,
       commentRewardTab: 0, // 评论赞赏切换
       commentCount: 0, // 评论次数
-      rewardCount: 0 // 赞赏次数
+      rewardCount: 0, // 赞赏次数
+      viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' }
     }
   },
   head() {
@@ -1326,7 +1328,7 @@ export default {
           <p style="flex: 1">
             持有：${need[i].amount / 10000 }
             <a href="/token/${need[i].id}">
-            <img src="${this.$ossProcess(need[i].logo)}" alt="logo">
+            <img src="${this.$ossProcess(need[i].logo)}" alt="logo" data-noenlarge="1">
             ${need[i].symbol}(${need[i].name})
             </a>
           </p>
@@ -1340,7 +1342,7 @@ export default {
       unlockPrompt.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${lockSvg}" alt="lock"
+            src="${lockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
         ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML + '\n<hr />' : ''}
@@ -1361,7 +1363,7 @@ export default {
       unlockContent.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${unlockSvg}" alt="lock"
+            src="${unlockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
       ` + unlockContent.innerHTML
