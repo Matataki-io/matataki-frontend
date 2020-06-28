@@ -153,15 +153,16 @@
           >
             <div class="icon telegram-icon" />
           </a>
-          <!-- <a
+          <a
             target="_blank"
-            href="https://twitter.com/realmatataki"
+            href="https://twitter.com/intent/follow?ref_src=twsrc%5Etfw&screen_name=realmatataki&tw_p=followbutton"
           >
             <svg-icon
               class="icon twitter-icon"
               icon-class="twitter"
             />
           </a>
+          <!--
           <a
             target="_blank"
             href="https://www.facebook.com/MatatakiOfficial/"
@@ -191,8 +192,10 @@ export default {
   height: 180px;
   background: #333333;
   padding-top: 52px;
-  padding-bottom: 52px;
+  // padding-bottom: 52px;
   box-sizing: border-box;
+  padding-bottom: calc(52px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(52px + env(safe-area-inset-bottom));
   &-content {
     max-width: 1200px;
     height: 100%;

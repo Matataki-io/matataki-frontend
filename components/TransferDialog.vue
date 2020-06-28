@@ -2,30 +2,49 @@
   <el-dialog
     :visible.sync="showModal"
     title="转账"
-    custom-class="br10"
-    width="380px"
+    custom-class="transfer-dialog br10"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="form"
       v-loading="transferLoading"
       :model="form"
       :rules="rules"
-      label-width="40px"
+      label-width="60px"
       class="gift-form"
     >
       <el-form-item label="对象">
-        <el-input
-          v-model="form.username"
-          placeholder="请输入赠送的对象"
-          style="z-index: 2;"
-        />
+        <el-select
+          v-model="userVal"
+          filterable
+          remote
+          reserve-keyword
+          placeholder="请输入关键词"
+          :remote-method="userRemoteMethod"
+          :loading="userLoading"
+          style="width: 100%;"
+          @change="userValChange"
+        >
+          <el-option
+            v-for="item in userList"
+            :key="item.id"
+            :label="searchUsername(item.nickname, item.username)"
+            :value="item.id"
+          >
+            <div class="fl ac">
+              <c-avatar :src="cover(item.avatar)" />
+              <span class="username">{{ searchUsername(item.nickname, item.username) }}</span>
+            </div>
+          </el-option>
+        </el-select>
         <!-- 常用候选对象列表 -->
-        <template v-if="historyUser.length !== 0">
+        <div v-if="historyUser.length !== 0" class="history-user">
           <el-tag
             v-for="item in historyUser"
             :key="item.id"
             type="info"
             class="history-user__tag"
+            size="small"
             @click="continueUser(item)"
           >
             {{
@@ -34,84 +53,29 @@
                 : item.nickname || item.username
             }}
           </el-tag>
-        </template>
-        <!-- 搜索结果 -->
-        <div
-          v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
-          class="transfer—search__list"
-        >
-          <div
-            v-for="item in searchUserList"
-            :key="item.id"
-            @click="continueUser(item)"
-          >
-            <avatar
-              :src="searchUserAvatar(item.avatar)"
-              class="transfer—search__list__avatar"
-            />
-            <span
-              class="search-result__tag "
-              v-html="searchUserTitle(item.nickname || item.username)"
-            />
-          </div>
         </div>
       </el-form-item>
-      <!-- 结果 -->
-      <transition name="result">
-        <el-form-item
-          v-if="!$utils.isNull(toUserInfo)"
-          label=""
-          prop=""
-        >
-          <router-link
-            :to="{name: 'user-id', params: {id: toUserInfo.id}}"
-            class="search-user"
-            target="_blank"
-          >
-            <avatar
-              :src="searchUserAvatar(toUserInfo.avatar)"
-              class="search-user-avatar"
-            />
-            <span
-              class="search-result__tag "
-              v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
-            />
-            <div
-              class="gift-ful"
-              @click="closeUser"
-            >
-              <i class="el-icon-close" />
-            </div>
-          </router-link>
-        </el-form-item>
-      </transition>
-      <el-form-item label="类型">
+      <el-form-item label="类型" prop="tokenId">
         <el-select
-          :value="selectedToken.symbol"
+          v-model="form.tokenId"
           filterable
-          remote
-          clear
-          placeholder="请输入关键词"
-          :remote-method="remoteMethod"
-          :loading="searchTokenLoading"
-          class="mttk-select"
+          placeholder="请选择" 
+          style="width: 100%"
           @change="changeTokenSelect"
         >
           <el-option
             v-for="item in tokenOptions"
-            :key="item.symbol"
-            :label="item.symbol"
-            :value="item"
+            :key="item.token_id"
+            :label="item.symbol + '-' + item.name"
+            :value="item.token_id"
           >
             <div class="token-container">
-              <img :src="$API.getImg(item.logo)" :alt="item.symbol" class="token-logo">
-              <span class="token-symbol" v-html="item.symbol" />
+              <img :src="cover(item.logo)" :alt="item.symbol" class="token-logo">
+              <span class="token-symbol">{{ item.symbol }}</span>
+              <span class="token-symbol">{{ tokenAmount(item.amount, item.decimals) }}</span>
             </div>
           </el-option>
         </el-select>
-        <!-- <p class="tokenname">
-          {{ form.tokenname }}
-        </p> -->
       </el-form-item>
       <el-form-item
         label="数量"
@@ -135,31 +99,26 @@
           @click="form.tokens = form.balance"
         >全部转入</a>
       </p>
-      <el-form-item
-        label="留言"
-        prop="memo"
-      >
+      <el-form-item label="留言">
         <el-input
           v-model="form.memo"
           type="textarea"
           :rows="3"
           placeholder="请写下想对作者说的话（选填）"
           size="small"
-          maxlength="20"
+          maxlength="500"
           show-word-limit
         />
       </el-form-item>
-      <el-form-item>
-        <div class="form-button">
-          <el-button
-            :disabled="$utils.isNull(toUserInfo)"
-            type="primary"
-            @click="submitForm('form')"
-          >
-            确定
-          </el-button>
-        </div>
-      </el-form-item>
+      <div class="form-button">
+        <el-button
+          :disabled="!userVal"
+          type="primary"
+          @click="submitForm('form')"
+        >
+          确定
+        </el-button>
+      </div>
     </el-form>
   </el-dialog>
   <!-- </m-dialog> -->
@@ -167,15 +126,11 @@
 
 <script>
 import { precision, toPrecision } from '@/utils/precisionConversion'
-import debounce from 'lodash/debounce'
-import { xssFilter } from '@/utils/xss'
-import avatar from '@/common/components/avatar'
+import { filterOutHtmlTags } from '@/utils/xss'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'TransferDialog',
-  components: {
-    avatar
-  },
   props: {
     value: {
       type: Boolean,
@@ -232,22 +187,24 @@ export default {
       },
       rules: {
         tokens: [
-          { validator: validateToken, trigger: ['blur', 'change'] }
+          { required: true, validator: validateToken, trigger: ['blur', 'change'] }
+        ],
+        tokenId: [
+          { required: true, message: '请选择类型', trigger: 'change' }
         ]
       },
-      searchUserList: [], // 搜索结果
       toUserInfo: null, // 转让的对象
       historyUser: [], // 历史转让用户
       transferLoading: false,
       tokenOptions: [],
-      searchTokenLoading: false,
-      selectedToken: {}
+      selectedToken: {},
+      userVal: '',
+      userLoading: false,
+      userList: [] // 用户列表
     }
   },
   computed: {
-    searchUserName() {
-      return this.form.username
-    }
+    ...mapGetters(['currentUserInfo']),
   },
   watch: {
     showModal(val) {
@@ -256,6 +213,7 @@ export default {
         this.historyUserFunc('token')
         this.initForm()
         this.initUser()
+        this.tokenTokenList()
       } else {
         this.formEmpty()
       }
@@ -263,16 +221,13 @@ export default {
     value(val) {
       this.showModal = val
     },
-    searchUserName() {
-      this.searchUser()
-    },
-  },
-  mounted() {
   },
   methods: {
     initUser() {
       if (!this.userData) return
       this.toUserInfo = this.userData
+      this.userVal = this.userData.nickname || this.userData.username
+      this.userList = [this.userData]
     },
     getUserBalance(tokenId) {
       this.$API.getUserBalance(tokenId).then((res) => {
@@ -282,29 +237,27 @@ export default {
         }
       })
     },
-    tokenAmount(amount, decimals) {
-      const tokenamount = precision(amount, 'CNY', decimals)
-      return this.$publishMethods.formatDecimal(tokenamount, 4)
+
+    changeTokenSelect(id) {
+      this.form.tokenId = id
+      this.getUserBalance(id)
     },
-    changeTokenSelect(token) {
-      this.selectedToken = token
-      this.form.tokenId = token.id
-      this.getUserBalance(token.id)
-    },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.searchTokenLoading = true
-        this.$API.searchToken(query).then((res) => {
-          this.searchTokenLoading = false
-          if (res.code === 0) {
-            this.tokenOptions = res.data.list
-          } else {
-            this.tokenOptions = []
-          }
-        })
-      } else {
-        this.tokenOptions = []
+    // 获取所有token
+    async tokenTokenList() {
+      let data = {
+        pagesize: 999,
+        order: 0
       }
+      await this.$API.tokenTokenList(data).then(res => {
+        if (res.code === 0) {
+          this.tokenOptions = res.data.list
+        } else {
+          this.tokenOptions = []
+        }
+      }).catch(err => {
+        console.log(err)
+        this.tokenOptions = []
+      })
     },
     initForm() {
       if (!this.form2) return
@@ -313,28 +266,19 @@ export default {
       this.form.decimals = this.form2.decimals
       this.form.max = this.form2.max
       this.form.balance = this.form2.balance
-      this.selectedToken = {
-        id: this.form2.tokenId,
-        symbol: this.form2.tokenname,
-      }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
     continueUser(val) {
       this.toUserInfo = val
-    },
-    closeUser(e) {
-      if (e && e.preventDefault) e.preventDefault()
-      else if (e && e.stopPropagation) e.stopPropagation()
-      this.toUserInfo = null
-      this.searchUserList = []
-      return false
+      this.userVal = val.nickname || val.username
+      this.userList = [val]
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.$utils.isNull(this.toUserInfo)) {
+          if (!this.userVal) {
             this.$message({ showClose: true, message: '请选择用户', type: 'warning'})
           } else {
             this.transferMinetoken()
@@ -342,12 +286,25 @@ export default {
         } else return false
       })
     },
-    transferMinetoken() {
+    // 转账
+    transferMinetoken() {    
       const toUserInfo = this.toUserInfo
       if (this.$utils.isNull(toUserInfo)) return
 
       const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
+
+      if (Number(toId) === Number(this.currentUserInfo.id)) {
+        this.$message({ showClose: true, message: '不能给自己转账', type: 'info' })
+        return
+      }
+
+      if (!this.form.tokenId) {
+        this.$message({ showClose: true, message: '请选择类型', type: 'info' })
+        return
+      }
+
       this.transferLoading = true
+      this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 
       const data = {
         tokenId: this.form.tokenId,
@@ -358,7 +315,7 @@ export default {
       this.$API.transferMinetoken(data)
         .then(res => {
           if (res.code === 0) {
-            this.$message({ showClose: true, message: res.message, type: 'success'})
+            this.$message({ showClose: true, message: '转账成功', type: 'success'})
             this.reload = Date.now()
 
             // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
@@ -372,49 +329,11 @@ export default {
           }
         }).catch(err => {
           console.log(err)
-          this.$message.error('赠送token失败')
+          this.$message.error('转账失败')
         }).finally(() => {
           this.transferLoading = false
           this.showModal = false
         })
-    },
-    // 搜索用户
-    searchUser: debounce(function () {
-      const searchName = this.form.username.trim()
-      if (!searchName) {
-        this.searchUserList = []
-        return
-      }
-
-      this.toUserInfo = null
-
-      const params = {
-        word: searchName,
-        pagesize: 10
-      }
-
-      this.$API.search('user', params).then(res => {
-        if (res.code === 0) {
-          this.searchUserList = res.data.list
-          if (res.data.list.length === 0) {
-            // 没有结果
-            this.$message({ showClose: true, message: '没有搜索结果', type: 'warning'})
-          }
-        } else {
-          // 失败
-          this.$message({ showClose: true, message: res.message, type: 'warning'})
-        }
-      }).catch(err => {
-        // 出错
-        console.log(err)
-        this.searchUserList = []
-      })
-    }, 300),
-    searchUserAvatar(src) {
-      return src ? this.$ossProcess(src, { h: 60 }) : ''
-    },
-    searchUserTitle(html) {
-      return html ? xssFilter(html) : ''
     },
     // 获取常用用户列表
     historyUserFunc(type) {
@@ -442,9 +361,55 @@ export default {
       this.form.balance = 0
       this.$refs.form.resetFields()
 
-      this.searchUserList = [] // 搜索结果
       this.toUserInfo = null
     },
+    // logo 
+    cover(cover) {
+      return cover ? this.$ossProcess(cover) : ''
+    },
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    // 用户改变事件
+    userValChange(val) {
+      this.toUserInfo = {
+        id: val
+      }
+    },
+    // 搜索用户名
+    searchUsername(nickname, username) {
+      let name = nickname || username
+      return name ? filterOutHtmlTags(name) : ''
+    },
+    // 用户远程搜索方法
+    userRemoteMethod(query) {
+      if (query !== '') {
+        this.userLoading = true
+
+        const params = {
+          word: query,
+          pagesize: 10
+        }
+
+        this.$API.search('user', params).then(res => {
+          if (res.code === 0 && res.data.list.length !== 0) {
+            this.userList = res.data.list
+          } else {
+            console.log(res.message)
+            this.userList = []
+          }
+        }).catch(err => {
+          console.log(err)
+          this.userList = []
+        }).finally(() => {
+          this.userLoading = false
+        })
+
+      } else {
+        this.userList = []
+      }
+    }
   }
 }
 </script>
@@ -481,9 +446,9 @@ export default {
 .form-button {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
   button {
-    padding-left: 40px;
-    padding-right: 40px;
+    width: 200px;
   }
 }
 
@@ -559,16 +524,33 @@ export default {
     margin: 0;
   }
 }
+.history-user {
+  &::after {
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    clear: both;
+  }
+}
 // history user
 .history-user__tag {
   cursor: pointer;
-  margin: 0 10px 0 0;
+  margin: 10px 10px 0 0;
+  float: left;
 }
-.transfer-dialog /deep/ .el-dialog {
-  width: 600px !important;
+
+.username {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/deep/ .transfer-dialog {
+  width: 380px !important;
 }
 @media screen and (max-width: 640px) {
-  .transfer-dialog /deep/ .el-dialog {
+  /deep/ .transfer-dialog {
     width: 90% !important;
   }
 }

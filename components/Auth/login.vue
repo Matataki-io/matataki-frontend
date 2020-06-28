@@ -8,6 +8,7 @@
       :model="loginForm"
       :rules="loginRules"
       class="ss-form"
+      @submit.native.prevent
     >
       <el-form-item prop="email">
         <el-input
@@ -26,6 +27,7 @@
       <el-form-item class="ss-btn">
         <el-button
           type="primary"
+          native-type="submit"
           @click="submitLoginForm"
         >
           {{ $t('login') }}
@@ -39,82 +41,6 @@
       <h1 class="oauth-title">
         {{ $t('auth.otherAccount') }}
       </h1>
-      <div class="oauth">
-        <el-tooltip
-          :content="$t('auth.vntTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-blue1"
-            @click="walletLogin('Vnt')"
-          >
-            <svg-icon
-              class="vnt"
-              icon-class="vnt"
-            />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip
-          :content="$t('auth.eosTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-gray"
-            @click="walletLogin('EOS')"
-          >
-            <svg-icon
-              class="eos"
-              icon-class="eos_login"
-            />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip
-          :content="$t('auth.metamaskTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-gray"
-            @click="walletLogin('MetaMask')"
-          >
-            <svg-icon
-              class="eos"
-              icon-class="metamask"
-            />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip
-          :content="$t('auth.ontType')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-blue"
-            @click="walletLogin('ONT')"
-          >
-            <img
-              src="@/assets/img/icon_logo_ont.svg"
-              alt="ONT"
-            >
-          </div>
-        </el-tooltip>
-        <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
-          <a :href="wxloginHref" class="oauth-bg bg-green">
-            <div>
-              <svg-icon class="github" icon-class="weixin" />
-            </div>
-          </a>
-        </el-tooltip>-->
-      </div>
       <div class="oauth">
         <el-tooltip
           :content="$t('auth.githubTitle')"
@@ -171,7 +97,6 @@
           placement="top"
         >
           <div
-            style="cursor: not-allowed;"
             class="oauth-bg bg-twitter"
             @click="walletLogin('Twitter')"
           >
@@ -181,6 +106,83 @@
             />
           </div>
         </el-tooltip>
+      </div>
+      <div class="oauth">
+        <el-tooltip
+          :content="$t('auth.metamaskTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('MetaMask')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="metamask"
+            />
+          </div>
+        </el-tooltip>
+
+        <el-tooltip
+          :content="$t('auth.eosTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-gray"
+            @click="walletLogin('EOS')"
+          >
+            <svg-icon
+              class="eos"
+              icon-class="eos_login"
+            />
+          </div>
+        </el-tooltip>
+
+
+
+        <el-tooltip
+          :content="$t('auth.ontType')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-blue"
+            @click="walletLogin('ONT')"
+          >
+            <img
+              src="@/assets/img/icon_logo_ont.svg"
+              alt="ONT"
+            >
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          :content="$t('auth.vntTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-blue1"
+            @click="walletLogin('Vnt')"
+          >
+            <svg-icon
+              class="vnt"
+              icon-class="vnt"
+            />
+          </div>
+        </el-tooltip>
+        <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
+          <a :href="wxloginHref" class="oauth-bg bg-green">
+            <div>
+              <svg-icon class="github" icon-class="weixin" />
+            </div>
+          </a>
+        </el-tooltip>-->
       </div>
     </div>
     <img
@@ -297,8 +299,7 @@ export default {
         if (!this.testDomain()) return
         this.telegramLogin()
       } else if (type === 'Twitter') {
-        if (!this.testDomain()) return
-        // this.twitterLogin();
+        this.twitterLogin()
       } else await this.signInx(type)
     },
     async signInx(type) {
@@ -380,8 +381,10 @@ export default {
               this.$store.commit('setUserConfig', { idProvider: 'Email' })
               this.$message.success(this.$t('success.loginSuccess'))
               this.$emit('hide')
-              this.$userMsgChannel.postMessage('login')
-              window.location.reload() // 登录完成刷新一次
+              setTimeout(() => {
+                this.$userMsgChannel.postMessage('login')
+                window.location.reload() // 登录完成刷新一次
+              }, 1000)
             } else {
               this.$message.error(this.$t('error.loginFailPasswordOrAccount'))
             }
@@ -485,6 +488,14 @@ export default {
       font-size: 22px;
       color: #fff;
     }
+    .facebook{
+      font-size: 22px;
+      color: #fff;
+    }
+    .google{
+      font-size: 21px;
+      color: #fff;
+    }
 
     display: flex;
     align-items: center;
@@ -529,8 +540,14 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  // background: #00ACED;
-  background: #b2b2b2;
+  background: #00ACED;
+  // background: #b2b2b2;
+}
+.bg-google {
+  background: #4285f4;
+}
+.bg-facebook {
+  background: #1977f3;
 }
 
 .referral {

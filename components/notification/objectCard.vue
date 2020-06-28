@@ -35,10 +35,9 @@
       </div>
       <!-- 用户 -->
       <div v-if="mode === 'user'" class="fl user">
-        <c-avatar
-          :src="avatar"
-          class="avatar"
-        />
+        <c-user-popover :user-id="Number(user.id)">
+          <c-avatar :src="avatar" class="avatar" />
+        </c-user-popover>
         <div class="user-info" :class="dateCard && 'user-details'">
           <div class="fl user-info-top">
             <h4>
@@ -252,6 +251,7 @@ export default {
   padding: 10px;
   &.shadow {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    padding: 20px;
   }
   .post {
     &-cover {
@@ -308,6 +308,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
         }
         &-other {
           font-size: 14px;
@@ -387,6 +388,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
       }
       p {
         font-size: 14px;
@@ -398,6 +400,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
       }
     }
   }
@@ -420,6 +423,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
         height: 16px;
         margin-bottom: 5px;
       }
@@ -447,6 +451,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
         }
       }
     }

@@ -199,7 +199,7 @@ export default {
    */
   _sendArticle(
     url,
-    { signId = null, author, data, title, fissionFactor, 
+    { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
       editRequireToken = null, editRequireBuy = null, ipfs_hide = true }) {
@@ -395,6 +395,10 @@ export default {
   },
   wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0, pay_cny_amount }) {
     return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity, pay_cny_amount })
+  },
+  // mine 个人的token list
+  tokenTokenList(params) {
+    return request.get('/token/tokenlist', { params })
   },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
@@ -610,7 +614,7 @@ minetokenGetResources(tokenId) {
       method: 'post',
       url: '/exchange/addLiquidityBalance',
       data: {
-        tokenId, cny_amount, token_amount, min_liquidity, max_tokens, deadline 
+        tokenId, cny_amount, token_amount, min_liquidity, max_tokens, deadline
       }
     })
   },
@@ -914,6 +918,12 @@ minetokenGetResources(tokenId) {
     })
   },
   // twitter 登录
+  twitterLoginPrepare() {
+    return request({
+      method: 'GET',
+      url: '/login/twitter/prepare'
+    })
+  },
   twitterLogin(data) {
     return request({
       method: 'POST',
@@ -963,7 +973,7 @@ minetokenGetResources(tokenId) {
       }
     })
   },
-  // 获取某篇文章的标签 
+  // 获取某篇文章的标签
   tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
   // 获取热门标签
   tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
@@ -1078,5 +1088,9 @@ minetokenGetResources(tokenId) {
   /** 删除一条评论 */
   deleteComment(id) {
     return request.delete(`/comment/delete/${id}`)
+  },
+  // 获取评论列表
+  commentGetComments(params) {
+    return request.get(`/comment/getComments`, { params } )
   }
 }

@@ -9,6 +9,7 @@
       <svg-icon v-else-if="svgType === 'featured'" class="icon-search" icon-class="notify_featured" />
       <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
       <svg-icon v-else-if="svgType === 'transfer'" class="icon-search" icon-class="notify_transfer" />
+      <svg-icon v-else-if="svgType === 'reward'" class="icon-search" icon-class="notify_reward" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
@@ -123,14 +124,18 @@ export default {
         follow: '关注了你',
         annouce: '',
         reply: '回复了你的评论',
-        transfer: '向你转账'
+        transfer: '向你转账',
+        reward: '打赏了你'
       }
     }
   },
   computed: {
+    /** 消息标签 */
     svgType() {
-      if(this.card.object_type === 'featuredArticles') return 'featured'
-      return this.card.action
+      const { action, object_type } = this.card
+      if(object_type === 'featuredArticles') return 'featured'
+      else if(action === 'transfer' && object_type === 'article') return 'reward'
+      return action
     },
     avatar() {
       if (this.user && this.user.avatar) return this.$ossProcess(this.user.avatar)
@@ -138,7 +143,10 @@ export default {
     },
     /** 行为标签 */
     actionLabel() {
-      return this.actionLabels[this.card.action]
+      const { action, object_type } = this.card
+      if(action === 'transfer' && object_type === 'article') return this.actionLabels.reward
+
+      return this.actionLabels[action]
     },
     nickname() {
       return this.user.nickname || this.user.username
@@ -168,14 +176,14 @@ export default {
         if (object_type !== 'announcement' || this.annouce === null) return ''
         return this.annouce.content
       }
-      else if (action === 'transfer' && this.transferLog) {
+      else if (action === 'transfer' && this.transferLog && this.card.total === 1) {
         // 转账
         const amount = this.tokenAmount(this.transferLog.amount, this.transferLog.decimals)
         if(object_type === 'cnyWallet') // CNY
           return `金额：${amount} ${this.transferLog.symbol}`
-        else if(object_type === 'tokenWallet') { // Token
+        else if(object_type === 'tokenWallet' || object_type === 'article') { // Token
           let content = `金额：${amount} ${this.transferLog.symbol}`
-          if(this.transferLog.memo) content += `\n转账备注：${this.transferLog.memo}`
+          if(this.transferLog.memo) content += `\n留言：${this.transferLog.memo}`
           return content
         }
       }
@@ -200,7 +208,8 @@ export default {
       else if(this.card.action === 'follow' && this.user)
         return 'user' // 用户
       else if(this.card.action === 'transfer' && this.transferLog)
-        return 'token'
+        if(this.card.object_type === 'article') return 'post' // 打赏文章
+        else return 'token' // Fan票或者CNY
       else return 'hide' // 隐藏
     }
   },
@@ -334,6 +343,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
           &:hover {
             text-decoration: underline;
           }  
