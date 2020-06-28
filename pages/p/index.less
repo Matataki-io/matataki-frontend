@@ -101,6 +101,15 @@
   font-weight: 400px;
   line-height: 1.8;
 
+  /deep/ img {
+    cursor: zoom-in;
+  }
+  /deep/ a {
+    img {
+      cursor: pointer;
+    }
+  }
+
   .unlock {
     background-color: #f7f7f7;
     padding: 20px;
@@ -122,6 +131,7 @@
       img {
         background-color: #fff0;
         color: #fff;
+        cursor: default;
       }
     }
   }
@@ -179,6 +189,7 @@
         width: 16px;
         height: 16px;
         border-radius: 50%;
+        cursor: pointer;
       }
     }
   }
