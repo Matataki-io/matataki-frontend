@@ -785,6 +785,7 @@ export default {
         // 持通证
         // 获取当前选择的通证种
         const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+        if(token.length === 0) return []
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
@@ -895,9 +896,7 @@ export default {
     editToken() { this.updateDraftWatch() },
     
     // 是否公开
-    ipfs_hide() { this.updateDraftWatch() },
-
-
+    ipfs_hide() { this.updateDraftWatch() }
   },
   created() {
     // 编辑文章不会自动保存
@@ -932,7 +931,6 @@ export default {
 
     this.getAllTokens()
     // this.setToolBar()
-
   },
   beforeRouteLeave(to, from, next) {
     if (this.changed()) return next()
@@ -1220,6 +1218,7 @@ export default {
       await this.$API.allToken({ pagesize }).then(res => {
         if (res.code === 0) {
           this.readSelectOptions = res.data.list
+          this.topOwnToken()
         }
       }).catch(err => console.log(err))
     },
@@ -1889,6 +1888,13 @@ export default {
     },
     toolMobileImport() {
       this.importVisible = true
+    },
+    /** 吧自己的Fan票排到最前面 */
+    topOwnToken() {
+      console.log('this.isMe', this.currentUserInfo.id, this.currentUserInfo, 'this.readSelectOptions', this.readSelectOptions)
+      this.readSelectOptions.forEach((token,index) => {
+        if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
+      })
     }
   }
 }
