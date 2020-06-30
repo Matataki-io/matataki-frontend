@@ -288,24 +288,6 @@
             </div>
           </div>
         </div>
-        <!-- <div v-if="settingDialogMode === 'setting'">
-          <el-button
-            v-if="isShowTransfer"
-            type="danger"
-            size="medium"
-            @click="delArticle"
-          >
-            删除此篇
-          </el-button>
-          <el-button
-            v-if="isShowTransfer"
-            type="danger"
-            size="medium" 
-            @click="transferArticle"
-          >
-            转让草稿
-          </el-button>
-        </div> -->
         <h1 class="set-title set-title-border">
           权限设置
         </h1>
@@ -327,21 +309,16 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="some">
-            部分人可见
+          <el-radio v-model="readConfigRadio" label="token">
+            持币可见
+          </el-radio>
+          <br>
+          <el-radio v-model="readConfigRadio" label="cny">
+            支付可见
           </el-radio>
 
-          <div v-show="readConfigRadio === 'some'" class="post-content root-setting">
+          <div class="post-content root-setting">
             <div style="width: 380px;">
-              <div>
-                <el-checkbox
-                  v-model="readauThority"
-                  size="small"
-                  :disabled="prohibitEditingPrices"
-                >
-                  设置持Fan票
-                </el-checkbox>
-              </div>
               <transition name="fade">
                 <div
                   v-show="readauThority"
@@ -378,26 +355,6 @@
                   </div>
                 </div>
               </transition>
-              <div v-show="readauThority" class="related-add">
-                <el-tooltip
-                  effect="dark"
-                  content="多Fan票解锁正在开发中"
-                  placement="top"
-                >
-                  <div class="add-icon disable">
-                    <i class="el-icon-plus" />
-                  </div>
-                </el-tooltip>
-                <span>添加更多</span>
-              </div>
-              <el-checkbox
-                v-model="paymentTokenVisible"
-                size="small"
-                style="margin-top: 10px;"
-                :disabled="prohibitEditingPrices"
-              >
-                设置支付
-              </el-checkbox>
               <transition name="fade">
                 <div
                   v-show="paymentTokenVisible"
@@ -467,21 +424,12 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio v-model="editConfigRadio" label="some">
-            部分人可编辑
+          <el-radio v-model="editConfigRadio" label="token">
+            持币可编辑
           </el-radio>
 
-          <div v-show="editConfigRadio === 'some'" class="post-content root-setting">
+          <div class="post-content root-setting">
             <div style="width: 380px;">
-              <div>
-                <el-checkbox
-                  v-model="tokenEditAuthority"
-                  size="small"
-                  :disabled="prohibitEditingPrices"
-                >
-                  设置持Fan票
-                </el-checkbox>
-              </div>
               <transition name="fade">
                 <div
                   v-show="tokenEditAuthority"
@@ -518,14 +466,6 @@
                   </div>
                 </div>
               </transition>
-              <el-checkbox
-                v-model="buyEditAuthority"
-                size="small"
-                style="margin-top: 10px;"
-                disabled
-              >
-                设置支付
-              </el-checkbox>
               <transition name="fade">
                 <div
                   v-show="buyEditAuthority"
@@ -801,6 +741,7 @@ export default {
         // 持通证
         // 获取当前选择的通证种
         const token = this.readSelectOptions.filter(list => list.id === this.editSelectValue)
+        if(token.length === 0) return []
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
@@ -877,7 +818,12 @@ export default {
     // 协议
     CCLicenseCredit() { this.updateDraftWatch() },
     // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
-    readConfigRadio() { this.updateDraftWatch() },
+    readConfigRadio(val) {
+      this.readauThority = val === 'token'
+      this.paymentTokenVisible = val === 'cny'
+
+      this.updateDraftWatch()
+    },
     readauThority() { this.updateDraftWatch() },
     readSelectValue() { this.updateDraftWatch() },
     readToken() { this.updateDraftWatch() },
@@ -890,7 +836,10 @@ export default {
     readSummary() { this.updateDraftWatch() },
 
     // 编辑权限 单选 设置复选 选择框 数量
-    editConfigRadio() { this.updateDraftWatch() },
+    editConfigRadio(val) {
+      this.tokenEditAuthority = val === 'token'
+      this.updateDraftWatch()
+    },
     tokenEditAuthority() { this.updateDraftWatch() },
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
@@ -1097,19 +1046,18 @@ export default {
           }
 
           // 有 持通证阅读 || 付费阅读 展示单选区域
-          if (this.readauThority || this.paymentTokenVisible) {
-            this.readConfigRadio = 'some'
-          } else {
-            this.readConfigRadio = 'all'
-          }
+          if (this.paymentTokenVisible)
+            this.readConfigRadio = 'cny'
+          else if (this.readauThority)
+            this.readConfigRadio = 'token'
+          else this.readConfigRadio = 'all'
 
           //有 持通证编辑 || 付费编辑
-          if (this.tokenEditAuthority || this.buyEditAuthority) {
-            this.editConfigRadio = 'some'
-          } else {
-            this.editConfigRadio = 'all'
-          }
-
+          if (this.buyEditAuthority)
+            this.editConfigRadio = 'cny'
+          else if (this.tokenEditAuthority)
+            this.editConfigRadio = 'token'
+          else this.editConfigRadio = 'all'
 
         } else {
           this.$message({ showClose: true, message: res.message, type: 'error' })
@@ -1165,22 +1113,17 @@ export default {
 
           // 暂无付费编辑
 
-
           // 有 持通证阅读 || 付费阅读 展示单选区域
-          if (this.readauThority || this.paymentTokenVisible) {
-            this.readConfigRadio = 'some'
-          } else {
-            this.readConfigRadio = 'all'
-          }
+          if (this.paymentTokenVisible)
+            this.readConfigRadio = 'cny'
+          else if(this.readauThority)
+            this.readConfigRadio = 'token'
+          else this.readConfigRadio = 'all'
 
           //有 持通证编辑 || 付费编辑
-          if (this.tokenEditAuthority || this.buyEditAuthority) {
-            this.editConfigRadio = 'some'
-          } else {
-            this.editConfigRadio = 'all'
-          }
-
-
+          if (this.buyEditAuthority) this.editConfigRadio = 'cny'
+          else if (this.tokenEditAuthority) this.editConfigRadio = 'token'
+          else this.editConfigRadio = 'all'
 
         } else {
           console.log(res.message)
@@ -1861,9 +1804,7 @@ export default {
       data.ipfs_hide = Boolean(this.ipfs_hide)
 
       // 阅读权限设置
-      if (this.readConfigRadio === 'some') {
-        data.requireToken = this.requireToken
-      }
+      data.requireToken = this.requireToken
 
       // 支付阅读
       if (this.paymentTokenVisible) {
@@ -1876,12 +1817,10 @@ export default {
       }
 
       // 编辑权限
-      if (this.editConfigRadio === 'some') {
-        data.editRequireToken = this.editRequireToken
-      }
+      data.editRequireToken = this.editRequireToken
 
       // 设置摘要
-      if (this.readConfigRadio === 'some' || this.paymentTokenVisible) {
+      if (this.readauThority || this.paymentTokenVisible) {
         data.short_content = this.readSummary
       }
       return data
