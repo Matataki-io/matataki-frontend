@@ -79,6 +79,7 @@
 
 <script>
 import { precision, toPrecision } from '@/utils/precisionConversion'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'TransferDialog',
@@ -128,6 +129,9 @@ export default {
       transferLoading: false,
       tokenOptions: [],
     }
+  },
+  computed: {
+    ...mapGetters(['isMe'])
   },
   watch: {
     showModal(val) {
@@ -215,6 +219,7 @@ export default {
       await this.$API.tokenTokenList(data).then(res => {
         if (res.code === 0) {
           this.tokenOptions = res.data.list
+          this.topOwnToken()
         } else {
           this.tokenOptions = []
         }
@@ -232,6 +237,13 @@ export default {
       const tokenamount = precision(amount, 'CNY', decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
+    /** 吧自己的Fan票排到最前面 */
+    topOwnToken() {
+      let list = this.tokenOptions
+      list.forEach((token,index) => {
+        if(this.isMe(token.uid)) list.unshift(list.splice(index, 1)[0])
+      })
+    }
   }
 }
 </script>
