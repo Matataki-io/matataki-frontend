@@ -44,7 +44,7 @@ export const xssFilter = html => {
     'data-id',
     'data-tools'
   ]
-  whiteList.span = ['class', 'style', 'aria-hidden']
+  whiteList.span = ['class', 'style', 'aria-hidden', 'data-linenumber']
   let aTag = ['class', 'style', 'href', 'data-url', 'target', 'id']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
@@ -134,7 +134,7 @@ export const xssFilter = html => {
     },
     {
       tag: 'mi',
-      attributes: ''
+      attributes: ['mathvariant', 'normal']
     },
     {
       tag: 'msub',
@@ -151,13 +151,33 @@ export const xssFilter = html => {
     {
       tag: 'munderover',
       attributes: ''
-    }
+    },
+    {
+      tag: 'mspace',
+      attributes: ['width']
+    },
+    {
+      tag: 'mfrac',
+      attributes: ''
+    },
+    {
+      tag: 'msqrt',
+      attributes: ''
+    },
+    {
+      tag: 'msup',
+      attributes: ''
+    },
+    {
+      tag: 'summary',
+      attributes: ''
+    },
   ]
 
   let rulePush = [
     {
       tag: 'div',
-      attributes: ['class', 'data-need', 'data-hold']
+      attributes: ['class', 'data-need', 'data-hold', 'role', 'data-pdfurl']
     },
     {
       tag: 'h1',
@@ -197,11 +217,11 @@ export const xssFilter = html => {
     },
     {
       tag: 'pre',
-      attributes: ['style']
+      attributes: ['class', 'style']
     },
     {
       tag: 'ol',
-      attributes: ['style', 'class']
+      attributes: ['style', 'class', 'start']
     },
     {
       tag: 'ul',
@@ -217,6 +237,14 @@ export const xssFilter = html => {
     },
     {
       tag: 'table',
+      attributes: ['class']
+    },
+    {
+      tag: 'i',
+      attributes: ['class', 'hidden']
+    },
+    {
+      tag: 'details',
       attributes: ['class']
     },
   ]

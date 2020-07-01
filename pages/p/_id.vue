@@ -4,7 +4,7 @@
       <div class="container">
         <!-- 文章封面 -->
         <div v-if="cover" class="TitleImage">
-          <img v-lazy="cover" alt="cover">
+          <img :src="cover" alt="cover">
         </div>
         <article class="Post-Header">
           <header>
@@ -59,14 +59,14 @@
           </header>
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
-          <no-ssr>
-            <mavon-editor
-              v-show="false"
-              style="display: none;"
-            />
-          </no-ssr>
+          <client-only>
+            <!-- <div slot="placeholder" class="placeholder">
+              正在加载您的文章...
+            </div> -->
+            <mavon-editor v-show="false" />
+          </client-only>
+          <!-- v-highlight -->
           <div
-            v-highlight
             v-viewer="viewerOptions"
             class="markdown-body article-content"
             :class="fontSizeComputed"
@@ -478,7 +478,7 @@ export default {
       commentRewardTab: 0, // 评论赞赏切换
       commentCount: 0, // 评论次数
       rewardCount: 0, // 赞赏次数
-      viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' }
+      viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
     }
   },
   head() {
@@ -699,6 +699,7 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
+      this.formatPreview()
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
@@ -788,6 +789,11 @@ export default {
       this.$nextTick(() => {
         this.setFontSize()
         this.getCommentRewardCount()
+
+        window.onload = () => {
+          this.formatPreview()
+        }
+
       })
     }
 
@@ -1496,9 +1502,29 @@ export default {
       await this.getCommentCount()
       await this.getRewardCount()
     },
+    // 格式化文章样式
+    formatPreview() {
+      try {
+        if (window.$ && window.finishView) {
+          window.finishView(window.$('.article-content'))
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+.placeholder {
+  min-height: 300px;
+  text-align: center;
+  font-size: 16px;
+  padding: 100px 0 0;
+  box-sizing: border-box;
+}
+</style>
