@@ -2,6 +2,7 @@
   <div class="article-container">
     <div class="article-head">
       <tab :idx="0" />
+      
       <!-- <div
         class="sort"
       >
@@ -131,7 +132,7 @@ export default {
     return { articleList }
   },
   created() {
-    if (this.articleList.length !== 0) {
+    if (this.articleList && this.articleList.length !== 0) {
       this.articleCardData[0].articles = this.articleList
     }
   },
