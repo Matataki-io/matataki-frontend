@@ -342,7 +342,7 @@ import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import CommentList from '@/components/comment/List'
-import { ipfsData } from '@/api/async_data_api.js'
+import { ipfsData, wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
@@ -730,10 +730,11 @@ export default {
     })
     // console.log('info', info.data)
 
+    let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
     if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
-      return {
+      data = {
         article: info.data,
         post: {
           content: info.data.short_content
@@ -746,13 +747,13 @@ export default {
         const res = await ipfsData($axios, hash)
         if (res.code === 0) {
           // console.log('return', res.data)
-          return {
+          data = {
             article: info.data,
             post: res.data
           }
         } else {
           // 获取失败
-          return {
+          data = {
             article: info.data,
             post: {
               content: info.data.short_content
@@ -762,7 +763,7 @@ export default {
       } else {
         // 没有hash
         // console.log('not hash')
-        return {
+        data = {
           article: info.data,
           post: {
             content: info.data.short_content
@@ -770,6 +771,31 @@ export default {
         }
       }
     }
+
+    // wx share
+    let defaultLink = ''
+    if (process.server) {
+      defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
+    } else if (process.browser) {
+      defaultLink = window.location.href
+    } else {
+      defaultLink = ''
+    }
+
+    if (defaultLink) {
+      try {
+        const res = await wxShare($axios, defaultLink)
+        if (res.code === 0) {
+          data.wxShareData = res.data
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    // wx share end
+
+    return data
   },
   created() {
     if (process.browser) {
@@ -804,7 +830,7 @@ export default {
   destroyed() {
     clearInterval(this.timer)
   },
-  methods: {
+  methods: { 
     // 增加文章阅读量
     async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
@@ -1468,7 +1494,8 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: desc,
-        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : '',
+        data: this.wxShareData || {}
       })
     },
     // 设置文章默认文字大小
