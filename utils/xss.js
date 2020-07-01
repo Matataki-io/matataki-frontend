@@ -55,7 +55,7 @@ export const xssFilter = html => {
 
   let brTag = ['style']
   let strongTag = ['style']
-  let svgTag = ['svg', 'x', 'y', 'viewbox', 'width', 'style', 'g', 'line', 'xmlns']
+  let svgTag = ['svg', 'x', 'y', 'viewbox', 'width', 'height', 'style', 'g', 'line', 'xmlns', 'preserveaspectratio']
   let lineTag = ['style', 'x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'stroke-width', 'stroke-miterlimit']
   let gTag = ['style']
   let ulTag = ['style']
@@ -171,6 +171,10 @@ export const xssFilter = html => {
     {
       tag: 'summary',
       attributes: ''
+    },
+    {
+      tag: 'path',
+      attributes: ['path', 'd']
     },
   ]
 
