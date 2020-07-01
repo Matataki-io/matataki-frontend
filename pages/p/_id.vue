@@ -59,12 +59,9 @@
           </header>
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
-          <client-only>
-            <!-- <div slot="placeholder" class="placeholder">
-              正在加载您的文章...
-            </div> -->
-            <mavon-editor v-show="false" />
-          </client-only>
+          <no-ssr>
+            <mavon-editor v-show="false" style="display: none;" />
+          </no-ssr>
           <!-- v-highlight -->
           <div
             v-viewer="viewerOptions"
@@ -503,6 +500,12 @@ export default {
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
       ],
+      script: [
+        {
+          // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        }
+      ]
     }
   },
   computed: {

@@ -36,7 +36,6 @@
           <mavon-editor v-show="false" style="display: none;" />
         </no-ssr>
         <div
-          v-highlight
           class="markdown-body article-content"
           v-html="compiledMarkdown"
         />
