@@ -4,7 +4,7 @@ import utils from '@/utils/utils'
 
 export default ({ title = '', desc = '', link = '', imgUrl = '', data = {}}) => {
   try {
-    // if (process.env.VUE_APP_WX_URL !== window.location.origin) return console.log('当前域名或环境不在微信内, 无需调用')
+    if (process.env.VUE_APP_WX_URL !== window.location.origin) return console.log('当前域名或环境不在微信内, 无需调用')
     let defaultTitle = '瞬MATATAKI—发布瞬间，灵感永存'
     let defaultDesc =
     '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。'
