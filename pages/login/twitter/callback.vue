@@ -13,7 +13,7 @@ export default {
   async mounted() {
     const { type, oauth_token, oauth_verifier } = this.$route.query
 
-    if (!type) {
+    if (type === 'login') {
       try {
         const res2 = await this.$API.twitterLogin({
           oauth_token,
