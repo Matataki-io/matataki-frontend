@@ -33,14 +33,6 @@
             <div class="empty" />
             <div class="fl ac">
               <!-- 付费文章 -->
-              <div class="lock-img-container">
-                <img
-                  v-if="card.require_holdtokens || card.require_buy"
-                  class="lock-img"
-                  src="@/assets/img/lock.png"
-                  alt="lock"
-                >
-              </div>
               <span class="lock-text">{{ lock }}</span>
               <!-- 阅读量 -->
               <span class="data">
@@ -204,10 +196,14 @@ export default {
       return this.card.read
     },
     lock() {
+      if (this.card.is_ownpost && (this.card.pay_symbol || this.card.token_symbol)) return '我创建的'
+
       if (this.card.pay_symbol) {
-        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+        if (this.card.pay_unlock) return '已付费'
+        return `需付费 ${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
       } else if (this.card.token_symbol) {
-        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+        if (this.card.token_unlock) return '已解锁'
+        return `需持有 ${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
       } else {
         return ''
       }
@@ -491,11 +487,11 @@ export default {
   height: 16px;
 }
 .lock-text {
-  color: #b2b2b2;
-  font-size: 14px;
-  line-height: 22px;
+  font-size:14px;
+  font-weight:400;
+  color: #F7B500;
+  line-height:20px;
   margin: 0 18px 0 0;
-  font-weight: bold;
 }
 
 // 小于600
