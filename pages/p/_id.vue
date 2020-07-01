@@ -772,27 +772,33 @@ export default {
       }
     }
 
-    // wx share
-    let defaultLink = ''
-    if (process.server) {
-      defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
-    } else if (process.browser) {
-      defaultLink = window.location.href
-    } else {
-      defaultLink = ''
-    }
+    // wx share 
+    let userAgent = req && req.headers['user-agent'].toLowerCase()
+    const isWeixin = () => /micromessenger/.test(userAgent)
+    // 在微信内才请求分享 避免造成不必要的请求
+    if (isWeixin()) {
+      console.log('yes', req.headers['user-agent'].toLowerCase())
+      
+      let defaultLink = ''
+      if (process.server) {
+        defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
+      } else if (process.browser) {
+        defaultLink = window.location.href
+      } else {
+        defaultLink = ''
+      }
 
-    if (defaultLink) {
-      try {
-        const res = await wxShare($axios, defaultLink)
-        if (res.code === 0) {
-          data.wxShareData = res.data
+      if (defaultLink) {
+        try {
+          const res = await wxShare($axios, defaultLink)
+          if (res.code === 0) {
+            data.wxShareData = res.data
+          }
+        } catch (e) {
+          console.log(e)
         }
-      } catch (e) {
-        console.log(e)
       }
     }
-
     // wx share end
 
     return data
