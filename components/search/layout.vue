@@ -147,7 +147,7 @@ export default {
       return !(this.articleCardData[this.searchType].articles.length === 0 && this.paginationDataLoaded)
     },
     googleUrl() {
-      return `https://www.google.com.hk/search?query=${this.searchQueryVal}&as_sitesearch=${process.env.VUE_APP_DOMAIN_IO}`
+      return `https://www.google.com.hk/search?query=${this.searchQueryVal}&as_sitesearch=${process.env.VUE_APP_URL}`
     }
   },
   created() {
