@@ -1,15 +1,6 @@
 <template>
-  <div class="user-main">
-    <h2 class="tag-title">
-      持有的流动金
-    </h2>
-
-    <div
-      v-loading="loading"
-      class="card-container buycoins"
-    >
-      <div class="line" />
-
+  <div>
+    <div v-loading="loading" class="card-container buycoins">
       <el-table
         :data="pointLog.list"
         :expand-row-keys="expands"
@@ -323,12 +314,7 @@ export default {
     font-size: 20px;
   }
 }
-.tag-title {
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 10px;
-  margin: 0;
-}
+
 .expand-button {
   font-size: 14px;
   .i-spin {
@@ -413,13 +399,6 @@ export default {
   .el-table::before {
     height: 0;
   }
-}
-.user-main {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: @br10;
-  box-sizing: border-box;
-  margin-bottom: 120px;
 }
 .hide-expand-button {
   .el-table__body-wrapper .el-table__body .el-table__row .el-table__expand-column .cell {
