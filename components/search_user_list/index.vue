@@ -135,6 +135,11 @@ export default {
     font-weight: 500;
     color: #333;
     cursor: pointer;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
   }
   .user-num,
   .user-des {
@@ -143,6 +148,11 @@ export default {
     font-size: 16px;
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
   }
   .user-num {
     margin: 6px 0;
@@ -150,6 +160,7 @@ export default {
 }
 
 .follow {
+  margin-left: 10px;
   &.black {
     background: #333;
     color: #fff;
