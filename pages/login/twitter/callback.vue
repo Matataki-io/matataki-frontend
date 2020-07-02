@@ -22,9 +22,10 @@ export default {
         await this.$store.commit('setLoginModal', false)
         await this.$store.commit('setAccessToken', res2.data)
         await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
-        this.$router.go(-3) // ??? // 本页面由twitter登录后重定向而来，故-1是twitter/login
+
+        this.$router.push({ name: 'article' })
       } catch (error) {
-        this.$router.go(-3)
+        this.$router.push({ name: 'article' })
         this.$message.closeAll()
         this.$message.error(error.toString())
       }
