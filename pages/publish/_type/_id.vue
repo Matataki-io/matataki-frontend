@@ -99,8 +99,6 @@
       </no-ssr>
     </div>
 
-
-
     <article-transfer
       v-if="isShowTransfer"
       v-model="transferModal"

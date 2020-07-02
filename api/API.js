@@ -918,10 +918,11 @@ minetokenGetResources(tokenId) {
     })
   },
   // twitter 登录
-  twitterLoginPrepare() {
+  twitterLoginPrepare(type) {
     return request({
       method: 'GET',
-      url: '/login/twitter/prepare'
+      url: '/login/twitter/prepare',
+      params: { type }
     })
   },
   twitterLogin(data) {
