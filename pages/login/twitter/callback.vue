@@ -23,9 +23,9 @@ export default {
         await this.$store.commit('setAccessToken', res2.data)
         await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
 
-        this.$router.push({ name: 'article' })
+        this.$router.replace({ name: 'article' })
       } catch (error) {
-        this.$router.push({ name: 'article' })
+        this.$router.replace({ name: 'article' })
         this.$message.closeAll()
         this.$message.error(error.toString())
       }
@@ -44,7 +44,7 @@ export default {
           this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
 
-        this.$router.push({ name: 'setting-account' })
+        this.$router.replace({ name: 'setting-account' })
       } catch (err) {
         console.log(err)
         this.$message.error('绑定失败')
