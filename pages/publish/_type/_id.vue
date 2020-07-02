@@ -364,10 +364,10 @@
                     <h3>支付类型</h3>
                     <el-select
                       v-model="paymentSelectValue"
-                      disabled
                       size="small"
                       placeholder="请选择"
                       style="width: 100%;"
+                      filterable
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -475,10 +475,10 @@
                     <h3>支付类型</h3>
                     <el-select
                       v-model="paymentSelectValue"
-                      disabled
                       size="small"
                       placeholder="请选择"
                       style="width: 100%;"
+                      filterable
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -599,6 +599,7 @@ import statement from '@/components/statement/index.vue'
 
 import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
+import { CNY } from '@/components/exchange/consts.js'
 
 export default {
   layout: 'empty',
@@ -659,14 +660,7 @@ export default {
       paymentTokenVisible: false, // 支付可见
       paymentToken: 0, // 支付token
       editPaymentToken: 0, // 编辑文章需支付token数量
-      paymentSelectOptions: [
-        {
-          id: -1, // 暂时前端写死, 不能0否则判断要修改
-          symbol: 'CNY',
-          name: '人民币'
-        }
-      ], // 支付tokenlist
-      paymentSelectValue: -1, // 支付tokenlist show value
+      paymentSelectValue: '', // 支付tokenlist show value
       readSummary: '',
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
@@ -755,10 +749,15 @@ export default {
       if (!this.paymentTokenVisible) {
         return null
       } else {
-        const data = {
-          price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
-        }
-        return data
+        let tokenArr = []
+        const token = this.paymentSelectOptions.filter(list => list.id === this.paymentSelectValue)
+        if(token.length === 0) return []
+        // 目前只用上传一种数据格式
+        tokenArr = [{
+          tokenId: token[0].id,
+          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+        }]
+        return tokenArr
       }
     },
     /** 付费编辑 */
@@ -773,6 +772,12 @@ export default {
         return data
       }
     },
+    paymentSelectOptions() {
+      return [
+        CNY,
+        ...this.readSelectOptions,
+      ]
+    }
   },
   watch: {
     fissionNum() {
@@ -1035,14 +1040,14 @@ export default {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
             this.readSummary = res.data.short_content
-            this.paymentSelectValue = -1
+            this.paymentSelectValue = ''
           }
 
           // 付费编辑
           if (res.data.editPrices && res.data.editPrices.length !== 0) {
             this.buyEditAuthority = true
             this.editPaymentToken = precision(res.data.editPrices[0].price, res.data.editPrices[0].platform, res.data.editPrices[0].decimals)
-            this.paymentSelectValue = -1
+            this.paymentSelectValue = ''
           }
 
           // 有 持通证阅读 || 付费阅读 展示单选区域
@@ -1101,7 +1106,7 @@ export default {
             this.paymentTokenVisible = true
             this.paymentToken = precision(data.require_buy[0].amount, 'CNY', 4)
             this.readSummary = data.short_content
-            this.paymentSelectValue = -1
+            this.paymentSelectValue = data.require_buy[0].token_id
           }
 
           // 持通证编辑
@@ -1435,14 +1440,14 @@ export default {
         }
 
         if (this.paymentTokenVisible) {
-          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.paymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
           else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
 
         // 付费编辑
         if (this.buyEditAuthority) {
-          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
         // 发布文章
