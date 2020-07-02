@@ -4,7 +4,7 @@
       <div class="container">
         <!-- 文章封面 -->
         <div v-if="cover" class="TitleImage">
-          <img v-lazy="cover" alt="cover">
+          <img :src="cover" alt="cover">
         </div>
         <article class="Post-Header">
           <header>
@@ -60,13 +60,11 @@
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
           <no-ssr>
-            <mavon-editor
-              v-show="false"
-              style="display: none;"
-            />
+            <mavon-editor v-show="false" style="display: none;" />
           </no-ssr>
+          <!-- v-highlight -->
           <div
-            v-highlight
+            v-viewer="viewerOptions"
             class="markdown-body article-content"
             :class="fontSizeComputed"
             v-html="compiledMarkdown"
@@ -344,7 +342,7 @@ import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import CommentList from '@/components/comment/List'
-import { ipfsData } from '@/api/async_data_api.js'
+import { ipfsData, wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
@@ -476,7 +474,8 @@ export default {
       fontSizeVal: 1,
       commentRewardTab: 0, // 评论赞赏切换
       commentCount: 0, // 评论次数
-      rewardCount: 0 // 赞赏次数
+      rewardCount: 0, // 赞赏次数
+      viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
     }
   },
   head() {
@@ -501,6 +500,12 @@ export default {
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
       ],
+      script: [
+        {
+          // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        }
+      ]
     }
   },
   computed: {
@@ -697,6 +702,7 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
+      this.formatPreview()
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
@@ -724,10 +730,11 @@ export default {
     })
     // console.log('info', info.data)
 
+    let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
     if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
-      return {
+      data = {
         article: info.data,
         post: {
           content: info.data.short_content
@@ -740,13 +747,13 @@ export default {
         const res = await ipfsData($axios, hash)
         if (res.code === 0) {
           // console.log('return', res.data)
-          return {
+          data = {
             article: info.data,
             post: res.data
           }
         } else {
           // 获取失败
-          return {
+          data = {
             article: info.data,
             post: {
               content: info.data.short_content
@@ -756,7 +763,7 @@ export default {
       } else {
         // 没有hash
         // console.log('not hash')
-        return {
+        data = {
           article: info.data,
           post: {
             content: info.data.short_content
@@ -764,6 +771,37 @@ export default {
         }
       }
     }
+
+    // wx share 
+    let userAgent = req && req.headers['user-agent'].toLowerCase()
+    const isWeixin = () => /micromessenger/.test(userAgent)
+    // 在微信内才请求分享 避免造成不必要的请求
+    if (isWeixin()) {
+      console.log('yes', req.headers['user-agent'].toLowerCase())
+      
+      let defaultLink = ''
+      if (process.server) {
+        defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
+      } else if (process.browser) {
+        defaultLink = window.location.href
+      } else {
+        defaultLink = ''
+      }
+
+      if (defaultLink) {
+        try {
+          const res = await wxShare($axios, defaultLink)
+          if (res.code === 0) {
+            data.wxShareData = res.data
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    }
+    // wx share end
+
+    return data
   },
   created() {
     if (process.browser) {
@@ -786,6 +824,11 @@ export default {
       this.$nextTick(() => {
         this.setFontSize()
         this.getCommentRewardCount()
+
+        window.onload = () => {
+          this.formatPreview()
+        }
+
       })
     }
 
@@ -793,7 +836,7 @@ export default {
   destroyed() {
     clearInterval(this.timer)
   },
-  methods: {
+  methods: { 
     // 增加文章阅读量
     async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
@@ -1326,7 +1369,7 @@ export default {
           <p style="flex: 1">
             持有：${need[i].amount / 10000 }
             <a href="/token/${need[i].id}">
-            <img src="${this.$ossProcess(need[i].logo)}" alt="logo">
+            <img src="${this.$ossProcess(need[i].logo)}" alt="logo" data-noenlarge="1">
             ${need[i].symbol}(${need[i].name})
             </a>
           </p>
@@ -1340,7 +1383,7 @@ export default {
       unlockPrompt.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${lockSvg}" alt="lock"
+            src="${lockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
         ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML + '\n<hr />' : ''}
@@ -1361,7 +1404,7 @@ export default {
       unlockContent.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${unlockSvg}" alt="lock"
+            src="${unlockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
       ` + unlockContent.innerHTML
@@ -1457,7 +1500,8 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: desc,
-        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : '',
+        data: this.wxShareData || {}
       })
     },
     // 设置文章默认文字大小
@@ -1494,9 +1538,29 @@ export default {
       await this.getCommentCount()
       await this.getRewardCount()
     },
+    // 格式化文章样式
+    formatPreview() {
+      try {
+        if (window.$ && window.finishView) {
+          window.finishView(window.$('.article-content'))
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+.placeholder {
+  min-height: 300px;
+  text-align: center;
+  font-size: 16px;
+  padding: 100px 0 0;
+  box-sizing: border-box;
+}
+</style>

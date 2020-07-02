@@ -97,7 +97,6 @@
           placement="top"
         >
           <div
-            style="cursor: not-allowed;"
             class="oauth-bg bg-twitter"
             @click="walletLogin('Twitter')"
           >
@@ -125,7 +124,7 @@
             />
           </div>
         </el-tooltip>
-        
+
         <el-tooltip
           :content="$t('auth.eosTitle')"
           class="item"
@@ -300,8 +299,7 @@ export default {
         if (!this.testDomain()) return
         this.telegramLogin()
       } else if (type === 'Twitter') {
-        if (!this.testDomain()) return
-        // this.twitterLogin();
+        this.twitterLogin()
       } else await this.signInx(type)
     },
     async signInx(type) {
@@ -490,6 +488,14 @@ export default {
       font-size: 22px;
       color: #fff;
     }
+    .facebook{
+      font-size: 22px;
+      color: #fff;
+    }
+    .google{
+      font-size: 21px;
+      color: #fff;
+    }
 
     display: flex;
     align-items: center;
@@ -534,8 +540,14 @@ export default {
   background: #0088cc;
 }
 .bg-twitter {
-  // background: #00ACED;
-  background: #b2b2b2;
+  background: #00ACED;
+  // background: #b2b2b2;
+}
+.bg-google {
+  background: #4285f4;
+}
+.bg-facebook {
+  background: #1977f3;
 }
 
 .referral {

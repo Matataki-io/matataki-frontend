@@ -717,14 +717,6 @@
     "@babel/helper-create-regexp-features-plugin" "^7.10.1"
     "@babel/helper-plugin-utils" "^7.10.1"
 
-"@babel/polyfill@7.10.1":
-  version "7.10.1"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.10.1.tgz#d56d4c8be8dd6ec4dce2649474e9b707089f739f"
-  integrity sha512-TviueJ4PBW5p48ra8IMtLXVkDucrlOZAIZ+EXqS3Ot4eukHbWiqcn7DcqpA1k5PcKtmJ4Xl9xwdv6yQvvcA+3g==
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.4"
-
 "@babel/preset-env@^7.4.5", "@babel/preset-env@^7.9.0":
   version "7.10.2"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.10.2.tgz#715930f2cf8573b0928005ee562bed52fb65fdfb"
@@ -810,6 +802,13 @@
   version "7.10.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.2.tgz#d103f21f2602497d38348a32e008637d506db839"
   integrity sha512-6sF3uQw2ivImfVIl62RZ7MXhO2tap69WeWK57vAaimT6AZbE4FbqjdEJIN1UqoD6wI6B+1n9UiagafH1sxjOtg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.5.5":
+  version "7.10.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.3.tgz#670d002655a7c366540c67f6fd3342cd09500364"
+  integrity sha512-RzGO0RLSdokm9Ipe/YD+7ww8X2Ro79qiXZF3HU9ljrM+qnJmH1Vqth+hbiQZy761LnMJTMitHDuKVYTk3k4dLw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -994,6 +993,14 @@
     "@ethersproject/rlp" "^5.0.0"
     "@ethersproject/signing-key" "^5.0.0"
 
+"@hackmd/emojify.js@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@hackmd/emojify.js/-/emojify.js-2.1.0.tgz#4555a7004679f75aa91ccec65eba3b3b8646b1ea"
+  integrity sha512-RmQXPGD/uGaa0w2qoc+y6ur+TpQhAr2aBOm2QDLBDMzOdhkdmh9MyadM2rtLGz6U3ZilPjkQYzs+gHm1BhwvtA==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    core-js "^3.2.1"
+
 "@intlify/vue-i18n-loader@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@intlify/vue-i18n-loader/-/vue-i18n-loader-0.6.1.tgz#dbf7ab1d7ea3641396733b9827fed949644b1eeb"
@@ -1002,15 +1009,18 @@
     js-yaml "^3.13.1"
     json5 "^2.1.1"
 
-"@matataki/editor@1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@matataki/editor/-/editor-1.3.1.tgz#ab11a12e6da02e475a5b972926560fc990d57546"
-  integrity sha512-SXw9sKy2ACxnspO87MJlcIj/fc0QSJ5XwLbWKX7PPx3B1xJRDTaWDNT57DEZ1gEEy5H1+SnwtatutLnNTfJt3A==
+"@matataki/editor@1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@matataki/editor/-/editor-1.3.2.tgz#eddb91d74fb92c296ebf452cc7987075b8d270d2"
+  integrity sha512-0qJpr9JXT2GElmH5pNWgfr1Pg1NMdfwaCClbtE5ckJ92fdDp7tAyCwOPvSJpIoC5VEYziDSSqJksIjzxRcUthA==
   dependencies:
+    "@hackmd/emojify.js" "2.1.0"
     animejs "3.2.0"
     codemirror "5.42.0"
     highlight.js "^9.11.0"
     highlight.js-async-webpack "^1.0.4"
+    jquery "3.5.1"
+    prismjs "1.20.0"
     vconsole "3.3.4"
     velocity-animate "1.5.2"
     vue-codemirror "4.0.6"
@@ -2184,16 +2194,7 @@ babel-plugin-dynamic-import-node@^2.3.3:
   dependencies:
     object.assign "^4.1.0"
 
-babel-polyfill@6.26.0:
-  version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
-  integrity sha1-N5k3q8Z9eJWXCtxiHyhM2WbPIVM=
-  dependencies:
-    babel-runtime "^6.26.0"
-    core-js "^2.5.0"
-    regenerator-runtime "^0.10.5"
-
-babel-runtime@6.26.0, babel-runtime@6.x, babel-runtime@^6.26.0:
+babel-runtime@6.26.0, babel-runtime@6.x:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -3236,10 +3237,15 @@ core-js-compat@^3.6.2:
     browserslist "^4.8.5"
     semver "7.0.0"
 
-core-js@^2.4.0, core-js@^2.5.0, core-js@^2.6.5:
+core-js@^2.4.0, core-js@^2.6.5:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
+
+core-js@^3.2.1:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
+  integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
 
 core-util-is@1.0.2, core-util-is@^1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -6306,6 +6312,11 @@ jimp-compact@^0.8.0:
   resolved "https://registry.yarnpkg.com/jimp-compact/-/jimp-compact-0.8.5.tgz#4dd5be1df94111902a58e6e698cbbdea9bdc1e0b"
   integrity sha512-BkpiX6jZyDVLU+CleO/6yF8SFHnyZXiElPryNjZx58AK1vy+bqSFvhKeFS680TISSr8IWqHlIAwDMMA0DTQkMw==
 
+jquery@3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
+  integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
+
 js-base64@^2.1.9, js-base64@^2.5.1, js-base64@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.2.tgz#313b6274dda718f714d00b3330bbae6e38e90209"
@@ -8805,6 +8816,13 @@ pretty-time@^1.1.0:
   resolved "https://registry.yarnpkg.com/pretty-time/-/pretty-time-1.1.0.tgz#ffb7429afabb8535c346a34e41873adf3d74dd0e"
   integrity sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==
 
+prismjs@1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.20.0.tgz#9b685fc480a3514ee7198eac6a3bf5024319ff03"
+  integrity sha512-AEDjSrVNkynnw6A+B1DsFkd6AVdTnp+/WoUixFRULlCLZVRZlVQMVWio/16jv7G1FscUxQxOQhWwApgbnxr6kQ==
+  optionalDependencies:
+    clipboard "^2.0.0"
+
 private@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
@@ -9153,11 +9171,6 @@ regenerate@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.1.tgz#cad92ad8e6b591773485fbe05a485caf4f457e6f"
   integrity sha512-j2+C8+NtXQgEKWk49MMP5P/u2GhnahTtVkRIHr5R5lVRlbKvmQ+oS+A5aLKWp2ma5VkT8sh6v+v4hbH0YHR66A==
-
-regenerator-runtime@^0.10.5:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
-  integrity sha1-M2w+/BIgrc7dosn6tntaeVWjNlg=
 
 regenerator-runtime@^0.11.0:
   version "0.11.1"
@@ -10394,6 +10407,11 @@ throttle-debounce@^1.0.1:
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-1.1.0.tgz#51853da37be68a155cb6e827b3514a3c422e89cd"
   integrity sha512-XH8UiPCQcWNuk2LYePibW/4qL97+ZQ1AN3FNXwZRBNPPowo/NRU5fAlDCSNBJIYCKbioZfuYtMhG4quqoJhVzg==
 
+throttle-debounce@^2.0.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-2.2.1.tgz#fbd933ae6793448816f7d5b3cae259d464c98137"
+  integrity sha512-i9hAVld1f+woAiyNGqWelpDD5W1tpMroL3NofTz9xzwq6acWBlO2dC8k5EFSZepU6oOINtV5Q3aSPoRg7o4+fA==
+
 through2@^2.0.0:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.5.tgz#01c1e39eb31d07cb7d03a96a70823260b23132cd"
@@ -10967,6 +10985,14 @@ uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
+v-viewer@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/v-viewer/-/v-viewer-1.5.1.tgz#94804d83814cca566e691339fe1e64793486f200"
+  integrity sha512-Q5ICKzmYQD0qTf+hti2Lhgy6UYY2zgFr+YrN9a3yPgr7pOjYrG405Pz4+6Z6FXlhdhGysCWFJUNCI2tsIyvjWQ==
+  dependencies:
+    throttle-debounce "^2.0.1"
+    viewerjs "^1.5.0"
+
 v8-compile-cache@^2.0.3:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.1.1.tgz#54bc3cdd43317bca91e35dcaf305b1a7237de745"
@@ -11023,6 +11049,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+viewerjs@^1.5.0:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/viewerjs/-/viewerjs-1.6.1.tgz#719719898cbf7b63dd41763a0b4dabfa927ddfcf"
+  integrity sha512-2c6hURX1kaHNCluP0l+7nkI26/GBcQqpMRA4PGC3EsJ48lSpjYXK8C1pHC84q9kf4otANwxH2Nw8HAOk69ZTig==
 
 vm-browserify@^1.0.1:
   version "1.1.2"

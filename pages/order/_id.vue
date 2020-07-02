@@ -59,7 +59,7 @@
         </el-table>
       </div>
       <div class="flexBox">
-        <span>预期价格波动：1% </span>
+        <span v-if="!isAdd">预期价格波动：1% </span>
         <div>
           合计：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
         </div>
@@ -151,6 +151,11 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo']),
+    isAdd() {
+      const type = this.order.items ? this.order.items.orderTokenItem.type : null
+      if (type === 'add') return true
+      return false
+    },
     tradeType() {
       const typeOptions = {
         add: '添加流动性',

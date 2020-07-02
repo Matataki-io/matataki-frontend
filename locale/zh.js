@@ -138,7 +138,9 @@ export default {
     githubTitle: 'GitHub登录',
     wechatTitle: '微信登录',
     telegramTitle: 'Telegram登录',
-    twitterTitle: 'Twitter登录（开发中）',
+    twitterTitle: 'Twitter登录',
+    facebookTitle: 'Facebook登录',
+    googleTitle: 'Google登录',
     ontDoc: '《如何使用ONT登录》',
     invite: '已邀请', //img
     viewWallet: '查看支持的钱包',

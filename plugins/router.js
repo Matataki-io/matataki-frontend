@@ -95,10 +95,16 @@ export default ({ app }) => {
       'user-id-follow': '用户关注-瞬MATATAKI',
       'user-id-info': '用户信息-瞬MATATAKI',
     }
+    // 不需要设置微信分享的页面列表
+    let weChatShareNoSetList = [
+      'p-id'
+    ]
     Vue.nextTick(() => {
-      wechatShare({
-        title: weChatShareList[to.name] || ''
-      })
+      if (!(weChatShareNoSetList.includes(to.name))) {
+        wechatShare({
+          title: weChatShareList[to.name] || ''
+        })
+      }
     })
 
     const autoAlertLoginPage = [] // 进入页面没有登陆则弹出信息框

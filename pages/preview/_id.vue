@@ -36,7 +36,6 @@
           <mavon-editor v-show="false" style="display: none;" />
         </no-ssr>
         <div
-          v-highlight
           class="markdown-body article-content"
           v-html="compiledMarkdown"
         />
@@ -98,12 +97,22 @@ export default {
       }
     }
   },
+  watch: {
+    compiledMarkdown() {
+      this.formatPreview()
+    }
+  },
   created() {
     if (process.browser) {
       this.$nextTick(() => {
         this.init()
       })
       this.previewDraftTime(this.$route.params.id)
+    }
+  },
+  mounted() {
+    window.onload = () => {
+      this.formatPreview()
     }
   },
   methods: {
@@ -136,6 +145,16 @@ export default {
         }).catch(err => {
           console.log(err)
         })
+    },
+    // 格式化文章样式
+    formatPreview() {
+      try {
+        if (window.$ && window.finishView) {
+          window.finishView(window.$('.article-content'))
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

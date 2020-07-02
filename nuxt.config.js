@@ -89,7 +89,8 @@ export default {
     { src: '@/plugins/vue-mavon-editor', ssr: false },
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false },
     // { src: '~/plugins/fundebug.js', ssr: false },
-    { src: '~/plugins/sentry.js', ssr: false }
+    { src: '~/plugins/sentry.js', ssr: false },
+    { src: '@/plugins/v-viewer.js', ssr: false }
   ],
   generate: {
     // routes: [

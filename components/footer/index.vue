@@ -153,15 +153,16 @@
           >
             <div class="icon telegram-icon" />
           </a>
-          <!-- <a
+          <a
             target="_blank"
-            href="https://twitter.com/realmatataki"
+            href="https://twitter.com/intent/follow?ref_src=twsrc%5Etfw&screen_name=realmatataki&tw_p=followbutton"
           >
             <svg-icon
               class="icon twitter-icon"
               icon-class="twitter"
             />
           </a>
+          <!--
           <a
             target="_blank"
             href="https://www.facebook.com/MatatakiOfficial/"
