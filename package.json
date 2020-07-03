@@ -1,6 +1,6 @@
 {
   "name": "matataki",
-  "version": "1.0.0",
+  "version": "4.4.2",
   "description": "matataki",
   "author": "matataki",
   "private": true,
@@ -36,6 +36,7 @@
     "cyanobridge": "^0.1.0",
     "element-ui": "2.13.2",
     "eosjs": "^16.0.9",
+    "hover.css": "2.3.2",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.1",
     "js-sha256": "^0.9.0",
