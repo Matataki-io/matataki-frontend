@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-loading="loading" class="card-container buycoins">
+    <div v-loading="loading" class="card-container">
       <el-table
         :data="pointLog.list"
         :expand-row-keys="expands"
-        class="hide-expand-button hold-table"
+        class="hole-ticket-hide-expand-button hold-table"
         style="width: 100%"
         row-key="token_id"
         @sort-change="sortChange"
@@ -37,7 +37,11 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="现价" width="180" />
+        <el-table-column label="现价" width="180">
+          <template>
+            <span class="scope">{{ randomNow() }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="create_time"
           label=""
@@ -84,23 +88,32 @@
               >
                 {{ $t('gift') }}
               </el-button>
-              <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
-                <el-button
-                  type="primary"
-                  class="info-button"
-                  size="small"
-                >
-                  {{ $t('transaction') }}
-                </el-button>
-              </router-link>
 
-              <el-dropdown size="small" type="primary">
-                更多
+              <el-dropdown size="small">
+                <el-button size="small">
+                  更多<i class="el-icon-arrow-down el-icon--right" />
+                </el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>交易</el-dropdown-item>
-                  <el-dropdown-item>进入主页</el-dropdown-item>
-                  <el-dropdown-item>添加流动性</el-dropdown-item>
-                  <el-dropdown-item>历史交易记录</el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                      更多
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                      进入主页
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                      添加流动性
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                      历史交易记录
+                    </router-link>
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -374,7 +387,15 @@ export default {
       let order = this.pointLog.params.order
       this.pointLog.params.order = (++order) % 3
       this.reload = Date.now()
-    } 
+    },
+    randomNow() {
+      let now = (Math.random() * 10 + 1).toFixed(4)
+      let percentage = ''
+      percentage = Math.random() < 0.5 ? '+' : '-'
+      percentage += Math.floor(Math.random() * 100 + 1)
+      percentage += '%'
+      return `${now}(${percentage})`
+    }
   }
 }
 </script>
@@ -436,6 +457,8 @@ export default {
 
 .expand-button {
   font-size: 14px;
+  font-weight:400;
+  color:rgba(84,45,224,1);
   .i-spin {
     &-z90 {
       transform: rotate(90deg)
@@ -603,6 +626,14 @@ export default {
     }
   }
 }
+
+
+.token-more-link {
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
 .transfer-dialog /deep/ .el-dialog {
   width: 600px !important;
 }
@@ -623,20 +654,8 @@ export default {
 
 </style>
 
-<style lang="less">
-.buycoins {
-  .el-table th>.cell {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-  }
-  .el-table td, .el-table th.is-leaf {
-    border-bottom: none;
-  }
-  .el-table::before {
-    height: 0;
-  }
-}
-.hide-expand-button {
+<style lang="less" scoped>
+/deep/ .hole-ticket-hide-expand-button {
   .el-table__body-wrapper .el-table__body .el-table__row .el-table__expand-column .cell {
     display: none;
   }
