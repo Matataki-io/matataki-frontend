@@ -12,8 +12,7 @@
     <el-row class="token-container">
       <!-- 左侧卡片 -->
       <el-col :span="17">
-        <introduction :minetoken-token="minetokenToken" />
-        <datasheets :minetoken-token="minetokenToken" />
+        <tokenRelated />
       </el-col>
       <!-- 右侧卡片 -->
       <el-col :span="7">
@@ -41,8 +40,7 @@ import { accessTokenAPI } from '@/api/backend'
 import basicInfoHead from '@/components/token/basic_info_head'
 import tokenNav from '@/components/token/token_nav'
 // 左侧
-import introduction from '@/components/token/introduction'
-import datasheets from '@/components/token/datasheets'
+import tokenRelated from '@/components/token/token_related'
 // 右侧
 import tokenBuyCard from '@/components/token/token_buy_card'
 import tokenJoinFandom from '@/components/token/token_join_fandom'
@@ -55,8 +53,7 @@ export default {
     basicInfoHead,
     tokenNav,
     // 左侧
-    introduction,
-    datasheets,
+    tokenRelated,
     // 右侧
     tokenBuyCard,
     tokenJoinFandom,

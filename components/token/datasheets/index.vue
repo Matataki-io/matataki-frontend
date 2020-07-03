@@ -1,30 +1,30 @@
 <template>
   <div class="detail">
-    <mineTokensNav v-model="tabPage" />
+    <datasheetsNav v-model="tabPage" />
     <div class="line" />
-    <tokenFanCoins v-if="tabPage === 0" />
-    <tokenFanCoinsDetail v-if="tabPage === 1" />
-    <tokenLiquidity v-if="tabPage === 2" />
-    <tokenLiquidityDetail
+    <fanCoins v-if="tabPage === 0" />
+    <fanCoinsDetail v-if="tabPage === 1" />
+    <liquidity v-if="tabPage === 2" />
+    <liquidityDetail
       v-if="tabPage === 3"
       :token="minetokenToken"
     />
   </div>
 </template>
 <script>
-import mineTokensNav from './minetokens_nav'
-import tokenFanCoins from './token_fan_coins'
-import tokenFanCoinsDetail from './token_fan_coins_detail'
-import tokenLiquidity from './token_liquidity'
-import tokenLiquidityDetail from './token_liquidity_detail'
+import datasheetsNav from './tokens_datasheets_nav'
+import fanCoins from './token_fan_coins'
+import fanCoinsDetail from './token_fan_coins_detail'
+import liquidity from './token_liquidity'
+import liquidityDetail from './token_liquidity_detail'
 
 export default {
   components: {
-    mineTokensNav,
-    tokenFanCoins,
-    tokenFanCoinsDetail,
-    tokenLiquidity,
-    tokenLiquidityDetail
+    datasheetsNav,
+    fanCoins,
+    fanCoinsDetail,
+    liquidity,
+    liquidityDetail
   },
   props: {
     minetokenToken: {
