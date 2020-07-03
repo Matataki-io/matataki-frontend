@@ -16,7 +16,8 @@ export default {
     if (state === 'login') {
       try {
         const res2 = await this.$API.googleLogin({
-          code
+          code,
+          callbackUrl: `${window.location.origin}/login/google/callback`
         })
         await this.$store.commit('setLoginModal', false)
         await this.$store.commit('setAccessToken', res2.data)
@@ -34,7 +35,8 @@ export default {
       try {
         const res = await this.$API.accountBind({
             platform: 'google',
-            code
+            code,
+            callbackUrl: `${window.location.origin}/login/google/callback`
           })
         if (res.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})
