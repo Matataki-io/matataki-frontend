@@ -15,13 +15,13 @@ export default {
 
     if (state === 'login') {
       try {
-        const res2 = await this.$API.googleLogin({
+        const res2 = await this.$API.facebookLogin({
           code,
-          callbackUrl: `${window.location.origin}/login/google/callback`
+          callbackUrl: `${window.location.origin}/login/facebook/callback`
         })
         await this.$store.commit('setLoginModal', false)
         await this.$store.commit('setAccessToken', res2.data)
-        await this.$store.commit('setUserConfig', { idProvider: 'google' })
+        await this.$store.commit('setUserConfig', { idProvider: 'facebook' })
 
         this.$router.replace({ name: 'article' })
       } catch (error) {
@@ -34,9 +34,9 @@ export default {
     } else if (state === 'binding') {
       try {
         const res = await this.$API.accountBind({
-            platform: 'google',
+            platform: 'facebook',
             code,
-            callbackUrl: `${window.location.origin}/login/google/callback`
+            callbackUrl: `${window.location.origin}/login/facebook/callback`
           })
         if (res.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})

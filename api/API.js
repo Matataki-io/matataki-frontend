@@ -947,6 +947,21 @@ minetokenGetResources(tokenId) {
       data: data
     })
   },
+  // facebook 登录
+  facebookLoginPrepare(callbackUrl, state) {
+    return request({
+      method: 'GET',
+      url: '/login/facebook/prepare',
+      params: { callbackUrl, state }
+    })
+  },
+  facebookLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/facebook',
+      data: data
+    })
+  },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
     return request.get(`/search/${type}`, { params })
