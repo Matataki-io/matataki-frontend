@@ -932,6 +932,21 @@ minetokenGetResources(tokenId) {
       data: data
     })
   },
+  // google 登录
+  googleLoginPrepare(callbackUrl, state) {
+    return request({
+      method: 'GET',
+      url: '/login/google/prepare',
+      params: { callbackUrl, state }
+    })
+  },
+  googleLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/google',
+      data: data
+    })
+  },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
     return request.get(`/search/${type}`, { params })
