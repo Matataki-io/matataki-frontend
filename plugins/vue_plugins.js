@@ -2,6 +2,7 @@ import Vue from 'vue'
 import clampy from '@clampy-js/vue-clampy'
 import VueClipboard from 'vue-clipboard2'
 import { ContentLoader } from 'vue-content-loader'
+import 'hover.css'
 
 import moment from 'moment'
 import '@/icons'
