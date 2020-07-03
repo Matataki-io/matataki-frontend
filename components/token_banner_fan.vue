@@ -15,15 +15,19 @@
         <ul>
           <li>
             1.  完善个人信息：设置头像、昵称和简介
-            <a href="">立即设置</a>
-            <img src="@/assets/img/token_banner_fan_done.svg" alt="done">
+            <img v-if="isCompleteInfo" src="@/assets/img/token_banner_fan_done.svg" alt="done">
+            <router-link v-else :to="{ name: 'setting' }" target="_blank">
+              立即设置
+            </router-link>
           </li>
           <li>
             2. 至少在Matataki发布过一篇文章
-            <a href="">立即发布</a>
-            <img src="@/assets/img/token_banner_fan_done.svg" alt="done">
+            <img v-if="articleNumber > 0" src="@/assets/img/token_banner_fan_done.svg" alt="done">
+            <router-link v-else :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }" target="_blank">
+              立即发布
+            </router-link>
           </li>
-          <li>3. 提交&nbsp;<a href="">申请表单</a>&nbsp;进入waitlist（若已填写请勿重复提交）</li>
+          <li>3. 提交&nbsp;<a href="https://wj.qq.com/s2/5208015/8e5d" target="_blank" @click="applicationForm">申请表单</a>&nbsp;进入waitlist（若已填写请勿重复提交）</li>
         </ul>
         <p class="token-remarks">在收到您的申请后，我们将会使用电子邮件与您联系，请务必确保申请表单中填写的邮箱地址正确</p>
       </template>
@@ -34,6 +38,59 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  data() {
+    return {
+      userData: Object.create(null),
+      articleNumber: 0
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+    isCompleteInfo() {
+      let { avatar, nickname, introduction } = this.userData
+      return avatar && nickname && introduction
+    }
+  },
+  watch: {
+    isLogined() {
+      this.getCurrentUserData()
+    }
+  },
+  created() {
+    if (process.browser) {
+      if (this.isLogined) {
+        this.getCurrentUserData()
+      }
+    }
+  },
+
+  methods: {
+    async getCurrentUserData() {
+      const userResult = await this.$utils.factoryRequest(this.$API.getUser(this.currentUserInfo.id))
+      if (userResult) {
+        this.userData = userResult.data
+      }
+
+      const userArticleNumberResult = await this.$utils.factoryRequest(this.$API.getNumArticles(this.currentUserInfo.id))
+      if (userResult) {
+        this.articleNumber = userArticleNumberResult.data.count
+      }
+    },
+    // 表单申请
+    applicationForm(e) {
+      if (!(this.isCompleteInfo && this.articleNumber > 0)) {
+        this.$message({ showClose: true, message: '请先完成前面的两个任务哦~', type: 'warning'})
+        this.$utils.stopEvent(e)
+      }
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .token-banner {
@@ -88,6 +145,7 @@
   right: 40px;
   top: -20px;
   max-width: 280px;
+  animation: Updown 3s linear infinite;
 }
 
 .token-content {
