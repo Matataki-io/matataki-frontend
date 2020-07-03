@@ -33,6 +33,7 @@
   bottom: 0;
   overflow: hidden;
   border-radius: 10px;
+  user-select: none;
   .decoration {
     width: 100%;
     height: 100%;
@@ -44,6 +45,7 @@
   top: -46px;
   right: -26px;
   bottom: 0;
+  user-select: none;
 }
 .token-content {
   margin-left: 200px;
@@ -52,6 +54,7 @@
   .token-text {
     max-width: 430px;
     width: 100%;
+    user-select: none;
   }
   .token-more {
     display: block;

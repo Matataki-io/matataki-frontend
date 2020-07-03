@@ -124,6 +124,7 @@ export default {
   height: 90px;
   width: 134px;
   .up {
+    user-select: none;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -140,6 +141,7 @@ export default {
   height: 80px;
   width: 82px;
   .down {
+    user-select: none;
     position: absolute;
     left: 0;
     top: 0;
@@ -147,6 +149,7 @@ export default {
   }
 }
 .token-todo {
+  user-select: none;
   position: absolute;
   right: 40px;
   top: -20px;
