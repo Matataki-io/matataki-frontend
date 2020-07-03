@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="related">
     <div class="header">
       <h2 class="title">
         {{ $t('token.relatedCreations') }}
@@ -159,7 +159,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
+.related {
+  background: @white;
+  padding: 20px;
+  border-radius: @br10;
+  margin: 20px 0 0;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
 
