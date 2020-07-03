@@ -152,7 +152,9 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo']),
     isAdd() {
-      const type = this.order.items ? this.order.items.orderTokenItem.type : null
+      if (!this.order.items) return false;
+      if (!this.order.items.orderTokenItem) return false;
+      const type = this.order.items.orderTokenItem.type
       if (type === 'add') return true
       return false
     },
