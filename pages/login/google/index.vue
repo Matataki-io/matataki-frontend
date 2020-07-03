@@ -19,7 +19,8 @@ export default {
     }
   },
   async mounted() {
-    const { type } = this.$route.query
+    const type = this.$route.query.from
+
     const response = await this.$API.googleLoginPrepare(`${window.location.origin}/login/google/callback`, type || 'binding')
 
     window.location.href = response.data
