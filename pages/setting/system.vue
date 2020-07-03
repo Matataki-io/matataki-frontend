@@ -100,17 +100,18 @@ export default {
         const res = await this.$API.setProfile({ accept })
         if (res.code === 0) {
           this.$message({
+            showClose: true,
             message: this.$t('success.success'),
             type: 'success'
           })
         } else {
-          this.$message.error(this.$t('error.fail'))
+          this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
           this.articleTransfer = !status
         }
       } catch (error) {
         this.articleTransfer = !status
         console.log(`转让状态错误${error}`)
-        this.$message.error(this.$t('error.fail'))
+        this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
       }
     },
     clearCache() {

@@ -3,10 +3,9 @@
     <div class="container-padding">
       <div class="token-detail">
         <div class="fl">
-          <avatar
-            :src="logo"
-            size="120px"
-          />
+          <c-token-popover :token-id="Number(minetokenToken.id)">
+            <avatar :src="logo" size="120px" />
+          </c-token-popover>
           <div class="token-detail-info">
             <div class="fl info-line">
               <div class="token-info-title bold">
@@ -31,11 +30,11 @@
               </div>
               <div>
                 <p class="token-info-sub">
-                  <router-link
-                    :to="{name: 'user-id', params: {id: minetokenToken.uid}}"
-                  >
-                    {{ minetokenUser.nickname || minetokenUser.username }}
-                  </router-link>
+                  <c-user-popover :user-id="Number(minetokenToken.uid)">
+                    <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                      {{ minetokenUser.nickname || minetokenUser.username }}
+                    </router-link>
+                  </c-user-popover>
                 </p>
               </div>
             </div>
@@ -105,7 +104,7 @@
             {{ $t('share') }}
           </el-button>
         </div>
- 
+
         <p
           v-if="!minetokenToken.contract_address"
           class="warning"
@@ -196,6 +195,64 @@
               </p>
             </div>
           </div>
+          <!-- 上下模块需要数据同步修改 -->
+          <ul class="total-content-mobile">
+            <li>
+              <span class="total-item-title">{{ $t('token.totalIssued') }}</span>
+              <div class="total-item-content">
+                <div class="item">
+                  <span>{{ amount }}<sub>{{ minetokenToken.symbol }}</sub></span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="total-item-title">{{ $t('token.liquidGoldPool') }}</span>
+              <div class="total-item-content">
+                <div class="item">
+                  <span>{{ cnyReserve }}<sub>CNY</sub></span>
+                </div>
+                <div class="item-symbol">
+                  +
+                </div>
+                <div class="item">
+                  <span>{{ tokenReserve }}<sub>{{ minetokenToken.symbol }}</sub></span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="total-item-title">{{ $t('token.volume24h') }}</span>
+              <div class="total-item-content">
+                <div class="item">
+                  <span>{{ volume }}<sub>{{ minetokenToken.symbol }}</sub></span>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <span class="total-item-title">{{ $t('token.turnover24h') }}</span>
+              <div class="total-item-content">
+                <div class="item">
+                  <span>{{ exchangeAmount }}<sub>CNY</sub></span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="total-item-title"> {{ $t('token.change24h') }}</span>
+              <div class="total-item-content">
+                <div class="item">
+                  <span :style="{color: color}">{{ change }}</span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="total-item-title">{{ $t('token.currentPrice') }}</span>
+              <div class="total-item-content">
+                <div class="item">
+                  <span>{{ price }}<sub>CNY</sub></span>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
 
         <div class="detail">
@@ -262,6 +319,9 @@
                 :icon="item.type"
                 :content="item.content"
               />
+              <span>{{ item.content }}</span>
+              <a v-if="socialUrl(item.type, item.content)" :href="socialUrl(item.type, item.content)" target="_blank">跳转</a>
+              <a v-else href="Javascript:;" @click="copyCode(item.content)">复制</a>
             </div>
           </div>
           <span
@@ -294,7 +354,6 @@
   </div>
 </template>
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
@@ -411,7 +470,7 @@ export default {
       else return 'rgb(153, 153, 153)'
     },
     friendlyDate() {
-      return moment(this.minetokenToken.create_time).format('lll')
+      return this.moment(this.minetokenToken.create_time).format('lll')
     }
   },
   watch: {
@@ -454,7 +513,7 @@ export default {
             this.resourcesSocialss = socialFilterEmpty
             this.resourcesWebsites = res.data.websites
           } else {
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
           }
         })
         .catch(err => {
@@ -484,6 +543,29 @@ export default {
       const isHttps = url.indexOf('https://')
       if (isHttp !== 0 && isHttps !== 0) url = 'http://' + url
       return url
+    },
+    // 返回社交链接
+    socialUrl(type, content) {
+      let list = {
+        'email': 'mailto:',
+        'weibo': 'https://www.weibo.com/',
+        'telegram': 'https://telegram.me/',
+        'twitter': 'https://twitter.com/',
+        'facebook': 'https://facebook.com/',
+        'github': 'https://github.com/'
+      }
+      let listType = list[type.toLocaleLowerCase()]
+      return listType ? listType + content : ''
+    },
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
     }
   }
 }
@@ -625,6 +707,10 @@ export default {
   padding: 0;
   margin: 0;
   sub {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
     bottom: 0;
   }
 }
@@ -684,6 +770,18 @@ export default {
   &:nth-child(6n) {
     margin-right: 0;
   }
+  span {
+    margin-left: 10px;
+    font-size: 14px;
+    display: none;
+  }
+  a {
+    margin-left: 10px;
+    font-size: 14px;
+    text-decoration: underline;
+    color: #333;
+    display: none;
+  }
 }
 .circle-btn {
   width: 40px;
@@ -741,6 +839,54 @@ export default {
   color: red;
 }
 
+.total-content-mobile {
+  display: none;
+  li {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    .total-item-title {
+      font-size: 14px;
+      font-weight: 400;
+      min-width: 70px;
+    }
+    .total-item-content {
+      margin-left: 10px;
+      .item {
+        span {
+          font-size: 18px;
+          font-weight: 600;
+          color: @purpleDark;
+          line-height: 1.5;
+          padding: 0;
+          margin: 0;
+          sub {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+            bottom: 0;
+          }
+        }
+      }
+      .item-symbol {
+        font-size: 16px;
+        line-height: 1;
+        color: @purpleDark;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .social-btn .circle {
+    &:nth-child(6n) {
+      margin-right: 10px;
+    }
+  }
+}
+
 // 小于992
 @media screen and (max-width: 992px) {
   .token-container {
@@ -755,7 +901,7 @@ export default {
 }
 
 // <600
-@media screen and (max-width: 600px){
+@media screen and (max-width: 600px) {
   .token-title {
     font-size: 20px;
   }
@@ -773,6 +919,7 @@ export default {
   .token-detail /deep/ .g-avatar {
     width: 60px !important;
     height: 60px !important;
+    flex: 0 0 60px;
   }
 
   .token-info-title.bold {
@@ -795,5 +942,21 @@ export default {
   }
 }
 
+@media screen and (max-width: 540px) {
+  .social-btn .circle {
+    width: 100%;
+    justify-content: flex-start;
+    span,
+    a {
+      display: inherit;
+    }
+  }
 
+  .total-content {
+    display: none;
+  }
+  .total-content-mobile {
+    display: initial;
+  }
+}
 </style>

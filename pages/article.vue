@@ -46,7 +46,7 @@ export default {
       idx: 0,
       usersRecommendList: [{},{},{},{},{}],
       usersLoading: false,
-      recommendList: [],
+      recommendList: [{},{},{},{},{}],
       popularlist: [],
       articleList: []
     }
@@ -132,7 +132,7 @@ export default {
   justify-content: space-between;
   max-width: 1200px;
   width: 100%;
-  margin: 20px auto 0;
+  margin: 10px auto 0;
   &::after {
     content: "";
     display: block;
@@ -351,20 +351,15 @@ export default {
     // margin-top: 20px;
     .col-6 {
       width: 100%;
-      padding-left: 20px;
-      padding-right: 20px;
+      // padding-left: 20px;
+      // padding-right: 20px;
     }
     .col-3 {
       display: none;
     }
   }
 }
-// 小于600
-@media screen and (max-width: 600px) {
-  .home {
-    background-color: #fff;
-  }
-}
+
 </style>
 
 <style lang="less" scoped>

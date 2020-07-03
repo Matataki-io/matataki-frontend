@@ -112,9 +112,10 @@
             target="_blank"
             href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t"
             title="群号：766605671"
+            class="icon qq"
           >
             <svg-icon
-              class="icon qq-icon"
+              class="qq-icon"
               icon-class="qq"
             />
           </a>
@@ -122,7 +123,7 @@
             <div class="wechat">
               <div class="wechat-img">
                 <img
-                  src="@/assets/img/wechat-group.png"
+                  src="@/assets/img/wechat-group1.png"
                   alt="code"
                 >
                 <p class="wechat-title">
@@ -152,15 +153,16 @@
           >
             <div class="icon telegram-icon" />
           </a>
-          <!-- <a
+          <a
             target="_blank"
-            href="https://twitter.com/realmatataki"
+            href="https://twitter.com/intent/follow?ref_src=twsrc%5Etfw&screen_name=realmatataki&tw_p=followbutton"
           >
             <svg-icon
               class="icon twitter-icon"
               icon-class="twitter"
             />
           </a>
+          <!--
           <a
             target="_blank"
             href="https://www.facebook.com/MatatakiOfficial/"
@@ -190,8 +192,10 @@ export default {
   height: 180px;
   background: #333333;
   padding-top: 52px;
-  padding-bottom: 52px;
+  // padding-bottom: 52px;
   box-sizing: border-box;
+  padding-bottom: calc(52px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(52px + env(safe-area-inset-bottom));
   &-content {
     max-width: 1200px;
     height: 100%;
@@ -322,15 +326,18 @@ export default {
       background-image: url("../../assets/img/footer_facebook_active.svg");
     }
   }
-  &.qq-icon {
+}
+.icon {
+  .qq-icon {
     width: 28px;
     height: 28px;
-    color: #b2b2b2;
+    color: #989898;
     &:hover {
       color: #12b7f5;
     }
   }
 }
+
 .copyright {
   font-size: 14px;
   color: rgba(178, 178, 178, 1);
@@ -362,14 +369,16 @@ export default {
 // 小于1200
 @media screen and (max-width: 1200px) {
   .footer {
+    .icon {
+      &.qq {
+        margin-left: 0;
+      }
+    }
     .footer-c4 {
       text-align: center;
       .logo {
         display: block;
         margin: 0 auto 10px;
-      }
-      .icon.wechat-icon {
-        margin-left: 0;
       }
     }
   }

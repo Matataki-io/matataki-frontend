@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 import avatar from '@/components/avatar/index'
 
@@ -61,7 +60,7 @@ export default {
       return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
     },
     friendlyDate() {
-      const time = moment(this.comment.create_time)
+      const time = this.moment(this.comment.create_time)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     action() {

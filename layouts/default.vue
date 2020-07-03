@@ -1,5 +1,12 @@
 <template>
   <div class="app">
+    <el-alert
+      v-if="$nuxt.isOffline"
+      title="您可能未连接到互联网, 请连接网络后重试~"
+      type="error"
+      effect="dark"
+      style="z-index: 999;max-width: 340px;position: fixed;top: 20px;right: 20px;"
+    />
     <g-header v-if="!hideHeader" />
     <nuxt class="app-container" />
     <!-- <lazy-component> -->
@@ -8,20 +15,18 @@
     <back-to-top
       v-if="!hideBackTop"
       :visibility-height="300"
-      :back-position="50"
+      :back-position="100"
       class="backtop"
       transition-name="fade"
     >
       <svg-icon
         class="backtop-icon"
-        icon-class="backtop"
+        icon-class="back_top"
       />
     </back-to-top>
-    <feedback
-      v-if="!hideFeedback"
-      :show-position="100"
-    />
+    <feedback v-if="!hideFeedback" :show-position="100" />
     <AuthModal v-model="loginModalShow" />
+    <TransferDialog v-model="transferDialogShow" :user-data="transferUserData" />
     <articleImport
       v-model="importModalShow"
       @importArticle="importArticle"
@@ -36,14 +41,23 @@ import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
+import { getCookie } from '@/utils/cookie'
+import TransferDialog from '@/components/TransferDialog'
+
 export default {
   name: 'Default',
+  head: {
+    script: [
+      { src: '/bowl.min.js' }
+    ]
+  },
   components: {
     gFooter: footer,
     AuthModal,
     BackToTop,
     articleImport,
-    feedback
+    feedback,
+    TransferDialog
   },
   data() {
     return {
@@ -70,6 +84,24 @@ export default {
         this.$store.commit('importArticle/setImportModal', v)
       }
     },
+    // 转账 dialog show
+    transferDialogShow: {
+      get() {
+        return this.$store.state.transferDialog.transferDialog
+      },
+      set(v) {
+        this.$store.commit('transferDialog/setTransferDialog', v)
+        if (!v) {
+          this.$store.commit('transferDialog/setTransferUserData', Object.create(null))
+        }
+      }
+    },
+    // 转账 dialog user data
+    transferUserData: {
+      get() {
+        return this.$store.state.transferDialog.transferUserData
+      }
+    },
     hideBackTop() {
       return this.$route.name === 'publish-type-id'
     },
@@ -84,22 +116,15 @@ export default {
       return this.$route.name === 'home'
     }
   },
-  watch: {
-    isLogined(val) {
-      if(val) this.loginModalShow = false
-    }
-  },
-  created() {
-    if(this.$route.query.referral && !this.isLogined) {
-      setTimeout(()=> {
-        this.loginModalShow = true
-      }, 100)
-    }
-  },
   mounted() {
     this.$store.dispatch('testLogin')
     if (process.browser) {
       this.removeOverflowHide()
+      // this.testDomain()
+      console.log('NODE_ENV', process.env.NODE_ENV)
+      console.log('NODE_ENV', process.env.NODE)
+      this.injectScript()
+      this.debug()
     }
   },
   methods: {
@@ -129,6 +154,47 @@ export default {
           }
         }
       }, 1000)
+    },
+    // 检测域名
+    testDomain() {
+      try {
+        console.log('NODE_ENV', process.env.NODE_ENV)
+        
+        // 开发模式不管
+        if (process.env.NODE_ENV === 'development') return
+        // 在微信里面不管  
+        if (this.$utils.isInWeixin()) return
+
+        let IO = process.env.VUE_APP_DOMAIN_IO
+        let isIo = this.$utils.isDomain(IO)
+        if (!isIo) {
+          this.$message(`请使用非微信浏览器访问 ${IO} 使用该功能`)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    injectScript() {
+      try {
+        // eslint-disable-next-line no-undef
+        var bowl = new Bowl()
+        bowl.add([
+          { url: '/bowl.min.js', key: 'bowl' }
+        ])
+        bowl.inject().then(() => {
+          console.log('success')
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 开启调试
+    debug() {
+      try {
+        getCookie('VConsole') === 'true' && new this.$VConsole()
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
@@ -137,27 +203,30 @@ export default {
 <style lang="less" scoped>
 .app {
   .backtop {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: @purpleDark;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
     z-index: 99;
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 90px;
-    color: #fff;
+    bottom: 115px;
+    color: #B2B2B2;
     display: flex;
     align-items: center;
     justify-content: center;
-    // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.05);
+    border-radius: 4px;
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
     &:hover {
       opacity: 0.9;
     }
 
     &-icon {
-      color: #fff;
+      color: #B2B2B2;
+      font-size: 24px;
     }
   }
 }
@@ -171,7 +240,13 @@ export default {
 @media screen and (max-width: 768px) {
   .app {
     .backtop {
-      right: 10px;
+      width: 30px;
+      height: 30px;
+      right: 20px;
+      bottom: 100px;
+      &-icon {
+        font-size: 16px;
+      }
     }
   }
 }

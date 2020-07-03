@@ -85,12 +85,16 @@ export default {
           const res = await this.$API.delDraft({ id })
           if (res.code === 0) {
             this.articleCardData.articles.splice(index, 1) // 前端手动删除一下数据
-            this.$message({ type: 'success', message: '删除成功!' })
+            this.$message({ 
+              showClose: true,
+              type: 'success', 
+              message: '删除成功!'
+            })
           } else {
-            this.$message.error('删除错误')
+            this.$message({ showClose: true, message: '删除错误', type: 'error'})
           }
         } catch (error) {
-          this.$message.error('删除错误')
+          this.$message({ showClose: true, message: '删除错误', type: 'error'})
         }
       }
 

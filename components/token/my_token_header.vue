@@ -6,10 +6,9 @@
     tag="div"
   >
     <div>
-      <avatar
-        :src="cover"
-        size="60px"
-      />
+      <c-token-popover :token-id="Number(tokenData.id)">
+        <avatar :src="cover" size="60px" />
+      </c-token-popover>
     </div>
     <div class="card-info">
       <h2>

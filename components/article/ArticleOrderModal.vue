@@ -149,7 +149,6 @@
 import QRCode from '@/components/exchange/Qrcode'
 import { mapGetters } from 'vuex'
 import utils from '@/utils/utils'
-import moment from 'moment'
 const interval = 5000
 export default {
   name: 'OrderModal',
@@ -217,7 +216,7 @@ export default {
       return `购买文章${this.articleId}`
     },
     friendlyTime() {
-      return moment(this.order.create_time).format(
+      return this.moment(this.order.create_time).format(
         "YYYY-MM-DD HH:mm:ss"
       );
     },
@@ -437,17 +436,19 @@ export default {
       })
     },
     successNotice(text) {
-      this.$message.success({
+      this.$message({
         message: text,
         duration: 4000,
-        showClose: true
+        showClose: true,
+        type: 'success'
       })
     },
     errorNotice(text) {
-      this.$message.error({
+      this.$message({
         message: text,
         duration: 4000,
-        showClose: true
+        showClose: true,
+        type: 'error'
       })
     }
   }

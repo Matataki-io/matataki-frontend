@@ -127,7 +127,7 @@ export default {
             this.form.input = ''
           }
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.form.input = ''
         }
       })
@@ -195,6 +195,12 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+  .token-title  {
+    font-size: 20px;
+  }
 }
 </style>
 <style lang="less">

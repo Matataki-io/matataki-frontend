@@ -4,23 +4,26 @@ import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 import i18n from './plugins/i18n'
+import ENV from './env'
 
-import env from './env'
-function genENV() {
-  const keys = Object.keys(env.production)
-  const result = {}
-  keys.forEach((item) => {
-    result[item] = env[process.env.NODE_ENV][item]
-  })
-  return result
-}
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
+const NODE_ENV = process.env.NODE_ENV
+console.log(NODE_ENV)
+
+function cdnPublicPath (env) {
+  const list = {
+    'development': '/_nuxt/',
+    'testing': 'https://cdntest.frontenduse.top',
+    'production': 'https://cdn.frontenduse.top',
+  }
+  return list[env] || '/_nuxt/'
+}
+
 export default {
-  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -73,11 +76,9 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~/plugins/combined-inject.js',
-    // '~/plugins/element-ui',
     '~/plugins/vue_plugins.js',
     '~/plugins/vue_components.js',
     // '~/plugins/i18n.js',
-    '~/plugins/components.js',
     '@/plugins/vue_directive.js',
     '@/plugins/vue_lazyload.js',
     { src: '~/plugins/broadcastchannel.js', mode: 'client' },
@@ -88,7 +89,8 @@ export default {
     { src: '@/plugins/vue-mavon-editor', ssr: false },
     { src: '~/plugins/vue_scroll_reveal.js', ssr: false },
     // { src: '~/plugins/fundebug.js', ssr: false },
-    { src: '~/plugins/sentry.js', ssr: false }
+    { src: '~/plugins/sentry.js', ssr: false },
+    { src: '@/plugins/v-viewer.js', ssr: false }
   ],
   generate: {
     // routes: [
@@ -119,8 +121,26 @@ export default {
   ** Build configuration
   */
   build: {
-    // publicPath: 'http://matataki-client.oss-cn-shanghai.aliyuncs.com/dist/',
+    publicPath: cdnPublicPath(NODE_ENV),
     // analyze: true,
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          editor: {
+            test: /node_modules[\\/]@matataki\/editor/,
+            chunks: 'all',
+            priority: 20,
+            name: true
+          },
+          elementui: {
+            test: /node_modules[\\/]element-ui/,
+            chunks: 'all',
+            priority: 20,
+            name: true
+          },
+        }
+      }
+    },
     cache: true,
     parallel: true,
     // CSS提取
@@ -176,5 +196,5 @@ export default {
 
     }
   },
-  env: genENV()
+  env: ENV[process.env.NODE_ENV]
 }

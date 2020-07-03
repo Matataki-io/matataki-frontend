@@ -1,15 +1,14 @@
 <template>
-  <router-link :to="{name: 'p-id', params:{id: card.object_id}}">
+  <router-link :to="url">
     <div
       class="card"
     >
       <!-- 用户 -->
       <div class="fl user">
         <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
-          <c-avatar
-            :src="avatar"
-            class="avatar"
-          />
+          <c-user-popover :user-id="Number(card.user.id)">
+            <c-avatar :src="avatar" class="avatar" />
+          </c-user-popover>
         </router-link>
         <div class="user-info">
           <div class="fl user-info-top">
@@ -20,14 +19,18 @@
             </h4>
             <div class="fl" style="flex: 1;">
               <p class="action">
-                评论了你的文章
+                {{ actionLabels[card.action] }}
               </p>
               <p>
                 {{ dateCard }}
               </p>
             </div>
           </div>
-          <p class="user-info-content" v-html="card.comment.comment" />
+          <p v-if="comment !== false" class="user-info-content" v-html="comment" />
+          <p v-else class="user-info-content no-data">
+            <i class="el-icon-delete" />
+            此条评论已被删除
+          </p>
         </div>
       </div>
     </div>
@@ -35,7 +38,6 @@
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
 
 export default {
@@ -51,9 +53,8 @@ export default {
   data() {
     return {
       actionLabels: {
-        like: '推荐了你的文章',
-        comment: '评论了你的文章',
-        follow: '关注了你'
+        reply: '回复了你的评论',
+        comment: '评论了你的文章'
       }
     }
   },
@@ -68,9 +69,19 @@ export default {
     },
     dateCard() {
       if(!this.card.create_time) return ''
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
+    url() {
+      if(this.card && this.card.comment)
+        return {name: 'p-id', params: {id: this.card.comment.sign_id}, query: {comment: this.card.comment.id}}
+      else return {}
+    },
+    comment() {
+      if(this.card && this.card.comment)
+        return this.card.comment.comment
+      else return false
+    }
   },
   methods: {
   }
@@ -79,7 +90,7 @@ export default {
 <style lang="less" scoped>
 .card {
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   background-color: white;
   .user {
@@ -106,6 +117,7 @@ export default {
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 1;
             overflow: hidden;
+            word-break:break-all;
             &:hover {
               text-decoration: underline;
             }
@@ -129,6 +141,10 @@ export default {
         line-height: 30px;
         white-space: pre-wrap;
         margin: 0;
+        &.no-data {
+          white-space: normal;
+          color: #b2b2b2;
+        }
       }
     }
   }

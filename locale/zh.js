@@ -123,7 +123,7 @@ export default {
   },
   // components
   header: {
-    newArticle: '写文章'
+    newArticle: '创作文章'
   },
   auth: {
     eosWallet: 'EOS钱包',
@@ -138,7 +138,9 @@ export default {
     githubTitle: 'GitHub登录',
     wechatTitle: '微信登录',
     telegramTitle: 'Telegram登录',
-    twitterTitle: 'Twitter登录（开发中）',
+    twitterTitle: 'Twitter登录',
+    facebookTitle: 'Facebook登录',
+    googleTitle: 'Google登录',
     ontDoc: '《如何使用ONT登录》',
     invite: '已邀请', //img
     viewWallet: '查看支持的钱包',
@@ -320,7 +322,7 @@ export default {
     share: '分享',
     timeline: '动态',
     fanTicket: 'Fan票',
-    signOut: '登出',
+    signOut: '登出账户',
     signIn: '立即登录',
 
     navArticle: '文章',
@@ -683,7 +685,8 @@ export default {
     bookmark: '收藏',
     myBookmark: '我的收藏',
     message: '私信',
-    issuedFanTickets: '发行了Fan票的用户'
+    issuedFanTickets: '发行了Fan票的用户',
+    registrationTime: '注册时间'
   },
   withdraw: {
     title: '提现',

@@ -5,11 +5,9 @@
         :to="{name: 'user-id', params: {id : article.uid}}"
         target="_blank"
       >
-        <avatar
-          :size="'50px'"
-          :src="avatarSrc"
-          class="Avatar"
-        />
+        <c-user-popover :user-id="Number(article.uid)">
+          <c-avatar :src="avatarSrc" class="Avatar" />
+        </c-user-popover>
       </router-link>
       <div class="AuthorInfo-content">
         <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
@@ -42,14 +40,11 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
-import avatar from '@/components/avatar/index.vue'
 import ipfsAll from '@/common/components/ipfs_all/index.vue'
 
 export default {
   components: {
-    avatar,
     ipfsAll
   },
   props: {
@@ -86,7 +81,7 @@ export default {
     },
     time() {
       const { create_time: createTime } = this.article
-      return createTime ? moment(createTime).format('YYYY-MM-DD HH:mm') : ''
+      return createTime ? this.moment(createTime).format('YYYY-MM-DD HH:mm') : ''
     }
   },
   watch: {
@@ -108,7 +103,7 @@ export default {
           this.info.is_follow = res.data.is_follow
           this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         console.log(`获取关注状态失败${err}`)
@@ -135,15 +130,15 @@ export default {
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
-          this.$message.success(`${message}${this.$t('success.success')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('success.success')}`, type: 'success'})
           this.info.is_follow = type === 1
           // 在获取一次防止出错
           this.getUserInfo(this.article.uid)
         } else {
-          this.$message.error(`${message}${this.$t('error.fail')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
         }
       } catch (error) {
-        this.$message.error(`${message}${this.$t('error.fail')}`)
+        this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
       }
     }
   }
@@ -152,11 +147,8 @@ export default {
 
 <style scoped lang="less">
 .Avatar {
-  background: #fff;
-  border-radius: 50%;
-  vertical-align: top;
-  height: 38px;
-  width: 38px;
+  width: 50px;
+  height: 50px;
 }
 .AuthorInfo-content {
   margin: 0 10px;
@@ -220,8 +212,10 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .Post-Author .Avatar {
-    width: 30px !important;
-    height: 30px !important;
+    /deep/ .c-avatar {
+      width: 30px;
+      height: 30px;
+    }
   }
   .Post-Author .AuthorInfo-name {
     font-size: 16px;

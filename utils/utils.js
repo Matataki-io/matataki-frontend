@@ -1,5 +1,6 @@
 /* eslint-disable */
 import moment from 'moment'
+
 export default {
   setCookie(name, value, days = 1) {
     let d = new Date();
@@ -88,5 +89,9 @@ export default {
   isInWeixin() {
     const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
     return isWeixin()
+  },
+  // 处于io/cn
+  isDomain(url) {
+    return new RegExp(url).test(window.location.hostname.toLowerCase())
   },
 };

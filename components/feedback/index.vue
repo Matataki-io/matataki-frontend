@@ -16,7 +16,7 @@
       >
         <svg-icon
           class="icon-feedback"
-          icon-class="tgc"
+          icon-class="tucao"
         />
       </a>
     </el-tooltip>
@@ -65,35 +65,40 @@ export default {
 
 <style scoped lang="less">
 .feedback {
-  border-radius: 50%;
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  color: #fff;
-  background: @purpleDark;
+  width: 45px;
+  height: 45px;
   cursor: pointer;
-  bottom: 40px;
+  z-index: 99;
+  font-size: 14px;
+  position: fixed;
   right: 40px;
-  text-align: center;
+  bottom: 60px;
+  color: #b2b2b2;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all .3s;
-  z-index: 99;
-  // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
-    &:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin-bottom: constant(safe-area-inset-bottom);
+  margin-bottom: env(safe-area-inset-bottom);
+  &:hover {
     opacity: 0.9;
   }
   .icon-feedback {
-    font-size: 22px;
-    color: #fff;
+    color: #b2b2b2;
+    font-size: 24px;
   }
 }
 
 @media screen and (max-width: 768px) {
   .feedback {
-    right: 10px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    .icon-feedback {
+      font-size: 16px;
+    }
   }
 }
 </style>

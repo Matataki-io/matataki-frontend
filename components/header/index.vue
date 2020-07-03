@@ -185,8 +185,8 @@
           <svg-icon icon-class="menu" class="menu" @click="toggleMenu = !toggleMenu" />
         </el-badge>
         <ul v-show="toggleMenu" class="menu-ul">
-          <li>
-            <div class="search">
+          <li class="menu-ul-item">
+            <div class="menu-search">
               <input
                 v-model="searchInput"
                 :placeholder="$t('home.searchPlaceholder')"
@@ -206,71 +206,62 @@
                 icon-class="search"
                 @click.stop="jutmpToSearch"
               />
-              <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="search-list">
+              <ul v-if="searchRecommendList.length !== 0 && searchFcous" class="menu-search-list">
                 <li
                   v-for="(item, index) in searchRecommendList"
                   :key="index"
                   @click.stop="jutmpToSearchRecommend(item.word)"
                 >
-                  <a href="javascript:;">{{ item.word }}</a>
+                  {{ item.word }}
                 </li>
               </ul>
             </div>
           </li>
-          <li>
+          <template v-if="isLogined">
+            <li class="menu-ul-item">
+              <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
+                <div class="fl ac">
+                  <c-avatar :src="avatar" class="menu-avatar" />
+                  <span class="username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
+                </div>
+              </n-link>
+            </li>
+            <li class="menu-ul-item">
+              <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
+                <svg-icon icon-class="menu_account" class="icon" />{{ $t('home.account') }}
+              </n-link>
+            </li>
+            <li class="menu-ul-item" @click="btnsignOut">
+              <a href="javascript:;">
+                <svg-icon icon-class="menu_logout" class="icon" />{{ $t('home.signOut') }}
+              </a>
+            </li>
+          </template>
+          <li v-if="!isLogined" class="menu-ul-item" @click="login">
+            <a href="javascript:;">
+              <svg-icon icon-class="menu_login" class="icon" />{{ $t('home.signIn') }}
+            </a>
+          </li>
+          <li class="menu-ul-item">
             <n-link to="/notification">
-              消息中心
+              <svg-icon icon-class="menu_notice" class="icon" />消息中心
               <span v-if="numMessagesLabel" class="news">
                 {{ numMessagesLabel }}
               </span>
             </n-link>
           </li>
 
-          <li @click="postImport">
-            <a href="javascript:;">{{ $t('publish.importArticle') }}</a>
-          </li>
-
-          <li @click="writeP">
+          <li class="menu-ul-item" @click="postImport">
             <a href="javascript:;">
-              {{ $t('header.newArticle') }}
+              <svg-icon icon-class="menu_import" class="icon" />{{ $t('publish.importArticle') }}
             </a>
           </li>
 
-
-          <template v-if="isLogined">
-            <li>
-              <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
-                <div class="fl ac">
-                  <c-avatar :src="avatar" />
-                  <span class="username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
-                </div>
-              </n-link>
-            </li>
-            <li>
-              <n-link
-                :to="{name: 'setting', params:{id: currentUserInfo.id}}"
-                class="link"
-              >
-                {{ $t('home.account') }}
-              </n-link>
-            </li>
-
-            <li @click="btnsignOut">
-              <a href="javascript:;">
-                {{ $t('home.signOut') }}
-              </a>
-            </li>
-          </template>
-          <li v-else @click="login">
+          <li class="menu-ul-item" @click="writeP">
             <a href="javascript:;">
-              {{ $t('home.signIn') }}
+              <svg-icon icon-class="menu_write" class="icon" />{{ $t('header.newArticle') }}
             </a>
           </li>
-          <!-- <li>
-            <a href="javascript:;">
-              <language />
-            </a>
-          </li> -->
         </ul>
         <div v-if="toggleMenu" class="menu-full" @click="toggleMenu = !toggleMenu" />
       </div>
@@ -336,7 +327,7 @@ export default {
           title: this.$t('home.creation'),
           url: 'article',
           sup: '',
-          urlList: ['article', 'ring-id']
+          urlList: ['article', 'article-latest', 'ring-id']
         },
         {
           title: this.$t('home.timeline'),
@@ -652,9 +643,8 @@ export default {
     border: none;
     outline: none;
     background-color: transparent;
-
     font-size: 14px;
-    color: rgba(0, 0, 0, 1);
+    color: #000000;
   }
   .icon-search {
     width: 20px;
@@ -698,6 +688,68 @@ export default {
     }
   }
 }
+
+.menu-search {
+  position: relative;
+  width: 100%;
+  background: rgba(241, 241, 241, 1);
+  border-radius: 4px;
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  .input {
+    flex: 1;
+    padding: 0 40px 0 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 12px;
+    color: #000000;
+    height: 30px;
+
+  }
+  .icon-search {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    cursor: pointer;
+  }
+}
+.menu-search-list {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: #fff;
+  width: 100%;
+  max-height: 280px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  z-index: 99;
+  li {
+    list-style: none;
+    font-size: 12px;
+    color: #000;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    letter-spacing: 1px;
+    padding: 14px 10px;
+    border-bottom: 1px solid #ededed;
+    &:nth-last-child(1) {
+      border-bottom: none;
+    }
+  }
+}
+
 .language {
   margin-left: 16px;
 }
@@ -812,29 +864,41 @@ export default {
     right: 0;
     background: #fff;
     box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
-    padding: 0 10px 20px;
+    padding: 10px 20px 0 20px;
     margin: 0;
     list-style: none;
-    li {
-      border-bottom: 1px solid #dfdfdf;
+    .menu-ul-item {
+      border-bottom: 1px solid #DBDBDB;
       padding: 0;
       font-size: 14px;
       color: #333;
       font-weight: 400;
       cursor: pointer;
+      height: 45px;
+      box-sizing: border-box;
 
       &:nth-last-child(1) {
         border-bottom: none;
       }
       a {
         display: block;
-        padding: 10px;
         color: #333;
+        line-height: 45px;
+      }
+      .icon {
+        font-size: 20px;
+        margin: 0 10px 0 0;
       }
 
       .username {
         margin-left: 10px;
       }
+    }
+    .menu-avatar {
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+      line-height: 20px;
     }
   }
 }
@@ -867,17 +931,13 @@ export default {
     .pc {
       display: none;
     }
-    .search {
-      width: 100%;
-      margin: 10px 0;
-    }
   }
 }
 
 
 @media screen and (max-width: 992px) {
   .home-head {
-    padding-left: 20px;
+    padding-left: 10px;
     padding-right: 10px;
     .logo {
       height: 30px;
@@ -894,13 +954,7 @@ export default {
   .qq-tips {
     font-size: 13px;
   }
-  .search .input {
-    font-size: 12px;
-  }
-  .search .icon-search {
-    width: 16px;
-    height: 16px;
-  }
+
   .write-btn {
     width: 80px;
     line-height: 20px;
@@ -915,10 +969,6 @@ export default {
   .menu-ul,
   .menu-full {
     top: 50px;
-  }
-
-  .search-list {
-    top: 40px;
   }
 }
 </style>

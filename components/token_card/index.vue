@@ -4,10 +4,9 @@
     class="fl card"
   >
     <div class="token-cover">
-      <avatar
-        :src="cover"
-        size="45px"
-      />
+      <c-token-popover :token-id="Number(card.id)">
+        <avatar :src="cover" size="45px" />
+      </c-token-popover>
     </div>
     <div class="fl cards-content">
       <div class="card-info">
@@ -41,14 +40,10 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link
-          :to="{name: 'user-id', params: { id: card.uid }}"
-          class="fl ac"
-        >
-          <avatar
-            :src="coverUser"
-            size="30px"
-          />
+        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
+          <c-user-popover :user-id="Number(card.uid)">
+            <c-avatar :src="coverUser" size="30px" />
+          </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </router-link>
       </div>
@@ -56,7 +51,6 @@
   </router-link>
 </template>
 <script>
-import moment from 'moment'
 import avatar from '@/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 
@@ -94,7 +88,7 @@ export default {
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
     friendlyDate() {
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     }
   }
@@ -120,7 +114,7 @@ export default {
   width: 31%;
   &-symbol {
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 500;
     color: @black;
     line-height: 28px;
     padding: 0;
@@ -199,14 +193,6 @@ export default {
 }
 // <600
 @media screen and (max-width: 600px) {
-  .token-cover {
-    display: none;
-  }
-
-  .cards-content {
-    margin-left: 0;
-  }
-
   .card-info {
     width: 35%;
   }
@@ -217,14 +203,23 @@ export default {
 
 // < 580
 @media screen and (max-width: 580px) {
+  .token-cover {
+    /deep/ .g-avatar {
+      width: 30px !important;
+      height: 30px !important;
+    }
+  }
   .cards-content {
     display: block;
     .card-info {
       width: 100%;
     }
     .card-info-symbol {
-          font-size: 18px;
-    line-height: 20px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .card-info-name {
+      font-size: 12px;
     }
     .card-data {
       width: 100%;
@@ -232,6 +227,13 @@ export default {
       .card-data-column {
         float: none;
         width: 100%;
+        .card-data-amount {
+          font-size:14px;
+          font-weight:400;
+          color:rgba(0,0,0,1);
+          line-height:20px;
+          margin: 10px 0 0 0;
+        }
       }
       .card-data-amount {
         line-height: 1.5;

@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 // import { isNDaysAgo } from '@/common/methods';
 
 export default {
@@ -32,7 +31,7 @@ export default {
   },
   computed: {
     friendlyDate() {
-      return moment(this.asset.create_time).format('MMMDo HH:mm')
+      return this.moment(this.asset.create_time).format('MMMDo HH:mm')
     },
     assetAmount() {
       return this.asset.amount > 0 ? '+' + this.asset.amount : this.asset.amount

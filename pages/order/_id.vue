@@ -59,7 +59,7 @@
         </el-table>
       </div>
       <div class="flexBox">
-        <span>预期价格波动：1% </span>
+        <span v-if="!isAdd">预期价格波动：1% </span>
         <div>
           合计：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
         </div>
@@ -119,7 +119,6 @@
 <script>
 /* eslint-disable */
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 import QRCode from '@/components/exchange/Qrcode'
 import utils from '@/utils/utils'
 import store from '@/utils/store.js'
@@ -152,6 +151,11 @@ export default {
   },
   computed: {
     ...mapGetters(['currentUserInfo']),
+    isAdd() {
+      const type = this.order.items ? this.order.items.orderTokenItem.type : null
+      if (type === 'add') return true
+      return false
+    },
     tradeType() {
       const typeOptions = {
         add: '添加流动性',
@@ -172,7 +176,7 @@ export default {
       } else return 0
     },
     friendlyTime() {
-      return moment(this.order.create_time).format('YYYY-MM-DD HH:mm:ss')
+      return this.moment(this.order.create_time).format('YYYY-MM-DD HH:mm:ss')
     },
     // 是否是微信账户
     isWeixinAccount() {
@@ -221,6 +225,7 @@ export default {
   mounted() {
     this.getOrderData()
     this.getUserBalance()
+    this.getWeixinOpenId()
   },
   beforeDestroy() {
     clearInterval(this.timer)
@@ -342,7 +347,11 @@ export default {
           console.log(e)
           this.loading = false
           const message = e.response.data.message || '失败'
-          this.$message.error(message)
+          this.$message({
+            showClose: true,
+            message: message,
+            type: 'error'
+          })
         })
       } else {
         // 弹出NATIVE支付二维码
@@ -356,6 +365,27 @@ export default {
         })
       }
       const openid = this.currentUserInfo.name
+    },
+    getWeixinOpenId() {
+      if (!this.isInWeixin) return
+      if (this.isWeixinAccount) return
+      if (store.get('WX_OPENID')) return
+      const { code, state } = this.$route.query
+      if (!code || state !== 'weixin') {
+        const VUE_APP_WX_URL = process.env.VUE_APP_WX_URL
+        const appid = 'wx95829b6a2307300b'
+        const scope = 'snsapi_base'
+        const redirectUri = `${VUE_APP_WX_URL}${this.$route.path}`
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+          redirectUri
+        )}&response_type=code&scope=${scope}&state=weixin#wechat_redirect`
+      } else {
+        this.$API.getWeixinOpenId(code).then(res => {
+          if (res.openid) {
+            store.set('WX_OPENID', res.openid)
+          }
+        })
+      }
     },
     // 唤起JS微信支付
     weakWeixinPay(order) {

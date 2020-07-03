@@ -31,14 +31,8 @@
               {{ dateCard }}
             </div>
             <div class="empty" />
-            <div>
+            <div class="fl ac">
               <!-- 付费文章 -->
-              <img
-                v-if="card.require_holdtokens || card.require_buy"
-                class="lock-img"
-                src="@/assets/img/lock.png"
-                alt="lock"
-              >
               <span class="lock-text">{{ lock }}</span>
               <!-- 阅读量 -->
               <span class="data">
@@ -71,10 +65,12 @@
               :to="{ name: 'user-id', params: {id: card && card.uid} }"
               target="_blank"
             >
-              <avatar
-                :src="avatarImg"
-                class="avatar"
-              />
+              <c-user-popover :user-id="Number(card.uid)">
+                <c-avatar
+                  :src="avatarImg" 
+                  class="avatar"
+                />
+              </c-user-popover>
             </n-link>
             <n-link
               :to="{ name: 'user-id', params: {id: card && card.uid} }"
@@ -98,17 +94,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import moment from 'moment'
-import avatar from '@/common/components/avatar/index.vue'
 import { precision } from '@/utils/precisionConversion'
 import { isNDaysAgo, isThisYear } from '@/utils/momentFun'
 import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   name: 'ArticleCard',
-  components: {
-    avatar
-  },
   props: {
     // 卡片数据
     card: {
@@ -126,11 +117,17 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      chosenHtml: '<span class="article-chosen">精选</span> '
+    }
+  },
   computed: {
     ...mapGetters(['isMe', 'currentUserInfo', 'isLogined']),
     xssTitle() {
       if (this.card.title) {
-        return filterOutHtmlTags(this.card.title, {
+        const chosenHtml = this.card.is_recommend ? this.chosenHtml : ''
+        return chosenHtml + filterOutHtmlTags(this.card.title, {
           em: []
         })
       } else return ''
@@ -181,12 +178,12 @@ export default {
     },
     dateCard() {
       if (!this.card) return ''
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       if (!isThisYear(time)) {
         // return time.format('YYYY MMMDo HH:mm')
         return time.format('lll')
       }
-      return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+      return isNDaysAgo(2, time) ? time.format('YYYY-MM-DD HH:mm') : time.fromNow()
     },
     likes() {
       if (!this.card || !this.card.likes) return 0
@@ -199,10 +196,14 @@ export default {
       return this.card.read
     },
     lock() {
+      if (this.card.is_ownpost && (this.card.pay_symbol || this.card.token_symbol)) return '我创建的'
+
       if (this.card.pay_symbol) {
-        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+        if (this.card.pay_unlock) return '已付费'
+        return `需付费 ${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
       } else if (this.card.token_symbol) {
-        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+        if (this.card.token_unlock) return '已解锁'
+        return `需持有 ${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
       } else {
         return ''
       }
@@ -226,10 +227,14 @@ export default {
       console.log(code)
       this.$copyText(code).then(
         () => {
-          this.$message.success(this.$t('success.copy'))
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
         },
         () => {
-          this.$message.error(this.$t('error.copy'))
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
     }
@@ -407,6 +412,7 @@ export default {
   display: flex;
   margin: 20px 0 0 0;
   padding: 0;
+  flex-wrap: wrap;
   .off-shelves {
     background: #b3b3b3;
     color: #fff;
@@ -472,17 +478,20 @@ export default {
   text-overflow: ellipsis;
   display: -webkit-box;
 }
-
+.lock-img-container {
+  display: flex;
+  align-items: center;
+}
 .lock-img {
-  margin: 0 4px 0 0;
-  height: 20px;
+  margin: 0 10px 0 0;
+  height: 16px;
 }
 .lock-text {
-  color: #b2b2b2;
-  font-size: 14px;
-  line-height: 22px;
+  font-size:14px;
+  font-weight:400;
+  color: #F7B500;
+  line-height:20px;
   margin: 0 18px 0 0;
-  font-weight: bold;
 }
 
 // 小于600
@@ -494,9 +503,9 @@ export default {
   }
 
   .card {
-    margin: 20px 0;
-    border-radius: 0;
-    background-color: transparent;
+      margin: 10px 0;
+      padding: 20px;
+      border-radius: 8px;
     &:hover {
       transform: none;
       box-shadow: none;
@@ -529,12 +538,52 @@ export default {
     }
   }
 }
+@media screen and (max-width: 540px) {
+  .lock-img {
+    height: 14px;
+  }
+  .article-title {
+    .title {
+      font-size: 14px;
+    }
+  }
+
+  .content-text,
+  .lock-text,
+  .des .data,
+  .des .data.like {
+    font-size: 12px;
+  }
+}
 </style>
 
 <style lang="less">
-.search-res em {
-  font-weight: bold;
-  font-style: normal;
-  color: @purpleDark;
+.search-res {
+  .article-chosen {
+    background: #F7B500;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    line-height: 23px;
+    height: 22px;
+    border-radius: 4px;
+    padding: 0px 5px;
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
+  em {
+    font-weight: bold;
+    font-style: normal;
+    color: @purpleDark;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .search-res {
+    .article-chosen {
+      line-height: 18px;
+      height: 17px;
+    }
+  }
 }
 </style>

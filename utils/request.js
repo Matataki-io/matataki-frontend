@@ -78,7 +78,7 @@ _axios.interceptors.response.use(
               removeCookie('ACCESS_TOKEN')
               removeCookie('idProvider')
               removeCookie('referral')
-              store.clearAll()
+              store.clear()
               sessionStorage.clear()
             }).catch(err => {
               console.log(err)

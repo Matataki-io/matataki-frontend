@@ -390,6 +390,7 @@ export const actions = {
         commit('user/resetState')
         // commit('i18n/resetState')
         commit('importArticle/resetState')
+        commit('transferDialog/resetState')
         commit('metamask/resetState')
         commit('notification/resetState')
         commit('ontology/resetState')

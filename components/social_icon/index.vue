@@ -19,6 +19,7 @@
       <svg-icon
         v-else
         :icon-class="iconName"
+        @click="copyCode(content)"
       />
     </el-tooltip>
     <svg-icon
@@ -89,7 +90,7 @@ export default {
           name: 'Telegram：',
           tooltip: '',
           placeholder: `Telegram ${this.$t('username')}`,
-          url: '',
+          url: 'https://telegram.me/',
           value: ''
         },
         {
@@ -131,6 +132,18 @@ export default {
       const socialFillter = this.social.filter(i => i.symbol === this.icon)
       return socialFillter[0].url
     }
+  },
+  methods: {
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
+    }
   }
 }
 </script>
@@ -146,6 +159,7 @@ export default {
   align-items: center;
   font-size: 24px;
   color: @white;
+  cursor: pointer;
   &:hover {
     &.Email {
       background: #542de0;

@@ -44,7 +44,7 @@ export const xssFilter = html => {
     'data-id',
     'data-tools'
   ]
-  whiteList.span = ['class', 'style', 'aria-hidden']
+  whiteList.span = ['class', 'style', 'aria-hidden', 'data-linenumber']
   let aTag = ['class', 'style', 'href', 'data-url', 'target', 'id']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
@@ -55,7 +55,7 @@ export const xssFilter = html => {
 
   let brTag = ['style']
   let strongTag = ['style']
-  let svgTag = ['svg', 'x', 'y', 'viewbox', 'width', 'style', 'g', 'line', 'xmlns']
+  let svgTag = ['svg', 'x', 'y', 'viewbox', 'width', 'height', 'style', 'g', 'line', 'xmlns', 'preserveaspectratio']
   let lineTag = ['style', 'x1', 'x2', 'y1', 'y2', 'fill', 'stroke', 'stroke-width', 'stroke-miterlimit']
   let gTag = ['style']
   let ulTag = ['style']
@@ -134,7 +134,7 @@ export const xssFilter = html => {
     },
     {
       tag: 'mi',
-      attributes: ''
+      attributes: ['mathvariant', 'normal']
     },
     {
       tag: 'msub',
@@ -151,13 +151,37 @@ export const xssFilter = html => {
     {
       tag: 'munderover',
       attributes: ''
-    }
+    },
+    {
+      tag: 'mspace',
+      attributes: ['width']
+    },
+    {
+      tag: 'mfrac',
+      attributes: ''
+    },
+    {
+      tag: 'msqrt',
+      attributes: ''
+    },
+    {
+      tag: 'msup',
+      attributes: ''
+    },
+    {
+      tag: 'summary',
+      attributes: ''
+    },
+    {
+      tag: 'path',
+      attributes: ['path', 'd']
+    },
   ]
 
   let rulePush = [
     {
       tag: 'div',
-      attributes: ['class', 'data-need', 'data-hold']
+      attributes: ['class', 'data-need', 'data-hold', 'role', 'data-pdfurl']
     },
     {
       tag: 'h1',
@@ -197,11 +221,11 @@ export const xssFilter = html => {
     },
     {
       tag: 'pre',
-      attributes: ['style']
+      attributes: ['class', 'style']
     },
     {
       tag: 'ol',
-      attributes: ['style', 'class']
+      attributes: ['style', 'class', 'start']
     },
     {
       tag: 'ul',
@@ -217,6 +241,14 @@ export const xssFilter = html => {
     },
     {
       tag: 'table',
+      attributes: ['class']
+    },
+    {
+      tag: 'i',
+      attributes: ['class', 'hidden']
+    },
+    {
+      tag: 'details',
       attributes: ['class']
     },
   ]
@@ -290,7 +322,7 @@ export const xssImageProcess = html => {
 
           }
           // console.log('url', url)
-          return `${name}=${url} alt=${url}`
+          return `${name}='${url}' alt='${url}'`
         }
       }
     }
@@ -304,5 +336,18 @@ export const filterOutHtmlTags = (html, whiteList = []) => {
     whiteList: whiteList,
     stripIgnoreTag: true,
     stripIgnoreTagBody: ["script"]
+  });
+}
+
+// 处理文章 link 增加 属性, 新页面打开
+export const processLink = html => {
+  return xss(html, {
+    onTagAttr: function(tag, name, value, isWhiteAttr) {
+      // 为 a 并且有 href 则添加 target
+      if (tag === "a" && name === "href") {
+        let val = xss.friendlyAttrValue(value)
+        return `${name}='${val}' target='_blank' rel='noreferrer noopener'`
+      }
+    }
   });
 }

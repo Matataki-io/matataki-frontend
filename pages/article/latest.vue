@@ -4,21 +4,19 @@
     <div class="article-head">
       <tab :idx="1" />
     </div>
-    <div class="token-tap">
-      <articleCardListNew
-        v-for="item in articleCardData.articles"
-        :key="item.id"
-        :card="item"
+    <articleCardListNew
+      v-for="item in articleCardData.articles"
+      :key="item.id"
+      :card="item"
+    />
+    <div class="load-more-button">
+      <buttonLoadMore
+        :type-index="0"
+        :params="articleCardData.params"
+        :api-url="articleCardData.apiUrl"
+        :is-atuo-request="articleCardData.isAtuoRequest"
+        @buttonLoadMore="buttonLoadMore"
       />
-      <div class="load-more-button">
-        <buttonLoadMore
-          :type-index="0"
-          :params="articleCardData.params"
-          :api-url="articleCardData.apiUrl"
-          :is-atuo-request="articleCardData.isAtuoRequest"
-          @buttonLoadMore="buttonLoadMore"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -91,3 +89,13 @@ export default {
   }
 }
 </script>
+
+
+<style lang="less" scoped>
+.article-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+}
+</style>

@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
@@ -100,7 +99,7 @@ export default {
     },
     buyTime() {
       if (!this.buy) return 0
-      return moment(this.buy.create_time).format('lll')
+      return this.moment(this.buy.create_time).format('lll')
     },
     buyCover() {
       if (!this.buy) return ''
@@ -112,12 +111,13 @@ export default {
       this.$copyText(text).then(
         () => {
           this.$message({
+            showClose: true,
             message: this.$t('success.copy'),
             type: 'success'
           })
         },
         () => {
-          this.$message.error(this.$t('error.copy'))
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
     },

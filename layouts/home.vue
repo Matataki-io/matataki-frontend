@@ -10,7 +10,7 @@
     >
       <svg-icon
         class="backtop-icon"
-        icon-class="backtop"
+        icon-class="back_top"
       />
     </back-to-top>
     <feedback :show-position="100" />
@@ -101,34 +101,43 @@ export default {
 <style lang="less" scoped>
 .app {
   .backtop {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: @purpleDark;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
     z-index: 99;
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 90px;
-    color: #fff;
+    bottom: 115px;
+    color: #B2B2B2;
     display: flex;
     align-items: center;
     justify-content: center;
-    // box-shadow: 0 4px 24px rgba(84, 45, 224, .5);
+    background: rgba(255,255,255,1);
+    box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.05);
+    border-radius: 4px;
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
     &:hover {
       opacity: 0.9;
     }
 
     &-icon {
-      color: #fff;
+      color: #B2B2B2;
+      font-size: 24px;
     }
   }
 }
 @media screen and (max-width: 768px) {
   .app {
     .backtop {
-      right: 10px;
+      width: 30px;
+      height: 30px;
+      right: 20px;
+      bottom: 100px;
+      &-icon {
+        font-size: 16px;
+      }
     }
   }
 }

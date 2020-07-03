@@ -110,12 +110,16 @@ export default {
             }
             this.resetData()
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
             this.loading = false
           }
         }).catch(err => {
           this.loading = false
-          this.$message.error(this.$t('publish.importError'))
+          this.$message({
+            showClose: true,
+            message: this.$t('publish.importError'),
+            type: 'error'
+          })
           console.log('err', err)
         })
     },
@@ -135,13 +139,17 @@ export default {
             this.loading = false
             this.visible = false
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
             this.loading = false
           }
         })
         .catch(err => {
           this.loading = false
-          this.$message.error(this.$t('publish.importError'))
+          this.$message({
+            showClose: true,
+            message: this.$t('publish.importError'),
+            type: 'error'
+          })
           console.log(err)
         })
     }

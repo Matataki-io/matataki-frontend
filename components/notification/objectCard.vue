@@ -35,10 +35,9 @@
       </div>
       <!-- 用户 -->
       <div v-if="mode === 'user'" class="fl user">
-        <c-avatar
-          :src="avatar"
-          class="avatar"
-        />
+        <c-user-popover :user-id="Number(user.id)">
+          <c-avatar :src="avatar" class="avatar" />
+        </c-user-popover>
         <div class="user-info" :class="dateCard && 'user-details'">
           <div class="fl user-info-top">
             <h4>
@@ -69,12 +68,45 @@
           </a>
         </div>
       </div>
+      <!-- 回复/评论 -->
+      <div v-if="mode === 'reply'" class="fl reply">
+        <p v-if="content !== false">
+          {{ content }}
+        </p>
+        <p v-else>
+          <i class="el-icon-delete" />
+          此条评论已被删除
+        </p>
+      </div>
+      <!-- token -->
+      <div v-if="mode === 'token'" class="fl token">
+        <div class="token-logo">
+          <el-image
+            class="token-logo-img"
+            :src="tokenLogo"
+            lazy
+            alt="cover"
+          />
+        </div>
+        <div v-if="token.symbol !== 'CNY'" class="token-right">
+          <h4>
+            {{ token.name }} 「{{ token.symbol }}」
+          </h4>
+          <p>
+            {{ token.brief }}
+          </p>
+        </div>
+        <div v-else class="token-right">
+          <h4>
+            CNY
+          </h4>
+        </div>
+      </div>
     </div>
   </router-link>
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
 import { mapGetters } from 'vuex'
 
@@ -94,6 +126,14 @@ export default {
     post: {
       type: Object,
       default:  null
+    },
+    comment: {
+      type: Object,
+      default:  null
+    },
+    token: {
+      type: Object,
+      default: null
     },
     bgColor: {
       type: String,
@@ -135,7 +175,11 @@ export default {
     },
     url() {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
-      return {name: 'user-id', params:{id: this.user.id}}
+      else if(this.mode === 'reply' && this.comment) return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+      else if(this.mode === 'token' && this.token.symbol === 'CNY') return {name: 'account'}
+      else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id}}
+      else if(this.mode === 'user') return {name: 'user-id', params:{id: this.user.id}}
+      return {}
     },
     followBtnText() {
       if(!this.user) return ''
@@ -151,8 +195,17 @@ export default {
     },
     dateCard() {
       if(!this.createTime) return ''
-      const time = moment(this.createTime)
+      const time = this.moment(this.createTime)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    content() {
+      if(!this.comment) return false
+      return this.comment.comment
+    },
+    tokenLogo() {
+      if (!this.token) return ''
+      if (this.token.symbol === 'CNY') return require('@/assets/img/notify_cny.png')
+      return this.token.logo ? this.$ossProcess(this.token.logo, { h: 60 }) : ''
     },
   },
   methods: {
@@ -178,14 +231,14 @@ export default {
         if (type === 1) res = await this.$API.follow(id)
         else res = await this.$API.unfollow(id)
         if (res.code === 0) {
-          this.$message.success(`${message}${this.$t('success.success')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('success.success')}`, type: 'success'})
 
           this.user.is_follow = type === 1
         } else {
-          this.$message.error(`${message}${this.$t('error.fail')}`)
+          this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
         }
       } catch (error) {
-        this.$message.error(`${message}${this.$t('error.fail')}`)
+        this.$message({ showClose: true, message: `${message}${this.$t('error.fail')}`, type: 'error' })
       }
     }
   }
@@ -198,6 +251,7 @@ export default {
   padding: 10px;
   &.shadow {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    padding: 20px;
   }
   .post {
     &-cover {
@@ -254,6 +308,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
         }
         &-other {
           font-size: 14px;
@@ -289,6 +344,66 @@ export default {
       margin-left: 20px;
     }
   }
+  .reply {
+    padding: 10px;
+    p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      font-size: 14px;
+      font-weight: 400;
+      color: #B2B2B2;
+      line-height: 20px;
+      margin: 0;
+      .no-data {
+        color: #b2b2b2;
+      }
+    }
+  }
+  .token {
+    &-logo {
+      width: 60px !important;
+      height: 60px !important;
+      min-width: 60px;
+      background: #eee;
+      margin-right: 14px;
+      &-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+    &-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      h4 {
+        font-size: 16px;
+        color: black;
+        line-height: 21px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        word-break:break-all;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #B2B2B2;
+        line-height: 20px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        word-break:break-all;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -308,6 +423,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        word-break:break-all;
         height: 16px;
         margin-bottom: 5px;
       }
@@ -335,6 +451,25 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
+        }
+      }
+    }
+    .reply {
+      padding: 0;
+    }
+    .token {
+      &-logo {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px;
+      }
+      &-right {
+        h4 {
+          font-size: 14px;
+        }
+        p {
+          font-size: 12px;
         }
       }
     }

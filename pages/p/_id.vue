@@ -4,7 +4,7 @@
       <div class="container">
         <!-- 文章封面 -->
         <div v-if="cover" class="TitleImage">
-          <img v-lazy="cover" alt="cover">
+          <img :src="cover" alt="cover">
         </div>
         <article class="Post-Header">
           <header>
@@ -57,16 +57,16 @@
               </el-dropdown>
             </div>
           </header>
+          <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
           <no-ssr>
-            <mavon-editor
-              v-show="false"
-              style="display: none;"
-            />
+            <mavon-editor v-show="false" style="display: none;" />
           </no-ssr>
+          <!-- v-highlight -->
           <div
-            v-highlight
+            v-viewer="viewerOptions"
             class="markdown-body article-content"
+            :class="fontSizeComputed"
             v-html="compiledMarkdown"
           />
           <!-- 文章页脚 声明 是否原创 -->
@@ -141,11 +141,27 @@
                   <div class="fl price">
                     {{ $t('paidRead.pay') }}
                     <span class="amount">{{ getArticlePrice }}</span>
-                    <svg-icon
-                      icon-class="currency"
-                      class="avatar-cny"
-                    />
-                    CNY
+                    <template v-if="getPayToken.token_id">
+                      <router-link
+                        :to="{name: 'token-id', params:{ id:getPayToken.token_id }}"
+                        target="_blank"
+                        class="fl"
+                      >
+                        <avatar
+                          :size="'16px'"
+                          :src="$API.getImg(getPayToken.logo)"
+                          class="avatar-token"
+                        />
+                        {{ getPayToken.symbol }} <template v-if="getPayToken.name">（{{ getPayToken.name }}）</template>
+                      </router-link>
+                    </template>
+                    <template v-else>
+                      <svg-icon
+                        icon-class="currency"
+                        class="avatar-cny"
+                      />
+                      {{ getPayToken.symbol }}
+                    </template>
                   </div>
                   <el-tooltip
                     class="item"
@@ -223,6 +239,8 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <!-- 赞赏 -->
+      <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
 
 
 
@@ -255,14 +273,21 @@
       <!-- 内容居中 -->
       <div class="p-w">
         <!-- 评论内容 -->
-        <commentInput
-          v-if="!isProduct"
-          :article="article"
-        />
+        <commentInput v-if="!isProduct" :article="article" @success="getCommentCount" />
+
+        <div class="comment-reward">
+          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentCount }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ rewardCount }}</span></span>
+        </div>
+        <!-- 这里的 success 通过 孙组件一层层上传发过来的事件 -->
         <CommentList
+          v-if="commentRewardTab === 0"
           :sign-id="article.id"
           :type="article.channel_id"
+          :comment-anchor="commentAnchor"
+          @success="getCommentCount"
         />
+        <commentReward v-if="commentRewardTab === 1" />
       </div>
 
       <InvestModal
@@ -321,10 +346,8 @@
 
 <script>
 // import throttle from 'lodash/throttle'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
 import { mapGetters } from 'vuex'
-import { xssFilter, xssImageProcess, filterOutHtmlTags } from '@/utils/xss'
+import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -335,13 +358,12 @@ import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import CommentList from '@/components/comment/List'
-import { ipfsData } from '@/api/async_data_api.js'
+import { ipfsData, wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
 import { CNY } from '@/components/exchange/consts.js'
 import utils from '@/utils/utils'
-import { getCookie } from '@/utils/cookie'
 import avatar from '@/components/avatar/index.vue'
 import becomeAnArticleEditor from '@/components/become_an_article_editor/index.vue'
 import ArticleHistory from '@/common/components/ipfs_all/history.vue'
@@ -350,6 +372,12 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import RewardFooter from '@/components/article/RewardFooter'
+import fontSize from '@/components/p_page/font_size'
+import commentReward from '@/components/p_page/reward'
+
+import { getCookie } from '@/utils/cookie'
+import store from '@/utils/store.js'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -376,7 +404,10 @@ export default {
     OrderModal,
     becomeAnArticleEditor,
     avatar,
-    sidebar
+    sidebar,
+    RewardFooter,
+    fontSize,
+    commentReward
   },
   data() {
     return {
@@ -454,7 +485,13 @@ export default {
       lockLoading: true,
       articleIpfsArray: [], // ipfs hash
       resizeEvent: null,
-      tags: [] // 文章标签
+      tags: [], // 文章标签
+      commentAnchor: Number(this.$route.query.comment) || 0, //评论锚点
+      fontSizeVal: 1,
+      commentRewardTab: 0, // 评论赞赏切换
+      commentCount: 0, // 评论次数
+      rewardCount: 0, // 赞赏次数
+      viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
     }
   },
   head() {
@@ -479,18 +516,24 @@ export default {
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
       ],
+      script: [
+        {
+          // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        }
+      ]
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'currentUserInfo']),
     articleTimeISO() {
       const { create_time: createTime } = this.article
-      const time = moment(createTime)
-      return moment(time).toISOString()
+      const time = this.moment(createTime)
+      return this.moment(time).toISOString()
     },
     articleCreateTimeComputed() {
       const { create_time: createTime } = this.article
-      const time = moment(createTime)
+      const time = this.moment(createTime)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
     isRecommend() {
@@ -501,18 +544,23 @@ export default {
       // 因为之前批量替换了getImg接口,导致上传图片在允许webp的平台会产生一个webp格式的链接, 所以这里过优化一下(比如chrome上传会带webp,safari就不会带webp)
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
-      if (process.browser) {
+      try {
+        if (process.browser) {
+          const markdownItEditor = this.$mavonEditor.markdownIt
+          const { content } = this.post
 
-        const markdownItEditor = this.$mavonEditor.markdownIt
-        const { content } = this.post
+          let md = markdownItEditor.render(content)
 
-        let md = markdownItEditor.render(content)
-
-        return this.$utils.compose(xssImageProcess, xssFilter)(md)
-      } else {
-        let md = markdownIt.render(this.post.content)
-        return this.$utils.compose(xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+        } else {
+          let md = markdownIt.render(this.post.content)
+          return this.$utils.compose(xssImageProcess, xssFilter)(md)
+        }
+      } catch (e) {
+        return this.post.content
       }
+
+
     },
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
@@ -545,6 +593,14 @@ export default {
         return this.$utils.fromDecimal(ad.price)
       } else {
         return 0
+      }
+    },
+    getPayToken() {
+      if (this.isPriceArticle) {
+        const ad = this.article.prices[0]
+        return ad
+      } else {
+        return {}
       }
     },
     // 是否是付费文章
@@ -618,6 +674,45 @@ export default {
         if (this.article.require_holdtokens || this.article.require_buy) return false
         return true
       }
+    },
+    // 动态返回文章字号大小
+    // >992 16 18 20 22 24
+    // >600 <=992 14 16 18 20 22
+    // <- 600 12 14 16 18 20
+    // 第二个标准值是css文章的默认字体大小
+    fontSizeComputed() {
+      try {
+        let list = {}
+        let clientWidth = document.body.clientWidth || document.documentElement.clientWidth
+        if (clientWidth <= 992 && clientWidth > 600) {
+          list = {
+            0: 'font14',
+            1: '',
+            2: 'font18',
+            3: 'font20',
+            4: 'font22',
+          }
+        } else if (clientWidth <= 600) {
+          list = {
+            0: 'font12',
+            1: '',
+            2: 'font16',
+            3: 'font18',
+            4: 'font20',
+          }
+        } else {
+          list = {
+            0: 'font16',
+            1: '',
+            2: 'font20',
+            3: 'font22',
+            4: 'font24',
+          }
+        }
+        return list[this.fontSizeVal] || ''
+      } catch(e) {
+        return ''
+      }
     }
   },
   watch: {
@@ -631,7 +726,12 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
-    }
+      this.formatPreview()
+    },
+    // 保存font size 选择
+    fontSizeVal(newVal) {
+      store.set('p_font_size', newVal)
+    } 
   },
 
   async asyncData({ $axios, route, req }) {
@@ -654,10 +754,11 @@ export default {
     })
     // console.log('info', info.data)
 
+    let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
     if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
-      return {
+      data = {
         article: info.data,
         post: {
           content: info.data.short_content
@@ -670,13 +771,13 @@ export default {
         const res = await ipfsData($axios, hash)
         if (res.code === 0) {
           // console.log('return', res.data)
-          return {
+          data = {
             article: info.data,
             post: res.data
           }
         } else {
           // 获取失败
-          return {
+          data = {
             article: info.data,
             post: {
               content: info.data.short_content
@@ -686,7 +787,7 @@ export default {
       } else {
         // 没有hash
         // console.log('not hash')
-        return {
+        data = {
           article: info.data,
           post: {
             content: info.data.short_content
@@ -694,6 +795,37 @@ export default {
         }
       }
     }
+
+    // wx share 
+    let userAgent = req && req.headers['user-agent'].toLowerCase()
+    const isWeixin = () => /micromessenger/.test(userAgent)
+    // 在微信内才请求分享 避免造成不必要的请求
+    if (isWeixin()) {
+      console.log('yes', req.headers['user-agent'].toLowerCase())
+      
+      let defaultLink = ''
+      if (process.server) {
+        defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
+      } else if (process.browser) {
+        defaultLink = window.location.href
+      } else {
+        defaultLink = ''
+      }
+
+      if (defaultLink) {
+        try {
+          const res = await wxShare($axios, defaultLink)
+          if (res.code === 0) {
+            data.wxShareData = res.data
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    }
+    // wx share end
+
+    return data
   },
   created() {
     if (process.browser) {
@@ -712,13 +844,23 @@ export default {
       this.getArticleIpfs()
 
       this.setAllHideContentStyle()
+
+      this.$nextTick(() => {
+        this.setFontSize()
+        this.getCommentRewardCount()
+
+        window.onload = () => {
+          this.formatPreview()
+        }
+
+      })
     }
 
   },
   destroyed() {
     clearInterval(this.timer)
   },
-  methods: {
+  methods: { 
     // 增加文章阅读量
     async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
@@ -855,7 +997,7 @@ export default {
               this.article.title = res.data.title
               this.post.content = res.data.content
             } else {
-              this.$message.warning(res.message)
+              this.$message({ showClose: true, message: res.message, type: 'warning'})
             }
           }).catch(err => {
             console.log('err', err)
@@ -866,7 +1008,7 @@ export default {
       await this.$API.getArticleInfo(this.$route.params.id)
         .then(res => {
           if (res.code === 0) this.article = res.data
-          else this.$message.warning(res.message)
+          else this.$message({ showClose: true, message: res.message, type: 'warning'})
         }).catch(err => {
           console.log('err', err)
         })
@@ -955,7 +1097,7 @@ export default {
     },
     del() {
       const delSuccess = () => {
-        this.$message({ duration: 2000, message: this.$t('p.deleteArticle') })
+        this.$message({ showClose: true, duration: 2000, message: this.$t('p.deleteArticle') })
         this.$router.push('/article')
       }
       const fail = (err) => {
@@ -1041,7 +1183,7 @@ export default {
       await this.$API.getUser(this.article.uid).then((res) => {
         if (res.code === 0) {
           this.avatar = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
-        } else this.$message.warning(res.message)
+        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
       }).catch(err => {
         console.log('err', err)
       })
@@ -1198,10 +1340,14 @@ export default {
     copyText(getCopyIpfsHash) {
       this.$copyText(getCopyIpfsHash).then(
         () => {
-          this.$message.success(this.$t('success.copy'))
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
         },
         () => {
-          this.$message.error(this.$t('error.copy'))
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
     },
@@ -1247,7 +1393,7 @@ export default {
           <p style="flex: 1">
             持有：${need[i].amount / 10000 }
             <a href="/token/${need[i].id}">
-            <img src="${this.$ossProcess(need[i].logo)}" alt="logo">
+            <img src="${this.$ossProcess(need[i].logo)}" alt="logo" data-noenlarge="1">
             ${need[i].symbol}(${need[i].name})
             </a>
           </p>
@@ -1261,7 +1407,7 @@ export default {
       unlockPrompt.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${lockSvg}" alt="lock"
+            src="${lockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
         ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML + '\n<hr />' : ''}
@@ -1282,7 +1428,7 @@ export default {
       unlockContent.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${unlockSvg}" alt="lock"
+            src="${unlockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
       ` + unlockContent.innerHTML
@@ -1355,6 +1501,7 @@ export default {
         console.log(error)
         // 提取内容 删除多余的标签
         const regRemoveContent = (str) => {
+          if (!str) return str
           // 去除空格
           const strTrim = str => str.replace(/\s+/g, '')
           // 去除标签
@@ -1377,12 +1524,67 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: desc,
-        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : '',
+        data: this.wxShareData || {}
       })
     },
+    // 设置文章默认文字大小
+    setFontSize() {
+      try {
+        let fontSize = store.get('p_font_size')
+        if (fontSize) {
+          this.fontSizeVal = Number(fontSize)
+        }
+      } catch(e) {
+        console.log(e)
+      }
+    },
+    // 评论数
+    async getCommentCount() {
+      const commentResult = await this.$utils.factoryRequest(this.$API.commentGetComments({
+        signid: this.$route.params.id
+      }))
+
+      if (commentResult) {
+        this.commentCount = commentResult.data.allcount
+      }
+    },
+    // 赞赏数
+    async getRewardCount() {
+      const rewardResult = await this.$utils.factoryRequest(this.$API.getRewardList(this.$route.params.id, 1, 1))
+
+      if (rewardResult) {
+        this.rewardCount = rewardResult.data.count
+      }
+    },
+    // 获取评论和赞赏次数
+    async getCommentRewardCount() {
+      await this.getCommentCount()
+      await this.getRewardCount()
+    },
+    // 格式化文章样式
+    formatPreview() {
+      try {
+        if (window.$ && window.finishView) {
+          window.finishView(window.$('.article-content'))
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+.placeholder {
+  min-height: 300px;
+  text-align: center;
+  font-size: 16px;
+  padding: 100px 0 0;
+  box-sizing: border-box;
+}
+</style>

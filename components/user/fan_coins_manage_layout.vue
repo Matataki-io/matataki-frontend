@@ -244,7 +244,7 @@ export default {
             })
           }
         } else {
-          this.$message.error(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'error' })
         }
       })
     },
@@ -256,7 +256,7 @@ export default {
           this.resourcesSocialss = socialFilterEmpty
           this.resourcesWebsites = res.data.websites
         } else {
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       })
         .catch(err => {
@@ -271,9 +271,9 @@ export default {
         .then(res => {
           if (res.code === 0) {
             this.tokenDetail()
-            this.$message.success(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'success'})
           } else {
-            this.$message.error(res.message)
+            this.$message({ showClose: true, message: res.message, type: 'error' })
           }
         })
     },
@@ -285,7 +285,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
-        if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message.warning('发行总量不能超过一亿')
+        if ((Number(value) + Number(this.totalAmount)) > 100000000) return this.$message({ showClose: true, message: '发行总量不能超过一亿', type: 'warning'})
         if (Number(value) > 0) this.minetokenMint(Number(value))
       })
     }

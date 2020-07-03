@@ -34,7 +34,8 @@ body {
 
 // 覆盖github markdown css
 .markdown-body {
-  .fontFamily() !important
+  .fontFamily() !important;
+  font-size: inherit !important;
 }
 
 /* 加载更多提示 */
@@ -200,6 +201,12 @@ a {
   }
 }
 
+
+// 表格样式优化 用于文章展示和编辑
+.markdown-body /deep/ table {
+  word-break: keep-all;
+}
+
 // lazy img cover
 .img-lazy .el-image__error,
 .el-image__inner,
@@ -270,4 +277,11 @@ a {
   font-style: normal;
   color: #542de0;
   font-size: inherit
+}
+
+// 覆盖 message 信息框
+@media screen and (max-width: 400px) {
+  .el-message {
+    min-width: 90% !important;
+  }
 }

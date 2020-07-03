@@ -6,16 +6,13 @@
           {{ $t('user.buycoins') }}
         </h2>
 
-        <div
-          v-loading="loading"
-          class="card-container buycoins"
-        >
+        <div v-loading="loading" class="card-container buycoins">
           <div class="line" />
 
           <el-table
             :data="pointLog.list"
             :expand-row-keys="expands"
-            class="hide-expand-button"
+            class="hide-expand-button hold-table"
             style="width: 100%"
             row-key="token_id"
             @sort-change="sortChange"
@@ -25,14 +22,10 @@
               label="Fan票"
             >
               <template slot-scope="scope">
-                <router-link
-                  :to="{name: 'token-id', params: {id: scope.row.token_id}}"
-                  class="fl ac"
-                >
-                  <avatar
-                    :src="cover(scope.row.logo)"
-                    style="margin-right: 10px; min-width: 30px;"
-                  />
+                <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac" target="_blank">
+                  <c-token-popover :token-id="Number(scope.row.token_id)">
+                    <avatar :src="cover(scope.row.logo)" style="margin-right: 10px; min-width: 30px;" />
+                  </c-token-popover>
                   <span class="scope">{{ scope.row.symbol }}</span>
                 </router-link>
               </template>
@@ -130,6 +123,50 @@
               </template>
             </el-table-column>
           </el-table>
+
+
+          <ul class="hold-list">
+            <li class="hold-header">
+              <span>Fan票</span>
+              <span @click="sortChangeM">持仓量<i class="el-icon-d-caret" /></span>
+            </li>
+            <li v-for="(item, index) in pointLog.list" :key="index">
+              <div class="item">
+                <router-link :to="{name: 'token-id', params: {id: item.token_id}}" class="fl ac item-name">
+                  <avatar :src="cover(item.logo)" />
+                  <span>{{ item.symbol }}</span>
+                </router-link>
+
+                <span class="item-amount">{{ tokenAmount(item.amount, item.decimals) }}</span>
+
+                <div class="item-btn">
+                  <span class="item-more" @click="foldingClick(item.token_id)">
+                    <!-- {{ expands[0] !== item.token_id ? '展开明细' : '收起明细' }} -->
+                    <i class="el-icon-d-arrow-right item-more-icon" :class="expands[0] !== item.token_id && 'active'" />
+                  </span>
+                  <el-button
+                    style="margin: 0 4px;"
+                    size="mini"
+                    @click="showGift(item.symbol, item.token_id, tokenAmount(item.amount, item.decimals), item.decimals )"
+                  >
+                    {{ $t('gift') }}
+                  </el-button>
+                  <router-link :to="{name: 'exchange', hash: '#swap', query: { output: item.symbol }}">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                    >
+                      {{ $t('transaction') }}
+                    </el-button>
+                  </router-link>
+                </div>
+              </div>
+              <tokensDetail
+                v-if="expands[0] === item.token_id"
+                :id="item.token_id"
+              />
+            </li>
+          </ul>
         </div>
         <user-pagination
           v-show="!loading"
@@ -144,136 +181,8 @@
           @paginationData="paginationData"
           @togglePage="togglePage"
         />
-        <m-dialog
-          v-model="giftDialog"
-          width="600px"
-          title="赠送Fan票"
-          class="transfer-dialog"
-        >
-          <el-form
-            ref="form"
-            v-loading="transferLoading"
-            :model="form"
-            :rules="rules"
-            label-width="70px"
-            class="gift-form"
-          >
-            <el-form-item label="Fan票">
-              <p class="tokenname">
-                {{ form.tokenname }}
-              </p>
-            </el-form-item>
-            <el-form-item label="接受对象">
-              <el-input
-                v-model="form.username"
-                placeholder="请输入赠送的对象"
-                size="small"
-                style="z-index: 2;"
-              />
-              <!-- 常用候选对象列表 -->
-              <template v-if="historyUser.length !== 0">
-                <el-tag
-                  v-for="item in historyUser"
-                  :key="item.id"
-                  type="info"
-                  class="history-user__tag"
-                  @click="continueUser(item)"
-                >
-                  {{
-                    (item.nickname || item.username).length > 20
-                      ? `${(item.nickname || item.username).slice(0, 20)}...`
-                      : item.nickname || item.username
-                  }}
-                </el-tag>
-              </template>
-              <!-- 搜索结果 -->
-              <div
-                v-if="searchUserList.length !== 0 && $utils.isNull(toUserInfo)"
-                class="transfer—search__list"
-              >
-                <div
-                  v-for="item in searchUserList"
-                  :key="item.id"
-                  @click="continueUser(item)"
-                >
-                  <avatar
-                    :src="searchUserAvatar(item.avatar)"
-                    class="transfer—search__list__avatar"
-                  />
-                  <span
-                    class="search-result__tag "
-                    v-html="searchUserTitle(item.nickname || item.username)"
-                  />
-                </div>
-              </div>
-            </el-form-item>
-            <!-- 结果 -->
-            <transition name="result">
-              <el-form-item
-                v-if="!$utils.isNull(toUserInfo)"
-                label=""
-                prop=""
-              >
-                <router-link
-                  :to="{name: 'user-id', params: {id: toUserInfo.id}}"
-                  class="search-user"
-                  target="_blank"
-                >
-                  <avatar
-                    :src="searchUserAvatar(toUserInfo.avatar)"
-                    class="search-user-avatar"
-                  />
-                  <span
-                    class="search-result__tag "
-                    v-html="searchUserTitle(toUserInfo.nickname || toUserInfo.username)"
-                  />
-                  <div
-                    class="gift-ful"
-                    @click="closeUser"
-                  >
-                    <i class="el-icon-close" />
-                  </div>
-                </router-link>
-              </el-form-item>
-            </transition>
-            <el-form-item
-              label="发送数量"
-              prop="tokens"
-            >
-              <el-input
-                v-model="form.tokens"
-                :max="form.max"
-                :min="form.min"
-                placeholder="请输入数量"
-                size="small"
-                clearable
-              />
-            </el-form-item>
-            <p
-              v-if="form.balance"
-              class="balance"
-            >
-              余额&nbsp;{{ form.balance }}&nbsp;
-              <a
-                href="javascript:;"
-                @click="form.tokens = form.balance"
-              >全部转入</a>
-            </p>
-            <el-form-item>
-              <div class="form-button">
-                <el-button
-                  :disabled="$utils.isNull(toUserInfo)"
-                  type="primary"
-                  size="small"
-                  @click="submitForm('form')"
-                >
-                  确定
-                </el-button>
-              </div>
-            </el-form-item>
-          </el-form>
-        </m-dialog>
       </div>
+      <TransferDialog v-model="giftDialog" :form2="form" />
       <!-- 流动金 -->
       <holdliquidity />
     </template>
@@ -284,16 +193,16 @@
 </template>
 
 <script>
-import moment from 'moment'
 import debounce from 'lodash/debounce'
 import userPagination from '@/components/user/user_pagination.vue'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
-import { precision, toPrecision } from '@/utils/precisionConversion'
+import { precision } from '@/utils/precisionConversion'
 import holdliquidity from '@/components/holdliquidity/index.vue'
 import tokensDetail from '@/components/tokens_detail/index.vue'
+import TransferDialog from '@/components/TransferDialog'
 
 export default {
   components: {
@@ -302,7 +211,8 @@ export default {
     userPagination,
     holdliquidity,
     tokensDetail,
-    avatar
+    avatar,
+    TransferDialog
   },
   data() {
     const validateToken = (rule, value, callback) => {
@@ -326,7 +236,7 @@ export default {
           order: 0
         },
         apiUrl: 'tokenTokenList',
-        list: []
+        list: [],
       },
       currentPage: Number(this.$route.query.tokensPage) || 1,
       loading: false, // 加载数据
@@ -366,20 +276,13 @@ export default {
     }
   },
   watch: {
-    giftDialog(newVal) {
-      if (newVal) {
-        this.historyUserFunc('token')
-      } else {
-        this.formEmpty()
-      }
-    },
     searchUserName() {
       this.searchUser()
     }
   },
   methods: {
     createTime(time) {
-      return moment(time).format('MMMDo HH:mm')
+      return this.moment(time).format('MMMDo HH:mm')
     },
     cover(cover) {
       return cover ? this.$ossProcess(cover) : ''
@@ -405,69 +308,6 @@ export default {
       this.$router.push({
         query
       })
-    },
-    transferMinetoken() {
-      const toUserInfo = this.toUserInfo
-      if (this.$utils.isNull(toUserInfo)) return
-
-      const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
-      this.transferLoading = true
-
-      const data = {
-        tokenId: this.form.tokenId,
-        to: toId,
-        amount: toPrecision(this.form.tokens, 'CNY', this.form.decimals)
-      }
-      this.$API.transferMinetoken(data)
-        .then(res => {
-          if (res.code === 0) {
-            this.$message.success(res.message)
-            this.reload = Date.now()
-
-            // 不知道怎么拿到更新后的tab数据 就暂时先加减吧...
-            const toAmount = toPrecision(this.form.tokens, 'CNY', this.form.decimals)
-            const currentAmount = toPrecision(this.form.balance, 'CNY', this.form.decimals)
-            const endAmount = precision(currentAmount - toAmount, 'CNY', this.form.decimals)
-            this.form.balance = Number(endAmount)
-            this.form.max = Number(endAmount)
-          } else {
-            this.$message.error(res.message)
-          }
-        }).catch(err => {
-          console.log(err)
-          this.$message.error('赠送token失败')
-        }).finally(() => {
-          this.transferLoading = false
-        })
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (this.$utils.isNull(this.toUserInfo)) {
-            this.$message.warning('请选择用户')
-          } else {
-            this.transferMinetoken()
-          }
-        } else return false
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    formEmpty() {
-      this.form.tokenname = ''
-      this.form.username = ''
-      this.form.useravatar = ''
-      this.form.userId = ''
-      this.form.tokenId = ''
-      this.form.decimals = ''
-      this.form.tokens = ''
-      this.form.max = 99999999
-      this.form.balance = 0
-      this.$refs.form.resetFields()
-
-      this.searchUserList = [] // 搜索结果
-      this.toUserInfo = null
     },
     closeUser(e) {
       if (e && e.preventDefault) e.preventDefault()
@@ -505,11 +345,11 @@ export default {
           this.searchUserList = res.data.list
           if (res.data.list.length === 0) {
             // 没有结果
-            this.$message.warning('没有搜索结果')
+            this.$message({ showClose: true, message: '没有搜索结果', type: 'warning'})
           }
         } else {
           // 失败
-          this.$message.warning(res.message)
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
       }).catch(err => {
         // 出错
@@ -545,6 +385,7 @@ export default {
       })
     },
     sortChange(sort) {
+      console.log('sort', sort)
       switch(sort.order) {
         case 'ascending':
           this.pointLog.params.order = 1
@@ -556,7 +397,13 @@ export default {
           this.pointLog.params.order = 0
       }
       this.togglePage(1)
-    }
+    },
+    // 移动端排序
+    sortChangeM() {
+      let order = this.pointLog.params.order
+      this.pointLog.params.order = (++order) % 3
+      this.reload = Date.now()
+    } 
   }
 }
 </script>
@@ -633,10 +480,10 @@ export default {
   font-size: 14px;
   .i-spin {
     &-z90 {
-          transform: rotate(90deg)
+      transform: rotate(90deg)
     }
     &-f90 {
-          transform: rotate(-90deg)
+      transform: rotate(-90deg)
     }
   }
 }
@@ -747,6 +594,75 @@ export default {
 .result-leave-to {
   opacity: 0
 }
+
+.hold-header {
+  span {
+    font-size: 14px;
+    color: #909399;
+    margin-right: 40px;
+    &:nth-last-child(1) {
+      margin-right: 0;
+    }
+  }
+}
+
+.hold-list {
+  display: none;
+  margin-top: 20px;
+  li {
+    list-style: none;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  .item-name {
+    color: #333;
+    span {
+      font-size: 12px;
+      margin-left: 4px;
+    }
+  }
+  .item-amount {
+    color: #333;
+    font-size: 12px;
+  }
+  .item-btn {
+    display: flex;
+    align-items: center;
+  }
+  .item-more {
+    font-size: 12px;
+    color: #542de0;
+    padding: 0 4px 0 4px;
+    .item-more-icon {
+      transform: rotate(-90deg);
+      &.active {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+.transfer-dialog /deep/ .el-dialog {
+  width: 600px !important;
+}
+@media screen and (max-width: 768px) {
+  .hold-table {
+    display: none;
+  }
+  .hold-list {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .transfer-dialog /deep/ .el-dialog {
+    width: 90% !important;
+  }
+}
+
 </style>
 
 <style lang="less">

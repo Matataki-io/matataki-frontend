@@ -6,13 +6,19 @@
       <svg-icon v-else-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
       <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
       <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
+      <svg-icon v-else-if="svgType === 'featured'" class="icon-search" icon-class="notify_featured" />
+      <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
+      <svg-icon v-else-if="svgType === 'transfer'" class="icon-search" icon-class="notify_transfer" />
+      <svg-icon v-else-if="svgType === 'reward'" class="icon-search" icon-class="notify_reward" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
         <!-- 头像 -->
         <div @click.stop>
           <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: user.id || 0}}">
-            <c-avatar :src="avatar" class="avatar" />
+            <c-user-popover :user-id="Number(user.id)">
+              <c-avatar :src="avatar" class="avatar" />
+            </c-user-popover>
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>
         </div>
@@ -53,12 +59,18 @@
         </h4>
       </div>
       <p v-if="content" class="notify-right-content" v-html="content" />
+      <p v-if="noComment && !content" class="notify-right-content no-data">
+        <i class="el-icon-delete" />
+        此条评论已被删除
+      </p>
       <!-- 对象卡片 -->
       <div v-if="mode !== 'hide'" @click.stop>
         <objectCard
           :mode="mode"
           :user="user"
           :post="post"
+          :comment="commentObject"
+          :token="transferLog"
         />
       </div>
     </div>
@@ -66,8 +78,8 @@
 </template>
 <script>
 
-import moment from 'moment'
 import { isNDaysAgo } from '@/utils/momentFun'
+import { precision } from '@/utils/precisionConversion'
 import objectCard from '@/components/notification/objectCard.vue'
 
 export default {
@@ -94,6 +106,14 @@ export default {
     comment: {
       type: Object,
       default: null
+    },
+    commentObject: {
+      type: Object,
+      default: null
+    },
+    transferLog: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -103,13 +123,19 @@ export default {
         comment: '评论了你的文章',
         follow: '关注了你',
         annouce: '',
-        reply: '回复了你的评论'
+        reply: '回复了你的评论',
+        transfer: '向你转账',
+        reward: '打赏了你'
       }
     }
   },
   computed: {
+    /** 消息标签 */
     svgType() {
-      return this.card.action
+      const { action, object_type } = this.card
+      if(object_type === 'featuredArticles') return 'featured'
+      else if(action === 'transfer' && object_type === 'article') return 'reward'
+      return action
     },
     avatar() {
       if (this.user && this.user.avatar) return this.$ossProcess(this.user.avatar)
@@ -117,7 +143,10 @@ export default {
     },
     /** 行为标签 */
     actionLabel() {
-      return this.actionLabels[this.card.action]
+      const { action, object_type } = this.card
+      if(action === 'transfer' && object_type === 'article') return this.actionLabels.reward
+
+      return this.actionLabels[action]
     },
     nickname() {
       return this.user.nickname || this.user.username
@@ -130,47 +159,63 @@ export default {
     },
     announcementTitle() {
       if(this.card.action !== 'annouce') return ''
-      return this.annouce.title
+      if (this.card.object_type === 'announcement') return this.annouce.title
+      if (this.card.object_type === 'featuredArticles') return '你的文章已被瞬Matataki评为精选作品'
+      return ''
     },
     /** 内容 */
     content() {
-      const { action } = this.card
-      if (action === 'comment') {
+      const { action, object_type } = this.card
+      if (action === 'comment' || action === 'reply') {
         // 评论
         if (this.comment === null || this.card.total > 1) return ''
         return this.comment.comment
       }
       else if (action === 'annouce') {
         // 公告
-        if (this.annouce === null) return ''
+        if (object_type !== 'announcement' || this.annouce === null) return ''
         return this.annouce.content
+      }
+      else if (action === 'transfer' && this.transferLog && this.card.total === 1) {
+        // 转账
+        const amount = this.tokenAmount(this.transferLog.amount, this.transferLog.decimals)
+        if(object_type === 'cnyWallet') // CNY
+          return `金额：${amount} ${this.transferLog.symbol}`
+        else if(object_type === 'tokenWallet' || object_type === 'article') { // Token
+          let content = `金额：${amount} ${this.transferLog.symbol}`
+          if(this.transferLog.memo) content += `\n留言：${this.transferLog.memo}`
+          return content
+        }
       }
       return ''
     },
     /** 格式化时间 */
     dateCard() {
-      const time = moment(this.card.create_time)
+      // 优先采用notify_time
+      const time = this.moment(this.card.notify_time || this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    /** 判断：是评论或回复类型、条目数等予1，并且评论对象缺失 */
+    noComment() {
+      return (this.card.action === 'comment' || this.card.action === 'reply') && this.card.total === 1 && !this.comment
     },
     /** 子卡片显示模式 */
     mode() {
-      if (['comment', 'like', 'annouce'].includes(this.card.action)) {
-        // 使用文章卡片，如果文章对象是空的则不显示
-        if(!this.post) return 'hide'
-        else return 'post'
-      }
-      else if (this.card.action === 'reply') {
-        return 'reply'
-      } else {
-        // 使用用户卡片，如果用户对象是空的则不显示
-        if (!this.user) return 'hide'
-        else return 'user'
-      }
+      if (['comment', 'like', 'annouce'].includes(this.card.action) && this.post)
+        return 'post' // 文章
+      else if (this.card.action === 'reply')
+        return 'reply' // 回复
+      else if(this.card.action === 'follow' && this.user)
+        return 'user' // 用户
+      else if(this.card.action === 'transfer' && this.transferLog)
+        if(this.card.object_type === 'article') return 'post' // 打赏文章
+        else return 'token' // Fan票或者CNY
+      else return 'hide' // 隐藏
     }
   },
   methods: {
     openDetails() {
-      if(this.card.total < 2) return this.openObject()
+      if(this.card.total < 2 || this.card.action === 'annouce') return this.openObject()
 
       this.$emit('openDetails', {
         startId: this.card.id,
@@ -183,8 +228,34 @@ export default {
     openObject() {
       if(this.mode === 'hide') return
 
-      const url = this.mode === 'post' ? {name: 'p-id', params:{id: this.post.id}} : {name: 'user-id', params:{id: this.user.id}}
+      let url
+      switch (this.mode) {
+        case 'post':
+          if (this.card.action === 'comment' && this.comment)
+            url = {name: 'p-id', params: {id: this.post.id}, query: {comment: this.comment.id}}
+          else url = {name: 'p-id', params: {id: this.post.id}}
+          break
+        case 'user':
+          url = {name: 'user-id', params: {id: this.user.id}}
+          break
+        case 'reply':
+          if (this.comment)
+            url = {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
+          else url = {}
+          break
+        case 'token':
+          if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
+          else url = {name: 'token-id', params: {id: this.transferLog.token_id}}
+          break
+        default:
+          url = {}
+          break
+      }
       this.$router.push(url)
+    },
+    tokenAmount(amount, decimals) {
+      const tokenamount = precision(amount, 'CNY', decimals)
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     }
   }
 }
@@ -272,6 +343,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          word-break:break-all;
           &:hover {
             text-decoration: underline;
           }  
@@ -300,6 +372,10 @@ export default {
       color: black;
       line-height: 30px;
       white-space: pre-wrap;
+      &.no-data {
+        white-space: normal;
+        color: #b2b2b2;
+      }
     }
   }
   .round-silhouette {

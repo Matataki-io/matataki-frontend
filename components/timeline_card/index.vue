@@ -2,7 +2,9 @@
   <router-link class="card" :to="{ name: 'p-id', params: {id: card.id} }" target="_blank">
     <!-- head -->
     <section class="card-head">
-      <c-avatar :src="avatarImg" />
+      <c-user-popover :user-id="Number(card.uid)">
+        <c-avatar :src="avatarImg" />
+      </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>
       <span class="card-description">发布了新作品</span>
     </section>
@@ -25,13 +27,7 @@
       <span class="card-time">{{ time }}</span>
       <div class="card-info">
         <div class="card-info-block">
-          <img
-            v-if="card.require_holdtokens || card.require_buy"
-            class="lock-img"
-            src="@/assets/img/lock.png"
-            alt="lock"
-          >
-          <span class="card-info-text">{{ lock }}</span>
+          <span class="card-info-text lock">{{ lock }}</span>
         </div>
         <div class="card-info-block">
           <i class="el-icon-view icon" />
@@ -47,7 +43,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { precision } from '@/utils/precisionConversion'
 
 export default {
@@ -69,7 +64,7 @@ export default {
     },
     // 时间
     time() {
-      const time = moment(this.card.create_time)
+      const time = this.moment(this.card.create_time)
       return time ? time.format('YYYY-MM-DD HH:mm:ss') : ''
     },
     likes() {
@@ -83,10 +78,14 @@ export default {
       return this.card.read
     },
     lock() {
+      if (this.card.is_ownpost && (this.card.pay_symbol || this.card.token_symbol)) return '我创建的'
+      
       if (this.card.pay_symbol) {
-        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
+        if (this.card.pay_unlock) return '已付费'
+        return `需付费 ${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
       } else if (this.card.token_symbol) {
-        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
+        if (this.card.token_unlock) return '已解锁'
+        return `需持有 ${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
       } else {
         return ''
       }
@@ -208,6 +207,9 @@ export default {
     line-height: 20px;
     padding: 0;
     margin: 0;
+    &.lock {
+      color: #F7B500;
+    }
   }
   .icon {
     color: rgba(178, 178, 178, 1);

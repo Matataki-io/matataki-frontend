@@ -321,7 +321,7 @@ export default {
     // 输入框内容检测
     checkSaveParams() {
       // 中文 字母 数字 1-12
-      const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{1,50}$/
+      const reg = /^[\u4E00-\u9FFF\u3400-\u4DFF\u3131-\uD79Dぁ-んァ-ンA-Za-z0-9]{1,50}$/
       // const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.username)) {
         throw this.$t('rule.strEnglishNumber', ['1-50'])
@@ -417,6 +417,7 @@ export default {
         this.refreshUser({ id: this.currentUserInfo.id })
         this.getMyUserData()
         this.$message({
+          showClose: true,
           message: this.$t('success.success'),
           type: 'success'
         })
@@ -427,7 +428,8 @@ export default {
           this.$message.error(error.response.data.message)
         } else {
           console.error(`修改信息失败 catch error ${error}`)
-          this.$message.error(this.$t('error.fail'))
+          this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
+          this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
         }
       } finally {
         this.loading = false

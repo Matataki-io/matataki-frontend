@@ -26,6 +26,8 @@
           :post="getPost(item)"
           :annouce="getAnnouce(item)"
           :comment="getComment(item)"
+          :comment-object="getCommentObject(item)"
+          :transfer-log="getTransferLog(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
@@ -48,18 +50,19 @@
             <i class="el-icon-arrow-left" />
           </div>
           <h3>
-            {{ actionDetailLabels[detailsIndex.action] }}
+            {{ actionDetailLabel }}
           </h3>
         </div>
         <div style="margin-bottom: 20px;">
           <objectCard
-            v-if="detailsIndex.objectType === 'article'"
-            mode="post"
+            v-if="detailsIndex.objectType === 'article' || detailsIndex.objectType === 'comment'"
+            :mode="detailsIndex.objectType === 'article' ? 'post' : 'reply'"
             :post="posts.find(post => post.id === detailsIndex.objectId)"
+            :comment="comments.find(comment => comment.id === detailsIndex.objectId)"
             bg-color="white"
           />
         </div>
-        <el-divider v-if="detailsIndex.objectType === 'article'" />
+        <el-divider v-if="detailsIndex.objectType === 'article' || detailsIndex.objectType === 'comment'" />
         <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
           <objectCard
             v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'"
@@ -70,7 +73,11 @@
             bg-color="white"
           />
           <commentCard
-            v-if="detailsIndex.action === 'comment'"
+            v-if="detailsIndex.action === 'comment' || detailsIndex.action === 'reply'"
+            :card="item"
+          />
+          <rewardCard
+            v-else-if="detailsIndex.action === 'transfer' && detailsIndex.objectType === 'article'"
             :card="item"
           />
         </div>
@@ -93,7 +100,7 @@
               消息筛选
             </h3>
             <div class="option-card">
-              <!-- <el-checkbox
+              <el-checkbox
                 v-model="checkAll"
                 :indeterminate="isIndeterminate"
                 :disabled="showDetails"
@@ -101,7 +108,8 @@
                 @change="handleCheckAllChange"
               >
                 全选
-              </el-checkbox> -->
+              </el-checkbox>
+              <el-divider />
               <el-checkbox-group
                 v-model="checkedCities"
                 class="fl checkbox-group"
@@ -157,10 +165,11 @@ import buttonLoadMore from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
 import commentCard from '@/components/notification/commentCard.vue'
+import rewardCard from '@/components/notification/rewardCard.vue'
 
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMore, notifyCard, objectCard, commentCard },
+  components: { buttonLoadMore, notifyCard, objectCard, commentCard, rewardCard },
   data() {
     return {
       showDetails: false,
@@ -169,13 +178,17 @@ export default {
       posts: [],
       announcements: [],
       comments: [],
+      assetsLogs: [],
+      minetokensLogs: [],
       detailsIndex: null,
       notificationDetails: [],
       pagePosition: 0,
       actionDetailLabels: {
         like: '推荐详情',
         comment: '评论详情',
-        follow: '关注详情'
+        follow: '关注详情',
+        reply: '回复详情',
+        reward: '打赏详情'
       },
       checkAll: true,
       checkedCities: [],
@@ -183,23 +196,27 @@ export default {
       actionTypes: [
         {
           key: 'follow',
-          label: '关注信息'
+          label: '关注'
         },
         {
           key: 'comment',
-          label: '评论信息'
+          label: '评论'
         },
         {
           key: 'like',
-          label: '推荐信息'
+          label: '推荐'
         },
         {
           key: 'annouce',
-          label: '公告信息'
+          label: '系统'
         },
         {
           key: 'reply',
-          label: '回复信息'
+          label: '回复'
+        },
+        {
+          key: 'transfer',
+          label: '交易'
         }
       ],
       actions: null,
@@ -225,6 +242,12 @@ export default {
         apiUrl: 'notifyDetails',
         params: { pagesize: 20, ...this.detailsIndex }
       }
+    },
+    actionDetailLabel() {
+      if(!this.detailsIndex) return ''
+      const { action, objectType } = this.detailsIndex
+      if (action === 'transfer' && objectType === 'article') return this.actionDetailLabels.reward
+      return this.actionDetailLabels[action]
     }
   },
   watch: {
@@ -246,6 +269,8 @@ export default {
         this.announcements.push(...res.data.announcements)
         this.comments.push(...res.data.comments)
         this.notifications.push(...res.data.list)
+        this.assetsLogs.push(...res.data.assetsLog)
+        this.minetokensLogs.push(...res.data.minetokensLog)
         // 标记已读
         this.markRead(res.data.list)
         // 设定起始查询位置
@@ -265,7 +290,7 @@ export default {
     getPost(notify) {
       if(this.posts && this.posts.length > 0) {
         let postId
-        if(notify.object_type === 'article')
+        if(notify.object_type === 'article' || notify.object_type === 'featuredArticles' )
           postId = notify.object_id
         else if(notify.object_type === 'announcement' && notify.remark)
           postId = notify.remark
@@ -282,10 +307,30 @@ export default {
       return null
     },
     getComment(notify) {
-      if(this.comments && this.comments.length > 0 && notify.action === 'comment') {
+      if(this.comments && this.comments.length > 0 && (notify.action === 'comment' || notify.action === 'reply')) {
         const commentId = notify.remark
         return this.comments.find(comment => comment.id === commentId)
       }
+      return null
+    },
+    getCommentObject(notify) {
+      if(this.comments && this.comments.length > 0 && notify.object_type === 'comment') {
+        const commentId = notify.object_id
+        return this.comments.find(comment => comment.id === commentId)
+      }
+      return null
+    },
+    getTransferLog(notify) {
+      const logId = notify.object_id
+      if(notify.action !== 'transfer') return null
+
+      if(notify.object_type === 'cnyWallet' && this.assetsLogs.length > 0)
+        return this.assetsLogs.find(assetsLog => assetsLog.id === logId)
+      else if(notify.object_type === 'tokenWallet' && this.minetokensLogs.length > 0)
+        return this.minetokensLogs.find(minetokensLog => minetokensLog.id === logId)
+      else if(notify.object_type === 'article' && this.minetokensLogs.length > 0)
+        return this.minetokensLogs.find(minetokensLog => minetokensLog.id === notify.remark)
+
       return null
     },
     openDetails(data) {
@@ -328,7 +373,7 @@ export default {
         this.$message.success(this.$t('success.success'))
         this.$router.go(0)
       }
-      else this.$message.error(this.$t('error.fail'))
+      else this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
     },
     updateList() {
       this.loading = true

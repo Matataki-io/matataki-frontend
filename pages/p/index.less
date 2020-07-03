@@ -95,12 +95,22 @@
   border-radius: 0 0 4px 4px;
 }
 
-
 .article-content {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 18px !important;
   font-weight: 400px;
   line-height: 1.8;
+  z-index: 0;
+
+  /deep/ img {
+    cursor: zoom-in;
+  }
+
+  /deep/ a {
+    img {
+      cursor: pointer;
+    }
+  }
 
   .unlock {
     background-color: #f7f7f7;
@@ -123,6 +133,7 @@
       img {
         background-color: #fff0;
         color: #fff;
+        cursor: default;
       }
     }
   }
@@ -180,8 +191,39 @@
         width: 16px;
         height: 16px;
         border-radius: 50%;
+        cursor: pointer;
       }
     }
+  }
+}
+
+.article-content {
+  &.font12 {
+    font-size: 12px !important;
+  }
+
+  &.font14 {
+    font-size: 14px !important;
+  }
+
+  &.font16 {
+    font-size: 16px !important;
+  }
+
+  &.font18 {
+    font-size: 18px !important;
+  }
+
+  &.font20 {
+    font-size: 20px !important;
+  }
+
+  &.font22 {
+    font-size: 22px !important;
+  }
+
+  &.font24 {
+    font-size: 24px !important;
   }
 }
 
@@ -773,15 +815,40 @@
   padding-left: 8px;
 }
 
-@media screen and (max-width: 1200px) {
-  .article-content {
-    font-size: 17px;
+
+.comment-reward {
+  padding: 0 0 0 60px;
+  margin-top: 40px;
+}
+
+@media screen and (max-width: 860px) {
+  .comment-reward {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+.comment-reward-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #B2B2B2;
+  line-height: 28px;
+  padding: 0;
+  margin: 0 20px 0 0;
+  cursor: pointer;
+
+  span {
+    margin-left: 5px;
+  }
+
+  &.active {
+    color: #333;
   }
 }
 
 @media screen and (max-width: 992px) {
   .article-content {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   .Post-Title {
@@ -789,15 +856,9 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-  .article-content {
-    font-size: 15px;
-  }
-}
-
 @media screen and (max-width: 600px) {
   .article-content {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 
   .Post-Title {
@@ -809,4 +870,10 @@
 .matataki-selected {
   width: 56px;
   margin-top: 20px;
+}
+
+@media screen and (max-width: 540px) {
+  .tag-list {
+    padding: 0 10px;
+  }
 }

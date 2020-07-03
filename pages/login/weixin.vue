@@ -9,6 +9,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  layout: 'empty',
   name: 'WeixinLogin',
   data() {
     return {
@@ -37,9 +38,9 @@ export default {
           }
           this.$API.accountBind(params).then(res => {
             if (res.code === 0) {
-              this.$message.success(res.message)
+              this.$message({ showClose: true, message: res.message, type: 'success'})
             } else {
-              this.$message.warning(res.message)
+              this.$message({ showClose: true, message: res.message, type: 'warning'})
             }
           }).catch(err => {
             console.log(err)
@@ -54,7 +55,7 @@ export default {
               this.$store.commit('setUserConfig', { idProvider: 'weixin' })
 
             } else {
-              this.$message.error(res.message)
+              this.$message({ showClose: true, message: res.message, type: 'error' })
             }
             this.$router.push({ path: from })
   

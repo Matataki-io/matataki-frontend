@@ -96,7 +96,7 @@ export default {
           this.comment = ''
           this.$store.commit('setCommentRequest')
           this.$emit('doneReply')
-        } else this.$message.error(res.message)
+        } else this.$message({ showClose: true, message: res.message, type: 'error' })
       }).catch(e => {
         console.log('评论失败', e)
         this.$message.error(this.$t('p.commentFail'))
@@ -112,7 +112,7 @@ export default {
           if (res.code === 0) {
             this.$message.success(this.$t('p.commentSuccess'))
             this.comment = ''
-          } else this.$message.error(res.message)
+          } else this.$message({ showClose: true, message: res.message, type: 'error' })
         })
         .catch(e => {
           console.log('评论失败', e)
@@ -191,9 +191,6 @@ export default {
 @media screen and (max-width: 860px){
   .avatar {
     display: none;
-  }
-  .comment-container {
-    padding: 0 10px;
   }
 }
 </style>

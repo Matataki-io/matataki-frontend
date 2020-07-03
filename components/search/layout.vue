@@ -5,6 +5,7 @@
       @search="search"
     />
     <div class="search-container">
+      <p class="search-google-tip">- 搜索不到你想要的结果？试试 <a :href="googleUrl" target="_blank">Google搜索</a> -</p>
       <div class="search-head fl">
         <span
           v-for="(tag, index) in tagList"
@@ -144,6 +145,9 @@ export default {
   computed: {
     searchQueryValLen() {
       return !(this.articleCardData[this.searchType].articles.length === 0 && this.paginationDataLoaded)
+    },
+    googleUrl() {
+      return `https://www.google.com.hk/search?query=${this.searchQueryVal}&as_sitesearch=${process.env.VUE_APP_URL}`
     }
   },
   created() {
