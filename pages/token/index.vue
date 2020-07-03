@@ -1,6 +1,7 @@
 <template>
   <div class="token">
     <tokenBanner />
+    <tokenBannerFan class="token-banner-fan" />
     <myTokenHeader />
     <!-- 登录后显示 -->
     <!-- fan ticket -->
@@ -26,6 +27,7 @@
 
 <script>
 import tokenBanner from '@/components/token_banner.vue'
+import tokenBannerFan from '@/components/token_banner_fan.vue'
 import myTokenHeader from '@/components/token/my_token_header.vue'
 import holdTicket from '@/components/hold_ticket.vue'
 import holdLiquidity from '@/components/holdliquidity/index.vue'
@@ -34,6 +36,7 @@ import tokenList from '@/components/token_list.vue'
 export default {
   components: {
     tokenBanner,
+    tokenBannerFan,
     myTokenHeader,
     holdTicket,
     tokenList,
@@ -57,6 +60,9 @@ export default {
   box-sizing: border-box;
 }
 
+.token-banner-fan {
+  margin-top: 40px;
+}
 .token-title {
   font-size: 20px;
   font-weight: 500;

@@ -55,7 +55,7 @@
   }
   .token-more {
     display: block;
-    max-width: 160px;
+    width: 160px;
     border-radius: 4px;
     background-color: @purpleDark;
     font-size: 14px;
