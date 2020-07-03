@@ -1,6 +1,7 @@
 <template>
   <div class="token">
     <tokenBanner />
+    <!-- 判断是否已经发币了 -->
     <tokenBannerFan class="token-banner-fan" />
     <myTokenHeader />
     <!-- 登录后显示 -->

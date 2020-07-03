@@ -10,7 +10,7 @@
 
     <div class="token-content">
       <p class="token-title">人人皆可免费发行</p>
-      <template v-if="true">
+      <template v-if="!isTokenUser">
         <p class="token-description mode-one">按顺序完成以下任务，即可免费发行你的Fan票</p>
         <ul>
           <li>
@@ -33,7 +33,9 @@
       </template>
       <template v-else>
         <p class="token-description mode-two">您好！您的申请已经通过，请查收邮箱中的邮件。</p>
-        <a href="javascript:;" target="_blank" class="token-more hvr-float">发行Fan票</a>
+        <router-link :to="{name: 'postminetoken'}" target="_blank" class="token-more hvr-float">
+          发行Fan票
+        </router-link>
       </template>
     </div>
   </div>
@@ -54,6 +56,9 @@ export default {
     isCompleteInfo() {
       let { avatar, nickname, introduction } = this.userData
       return avatar && nickname && introduction
+    },
+    isTokenUser() {
+      return this.userData.status & this.$userStatus.hasMineTokenPermission
     }
   },
   watch: {
