@@ -75,6 +75,7 @@ export default {
   },
 
   methods: {
+    // 获取当前用户的信息
     async getCurrentUserData() {
       const userResult = await this.$utils.factoryRequest(this.$API.getUser(this.currentUserInfo.id))
       if (userResult) {
@@ -82,7 +83,7 @@ export default {
       }
 
       const userArticleNumberResult = await this.$utils.factoryRequest(this.$API.getNumArticles(this.currentUserInfo.id))
-      if (userResult) {
+      if (userArticleNumberResult) {
         this.articleNumber = userArticleNumberResult.data.count
       }
     },

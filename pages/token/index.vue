@@ -2,7 +2,7 @@
   <div class="token">
     <tokenBanner />
     <!-- 判断是否已经发币了 -->
-    <tokenBannerFan class="token-banner-fan" />
+    <tokenBannerFan v-if="!isPublishToken" class="token-banner-fan" />
     <myTokenHeader />
     <!-- 登录后显示 -->
     <!-- fan ticket -->
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import tokenBanner from '@/components/token_banner.vue'
 import tokenBannerFan from '@/components/token_banner_fan.vue'
 import myTokenHeader from '@/components/token/my_token_header.vue'
@@ -46,6 +48,31 @@ export default {
   data() {
     return {
       ticketTab: 0,
+      isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  watch: {
+    isLogined() {
+      this.getTokenUserData()
+    }
+  },
+  created() {
+    if (process.browser) {
+      if (this.isLogined) {
+        this.getTokenUserData()
+      }
+    }
+  },
+  methods: {
+    // 获取 token user 的信息
+    async getTokenUserData() {
+      const userResult = await this.$utils.factoryRequest(this.$API.tokenUserId(this.currentUserInfo.id))
+      if (userResult) {
+        this.isPublishToken = !!userResult.data // 没有信息是 null
+      }
     }
   }
 }
