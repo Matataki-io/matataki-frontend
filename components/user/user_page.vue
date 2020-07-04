@@ -99,7 +99,7 @@
           <bannerUpload
             :img-upload-done="imgUploadDone"
             :update-type="'banner'"
-            class="follow3"
+            class="banner-upload"
             @doneImageUpload="doneImageUpload"
           >
             <el-button
@@ -129,19 +129,19 @@
         </router-link>
         <el-button
           size="small"
+          class="share"
+          @click="shareModalShow = true"
+        >
+          <svg-icon icon-class="share_new" />
+          {{ $t('share') }}
+        </el-button>
+        <el-button
+          size="small"
           class="transfer"
           @click="transfer"
         >
           <i class="el-icon-money" />
           转账
-        </el-button>
-        <el-button
-          size="small"
-          class="follow2"
-          @click="shareModalShow = true"
-        >
-          <svg-icon icon-class="share_new" />
-          {{ $t('share') }}
         </el-button>
       </div>
     </div>
@@ -392,12 +392,12 @@ export default {
     right: 10px;
     bottom: 0px;
   }
-  .follow2 {
+  .share {
     position: absolute;
     right: 10px;
     bottom: 40px;
   }
-  .follow3 {
+  .banner-upload {
     position: absolute;
     right: 10px;
     bottom: 250px;
