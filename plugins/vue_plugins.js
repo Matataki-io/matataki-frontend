@@ -7,7 +7,7 @@ import 'hover.css'
 import moment from 'moment'
 import '@/icons'
 moment.locale('zh-CN')
-Vue.config.devtools = true;
+Vue.config.devtools = true
 Vue.prototype.moment = moment
 Vue.use(clampy)
 Vue.use(VueClipboard)
