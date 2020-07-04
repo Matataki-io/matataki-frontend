@@ -7,7 +7,7 @@
 
     <div class="token-content">
       <img class="token-text" src="@/assets/img/token_banner_text.svg">
-      <a href="javascript:;" target="_blank" class="token-more hvr-float">了解更多</a>
+      <a href="https://www.matataki.io/p/977" target="_blank" class="token-more hvr-float">了解更多</a>
     </div>
   </div>
 </template>
