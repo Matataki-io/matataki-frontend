@@ -1,8 +1,5 @@
 <template>
-  <router-link
-    :to="{name: 'token-id', params: { id: card.id }}"
-    class="fl card"
-  >
+  <div class="fl card" @click.prevent="$router.push({name: 'token-id', params: { id: card.id }})">
     <div class="token-cover">
       <c-token-popover :token-id="Number(card.id)">
         <avatar :src="cover" size="45px" />
@@ -39,8 +36,8 @@
           </p>
         </div>
         <div class="card-data-column">
-          <router-link :to="{ name: 'token-id-circle', params: { id: card.id } }" target="_blank">
-            <el-button type="primary" size="small">
+          <router-link :to="{ name: 'token-id-circle', params: { id: card.id } }">
+            <el-button type="primary" size="small" @click.stop="">
               圈子
             </el-button>
           </router-link>
@@ -55,7 +52,7 @@
         </router-link>
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 <script>
 import avatar from '@/components/avatar/index.vue'
@@ -97,8 +94,8 @@ export default {
     friendlyDate() {
       const time = this.moment(this.card.create_time)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>
@@ -108,6 +105,7 @@ export default {
   color: #000;
   text-decoration: none;
   overflow: hidden;
+  cursor: pointer;
   // &:nth-last-child(1) {
   //   border-bottom: 1px solid #dbdbdb;
   // }
