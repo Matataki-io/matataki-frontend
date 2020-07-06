@@ -85,6 +85,11 @@ export default {
       return
     }
   },
+  // 外观模式(高级叫法)
+  stopEvent (e) {
+    e.preventDefault()
+    e.stopPropagation()
+  },
   // 是否处于微信浏览器
   isInWeixin() {
     const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
