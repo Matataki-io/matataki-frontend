@@ -291,6 +291,7 @@
               <a
                 :href="formatUrl(item)"
                 target="_blank"
+                rel="noopener noreferrer"
               >{{ item }}</a>
             </li>
           </ul>
