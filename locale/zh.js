@@ -801,8 +801,8 @@ export default {
     directionAndTime: '方向&时间',
     liquidGoldToken: '流动金Token',
     relatedCreations: '相关创作',
-    sortByPopularity: '按照热度排序',
-    sortByTime: '按照时间排序',
+    sortByPopularity: '最热',
+    sortByTime: '最新',
     visibleTicket: '持票可见',
     payToSee: '付费可见',
     quickPurchase: '快捷购买',
@@ -810,7 +810,8 @@ export default {
     payImmediately: '立即支付',
     tradingFanTickets: '交易Fan票',
     underDeployment: 'Fan票正在部署中，请稍后过来操作!',
-    enterTheNumber: '请先输入购买数量'
+    enterTheNumber: '请先输入购买数量',
+    relatedActivities: '相关活动'
   },
   ipfsHash: {
     link: 'IPFS地址',
