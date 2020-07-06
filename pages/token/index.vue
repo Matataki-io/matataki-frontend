@@ -6,7 +6,7 @@
     <myTokenHeader />
     <!-- 登录后显示 -->
     <!-- fan ticket -->
-    <div class="c-card">
+    <div v-if="isLogined" class="c-card">
       <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">Fan票夹</span>
       <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">我的流动金</span>
       <holdTicket v-if="ticketTab === 0" />
@@ -14,15 +14,15 @@
     </div>
 
     <!-- 登录后显示 -->
-    <div class="c-card">
+    <div v-if="isLogined" class="c-card">
       <span class="pipeline-title">交易总流水</span>
-      <tokenTotalTransactionFlow class="flow" />
+      <tokenTotalTransactionFlow class="mt" />
     </div>
     
     <!-- 总会显示 -->
     <div class="c-card">
       <span class="ticket-title">全部Fan票</span>
-      <tokenList />
+      <tokenList class="mt" />
     </div>
   </div>
 </template>
@@ -124,7 +124,7 @@ export default {
   margin: 20px 0;
 }
 
-.flow {
+.mt {
   margin-top: 20px;
 }
 
