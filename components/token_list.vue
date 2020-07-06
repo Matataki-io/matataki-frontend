@@ -47,7 +47,7 @@
         <div class="tokens-list-header-medium-column">
           <div
             :class="sort.startsWith('unit-price') && 'active'"
-            class="sub-column"
+            class="sub-column cursor"
             @click="toggleSort('unit-price')"
           >
             {{ $t('token.unitPrice') }}
@@ -55,7 +55,7 @@
           </div>
           <div
             :class="sort.startsWith('liquidity') && 'active'"
-            class="sub-column"
+            class="sub-column cursor"
             @click="toggleSort('liquidity')"
           >
             {{ $t('token.liquidGold') }}
@@ -63,12 +63,13 @@
           </div>
           <div
             :class="sort.startsWith('exchange') && 'active'"
-            class="sub-column"
+            class="sub-column cursor"
             @click="toggleSort('exchange')"
           >
             {{ $t('token.turnover24h') }}
             <i class="el-icon-d-caret" />
           </div>
+          <div class="sub-column" />
         </div>
         <div class="tokens-list-header-right-column">
           {{ $t('token.founder') }}
@@ -290,7 +291,7 @@ export default {
   }
 
   &-left-column {
-    width: 35%;
+    width: 30%;
 
     .el-dropdown {
       font-size: 16px;
@@ -298,11 +299,14 @@ export default {
   }
 
   &-medium-column {
-    width: 39%;
+    width: 44%;
     text-align: center;
 
     .sub-column {
-      width: 33%;
+      width: 25%;
+      &.cursor {
+        cursor: pointer;
+      }
     }
   }
 

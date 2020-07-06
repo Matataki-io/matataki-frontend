@@ -38,6 +38,13 @@
             <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} CNY
           </p>
         </div>
+        <div class="card-data-column">
+          <router-link :to="{ name: 'token-id-circle', params: { id: card.id } }" target="_blank">
+            <el-button type="primary" size="small">
+              圈子
+            </el-button>
+          </router-link>
+        </div>
       </div>
       <div class="card-user">
         <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
@@ -111,7 +118,7 @@ export default {
 }
 
 .card-info {
-  width: 31%;
+  width: 26%;
   &-symbol {
     font-size: 20px;
     font-weight: 500;
@@ -137,12 +144,15 @@ export default {
 }
 
 .card-data {
-  width: 43%;
+  width: 48%;
 
   &-column {
     float: left;
-    width: 33%;
+    width: 25%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &-amount {
