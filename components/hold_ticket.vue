@@ -11,12 +11,15 @@
       >
         <el-table-column prop="total_supply" label="Fan票" width="180">
           <template slot-scope="scope">
-            <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac" target="_blank">
-              <c-token-popover :token-id="Number(scope.row.token_id)">
-                <avatar :src="cover(scope.row.logo)" style="margin-right: 10px; min-width: 30px;" />
-              </c-token-popover>
-              <span class="scope">{{ scope.row.symbol }}</span>
-            </router-link>
+            <div class="hold">
+              <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac hold-z-index" target="_blank">
+                <c-token-popover :token-id="Number(scope.row.token_id)">
+                  <avatar :src="cover(scope.row.logo)" style="margin-right: 10px; min-width: 30px;" />
+                </c-token-popover>
+                <span class="scope">{{ scope.row.symbol }}</span>
+              </router-link>
+              <div class="hold-bc" :style="{'width': setHoldBc(scope.row.amount)}" />
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -26,7 +29,7 @@
           width="180"
         >
           <template slot-scope="scope">
-            <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
+            <span class="scope hold-z-index">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -39,7 +42,7 @@
         </el-table-column>
         <el-table-column label="现价" width="180">
           <template>
-            <span class="scope">{{ randomNow() }}</span>
+            <span class="scope hold-z-index">{{ randomNow() }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -262,7 +265,7 @@ export default {
   watch: {
     searchUserName() {
       this.searchUser()
-    }
+    },
   },
   methods: {
     createTime(time) {
@@ -395,6 +398,35 @@ export default {
       percentage += Math.floor(Math.random() * 100 + 1)
       percentage += '%'
       return `${now}(${percentage})`
+    },
+    // 设置持有 token 的背景条
+    setHoldBc(data) {
+      try {
+        let val = parseInt(data)
+
+        let list = this.pointLog.list.map(i => i.amount)
+        let max = Math.max(...list)
+        let min = Math.min(...list)
+        let percentage = Math.floor((max - min) / 100)
+
+        // 默认 10px
+        let widthVal = '10px'
+
+        if (val <= min) { // 最小
+          widthVal = '10px'
+        } else if (val >= max) { // 最大
+          widthVal = '320px'
+        } else {
+          // 按照刻度 divide
+          let valPercentage = Math.ceil(val / percentage)
+          // 最小不能少于 10, 如果太小 按照 10的基础上 add
+          widthVal = (valPercentage < 10 ? valPercentage + 10 : valPercentage ) + 'px'
+        }
+        return widthVal
+      } catch (e) {
+        console.log(e)
+        return '10px'
+      }
     }
   }
 }
@@ -634,6 +666,9 @@ export default {
   color: #333;
 }
 
+
+
+
 .transfer-dialog /deep/ .el-dialog {
   width: 600px !important;
 }
@@ -655,6 +690,33 @@ export default {
 </style>
 
 <style lang="less" scoped>
+.hold-z-index {
+  position: relative;
+  z-index: 2;
+}
+.hold {
+  position: relative;
+  padding: 8px;
+  .hold-bc {
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    max-width: 320px;
+    // height: 46px;
+    background-color: #EBE6FF;
+    z-index: 1;
+    border-radius: 8px;
+  }
+}
+
+/deep/ .hold-table {
+  .el-table__row .cell {
+    overflow: initial;
+  }
+}
+
+
 /deep/ .hole-ticket-hide-expand-button {
   .el-table__body-wrapper .el-table__body .el-table__row .el-table__expand-column .cell {
     display: none;
