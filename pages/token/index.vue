@@ -6,7 +6,7 @@
     <myTokenHeader />
     <!-- 登录后显示 -->
     <!-- fan ticket -->
-    <div class="c-card">
+    <div v-if="isLogined" class="c-card">
       <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">Fan票夹</span>
       <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">我的流动金</span>
       <holdTicket v-if="ticketTab === 0" />
@@ -14,14 +14,15 @@
     </div>
 
     <!-- 登录后显示 -->
-    <div class="c-card">
+    <div v-if="isLogined" class="c-card">
       <span class="pipeline-title">交易总流水</span>
+      <tokenTotalTransactionFlow class="mt" />
     </div>
     
     <!-- 总会显示 -->
     <div class="c-card">
       <span class="ticket-title">全部Fan票</span>
-      <tokenList />
+      <tokenList class="mt" />
     </div>
   </div>
 </template>
@@ -35,6 +36,7 @@ import myTokenHeader from '@/components/token/my_token_header.vue'
 import holdTicket from '@/components/hold_ticket.vue'
 import holdLiquidity from '@/components/holdliquidity/index.vue'
 import tokenList from '@/components/token_list.vue'
+import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow.vue'
 
 export default {
   components: {
@@ -43,7 +45,8 @@ export default {
     myTokenHeader,
     holdTicket,
     tokenList,
-    holdLiquidity
+    holdLiquidity,
+    tokenTotalTransactionFlow
   },
   data() {
     return {
@@ -121,5 +124,8 @@ export default {
   margin: 20px 0;
 }
 
+.mt {
+  margin-top: 20px;
+}
 
 </style>
