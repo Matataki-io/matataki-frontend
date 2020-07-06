@@ -16,6 +16,7 @@
     <!-- 登录后显示 -->
     <div class="c-card">
       <span class="pipeline-title">交易总流水</span>
+      <tokenTotalTransactionFlow class="flow" />
     </div>
     
     <!-- 总会显示 -->
@@ -35,6 +36,7 @@ import myTokenHeader from '@/components/token/my_token_header.vue'
 import holdTicket from '@/components/hold_ticket.vue'
 import holdLiquidity from '@/components/holdliquidity/index.vue'
 import tokenList from '@/components/token_list.vue'
+import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow.vue'
 
 export default {
   components: {
@@ -43,7 +45,8 @@ export default {
     myTokenHeader,
     holdTicket,
     tokenList,
-    holdLiquidity
+    holdLiquidity,
+    tokenTotalTransactionFlow
   },
   data() {
     return {
@@ -121,5 +124,8 @@ export default {
   margin: 20px 0;
 }
 
+.flow {
+  margin-top: 20px;
+}
 
 </style>
