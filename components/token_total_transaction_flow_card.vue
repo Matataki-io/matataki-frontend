@@ -10,7 +10,7 @@
       <template slot-scope="scope">
         <span class="card-name">
           {{ scope.row.name }}
-          <txHash />
+          <txHash hash="" />
         </span>
       </template>
     </el-table-column>
@@ -86,7 +86,7 @@ export default {
 }
 .card-symbol {
   font-size:14px;
-  font-weight:500;
+  font-weight:400;
   color:rgba(178,178,178,1);
   line-height:20px;
 }
