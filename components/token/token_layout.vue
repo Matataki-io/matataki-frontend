@@ -357,7 +357,7 @@
 import { mapGetters } from 'vuex'
 import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
-import mineTokensNav from '@/components/token/datasheets/minetokens_nav.vue'
+import mineTokensNav from '@/components/token/datasheets/tokens_datasheets_nav'
 import Share from '@/components/token/token_share.vue'
 import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
