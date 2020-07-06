@@ -141,11 +141,27 @@
                   <div class="fl price">
                     {{ $t('paidRead.pay') }}
                     <span class="amount">{{ getArticlePrice }}</span>
-                    <svg-icon
-                      icon-class="currency"
-                      class="avatar-cny"
-                    />
-                    CNY
+                    <template v-if="getPayToken.token_id">
+                      <router-link
+                        :to="{name: 'token-id', params:{ id:getPayToken.token_id }}"
+                        target="_blank"
+                        class="fl"
+                      >
+                        <avatar
+                          :size="'16px'"
+                          :src="$API.getImg(getPayToken.logo)"
+                          class="avatar-token"
+                        />
+                        {{ getPayToken.symbol }} <template v-if="getPayToken.name">（{{ getPayToken.name }}）</template>
+                      </router-link>
+                    </template>
+                    <template v-else>
+                      <svg-icon
+                        icon-class="currency"
+                        class="avatar-cny"
+                      />
+                      {{ getPayToken.symbol }}
+                    </template>
                   </div>
                   <el-tooltip
                     class="item"
@@ -577,6 +593,14 @@ export default {
         return this.$utils.fromDecimal(ad.price)
       } else {
         return 0
+      }
+    },
+    getPayToken() {
+      if (this.isPriceArticle) {
+        const ad = this.article.prices[0]
+        return ad
+      } else {
+        return {}
       }
     },
     // 是否是付费文章

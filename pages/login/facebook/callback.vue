@@ -11,17 +11,17 @@
 export default {
   layout: 'empty',
   async mounted() {
-    const { type, oauth_token, oauth_verifier } = this.$route.query
+    const { code, state } = this.$route.query
 
-    if (type === 'login') {
+    if (state === 'login') {
       try {
-        const res2 = await this.$API.twitterLogin({
-          oauth_token,
-          oauth_verifier
+        const res2 = await this.$API.facebookLogin({
+          code,
+          callbackUrl: `${window.location.origin}/login/facebook/callback`
         })
         await this.$store.commit('setLoginModal', false)
         await this.$store.commit('setAccessToken', res2.data)
-        await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
+        await this.$store.commit('setUserConfig', { idProvider: 'facebook' })
 
         this.$router.replace({ name: 'article' })
       } catch (error) {
@@ -31,12 +31,12 @@ export default {
       }
 
       return
-    } else if (type === 'binding') {
+    } else if (state === 'binding') {
       try {
         const res = await this.$API.accountBind({
-            platform: 'twitter',
-            oauth_token,
-            oauth_verifier
+            platform: 'facebook',
+            code,
+            callbackUrl: `${window.location.origin}/login/facebook/callback`
           })
         if (res.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})

@@ -106,6 +106,38 @@
             />
           </div>
         </el-tooltip>
+        <el-tooltip
+          :content="$t('auth.googleTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-google"
+            @click="walletLogin('Google')"
+          >
+            <svg-icon
+              class="google"
+              icon-class="google"
+            />
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          :content="$t('auth.facebookTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-facebook"
+            @click="walletLogin('Facebook')"
+          >
+            <svg-icon
+              class="facebook"
+              icon-class="facebook"
+            />
+          </div>
+        </el-tooltip>
       </div>
       <div class="oauth">
         <el-tooltip
@@ -300,6 +332,10 @@ export default {
         this.telegramLogin()
       } else if (type === 'Twitter') {
         this.twitterLogin()
+      } else if (type === 'Google') {
+        this.googleLogin()
+      }  else if (type === 'Facebook') {
+        this.facebookLogin()
       } else await this.signInx(type)
     },
     async signInx(type) {
@@ -366,6 +402,14 @@ export default {
       this.$store.commit('setLoginModal', true)
       this.$store.commit('setTwitterLoginMode', 'login')
       this.$router.push({ name: 'login-twitter', query: { from: 'login' } })
+    },
+    async googleLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-google', query: { from: 'login' } })
+    },
+    async facebookLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-facebook', query: { from: 'login' } })
     },
     // 登录提交
     submitLoginForm() {

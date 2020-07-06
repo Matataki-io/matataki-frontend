@@ -1,0 +1,311 @@
+<template>
+  <div class="container-padding">
+    <div class="token-detail">
+      <div class="fl">
+        <c-token-popover :token-id="Number(minetokenToken.id)">
+          <avatar :src="logo" size="120px" />
+        </c-token-popover>
+        <div class="token-detail-info">
+          <div class="fl info-line">
+            <div class="token-info-title bold">
+              {{ minetokenToken.symbol }}
+            </div>
+            <div>
+              <p class="token-info-sub">
+                {{ minetokenToken.name }}
+              </p>
+            </div>
+            <div>
+              <a
+                class="help-link"
+                href="https://www.matataki.io/p/977"
+                target="_blank"
+              >{{ $t('token.whatIsAFanTicket') }}</a>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
+              {{ $t('token.founder') }}：
+            </div>
+            <div>
+              <p class="token-info-sub">
+                <c-user-popover :user-id="Number(minetokenToken.uid)">
+                  <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                    {{ minetokenUser.nickname || minetokenUser.username }}
+                  </router-link>
+                </c-user-popover>
+              </p>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
+              {{ $t('token.releaseTime') }}：
+            </div>
+            <div>
+              <p class="token-info-sub">
+                {{ friendlyDate }}
+              </p>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div
+              class="token-info-title"
+              v-html="$t('token.summary')"
+            />
+            <div>
+              <p class="token-info-sub">
+                {{ minetokenToken.brief || $t('not') }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <router-link
+        v-if="isLogined || balance"
+        :to="{ name: 'tokens' }"
+        tag="div"
+        class="balance"
+      >
+        {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
+        <i class="el-icon-arrow-right" />
+      </router-link>
+      <div class="share-btn">
+        <a
+          :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
+          target="_blank"
+        >
+          <el-button
+            class="link-btn"
+            size="small"
+          >
+            <svg-icon icon-class="eth_mini" />
+            {{ $t('token.viewOnChain') }}
+          </el-button>
+        </a>
+        <router-link
+          v-if="isMyToken"
+          :to="{ name: 'editminetoken' }"
+        >
+          <el-button
+            class="btn"
+            size="small"
+            icon="el-icon-setting"
+          >
+            {{ $t('token.edit') }}
+          </el-button>
+        </router-link>
+        <el-button
+          class="btn"
+          size="small"
+          @click="shareModalShow = true"
+        >
+          <svg-icon icon-class="share_new" />
+          {{ $t('share') }}
+        </el-button>
+      </div>
+
+      <p
+        v-if="!minetokenToken.contract_address"
+        class="warning"
+      >
+        {{ $t('token.waitPatiently') }}
+      </p>
+    </div>
+    <share
+      :share-modal-show="shareModalShow"
+      :img="logo"
+      :minetoken-token="minetokenToken"
+      :minetoken-user="minetokenUser"
+      @input="val => shareModalShow = val"
+    />
+  </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+import avatar from '@/components/avatar/index.vue'
+import { precision } from '@/utils/precisionConversion'
+import share from '@/components/token/token_share.vue'
+
+export default {
+  components: {
+    avatar,
+    share
+  },
+  props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+    minetokenUser: {
+      type: Object,
+      required: true
+    },
+    minetokenExchange: {
+      type: Object,
+      required: true
+    },
+    isMyToken: {
+      type: Boolean,
+      default: false
+    },
+    balance: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      shareModalShow: false
+    }
+  },
+  computed: {
+    ...mapGetters(['isLogined']),
+    logo() {
+      if (!this.minetokenToken.logo) return ''
+      return this.minetokenToken.logo
+        ? this.$ossProcess(this.minetokenToken.logo, { h: 160 })
+        : ''
+    },
+    amount() {
+      const tokenamount = precision(
+        this.minetokenToken.total_supply || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    friendlyDate() {
+      return this.moment(this.minetokenToken.create_time).format('lll')
+    }
+  },
+  watch: {
+  },
+  // created() {},
+  mounted() {
+  },
+  methods: {
+  }
+}
+</script>
+<style lang="less" scoped>
+.container-padding {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+.token-detail {
+  position: relative;
+  margin: 20px auto 0;
+  padding: 20px;
+  background: @white;
+  border-radius: @br10;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+.info-line {
+  margin: 6px 0;
+}
+.token-detail-info {
+  width: 60%;
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  color: @black;
+  line-height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.token-info-title {
+  // width: 70px;
+  flex: 0 0 80px;
+  &.bold {
+    font-weight: bold;
+    font-size: 24px;
+  }
+}
+.token-info-sub {
+  padding: 0 0 0 10px;
+  margin: 0;
+  a {
+    color: #542de0;
+  }
+}
+.share-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  .btn {
+    padding: 7px 21px;
+    font-size: 14px;
+    border-radius: 6px;
+    margin-left: 5px;
+  }
+  .link-btn {
+    padding: 7px 7px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+}
+
+.help-link {
+  font-size: 14px;
+  color: #868686;
+  text-decoration: underline;
+  margin-left: 20px;
+}
+.balance {
+  position: absolute;
+  font-weight: 400;
+  font-size: 16px;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  &:hover {
+    color: #542de0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+// 小于992
+@media screen and (max-width: 992px) {
+}
+
+// <600
+@media screen and (max-width: 600px) {
+  .balance,
+  .share-btn {
+    position: initial;
+    margin-top: 10px;
+  }
+  .token-detail {
+    padding: 10px;
+  }
+  .token-detail-info {
+    width: 100%;
+  }
+  .token-detail /deep/ .g-avatar {
+    width: 60px !important;
+    height: 60px !important;
+    flex: 0 0 60px;
+  }
+  
+  .token-detail-info,
+  .balance {
+    font-size: 14px;
+  }
+
+  .token-info-title.bold {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+}
+</style>
