@@ -7,16 +7,20 @@
       :minetoken-exchange="minetokenExchange"
       :is-my-token="isMyToken"
       :balance="balance"
+      @display-angle="setDisplayAngle"
     />
-    <tokenNav />
+    <tokenNav v-if="clientVisible" />
     <el-row class="token-container">
       <!-- 左侧卡片 -->
       <el-col :span="17">
-        <introduction :minetoken-token="minetokenToken" />
+        <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
+        <management v-if="creatorVisible" />
+        <expandMod v-if="creatorVisible" />
+        <dashboard />
         <datasheets :minetoken-token="minetokenToken" />
       </el-col>
       <!-- 右侧卡片 -->
-      <el-col :span="7">
+      <el-col v-if="clientVisible" :span="7">
         <tokenBuyCard :token="minetokenToken" />
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
@@ -26,6 +30,11 @@
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
         <widgetCopyBox />
+      </el-col>
+      <!-- 管理视角的右侧卡片 -->
+      <el-col v-if="creatorVisible" :span="7">
+        <recommendMod />
+        <quickEntrance />
       </el-col>
     </el-row>
   </div>
@@ -42,6 +51,9 @@ import basicInfoHead from '@/components/token/basic_info_head'
 import tokenNav from '@/components/token/token_nav'
 // 左侧
 import introduction from '@/components/token/introduction'
+import management from '@/components/token/management'
+import expandMod from '@/components/token/expand_mod'
+import dashboard from '@/components/token/dashboard'
 import datasheets from '@/components/token/datasheets'
 // 右侧
 import tokenBuyCard from '@/components/token/token_buy_card'
@@ -49,6 +61,8 @@ import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
+import recommendMod from '@/components/token/recommend_mod'
+import quickEntrance from '@/components/token/quick_entrance'
 
 export default {
   components: {
@@ -56,13 +70,18 @@ export default {
     tokenNav,
     // 左侧
     introduction,
+    management,
+    expandMod,
+    dashboard,
     datasheets,
     // 右侧
     tokenBuyCard,
     tokenJoinFandom,
     relatedWebsites,
     socialAccount,
-    widgetCopyBox
+    widgetCopyBox,
+    recommendMod,
+    quickEntrance
   },
   head() {
     return {
@@ -96,7 +115,16 @@ export default {
       resourcesWebsites: [],
       resourcesSocialss: [],
       balance: 0,
-      isMyToken: false
+      isMyToken: false,
+      displayAngle: 'client'
+    }
+  },
+  computed: {
+    clientVisible() {
+      return this.displayAngle === 'client'
+    },
+    creatorVisible() {
+      return this.displayAngle === 'creator'
     }
   },
   async asyncData({ $axios, route, req }) {
@@ -147,7 +175,8 @@ export default {
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
       balance,
-      isMyToken
+      isMyToken,
+      displayAngle: isMyToken ? 'creator' : 'client'
     }
   },
   created() {
@@ -184,6 +213,10 @@ export default {
         imgUrl: this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
       })
     },
+    setDisplayAngle(val) {
+      this.displayAngle = val
+      console.log('displayAngle:', val)
+    }
   }
 }
 </script>
