@@ -7,8 +7,9 @@
       :minetoken-exchange="minetokenExchange"
       :is-my-token="isMyToken"
       :balance="balance"
+      @display-angle="setDisplayAngle"
     />
-    <tokenNav />
+    <tokenNav :display-angle="displayAngle" />
     <el-row class="token-container">
       <!-- 左侧卡片 -->
       <el-col :span="17">
@@ -96,7 +97,8 @@ export default {
       resourcesWebsites: [],
       resourcesSocialss: [],
       balance: 0,
-      isMyToken: false
+      isMyToken: false,
+      displayAngle: 'client'
     }
   },
   async asyncData({ $axios, route, req }) {
@@ -147,7 +149,8 @@ export default {
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
       balance,
-      isMyToken
+      isMyToken,
+      displayAngle: 'client'
     }
   },
   created() {
@@ -184,6 +187,10 @@ export default {
         imgUrl: this.minetokenToken.logo ? this.$ossProcess(this.minetokenToken.logo) : ''
       })
     },
+    setDisplayAngle(val) {
+      this.displayAngle = val
+      if(val === 'creator') this.$router.replace({name: 'token-id', params: {id : this.$route.params.id}})
+    }
   }
 }
 </script>
