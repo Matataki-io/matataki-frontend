@@ -82,18 +82,6 @@
             {{ $t('token.viewOnChain') }}
           </el-button>
         </a>
-        <router-link
-          v-if="isMyToken"
-          :to="{ name: 'editminetoken' }"
-        >
-          <el-button
-            class="btn"
-            size="small"
-            icon="el-icon-setting"
-          >
-            {{ $t('token.edit') }}
-          </el-button>
-        </router-link>
         <el-button
           class="btn"
           size="small"
@@ -101,6 +89,15 @@
         >
           <svg-icon icon-class="share_new" />
           {{ $t('share') }}
+        </el-button>
+        <el-button
+          v-if="isMyToken"
+          class="link-btn"
+          size="small"
+          @click="switchDisplayAngle"
+        >
+          {{ displayAngle === 'client' ? '管理视角' : '粉丝视角' }}
+          <svg-icon icon-class="switch" />
         </el-button>
       </div>
 
@@ -155,7 +152,8 @@ export default {
   },
   data() {
     return {
-      shareModalShow: false
+      shareModalShow: false,
+      displayAngle: this.isMyToken ? 'creator' : 'client' // 创建者、客户
     }
   },
   computed: {
@@ -179,11 +177,20 @@ export default {
     }
   },
   watch: {
+    displayAngle(val) {
+      this.$emit('display-angle', val)
+      let text = val === 'client' ? '现在是粉丝视角' : '现在是管理视角'
+      this.$message.success(`切换成功，${text}`)
+    }
   },
   // created() {},
   mounted() {
   },
   methods: {
+    switchDisplayAngle() {
+      if(!this.isMyToken) return console.error('No permission to switch perspectives')
+      this.displayAngle = this.displayAngle === 'client' ? 'creator' : 'client'
+    }
   }
 }
 </script>
