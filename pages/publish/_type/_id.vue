@@ -875,9 +875,11 @@ export default {
     } else if (type === 'edit') {
       const { hash } = this.$route.query
       // 编辑文章
-      this.$nextTick(() => {
-        this.setArticleDataById(hash, id)
-      })
+      if (process.browser) {
+        this.$nextTick(() => {
+          this.setArticleDataById(hash, id)
+        })
+      }
     } else {
       console.log('路由错误')
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
@@ -887,11 +889,18 @@ export default {
     // this.setToolBar()
   },
   beforeRouteLeave(to, from, next) {
-    if (this.changed()) return next()
-    if (window.confirm(this.$t('publish.modalTextText'))) {
-      next()
+    // 只有编辑页面使用
+    if (this.$route.params.type === 'edit') {
+
+      if (this.changed()) return next()
+      if (window.confirm(this.$t('publish.modalTextText'))) {
+        next()
+      } else {
+        next(false)
+      }
+
     } else {
-      next(false)
+      next()
     }
   },
   beforeMount() {
@@ -980,11 +989,17 @@ export default {
       }
     }, 500),
     unload($event) {
-      // 刷新页面 关闭页面有提示
-      // https://jsfiddle.net/jbf4vL7h/29/
-      const confirmationMessage = 'o/'
-      $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
-      return confirmationMessage // Gecko, WebKit, Chrome <34
+      // 只有编辑页面使用
+      if (this.$route.params.type === 'edit') {
+        if (!this.allowLeave) {
+        // 刷新页面 关闭页面有提示
+        // https://jsfiddle.net/jbf4vL7h/29/
+          const confirmationMessage = 'o/'
+          $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
+          return confirmationMessage // Gecko, WebKit, Chrome <34
+        }
+      }
+
     },
     changed() {
       // 如果允许关闭 或者 内容都为空
@@ -998,7 +1013,7 @@ export default {
           // 设置文章内容
             this.title = res.data.title
             this.markdownData = res.data.content
-            // this.renderMarkdown()
+            this.renderMarkdown()
           } else this.$message({ showClose: true, message: res.message, type: 'warning'})
         }).catch(err => {
           console.log('err', err)
@@ -1305,7 +1320,7 @@ export default {
           this.id = res.data
           // console.log(this.$route)
           const url = window.location.origin + '/publish/draft/' + res.data
-          history.pushState({}, '', url)
+          history.replaceState({}, '', url)
 
         } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }).catch(err => {
@@ -1843,13 +1858,15 @@ export default {
       })
     },
     // hack render markdown
-    // 先留着吧
     renderMarkdown() {
       setTimeout(() => {
         let previewContent = document.querySelector('#previewContent')
         console.log('innerHTML', previewContent.innerHTML)
         if (!previewContent.innerHTML) {
-          this.markdownData += ' '
+          this.allowLeave = true
+          setTimeout(() => {
+            window.location.reload()
+          }, 300)
         }
       }, 1000)
     }
