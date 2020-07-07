@@ -1244,7 +1244,7 @@ export default {
           confirmButtonText: '确定',
           callback: action => {
             if (action === 'confirm') {
-              this.payToken()
+              this.payTokenToArticle()
             }
           }
         })
@@ -1252,8 +1252,27 @@ export default {
       console.log('balance', balance, 'this.form.output', this.form.output)
     },
     // 直接支付token
-    async payToken() {
-
+    async payTokenToArticle() {
+      const loading = this.$loading({
+        lock: false,
+        text: '购买中',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
+      this.$API.payTokenToArticle({
+        pid: this.article.id
+      })
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            window.location.reload()
+          } else {
+            this.$message({
+              showClose: true,
+              message: res.message || '支付失败，请刷新页面重试',
+              type: 'error'
+            })
+          }
+        })
     },
     async createOrder() {
       let needToken = false

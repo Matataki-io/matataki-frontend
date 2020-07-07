@@ -1123,5 +1123,12 @@ minetokenGetResources(tokenId) {
   // 获取评论列表
   commentGetComments(params) {
     return request.get(`/comment/getComments`, { params } )
+  },
+  payTokenToArticle(data) {
+    return request({
+      method: 'POST',
+      url: '/orders/payArticle',
+      data
+    })
   }
 }
