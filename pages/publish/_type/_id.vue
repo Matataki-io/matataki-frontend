@@ -875,7 +875,9 @@ export default {
     } else if (type === 'edit') {
       const { hash } = this.$route.query
       // 编辑文章
-      this.setArticleDataById(hash, id)
+      this.$nextTick(() => {
+        this.setArticleDataById(hash, id)
+      })
     } else {
       console.log('路由错误')
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
@@ -990,15 +992,17 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      await this.$API.getIpfsData(hash, true).then(res => {
-        if (res.code === 0) {
+      await this.$API.getIpfsData(hash, true)
+        .then(res => {
+          if (res.code === 0) {
           // 设置文章内容
-          this.title = res.data.title
-          this.markdownData = res.data.content
-        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
-      }).catch(err => {
-        console.log('err', err)
-      })
+            this.title = res.data.title
+            this.markdownData = res.data.content
+            // this.renderMarkdown()
+          } else this.$message({ showClose: true, message: res.message, type: 'warning'})
+        }).catch(err => {
+          console.log('err', err)
+        })
       // 获取文章信息
       await this.$API.getCanEditPost(id).then(res => {
         // console.log('获取文章信息:', id, res)
@@ -1837,6 +1841,17 @@ export default {
       this.readSelectOptions.forEach((token,index) => {
         if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
       })
+    },
+    // hack render markdown
+    // 先留着吧
+    renderMarkdown() {
+      setTimeout(() => {
+        let previewContent = document.querySelector('#previewContent')
+        console.log('innerHTML', previewContent.innerHTML)
+        if (!previewContent.innerHTML) {
+          this.markdownData += ' '
+        }
+      }, 1000)
     }
   }
 }
