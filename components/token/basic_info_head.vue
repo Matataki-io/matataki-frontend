@@ -153,7 +153,7 @@ export default {
   data() {
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? 'creator' : 'client' // 创建者、客户
+      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client' // 创建者、客户
     }
   },
   computed: {

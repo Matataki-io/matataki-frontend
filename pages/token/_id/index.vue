@@ -9,7 +9,7 @@
       :balance="balance"
       @display-angle="setDisplayAngle"
     />
-    <tokenNav v-if="clientVisible" />
+    <tokenNav v-if="clientVisible" :display-angle="displayAngle" />
     <el-row class="token-container">
       <!-- 左侧卡片 -->
       <el-col :span="17">
@@ -170,13 +170,15 @@ export default {
       else console.error(balanceRes.message)
     }
 
+    const displayAngle = isMyToken ? route.params.displayAngle || 'creator' : 'client'
+
     return {
       minetokenToken: res.data.token || Object.create(null),
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
       balance,
       isMyToken,
-      displayAngle: isMyToken ? 'creator' : 'client'
+      displayAngle
     }
   },
   created() {
@@ -215,7 +217,6 @@ export default {
     },
     setDisplayAngle(val) {
       this.displayAngle = val
-      console.log('displayAngle:', val)
     }
   }
 }

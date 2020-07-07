@@ -4,7 +4,7 @@
       v-for="(tag, index) in tags"
       :key="index"
       :class="$route.name === tag.url && 'active'"
-      :to="{name: tag.url, params: {id: $route.params.id}}"
+      :to="{name: tag.url, params: {id: $route.params.id, displayAngle }}"
       replace
     >
       {{ tag.label }}
@@ -17,6 +17,10 @@ export default {
   components: {
   },
   props: {
+    displayAngle: {
+      type: String,
+      default: 'client'
+    }
   },
   data() {
     return {
