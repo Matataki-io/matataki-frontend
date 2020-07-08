@@ -416,13 +416,13 @@ export default {
         } else if (val >= max) { // 最大
           widthVal = '320px'
         } else {
-          // 按照刻度求百分比 向下取值 向上可能99.6 => 100%
+          // 按照刻度求百分比 向下取值 向上/四舍五入 可能99.6 => 100%
           let valPercentage = Math.floor(val / percentage)
           // 根据百分比计算宽度
-          let bcWidth = (320 * (valPercentage / 100) )
+          let bcWidth = (320 * (valPercentage / 100))
 
           // 最小不能少于 10, 如果太小 按照 10 展示
-          widthVal = (bcWidth < 10 ? 10 : bcWidth ) + 'px'
+          widthVal = (bcWidth < 10 ? 10 : bcWidth) + 'px'
         }
         return widthVal
       } catch (e) {
