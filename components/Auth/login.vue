@@ -42,6 +42,7 @@
         {{ $t('auth.otherAccount') }}
       </h1>
       <div class="oauth">
+        <!-- 社交账户 -->
         <el-tooltip
           :content="$t('auth.githubTitle')"
           class="item"
@@ -132,14 +133,10 @@
             class="oauth-bg bg-facebook"
             @click="walletLogin('Facebook')"
           >
-            <svg-icon
-              class="facebook"
-              icon-class="facebook"
-            />
+            <svg-icon class="facebook" icon-class="facebook" />
           </div>
         </el-tooltip>
-      </div>
-      <div class="oauth">
+        <!-- 钱包账户 -->
         <el-tooltip
           :content="$t('auth.metamaskTitle')"
           class="item"
@@ -494,6 +491,10 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  a {
+    color: #6c6c6c;
+    font-size: 12px;
+  }
 }
 .oauth-box {
   display: flex;
@@ -503,8 +504,8 @@ export default {
   text-align: center;
   .oauth-title {
     font-size: 16px;
-    color: #000000;
-    margin: 20px 0 20px;
+    color: #333;
+    margin: 20px 0 10px;
     font-weight: 400;
   }
   .warning-tip {
@@ -514,7 +515,7 @@ export default {
     font-weight: 400;
   }
   .oauth {
-    margin-bottom: 10px;
+    flex-wrap: wrap;
     .vnt {
       font-size: 24px;
       padding-top: 2px;
@@ -553,11 +554,9 @@ export default {
       height: 32px;
       border-radius: 50%;
       padding: 6px;
+      margin: 10px 5px 0 5px;
       img {
         width: 20px;
-      }
-      + .oauth-bg {
-        margin-left: 20px;
       }
     }
   }
