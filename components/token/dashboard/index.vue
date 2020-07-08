@@ -3,6 +3,8 @@
     <h2 class="token-title">
       Dashboard
     </h2>
+    <rectangleTree />
+    <rectangularPie />
     <p>
       <i class="el-icon-s-cooperation" />
       Dashboard卡片正在施工中
@@ -10,7 +12,14 @@
   </div>
 </template>
 <script>
+import rectangleTree from './rectangle_tree'
+import rectangularPie from './rectangular_pie'
+
 export default {
+  components: {
+    rectangleTree,
+    rectangularPie
+  }
   // props: {
   //   minetokenToken: {
   //     type: Object,
