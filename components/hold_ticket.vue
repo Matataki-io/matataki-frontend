@@ -41,8 +41,11 @@
           </template>
         </el-table-column>
         <el-table-column label="现价" width="180">
-          <template>
-            <span class="scope hold-z-index">{{ randomNow() }}</span>
+          <template slot-scope="scope">
+            <span class="scope hold-z-index">
+              {{ scope.row.current_price }}
+              (<span :style="{color: $utils.amountColor(scope.row.price_change_24h)}">{{ change24(scope.row.price_change_24h) }}</span>)
+            </span>
           </template>
         </el-table-column>
         <el-table-column
@@ -50,14 +53,14 @@
           label=""
           align="right"
         >
-          <template slot="header">
+          <!-- <template slot="header">
             <el-input
               size="small"
               placeholder="输入关键字搜索"
               suffix-icon="el-icon-search"
               style="max-width: 240px;"
             />
-          </template>
+          </template> -->
           <template slot-scope="scope">
             <div class="invite-block btn">
               <!-- <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}"> -->
@@ -99,16 +102,16 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
                     <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
-                      更多
+                      交易
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                    <router-link class="token-more-link" :to="{name: 'token-id', params: { id: scope.row.token_id } }" target="_blank">
                       进入主页
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#pool', query: { output: scope.row.symbol }}" target="_blank">
                       添加流动性
                     </router-link>
                   </el-dropdown-item>
@@ -391,13 +394,13 @@ export default {
       this.pointLog.params.order = (++order) % 3
       this.reload = Date.now()
     },
-    randomNow() {
-      let now = (Math.random() * 10 + 1).toFixed(4)
-      let percentage = ''
-      percentage = Math.random() < 0.5 ? '+' : '-'
-      percentage += Math.floor(Math.random() * 100 + 1)
-      percentage += '%'
-      return `${now}(${percentage})`
+    // 24h 百分比
+    change24(val) {
+      if (val) {
+        const amount = (val * 100).toFixed(2) + '%'
+        if (parseInt(amount) > 0) return '+' + amount
+        return amount
+      } else return '0%'
     },
     // 设置持有 token 的背景条
     setHoldBc(data) {
@@ -416,13 +419,13 @@ export default {
         } else if (val >= max) { // 最大
           widthVal = '320px'
         } else {
-          // 按照刻度求百分比 向下取值 向上可能99.6 => 100%
+          // 按照刻度求百分比 向下取值 向上/四舍五入 可能99.6 => 100%
           let valPercentage = Math.floor(val / percentage)
           // 根据百分比计算宽度
-          let bcWidth = (320 * (valPercentage / 100) )
+          let bcWidth = (320 * (valPercentage / 100))
 
           // 最小不能少于 10, 如果太小 按照 10 展示
-          widthVal = (bcWidth < 10 ? 10 : bcWidth ) + 'px'
+          widthVal = (bcWidth < 10 ? 10 : bcWidth) + 'px'
         }
         return widthVal
       } catch (e) {

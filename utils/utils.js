@@ -30,6 +30,10 @@ export default {
     const timeFormat = moment(time).format('YYYY-MM-DD')
     return moment(nowTime).isAfter(timeFormat)
   },
+  // 格式化时间
+  formatTime(time, format = 'YYYY-MM-DD HH:mm:ss') {
+    return time ? moment(time).format(format) : ''
+  },
   isNull(v) {
     return v === '' || v === null || v === undefined || JSON.stringify(v) === '{}' || JSON.stringify(v) === '[]';
   },
@@ -98,5 +102,17 @@ export default {
   // 处于io/cn
   isDomain(url) {
     return new RegExp(url).test(window.location.hostname.toLowerCase())
+  },
+  // 数量颜色
+  amountColor(val) {
+    // 显示转换
+    const amount = parseFloat(val)
+    if (amount < 0) {
+      return '#d74e5a'
+    } else if (amount > 0) {
+      return '#41b37d'
+    } else {
+      return 'rgb(153, 153, 153)'
+    }
   },
 };
