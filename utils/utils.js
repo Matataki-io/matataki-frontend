@@ -30,6 +30,10 @@ export default {
     const timeFormat = moment(time).format('YYYY-MM-DD')
     return moment(nowTime).isAfter(timeFormat)
   },
+  // 格式化时间
+  formatTime(time, format = 'YYYY-MM-DD HH:mm:ss') {
+    return time ? moment(time).format(format) : ''
+  },
   isNull(v) {
     return v === '' || v === null || v === undefined || JSON.stringify(v) === '{}' || JSON.stringify(v) === '[]';
   },

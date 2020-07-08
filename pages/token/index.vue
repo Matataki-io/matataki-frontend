@@ -46,7 +46,7 @@ export default {
     holdTicket,
     tokenList,
     holdLiquidity,
-    tokenTotalTransactionFlow
+    tokenTotalTransactionFlow,
   },
   data() {
     return {
@@ -76,7 +76,7 @@ export default {
       if (userResult) {
         this.isPublishToken = !!userResult.data // 没有信息是 null
       }
-    }
+    },
   }
 }
 </script>
