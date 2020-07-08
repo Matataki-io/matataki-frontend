@@ -99,4 +99,16 @@ export default {
   isDomain(url) {
     return new RegExp(url).test(window.location.hostname.toLowerCase())
   },
+  // 数量颜色
+  amountColor(val) {
+    // 显示转换
+    const amount = parseFloat(val)
+    if (amount < 0) {
+      return '#d74e5a'
+    } else if (amount > 0) {
+      return '#41b37d'
+    } else {
+      return 'rgb(153, 153, 153)'
+    }
+  },
 };

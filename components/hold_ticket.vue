@@ -41,8 +41,11 @@
           </template>
         </el-table-column>
         <el-table-column label="现价" width="180">
-          <template>
-            <span class="scope hold-z-index">{{ randomNow() }}</span>
+          <template slot-scope="scope">
+            <span class="scope hold-z-index">
+              {{ scope.row.current_price }}
+              (<span :style="{color: $utils.amountColor(scope.row.price_change_24h)}">{{ change24(scope.row.price_change_24h) }}</span>)
+            </span>
           </template>
         </el-table-column>
         <el-table-column
@@ -50,14 +53,14 @@
           label=""
           align="right"
         >
-          <template slot="header">
+          <!-- <template slot="header">
             <el-input
               size="small"
               placeholder="输入关键字搜索"
               suffix-icon="el-icon-search"
               style="max-width: 240px;"
             />
-          </template>
+          </template> -->
           <template slot-scope="scope">
             <div class="invite-block btn">
               <!-- <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}"> -->
@@ -99,7 +102,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
                     <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
-                      更多
+                      交易
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
@@ -391,13 +394,13 @@ export default {
       this.pointLog.params.order = (++order) % 3
       this.reload = Date.now()
     },
-    randomNow() {
-      let now = (Math.random() * 10 + 1).toFixed(4)
-      let percentage = ''
-      percentage = Math.random() < 0.5 ? '+' : '-'
-      percentage += Math.floor(Math.random() * 100 + 1)
-      percentage += '%'
-      return `${now}(${percentage})`
+    // 24h 百分比
+    change24(val) {
+      if (val) {
+        const amount = (val * 100).toFixed(2) + '%'
+        if (parseInt(amount) > 0) return '+' + amount
+        return amount
+      } else return '0%'
     },
     // 设置持有 token 的背景条
     setHoldBc(data) {
