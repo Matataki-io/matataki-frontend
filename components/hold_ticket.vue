@@ -115,11 +115,6 @@
                       添加流动性
                     </router-link>
                   </el-dropdown-item>
-                  <el-dropdown-item>
-                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
-                      历史交易记录
-                    </router-link>
-                  </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
