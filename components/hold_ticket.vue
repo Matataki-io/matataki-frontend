@@ -406,21 +406,23 @@ export default {
 
         let list = this.pointLog.list.map(i => i.amount)
         let max = Math.max(...list)
-        let min = Math.min(...list)
-        let percentage = Math.floor((max - min) / 100)
+        let percentage = Math.floor(max / 100) // 按照最大的值计算 刻度
 
         // 默认 10px
         let widthVal = '10px'
 
-        if (val <= min) { // 最小
+        if (val <= 1) { // 最小 1 ==== 0.0001
           widthVal = '10px'
         } else if (val >= max) { // 最大
           widthVal = '320px'
         } else {
-          // 按照刻度 divide
-          let valPercentage = Math.ceil(val / percentage)
-          // 最小不能少于 10, 如果太小 按照 10的基础上 add
-          widthVal = (valPercentage < 10 ? valPercentage + 10 : valPercentage ) + 'px'
+          // 按照刻度求百分比 向下取值 向上可能99.6 => 100%
+          let valPercentage = Math.floor(val / percentage)
+          // 根据百分比计算宽度
+          let bcWidth = (320 * (valPercentage / 100) )
+
+          // 最小不能少于 10, 如果太小 按照 10 展示
+          widthVal = (bcWidth < 10 ? 10 : bcWidth ) + 'px'
         }
         return widthVal
       } catch (e) {
