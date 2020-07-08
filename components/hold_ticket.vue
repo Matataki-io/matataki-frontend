@@ -106,12 +106,12 @@
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                    <router-link class="token-more-link" :to="{name: 'token-id', params: { id: scope.row.token_id } }" target="_blank">
                       进入主页
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#pool', query: { output: scope.row.symbol }}" target="_blank">
                       添加流动性
                     </router-link>
                   </el-dropdown-item>
