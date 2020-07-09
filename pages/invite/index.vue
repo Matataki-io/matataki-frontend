@@ -25,6 +25,7 @@
                 <avatar
                   :src="cover(scope.row.avatar)"
                   size="30px"
+                  class="avatar"
                 />
                 <span class="username">{{ scope.row.username }}</span>
               </n-link>
@@ -186,6 +187,9 @@ export default {
   font-size: 20px;
   padding-left: 10px;
   margin: 0;
+}
+.avatar {
+  flex: 0 0 30px;
 }
 </style>
 
