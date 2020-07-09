@@ -115,4 +115,21 @@ export default {
       return 'rgb(153, 153, 153)'
     }
   },
+  // 获取客户端的宽度 高度
+  clientWidth() {
+    try {
+      return (document.body.clientWidth || document.documentElement.clientWidth) || 0
+    } catch (e) {
+      console.log(e)
+      return 0
+    }
+  },
+  clientHeight() {
+    try {
+      return (document.body.clientHeight || document.documentElement.clientHeight) || 0
+    } catch (e) {
+      console.log(e)
+      return 0
+    }
+  }
 };

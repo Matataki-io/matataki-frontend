@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="pull.loading" class="total-flow">
+  <div v-loading="pull.loading">
     <div>
       <span class="head-title" :class="headTitle === 0 && 'active'" @click="headTitle = 0">全部</span>
       <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">转账</span>
@@ -108,7 +108,8 @@ export default {
   color:rgba(178,178,178,1);
   line-height:22px;
   padding: 0;
-  margin: 0 20px 0 0;
+  margin: 10px 20px 0 0;
+  display: inline-block;
   cursor: pointer;
   &:nth-last-of-type(1) {
     margin-right: 0;

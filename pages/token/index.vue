@@ -16,7 +16,7 @@
     <!-- 登录后显示 -->
     <div v-if="isLogined" class="c-card">
       <span class="pipeline-title">交易总流水</span>
-      <tokenTotalTransactionFlow class="mt" />
+      <tokenTotalTransactionFlow class="token-flow" />
     </div>
     
     <!-- 总会显示 -->
@@ -126,6 +126,9 @@ export default {
 
 .mt {
   margin-top: 20px;
+}
+.token-flow {
+  margin-top: 10px;
 }
 
 </style>
