@@ -15,8 +15,10 @@
 
     <!-- 登录后显示 -->
     <div v-if="isLogined" class="c-card">
-      <span class="pipeline-title">交易总流水</span>
-      <tokenTotalTransactionFlow class="token-flow" />
+      <span class="token-title" :class="flowTab === 0 && 'active'" @click="flowTab = 0">交易总流水</span>
+      <span class="token-title" :class="flowTab === 1 && 'active'" @click="flowTab = 1">流动金总流水</span>
+      <tokenTotalTransactionFlow v-if="flowTab === 0" class="token-flow" />
+      <liquidityTotalTransactionFlow v-if="flowTab === 1" class="token-flow" />
     </div>
     
     <!-- 总会显示 -->
@@ -37,6 +39,7 @@ import holdTicket from '@/components/hold_ticket.vue'
 import holdLiquidity from '@/components/holdliquidity/index.vue'
 import tokenList from '@/components/token_list.vue'
 import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow.vue'
+import liquidityTotalTransactionFlow from '@/components/liquidity_total_transaction_flow.vue'
 
 export default {
   components: {
@@ -47,10 +50,12 @@ export default {
     tokenList,
     holdLiquidity,
     tokenTotalTransactionFlow,
+    liquidityTotalTransactionFlow,
   },
   data() {
     return {
       ticketTab: 0,
+      flowTab: 1,
       isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
     }
   },

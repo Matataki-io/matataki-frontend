@@ -54,7 +54,7 @@
       prop="create_time"
       label="时间"
       :align="$utils.clientWidth() >= 768 ? 'left' : 'center'"
-      :width="$utils.clientWidth() >= 768 ? '180' : '148' "
+      :width="$utils.clientWidth() >= 768 ? '180' : '146' "
     >
       <template slot-scope="scope">
         {{ $utils.formatTime(scope.row.create_time) }}
