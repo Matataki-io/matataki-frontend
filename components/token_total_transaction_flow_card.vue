@@ -2,13 +2,14 @@
   <el-table
     :data="data"
     style="width: 100%"
+    :size="$utils.clientWidth() >= 768 ? '' : 'mini'"
   >
     <el-table-column
       prop="name"
       label="名称"
     >
       <template slot-scope="scope">
-        <span class="card-name">
+        <span class="card-name" :class="$utils.clientWidth() >= 768 ? '' : 'mini'">
           <!-- 如果没有名字 不显示 -->
           <router-link
             v-if="(scope.row.from_nickname || scope.row.from_username)"
@@ -40,9 +41,10 @@
       </template>
     </el-table-column>
     <el-table-column
+      v-if="$utils.clientWidth() >= 768"
       prop="type"
       label="类型"
-      width="160"
+      :width="$utils.clientWidth() >= 768 ? '160' : '' "
     >
       <template slot-scope="scope">
         {{ formatType(scope.row.type) }}
@@ -51,7 +53,8 @@
     <el-table-column
       prop="create_time"
       label="时间"
-      width="180"
+      :align="$utils.clientWidth() >= 768 ? 'left' : 'center'"
+      :width="$utils.clientWidth() >= 768 ? '180' : '146' "
     >
       <template slot-scope="scope">
         {{ $utils.formatTime(scope.row.create_time) }}
@@ -120,12 +123,20 @@ export default {
   }
   a {
     color: inherit;
+    line-height: 1.2;
   }
   &.logout {
     color: #b2b2b2;
   }
   .hash {
     margin-left: 4px;
+  }
+
+  &.mini {
+    flex-direction: column;
+    .icon {
+      transform: rotate(90deg);
+    }
   }
 }
 .card-type,

@@ -2,13 +2,8 @@
   <div v-loading="pull.loading">
     <div>
       <span class="head-title" :class="headTitle === 0 && 'active'" @click="headTitle = 0">全部</span>
-      <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">转账</span>
-      <span class="head-title" :class="headTitle === 2 && 'active'" @click="headTitle = 2">交易</span>
-      <span class="head-title" :class="headTitle === 3 && 'active'" @click="headTitle = 3">添加</span>
-      <span class="head-title" :class="headTitle === 4 && 'active'" @click="headTitle = 4">删除</span>
-      <span class="head-title" :class="headTitle === 5 && 'active'" @click="headTitle = 5">打赏</span>
-      <span class="head-title" :class="headTitle === 6 && 'active'" @click="headTitle = 6">支付</span>
-      <span class="head-title" :class="headTitle === 7 && 'active'" @click="headTitle = 7">增发</span>
+      <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">添加</span>
+      <span class="head-title" :class="headTitle === 2 && 'active'" @click="headTitle = 2">删除</span>
     </div>
 
     <tableCard class="table-card" :data="pull.list" />
@@ -29,7 +24,7 @@
 
 <script>
 import userPagination from '@/components/user/user_pagination.vue'
-import tableCard from './token_total_transaction_flow_card'
+import tableCard from './liquidity_total_transaction_flow_card'
 export default {
   components: {
     userPagination,
@@ -42,7 +37,7 @@ export default {
         params: {
           pagesize: 10
         },
-        apiUrl: 'tokenAllLogs',
+        apiUrl: 'tokenAllLiquidityLogs',
         list: [],
         loading: false,
         currentPage: 1,
@@ -74,20 +69,10 @@ export default {
           pagesize: 10
         }
       } else if (val === 1) {
-        this.pull.params.type = 'transfer'
-      }else if (val === 2) {
-        this.pull.params.type = 'exchange_purchase'
-      }else if (val === 3) {
         this.pull.params.type = 'exchange_addliquidity'
-      }else if (val === 4) {
+      }else if (val === 2) {
         this.pull.params.type = 'exchange_removeliquidity'
-      }else if (val === 5) {
-        this.pull.params.type = 'reward_article'
-      }else if (val === 6) {
-        this.pull.params.type = 'pay_article'
-      }else if (val === 7) {
-        this.pull.params.type = 'mint'
-      }else {
+      } else {
         this.pull.params = {
           pagesize: 10
         }
