@@ -23,7 +23,6 @@ export default {
       tagsList: [
         { title: this.$t('user.userInformation'), url: 'setting' },
         { title: this.$t('user.accountSetting'), url: 'setting-account' },
-        { title: this.$t('user.fanWallet'), url: 'tokens' },
         { title: this.$t('user.applycoins'), url: 'tokens-apply' },
         { title: this.$t('user.myBookmark'), url: 'bookmark' },
         { title: this.$t('user.wallet'), url: 'account' },

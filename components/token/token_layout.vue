@@ -63,7 +63,7 @@
         </div>
         <router-link
           v-if="isLogined"
-          :to="{ name: 'tokens' }"
+          :to="{ name: 'token' }"
           tag="div"
           class="balance"
         >
