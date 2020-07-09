@@ -16,7 +16,7 @@
       :current-page="pull.currentPage"
       :params="pull.params"
       :api-url="pull.apiUrl"
-      :page-size="pull.params.pageSize"
+      :page-size="pull.params.pagesize"
       :total="pull.total"
       :reload="pull.reload"
       :need-access-token="true"
