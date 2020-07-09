@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       ticketTab: 0,
-      flowTab: 1,
+      flowTab: 0,
       isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
     }
   },
