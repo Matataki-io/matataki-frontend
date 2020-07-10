@@ -16,7 +16,7 @@
         <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
         <management v-if="creatorVisible" />
         <expandMod v-if="creatorVisible" />
-        <dashboard />
+        <dashboard :minetoken-token="minetokenToken" />
         <datasheets :minetoken-token="minetokenToken" />
       </el-col>
       <!-- 右侧卡片 -->
