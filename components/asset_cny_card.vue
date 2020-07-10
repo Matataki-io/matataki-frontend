@@ -102,7 +102,7 @@ export default {
     assetType() {
       // type='withdraw'：0 待处理 1已转账待确认 2成功 3失败， 4审核 5审核拒绝
       // type=其他：只有2，表示成功
-      const { status, type } = this.data
+      const { status, type, from_platform, to_platform } = this.data
       const switchStatus = {
         0: this.$t('assetCard.0'),
         1: this.$t('assetCard.1'),
@@ -133,10 +133,16 @@ export default {
         earn: this.$t('assetCard.earn'),
         // 人民币
         recharge: this.$t('assetCard.recharge'),
-        transfer_out: this.$t('assetCard.transfer_out'),
-        transfer_in: this.$t('assetCard.transfer_in')
-
+        transfer_out: '转账',
+        transfer_in: '转账'
         // ...pointTypes
+      }
+
+      let from = from_platform ? from_platform.toLocaleLowerCase() : ''
+      let to = to_platform ? to_platform.toLocaleLowerCase() : ''
+
+      if (from === 'cny' || to === 'cny') {
+        return '交易'
       }
       return switchType[type]
     },
