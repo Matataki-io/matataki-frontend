@@ -9,13 +9,13 @@
     <div class="card-info">
       <time class="card-time">{{ $utils.formatTime(data.create_time) }}</time>
     </div>
-    <!-- <div class="card-info">
+    <div v-if="data.type !== 'recharge'" class="card-info">
       <div class="card-username">
-        <span>xxxxx</span>
-        <svg-icon icon-class="transfer" class="icon" />
-        <span>xxxxx</span>
+        <span v-if="fromUsername">{{ fromUsername }}</span>
+        <svg-icon v-if="fromUsername && toUsername" icon-class="transfer" class="icon" />
+        <span v-if="toUsername">{{ toUsername }}</span>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -30,6 +30,20 @@ export default {
     }
   },
   computed: {
+    fromUsername() {
+      // 如果转入 交换顺序
+      if (this.data.type === 'transfer_in' && this.data.amount >= 0) {
+        return this.data.to_nickname || this.data.to_username
+      }
+      return this.data.from_nickname || this.data.from_username
+    },
+    // 如果转入 交换顺序
+    toUsername() {
+      if (this.data.type === 'transfer_in' && this.data.amount >= 0) {
+        return this.data.from_nickname || this.data.from_nickname
+      }
+      return this.data.to_nickname || this.data.to_username
+    },
     assetAmount() {
       const pointTypes = {
         reading: '+', // 用户阅读
