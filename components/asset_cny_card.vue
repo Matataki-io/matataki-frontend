@@ -1,51 +1,35 @@
 <template>
   <div class="card">
-    <div class="card-info">
+    <div class="card-info fl ac jsb">
       <span class="card-type">{{ assetType }}</span>
-      <h2 :style="{ color: `${assetColor}` }" class="card-pricing">
+      <span :style="{ color: `${assetColor}` }" class="card-pricing">
         {{ assetAmount }}
-      </h2>
-    </div>
-    <div class="card-info">
-      <span class="card-date">{{ friendlyDate }}</span>
-    </div>
-    <div class="card-info">
-      <span v-if="!isWithdraw" class="card-title">{{ assetTitle }}</span>
-      <span v-else class="card-title">
-        <div v-if="asset.toaddress" class="copy-list" @click="copyInfo(asset.toaddress)">
-          {{ asset.toaddress }}
-          <svg-icon class="icon" icon-class="copy" />
-        </div>
-        <div v-if="asset.trx" class="copy-list" @click="copyInfo(asset.trx)">
-          {{ asset.trx }}
-          <svg-icon class="icon" icon-class="copy" />
-        </div>
       </span>
     </div>
+    <div class="card-info">
+      <time class="card-time">{{ $utils.formatTime(data.create_time) }}</time>
+    </div>
+    <!-- <div class="card-info">
+      <div class="card-username">
+        <span>xxxxx</span>
+        <svg-icon icon-class="transfer" class="icon" />
+        <span>xxxxx</span>
+      </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-// import { isNDaysAgo } from '@/common/methods';
 import { precision } from '@/utils/precisionConversion'
 
 export default {
-  name: 'AssetCard',
   props: {
-    asset: {
+    data: {
       type: Object,
       required: true
     }
   },
   computed: {
-    friendlyDate() {
-      // const isAppleSlave = navigator.platform.includes('iPhone');
-      // const time = moment(this.asset.create_time);
-      // const timeZoneOffset = moment(time.getTime() - time.getTimezoneOffset() * 60000 * (isAppleSlave ? 0 : 1));
-      // return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow();
-
-      return this.moment(this.asset.create_time).format('MMMDo HH:mm')
-    },
     assetAmount() {
       const pointTypes = {
         reading: '+', // 用户阅读
@@ -72,7 +56,7 @@ export default {
         earn: '+',
         ...pointTypes
       }
-      return switchType[this.asset.type] + precision(this.asset.amount, this.asset.symbol) || ''
+      return switchType[this.data.type] + precision(this.data.amount, this.data.symbol) || ''
     },
     assetColor() {
       const switchType = {
@@ -90,10 +74,10 @@ export default {
         transfer_out: '#d74e5a',
         transfer_in: '#41b37d'
       }
-      return switchType[this.asset.type] || '#41b37d'
+      return switchType[this.data.type] || '#41b37d'
     },
     assetTitle() {
-      const { title, type } = this.asset
+      const { title, type } = this.data
       // 有内容显示内容
       if (title) return title
       // 没有内容根据类型判断
@@ -104,7 +88,7 @@ export default {
     assetType() {
       // type='withdraw'：0 待处理 1已转账待确认 2成功 3失败， 4审核 5审核拒绝
       // type=其他：只有2，表示成功
-      const { status, type } = this.asset
+      const { status, type } = this.data
       const switchStatus = {
         0: this.$t('assetCard.0'),
         1: this.$t('assetCard.1'),
@@ -142,26 +126,9 @@ export default {
       }
       return switchType[type]
     },
-    isWithdraw() {
-      return this.asset.type === 'withdraw'
-    }
   },
   created() {},
   methods: {
-    copyInfo(copyText) {
-      this.$copyText(copyText).then(
-        () => {
-          this.$message({
-            showClose: true,
-            message: this.$t('success.copy'),
-            type: 'success'
-          }) 
-        },
-        () => {
-          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
-        }
-      )
-    }
   }
 }
 </script>
@@ -169,62 +136,50 @@ export default {
 <style scoped lang="less">
 .card {
   box-sizing: border-box;
-  background-color: #fff;
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  text-align: left;
-  width: 100%;
+  padding: 20px 0;
   border-bottom: 1px solid #ececec;
   &:nth-last-of-type(1) {
     border: none;
   }
   &-pricing {
-    padding: 0;
-    margin: 0;
-    font-weight: bold;
-    font-size: 22px;
-    color:rgba(0,0,0,1);
+    font-size:20px;
+    font-weight:500;
     line-height:28px;
+    color: #333;
   }
   &-type {
-    font-size: 16px;
+    font-size:16px;
+    font-weight:400;
     color:rgba(0,0,0,1);
-    line-height:28px;
+    line-height:22px;
   }
   &-info {
+    width: 100%;
+    margin-top: 20px;
+    &:nth-child(1) {
+      margin-top: 0;
+    }
+  }
+  &-username {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  }
-  &-title {
-    font-size: 14px;
-    color:#333;
-    line-height: 1.5;
-    &-info {
-      margin: 0 6px 0 0;
+    flex-wrap: wrap;
+    span {
+      font-size:16px;
+    font-weight:400;
+    color:rgba(0,0,0,1);
+    line-height:22px;
     }
-    .copy-hash {
-      width: 16px;
+    .icon {
+  margin: 0 4px;
     }
   }
-  &-date {
-    font-size: 14px;
+  &-time {
+    font-size:16px;
+    font-weight:400;
     color:rgba(178,178,178,1);
     line-height:22px;
   }
 }
 
-.copy-list {
-  display: flex;
-  align-items: center;
-  .icon {
-    margin-left: 10px;
-    color: #2d2d2d;
-    cursor: pointer;
-    font-size: 16px;
-  }
-}
 </style>
