@@ -12,7 +12,7 @@
       <div class="card-min-amount">
         <span class="action">打赏了</span>
         <router-link :to="{name: 'token-id', params: { id: card.token_id }}" target="_blank" class="token">
-          {{ tokenAmount }}{{ card.symbol }}
+          {{ tokenAmount }} {{ card.symbol }}
         </router-link>
       </div>
       <time class="time">{{ time }}</time>
