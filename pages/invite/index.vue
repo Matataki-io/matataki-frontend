@@ -185,7 +185,6 @@ export default {
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  padding-left: 10px;
   margin: 0;
 }
 .avatar {

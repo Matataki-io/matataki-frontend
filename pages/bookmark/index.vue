@@ -14,6 +14,7 @@
             <articleCardListNew
               v-for="(item, index) in pull.list"
               :key="index"
+              class="article-list"
               :card="item"
             />
             <user-pagination
@@ -26,54 +27,6 @@
               class="pagination"
               @paginationData="paginationData"
               @togglePage="togglePage"
-            />
-          </no-content-prompt>
-        </div>
-      </div>
-      <div class="bookmark-container">
-        <h2 class="tag-title">
-          分享
-        </h2>
-        <div
-          slot="list"
-          v-loading="loadingShare"
-        >
-          <no-content-prompt :list="pullShare.list">
-            <!-- 暂时处理  by xiaotian -->
-            <!-- 下次功能调整重构 -->
-            <router-link
-              v-for="(item, index) in pullShare.list"
-              :key="index"
-              :to="{name: 'share-id', params: {id: item.id}}"
-              target="_blank"
-              class="card-bookmark"
-            >
-              <p>{{ item.short_content }}</p>
-              <div>
-                <span>
-                  <svg-icon
-                    class="icon"
-                    icon-class="eye"
-                  />{{ item.read }}
-                </span>
-                <span>
-                  <svg-icon
-                    class="icon"
-                    icon-class="like_thin"
-                  />{{ item.likes }}
-                </span>
-              </div>
-            </router-link>
-            <user-pagination
-              v-show="!loadingShare"
-              :current-page="currentPageShare"
-              :params="pullShare.params"
-              :api-url="pullShare.apiUrl"
-              :page-size="pullShare.params.pagesize"
-              :total="totalShare"
-              class="pagination"
-              @paginationData="paginationDataShare"
-              @togglePage="togglePageShare"
             />
           </no-content-prompt>
         </div>
@@ -178,25 +131,33 @@ export default {
       margin-right: 2px;
     }
   }
-}
 
+}
+/deep/ .article-list {
+  margin: 0;
+  &:hover {
+    transform: inherit;
+    box-shadow: inherit;
+  }
+}
+.article-list /deep/ .article {
+  padding-left: 0;
+  padding-right: 0;
+}
 .bookmark-container {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-sizing: border-box;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
-</style>
-
-<style scoped>
 .pagination {
-  padding: 40px 5px;
+  margin-top: 20px;
 }
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  margin: 0 0 20px 20px;
+  margin: 0;
   padding: 0;
 }
 </style>

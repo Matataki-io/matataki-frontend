@@ -176,7 +176,7 @@ export default {
   margin-right: 20px;
 }
 .list {
-  margin: 20px 0 0 10px;
+  margin: 20px 0 0 0;
   a {
     color: #333;
     text-decoration: underline;
@@ -185,7 +185,6 @@ export default {
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  padding-left: 10px;
   margin: 0;
 }
 </style>
