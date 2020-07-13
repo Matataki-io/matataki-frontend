@@ -40,7 +40,7 @@
                 {{ uniswapGoldPool }}
               </h4>
               <p>
-                Uniswap流动金池
+                流通中
               </p>
             </span>
           </div>
@@ -50,24 +50,45 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 export default {
-  // props: {
-  //   minetokenToken: {
-  //     type: Object,
-  //     required: true
-  //   },
-  // },
-  data() {
-    return {
-      iHold: 20,
-      othersHold: 167,
-      uniswapGoldPool: 231
+  props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+    currentPoolSize: {
+      type: Object,
+      required: true
+    },
+    balance: {
+      type: Number,
+      default: 0
     }
   },
+  // data() {
+  //   return {
+  //     iHold: 0,
+  //     othersHold: 0,
+  //     uniswapGoldPool: 0
+  //   }
+  // },
   computed: {
-    total() {
-      return this.iHold + this.othersHold + this.uniswapGoldPool
+    iHold() {
+      if(this.currentPoolSize.token_amount === undefined) return 'Loading...'
+      return this.balance || 0
+    },
+    othersHold() {
+      if(this.currentPoolSize.token_amount === undefined) return 'Loading...'
+      return Number((this.unitConversion(this.minetokenToken.total_supply) - (this.balance + (this.currentPoolSize.token_amount || 0))).toFixed(4))
+    },
+    uniswapGoldPool() {
+      if(this.currentPoolSize.token_amount === undefined) return 'Loading...'
+      return this.currentPoolSize.token_amount || 0
     }
+  },
+  created() {
   },
   methods: {
     getFontSize(test) {
@@ -79,9 +100,18 @@ export default {
       let r = outMin + (scale * (outMax - outMin))
       return Math.round(r)
     },
-    getPercentage(num, max) {
-      return num / (max || this.total) * 100 + '%'
-    }
+    getPercentage(num) {
+      return num / (this.iHold + this.othersHold + this.uniswapGoldPool) * 100 + '%'
+    },
+    unitConversion(num) {
+      if(!this.minetokenToken) return 0
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
   }
 }
 </script>
