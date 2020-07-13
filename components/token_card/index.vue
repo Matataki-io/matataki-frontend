@@ -36,11 +36,11 @@
           </p>
         </div>
         <div class="card-data-column">
-          <router-link :to="{ name: 'token-id-circle', params: { id: card.id } }">
+          <!-- <router-link :to="{ name: 'token-id-circle', params: { id: card.id } }">
             <el-button type="primary" size="small" @click.stop="">
               圈子
             </el-button>
-          </router-link>
+          </router-link> -->
         </div>
       </div>
       <div class="card-user">
