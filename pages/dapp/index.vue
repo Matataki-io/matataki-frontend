@@ -32,10 +32,10 @@
 
 <script>
 import matataki from '@/assets/img/dapp_list_matataki.png'
+import exchange from '@/assets/img/dapp_list_exchange.png'
 import airdrop from '@/assets/img/dapp_list_airdrop.png'
 import map from '@/assets/img/dapp_list_map.png'
 import doc from '@/assets/img/dapp_list_doc.png'
-
 export default {
   data() {
     return {
@@ -45,15 +45,23 @@ export default {
           list: [
             {
               title: '瞬Matataki',
-              description: '一个公开永存的数字作品库',
+              description: '公开永存的数字作品库',
               img: matataki,
-              url: 'https://www.matataki.io',
+              url: 'https://www.matataki.io/',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Fan票交换事务所',
+              description: '基于Uniswap的Fan票交易工具',
+              img: exchange,
+              url: 'https://www.matataki.io/exchange/',
               btn: '访问网站',
               disabled: false
             },
             {
               title: 'Matataki Airdrop',
-              description: '一个基于Fan票的简单空投工具',
+              description: '基于Fan票的简单空投工具',
               img: airdrop,
               url: 'https://www.matataki-airdrop.xyz/',
               btn: '访问网站',
