@@ -19,8 +19,8 @@ export default {
     }
   },
   async mounted() {
-    const response = await this.$API.facebookLoginPrepare(`${window.location.origin}/login/facebook/callback`, type || 'binding')
     const type = this.$route.query.from
+    const response = await this.$API.facebookLoginPrepare(`${window.location.origin}/login/facebook/callback`, type || 'binding')
 
     window.location.href = response.data
   },
