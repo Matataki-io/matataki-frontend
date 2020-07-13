@@ -1,195 +1,186 @@
 <template>
-  <userLayout :need-frame="false">
-    <template slot="main">
-      <div class="tokens-main">
-        <h2 class="tag-title">
-          {{ $t('user.buycoins') }}
-        </h2>
-
-        <div v-loading="loading" class="card-container buycoins">
-          <div class="line" />
-
-          <el-table
-            :data="pointLog.list"
-            :expand-row-keys="expands"
-            class="hide-expand-button hold-table"
-            style="width: 100%"
-            row-key="token_id"
-            @sort-change="sortChange"
-          >
-            <el-table-column
-              prop="total_supply"
-              label="Fan票"
-            >
-              <template slot-scope="scope">
-                <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac" target="_blank">
-                  <c-token-popover :token-id="Number(scope.row.token_id)">
-                    <avatar :src="cover(scope.row.logo)" style="margin-right: 10px; min-width: 30px;" />
-                  </c-token-popover>
-                  <span class="scope">{{ scope.row.symbol }}</span>
-                </router-link>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="total_supply"
-              label="名称"
-            >
-              <template slot-scope="scope">
-                <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}">
-                  <span class="scope">{{ scope.row.name }}</span>
-                </router-link>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              :label="$t('token.founder')"
-            >
-              <template slot-scope="scope">
-                <n-link
-                  :to="{name: 'user-id', params: {id: scope.row.uid}}"
-                  class="invite-block author"
+  <div>
+    <div v-loading="loading" class="card-container">
+      <el-table
+        :data="pointLog.list"
+        :expand-row-keys="expands"
+        class="hole-ticket-hide-expand-button hold-table"
+        style="width: 100%"
+        row-key="token_id"
+        @sort-change="sortChange"
+      >
+        <el-table-column prop="total_supply" label="Fan票" width="180">
+          <template slot-scope="scope">
+            <div class="hold">
+              <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac hold-z-index" target="_blank">
+                <c-token-popover :token-id="Number(scope.row.token_id)">
+                  <avatar :src="cover(scope.row.logo)" style="margin-right: 10px; min-width: 30px;" />
+                </c-token-popover>
+                <span class="scope">{{ scope.row.symbol }}</span>
+              </router-link>
+              <div class="hold-bc" :style="{'width': setHoldBc(scope.row.amount)}" />
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="持有"
+          prop="total_supply"
+          sortable="custom"
+          width="180"
+        >
+          <template slot-scope="scope">
+            <span class="scope hold-z-index">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <tokensDetail
+              v-if="expands[0] === scope.row.token_id"
+              :id="scope.row.token_id"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column label="现价" width="180">
+          <template slot-scope="scope">
+            <span class="scope hold-z-index">
+              {{ scope.row.current_price }}
+              (<span :style="{color: $utils.amountColor(scope.row.price_change_24h)}">{{ change24(scope.row.price_change_24h) }}</span>)
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="create_time"
+          label=""
+          align="right"
+        >
+          <!-- <template slot="header">
+            <el-input
+              size="small"
+              placeholder="输入关键字搜索"
+              suffix-icon="el-icon-search"
+              style="max-width: 240px;"
+            />
+          </template> -->
+          <template slot-scope="scope">
+            <div class="invite-block btn">
+              <!-- <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}"> -->
+              <el-button
+                type="text"
+                class="info-button"
+                size="small"
+                @click="foldingClick(scope.row.token_id)"
+              >
+                <span
+                  v-if="expands[0] !== scope.row.token_id"
+                  class="expand-button"
                 >
-                  <!-- <avatar :src="cover(scope.row.avatar)" /> -->
-                  <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
-                </n-link>
-              </template>
-            </el-table-column>
+                  展开明细
+                  <i class="el-icon-d-arrow-right i-spin-z90" />
+                </span>
+                <span
+                  v-else
+                  class="expand-button"
+                >
+                  收起明细
+                  <i class="el-icon-d-arrow-right i-spin-f90" />
+                </span>
+              </el-button>
+              <!-- </router-link> -->
+              <el-button
+                class="info-button"
+                style="margin: 0 10px;"
+                size="small"
+                @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
+              >
+                {{ $t('gift') }}
+              </el-button>
 
-            <el-table-column
-              :label="$t('user.positionCoins')"
-              prop="total_supply"
-              sortable="custom"
-            >
-              <template slot-scope="scope">
-                <span class="scope">{{ tokenAmount(scope.row.amount, scope.row.decimals) }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column type="expand">
-              <template slot-scope="scope">
-                <tokensDetail
-                  v-if="expands[0] === scope.row.token_id"
-                  :id="scope.row.token_id"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="create_time"
-              label=""
-              width="220"
-            >
-              <template slot-scope="scope">
-                <div class="invite-block btn">
-                  <!-- <router-link :to="{name: 'tokens-id', params: {id: scope.row.token_id}}"> -->
-                  <el-button
-                    type="text"
-                    class="info-button"
-                    size="small"
-                    @click="foldingClick(scope.row.token_id)"
-                  >
-                    <span
-                      v-if="expands[0] !== scope.row.token_id"
-                      class="expand-button"
-                    >
-                      展开明细
-                      <i class="el-icon-d-arrow-right i-spin-z90" />
-                    </span>
-                    <span
-                      v-else
-                      class="expand-button"
-                    >
-                      收起明细
-                      <i class="el-icon-d-arrow-right i-spin-f90" />
-                    </span>
-                  </el-button>
-                  <!-- </router-link> -->
-                  <el-button
-                    class="info-button"
-                    style="margin: 0 10px;"
-                    size="small"
-                    @click="showGift(scope.row.symbol, scope.row.token_id, tokenAmount(scope.row.amount, scope.row.decimals), scope.row.decimals )"
-                  >
-                    {{ $t('gift') }}
-                  </el-button>
-                  <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
-                    <el-button
-                      type="primary"
-                      class="info-button"
-                      size="small"
-                    >
-                      {{ $t('transaction') }}
-                    </el-button>
-                  </router-link>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-dropdown size="small">
+                <el-button size="small">
+                  更多<i class="el-icon-arrow-down el-icon--right" />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
+                      交易
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'token-id', params: { id: scope.row.token_id } }" target="_blank">
+                      进入主页
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link class="token-more-link" :to="{name: 'exchange', hash: '#pool', query: { output: scope.row.symbol }}" target="_blank">
+                      添加流动性
+                    </router-link>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
 
 
-          <ul class="hold-list">
-            <li class="hold-header">
-              <span>Fan票</span>
-              <span @click="sortChangeM">持仓量<i class="el-icon-d-caret" /></span>
-            </li>
-            <li v-for="(item, index) in pointLog.list" :key="index">
-              <div class="item">
-                <router-link :to="{name: 'token-id', params: {id: item.token_id}}" class="fl ac item-name">
-                  <avatar :src="cover(item.logo)" />
-                  <span>{{ item.symbol }}</span>
-                </router-link>
+      <ul class="hold-list">
+        <li class="hold-header">
+          <span>Fan票</span>
+          <span @click="sortChangeM">持仓量<i class="el-icon-d-caret" /></span>
+        </li>
+        <li v-for="(item, index) in pointLog.list" :key="index">
+          <div class="item">
+            <router-link :to="{name: 'token-id', params: {id: item.token_id}}" class="fl ac item-name">
+              <avatar :src="cover(item.logo)" />
+              <span>{{ item.symbol }}</span>
+            </router-link>
 
-                <span class="item-amount">{{ tokenAmount(item.amount, item.decimals) }}</span>
+            <span class="item-amount">{{ tokenAmount(item.amount, item.decimals) }}</span>
 
-                <div class="item-btn">
-                  <span class="item-more" @click="foldingClick(item.token_id)">
-                    <!-- {{ expands[0] !== item.token_id ? '展开明细' : '收起明细' }} -->
-                    <i class="el-icon-d-arrow-right item-more-icon" :class="expands[0] !== item.token_id && 'active'" />
-                  </span>
-                  <el-button
-                    style="margin: 0 4px;"
-                    size="mini"
-                    @click="showGift(item.symbol, item.token_id, tokenAmount(item.amount, item.decimals), item.decimals )"
-                  >
-                    {{ $t('gift') }}
-                  </el-button>
-                  <router-link :to="{name: 'exchange', hash: '#swap', query: { output: item.symbol }}">
-                    <el-button
-                      type="primary"
-                      size="mini"
-                    >
-                      {{ $t('transaction') }}
-                    </el-button>
-                  </router-link>
-                </div>
-              </div>
-              <tokensDetail
-                v-if="expands[0] === item.token_id"
-                :id="item.token_id"
-              />
-            </li>
-          </ul>
-        </div>
-        <user-pagination
-          v-show="!loading"
-          :reload="reload"
-          :current-page="currentPage"
-          :params="pointLog.params"
-          :api-url="pointLog.apiUrl"
-          :page-size="pointLog.params.pagesize"
-          :total="total"
-          :need-access-token="true"
-          class="pagination"
-          @paginationData="paginationData"
-          @togglePage="togglePage"
-        />
-      </div>
-      <TransferDialog v-model="giftDialog" :form2="form" />
-      <!-- 流动金 -->
-      <holdliquidity />
-    </template>
-    <template slot="nav">
-      <myAccountNav />
-    </template>
-  </userLayout>
+            <div class="item-btn">
+              <span class="item-more" @click="foldingClick(item.token_id)">
+                <!-- {{ expands[0] !== item.token_id ? '展开明细' : '收起明细' }} -->
+                <i class="el-icon-d-arrow-right item-more-icon" :class="expands[0] !== item.token_id && 'active'" />
+              </span>
+              <el-button
+                style="margin: 0 4px;"
+                size="mini"
+                @click="showGift(item.symbol, item.token_id, tokenAmount(item.amount, item.decimals), item.decimals )"
+              >
+                {{ $t('gift') }}
+              </el-button>
+              <router-link :to="{name: 'exchange', hash: '#swap', query: { output: item.symbol }}">
+                <el-button
+                  type="primary"
+                  size="mini"
+                >
+                  {{ $t('transaction') }}
+                </el-button>
+              </router-link>
+            </div>
+          </div>
+          <tokensDetail
+            v-if="expands[0] === item.token_id"
+            :id="item.token_id"
+          />
+        </li>
+      </ul>
+    </div>
+    <user-pagination
+      v-show="!loading"
+      :reload="reload"
+      :current-page="currentPage"
+      :params="pointLog.params"
+      :api-url="pointLog.apiUrl"
+      :page-size="pointLog.params.pagesize"
+      :total="total"
+      :need-access-token="true"
+      class="pagination"
+      @paginationData="paginationData"
+      @togglePage="togglePage"
+    />
+    <TransferDialog v-model="giftDialog" :form2="form" />
+  </div>
 </template>
 
 <script>
@@ -197,19 +188,13 @@ import debounce from 'lodash/debounce'
 import userPagination from '@/components/user/user_pagination.vue'
 import { xssFilter } from '@/utils/xss'
 import avatar from '@/common/components/avatar'
-import userLayout from '@/components/user/user_layout.vue'
-import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import { precision } from '@/utils/precisionConversion'
-import holdliquidity from '@/components/holdliquidity/index.vue'
 import tokensDetail from '@/components/tokens_detail/index.vue'
 import TransferDialog from '@/components/TransferDialog'
 
 export default {
   components: {
-    userLayout,
-    myAccountNav,
     userPagination,
-    holdliquidity,
     tokensDetail,
     avatar,
     TransferDialog
@@ -278,7 +263,7 @@ export default {
   watch: {
     searchUserName() {
       this.searchUser()
-    }
+    },
   },
   methods: {
     createTime(time) {
@@ -403,7 +388,46 @@ export default {
       let order = this.pointLog.params.order
       this.pointLog.params.order = (++order) % 3
       this.reload = Date.now()
-    } 
+    },
+    // 24h 百分比
+    change24(val) {
+      if (val) {
+        const amount = (val * 100).toFixed(2) + '%'
+        if (parseInt(amount) > 0) return '+' + amount
+        return amount
+      } else return '0%'
+    },
+    // 设置持有 token 的背景条
+    setHoldBc(data) {
+      try {
+        let val = parseInt(data)
+
+        let list = this.pointLog.list.map(i => i.amount)
+        let max = Math.max(...list)
+        let percentage = Math.floor(max / 100) // 按照最大的值计算 刻度
+
+        // 默认 10px
+        let widthVal = '10px'
+
+        if (val <= 1) { // 最小 1 ==== 0.0001
+          widthVal = '10px'
+        } else if (val >= max) { // 最大
+          widthVal = '320px'
+        } else {
+          // 按照刻度求百分比 向下取值 向上/四舍五入 可能99.6 => 100%
+          let valPercentage = Math.floor(val / percentage)
+          // 根据百分比计算宽度
+          let bcWidth = (320 * (valPercentage / 100))
+
+          // 最小不能少于 10, 如果太小 按照 10 展示
+          widthVal = (bcWidth < 10 ? 10 : bcWidth) + 'px'
+        }
+        return widthVal
+      } catch (e) {
+        console.log(e)
+        return '10px'
+      }
+    }
   }
 }
 </script>
@@ -463,21 +487,10 @@ export default {
   }
 }
 
-.tokens-main {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: @br10;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-}
-.tag-title {
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 10px;
-  margin: 0;
-}
 .expand-button {
   font-size: 14px;
+  font-weight:400;
+  color:rgba(84,45,224,1);
   .i-spin {
     &-z90 {
       transform: rotate(90deg)
@@ -645,6 +658,17 @@ export default {
     }
   }
 }
+
+
+.token-more-link {
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
+
+
+
 .transfer-dialog /deep/ .el-dialog {
   width: 600px !important;
 }
@@ -665,20 +689,35 @@ export default {
 
 </style>
 
-<style lang="less">
-.buycoins {
-  .el-table th>.cell {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-  }
-  .el-table td, .el-table th.is-leaf {
-    border-bottom: none;
-  }
-  .el-table::before {
-    height: 0;
+<style lang="less" scoped>
+.hold-z-index {
+  position: relative;
+  z-index: 2;
+}
+.hold {
+  position: relative;
+  padding: 8px;
+  .hold-bc {
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    max-width: 320px;
+    // height: 46px;
+    background-color: #EBE6FF;
+    z-index: 1;
+    border-radius: 8px;
   }
 }
-.hide-expand-button {
+
+/deep/ .hold-table {
+  .el-table__row .cell {
+    overflow: initial;
+  }
+}
+
+
+/deep/ .hole-ticket-hide-expand-button {
   .el-table__body-wrapper .el-table__body .el-table__row .el-table__expand-column .cell {
     display: none;
   }

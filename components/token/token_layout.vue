@@ -63,7 +63,7 @@
         </div>
         <router-link
           v-if="isLogined"
-          :to="{ name: 'tokens' }"
+          :to="{ name: 'token' }"
           tag="div"
           class="balance"
         >
@@ -261,7 +261,7 @@
           <slot />
         </div>
 
-        <tokenRelated class="related" />
+        <tokenRelated />
       </el-col>
       <el-col :span="7">
         <!-- <router-link class="exchange" :to="{name: 'exchange'}">
@@ -291,6 +291,7 @@
               <a
                 :href="formatUrl(item)"
                 target="_blank"
+                rel="noopener noreferrer"
               >{{ item }}</a>
             </li>
           </ul>
@@ -357,7 +358,7 @@
 import { mapGetters } from 'vuex'
 import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
-import mineTokensNav from '@/components/user/minetokens_nav.vue'
+import mineTokensNav from '@/components/token/datasheets/tokens_datasheets_nav'
 import Share from '@/components/token/token_share.vue'
 import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
@@ -677,8 +678,7 @@ export default {
 .detail,
 .about,
 .social,
-.share,
-.related {
+.share {
   background: @white;
   padding: 20px;
   border-radius: @br10;

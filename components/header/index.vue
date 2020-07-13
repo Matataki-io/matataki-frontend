@@ -134,7 +134,7 @@
           >
             <n-link
               :to="{name: 'user-id', params:{id: currentUserInfo.id}}"
-              class="link"
+              class="link border-tl-tr"
             >
               <el-dropdown-item>
                 {{ currentUserInfo.nickname || currentUserInfo.name }}
@@ -150,7 +150,7 @@
             </n-link>
 
             <div
-              class="link"
+              class="link border-br-bl"
               @click="btnsignOut"
             >
               <el-dropdown-item>
@@ -760,9 +760,16 @@ export default {
 .user-dorpdown {
   max-width: 150px;
   box-sizing: border-box;
+  .border-tl-tr {
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+  }
+  .border-br-bl {
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+  }
   &.el-dropdown-menu {
     padding: 0;
-    border: noen;
   }
   .el-dropdown-menu__item {
     font-size: 14px;
@@ -774,12 +781,6 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    &:nth-of-type(1) {
-      border-radius: 4px 4px 0 0;
-    }
-    &:nth-last-of-type(1) {
-      border-radius: 0 0 4px 4px;
-    }
   }
   .el-dropdown-menu__item--divided {
     margin-top: 0;
@@ -794,6 +795,9 @@ export default {
     .link {
       color: #fff;
     }
+  }
+  /deep/ .popper__arrow {
+    margin-top: -1px;
   }
 }
 </style>

@@ -22,6 +22,12 @@
       </p>
     </div>
     <div>
+      <!-- <router-link :to="{name: 'token-id', params: { id: tokenData.id }}">
+        <el-button size="small">
+          管理后台
+        </el-button>
+      </router-link> -->
+
       <router-link
         :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
         class="fl ac"

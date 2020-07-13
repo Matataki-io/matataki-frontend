@@ -932,6 +932,36 @@ minetokenGetResources(tokenId) {
       data: data
     })
   },
+  // google 登录
+  googleLoginPrepare(callbackUrl, state) {
+    return request({
+      method: 'GET',
+      url: '/login/google/prepare',
+      params: { callbackUrl, state }
+    })
+  },
+  googleLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/google',
+      data: data
+    })
+  },
+  // facebook 登录
+  facebookLoginPrepare(callbackUrl, state) {
+    return request({
+      method: 'GET',
+      url: '/login/facebook/prepare',
+      params: { callbackUrl, state }
+    })
+  },
+  facebookLogin(data) {
+    return request({
+      method: 'POST',
+      url: '/login/facebook',
+      data: data
+    })
+  },
   // --------------------------- 搜索 ------------------------------------
   search(type, params) {
     return request.get(`/search/${type}`, { params })
@@ -1093,5 +1123,12 @@ minetokenGetResources(tokenId) {
   // 获取评论列表
   commentGetComments(params) {
     return request.get(`/comment/getComments`, { params } )
+  },
+  payTokenToArticle(data) {
+    return request({
+      method: 'POST',
+      url: '/orders/payArticle',
+      data
+    })
   }
 }

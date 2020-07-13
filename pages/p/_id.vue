@@ -141,7 +141,7 @@
                   <div class="fl price">
                     {{ $t('paidRead.pay') }}
                     <span class="amount">{{ getArticlePrice }}</span>
-                    <template v-if="getPayToken.token_id">
+                    <template v-if="getPayToken.token_id !== 0">
                       <router-link
                         :to="{name: 'token-id', params:{ id:getPayToken.token_id }}"
                         target="_blank"
@@ -347,6 +347,7 @@
 <script>
 // import throttle from 'lodash/throttle'
 import { mapGetters } from 'vuex'
+import BigNumber from 'bignumber.js'
 import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
@@ -1204,7 +1205,95 @@ export default {
         this.$store.commit('setCommentRequest')
       }, 3000)
     },
-    wxpayArticle() {
+    // 处理支付币阅读的文章
+    async handlePayToken() {
+      // 判断余额，余额不足->去创建买币订单，余额足->直接支付
+      const {
+        decimals,
+        logo,
+        token_id: id,
+        name,
+        symbol
+      } = this.article.prices[0]
+      this.form.outputToken = {
+        decimals,
+        id,
+        logo,
+        name,
+        symbol
+      }
+      const needPay = this.getArticlePrice
+      // 查看余额
+      const res = await this.$API.getUserBalance(id)
+      const balance = this.$utils.fromDecimal(res.data, decimals)
+      // 余额不足，去创建买币订单
+      if (balance < needPay) {
+        const _needPay = new BigNumber(needPay)
+        this.form.output = parseFloat(_needPay.minus(balance).toString())
+        this.$alert('是否创建订单？', '余额不足', {
+          confirmButtonText: '确定',
+          callback: action => {
+            if (action === 'confirm') {
+              this.createOrder()
+            }
+          }
+        })
+      } else { // 余额足，直接支付
+        this.form.output = 0
+        this.$alert('是否直接支付？', '余额充足', {
+          confirmButtonText: '确定',
+          callback: action => {
+            if (action === 'confirm') {
+              this.payTokenToArticle()
+            }
+          }
+        })
+      }
+      console.log('balance', balance, 'this.form.output', this.form.output)
+    },
+    // 直接支付token
+    async payTokenToArticle() {
+      const loading = this.$loading({
+        lock: false,
+        text: '购买中',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
+      this.$API.payTokenToArticle({
+        pid: this.article.id
+      })
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            window.location.reload()
+          } else {
+            this.$message({
+              showClose: true,
+              message: res.message || '支付失败，请刷新页面重试',
+              type: 'error'
+            })
+          }
+        })
+    },
+    async createOrder() {
+      let needToken = false
+      let needPrice = false
+      // 是持币阅读文章 或者 是需要买币阅读（非cny）
+      if ((this.isTokenArticle && !this.tokenHasPaied) || this.getPayToken.token_id !== 0) {
+        needToken = true
+      }
+      if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id === 0) {
+        needPrice = true
+      }
+      console.log(this.form)
+      // type这个字段不重要，可以去除
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        needToken,
+        needPrice,
+        signId: this.article.id
+      })
+    },
+    async wxpayArticle() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
         return false
@@ -1213,29 +1302,12 @@ export default {
         this.$message.error(this.getInputAmountError)
         return
       }
-      this.$store.dispatch('order/createOrder', {
-        ...this.form,
-        type: 'buy_token_output',
-        needToken: this.isTokenArticle && !this.tokenHasPaied,
-        needPrice: this.isPriceArticle && !this.priceHasPaied,
-        signId: this.article.id
-      })
-      /* const loading = this.$loading({
-        lock: false,
-        text: '提交中',
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
-      const requestParams = this.makeOrderParams()
-      this.$API.createOrder(requestParams).then(res => {
-        loading.close()
-        if (res.code === 0) {
-          // this.tradeNo = res.data
-          // this.showOrderModal = true
-          this.$router.push({ name: 'order-id', params: { id: res.data } })
-        } else {
-          this.$message.error('订单创建失败')
-        }
-      }) */
+      // 如果是付币阅读的文章
+      if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id !== 0) {
+        await this.handlePayToken()
+      } else {
+        this.createOrder()
+      }
     },
     async calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {

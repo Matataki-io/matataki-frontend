@@ -875,7 +875,11 @@ export default {
     } else if (type === 'edit') {
       const { hash } = this.$route.query
       // 编辑文章
-      this.setArticleDataById(hash, id)
+      if (process.browser) {
+        this.$nextTick(() => {
+          this.setArticleDataById(hash, id)
+        })
+      }
     } else {
       console.log('路由错误')
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
@@ -885,11 +889,18 @@ export default {
     // this.setToolBar()
   },
   beforeRouteLeave(to, from, next) {
-    if (this.changed()) return next()
-    if (window.confirm(this.$t('publish.modalTextText'))) {
-      next()
+    // 只有编辑页面使用
+    if (this.$route.params.type === 'edit') {
+
+      if (this.changed()) return next()
+      if (window.confirm(this.$t('publish.modalTextText'))) {
+        next()
+      } else {
+        next(false)
+      }
+
     } else {
-      next(false)
+      next()
     }
   },
   beforeMount() {
@@ -978,11 +989,17 @@ export default {
       }
     }, 500),
     unload($event) {
-      // 刷新页面 关闭页面有提示
-      // https://jsfiddle.net/jbf4vL7h/29/
-      const confirmationMessage = 'o/'
-      $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
-      return confirmationMessage // Gecko, WebKit, Chrome <34
+      // 只有编辑页面使用
+      if (this.$route.params.type === 'edit') {
+        if (!this.allowLeave) {
+        // 刷新页面 关闭页面有提示
+        // https://jsfiddle.net/jbf4vL7h/29/
+          const confirmationMessage = 'o/'
+          $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
+          return confirmationMessage // Gecko, WebKit, Chrome <34
+        }
+      }
+
     },
     changed() {
       // 如果允许关闭 或者 内容都为空
@@ -990,15 +1007,17 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      await this.$API.getIpfsData(hash, true).then(res => {
-        if (res.code === 0) {
+      await this.$API.getIpfsData(hash, true)
+        .then(res => {
+          if (res.code === 0) {
           // 设置文章内容
-          this.title = res.data.title
-          this.markdownData = res.data.content
-        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
-      }).catch(err => {
-        console.log('err', err)
-      })
+            this.title = res.data.title
+            this.markdownData = res.data.content
+            this.renderMarkdown()
+          } else this.$message({ showClose: true, message: res.message, type: 'warning'})
+        }).catch(err => {
+          console.log('err', err)
+        })
       // 获取文章信息
       await this.$API.getCanEditPost(id).then(res => {
         // console.log('获取文章信息:', id, res)
@@ -1301,7 +1320,7 @@ export default {
           this.id = res.data
           // console.log(this.$route)
           const url = window.location.origin + '/publish/draft/' + res.data
-          history.pushState({}, '', url)
+          history.replaceState({}, '', url)
 
         } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }).catch(err => {
@@ -1837,6 +1856,19 @@ export default {
       this.readSelectOptions.forEach((token,index) => {
         if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
       })
+    },
+    // hack render markdown
+    renderMarkdown() {
+      setTimeout(() => {
+        let previewContent = document.querySelector('#previewContent')
+        console.log('innerHTML', previewContent.innerHTML)
+        if (!previewContent.innerHTML) {
+          this.allowLeave = true
+          setTimeout(() => {
+            window.location.reload()
+          }, 300)
+        }
+      }, 1000)
     }
   }
 }

@@ -793,11 +793,11 @@ export default {
         tradingFanTickets: 'Trading Fan tickets',
         underDeployment: 'Fan tickets are being deployed, please come back later!',
         enterTheNumber: 'Please enter the purchase quantity first',
-        relatedActivities: '相关活动',
-        tokenManagement: 'Fan票管理',
-        expandMod: '拓展MOD',
-        recommendMod: '推荐模组',
-        quickEntrance: '快捷入口'
+        relatedActivities: 'Related activities',
+        tokenManagement: 'Fan Ticket Management',
+        expandMod: 'Expand MOD',
+        recommendMod: 'Recommend Mod',
+        quickEntrance: 'Quick entrance'
     },
     ipfsHash: {
         link: 'IPFS address',
