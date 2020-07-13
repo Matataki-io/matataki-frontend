@@ -340,6 +340,12 @@ export default {
           url: 'token',
           sup: '',
           urlList: ['token']
+        },
+        {
+          title: 'DAPP',
+          url: 'dapp',
+          sup: '',
+          urlList: ['dapp']
         }
       ]
     },
