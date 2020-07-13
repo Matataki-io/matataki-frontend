@@ -36,12 +36,11 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="流动金"
+      label="流动金Token"
       align="right"
     >
       <template slot-scope="scope">
         {{ formatPrecision(scope.row.liquidity) }}
-        {{ scope.row.symbol }}
       </template>
     </el-table-column>
   </el-table>
