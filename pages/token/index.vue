@@ -1,5 +1,5 @@
 <template>
-  <div class="token">
+  <div class="token-container">
     <tokenBanner />
     <!-- 判断是否已经发币了 -->
     <tokenBannerFan v-if="!isPublishToken" class="token-banner-fan" />
@@ -86,8 +86,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-.token {
+<style lang="less" scoped>
+.token-container {
   max-width: 1200px;
   width: 100%;
   margin: 40px auto 0;
