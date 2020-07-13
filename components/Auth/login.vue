@@ -123,7 +123,7 @@
             />
           </div>
         </el-tooltip>
-        <el-tooltip
+        <!-- <el-tooltip
           :content="$t('auth.facebookTitle')"
           class="item"
           effect="dark"
@@ -135,7 +135,7 @@
           >
             <svg-icon class="facebook" icon-class="facebook" />
           </div>
-        </el-tooltip>
+        </el-tooltip> -->
         <!-- 钱包账户 -->
         <el-tooltip
           :content="$t('auth.metamaskTitle')"
@@ -384,10 +384,10 @@ export default {
         console.error(error)
         this.loading = false
         this.$message.closeAll()
-        if ((error.message && error.message.includes("invalid json"))
-          || (error.toString() && error.toString().includes("invalid json"))
+        if ((error.message && error.message.includes('invalid json'))
+          || (error.toString() && error.toString().includes('invalid json'))
         ) {
-          this.$message.error("Please make sure you are using MetaMask.")
+          this.$message.error('Please make sure you are using MetaMask.')
         } else if (error.message) {
           this.$message.error(error.message)
         } else {
