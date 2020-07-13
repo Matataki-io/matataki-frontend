@@ -22,10 +22,21 @@
       </p>
     </div>
     <div>
-      <router-link :to="{name: 'token-id', params: { id: tokenData.id }}">
+      <!-- <router-link :to="{name: 'token-id', params: { id: tokenData.id }}">
         <el-button size="small">
           管理后台
         </el-button>
+      </router-link> -->
+
+      <router-link
+        :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
+        class="fl ac"
+      >
+        <avatar
+          :src="avatar"
+          size="30px"
+        />
+        <span class="card-username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
       </router-link>
     </div>
   </router-link>
