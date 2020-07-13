@@ -53,6 +53,10 @@ export default {
     token: {
       type: Object,
       default: () => ({})
+    },
+    currentPoolSize: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -65,8 +69,7 @@ export default {
       },
       type: 'buy_token_output',
       priceSlippage: 0.01,
-      orderShow: false,
-      currentPoolSize: {}
+      orderShow: false
     }
   },
   computed: {
@@ -81,7 +84,6 @@ export default {
   },
   mounted() {
     this.form.outputToken = this.token
-    if (this.token.id) this.getCurrentPoolSize(this.token.id)
   },
   methods: {
     pay() {
@@ -129,17 +131,6 @@ export default {
         } else {
           this.$message({ showClose: true, message: res.message, type: 'error' })
           this.form.input = ''
-        }
-      })
-    },
-    getCurrentPoolSize(tokenId) {
-      this.$API.getCurrentPoolSize(tokenId).then(res => {
-        if (res.code === 0) {
-          this.currentPoolSize = {
-            cny_amount: this.$utils.fromDecimal(res.data.cny_amount, 4),
-            token_amount: this.$utils.fromDecimal(res.data.token_amount, 4),
-            total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
-          }
         }
       })
     },

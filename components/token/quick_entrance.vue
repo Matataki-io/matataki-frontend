@@ -1,7 +1,7 @@
 <template>
   <div class="entrance">
     <h2 class="token-title">
-      {{ $t('token.relatedActivities') }}
+      {{ $t('token.quickEntrance') }}
     </h2>
     <div class="entrance-list">
       <a

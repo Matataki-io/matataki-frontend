@@ -10,7 +10,7 @@
         v-if="data.float !== 0"
         :class="data.float < 0 && 'red'"
       >
-        {{ data.float > 0 ? `+${data.float}` : data.float }}
+        {{ data.float > 0 ? `+${data.float}` : data.float }}%
       </span>
     </p>
     <h3 class="card-value">
@@ -18,6 +18,7 @@
     </h3>
     <div class="card-bottom">
       <div
+        v-if="data.openChart"
         class="card-bottom-add"
         :class="permanent && 'active'"
         @click.stop="$emit('switch-permanent')"
@@ -86,8 +87,10 @@ export default {
     font-weight: 400;
     color: black;
     line-height: 17px;
+    white-space: nowrap;
     span {
       color: #15AD8B;
+      white-space: nowrap;
       &.red {
         color: #FB6877;
       }
@@ -100,17 +103,21 @@ export default {
     color: black;
     line-height: 28px;
     text-align: center;
+    white-space: nowrap;
   }
   &-bottom {
     display: flex;
     justify-content: flex-end;
+    height: 20px;
     &-add {
       width: 20px;
       height: 20px;
       border-radius: 2px;
       background: #B2B2B2;
-      text-align: center;
       color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         background: #896DF0;
       }

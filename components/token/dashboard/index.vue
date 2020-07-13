@@ -21,12 +21,16 @@
         </router-link>
       </div>
       <rectangleTree />
-      <rectangularPie />
+      <rectangularPie
+        :minetoken-token="minetokenToken"
+        :current-pool-size="currentPoolSize"
+        :balance="balance"
+      />
     </div>
     <div class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          增发持仓分布图
+          数据中心
         </h4>
       </div>
       <div class="card-list">
@@ -56,6 +60,8 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 import rectangleTree from './rectangle_tree'
 import rectangularPie from './rectangular_pie'
 import dataCard from './data_card'
@@ -73,6 +79,18 @@ export default {
       type: Object,
       required: true
     },
+    minetokenExchange: {
+      type: Object,
+      required: true
+    },
+    currentPoolSize: {
+      type: Object,
+      required: true
+    },
+    balance: {
+      type: Number,
+      default: 0
+    }
   },
   data() {  
     return {
@@ -80,68 +98,112 @@ export default {
       dataList: [
         {
           name: '当前价格',
-          symbol: '',
+          label: 'price',
+          symbol: '￥',
           value: 0,
           float: 0,
+          openChart: true,
           permanent: false
         },
         {
           name: '流动金',
-          symbol: '',
+          label: 'cny_reserve',
+          symbol: '￥',
           value: 0,
           float: 0,
+          openChart: true,
           permanent: false
         },
         {
           name: '24h交易额',
-          symbol: '',
+          label: 'amount_24h',
+          symbol: '￥',
           value: 0,
           float: 0,
+          openChart: false,
           permanent: false
         },
         {
           name: '24h交易量',
+          label: 'volume_24h',
           symbol: '',
           value: 0,
           float: 0,
+          openChart: false,
           permanent: false
         },
         {
           name: '已发行',
+          label: 'total_supply',
           symbol: '',
           value: 0,
           float: 0,
+          openChart: false,
           permanent: false
         },
-        {
-          name: '收益',
-          symbol: '',
-          value: 0,
-          float: 0,
-          permanent: false
-        },
-        {
-          name: '持币者',
-          symbol: '',
-          value: 0,
-          float: 0,
-          permanent: false
-        },
-        {
-          name: '做市商',
-          symbol: '',
-          value: 0,
-          float: 0,
-          permanent: false
-        }
+        // {
+        //   name: '收益',
+        //   label: '',
+        //   symbol: '￥',
+        //   value: 0,
+        //   float: 0,
+        //   permanent: false
+        // },
+        // {
+        //   name: '持币者',
+        //   label: '',
+        //   symbol: '',
+        //   value: 0,
+        //   float: 0,
+        //   permanent: false
+        // },
+        // {
+        //   name: '做市商',
+        //   label: '',
+        //   symbol: '',
+        //   value: 0,
+        //   float: 0,
+        //   permanent: false
+        // }
       ]
     }
   },
+  computed: {
+  },
   created() {
-    this.dataList.forEach(data => {
-      data.value = Number((Math.random()*10000000).toFixed(4))
-      data.float = Number((Math.random()*20000 - 10000).toFixed(4))
-    })
+    this.initValues()
+    // this.dataList.forEach(data => {
+    //   // data.value = Number((Math.random()*10000000).toFixed(4))
+    //   data.float = Number((Math.random()*2000 - 1000).toFixed(4))
+    // })
+  },
+  methods: {
+    initValues() {
+      this.dataList.forEach(data => {
+        if(data.label !== 'price') {
+          const tokenLabel = data.label === 'total_supply' ? 'minetokenToken' : 'minetokenExchange'
+          data.value = this.unitConversion(this[tokenLabel][data.label])
+        }
+        else {
+          data.value = this.minetokenExchange[data.label] || 0
+          data.float = this.percentage(this.minetokenExchange.change_24h)
+        }
+      })
+    },
+    unitConversion(num) {
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
+    percentage(num) {
+      if (num) {
+        const amount = (num * 100).toFixed(2)
+        return parseInt(amount) > 0 ? `+${amount}` : amount
+      } else return 0
+    },
   }
 }
 </script>

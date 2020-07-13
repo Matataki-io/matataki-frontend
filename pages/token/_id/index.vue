@@ -16,12 +16,20 @@
         <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
         <management v-if="creatorVisible" />
         <expandMod v-if="creatorVisible" />
-        <dashboard :minetoken-token="minetokenToken" />
+        <dashboard
+          :minetoken-token="minetokenToken"
+          :minetoken-exchange="minetokenExchange"
+          :current-pool-size="currentPoolSize"
+          :balance="balance"
+        />
         <datasheets :minetoken-token="minetokenToken" />
       </el-col>
       <!-- 右侧卡片 -->
       <el-col v-if="clientVisible" :span="7">
-        <tokenBuyCard :token="minetokenToken" />
+        <tokenBuyCard
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        />
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
@@ -112,11 +120,12 @@ export default {
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
+      currentPoolSize: {},
       resourcesWebsites: [],
       resourcesSocialss: [],
       balance: 0,
       isMyToken: false,
-      displayAngle: 'client'
+      displayAngle: 'client',
     }
   },
   computed: {
@@ -186,6 +195,7 @@ export default {
       this.setWeChatShare()
     }
     this.minetokenGetResources(this.$route.params.id)
+    this.getCurrentPoolSize(this.$route.params.id)
   },
   methods: {
     async minetokenGetResources(id) {
@@ -217,6 +227,17 @@ export default {
     },
     setDisplayAngle(val) {
       this.displayAngle = val
+    },
+    getCurrentPoolSize(tokenId) {
+      this.$API.getCurrentPoolSize(tokenId).then(res => {
+        if (res.code === 0) {
+          this.currentPoolSize = {
+            cny_amount: this.$utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: this.$utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
+          }
+        }
+      })
     }
   }
 }
