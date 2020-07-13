@@ -792,7 +792,12 @@ export default {
         payImmediately: '立即支付',
         tradingFanTickets: '交易Fan票',
         underDeployment: 'Fan票正在部署中，请稍后过来操作!',
-        enterTheNumber: '请先输入购买数量'
+        enterTheNumber: '请先输入购买数量',
+        relatedActivities: '相关活动',
+        tokenManagement: 'Fan票管理',
+        expandMod: '拓展MOD',
+        recommendMod: '推荐模组',
+        quickEntrance: '快捷入口'
     },
     ipfsHash: {
         link: 'IPFS地址',

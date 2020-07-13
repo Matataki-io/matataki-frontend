@@ -136,10 +136,10 @@ export default {
         vntTitle: 'login with VNT',
         githubTitle: 'login with GitHub',
         wechatTitle: '微信登录',
-        telegramTitle: 'Login with Telegram',
-        twitterTitle: 'login with Twitter',
-        facebookTitle: 'login with Facebook',
-        googleTitle: 'login with Google',
+        telegramTitle: 'Telegram登录',
+        twitterTitle: 'Twitter登录',
+        facebookTitle: 'Facebook登录',
+        googleTitle: 'Google登录',
         ontDoc: '《如何使用ONT登录》',
         invite: '已邀请',
         //img
@@ -670,7 +670,7 @@ export default {
         myBookmark: 'myBookmark',
         message: 'message',
         issuedFanTickets: 'Users who have issued Fan tickets',
-        registrationTime: 'Registration time'
+        registrationTime: '注册时间'
     },
     withdraw: {
         title: 'withdraw',
@@ -783,8 +783,8 @@ export default {
         directionAndTime: 'Direction & time',
         liquidGoldToken: 'Liquid gold token',
         relatedCreations: 'Related creations',
-        sortByPopularity: 'Sort by popularity',
-        sortByTime: 'Sort by time',
+        sortByPopularity: '最热',
+        sortByTime: '最新',
         visibleTicket: 'Visible ticket',
         payToSee: 'Pay to see',
         quickPurchase: 'Quick purchase',
