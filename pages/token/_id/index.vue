@@ -19,10 +19,10 @@
 // import userPagination from '@/components/user/user_pagination.vue'
 // import minetokenCard from '@/components/user/minetoken_card'
 import layout from '@/components/token/token_layout.vue'
-import tokenFanCoins from '@/components/token/token_fan_coins'
-import tokenFanCoinsDetail from '@/components/token/token_fan_coins_detail'
-import tokenLiquidity from '@/components/token/token_liquidity'
-import tokenLiquidityDetail from '@/components/token/token_liquidity_detail'
+import tokenFanCoins from '@/components/token/datasheets/token_fan_coins'
+import tokenFanCoinsDetail from '@/components/token/datasheets/token_fan_coins_detail'
+import tokenLiquidity from '@/components/token/datasheets/token_liquidity'
+import tokenLiquidityDetail from '@/components/token/datasheets/token_liquidity_detail'
 import { extractChar } from '@/utils/reg'
 
 export default {

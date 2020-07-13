@@ -12,6 +12,7 @@
             :key="index"
             :buy="item"
             type="article"
+            class="card"
           />
           <user-pagination
             v-show="!loading"
@@ -81,16 +82,21 @@ export default {
 }
 </script>
 
-<style scoped>
-.pagination {
-  padding: 40px 5px;
+<style lang="less" scoped>
+.card {
+  padding: 20px 0;
 }
+
+.pagination {
+  margin-top: 20px;
+}
+
 .tag-title {
   font-weight: bold;
   font-size: 20px;
-  padding-left: 20px;
   padding-bottom: 10px;
   margin: 0;
   border-bottom: 1px solid #ececec;
+  display: block;
 }
 </style>

@@ -5,6 +5,7 @@
       :key="index"
       :class="$route.name === item.url && 'active'"
       :to="{name: item.url, params: {id: $route.params.id}}"
+      replace
     >
       {{ item.title }}
     </router-link>

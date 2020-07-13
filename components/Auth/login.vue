@@ -42,6 +42,7 @@
         {{ $t('auth.otherAccount') }}
       </h1>
       <div class="oauth">
+        <!-- 社交账户 -->
         <el-tooltip
           :content="$t('auth.githubTitle')"
           class="item"
@@ -106,8 +107,36 @@
             />
           </div>
         </el-tooltip>
-      </div>
-      <div class="oauth">
+        <el-tooltip
+          :content="$t('auth.googleTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-google"
+            @click="walletLogin('Google')"
+          >
+            <svg-icon
+              class="google"
+              icon-class="google"
+            />
+          </div>
+        </el-tooltip>
+        <!-- <el-tooltip
+          :content="$t('auth.facebookTitle')"
+          class="item"
+          effect="dark"
+          placement="top"
+        >
+          <div
+            class="oauth-bg bg-facebook"
+            @click="walletLogin('Facebook')"
+          >
+            <svg-icon class="facebook" icon-class="facebook" />
+          </div>
+        </el-tooltip> -->
+        <!-- 钱包账户 -->
         <el-tooltip
           :content="$t('auth.metamaskTitle')"
           class="item"
@@ -300,6 +329,10 @@ export default {
         this.telegramLogin()
       } else if (type === 'Twitter') {
         this.twitterLogin()
+      } else if (type === 'Google') {
+        this.googleLogin()
+      }  else if (type === 'Facebook') {
+        this.facebookLogin()
       } else await this.signInx(type)
     },
     async signInx(type) {
@@ -351,7 +384,11 @@ export default {
         console.error(error)
         this.loading = false
         this.$message.closeAll()
-        if (error.message) {
+        if ((error.message && error.message.includes('invalid json'))
+          || (error.toString() && error.toString().includes('invalid json'))
+        ) {
+          this.$message.error('Please make sure you are using MetaMask.')
+        } else if (error.message) {
           this.$message.error(error.message)
         } else {
           this.$message.error(error.toString())
@@ -366,6 +403,14 @@ export default {
       this.$store.commit('setLoginModal', true)
       this.$store.commit('setTwitterLoginMode', 'login')
       this.$router.push({ name: 'login-twitter', query: { from: 'login' } })
+    },
+    async googleLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-google', query: { from: 'login' } })
+    },
+    async facebookLogin() {
+      this.$store.commit('setLoginModal', false)
+      this.$router.push({ name: 'login-facebook', query: { from: 'login' } })
     },
     // 登录提交
     submitLoginForm() {
@@ -450,6 +495,10 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  a {
+    color: #6c6c6c;
+    font-size: 12px;
+  }
 }
 .oauth-box {
   display: flex;
@@ -459,8 +508,8 @@ export default {
   text-align: center;
   .oauth-title {
     font-size: 16px;
-    color: #000000;
-    margin: 20px 0 20px;
+    color: #333;
+    margin: 20px 0 10px;
     font-weight: 400;
   }
   .warning-tip {
@@ -470,7 +519,7 @@ export default {
     font-weight: 400;
   }
   .oauth {
-    margin-bottom: 10px;
+    flex-wrap: wrap;
     .vnt {
       font-size: 24px;
       padding-top: 2px;
@@ -509,11 +558,9 @@ export default {
       height: 32px;
       border-radius: 50%;
       padding: 6px;
+      margin: 10px 5px 0 5px;
       img {
         width: 20px;
-      }
-      + .oauth-bg {
-        margin-left: 20px;
       }
     }
   }

@@ -123,7 +123,7 @@ export default {
         passwordChangeFailed: '密码修改失败'
     },
     // components
-    header: { newArticle: '写文章' },
+    header: { newArticle: '创作文章' },
     auth: {
         eosWallet: 'EOS钱包',
         ontWallet: 'ONT钱包',
@@ -310,7 +310,7 @@ export default {
         share: '分享',
         timeline: '动态',
         fanTicket: 'Fan票',
-        signOut: '登出',
+        signOut: '登出账户',
         signIn: '立即登录',
         navArticle: '文章',
         navShop: '商品',
@@ -783,8 +783,8 @@ export default {
         directionAndTime: '方向&时间',
         liquidGoldToken: '流动金Token',
         relatedCreations: '相关创作',
-        sortByPopularity: '按照热度排序',
-        sortByTime: '按照时间排序',
+        sortByPopularity: '最热',
+        sortByTime: '最新',
         visibleTicket: '持票可见',
         payToSee: '付费可见',
         quickPurchase: '快捷购买',
@@ -792,7 +792,12 @@ export default {
         payImmediately: '立即支付',
         tradingFanTickets: '交易Fan票',
         underDeployment: 'Fan票正在部署中，请稍后过来操作!',
-        enterTheNumber: '请先输入购买数量'
+        enterTheNumber: '请先输入购买数量',
+        relatedActivities: '相关活动',
+        tokenManagement: 'Fan票管理',
+        expandMod: '拓展MOD',
+        recommendMod: '推荐模组',
+        quickEntrance: '快捷入口'
     },
     ipfsHash: {
         link: 'IPFS地址',

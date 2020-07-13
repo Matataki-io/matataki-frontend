@@ -165,6 +165,26 @@ export default {
           status: false,
           is_main: 0,
           disabled: false
+        },
+        {
+          type: 'google',
+          icon: 'google', // 随时可换 防止影响
+          typename: 'Google',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
+        },
+        {
+          type: 'facebook',
+          icon: 'facebook', // 随时可换 防止影响
+          typename: 'Facebook',
+          username: '', // 最好后端混淆后返回
+          loading: false,
+          status: false,
+          is_main: 0,
+          disabled: false
         }
       ]
     }
@@ -434,6 +454,14 @@ export default {
         if (this.testDomain()) {
           this.$router.push({ name: 'login-twitter' })
         }
+      } else if (type === 'google') {
+        if (this.testDomain()) {
+          this.$router.push({ name: 'login-google' })
+        }
+      } else if (type === 'facebook') {
+        if (this.testDomain()) {
+          this.$router.push({ name: 'login-facebook' })
+        }
       } else this.$message.warning(this.$t('thirdParty.pcDoesNotSupportBinding'))
 
       this.accountList[idx].loading = false
@@ -661,6 +689,24 @@ export default {
     background-color: #00ACED;
     &:hover {
       background-color: mix(#000, #00ACED, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.google {
+    background-color: #4285F4;
+    &:hover {
+      background-color: mix(#000, #4285F4, 20%);
+    }
+    .icon {
+      font-size: 20px;
+    }
+  }
+  &.facebook {
+    background-color: #4267B2;
+    &:hover {
+      background-color: mix(#000, #4267B2, 20%);
     }
     .icon {
       font-size: 20px;

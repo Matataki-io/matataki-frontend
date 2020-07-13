@@ -34,10 +34,10 @@ export default {
     } else if (type === 'binding') {
       try {
         const res = await this.$API.accountBind({
-            platform: 'twitter',
-            oauth_token,
-            oauth_verifier
-          })
+          platform: 'twitter',
+          oauth_token,
+          oauth_verifier
+        })
         if (res.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         } else {

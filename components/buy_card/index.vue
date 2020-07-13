@@ -132,7 +132,7 @@ export default {
 .buy-block {
   background: #fff;
   border-radius: 4px;
-  padding: 20px;
+  padding: 0;
   margin: 0;
   border-bottom: 1px solid #ececec;
   &:nth-last-of-type(1) {
