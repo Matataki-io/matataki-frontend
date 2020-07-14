@@ -1,8 +1,8 @@
 <template>
   <div class="treemap">
-    <div class="maximum-issuance">
-      <div :style="`width:${getPercentage(totalIssued, maximumIssuance)}`" class="total-issued">
-        <div :style="`width:${getPercentage(issued7D, totalIssued)}`" class="issued-7d">
+    <div class="total-issued">
+      <div :style="`width:${getPercentage(issued30D, totalIssued)}`" class="issued-30d">
+        <div :style="`width:${getPercentage(issued7D, issued30D)}`" class="issued-7d">
           <div :style="`width:${getPercentage(issued24H, issued7D)}`" class="issued-24h">
             <div class="data-label">
               <div class="data-label-div">
@@ -36,11 +36,11 @@
           <div class="data-label-div">
             <i class="placeholder" />
             <span>
-              <h4 :style="`font-size:${getFontSize(totalIssued)};`">
-                {{ totalIssued }}
+              <h4 :style="`font-size:${getFontSize(issued30D)};`">
+                {{ issued30D }}
               </h4>
               <p>
-                已发行总量
+                30D增发量
               </p>
             </span>
           </div>
@@ -50,11 +50,11 @@
         <div class="data-label-div">
           <i class="placeholder" />
           <span>
-            <h4 :style="`font-size:${getFontSize(maximumIssuance)};`">
-              {{ maximumIssuance }}
+            <h4 :style="`font-size:${getFontSize(totalIssued)};`">
+              {{ totalIssued }}
             </h4>
             <p>
-              上限发行量
+              已发行总量
             </p>
           </span>
         </div>
@@ -72,11 +72,14 @@ export default {
   // },
   data() {
     return {
-      maximumIssuance: 349,
-      totalIssued: 201,
-      issued7D: 100,
-      issued24H: 30
+      totalIssued: 0,
+      issued30D: 0,
+      issued7D: 0,
+      issued24H: 0
     }
+  },
+  created() {
+    this.getAddSupplyChart()
   },
   methods: {
     getFontSize(test) {
@@ -90,6 +93,21 @@ export default {
     },
     getPercentage(num, max) {
       return num / max * 100 + '%'
+    },
+    async getAddSupplyChart() {
+      try {
+        const res = await this.$API.getAddSupplyChart(this.$route.params.id)
+        if(res.code === 0) {
+          this.totalIssued = res.data.total_supply
+          this.issued30D = res.data.suppl_30d
+          this.issued7D = res.data.suppl_7d
+          this.issued24H = res.data.suppl_24h
+        }
+        else this.$message.error(res.message)
+      }
+      catch(e) {
+        console.error(e)
+      }
     }
   }
 }
@@ -151,7 +169,7 @@ export default {
     border-radius:4px;
     transition: all 0.3s;
   }
-  .maximum-issuance {
+  .total-issued {
     .data-square();
     width: 100%;
     min-width: 80px;
@@ -160,7 +178,7 @@ export default {
       min-width: 160px;
     }
   }
-  .total-issued {
+  .issued-30d {
     .data-square();
     width: 50%;
     min-width: 60px;

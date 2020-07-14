@@ -1130,5 +1130,8 @@ minetokenGetResources(tokenId) {
       url: '/orders/payArticle',
       data
     })
+  },
+  getAddSupplyChart(id) {
+    return request.get(`/minetoken/${id}/supplyChart`)
   }
 }
