@@ -1133,5 +1133,8 @@ minetokenGetResources(tokenId) {
   },
   getAddSupplyChart(id) {
     return request.get(`/minetoken/${id}/supplyChart`)
+  },
+  getHistoryPrice(tokenId) {
+    return request.get(`/token/history/price`, { params: { tokenId }})
   }
 }
