@@ -41,22 +41,37 @@
           :active="active === index"
           :permanent="cardData.permanent"
           @set-active="active = index"
-          @switch-permanent="cardData.permanent = !cardData.permanent"
         />
       </div>
     </div>
-    <div class="dashboard-block">
+    <div v-show="active === 0" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          当前价格
+          历史价格
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="period" label="30d">
+            30天
+          </el-radio>
+          <el-radio v-model="period" label="all">
+            全部
+          </el-radio>
+        </div>
+      </div>
+      <lineChart :period="period" />
+    </div>
+    <div v-show="active !== 0" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          {{ dataList[active].name }}
         </h4>
       </div>
-      <lineChart />
+      <div class="chart-no-data">
+        <div>
+          暂不支持查看 {{ dataList[active].name }} 的历史数据
+        </div>
+      </div>
     </div>
-    <p>
-      <i class="el-icon-s-cooperation" />
-      Dashboard卡片正在施工中
-    </p>
   </div>
 </template>
 <script>
@@ -111,7 +126,7 @@ export default {
           symbol: '￥',
           value: 0,
           float: 0,
-          openChart: true,
+          openChart: false,
           permanent: false
         },
         {
@@ -165,7 +180,8 @@ export default {
         //   float: 0,
         //   permanent: false
         // }
-      ]
+      ],
+      period: '30d'
     }
   },
   computed: {
@@ -227,6 +243,22 @@ export default {
         font-weight: 500;
         color: black;
         line-height: 22px;
+      }
+      .chart-period {
+        margin-right: 4%;
+      }
+    }
+
+    .chart-no-data {
+      padding: 0 3% 30px 3%;
+      div {
+        width: 100%;
+        height: 270px;
+        background: #F1F1F1;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
