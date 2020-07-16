@@ -14,8 +14,12 @@
       <!-- 左侧卡片 -->
       <el-col :span="17">
         <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
+        <tokenBuyCard
+          class="buy-card1"
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        />
         <management v-if="creatorVisible" />
-        <expandMod v-if="creatorVisible" />
         <dashboard
           :minetoken-token="minetokenToken"
           :minetoken-exchange="minetokenExchange"
@@ -25,8 +29,9 @@
         <datasheets :minetoken-token="minetokenToken" />
       </el-col>
       <!-- 右侧卡片 -->
-      <el-col v-if="clientVisible" :span="7">
+      <el-col v-show="clientVisible" :span="7">
         <tokenBuyCard
+          class="buy-card2"
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
         />
@@ -41,7 +46,6 @@
       </el-col>
       <!-- 管理视角的右侧卡片 -->
       <el-col v-if="creatorVisible" :span="7">
-        <recommendMod />
         <quickEntrance />
       </el-col>
     </el-row>
@@ -60,7 +64,7 @@ import tokenNav from '@/components/token/token_nav'
 // 左侧
 import introduction from '@/components/token/introduction'
 import management from '@/components/token/management'
-import expandMod from '@/components/token/expand_mod'
+// import expandMod from '@/components/token/expand_mod'
 import dashboard from '@/components/token/dashboard'
 import datasheets from '@/components/token/datasheets'
 // 右侧
@@ -69,7 +73,7 @@ import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
-import recommendMod from '@/components/token/recommend_mod'
+// import recommendMod from '@/components/token/recommend_mod'
 import quickEntrance from '@/components/token/quick_entrance'
 
 export default {
@@ -79,7 +83,6 @@ export default {
     // 左侧
     introduction,
     management,
-    expandMod,
     dashboard,
     datasheets,
     // 右侧
@@ -88,7 +91,6 @@ export default {
     relatedWebsites,
     socialAccount,
     widgetCopyBox,
-    recommendMod,
     quickEntrance
   },
   head() {
@@ -258,6 +260,11 @@ export default {
     padding-right: 10px;
   }
 }
+
+.buy-card1 {
+  display: none;
+  margin: 20px 0 0;
+}
 // 小于992
 @media screen and (max-width: 992px) {
   .token-container {
@@ -268,6 +275,12 @@ export default {
     .el-col-7 {
       width: 100%;
     }
+  }
+  .buy-card1 {
+    display: block;
+  }
+  .buy-card2 {
+    display: none;
   }
 }
 </style>
