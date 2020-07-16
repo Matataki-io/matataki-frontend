@@ -4,7 +4,7 @@ import utils from '@/utils/utils'
 import API from '@/api/API'
 
 export const getters = {
-  makeOrderParams: () => ({ input, output, outputToken, needToken = true, needPrice = false, signId }) => {
+  makeOrderParams: () => ({ input, output, outputToken, needToken = true, needPrice = false, signId, type }) => {
     console.log(input, output, outputToken)
     const requestParams = {
       useBalance: 0,
@@ -13,7 +13,7 @@ export const getters = {
     if (needToken) {
       requestParams.items.push({
         tokenId: outputToken.id,
-        type: 'buy_token_output',
+        type: type || 'buy_token_output',
         cny_amount: utils.toDecimal(input, outputToken.decimals),
         amount: utils.toDecimal(output, outputToken.decimals)
       })
@@ -21,7 +21,7 @@ export const getters = {
     if (needPrice) {
       requestParams.items.push({
         signId,
-        type: 'buy_post'
+        type: type || 'buy_post'
       })
     }
     return requestParams
