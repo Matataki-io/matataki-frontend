@@ -50,11 +50,11 @@
           历史价格
         </h4>
         <div class="chart-period">
-          <el-radio v-model="period" label="30d">
-            30天
-          </el-radio>
           <el-radio v-model="period" label="all">
             全部
+          </el-radio>
+          <el-radio v-model="period" label="30d">
+            30天
           </el-radio>
         </div>
       </div>
@@ -181,7 +181,7 @@ export default {
         //   permanent: false
         // }
       ],
-      period: '30d'
+      period: 'all'
     }
   },
   computed: {

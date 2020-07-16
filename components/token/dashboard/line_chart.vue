@@ -26,7 +26,7 @@ export default {
   props: {
     period: {
       type: String,
-      default: '30d'
+      default: 'all'
     },
   },
   data() {
@@ -58,6 +58,7 @@ export default {
         },
         yAxis: {
           type: 'value',
+          scale: true,
           splitLine: {
             show: false
           }
@@ -69,8 +70,9 @@ export default {
           {
             data: [],
             type: 'line',
-            smooth: true,
+            smooth: 0.25,
             showSymbol: false,
+            sampling: 'average',
             itemStyle : {
               normal : {
                 color:'#542DE0',
@@ -80,16 +82,7 @@ export default {
               }
             },
             // areaStyle: {
-            //   color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            //     {
-            //       offset: 0,
-            //       color: '#542DE0'
-            //     },
-            //     {
-            //       offset: 0.7,
-            //       color: '#f1f1f100'
-            //     }
-            //   ])
+            //   color: null
             // },
           }
         ]
@@ -126,6 +119,16 @@ export default {
       if(!this.echarts) this.echarts = this.$echarts.getInstanceByDom(document.getElementById('linechart'))
       this.echarts.resize()
     }
+    // this.orgOptions.series[0].areaStyle.color = new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //   {
+    //     offset: 0,
+    //     color: '#D4C9FF'
+    //   },
+    //   {
+    //     offset: 1,
+    //     color: '#f1f1f100'
+    //   }
+    // ])
   },
   methods: {
     async getHistoryPrice() {

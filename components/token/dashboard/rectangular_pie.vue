@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="piemap">
-      <div :style="`width:${getPercentage(iHold)}`" class="i-hold">
+      <div v-if="iHold" :style="`width:${getPercentage(iHold)}`" class="i-hold">
         <div class="data-label">
           <div class="data-label-div">
             <i class="placeholder" />
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div :style="`width:${getPercentage(othersHold)}`" class="others-hold">
+      <div v-if="othersHold" :style="`width:${getPercentage(othersHold)}`" class="others-hold">
         <div class="data-label">
           <div class="data-label-div">
             <i class="placeholder" />
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div :style="`width:${getPercentage(uniswapGoldPool)}`" class="uniswap-goldpool">
+      <div v-if="uniswapGoldPool" :style="`width:${getPercentage(uniswapGoldPool)}`" class="uniswap-goldpool">
         <div class="data-label">
           <div class="data-label-div">
             <i class="placeholder" />
@@ -120,6 +120,8 @@ export default {
   display: flex;
   background: #F1F1F1;
   height: 60px;
+  overflow: hidden;
+  border-radius: 4px;
   .data-label {
     flex: 1;
     display: flex;
@@ -163,6 +165,13 @@ export default {
     display: flex;
     min-width: 20px;
     transition: all 0.3s;
+    margin: 0 2.5px;
+    &:first-child {
+      margin-left: 0px;
+    }
+    &:last-child {
+      margin-right: 0px;
+    }
     &:hover {
       min-width: 120px;
       .data-label-div span {
@@ -174,20 +183,17 @@ export default {
     .data-square();
     width: 33.3%;
     background: #F7B500;
-    border-radius: 4px 0 0 4px;
   }
   .others-hold {
     .data-square();
     width: 33.3%;
     background: #F2853D;
     border-radius: 0;
-    margin: 0 5px;
   }
   .uniswap-goldpool {
     .data-square();
     width: 33.3%;
     background: #F35757;
-    border-radius: 0 4px 4px 0;
   }
 }
 
