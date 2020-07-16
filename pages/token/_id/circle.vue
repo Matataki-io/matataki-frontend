@@ -13,7 +13,7 @@
     <el-row class="token-container">
       <!-- 左侧卡片 -->
       <el-col :span="17">
-        <relatedActivities :minetoken-token="minetokenToken" />
+        <!-- <relatedActivities :minetoken-token="minetokenToken" /> -->
         <tokenRelated />
       </el-col>
       <!-- 右侧卡片 -->
@@ -45,7 +45,7 @@ import { accessTokenAPI } from '@/api/backend'
 import basicInfoHead from '@/components/token/basic_info_head'
 import tokenNav from '@/components/token/token_nav'
 // 左侧
-import relatedActivities from '@/components/token/related_activities'
+// import relatedActivities from '@/components/token/related_activities'
 import tokenRelated from '@/components/token/token_related'
 // 右侧
 import tokenBuyCard from '@/components/token/token_buy_card'
@@ -59,7 +59,7 @@ export default {
     basicInfoHead,
     tokenNav,
     // 左侧
-    relatedActivities,
+    // relatedActivities,
     tokenRelated,
     // 右侧
     tokenBuyCard,
