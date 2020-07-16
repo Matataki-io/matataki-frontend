@@ -1,9 +1,24 @@
 <template>
   <div class="treemap">
     <div class="total-issued">
-      <div :style="`width:${getPercentage(issued30D, totalIssued)}`" class="issued-30d">
-        <div :style="`width:${getPercentage(issued7D, issued30D)}`" class="issued-7d">
-          <div :style="`width:${getPercentage(issued24H, issued7D)}`" class="issued-24h">
+      <div
+        v-if="issued30D"
+        :style="`width:${getPercentage(issued30D, totalIssued)}`"
+        class="issued-30d"
+        :class="getMinWidth(2)"
+      >
+        <div
+          v-if="issued7D"
+          :style="`width:${getPercentage(issued7D, issued30D)}`"
+          class="issued-7d"
+          :class="getMinWidth(1)"
+        >
+          <div
+            v-if="issued24H"
+            :style="`width:${getPercentage(issued24H, issued7D)}`"
+            class="issued-24h"
+            :class="getMinWidth(0)"
+          >
             <div class="data-label">
               <div class="data-label-div">
                 <i class="placeholder" />
@@ -72,10 +87,10 @@ export default {
   // },
   data() {
     return {
-      totalIssued: 0,
-      issued30D: 0,
-      issued7D: 0,
-      issued24H: 0
+      totalIssued: 'Loading...',
+      issued30D: 'Loading...',
+      issued7D: 'Loading...',
+      issued24H: 'Loading...'
     }
   },
   created() {
@@ -108,6 +123,11 @@ export default {
       catch(e) {
         console.error(e)
       }
+    },
+    getMinWidth(num) {
+      const a = [Number(Boolean(this.issued24H)), Number(Boolean(this.issued7D)), Number(Boolean(this.issued30D))]
+      const w = [a[0], a[0] + a[1], a[0] + a[1] + a[2]][num]
+      return Boolean(w) && 'issued-w' + w
     }
   }
 }
@@ -126,7 +146,7 @@ export default {
     transition: all 0.3s;
     min-width: 20px;
     &:hover {
-      min-width: 90px;
+      min-width: 100px;
       .data-label-div span {
         transform: translate(0, -4px);
       }
@@ -181,28 +201,34 @@ export default {
   .issued-30d {
     .data-square();
     width: 50%;
-    min-width: 60px;
     background: #AF9BF3;
-    &:hover {
-      min-width: 140px;
-    }
   }
   .issued-7d {
     .data-square();
     width: 50%;
-    min-width: 40px;
     background: #896DF0;
-    &:hover {
-      min-width: 120px;
-    }
   }
   .issued-24h {
     .data-square();
     width: 50%;
-    min-width: 20px;
     background: #542DE0;
+  }
+  .issued-w1 {
+    min-width: 20px;
     &:hover {
       min-width: 100px;
+    }
+  }
+  .issued-w2 {
+    min-width: 40px;
+    &:hover {
+      min-width: 120px;
+    }
+  }
+  .issued-w3 {
+    min-width: 60px;
+    &:hover {
+      min-width: 140px;
     }
   }
 }
