@@ -15,6 +15,7 @@
       <el-col :span="17">
         <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
         <tokenBuyCard
+          v-if="clientVisible"
           class="buy-card1"
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
