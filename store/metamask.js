@@ -53,7 +53,7 @@ export const actions = {
       commit('SET_METAMASK_CONNECTION', true)
     } catch (error) {
       // @todo: handle User denied account access...
-      throw Error('你拒绝了网站对MetaMask插件的访问，无法通过MetaMask登录')
+      throw Error('You just reject MetaMask connection, please approve the connection to continute.')
     }
     try {
       const { signature, msgParams } = await getSignatureForLogin()
@@ -66,9 +66,9 @@ export const actions = {
       if (res.code === 0) {
         setToken(res.data)
         this._vm.$userMsgChannel.postMessage('login')
-        return '签名登录成功，正在跳转'
+        return 'Sign In Successfully'
       } else {
-        throw Error('签名登录失败')
+        throw Error('Failed to verify your signature')
       }
     } catch (error) {
       console.error(`Error happened when signing ${error.toString()}`)

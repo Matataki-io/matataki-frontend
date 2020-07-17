@@ -63,7 +63,7 @@
         </div>
         <router-link
           v-if="isLogined"
-          :to="{ name: 'tokens' }"
+          :to="{ name: 'token' }"
           tag="div"
           class="balance"
         >
@@ -261,7 +261,7 @@
           <slot />
         </div>
 
-        <tokenRelated class="related" />
+        <tokenRelated />
       </el-col>
       <el-col :span="7">
         <!-- <router-link class="exchange" :to="{name: 'exchange'}">
@@ -271,7 +271,10 @@
           />
           Fan票交易所
         </router-link>-->
-        <tokenBuyCard :token="minetokenToken" />
+        <tokenBuyCard
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        />
 
         <TokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
@@ -291,6 +294,7 @@
               <a
                 :href="formatUrl(item)"
                 target="_blank"
+                rel="noopener noreferrer"
               >{{ item }}</a>
             </li>
           </ul>
@@ -357,7 +361,7 @@
 import { mapGetters } from 'vuex'
 import TokenJoinFandom from './token_join_fandom'
 import avatar from '@/components/avatar/index.vue'
-import mineTokensNav from '@/components/user/minetokens_nav.vue'
+import mineTokensNav from '@/components/token/datasheets/tokens_datasheets_nav'
 import Share from '@/components/token/token_share.vue'
 import tokenBuyCard from '@/components/token/token_buy_card.vue'
 import socialIcon from '@/components/social_icon/index.vue'
@@ -394,6 +398,7 @@ export default {
     return {
       shareModalShow: false,
       tokenWidget: `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`,
+      currentPoolSize: {},
       resourcesSocialss: [],
       resourcesWebsites: [],
       showTokenSetting: false,
@@ -495,6 +500,7 @@ export default {
   },
   created() {
     this.minetokenGetResources(this.$route.params.id)
+    this.getCurrentPoolSize(this.$route.params.id)
   },
   mounted() {
     if (this.currentUserInfo.id) this.tokenUserId(this.currentUserInfo.id)
@@ -566,6 +572,17 @@ export default {
           this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
+    },
+    getCurrentPoolSize(tokenId) {
+      this.$API.getCurrentPoolSize(tokenId).then(res => {
+        if (res.code === 0) {
+          this.currentPoolSize = {
+            cny_amount: this.$utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: this.$utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
+          }
+        }
+      })
     }
   }
 }
@@ -677,8 +694,7 @@ export default {
 .detail,
 .about,
 .social,
-.share,
-.related {
+.share {
   background: @white;
   padding: 20px;
   border-radius: @br10;

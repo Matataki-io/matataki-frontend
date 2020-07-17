@@ -2,51 +2,34 @@
   <userLayout :need-frame="false">
     <template slot="main">
       <div class="cny-main">
-        <h2 class="tag-title">
-          余额 ¥
-        </h2>
-        <template v-if="viewStatus === 0">
-          <assets
-            :assets="assets"
-            type="CNY"
-            class="assets-margin"
-            @toggleWithdraw="status => viewStatus = status"
-          />
-          <div
-            v-loading="loading"
-            class="card-container"
-          >
-            <no-content-prompt :list="articleCardData.articles">
-              <assetCard
-                v-for="(item, index) in articleCardData.articles"
-                :key="index"
-                :asset="item"
-              />
-            </no-content-prompt>
-          </div>
-          <user-pagination
-            v-show="!loading"
-            :current-page="currentPage"
-            :params="articleCardData.params"
-            :api-url="articleCardData.apiUrl"
-            :page-size="articleCardData.params.pagesize"
-            :total="total"
-            :need-access-token="true"
-            class="pagination"
-            @paginationData="paginationData"
-            @togglePage="togglePage"
-          />
-        </template>
-        <template v-else>
-          <withdraw
-            type="ONT"
-            class="withdraw"
-            @toggleWithdraw="status => viewStatus = status"
-            @withdrawDone="viewStatus = 0"
-          />
-        </template>
+        <asset
+          :assets="assets"
+          type="CNY"
+          class="assets-margin"
+          @toggleWithdraw="status => viewStatus = status"
+        />
+        <div v-loading="loading" class="card-container">
+          <no-content-prompt :list="pull.articles">
+            <card
+              v-for="(item, index) in pull.articles"
+              :key="index"
+              :data="item"
+            />
+          </no-content-prompt>
+        </div>
+        <user-pagination
+          v-show="!loading"
+          :current-page="currentPage"
+          :params="pull.params"
+          :api-url="pull.apiUrl"
+          :page-size="pull.params.pagesize"
+          :total="total"
+          :need-access-token="true"
+          class="pagination"
+          @paginationData="paginationData"
+          @togglePage="togglePage"
+        />
       </div>
-      <points />
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -57,27 +40,23 @@
 <script>
 import userLayout from '@/components/user/user_layout.vue'
 import userPagination from '@/components/user/user_pagination.vue'
-import assetCard from '@/components/asset_card/index.vue'
-import assets from '@/components/user/assets.vue'
-import withdraw from '@/components/user/withdraw.vue'
+import asset from '@/components/asset_cny'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
-import points from '@/components/points/index.vue'
+import card from '@/components/asset_cny_card'
 export default {
   components: {
     userLayout,
     myAccountNav,
     userPagination,
-    assetCard,
-    assets,
-    withdraw,
-    points
+    asset,
+    card
   },
   data() {
     return {
-      articleCardData: {
+      pull: {
         params: {
           symbol: (this.$route.query.type || 'CNY').toUpperCase(),
-          pagesize: 4
+          pagesize: 10
         },
         apiUrl: 'assetList',
         articles: []
@@ -86,20 +65,19 @@ export default {
       loading: false, // 加载数据
       total: 0,
       assets: {},
-      viewStatus: 0 // 0 1
     }
   },
   methods: {
     paginationData(res) {
       // console.log(res)
-      this.articleCardData.articles = res.data.logs
+      this.pull.articles = res.data.logs
       this.assets = res.data
       this.total = res.data.count || 0
       this.loading = false
     },
     togglePage(i) {
       this.loading = true
-      this.articleCardData.articles = []
+      this.pull.articles = []
       this.currentPage = i
       const query = { ...this.$route.query }
       query.moneyPage = i
@@ -117,13 +95,11 @@ export default {
   padding: 20px;
   border-radius: @br10;
   box-sizing: border-box;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
-.tag-title {
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  margin: 0;
+
+.pagination {
+  margin-top: 20px;
 }
+
 </style>

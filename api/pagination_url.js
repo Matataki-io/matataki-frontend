@@ -86,5 +86,9 @@ export const paginationUrl = {
   // 标签最新
   tagsLatest: 'tags/latest',
   // 赞赏
-  postsReward: 'posts/:id/reward'
+  postsReward: 'posts/:id/reward',
+  // 查看我所有fan票的日志记录
+  tokenAllLogs: 'token/allLogs',
+  // 查看我所有fan票的流动金日志记录
+  tokenAllLiquidityLogs: 'token/allLiquidityLogs',
 }

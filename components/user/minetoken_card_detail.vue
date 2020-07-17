@@ -72,10 +72,11 @@ export default {
       const { type } = this.card
       const typeList = {
         mint: '增发',
-        transfer: '赠送',
+        transfer: '转账',
         exchange_purchase: '交易 ',
         exchange_addliquidity: '添加流动性',
-        exchange_removeliquidity: '删除流动性'
+        exchange_removeliquidity: '删除流动性',
+        reward_article: '打赏'
       }
       return typeList[type] || '其他'
     },

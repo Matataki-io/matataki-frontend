@@ -74,22 +74,24 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/axios',
-    '~/plugins/combined-inject.js',
-    '~/plugins/vue_plugins.js',
-    '~/plugins/vue_components.js',
+    '@/plugins/axios',
+    '@/plugins/combined-inject.js',
+    '@/plugins/vue_plugins.js',
+    '@/plugins/vue_components.js',
     // '~/plugins/i18n.js',
     '@/plugins/vue_directive.js',
     '@/plugins/vue_lazyload.js',
-    { src: '~/plugins/broadcastchannel.js', mode: 'client' },
-    { src: '~/plugins/router.js', mode: 'client', ssr: false },
+    { src: '@/plugins/broadcastchannel.js', mode: 'client' },
+    { src: '@/plugins/router.js', mode: 'client', ssr: false },
     { src: '@/plugins/element-ui', ssr: true },
     { src: '@/plugins/vant_ui', ssr: true },
     { src: '@/plugins/nossr', ssr: false },
     { src: '@/plugins/vue-mavon-editor', ssr: false },
-    { src: '~/plugins/vue_scroll_reveal.js', ssr: false },
+    { src: '@/plugins/vue_scroll_reveal.js', ssr: false },
     // { src: '~/plugins/fundebug.js', ssr: false },
-    { src: '~/plugins/sentry.js', ssr: false }
+    { src: '@/plugins/sentry.js', ssr: false },
+    { src: '@/plugins/v-viewer.js', ssr: false },
+    { src: '@/plugins/vue_echarts.js', ssr: false }
   ],
   generate: {
     // routes: [

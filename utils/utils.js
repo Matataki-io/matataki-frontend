@@ -30,6 +30,10 @@ export default {
     const timeFormat = moment(time).format('YYYY-MM-DD')
     return moment(nowTime).isAfter(timeFormat)
   },
+  // 格式化时间
+  formatTime(time, format = 'YYYY-MM-DD HH:mm:ss') {
+    return time ? moment(time).format(format) : ''
+  },
   isNull(v) {
     return v === '' || v === null || v === undefined || JSON.stringify(v) === '{}' || JSON.stringify(v) === '[]';
   },
@@ -85,6 +89,11 @@ export default {
       return
     }
   },
+  // 外观模式(高级叫法)
+  stopEvent (e) {
+    e.preventDefault()
+    e.stopPropagation()
+  },
   // 是否处于微信浏览器
   isInWeixin() {
     const isWeixin = () => /micromessenger/.test(navigator.userAgent.toLowerCase())
@@ -94,4 +103,33 @@ export default {
   isDomain(url) {
     return new RegExp(url).test(window.location.hostname.toLowerCase())
   },
+  // 数量颜色
+  amountColor(val) {
+    // 显示转换
+    const amount = parseFloat(val)
+    if (amount < 0) {
+      return '#d74e5a'
+    } else if (amount > 0) {
+      return '#41b37d'
+    } else {
+      return 'rgb(153, 153, 153)'
+    }
+  },
+  // 获取客户端的宽度 高度
+  clientWidth() {
+    try {
+      return (document.body.clientWidth || document.documentElement.clientWidth) || 0
+    } catch (e) {
+      console.log(e)
+      return 0
+    }
+  },
+  clientHeight() {
+    try {
+      return (document.body.clientHeight || document.documentElement.clientHeight) || 0
+    } catch (e) {
+      console.log(e)
+      return 0
+    }
+  }
 };

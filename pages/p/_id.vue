@@ -4,7 +4,7 @@
       <div class="container">
         <!-- 文章封面 -->
         <div v-if="cover" class="TitleImage">
-          <img v-lazy="cover" alt="cover">
+          <img :src="cover" alt="cover">
         </div>
         <article class="Post-Header">
           <header>
@@ -60,13 +60,11 @@
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
           <no-ssr>
-            <mavon-editor
-              v-show="false"
-              style="display: none;"
-            />
+            <mavon-editor v-show="false" style="display: none;" />
           </no-ssr>
+          <!-- v-highlight -->
           <div
-            v-highlight
+            v-viewer="viewerOptions"
             class="markdown-body article-content"
             :class="fontSizeComputed"
             v-html="compiledMarkdown"
@@ -143,11 +141,27 @@
                   <div class="fl price">
                     {{ $t('paidRead.pay') }}
                     <span class="amount">{{ getArticlePrice }}</span>
-                    <svg-icon
-                      icon-class="currency"
-                      class="avatar-cny"
-                    />
-                    CNY
+                    <template v-if="getPayToken.token_id !== 0">
+                      <router-link
+                        :to="{name: 'token-id', params:{ id:getPayToken.token_id }}"
+                        target="_blank"
+                        class="fl"
+                      >
+                        <avatar
+                          :size="'16px'"
+                          :src="$API.getImg(getPayToken.logo)"
+                          class="avatar-token"
+                        />
+                        {{ getPayToken.symbol }} <template v-if="getPayToken.name">（{{ getPayToken.name }}）</template>
+                      </router-link>
+                    </template>
+                    <template v-else>
+                      <svg-icon
+                        icon-class="currency"
+                        class="avatar-cny"
+                      />
+                      {{ getPayToken.symbol }}
+                    </template>
                   </div>
                   <el-tooltip
                     class="item"
@@ -333,6 +347,7 @@
 <script>
 // import throttle from 'lodash/throttle'
 import { mapGetters } from 'vuex'
+import BigNumber from 'bignumber.js'
 import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
@@ -344,7 +359,7 @@ import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import CommentList from '@/components/comment/List'
-import { ipfsData } from '@/api/async_data_api.js'
+import { ipfsData, wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
@@ -476,7 +491,8 @@ export default {
       fontSizeVal: 1,
       commentRewardTab: 0, // 评论赞赏切换
       commentCount: 0, // 评论次数
-      rewardCount: 0 // 赞赏次数
+      rewardCount: 0, // 赞赏次数
+      viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
     }
   },
   head() {
@@ -501,6 +517,12 @@ export default {
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
       ],
+      script: [
+        {
+          // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        }
+      ]
     }
   },
   computed: {
@@ -572,6 +594,14 @@ export default {
         return this.$utils.fromDecimal(ad.price)
       } else {
         return 0
+      }
+    },
+    getPayToken() {
+      if (this.isPriceArticle) {
+        const ad = this.article.prices[0]
+        return ad
+      } else {
+        return {}
       }
     },
     // 是否是付费文章
@@ -697,6 +727,7 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
+      this.formatPreview()
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
@@ -724,10 +755,11 @@ export default {
     })
     // console.log('info', info.data)
 
+    let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
     if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
-      return {
+      data = {
         article: info.data,
         post: {
           content: info.data.short_content
@@ -740,13 +772,13 @@ export default {
         const res = await ipfsData($axios, hash)
         if (res.code === 0) {
           // console.log('return', res.data)
-          return {
+          data = {
             article: info.data,
             post: res.data
           }
         } else {
           // 获取失败
-          return {
+          data = {
             article: info.data,
             post: {
               content: info.data.short_content
@@ -756,7 +788,7 @@ export default {
       } else {
         // 没有hash
         // console.log('not hash')
-        return {
+        data = {
           article: info.data,
           post: {
             content: info.data.short_content
@@ -764,6 +796,37 @@ export default {
         }
       }
     }
+
+    // wx share 
+    let userAgent = req && req.headers['user-agent'].toLowerCase()
+    const isWeixin = () => /micromessenger/.test(userAgent)
+    // 在微信内才请求分享 避免造成不必要的请求
+    if (isWeixin()) {
+      console.log('yes', req.headers['user-agent'].toLowerCase())
+      
+      let defaultLink = ''
+      if (process.server) {
+        defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
+      } else if (process.browser) {
+        defaultLink = window.location.href
+      } else {
+        defaultLink = ''
+      }
+
+      if (defaultLink) {
+        try {
+          const res = await wxShare($axios, defaultLink)
+          if (res.code === 0) {
+            data.wxShareData = res.data
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    }
+    // wx share end
+
+    return data
   },
   created() {
     if (process.browser) {
@@ -786,6 +849,11 @@ export default {
       this.$nextTick(() => {
         this.setFontSize()
         this.getCommentRewardCount()
+
+        window.onload = () => {
+          this.formatPreview()
+        }
+
       })
     }
 
@@ -793,7 +861,7 @@ export default {
   destroyed() {
     clearInterval(this.timer)
   },
-  methods: {
+  methods: { 
     // 增加文章阅读量
     async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
@@ -1137,7 +1205,95 @@ export default {
         this.$store.commit('setCommentRequest')
       }, 3000)
     },
-    wxpayArticle() {
+    // 处理支付币阅读的文章
+    async handlePayToken() {
+      // 判断余额，余额不足->去创建买币订单，余额足->直接支付
+      const {
+        decimals,
+        logo,
+        token_id: id,
+        name,
+        symbol
+      } = this.article.prices[0]
+      this.form.outputToken = {
+        decimals,
+        id,
+        logo,
+        name,
+        symbol
+      }
+      const needPay = this.getArticlePrice
+      // 查看余额
+      const res = await this.$API.getUserBalance(id)
+      const balance = this.$utils.fromDecimal(res.data, decimals)
+      // 余额不足，去创建买币订单
+      if (balance < needPay) {
+        const _needPay = new BigNumber(needPay)
+        this.form.output = parseFloat(_needPay.minus(balance).toString())
+        this.$alert('是否创建订单？', '余额不足', {
+          confirmButtonText: '确定',
+          callback: action => {
+            if (action === 'confirm') {
+              this.createOrder()
+            }
+          }
+        })
+      } else { // 余额足，直接支付
+        this.form.output = 0
+        this.$alert('是否直接支付？', '余额充足', {
+          confirmButtonText: '确定',
+          callback: action => {
+            if (action === 'confirm') {
+              this.payTokenToArticle()
+            }
+          }
+        })
+      }
+      console.log('balance', balance, 'this.form.output', this.form.output)
+    },
+    // 直接支付token
+    async payTokenToArticle() {
+      const loading = this.$loading({
+        lock: false,
+        text: '购买中',
+        background: 'rgba(0, 0, 0, 0.4)'
+      })
+      this.$API.payTokenToArticle({
+        pid: this.article.id
+      })
+        .then(res => {
+          loading.close()
+          if (res.code === 0) {
+            window.location.reload()
+          } else {
+            this.$message({
+              showClose: true,
+              message: res.message || '支付失败，请刷新页面重试',
+              type: 'error'
+            })
+          }
+        })
+    },
+    async createOrder() {
+      let needToken = false
+      let needPrice = false
+      // 是持币阅读文章 或者 是需要买币阅读（非cny）
+      if ((this.isTokenArticle && !this.tokenHasPaied) || this.getPayToken.token_id !== 0) {
+        needToken = true
+      }
+      if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id === 0) {
+        needPrice = true
+      }
+      console.log(this.form)
+      // type这个字段不重要，可以去除
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        needToken,
+        needPrice,
+        signId: this.article.id
+      })
+    },
+    async wxpayArticle() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
         return false
@@ -1146,29 +1302,12 @@ export default {
         this.$message.error(this.getInputAmountError)
         return
       }
-      this.$store.dispatch('order/createOrder', {
-        ...this.form,
-        type: 'buy_token_output',
-        needToken: this.isTokenArticle && !this.tokenHasPaied,
-        needPrice: this.isPriceArticle && !this.priceHasPaied,
-        signId: this.article.id
-      })
-      /* const loading = this.$loading({
-        lock: false,
-        text: '提交中',
-        background: 'rgba(0, 0, 0, 0.4)'
-      })
-      const requestParams = this.makeOrderParams()
-      this.$API.createOrder(requestParams).then(res => {
-        loading.close()
-        if (res.code === 0) {
-          // this.tradeNo = res.data
-          // this.showOrderModal = true
-          this.$router.push({ name: 'order-id', params: { id: res.data } })
-        } else {
-          this.$message.error('订单创建失败')
-        }
-      }) */
+      // 如果是付币阅读的文章
+      if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id !== 0) {
+        await this.handlePayToken()
+      } else {
+        this.createOrder()
+      }
     },
     async calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
@@ -1326,7 +1465,7 @@ export default {
           <p style="flex: 1">
             持有：${need[i].amount / 10000 }
             <a href="/token/${need[i].id}">
-            <img src="${this.$ossProcess(need[i].logo)}" alt="logo">
+            <img src="${this.$ossProcess(need[i].logo)}" alt="logo" data-noenlarge="1">
             ${need[i].symbol}(${need[i].name})
             </a>
           </p>
@@ -1340,7 +1479,7 @@ export default {
       unlockPrompt.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${lockSvg}" alt="lock"
+            src="${lockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
         ${unlockPrompt.innerHTML.trim() !== 'Hidden content' ? unlockPrompt.innerHTML + '\n<hr />' : ''}
@@ -1361,7 +1500,7 @@ export default {
       unlockContent.innerHTML = `
         <div class="lock-bg">
           <img
-            src="${unlockSvg}" alt="lock"
+            src="${unlockSvg}" alt="lock" data-noenlarge="1"
           />
         </div>
       ` + unlockContent.innerHTML
@@ -1457,7 +1596,8 @@ export default {
       this.$wechatShare({
         title: this.article.title,
         desc: desc,
-        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : ''
+        imgUrl: this.article.cover ? this.$ossProcess(this.article.cover) : '',
+        data: this.wxShareData || {}
       })
     },
     // 设置文章默认文字大小
@@ -1494,9 +1634,29 @@ export default {
       await this.getCommentCount()
       await this.getRewardCount()
     },
+    // 格式化文章样式
+    formatPreview() {
+      try {
+        if (window.$ && window.finishView) {
+          window.finishView(window.$('.article-content'))
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+.placeholder {
+  min-height: 300px;
+  text-align: center;
+  font-size: 16px;
+  padding: 100px 0 0;
+  box-sizing: border-box;
+}
+</style>

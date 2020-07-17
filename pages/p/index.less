@@ -97,9 +97,20 @@
 
 .article-content {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 18px !important;
   font-weight: 400px;
   line-height: 1.8;
+  z-index: 0;
+
+  /deep/ img {
+    cursor: zoom-in;
+  }
+
+  /deep/ a {
+    img {
+      cursor: pointer;
+    }
+  }
 
   .unlock {
     background-color: #f7f7f7;
@@ -122,6 +133,7 @@
       img {
         background-color: #fff0;
         color: #fff;
+        cursor: default;
       }
     }
   }
@@ -179,6 +191,7 @@
         width: 16px;
         height: 16px;
         border-radius: 50%;
+        cursor: pointer;
       }
     }
   }
@@ -186,31 +199,31 @@
 
 .article-content {
   &.font12 {
-    font-size: 12px;
+    font-size: 12px !important;
   }
 
   &.font14 {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 
   &.font16 {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   &.font18 {
-    font-size: 18px;
+    font-size: 18px !important;
   }
 
   &.font20 {
-    font-size: 20px;
+    font-size: 20px !important;
   }
 
   &.font22 {
-    font-size: 22px;
+    font-size: 22px !important;
   }
 
   &.font24 {
-    font-size: 24px;
+    font-size: 24px !important;
   }
 }
 
@@ -835,7 +848,7 @@
 
 @media screen and (max-width: 992px) {
   .article-content {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   .Post-Title {
@@ -845,7 +858,7 @@
 
 @media screen and (max-width: 600px) {
   .article-content {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 
   .Post-Title {

@@ -23,7 +23,6 @@ export default {
       tagsList: [
         { title: this.$t('user.userInformation'), url: 'setting' },
         { title: this.$t('user.accountSetting'), url: 'setting-account' },
-        { title: this.$t('user.fanWallet'), url: 'tokens' },
         { title: this.$t('user.applycoins'), url: 'tokens-apply' },
         { title: this.$t('user.myBookmark'), url: 'bookmark' },
         { title: this.$t('user.wallet'), url: 'account' },
@@ -84,15 +83,28 @@ export default {
   overflow: hidden;
   background-color: #fff;
   border-radius: @br10;
-  padding: 10px 20px;
+  padding: 0 20px;
   a {
     display:block;
-    color: #000;
+    color: #b2b2b2;
     font-size: 18px;
-    padding: 10px 0;
+    margin: 20px 0 0;
+    font-size: 500;
     &.active {
-      font-weight:bold;
       color:rgba(0,0,0,1);
+    }
+    &:nth-last-of-type(1) {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .info {
+    a {
+      display: inline-block;
+      margin-right: 10px;
+      font-size: 16px;
     }
   }
 }

@@ -1,15 +1,6 @@
 <template>
-  <div class="user-main">
-    <h2 class="tag-title">
-      持有的流动金
-    </h2>
-
-    <div
-      v-loading="loading"
-      class="card-container buycoins"
-    >
-      <div class="line" />
-
+  <div>
+    <div v-loading="loading" class="card-container buycoins">
       <el-table
         :data="pointLog.list"
         :expand-row-keys="expands"
@@ -21,35 +12,22 @@
         <el-table-column
           prop="total_supply"
           label="Fan票"
+          width="180"
         >
           <template slot-scope="scope">
             <router-link :to="{name: 'token-id', params: {id: scope.row.token_id}}" class="fl ac" target="_blank">
               <c-token-popover :token-id="Number(scope.row.token_id)">
                 <avatar :src="cover(scope.row.logo)" size="30px" style="margin-right: 10px;" />
               </c-token-popover>
-              <span class="scope">{{ scope.row.symbol }}({{ scope.row.name }})</span>
+              <span class="scope">{{ scope.row.symbol }}</span>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column
-          prop="name"
-          :label="$t('token.founder')"
-        >
-          <template slot-scope="scope">
-            <n-link
-              :to="{name: 'user-id', params: {id: scope.row.uid}}"
-              class="invite-block author"
-            >
-              <!-- <avatar :src="cover(scope.row.avatar)" size="30px" /> -->
-              <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
-            </n-link>
-          </template>
-        </el-table-column>
-
-        <el-table-column
           prop="total_supply"
           label="我的流动金Token"
           sortable="custom"
+          width="180"
         >
           <template slot-scope="scope">
             <span class="scope">{{ liquidity(scope.row.liquidity_balance, scope.row.decimals) }} ({{ percent(scope.row.liquidity_balance, scope.row.total_supply) }})</span>
@@ -66,7 +44,6 @@
         <el-table-column
           prop="create_time"
           label=""
-          width="220"
         >
           <template slot-scope="scope">
             <div class="invite-block btn">
@@ -94,7 +71,6 @@
               </el-button>
               <router-link :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}">
                 <el-button
-                  type="primary"
                   class="info-button"
                   size="small"
                 >
@@ -323,14 +299,11 @@ export default {
     font-size: 20px;
   }
 }
-.tag-title {
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 10px;
-  margin: 0;
-}
+
 .expand-button {
   font-size: 14px;
+  font-weight: 400;
+  color:rgba(84,45,224,1);
   .i-spin {
     &-z90 {
           transform: rotate(90deg)
@@ -413,13 +386,6 @@ export default {
   .el-table::before {
     height: 0;
   }
-}
-.user-main {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: @br10;
-  box-sizing: border-box;
-  margin-bottom: 120px;
 }
 .hide-expand-button {
   .el-table__body-wrapper .el-table__body .el-table__row .el-table__expand-column .cell {

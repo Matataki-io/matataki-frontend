@@ -2,6 +2,7 @@
   <div class="article-container">
     <div class="article-head">
       <tab :idx="0" />
+      
       <!-- <div
         class="sort"
       >
@@ -40,7 +41,9 @@ import debounce from 'lodash/debounce'
 import tab from '@/components/article_page/tab'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
-import { paginationData } from '@/api/async_data_api.js'
+import { paginationUrl } from '@/api/pagination_url'
+import { extractChar } from '@/utils/reg'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   transition: 'page',
@@ -108,8 +111,19 @@ export default {
       this.articleCardData[value].autoRequestTime = Date.now()
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, req }) {
     let articleList = []
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    if (process.browser) {
+      accessToekn = getCookie('ACCESS_TOKEN')
+    }
 
     try {
       // 内容列表
@@ -117,11 +131,13 @@ export default {
         channel: 1,
         extra: 'short_content'
       }
-      const resPagination = await paginationData(
-        $axios,
-        'homeScoreRanking',
-        params
-      )
+
+      const resPagination = await $axios({
+        url: paginationUrl['homeScoreRanking'],
+        methods: 'get',
+        params,
+        headers: { 'x-access-token': accessToekn }
+      })
       if (resPagination.code === 0) articleList = resPagination.data.list
       else throw new Error(resPagination.message)
     } catch (error) {
@@ -131,7 +147,7 @@ export default {
     return { articleList }
   },
   created() {
-    if (this.articleList.length !== 0) {
+    if (this.articleList && this.articleList.length !== 0) {
       this.articleCardData[0].articles = this.articleList
     }
   },
