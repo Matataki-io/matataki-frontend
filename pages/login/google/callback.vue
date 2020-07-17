@@ -34,10 +34,10 @@ export default {
     } else if (state === 'binding') {
       try {
         const res = await this.$API.accountBind({
-            platform: 'google',
-            code,
-            callbackUrl: `${window.location.origin}/login/google/callback`
-          })
+          platform: 'google',
+          code,
+          callbackUrl: `${window.location.origin}/login/google/callback`
+        })
         if (res.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         } else {
