@@ -146,6 +146,10 @@ export default {
 </script>
 
 <style scoped lang="less">
+.follow:active {
+  transform: scale(0.9);
+  box-shadow: 0 2px 25px rgba(163, 163, 163, 0.747);
+}
 .Avatar {
   width: 50px;
   height: 50px;
