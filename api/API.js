@@ -1132,6 +1132,12 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  getAddSupplyChart(id) {
+    return request.get(`/minetoken/${id}/supplyChart`)
+  },
+  getHistoryPrice(tokenId) {
+    return request.get(`/token/history/price`, { params: { tokenId }})
+  },
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },

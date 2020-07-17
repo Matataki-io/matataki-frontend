@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="piemap">
-      <div :style="`width:${getPercentage(iHold)}`" class="i-hold">
+      <div v-if="iHold" :style="`width:${getPercentage(iHold)}`" class="i-hold">
         <div class="data-label">
           <div class="data-label-div">
             <i class="placeholder" />
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div :style="`width:${getPercentage(othersHold)}`" class="others-hold">
+      <div v-if="othersHold" :style="`width:${getPercentage(othersHold)}`" class="others-hold">
         <div class="data-label">
           <div class="data-label-div">
             <i class="placeholder" />
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div :style="`width:${getPercentage(uniswapGoldPool)}`" class="uniswap-goldpool">
+      <div v-if="uniswapGoldPool" :style="`width:${getPercentage(uniswapGoldPool)}`" class="uniswap-goldpool">
         <div class="data-label">
           <div class="data-label-div">
             <i class="placeholder" />
@@ -40,7 +40,7 @@
                 {{ uniswapGoldPool }}
               </h4>
               <p>
-                Uniswap流动金池
+                流通中
               </p>
             </span>
           </div>
@@ -50,24 +50,45 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 export default {
-  // props: {
-  //   minetokenToken: {
-  //     type: Object,
-  //     required: true
-  //   },
-  // },
-  data() {
-    return {
-      iHold: 20,
-      othersHold: 167,
-      uniswapGoldPool: 231
+  props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+    currentPoolSize: {
+      type: Object,
+      required: true
+    },
+    balance: {
+      type: Number,
+      default: 0
     }
   },
+  // data() {
+  //   return {
+  //     iHold: 0,
+  //     othersHold: 0,
+  //     uniswapGoldPool: 0
+  //   }
+  // },
   computed: {
-    total() {
-      return this.iHold + this.othersHold + this.uniswapGoldPool
+    iHold() {
+      if(this.currentPoolSize.token_amount === undefined) return 'Loading...'
+      return this.balance || 0
+    },
+    othersHold() {
+      if(this.currentPoolSize.token_amount === undefined) return 'Loading...'
+      return Number((this.unitConversion(this.minetokenToken.total_supply) - (this.balance + (this.currentPoolSize.token_amount || 0))).toFixed(4))
+    },
+    uniswapGoldPool() {
+      if(this.currentPoolSize.token_amount === undefined) return 'Loading...'
+      return this.currentPoolSize.token_amount || 0
     }
+  },
+  created() {
   },
   methods: {
     getFontSize(test) {
@@ -79,9 +100,18 @@ export default {
       let r = outMin + (scale * (outMax - outMin))
       return Math.round(r)
     },
-    getPercentage(num, max) {
-      return num / (max || this.total) * 100 + '%'
-    }
+    getPercentage(num) {
+      return num / (this.iHold + this.othersHold + this.uniswapGoldPool) * 100 + '%'
+    },
+    unitConversion(num) {
+      if(!this.minetokenToken) return 0
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
   }
 }
 </script>
@@ -90,6 +120,8 @@ export default {
   display: flex;
   background: #F1F1F1;
   height: 60px;
+  overflow: hidden;
+  border-radius: 4px;
   .data-label {
     flex: 1;
     display: flex;
@@ -133,6 +165,13 @@ export default {
     display: flex;
     min-width: 20px;
     transition: all 0.3s;
+    margin: 0 2.5px;
+    &:first-child {
+      margin-left: 0px;
+    }
+    &:last-child {
+      margin-right: 0px;
+    }
     &:hover {
       min-width: 120px;
       .data-label-div span {
@@ -144,20 +183,17 @@ export default {
     .data-square();
     width: 33.3%;
     background: #F7B500;
-    border-radius: 4px 0 0 4px;
   }
   .others-hold {
     .data-square();
     width: 33.3%;
     background: #F2853D;
     border-radius: 0;
-    margin: 0 5px;
   }
   .uniswap-goldpool {
     .data-square();
     width: 33.3%;
     background: #F35757;
-    border-radius: 0 4px 4px 0;
   }
 }
 
