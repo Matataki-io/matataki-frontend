@@ -396,6 +396,7 @@ export default {
   wxpay({ total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity = 0, pay_cny_amount }) {
     return request.post('/wx/pay', { total, title, type, token_id, token_amount, limit_value, decimals, min_liquidity, pay_cny_amount })
   },
+
   // mine 个人的token list
   tokenTokenList(params) {
     return request.get('/token/tokenlist', { params })
@@ -1130,5 +1131,8 @@ minetokenGetResources(tokenId) {
       url: '/orders/payArticle',
       data
     })
-  }
+  },
+  // -------------------- 微信服务号 扫码登录 --------------------------------------
+  apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
+  apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
 }
