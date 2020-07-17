@@ -7,23 +7,14 @@
     custom-class="my-dialog br10 auth-dialog"
     @closed="() => {step = 1; isLogin = true}"
   >
-    <section
-      v-show="step === 1"
-      class="auth-main"
-    >
+    <section v-show="step === 1" class="auth-main">
       <div class="auth-title-container">
-        <span
-          :class="['auth-title', {'active':isLogin}]"
-          @click="isLogin=true"
-        >
+        <span :class="['auth-title', {'active':isLogin}]" @click="isLogin=true">
           {{ $t('login') }}</span>
-        <span
-          :class="['auth-title', {'active':!isLogin}]"
-          @click="isLogin=false"
-        >
+        <span :class="['auth-title', {'active':!isLogin}]" @click="isLogin=false">
           {{ $t('registered') }}</span>
       </div>
-      <div class="loginRegister">
+      <div>
         <Login
           v-show="isLogin"
           @switch="step = 3"
@@ -36,10 +27,7 @@
       </div>
     </section>
     <Wallet v-show="step === 2" />
-    <section
-      v-show="step === 3"
-      class="auth-main"
-    >
+    <section v-show="step === 3" class="auth-main">
       <ResetPassword @switch="step = 1;isLogin = true;" />
     </section>
     <div
@@ -64,7 +52,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Wallet from './wallet'
 import Login from './login'
 import Register from './register'
@@ -82,6 +69,12 @@ export default {
     Register,
     ResetPassword
   },
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       isLogin: true,
@@ -89,11 +82,7 @@ export default {
       showModal: false,
     }
   },
-  props: {
-    value: {
-      type: Boolean,
-      default: false
-    }
+  computed: {
   },
   watch: {
     showModal(val) {
@@ -103,8 +92,6 @@ export default {
       this.showModal = val
     }
   },
-  computed: {
-  },
   created() {
     if (process.browser) {
       this.injectScript()
@@ -113,6 +100,7 @@ export default {
   methods: {
     injectScript() {
       try {
+        // eslint-disable-next-line no-undef
         var bowl = new Bowl()
         bowl.add([
           { url: '/gt.js', key: 'gt' }

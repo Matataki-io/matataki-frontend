@@ -101,6 +101,9 @@ export default {
       if (this.isLogined) {
         this.show = true
       } else {
+        // popup login modal
+        this.$store.commit('setLoginModal', true)
+        this.$emit('login')
         this.$message({
           showClose: true,
           message: '请先登录～',

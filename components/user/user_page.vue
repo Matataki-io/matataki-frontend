@@ -99,7 +99,7 @@
           <bannerUpload
             :img-upload-done="imgUploadDone"
             :update-type="'banner'"
-            class="follow3"
+            class="banner-upload"
             @doneImageUpload="doneImageUpload"
           >
             <el-button
@@ -129,19 +129,19 @@
         </router-link>
         <el-button
           size="small"
-          class="transfer"
-          @click="giftDialog = true"
-        >
-          <i class="el-icon-money" />
-          转账
-        </el-button>
-        <el-button
-          size="small"
-          class="follow2"
+          class="share"
           @click="shareModalShow = true"
         >
           <svg-icon icon-class="share_new" />
           {{ $t('share') }}
+        </el-button>
+        <el-button
+          size="small"
+          class="transfer"
+          @click="transfer"
+        >
+          <i class="el-icon-money" />
+          转账
         </el-button>
       </div>
     </div>
@@ -158,7 +158,6 @@
       :img="userInfo.avatar"
       @input="val => shareModalShow = val"
     />
-    <TransferDialog v-model="giftDialog" :user-data="userData2" />
   </div>
 </template>
 
@@ -171,7 +170,6 @@ import followBtn from '@/components/follow_btn'
 import Share from '@/components/token/token_share.vue'
 
 import bannerUpload from '@/components/bannerUpload/index.vue'
-import TransferDialog from '@/components/TransferDialog'
 
 export default {
   components: {
@@ -180,8 +178,7 @@ export default {
     userPageNav,
     tokenAvatar,
     Share,
-    bannerUpload,
-    TransferDialog
+    bannerUpload
   },
   props: {
     userData: {
@@ -196,25 +193,14 @@ export default {
       tokenUser: false,
       tokenData: Object.create(null),
       shareModalShow: false,
-      imgUploadDone: 0, // 图片是否上传完成
-      giftDialog: false
+      imgUploadDone: 0 // 图片是否上传完成
     }
   },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
     }),
-    ...mapGetters(['isMe']),
-    userData2() {
-      if (this.userData) {
-        return {
-          ...this.userData,
-          id: Number(this.$route.params.id)
-        }
-      } else {
-        return null
-      }
-    }
+    ...mapGetters(['isMe', 'isLogined'])
   },
   created() {
     // this.getMyUserData()
@@ -259,7 +245,30 @@ export default {
     doneImageUpload() {
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.$route.params.id })
-    }
+    },
+    transfer() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return
+      }
+
+      if (this.isMe(this.$route.params.id)) {
+        this.$message({
+          showClose: true,
+          message: '不能给自己转账',
+          type: 'warning'
+        })
+        return
+      }
+
+      const userDataWithId = this.userData ? {
+        ...this.userData,
+        id: Number(this.$route.params.id)
+      } : null
+
+      this.$store.commit('transferDialog/setTransferUserData', userDataWithId)
+      this.$store.commit('transferDialog/setTransferDialog', true)
+    },
   }
 }
 </script>
@@ -383,12 +392,12 @@ export default {
     right: 10px;
     bottom: 0px;
   }
-  .follow2 {
+  .share {
     position: absolute;
     right: 10px;
     bottom: 40px;
   }
-  .follow3 {
+  .banner-upload {
     position: absolute;
     right: 10px;
     bottom: 250px;

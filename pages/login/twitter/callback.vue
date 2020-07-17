@@ -11,21 +11,44 @@
 export default {
   layout: 'empty',
   async mounted() {
-    try {
-      const oauthtoken = this.$route.query.oauth_token
-      const oauthverifier = this.$route.query.oauth_verifier
-      const res2 = await this.$API.twitterLogin({
-        oauth_token: oauthtoken,
-        oauth_verifier: oauthverifier
-      })
-      await this.$store.commit('setLoginModal', false)
-      await this.$store.commit('setAccessToken', res2.data)
-      await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
-      this.$router.go(-3) // ??? // 本页面由twitter登录后重定向而来，故-1是twitter/login
-    } catch (error) {
-      this.$router.go(-3)
-      this.$message.closeAll()
-      this.$message.error(error.toString())
+    const { type, oauth_token, oauth_verifier } = this.$route.query
+
+    if (type === 'login') {
+      try {
+        const res2 = await this.$API.twitterLogin({
+          oauth_token,
+          oauth_verifier
+        })
+        await this.$store.commit('setLoginModal', false)
+        await this.$store.commit('setAccessToken', res2.data)
+        await this.$store.commit('setUserConfig', { idProvider: 'twitter' })
+
+        this.$router.replace({ name: 'article' })
+      } catch (error) {
+        this.$router.replace({ name: 'article' })
+        this.$message.closeAll()
+        this.$message.error(error.toString())
+      }
+
+      return
+    } else if (type === 'binding') {
+      try {
+        const res = await this.$API.accountBind({
+          platform: 'twitter',
+          oauth_token,
+          oauth_verifier
+        })
+        if (res.code === 0) {
+          this.$message({ showClose: true, message: res.message, type: 'success'})
+        } else {
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
+        }
+
+        this.$router.replace({ name: 'setting-account' })
+      } catch (err) {
+        console.log(err)
+        this.$message.error('绑定失败')
+      }
     }
   }
 }

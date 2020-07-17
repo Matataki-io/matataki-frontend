@@ -1,5 +1,12 @@
 <template>
   <div class="app">
+    <el-alert
+      v-if="$nuxt.isOffline"
+      title="您可能未连接到互联网, 请连接网络后重试~"
+      type="error"
+      effect="dark"
+      style="z-index: 999;max-width: 340px;position: fixed;top: 20px;right: 20px;"
+    />
     <g-header v-if="!hideHeader" />
     <nuxt class="app-container" />
     <!-- <lazy-component> -->

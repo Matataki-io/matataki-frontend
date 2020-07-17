@@ -99,8 +99,6 @@
       </no-ssr>
     </div>
 
-
-
     <article-transfer
       v-if="isShowTransfer"
       v-model="transferModal"
@@ -288,24 +286,6 @@
             </div>
           </div>
         </div>
-        <!-- <div v-if="settingDialogMode === 'setting'">
-          <el-button
-            v-if="isShowTransfer"
-            type="danger"
-            size="medium"
-            @click="delArticle"
-          >
-            删除此篇
-          </el-button>
-          <el-button
-            v-if="isShowTransfer"
-            type="danger"
-            size="medium" 
-            @click="transferArticle"
-          >
-            转让草稿
-          </el-button>
-        </div> -->
         <h1 class="set-title set-title-border">
           权限设置
         </h1>
@@ -327,21 +307,16 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="some">
-            部分人可见
+          <el-radio v-model="readConfigRadio" label="token">
+            持币可见
+          </el-radio>
+          <br>
+          <el-radio v-model="readConfigRadio" label="cny">
+            支付可见
           </el-radio>
 
-          <div v-show="readConfigRadio === 'some'" class="post-content root-setting">
+          <div class="post-content root-setting">
             <div style="width: 380px;">
-              <div>
-                <el-checkbox
-                  v-model="readauThority"
-                  size="small"
-                  :disabled="prohibitEditingPrices"
-                >
-                  设置持Fan票
-                </el-checkbox>
-              </div>
               <transition name="fade">
                 <div
                   v-show="readauThority"
@@ -378,26 +353,6 @@
                   </div>
                 </div>
               </transition>
-              <div v-show="readauThority" class="related-add">
-                <el-tooltip
-                  effect="dark"
-                  content="多Fan票解锁正在开发中"
-                  placement="top"
-                >
-                  <div class="add-icon disable">
-                    <i class="el-icon-plus" />
-                  </div>
-                </el-tooltip>
-                <span>添加更多</span>
-              </div>
-              <el-checkbox
-                v-model="paymentTokenVisible"
-                size="small"
-                style="margin-top: 10px;"
-                :disabled="prohibitEditingPrices"
-              >
-                设置支付
-              </el-checkbox>
               <transition name="fade">
                 <div
                   v-show="paymentTokenVisible"
@@ -407,10 +362,10 @@
                     <h3>支付类型</h3>
                     <el-select
                       v-model="paymentSelectValue"
-                      disabled
                       size="small"
                       placeholder="请选择"
                       style="width: 100%;"
+                      filterable
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -467,21 +422,12 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio v-model="editConfigRadio" label="some">
-            部分人可编辑
+          <el-radio v-model="editConfigRadio" label="token">
+            持币可编辑
           </el-radio>
 
-          <div v-show="editConfigRadio === 'some'" class="post-content root-setting">
+          <div class="post-content root-setting">
             <div style="width: 380px;">
-              <div>
-                <el-checkbox
-                  v-model="tokenEditAuthority"
-                  size="small"
-                  :disabled="prohibitEditingPrices"
-                >
-                  设置持Fan票
-                </el-checkbox>
-              </div>
               <transition name="fade">
                 <div
                   v-show="tokenEditAuthority"
@@ -518,14 +464,6 @@
                   </div>
                 </div>
               </transition>
-              <el-checkbox
-                v-model="buyEditAuthority"
-                size="small"
-                style="margin-top: 10px;"
-                disabled
-              >
-                设置支付
-              </el-checkbox>
               <transition name="fade">
                 <div
                   v-show="buyEditAuthority"
@@ -535,10 +473,10 @@
                     <h3>支付类型</h3>
                     <el-select
                       v-model="paymentSelectValue"
-                      disabled
                       size="small"
                       placeholder="请选择"
                       style="width: 100%;"
+                      filterable
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -659,6 +597,7 @@ import statement from '@/components/statement/index.vue'
 
 import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
+import { CNY } from '@/components/exchange/consts.js'
 
 export default {
   layout: 'empty',
@@ -719,14 +658,7 @@ export default {
       paymentTokenVisible: false, // 支付可见
       paymentToken: 0, // 支付token
       editPaymentToken: 0, // 编辑文章需支付token数量
-      paymentSelectOptions: [
-        {
-          id: -1, // 暂时前端写死, 不能0否则判断要修改
-          symbol: 'CNY',
-          name: '人民币'
-        }
-      ], // 支付tokenlist
-      paymentSelectValue: -1, // 支付tokenlist show value
+      paymentSelectValue: '', // 支付tokenlist show value
       readSummary: '',
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
@@ -785,6 +717,7 @@ export default {
         // 持通证
         // 获取当前选择的通证种
         const token = this.readSelectOptions.filter(list => list.id === this.readSelectValue)
+        if(token.length === 0) return []
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
@@ -800,6 +733,7 @@ export default {
         // 持通证
         // 获取当前选择的通证种
         const token = this.readSelectOptions.filter(list => list.id === this.editSelectValue)
+        if(token.length === 0) return []
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
@@ -813,10 +747,15 @@ export default {
       if (!this.paymentTokenVisible) {
         return null
       } else {
-        const data = {
-          price: toPrecision(this.paymentToken, 'cny', 4) // 默认四位小数
-        }
-        return data
+        let tokenArr = []
+        const token = this.paymentSelectOptions.filter(list => list.id === this.paymentSelectValue)
+        if(token.length === 0) return []
+        // 目前只用上传一种数据格式
+        tokenArr = [{
+          tokenId: token[0].id,
+          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+        }]
+        return tokenArr
       }
     },
     /** 付费编辑 */
@@ -831,6 +770,12 @@ export default {
         return data
       }
     },
+    paymentSelectOptions() {
+      return [
+        CNY,
+        ...this.readSelectOptions,
+      ]
+    }
   },
   watch: {
     fissionNum() {
@@ -876,7 +821,12 @@ export default {
     // 协议
     CCLicenseCredit() { this.updateDraftWatch() },
     // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
-    readConfigRadio() { this.updateDraftWatch() },
+    readConfigRadio(val) {
+      this.readauThority = val === 'token'
+      this.paymentTokenVisible = val === 'cny'
+
+      this.updateDraftWatch()
+    },
     readauThority() { this.updateDraftWatch() },
     readSelectValue() { this.updateDraftWatch() },
     readToken() { this.updateDraftWatch() },
@@ -889,15 +839,16 @@ export default {
     readSummary() { this.updateDraftWatch() },
 
     // 编辑权限 单选 设置复选 选择框 数量
-    editConfigRadio() { this.updateDraftWatch() },
+    editConfigRadio(val) {
+      this.tokenEditAuthority = val === 'token'
+      this.updateDraftWatch()
+    },
     tokenEditAuthority() { this.updateDraftWatch() },
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
     
     // 是否公开
-    ipfs_hide() { this.updateDraftWatch() },
-
-
+    ipfs_hide() { this.updateDraftWatch() }
   },
   created() {
     // 编辑文章不会自动保存
@@ -924,7 +875,11 @@ export default {
     } else if (type === 'edit') {
       const { hash } = this.$route.query
       // 编辑文章
-      this.setArticleDataById(hash, id)
+      if (process.browser) {
+        this.$nextTick(() => {
+          this.setArticleDataById(hash, id)
+        })
+      }
     } else {
       console.log('路由错误')
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
@@ -932,14 +887,20 @@ export default {
 
     this.getAllTokens()
     // this.setToolBar()
-
   },
   beforeRouteLeave(to, from, next) {
-    if (this.changed()) return next()
-    if (window.confirm(this.$t('publish.modalTextText'))) {
-      next()
+    // 只有编辑页面使用
+    if (this.$route.params.type === 'edit') {
+
+      if (this.changed()) return next()
+      if (window.confirm(this.$t('publish.modalTextText'))) {
+        next()
+      } else {
+        next(false)
+      }
+
     } else {
-      next(false)
+      next()
     }
   },
   beforeMount() {
@@ -1028,11 +989,17 @@ export default {
       }
     }, 500),
     unload($event) {
-      // 刷新页面 关闭页面有提示
-      // https://jsfiddle.net/jbf4vL7h/29/
-      const confirmationMessage = 'o/'
-      $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
-      return confirmationMessage // Gecko, WebKit, Chrome <34
+      // 只有编辑页面使用
+      if (this.$route.params.type === 'edit') {
+        if (!this.allowLeave) {
+        // 刷新页面 关闭页面有提示
+        // https://jsfiddle.net/jbf4vL7h/29/
+          const confirmationMessage = 'o/'
+          $event.returnValue = confirmationMessage // Gecko, Trident, Chrome 34+
+          return confirmationMessage // Gecko, WebKit, Chrome <34
+        }
+      }
+
     },
     changed() {
       // 如果允许关闭 或者 内容都为空
@@ -1040,15 +1007,17 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      await this.$API.getIpfsData(hash, true).then(res => {
-        if (res.code === 0) {
+      await this.$API.getIpfsData(hash, true)
+        .then(res => {
+          if (res.code === 0) {
           // 设置文章内容
-          this.title = res.data.title
-          this.markdownData = res.data.content
-        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
-      }).catch(err => {
-        console.log('err', err)
-      })
+            this.title = res.data.title
+            this.markdownData = res.data.content
+            this.renderMarkdown()
+          } else this.$message({ showClose: true, message: res.message, type: 'warning'})
+        }).catch(err => {
+          console.log('err', err)
+        })
       // 获取文章信息
       await this.$API.getCanEditPost(id).then(res => {
         // console.log('获取文章信息:', id, res)
@@ -1088,30 +1057,29 @@ export default {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
             this.readSummary = res.data.short_content
-            this.paymentSelectValue = -1
+            this.paymentSelectValue = ''
           }
 
           // 付费编辑
           if (res.data.editPrices && res.data.editPrices.length !== 0) {
             this.buyEditAuthority = true
             this.editPaymentToken = precision(res.data.editPrices[0].price, res.data.editPrices[0].platform, res.data.editPrices[0].decimals)
-            this.paymentSelectValue = -1
+            this.paymentSelectValue = ''
           }
 
           // 有 持通证阅读 || 付费阅读 展示单选区域
-          if (this.readauThority || this.paymentTokenVisible) {
-            this.readConfigRadio = 'some'
-          } else {
-            this.readConfigRadio = 'all'
-          }
+          if (this.paymentTokenVisible)
+            this.readConfigRadio = 'cny'
+          else if (this.readauThority)
+            this.readConfigRadio = 'token'
+          else this.readConfigRadio = 'all'
 
           //有 持通证编辑 || 付费编辑
-          if (this.tokenEditAuthority || this.buyEditAuthority) {
-            this.editConfigRadio = 'some'
-          } else {
-            this.editConfigRadio = 'all'
-          }
-
+          if (this.buyEditAuthority)
+            this.editConfigRadio = 'cny'
+          else if (this.tokenEditAuthority)
+            this.editConfigRadio = 'token'
+          else this.editConfigRadio = 'all'
 
         } else {
           this.$message({ showClose: true, message: res.message, type: 'error' })
@@ -1155,7 +1123,7 @@ export default {
             this.paymentTokenVisible = true
             this.paymentToken = precision(data.require_buy[0].amount, 'CNY', 4)
             this.readSummary = data.short_content
-            this.paymentSelectValue = -1
+            this.paymentSelectValue = data.require_buy[0].token_id
           }
 
           // 持通证编辑
@@ -1167,22 +1135,17 @@ export default {
 
           // 暂无付费编辑
 
-
           // 有 持通证阅读 || 付费阅读 展示单选区域
-          if (this.readauThority || this.paymentTokenVisible) {
-            this.readConfigRadio = 'some'
-          } else {
-            this.readConfigRadio = 'all'
-          }
+          if (this.paymentTokenVisible)
+            this.readConfigRadio = 'cny'
+          else if(this.readauThority)
+            this.readConfigRadio = 'token'
+          else this.readConfigRadio = 'all'
 
           //有 持通证编辑 || 付费编辑
-          if (this.tokenEditAuthority || this.buyEditAuthority) {
-            this.editConfigRadio = 'some'
-          } else {
-            this.editConfigRadio = 'all'
-          }
-
-
+          if (this.buyEditAuthority) this.editConfigRadio = 'cny'
+          else if (this.tokenEditAuthority) this.editConfigRadio = 'token'
+          else this.editConfigRadio = 'all'
 
         } else {
           console.log(res.message)
@@ -1220,6 +1183,7 @@ export default {
       await this.$API.allToken({ pagesize }).then(res => {
         if (res.code === 0) {
           this.readSelectOptions = res.data.list
+          this.topOwnToken()
         }
       }).catch(err => console.log(err))
     },
@@ -1356,7 +1320,7 @@ export default {
           this.id = res.data
           // console.log(this.$route)
           const url = window.location.origin + '/publish/draft/' + res.data
-          history.pushState({}, '', url)
+          history.replaceState({}, '', url)
 
         } else this.saveDraft = '<span style="color: red">文章自动保存失败,请重试</span>'
       }).catch(err => {
@@ -1493,14 +1457,14 @@ export default {
         }
 
         if (this.paymentTokenVisible) {
-          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.paymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
           else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
 
         // 付费编辑
         if (this.buyEditAuthority) {
-          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
         // 发布文章
@@ -1862,9 +1826,7 @@ export default {
       data.ipfs_hide = Boolean(this.ipfs_hide)
 
       // 阅读权限设置
-      if (this.readConfigRadio === 'some') {
-        data.requireToken = this.requireToken
-      }
+      data.requireToken = this.requireToken
 
       // 支付阅读
       if (this.paymentTokenVisible) {
@@ -1877,18 +1839,36 @@ export default {
       }
 
       // 编辑权限
-      if (this.editConfigRadio === 'some') {
-        data.editRequireToken = this.editRequireToken
-      }
+      data.editRequireToken = this.editRequireToken
 
       // 设置摘要
-      if (this.readConfigRadio === 'some' || this.paymentTokenVisible) {
+      if (this.readauThority || this.paymentTokenVisible) {
         data.short_content = this.readSummary
       }
       return data
     },
     toolMobileImport() {
       this.importVisible = true
+    },
+    /** 吧自己的Fan票排到最前面 */
+    topOwnToken() {
+      console.log('this.isMe', this.currentUserInfo.id, this.currentUserInfo, 'this.readSelectOptions', this.readSelectOptions)
+      this.readSelectOptions.forEach((token,index) => {
+        if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
+      })
+    },
+    // hack render markdown
+    renderMarkdown() {
+      setTimeout(() => {
+        let previewContent = document.querySelector('#previewContent')
+        console.log('innerHTML', previewContent.innerHTML)
+        if (!previewContent.innerHTML) {
+          this.allowLeave = true
+          setTimeout(() => {
+            window.location.reload()
+          }, 300)
+        }
+      }, 1000)
     }
   }
 }
