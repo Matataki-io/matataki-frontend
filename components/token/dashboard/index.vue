@@ -44,7 +44,7 @@
         />
       </div>
     </div>
-    <div v-show="active === 0" class="dashboard-block">
+    <div v-if="active === 0" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           历史价格
@@ -58,9 +58,17 @@
           </el-radio>
         </div>
       </div>
-      <lineChart :period="period" />
+      <historyPrice :period="period" />
     </div>
-    <div v-show="active !== 0" class="dashboard-block">
+    <div v-if="active === 4" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史增发
+        </h4>
+      </div>
+      <historyIssued :minetoken-token="minetokenToken" />
+    </div>
+    <div v-if="active !== 0 && active !== 4" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           {{ dataList[active].name }}
@@ -80,13 +88,15 @@ import { precision } from '@/utils/precisionConversion'
 import rectangleTree from './rectangle_tree'
 import rectangularPie from './rectangular_pie'
 import dataCard from './data_card'
-import lineChart from './line_chart'
+import historyPrice from './line_chart/history_price'
+import historyIssued from './line_chart/history_issued'
 
 export default {
   components: {
     rectangleTree,
     rectangularPie,
-    lineChart,
+    historyPrice,
+    historyIssued,
     dataCard
   },
   props: {
@@ -153,7 +163,7 @@ export default {
           symbol: '',
           value: 0,
           float: 0,
-          openChart: false,
+          openChart: true,
           permanent: false
         },
         // {

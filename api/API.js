@@ -1135,10 +1135,14 @@ minetokenGetResources(tokenId) {
   getAddSupplyChart(id) {
     return request.get(`/minetoken/${id}/supplyChart`)
   },
-  getHistoryPrice(tokenId) {
-    return request.get(`/token/history/price`, { params: { tokenId }})
-  },
+  // -------------------- token历史记录 --------------------
+  // token历史价格
+  getHistoryPrice(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
+  // token历史增发
+  getIssuedHistory(tokenId) { return request.get(`/token/${tokenId}/history/issued`) },
+
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
+  // -------------------- End -----------------------
 }
