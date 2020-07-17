@@ -177,12 +177,23 @@ export default {
     margin-top: 40px;
     cursor: pointer;
     border: none;
+    transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.25);
     &:hover {
       background-color: rgba(84, 45, 224, 0.9);
+      box-shadow: inset 0 0 20px rgba(77, 12, 255, 0.5), 0 0 20px rgba(218, 185, 255, 0.863);
+      outline: none;
+      transform: scale(1.05);
+      outline-offset: 15px;
+      text-shadow: 1px 1px 2px #427388;
     }
     &:disabled {
       background-color: #a1a1a1;
+    }
+    &:active {
+      transform: scale(0.9);
+      background-color: #502DCF;
+      box-shadow: 0 2px 25px rgba(140, 0, 255, 0.747);
     }
   }
   .reward-icon {
