@@ -63,6 +63,27 @@
       <historyPrice :period="dataList[0].period" />
     </div>
 
+    <!-- 历史价格 -->
+    <div v-if="active === 1" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史价格
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="dataList[1].period" label="all">
+            全部
+          </el-radio>
+          <el-radio v-model="dataList[1].period" label="30d">
+            30天
+          </el-radio>
+        </div>
+      </div>
+      <historyLiquidity
+        :minetoken-token="minetokenToken"
+        :period="dataList[1].period"
+      />
+    </div>
+
     <!-- 历史交易额 -->
     <div v-if="active === 2" class="dashboard-block">
       <div class="dashboard-block-head">
@@ -116,7 +137,7 @@
     </div>
 
     <!-- 不支持 -->
-    <div v-if="active === 1" class="dashboard-block">
+    <!-- <div v-if="active === 1" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           {{ dataList[active].name }}
@@ -127,7 +148,7 @@
           暂不支持查看 {{ dataList[active].name }} 的历史数据
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -137,6 +158,7 @@ import rectangleTree from './rectangle_tree'
 import rectangularPie from './rectangular_pie'
 import dataCard from './data_card'
 import historyPrice from './line_chart/history_price'
+import historyLiquidity from './line_chart/history_liquidity'
 import historyIssued from './line_chart/history_issued'
 import historyAmount from './line_chart/history_amount'
 import historyVolume from './line_chart/history_volume'
@@ -146,6 +168,7 @@ export default {
     rectangleTree,
     rectangularPie,
     historyPrice,
+    historyLiquidity,
     historyIssued,
     historyAmount,
     historyVolume,
@@ -179,7 +202,7 @@ export default {
           symbol: '￥',
           value: 0,
           float: 0,
-          openChart: true,
+          openChart: false,
           permanent: false,
           period: 'all'
         },
@@ -199,7 +222,7 @@ export default {
           symbol: '￥',
           value: 0,
           float: 0,
-          openChart: true,
+          openChart: false,
           permanent: false,
           period: 'all'
         },
@@ -209,7 +232,7 @@ export default {
           symbol: '',
           value: 0,
           float: 0,
-          openChart: true,
+          openChart: false,
           permanent: false,
           period: 'all'
         },
@@ -219,7 +242,7 @@ export default {
           symbol: '',
           value: 0,
           float: 0,
-          openChart: true,
+          openChart: false,
           permanent: false,
           period: 'all'
         },
