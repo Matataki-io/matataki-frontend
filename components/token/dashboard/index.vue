@@ -306,7 +306,7 @@ export default {
     percentage(num) {
       if (num) {
         const amount = (num * 100).toFixed(2)
-        return parseInt(amount) > 0 ? `+${amount}` : amount
+        return Number(amount) > 0 ? `+${amount}` : amount
       } else return 0
     },
   }
