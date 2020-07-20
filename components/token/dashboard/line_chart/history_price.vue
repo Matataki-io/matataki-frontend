@@ -68,6 +68,7 @@ export default {
         },{}],
         series: [
           {
+            name: 'CNY',
             data: [],
             type: 'line',
             smooth: 0.25,

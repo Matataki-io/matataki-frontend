@@ -1138,6 +1138,8 @@ minetokenGetResources(tokenId) {
   // -------------------- token历史记录 --------------------
   // token历史价格
   getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
+  // token流动金历史
+  getLiquidityHistory(tokenId) { return request.get(`/token/${tokenId}/history/liquidity`) },
   // token历史增发
   getIssuedHistory(tokenId) { return request.get(`/token/${tokenId}/history/issued`) },
   // token交易额历史

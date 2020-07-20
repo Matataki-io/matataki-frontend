@@ -73,6 +73,7 @@ export default {
         },{}],
         series: [
           {
+            name: this.minetokenToken.symbol,
             data: [],
             type: 'line',
             smooth: 0.25,
