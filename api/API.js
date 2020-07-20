@@ -1137,9 +1137,13 @@ minetokenGetResources(tokenId) {
   },
   // -------------------- token历史记录 --------------------
   // token历史价格
-  getHistoryPrice(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
+  getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
   // token历史增发
   getIssuedHistory(tokenId) { return request.get(`/token/${tokenId}/history/issued`) },
+  // token交易额历史
+  getAmountHistory(tokenId) { return request.get(`/token/${tokenId}/history/amount`) },
+  // token交易量历史
+  getVolumeHistory(tokenId) { return request.get(`/token/${tokenId}/history/volume`) },
 
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
