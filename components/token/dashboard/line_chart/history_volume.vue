@@ -19,11 +19,16 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
   },
   props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
     period: {
       type: String,
       default: 'all'
@@ -112,40 +117,30 @@ export default {
     }
   },
   created() {
-    this.getPriceHistory()
+    this.getVolumeHistory()
   },
   mounted() {
     window.onresize = () => {
       if(!this.echarts) this.echarts = this.$echarts.getInstanceByDom(document.getElementById('linechart'))
       this.echarts.resize()
     }
-    // this.orgOptions.series[0].areaStyle.color = new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-    //   {
-    //     offset: 0,
-    //     color: '#D4C9FF'
-    //   },
-    //   {
-    //     offset: 1,
-    //     color: '#f1f1f100'
-    //   }
-    // ])
   },
   methods: {
-    async getPriceHistory() {
+    async getVolumeHistory() {
       try {
-        const res = await this.$API.getPriceHistory(this.$route.params.id)
+        const res = await this.$API.getVolumeHistory(this.$route.params.id)
         this.loading = false
         if (res.code !== 0) {
           this.$message.error(res.message)
           return
         }
 
-        if(res.data.arr) {
-          this.rawList = res.data.arr
+        if(res.data) {
+          this.rawList = res.data
           if (this.period === '30d')
-            this.set30dList(res.data.arr)
+            this.set30dList(res.data)
           else
-            this.setAllList(res.data.arr)
+            this.setAllList(res.data)
         }
       }
       catch  (e) {
@@ -153,46 +148,38 @@ export default {
         console.error(e)
       }
     },
-    setList(list) {
-      list.forEach(item => {
-        this.orgOptions.series[0].data.push([item.time, item.price])
-      })
-    },
     set30dList(list) {
       this.orgOptions.series[0].data = []
       if (this.list30d.length === 0) {
         let date30d = new Date()
         date30d.setDate(date30d.getDate() - 29)
-        let value
-        for (let i = 0; i < list.length; i++) {
-          const date = new Date(list[i].time)
-          if (date <= date30d) {
-            value = list[i].price
-            break
-          }
-        }
 
         for (let i = 0; i < 30; i++) {
           const dateText = this.moment(date30d).format('YYYY-MM-DD')
-          let res = list.find(item => item.time === dateText)
-          if (res) value = res.price
-          this.list30d.push([dateText, value])
+          let res = list.find(item => item.create_time === dateText)
+          this.list30d.push([dateText, res ? res.amount : 0])
           date30d.setDate(date30d.getDate() + 1)
         }
       }
       this.orgOptions.series[0].data.push(...this.list30d)
     },
+    unitConversion(num) {
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
     setAllList(list) {
       this.orgOptions.series[0].data = []
       if(this.listAll.length === 0) {
-        let date = new Date(list[list.length - 1].time)
-        let value
+        let date = new Date(list[0].create_time)
         const nowDate = new Date()
         while(date <= nowDate) {
           const dateText = this.moment(date).format('YYYY-MM-DD')
-          let res = list.find(item => item.time === dateText)
-          if(res) value = res.price
-          this.listAll.push([dateText, value])
+          let res = list.find(item => item.create_time === dateText)
+          this.listAll.push([dateText, res ? res.amount : 0])
           date.setDate(date.getDate() + 1)
         }
       }

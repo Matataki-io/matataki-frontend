@@ -112,7 +112,7 @@ export default {
     }
   },
   created() {
-    this.getHistoryPrice()
+    this.getIssuedHistory()
   },
   mounted() {
     window.onresize = () => {
@@ -131,7 +131,7 @@ export default {
     // ])
   },
   methods: {
-    async getHistoryPrice() {
+    async getIssuedHistory() {
       try {
         const res = await this.$API.getIssuedHistory(this.$route.params.id)
         this.loading = false
