@@ -53,11 +53,6 @@ export default {
           bottom: '50px',
           containLabel: true
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
         xAxis: {
           type: 'time',
           boundaryGap: false,
@@ -67,7 +62,10 @@ export default {
         },
         yAxis: {
           type: 'value',
-          scale: true
+          scale: true,
+          splitLine: {
+            show: false
+          }
         },
         dataZoom: [{
           type: 'inside',
