@@ -465,8 +465,16 @@ export default {
         this.setPathToSession('wechatFrom')
         this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
       } else {
-        let to = encodeURIComponent(window.location.href)
-        this.$router.push({ name: 'login-auth', query: { to: to } })
+        // 备案的域名中 (方便测试)
+        if (window.location.origin === process.env.VUE_APP_WX_URL) {
+          let to = encodeURIComponent(window.location.href)
+          this.$router.push({ name: 'login-auth', query: { to: to } })
+        } else {
+          let to = encodeURIComponent(window.location.href)
+          let url = `${process.env.VUE_APP_WX_URL}/login/auth`
+          url += to ? `?to=${to}` : ''
+          window.location.href = url
+        }
       }
     },
     // 检测域名

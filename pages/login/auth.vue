@@ -68,16 +68,22 @@ export default {
         }
         const res = await this.$utils.factoryRequest(this.$API.apiLoginByWx({ scene }))
         if (res && res.data) {
-          this.$store.commit('setAccessToken', res.data)
-          this.$store.commit('setUserConfig', { idProvider: 'weixin' })
           clearInterval(this.timer)
-          let to = this.$route.query.to || ''
 
-          if (to) {
-            window.location.href = decodeURIComponent(to)
-          } else {
-            this.$router.push({ name: 'article' })
+          try {
+            // 获取 to
+            let to = this.$route.query.to || ''
+            // url = target url + access_token + redirect
+            let url = `${process.env.VUE_APP_PC_URL}/login/auth_redirect?access_token=${res.data}&redirect=`
+
+            url += to ? `${decodeURIComponent(to)}` : `${process.env.VUE_APP_PC_URL}`
+
+            window.location.href = url
+          } catch (e) {
+            console.log('login auth done', e)
+            window.location.href = process.env.VUE_APP_PC_URL
           }
+
         }
       }, 1000)
 
