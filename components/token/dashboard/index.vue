@@ -131,7 +131,7 @@ export default {
           permanent: false
         },
         {
-          name: '流动金',
+          name: '流动性',
           label: 'cny_reserve',
           symbol: '￥',
           value: 0,
