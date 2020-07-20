@@ -352,6 +352,9 @@ export default {
   }
 
   .tokens-list-header-medium-column {
+    .sub-column {
+      width: 33%;
+    }
     .sub-column:nth-child(1) {
       text-align: left;
     }
@@ -360,6 +363,7 @@ export default {
       text-align: right;
     }
   }
+
 }
 
 </style>

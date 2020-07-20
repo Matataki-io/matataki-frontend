@@ -75,6 +75,7 @@ export default {
     return fn.reduce((a, b) => (...args) => a(b(...args)))
   },
   // 工厂函数 返回接口数据
+  // TODO: 需要调整
   async factoryRequest(api) {
     try {
       const res = await api

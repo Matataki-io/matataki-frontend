@@ -154,6 +154,10 @@ export default {
     background: #333;
     border-color: #333;
   }
+  &::active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 25px rgba(163, 163, 163, 0.747);
+  }
 }
 .comment-input {
   margin-top: 10px;

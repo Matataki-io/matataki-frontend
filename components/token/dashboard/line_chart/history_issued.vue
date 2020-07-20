@@ -19,11 +19,16 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
 
 export default {
   components: {
   },
   props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
     period: {
       type: String,
       default: 'all'
@@ -49,7 +54,6 @@ export default {
           containLabel: true
         },
         xAxis: {
-          data: [],
           type: 'time',
           boundaryGap: false,
           splitLine: {
@@ -64,15 +68,14 @@ export default {
           }
         },
         dataZoom: [{
-          type: 'inside'
+          type: 'inside',
+          filterMode: 'none'
         },{}],
         series: [
           {
-            data: [],
+            name: this.minetokenToken.symbol,
             type: 'line',
-            smooth: 0.25,
-            showSymbol: false,
-            sampling: 'average',
+            step: 'end',
             itemStyle : {
               normal : {
                 color:'#542DE0',
@@ -81,9 +84,7 @@ export default {
                 }
               }
             },
-            // areaStyle: {
-            //   color: null
-            // },
+            data: []
           }
         ]
       },
@@ -112,7 +113,7 @@ export default {
     }
   },
   created() {
-    this.getHistoryPrice()
+    this.getIssuedHistory()
   },
   mounted() {
     window.onresize = () => {
@@ -131,21 +132,21 @@ export default {
     // ])
   },
   methods: {
-    async getHistoryPrice() {
+    async getIssuedHistory() {
       try {
-        const res = await this.$API.getHistoryPrice(this.$route.params.id)
+        const res = await this.$API.getIssuedHistory(this.$route.params.id)
         this.loading = false
         if (res.code !== 0) {
           this.$message.error(res.message)
           return
         }
 
-        if(res.data.arr) {
-          this.rawList = res.data.arr
+        if(res.data) {
+          this.rawList = res.data
           if (this.period === '30d')
-            this.set30dList(res.data.arr)
+            this.set30dList(res.data)
           else
-            this.setAllList(res.data.arr)
+            this.setAllList(res.data)
         }
       }
       catch  (e) {
@@ -153,47 +154,25 @@ export default {
         console.error(e)
       }
     },
-    setList(list) {
-      list.forEach(item => {
-        this.orgOptions.series[0].data.push([item.time, item.price])
-      })
+    unitConversion(num) {
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
-    set30dList(list) {
+    set30dList() {
       this.orgOptions.series[0].data = []
-      if (this.list30d.length === 0) {
-        let date30d = new Date()
-        date30d.setDate(date30d.getDate() - 29)
-        let value
-        for (let i = 0; i < list.length; i++) {
-          const date = new Date(list[i].time)
-          if (date <= date30d) {
-            value = list[i].price
-            break
-          }
-        }
-
-        for (let i = 0; i < 30; i++) {
-          const dateText = this.moment(date30d).format('YYYY-MM-DD')
-          let res = list.find(item => item.time === dateText)
-          if (res) value = res.price
-          this.list30d.push([dateText, value])
-          date30d.setDate(date30d.getDate() + 1)
-        }
-      }
-      this.orgOptions.series[0].data.push(...this.list30d)
     },
     setAllList(list) {
       this.orgOptions.series[0].data = []
-      if(this.listAll.length === 0) {
-        let date = new Date(list[list.length - 1].time)
-        let value
-        const nowDate = new Date()
-        while(date <= nowDate) {
-          const dateText = this.moment(date).format('YYYY-MM-DD')
-          let res = list.find(item => item.time === dateText)
-          if(res) value = res.price
-          this.listAll.push([dateText, value])
-          date.setDate(date.getDate() + 1)
+      let value = 0
+      if (this.listAll.length === 0) {
+        for (let i = 0; i < list.length; i++) {
+          value += list[i].amount
+          const dateText = this.moment(list[i].create_time).format('YYYY-MM-DD')
+          this.listAll.push([dateText, this.unitConversion(value)])
         }
       }
       this.orgOptions.series[0].data.push(...this.listAll)
