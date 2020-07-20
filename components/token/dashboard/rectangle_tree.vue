@@ -78,13 +78,15 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 export default {
-  // props: {
-  //   minetokenToken: {
-  //     type: Object,
-  //     required: true
-  //   },
-  // },
+  props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+  },
   data() {
     return {
       totalIssued: 'Loading...',
@@ -113,10 +115,10 @@ export default {
       try {
         const res = await this.$API.getAddSupplyChart(this.$route.params.id)
         if(res.code === 0) {
-          this.totalIssued = res.data.total_supply
-          this.issued30D = res.data.suppl_30d
-          this.issued7D = res.data.suppl_7d
-          this.issued24H = res.data.suppl_24h
+          this.totalIssued = this.unitConversion(res.data.total_supply)
+          this.issued30D = this.unitConversion(res.data.suppl_30d)
+          this.issued7D = this.unitConversion(res.data.suppl_7d)
+          this.issued24H = this.unitConversion(res.data.suppl_24h)
         }
         else this.$message.error(res.message)
       }
@@ -128,7 +130,16 @@ export default {
       const a = [Number(Boolean(this.issued24H)), Number(Boolean(this.issued7D)), Number(Boolean(this.issued30D))]
       const w = [a[0], a[0] + a[1], a[0] + a[1] + a[2]][num]
       return Boolean(w) && 'issued-w' + w
-    }
+    },
+    unitConversion(num) {
+      if(!this.minetokenToken) return 0
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
   }
 }
 </script>

@@ -20,7 +20,7 @@
           </el-button>
         </router-link>
       </div>
-      <rectangleTree />
+      <rectangleTree :minetoken-token="minetokenToken" />
       <rectangularPie
         :minetoken-token="minetokenToken"
         :current-pool-size="currentPoolSize"
