@@ -157,7 +157,7 @@ export default {
         for (let i = 0; i < 30; i++) {
           const dateText = this.moment(date30d).format('YYYY-MM-DD')
           let res = list.find(item => item.create_time === dateText)
-          this.list30d.push([dateText, res ? res.amount : 0])
+          this.list30d.push([dateText, res ? this.unitConversion(res.amount) : 0])
           date30d.setDate(date30d.getDate() + 1)
         }
       }
@@ -179,7 +179,7 @@ export default {
         while(date <= nowDate) {
           const dateText = this.moment(date).format('YYYY-MM-DD')
           let res = list.find(item => item.create_time === dateText)
-          this.listAll.push([dateText, res ? res.amount : 0])
+          this.listAll.push([dateText, res ? this.unitConversion(res.amount) : 0])
           date.setDate(date.getDate() + 1)
         }
       }
