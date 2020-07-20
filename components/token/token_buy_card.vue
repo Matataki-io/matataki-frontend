@@ -7,15 +7,18 @@
       <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange" /></span>
     </div>
     <el-input
-      v-model="form.output"
-      :placeholder="$t('token.enterPurchaseQuantity')"
+      v-model="inputModel"
+      :placeholder="base === baseType[0] ? $t('token.enterBudget') : $t('token.enterPurchaseQuantity')"
       @input="inputChange"
       @keypress.native="isNumber"
     >
+      <span slot="prefix" class="prefix-switch" @click="baseSwitch">
+        <svg-icon icon-class="switch" />
+      </span>
       <span
         slot="suffix"
         class="el-input__icon suffix-text"
-      >= {{ form.input || 0 }} CNY</span>
+      >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
     </el-input>
     <div class="btns">
       <el-button
@@ -61,6 +64,7 @@ export default {
   },
   data() {
     return {
+      inputModel: '',
       form: {
         input: '',
         inputToken: CNY,
@@ -69,7 +73,9 @@ export default {
       },
       type: 'buy_token_output',
       priceSlippage: 0.01,
-      orderShow: false
+      orderShow: false,
+      baseType: ['input', 'output'],
+      base: 'output'
     }
   },
   computed: {
@@ -80,12 +86,32 @@ export default {
         return (parseFloat(input) / (1 - this.priceSlippage)).toFixed(4)
       }
       return 0
+    },
+    suffixAmount() {
+      return this.baseType.findIndex(base => base === this.base) ? this.form.input : this.form.output
+    },
+    suffixSymbol() {
+      return this.baseType.findIndex(base => base === this.base) ? this.form.inputToken.symbol : this.form.outputToken.symbol
+    }
+  },
+  watch: {
+    inputModel(val) {
+      if(this.base === this.baseType[0])
+        this.form.input = val
+      else
+        this.form.output = val
     }
   },
   mounted() {
     this.form.outputToken = this.token
   },
   methods: {
+    baseSwitch() {
+      // switch
+      this.base = this.baseType[Number(this.base === this.baseType[0])]
+      
+      this.inputModel = this.base === this.baseType[0] ? this.form.input : this.form.output
+    },
     pay() {
       if (this.isLogined) {
         
@@ -112,8 +138,10 @@ export default {
 
       // 没有合约地址
       if (!this.token.contract_address) return
-
-      this.getInputAmount(0, this.token.id, this.form.output)
+      if(this.base === this.baseType[0])
+        this.getOutputAmount(0, this.token.id, this.form.input)
+      else
+        this.getInputAmount(0, this.token.id, this.form.output)
     }, 500),
     getInputAmount(inputTokenId = 0, outputTokenId, outputAmount) {
       const deciaml = 4
@@ -134,8 +162,29 @@ export default {
         }
       })
     },
+    getOutputAmount(inputTokenId = 0, outputTokenId, inputAmount) {
+      const deciaml = 4
+      const _inputAmount = this.$utils.toDecimal(inputAmount, deciaml)
+      this.$API.getOutputAmount(inputTokenId, outputTokenId, _inputAmount).then((res) => {
+        if (res.code === 0) {
+          if (res.data)
+            this.form.output = parseFloat(this.$utils.fromDecimal(res.data, deciaml)).toFixed(4) || ''
+          else
+            this.form.output = ''
+        } else {
+          this.$message({ showClose: true, message: res.message, type: 'error' })
+          this.form.output = ''
+        }
+      })
+    },
     isNumber(event) {
+      const max = 100000000
       if (!/\d/.test(event.key) && event.key !== '.') {
+        return event.preventDefault()
+      }
+      else if(Number(this.inputModel + event.key) > max) {
+        this.inputModel = max
+        this.inputChange()
         return event.preventDefault()
       }
     }
@@ -144,15 +193,30 @@ export default {
 </script>
 
 <style scoped lang="less">
-.suffix-text {
-  color: @purpleDark;
-}
 .buy-card {
   background: @white;
   padding: 20px;
   border-radius: @br10;
   margin: 0;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  .suffix-text {
+    color: @purpleDark;
+  }
+  .prefix-switch {
+    margin: 50% 0;
+    width: 20px;
+    height: 20px;
+    color: white;
+    background: #B2B2B2;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+      background: #896DF0;
+    }
+  }
 }
 .token-title {
   font-size:24px;
@@ -178,9 +242,6 @@ export default {
   align-content: center;
   justify-content: space-between;
   margin-top: 20px;
-  .btn1, .btn2 {
-    // flex: 1;
-  }
 }
 .ellipsis {
   overflow: hidden;

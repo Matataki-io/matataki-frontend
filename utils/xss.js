@@ -346,7 +346,12 @@ export const processLink = html => {
       // 为 a 并且有 href 则添加 target
       if (tag === "a" && name === "href") {
         let val = xss.friendlyAttrValue(value)
-        return `${name}='${val}' target='_blank' rel='noreferrer noopener'`
+
+        let firstStr = val.slice(0, 1) // #
+        // 认为是 TOC 或者其他 ID 跳转标签
+        if (firstStr !== '#') {
+          return `${name}='${val}' target='_blank' rel='noreferrer noopener'`
+        }
       }
     }
   });

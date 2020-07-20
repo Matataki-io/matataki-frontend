@@ -9,7 +9,7 @@ module.exports = {
     VUE_APP_GITHUB_CLIENT_ID: '889e6eafa77e2e87a08c',
     VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
-    VUE_APP_PC_URL: 'https://wwwtest.smartsignature.io',
+    VUE_APP_PC_URL: 'http://localhost:8080',
     WX_SHARE_HOST: 'https://sstest.frontenduse.top',
     TELEGRAM_IV_RHASH: '71acceb5462fa6',
     TELEGRAM_BOT_NAME: 'matataki_test_pc_bot',
@@ -18,7 +18,7 @@ module.exports = {
     TELEGRAM_FANDOM_BOT: 'matataki_testing_bot',
     TWITTER_APP_KEY: 'LdQ6moi0sfGzsPBtVMxjPhbeq',
     FANDOM_SERVER_API: 'https://fanpiao-bot-data.web.app',
-    VUE_APP_WX_URL: 'https://sstest.frontenduse.top',
+    VUE_APP_WX_URL: 'http://localhost:8080',
     VUE_APP_DOMAIN_IO: 'matataki.io', // 前端用来判断在 io 还是非 io
     // VUE_APP_DOMAIN_IO: 'localhost', // 前端用来判断在 io 还是非 io
     VUE_APP_DOMAIN_CN: 'matataki.cn', // 前端用来判断在 cn 还是非 cn
@@ -33,7 +33,7 @@ module.exports = {
     VUE_APP_GITHUB_CLIENT_ID: '889e6eafa77e2e87a08c',
     VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
-    VUE_APP_PC_URL: 'https://wwwtest.smartsignature.io',
+    VUE_APP_PC_URL: 'https://test.matataki.io',
     WX_SHARE_HOST: 'https://sstest.frontenduse.top',
     TELEGRAM_IV_RHASH: '71acceb5462fa6',
     TELEGRAM_BOT_NAME: 'matataki_test_pc_bot',

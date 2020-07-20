@@ -545,6 +545,37 @@ export default {
   .write-icon {
     color: #fff;
   }
+  &::before {
+    content: '';
+    border-radius: 1000px;
+    min-width: calc(114px + 6px);
+    min-height: calc(38px + 6px);
+    border: 3px solid #4F2FD7;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: scale 0.3s ease-in-out 0s, ;
+  }
+
+  &:hover, .button:focus {
+    color: #fff;
+    transform: scale(0.9)
+  }
+
+  &:hover::before, &:focus::before {
+    opacity: 1;
+  }
+
+  &:hover::after, &:focus::after {
+    animation: none;
+    display: none;
+  }
+
+  &::active {
+    transform: scale(0.8);
+  }
 }
 .header {
   width: 100%;

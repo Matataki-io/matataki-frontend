@@ -789,6 +789,7 @@ export default {
         payToSee: 'Pay to see',
         quickPurchase: 'Quick purchase',
         enterPurchaseQuantity: 'Enter purchase quantity',
+        enterBudget: 'Enter Budget',
         payImmediately: 'Pay',
         tradingFanTickets: 'Trading Fan tickets',
         underDeployment: 'Fan tickets are being deployed, please come back later!',

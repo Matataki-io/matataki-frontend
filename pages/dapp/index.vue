@@ -18,12 +18,20 @@
           </div>
           <p class="item-title">{{ itemBlock.title }}</p>
           <p class="item-description">{{ itemBlock.description }}</p>
-          <a
-            :href="itemBlock.disabled ? 'javascript:;' :itemBlock.url"
-            class="item-btn"
-            :class="itemBlock.disabled && 'disabled'"
-            :target="itemBlock.disabled ? '' : '_blank'"
-          >{{ itemBlock.btn }}</a>
+          <div>
+            <a
+              v-if="itemBlock.repo"
+              :href="itemBlock.repo"
+              class="item-btn github"
+              target="_blank"
+            >GitHub地址</a>
+            <a
+              :href="itemBlock.disabled ? 'javascript:;' :itemBlock.url"
+              class="item-btn"
+              :class="itemBlock.disabled && 'disabled'"
+              :target="itemBlock.disabled ? '' : '_blank'"
+            >{{ itemBlock.btn }}</a>
+          </div>
         </li>
       </ul>
     </div>
@@ -48,6 +56,7 @@ export default {
               description: '公开永存的数字作品库',
               img: matataki,
               url: 'https://www.matataki.io/',
+              repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: '访问网站',
               disabled: false
             },
@@ -56,6 +65,7 @@ export default {
               description: '基于Uniswap的Fan票交易工具',
               img: exchange,
               url: 'https://www.matataki.io/exchange/',
+              repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: '访问网站',
               disabled: false
             },
@@ -64,17 +74,28 @@ export default {
               description: '基于Fan票的简单空投工具',
               img: airdrop,
               url: 'https://www.matataki-airdrop.xyz/',
+              repo: 'https://github.com/NaoMikuOshi/Matataki-Token-AirDropper',
               btn: '访问网站',
               disabled: false
             },
             {
-              title: '神秘应用',
-              description: '此应用正在开发中',
+              title: 'Cryptomeetup',
+              description: '基于Fan票的地理位置共享&订阅',
               img: map,
-              url: '',
-              btn: '即将上线',
-              disabled: true
+              url: 'https://cryptomeetup.async.moe/',
+              repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
+              btn: '访问网站',
+              disabled: false
             },
+            // {
+            //   title: 'Cryptomeetup',
+            //   description: '基于Fan票的地理位置共享&订阅',
+            //   img: map,
+            //   url: 'https://cryptomeetup.async.moe/',
+            //   repo: '',
+            //   btn: '访问网站',
+            //   disabled: true
+            // },
           ]
         },
         {
@@ -187,6 +208,7 @@ export default {
       margin: 20px 20px 0 0;
       padding: 0 20px 20px;
       box-sizing: border-box;
+      text-align: center;
       transition: all 0.3s;
       &:nth-of-type(4n) {
         margin-right: 0;
@@ -234,10 +256,17 @@ export default {
         font-weight: 500;
         color: rgba(84, 45, 224, 1);
         line-height: 20px;
-        padding: 6px 16px;
+        padding: 5px 16px;
+        margin: 0 10px;
+        display: inline-block;
         text-align: center;
-        float: right;
         transition: all .2s;
+        &.github {
+          padding-left: 8px;
+          padding-right: 8px;
+          color: #333;
+          border:1px solid rgba(178,178,178,1)
+        }
         &.disabled {
           border-color: rgba(241, 241, 241, 1);
           background: rgba(241, 241, 241, 1);
@@ -252,6 +281,10 @@ export default {
         &:hover {
           background: rgba(84, 45, 224, 1);
           color: #fff;
+          &.github {
+            border-color: rgba(178,178,178,1);
+            background-color: rgba(178,178,178,1);
+          }
         }
       }
     }

@@ -4,14 +4,14 @@
       <div @click="$emit('like', 2)">
         <svg-icon
           :class="isLiked === 2 && 'active'"
-          class="icon"
+          class="icon like-icon"
           icon-class="great-solid"
         />
       </div>
       <p>{{ $t('p.like') }}<span>{{ likes }}</span></p>
     </el-badge>
 
-    <el-badge :value="dislikes" type="primary" class="icon-num">
+    <el-badge :value="dislikes" type="primary" class="icon-num dislike-btn">
       <div @click="$emit('like', 1)">
         <svg-icon
           :class="isLiked === 1 && 'active'"
@@ -96,6 +96,13 @@ export default {
     }
   }
 
+  .like-icon {
+    transition: left 2s ease all;
+    &:hover {
+      left: 20px;
+    }
+  }
+
   .icon-num {
     display: flex;
     align-items: center;
@@ -117,7 +124,19 @@ export default {
       &:hover {
         transform: scale(1.04);
       }
+
+      &:active {
+        transform: scale(0.9);
+        color: #4F2FD7;
+        background-color: #fff;
+        box-shadow: 0 2px 25px rgba(163, 163, 163, 0.747);
+      }
+
+      & > svg:hover {
+        color: #4F2FD7;
+      }
     }
+    
     p {
       text-align: center;
       font-size: 14px;
