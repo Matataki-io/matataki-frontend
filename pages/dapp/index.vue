@@ -68,12 +68,12 @@ export default {
               disabled: false
             },
             {
-              title: '神秘应用',
-              description: '此应用正在开发中',
+              title: 'Cryptomeetup',
+              description: '基于Fan票的地理位置共享&订阅',
               img: map,
-              url: '',
-              btn: '即将上线',
-              disabled: true
+              url: 'https://cryptomeetup.async.moe/',
+              btn: '访问网站',
+              disabled: false
             },
           ]
         },
