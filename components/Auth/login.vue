@@ -467,16 +467,8 @@ export default {
       } else {
         let key = this.$route.query.key || ''
         if (key) {
-        // 备案的域名中 (方便测试)
-          if (window.location.origin === process.env.VUE_APP_WX_URL) {
-            let to = encodeURIComponent(window.location.href)
-            this.$router.push({ name: 'login-auth', query: { to: to } })
-          } else {
-            let to = encodeURIComponent(window.location.href)
-            let url = `${process.env.VUE_APP_WX_URL}/login/auth`
-            url += to ? `?to=${to}` : ''
-            window.location.href = url
-          }
+          let to = encodeURIComponent(window.location.href)
+          this.$router.push({ name: 'login-auth', query: { to: to } })
         } else {
           this.$message.error('请在微信中操作')
         }
