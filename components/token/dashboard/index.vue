@@ -67,7 +67,7 @@
     <div v-if="active === 1" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史价格
+          历史流动性
         </h4>
         <div class="chart-period">
           <el-radio v-model="dataList[1].period" label="all">
