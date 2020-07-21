@@ -1144,5 +1144,7 @@ minetokenGetResources(tokenId) {
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
+  // 扫码绑定
+  apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
   // -------------------- End -----------------------
 }
