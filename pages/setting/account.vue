@@ -315,7 +315,7 @@ export default {
         } else {
           // this.$message(this.$t('请在微信内操作'))
           const currentUserInfo = this.currentUserInfo
-          const url = `${process.env.VUE_APP_WX_URL}/login/bind_wechat?uid=${currentUserInfo.id || ''}`
+          const url = `${window.location.origin}/login/bind_wechat?uid=${currentUserInfo.id || ''}`
           let windowObjectReference = null
           const openRequestedPopup = (strUrl, strWindowName) => {
             if (windowObjectReference == null || windowObjectReference.closed) {

@@ -75,17 +75,33 @@ export default {
         if (this.invalid <= 0) {
           clearInterval(this.timer)
         }
-        const res = await this.$utils.factoryRequest(this.$API.apiBindByWx({ scene }))
-        if (res && res.data) {
 
-          clearInterval(this.timer)
+        try {
+          const res = await this.$API.apiBindByWx({ scene })
+          if (res.code === 0) {
 
-          if (window.opener) {
-            window.opener.location.reload()
-            window.close()
+            if (res.data) {  // 如果有内容 成功
+              clearInterval(this.timer)
+
+              if (window.opener) {
+                window.opener.location.reload()
+                window.close()
+              }
+            }
+          
+          } else { // 如果已经错了 停止掉
+            clearInterval(this.timer)
+            this.$message.error({
+              message: '账号已存在或已绑定',
+              duration: 4000,
+              showClose: true
+            })
           }
-
+        } catch (e) {
+          console.log('bindByWx error', e)
+          clearInterval(this.timer)
         }
+    
       }, 1000)
 
     },
