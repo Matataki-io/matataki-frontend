@@ -38,6 +38,12 @@
       </template>
       <template>
         <h3 class="title">
+          UID
+        </h3>
+        <p>{{ $route.params.id }}</p>
+      </template>
+      <template>
+        <h3 class="title">
           {{ $t('user.registrationTime') }}
         </h3>
         <p>{{ create_time }}</p>

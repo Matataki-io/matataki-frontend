@@ -47,35 +47,50 @@ export default {
           }
         },
         grid: {
-          top: '3%',
+          top: '10%',
           left: '3%',
           right: '4%',
           bottom: '50px',
           containLabel: true
         },
         xAxis: {
+          data: [],
           type: 'time',
           boundaryGap: false,
           splitLine: {
             show: false
           }
         },
-        yAxis: {
-          type: 'value',
-          scale: true,
-          splitLine: {
-            show: false
+        yAxis: [
+          {
+            name: 'CNY',
+            type: 'value',
+            scale: true,
+            splitLine: {
+              show: false
+            }
+          },
+          {
+            name: this.minetokenToken.symbol,
+            type: 'value',
+            scale: true,
+            splitLine: {
+              show: false
+            }
           }
-        },
+        ],
         dataZoom: [{
-          type: 'inside',
-          filterMode: 'none'
+          type: 'inside'
         },{}],
         series: [
           {
-            name: this.minetokenToken.symbol,
+            name: 'CNY',
+            data: [],
             type: 'line',
-            step: 'end',
+            smooth: 0.25,
+            showSymbol: false,
+            sampling: 'average',
+            yAxisIndex: 0,
             itemStyle : {
               normal : {
                 color:'#542DE0',
@@ -84,7 +99,29 @@ export default {
                 }
               }
             },
-            data: []
+            // areaStyle: {
+            //   color: null
+            // },
+          },
+          {
+            name: this.minetokenToken.symbol,
+            data: [],
+            type: 'line',
+            smooth: 0.25,
+            showSymbol: false,
+            sampling: 'average',
+            yAxisIndex: 1,
+            itemStyle : {
+              normal : {
+                color:'#F2853D',
+                lineStyle:{
+                  color:'#F2853D'
+                }
+              }
+            },
+            // areaStyle: {
+            //   color: null
+            // },
           }
         ]
       },
@@ -113,28 +150,18 @@ export default {
     }
   },
   created() {
-    this.getIssuedHistory()
+    this.getLiquidityHistory()
   },
   mounted() {
     window.onresize = () => {
       if(!this.echarts) this.echarts = this.$echarts.getInstanceByDom(document.getElementById('linechart'))
       this.echarts.resize()
     }
-    // this.orgOptions.series[0].areaStyle.color = new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-    //   {
-    //     offset: 0,
-    //     color: '#D4C9FF'
-    //   },
-    //   {
-    //     offset: 1,
-    //     color: '#f1f1f100'
-    //   }
-    // ])
   },
   methods: {
-    async getIssuedHistory() {
+    async getLiquidityHistory() {
       try {
-        const res = await this.$API.getIssuedHistory(this.$route.params.id)
+        const res = await this.$API.getLiquidityHistory(this.$route.params.id)
         this.loading = false
         if (res.code !== 0) {
           this.$message.error(res.message)
@@ -154,6 +181,59 @@ export default {
         console.error(e)
       }
     },
+    set30dList(list) {
+      this.orgOptions.series[0].data = []
+      this.orgOptions.series[1].data = []
+      if (this.list30d.length === 0) {
+        let date30d = new Date()
+        date30d.setDate(date30d.getDate() - 29)
+        let value
+        let value2
+        for (let i = list.length - 1; i >= 0; i--) {
+          const date = new Date(list[i].time)
+          if (date <= date30d) {
+            value = list[i].cny
+            value2 = list[i].token
+            break
+          }
+        }
+
+        for (let i = 0; i < 30; i++) {
+          const dateText = this.moment(date30d).format('YYYY-MM-DD')
+          let res = list.find(item => item.time === dateText)
+          if (res) {
+            value = res.cny
+            value2 = res.token
+          }
+          this.list30d.push([dateText, this.unitConversion(value), this.unitConversion(value2)])
+          date30d.setDate(date30d.getDate() + 1)
+        }
+      }
+      this.orgOptions.series[0].data.push(...this.list30d.map(item => [item[0], item[1]]))
+      this.orgOptions.series[1].data.push(...this.list30d.map(item => [item[0], item[2]]))
+    },
+    setAllList(list) {
+      this.orgOptions.series[0].data = []
+      this.orgOptions.series[1].data = []
+      if(this.listAll.length === 0) {
+        let date = new Date(list[0].time)
+        let value
+        let value2
+        const nowDate = new Date()
+        while(date <= nowDate) {
+          const dateText = this.moment(date).format('YYYY-MM-DD')
+          let res = list.find(item => item.time === dateText)
+          if (res) {
+            value = res.cny
+            value2 = res.token
+          }
+          this.listAll.push([dateText, this.unitConversion(value), this.unitConversion(value2)])
+          date.setDate(date.getDate() + 1)
+        }
+      }
+      this.orgOptions.series[0].data.push(...this.listAll.map(item => [item[0], item[1]]))
+      this.orgOptions.series[1].data.push(...this.listAll.map(item => [item[0], item[2]]))
+    },
     unitConversion(num) {
       const tokenamount = precision(
         num || 0,
@@ -161,21 +241,6 @@ export default {
         this.minetokenToken.decimals
       )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
-    },
-    set30dList() {
-      this.orgOptions.series[0].data = []
-    },
-    setAllList(list) {
-      this.orgOptions.series[0].data = []
-      let value = 0
-      if (this.listAll.length === 0) {
-        for (let i = 0; i < list.length; i++) {
-          value += list[i].amount
-          const dateText = this.moment(list[i].create_time).format('YYYY-MM-DD')
-          this.listAll.push([dateText, this.unitConversion(value)])
-        }
-      }
-      this.orgOptions.series[0].data.push(...this.listAll)
     }
   }
 }
