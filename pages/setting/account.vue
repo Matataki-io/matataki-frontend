@@ -191,7 +191,8 @@ export default {
   },
   computed: {
     ...mapState(['scatter', 'metamask']),
-    ...mapGetters(['scatter/currentUsername', 'isLogined'])
+    ...mapGetters(['scatter/currentUsername', 'isLogined']),
+    ...mapGetters(['currentUserInfo'])
   },
   mounted() {
     this.getAccountList()
@@ -291,7 +292,6 @@ export default {
       this.accountList[idx].loading = true
 
       if (type === 'email') {
-        if (!this.isLogined) return this.$store.commit('setLoginModal', true)
         // const url = 'http://localhost:8080/login/email'
         const url = `${window.location.origin}/login/email`
         let windowObjectReference = null
@@ -313,7 +313,22 @@ export default {
           this.setPathToSession('wechatFrom', 'buildAccount')
           this.$router.push({ name: 'login-weixin' })
         } else {
-          this.$message(this.$t('请在微信内操作'))
+          // this.$message(this.$t('请在微信内操作'))
+          const currentUserInfo = this.currentUserInfo
+          const url = `${process.env.VUE_APP_WX_URL}/login/bind_wechat?uid=${currentUserInfo.id || ''}`
+          let windowObjectReference = null
+          const openRequestedPopup = (strUrl, strWindowName) => {
+            if (windowObjectReference == null || windowObjectReference.closed) {
+              windowObjectReference = window.open(
+                strUrl,
+                strWindowName,
+                'left=100,top=100,width=1000,height=600,resizable,scrollbars,status'
+              )
+            } else {
+              windowObjectReference.focus()
+            }
+          }
+          openRequestedPopup(url, 'buildEmail')
         }
       } else if (type === 'eth') {
         try {

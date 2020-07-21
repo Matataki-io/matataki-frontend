@@ -106,6 +106,7 @@ export default {
               description: '关于瞬Matataki的开发文档',
               img: doc,
               url: 'https://docs.matataki.io/',
+              repo: 'https://github.com/Matataki-io/api-doc',
               btn: '立即查看',
               disabled: false
             },
