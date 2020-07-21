@@ -219,6 +219,22 @@ export default {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .decoration {
+    display: none;
+  }
+
+  .login-page .inner {
+    text-align: center;
+  }
+  .login-page .inner .main .wrapper.wechat-login {
+    transform: none;
+  }
+  .login-page .inner .main .wrapper.wechat-login .inner {
+    margin: 0 auto;
+  }
+}
+
 @keyframes invalid {
   0% {
     transform: translateX(0);
