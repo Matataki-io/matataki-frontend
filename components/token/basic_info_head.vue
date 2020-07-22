@@ -48,6 +48,23 @@
             </div>
           </div>
           <div class="fl info-line">
+            <div class="token-info-title">
+              {{ $t('token.tags') }}：
+            </div>
+            <div>
+              <p v-if="!tokenTagsExist" class="token-info-sub">
+                无标签
+              </p>
+            </div>
+            <div v-if="tokenTagsExist" class="token-info-sub">
+              <div v-for="tag in tags" :key="tag">
+                <el-button size="small">
+                  {{ tag.name }}
+                </el-button>
+              </div>
+            </div>
+          </div>
+          <div class="fl info-line">
             <div
               class="token-info-title"
               v-html="$t('token.summary')"
@@ -153,7 +170,14 @@ export default {
   data() {
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client' // 创建者、客户
+      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户,
+      tags: [],
+      tagPattern: [
+        {name:'个人', label: 'personal', checked: false}, 
+        {name:'组织', label: 'organization', checked: false}, 
+        {name: '产品', label: 'product', checked: false}, 
+        { name: 'MEME', label: 'meme', checked: false}
+      ]
     }
   },
   computed: {
@@ -174,6 +198,10 @@ export default {
     },
     friendlyDate() {
       return this.moment(this.minetokenToken.create_time).format('lll')
+    },
+    tokenTagsExist() {
+      if (this.tags.length === 0) return false
+      else return this.tags
     }
   },
   watch: {
@@ -183,7 +211,20 @@ export default {
       this.$message.success(`切换成功，${text}`)
     }
   },
-  // created() {},
+  created() {
+    this.$API.tokenDetail().then(res => {
+      if (res.data.tags.length > 0) {
+        this.tagPattern.forEach(tag => {
+          res.data.tags.forEach(item => {
+            console.log('tag', tag)
+            console.log('item', item.tag)
+            if (tag.label === item.tag) this.tags.push(tag)
+          })
+        })
+        console.log(this.tags)
+      }
+    })
+  },
   mounted() {
   },
   methods: {
