@@ -16,6 +16,7 @@ import {
   Pagination,
   MessageBox,
   Checkbox,
+  CheckboxButton,
   CheckboxGroup,
   Slider,
   Popover,
@@ -56,6 +57,7 @@ Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Pagination)
 Vue.use(Checkbox)
+Vue.use(CheckboxButton)
 Vue.use(CheckboxGroup)
 Vue.use(Slider)
 Vue.use(Popover)

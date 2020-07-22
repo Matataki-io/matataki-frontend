@@ -80,6 +80,28 @@
         />
       </el-form-item>
       <el-form-item
+        label="标签"
+        prop="tag"
+        class="form-tags"
+      >
+        <el-checkbox-group v-model="form.tags">
+          <el-checkbox-button v-for="(tag, index) in tags" :key="index" :label="tag.label">
+            {{ tag.name }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+        <el-tooltip
+          effect="dark"
+          content="主体选择不影响相关功能"
+          placement="right"
+          class="tag-help"
+        >
+          <svg-icon
+            class="help-icon"
+            icon-class="help"
+          />
+        </el-tooltip>
+      </el-form-item>
+      <el-form-item
         label="图标"
         prop="logo"
       >
@@ -152,7 +174,7 @@
           :rows="6"
           class="input"
           type="textarea"
-          maxlength="500"
+          maxlength="1000"
           show-word-limit
           placeholder="介绍"
         />
@@ -259,6 +281,7 @@ export default {
     socialIcon
   },
   data() {
+    const tagsOptions = [{name:'个人', label: 'personal'}, {name:'组织', label: 'organization'}, {name: '产品', label: 'product'}, { name: 'MEME', label: 'meme'}]
     const checkSymbol = (rule, value, callback) => {
       const reg = /^[A-Z]+$/
       const res = reg.test(this.form.symbol)
@@ -270,9 +293,12 @@ export default {
     }
     return {
       tokenId: null,
+      selected: [],
+      tags: tagsOptions,
       form: {
         name: '',
         symbol: '',
+        tags: [],
         number: '',
         logo: '',
         brief: '',
@@ -289,6 +315,9 @@ export default {
           { required: true, message: '请输入Fan票缩写', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: ['blur', 'change'] }
+        ],
+        tag: [
+          { required: false, message: '请选择至少一种标签:', trigger: 'blur' }
         ],
         logo: [
           { required: true, message: '请输上传图标' }
@@ -472,11 +501,12 @@ export default {
       else throw res.message
     },
     async minetokenCreate() {
-      const { name, symbol, logo, brief, introduction, number } = this.form
+      const { name, symbol, tags, logo, brief, introduction, number } = this.form
       const data = {
         name: name,
         symbol: symbol,
         decimals: 4,
+        tags: tags,
         brief: brief,
         introduction,
         logo: logo,
@@ -534,6 +564,7 @@ export default {
         })
     },
     submitForm(formName) {
+      console.log(this.selected)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.isPost) this.minetokenCreate()
@@ -671,6 +702,17 @@ export default {
 }
 .publish-btn {
   display: block;
+}
+
+.form-tags {
+  /deep/ .el-form-item__content {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.tag-help {
+  margin-left: 1rem;
 }
 
 .tokens-image {
