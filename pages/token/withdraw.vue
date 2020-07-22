@@ -5,8 +5,9 @@
     </h1>
     <div class="card">
         <el-alert type="warning">
-        ⚠️ 这个目前还是试验性功能，提取出站外的Fan票为普通的 ERC20 代币。
-        请确定你自己知道你在做啥。
+        ⚠️ 这个目前还是试验性功能，提取出站外的Fan票为普通的 ERC20 代币。（在 Rinkeby Testnet 上）
+        <br />
+        请确定你自己知道你在做啥。请确保你提供的是一个以太坊地址，我们不为搞错地址所造成的丢币负责。
         </el-alert>
         <el-form
       ref="form"
@@ -55,6 +56,13 @@
           @click="form.amount = form.balance"
         >全部转入</a>
       </p>
+      <el-form-item label="目标地址" prop="to">
+        <el-input
+          v-model="form.to"
+          placeholder="请输入目标钱包的以太坊地址，以 0x 开头。"
+          clearable
+        />
+      </el-form-item>
       <div class="form-button">
         <el-button
           :disabled="!isGoodToWithdraw"
@@ -90,6 +98,17 @@ export default {
         callback()
       }
     }
+    const validateEthereumAddress = (rule, value, callback) => {
+      if (!value) {
+        callback('目标钱包地址不能为空')
+      } else if (value.length !== 42) {
+        callback(new Error('钱包地址长度不正确，请再次确认是否为以太坊钱包地址'))
+      } else if (value.slice(0, 2) !== '0x') {
+        callback('地址不是0x开头，应该不是以太坊地址🤔')
+      } else {
+        callback()
+      }
+    }
     return {
       form: {
         tokenId: '',
@@ -98,6 +117,7 @@ export default {
         min: 0.0001,
         max: 99999999, // 默认最大
         balance: 0,
+        to: ''
       },
       rules: {
         tokenId: [
@@ -105,6 +125,9 @@ export default {
         ],
         amount: [
           { required: true, validator: validateToken, trigger: ['blur', 'change'] }
+        ],
+        to: [
+          { required: true, validator: validateEthereumAddress, trigger: ['blur', 'change'] }
         ],
       },
       transferLoading: false,
