@@ -137,7 +137,7 @@
     </div>
 
     <!-- 不支持 -->
-    <!-- <div v-if="active === 1" class="dashboard-block">
+    <div v-if="active === 5 || active === 6" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           {{ dataList[active].name }}
@@ -148,7 +148,7 @@
           暂不支持查看 {{ dataList[active].name }} 的历史数据
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -254,22 +254,26 @@ export default {
         //   float: 0,
         //   permanent: false
         // },
-        // {
-        //   name: '持币者',
-        //   label: '',
-        //   symbol: '',
-        //   value: 0,
-        //   float: 0,
-        //   permanent: false
-        // },
-        // {
-        //   name: '做市商',
-        //   label: '',
-        //   symbol: '',
-        //   value: 0,
-        //   float: 0,
-        //   permanent: false
-        // }
+        {
+          name: '持币者',
+          label: 'number_of_holders',
+          symbol: '',
+          value: 0,
+          float: 0,
+          openChart: false,
+          permanent: false,
+          period: 'all'
+        },
+        {
+          name: '做市商',
+          label: 'number_of_liquidity_holders',
+          symbol: '',
+          value: 0,
+          float: 0,
+          openChart: false,
+          permanent: false,
+          period: 'all'
+        }
       ]
     }
   },
@@ -285,12 +289,15 @@ export default {
   methods: {
     initValues() {
       this.dataList.forEach(data => {
-        if(data.label !== 'price') {
+        if(!['price', 'number_of_holders', 'number_of_liquidity_holders'].includes(data.label)) {
           const tokenLabel = data.label === 'total_supply' ? 'minetokenToken' : 'minetokenExchange'
           data.value = this.unitConversion(this[tokenLabel][data.label])
         }
         else {
           data.value = this.minetokenExchange[data.label] || 0
+        }
+
+        if(data.label === 'price') {
           data.float = this.percentage(this.minetokenExchange.change_24h)
         }
       })
