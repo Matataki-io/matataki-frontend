@@ -564,7 +564,6 @@ export default {
         })
     },
     submitForm(formName) {
-      console.log(this.selected)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.isPost) this.minetokenCreate()
