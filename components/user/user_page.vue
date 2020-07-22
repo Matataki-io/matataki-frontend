@@ -1,22 +1,10 @@
 <template>
   <div class="user-page">
-    <div
-      v-if="userInfo.banner"
-      class="banner user-page-banner"
-    >
-      <img
-        :src="userInfo.banner"
-        alt="banner"
-      >
+    <div v-if="userInfo.banner" class="banner user-page-banner">
+      <img :src="userInfo.banner" alt="banner">
     </div>
-    <div
-      v-else
-      class="default-banner user-page-banner"
-    >
-      <img
-        src="@/assets/img/user_banner.png"
-        alt="banner"
-      >
+    <div v-else class="default-banner user-page-banner">
+      <img src="@/assets/img/user_banner.png" alt="banner">
     </div>
     <div class="user-info user-page-info">
       <div class="user-info-center">
@@ -40,38 +28,10 @@
         <div>
           <h1 class="username">
             {{ userInfo.name }}
-            <!-- {{ userInfo }} -->
-            <!-- <el-tooltip
-            v-if="seedUser"
-            class="item"
-            effect="dark"
-            content="种子用户"
-            placement="top"
-          >
-            <svg-icon
-              class="seeduser"
-              icon-class="seeduser"
-            />
-            </el-tooltip>-->
-
-            <el-tooltip
-              v-if="tokenUser"
-              class="tooltip"
-              effect="dark"
-              :content="$t('user.issuedFanTickets')"
-              placement="top"
-            >
-              <svg-icon
-                class="tokens"
-                icon-class="token"
-              />
-            </el-tooltip>
           </h1>
         </div>
 
-        <p class="profile">
-          {{ userInfo.introduction || $t('not') }}
-        </p>
+        <p class="profile">{{ userInfo.introduction || $t('not') }}</p>
         <div class="fl jc">
           <router-link
             :to="{name: 'user-id-follow', params: {id: $route.params.id}}"
@@ -364,7 +324,7 @@ export default {
     color: #000;
     line-height: 22px;
     padding: 0;
-    margin: 10px 0 20px;
+    margin: 20px 0 40px;
     white-space: pre-wrap;
     word-break: break-all;
   }

@@ -20,41 +20,6 @@
           <a
             class="href"
             target="_blank"
-            href="https://www.matataki.io/p/781"
-          >
-            {{ $t('footer.point') }}
-          </a>
-          <!-- 隐私政策与用户协议 -->
-          <!-- 去掉链接 -->
-          <a
-            class="href"
-            target="_blank"
-          >
-            {{ $t('footer.privacyPolicy') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
-          >
-            {{ $t('footer.userAgreement') }}
-          </a>
-          <!-- 保留链接 -->
-          <!-- <a class="href" target="_blank" href="/policy">
-            {{ $t('footer.privacyPolicy') }}
-          </a>
-          <a class="href" target="_blank" href="/agreement">
-            {{ $t('footer.userAgreement') }}
-          </a> -->
-          <a
-            class="href"
-            target="_blank"
-            href="https://github.com/Matataki-io/Matataki-FE"
-          >
-            {{ $t('footer.about') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
             href="https://www.yuque.com/matataki/matataki_version"
           >
             {{ $t('footer.updateRecord') }}

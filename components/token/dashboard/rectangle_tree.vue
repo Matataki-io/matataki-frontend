@@ -1,9 +1,24 @@
 <template>
   <div class="treemap">
-    <div class="maximum-issuance">
-      <div :style="`width:${getPercentage(totalIssued, maximumIssuance)}`" class="total-issued">
-        <div :style="`width:${getPercentage(issued7D, totalIssued)}`" class="issued-7d">
-          <div :style="`width:${getPercentage(issued24H, issued7D)}`" class="issued-24h">
+    <div class="total-issued">
+      <div
+        v-if="issued30D"
+        :style="`width:${getPercentage(issued30D, totalIssued)}`"
+        class="issued-30d"
+        :class="getMinWidth(2)"
+      >
+        <div
+          v-if="issued7D"
+          :style="`width:${getPercentage(issued7D, issued30D)}`"
+          class="issued-7d"
+          :class="getMinWidth(1)"
+        >
+          <div
+            v-if="issued24H"
+            :style="`width:${getPercentage(issued24H, issued7D)}`"
+            class="issued-24h"
+            :class="getMinWidth(0)"
+          >
             <div class="data-label">
               <div class="data-label-div">
                 <i class="placeholder" />
@@ -36,11 +51,11 @@
           <div class="data-label-div">
             <i class="placeholder" />
             <span>
-              <h4 :style="`font-size:${getFontSize(totalIssued)};`">
-                {{ totalIssued }}
+              <h4 :style="`font-size:${getFontSize(issued30D)};`">
+                {{ issued30D }}
               </h4>
               <p>
-                已发行总量
+                30D增发量
               </p>
             </span>
           </div>
@@ -50,11 +65,11 @@
         <div class="data-label-div">
           <i class="placeholder" />
           <span>
-            <h4 :style="`font-size:${getFontSize(maximumIssuance)};`">
-              {{ maximumIssuance }}
+            <h4 :style="`font-size:${getFontSize(totalIssued)};`">
+              {{ totalIssued }}
             </h4>
             <p>
-              上限发行量
+              已发行总量
             </p>
           </span>
         </div>
@@ -63,20 +78,25 @@
   </div>
 </template>
 <script>
+import { precision } from '@/utils/precisionConversion'
+
 export default {
-  // props: {
-  //   minetokenToken: {
-  //     type: Object,
-  //     required: true
-  //   },
-  // },
+  props: {
+    minetokenToken: {
+      type: Object,
+      required: true
+    },
+  },
   data() {
     return {
-      maximumIssuance: 349,
-      totalIssued: 201,
-      issued7D: 100,
-      issued24H: 30
+      totalIssued: 'Loading...',
+      issued30D: 'Loading...',
+      issued7D: 'Loading...',
+      issued24H: 'Loading...'
     }
+  },
+  created() {
+    this.getAddSupplyChart()
   },
   methods: {
     getFontSize(test) {
@@ -90,7 +110,36 @@ export default {
     },
     getPercentage(num, max) {
       return num / max * 100 + '%'
-    }
+    },
+    async getAddSupplyChart() {
+      try {
+        const res = await this.$API.getAddSupplyChart(this.$route.params.id)
+        if(res.code === 0) {
+          this.totalIssued = this.unitConversion(res.data.total_supply)
+          this.issued30D = this.unitConversion(res.data.suppl_30d)
+          this.issued7D = this.unitConversion(res.data.suppl_7d)
+          this.issued24H = this.unitConversion(res.data.suppl_24h)
+        }
+        else this.$message.error(res.message)
+      }
+      catch(e) {
+        console.error(e)
+      }
+    },
+    getMinWidth(num) {
+      const a = [Number(Boolean(this.issued24H)), Number(Boolean(this.issued7D)), Number(Boolean(this.issued30D))]
+      const w = [a[0], a[0] + a[1], a[0] + a[1] + a[2]][num]
+      return Boolean(w) && 'issued-w' + w
+    },
+    unitConversion(num) {
+      if(!this.minetokenToken) return 0
+      const tokenamount = precision(
+        num || 0,
+        'CNY',
+        this.minetokenToken.decimals
+      )
+      return this.$publishMethods.formatDecimal(tokenamount, 4)
+    },
   }
 }
 </script>
@@ -108,7 +157,7 @@ export default {
     transition: all 0.3s;
     min-width: 20px;
     &:hover {
-      min-width: 90px;
+      min-width: 100px;
       .data-label-div span {
         transform: translate(0, -4px);
       }
@@ -151,7 +200,7 @@ export default {
     border-radius:4px;
     transition: all 0.3s;
   }
-  .maximum-issuance {
+  .total-issued {
     .data-square();
     width: 100%;
     min-width: 80px;
@@ -160,31 +209,37 @@ export default {
       min-width: 160px;
     }
   }
-  .total-issued {
+  .issued-30d {
     .data-square();
     width: 50%;
-    min-width: 60px;
     background: #AF9BF3;
-    &:hover {
-      min-width: 140px;
-    }
   }
   .issued-7d {
     .data-square();
     width: 50%;
-    min-width: 40px;
     background: #896DF0;
-    &:hover {
-      min-width: 120px;
-    }
   }
   .issued-24h {
     .data-square();
     width: 50%;
-    min-width: 20px;
     background: #542DE0;
+  }
+  .issued-w1 {
+    min-width: 20px;
     &:hover {
       min-width: 100px;
+    }
+  }
+  .issued-w2 {
+    min-width: 40px;
+    &:hover {
+      min-width: 120px;
+    }
+  }
+  .issued-w3 {
+    min-width: 60px;
+    &:hover {
+      min-width: 140px;
     }
   }
 }

@@ -34,10 +34,10 @@ export default {
     } else if (state === 'binding') {
       try {
         const res = await this.$API.accountBind({
-            platform: 'facebook',
-            code,
-            callbackUrl: `${window.location.origin}/login/facebook/callback`
-          })
+          platform: 'facebook',
+          code,
+          callbackUrl: `${window.location.origin}/login/facebook/callback`
+        })
         if (res.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         } else {

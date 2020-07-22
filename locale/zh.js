@@ -807,6 +807,7 @@ export default {
     payToSee: '付费可见',
     quickPurchase: '快捷购买',
     enterPurchaseQuantity: '输入购买数量',
+    enterBudget: '输入购买金额',
     payImmediately: '立即支付',
     tradingFanTickets: '交易Fan票',
     underDeployment: 'Fan票正在部署中，请稍后过来操作!',
@@ -815,7 +816,8 @@ export default {
     tokenManagement: 'Fan票管理',
     expandMod: '拓展MOD',
     recommendMod: '推荐模组',
-    quickEntrance: '快捷入口'
+    quickEntrance: '快捷入口',
+    tags: '标签'
   },
   ipfsHash: {
     link: 'IPFS地址',

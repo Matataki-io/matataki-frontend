@@ -10,6 +10,7 @@ export default ({ app }) => {
       'minetoken', 'editminetoken', 'postminetoken',
       'user-id-buy', 'publish-type-id',
       'user-id-buy', 'user-id-buy-other',
+      'token-withdraw',
       'setting', 'setting-account', 'setting-system' // setting page
     ] // 需要登陆才能进入
     // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
@@ -94,6 +95,7 @@ export default ({ app }) => {
       'user-id-fan': '用户粉丝-瞬MATATAKI',
       'user-id-follow': '用户关注-瞬MATATAKI',
       'user-id-info': '用户信息-瞬MATATAKI',
+      'token-withdraw': '提取代币 - 瞬MATATAKI'
     }
     // 不需要设置微信分享的页面列表
     let weChatShareNoSetList = [

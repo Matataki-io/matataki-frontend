@@ -1,7 +1,7 @@
 <template>
   <div class="entrance">
     <h2 class="token-title">
-      {{ $t('token.relatedActivities') }}
+      {{ $t('token.quickEntrance') }}
     </h2>
     <div class="entrance-list">
       <a
@@ -36,7 +36,6 @@ export default {
   background: @white;
   padding: 20px;
   border-radius: @br10;
-  margin: 20px 0 0;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
 
   &-list {

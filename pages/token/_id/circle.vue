@@ -5,6 +5,7 @@
       :minetoken-token="minetokenToken"
       :minetoken-user="minetokenUser"
       :minetoken-exchange="minetokenExchange"
+      :tags="tags"
       :is-my-token="isMyToken"
       :balance="balance"
       @display-angle="setDisplayAngle"
@@ -13,12 +14,15 @@
     <el-row class="token-container">
       <!-- 左侧卡片 -->
       <el-col :span="17">
-        <relatedActivities :minetoken-token="minetokenToken" />
+        <!-- <relatedActivities :minetoken-token="minetokenToken" /> -->
         <tokenRelated />
       </el-col>
       <!-- 右侧卡片 -->
       <el-col :span="7">
-        <tokenBuyCard :token="minetokenToken" />
+        <tokenBuyCard
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        />
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
@@ -42,7 +46,7 @@ import { accessTokenAPI } from '@/api/backend'
 import basicInfoHead from '@/components/token/basic_info_head'
 import tokenNav from '@/components/token/token_nav'
 // 左侧
-import relatedActivities from '@/components/token/related_activities'
+// import relatedActivities from '@/components/token/related_activities'
 import tokenRelated from '@/components/token/token_related'
 // 右侧
 import tokenBuyCard from '@/components/token/token_buy_card'
@@ -56,7 +60,7 @@ export default {
     basicInfoHead,
     tokenNav,
     // 左侧
-    relatedActivities,
+    // relatedActivities,
     tokenRelated,
     // 右侧
     tokenBuyCard,
@@ -94,6 +98,7 @@ export default {
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
+      currentPoolSize: {},
       resourcesWebsites: [],
       resourcesSocialss: [],
       balance: 0,
@@ -148,6 +153,7 @@ export default {
       minetokenToken: res.data.token || Object.create(null),
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
+      tags: res.data.tags || [],
       balance,
       isMyToken,
       displayAngle: 'client'
@@ -158,6 +164,7 @@ export default {
       this.setWeChatShare()
     }
     this.minetokenGetResources(this.$route.params.id)
+    this.getCurrentPoolSize(this.$route.params.id)
   },
   methods: {
     async minetokenGetResources(id) {
@@ -190,6 +197,17 @@ export default {
     setDisplayAngle(val) {
       this.displayAngle = val
       if(val === 'creator') this.$router.replace({name: 'token-id', params: {id : this.$route.params.id}})
+    },
+    getCurrentPoolSize(tokenId) {
+      this.$API.getCurrentPoolSize(tokenId).then(res => {
+        if (res.code === 0) {
+          this.currentPoolSize = {
+            cny_amount: this.$utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: this.$utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
+          }
+        }
+      })
     }
   }
 }

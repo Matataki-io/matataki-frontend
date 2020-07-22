@@ -5,6 +5,7 @@
       :minetoken-token="minetokenToken"
       :minetoken-user="minetokenUser"
       :minetoken-exchange="minetokenExchange"
+      :tags="tags"
       :is-my-token="isMyToken"
       :balance="balance"
       @display-angle="setDisplayAngle"
@@ -14,14 +15,28 @@
       <!-- 左侧卡片 -->
       <el-col :span="17">
         <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
+        <tokenBuyCard
+          v-if="clientVisible"
+          class="buy-card1"
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        />
         <management v-if="creatorVisible" />
-        <expandMod v-if="creatorVisible" />
-        <dashboard :minetoken-token="minetokenToken" />
+        <dashboard
+          :minetoken-token="minetokenToken"
+          :minetoken-exchange="minetokenExchange"
+          :current-pool-size="currentPoolSize"
+          :balance="balance"
+        />
         <datasheets :minetoken-token="minetokenToken" />
       </el-col>
       <!-- 右侧卡片 -->
-      <el-col v-if="clientVisible" :span="7">
-        <tokenBuyCard :token="minetokenToken" />
+      <el-col v-show="clientVisible" :span="7">
+        <tokenBuyCard
+          class="buy-card2"
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        />
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
@@ -33,7 +48,6 @@
       </el-col>
       <!-- 管理视角的右侧卡片 -->
       <el-col v-if="creatorVisible" :span="7">
-        <recommendMod />
         <quickEntrance />
       </el-col>
     </el-row>
@@ -52,7 +66,7 @@ import tokenNav from '@/components/token/token_nav'
 // 左侧
 import introduction from '@/components/token/introduction'
 import management from '@/components/token/management'
-import expandMod from '@/components/token/expand_mod'
+// import expandMod from '@/components/token/expand_mod'
 import dashboard from '@/components/token/dashboard'
 import datasheets from '@/components/token/datasheets'
 // 右侧
@@ -61,7 +75,7 @@ import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
-import recommendMod from '@/components/token/recommend_mod'
+// import recommendMod from '@/components/token/recommend_mod'
 import quickEntrance from '@/components/token/quick_entrance'
 
 export default {
@@ -71,7 +85,6 @@ export default {
     // 左侧
     introduction,
     management,
-    expandMod,
     dashboard,
     datasheets,
     // 右侧
@@ -80,7 +93,6 @@ export default {
     relatedWebsites,
     socialAccount,
     widgetCopyBox,
-    recommendMod,
     quickEntrance
   },
   head() {
@@ -112,11 +124,13 @@ export default {
       minetokenToken: Object.create(null),
       minetokenUser: Object.create(null),
       minetokenExchange: Object.create(null),
+      currentPoolSize: {},
       resourcesWebsites: [],
       resourcesSocialss: [],
+      tags: [],
       balance: 0,
       isMyToken: false,
-      displayAngle: 'client'
+      displayAngle: 'client',
     }
   },
   computed: {
@@ -176,6 +190,7 @@ export default {
       minetokenToken: res.data.token || Object.create(null),
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
+      tags: res.data.tags || [],
       balance,
       isMyToken,
       displayAngle
@@ -186,6 +201,7 @@ export default {
       this.setWeChatShare()
     }
     this.minetokenGetResources(this.$route.params.id)
+    this.getCurrentPoolSize(this.$route.params.id)
   },
   methods: {
     async minetokenGetResources(id) {
@@ -217,6 +233,17 @@ export default {
     },
     setDisplayAngle(val) {
       this.displayAngle = val
+    },
+    getCurrentPoolSize(tokenId) {
+      this.$API.getCurrentPoolSize(tokenId).then(res => {
+        if (res.code === 0) {
+          this.currentPoolSize = {
+            cny_amount: this.$utils.fromDecimal(res.data.cny_amount, 4),
+            token_amount: this.$utils.fromDecimal(res.data.token_amount, 4),
+            total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
+          }
+        }
+      })
     }
   }
 }
@@ -237,6 +264,11 @@ export default {
     padding-right: 10px;
   }
 }
+
+.buy-card1 {
+  display: none;
+  margin: 20px 0 0;
+}
 // 小于992
 @media screen and (max-width: 992px) {
   .token-container {
@@ -247,6 +279,12 @@ export default {
     .el-col-7 {
       width: 100%;
     }
+  }
+  .buy-card1 {
+    display: block;
+  }
+  .buy-card2 {
+    display: none;
   }
 }
 </style>
