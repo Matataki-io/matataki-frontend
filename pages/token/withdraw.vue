@@ -67,7 +67,7 @@
           v-if="form.balance"
           href="javascript:;"
           @click="form.amount = form.balance"
-        >全部转入</a>
+        >全部转出</a>
       </p>
       <el-form-item label="目标地址" prop="to">
         <el-input
@@ -105,8 +105,8 @@
 </template>
 
 <script>
-import { precision, toPrecision } from '@/utils/precisionConversion'
 import { mapGetters } from 'vuex'
+import { precision, toPrecision } from '@/utils/precisionConversion'
 
 export default {
   name: 'TokenWithdraw',
