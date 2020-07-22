@@ -51,15 +51,15 @@
             <div class="token-info-title">
               {{ $t('token.tags') }}：
             </div>
-            <div>
-              <p v-if="!tokenTagsExist" class="token-info-sub">
+            <div v-if="tags && tags.length === 0">
+              <p class="token-info-sub">
                 无标签
               </p>
             </div>
-            <div v-if="tokenTagsExist" class="token-info-sub">
-              <div v-for="tag in tags" :key="tag">
+            <div v-else class="token-info-sub">
+              <div v-for="(tag, index) in tags" :key="index">
                 <el-button size="small">
-                  {{ tag.name }}
+                  {{ tagPattern.find(item => item.label === tag.tag).name }}
                 </el-button>
               </div>
             </div>
@@ -165,13 +165,16 @@ export default {
     balance: {
       type: Number,
       default: 0
+    },
+    tags: {
+      type: Array,
+      default: (() => [])
     }
   },
   data() {
     return {
       shareModalShow: false,
       displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户,
-      tags: [],
       tagPattern: [
         {name:'个人', label: 'personal', checked: false}, 
         {name:'组织', label: 'organization', checked: false}, 
@@ -198,10 +201,6 @@ export default {
     },
     friendlyDate() {
       return this.moment(this.minetokenToken.create_time).format('lll')
-    },
-    tokenTagsExist() {
-      if (this.tags.length === 0) return false
-      else return this.tags
     }
   },
   watch: {
@@ -210,18 +209,6 @@ export default {
       let text = val === 'client' ? '现在是粉丝视角' : '现在是管理视角'
       this.$message.success(`切换成功，${text}`)
     }
-  },
-  created() {
-    this.$API.tokenDetail().then(res => {
-      if (res.data.tags.length > 0) {
-        this.tagPattern.forEach(tag => {
-          res.data.tags.forEach(item => {
-            if (tag.label === item.tag) this.tags.push(tag)
-          })
-        })
-        console.log(this.tags)
-      }
-    })
   },
   mounted() {
   },

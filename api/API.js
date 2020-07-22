@@ -1107,6 +1107,15 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  // Token提现
+  withdrawToken(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/${tid}/withdraw`,
+        data,
+        timeout: 40 * 1000
+      })
+    },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
@@ -1137,12 +1146,20 @@ minetokenGetResources(tokenId) {
   },
   // -------------------- token历史记录 --------------------
   // token历史价格
-  getHistoryPrice(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
+  getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
+  // token流动金历史
+  getLiquidityHistory(tokenId) { return request.get(`/token/${tokenId}/history/liquidity`) },
   // token历史增发
   getIssuedHistory(tokenId) { return request.get(`/token/${tokenId}/history/issued`) },
+  // token交易额历史
+  getAmountHistory(tokenId) { return request.get(`/token/${tokenId}/history/amount`) },
+  // token交易量历史
+  getVolumeHistory(tokenId) { return request.get(`/token/${tokenId}/history/volume`) },
 
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
+  // 扫码绑定
+  apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
   // -------------------- End -----------------------
 }

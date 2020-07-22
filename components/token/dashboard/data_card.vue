@@ -10,7 +10,7 @@
         v-if="data.float !== 0"
         :class="data.float < 0 && 'red'"
       >
-        {{ data.float > 0 ? `+${data.float}` : data.float }}%
+        {{ data.float > 0 ? `${data.float}` : data.float }}%
       </span>
     </p>
     <h3 class="card-value">

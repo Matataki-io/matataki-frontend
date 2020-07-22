@@ -18,7 +18,7 @@
                 </c-token-popover>
                 <span class="scope">{{ scope.row.symbol }}</span>
               </router-link>
-              <div class="hold-bc" :style="{'width': setHoldBc(scope.row.amount)}" />
+              <div class="hold-bc" :style="{'width': setHoldBc(scope.row.hold_percentage)}" />
             </div>
           </template>
         </el-table-column>
@@ -402,22 +402,16 @@ export default {
       try {
         let val = parseInt(data)
 
-        let list = this.pointLog.list.map(i => i.amount)
-        let max = Math.max(...list)
-        let percentage = Math.floor(max / 100) // 按照最大的值计算 刻度
-
         // 默认 10px
         let widthVal = '10px'
 
         if (val <= 1) { // 最小 1 ==== 0.0001
           widthVal = '10px'
-        } else if (val >= max) { // 最大
+        } else if (val >= 100) { // 最大
           widthVal = '320px'
         } else {
-          // 按照刻度求百分比 向下取值 向上/四舍五入 可能99.6 => 100%
-          let valPercentage = Math.floor(val / percentage)
           // 根据百分比计算宽度
-          let bcWidth = (320 * (valPercentage / 100))
+          let bcWidth = (320 * (val / 100))
 
           // 最小不能少于 10, 如果太小 按照 10 展示
           widthVal = (bcWidth < 10 ? 10 : bcWidth) + 'px'
