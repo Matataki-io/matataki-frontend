@@ -465,8 +465,14 @@ export default {
         this.setPathToSession('wechatFrom')
         this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
       } else {
-        let to = encodeURIComponent(window.location.href)
-        this.$router.push({ name: 'login-auth', query: { to: to } })
+        let key = this.$route.query.key || ''
+        if (key) {
+          let to = encodeURIComponent(window.location.href)
+          this.$router.push({ name: 'login-auth', query: { to: to } })
+        } else {
+          this.$message.error('请在微信中操作')
+        }
+
       }
     },
     // 检测域名

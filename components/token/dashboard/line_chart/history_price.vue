@@ -68,6 +68,7 @@ export default {
         },{}],
         series: [
           {
+            name: 'CNY',
             data: [],
             type: 'line',
             smooth: 0.25,
@@ -112,7 +113,7 @@ export default {
     }
   },
   created() {
-    this.getHistoryPrice()
+    this.getPriceHistory()
   },
   mounted() {
     window.onresize = () => {
@@ -131,9 +132,9 @@ export default {
     // ])
   },
   methods: {
-    async getHistoryPrice() {
+    async getPriceHistory() {
       try {
-        const res = await this.$API.getHistoryPrice(this.$route.params.id)
+        const res = await this.$API.getPriceHistory(this.$route.params.id)
         this.loading = false
         if (res.code !== 0) {
           this.$message.error(res.message)

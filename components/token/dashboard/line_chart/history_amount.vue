@@ -54,6 +54,7 @@ export default {
           containLabel: true
         },
         xAxis: {
+          data: [],
           type: 'time',
           boundaryGap: false,
           splitLine: {
@@ -68,14 +69,16 @@ export default {
           }
         },
         dataZoom: [{
-          type: 'inside',
-          filterMode: 'none'
+          type: 'inside'
         },{}],
         series: [
           {
-            name: this.minetokenToken.symbol,
+            name: 'CNY',
+            data: [],
             type: 'line',
-            step: 'end',
+            smooth: 0.25,
+            showSymbol: false,
+            sampling: 'average',
             itemStyle : {
               normal : {
                 color:'#542DE0',
@@ -84,7 +87,9 @@ export default {
                 }
               }
             },
-            data: []
+            // areaStyle: {
+            //   color: null
+            // },
           }
         ]
       },
@@ -113,28 +118,18 @@ export default {
     }
   },
   created() {
-    this.getIssuedHistory()
+    this.getAmountHistory()
   },
   mounted() {
     window.onresize = () => {
       if(!this.echarts) this.echarts = this.$echarts.getInstanceByDom(document.getElementById('linechart'))
       this.echarts.resize()
     }
-    // this.orgOptions.series[0].areaStyle.color = new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-    //   {
-    //     offset: 0,
-    //     color: '#D4C9FF'
-    //   },
-    //   {
-    //     offset: 1,
-    //     color: '#f1f1f100'
-    //   }
-    // ])
   },
   methods: {
-    async getIssuedHistory() {
+    async getAmountHistory() {
       try {
-        const res = await this.$API.getIssuedHistory(this.$route.params.id)
+        const res = await this.$API.getAmountHistory(this.$route.params.id)
         this.loading = false
         if (res.code !== 0) {
           this.$message.error(res.message)
@@ -154,6 +149,21 @@ export default {
         console.error(e)
       }
     },
+    set30dList(list) {
+      this.orgOptions.series[0].data = []
+      if (this.list30d.length === 0) {
+        let date30d = new Date()
+        date30d.setDate(date30d.getDate() - 29)
+
+        for (let i = 0; i < 30; i++) {
+          const dateText = this.moment(date30d).format('YYYY-MM-DD')
+          let res = list.find(item => item.create_time === dateText)
+          this.list30d.push([dateText, res ? this.unitConversion(res.amount) : 0])
+          date30d.setDate(date30d.getDate() + 1)
+        }
+      }
+      this.orgOptions.series[0].data.push(...this.list30d)
+    },
     unitConversion(num) {
       const tokenamount = precision(
         num || 0,
@@ -162,17 +172,16 @@ export default {
       )
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
-    set30dList() {
-      this.orgOptions.series[0].data = []
-    },
     setAllList(list) {
       this.orgOptions.series[0].data = []
-      let value = 0
-      if (this.listAll.length === 0) {
-        for (let i = 0; i < list.length; i++) {
-          value += list[i].amount
-          const dateText = this.moment(list[i].create_time).format('YYYY-MM-DD')
-          this.listAll.push([dateText, this.unitConversion(value)])
+      if(this.listAll.length === 0) {
+        let date = new Date(list[0].create_time)
+        const nowDate = new Date()
+        while(date <= nowDate) {
+          const dateText = this.moment(date).format('YYYY-MM-DD')
+          let res = list.find(item => item.create_time === dateText)
+          this.listAll.push([dateText, res ? this.unitConversion(res.amount) : 0])
+          date.setDate(date.getDate() + 1)
         }
       }
       this.orgOptions.series[0].data.push(...this.listAll)

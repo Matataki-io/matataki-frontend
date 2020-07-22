@@ -20,7 +20,7 @@
           </el-button>
         </router-link>
       </div>
-      <rectangleTree />
+      <rectangleTree :minetoken-token="minetokenToken" />
       <rectangularPie
         :minetoken-token="minetokenToken"
         :current-pool-size="currentPoolSize"
@@ -44,22 +44,89 @@
         />
       </div>
     </div>
+
+    <!-- 历史价格 -->
     <div v-if="active === 0" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           历史价格
         </h4>
         <div class="chart-period">
-          <el-radio v-model="period" label="all">
+          <el-radio v-model="dataList[0].period" label="all">
             全部
           </el-radio>
-          <el-radio v-model="period" label="30d">
+          <el-radio v-model="dataList[0].period" label="30d">
             30天
           </el-radio>
         </div>
       </div>
-      <historyPrice :period="period" />
+      <historyPrice :period="dataList[0].period" />
     </div>
+
+    <!-- 历史价格 -->
+    <div v-if="active === 1" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史流动性池
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="dataList[1].period" label="all">
+            全部
+          </el-radio>
+          <el-radio v-model="dataList[1].period" label="30d">
+            30天
+          </el-radio>
+        </div>
+      </div>
+      <historyLiquidity
+        :minetoken-token="minetokenToken"
+        :period="dataList[1].period"
+      />
+    </div>
+
+    <!-- 历史交易额 -->
+    <div v-if="active === 2" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史交易额
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="dataList[2].period" label="all">
+            全部
+          </el-radio>
+          <el-radio v-model="dataList[2].period" label="30d">
+            30天
+          </el-radio>
+        </div>
+      </div>
+      <historyAmount
+        :minetoken-token="minetokenToken"
+        :period="dataList[2].period"
+      />
+    </div>
+
+    <!-- 历史交易量 -->
+    <div v-if="active === 3" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史交易量
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="dataList[3].period" label="all">
+            全部
+          </el-radio>
+          <el-radio v-model="dataList[3].period" label="30d">
+            30天
+          </el-radio>
+        </div>
+      </div>
+      <historyVolume
+        :minetoken-token="minetokenToken"
+        :period="dataList[3].period"
+      />
+    </div>
+
+    <!-- 历史增发 -->
     <div v-if="active === 4" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
@@ -68,7 +135,9 @@
       </div>
       <historyIssued :minetoken-token="minetokenToken" />
     </div>
-    <div v-if="active !== 0 && active !== 4" class="dashboard-block">
+
+    <!-- 不支持 -->
+    <div v-if="active === 5 || active === 6" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           {{ dataList[active].name }}
@@ -89,14 +158,20 @@ import rectangleTree from './rectangle_tree'
 import rectangularPie from './rectangular_pie'
 import dataCard from './data_card'
 import historyPrice from './line_chart/history_price'
+import historyLiquidity from './line_chart/history_liquidity'
 import historyIssued from './line_chart/history_issued'
+import historyAmount from './line_chart/history_amount'
+import historyVolume from './line_chart/history_volume'
 
 export default {
   components: {
     rectangleTree,
     rectangularPie,
     historyPrice,
+    historyLiquidity,
     historyIssued,
+    historyAmount,
+    historyVolume,
     dataCard
   },
   props: {
@@ -127,17 +202,19 @@ export default {
           symbol: '￥',
           value: 0,
           float: 0,
-          openChart: true,
-          permanent: false
+          openChart: false,
+          permanent: false,
+          period: 'all'
         },
         {
-          name: '流动金',
+          name: '流动性',
           label: 'cny_reserve',
           symbol: '￥',
           value: 0,
           float: 0,
           openChart: false,
-          permanent: false
+          permanent: false,
+          period: 'all'
         },
         {
           name: '24h交易额',
@@ -146,7 +223,8 @@ export default {
           value: 0,
           float: 0,
           openChart: false,
-          permanent: false
+          permanent: false,
+          period: 'all'
         },
         {
           name: '24h交易量',
@@ -155,7 +233,8 @@ export default {
           value: 0,
           float: 0,
           openChart: false,
-          permanent: false
+          permanent: false,
+          period: 'all'
         },
         {
           name: '已发行',
@@ -163,8 +242,9 @@ export default {
           symbol: '',
           value: 0,
           float: 0,
-          openChart: true,
-          permanent: false
+          openChart: false,
+          permanent: false,
+          period: 'all'
         },
         // {
         //   name: '收益',
@@ -174,24 +254,27 @@ export default {
         //   float: 0,
         //   permanent: false
         // },
-        // {
-        //   name: '持币者',
-        //   label: '',
-        //   symbol: '',
-        //   value: 0,
-        //   float: 0,
-        //   permanent: false
-        // },
-        // {
-        //   name: '做市商',
-        //   label: '',
-        //   symbol: '',
-        //   value: 0,
-        //   float: 0,
-        //   permanent: false
-        // }
-      ],
-      period: 'all'
+        {
+          name: '持币者',
+          label: 'number_of_holders',
+          symbol: '',
+          value: 0,
+          float: 0,
+          openChart: false,
+          permanent: false,
+          period: 'all'
+        },
+        {
+          name: '做市商',
+          label: 'number_of_liquidity_holders',
+          symbol: '',
+          value: 0,
+          float: 0,
+          openChart: false,
+          permanent: false,
+          period: 'all'
+        }
+      ]
     }
   },
   computed: {
@@ -206,12 +289,15 @@ export default {
   methods: {
     initValues() {
       this.dataList.forEach(data => {
-        if(data.label !== 'price') {
+        if(!['price', 'number_of_holders', 'number_of_liquidity_holders'].includes(data.label)) {
           const tokenLabel = data.label === 'total_supply' ? 'minetokenToken' : 'minetokenExchange'
           data.value = this.unitConversion(this[tokenLabel][data.label])
         }
         else {
           data.value = this.minetokenExchange[data.label] || 0
+        }
+
+        if(data.label === 'price') {
           data.float = this.percentage(this.minetokenExchange.change_24h)
         }
       })
@@ -227,7 +313,7 @@ export default {
     percentage(num) {
       if (num) {
         const amount = (num * 100).toFixed(2)
-        return parseInt(amount) > 0 ? `+${amount}` : amount
+        return Number(amount) > 0 ? `+${amount}` : amount
       } else return 0
     },
   }

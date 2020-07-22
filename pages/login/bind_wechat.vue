@@ -2,7 +2,7 @@
   <section class="login-page">
     <section class="inner">
       <section class="main">
-        <p class="method">微信扫码登录</p>
+        <p class="method">微信扫码绑定</p>
         <section class="wrapper wechat-login">
           <section class="wechat-login">
             <section v-loading="loading" class="inner invalid">
@@ -17,7 +17,7 @@
           </section>
         </section>
         <!-- <div class="third-methods"></div> -->
-        <p class="follow-public-account">关注「Andoromeda仙女座」公众号，即可登录。</p>
+        <p class="follow-public-account">关注「Andoromeda仙女座」公众号，即可绑定。</p>
       </section>
       <img src="../../assets/img/login_auth.svg" alt="书桌" class="decoration">
     </section>
@@ -46,11 +46,20 @@ export default {
   methods: {
     // 生成二维码
     async qrCode() {
+
+      // 判断 uid
+      const { uid } = this.$route.query
+      if (!uid) {
+        this.invalid = 0
+        this.loading = false
+        return
+      }
+
       this.loading = true
-      const res = await this.$utils.factoryRequest(this.$API.apiWeChatQRCode({ source: 1 }))
+      const res = await this.$utils.factoryRequest(this.$API.apiWeChatQRCode({ source: 2, uid: uid }))
       if (res && res.data && res.data.qrcode) {
         this.qrCodeUrl = res.data.qrcode
-        this.loginByWx(res.data.scene)
+        this.bindByWx(res.data.scene)
       } else {
         console.log('生成二维码失败', res)
         this.invalid = 0
@@ -58,7 +67,7 @@ export default {
       this.loading = false
     },
     // 轮询登录
-    async loginByWx(scene) {
+    async bindByWx(scene) {
       clearInterval(this.timer)
       this.timer = setInterval(async () => {
         this.invalid--
@@ -66,20 +75,33 @@ export default {
         if (this.invalid <= 0) {
           clearInterval(this.timer)
         }
-        const res = await this.$utils.factoryRequest(this.$API.apiLoginByWx({ scene }))
-        if (res && res.data) {
 
-          this.$store.commit('setAccessToken', res.data)
-          this.$store.commit('setUserConfig', { idProvider: 'weixin' })
-          clearInterval(this.timer)
-          let to = this.$route.query.to || ''
+        try {
+          const res = await this.$API.apiBindByWx({ scene })
+          if (res.code === 0) {
 
-          if (to) {
-            window.location.href = decodeURIComponent(to)
-          } else {
-            this.$router.push({ name: 'article' })
+            if (res.data) {  // 如果有内容 成功
+              clearInterval(this.timer)
+
+              if (window.opener) {
+                window.opener.location.reload()
+                window.close()
+              }
+            }
+          
+          } else { // 如果已经错了 停止掉
+            clearInterval(this.timer)
+            this.$message.error({
+              message: '账号已存在或已绑定',
+              duration: 4000,
+              showClose: true
+            })
           }
+        } catch (e) {
+          console.log('bindByWx error', e)
+          clearInterval(this.timer)
         }
+    
       }, 1000)
 
     },

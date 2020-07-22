@@ -20,7 +20,7 @@
       <tokenTotalTransactionFlow v-if="flowTab === 0" class="token-flow" />
       <liquidityTotalTransactionFlow v-if="flowTab === 1" class="token-flow" />
     </div>
-    
+
     <!-- 总会显示 -->
     <div class="c-card">
       <span class="ticket-title">全部Fan票</span>
