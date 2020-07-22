@@ -454,10 +454,11 @@ export default {
       })
     },
     async minetokenTokenId(id) {
-      const { name, logo, brief, introduction } = this.form
+      const { name, logo, brief, tags, introduction } = this.form
       const data = {
         name: name,
         brief: brief,
+        tags,
         introduction,
         logo: logo
       }
