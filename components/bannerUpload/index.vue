@@ -278,7 +278,7 @@ export default {
           this.$message({
             showClose: true,
             duration: 1000,
-            message: this.$t('error.uploadImgFail')
+            message: this.$t('imgUpload.uploadImgFail')
           })
         }
       }
