@@ -798,7 +798,8 @@ export default {
         tokenManagement: 'Fan Ticket Management',
         expandMod: 'Expand MOD',
         recommendMod: 'Recommend Mod',
-        quickEntrance: 'Quick entrance'
+        quickEntrance: 'Quick entrance',
+        tags: 'Tags'
     },
     ipfsHash: {
         link: 'IPFS address',

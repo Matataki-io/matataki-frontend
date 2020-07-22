@@ -39,6 +39,16 @@
           </div>
           <div class="fl info-line">
             <div class="token-info-title">
+              {{ $t('token.tags') }}：
+            </div>
+            <div>
+              <p v-if="!tokenTagsExist" class="token-info-sub">
+                无标签
+              </p>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
               {{ $t('token.releaseTime') }}：
             </div>
             <div>
@@ -153,7 +163,8 @@ export default {
   data() {
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client' // 创建者、客户
+      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户,
+      tags: []
     }
   },
   computed: {
@@ -174,6 +185,10 @@ export default {
     },
     friendlyDate() {
       return this.moment(this.minetokenToken.create_time).format('lll')
+    },
+    tokenTagsExist() {
+      if (this.tags.length === 0) return false
+      else return this.tags
     }
   },
   watch: {
@@ -183,7 +198,13 @@ export default {
       this.$message.success(`切换成功，${text}`)
     }
   },
-  // created() {},
+  created() {
+    this.$API.tokenDetail().then(res => {
+      if (res.data.tags.length > 0) {
+        this.tags = res.data.tags
+      }
+    })
+  },
   mounted() {
   },
   methods: {

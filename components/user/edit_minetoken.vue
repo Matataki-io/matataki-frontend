@@ -85,7 +85,12 @@
         class="form-tags"
       >
         <el-checkbox-group v-model="form.tags">
-          <el-checkbox-button v-for="(tag, index) in tags" :key="index" :label="tag.label">
+          <el-checkbox-button
+            v-for="(tag, index) in tags" 
+            :key="index" 
+            :checked="tag.checked"
+            :label="tag.label"
+          >
             {{ tag.name }}
           </el-checkbox-button>
         </el-checkbox-group>
@@ -281,7 +286,6 @@ export default {
     socialIcon
   },
   data() {
-    const tagsOptions = [{name:'个人', label: 'personal'}, {name:'组织', label: 'organization'}, {name: '产品', label: 'product'}, { name: 'MEME', label: 'meme'}]
     const checkSymbol = (rule, value, callback) => {
       const reg = /^[A-Z]+$/
       const res = reg.test(this.form.symbol)
@@ -292,9 +296,15 @@ export default {
       }
     }
     return {
+      checked: false,
       tokenId: null,
       selected: [],
-      tags: tagsOptions,
+      tags: [
+        {name:'个人', label: 'personal', checked: false}, 
+        {name:'组织', label: 'organization', checked: false}, 
+        {name: '产品', label: 'product', checked: false}, 
+        { name: 'MEME', label: 'meme', checked: false}
+      ],
       form: {
         name: '',
         symbol: '',
@@ -431,6 +441,15 @@ export default {
       await this.$API.tokenDetail().then(res => {
         if (res.code === 0) {
           if (res.data.token) {
+            if (res.data.tags.length > 0) {
+              this.form.tags.forEach((tag, index) => {
+                res.data.tags.forEach(e => {
+                  if (e === tag.label) {
+                    this.form.tags[index].checked = true
+                  }
+                }) 
+              })
+            }
             if (this.isPost) {
               this.$router.push({
                 name: 'editminetoken'
