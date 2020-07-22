@@ -2,7 +2,6 @@ module.exports = {
   development: {
     NODE: 'development',
     NODE_ENV: 'development',
-    // VUE_APP_API: 'http://127.0.0.1:7001',
     VUE_APP_API: 'https://apitest.smartsignature.io',
     VUE_APP_URL: 'https://test.smartsignature.io',
     VUE_APP_SIGNATURE_CONTRACT: 'dragonquest2',
