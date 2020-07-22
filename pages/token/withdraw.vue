@@ -96,7 +96,7 @@
             :href="`https://rinkeby.etherscan.io/tx/${withdrawResult.txHash}`" 
             target="_blank" 
             rel="noreferrer">
-            在 EtherScan 查看这笔提现交易
+            👉 在 EtherScan 查看这笔提现交易 👈
         </a>
       </el-alert>
     </el-form>
