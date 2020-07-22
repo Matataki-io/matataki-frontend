@@ -3,18 +3,18 @@
     <h1 class="title">
         提取 Fan票
     </h1>
-    <el-alert type="warning">
+    <div class="card">
+        <el-alert type="warning">
         ⚠️ 这个目前还是试验性功能，提取出站外的Fan票为普通的 ERC20 代币。
         请确定你自己知道你在做啥。
-    </el-alert>
-    <div class="card">
+        </el-alert>
         <el-form
       ref="form"
       v-loading="transferLoading"
       :model="form"
       :rules="rules"
       label-width="60px"
-      class="gift-form"
+      class="withdraw-form"
     >
       <el-form-item label="类型" prop="tokenId">
         <el-select
@@ -233,6 +233,7 @@ export default {
     border-radius: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
     box-sizing: border-box;
+    padding: 10px;
 }
 </style>
 
@@ -340,8 +341,8 @@ export default {
     font-size: 20px;
   }
 }
-.gift-form {
-  // margin: 0 40px 0 20px;
+.withdraw-form {
+  margin: 10px;
   .tokenname {
     padding: 0;
     margin: 0;
