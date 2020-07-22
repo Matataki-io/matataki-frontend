@@ -194,9 +194,16 @@
           class="fl ac about-input"
         >
           <el-input
-            v-model="about[index]"
+            v-model="about[index].name"
+            class="input web-name"
+            placeholder="网站名称"
+            :maxlength="20"
+          />
+          <el-input
+            v-model="about[index].url"
             class="input"
             :placeholder="$t('social.fillLink')"
+            :maxlength="255"
           />
           <!-- <div v-if="index === 0" class="about-input-btn" @click="aboutAdd">
             <i class="el-icon-plus" />
@@ -342,7 +349,10 @@ export default {
         ]
       },
       imgUploadDone: 0, // 图片是否上传完成
-      about: [''],
+      about: [{
+        url: '',
+        name: ''
+      }],
       social: [
         {
           symbol: 'QQ',
@@ -550,7 +560,7 @@ export default {
             if (~index) this.social[index].value = i.content
           })
           // this.resourcesWebsites = res.data.websites
-          this.about = res.data.websites.length > 0 ? res.data.websites : ['']
+          if (res.data.websites.length > 0) this.about = res.data.websites
         } else {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         }
@@ -601,7 +611,10 @@ export default {
     },
     aboutAdd() {
       if (this.about.length >= 5) return
-      this.about.push('')
+      this.about.push({
+        url: '',
+        name: ''
+      })
     },
     abountLess(i) {
       if (this.about.length <= 1) return
@@ -713,6 +726,10 @@ export default {
   margin-top: 30px;
   .input {
     max-width: 400px;
+    &.web-name {
+      max-width: 150px;
+      margin-right: 5px;
+    }
   }
   .social-input {
     max-width: 340px;
@@ -743,7 +760,9 @@ export default {
 }
 .about-input-btn {
   width: 24px;
+  min-width: 24px;
   height: 24px;
+  min-height: 24px;
   background-color: @purpleDark;
   color: @white;
   display: flex;
