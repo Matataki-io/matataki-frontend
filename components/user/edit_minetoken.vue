@@ -87,8 +87,7 @@
         <el-checkbox-group v-model="form.tags">
           <el-checkbox-button
             v-for="(tag, index) in tags" 
-            :key="index" 
-            :checked="tag.checked"
+            :key="index"
             :label="tag.label"
           >
             {{ tag.name }}
@@ -442,10 +441,10 @@ export default {
         if (res.code === 0) {
           if (res.data.token) {
             if (res.data.tags.length > 0) {
-              this.form.tags.forEach((tag, index) => {
+              this.tags.forEach((tag) => {
                 res.data.tags.forEach(e => {
-                  if (e === tag.label) {
-                    this.form.tags[index].checked = true
+                  if (e.tag === tag.label) {
+                    this.form.tags.push(tag.label)
                   }
                 }) 
               })

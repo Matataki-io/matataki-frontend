@@ -56,8 +56,8 @@
                 无标签
               </p>
             </div>
-            <div v-else class="token-info-sub">
-              <div v-for="(tag, index) in tags" :key="index">
+            <div v-else class="token-info-sub" style="display: flex;">
+              <div v-for="(tag, index) in tags" :key="index" style="margin-right:0.5rem;">
                 <el-button size="small">
                   {{ tagPattern.find(item => item.label === tag.tag).name }}
                 </el-button>
