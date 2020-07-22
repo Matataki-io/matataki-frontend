@@ -162,26 +162,20 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.transferMinetoken()
+          console.log('is submit valid ☑️')
+          this.withdrawMinetoken()
         } else return false
       })
     },
-    transferMinetoken() {
-      const userData = this.userData
-      if (this.$utils.isNull(userData)) return
-
-      const toId = this.$utils.isNull(userData) ? -1 : userData.id
+    withdrawMinetoken() {
       this.transferLoading = true
       this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
 
       const data = {
-        tokenId: this.form.tokenId,
-        to: toId,
+        target: this.form.to,
         amount: toPrecision(this.form.amount, 'CNY', 4),
-        memo: this.form.message
       }
-      const pid = this.$route.params.id
-      this.$API.rewardArticle(pid, data)
+      this.$API.withdrawToken(this.form.tokenId, data)
         .then(res => {
           if (res.code === 0) {
             this.$emit('success')
@@ -197,7 +191,7 @@ export default {
           }
         }).catch(err => {
           console.log(err)
-          this.$message.error('赞赏失败')
+          this.$message.error('提现失败')
         }).finally(() => {
           this.transferLoading = false
         })

@@ -1107,6 +1107,15 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  // Token提现
+  withdrawToken(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/${tid}/withdraw`,
+        data,
+        timeout: 40 * 1000
+      })
+    },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
