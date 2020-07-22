@@ -5,6 +5,7 @@
       :minetoken-token="minetokenToken"
       :minetoken-user="minetokenUser"
       :minetoken-exchange="minetokenExchange"
+      :tags="tags"
       :is-my-token="isMyToken"
       :balance="balance"
       @display-angle="setDisplayAngle"
@@ -152,6 +153,7 @@ export default {
       minetokenToken: res.data.token || Object.create(null),
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
+      tags: res.data.tags || [],
       balance,
       isMyToken,
       displayAngle: 'client'
