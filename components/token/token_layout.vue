@@ -49,23 +49,6 @@
               </div>
             </div>
             <div class="fl info-line">
-              <div class="token-info-title">
-                {{ $t('token.tags') }}：
-              </div>
-              <div>
-                <p v-if="!tokenTagsExist" class="token-info-sub">
-                  无标签
-                </p>
-              </div>
-              <div v-if="tokenTagsExist" class="token-info-sub">
-                <div v-for="tag in tags" :key="tag">
-                  <el-button size="small">
-                    {{ tag.name }}
-                  </el-button>
-                </div>
-              </div>
-            </div>
-            <div class="fl info-line">
               <div
                 class="token-info-title"
                 v-html="$t('token.summary')"
