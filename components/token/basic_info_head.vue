@@ -39,6 +39,16 @@
           </div>
           <div class="fl info-line">
             <div class="token-info-title">
+              {{ $t('token.releaseTime') }}：
+            </div>
+            <div>
+              <p class="token-info-sub">
+                {{ friendlyDate }}
+              </p>
+            </div>
+          </div>
+          <div class="fl info-line">
+            <div class="token-info-title">
               {{ $t('token.tags') }}：
             </div>
             <div>
@@ -46,15 +56,12 @@
                 无标签
               </p>
             </div>
-          </div>
-          <div class="fl info-line">
-            <div class="token-info-title">
-              {{ $t('token.releaseTime') }}：
-            </div>
-            <div>
-              <p class="token-info-sub">
-                {{ friendlyDate }}
-              </p>
+            <div v-if="tokenTagsExist" class="token-info-sub">
+              <div v-for="tag in tags" :key="tag">
+                <el-button size="small">
+                  {{ tag.name }}
+                </el-button>
+              </div>
             </div>
           </div>
           <div class="fl info-line">
@@ -164,7 +171,13 @@ export default {
     return {
       shareModalShow: false,
       displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户,
-      tags: []
+      tags: [],
+      tagPattern: [
+        {name:'个人', label: 'personal', checked: false}, 
+        {name:'组织', label: 'organization', checked: false}, 
+        {name: '产品', label: 'product', checked: false}, 
+        { name: 'MEME', label: 'meme', checked: false}
+      ]
     }
   },
   computed: {
@@ -201,7 +214,14 @@ export default {
   created() {
     this.$API.tokenDetail().then(res => {
       if (res.data.tags.length > 0) {
-        this.tags = res.data.tags
+        this.tagPattern.forEach(tag => {
+          res.data.tags.forEach(item => {
+            console.log('tag', tag)
+            console.log('item', item.tag)
+            if (tag.label === item.tag) this.tags.push(tag)
+          })
+        })
+        console.log(this.tags)
       }
     })
   },
