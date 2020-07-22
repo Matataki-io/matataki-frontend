@@ -216,8 +216,6 @@ export default {
       if (res.data.tags.length > 0) {
         this.tagPattern.forEach(tag => {
           res.data.tags.forEach(item => {
-            console.log('tag', tag)
-            console.log('item', item.tag)
             if (tag.label === item.tag) this.tags.push(tag)
           })
         })
