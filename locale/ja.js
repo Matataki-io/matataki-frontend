@@ -798,7 +798,8 @@ export default {
         tokenManagement: 'Fan票管理',
         expandMod: '拓展MOD',
         recommendMod: '推荐模组',
-        quickEntrance: '快捷入口'
+        quickEntrance: '快捷入口',
+        tags: '标签'
     },
     ipfsHash: {
         link: 'IPFS地址',
