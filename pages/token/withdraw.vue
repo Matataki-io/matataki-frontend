@@ -5,9 +5,22 @@
     </h1>
     <div class="card">
         <el-alert type="warning">
-        ⚠️ 这个目前还是试验性功能，提取出站外的Fan票为普通的 ERC20 代币。（在 Rinkeby Testnet 上）
+        <h2 class="title">
+            ⚠️你找到了暂未对公众开放的试验性功能⚠️
+        </h2>
+        提取出站外的Fan票为普通的 ERC20 代币。（在 Rinkeby Testnet 上）
         <br />
-        请确定你自己知道你在做啥。请确保你提供的是一个以太坊地址，我们不为搞错地址所造成的丢币负责。
+        请确保你自己知道你在做啥，并提供的一个有效的以太坊地址，我们不为搞错地址所造成的丢币负责。
+        </el-alert>
+        <el-alert type="info">
+            <h2 class="title">
+                ❓怎么在以太坊钱包显示我提现出来的Fan票？ 
+            </h2>
+            <a 
+                style="color: #1989FA;"
+                href="https://matataki.io/p/4881" 
+                target="_blank" 
+                rel="noreferrer">👉在 MetaMask 添加 Fan票的指南👈</a>
         </el-alert>
         <el-form
       ref="form"
@@ -28,13 +41,13 @@
           <el-option
             v-for="item in tokenOptions"
             :key="item.token_id"
-            :label="item.symbol + '-' + item.name"
+            :label="`${item.name}(${item.symbol})`"
             :value="item.token_id"
           >
             <div class="token-container">
               <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
-              <span class="token-symbol">{{ item.symbol }}</span>
-              <span class="token-symbol">{{ tokenAmount(item.amount, item.decimals) }}</span>
+              <span class="token-symbol">{{item.name}}({{ item.symbol }})</span>
+              <span class="token-symbol">余额: {{ tokenAmount(item.amount, item.decimals) }} {{item.symbol}}</span>
             </div>
           </el-option>
         </el-select>
@@ -54,7 +67,7 @@
           v-if="form.balance"
           href="javascript:;"
           @click="form.amount = form.balance"
-        >全部转入</a>
+        >全部转出</a>
       </p>
       <el-form-item label="目标地址" prop="to">
         <el-input
@@ -73,14 +86,27 @@
           确定
         </el-button>
       </div>
+      <el-alert type="success" v-if="withdrawResult">
+        <h1 class="title">
+            Fan 票提现成功
+        </h1>
+        这笔交易已经提交到区块链网络，等待网络确认。
+        <a 
+            style="color: #1989FA;"
+            :href="`https://rinkeby.etherscan.io/tx/${withdrawResult.txHash}`" 
+            target="_blank" 
+            rel="noreferrer">
+            👉 在 EtherScan 查看这笔提现交易 👈
+        </a>
+      </el-alert>
     </el-form>
     </div>
   </div>
 </template>
 
 <script>
-import { precision, toPrecision } from '@/utils/precisionConversion'
 import { mapGetters } from 'vuex'
+import { precision, toPrecision } from '@/utils/precisionConversion'
 
 export default {
   name: 'TokenWithdraw',
@@ -132,6 +158,7 @@ export default {
       },
       transferLoading: false,
       tokenOptions: [],
+      withdrawResult: null
     }
   },
   computed: {
@@ -186,6 +213,7 @@ export default {
             const endAmount = precision(currentAmount - toAmount, 'CNY', 4)
             this.form.balance = Number(endAmount)
             this.form.max = Number(endAmount)
+            this.withdrawResult = res.data
           } else {
             this.$message({ showClose: true, message: res.message, type: 'error' })
           }
@@ -251,6 +279,9 @@ export default {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
     box-sizing: border-box;
     padding: 10px;
+}
+.card .el-alert {
+    margin: 10px 0;
 }
 </style>
 
