@@ -202,6 +202,46 @@
           </ul>
         </div>
         <h4 class="set-subtitle">
+          关联 Fan 票
+        </h4>
+        <div v-if="!isAssosiateWith" class="set-content" style="display: flex;align-items: center;">
+          <el-select
+            v-model="assosiateWith"
+            size="small"
+            placeholder="请选择"
+            style="width: 40%;"
+            filterable
+          >
+            <el-option
+              v-for="item in readSelectOptions"
+              :key="item.id"
+              :label="item.symbol + '-' + item.name"
+              :value="item.id"
+            />
+          </el-select>
+          <el-button 
+            type="primary" 
+            size="small" 
+            style="margin-left: 0.5rem;"
+            @click="setAssosiateWith"
+          >
+            关联
+          </el-button>
+        </div>
+        <div v-if="isAssosiateWith" class="set-content">
+          <div class="img-container">
+            <div
+              class="overlay-box"
+              :style="{backgroundImage: `url(${assosiateFanLogo})`}"
+              @click="cancelAssosiate"
+            >
+              <div class="desc">
+                <p>取消关联</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4 class="set-subtitle">
           原创声明
           <el-tooltip
             effect="dark"
@@ -646,6 +686,11 @@ export default {
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
       saveDraft: '文章自动保存至',
+      assosiateFan: '',
+      assosiateFanName: '',
+      assosiateFanLogo: '',
+      assosiateWith: null,
+      isAssosiateWith: false,
       readContent: false,
       readauThority: false, // 持通证阅读
       tokenEditAuthority: false,
@@ -915,6 +960,26 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    // 关联 Fan 票
+    setAssosiateWith() {
+      if (this.assosiateWith === null) this.$message({
+        showClose: false,
+        message: '请选择你要关联的 Fan 票',
+        type: 'error'
+      })
+      else {
+        this.$API.minetokenId(this.assosiateWith).then(res => {
+          this.isAssosiateWith = true
+          this.assosiateFanName = res.data.token.name
+          this.assosiateFanLogo = this.$API.getImg(res.data.token.logo)
+        })
+      }
+    },
+    // 取消关联
+    cancelAssosiate() {
+      this.isAssosiateWith = false
+      this.assosiateWith = null
+    },
     // 设置编辑器提示字
     setEditorPlaceholder() {
       const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
@@ -1876,6 +1941,50 @@ export default {
 
 <style scoped lang="less" src="../Publish.less"></style>
 <style lang="less">
+
+.overlay-box {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.overlay-box:hover .desc,
+.overlay-box:focus .desc {
+  opacity: 1;
+}
+.overlay-box .desc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+.img-cancel {
+  display: none;
+  position: absolute;
+}
+
+.img-hover {
+  width: 5rem;
+  height: 5rem;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.img-hover:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+}
+
 .editor {
   // 工具栏按钮 去掉样式
   [type='button'] {
