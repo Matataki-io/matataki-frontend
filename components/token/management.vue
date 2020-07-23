@@ -16,7 +16,7 @@
         <div>
           <img class="liquidity-management" src="@/assets/img/token/liquidity_management.png" alt="Liquidity Management">
           <p>
-            流动金管理
+            流动性管理
           </p>
         </div>
       </a>
