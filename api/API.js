@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -224,6 +224,7 @@ export default {
         requireToken, requireBuy,
         editRequireToken, editRequireBuy,
         ipfs_hide,
+        assosiateWith
       },
       timeout: 30000
     })
