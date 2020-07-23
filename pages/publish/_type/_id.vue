@@ -1098,6 +1098,8 @@ export default {
 
           this.tags = res.data.tags.map(i => i.name)
 
+          this.assosiateWith = res.data.assosiateWith
+
           this.setCCLicense(res.data.cc_license)
           
           // 持通证阅读
@@ -1170,6 +1172,7 @@ export default {
           this.commentPayPoint = data.comment_pay_point
 
           this.tags = data.tags
+          this.assosiateWith = data.assosiateWith
           this.ipfs_hide = Boolean(data.ipfs_hide)
 
 
@@ -1329,6 +1332,9 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.tags
 
+      // 关联 Fan 票
+      article.assosiateWith = this.assosiateWith
+
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
@@ -1397,6 +1403,10 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.tags
+
+      // 关联 Fan 票
+      article.assosiateWith = this.assosiateWith
+
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
 
@@ -1532,6 +1542,7 @@ export default {
           if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
+
         // 发布文章
         this.fullscreenLoading = true
 
