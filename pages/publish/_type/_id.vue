@@ -909,6 +909,10 @@ export default {
 
   },
   mounted() {
+    if (this.assosiateWith) {
+      this.setAssosiateWith()
+    }
+
     const { type, id } = this.$route.params
 
     if (type === 'draft' && id === 'create') {
@@ -1022,6 +1026,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -1042,6 +1047,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -1099,6 +1105,9 @@ export default {
           this.tags = res.data.tags.map(i => i.name)
 
           this.assosiateWith = res.data.assosiate_with
+          if (this.assosiateWith) {
+            this.setAssosiateWith()
+          }
 
           this.setCCLicense(res.data.cc_license)
           
