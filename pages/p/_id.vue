@@ -239,7 +239,10 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
-      <AssosiateWith />
+      <AssosiateWith 
+        v-if="article.assosiate_with"
+        :article="article"
+      />
       <!-- 赞赏 -->
       <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
 
@@ -379,8 +382,6 @@ import commentReward from '@/components/p_page/reward'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
-
-import Axios from 'axios'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -751,9 +752,9 @@ export default {
     const hashOrId = route.params.id
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await Axios({
-      url: `http://127.0.0.1:7001/${url}/${hashOrId}`,
-      methods: 'GET',
+    const info = await $axios({
+      url: `/${url}/${hashOrId}`,
+      methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
     let data = {}
@@ -830,7 +831,6 @@ export default {
     return data
   },
   created() {
-    console.log(this.article)
     if (process.browser) {
       this.setWxShare()
     }
