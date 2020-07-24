@@ -9,11 +9,11 @@
         <a
           v-for="(item, index ) in urls"
           :key="index"
-          :href="formatUrl(item)"
+          :href="formatUrl(item.url)"
           target="_blank"
           class="websites-link"
           rel="noopener noreferrer"
-        >{{ item }} </a>
+        >{{ item.name || item.url }} </a>
       </template>
       <template v-if="social.length !== 0">
         <h3 class="title">
@@ -35,6 +35,12 @@
             <a v-else href="Javascript:;" @click="copyCode(item.content)">复制</a>
           </div>
         </div>
+      </template>
+      <template>
+        <h3 class="title">
+          UID
+        </h3>
+        <p>{{ $route.params.id }}</p>
       </template>
       <template>
         <h3 class="title">
@@ -140,7 +146,7 @@ export default {
         const resLinks = await this.$API.getUserLinks({ id: this.$route.params.id })
         if (resLinks.code === 0) {
           const data = resLinks.data
-          this.urls = data.websites
+          this.urls = data.websites.filter(web => web.url)
           data.socialAccounts.forEach(item => {
             this.socialTemplate.find(age => age.type === item.type).content = item.value
           })

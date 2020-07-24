@@ -292,10 +292,10 @@
               :key="index"
             >
               <a
-                :href="formatUrl(item)"
+                :href="formatUrl(item.url)"
                 target="_blank"
                 rel="noopener noreferrer"
-              >{{ item }}</a>
+              >{{ item.name || item.url }}</a>
             </li>
           </ul>
           <span

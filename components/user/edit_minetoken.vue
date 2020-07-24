@@ -80,6 +80,32 @@
         />
       </el-form-item>
       <el-form-item
+        label="标签"
+        prop="tag"
+        class="form-tags"
+      >
+        <el-checkbox-group v-model="form.tags">
+          <el-checkbox-button
+            v-for="(tag, index) in tags" 
+            :key="index"
+            :label="tag.label"
+          >
+            {{ tag.name }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+        <el-tooltip
+          effect="dark"
+          content="主体选择不影响相关功能"
+          placement="right"
+          class="tag-help"
+        >
+          <svg-icon
+            class="help-icon"
+            icon-class="help"
+          />
+        </el-tooltip>
+      </el-form-item>
+      <el-form-item
         label="图标"
         prop="logo"
       >
@@ -152,7 +178,7 @@
           :rows="6"
           class="input"
           type="textarea"
-          maxlength="500"
+          maxlength="1000"
           show-word-limit
           placeholder="介绍"
         />
@@ -168,9 +194,16 @@
           class="fl ac about-input"
         >
           <el-input
-            v-model="about[index]"
+            v-model="about[index].name"
+            class="input web-name"
+            placeholder="网站名称"
+            :maxlength="20"
+          />
+          <el-input
+            v-model="about[index].url"
             class="input"
             :placeholder="$t('social.fillLink')"
+            :maxlength="255"
           />
           <!-- <div v-if="index === 0" class="about-input-btn" @click="aboutAdd">
             <i class="el-icon-plus" />
@@ -269,10 +302,19 @@ export default {
       }
     }
     return {
+      checked: false,
       tokenId: null,
+      selected: [],
+      tags: [
+        {name:'个人', label: 'personal', checked: false}, 
+        {name:'组织', label: 'organization', checked: false}, 
+        {name: '产品', label: 'product', checked: false}, 
+        { name: 'MEME', label: 'meme', checked: false}
+      ],
       form: {
         name: '',
         symbol: '',
+        tags: [],
         number: '',
         logo: '',
         brief: '',
@@ -290,6 +332,9 @@ export default {
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
+        tag: [
+          { required: false, message: '请选择至少一种标签:', trigger: 'blur' }
+        ],
         logo: [
           { required: true, message: '请输上传图标' }
         ],
@@ -304,7 +349,10 @@ export default {
         ]
       },
       imgUploadDone: 0, // 图片是否上传完成
-      about: [''],
+      about: [{
+        url: '',
+        name: ''
+      }],
       social: [
         {
           symbol: 'QQ',
@@ -402,6 +450,15 @@ export default {
       await this.$API.tokenDetail().then(res => {
         if (res.code === 0) {
           if (res.data.token) {
+            if (res.data.tags.length > 0) {
+              this.tags.forEach((tag) => {
+                res.data.tags.forEach(e => {
+                  if (e.tag === tag.label) {
+                    this.form.tags.push(tag.label)
+                  }
+                }) 
+              })
+            }
             if (this.isPost) {
               this.$router.push({
                 name: 'editminetoken'
@@ -425,10 +482,11 @@ export default {
       })
     },
     async minetokenTokenId(id) {
-      const { name, logo, brief, introduction } = this.form
+      const { name, logo, brief, tags, introduction } = this.form
       const data = {
         name: name,
         brief: brief,
+        tags,
         introduction,
         logo: logo
       }
@@ -472,11 +530,12 @@ export default {
       else throw res.message
     },
     async minetokenCreate() {
-      const { name, symbol, logo, brief, introduction, number } = this.form
+      const { name, symbol, tags, logo, brief, introduction, number } = this.form
       const data = {
         name: name,
         symbol: symbol,
         decimals: 4,
+        tags: tags,
         brief: brief,
         introduction,
         logo: logo,
@@ -501,7 +560,7 @@ export default {
             if (~index) this.social[index].value = i.content
           })
           // this.resourcesWebsites = res.data.websites
-          this.about = res.data.websites.length > 0 ? res.data.websites : ['']
+          if (res.data.websites.length > 0) this.about = res.data.websites
         } else {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         }
@@ -552,7 +611,10 @@ export default {
     },
     aboutAdd() {
       if (this.about.length >= 5) return
-      this.about.push('')
+      this.about.push({
+        url: '',
+        name: ''
+      })
     },
     abountLess(i) {
       if (this.about.length <= 1) return
@@ -664,6 +726,10 @@ export default {
   margin-top: 30px;
   .input {
     max-width: 400px;
+    &.web-name {
+      max-width: 150px;
+      margin-right: 5px;
+    }
   }
   .social-input {
     max-width: 340px;
@@ -671,6 +737,17 @@ export default {
 }
 .publish-btn {
   display: block;
+}
+
+.form-tags {
+  /deep/ .el-form-item__content {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.tag-help {
+  margin-left: 1rem;
 }
 
 .tokens-image {
@@ -683,7 +760,9 @@ export default {
 }
 .about-input-btn {
   width: 24px;
+  min-width: 24px;
   height: 24px;
+  min-height: 24px;
   background-color: @purpleDark;
   color: @white;
   display: flex;

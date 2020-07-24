@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -224,6 +224,7 @@ export default {
         requireToken, requireBuy,
         editRequireToken, editRequireBuy,
         ipfs_hide,
+        assosiateWith
       },
       timeout: 30000
     })
@@ -1107,6 +1108,15 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  // Token提现
+  withdrawToken(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/${tid}/withdraw`,
+        data,
+        timeout: 40 * 1000
+      })
+    },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
@@ -1150,5 +1160,7 @@ minetokenGetResources(tokenId) {
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
+  // 扫码绑定
+  apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
   // -------------------- End -----------------------
 }
