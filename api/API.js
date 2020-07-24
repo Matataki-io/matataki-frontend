@@ -1162,4 +1162,10 @@ minetokenGetResources(tokenId) {
   // 扫码绑定
   apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
   // -------------------- End -----------------------
+
+  // ---------------- Fan票申请 ----------------------------------------
+  // fan票提交申请
+  apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
+  // fan票提交申请调研表单
+  apiMinetokenApplicationSurvey(data) { return request.post('/api/minetoken_application_survey', data) },
 }
