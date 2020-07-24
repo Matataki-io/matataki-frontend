@@ -137,6 +137,12 @@
         <h4 class="set-subtitle">
           {{ $t('publish.coverTitle') }}
         </h4>
+        <el-alert
+          :title="$t('publish.coverRecommendation')"
+          :closable="false"
+          type="info"
+          show-icon
+        />
         <div class="set-content">
           <div class="cover">
             <img-upload
