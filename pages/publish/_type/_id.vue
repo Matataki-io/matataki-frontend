@@ -1098,7 +1098,7 @@ export default {
 
           this.tags = res.data.tags.map(i => i.name)
 
-          this.assosiateWith = res.data.assosiateWith
+          this.assosiateWith = res.data.assosiate_with
 
           this.setCCLicense(res.data.cc_license)
           
@@ -1172,7 +1172,7 @@ export default {
           this.commentPayPoint = data.comment_pay_point
 
           this.tags = data.tags
-          this.assosiateWith = data.assosiateWith
+          this.assosiateWith = data.assosiate_with
           this.ipfs_hide = Boolean(data.ipfs_hide)
 
 

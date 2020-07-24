@@ -239,10 +239,9 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <AssosiateWith />
       <!-- 赞赏 -->
       <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
-
-
 
       <!-- tag 标签 -->
       <div
@@ -373,12 +372,15 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import AssosiateWith from '@/components/article/AssosiateWith.vue'
 import RewardFooter from '@/components/article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
 import commentReward from '@/components/p_page/reward'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
+
+import Axios from 'axios'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -401,6 +403,7 @@ export default {
     // articleIpfs,
     articleTransfer,
     // FeedbackModal,
+    AssosiateWith,
     commentInput,
     OrderModal,
     becomeAnArticleEditor,
@@ -748,13 +751,11 @@ export default {
     const hashOrId = route.params.id
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios({
-      url: `/${url}/${hashOrId}`,
-      methods: 'get',
+    const info = await Axios({
+      url: `http://127.0.0.1:7001/${url}/${hashOrId}`,
+      methods: 'GET',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('info', info.data)
-
     let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
@@ -829,6 +830,7 @@ export default {
     return data
   },
   created() {
+    console.log(this.article)
     if (process.browser) {
       this.setWxShare()
     }
