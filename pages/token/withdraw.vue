@@ -1,105 +1,107 @@
 <template>
   <div class="withdraw-container">
     <h1 class="title">
-        提取 Fan票
+      提取 Fan票
     </h1>
     <div class="card">
-        <el-alert type="warning">
+      <el-alert type="warning">
         <h2 class="title">
-            ⚠️你找到了暂未对公众开放的试验性功能⚠️
+          ⚠️你找到了暂未对公众开放的试验性功能⚠️
         </h2>
         提取出站外的Fan票为普通的 ERC20 代币。（在 Rinkeby Testnet 上）
-        <br />
+        <br>
         请确保你自己知道你在做啥，并提供的一个有效的以太坊地址，我们不为搞错地址所造成的丢币负责。
-        </el-alert>
-        <el-alert type="info">
-            <h2 class="title">
-                ❓怎么在以太坊钱包显示我提现出来的Fan票？ 
-            </h2>
-            <a 
-                style="color: #1989FA;"
-                href="https://matataki.io/p/4881" 
-                target="_blank" 
-                rel="noreferrer">👉在 MetaMask 添加 Fan票的指南👈</a>
-        </el-alert>
-        <el-form
-      ref="form"
-      v-loading="transferLoading"
-      :model="form"
-      :rules="rules"
-      label-width="60px"
-      class="withdraw-form"
-    >
-      <el-form-item label="类型" prop="tokenId">
-        <el-select
-          v-model="form.tokenId"
-          filterable
-          placeholder="请选择" 
-          style="width: 100%"
-          @change="changeTokenSelect"
-        >
-          <el-option
-            v-for="item in tokenOptions"
-            :key="item.token_id"
-            :label="`${item.name}(${item.symbol})`"
-            :value="item.token_id"
-          >
-            <div class="token-container">
-              <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
-              <span class="token-symbol">{{item.name}}({{ item.symbol }})</span>
-              <span class="token-symbol">余额: {{ tokenAmount(item.amount, item.decimals) }} {{item.symbol}}</span>
-            </div>
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="数量" prop="amount">
-        <el-input
-          v-model="form.amount"
-          :max="form.max"
-          :min="form.min"
-          placeholder="请输入数量"
-          clearable
-        />
-      </el-form-item>
-      <p class="balance">
-        余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
-        <a
-          v-if="form.balance"
-          href="javascript:;"
-          @click="form.amount = form.balance"
-        >全部转出</a>
-      </p>
-      <el-form-item label="目标地址" prop="to">
-        <el-input
-          v-model="form.to"
-          placeholder="请输入目标钱包的以太坊地址，以 0x 开头。"
-          clearable
-        />
-      </el-form-item>
-      <div class="form-button">
-        <el-button
-          :disabled="!isGoodToWithdraw"
-          type="primary"
-          class="submit-btn"
-          @click="submitForm('form')"
-        >
-          确定
-        </el-button>
-      </div>
-      <el-alert type="success" v-if="withdrawResult">
-        <h1 class="title">
-            Fan 票提现成功
-        </h1>
-        这笔交易已经提交到区块链网络，等待网络确认。
+      </el-alert>
+      <el-alert type="info">
+        <h2 class="title">
+          ❓怎么在以太坊钱包显示我提现出来的Fan票？ 
+        </h2>
         <a 
+          style="color: #1989FA;"
+          href="https://matataki.io/p/4881" 
+          target="_blank" 
+          rel="noreferrer"
+        >👉在 MetaMask 添加 Fan票的指南👈</a>
+      </el-alert>
+      <el-form
+        ref="form"
+        v-loading="transferLoading"
+        :model="form"
+        :rules="rules"
+        label-width="60px"
+        class="withdraw-form"
+      >
+        <el-form-item label="类型" prop="tokenId">
+          <el-select
+            v-model="form.tokenId"
+            filterable
+            placeholder="请选择" 
+            style="width: 100%"
+            @change="changeTokenSelect"
+          >
+            <el-option
+              v-for="item in tokenOptions"
+              :key="item.token_id"
+              :label="`${item.name}(${item.symbol})`"
+              :value="item.token_id"
+            >
+              <div class="token-container">
+                <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
+                <span class="token-symbol">{{ item.name }}({{ item.symbol }})</span>
+                <span class="token-symbol">余额: {{ tokenAmount(item.amount, item.decimals) }} {{ item.symbol }}</span>
+              </div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数量" prop="amount">
+          <el-input
+            v-model="form.amount"
+            :max="form.max"
+            :min="form.min"
+            placeholder="请输入数量"
+            clearable
+          />
+        </el-form-item>
+        <p class="balance">
+          余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
+          <a
+            v-if="form.balance"
+            href="javascript:;"
+            @click="form.amount = form.balance"
+          >全部转出</a>
+        </p>
+        <el-form-item label="目标地址" prop="to">
+          <el-input
+            v-model="form.to"
+            placeholder="请输入目标钱包的以太坊地址，以 0x 开头。"
+            clearable
+          />
+        </el-form-item>
+        <div class="form-button">
+          <el-button
+            :disabled="!isGoodToWithdraw"
+            type="primary"
+            class="submit-btn"
+            @click="submitForm('form')"
+          >
+            确定
+          </el-button>
+        </div>
+        <el-alert v-if="withdrawResult" type="success">
+          <h1 class="title">
+            Fan 票提现成功
+          </h1>
+          这笔交易已经提交到区块链网络，等待网络确认。
+          <a 
             style="color: #1989FA;"
             :href="`https://rinkeby.etherscan.io/tx/${withdrawResult.txHash}`" 
             target="_blank" 
-            rel="noreferrer">
+            rel="noreferrer"
+          >
             👉 在 EtherScan 查看这笔提现交易 👈
-        </a>
-      </el-alert>
-    </el-form>
+          </a>
+        </el-alert>
+      </el-form>
     </div>
   </div>
 </template>
@@ -164,12 +166,12 @@ export default {
   computed: {
     ...mapGetters(['isMe']),
     isGoodToWithdraw() {
-        if (!this.form.amount) return false
-        return Number(this.form.amount) <= this.form.max
+      if (!this.form.amount) return false
+      return Number(this.form.amount) <= this.form.max
     }
   },
   mounted() {
-      this.tokenTokenList()
+    this.tokenTokenList()
   },
   methods: {
     getUserBalance(tokenId) {
