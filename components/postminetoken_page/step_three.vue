@@ -10,31 +10,38 @@
     >
       <p class="survey-title">基本信息</p>
       <el-form-item label="自我介绍" prop="introduction">
-        <el-input v-model="tokenForm.introduction" />
+        <el-input
+          v-model="tokenForm.introduction"
+          type="textarea"
+          show-word-limit
+          maxlength="200"
+          :rows="5"
+          placeholder="请输入内容"
+        />
       </el-form-item>
       <el-form-item label="您的年龄" prop="age">
-        <el-input v-model="tokenForm.age" />
+        <el-input v-model="tokenForm.age" placeholder="请输入内容" />
       </el-form-item>
       <el-form-item label="手机号码" prop="number">
-        <el-input v-model="tokenForm.number" />
+        <el-input v-model="tokenForm.number" placeholder="请输入内容" />
       </el-form-item>
       <el-form-item label="职业领域" prop="career">
-        <el-input v-model="tokenForm.career" />
+        <el-input v-model="tokenForm.career" placeholder="请输入内容" />
       </el-form-item>
       <p class="survey-title">基本信息</p>
 
       <el-form-item label="领域" prop="field">
-        <el-input v-model="tokenForm.field" />
+        <el-input v-model="tokenForm.field" placeholder="请输入内容" />
       </el-form-item>
       <el-form-item label="平台" prop="platform">
-        <el-input v-model="tokenForm.platform" />
+        <el-input v-model="tokenForm.platform" placeholder="请输入内容" />
       </el-form-item>
 
       <el-form-item label="昵称" prop="nickname">
-        <el-input v-model="tokenForm.nickname" />
+        <el-input v-model="tokenForm.nickname" placeholder="请输入内容" />
       </el-form-item>
       <el-form-item label="链接" prop="link">
-        <el-input v-model="tokenForm.link" />
+        <el-input v-model="tokenForm.link" placeholder="请输入内容" />
       </el-form-item>
       <div class="token-checked">
         <el-checkbox v-model="tokenForm.interview">
@@ -44,17 +51,45 @@
       <div class="token-line" />
       <p class="survey-title">其他问答</p>
       <el-form-item label="您如何了解到了Fan票？" prop="know" class="label-line">
-        <el-input v-model="tokenForm.know" />
+        <el-input
+          v-model="tokenForm.know"
+          type="textarea"
+          show-word-limit
+          maxlength="200"
+          :rows="5"
+          placeholder="请输入内容"
+        />
       </el-form-item>
 
       <el-form-item label="为什么想要发行Fan票？" prop="publish" class="label-line">
-        <el-input v-model="tokenForm.publish" />
+        <el-input
+          v-model="tokenForm.publish"
+          type="textarea"
+          show-word-limit
+          maxlength="200"
+          :rows="5"
+          placeholder="请输入内容"
+        />
       </el-form-item>
       <el-form-item label="您希望了解什么信息？" prop="info" class="label-line">
-        <el-input v-model="tokenForm.info" />
+        <el-input
+          v-model="tokenForm.info"
+          type="textarea"
+          show-word-limit
+          maxlength="200"
+          :rows="5"
+          placeholder="请输入内容"
+        />
       </el-form-item>
       <el-form-item label="您会如何推广自己的Fan票？" prop="promote" class="label-line">
-        <el-input v-model="tokenForm.promote" />
+        <el-input
+          v-model="tokenForm.promote"
+          type="textarea"
+          show-word-limit
+          maxlength="200"
+          :rows="5"
+          placeholder="请输入内容"
+        />
       </el-form-item>
     </el-form>
 
@@ -123,6 +158,11 @@ export default {
       }
     }
   },
+  created() {
+    if (process.browser) {
+      this.minetokenApplicationSurvey()
+    }
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -178,14 +218,33 @@ export default {
             info: this.tokenForm.info,
             promote: this.tokenForm.promote,
           }
-          let result = await this.$utils.factoryRequest(this.$API.apiMinetokenApplicationSurvey(data))
-          if (result) {
-            this.$emit('done')
-          }
+
+          this.$emit('done', data)
+
         } else {
           return false
         }
       })
+    },
+    // 获取已经提交过的信息
+    async minetokenApplicationSurvey() {
+      const result = await this.$utils.factoryRequest(this.$API.apiMinetokenApplicationSurveyGet())
+      if (result) {
+        const { data } = result
+        this.tokenForm.introduction = data.introduction
+        this.tokenForm.age = data.age
+        this.tokenForm.number = data.number
+        this.tokenForm.career = data.career
+        this.tokenForm.field = data.field
+        this.tokenForm.platform = data.platform
+        this.tokenForm.nickname = data.nickname
+        this.tokenForm.link = data.link
+        this.tokenForm.interview = data.interview === 0 ? true : false
+        this.tokenForm.know = data.know
+        this.tokenForm.publish = data.publish
+        this.tokenForm.info = data.info
+        this.tokenForm.promote = data.promote
+      }
     }
   }
 }

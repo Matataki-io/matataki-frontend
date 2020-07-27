@@ -1167,5 +1167,8 @@ minetokenGetResources(tokenId) {
   // fan票提交申请
   apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
   // fan票提交申请调研表单
+  apiMinetokenApplicationSurveyGet(data) { return request.get('/api/minetoken_application_survey', data) },
   apiMinetokenApplicationSurvey(data) { return request.post('/api/minetoken_application_survey', data) },
+  // fan票提交校验 不能重复 symbol
+  apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
 }

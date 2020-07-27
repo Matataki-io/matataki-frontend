@@ -10,10 +10,41 @@
       class="token-form"
     >
       <el-form-item label="图标" prop="logo">
-        <el-input v-model="tokenForm.logo" />
+        <div class="upload">
+          <img-upload
+            v-show="!coinsCover"
+            :img-upload-done="imgUploadDone"
+            update-type="coins"
+            class="coins-upload-content"
+            @doneImageUpload="doneImageUpload"
+          >
+            <div
+              slot="uploadButton" 
+              class="upload-logo"
+            >
+              <i class="el-icon-plus" />
+            </div>
+          </img-upload>
+          <div v-show="coinsCover" class="coina-cover">
+            <el-image
+              :src="coinsCover"
+              fit="cover"
+              class="tokens-image"
+            />
+            <div
+              class="cover-full"
+              @click="removeCoinsIcon"
+            >
+              <i class="el-icon-delete remove" />
+            </div>
+          </div>
+
+          <p class="upload-text">请上传512*512大小的PNG格式图片作为粉丝币logo</p>
+        </div>
+        <!-- <el-input v-model="tokenForm.logo" /> -->
       </el-form-item>
       <el-form-item label="名称" prop="name">
-        <el-input v-model="tokenForm.name" />
+        <el-input v-model="tokenForm.name" class="token-input" />
       </el-form-item>
       <el-form-item prop="symbol">
         <span slot="label">
@@ -27,7 +58,7 @@
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
-        <el-input v-model="tokenForm.symbol" />
+        <el-input v-model="tokenForm.symbol" class="token-input" />
       </el-form-item>
       <el-form-item prop="tag">
         <span slot="label">
@@ -41,7 +72,7 @@
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
-        <el-checkbox-group v-model="tokenForm.tag">
+        <el-checkbox-group v-model="tokenForm.tag" class="token-checkbox">
           <el-checkbox label="个人" />
           <el-checkbox label="组织" />
           <el-checkbox label="产品" />
@@ -69,9 +100,29 @@
   </section>
 </template>
 <script>
-import { debounce } from 'lodash'
+import { debounce, isEmpty } from 'lodash'
+import imgUpload from '@/components/imgUpload/index.vue'
+
 export default {
+  components: {
+    imgUpload,
+  },
+  props: {
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
+    // 校验Symbol
+    const checkSymbol = async (rule, value, callback) => {
+      const res = await this.$API.apiMinetokenApplicationVerify({ symbol: value })
+      if (res.code !== 0) {
+        callback(new Error('缩写不能重复~'))
+      } else {
+        callback()
+      }
+    }
     return {
       tokenForm: {
         logo: '',
@@ -88,12 +139,20 @@ export default {
         ],
         symbol: [
           { required: true, message: '请输入缩写', trigger: 'blur' },
+          { validator: checkSymbol, trigger: 'blur' },
         ],
         tag: [
           { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
         ],
-      }
+      },
+      imgUploadDone: 0, // 图片是否上传完成
+
     }
+  },
+  computed: {
+    coinsCover() {
+      return this.tokenForm.logo ? this.$ossProcess(this.tokenForm.logo) : ''
+    },
   },
   watch: {
     tokenForm: {
@@ -106,9 +165,23 @@ export default {
   created() {
     if (process.browser) {
       this.getUserTokenInfo()
+
+      if (!isEmpty(this.info)) {
+        console.log('info', this.info)
+
+        this.setForm(this.info)
+      }
+      
     }
   },
   methods: {
+    // 设置用户表单信息
+    setForm(info) {
+      this.tokenForm.logo = info.logo
+      this.tokenForm.name = info.name
+      this.tokenForm.symbol = info.symbol
+      this.tokenForm.tag = info.tag.split(',')
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
@@ -121,7 +194,7 @@ export default {
     postTokenForm: debounce(async function () {
       let data = {
         type: 'draft',
-        logo: this.tokenForm.log,
+        logo: this.tokenForm.logo,
         name: this.tokenForm.name,
         symbol: this.tokenForm.symbol,
         tag: this.tokenForm.tag,
@@ -134,23 +207,33 @@ export default {
     },
     next(formName) {
       this.$refs[formName].validate(async (valid) => {
+
         if (valid) {
           let data = {
             type: 'submit',
-            logo: this.tokenForm.log,
+            logo: this.tokenForm.logo,
             name: this.tokenForm.name,
             symbol: this.tokenForm.symbol,
             tag: this.tokenForm.tag,
           }
-          let result = await this.$utils.factoryRequest(this.$API.apiMinetokenApplication(data))
-          if (result) {
-            this.$emit('done')
-          }
+          this.$emit('done', data)
+
         } else {
           return false
         }
+
       })
-    }
+    },
+    // 完成上传
+    doneImageUpload(res) {
+      console.log(res)
+      this.tokenForm.logo = res.data.data.cover
+      this.imgUploadDone += Date.now()
+    },
+    // 删除图标
+    removeCoinsIcon() {
+      this.tokenForm.logo = ''
+    },
   }
 }
 </script>
@@ -181,7 +264,10 @@ export default {
 }
 .token-form {
   margin: 20px 0;
-  max-width: 400px;
+  max-width: 500px;
+  .token-input {
+    width: 240px;
+  }
 }
 
 .token-comment {
@@ -235,6 +321,92 @@ export default {
       border: 1px solid rgba(250, 100, 0, 1);
       color: rgba(250, 100, 0, 1);
       margin-right: 20px;
+    }
+  }
+}
+
+/deep/ .token-checkbox {
+  .el-checkbox {
+    border-radius: 4px;
+    border: 1px solid #542de0;
+    background-color: #fff;
+    color: #542de0;
+    padding: 0 25px;
+    margin-right: 10px;
+    line-height: 30px;
+    .el-checkbox__input {
+      display: none;
+    }
+    .el-checkbox__label {
+      padding-left: 0;
+    }
+    &.is-checked {
+      background-color: #542de0;
+      .el-checkbox__label {
+        padding-left: 0;
+        color: #fff;
+      }
+    }
+  }
+}
+.upload {
+  display: flex;
+  align-items: flex-end;
+  &-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    border: 1px solid rgba(219, 219, 219, 1);
+    display: flex;
+    flex: 0 0 60px;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    box-sizing: border-box;
+    color: #b2b2b2;
+  }
+  &-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
+    line-height: 20px;
+    padding: 0;
+    margin: 0 0 0 10px;
+  }
+}
+.coins-upload-content {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+}
+.coina-cover {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background: #ececec;
+  border: 1px solid #ececec;
+  &:hover .cover-full {
+    display: flex;
+  }
+  .cover-full {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    // display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    display: none;
+    .remove {
+      font-size: 20px;
+      color: #fff;
     }
   }
 }

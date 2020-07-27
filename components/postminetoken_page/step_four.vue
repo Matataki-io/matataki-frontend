@@ -13,6 +13,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  methods: {
+    done() {
+      this.$emit('done')
+    }
+  }
+}
+</script>
+
 <style lang="less" scoped>
 .text {
   font-size: 16px;
