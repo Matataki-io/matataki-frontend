@@ -1169,6 +1169,8 @@ minetokenGetResources(tokenId) {
   // 添加协作者
   setCollaborator(userId) { return request.post(`/token/collaborator/${userId}`) },
   // 删除协作者
-  deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) }
+  deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) },
+  // 获取自己创建和协作的Fan票列表
+  getBindableTokenList() { return request.get(`/token/bindable`) }
   // -------------------- End -----------------------
 }

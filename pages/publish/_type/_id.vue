@@ -353,11 +353,19 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="token">
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices || noTokenAvailable"
+            label="token"
+          >
             持币可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="cny">
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="cny"
+          >
             支付可见
           </el-radio>
 
@@ -376,7 +384,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -394,7 +402,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入数量"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -412,6 +420,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
+                      :disabled="prohibitEditingPrices"
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -468,7 +477,11 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio v-model="editConfigRadio" label="token">
+          <el-radio
+            v-model="editConfigRadio"
+            :disabled="prohibitEditingPrices || noTokenAvailable"
+            label="token"
+          >
             持币可编辑
           </el-radio>
 
@@ -487,7 +500,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -505,7 +518,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入内容"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -826,6 +839,9 @@ export default {
         CNY,
         ...this.readSelectOptions,
       ]
+    },
+    noTokenAvailable() {
+      return !this.readSelectOptions || this.readSelectOptions.length === 0
     }
   },
   watch: {
@@ -940,7 +956,7 @@ export default {
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
-    this.getAllTokens()
+    this.getBindableTokenList()
     // this.setToolBar()
   },
   beforeRouteLeave(to, from, next) {
@@ -1258,17 +1274,20 @@ export default {
       this.$message.success(msg)
       this.jumpToArticle(hash)
     },
-    /**
-     * 获取所有token
-     */
-    async getAllTokens() {
-      const pagesize = 999
-      await this.$API.allToken({ pagesize }).then(res => {
+    /** 获取可选的Token */
+    async getBindableTokenList() {
+      try {
+        const res = await this.$API.getBindableTokenList()
         if (res.code === 0) {
-          this.readSelectOptions = res.data.list
+          this.readSelectOptions = res.data
           this.topOwnToken()
         }
-      }).catch(err => console.log(err))
+        else this.$message.error(res.message)
+      }
+      catch (e) {
+        console.error(e)
+        this.$message.error(this.$t('error.fail'))
+      }
     },
     // 文章持通证阅读
     async postMineTokens(id) {
