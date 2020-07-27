@@ -1162,5 +1162,13 @@ minetokenGetResources(tokenId) {
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
   // 扫码绑定
   apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
+
+  // -------------------- token 协作者 --------------------
+  // 获取协作者列表
+  getCollaborators() { return request.get('/token/collaborator') },
+  // 添加协作者
+  setCollaborator(userId) { return request.post(`/token/collaborator/${userId}`) },
+  // 删除协作者
+  deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) }
   // -------------------- End -----------------------
 }

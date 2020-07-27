@@ -137,6 +137,12 @@
         <h4 class="set-subtitle">
           {{ $t('publish.coverTitle') }}
         </h4>
+        <el-alert
+          :title="$t('publish.coverRecommendation')"
+          :closable="false"
+          type="info"
+          show-icon
+        />
         <div class="set-content">
           <div class="cover">
             <img-upload
@@ -909,6 +915,10 @@ export default {
 
   },
   mounted() {
+    if (this.assosiateWith) {
+      this.setAssosiateWith()
+    }
+
     const { type, id } = this.$route.params
 
     if (type === 'draft' && id === 'create') {
@@ -1022,6 +1032,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -1042,6 +1053,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -1098,7 +1110,10 @@ export default {
 
           this.tags = res.data.tags.map(i => i.name)
 
-          this.assosiateWith = res.data.assosiateWith
+          this.assosiateWith = res.data.assosiate_with
+          if (this.assosiateWith) {
+            this.setAssosiateWith()
+          }
 
           this.setCCLicense(res.data.cc_license)
           
@@ -1172,7 +1187,7 @@ export default {
           this.commentPayPoint = data.comment_pay_point
 
           this.tags = data.tags
-          this.assosiateWith = data.assosiateWith
+          this.assosiateWith = data.assosiate_with
           this.ipfs_hide = Boolean(data.ipfs_hide)
 
 
