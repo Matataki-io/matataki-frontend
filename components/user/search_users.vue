@@ -83,7 +83,10 @@ export default {
   // mounted() {},
   methods: {
     initUser() {
-      if (!this.userData) return
+      if (!this.userData) {
+        this.userVal = ''
+        return
+      }
       this.userVal = this.userData.nickname || this.userData.username
       this.userList = [this.userData]
     },

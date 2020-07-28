@@ -15,8 +15,8 @@
       <div class="fl notify-right-header">
         <!-- 头像 -->
         <div @click.stop>
-          <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: user.id || 0}}">
-            <c-user-popover :user-id="Number(user.id)">
+          <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: card.user_id}}">
+            <c-user-popover :user-id="Number(card.user_id)">
               <c-avatar :src="avatar" class="avatar" />
             </c-user-popover>
             <div v-if="card.total > 1" class="round-silhouette" />
@@ -34,7 +34,7 @@
         <!-- 事件发送者 -->
         <h4>
           <span @click.stop>
-            <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
+            <router-link :class="!(user.nickname || user.username) && 'logout'" :to="{name: 'user-id', params:{id: card.user_id}}">
               {{ nickname }}
             </router-link>
           </span>
@@ -93,7 +93,7 @@ export default {
     },
     user: {
       type: Object,
-      default: null
+      default: () => { return {} }
     },
     post: {
       type: Object,
@@ -149,7 +149,7 @@ export default {
       return this.actionLabels[action]
     },
     nickname() {
-      return this.user.nickname || this.user.username
+      return this.user.nickname || this.user.username || this.$t('error.accountHasBeenLoggedOut')
     },
     /** 折叠数量 */
     totalLabel() {
@@ -236,7 +236,7 @@ export default {
           else url = {name: 'p-id', params: {id: this.post.id}}
           break
         case 'user':
-          url = {name: 'user-id', params: {id: this.user.id}}
+          url = {name: 'user-id', params: {id: this.card.user_id}}
           break
         case 'reply':
           if (this.comment)
@@ -344,6 +344,9 @@ export default {
           -webkit-line-clamp: 1;
           overflow: hidden;
           word-break:break-all;
+          &.logout {
+            color: #b2b2b2;
+          }
           &:hover {
             text-decoration: underline;
           }  
