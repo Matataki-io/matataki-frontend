@@ -353,14 +353,28 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio
-            v-model="readConfigRadio"
-            :disabled="prohibitEditingPrices || noTokenAvailable"
-            label="token"
-          >
-            持币可见
-          </el-radio>
-          <br>
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="readConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可见
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
           <el-radio
             v-model="readConfigRadio"
             :disabled="prohibitEditingPrices"
@@ -477,13 +491,28 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio
-            v-model="editConfigRadio"
-            :disabled="prohibitEditingPrices || noTokenAvailable"
-            label="token"
-          >
-            持币可编辑
-          </el-radio>
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="editConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可编辑
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
 
           <div class="post-content root-setting">
             <div style="width: 380px;">
@@ -1979,6 +2008,9 @@ export default {
           }, 300)
         }
       }, 1000)
+    },
+    openWj() {
+      window.open('https://wj.qq.com/s2/5208015/8e5d', '_blank')
     }
   }
 }
@@ -2034,6 +2066,56 @@ export default {
   // 工具栏按钮 去掉样式
   [type='button'] {
     -webkit-appearance: none;
+  }
+}
+
+.privileged {
+  background: #F7F7F7;
+  border-radius: 8px;
+  border: 1px dashed #DBDBDB;
+  padding: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.privileged-guide {
+  display:none;
+  align-items: center;
+  &.show-guide {
+    display: flex;
+  }
+  span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #F7B500;
+    line-height: 22px;
+    margin: 0 10px 0 0;
+  }
+  button {
+    width: 90px;
+    height: 30px;
+    background: #F7B500;
+    border-radius: 4px;
+    padding: 5px 16px;
+    &:hover, &:focus {
+      background: #ffc420;
+      border-color: #ffc420;
+    }
+    span {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+}
+@media screen and (max-width: 540px) {
+  .privileged {
+    display: block;
+  }
+  .privileged-guide {
+    justify-content: flex-end;
   }
 }
 </style>
