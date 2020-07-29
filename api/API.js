@@ -1185,7 +1185,7 @@ minetokenGetResources(tokenId) {
   // 删除协作者
   deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) },
   // 获取自己创建和协作的Fan票列表
-  getBindableTokenList() { return request.get(`/token/bindable`) }
+  getBindableTokenList() { return request.get(`/token/bindable`) },
   // -------------------- End -----------------------
 
   // ---------------- Fan票申请 ----------------------------------------
