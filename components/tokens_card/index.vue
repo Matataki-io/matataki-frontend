@@ -29,7 +29,7 @@
           {{ card.symbol }}
         </span>
       </div>
-      <div class="memo" v-if="card.memo">
+      <div v-if="card.memo" class="memo">
         Memo: {{ card.memo }}
       </div>
     </div>
