@@ -94,7 +94,7 @@
     </el-form>
 
     <div class="token-footer">  
-      <a class="h-rule" href="#" target="_blank">
+      <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
         任何反馈<svg-icon icon-class="arrow" class="icon" />
       </a>
       <a href="javascript:;" class="f-btn prev" @click="prev">上一步</a>

@@ -1165,6 +1165,7 @@ minetokenGetResources(tokenId) {
 
   // ---------------- Fan票申请 ----------------------------------------
   // fan票提交申请
+  apiGetMinetokenApplication() { return request.get('/api/minetoken_application') },
   apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
   // fan票提交申请调研表单
   apiMinetokenApplicationSurveyGet(data) { return request.get('/api/minetoken_application_survey', data) },

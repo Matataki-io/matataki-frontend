@@ -5,7 +5,7 @@
     <p class="text">审核结果将会在5个工作日内通过邮件发送</p>
 
     <div class="token-footer">  
-      <a class="h-rule" href="#" target="_blank">
+      <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
         任何反馈<svg-icon icon-class="arrow" class="icon" />
       </a>
       <a href="javascript:;" class="f-btn next" @click="done">确定</a>
