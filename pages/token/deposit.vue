@@ -64,8 +64,14 @@
             Fan 票充值成功
           </h1>这笔交易已经同步到数据库。
           <p>来自钱包地址: <code>{{ depositResult.from }}</code></p>
-          <p>Fan票号: <code>{{ depositResult.tokenId }}</code></p>
-          <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }}</code></p>
+          <p v-if="depositResult.token">
+            Fan票名：{{depositResult.token.name}}
+            符号：{{depositResult.token.symbol}}
+            <router-link :to="'/token/' + depositResult.token.id" target="_blank">
+              ↗️ 查看该饭票详情
+            </router-link>
+          </p>
+          <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol}}</code></p>
         </el-alert>
       </el-form>
     </div>
@@ -107,7 +113,6 @@ export default {
       },
       myHostingAccount: '',
       transferLoading: false,
-      tokenOptions: [],
       depositResult: null,
     }
   },
@@ -121,7 +126,6 @@ export default {
     }
   },
   mounted() {
-    this.tokenTokenList()
     this.fetchMyHostingAccount()
   },
   methods: {
@@ -167,7 +171,7 @@ export default {
         } else return false
       })
     },
-    depositMinetoken() {
+    async depositMinetoken() {
       this.transferLoading = true
       this.$message({
         showClose: true,
@@ -175,55 +179,32 @@ export default {
         type: 'info',
       })
 
-      this.$API
-        .depositToken(this.form.txHash)
-        .then((res) => {
-          if (res.code === 0) {
+      try {
+        const res = await this.$API.depositToken(this.form.txHash)
+        
+        if (res.code === 0) {
             this.$emit('success')
             this.depositResult = res.data
-          } else {
+            const token = await this.$API.minetokenId(res.data.tokenId)
+            this.depositResult.token = token.data.token
+        } else {
             this.$message({
-              showClose: true,
-              message: res.message,
-              type: 'error',
-              duration: 0
+                showClose: true,
+                message: res.message,
+                type: 'error',
+                duration: 0
             })
-          }
-        })
-        .catch((err) => {
-            this.$message({
+        }
+      } catch (err) {
+          this.$message({
               showClose: true,
               message: err.response.data.message,
               type: 'error',
               duration: 0
-            })
-        })
-        .finally(() => {
-          this.transferLoading = false
-        })
-    },
-    /**
-     * 获取所有token
-     */
-    async tokenTokenList() {
-      let data = {
-        pagesize: 999,
-        order: 0,
+          })
+      } finally {
+        this.transferLoading = false
       }
-      await this.$API
-        .tokenTokenList(data)
-        .then((res) => {
-          if (res.code === 0) {
-            this.tokenOptions = res.data.list
-            this.topOwnToken()
-          } else {
-            this.tokenOptions = []
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-          this.tokenOptions = []
-        })
     },
     // logo
     tokenLogo(cover) {
@@ -233,13 +214,6 @@ export default {
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
-    },
-    /** 吧自己的Fan票排到最前面 */
-    topOwnToken() {
-      let list = this.tokenOptions
-      list.forEach((token, index) => {
-        if (this.isMe(token.uid)) list.unshift(list.splice(index, 1)[0])
-      })
     },
   },
 }
