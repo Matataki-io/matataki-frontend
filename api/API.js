@@ -1188,6 +1188,20 @@ minetokenGetResources(tokenId) {
   getBindableTokenList() { return request.get(`/token/bindable`) },
   // -------------------- End -----------------------
 
+  // -------------------- 直通车 --------------------
+  directTrade: {
+    // 查item
+    getItem(id) { return request.get(`/trade/direct/${id}`) },
+    // 增
+    create(price) { return request.post(`/trade/direct`, { price }) },
+    // 改
+    set(data) { return request.put(`/trade/direct`, data) },
+    // 查list
+    getList(params) { return request.get(`/trade/direct`, { params }) },
+    getItemByUser() { return request.get('/api/user/market')}
+  },
+  // -------------------- End -----------------------
+
   // ---------------- Fan票申请 ----------------------------------------
   // fan票提交申请
   apiGetMinetokenApplication() { return request.get('/api/minetoken_application') },
