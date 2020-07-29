@@ -1171,6 +1171,20 @@ minetokenGetResources(tokenId) {
   // 删除协作者
   deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) },
   // 获取自己创建和协作的Fan票列表
-  getBindableTokenList() { return request.get(`/token/bindable`) }
+  getBindableTokenList() { return request.get(`/token/bindable`) },
+  // -------------------- End -----------------------
+
+  // -------------------- 直通车 --------------------
+  directTrade: {
+    // 查item
+    getItem(id) { return request.get(`/trade/direct/${id}`) },
+    // 增
+    create(price) { return request.post(`/trade/direct`, { price }) },
+    // 改
+    set(data) { return request.put(`/trade/direct`, data) },
+    // 查list
+    getList(params) { return request.get(`/trade/direct`, { params }) },
+    getItemByUser() { return request.get('/api/user/market')}
+  }
   // -------------------- End -----------------------
 }
