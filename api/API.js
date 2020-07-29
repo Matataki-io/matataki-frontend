@@ -1116,7 +1116,15 @@ minetokenGetResources(tokenId) {
         data,
         timeout: 40 * 1000
       })
-    },
+  },
+  // Token转入同步到DB
+  depositToken(txHash) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/deposit`,
+      data: { txHash },
+    })
+  },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
