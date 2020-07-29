@@ -23,3 +23,4 @@ export const ipfsArticleData = (axios, hash) => axios.get(`/post/${hash}`)
 // wxSign share
 export const wxShare = (axios, defaultLink) => axios.get(`${process.env.VUE_APP_API}/wx/sign?url=${encodeURIComponent(defaultLink)}`)
 
+

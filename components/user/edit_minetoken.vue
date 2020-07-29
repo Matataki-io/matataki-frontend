@@ -128,10 +128,7 @@
             <i class="el-icon-plus add" />
           </div>
         </img-upload>
-        <div
-          v-show="coinsCover"
-          class="coina-cover"
-        >
+        <div v-show="coinsCover" class="coina-cover">
           <el-image
             :src="coinsCover"
             fit="cover"

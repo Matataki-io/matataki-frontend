@@ -1187,4 +1187,14 @@ minetokenGetResources(tokenId) {
   // 获取自己创建和协作的Fan票列表
   getBindableTokenList() { return request.get(`/token/bindable`) }
   // -------------------- End -----------------------
+
+  // ---------------- Fan票申请 ----------------------------------------
+  // fan票提交申请
+  apiGetMinetokenApplication() { return request.get('/api/minetoken_application') },
+  apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
+  // fan票提交申请调研表单
+  apiMinetokenApplicationSurveyGet(data) { return request.get('/api/minetoken_application_survey', data) },
+  apiMinetokenApplicationSurvey(data) { return request.post('/api/minetoken_application_survey', data) },
+  // fan票提交校验 不能重复 symbol
+  apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
 }
