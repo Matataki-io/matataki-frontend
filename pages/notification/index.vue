@@ -28,6 +28,7 @@
           :comment="getComment(item)"
           :comment-object="getCommentObject(item)"
           :transfer-log="getTransferLog(item)"
+          :token="getToken(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
@@ -65,11 +66,12 @@
         <el-divider v-if="detailsIndex.objectType === 'article' || detailsIndex.objectType === 'comment'" />
         <div v-for="(item, index) in notificationDetails" :key="index" style="margin: 20px 0;">
           <objectCard
-            v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow'"
-            mode="user"
+            v-if="detailsIndex.action === 'like' || detailsIndex.action === 'follow' || detailsIndex.objectType === 'collaborator'"
+            :mode="detailsIndex.objectType === 'collaborator' ? 'token' : 'user'"
             :user="item.user"
             :create-time="item.create_time"
-            :action="item.action"
+            :action="detailsIndex.objectType === 'collaborator' ? 'collaborator' : item.action"
+            :token="item.token"
             bg-color="white"
           />
           <commentCard
@@ -180,6 +182,7 @@ export default {
       comments: [],
       assetsLogs: [],
       minetokensLogs: [],
+      tokens: [],
       detailsIndex: null,
       notificationDetails: [],
       pagePosition: 0,
@@ -188,7 +191,8 @@ export default {
         comment: '评论详情',
         follow: '关注详情',
         reply: '回复详情',
-        reward: '打赏详情'
+        reward: '打赏详情',
+        collaborator: '添加协作者详情'
       },
       checkAll: true,
       checkedCities: [],
@@ -247,6 +251,7 @@ export default {
       if(!this.detailsIndex) return ''
       const { action, objectType } = this.detailsIndex
       if (action === 'transfer' && objectType === 'article') return this.actionDetailLabels.reward
+      if (action === 'annouce' && objectType === 'collaborator') return this.actionDetailLabels.collaborator
       return this.actionDetailLabels[action]
     }
   },
@@ -271,6 +276,7 @@ export default {
         this.notifications.push(...res.data.list)
         this.assetsLogs.push(...res.data.assetsLog)
         this.minetokensLogs.push(...res.data.minetokensLog)
+        this.tokens.push(...res.data.tokens)
         // 标记已读
         this.markRead(res.data.list)
         // 设定起始查询位置
@@ -332,6 +338,10 @@ export default {
         return this.minetokensLogs.find(minetokensLog => minetokensLog.id === notify.remark)
 
       return null
+    },
+    getToken(notify) {
+      if (notify.action !== 'annouce' || notify.object_type !== 'collaborator') return null
+      return this.tokens.find(token => token.id === notify.remark)
     },
     openDetails(data) {
       this.pagePosition = document.documentElement.scrollTop
