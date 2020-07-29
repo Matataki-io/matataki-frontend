@@ -1125,6 +1125,12 @@ minetokenGetResources(tokenId) {
       data: { txHash },
     })
   },
+  getMyHostingAddress() {
+    return request({
+      method: 'GET',
+      url: `/token/myAddress`,
+    })
+  },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
