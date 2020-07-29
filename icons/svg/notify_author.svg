@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="通知_v4.6.0" transform="translate(-400.000000, -2848.000000)">
+            <g id="author" transform="translate(400.000000, 2848.000000)">
+                <circle id="椭圆形" fill="#EBE6FF" cx="15" cy="15" r="15"></circle>
+                <polygon id="路径-8" stroke="#542DE0" stroke-width="1.3" fill="#FFFFFF" stroke-linejoin="round" points="24 10.4345833 18.9224169 13.3242984 15.0064355 8 11.0775831 13.3242984 6 10.4345833 8.93643509 22 21.2662816 22"></polygon>
+                <line x1="12" y1="19" x2="18" y2="19" id="路径-9" stroke="#542DE0" stroke-width="1.3" stroke-linecap="round"></line>
+            </g>
+        </g>
+    </g>
+</svg>

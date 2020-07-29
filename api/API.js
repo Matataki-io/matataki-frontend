@@ -1116,7 +1116,21 @@ minetokenGetResources(tokenId) {
         data,
         timeout: 40 * 1000
       })
-    },
+  },
+  // Token转入同步到DB
+  depositToken(txHash) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/deposit`,
+      data: { txHash },
+    })
+  },
+  getMyHostingAddress() {
+    return request({
+      method: 'GET',
+      url: `/token/myAddress`,
+    })
+  },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
@@ -1185,6 +1199,16 @@ minetokenGetResources(tokenId) {
     // 查list
     getList(params) { return request.get(`/trade/direct`, { params }) },
     getItemByUser() { return request.get('/api/user/market')}
-  }
+  },
   // -------------------- End -----------------------
+
+  // ---------------- Fan票申请 ----------------------------------------
+  // fan票提交申请
+  apiGetMinetokenApplication() { return request.get('/api/minetoken_application') },
+  apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
+  // fan票提交申请调研表单
+  apiMinetokenApplicationSurveyGet(data) { return request.get('/api/minetoken_application_survey', data) },
+  apiMinetokenApplicationSurvey(data) { return request.post('/api/minetoken_application_survey', data) },
+  // fan票提交校验 不能重复 symbol
+  apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
 }
