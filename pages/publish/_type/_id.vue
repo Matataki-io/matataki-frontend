@@ -137,6 +137,12 @@
         <h4 class="set-subtitle">
           {{ $t('publish.coverTitle') }}
         </h4>
+        <el-alert
+          :title="$t('publish.coverRecommendation')"
+          :closable="false"
+          type="info"
+          show-icon
+        />
         <div class="set-content">
           <div class="cover">
             <img-upload
@@ -200,6 +206,46 @@
               <span class="tag-tip">按回车Enter创建标签</span>
             </li>
           </ul>
+        </div>
+        <h4 class="set-subtitle">
+          关联 Fan 票
+        </h4>
+        <div v-if="!isAssosiateWith" class="set-content" style="display: flex;align-items: center;">
+          <el-select
+            v-model="assosiateWith"
+            size="small"
+            placeholder="请选择"
+            style="width: 40%;"
+            filterable
+          >
+            <el-option
+              v-for="item in readSelectOptions"
+              :key="item.id"
+              :label="item.symbol + '-' + item.name"
+              :value="item.id"
+            />
+          </el-select>
+          <el-button 
+            type="primary" 
+            size="small" 
+            style="margin-left: 0.5rem;"
+            @click="setAssosiateWith"
+          >
+            关联
+          </el-button>
+        </div>
+        <div v-if="isAssosiateWith" class="set-content">
+          <div class="img-container">
+            <div
+              class="overlay-box"
+              :style="{backgroundImage: `url(${assosiateFanLogo})`}"
+              @click="cancelAssosiate"
+            >
+              <div class="desc">
+                <p>取消关联</p>
+              </div>
+            </div>
+          </div>
         </div>
         <h4 class="set-subtitle">
           原创声明
@@ -307,11 +353,33 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="token">
-            持币可见
-          </el-radio>
-          <br>
-          <el-radio v-model="readConfigRadio" label="cny">
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="readConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可见
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="cny"
+          >
             支付可见
           </el-radio>
 
@@ -330,7 +398,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -348,7 +416,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入数量"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -366,6 +434,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
+                      :disabled="prohibitEditingPrices"
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -422,9 +491,28 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio v-model="editConfigRadio" label="token">
-            持币可编辑
-          </el-radio>
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="editConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可编辑
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
 
           <div class="post-content root-setting">
             <div style="width: 380px;">
@@ -441,7 +529,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -459,7 +547,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入内容"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -646,6 +734,11 @@ export default {
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
       saveDraft: '文章自动保存至',
+      assosiateFan: '',
+      assosiateFanName: '',
+      assosiateFanLogo: '',
+      assosiateWith: null,
+      isAssosiateWith: false,
       readContent: false,
       readauThority: false, // 持通证阅读
       tokenEditAuthority: false,
@@ -775,6 +868,9 @@ export default {
         CNY,
         ...this.readSelectOptions,
       ]
+    },
+    noTokenAvailable() {
+      return !this.readSelectOptions || this.readSelectOptions.length === 0
     }
   },
   watch: {
@@ -864,6 +960,10 @@ export default {
 
   },
   mounted() {
+    if (this.assosiateWith) {
+      this.setAssosiateWith()
+    }
+
     const { type, id } = this.$route.params
 
     if (type === 'draft' && id === 'create') {
@@ -885,7 +985,7 @@ export default {
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
-    this.getAllTokens()
+    this.getBindableTokenList()
     // this.setToolBar()
   },
   beforeRouteLeave(to, from, next) {
@@ -915,6 +1015,26 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    // 关联 Fan 票
+    setAssosiateWith() {
+      if (this.assosiateWith === null) this.$message({
+        showClose: false,
+        message: '请选择你要关联的 Fan 票',
+        type: 'error'
+      })
+      else {
+        this.$API.minetokenId(this.assosiateWith).then(res => {
+          this.isAssosiateWith = true
+          this.assosiateFanName = res.data.token.name
+          this.assosiateFanLogo = this.$API.getImg(res.data.token.logo)
+        })
+      }
+    },
+    // 取消关联
+    cancelAssosiate() {
+      this.isAssosiateWith = false
+      this.assosiateWith = null
+    },
     // 设置编辑器提示字
     setEditorPlaceholder() {
       const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
@@ -957,6 +1077,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -977,6 +1098,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -1032,6 +1154,11 @@ export default {
           this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
 
           this.tags = res.data.tags.map(i => i.name)
+
+          this.assosiateWith = res.data.assosiate_with
+          if (this.assosiateWith) {
+            this.setAssosiateWith()
+          }
 
           this.setCCLicense(res.data.cc_license)
           
@@ -1105,6 +1232,7 @@ export default {
           this.commentPayPoint = data.comment_pay_point
 
           this.tags = data.tags
+          this.assosiateWith = data.assosiate_with
           this.ipfs_hide = Boolean(data.ipfs_hide)
 
 
@@ -1175,17 +1303,20 @@ export default {
       this.$message.success(msg)
       this.jumpToArticle(hash)
     },
-    /**
-     * 获取所有token
-     */
-    async getAllTokens() {
-      const pagesize = 999
-      await this.$API.allToken({ pagesize }).then(res => {
+    /** 获取可选的Token */
+    async getBindableTokenList() {
+      try {
+        const res = await this.$API.getBindableTokenList()
         if (res.code === 0) {
-          this.readSelectOptions = res.data.list
+          this.readSelectOptions = res.data
           this.topOwnToken()
         }
-      }).catch(err => console.log(err))
+        else this.$message.error(res.message)
+      }
+      catch (e) {
+        console.error(e)
+        this.$message.error(this.$t('error.fail'))
+      }
     },
     // 文章持通证阅读
     async postMineTokens(id) {
@@ -1264,6 +1395,9 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.tags
 
+      // 关联 Fan 票
+      article.assosiateWith = this.assosiateWith
+
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
@@ -1332,6 +1466,10 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.tags
+
+      // 关联 Fan 票
+      article.assosiateWith = this.assosiateWith
+
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
 
@@ -1467,6 +1605,7 @@ export default {
           if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
+
         // 发布文章
         this.fullscreenLoading = true
 
@@ -1869,6 +2008,9 @@ export default {
           }, 300)
         }
       }, 1000)
+    },
+    openWj() {
+      window.open('https://wj.qq.com/s2/5208015/8e5d', '_blank')
     }
   }
 }
@@ -1876,10 +2018,104 @@ export default {
 
 <style scoped lang="less" src="../Publish.less"></style>
 <style lang="less">
+
+.overlay-box {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.overlay-box:hover .desc,
+.overlay-box:focus .desc {
+  opacity: 1;
+}
+.overlay-box .desc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+.img-cancel {
+  display: none;
+  position: absolute;
+}
+
+.img-hover {
+  width: 5rem;
+  height: 5rem;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.img-hover:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+}
+
 .editor {
   // 工具栏按钮 去掉样式
   [type='button'] {
     -webkit-appearance: none;
+  }
+}
+
+.privileged {
+  background: #F7F7F7;
+  border-radius: 8px;
+  border: 1px dashed #DBDBDB;
+  padding: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.privileged-guide {
+  display:none;
+  align-items: center;
+  &.show-guide {
+    display: flex;
+  }
+  span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #F7B500;
+    line-height: 22px;
+    margin: 0 10px 0 0;
+  }
+  button {
+    width: 90px;
+    height: 30px;
+    background: #F7B500;
+    border-radius: 4px;
+    padding: 5px 16px;
+    &:hover, &:focus {
+      background: #ffc420;
+      border-color: #ffc420;
+    }
+    span {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+}
+@media screen and (max-width: 540px) {
+  .privileged {
+    display: block;
+  }
+  .privileged-guide {
+    justify-content: flex-end;
   }
 }
 </style>

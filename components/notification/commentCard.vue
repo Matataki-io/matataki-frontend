@@ -5,15 +5,15 @@
     >
       <!-- 用户 -->
       <div class="fl user">
-        <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
-          <c-user-popover :user-id="Number(card.user.id)">
+        <router-link :to="{name: 'user-id', params:{id: card.user_id}}">
+          <c-user-popover :user-id="Number(card.user_id)">
             <c-avatar :src="avatar" class="avatar" />
           </c-user-popover>
         </router-link>
         <div class="user-info">
           <div class="fl user-info-top">
             <h4>
-              <router-link :to="{name: 'user-id', params:{id: card.user.id}}">
+              <router-link :class="logout && 'logout'" :to="{name: 'user-id', params:{id: card.user_id}}">
                 {{ nickname }}
               </router-link>
             </h4>
@@ -64,8 +64,11 @@ export default {
       return ''
     },
     nickname() {
-      if(!this.card.user) return ''
-      return this.card.user.nickname || this.card.user.username
+      if(!this.card.user) return this.$t('error.accountHasBeenLoggedOut')
+      return this.card.user.nickname || this.card.user.username || this.$t('error.accountHasBeenLoggedOut')
+    },
+    logout() {
+      return !this.card.user || (!this.card.user.nickname && !this.card.user.username)
     },
     dateCard() {
       if(!this.card.create_time) return ''
@@ -118,6 +121,9 @@ export default {
             -webkit-line-clamp: 1;
             overflow: hidden;
             word-break:break-all;
+            &.logout {
+              color: #b2b2b2;
+            }
             &:hover {
               text-decoration: underline;
             }

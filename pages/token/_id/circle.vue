@@ -177,7 +177,7 @@ export default {
           ) // 过滤
           const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
           this.resourcesSocialss = socialFilterEmpty
-          this.resourcesWebsites = res.data.websites
+          this.resourcesWebsites = res.data.websites.filter(web => web.url)
         } else {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         }

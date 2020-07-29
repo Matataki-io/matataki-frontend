@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -224,6 +224,7 @@ export default {
         requireToken, requireBuy,
         editRequireToken, editRequireBuy,
         ipfs_hide,
+        assosiateWith
       },
       timeout: 30000
     })
@@ -1115,7 +1116,21 @@ minetokenGetResources(tokenId) {
         data,
         timeout: 40 * 1000
       })
-    },
+  },
+  // Token转入同步到DB
+  depositToken(txHash) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/deposit`,
+      data: { txHash },
+    })
+  },
+  getMyHostingAddress() {
+    return request({
+      method: 'GET',
+      url: `/token/myAddress`,
+    })
+  },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
@@ -1161,6 +1176,16 @@ minetokenGetResources(tokenId) {
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
   // 扫码绑定
   apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
+
+  // -------------------- token 协作者 --------------------
+  // 获取协作者列表
+  getCollaborators() { return request.get('/token/collaborator') },
+  // 添加协作者
+  setCollaborator(userId) { return request.post(`/token/collaborator/${userId}`) },
+  // 删除协作者
+  deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) },
+  // 获取自己创建和协作的Fan票列表
+  getBindableTokenList() { return request.get(`/token/bindable`) }
   // -------------------- End -----------------------
 
   // ---------------- Fan票申请 ----------------------------------------
