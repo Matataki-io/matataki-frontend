@@ -846,7 +846,7 @@ export default {
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
-          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+          amount: toPrecision(this.paymentToken, 'cny', token[0].decimals)
         }]
         return tokenArr
       }
