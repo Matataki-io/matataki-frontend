@@ -172,7 +172,7 @@ export default {
     },
     announcementTitle() {
       if(this.card.action !== 'annouce') return ''
-      if (this.card.object_type === 'announcement') return this.annouce.title
+      if (['announcement', 'announcementToken'].includes(this.card.object_type)) return this.annouce.title
       if (this.card.object_type === 'featuredArticles') return '你的文章已被瞬Matataki评为精选作品'
       return ''
     },
@@ -186,8 +186,9 @@ export default {
       }
       else if (action === 'annouce') {
         // 公告
-        if (object_type !== 'announcement' || this.annouce === null) return ''
-        return this.annouce.content
+        if (['announcement', 'announcementToken'].includes(object_type) && this.annouce)
+          return this.annouce.content
+        else return ''
       }
       else if (action === 'transfer' && this.transferLog && this.card.total === 1) {
         // 转账
@@ -227,6 +228,7 @@ export default {
       }
       else if (action === 'annouce') {
         if (object_type === 'collaborator' && this.token && total < 2) return 'token'
+        if (object_type === 'announcementToken' && this.token) return 'token'
         else if (this.post) return 'post'
       }
       return 'hide' // 隐藏
