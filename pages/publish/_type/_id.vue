@@ -943,6 +943,7 @@ export default {
     tokenEditAuthority() { this.updateDraftWatch() },
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
+    assosiateWith() { this.updateDraftWatch() },
     
     // 是否公开
     ipfs_hide() { this.updateDraftWatch() }
@@ -1909,6 +1910,7 @@ export default {
           requireToken: [],
           requireBuy: [],
           editRequireToken: [],
+          assosiate_with: this.assosiateWith
         }
 
         data = this.draftFactory(data)
