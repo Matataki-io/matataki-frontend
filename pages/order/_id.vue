@@ -164,6 +164,7 @@ export default {
         buy_token_input: this.$t('home.buyFanTickets'),
         buy_token_output: this.$t('home.buyFanTickets'),
         sale_token: '出售Fan票',
+        direct_trade: 'Fan票直售'
       };
       if (this.articleId) {
         return `购买文章${this.articleId}`
