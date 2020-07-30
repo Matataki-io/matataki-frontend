@@ -29,6 +29,9 @@
           {{ card.symbol }}
         </span>
       </div>
+      <div v-if="card.memo" class="memo">
+        Memo: {{ card.memo }}
+      </div>
     </div>
     <div class="card-m">
       <div class="fl ac jsb line">
@@ -184,6 +187,9 @@ export default {
   width: 150px;
   text-align: right;
 }
+.memo {
+  min-width: 100%;
+}
 .time {
   font-size:13px;
   font-weight:400;
@@ -203,6 +209,7 @@ export default {
   .card-m .line-bottom,
   .card-info  {
     border-bottom: 1px solid #B2B2B2;
+    flex-wrap: wrap;
   }
 
   &:nth-last-child(1) .card-m .line-bottom,

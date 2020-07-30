@@ -219,7 +219,7 @@
             filterable
           >
             <el-option
-              v-for="item in readSelectOptions"
+              v-for="item in allTokenOptions"
               :key="item.id"
               :label="item.symbol + '-' + item.name"
               :value="item.id"
@@ -353,11 +353,33 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="token">
-            持币可见
-          </el-radio>
-          <br>
-          <el-radio v-model="readConfigRadio" label="cny">
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="readConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可见
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="cny"
+          >
             支付可见
           </el-radio>
 
@@ -376,7 +398,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -394,7 +416,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入数量"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -412,6 +434,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
+                      :disabled="prohibitEditingPrices"
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -468,9 +491,28 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio v-model="editConfigRadio" label="token">
-            持币可编辑
-          </el-radio>
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="editConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可编辑
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
 
           <div class="post-content root-setting">
             <div style="width: 380px;">
@@ -487,7 +529,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -505,7 +547,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入内容"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -704,6 +746,7 @@ export default {
       readToken: 1, // 阅读token数量
       editToken: 1, // 编辑token数量
       readSelectOptions: [], // 阅读tokenlist
+      allTokenOptions: [], // 全部 token list
       readSelectValue: '', // 阅读tokenlist show value
       editSelectValue: '', // 编辑tokenlist show value
       paymentTokenVisible: false, // 支付可见
@@ -826,6 +869,9 @@ export default {
         CNY,
         ...this.readSelectOptions,
       ]
+    },
+    noTokenAvailable() {
+      return !this.readSelectOptions || this.readSelectOptions.length === 0
     }
   },
   watch: {
@@ -940,6 +986,7 @@ export default {
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
+    this.getBindableTokenList()
     this.getAllTokens()
     // this.setToolBar()
   },
@@ -978,11 +1025,11 @@ export default {
         type: 'error'
       })
       else {
-        this.$API.minetokenId(this.assosiateWith).then(res => {
-          this.isAssosiateWith = true
-          this.assosiateFanName = res.data.token.name
-          this.assosiateFanLogo = this.$API.getImg(res.data.token.logo)
-        })
+        let token = this.allTokenOptions.find(option => option.id === Number(this.assosiateWith))
+        if (!token) return this.$message.error(`找不到ID为：${this.assosiateWith} 的Fan票`)
+        this.isAssosiateWith = true
+        this.assosiateFanName = token.name
+        this.assosiateFanLogo = this.$API.getImg(token.logo)
       }
     },
     // 取消关联
@@ -1258,6 +1305,21 @@ export default {
       this.$message.success(msg)
       this.jumpToArticle(hash)
     },
+    /** 获取可选的Token */
+    async getBindableTokenList() {
+      try {
+        const res = await this.$API.getBindableTokenList()
+        if (res.code === 0) {
+          // 如果有的话，吧自己发行的Fan票放到第一位
+          this.readSelectOptions = this.topOwnToken(res.data)
+        }
+        else this.$message.error(res.message)
+      }
+      catch (e) {
+        console.error(e)
+        this.$message.error(this.$t('error.fail'))
+      }
+    },
     /**
      * 获取所有token
      */
@@ -1265,8 +1327,14 @@ export default {
       const pagesize = 999
       await this.$API.allToken({ pagesize }).then(res => {
         if (res.code === 0) {
-          this.readSelectOptions = res.data.list
-          this.topOwnToken()
+          // 如果有的话，吧自己发行的Fan票放到第一位
+          this.allTokenOptions = this.topOwnToken(res.data.list)
+          // 检查用户有没有发Fan票，如果有的话，就填写进表单中
+          const isNewArticle = this.$route.params.type === 'draft' && this.$route.params.id === 'create'
+          if (isNewArticle && this.isMe({...this.allTokenOptions[0]}.uid)) {
+            this.assosiateWith = this.allTokenOptions[0].id
+            this.setAssosiateWith()
+          }
         }
       }).catch(err => console.log(err))
     },
@@ -1942,11 +2010,14 @@ export default {
       this.importVisible = true
     },
     /** 吧自己的Fan票排到最前面 */
-    topOwnToken() {
-      console.log('this.isMe', this.currentUserInfo.id, this.currentUserInfo, 'this.readSelectOptions', this.readSelectOptions)
-      this.readSelectOptions.forEach((token,index) => {
-        if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
-      })
+    topOwnToken(tokenList) {
+      for (let i = 0; i < tokenList.length; i++) {
+        if(this.isMe(tokenList[i].uid)) {
+          tokenList.unshift(tokenList.splice(i, 1)[0])
+          break
+        }
+      }
+      return tokenList
     },
     // hack render markdown
     renderMarkdown() {
@@ -1960,6 +2031,9 @@ export default {
           }, 300)
         }
       }, 1000)
+    },
+    openWj() {
+      window.open('https://wj.qq.com/s2/5208015/8e5d', '_blank')
     }
   }
 }
@@ -1974,24 +2048,25 @@ export default {
   border-radius: 50%;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-.overlay-box:hover .desc,
-.overlay-box:focus .desc {
-  opacity: 1;
-}
-.overlay-box .desc {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  font-size: 0.8rem;
-  opacity: 0;
-  transition: all 0.3s ease;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  &:hover, &:focus {
+    .desc {
+      opacity: 1;
+    }
+  }
+  .desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
 }
 
 .img-cancel {
@@ -2015,6 +2090,56 @@ export default {
   // 工具栏按钮 去掉样式
   [type='button'] {
     -webkit-appearance: none;
+  }
+}
+
+.privileged {
+  background: #F7F7F7;
+  border-radius: 8px;
+  border: 1px dashed #DBDBDB;
+  padding: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.privileged-guide {
+  display:none;
+  align-items: center;
+  &.show-guide {
+    display: flex;
+  }
+  span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #F7B500;
+    line-height: 22px;
+    margin: 0 10px 0 0;
+  }
+  button {
+    width: 90px;
+    height: 30px;
+    background: #F7B500;
+    border-radius: 4px;
+    padding: 5px 16px;
+    &:hover, &:focus {
+      background: #ffc420;
+      border-color: #ffc420;
+    }
+    span {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+}
+@media screen and (max-width: 540px) {
+  .privileged {
+    display: block;
+  }
+  .privileged-guide {
+    justify-content: flex-end;
   }
 }
 </style>
