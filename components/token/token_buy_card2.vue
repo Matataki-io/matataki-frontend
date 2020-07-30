@@ -37,10 +37,6 @@
           </el-button>
         </router-link>
       </div>
-      <OrderModal
-        v-model="orderShow"
-        :form="{...form,type,limitValue}"
-      />
     </div>
     <el-divider direction="vertical" class="middle-divider" />
     <div class="tips-card">
@@ -57,10 +53,8 @@
 import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import { CNY } from '@/components/exchange/consts.js'
-import OrderModal from '@/components/exchange/OrderModal'
 export default {
   components: {
-    OrderModal
   },
   props: {
     token: {
@@ -83,7 +77,6 @@ export default {
       },
       type: 'buy_token_output',
       priceSlippage: 0.01,
-      orderShow: false,
       baseType: ['input', 'output'],
       base: 'output'
     }
@@ -134,7 +127,6 @@ export default {
         if (this.$utils.isNull(this.form.output)) {
           this.$message.error(this.$t('token.enterTheNumber'))
         } else {
-          // this.orderShow = true
           this.$store.dispatch('order/createOrder', {
             ...this.form,
             type: this.type
