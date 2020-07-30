@@ -1191,7 +1191,7 @@ minetokenGetResources(tokenId) {
   // -------------------- 直通车 --------------------
   directTrade: {
     // 查item
-    getItem(id) { return request.get(`/trade/direct/${id}`) },
+    getItem(id, type = 'tokenId') { return request.get(`/trade/direct/${id}`, { params: { type }}) },
     // 增
     create(price) { return request.post(`/trade/direct`, { price }) },
     // 改
@@ -1201,6 +1201,9 @@ minetokenGetResources(tokenId) {
     getItemByUser() { return request.get('/api/user/market')}
   },
   // -------------------- End -----------------------
+  getMintDetail() {
+    return request.get('/api/mint/detail')
+  },
 
   // ---------------- Fan票申请 ----------------------------------------
   // fan票提交申请

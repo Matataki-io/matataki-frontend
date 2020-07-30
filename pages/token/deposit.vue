@@ -12,17 +12,18 @@
         <a 
           href="https://matataki.io/p/5013" 
           target="_blank"
-          rel="noreferrer">
+          rel="noreferrer"
+        >
           👉查看充值站外Fan票的教程 👈
         </a>
       </el-alert>
-      <el-alert type="info" v-if="myHostingAccount">
+      <el-alert v-if="myHostingAccount" type="info">
         <h2 class="title">
           我的托管钱包
         </h2>
         地址: 
         <code @click="copy">
-          {{myHostingAccount}}
+          {{ myHostingAccount }}
         </code>
         <button @click="copy">
           复制
@@ -31,7 +32,8 @@
         <a 
           :href="etherscanLink" 
           target="_blank"
-          rel="noreferrer">
+          rel="noreferrer"
+        >
           👉在 Etherscan 看这个托管账户的链上交易（找到 txHash） 👈
         </a>
       </el-alert>
@@ -65,13 +67,13 @@
           </h1>这笔交易已经同步到数据库。
           <p>来自钱包地址: <code>{{ depositResult.from }}</code></p>
           <p v-if="depositResult.token">
-            Fan票名：{{depositResult.token.name}}
-            符号：{{depositResult.token.symbol}}
+            Fan票名：{{ depositResult.token.name }}
+            符号：{{ depositResult.token.symbol }}
             <router-link :to="'/token/' + depositResult.token.id" target="_blank">
               ↗️ 查看该饭票详情
             </router-link>
           </p>
-          <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol}}</code></p>
+          <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
         </el-alert>
       </el-form>
     </div>
@@ -183,25 +185,25 @@ export default {
         const res = await this.$API.depositToken(this.form.txHash)
         
         if (res.code === 0) {
-            this.$emit('success')
-            this.depositResult = res.data
-            const token = await this.$API.minetokenId(res.data.tokenId)
-            this.depositResult.token = token.data.token
+          this.$emit('success')
+          this.depositResult = res.data
+          const token = await this.$API.minetokenId(res.data.tokenId)
+          this.depositResult.token = token.data.token
         } else {
-            this.$message({
-                showClose: true,
-                message: res.message,
-                type: 'error',
-                duration: 0
-            })
+          this.$message({
+            showClose: true,
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
         }
       } catch (err) {
-          this.$message({
-              showClose: true,
-              message: err.response.data.message,
-              type: 'error',
-              duration: 0
-          })
+        this.$message({
+          showClose: true,
+          message: err.response.data.message,
+          type: 'error',
+          duration: 0
+        })
       } finally {
         this.transferLoading = false
       }

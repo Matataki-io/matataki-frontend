@@ -1,6 +1,7 @@
 <template>
   <settingLayout>
-    <div class="trade-setting">
+    <NoTokenTip v-if="NoToken" />
+    <div v-else class="trade-setting">
       <a href="https://www.yuque.com/matataki/matataki">完整Fan票规则说明 ></a>
       <div v-loading="loading" class="form-container">
         <el-form 
@@ -17,7 +18,7 @@
             <span class="price-setting-tip">* 价格设置后无法修改</span>
           </el-form-item>
         </el-form>
-        <div>
+        <div v-else>
           <div class="token-trade-disabled">
             <span class="trade-setting-label">直通车销售功能</span>
             <el-switch v-model="form.enabled" @change="changeStatus" />
@@ -67,10 +68,12 @@
 
 <script>
 import settingLayout from '@/components/token/liquidity_setting.vue'
+import NoTokenTip from '@/components/NoTokenTip.vue'
 
 export default {
   components: {
     settingLayout,
+    NoTokenTip
   },
   data() {
     return {
@@ -134,7 +137,7 @@ export default {
       this.tokenBalance =  this.$utils.fromDecimal(result.data)
     },
     async create() {
-      if (parseFloat(this.from.price) <= 0) {
+      if (parseFloat(this.form.price) <= 0) {
         this.$message.warning('请输入大于0的数字！')
       }
       const price = this.$utils.toDecimal(this.form.price)
