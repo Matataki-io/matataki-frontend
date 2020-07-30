@@ -1,6 +1,7 @@
 <template>
   <settingLayout>
-    <div class="trade-setting">
+    <NoTokenTip v-if="NoToken" />
+    <div v-else class="trade-setting">
       <a href="https://www.yuque.com/matataki/matataki">完整Fan票规则说明 ></a>
       <div v-loading="loading" class="form-container">
         <el-form 
@@ -67,10 +68,12 @@
 
 <script>
 import settingLayout from '@/components/token/liquidity_setting.vue'
+import NoTokenTip from '@/components/NoTokenTip.vue'
 
 export default {
   components: {
     settingLayout,
+    NoTokenTip
   },
   data() {
     return {

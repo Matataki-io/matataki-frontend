@@ -1201,6 +1201,9 @@ minetokenGetResources(tokenId) {
     getItemByUser() { return request.get('/api/user/market')}
   },
   // -------------------- End -----------------------
+  getMintDetail() {
+    return request.get('/api/mint/detail')
+  },
 
   // ---------------- Fan票申请 ----------------------------------------
   // fan票提交申请
