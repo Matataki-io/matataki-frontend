@@ -12,14 +12,14 @@
           </p>
         </div>
       </router-link>
-      <a href="Javascript:;" class="management-list-card disable">
+      <router-link :to="{ name: 'liquidity-mint' }" class="management-list-card">
         <div>
           <img class="liquidity-management" src="@/assets/img/token/liquidity_management.png" alt="Liquidity Management">
           <p>
             流动性管理
           </p>
         </div>
-      </a>
+      </router-link>
       <a href="Javascript:;" class="management-list-card disable">
         <div>
           <img class="marketing" src="@/assets/img/token/marketing.png" alt="Marketing">
