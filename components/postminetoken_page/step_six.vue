@@ -69,5 +69,6 @@ export default {
   overflow: hidden;
   word-break: break-all;
   display: inline-block;
+  max-width: 400px;
 }
 </style>
