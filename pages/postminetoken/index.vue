@@ -9,10 +9,10 @@
         <section class="step" :class="active >= 0 && 'active'">
           ① 基础信息
         </section>
-        <section class="step" :class="active > 1 && 'active'">
+        <section class="step" :class="active >= 1 && 'active'">
           ② Fan票设置
         </section>
-        <section class="step" :class="active > 2 && 'active'">
+        <section class="step" :class="active >= 2 && 'active'">
           ③ 提交申请
         </section>
       </section>
@@ -49,6 +49,7 @@ import stepFive from '@/components/postminetoken_page/step_five'
 import stepSix from '@/components/postminetoken_page/step_six'
 import { extractChar } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -67,6 +68,14 @@ export default {
       stepThreeStatus: false,
       stepTwoData: null, // 表单数据
       stepThreeData: null, // 表单数据
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  watch: {
+    isLogined() {
+      this.getTokenUserData()
     }
   },
   async asyncData({ $axios, req }) {
@@ -116,8 +125,19 @@ export default {
         this.active = 0
       }
     }
+    if (process.browser && this.isLogined) {
+      this.getTokenUserData()
+    }
   },
   methods: {
+    // 获取 token user 的信息
+    async getTokenUserData() {
+      const userResult = await this.$utils.factoryRequest(this.$API.tokenUserId(this.currentUserInfo.id))
+      // 已经发币了 直接返回
+      if (userResult && userResult.data) {
+        this.$router.go(-1)
+      }
+    },
     prev() {
       this.active--
     },

@@ -102,7 +102,7 @@
 <script>
 import { debounce, isEmpty } from 'lodash'
 import imgUpload from '@/components/imgUpload/index.vue'
-
+import { tagList } from '@/common/config/minetoken_tag'
 export default {
   components: {
     imgUpload,
@@ -180,7 +180,25 @@ export default {
       this.tokenForm.logo = info.logo
       this.tokenForm.name = info.name
       this.tokenForm.symbol = info.symbol
-      this.tokenForm.tag = info.tag.split(',')
+      this.tokenForm.tag =  this.tagDataToShow(info.tag.split(','))
+    },
+    // 数据转换显示
+    tagDataToShow(data) {
+      return data.map(i => tagList[i]).filter(Boolean)
+    },
+    // 数据转换提交
+    tagDataToPost(data) {
+
+      let arr = []
+      for (let i = 0, len = data.length; i < len; i++) {
+        for(const key in tagList) {
+          if (data[i] === tagList[key]) {
+            arr.push(key)
+          }
+        }
+      }
+
+      return arr
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -197,7 +215,7 @@ export default {
         logo: this.tokenForm.logo,
         name: this.tokenForm.name,
         symbol: this.tokenForm.symbol,
-        tag: this.tokenForm.tag,
+        tag: this.tagDataToPost(this.tokenForm.tag)
       }
       await this.$utils.factoryRequest(this.$API.apiMinetokenApplication(data))
 
@@ -214,7 +232,7 @@ export default {
             logo: this.tokenForm.logo,
             name: this.tokenForm.name,
             symbol: this.tokenForm.symbol,
-            tag: this.tokenForm.tag,
+            tag: this.tagDataToPost(this.tokenForm.tag)
           }
           this.$emit('done', data)
 
