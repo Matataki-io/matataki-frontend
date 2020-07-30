@@ -1,8 +1,8 @@
 <template>
   <div class="mint-no-token">
     <div class="no-token-img">
-      <img src="@/assets/img/gray_oops.png" alt="oops" class="oops" />
-      <img src="@/assets/img/gray_fanpiao.png" alt="Fan票" />
+      <img src="@/assets/img/gray_oops.png" alt="oops" class="oops">
+      <img src="@/assets/img/gray_fanpiao.png" alt="Fan票">
     </div>
     <p class="no-token-tip">尚未发行Fan票</p>
     <router-link :to="{ name: 'postminetoken' }">
