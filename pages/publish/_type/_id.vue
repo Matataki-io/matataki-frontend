@@ -219,7 +219,7 @@
             filterable
           >
             <el-option
-              v-for="item in readSelectOptions"
+              v-for="item in allTokenOptions"
               :key="item.id"
               :label="item.symbol + '-' + item.name"
               :value="item.id"
@@ -746,6 +746,7 @@ export default {
       readToken: 1, // 阅读token数量
       editToken: 1, // 编辑token数量
       readSelectOptions: [], // 阅读tokenlist
+      allTokenOptions: [], // 全部 token list
       readSelectValue: '', // 阅读tokenlist show value
       editSelectValue: '', // 编辑tokenlist show value
       paymentTokenVisible: false, // 支付可见
@@ -986,6 +987,7 @@ export default {
     }
 
     this.getBindableTokenList()
+    this.getAllTokens()
     // this.setToolBar()
   },
   beforeRouteLeave(to, from, next) {
@@ -1023,11 +1025,11 @@ export default {
         type: 'error'
       })
       else {
-        this.$API.minetokenId(this.assosiateWith).then(res => {
-          this.isAssosiateWith = true
-          this.assosiateFanName = res.data.token.name
-          this.assosiateFanLogo = this.$API.getImg(res.data.token.logo)
-        })
+        let token = this.allTokenOptions.find(option => option.id === Number(this.assosiateWith))
+        if (!token) return this.$message.error(`找不到ID为：${this.assosiateWith} 的Fan票`)
+        this.isAssosiateWith = true
+        this.assosiateFanName = token.name
+        this.assosiateFanLogo = this.$API.getImg(token.logo)
       }
     },
     // 取消关联
@@ -1308,8 +1310,8 @@ export default {
       try {
         const res = await this.$API.getBindableTokenList()
         if (res.code === 0) {
-          this.readSelectOptions = res.data
-          this.topOwnToken()
+          // 如果有的话，吧自己发行的Fan票放到第一位
+          this.readSelectOptions = this.topOwnToken(res.data)
         }
         else this.$message.error(res.message)
       }
@@ -1317,6 +1319,24 @@ export default {
         console.error(e)
         this.$message.error(this.$t('error.fail'))
       }
+    },
+    /**
+     * 获取所有token
+     */
+    async getAllTokens() {
+      const pagesize = 999
+      await this.$API.allToken({ pagesize }).then(res => {
+        if (res.code === 0) {
+          // 如果有的话，吧自己发行的Fan票放到第一位
+          this.allTokenOptions = this.topOwnToken(res.data.list)
+          // 检查用户有没有发Fan票，如果有的话，就填写进表单中
+          const isNewArticle = this.$route.params.type === 'draft' && this.$route.params.id === 'create'
+          if (isNewArticle && this.isMe({...this.allTokenOptions[0]}.uid)) {
+            this.assosiateWith = this.allTokenOptions[0].id
+            this.setAssosiateWith()
+          }
+        }
+      }).catch(err => console.log(err))
     },
     // 文章持通证阅读
     async postMineTokens(id) {
@@ -1990,11 +2010,14 @@ export default {
       this.importVisible = true
     },
     /** 吧自己的Fan票排到最前面 */
-    topOwnToken() {
-      console.log('this.isMe', this.currentUserInfo.id, this.currentUserInfo, 'this.readSelectOptions', this.readSelectOptions)
-      this.readSelectOptions.forEach((token,index) => {
-        if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
-      })
+    topOwnToken(tokenList) {
+      for (let i = 0; i < tokenList.length; i++) {
+        if(this.isMe(tokenList[i].uid)) {
+          tokenList.unshift(tokenList.splice(i, 1)[0])
+          break
+        }
+      }
+      return tokenList
     },
     // hack render markdown
     renderMarkdown() {
@@ -2025,24 +2048,25 @@ export default {
   border-radius: 50%;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-.overlay-box:hover .desc,
-.overlay-box:focus .desc {
-  opacity: 1;
-}
-.overlay-box .desc {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  font-size: 0.8rem;
-  opacity: 0;
-  transition: all 0.3s ease;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  &:hover, &:focus {
+    .desc {
+      opacity: 1;
+    }
+  }
+  .desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
 }
 
 .img-cancel {

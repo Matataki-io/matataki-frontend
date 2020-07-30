@@ -174,11 +174,11 @@ export default {
   data() {
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户,
+      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户
       tagPattern: [
-        {name:'个人', label: 'personal', checked: false}, 
-        {name:'组织', label: 'organization', checked: false}, 
-        {name: '产品', label: 'product', checked: false}, 
+        {name:'个人', label: 'personal', checked: false},
+        {name:'组织', label: 'organization', checked: false},
+        {name: '产品', label: 'product', checked: false},
         { name: 'MEME', label: 'meme', checked: false}
       ]
     }
