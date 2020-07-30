@@ -1,11 +1,23 @@
 <template>
   <div class="container-padding">
     <div class="buy-card">
+      <!-- <h2 class="token-title">
+        {{ $t('token.quickPurchase') }}
+      </h2> -->
       <div class="buy-flex">
-        <h2 class="token-title">
-          {{ $t('token.quickPurchase') }}
-        </h2>
-        <span class="center"><span class="ellipsis">{{ currentPoolSize.token_amount|| 0 }}</span> {{ token.symbol }} <svg-icon icon-class="exchange" /></span>
+        <div>
+          <span 
+            :class="[ 'token-title', { 'active': isUniswap } ]"
+            @click="tabChange('uniswap')"
+          >Uniswap交易所</span>
+          <span 
+            :class="[ 'token-title', { 'active': isDirectTrade } ]"
+            @click="tabChange('direct')"
+          >直通车</span>
+        </div>
+        <router-link class="center" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
+          Uniswap <i class="el-icon-arrow-right" />
+        </router-link>
       </div>
       <el-input
         v-model="inputModel"
@@ -22,20 +34,24 @@
         >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
       </el-input>
       <div class="btns">
+        <div class="market-info-container">
+          <div v-if="isDirectTrade" class="market-info">
+            <span>价格：{{ market.price }} CNY</span>
+            <span>剩余：{{ market.balance }} {{ token.symbol }}</span>
+            <span>已售出：{{ market.totalAmount - market.balance }} {{ token.symbol }}</span>
+          </div>
+          <div v-if="isUniswap" class="market-info">
+            <!-- <span>价格：0 CNY</span> -->
+            <span>剩余：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span>
+          </div>
+        </div>
         <el-button
-          class="btn1"
+          type="primary"
+          class="pay-btn"
           @click="pay"
         >
           {{ $t('token.payImmediately') }}
         </el-button>
-        <router-link :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-          <el-button
-            class="btn2"
-            type="primary"
-          >
-            {{ $t('token.tradingFanTickets') }}
-          </el-button>
-        </router-link>
       </div>
     </div>
     <el-divider direction="vertical" class="middle-divider" />
@@ -68,6 +84,7 @@ export default {
   },
   data() {
     return {
+      buyExchange: 'uniswap',
       inputModel: '',
       form: {
         input: '',
@@ -78,7 +95,13 @@ export default {
       type: 'buy_token_output',
       priceSlippage: 0.01,
       baseType: ['input', 'output'],
-      base: 'output'
+      base: 'output',
+      market: {
+        price: 0,
+        totalAmount: 0,
+        balance: 0
+      },
+      NoMarket: false
     }
   },
   computed: {
@@ -95,6 +118,12 @@ export default {
     },
     suffixSymbol() {
       return this.baseType.findIndex(base => base === this.base) ? this.form.inputToken.symbol : this.form.outputToken.symbol
+    },
+    isUniswap() {
+      return this.buyExchange === 'uniswap'
+    },
+    isDirectTrade() {
+      return this.buyExchange === 'direct'
     }
   },
   watch: {
@@ -107,8 +136,33 @@ export default {
   },
   mounted() {
     this.form.outputToken = this.token
+    this.getMarket()
   },
   methods: {
+    tabChange(v) {
+      this.buyExchange = v
+      this.form.input = ''
+      this.form.output = ''
+      this.inputModel = ''
+    },
+    async getMarket() {
+      const result = await this.$API.directTrade.getItem(this.token.id)
+      if (result.code === 0) {
+        const market = result.data
+        if (market.status === 0) {
+          this.NoMarket = false
+          this.market = {
+            price: this.$utils.fromDecimal(market.price),
+            totalAmount: this.$utils.fromDecimal(market.amount),
+            balance: this.$utils.fromDecimal(market.balance),
+          }
+        } else { // 尚未启动market
+          this.NoMarket = true
+        }
+      } else { // market暂无
+        this.NoMarket = true
+      }
+    },
     baseSwitch() {
       // switch
       this.base = this.baseType[Number(this.base === this.baseType[0])]
@@ -127,9 +181,11 @@ export default {
         if (this.$utils.isNull(this.form.output)) {
           this.$message.error(this.$t('token.enterTheNumber'))
         } else {
+          let type = this.type
+          if (this.isDirectTrade) type = 'direct_trade'
           this.$store.dispatch('order/createOrder', {
             ...this.form,
-            type: this.type
+            type
           })
         }
       } else {
@@ -137,14 +193,31 @@ export default {
       }
     },
     inputChange: debounce(function () {
-
-      // 没有合约地址
-      if (!this.token.contract_address) return
-      if(this.base === this.baseType[0])
-        this.getOutputAmount(0, this.token.id, this.form.input)
-      else
-        this.getInputAmount(0, this.token.id, this.form.output)
+      // uniswap 交易
+      if (this.isUniswap) {
+        // 没有合约地址
+        if (!this.token.contract_address) return
+        if(this.base === this.baseType[0])
+          this.getOutputAmount(0, this.token.id, this.form.input)
+        else
+          this.getInputAmount(0, this.token.id, this.form.output)
+      } else if (this.isDirectTrade) { // 直通车交易
+        if(this.base === this.baseType[0]) { // 输入是cny，输出是token
+          this.getMarketOutputAmount(this.form.input, this.market.price)
+        } else { // 输入是token，输出是cny
+          this.getMarketInputAmount(this.form.output, this.market.price)
+        }
+      }
     }, 500),
+    getMarketOutputAmount(input, price) {
+      let r = Math.floor(parseFloat(input) / parseFloat(price) * 100) / 100
+      // if (r === 0) r = 0.01
+      this.form.output = r
+
+    },
+    getMarketInputAmount(output, price) {
+      this.form.input = parseFloat(output) * parseFloat(price)
+    },
     getInputAmount(inputTokenId = 0, outputTokenId, outputAmount) {
       const deciaml = 4
       const _outputAmount = this.$utils.toDecimal(outputAmount, deciaml)
@@ -218,6 +291,20 @@ export default {
   .middle-divider {
     height: 120px;
   }
+  .market-info-container {
+    display: flex;
+    align-items: center;
+    .market-info {
+      span {
+        font-size: 14px;
+        color: #B2B2B2;
+        margin-right: 10px;
+      }
+    }
+  }
+  .pay-btn {
+    height: 40px;;
+  }
 }
 .buy-card {
   display: inline-block;
@@ -244,13 +331,17 @@ export default {
   }
 }
 .token-title {
-  font-size:24px;
-  font-weight:bold;
-  color:@black;
+  font-size:20px;
+  color: #B2B2B2;
   line-height:33px;
   padding: 0;
-  margin: 0;
+  margin-right: 10px;
+  cursor: pointer;
+  &.active {
+    color: #000000;
+  }
 }
+
 .buy-flex {
   display: flex;
   justify-content: space-between;

@@ -36,11 +36,11 @@
       </el-col>
       <!-- 右侧卡片 -->
       <el-col v-show="clientVisible" :span="7">
-        <tokenBuyCard
+        <!-- <tokenBuyCard
           class="buy-card2"
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
-        />
+        /> -->
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
