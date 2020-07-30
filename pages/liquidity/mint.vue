@@ -57,7 +57,7 @@ export default {
   methods: {
     async getItem() {
     },
-    async updateAmount() {
+    async mint() {
     },
     resetForm() {
       this.form.amount = null
