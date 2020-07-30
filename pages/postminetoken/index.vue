@@ -34,7 +34,7 @@
       <stepThree v-show="active === 2" @done="threePostInfo" @prev="() => active--" />
       <stepFour v-show="active === 3" @done="backPage" />
       <stepFive v-show="active === 4" @done="backPage" />
-      <stepSix v-show="active === 5" @done="resetApplication" />
+      <stepSix v-show="active === 5" :reason="userMinetokenApplication.reason || ''" @done="resetApplication" />
     </div>
   </section>
 </template>

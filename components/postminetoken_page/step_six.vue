@@ -2,12 +2,19 @@
   <div class="container">
     <img src="@/assets/img/application_complete.png" alt="done" class="image">
     <p class="text">您的Fan票申请失败</p>
+    <p v-if="reason" class="token-reason">{{ reason }}</p>
     <a href="javascript:;" class="f-btn" @click="done">重新申请</a>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    reason: {
+      type: String,
+      default: ''
+    }
+  },
   methods: {
     done() {
       this.$emit('done')
@@ -17,6 +24,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 .text {
   font-size: 16px;
   font-weight: 500;
@@ -27,7 +39,7 @@ export default {
 }
 .image {
   width: 240px;
-  margin: 200px auto 0;
+  margin: 100px auto 0;
   display: block;
 }
 
@@ -45,5 +57,18 @@ export default {
   border: 1px solid rgba(250, 100, 0, 1);
   margin: 40px auto 0;
   display: block;
+}
+
+.token-reason {
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 0;
+  overflow: hidden;
+  word-break: break-all;
+  display: inline-block;
+  max-width: 400px;
 }
 </style>

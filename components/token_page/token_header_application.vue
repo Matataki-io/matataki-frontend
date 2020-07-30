@@ -23,6 +23,7 @@
         </template>
         <template v-else-if="info.status === 3">
           <p class="token-text">您的Fan票申请申请失败!</p>
+          <p v-if="info.reason" class="token-reason">{{ info.reason }}</p>
         </template>
         <div class="token-footer">  
           <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
@@ -218,5 +219,17 @@ export default {
       border: 1px solid #542DE0;
     }
   }
+}
+
+.token-reason {
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 0;
+  max-width: 400px;
+  overflow: hidden;
+  word-break: break-all;
 }
 </style>
