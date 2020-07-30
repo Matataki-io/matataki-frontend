@@ -154,7 +154,10 @@ export default {
     tokenForm: {
       deep: true,
       handler() {
-        this.postSurveyInfo()
+        let { status } = this.$route.query
+        if (status !== 'modify') {
+          this.postSurveyInfo()
+        }
       }
     }
   },

@@ -97,13 +97,18 @@ export default {
       if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
     },
     async minetokenApplication(type, status) {
+      if (status === 'modify') {
+        this.$router.push({ name: 'postminetoken', query: { status: 'modify' } })
+        return
+      }
+
       let resultMinetokenApplication = await this.$utils.factoryRequest(this.$API.apiMinetokenApplication({
         type
       }))
       if (resultMinetokenApplication) {
         if (status === 'close') {
           window.location.reload()
-        } else if (status === 'reset' || status === 'modify') {
+        } else if (status === 'reset') {
           this.$router.push({ name: 'postminetoken' })
         }
       }

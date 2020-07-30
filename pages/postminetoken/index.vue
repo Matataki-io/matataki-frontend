@@ -1,5 +1,5 @@
 <template>
-  <section class="main">
+  <section v-loading.fullscreen.lock="loading" class="main">
     <span class="back" @click="backPage">
       <svg-icon icon-class="arrow" class="icon" />返回Fan票
     </span>
@@ -68,6 +68,7 @@ export default {
       stepThreeStatus: false,
       stepTwoData: null, // 表单数据
       stepThreeData: null, // 表单数据
+      loading: false
     }
   },
   computed: {
@@ -112,8 +113,13 @@ export default {
   },
   created() {
     if (process.browser) {
+
+      let { status } = this.$route.query
+      if (status === 'modify') {
+        this.active = 1
+      }
       // 状态 0 申请成功 1 申请未提交 2 申请中 3申请失败
-      if (this.userMinetokenApplication.status === 0) {
+      else if (this.userMinetokenApplication.status === 0) {
         this.active = 4
       } else if (this.userMinetokenApplication.status === 1) {
         this.active = 1
@@ -162,20 +168,28 @@ export default {
     // 上传信息
     async postInfo() {
 
+      this.loading = true
+
+      let { status } = this.$route.query
+      if (status === 'modify') {
+        this.stepTwoData.type = 'modify'
+      }
+
       let resultMinetokenApplication = await this.$utils.factoryRequest(this.$API.apiMinetokenApplication(this.stepTwoData))
       if (!resultMinetokenApplication) {
-        this.$message.error(resultMinetokenApplication.message || '失败')
+        this.$message.error('失败')
       }
 
       let resultMinetokenApplicationSurvey = await this.$utils.factoryRequest(this.$API.apiMinetokenApplicationSurvey(this.stepThreeData))
       if (!resultMinetokenApplicationSurvey) {
-        this.$message.error(resultMinetokenApplicationSurvey.message || '失败')
+        this.$message.error('失败')
       }
 
       if (resultMinetokenApplication && resultMinetokenApplicationSurvey) {
         this.active++
       }
 
+      this.loading = false
 
     },
     backPage() {
