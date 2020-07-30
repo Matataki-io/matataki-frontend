@@ -158,7 +158,10 @@ export default {
     tokenForm: {
       deep: true,
       handler() {
-        this.postTokenForm()
+        let { status } = this.$route.query
+        if (status !== 'modify') {
+          this.postTokenForm()
+        }
       }
     }
   },
@@ -167,8 +170,6 @@ export default {
       this.getUserTokenInfo()
 
       if (!isEmpty(this.info)) {
-        console.log('info', this.info)
-
         this.setForm(this.info)
       }
       
@@ -184,10 +185,12 @@ export default {
     },
     // 数据转换显示
     tagDataToShow(data) {
+      if (data.length <= 0) return []
       return data.map(i => tagList[i]).filter(Boolean)
     },
     // 数据转换提交
     tagDataToPost(data) {
+      if (data.length <= 0) return []
 
       let arr = []
       for (let i = 0, len = data.length; i < len; i++) {
