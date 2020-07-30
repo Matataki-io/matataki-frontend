@@ -18,7 +18,7 @@
             <span class="price-setting-tip">* 价格设置后无法修改</span>
           </el-form-item>
         </el-form>
-        <div>
+        <div v-else>
           <div class="token-trade-disabled">
             <span class="trade-setting-label">直通车销售功能</span>
             <el-switch v-model="form.enabled" @change="changeStatus" />
@@ -137,7 +137,7 @@ export default {
       this.tokenBalance =  this.$utils.fromDecimal(result.data)
     },
     async create() {
-      if (parseFloat(this.from.price) <= 0) {
+      if (parseFloat(this.form.price) <= 0) {
         this.$message.warning('请输入大于0的数字！')
       }
       const price = this.$utils.toDecimal(this.form.price)
