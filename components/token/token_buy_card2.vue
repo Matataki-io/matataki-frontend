@@ -1,66 +1,68 @@
 <template>
   <div class="container-padding">
-    <div class="buy-card">
-      <!-- <h2 class="token-title">
-        {{ $t('token.quickPurchase') }}
-      </h2> -->
-      <div class="buy-flex">
-        <div>
-          <span 
-            :class="[ 'token-title', { 'active': isUniswap } ]"
-            @click="tabChange('uniswap')"
-          >Uniswap交易所</span>
-          <span 
-            :class="[ 'token-title', { 'active': isDirectTrade } ]"
-            @click="tabChange('direct')"
-          >直通车</span>
-        </div>
-        <router-link class="center" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-          Uniswap <i class="el-icon-arrow-right" />
-        </router-link>
-      </div>
-      <el-input
-        v-model="inputModel"
-        :placeholder="base === baseType[0] ? $t('token.enterBudget') : $t('token.enterPurchaseQuantity')"
-        @input="inputChange"
-        @keypress.native="isNumber"
-      >
-        <span slot="prefix" class="prefix-switch" @click="baseSwitch">
-          <svg-icon icon-class="switch" />
-        </span>
-        <span
-          slot="suffix"
-          class="el-input__icon suffix-text"
-        >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
-      </el-input>
-      <div class="btns">
-        <div class="market-info-container">
-          <div v-if="isDirectTrade" class="market-info">
-            <span>价格：{{ market.price }} CNY</span>
-            <span>剩余：{{ market.balance }} {{ token.symbol }}</span>
-            <span>已售出：{{ market.totalAmount - market.balance }} {{ token.symbol }}</span>
+    <div class="container-inner">
+      <div class="buy-card">
+        <!-- <h2 class="token-title">
+          {{ $t('token.quickPurchase') }}
+        </h2> -->
+        <div class="buy-flex">
+          <div>
+            <span 
+              :class="[ 'token-title', { 'active': isUniswap } ]"
+              @click="tabChange('uniswap')"
+            >Uniswap交易所</span>
+            <span 
+              :class="[ 'token-title', { 'active': isDirectTrade } ]"
+              @click="tabChange('direct')"
+            >直通车</span>
           </div>
-          <div v-if="isUniswap" class="market-info">
-            <!-- <span>价格：0 CNY</span> -->
-            <span>剩余：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span>
-          </div>
+          <router-link class="center" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
+            Uniswap <i class="el-icon-arrow-right" />
+          </router-link>
         </div>
-        <el-button
-          type="primary"
-          class="pay-btn"
-          @click="pay"
+        <el-input
+          v-model="inputModel"
+          :placeholder="base === baseType[0] ? $t('token.enterBudget') : $t('token.enterPurchaseQuantity')"
+          @input="inputChange"
+          @keypress.native="isNumber"
         >
-          {{ $t('token.payImmediately') }}
-        </el-button>
+          <span slot="prefix" class="prefix-switch" @click="baseSwitch">
+            <svg-icon icon-class="switch" />
+          </span>
+          <span
+            slot="suffix"
+            class="el-input__icon suffix-text"
+          >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
+        </el-input>
+        <div class="btns">
+          <div class="market-info-container">
+            <div v-if="isDirectTrade" class="market-info">
+              <span>价格：{{ market.price }} CNY</span>
+              <span>剩余：{{ market.balance }} {{ token.symbol }}</span>
+              <span>已售出：{{ market.totalAmount - market.balance }} {{ token.symbol }}</span>
+            </div>
+            <div v-if="isUniswap" class="market-info">
+              <!-- <span>价格：0 CNY</span> -->
+              <span>剩余：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span>
+            </div>
+          </div>
+          <el-button
+            type="primary"
+            class="pay-btn"
+            @click="pay"
+          >
+            {{ $t('token.payImmediately') }}
+          </el-button>
+        </div>
       </div>
-    </div>
-    <el-divider direction="vertical" class="middle-divider" />
-    <div class="tips-card">
-      <ul>
-        <ol>1. 首次发行的时候会自动默认发行 1000 个Fan票</ol>
-        <ol>2. 首次发行成功后即可立即操作手动增发</ol>
-        <ol>3. 每次增发后需要等待10天可再次增发</ol>
-      </ul>
+      <el-divider direction="vertical" class="middle-divider" />
+      <div class="tips-card">
+        <ul>
+          <ol>1. 首次发行的时候会自动默认发行 1000 个Fan票</ol>
+          <ol>2. 首次发行成功后即可立即操作手动增发</ol>
+          <ol>3. 每次增发后需要等待10天可再次增发</ol>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -269,18 +271,23 @@ export default {
 
 <style scoped lang="less">
 .container-padding {
-  max-width: 1180px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
   margin-top: 20px;
-  background: @white;
-  border-radius: @br10;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+  .container-inner {
+    background: @white;
+    width: 100%;
+    border-radius: @br10;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .tips-card {
     width: 45%;
     display: inline-block;
@@ -368,6 +375,20 @@ export default {
 @media screen and (max-width: 600px) {
   .token-title  {
     font-size: 20px;
+  }
+}
+@media screen and (max-width: 800px) {
+  .middle-divider, .tips-card  {
+    display: none!important;
+  }
+  .buy-card {
+    padding: 20px;
+    width: 100%;
+  }
+  .market-info {
+    span {
+      display: block;
+    }
   }
 }
 </style>
