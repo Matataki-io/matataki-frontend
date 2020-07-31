@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <img src="@/assets/img/article_banner.png" alt="banner" class="article_banner">
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
