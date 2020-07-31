@@ -10,6 +10,7 @@ export default {
     ]
   },
   mounted() {
+    this.$store.dispatch('testLogin')
     if (process.browser) {
       this.injectScript()
     }
