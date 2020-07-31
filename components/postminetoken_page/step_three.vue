@@ -144,7 +144,7 @@
         任何反馈<svg-icon icon-class="arrow" class="icon" />
       </a>
       <a href="javascript:;" class="f-btn prev" @click="prev">上一步</a>
-      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">下一步</a>
+      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">提交申请</a>
     </div>
   </div>
 </template>
