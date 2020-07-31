@@ -9,9 +9,14 @@
       <img class="token-text" src="@/assets/img/token_banner_text.png">
       <div class="token-btn">
         <a href="https://www.matataki.io/p/977" target="_blank" class="token-more more hvr-float">了解更多</a>
-        <router-link v-if="showPublishBtn" :to="{ name: 'postminetoken' }" class="token-more publish hvr-float">
+        <a
+          v-if="showPublishBtn"
+          href="javascript:;"
+          class="token-more publish hvr-float"
+          @click="push"
+        >
           发行Fan票
-        </router-link>
+        </a>
       </div>
     </div>
   </div>
@@ -19,6 +24,8 @@
 
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     showPublishBtn: {
@@ -26,6 +33,18 @@ export default {
       default: false
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  methods: {
+    push() {
+      if (this.isLogined) {
+        this.$router.push({ name: 'postminetoken' })
+      } else {
+        this.$store.commit('setLoginModal', true)
+      }
+    }
+  }
 }
 </script>
 
