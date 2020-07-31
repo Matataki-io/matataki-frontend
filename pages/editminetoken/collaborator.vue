@@ -23,12 +23,14 @@
           :key="index"
           class="colla-member-card"
         >
-          <c-user-popover :user-id="Number(colla.user_id)">
-            <c-avatar :src="getAvatar(colla.avatar)" />
-          </c-user-popover>
-          <p class="colla-member-card-name" :class="!(colla.nickname || colla.username) && 'logout'">
-            {{ colla.nickname || colla.username || $t('error.accountHasBeenLoggedOut') }}
-          </p>
+          <router-link :to="{ name: 'user-id', params: { id: colla.user_id } }">
+            <c-user-popover :user-id="Number(colla.user_id)">
+              <c-avatar :src="getAvatar(colla.avatar)" />
+            </c-user-popover>
+            <p class="colla-member-card-name" :class="!(colla.nickname || colla.username) && 'logout'">
+              {{ colla.nickname || colla.username || $t('error.accountHasBeenLoggedOut') }}
+            </p>
+          </router-link>
           <el-popover
             v-model="colla.detelePopover"
             placement="top"
@@ -189,7 +191,17 @@ export default {
   &-card {
     display: flex;
     align-items: center;
-    margin-bottom: 26px;
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    &:hover {
+      background: #ededed;
+    }
+    a {
+      display: flex;
+      flex: 1;
+      align-items: center;
+    }
     &-name {
       flex: 1;
       margin: 0 0 0 10px;
