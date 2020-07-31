@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <p class="token-title">步骤3：有奖小调研（选填）</p>
+    <p class="token-description">参与调研后，通过了Fan票申请即有可能得到Fan票空投奖励</p>
     <el-form
       ref="tokenForm"
       :model="tokenForm"
-      :rules="rules"
-      label-width="80px"
+      label-width="90px"
       class="token-form"
     >
       <p class="survey-title">基本信息</p>
@@ -28,20 +28,66 @@
       <el-form-item label="职业领域" prop="career">
         <el-input v-model="tokenForm.career" placeholder="请输入内容" />
       </el-form-item>
-      <p class="survey-title">基本信息</p>
+      <p class="survey-title">主要创作者身份</p>
 
-      <el-form-item label="领域" prop="field">
-        <el-input v-model="tokenForm.field" placeholder="请输入内容" />
+      <el-form-item label="创作领域" prop="field">
+        <section class="fl">
+          <el-select
+            v-model="tokenForm.field"
+            placeholder="请选择"
+            clearable
+            style="width: 40%;"
+          >
+            <el-option
+              v-for="item in fieldOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+          <!-- "其他-XX" -->
+          <el-input
+            v-if="tokenForm.field === '其他'"
+            v-model="tokenForm.fieldOther"
+            style="width: 56%;margin-left: auto;"
+            placeholder="请输入内容"
+          />
+        </section>
       </el-form-item>
-      <el-form-item label="平台" prop="platform">
-        <el-input v-model="tokenForm.platform" placeholder="请输入内容" />
+      <el-form-item label="创作平台" prop="platform">
+        <section class="fl">
+          <el-select
+            v-model="tokenForm.platform"
+            placeholder="请选择"
+            clearable
+            style="width: 40%;"
+          >
+            <el-option
+              v-for="item in platformOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+          <!-- "其他-XX" -->
+          <el-input
+            v-if="tokenForm.platform === '其他'"
+            v-model="tokenForm.platformOther"
+            style="width: 56%;margin-left: auto;"
+            placeholder="请输入内容"
+          />
+        </section>
       </el-form-item>
 
-      <el-form-item label="昵称" prop="nickname">
-        <el-input v-model="tokenForm.nickname" placeholder="请输入内容" />
+      <el-form-item label="创作者昵称" prop="nickname">
+        <el-input v-model="tokenForm.nickname" placeholder="请填写" />
       </el-form-item>
-      <el-form-item label="链接" prop="link">
-        <el-input v-model="tokenForm.link" placeholder="请输入内容" />
+      <el-form-item label="主页链接" prop="link">
+        <el-input v-model="tokenForm.link" placeholder="请输入内容">
+          <template slot="prepend">
+            Http://
+          </template>
+        </el-input>
       </el-form-item>
       <div class="token-checked">
         <el-checkbox v-model="tokenForm.interview">
@@ -98,7 +144,7 @@
         任何反馈<svg-icon icon-class="arrow" class="icon" />
       </a>
       <a href="javascript:;" class="f-btn prev" @click="prev">上一步</a>
-      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">下一步</a>
+      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">提交申请</a>
     </div>
   </div>
 </template>
@@ -114,7 +160,9 @@ export default {
         number: '',
         career: '',
         field: '',
+        fieldOther: '', // 其他平台
         platform: '',
+        platformOther: '',
         nickname: '',
         link: '',
         interview: false,
@@ -123,31 +171,161 @@ export default {
         info: '',
         promote: '',
       },
-      
-      rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
-        ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-        ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-        ],
-        resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
-        ]
-      }
+
+      fieldOptions: [
+        {
+          value: '财经',
+          label: '财经'
+        }, {
+          value: '宠物',
+          label: '宠物'
+        }, {
+          value: '动漫',
+          label: '动漫'
+        }, {
+          value: '房产',
+          label: '房产'
+        }, {
+          value: '星座运势搞笑',
+          label: '星座运势搞笑'
+        }, {
+          value: '家后',
+          label: '家后'
+        }, {
+          value: '教育',
+          label: '教育'
+        }, {
+          value: '车',
+          label: '车'
+        }, {
+          value: '科技',
+          label: '科技'
+        }, {
+          value: '科学',
+          label: '科学'
+        }, {
+          value: '心理情感',
+          label: '心理情感'
+        }, {
+          value: '旅游',
+          label: '旅游'
+        }, {
+          value: '美食',
+          label: '美食'
+        }, {
+          value: '文学',
+          label: '文学'
+        }, {
+          value: '汽车',
+          label: '汽车'
+        }, {
+          value: '摄影',
+          label: '摄影'
+        },{
+          value: '古玩收藏',
+          label: '古玩收藏'
+        },{
+          value: '时尚美汝',
+          label: '时尚美汝'
+        },{
+          value: '社会时政',
+          label: '社会时政'
+        },{
+          value: '数码',
+          label: '数码'
+        },{
+          value: '体育健身',
+          label: '体育健身'
+        },{
+          value: '人文历史',
+          label: '人文历史'
+        },{
+          value: '游戏电竟',
+          label: '游戏电竟'
+        },{
+          value: '娱乐影视',
+          label: '娱乐影视'
+        },{
+          value: '孕产育儿',
+          label: '孕产育儿'
+        },{
+          value: '职场',
+          label: '职场'
+        },{
+          value: '生活百科',
+          label: '生活百科'
+        },{
+          value: '创意设计',
+          label: '创意设计'
+        },{
+          value: '其他',
+          label: '其他'
+        }
+      ],
+
+      platformOptions: [
+        {
+          value: '微信公众号',
+          label: '微信公众号'
+        }, {
+          value: '哔哩哔哩',
+          label: '哔哩哔哩'
+        }, {
+          value: '简书',
+          label: '简书'
+        }, {
+          value: '知乎',
+          label: '知乎'
+        }, {
+          value: '抖音',
+          label: '抖音'
+        }, {
+          value: '快手',
+          label: '快手'
+        }, {
+          value: '微博',
+          label: '微博'
+        }, {
+          value: '头条号',
+          label: '头条号'
+        }, {
+          value: '豆瓣',
+          label: '豆瓣'
+        }, {
+          value: '小红书',
+          label: '小红书'
+        }, {
+          value: '知识星球',
+          label: '知识星球'
+        }, {
+          value: '领英',
+          label: '领英'
+        }, {
+          value: 'QQ空间',
+          label: 'QQ空间'
+        }, {
+          value: '网易Lofter',
+          label: '网易Lofter'
+        }, {
+          value: 'CSDN',
+          label: 'CSDN'
+        }, {
+          value: '百度贴吧',
+          label: '百度贴吧'
+        },{
+          value: '百家号',
+          label: '百家号'
+        },{
+          value: '趣头条',
+          label: '趣头条'
+        },{
+          value: '喜马拉雅',
+          label: '喜马拉雅'
+        },{
+          value: '其他',
+          label: '其他'
+        }
+      ],
     }
   },
   watch: {
@@ -191,8 +369,8 @@ export default {
         age: this.tokenForm.age,
         number: this.tokenForm.number,
         career: this.tokenForm.career,
-        field: this.tokenForm.field,
-        platform: this.tokenForm.platform,
+        field: this.tokenForm.field === '其他' ? this.tokenForm.field + '-' + this.tokenForm.fieldOther : this.tokenForm.field,
+        platform: this.tokenForm.platform === '其他' ? this.tokenForm.platform + '-' + this.tokenForm.platformOther : this.tokenForm.platform,
         nickname: this.tokenForm.nickname,
         link: this.tokenForm.link,
         interview: this.tokenForm.interview ? 0 : 1,
@@ -211,8 +389,8 @@ export default {
             age: this.tokenForm.age,
             number: this.tokenForm.number,
             career: this.tokenForm.career,
-            field: this.tokenForm.field,
-            platform: this.tokenForm.platform,
+            field: this.tokenForm.field === '其他' ? this.tokenForm.field + '-' + this.tokenForm.fieldOther : this.tokenForm.field,
+            platform: this.tokenForm.platform === '其他' ? this.tokenForm.platform + '-' + this.tokenForm.platformOther : this.tokenForm.platform,
             nickname: this.tokenForm.nickname,
             link: this.tokenForm.link,
             interview: this.tokenForm.interview ? 0 : 1,
@@ -238,8 +416,6 @@ export default {
         this.tokenForm.age = data.age
         this.tokenForm.number = data.number
         this.tokenForm.career = data.career
-        this.tokenForm.field = data.field
-        this.tokenForm.platform = data.platform
         this.tokenForm.nickname = data.nickname
         this.tokenForm.link = data.link
         this.tokenForm.interview = data.interview === 0 ? true : false
@@ -247,6 +423,25 @@ export default {
         this.tokenForm.publish = data.publish
         this.tokenForm.info = data.info
         this.tokenForm.promote = data.promote
+
+
+        let field = data.field.split('-')
+        if (field[0] === '其他') {
+          this.tokenForm.field = '其他'
+          this.tokenForm.fieldOther = field[1]
+        } else {
+          this.tokenForm.field = field[0]
+          this.tokenForm.fieldOther = ''
+        }
+
+        let platform = data.platform.split('-')
+        if (platform[0] === '其他') {
+          this.tokenForm.platform = '其他'
+          this.tokenForm.platformOther = platform[1]
+        } else {
+          this.tokenForm.platform = platform[0]
+          this.tokenForm.platformOther = ''
+        }
       }
     }
   }
@@ -260,6 +455,13 @@ export default {
   line-height: 22px;
   padding: 0;
   margin: 0;
+}
+.token-description {
+  font-size: 14px;
+  color: #333;
+  line-height: 22px;
+  padding: 0;
+  margin: 10px 0 0 0;
 }
 .token-form {
   margin: 20px 0;
