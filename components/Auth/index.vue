@@ -73,6 +73,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    single: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -95,6 +99,8 @@ export default {
   created() {
     if (process.browser) {
       this.injectScript()
+
+      if (this.value && this.single) this.showModal = !this.showModal
     }
   },
   methods: {
