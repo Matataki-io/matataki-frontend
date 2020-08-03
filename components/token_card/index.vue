@@ -1,17 +1,18 @@
 <template>
-  <div class="fl card" @click.prevent="$router.push({name: 'token-id', params: { id: card.id }})">
-    <div class="token-cover">
+  <div class="fl card">
+    <router-link :to="{name: 'token-id', params: { id: card.id }}" class="token-cover">
       <c-token-popover :token-id="Number(card.id)">
         <avatar :src="cover" size="45px" />
       </c-token-popover>
-    </div>
+    </router-link>
+
     <div class="fl cards-content">
       <div class="card-info">
-        <div>
+        <router-link :to="{name: 'token-id', params: { id: card.id }}">
           <h2 class="card-info-symbol">
             {{ card.symbol || $t('not') }}
           </h2>
-        </div>
+        </router-link>
         <p class="card-info-name">
           {{ card.name || $t('not') }}
         </p>
@@ -105,7 +106,6 @@ export default {
   color: #000;
   text-decoration: none;
   overflow: hidden;
-  cursor: pointer;
   // &:nth-last-child(1) {
   //   border-bottom: 1px solid #dbdbdb;
   // }
