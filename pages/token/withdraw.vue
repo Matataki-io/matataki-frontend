@@ -3,7 +3,19 @@
     <h1 class="title">
       提取 Fan票
     </h1>
-    <div class="card">
+    <div v-if="!isLogined" class="card not-logined">
+      <h1 class="title">
+        😺嗯？你好像还没有登录？
+      </h1>
+      <h2 class="subtitle">
+        你需要先登录才能使用这个功能
+      </h2>
+      <el-button
+        @click="login">
+        注册/登录
+      </el-button>
+    </div>
+    <div v-else class="card">
       <el-alert type="warning">
         <h2 class="title">
           ⚠️你找到了暂未对公众开放的试验性功能⚠️
@@ -164,7 +176,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isMe']),
+    ...mapGetters(['isMe', 'isLogined', 'currentUserInfo']),
     isGoodToWithdraw() {
       if (!this.form.amount) return false
       return Number(this.form.amount) <= this.form.max
@@ -173,7 +185,16 @@ export default {
   mounted() {
     this.tokenTokenList()
   },
+  watch: {
+    isLogined(val) {
+      if (val) this.tokenTokenList()
+    },
+  },
   methods: {
+    login() {
+      this.$store.commit('setLoginModal', true)
+      this.$emit('login')
+    },
     getUserBalance(tokenId) {
       this.$API.getUserBalance(tokenId).then((res) => {
         if (res.code === 0) {
@@ -426,6 +447,18 @@ export default {
 @media screen and (max-width: 640px) {
   /deep/ .transfer-dialog {
     width: 90% !important;
+  }
+}
+.not-logined {
+  h1.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+  }
+  h2.subtitle {
+    color: #777;
+    font-size: 16px;
+    font-weight: 400;
   }
 }
 </style>
