@@ -1,18 +1,18 @@
 <template>
-  <div class="fl card">
-    <router-link :to="{name: 'token-id', params: { id: card.id }}" class="token-cover">
+  <div class="fl card" @click.prevent="$router.push({name: 'token-id', params: { id: card.id }})">
+    <div class="token-cover">
       <c-token-popover :token-id="Number(card.id)">
         <avatar :src="cover" size="45px" />
       </c-token-popover>
-    </router-link>
+    </div>
 
     <div class="fl cards-content">
       <div class="card-info">
-        <router-link :to="{name: 'token-id', params: { id: card.id }}">
+        <div>
           <h2 class="card-info-symbol">
             {{ card.symbol || $t('not') }}
           </h2>
-        </router-link>
+        </div>
         <p class="card-info-name">
           {{ card.name || $t('not') }}
         </p>
@@ -45,12 +45,12 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
+        <div class="fl ac user" @click.stop="$router.push({name: 'user-id', params: { id: card.uid }})">
           <c-user-popover :user-id="Number(card.uid)">
             <c-avatar :src="coverUser" size="30px" />
           </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
-        </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -106,6 +106,7 @@ export default {
   color: #000;
   text-decoration: none;
   overflow: hidden;
+  cursor: pointer;
   // &:nth-last-child(1) {
   //   border-bottom: 1px solid #dbdbdb;
   // }
@@ -170,6 +171,9 @@ export default {
   justify-content: flex-start;
   align-items: flex-end;
   flex-direction: column;
+  .user {
+    cursor: pointer;
+  }
 }
 .card-username {
   margin-left: 6px;
