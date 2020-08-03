@@ -34,7 +34,7 @@
             <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'modify')">修改申请信息</a>
           </template>
           <template v-else-if="info.status === 3">
-            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">重新申请</a>
+            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">我知道了</a>
           </template>
         </div>
       </section>
@@ -107,10 +107,8 @@ export default {
         type
       }))
       if (resultMinetokenApplication) {
-        if (status === 'close') {
+        if (status === 'close' || status === 'reset') {
           window.location.reload()
-        } else if (status === 'reset') {
-          this.$router.push({ name: 'postminetoken' })
         }
       }
     }
