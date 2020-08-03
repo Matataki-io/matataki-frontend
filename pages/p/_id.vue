@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <img src="@/assets/img/article_banner.png" alt="banner" class="article_banner">
+    <bannerFan />
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
@@ -383,6 +383,7 @@ import commentReward from '@/components/p_page/reward'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
+import bannerFan from '@/components/p_page/banner_fan'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -413,7 +414,8 @@ export default {
     sidebar,
     RewardFooter,
     fontSize,
-    commentReward
+    commentReward,
+    bannerFan
   },
   data() {
     return {
