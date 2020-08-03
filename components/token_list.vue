@@ -50,7 +50,7 @@
             class="sub-column cursor"
             @click="toggleSort('unit-price')"
           >
-            {{ $t('token.unitPrice') }}
+            交易所价格
             <i class="el-icon-d-caret" />
           </div>
           <div
