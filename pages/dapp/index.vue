@@ -44,6 +44,8 @@ import exchange from '@/assets/img/dapp_list_exchange.png'
 import airdrop from '@/assets/img/dapp_list_airdrop.png'
 import map from '@/assets/img/dapp_list_map.png'
 import doc from '@/assets/img/dapp_list_doc.png'
+import input from '@/assets/img/dapp_list_input.png'
+import output from '@/assets/img/dapp_list_output.png'
 export default {
   data() {
     return {
@@ -87,15 +89,24 @@ export default {
               btn: '访问网站',
               disabled: false
             },
-            // {
-            //   title: 'Cryptomeetup',
-            //   description: '基于Fan票的地理位置共享&订阅',
-            //   img: map,
-            //   url: 'https://cryptomeetup.async.moe/',
-            //   repo: '',
-            //   btn: '访问网站',
-            //   disabled: true
-            // },
+            {
+              title: 'Fan票提现',
+              description: '将Fan票提现到Metamask钱包',
+              img: output,
+              url: 'https://test.matataki.io/token/withdraw',
+              // repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Fan票转入',
+              description: '将Metamask钱包中的Fan票充值到Matataki',
+              img: input,
+              url: 'https://test.matataki.io/token/deposit',
+              // repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
+              btn: '访问网站',
+              disabled: false
+            },
           ]
         },
         {
@@ -122,7 +133,7 @@ export default {
 .dapp {
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto 20px;
+  margin: 0 auto 96px;
 }
 
 .dapp-head {
@@ -183,9 +194,13 @@ export default {
     color: rgba(51, 51, 51, 1);
     line-height: 28px;
     padding: 0;
-    margin: 0;
+    margin: 0 0 20px;
   }
   .item {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+    grid-gap: 20px 20px;
+    justify-content: space-between;
     &::after {
       display: block;
       content: "";
@@ -201,19 +216,15 @@ export default {
         height: 0;
         clear: both;
       }
-      width: calc(25% - 15px);
-      // height: 412px;
       background: rgba(255, 255, 255, 1);
       border-radius: 10px;
       float: left;
-      margin: 20px 20px 0 0;
       padding: 0 20px 20px;
       box-sizing: border-box;
       text-align: center;
       transition: all 0.3s;
-      &:nth-of-type(4n) {
-        margin-right: 0;
-      }
+      display: flex;
+      flex-direction: column;
       &:hover {
         transform: translateY(-4px);
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
@@ -249,6 +260,7 @@ export default {
         padding: 0;
         margin: 20px 0 44px;
         text-align: center;
+        flex: 1;
       }
       .item-btn {
         border-radius: 8px;
@@ -300,15 +312,15 @@ export default {
     margin-right: 60px;
   }
 
-  .dapp-container .item li {
-    width: calc(33.33% - 13.33333px);
-    &:nth-of-type(3n) {
-      margin-right: 0;
-    }
-    &:nth-of-type(4n) {
-      margin-right: 20px;
-    }
-  }
+  // .dapp-container .item li {
+  //   width: calc(33.33% - 13.33333px);
+  //   &:nth-of-type(3n) {
+  //     margin-right: 0;
+  //   }
+  //   &:nth-of-type(4n) {
+  //     margin-right: 20px;
+  //   }
+  // }
 }
 
 @media screen and (max-width: 800px) {
@@ -325,15 +337,15 @@ export default {
     }
   }
 
-  .dapp-container .item li {
-    width: calc(50% - 10px);
-    &:nth-of-type(2n) {
-      margin-right: 0;
-    }
-    &:nth-of-type(3n) {
-      margin-right: 20px;
-    }
-  }
+  // .dapp-container .item li {
+  //   width: calc(50% - 10px);
+  //   &:nth-of-type(2n) {
+  //     margin-right: 0;
+  //   }
+  //   &:nth-of-type(3n) {
+  //     margin-right: 20px;
+  //   }
+  // }
 }
 
 @media screen and (max-width: 540px) {
@@ -351,12 +363,12 @@ export default {
   }
 
   .dapp-container .item li {
-    width: calc(100%);
-    margin-left: 0;
-    margin-right: 0;
-    &:nth-of-type(3n) {
-      margin-right: 0;
-    }
+    // width: calc(100%);
+    // margin-left: 0;
+    // margin-right: 0;
+    // &:nth-of-type(3n) {
+    //   margin-right: 0;
+    // }
 
     &:hover {
       transform: none;
