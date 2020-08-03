@@ -340,8 +340,9 @@ export default {
       return null
     },
     getToken(notify) {
-      if (notify.action !== 'annouce' || notify.object_type !== 'collaborator') return null
-      return this.tokens.find(token => token.id === notify.remark)
+      if (notify.action === 'annouce' && ['announcementToken', 'collaborator'].includes(notify.object_type))
+        return this.tokens.find(token => token.id === notify.remark)
+      else return null
     },
     openDetails(data) {
       this.pagePosition = document.documentElement.scrollTop

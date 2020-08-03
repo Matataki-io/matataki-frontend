@@ -847,7 +847,7 @@ export default {
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
-          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+          amount: toPrecision(this.paymentToken, 'cny', token[0].decimals)
         }]
         return tokenArr
       }
@@ -1132,17 +1132,17 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      await this.$API.getIpfsData(hash, true)
-        .then(res => {
-          if (res.code === 0) {
+      try {
+        const res = await this.$API.getIpfsData(hash, true)
+        if (res.code === 0) {
           // 设置文章内容
-            this.title = res.data.title
-            this.markdownData = res.data.content
-            this.renderMarkdown()
-          } else this.$message({ showClose: true, message: res.message, type: 'warning'})
-        }).catch(err => {
-          console.log('err', err)
-        })
+          this.title = res.data.title
+          this.markdownData = res.data.content
+          this.renderMarkdown()
+        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
+      } catch (e) {
+        console.log('err', e)
+      }
       // 获取文章信息
       await this.$API.getCanEditPost(id).then(res => {
         // console.log('获取文章信息:', id, res)
@@ -1187,7 +1187,7 @@ export default {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
             this.readSummary = res.data.short_content
-            this.paymentSelectValue = ''
+            this.paymentSelectValue = res.data.prices[0].token_id
           }
 
           // 付费编辑
@@ -1656,9 +1656,9 @@ export default {
           if (!this.editSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
           else if (!(Number(this.editToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
         }
-
+        // 支付可见
         if (this.paymentTokenVisible) {
-          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.paymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
           else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
@@ -2025,7 +2025,7 @@ export default {
     renderMarkdown() {
       setTimeout(() => {
         let previewContent = document.querySelector('#previewContent')
-        console.log('innerHTML', previewContent.innerHTML)
+        // console.log('innerHTML', previewContent.innerHTML)
         if (!previewContent.innerHTML) {
           this.allowLeave = true
           setTimeout(() => {
@@ -2042,106 +2042,4 @@ export default {
 </script>
 
 <style scoped lang="less" src="../Publish.less"></style>
-<style lang="less">
-
-.overlay-box {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  &:hover, &:focus {
-    .desc {
-      opacity: 1;
-    }
-  }
-  .desc {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    font-size: 0.8rem;
-    opacity: 0;
-    transition: all 0.3s ease;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    cursor: pointer;
-  }
-}
-
-.img-cancel {
-  display: none;
-  position: absolute;
-}
-
-.img-hover {
-  width: 5rem;
-  height: 5rem;
-  position: absolute;
-  border-radius: 50%;
-}
-
-.img-hover:hover {
-  color: white;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.editor {
-  // 工具栏按钮 去掉样式
-  [type='button'] {
-    -webkit-appearance: none;
-  }
-}
-
-.privileged {
-  background: #F7F7F7;
-  border-radius: 8px;
-  border: 1px dashed #DBDBDB;
-  padding: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-}
-.privileged-guide {
-  display:none;
-  align-items: center;
-  &.show-guide {
-    display: flex;
-  }
-  span {
-    font-size: 16px;
-    font-weight: 400;
-    color: #F7B500;
-    line-height: 22px;
-    margin: 0 10px 0 0;
-  }
-  button {
-    width: 90px;
-    height: 30px;
-    background: #F7B500;
-    border-radius: 4px;
-    padding: 5px 16px;
-    &:hover, &:focus {
-      background: #ffc420;
-      border-color: #ffc420;
-    }
-    span {
-      color: white;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 20px;
-    }
-  }
-}
-@media screen and (max-width: 540px) {
-  .privileged {
-    display: block;
-  }
-  .privileged-guide {
-    justify-content: flex-end;
-  }
-}
-</style>
+<style lang="less" src="../index.less"></style>

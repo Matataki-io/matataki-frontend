@@ -1,6 +1,6 @@
 <template>
   <div class="token-container">
-    <tokenBanner :show-publish-btn="showPublishBtn" />
+    <tokenBanner :show-publish-btn="showPublishBtnComputed" />
     <!-- 判断是否已经发币了 -->
     <!-- <tokenBannerFan v-if="!isPublishToken" class="token-banner-fan" /> -->
     <myTokenHeader />
@@ -75,7 +75,11 @@ export default {
         let token = this.minetokenApplication
         return !isEmpty(token) && (token.status !== 1)
       }
-      
+    },
+    showPublishBtnComputed() {
+      // 没登录直接显示
+      // 登录后判断其他条件
+      return !this.isLogined || this.showPublishBtn
     }
   },
   watch: {

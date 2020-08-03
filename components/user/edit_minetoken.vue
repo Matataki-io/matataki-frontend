@@ -1,55 +1,11 @@
 <template>
   <div>
-    <div class="fl ac coins-head">
-      <h2 class="tag-title">
-        {{ isPost ? $t('user.issuecoins') : $t('user.editcoins') }}
-      </h2>
-      <!-- <el-tooltip v-if="isPost" effect="dark" content="如何发行Fan票?" placement="top-start">
-        <svg-icon
-          class="help-icon"
-          icon-class="help"
-        />
-      </el-tooltip> -->
-
-      <a
-        class="help-link"
-        target="_blank"
-        href="https://www.matataki.io/p/977"
-      >什么是Fan票?</a>
-      &nbsp;
-      <a
-        class="help-link"
-        target="_blank"
-        href="https://www.matataki.io/p/980"
-      >如何发行Fan票?</a>
-
-      <div
-        v-if="!isPost"
-        class="click-box"
-      >
-        <router-link :to="{name: 'token-id', params: { id: tokenId || 0}}">
-          <el-button size="small">
-            详情
-          </el-button>
-        </router-link>
-        <el-button
-          :loading="addToLoading"
-          size="small"
-          @click="addCoins"
-        >
-          增发
-        </el-button>
-        <router-link :to="{name: 'exchange', hash: '#swap', query: { output: form.symbol }}">
-          <el-button
-            size="small"
-            type="primary"
-          >
-            交易
-          </el-button>
-        </router-link>
-      </div>
+    <div class="token-help">
+      <a href="https://www.yuque.com/matataki/matataki" target="_blank">
+        完整Fan票规则说明
+        <i class="el-icon-arrow-right" />
+      </a>
     </div>
-
     <el-form
       ref="form"
       :rules="rules"
@@ -805,7 +761,22 @@ export default {
   font-size: 14px;
 }
 
+.token-help {
+  display: flex;
+  justify-content: flex-end;
+  a {
+    font-size: 16px;
+    color: black;
+    &:hover {
+      color: #542DE0;
+    }
+  }
+}
+
 @media screen and (max-width: 640px) {
+  .token-help a {
+    font-size: 14px;
+  }
   .coins-head {
     display: block;
   }
@@ -821,6 +792,8 @@ export default {
   }
 
   .input-form {
+    margin-top: 0;
+
     /deep/ .el-form-item__label {
       display: block;
       text-align: left;
@@ -842,6 +815,11 @@ export default {
     text-align: center;
     margin: 0 auto;
   }
+  .form-tags {
+  /deep/ .el-form-item__content {
+    display: inline-block;
+  }
+}
 }
 </style>
 
