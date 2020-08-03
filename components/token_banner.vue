@@ -3,20 +3,56 @@
     <div class="token-decoration">
       <img class="decoration" src="@/assets/img/token_banner_decoration.svg">
     </div>
-    <img class="token-fan" src="@/assets/img/token_banner_fan.svg">
+    <img class="token-fan" src="@/assets/img/token_banner_fan.png">
 
     <div class="token-content">
-      <img class="token-text" src="@/assets/img/token_banner_text.svg">
-      <a href="https://www.matataki.io/p/977" target="_blank" class="token-more hvr-float">了解更多</a>
+      <img class="token-text" src="@/assets/img/token_banner_text.png">
+      <div class="token-btn">
+        <a href="https://www.matataki.io/p/977" target="_blank" class="token-more more hvr-float">了解更多</a>
+        <a
+          v-if="showPublishBtn"
+          href="javascript:;"
+          class="token-more publish hvr-float"
+          @click="push"
+        >
+          发行Fan票
+        </a>
+      </div>
     </div>
   </div>
 </template>
+
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  props: {
+    showPublishBtn: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  methods: {
+    push() {
+      if (this.isLogined) {
+        this.$router.push({ name: 'postminetoken' })
+      } else {
+        this.$store.commit('setLoginModal', true)
+      }
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .token-banner {
   width: 100%;
   border-radius: 10px;
-  min-height: 240px;
+  min-height: 290px;
   background-color: #ece7ff;
   border-radius: 10px;
   position: relative;
@@ -42,10 +78,10 @@
 }
 .token-fan {
   position: absolute;
-  top: -46px;
   right: -26px;
   bottom: 0;
   user-select: none;
+  height: 343px;
 }
 .token-content {
   margin-left: 200px;
@@ -56,17 +92,27 @@
     width: 100%;
     user-select: none;
   }
+  .token-btn {
+    display: flex;
+    align-items: flex-start;
+  }
   .token-more {
-    display: block;
+    display: inline-block;
     width: 160px;
     border-radius: 4px;
-    background-color: @purpleDark;
     font-size: 14px;
     font-weight: 500;
     color: rgba(255, 255, 255, 1);
-    margin-top: 24px;
+    margin-top: 10px;
     text-align: center;
     padding: 5px 0;
+    &.more {
+      background-color: @purpleDark;
+      margin-right: 20px;
+    }
+    &.publish {
+      background-color: #FA6400;
+    }
   }
 }
 

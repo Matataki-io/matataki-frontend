@@ -5,30 +5,37 @@
     </h2>
     <div class="entrance-list">
       <a
+        v-for="(item, index) of list"
+        :key="index"
         class="entrance-list-card"
-        href="https://www.yuque.com/matataki"
+        :href="item.url"
         target="_blank"
       >
-        帮助手册
-      </a>
-      <a
-        class="entrance-list-card"
-        href="https://docs.matataki.io"
-        target="_blank"
-      >
-        开发文档
+        {{ item.label }}
       </a>
     </div>
   </div>
 </template>
 <script>
 export default {
-  // props: {
-  //   minetokenToken: {
-  //     type: Object,
-  //     required: true
-  //   },
-  // },
+  data() {
+    return {
+      list: [
+        {
+          label: '帮助手册',
+          url: 'https://www.yuque.com/matataki/matataki'
+        },
+        {
+          label: '开发文档',
+          url: 'https://docs.matataki.io'
+        },
+        {
+          label: '任何反馈',
+          url: 'http://andoromeda.mikecrm.com/a93Le8z'
+        }
+      ]
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

@@ -6,51 +6,9 @@
           <a
             class="href"
             target="_blank"
-            href="https://www.yuque.com/matataki"
-          >
-            {{ $t('footer.helpAndSupport') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
             href="https://www.yuque.com/matataki/matataki"
           >
             {{ $t('footer.hellpbook') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
-            href="https://www.matataki.io/p/781"
-          >
-            {{ $t('footer.point') }}
-          </a>
-          <!-- 隐私政策与用户协议 -->
-          <!-- 去掉链接 -->
-          <a
-            class="href"
-            target="_blank"
-          >
-            {{ $t('footer.privacyPolicy') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
-          >
-            {{ $t('footer.userAgreement') }}
-          </a>
-          <!-- 保留链接 -->
-          <!-- <a class="href" target="_blank" href="/policy">
-            {{ $t('footer.privacyPolicy') }}
-          </a>
-          <a class="href" target="_blank" href="/agreement">
-            {{ $t('footer.userAgreement') }}
-          </a> -->
-          <a
-            class="href"
-            target="_blank"
-            href="https://github.com/Matataki-io/Matataki-FE"
-          >
-            {{ $t('footer.about') }}
           </a>
           <a
             class="href"
@@ -62,9 +20,9 @@
           <a
             class="href"
             target="_blank"
-            href="http://www.matataki.io/p/616"
+            href="http://andoromeda.mikecrm.com/a93Le8z"
           >
-            {{ $t('footer.billboard') }}
+            任何反馈
           </a>
         </div>
         <p class="link">

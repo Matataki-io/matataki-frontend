@@ -5,9 +5,14 @@
       :minetoken-token="minetokenToken"
       :minetoken-user="minetokenUser"
       :minetoken-exchange="minetokenExchange"
+      :tags="tags"
       :is-my-token="isMyToken"
       :balance="balance"
       @display-angle="setDisplayAngle"
+    />
+    <tokenBuyCard2 
+      :token="minetokenToken"
+      :current-pool-size="currentPoolSize"
     />
     <tokenNav v-if="clientVisible" :display-angle="displayAngle" />
     <el-row class="token-container">
@@ -31,11 +36,11 @@
       </el-col>
       <!-- 右侧卡片 -->
       <el-col v-show="clientVisible" :span="7">
-        <tokenBuyCard
+        <!-- <tokenBuyCard
           class="buy-card2"
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
-        />
+        /> -->
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
@@ -44,6 +49,7 @@
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
         <widgetCopyBox />
+        <quickEntrance style="margin-top: 20px;" />
       </el-col>
       <!-- 管理视角的右侧卡片 -->
       <el-col v-if="creatorVisible" :span="7">
@@ -70,6 +76,7 @@ import dashboard from '@/components/token/dashboard'
 import datasheets from '@/components/token/datasheets'
 // 右侧
 import tokenBuyCard from '@/components/token/token_buy_card'
+import tokenBuyCard2 from '@/components/token/token_buy_card2'
 import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
@@ -88,6 +95,7 @@ export default {
     datasheets,
     // 右侧
     tokenBuyCard,
+    tokenBuyCard2,
     tokenJoinFandom,
     relatedWebsites,
     socialAccount,
@@ -126,6 +134,7 @@ export default {
       currentPoolSize: {},
       resourcesWebsites: [],
       resourcesSocialss: [],
+      tags: [],
       balance: 0,
       isMyToken: false,
       displayAngle: 'client',
@@ -188,6 +197,7 @@ export default {
       minetokenToken: res.data.token || Object.create(null),
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
+      tags: res.data.tags || [],
       balance,
       isMyToken,
       displayAngle
@@ -211,7 +221,7 @@ export default {
           ) // 过滤
           const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
           this.resourcesSocialss = socialFilterEmpty
-          this.resourcesWebsites = res.data.websites
+          this.resourcesWebsites = res.data.websites.filter(web => web.url)
         } else {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         }

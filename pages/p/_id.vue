@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <bannerFan />
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
@@ -239,10 +240,12 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <AssosiateWith 
+        v-if="article.assosiate_with"
+        :article="article"
+      />
       <!-- 赞赏 -->
       <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
-
-
 
       <!-- tag 标签 -->
       <div
@@ -328,6 +331,10 @@
         :form="{...form, type: 'buy_token_output', limitValue}"
         :trade-no="tradeNo"
       />
+      <ExsModal
+        v-model="showExs" 
+        :form="{...form, signId: article.id}"
+      />
     </div>
     <div v-else class="container deleted">
       <div>
@@ -373,12 +380,15 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import AssosiateWith from '@/components/article/AssosiateWith.vue'
 import RewardFooter from '@/components/article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
 import commentReward from '@/components/p_page/reward'
+import ExsModal from '@/components/ExsModal'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
+import bannerFan from '@/components/p_page/banner_fan'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -401,6 +411,7 @@ export default {
     // articleIpfs,
     articleTransfer,
     // FeedbackModal,
+    AssosiateWith,
     commentInput,
     OrderModal,
     becomeAnArticleEditor,
@@ -408,7 +419,9 @@ export default {
     sidebar,
     RewardFooter,
     fontSize,
-    commentReward
+    commentReward,
+    ExsModal,
+    bannerFan
   },
   data() {
     return {
@@ -493,6 +506,7 @@ export default {
       commentCount: 0, // 评论次数
       rewardCount: 0, // 赞赏次数
       viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
+      showExs: false
     }
   },
   head() {
@@ -753,8 +767,6 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('info', info.data)
-
     let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2
@@ -1230,14 +1242,15 @@ export default {
       if (balance < needPay) {
         const _needPay = new BigNumber(needPay)
         this.form.output = parseFloat(_needPay.minus(balance).toString())
-        this.$alert('是否创建订单？', '余额不足', {
+        this.createOrder()
+        /* this.$alert('是否创建订单？', '余额不足', {
           confirmButtonText: '确定',
           callback: action => {
             if (action === 'confirm') {
               this.createOrder()
             }
           }
-        })
+        }) */
       } else { // 余额足，直接支付
         this.form.output = 0
         this.$alert('是否直接支付？', '余额充足', {
@@ -1285,6 +1298,7 @@ export default {
         needPrice = true
       }
       console.log(this.form)
+      // if (needPrice) {
       // type这个字段不重要，可以去除
       this.$store.dispatch('order/createOrder', {
         ...this.form,
@@ -1292,6 +1306,9 @@ export default {
         needPrice,
         signId: this.article.id
       })
+      /* } else {
+        this.showExs = true
+      } */
     },
     async wxpayArticle() {
       if (!this.isLogined) {

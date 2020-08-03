@@ -1,9 +1,11 @@
 <template>
   <div class="token-container">
-    <tokenBanner />
+    <tokenBanner :show-publish-btn="showPublishBtnComputed" />
     <!-- 判断是否已经发币了 -->
-    <tokenBannerFan v-if="!isPublishToken" class="token-banner-fan" />
+    <!-- <tokenBannerFan v-if="!isPublishToken" class="token-banner-fan" /> -->
     <myTokenHeader />
+    <!-- 申请的token -->
+    <tokenHeaderApplication v-if="minetokenApplicationShow" :info="minetokenApplication" />
     <!-- 登录后显示 -->
     <!-- fan ticket -->
     <div v-if="isLogined" class="c-card">
@@ -20,7 +22,7 @@
       <tokenTotalTransactionFlow v-if="flowTab === 0" class="token-flow" />
       <liquidityTotalTransactionFlow v-if="flowTab === 1" class="token-flow" />
     </div>
-    
+
     <!-- 总会显示 -->
     <div class="c-card">
       <span class="ticket-title">全部Fan票</span>
@@ -33,19 +35,21 @@
 import { mapGetters } from 'vuex'
 
 import tokenBanner from '@/components/token_banner.vue'
-import tokenBannerFan from '@/components/token_banner_fan.vue'
+// import tokenBannerFan from '@/components/token_banner_fan.vue'
 import myTokenHeader from '@/components/token/my_token_header.vue'
+import tokenHeaderApplication from '@/components/token_page/token_header_application'
 import holdTicket from '@/components/hold_ticket.vue'
 import holdLiquidity from '@/components/holdliquidity/index.vue'
 import tokenList from '@/components/token_list.vue'
 import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow.vue'
 import liquidityTotalTransactionFlow from '@/components/liquidity_total_transaction_flow.vue'
-
+import { isEmpty } from 'lodash'
 export default {
   components: {
     tokenBanner,
-    tokenBannerFan,
+    // tokenBannerFan,
     myTokenHeader,
+    tokenHeaderApplication,
     holdTicket,
     tokenList,
     holdLiquidity,
@@ -56,11 +60,27 @@ export default {
     return {
       ticketTab: 0,
       flowTab: 0,
+      showPublishBtn: false,
       isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
+      minetokenApplication: Object.create(null) // 申请信息
     }
   },
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
+    minetokenApplicationShow() {
+      // 如果已经发币了直接返回
+      if (this.isPublishToken) {
+        return false
+      } else {
+        let token = this.minetokenApplication
+        return !isEmpty(token) && (token.status !== 1)
+      }
+    },
+    showPublishBtnComputed() {
+      // 没登录直接显示
+      // 登录后判断其他条件
+      return !this.isLogined || this.showPublishBtn
+    }
   },
   watch: {
     isLogined() {
@@ -81,6 +101,28 @@ export default {
       if (userResult) {
         this.isPublishToken = !!userResult.data // 没有信息是 null
       }
+
+      // 申请信息
+      let resultMinetokenApplication = await this.$utils.factoryRequest(this.$API.apiGetMinetokenApplication())
+      if (resultMinetokenApplication) {
+        this.minetokenApplication = resultMinetokenApplication.data
+      }
+
+      // 如果没有发币则继续往下判断
+      if (!this.isPublishToken) {
+        // 没有申请 || 或者申请没有提交 &&
+        // 没有发币的用户
+        if (
+          (isEmpty(this.minetokenApplication) || this.minetokenApplication.status === 1) && 
+        !this.isPublishToken
+        ) {
+          this.showPublishBtn = true
+        } else {
+          this.showPublishBtn = false
+        }
+      }
+
+ 
     },
   }
 }

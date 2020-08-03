@@ -5,9 +5,14 @@
       :minetoken-token="minetokenToken"
       :minetoken-user="minetokenUser"
       :minetoken-exchange="minetokenExchange"
+      :tags="tags"
       :is-my-token="isMyToken"
       :balance="balance"
       @display-angle="setDisplayAngle"
+    />
+    <tokenBuyCard2 
+      :token="minetokenToken"
+      :current-pool-size="currentPoolSize"
     />
     <tokenNav :display-angle="displayAngle" />
     <el-row class="token-container">
@@ -18,18 +23,20 @@
       </el-col>
       <!-- 右侧卡片 -->
       <el-col :span="7">
-        <tokenBuyCard
+        <!-- <tokenBuyCard
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
-        />
+        /> -->
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
           :balance="balance"
+          class="token-fandom"
         />
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
         <widgetCopyBox />
+        <quickEntrance style="margin-top: 20px;" />
       </el-col>
     </el-row>
   </div>
@@ -48,11 +55,13 @@ import tokenNav from '@/components/token/token_nav'
 // import relatedActivities from '@/components/token/related_activities'
 import tokenRelated from '@/components/token/token_related'
 // 右侧
-import tokenBuyCard from '@/components/token/token_buy_card'
+// import tokenBuyCard from '@/components/token/token_buy_card'
+import tokenBuyCard2 from '@/components/token/token_buy_card2'
 import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
+import quickEntrance from '@/components/token/quick_entrance'
 
 export default {
   components: {
@@ -62,11 +71,13 @@ export default {
     // relatedActivities,
     tokenRelated,
     // 右侧
-    tokenBuyCard,
+    // tokenBuyCard,
+    tokenBuyCard2,
     tokenJoinFandom,
     relatedWebsites,
     socialAccount,
-    widgetCopyBox
+    widgetCopyBox,
+    quickEntrance
   },
   head() {
     return {
@@ -107,21 +118,21 @@ export default {
   },
   async asyncData({ $axios, route, req }) {
     // 获取cookie token
-    let accessToekn = ''
+    let accessToken = ''
     // 请检查您是否在服务器端
     if (process.server) {
       const cookie = req && req.headers.cookie ? req.headers.cookie : ''
       const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
+      accessToken = token ? token[0] : ''
     }
     if (process.browser) {
-      accessToekn = getCookie('ACCESS_TOKEN')
+      accessToken = getCookie('ACCESS_TOKEN')
     }
 
     const res = await $axios({
       url: `/minetoken/${route.params.id}`,
       methods: 'get',
-      headers: { 'x-access-token': accessToekn }
+      headers: { 'x-access-token': accessToken }
     })
 
     if (res.code !== 0) {
@@ -131,8 +142,8 @@ export default {
 
     let balance = 0
     let isMyToken = false
-    if (accessToekn) {
-      const { id: userId } = accessTokenAPI.disassemble(accessToekn)
+    if (accessToken) {
+      const { id: userId } = accessTokenAPI.disassemble(accessToken)
       isMyToken = res.data.token.uid === userId
 
       const balanceRes = await $axios({
@@ -141,7 +152,7 @@ export default {
         params: {
           tokenId: route.params.id
         },
-        headers: { 'x-access-token': accessToekn }
+        headers: { 'x-access-token': accessToken }
       })
       if (balanceRes.code === 0)
         balance = parseFloat(utils.fromDecimal(balanceRes.data, 4))
@@ -152,6 +163,7 @@ export default {
       minetokenToken: res.data.token || Object.create(null),
       minetokenUser: res.data.user || Object.create(null),
       minetokenExchange: res.data.exchange || Object.create(null),
+      tags: res.data.tags || [],
       balance,
       isMyToken,
       displayAngle: 'client'
@@ -175,7 +187,7 @@ export default {
           ) // 过滤
           const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
           this.resourcesSocialss = socialFilterEmpty
-          this.resourcesWebsites = res.data.websites
+          this.resourcesWebsites = res.data.websites.filter(web => web.url)
         } else {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         }
@@ -236,6 +248,11 @@ export default {
     .el-col-7 {
       width: 100%;
     }
+  }
+}
+@media screen and (min-width: 992px) {
+  .token-fandom {
+    margin-top: 123px;
   }
 }
 </style>

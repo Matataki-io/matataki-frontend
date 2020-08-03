@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -224,6 +224,7 @@ export default {
         requireToken, requireBuy,
         editRequireToken, editRequireBuy,
         ipfs_hide,
+        assosiateWith
       },
       timeout: 30000
     })
@@ -1107,6 +1108,29 @@ minetokenGetResources(tokenId) {
       data
     })
   },
+  // Token提现
+  withdrawToken(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/${tid}/withdraw`,
+        data,
+        timeout: 40 * 1000
+      })
+  },
+  // Token转入同步到DB
+  depositToken(txHash) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/deposit`,
+      data: { txHash },
+    })
+  },
+  getMyHostingAddress() {
+    return request({
+      method: 'GET',
+      url: `/token/myAddress`,
+    })
+  },
   getRewardList(pid, page = 1, pagesize = 1000) {
     return request({
       method: 'GET',
@@ -1150,5 +1174,44 @@ minetokenGetResources(tokenId) {
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
   apiLoginByWx(params) { return request.get('/api/login_by_wx', { params }) },
+  // 扫码绑定
+  apiBindByWx(params) { return request.get('/api/bind_by_wx', { params }) },
+
+  // -------------------- token 协作者 --------------------
+  // 获取协作者列表
+  getCollaborators() { return request.get('/token/collaborator') },
+  // 添加协作者
+  setCollaborator(userId) { return request.post(`/token/collaborator/${userId}`) },
+  // 删除协作者
+  deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) },
+  // 获取自己创建和协作的Fan票列表
+  getBindableTokenList() { return request.get(`/token/bindable`) },
   // -------------------- End -----------------------
+
+  // -------------------- 直通车 --------------------
+  directTrade: {
+    // 查item
+    getItem(id, type = 'tokenId') { return request.get(`/trade/direct/${id}`, { params: { type }}) },
+    // 增
+    create(price) { return request.post(`/trade/direct`, { price }) },
+    // 改
+    set(data) { return request.put(`/trade/direct`, data) },
+    // 查list
+    getList(params) { return request.get(`/trade/direct`, { params }) },
+    getItemByUser() { return request.get('/api/user/market')}
+  },
+  // -------------------- End -----------------------
+  getMintDetail() {
+    return request.get('/api/mint/detail')
+  },
+
+  // ---------------- Fan票申请 ----------------------------------------
+  // fan票提交申请
+  apiGetMinetokenApplication() { return request.get('/api/minetoken_application') },
+  apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
+  // fan票提交申请调研表单
+  apiMinetokenApplicationSurveyGet(data) { return request.get('/api/minetoken_application_survey', data) },
+  apiMinetokenApplicationSurvey(data) { return request.post('/api/minetoken_application_survey', data) },
+  // fan票提交校验 不能重复 symbol
+  apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
 }

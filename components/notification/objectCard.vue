@@ -35,12 +35,12 @@
       </div>
       <!-- 用户 -->
       <div v-if="mode === 'user'" class="fl user">
-        <c-user-popover :user-id="Number(user.id)">
+        <c-user-popover :user-id="Number(user.id) || 0">
           <c-avatar :src="avatar" class="avatar" />
         </c-user-popover>
         <div class="user-info" :class="dateCard && 'user-details'">
           <div class="fl user-info-top">
-            <h4>
+            <h4 :class="logout && 'logout'">
               {{ nickname }}
             </h4>
             <p class="user-info-top-other">
@@ -51,7 +51,7 @@
             {{ user.introduction || '暂无简介' }}
           </p>
         </div>
-        <div v-if="!isMe(user.id)" class="user-button">
+        <div v-if="user.id && !isMe(user.id)" class="user-button">
           <a href="javascript:;">
             <el-button
               :class="!user.is_follow && 'black'"
@@ -91,6 +91,9 @@
         <div v-if="token.symbol !== 'CNY'" class="token-right">
           <h4>
             {{ token.name }} 「{{ token.symbol }}」
+            <span>
+              {{ action && actionLabels[action] }}
+            </span>
           </h4>
           <p>
             {{ token.brief }}
@@ -121,7 +124,7 @@ export default {
     },
     user: {
       type: Object,
-      default: null
+      default: () => { return {} }
     },
     post: {
       type: Object,
@@ -153,7 +156,8 @@ export default {
       actionLabels: {
         like: '推荐了你的文章',
         comment: '评论了你的文章',
-        follow: '关注了你'
+        follow: '关注了你',
+        collaborator: '将你添加为协作者'
       }
     }
   },
@@ -177,8 +181,8 @@ export default {
       if(this.mode === 'post') return {name: 'p-id', params:{id: this.post.id}}
       else if(this.mode === 'reply' && this.comment) return {name: 'p-id', params: {id: this.comment.sign_id}, query: {comment: this.comment.id}}
       else if(this.mode === 'token' && this.token.symbol === 'CNY') return {name: 'account'}
-      else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id}}
-      else if(this.mode === 'user') return {name: 'user-id', params:{id: this.user.id}}
+      else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id || this.token.id}}
+      else if(this.mode === 'user') return {name: 'user-id', params:{id: this.user.id || 0}}
       return {}
     },
     followBtnText() {
@@ -190,8 +194,11 @@ export default {
       return ''
     },
     nickname() {
-      if(!this.user) return ''
-      return this.user.nickname || this.user.username
+      if(!this.user) return this.$t('error.accountHasBeenLoggedOut')
+      return this.user.nickname || this.user.username || this.$t('error.accountHasBeenLoggedOut')
+    },
+    logout() {
+      return !this.user || !this.user.id
     },
     dateCard() {
       if(!this.createTime) return ''
@@ -309,6 +316,12 @@ export default {
           -webkit-line-clamp: 1;
           overflow: hidden;
           word-break:break-all;
+          &.logout {
+            color: #b2b2b2;
+          }
+          &:hover {
+            text-decoration: underline;
+          }
         }
         &-other {
           font-size: 14px;
@@ -366,11 +379,11 @@ export default {
       width: 60px !important;
       height: 60px !important;
       min-width: 60px;
-      background: #eee;
       margin-right: 14px;
       &-img {
         width: 100%;
         height: 100%;
+        background: #eee;
         object-fit: cover;
         border-radius: 50%;
       }
@@ -389,6 +402,14 @@ export default {
         -webkit-line-clamp: 1;
         overflow: hidden;
         word-break:break-all;
+        span {
+          font-size: 14px;
+          color: #B2B2B2;
+          line-height: 20px;
+          font-weight: 500;
+          margin: 0;
+          white-space: nowrap;
+        }
       }
       p {
         font-size: 14px;

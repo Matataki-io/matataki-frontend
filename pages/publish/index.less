@@ -1,0 +1,114 @@
+.overlay-box {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &:hover,
+  &:focus {
+    .desc {
+      opacity: 1;
+    }
+  }
+
+  .desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+.img-cancel {
+  display: none;
+  position: absolute;
+}
+
+.img-hover {
+  width: 5rem;
+  height: 5rem;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.img-hover:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.editor {
+
+  // 工具栏按钮 去掉样式
+  [type='button'] {
+    -webkit-appearance: none;
+  }
+}
+
+.privileged {
+  background: #F7F7F7;
+  border-radius: 8px;
+  border: 1px dashed #DBDBDB;
+  padding: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.privileged-guide {
+  display: none;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &.show-guide {
+    display: flex;
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #F7B500;
+    line-height: 22px;
+    margin: 5px 10px 5px 0;
+  }
+
+  button {
+    width: 90px;
+    height: 30px;
+    background: #F7B500;
+    border-radius: 4px;
+    padding: 5px 16px;
+
+    &:hover,
+    &:focus {
+      background: #ffc420;
+      border-color: #ffc420;
+    }
+
+    span {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .privileged {
+    display: block;
+  }
+
+  .privileged-guide {
+    justify-content: space-around;
+  }
+}

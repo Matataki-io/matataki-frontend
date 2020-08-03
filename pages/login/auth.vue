@@ -47,7 +47,7 @@ export default {
     // 生成二维码
     async qrCode() {
       this.loading = true
-      const res = await this.$utils.factoryRequest(this.$API.apiWeChatQRCode())
+      const res = await this.$utils.factoryRequest(this.$API.apiWeChatQRCode({ source: 1 }))
       if (res && res.data && res.data.qrcode) {
         this.qrCodeUrl = res.data.qrcode
         this.loginByWx(res.data.scene)
@@ -68,22 +68,17 @@ export default {
         }
         const res = await this.$utils.factoryRequest(this.$API.apiLoginByWx({ scene }))
         if (res && res.data) {
+
+          this.$store.commit('setAccessToken', res.data)
+          this.$store.commit('setUserConfig', { idProvider: 'weixin' })
           clearInterval(this.timer)
+          let to = this.$route.query.to || ''
 
-          try {
-            // 获取 to
-            let to = this.$route.query.to || ''
-            // url = target url + access_token + redirect
-            let url = `${process.env.VUE_APP_PC_URL}/login/auth_redirect?access_token=${res.data}&redirect=`
-
-            url += to ? `${decodeURIComponent(to)}` : `${process.env.VUE_APP_PC_URL}`
-
-            window.location.href = url
-          } catch (e) {
-            console.log('login auth done', e)
-            window.location.href = process.env.VUE_APP_PC_URL
+          if (to) {
+            window.location.href = decodeURIComponent(to)
+          } else {
+            this.$router.push({ name: 'article' })
           }
-
         }
       }, 1000)
 
@@ -199,6 +194,22 @@ export default {
 @media screen and (max-width: 1440px) {
   .decoration {
     width: 500px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .decoration {
+    display: none;
+  }
+
+  .login-page .inner {
+    text-align: center;
+  }
+  .login-page .inner .main .wrapper.wechat-login {
+    transform: none;
+  }
+  .login-page .inner .main .wrapper.wechat-login .inner {
+    margin: 0 auto;
   }
 }
 

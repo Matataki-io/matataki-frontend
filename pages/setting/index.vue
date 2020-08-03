@@ -80,9 +80,16 @@
               class="fl ac about-input social-list"
             >
               <el-input
-                v-model="about[index]"
+                v-model="about[index].name"
+                class="input web-name"
+                placeholder="网站名称"
+                :maxlength="20"
+              />
+              <el-input
+                v-model="about[index].url"
                 class="input"
                 :placeholder="$t('social.fillLink')"
+                :maxlength="255"
               />
               <div
                 v-if="about.length > 1"
@@ -177,7 +184,10 @@ export default {
       numPage: 1,
       aboutModify: false,
       socialModify: false,
-      about: [''],
+      about: [{
+        url: '',
+        name: ''
+      }],
       social: [
         {
           symbol: 'Email',
@@ -350,9 +360,8 @@ export default {
       }
       const setLinks = data => {
         this.linksData = data
-        this.about = [
-          ...data.websites.length !== 0 ? data.websites : ['']
-        ]
+        // 为了对比是否修改，需要深拷贝
+        if (data.websites.length !== 0) this.about = JSON.parse(JSON.stringify(data.websites))
         data.socialAccounts.forEach(item => {
           this.social.find(age => age.type === item.type).value = item.value
         })
@@ -392,7 +401,7 @@ export default {
         if (!this.aboutModify && !this.socialModify) return
 
         const requestData = {
-          websites: this.about.filter(Boolean),
+          websites: this.about.filter(web => web.url),
           socialAccounts: (() => {
             const nSocial = {}
             this.social.forEach(item => {
@@ -437,7 +446,10 @@ export default {
     },
     aboutAdd() {
       if (this.about.length >= 5) return
-      this.about.push('')
+      this.about.push({
+        url: '',
+        name: ''
+      })
     },
     abountLess(i) {
       if (this.about.length <= 1) return
@@ -573,6 +585,10 @@ export default {
   margin: 0 0 10px;
   .input {
     width: 400px;
+    &.web-name {
+      max-width: 150px;
+      margin-right: 5px;
+    }
   }
 }
 .about-input-btn {
