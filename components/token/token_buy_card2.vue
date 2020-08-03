@@ -412,17 +412,20 @@ export default {
   }
 }
 @media screen and (max-width: 800px) {
-  .middle-divider, .tips-card  {
+  .middle-divider {
     display: none!important;
   }
-  .buy-card {
+  .buy-card, .tips-card {
     padding: 20px;
-    width: 100%;
+    width: 100%!important;
   }
   .market-info {
     span {
       display: block;
     }
+  }
+  .container-inner {
+    flex-direction: column;
   }
 }
 </style>
