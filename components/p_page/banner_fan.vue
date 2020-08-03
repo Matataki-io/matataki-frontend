@@ -33,7 +33,7 @@ export default {
 
     publish() {
       if (this.isLogined) {
-        window.open(window.location.origin + '/postminetoken', '_blank')
+        window.open(window.location.origin + '/token', '_blank')
       } else {
         this.$store.commit('setLoginModal', true)
       }
