@@ -6,13 +6,6 @@
           <a
             class="href"
             target="_blank"
-            href="https://www.yuque.com/matataki"
-          >
-            {{ $t('footer.helpAndSupport') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
             href="https://www.yuque.com/matataki/matataki"
           >
             {{ $t('footer.hellpbook') }}
@@ -23,13 +16,6 @@
             href="https://www.yuque.com/matataki/matataki_version"
           >
             {{ $t('footer.updateRecord') }}
-          </a>
-          <a
-            class="href"
-            target="_blank"
-            href="http://www.matataki.io/p/616"
-          >
-            {{ $t('footer.billboard') }}
           </a>
         </div>
         <p class="link">
