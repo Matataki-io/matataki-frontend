@@ -108,21 +108,21 @@ export default {
   },
   async asyncData({ $axios, route, req }) {
     // 获取cookie token
-    let accessToekn = ''
+    let accessToken = ''
     // 请检查您是否在服务器端
     if (process.server) {
       const cookie = req && req.headers.cookie ? req.headers.cookie : ''
       const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
+      accessToken = token ? token[0] : ''
     }
     if (process.browser) {
-      accessToekn = getCookie('ACCESS_TOKEN')
+      accessToken = getCookie('ACCESS_TOKEN')
     }
 
     const res = await $axios({
       url: `/minetoken/${route.params.id}`,
       methods: 'get',
-      headers: { 'x-access-token': accessToekn }
+      headers: { 'x-access-token': accessToken }
     })
 
     if (res.code !== 0) {
@@ -132,8 +132,8 @@ export default {
 
     let balance = 0
     let isMyToken = false
-    if (accessToekn) {
-      const { id: userId } = accessTokenAPI.disassemble(accessToekn)
+    if (accessToken) {
+      const { id: userId } = accessTokenAPI.disassemble(accessToken)
       isMyToken = res.data.token.uid === userId
 
       const balanceRes = await $axios({
@@ -142,7 +142,7 @@ export default {
         params: {
           tokenId: route.params.id
         },
-        headers: { 'x-access-token': accessToekn }
+        headers: { 'x-access-token': accessToken }
       })
       if (balanceRes.code === 0)
         balance = parseFloat(utils.fromDecimal(balanceRes.data, 4))
@@ -177,7 +177,7 @@ export default {
           ) // 过滤
           const socialFilterEmpty = socialFilter.filter(i => i.content) // 过滤
           this.resourcesSocialss = socialFilterEmpty
-          this.resourcesWebsites = res.data.websites
+          this.resourcesWebsites = res.data.websites.filter(web => web.url)
         } else {
           this.$message({ showClose: true, message: res.message, type: 'success'})
         }

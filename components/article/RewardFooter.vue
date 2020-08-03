@@ -192,6 +192,7 @@ export default {
     }
     &:disabled {
       background-color: #a1a1a1;
+      box-shadow: none;
     }
     &:active {
       transform: scale(0.9);

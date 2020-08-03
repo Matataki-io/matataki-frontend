@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <img src="@/assets/img/article_banner.png" alt="banner" class="article_banner">
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
@@ -239,10 +240,12 @@
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
         />
       </div>
+      <AssosiateWith 
+        v-if="article.assosiate_with"
+        :article="article"
+      />
       <!-- 赞赏 -->
       <RewardFooter :user-data="{ id: article.uid }" @success="getRewardCount" />
-
-
 
       <!-- tag 标签 -->
       <div
@@ -373,6 +376,7 @@ import lockSvg from '@/assets/img/lock.svg'
 import unlockSvg from '@/assets/img/unlock.svg'
 
 import sidebar from '@/components/p_page/sidebar'
+import AssosiateWith from '@/components/article/AssosiateWith.vue'
 import RewardFooter from '@/components/article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
 import commentReward from '@/components/p_page/reward'
@@ -401,6 +405,7 @@ export default {
     // articleIpfs,
     articleTransfer,
     // FeedbackModal,
+    AssosiateWith,
     commentInput,
     OrderModal,
     becomeAnArticleEditor,
@@ -753,8 +758,6 @@ export default {
       methods: 'get',
       headers: { 'x-access-token': accessToekn }
     })
-    // console.log('info', info.data)
-
     let data = {}
     // 判断是否为付费阅读文章
     const isProduct = info.data.channel_id === 2

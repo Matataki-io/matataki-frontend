@@ -3,15 +3,15 @@
     <h2 class="token-title">
       {{ $t('social.relatedWebsites') }}
     </h2>
-    <ul v-if="resourcesWebsites.length !== 0">
+    <ul v-if="resourcesWebsites.length !== 0 && resourcesWebsites[0].url">
       <li
         v-for="(item, index) in resourcesWebsites"
         :key="index"
       >
         <a
-          :href="formatUrl(item)"
+          :href="formatUrl(item.url)"
           target="_blank"
-        >{{ item }}</a>
+        >{{ item.name || item.url }}</a>
       </li>
     </ul>
     <span

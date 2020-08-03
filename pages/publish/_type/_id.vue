@@ -137,6 +137,12 @@
         <h4 class="set-subtitle">
           {{ $t('publish.coverTitle') }}
         </h4>
+        <el-alert
+          :title="$t('publish.coverRecommendation')"
+          :closable="false"
+          type="info"
+          show-icon
+        />
         <div class="set-content">
           <div class="cover">
             <img-upload
@@ -200,6 +206,46 @@
               <span class="tag-tip">按回车Enter创建标签</span>
             </li>
           </ul>
+        </div>
+        <h4 class="set-subtitle">
+          关联 Fan 票
+        </h4>
+        <div v-if="!isAssosiateWith" class="set-content" style="display: flex;align-items: center;">
+          <el-select
+            v-model="assosiateWith"
+            size="small"
+            placeholder="请选择"
+            style="width: 40%;"
+            filterable
+          >
+            <el-option
+              v-for="item in allTokenOptions"
+              :key="item.id"
+              :label="item.symbol + '-' + item.name"
+              :value="item.id"
+            />
+          </el-select>
+          <el-button 
+            type="primary" 
+            size="small" 
+            style="margin-left: 0.5rem;"
+            @click="setAssosiateWith"
+          >
+            关联
+          </el-button>
+        </div>
+        <div v-if="isAssosiateWith" class="set-content">
+          <div class="img-container">
+            <div
+              class="overlay-box"
+              :style="{backgroundImage: `url(${assosiateFanLogo})`}"
+              @click="cancelAssosiate"
+            >
+              <div class="desc">
+                <p>取消关联</p>
+              </div>
+            </div>
+          </div>
         </div>
         <h4 class="set-subtitle">
           原创声明
@@ -307,11 +353,33 @@
             所有人可见
           </el-radio>
           <br>
-          <el-radio v-model="readConfigRadio" label="token">
-            持币可见
-          </el-radio>
-          <br>
-          <el-radio v-model="readConfigRadio" label="cny">
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="readConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可见
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="cny"
+          >
             支付可见
           </el-radio>
 
@@ -330,7 +398,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -348,7 +416,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入数量"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -366,6 +434,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
+                      :disabled="prohibitEditingPrices"
                     >
                       <el-option
                         v-for="item in paymentSelectOptions"
@@ -422,9 +491,28 @@
             仅自己可编辑
           </el-radio>
           <br>
-          <el-radio v-model="editConfigRadio" label="token">
-            持币可编辑
-          </el-radio>
+          <!-- Fan票发行者特权功能 -->
+          <div :class="noTokenAvailable && !prohibitEditingPrices && 'privileged'">
+            <el-radio
+              v-model="editConfigRadio"
+              :disabled="prohibitEditingPrices || noTokenAvailable"
+              label="token"
+            >
+              持币可编辑
+            </el-radio>
+            <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
+              <span>
+                Fan票发行者特权功能
+              </span>
+              <el-button
+                size="small"
+                type="warning"
+                @click="openWj"
+              >
+                立即申请
+              </el-button>
+            </div>
+          </div>
 
           <div class="post-content root-setting">
             <div style="width: 380px;">
@@ -441,7 +529,7 @@
                       placeholder="请选择"
                       style="width: 100%;"
                       filterable
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     >
                       <el-option
                         v-for="item in readSelectOptions"
@@ -459,7 +547,7 @@
                       :max="100000000"
                       size="small"
                       placeholder="请输入内容"
-                      :disabled="prohibitEditingPrices"
+                      :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
                 </div>
@@ -646,6 +734,11 @@ export default {
       commentPayPoint: 1,
       autoUpdateDfaft: false, // 是否自动更新草稿
       saveDraft: '文章自动保存至',
+      assosiateFan: '',
+      assosiateFanName: '',
+      assosiateFanLogo: '',
+      assosiateWith: null,
+      isAssosiateWith: false,
       readContent: false,
       readauThority: false, // 持通证阅读
       tokenEditAuthority: false,
@@ -653,6 +746,7 @@ export default {
       readToken: 1, // 阅读token数量
       editToken: 1, // 编辑token数量
       readSelectOptions: [], // 阅读tokenlist
+      allTokenOptions: [], // 全部 token list
       readSelectValue: '', // 阅读tokenlist show value
       editSelectValue: '', // 编辑tokenlist show value
       paymentTokenVisible: false, // 支付可见
@@ -753,7 +847,7 @@ export default {
         // 目前只用上传一种数据格式
         tokenArr = [{
           tokenId: token[0].id,
-          amount: toPrecision(this.readToken, 'cny', token[0].decimals)
+          amount: toPrecision(this.paymentToken, 'cny', token[0].decimals)
         }]
         return tokenArr
       }
@@ -775,6 +869,9 @@ export default {
         CNY,
         ...this.readSelectOptions,
       ]
+    },
+    noTokenAvailable() {
+      return !this.readSelectOptions || this.readSelectOptions.length === 0
     }
   },
   watch: {
@@ -846,6 +943,7 @@ export default {
     tokenEditAuthority() { this.updateDraftWatch() },
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
+    assosiateWith() { this.updateDraftWatch() },
     
     // 是否公开
     ipfs_hide() { this.updateDraftWatch() }
@@ -864,6 +962,10 @@ export default {
 
   },
   mounted() {
+    if (this.assosiateWith) {
+      this.setAssosiateWith()
+    }
+
     const { type, id } = this.$route.params
 
     if (type === 'draft' && id === 'create') {
@@ -885,6 +987,7 @@ export default {
       this.$router.push({ name: 'publish-type-id', params: { type: 'draft', id: 'create' } })
     }
 
+    this.getBindableTokenList()
     this.getAllTokens()
     // this.setToolBar()
   },
@@ -915,6 +1018,26 @@ export default {
 
   methods: {
     ...mapActions(['getSignatureOfArticle']),
+    // 关联 Fan 票
+    setAssosiateWith() {
+      if (this.assosiateWith === null) this.$message({
+        showClose: false,
+        message: '请选择你要关联的 Fan 票',
+        type: 'error'
+      })
+      else {
+        let token = this.allTokenOptions.find(option => option.id === Number(this.assosiateWith))
+        if (!token) return this.$message.error(`找不到ID为：${this.assosiateWith} 的Fan票`)
+        this.isAssosiateWith = true
+        this.assosiateFanName = token.name
+        this.assosiateFanLogo = this.$API.getImg(token.logo)
+      }
+    },
+    // 取消关联
+    cancelAssosiate() {
+      this.isAssosiateWith = false
+      this.assosiateWith = null
+    },
     // 设置编辑器提示字
     setEditorPlaceholder() {
       const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
@@ -957,6 +1080,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -977,6 +1101,7 @@ export default {
           cover,
           is_original,
           tags,
+          assosiate_with: this.assosiateWith,
           commentPayPoint: 0,
           short_content: '',
           cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
@@ -1007,17 +1132,17 @@ export default {
     },
     // 通过ID拿数据
     async setArticleDataById(hash, id) {
-      await this.$API.getIpfsData(hash, true)
-        .then(res => {
-          if (res.code === 0) {
+      try {
+        const res = await this.$API.getIpfsData(hash, true)
+        if (res.code === 0) {
           // 设置文章内容
-            this.title = res.data.title
-            this.markdownData = res.data.content
-            this.renderMarkdown()
-          } else this.$message({ showClose: true, message: res.message, type: 'warning'})
-        }).catch(err => {
-          console.log('err', err)
-        })
+          this.title = res.data.title
+          this.markdownData = res.data.content
+          this.renderMarkdown()
+        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
+      } catch (e) {
+        console.log('err', e)
+      }
       // 获取文章信息
       await this.$API.getCanEditPost(id).then(res => {
         // console.log('获取文章信息:', id, res)
@@ -1032,6 +1157,11 @@ export default {
           this.prohibitEditingPrices = this.$route.params.type === 'edit' && !this.isMe(res.data.uid)
 
           this.tags = res.data.tags.map(i => i.name)
+
+          this.assosiateWith = res.data.assosiate_with
+          if (this.assosiateWith) {
+            this.setAssosiateWith()
+          }
 
           this.setCCLicense(res.data.cc_license)
           
@@ -1057,7 +1187,7 @@ export default {
             this.paymentTokenVisible = true
             this.paymentToken = precision(res.data.prices[0].price, res.data.prices[0].platform, res.data.prices[0].decimals)
             this.readSummary = res.data.short_content
-            this.paymentSelectValue = ''
+            this.paymentSelectValue = res.data.prices[0].token_id
           }
 
           // 付费编辑
@@ -1105,6 +1235,7 @@ export default {
           this.commentPayPoint = data.comment_pay_point
 
           this.tags = data.tags
+          this.assosiateWith = data.assosiate_with
           this.ipfs_hide = Boolean(data.ipfs_hide)
 
 
@@ -1175,6 +1306,21 @@ export default {
       this.$message.success(msg)
       this.jumpToArticle(hash)
     },
+    /** 获取可选的Token */
+    async getBindableTokenList() {
+      try {
+        const res = await this.$API.getBindableTokenList()
+        if (res.code === 0) {
+          // 如果有的话，吧自己发行的Fan票放到第一位
+          this.readSelectOptions = this.topOwnToken(res.data)
+        }
+        else this.$message.error(res.message)
+      }
+      catch (e) {
+        console.error(e)
+        this.$message.error(this.$t('error.fail'))
+      }
+    },
     /**
      * 获取所有token
      */
@@ -1182,8 +1328,14 @@ export default {
       const pagesize = 999
       await this.$API.allToken({ pagesize }).then(res => {
         if (res.code === 0) {
-          this.readSelectOptions = res.data.list
-          this.topOwnToken()
+          // 如果有的话，吧自己发行的Fan票放到第一位
+          this.allTokenOptions = this.topOwnToken(res.data.list)
+          // 检查用户有没有发Fan票，如果有的话，就填写进表单中
+          const isNewArticle = this.$route.params.type === 'draft' && this.$route.params.id === 'create'
+          if (isNewArticle && this.isMe({...this.allTokenOptions[0]}.uid)) {
+            this.assosiateWith = this.allTokenOptions[0].id
+            this.setAssosiateWith()
+          }
         }
       }).catch(err => console.log(err))
     },
@@ -1264,6 +1416,9 @@ export default {
       // 设置文章标签 🏷️
       article.tags = this.tags
 
+      // 关联 Fan 票
+      article.assosiateWith = this.assosiateWith
+
       article.cc_license = this.isOriginal ? this.CCLicenseCredit.license : null
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
@@ -1332,6 +1487,10 @@ export default {
     async editArticle(article) {
       // 设置文章标签 🏷️
       article.tags = this.tags
+
+      // 关联 Fan 票
+      article.assosiateWith = this.assosiateWith
+
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
 
@@ -1467,6 +1626,7 @@ export default {
           if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.editPaymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
         }
+
         // 发布文章
         this.fullscreenLoading = true
 
@@ -1496,9 +1656,9 @@ export default {
           if (!this.editSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
           else if (!(Number(this.editToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
         }
-
+        // 支付可见
         if (this.paymentTokenVisible) {
-          if (!this.paymentSelectValue) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
+          if (this.$utils.isNull(this.paymentSelectValue)) return this.$message({ showClose: true, message: '请选择支付类型', type: 'warning'})
           else if (!(Number(this.paymentToken) > 0)) return this.$message({ showClose: true, message: '支付数量设置不能小于0', type: 'warning'})
           else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
@@ -1750,6 +1910,7 @@ export default {
           requireToken: [],
           requireBuy: [],
           editRequireToken: [],
+          assosiate_with: this.assosiateWith
         }
 
         data = this.draftFactory(data)
@@ -1851,17 +2012,20 @@ export default {
       this.importVisible = true
     },
     /** 吧自己的Fan票排到最前面 */
-    topOwnToken() {
-      console.log('this.isMe', this.currentUserInfo.id, this.currentUserInfo, 'this.readSelectOptions', this.readSelectOptions)
-      this.readSelectOptions.forEach((token,index) => {
-        if(this.isMe(token.uid)) this.readSelectOptions.unshift(this.readSelectOptions.splice(index, 1)[0])
-      })
+    topOwnToken(tokenList) {
+      for (let i = 0; i < tokenList.length; i++) {
+        if(this.isMe(tokenList[i].uid)) {
+          tokenList.unshift(tokenList.splice(i, 1)[0])
+          break
+        }
+      }
+      return tokenList
     },
     // hack render markdown
     renderMarkdown() {
       setTimeout(() => {
         let previewContent = document.querySelector('#previewContent')
-        console.log('innerHTML', previewContent.innerHTML)
+        // console.log('innerHTML', previewContent.innerHTML)
         if (!previewContent.innerHTML) {
           this.allowLeave = true
           setTimeout(() => {
@@ -1869,17 +2033,13 @@ export default {
           }, 300)
         }
       }, 1000)
+    },
+    openWj() {
+      window.open('https://wj.qq.com/s2/5208015/8e5d', '_blank')
     }
   }
 }
 </script>
 
 <style scoped lang="less" src="../Publish.less"></style>
-<style lang="less">
-.editor {
-  // 工具栏按钮 去掉样式
-  [type='button'] {
-    -webkit-appearance: none;
-  }
-}
-</style>
+<style lang="less" src="../index.less"></style>

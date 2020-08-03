@@ -59,7 +59,7 @@
             <div v-else class="token-info-sub" style="display: flex;">
               <div v-for="(tag, index) in tags" :key="index" style="margin-right:0.5rem;">
                 <el-button size="small">
-                  {{ tagPattern.find(item => item.label === tag.tag).name }}
+                  {{ {...tagPattern.find(item => item.label === tag.tag)}.name || tag.tag }}
                 </el-button>
               </div>
             </div>
@@ -174,11 +174,11 @@ export default {
   data() {
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户,
+      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户
       tagPattern: [
-        {name:'个人', label: 'personal', checked: false}, 
-        {name:'组织', label: 'organization', checked: false}, 
-        {name: '产品', label: 'product', checked: false}, 
+        {name:'个人', label: 'personal', checked: false},
+        {name:'组织', label: 'organization', checked: false},
+        {name: '产品', label: 'product', checked: false},
         { name: 'MEME', label: 'meme', checked: false}
       ]
     }

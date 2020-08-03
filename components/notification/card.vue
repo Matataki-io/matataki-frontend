@@ -2,21 +2,15 @@
   <div :style="mode === 'hide' && 'cursor:default'" class="notify" @click="openDetails">
     <div class="notify-type">
       <!-- 通知类型图标 -->
-      <svg-icon v-if="svgType === 'like'" class="icon-search" icon-class="notify_recommend" />
-      <svg-icon v-else-if="svgType === 'comment'" class="icon-search" icon-class="notify_comment" />
-      <svg-icon v-else-if="svgType === 'follow'" class="icon-search" icon-class="notify_follow" />
-      <svg-icon v-else-if="svgType === 'annouce'" class="icon-search" icon-class="notify_annouce" />
-      <svg-icon v-else-if="svgType === 'featured'" class="icon-search" icon-class="notify_featured" />
-      <svg-icon v-else-if="svgType === 'reply'" class="icon-search" icon-class="notify_reply" />
-      <svg-icon v-else-if="svgType === 'transfer'" class="icon-search" icon-class="notify_transfer" />
-      <svg-icon v-else-if="svgType === 'reward'" class="icon-search" icon-class="notify_reward" />
+      <svg-icon v-if="iconTypes[svgType]" class="icon-search" :icon-class="iconTypes[svgType]" />
+      <svg-icon v-else class="icon-search" icon-class="annouce" />
     </div>
     <div class="notify-right">
       <div class="fl notify-right-header">
         <!-- 头像 -->
         <div @click.stop>
-          <router-link v-if="card.action !== 'annouce'" :to="{name: 'user-id', params:{id: user.id || 0}}">
-            <c-user-popover :user-id="Number(user.id)">
+          <router-link v-if="card.action !== 'annouce' || card.object_type === 'collaborator'" :to="{name: 'user-id', params:{id: card.user_id}}">
+            <c-user-popover :user-id="Number(card.user_id)">
               <c-avatar :src="avatar" class="avatar" />
             </c-user-popover>
             <div v-if="card.total > 1" class="round-silhouette" />
@@ -30,11 +24,11 @@
           {{ card.state ? '已读' : '未读' }}
         </p>
       </div>
-      <div v-if="card.action !== 'annouce'" class="notify-right-title">
+      <div v-if="card.action !== 'annouce' || card.object_type === 'collaborator'" class="notify-right-title">
         <!-- 事件发送者 -->
         <h4>
           <span @click.stop>
-            <router-link :to="{name: 'user-id', params:{id: user.id || 0}}">
+            <router-link :class="!(user.nickname || user.username) && 'logout'" :to="{name: 'user-id', params:{id: card.user_id}}">
               {{ nickname }}
             </router-link>
           </span>
@@ -70,7 +64,7 @@
           :user="user"
           :post="post"
           :comment="commentObject"
-          :token="transferLog"
+          :token="transferLog || token"
         />
       </div>
     </div>
@@ -93,7 +87,7 @@ export default {
     },
     user: {
       type: Object,
-      default: null
+      default: () => { return {} }
     },
     post: {
       type: Object,
@@ -114,6 +108,10 @@ export default {
     transferLog: {
       type: Object,
       default: null
+    },
+    token: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -125,7 +123,20 @@ export default {
         annouce: '',
         reply: '回复了你的评论',
         transfer: '向你转账',
-        reward: '打赏了你'
+        reward: '打赏了你',
+        collaborator: '已将你设置为协作者'
+      },
+      iconTypes: {
+        like: 'notify_recommend',
+        comment: 'notify_comment',
+        follow: 'notify_follow',
+        annouce: 'notify_annouce',
+        featured: 'notify_featured',
+        reply: 'notify_reply',
+        transfer: 'notify_transfer',
+        reward: 'notify_reward',
+        collaborator: 'notify_collaborator',
+        author: 'notify_author'
       }
     }
   },
@@ -133,8 +144,9 @@ export default {
     /** 消息标签 */
     svgType() {
       const { action, object_type } = this.card
-      if(object_type === 'featuredArticles') return 'featured'
-      else if(action === 'transfer' && object_type === 'article') return 'reward'
+      if (object_type === 'featuredArticles') return 'featured'
+      else if (action === 'transfer' && object_type === 'article') return 'reward'
+      else if (action === 'annouce' && object_type === 'collaborator') return 'collaborator'
       return action
     },
     avatar() {
@@ -144,12 +156,13 @@ export default {
     /** 行为标签 */
     actionLabel() {
       const { action, object_type } = this.card
-      if(action === 'transfer' && object_type === 'article') return this.actionLabels.reward
+      if (action === 'transfer' && object_type === 'article') return this.actionLabels.reward
+      if (action === 'annouce' && object_type === 'collaborator') return this.actionLabels.collaborator
 
       return this.actionLabels[action]
     },
     nickname() {
-      return this.user.nickname || this.user.username
+      return this.user.nickname || this.user.username || this.$t('error.accountHasBeenLoggedOut')
     },
     /** 折叠数量 */
     totalLabel() {
@@ -159,7 +172,7 @@ export default {
     },
     announcementTitle() {
       if(this.card.action !== 'annouce') return ''
-      if (this.card.object_type === 'announcement') return this.annouce.title
+      if (['announcement', 'announcementToken'].includes(this.card.object_type)) return this.annouce.title
       if (this.card.object_type === 'featuredArticles') return '你的文章已被瞬Matataki评为精选作品'
       return ''
     },
@@ -173,8 +186,9 @@ export default {
       }
       else if (action === 'annouce') {
         // 公告
-        if (object_type !== 'announcement' || this.annouce === null) return ''
-        return this.annouce.content
+        if (['announcement', 'announcementToken'].includes(object_type) && this.annouce)
+          return this.annouce.content
+        else return ''
       }
       else if (action === 'transfer' && this.transferLog && this.card.total === 1) {
         // 转账
@@ -201,21 +215,28 @@ export default {
     },
     /** 子卡片显示模式 */
     mode() {
-      if (['comment', 'like', 'annouce'].includes(this.card.action) && this.post)
+      const { action, object_type, total } = this.card
+      if (['comment', 'like'].includes(action) && this.post)
         return 'post' // 文章
-      else if (this.card.action === 'reply')
+      else if (action === 'reply')
         return 'reply' // 回复
-      else if(this.card.action === 'follow' && this.user)
+      else if (action === 'follow' && this.user)
         return 'user' // 用户
-      else if(this.card.action === 'transfer' && this.transferLog)
-        if(this.card.object_type === 'article') return 'post' // 打赏文章
+      else if (action === 'transfer' && this.transferLog) {
+        if (object_type === 'article') return 'post' // 打赏文章
         else return 'token' // Fan票或者CNY
-      else return 'hide' // 隐藏
+      }
+      else if (action === 'annouce') {
+        if (object_type === 'collaborator' && this.token && total < 2) return 'token'
+        if (object_type === 'announcementToken' && this.token) return 'token'
+        else if (this.post) return 'post'
+      }
+      return 'hide' // 隐藏
     }
   },
   methods: {
     openDetails() {
-      if(this.card.total < 2 || this.card.action === 'annouce') return this.openObject()
+      if(this.card.total < 2 || (this.card.action === 'annouce' && this.card.object_type !== 'collaborator')) return this.openObject()
 
       this.$emit('openDetails', {
         startId: this.card.id,
@@ -236,7 +257,7 @@ export default {
           else url = {name: 'p-id', params: {id: this.post.id}}
           break
         case 'user':
-          url = {name: 'user-id', params: {id: this.user.id}}
+          url = {name: 'user-id', params: {id: this.card.user_id}}
           break
         case 'reply':
           if (this.comment)
@@ -244,8 +265,11 @@ export default {
           else url = {}
           break
         case 'token':
-          if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
-          else url = {name: 'token-id', params: {id: this.transferLog.token_id}}
+          if (this.transferLog) { 
+            if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
+            else url = {name: 'token-id', params: {id: this.transferLog.token_id}}
+          }
+          else if (this.token) url = {name: 'token-id', params: {id: this.token.id}}
           break
         default:
           url = {}
@@ -344,6 +368,9 @@ export default {
           -webkit-line-clamp: 1;
           overflow: hidden;
           word-break:break-all;
+          &.logout {
+            color: #b2b2b2;
+          }
           &:hover {
             text-decoration: underline;
           }  
