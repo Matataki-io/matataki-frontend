@@ -14,7 +14,11 @@
       <ul class="item">
         <li v-for="(itemBlock, indexBlock) in item.list" :key="indexBlock">
           <div class="item-cover">
-            <img :src="itemBlock.img" :alt="item.title">
+            <img
+              :style="(itemBlock.width ? `width: ${itemBlock.width};` : '') + (itemBlock.height ? `height: ${itemBlock.height};` : '')"
+              :src="itemBlock.img"
+              :alt="item.title"
+            >
           </div>
           <p class="item-title">{{ itemBlock.title }}</p>
           <p class="item-description">{{ itemBlock.description }}</p>
@@ -46,6 +50,7 @@ import map from '@/assets/img/dapp_list_map.png'
 import doc from '@/assets/img/dapp_list_doc.png'
 import input from '@/assets/img/dapp_list_input.png'
 import output from '@/assets/img/dapp_list_output.png'
+import developer from '@/assets/img/dapp_list_developer.png'
 export default {
   data() {
     return {
@@ -57,6 +62,8 @@ export default {
               title: '瞬Matataki',
               description: '公开永存的数字作品库',
               img: matataki,
+              width: '128px',
+              height: '128px',
               url: 'https://www.matataki.io/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: '访问网站',
@@ -66,6 +73,8 @@ export default {
               title: 'Fan票交换事务所',
               description: '基于Uniswap的Fan票交易工具',
               img: exchange,
+              width: '168px',
+              height: '99px',
               url: 'https://www.matataki.io/exchange/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: '访问网站',
@@ -75,6 +84,8 @@ export default {
               title: 'Matataki Airdrop',
               description: '基于Fan票的简单空投工具',
               img: airdrop,
+              width: '170px',
+              height: '173px',
               url: 'https://www.matataki-airdrop.xyz/',
               repo: 'https://github.com/NaoMikuOshi/Matataki-Token-AirDropper',
               btn: '访问网站',
@@ -84,6 +95,8 @@ export default {
               title: 'Cryptomeetup',
               description: '基于Fan票的地理位置共享&订阅',
               img: map,
+              width: '166px',
+              height: '123px',
               url: 'https://cryptomeetup.async.moe/',
               repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
               btn: '访问网站',
@@ -93,6 +106,8 @@ export default {
               title: 'Fan票提现',
               description: '将Fan票提现到Metamask钱包',
               img: output,
+              width: '138px',
+              height: '159px',
               url: 'https://test.matataki.io/token/withdraw',
               // repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
               btn: '访问网站',
@@ -102,6 +117,8 @@ export default {
               title: 'Fan票转入',
               description: '将Metamask钱包中的Fan票充值到Matataki',
               img: input,
+              width: '138px',
+              height: '148px',
               url: 'https://test.matataki.io/token/deposit',
               // repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
               btn: '访问网站',
@@ -116,9 +133,22 @@ export default {
               title: '开发文档',
               description: '关于瞬Matataki的开发文档',
               img: doc,
+              width: '134px',
+              height: '140px',
               url: 'https://docs.matataki.io/',
               repo: 'https://github.com/Matataki-io/api-doc',
               btn: '立即查看',
+              disabled: false
+            },
+            {
+              title: 'Develop Portal',
+              description: 'Fan票的开发者中心',
+              img: developer,
+              width: '120px',
+              height: '120px',
+              url: 'https://developer.matataki.io',
+              repo: 'https://github.com/Matataki-io/DeveloperPortal-FE',
+              btn: '访问网站',
               disabled: false
             },
           ]
