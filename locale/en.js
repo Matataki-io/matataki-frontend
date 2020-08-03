@@ -790,6 +790,7 @@ export default {
         payToSee: 'Pay to see',
         quickPurchase: 'Quick purchase',
         enterPurchaseQuantity: 'Enter purchase quantity',
+<<<<<<< Updated upstream
         enterBudget: '输入购买金额',
         payImmediately: '立即支付',
         tradingFanTickets: '交易Fan票',
@@ -801,6 +802,20 @@ export default {
         recommendMod: '推荐模组',
         quickEntrance: '快捷入口',
         tags: '标签'
+=======
+        enterBudget: 'Enter Budget',
+        payImmediately: 'Pay',
+        tradingFanTickets: 'Trading Fan tickets',
+        underDeployment: 'Fan tickets are being deployed, please come back later!',
+        enterTheNumber: 'Please enter the purchase quantity first',
+        relatedActivities: 'Related activities',
+        tokenManagement: 'Fan Ticket Management',
+        expandMod: 'Expand MOD',
+        recommendMod: 'Recommend Mod',
+        quickEntrance: 'Quick entrance',
+        tags: 'Tags',
+        exchangePrice: 'Exchange price'
+>>>>>>> Stashed changes
     },
     ipfsHash: {
         link: 'IPFS address',
