@@ -2035,7 +2035,7 @@ export default {
       }, 1000)
     },
     openWj() {
-      window.open('https://wj.qq.com/s2/5208015/8e5d', '_blank')
+      window.open('/token', '_blank')
     }
   }
 }
