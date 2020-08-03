@@ -10,7 +10,6 @@ export default ({ app }) => {
       'minetoken', 'editminetoken', 'postminetoken',
       'user-id-buy', 'publish-type-id',
       'user-id-buy', 'user-id-buy-other',
-      'token-withdraw', 'token-deposit',
       'setting', 'setting-account', 'setting-system' // setting page
     ] // 需要登陆才能进入
     // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
