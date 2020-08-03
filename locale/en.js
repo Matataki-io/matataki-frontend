@@ -384,7 +384,7 @@ export default {
         commentTitle: '评论价格',
         commentContent: '用户需要向您支付对应的积分才可评论(1-99999)',
         point: '积分',
-        coverTitle: 'Cover',
+        coverTitle: '图文封面',
         coverRecommendation: '推荐尺寸 1160*580 ；宽高比 2:1',
         coverDes: '请上传宽高2:1尺寸的图片',
         tagTitle: '选择标签',
@@ -800,7 +800,8 @@ export default {
         expandMod: '拓展MOD',
         recommendMod: '推荐模组',
         quickEntrance: '快捷入口',
-        tags: '标签'
+        tags: '标签',
+        exchangePrice: '当前价格'
     },
     ipfsHash: {
         link: 'IPFS address',
