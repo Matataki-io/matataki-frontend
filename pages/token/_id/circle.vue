@@ -31,6 +31,7 @@
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
           :balance="balance"
+          class="token-fandom"
         />
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
@@ -244,6 +245,11 @@ export default {
     .el-col-7 {
       width: 100%;
     }
+  }
+}
+@media screen and (min-width: 992px) {
+  .token-fandom {
+    margin-top: 123px;
   }
 }
 </style>
