@@ -818,7 +818,8 @@ export default {
     expandMod: '拓展MOD',
     recommendMod: '推荐模组',
     quickEntrance: '快捷入口',
-    tags: '标签'
+    tags: '标签',
+    exchangePrice: '当前价格'
   },
   ipfsHash: {
     link: 'IPFS地址',
