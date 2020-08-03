@@ -331,6 +331,10 @@
         :form="{...form, type: 'buy_token_output', limitValue}"
         :trade-no="tradeNo"
       />
+      <ExsModal
+        v-model="showExs" 
+        :form="{...form, signId: article.id}"
+      />
     </div>
     <div v-else class="container deleted">
       <div>
@@ -380,6 +384,7 @@ import AssosiateWith from '@/components/article/AssosiateWith.vue'
 import RewardFooter from '@/components/article/RewardFooter'
 import fontSize from '@/components/p_page/font_size'
 import commentReward from '@/components/p_page/reward'
+import ExsModal from '@/components/ExsModal'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
@@ -413,7 +418,8 @@ export default {
     sidebar,
     RewardFooter,
     fontSize,
-    commentReward
+    commentReward,
+    ExsModal
   },
   data() {
     return {
@@ -498,6 +504,7 @@ export default {
       commentCount: 0, // 评论次数
       rewardCount: 0, // 赞赏次数
       viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
+      showExs: false
     }
   },
   head() {
@@ -1233,14 +1240,15 @@ export default {
       if (balance < needPay) {
         const _needPay = new BigNumber(needPay)
         this.form.output = parseFloat(_needPay.minus(balance).toString())
-        this.$alert('是否创建订单？', '余额不足', {
+        this.createOrder()
+        /* this.$alert('是否创建订单？', '余额不足', {
           confirmButtonText: '确定',
           callback: action => {
             if (action === 'confirm') {
               this.createOrder()
             }
           }
-        })
+        }) */
       } else { // 余额足，直接支付
         this.form.output = 0
         this.$alert('是否直接支付？', '余额充足', {
@@ -1288,6 +1296,7 @@ export default {
         needPrice = true
       }
       console.log(this.form)
+      // if (needPrice) {
       // type这个字段不重要，可以去除
       this.$store.dispatch('order/createOrder', {
         ...this.form,
@@ -1295,6 +1304,9 @@ export default {
         needPrice,
         signId: this.article.id
       })
+      /* } else {
+        this.showExs = true
+      } */
     },
     async wxpayArticle() {
       if (!this.isLogined) {
