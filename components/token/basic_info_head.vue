@@ -172,9 +172,15 @@ export default {
     }
   },
   data() {
+    const setDisplayAngle = () => {
+      if (this.$route.name === 'token-id')
+        return this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client'
+      else
+        return 'client'
+    }
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户
+      displayAngle: setDisplayAngle(), // 创建者、客户
       tagPattern: [
         {name:'个人', label: 'personal', checked: false},
         {name:'组织', label: 'organization', checked: false},
