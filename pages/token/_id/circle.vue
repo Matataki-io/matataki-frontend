@@ -10,6 +10,10 @@
       :balance="balance"
       @display-angle="setDisplayAngle"
     />
+    <tokenBuyCard2 
+      :token="minetokenToken"
+      :current-pool-size="currentPoolSize"
+    />
     <tokenNav :display-angle="displayAngle" />
     <el-row class="token-container">
       <!-- 左侧卡片 -->
@@ -19,14 +23,15 @@
       </el-col>
       <!-- 右侧卡片 -->
       <el-col :span="7">
-        <tokenBuyCard
+        <!-- <tokenBuyCard
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
-        />
+        /> -->
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
           :balance="balance"
+          class="token-fandom"
         />
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
@@ -49,7 +54,8 @@ import tokenNav from '@/components/token/token_nav'
 // import relatedActivities from '@/components/token/related_activities'
 import tokenRelated from '@/components/token/token_related'
 // 右侧
-import tokenBuyCard from '@/components/token/token_buy_card'
+// import tokenBuyCard from '@/components/token/token_buy_card'
+import tokenBuyCard2 from '@/components/token/token_buy_card2'
 import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
@@ -63,7 +69,8 @@ export default {
     // relatedActivities,
     tokenRelated,
     // 右侧
-    tokenBuyCard,
+    // tokenBuyCard,
+    tokenBuyCard2,
     tokenJoinFandom,
     relatedWebsites,
     socialAccount,
@@ -238,6 +245,11 @@ export default {
     .el-col-7 {
       width: 100%;
     }
+  }
+}
+@media screen and (min-width: 992px) {
+  .token-fandom {
+    margin-top: 123px;
   }
 }
 </style>
