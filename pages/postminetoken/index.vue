@@ -19,8 +19,8 @@
 
       <div class="token-head">
         <span class="h-title">免费发行Fan票</span>
-        <a class="h-rule" href="#" target="_blank">
-          完整Fan票规则说明<svg-icon icon-class="arrow" class="icon" />
+        <a class="h-rule" href="https://www.yuque.com/matataki/matataki/whiigy" target="_blank">
+          Fan票申请帮助文档<svg-icon icon-class="arrow" class="icon" />
         </a>
       </div>
 
