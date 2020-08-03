@@ -2,7 +2,7 @@
   <settingLayout>
     <NoTokenTip v-if="NoToken" />
     <div v-else class="trade-setting">
-      <a href="https://www.yuque.com/matataki/matataki">完整Fan票规则说明 ></a>
+      <a href="https://www.yuque.com/matataki/matataki">Fan票使用手册 ></a>
       <div v-loading="loading" class="form-container">
         <el-form 
           v-if="NoMarket" 

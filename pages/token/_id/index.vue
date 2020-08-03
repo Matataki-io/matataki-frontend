@@ -49,6 +49,7 @@
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
         <widgetCopyBox />
+        <quickEntrance style="margin-top: 20px;" />
       </el-col>
       <!-- 管理视角的右侧卡片 -->
       <el-col v-if="creatorVisible" :span="7">

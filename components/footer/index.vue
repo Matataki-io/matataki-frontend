@@ -17,6 +17,13 @@
           >
             {{ $t('footer.updateRecord') }}
           </a>
+          <a
+            class="href"
+            target="_blank"
+            href="http://andoromeda.mikecrm.com/a93Le8z"
+          >
+            任何反馈
+          </a>
         </div>
         <p class="link">
           {{ $t('footer.link') }}:
