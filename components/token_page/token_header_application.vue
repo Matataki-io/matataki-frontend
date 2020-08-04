@@ -12,6 +12,7 @@
       <section class="card-info">
         <h2>{{ info.symbol }}</h2>
         <p>{{ info.name }}</p>
+        <p>{{ info.brief }}</p>
       </section>
       <section>
         <template v-if="info.status === 0">
@@ -34,7 +35,7 @@
             <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'modify')">修改申请信息</a>
           </template>
           <template v-else-if="info.status === 3">
-            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">重新申请</a>
+            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">我知道了</a>
           </template>
         </div>
       </section>
@@ -107,10 +108,8 @@ export default {
         type
       }))
       if (resultMinetokenApplication) {
-        if (status === 'close') {
+        if (status === 'close' || status === 'reset') {
           window.location.reload()
-        } else if (status === 'reset') {
-          this.$router.push({ name: 'postminetoken' })
         }
       }
     }
@@ -154,7 +153,7 @@ export default {
       color: #000;
       line-height: 28px;
       padding: 0;
-      margin: 6px 0 0 0;
+      margin: 0;
     }
     P {
       font-size: 14px;
@@ -162,7 +161,7 @@ export default {
       color: #B2B2B2;
       line-height: 20px;
       padding: 0;
-      margin: 4px 0 0 0;
+      margin: 0;
       max-width: 400px;
       word-break: break-all;
       white-space: pre-wrap;

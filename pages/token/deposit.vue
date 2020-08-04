@@ -3,7 +3,19 @@
     <h1 class="title">
       从站外充值 Fan票
     </h1>
-    <div class="card">
+    <div v-if="!isLogined" class="card not-logined">
+      <h1 class="title">
+        😺 嗯？你好像还没有登录？
+      </h1>
+      <h2 class="subtitle">
+        你需要先登录才能使用这个功能
+      </h2>
+      <el-button
+        @click="login">
+        注册/登录
+      </el-button>
+    </div>
+    <div v-else class="card">
       <el-alert type="warning">
         <h2 class="title">
           ⚠️你找到了暂未对公众开放的试验性功能⚠️
@@ -119,7 +131,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isMe']),
+    ...mapGetters(['isMe', 'isLogined', 'currentUserInfo']),
     isGoodToWithdraw() {
       return this.form.txHash
     },
@@ -131,6 +143,10 @@ export default {
     this.fetchMyHostingAccount()
   },
   methods: {
+    login() {
+      this.$store.commit('setLoginModal', true)
+      this.$emit('login')
+    },
     precision(a,b,c) {
       return precision(a,b,c)
     },
@@ -387,5 +403,18 @@ export default {
 code {
   color: red;
   background: #EEE;
+}
+
+.not-logined {
+  h1.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+  }
+  h2.subtitle {
+    color: #777;
+    font-size: 16px;
+    font-weight: 400;
+  }
 }
 </style>

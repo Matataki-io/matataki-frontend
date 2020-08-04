@@ -364,7 +364,7 @@
             </el-radio>
             <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
               <span>
-                Fan票发行者特权功能
+                Fan票发行者和协作者特权功能
               </span>
               <el-button
                 size="small"
@@ -502,7 +502,7 @@
             </el-radio>
             <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
               <span>
-                Fan票发行者特权功能
+                Fan票发行者和协作者特权功能
               </span>
               <el-button
                 size="small"
@@ -2035,7 +2035,7 @@ export default {
       }, 1000)
     },
     openWj() {
-      window.open('https://wj.qq.com/s2/5208015/8e5d', '_blank')
+      window.open('/token', '_blank')
     }
   }
 }

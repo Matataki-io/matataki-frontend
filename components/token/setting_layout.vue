@@ -1,13 +1,20 @@
 <template>
   <div class="setting">
     <div class="setting-header">
+      <h3 @click="$router.go(-1)">
+        管理后台
+      </h3>
       <h3>
+        <i class="el-icon-arrow-right" />
+        基础设置
+      </h3>
+      <!-- <h3>
         <span @click="$router.go(-1)">
           管理后台
         </span>
         <i class="el-icon-arrow-right" />
         Fan票设置
-      </h3>
+      </h3> -->
     </div>
     <div class="setting-nav">
       <router-link
@@ -74,6 +81,7 @@ export default {
       font-weight: bold;
       color: black;
       line-height: 28px;
+      cursor: pointer;
       span {
         cursor: pointer;
         &:hover {

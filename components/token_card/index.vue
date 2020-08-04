@@ -5,6 +5,7 @@
         <avatar :src="cover" size="45px" />
       </c-token-popover>
     </div>
+
     <div class="fl cards-content">
       <div class="card-info">
         <div>
@@ -44,12 +45,12 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
+        <div class="fl ac user" @click.stop="$router.push({name: 'user-id', params: { id: card.uid }})">
           <c-user-popover :user-id="Number(card.uid)">
             <c-avatar :src="coverUser" size="30px" />
           </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
-        </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -170,6 +171,9 @@ export default {
   justify-content: flex-start;
   align-items: flex-end;
   flex-direction: column;
+  .user {
+    cursor: pointer;
+  }
 }
 .card-username {
   margin-left: 6px;

@@ -44,7 +44,12 @@
         <!-- <el-input v-model="tokenForm.logo" /> -->
       </el-form-item>
       <el-form-item label="名称" prop="name">
-        <el-input v-model="tokenForm.name" class="token-input" />
+        <el-input
+          v-model="tokenForm.name"
+          class="token-input"
+          maxlength="20"
+          show-word-limit
+        />
       </el-form-item>
       <el-form-item prop="symbol">
         <span slot="label">
@@ -58,7 +63,33 @@
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
-        <el-input v-model="tokenForm.symbol" class="token-input" />
+        <el-input
+          v-model="tokenForm.symbol"
+          class="token-input"
+          maxlength="20"
+          show-word-limit
+        />
+      </el-form-item>
+      <el-form-item prop="brief">
+        <span slot="label">
+          简介
+          <el-tooltip
+            effect="dark"
+            content="简介"
+            placement="top"
+            class="tag-help"
+          >
+            <svg-icon class="help-icon" icon-class="help" />
+          </el-tooltip>
+        </span>
+        <el-input
+          v-model="tokenForm.brief"
+          class="token-input"
+          type="textarea"
+          maxlength="100"
+          :rows="6"
+          show-word-limit
+        />
       </el-form-item>
       <el-form-item prop="tag">
         <span slot="label">
@@ -128,6 +159,7 @@ export default {
         logo: '',
         name: '',
         symbol: '',
+        brief: '',
         tag: [],
       },
       tokenRules: {
@@ -140,6 +172,9 @@ export default {
         symbol: [
           { required: true, message: '请输入缩写', trigger: 'blur' },
           { validator: checkSymbol, trigger: 'blur' },
+        ],
+        brief: [
+          { required: true, message: '请输入简介', trigger: 'blur' },
         ],
         tag: [
           { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
@@ -181,6 +216,7 @@ export default {
       this.tokenForm.logo = info.logo
       this.tokenForm.name = info.name
       this.tokenForm.symbol = info.symbol
+      this.tokenForm.brief = info.brief
       this.tokenForm.tag =  this.tagDataToShow(info.tag.split(','))
     },
     // 数据转换显示
@@ -218,6 +254,7 @@ export default {
         logo: this.tokenForm.logo,
         name: this.tokenForm.name,
         symbol: this.tokenForm.symbol,
+        brief: this.tokenForm.brief,
         tag: this.tagDataToPost(this.tokenForm.tag)
       }
       await this.$utils.factoryRequest(this.$API.apiMinetokenApplication(data))
@@ -235,6 +272,7 @@ export default {
             logo: this.tokenForm.logo,
             name: this.tokenForm.name,
             symbol: this.tokenForm.symbol,
+            brief: this.tokenForm.brief,
             tag: this.tagDataToPost(this.tokenForm.tag)
           }
           this.$emit('done', data)

@@ -3,6 +3,8 @@
     <div class="setting-header">
       <h3 @click="$router.go(-1)">
         管理后台
+      </h3>
+      <h3>
         <i class="el-icon-arrow-right" />
         流动性管理
       </h3>
