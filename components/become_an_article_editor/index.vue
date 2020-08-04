@@ -294,18 +294,7 @@ export default {
         this.$store.commit('setLoginModal', true)
         return false
       }
-      if (this.inputAmountError) {
-        this.$message.error(this.inputAmountError)
-        return
-      }
       this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
-      /* this.$store.dispatch('order/createOrder', {
-        ...this.form,
-        type: 'buy_token_output',
-        needToken: this.isTokenArticle && !this.tokenHasPaied,
-        // needPrice: this.isPriceArticle && !this.priceHasPaied,
-        signId: this.article.id
-      }) */
     },
     edit() {
       if(this.article && this.article.hash) {
