@@ -113,22 +113,31 @@
       </p>
       <div
         v-if="!hasPaied"
-        class="lock-bottom"
+        class="lock-bottom notice-creator-container"
       >
-        <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
-        <el-tooltip
-          effect="dark"
-          content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文"
-          placement="top-end"
-        >
-          <el-button
-            type="primary"
-            size="small"
-            @click="wxpayEdit"
+        <div class="btn-ccc">
+          <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
+          <el-tooltip
+            effect="dark"
+            content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文"
+            placement="top-end"
           >
-            一键{{ unlockText }}
+            <el-button
+              type="primary"
+              size="small"
+              :disabled="!editTokenExs"
+              @click="wxpayEdit"
+            >
+              一键{{ unlockText }}
+            </el-button>
+          </el-tooltip>
+        </div>
+        <div v-if="!editTokenExs" class="notice-creator">
+          <span class="warn-tip">该Fan票流动性不足暂时无法解锁</span>
+          <el-button type="primary" plain size="mini">
+            通知作者
           </el-button>
-        </el-tooltip>
+        </div>
       </div>
       <div
         v-else
@@ -203,8 +212,11 @@ export default {
     hasPaiedRead: {
       type: Boolean,
       default: true
+    },
+    editTokenExs: {
+      type: Boolean,
+      default: true
     }
-
   },
   data() {
     return {
@@ -286,13 +298,14 @@ export default {
         this.$message.error(this.inputAmountError)
         return
       }
-      this.$store.dispatch('order/createOrder', {
+      this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
+      /* this.$store.dispatch('order/createOrder', {
         ...this.form,
         type: 'buy_token_output',
         needToken: this.isTokenArticle && !this.tokenHasPaied,
         // needPrice: this.isPriceArticle && !this.priceHasPaied,
         signId: this.article.id
-      })
+      }) */
     },
     edit() {
       if(this.article && this.article.hash) {
@@ -405,5 +418,21 @@ export default {
 
 .prompt-svg-token { 
   padding-left: 8px;
+}
+.notice-creator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  .notice-creator {
+    margin-top: 10px;
+    .warn-tip {
+      color: #FB6877!important;
+      font-size: 12px;
+    }
+  }
+}
+.btn-ccc {
+  display: flex;
 }
 </style>
