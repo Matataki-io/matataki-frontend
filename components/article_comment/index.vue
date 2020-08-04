@@ -1,9 +1,10 @@
 <template>
   <div class="fl comment-input">
-    <avatar
+    <c-avatar
       :src="avatarSrc"
-      size="40px"
       class="avatar"
+      :recommend-author="user.is_recommend === 1"
+      :level="1"
     />
     <div class="comment-container">
       <el-input
@@ -34,12 +35,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import avatar from '@/components/avatar/index'
 
 export default {
-  components: {
-    avatar
-  },
   props: {
     article: {
       type: Object,
@@ -49,7 +46,8 @@ export default {
   data() {
     return {
       comment: '',
-      avatarSrc: ''
+      avatarSrc: '',
+      user: Object.create(null) // 用户信息 
     }
   },
   computed: {
@@ -67,9 +65,18 @@ export default {
   },
   methods: {
     async getUser(id) { // 获取用户头像
-      await this.$API.getUser(id).then(res => {
-        if (res.code === 0) this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
-      })
+      this.$API.getUser(id)
+        .then(res => {
+          if (res.code === 0) {
+
+            this.user = res.data
+
+            this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
+          }
+        })
+        .catch(e => {
+          console.log('get user info error', e)
+        })
     },
     islogin() {
       if (!this.isLogined) {
@@ -140,6 +147,14 @@ export default {
   margin-bottom: 20px;
   .avatar {
     margin-right: 20px;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    /deep/ .recommend.w60 .recommend-icon {
+      right: -10px;
+      bottom: -5px;
+      width: 26px;
+    }
   }
   .btn-container {
     margin-top: 10px;
