@@ -6,7 +6,12 @@
         target="_blank"
       >
         <c-user-popover :user-id="Number(article.uid)">
-          <c-avatar :src="avatarSrc" class="Avatar" />
+          <c-avatar
+            :src="avatarSrc"
+            class="Avatar"
+            :recommend-author="user.is_recommend === 1"
+            :level="1"
+          />
         </c-user-popover>
       </router-link>
       <div class="AuthorInfo-content">
@@ -66,7 +71,8 @@ export default {
       avatarSrc: '',
       info: {
         is_follow: 0 // 默认值
-      }
+      },
+      user: Object.create(null) // 用户信息 
     }
   },
   computed: {
@@ -100,6 +106,9 @@ export default {
     getUserInfo(id) {
       this.$API.getUser(id).then(res => {
         if (res.code === 0) {
+
+          this.user = res.data
+
           this.info.is_follow = res.data.is_follow
           this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
         } else {
@@ -153,6 +162,11 @@ export default {
 .Avatar {
   width: 50px;
   height: 50px;
+  /deep/ .recommend.w60 .recommend-icon {
+    right: -10px;
+    bottom: -5px;
+    width: 26px;
+  }
 }
 .AuthorInfo-content {
   margin: 0 10px;
@@ -163,25 +177,27 @@ export default {
   .AuthorInfo {
     flex: 1 1;
     white-space: nowrap;
-    overflow: hidden;
     display: flex;
     align-items: center;
   }
+  .AuthorInfo-content {
+    overflow: hidden;
+  }
   .AuthorInfo-name {
-    font-size:18px;
-    font-weight:500;
-    color:rgba(0,0,0,1);
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 1);
     margin: 0 0 4px 0;
     display: inline-block;
   }
 }
 .Post-Time {
-  font-weight:400;
-  color:rgba(178,178,178,1);
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
 }
 .View-Num {
-  font-weight:400;
-  color:rgba(178,178,178,1);
+  font-weight: 400;
+  color: rgba(178, 178, 178, 1);
   margin: 0 10px;
   display: flex;
   align-items: center;
@@ -191,7 +207,8 @@ export default {
     margin-right: 6px;
   }
 }
-.Post-Time, .View-Num {
+.Post-Time,
+.View-Num {
   font-size: 16px;
   color: @gray;
 }
@@ -205,10 +222,10 @@ export default {
 }
 
 .article-head__ipfs {
-  font-size:16px;
-  font-weight:bold;
-  color:rgba(84,45,224,1);
-  line-height:14px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(84, 45, 224, 1);
+  line-height: 14px;
 }
 
 .author-info {
@@ -225,7 +242,8 @@ export default {
     font-size: 16px;
     margin: 0;
   }
-  .Post-Time, .View-Num {
+  .Post-Time,
+  .View-Num {
     font-size: 12px;
   }
   .article-head__ipfs {

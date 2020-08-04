@@ -22,7 +22,7 @@
             class="avatar-container_face"
             target="_blank"
           >
-            <c-avatar :src="avatar(item.avatar)" />
+            <c-avatar :src="avatar(item.avatar)" :recommend-author="item.user_is_recommend === 1" />
           </router-link>
         </c-user-popover>
       </div>

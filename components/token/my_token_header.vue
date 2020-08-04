@@ -32,10 +32,7 @@
         :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
         class="fl ac"
       >
-        <avatar
-          :src="avatar"
-          size="30px"
-        />
+        <c-avatar :src="avatar" :recommend-author="user.is_recommend === 1" />
         <span class="card-username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
       </router-link>
     </div>
@@ -44,16 +41,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import avatar from '@/components/avatar/index.vue'
 export default {
-  components: {
-    avatar
-  },
   data() {
     return {
       tokenData: {},
       tokenUser: false,
-      avatar: ''
+      avatar: '',
+      user: Object.create(null) // 用户信息 
     }
   },
   computed: {
@@ -66,14 +60,14 @@ export default {
     isLogined(newState) {
       if (newState) {
         this.tokenUserId()
-        this.getAvatar()
+        this.getUserInfo()
       }
     }
   },
   created() {
     if (this.isLogined) {
       this.tokenUserId()
-      this.getAvatar()
+      this.getUserInfo()
     }
   },
   methods: {
@@ -89,9 +83,17 @@ export default {
         })
         .catch(err => console.log('get token user error', err))
     },
-    async getAvatar() {
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
+    async getUserInfo() {
+      try {
+        const result = await this.getCurrentUser()
+        const { avatar } = result
+
+        this.user = result
+
+        if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
+      } catch (e) {
+        console.log('getCurrentUser error: ', e)
+      }
     }
   }
 }
