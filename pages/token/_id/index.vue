@@ -10,7 +10,7 @@
       :balance="balance"
       @display-angle="setDisplayAngle"
     />
-    <tokenBuyCard2 
+    <tokenBuyCard2
       :token="minetokenToken"
       :current-pool-size="currentPoolSize"
     />
