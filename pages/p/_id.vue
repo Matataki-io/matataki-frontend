@@ -1359,10 +1359,6 @@ export default {
         this.$store.commit('setLoginModal', true)
         return false
       }
-      if (this.getInputAmountError) {
-        this.$message.error(this.getInputAmountError)
-        return
-      }
       // 如果是付币阅读的文章
       if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id !== 0) {
         await this.handlePayToken()
