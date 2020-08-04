@@ -247,7 +247,7 @@
           :lock-loading="lockLoading"
           :is-toll-read="isTokenArticle || isPriceArticle"
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
-          :editTokenExs="editTokenExs"
+          @createOrder="createEditOrder"
         />
       </div>
       <AssosiateWith 
@@ -1311,6 +1311,12 @@ export default {
             })
           }
         })
+    },
+    async createEditOrder(nt) {
+      this.copyForm = this.editForm
+      this.$nextTick(() => {
+        this.createOrder(nt, false, this.editForm)
+      })
     },
     async createOrder(nt, np, _form) {
       let needToken = nt === undefined ? false : nt

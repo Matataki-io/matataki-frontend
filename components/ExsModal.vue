@@ -7,7 +7,10 @@
     title="选择支付方式"
     custom-class="my-dialog br10 auth-dialog"
   >
-    <section class="exs-main">
+    <section 
+      v-loading="loading"
+      class="exs-main"
+    > 
       <div
         :disabled="noUniswap"
         class="aui-flex b-line"
