@@ -74,6 +74,7 @@ export default {
   border: 1px solid #ddd;
   box-sizing: border-box;
   position: relative;
+  outline: none;
   .avatar-box {
     width: 100%;
     height: 100%;
