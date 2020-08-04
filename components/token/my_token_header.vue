@@ -7,7 +7,7 @@
   >
     <div>
       <c-token-popover :token-id="Number(tokenData.id)">
-        <avatar :src="cover" size="60px" />
+        <c-avatar :src="cover" class="avatar" />
       </c-token-popover>
     </div>
     <div class="card-info">
@@ -100,6 +100,11 @@ export default {
 </script>
 
 <style scoped lang="less">
+.avatar {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+}
 .token-card {
   width: 100%;
   margin: 20px auto 20px;
