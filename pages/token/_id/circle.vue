@@ -36,6 +36,7 @@
         <relatedWebsites :resources-websites="resourcesWebsites" />
         <socialAccount :resources-socialss="resourcesSocialss" />
         <widgetCopyBox />
+        <quickEntrance style="margin-top: 20px;" />
       </el-col>
     </el-row>
   </div>
@@ -60,6 +61,7 @@ import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
 import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
+import quickEntrance from '@/components/token/quick_entrance'
 
 export default {
   components: {
@@ -74,7 +76,8 @@ export default {
     tokenJoinFandom,
     relatedWebsites,
     socialAccount,
-    widgetCopyBox
+    widgetCopyBox,
+    quickEntrance
   },
   head() {
     return {

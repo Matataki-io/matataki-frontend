@@ -4,13 +4,13 @@
       v-if="show"
       class="item"
       effect="dark"
-      :content="$t('sidebar.feedback') + '?'"
+      content="任何反馈"
       placement="left"
     >
       <!-- 84254 -->
       <a
         class="feedback"
-        href="https://support.qq.com/product/98576"
+        href="http://andoromeda.mikecrm.com/a93Le8z"
         target="_blank"
         title="反馈"
       >

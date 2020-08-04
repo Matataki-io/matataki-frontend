@@ -1170,6 +1170,8 @@ minetokenGetResources(tokenId) {
   getAmountHistory(tokenId) { return request.get(`/token/${tokenId}/history/amount`) },
   // token交易量历史
   getVolumeHistory(tokenId) { return request.get(`/token/${tokenId}/history/volume`) },
+  // token收益历史
+  getIncomeHistory(tokenId) { return request.get(`/token/${tokenId}/history/income`) },
 
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },

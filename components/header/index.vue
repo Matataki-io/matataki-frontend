@@ -116,18 +116,9 @@
           />
         </el-tooltip> -->
 
-        <el-dropdown
-          v-if="isLogined"
-          class="user-menu"
-        >
+        <el-dropdown v-if="isLogined" class="user-menu">
           <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
-          <div class="user-avatar">
-            <img
-              v-if="avatar"
-              :src="avatar"
-              alt="user avatar"
-            >
-          </div>
+          <c-avatar :src="avatar" :recommend-author="user.is_recommend === 1" />
           <el-dropdown-menu
             slot="dropdown"
             class="user-dorpdown"
@@ -316,7 +307,8 @@ export default {
       searchInput: this.searchQueryVal,
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
-      notifyUnreadQuantity: 0
+      notifyUnreadQuantity: 0,
+      user: Object.create(null) // 用户信息
     }
   },
   computed: {
@@ -406,9 +398,17 @@ export default {
       else this.login()
     },
     async refreshUser() {
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
-      await this.getNotifyUnreadQuantity()
+      try {
+        const result = await this.getCurrentUser()
+        const { avatar } = result
+
+        this.user = result
+
+        if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
+        await this.getNotifyUnreadQuantity()
+      } catch (e) {
+        console.log('refreshUser error: ',e)
+      }
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -880,19 +880,6 @@ export default {
   }
 }
 
-.user-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  overflow: hidden;
-  user-select: none;
-  border: 1px solid #ddd;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
 
 .menu {
   cursor: pointer;

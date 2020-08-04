@@ -12,6 +12,7 @@
       <section class="card-info">
         <h2>{{ info.symbol }}</h2>
         <p>{{ info.name }}</p>
+        <p>{{ info.brief }}</p>
       </section>
       <section>
         <template v-if="info.status === 0">
@@ -152,7 +153,7 @@ export default {
       color: #000;
       line-height: 28px;
       padding: 0;
-      margin: 6px 0 0 0;
+      margin: 0;
     }
     P {
       font-size: 14px;
@@ -160,7 +161,7 @@ export default {
       color: #B2B2B2;
       line-height: 20px;
       padding: 0;
-      margin: 4px 0 0 0;
+      margin: 0;
       max-width: 400px;
       word-break: break-all;
       white-space: pre-wrap;

@@ -108,8 +108,7 @@ export default {
               img: output,
               width: '138px',
               height: '159px',
-              url: 'https://test.matataki.io/token/withdraw',
-              // repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
+              url: '/token/withdraw',
               btn: '访问网站',
               disabled: false
             },
@@ -119,8 +118,7 @@ export default {
               img: input,
               width: '138px',
               height: '148px',
-              url: 'https://test.matataki.io/token/deposit',
-              // repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
+              url: '/token/deposit',
               btn: '访问网站',
               disabled: false
             },

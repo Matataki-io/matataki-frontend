@@ -7,7 +7,10 @@
         target="_blank"
       >
         <c-user-popover :user-id="Number(comment.uid)">
-          <c-avatar :src="avatar" />
+          <c-avatar
+            :src="avatar" 
+            :recommend-author="comment.user_is_recommend === 1"
+          />
         </c-user-popover>
       </n-link>
       <div class="comment-main">

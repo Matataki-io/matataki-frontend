@@ -1,9 +1,10 @@
 <template>
   <div class="fl comment-input">
-    <avatar
+    <c-avatar
       :src="avatarSrc"
-      size="40px"
       class="avatar"
+      :recommend-author="user.is_recommend === 1"
+      :level="1"
     />
     <div class="comment-container">
       <el-input
@@ -35,12 +36,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import avatar from '@/components/avatar/index'
-
 export default {
-  components: {
-    avatar
-  },
   props: {
     replyUsername: {
       type: String,
@@ -54,7 +50,8 @@ export default {
   data() {
     return {
       comment: '',
-      avatarSrc: ''
+      avatarSrc: '',
+      user: Object.create(null) // 用户信息
     }
   },
   computed: {
@@ -76,7 +73,12 @@ export default {
   methods: {
     async getUser(id) { // 获取用户头像
       await this.$API.getUser(id).then(res => {
-        if (res.code === 0) this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
+        if (res.code === 0) {
+
+          this.user = res.data
+
+          this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
+        }
       })
     },
     islogin() {
@@ -130,6 +132,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.avatar {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  /deep/ .recommend.w60 .recommend-icon {
+    right: -10px;
+    bottom: -5px;
+    width: 26px;
+  }
+}
 .comment-submit {
   /* width: 70px;
   height: 64px;
@@ -146,7 +158,7 @@ export default {
   cursor: pointer;
   background-color: #000;
   border: 1px solid #000;
-  transition: .1s;
+  transition: 0.1s;
   user-select: none;
   outline: none;
   margin-left: 10px;
@@ -170,10 +182,10 @@ export default {
     width: 100px;
   }
   .btn-des {
-    font-size:14px;
-    font-weight:400;
-    color:#9a9a9a;
-    line-height:20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9a9a9a;
+    line-height: 20px;
     margin-right: 10px;
   }
   .btn {
@@ -192,7 +204,7 @@ export default {
   // min-height: 150px;
 }
 // 小于860
-@media screen and (max-width: 860px){
+@media screen and (max-width: 860px) {
   .avatar {
     display: none;
   }

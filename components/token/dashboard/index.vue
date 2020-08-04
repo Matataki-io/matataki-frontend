@@ -136,8 +136,29 @@
       <historyIssued :minetoken-token="minetokenToken" />
     </div>
 
+    <!-- 历史收益 -->
+    <div v-if="active === 5" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史收益
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="dataList[5].period" label="all">
+            全部
+          </el-radio>
+          <el-radio v-model="dataList[5].period" label="30d">
+            30天
+          </el-radio>
+        </div>
+      </div>
+      <historyIncome
+        :minetoken-token="minetokenToken"
+        :period="dataList[5].period"
+      />
+    </div>
+
     <!-- 不支持 -->
-    <div v-if="active === 5 || active === 6" class="dashboard-block">
+    <div v-if="active === 6 || active === 7" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           {{ dataList[active].name }}
@@ -162,6 +183,7 @@ import historyLiquidity from './line_chart/history_liquidity'
 import historyIssued from './line_chart/history_issued'
 import historyAmount from './line_chart/history_amount'
 import historyVolume from './line_chart/history_volume'
+import historyIncome from './line_chart/history_income'
 
 export default {
   components: {
@@ -172,6 +194,7 @@ export default {
     historyIssued,
     historyAmount,
     historyVolume,
+    historyIncome,
     dataCard
   },
   props: {
@@ -246,14 +269,16 @@ export default {
           permanent: false,
           period: 'all'
         },
-        // {
-        //   name: '收益',
-        //   label: '',
-        //   symbol: '￥',
-        //   value: 0,
-        //   float: 0,
-        //   permanent: false
-        // },
+        {
+          name: '收益',
+          label: 'income',
+          symbol: '￥',
+          value: 0,
+          float: 0,
+          openChart: false,
+          permanent: false,
+          period: 'all'
+        },
         {
           name: '持币者',
           label: 'number_of_holders',
@@ -281,6 +306,7 @@ export default {
   },
   created() {
     this.initValues()
+    this.getMarket()
     // this.dataList.forEach(data => {
     //   // data.value = Number((Math.random()*10000000).toFixed(4))
     //   data.float = Number((Math.random()*2000 - 1000).toFixed(4))
@@ -315,6 +341,17 @@ export default {
         const amount = (num * 100).toFixed(2)
         return Number(amount) > 0 ? `+${amount}` : amount
       } else return 0
+    },
+    async getMarket() {
+      const result = await this.$API.directTrade.getItem(this.minetokenToken.id)
+      if (result.code === 0) {
+        const market = result.data
+        if (market.status === 0) {
+          const income = Math.round(this.$utils.fromDecimal(market.amount - market.balance) * market.price)
+          console.log('income:', income)
+          this.dataList.find(item => item.label === 'income').value = this.$utils.fromDecimal(income)
+        }
+      }
     },
   }
 }
