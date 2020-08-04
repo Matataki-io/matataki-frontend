@@ -208,7 +208,7 @@
               v-if="!hasPaied"
               class="lock-bottom"
             >
-              <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span>
+              <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
               <el-tooltip
                 class="item"
                 effect="dark"
@@ -332,8 +332,9 @@
         :trade-no="tradeNo"
       />
       <ExsModal
-        v-model="showExs" 
-        :form="{...form, signId: article.id}"
+        v-model="showExs"
+        :token="copyForm.outputToken"
+        :amount="copyForm.output"
       />
     </div>
     <div v-else class="container deleted">
@@ -506,7 +507,13 @@ export default {
       commentCount: 0, // 评论次数
       rewardCount: 0, // 赞赏次数
       viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
-      showExs: false
+      showExs: false,
+      copyForm: {
+        input: '',
+        inputToken: CNY,
+        output: '',
+        outputToken: {}
+      }
     }
   },
   head() {
@@ -1287,28 +1294,41 @@ export default {
           }
         })
     },
-    async createOrder() {
-      let needToken = false
-      let needPrice = false
-      // 是持币阅读文章 或者 是需要买币阅读（非cny）
-      if ((this.isTokenArticle && !this.tokenHasPaied) || this.getPayToken.token_id !== 0) {
-        needToken = true
+    async createOrder(nt, np, _form) {
+      let needToken = nt === undefined ? false : nt
+      let needPrice = np === undefined ? false : np
+      if (nt === undefined) {
+        // 是持币阅读文章 或者 是需要买币阅读（非cny）
+        if ((this.isTokenArticle && !this.tokenHasPaied) || this.getPayToken.token_id !== 0) {
+          needToken = true
+        }
       }
-      if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id === 0) {
-        needPrice = true
+      if (np === undefined) {
+        if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id === 0) {
+          needPrice = true
+        }
       }
-      console.log(this.form)
-      // if (needPrice) {
-      // type这个字段不重要，可以去除
-      this.$store.dispatch('order/createOrder', {
-        ...this.form,
-        needToken,
-        needPrice,
-        signId: this.article.id
-      })
-      /* } else {
+      if (_form === undefined) {
+        this.copyForm = {
+          input: this.form.input,
+          inputToken: Object.assign({}, this.form.inputToken),
+          output: this.form.output,
+          outputToken: Object.assign({}, this.form.outputToken),
+        }
+      } else {
+        this.copyForm = _form
+      }
+      if (needPrice) {
+        // type这个字段不重要，可以去除
+        this.$store.dispatch('order/createOrder', {
+          ...this.copyForm,
+          needToken,
+          needPrice,
+          signId: this.article.id
+        })
+      } else {
         this.showExs = true
-      } */
+      }
     },
     async wxpayArticle() {
       if (!this.isLogined) {
@@ -1544,18 +1564,16 @@ export default {
         const {data, error} = await this.getInputAmount(0, need[0].id, difference / 10000)
         loading.close()
         if(error) return this.$message.error(error)
-        this.$store.dispatch('order/createOrder', {
+        const _form = {
           input: data,
           output: need[0].amount / 10000,
           outputToken: {
             decimals: 4,
             id: need[0].id
           },
-          type: 'buy_token_output',
-          needToken: true,
-          needPrice: false,
-          signId: this.id
-        })
+          inputToken: CNY
+        }
+        this.createOrder(true, false, _form)
       }
       catch(e) {
         loading.close()
