@@ -208,21 +208,30 @@
               v-if="!hasPaied"
               class="lock-bottom"
             >
-              <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="$t('paidRead.tounlockThisArticle')"
-                placement="top-end"
-              >
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="wxpayArticle"
+              <div class="btn-ccc">
+                <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="$t('paidRead.tounlockThisArticle')"
+                  placement="top-end"
                 >
-                  {{ $t('paidRead.oneKey') + unlockText }}
+                  <el-button
+                    type="primary"
+                    size="small"
+                    :disabled="!readTokenExs"
+                    @click="wxpayArticle"
+                  >
+                    {{ $t('paidRead.oneKey') + unlockText }}
+                  </el-button>
+                </el-tooltip>
+              </div>
+              <div v-if="!readTokenExs" class="notice-creator">
+                <span class="warn-tip">该Fan票流动性不足暂时无法解锁</span>
+                <el-button type="primary" plain size="mini">
+                  通知作者
                 </el-button>
-              </el-tooltip>
+              </div>
             </div>
           </div>
         </div>
@@ -238,6 +247,7 @@
           :lock-loading="lockLoading"
           :is-toll-read="isTokenArticle || isPriceArticle"
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
+          :editTokenExs="editTokenExs"
         />
       </div>
       <AssosiateWith 
@@ -513,7 +523,9 @@ export default {
         inputToken: CNY,
         output: '',
         outputToken: {}
-      }
+      },
+      readTokenExs: true,
+      editTokenExs: true,
     }
   },
   head() {
@@ -904,7 +916,7 @@ export default {
         id: id || this.$route.params.id
       }
       this.lockLoading = true
-      await this.$API.currentProfile(data).then(res => {
+      await this.$API.currentProfile(data).then(async res => {
         this.lockLoading = false
         if (res.code === 0) {
           // console.log('这是currentProfile的数据：', res.data)
@@ -919,6 +931,12 @@ export default {
           this.calPayEditFormParams()
           this.getSupportStatus(res.data)
           this.isBookmarked = Boolean(res.data.is_bookmarked)
+          if (this.form.outputToken.id) {
+            this.readTokenExs = await this.hasExs(this.form.outputToken.id)
+          }
+          if (this.editForm.outputToken.id) {
+            this.editTokenExs = await this.hasExs(this.editForm.outputToken.id)
+          } 
         } else if (res.code === 401) {
           console.log(res.message)
         } else {
@@ -1345,6 +1363,26 @@ export default {
       } else {
         this.createOrder()
       }
+    },
+    async hasExs(tokenId) {
+      let hasMarket = true
+      let hasUniswap = true
+      const uniswapResult = await this.$API.getCurrentPoolSize(tokenId)
+      if (uniswapResult.code === 0) {
+        hasUniswap = true
+        if (uniswapResult.data.token_amount <= 0) hasUniswap = false
+      } else {
+        hasUniswap = false
+      }
+      const marketResult = await this.$API.directTrade.getItem(tokenId)
+      if (marketResult.code === 0) {
+        hasMarket = true
+        if (marketResult.data.balance <= 0) hasMarket = false // 余额不足
+        if (marketResult.data.status !== 0) hasMarket = false // 市场被关闭
+      } else {
+        hasMarket = false
+      }
+      return hasMarket || hasUniswap
     },
     async calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {

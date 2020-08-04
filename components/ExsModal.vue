@@ -19,7 +19,8 @@
         </div>
         <div class="aui-flex-box aui-flex-box-clear">
           <h4>交易所支付</h4>
-          <p>价格：{{ uniswap.price }} (CNY)</p>
+          <p v-if="noUniswap" class="warn-tip">暂无流动性</p>
+          <p v-else>价格：{{ uniswap.price }} (CNY) </p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="1" :disabled="noUniswap">
@@ -38,7 +39,8 @@
         </div>
         <div class="aui-flex-box aui-flex-box-clear">
           <h4>直通车支付</h4>
-          <p>价格：{{ directTrade.price }} (CNY)</p>
+          <p v-if="noMarket" class="warn-tip">暂无流动性</p>
+          <p v-else>价格：{{ directTrade.price }} (CNY) </p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="2" :disabled="noMarket">
@@ -46,7 +48,12 @@
           </el-radio>
         </div>
       </div>
-      <el-button type="primary" class="create-btn" @click="createOrder">
+      <el-button
+        type="primary"
+        class="create-btn"
+        :disabled="noUniswap&&noMarket"
+        @click="createOrder"
+      >
         创建订单
       </el-button>
     </section>
@@ -87,7 +94,7 @@ export default {
     return {
       isLogin: true,
       showModal: false,
-      radio: '1',
+      radio: '3',
       uniswap: {
         balance: 0,
         price: 0
@@ -118,10 +125,13 @@ export default {
     },
     value(val) {
       this.showModal = val
+    },
+    tokenId(val) {
+      if (val) this.getExsInfo(this.tokenId)
     }
   },
   mounted() {
-    if (this.tokenId) this.getExsInfo(this.tokenId)
+    // if (this.tokenId) this.getExsInfo(this.tokenId)
   },
   methods: {
     async createOrder() {
@@ -164,6 +174,15 @@ export default {
       this.directTrade.balance =  this.$utils.fromDecimal(directTradeBalance)
       this.directTrade.price =  this.$utils.fromDecimal(directTradePrice)
       this.loading = false
+      if(this.noUniswap) {
+        if (this.noMarket) {
+          this.radio = '3'
+        } else {
+          this.radio = '2'
+        }
+      } else {
+        this.radio = '1'
+      }
     }
   }
 }
@@ -181,6 +200,9 @@ export default {
   width: 300px;
   position: relative;
   margin: auto;
+  .warn-tip {
+    color: #FB6877!important;
+  }
   .aui-flex {
     display: flex;
     align-items: center;
@@ -189,7 +211,9 @@ export default {
     cursor: pointer;
     &[disabled] {
       cursor: not-allowed;
-      filter: grayscale(100%);
+      img {
+        filter: grayscale(100%);
+      }
     }
   }
   .aui-flex-wx {
