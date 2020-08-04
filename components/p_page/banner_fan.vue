@@ -30,13 +30,8 @@ export default {
     }
   },
   methods: {
-
     publish() {
-      if (this.isLogined) {
-        window.open(window.location.origin + '/token', '_blank')
-      } else {
-        this.$store.commit('setLoginModal', true)
-      }
+      window.open(window.location.origin + '/token', '_blank')
     },
     // 获取 token user 的信息
     async getTokenUserData() {
