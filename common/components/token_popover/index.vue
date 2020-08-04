@@ -22,7 +22,7 @@
       <div class="user-data">
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ exchangeInfo.price || 0 }}<span>CNY</span></p>
-          <p class="user-data-title">当前现价</p>
+          <p class="user-data-title">当前价格</p>
         </router-link>
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ exchangeAmount || 0 }}<span>CNY</span></p>
