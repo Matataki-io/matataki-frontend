@@ -347,15 +347,17 @@ export default {
       console.log(res)
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.currentUserInfo.id })
-      this.getMyUserData()
+      this.getMyUserData(true)
     },
     // 获取用户信息 - 转让状态
-    async getMyUserData() {
+    async getMyUserData(updateAvatarOnly = false) {
       const setUser = data => {
         // console.log(data)
-        this.userData = data
-        this.username = data.nickname || data.username
-        this.introduction = data.introduction || ''
+        if (!updateAvatarOnly) {
+          this.userData = data
+          this.username = data.nickname || data.username
+          this.introduction = data.introduction || ''
+        }
         this.setAvatarImage(data.avatar)
       }
       const setLinks = data => {
