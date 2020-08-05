@@ -211,10 +211,10 @@ export default {
 .back {
   display: inline-block;
   margin: 20px 0;
-  font-size:20px;
-  font-weight:600;
-  color:rgba(0,0,0,1);
-  line-height:28px;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1);
+  line-height: 28px;
   cursor: pointer;
 
   .icon {
@@ -258,7 +258,7 @@ export default {
 
     &::before {
       display: block;
-      content: '';
+      content: "";
       width: 0;
       height: 0;
       border-width: 20px;
@@ -272,7 +272,7 @@ export default {
     }
     &::after {
       display: block;
-      content: '';
+      content: "";
       width: 0;
       height: 0;
       border-width: 15px;
@@ -330,6 +330,54 @@ export default {
       text-decoration: underline;
       .icon {
         transform: translateX(4px);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .back {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .main {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .token {
+    border-radius: 0;
+    padding: 20px;
+  }
+
+  .steps {
+    .step {
+      padding: 5px 20px;
+      font-size: 12px;
+      height: 20px;
+      line-height: 20px;
+
+      &::before {
+        border-width: 18px;
+        top: -3px;
+      }
+      &::after {
+        right: -30px;
+      }
+    }
+  }
+
+  .token-head {
+    .h-title {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .h-rule {
+      font-size: 14px;
+      line-height: 1;
+      margin-left: 5px;
+      .icon {
+        margin-left: 2px;
       }
     }
   }

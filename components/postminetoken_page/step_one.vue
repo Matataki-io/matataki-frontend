@@ -118,9 +118,10 @@ export default {
       line-height: 22px;
       padding: 0;
       margin: 20px 0;
+      word-break: keep-all;
       a {
         text-decoration: underline;
-        color: #FA6400;
+        color: #fa6400;
       }
       img {
         width: 20px;
@@ -141,9 +142,9 @@ export default {
   }
 }
 .token-title {
-  font-size:16px;
-  color:rgba(0,0,0,1);
-  line-height:22px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 1);
+  line-height: 22px;
   padding: 0;
   margin: 0;
 }
@@ -169,16 +170,26 @@ export default {
   margin-top: 200px;
   text-align: right;
   .f-btn {
-    width:300px;
-    height:40px;
-    background:rgba(250,100,0,1);
-    border-radius:8px;
-    font-size:16px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    line-height:40px;
+    width: 300px;
+    height: 40px;
+    background: rgba(250, 100, 0, 1);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 40px;
     display: inline-block;
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .token-footer {
+    margin-top: 70px;
+    .f-btn {
+      width: 100%;
+      margin: 10px 0 0 0;
+    }
   }
 }
 </style>
