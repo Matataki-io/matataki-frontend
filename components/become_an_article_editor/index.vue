@@ -116,7 +116,7 @@
         class="lock-bottom notice-creator-container"
       >
         <div class="btn-ccc">
-          <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span>
+          <!-- <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span> -->
           <el-tooltip
             effect="dark"
             content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文"
