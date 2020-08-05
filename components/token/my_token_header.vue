@@ -32,7 +32,12 @@
         :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
         class="fl ac"
       >
-        <c-avatar :src="avatar" :recommend-author="user.is_recommend === 1" />
+        <c-avatar
+          :src="avatar"
+          :recommend-author="user.is_recommend === 1"
+          :token-user="!!tokenInfo.id"
+          :level-token="1"
+        />
         <span class="card-username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
       </router-link>
     </div>
@@ -47,7 +52,8 @@ export default {
       tokenData: {},
       tokenUser: false,
       avatar: '',
-      user: Object.create(null) // 用户信息 
+      user: Object.create(null), // 用户信息 
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
@@ -61,6 +67,7 @@ export default {
       if (newState) {
         this.tokenUserId()
         this.getUserInfo()
+        this.getTokenUser(this.currentUserInfo.id)
       }
     }
   },
@@ -68,6 +75,7 @@ export default {
     if (this.isLogined) {
       this.tokenUserId()
       this.getUserInfo()
+      this.getTokenUser(this.currentUserInfo.id)
     }
   },
   methods: {
@@ -94,7 +102,13 @@ export default {
       } catch (e) {
         console.log('getCurrentUser error: ', e)
       }
-    }
+    },
+    async getTokenUser(id) {
+      // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
+    },
   }
 }
 </script>

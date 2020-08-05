@@ -1,12 +1,13 @@
 <template>
-  <div class="components-avatar" :class="{ 'no-border': recommendAuthor }">
-    <!-- 推荐框 -->
-    <div v-if="recommendAuthor" class="recommend" :class="levelClass">
+  <!-- no-border 发币用户的边框 取消 最外层的描边 -->
+  <!-- levelClass 推荐用户只增加 icon -->
+  <div class="components-avatar" :class="[{ 'no-border': tokenUser}, levelClass]">
+    <!-- 发币用户 -->
+    <div v-if="tokenUser" class="token-user" :class="levelClassTokenUser">
       <div class="avatar-box">
         <img v-if="src" :src="src" alt="avatar">
         <img v-else :src="defaultAvatar" alt="avatar">
       </div>
-      <img src="@/assets/img/recommend_author.svg" alt="icon" class="recommend-icon">
     </div>
     <!-- 普通框 -->
     <template v-else>
@@ -15,6 +16,13 @@
         <img v-else :src="defaultAvatar" alt="avatar">
       </div>
     </template>
+    <!-- 推荐用户 -->
+    <img
+      v-if="recommendAuthor"
+      src="@/assets/img/recommend_author.svg"
+      alt="icon"
+      class="recommend-icon"
+    >
   </div>
 </template>
 
@@ -26,6 +34,15 @@ export default {
     src: {
       type: String,
       default: ''
+    },
+    // 发币用户
+    tokenUser: {
+      type: Boolean,
+      default: false
+    },
+    levelToken: {
+      type: Number,
+      default: 0
     },
     // 推荐作者
     recommendAuthor: {
@@ -56,7 +73,20 @@ export default {
           '2': 'w90',
           '3': 'w120',
         }
-        return list[this.level] || ''
+        return 'recommend ' + list[this.level] || ''
+      } else {
+        return ''
+      }
+    },
+    levelClassTokenUser() {
+      if (this.tokenUser) {
+        let list = {
+          // '0': 'w30',
+          '1': 'w60',
+          '2': 'w90',
+          '3': 'w120',
+        }
+        return list[this.levelToken] || ''
       } else {
         return ''
       }
@@ -92,10 +122,44 @@ export default {
   }
 }
 
-.components-avatar.no-border {
-  border: none;
-}
 .recommend {
+  .recommend-icon {
+    position: absolute;
+    right: -6px;
+    bottom: -2px;
+    z-index: 2;
+    width: 15px;
+  }
+
+  &.w60 {
+    .recommend-icon {
+      right: -12px;
+      bottom: -2px;
+      width: 30px;
+    }
+  }
+
+  &.w90 {
+    .recommend-icon {
+      right: -18px;
+      bottom: -2px;
+      width: 45px;
+    }
+  }
+
+  &.w120 {
+    .recommend-icon {
+      right: -24px;
+      bottom: -2px;
+      width: 60px;
+    }
+  }
+}
+// 发币用户
+.components-avatar.no-border {
+  border: none !important;
+}
+.token-user {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -105,49 +169,33 @@ export default {
   .avatar-box {
     border: 1px solid #fff;
   }
-  .recommend-icon {
+  &::after {
+    content: "";
+    display: block;
     position: absolute;
-    right: -4px;
-    bottom: -2px;
-    z-index: 2;
-    width: 15px;
-  }
-  &.recommend {
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      top: -1px;
-      left: -1px;
-      right: -1px;
-      bottom: -1px;
-      border-radius: 50%;
-      background: linear-gradient(
-        180deg,
-        rgba(253, 157, 0, 1),
-        rgba(250, 100, 0, 1)
-      );
-      z-index: 1;
-      animation: _rotate 3s linear infinite;
-    }
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(253, 157, 0, 1),
+      rgba(250, 100, 0, 1)
+    );
+    z-index: 1;
+    animation: _rotate 3s linear infinite;
   }
 
   &.w60 {
     .avatar-box {
       border-width: 2px;
     }
-    .recommend-icon {
-      right: -8px;
-      bottom: -4px;
-      width: 30px;
-    }
-    &.recommend {
-      &::after {
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-      }
+    &::after {
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
     }
   }
 
@@ -155,18 +203,11 @@ export default {
     .avatar-box {
       border-width: 3px;
     }
-    .recommend-icon {
-      right: -12px;
-      bottom: -6px;
-      width: 45px;
-    }
-    &.recommend {
-      &::after {
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-      }
+    &::after {
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
     }
   }
 
@@ -174,18 +215,11 @@ export default {
     .avatar-box {
       border-width: 4px;
     }
-    .recommend-icon {
-      right: -16px;
-      bottom: -8px;
-      width: 60px;
-    }
-    &.recommend {
-      &::after {
-        top: -4px;
-        left: -4px;
-        right: -4px;
-        bottom: -4px;
-      }
+    &::after {
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
     }
   }
 }

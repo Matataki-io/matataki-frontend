@@ -69,6 +69,8 @@
                 <c-avatar
                   :recommend-author="card.user_is_recommend === 1"
                   :level="1"
+                  :token-user="card.user_is_token === 1"
+                  :level-token="1"
                   :src="avatarImg" 
                   class="avatar"
                 />

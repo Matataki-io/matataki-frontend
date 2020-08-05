@@ -14,7 +14,9 @@
             class="avatar"
             :recommend-author="user.is_recommend === 1"
             :level="3"
-            :class="{'no-recommend': user.is_recommend !== 1}"
+            :token-user="!!tokenInfo.id"
+            :level-token="3"
+            :class="{'has-border': !tokenInfo.id }"
           />
           <img
             v-if="tokenUser"
@@ -154,7 +156,8 @@ export default {
       tokenData: Object.create(null),
       shareModalShow: false,
       imgUploadDone: 0, // 图片是否上传完成
-      user: Object.create(null) // 用户信息 
+      user: Object.create(null), // 用户信息 
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
@@ -170,6 +173,7 @@ export default {
     if (process.browser) {
       if (!this.$route.params.id) this.$router.go(-1)
       this.getUserInfo(this.$route.params.id)
+      this.getTokenUser(this.$route.params.id)
 
       this.$nextTick(() => {
         this.refreshUser({ id: this.$route.params.id })
@@ -191,6 +195,12 @@ export default {
         .catch(e => {
           console.log('get user info error', e)
         })
+    },
+    async getTokenUser(id) {
+      // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
     async getMyUserData() {
       await this.$API
@@ -301,9 +311,7 @@ export default {
     box-sizing: border-box;
     width: 120px;
     height: 120px;
-    &.no-recommend {
-      border: 6px solid #fff;
-    }
+    border: 6px solid #fff;
   }
   .username {
     font-size: 24px;
@@ -434,9 +442,9 @@ export default {
         border-width: 2px;
       }
       /deep/ .recommend-icon {
-        right: -8px;
-        bottom: -4px;
-        width: 30px;
+        right: -8px !important;
+        bottom: -2px !important;
+        width: 30px !important;
       }
       /deep/ .recommend::after {
         top: -2px;

@@ -15,6 +15,8 @@
           class="avatar-popover" 
           :recommend-author="userInfo.is_recommend === 1"
           :level="1"
+          :token-user="!!tokenInfo.id"
+          :level-token="1"
         />
       </router-link>
       <div class="username">
