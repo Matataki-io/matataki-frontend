@@ -85,7 +85,7 @@
       <el-form-item label="主页链接" prop="link">
         <el-input v-model="tokenForm.link" placeholder="请输入内容">
           <template slot="prepend">
-            Https://
+            https://
           </template>
         </el-input>
       </el-form-item>
@@ -189,14 +189,11 @@ export default {
           value: '星座运势搞笑',
           label: '星座运势搞笑'
         }, {
-          value: '家后',
-          label: '家后'
+          value: '家庭',
+          label: '家庭'
         }, {
           value: '教育',
           label: '教育'
-        }, {
-          value: '车',
-          label: '车'
         }, {
           value: '科技',
           label: '科技'
@@ -225,8 +222,8 @@ export default {
           value: '古玩收藏',
           label: '古玩收藏'
         },{
-          value: '时尚美汝',
-          label: '时尚美汝'
+          value: '时尚美妆',
+          label: '时尚美妆'
         },{
           value: '社会时政',
           label: '社会时政'
@@ -240,8 +237,8 @@ export default {
           value: '人文历史',
           label: '人文历史'
         },{
-          value: '游戏电竟',
-          label: '游戏电竟'
+          value: '游戏电竞',
+          label: '游戏电竞'
         },{
           value: '娱乐影视',
           label: '娱乐影视'
