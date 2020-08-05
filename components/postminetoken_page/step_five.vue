@@ -31,7 +31,6 @@ export default {
   display: block;
 }
 
-
 .f-btn {
   width: 300px;
   height: 40px;
@@ -45,5 +44,15 @@ export default {
   border: 1px solid rgba(250, 100, 0, 1);
   margin: 40px auto 0;
   display: block;
+}
+
+@media screen and (max-width: 540px) {
+  .image {
+    margin-top: 110px;
+  }
+  .f-btn {
+    width: 100%;
+    margin-top: 110px;
+  }
 }
 </style>

@@ -71,11 +71,15 @@ export default {
       color: rgba(255, 255, 255, 1);
       border: 1px solid rgba(250, 100, 0, 1);
     }
-    &.prev {
-      background-color: #fff;
-      border: 1px solid rgba(250, 100, 0, 1);
-      color: rgba(250, 100, 0, 1);
-      margin-right: 20px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .token-footer {
+    margin-top: 70px;
+    .f-btn {
+      width: 100%;
+      margin: 10px 0 0 0;
     }
   }
 }

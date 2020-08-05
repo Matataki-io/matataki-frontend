@@ -142,4 +142,10 @@ export default {
     display: none;
   }
 }
+
+@media screen and (max-width: 540px) {
+  .token-content .token-more {
+    width: 110px;
+  }
+}
 </style>

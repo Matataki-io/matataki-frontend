@@ -1,7 +1,6 @@
 <template>
   <section class="container">
     <p class="token-title">步骤2：设置您的Fan票信息</p>
-
     <el-form
       ref="tokenForm"
       :model="tokenForm"
@@ -103,7 +102,7 @@
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
-        <el-checkbox-group v-model="tokenForm.tag" class="token-checkbox">
+        <el-checkbox-group v-model="tokenForm.tag" class="token-checkbox" size="mini">
           <el-checkbox label="个人" />
           <el-checkbox label="组织" />
           <el-checkbox label="产品" />
@@ -111,6 +110,7 @@
         </el-checkbox-group>
       </el-form-item>
     </el-form>
+
     <p class="token-remarks">请勿设置具有迷惑性、误导性的Fan票信息</p>
     <p class="token-remarks mb20">请勿设置违反国家法律法规的Fan票信息</p>
     <div class="token-line" />
@@ -466,6 +466,54 @@ export default {
     .remove {
       font-size: 20px;
       color: #fff;
+    }
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .token-footer {
+    text-align: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    .f-btn {
+      margin: 10px 0 0;
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .token-form {
+    max-width: 100%;
+    .token-input {
+      width: 100%;
+    }
+  }
+
+  .upload {
+    align-items: baseline;
+    flex-direction: column;
+    &-text {
+      font-size: 12px;
+      line-height: 1;
+      margin: 10px 0 0 0;
+    }
+  }
+
+  /deep/ .token-checkbox {
+    .el-checkbox {
+      padding: 0 10px;
+      margin-right: 8px;
+      line-height: 30px;
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .token-footer {
+    margin-top: 70px;
+    .f-btn {
+      width: 100%;
     }
   }
 }

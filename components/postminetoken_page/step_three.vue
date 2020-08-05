@@ -85,7 +85,7 @@
       <el-form-item label="主页链接" prop="link">
         <el-input v-model="tokenForm.link" placeholder="请输入内容">
           <template slot="prepend">
-            Http://
+            Https://
           </template>
         </el-input>
       </el-form-item>
@@ -510,7 +510,6 @@ export default {
   }
 }
 
-
 /deep/ .label-line {
   .el-form-item__label {
     display: block;
@@ -527,14 +526,43 @@ export default {
   background-color: #dbdbdb;
 }
 .survey-title {
-font-size:16px;
-font-weight:500;
-color:rgba(0,0,0,1);
-line-height:22px;
-padding: 0;
-margin: 20px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  line-height: 22px;
+  padding: 0;
+  margin: 20px 0;
 }
 .token-checked {
   margin: 20px 0;
+}
+
+@media screen and (max-width: 960px) {
+  .token-footer {
+    text-align: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    .f-btn {
+      margin: 10px 0 0;
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .token-form {
+    max-width: 100%;
+    .token-input {
+      width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 540px) {
+  .token-footer {
+    margin-top: 70px;
+    .f-btn {
+      width: 100%;
+    }
+  }
 }
 </style>

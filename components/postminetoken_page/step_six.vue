@@ -71,4 +71,14 @@ export default {
   display: inline-block;
   max-width: 400px;
 }
+
+@media screen and (max-width: 540px) {
+  .image {
+    margin-top: 100px;
+  }
+  .f-btn {
+    width: 100%;
+    margin-top: 100px;
+  }
+}
 </style>
