@@ -22,7 +22,8 @@ export default {
   },
   data () {
     return {
-      isLogin: true
+      isLogin: true,
+      url: process.env.VUE_APP_DEVELOPER
     }
   },
   computed: {
@@ -34,8 +35,9 @@ export default {
       if (val.id !== null) {
         this.isLogin = false
         let cookie = getCookie('ACCESS_TOKEN')
-        cookie = '&cookies=' + cookie
-        window.location = decodeURIComponent(this.$route.params.redirect + cookie)
+        cookie = '/type=token&token=' + cookie
+        decodeURIComponent(this.url + this.$route.params.redirect + cookie)
+        window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
       }
     }
   },
@@ -46,8 +48,9 @@ export default {
     if (this.currentUserInfo.id !== null) {
       this.isLogin = false
       let cookie = getCookie('ACCESS_TOKEN')
-      cookie = '&cookies=' + cookie
-      window.location = decodeURIComponent(this.$route.params.redirect + cookie)
+      cookie = '/type=token?&token=' + cookie
+      decodeURIComponent(this.url + this.$route.params.redirect + cookie)
+      window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
     }
   }
 }
