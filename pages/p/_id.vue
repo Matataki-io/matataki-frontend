@@ -226,12 +226,17 @@
                   </el-button>
                 </el-tooltip>
               </div>
-              <div v-if="!readTokenExs" class="notice-creator">
+              <NoticeCreator
+                v-if="!readTokenExs"
+                :tokenId="form.outputToken.id"
+                :postId="article.id"
+              />
+              <!-- <div v-if="!readTokenExs" class="notice-creator">
                 <span class="warn-tip">该Fan票流动性不足暂时无法解锁</span>
                 <el-button type="primary" plain size="mini">
                   通知作者
                 </el-button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -400,6 +405,7 @@ import ExsModal from '@/components/ExsModal'
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
+import NoticeCreator from '@/components/NoticeCreator.vue'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -432,7 +438,8 @@ export default {
     fontSize,
     commentReward,
     ExsModal,
-    bannerFan
+    bannerFan,
+    NoticeCreator
   },
   data() {
     return {
