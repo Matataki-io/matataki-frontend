@@ -22,8 +22,11 @@
         </div>
         <div class="aui-flex-box aui-flex-box-clear">
           <h4>交易所支付</h4>
-          <p v-if="noUniswap" class="warn-tip">暂无流动性</p>
-          <p v-else>价格：{{ uniswap.price }} (CNY) </p>
+          <p v-if="noUniswap" class="warn-tip">
+            流动性不足，流动金：{{ uniswap.balance }} {{ token.symbol }}
+          </p>
+          <!-- <p v-else-if="noUniswap" class="warn-tip">暂无流动性</p> -->
+          <p v-else>价格：¥{{ uniswap.price }}，需支付：¥{{ uniswapNeedPay }}</p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="1" :disabled="noUniswap">
@@ -42,8 +45,11 @@
         </div>
         <div class="aui-flex-box aui-flex-box-clear">
           <h4>直通车支付</h4>
-          <p v-if="noMarket" class="warn-tip">暂无流动性</p>
-          <p v-else>价格：{{ directTrade.price }} (CNY) </p>
+          <p v-if="noMarket" class="warn-tip">
+            流动性不足，流动金：{{ directTrade.balance }} {{ token.symbol }}
+          </p>
+          <!-- <p v-else-if="noMarket" class="warn-tip">暂无流动性</p> -->
+          <p v-else>价格：¥{{ directTrade.price }}，需支付：¥{{ directTradeNeedPay }}</p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="2" :disabled="noMarket">
@@ -52,6 +58,17 @@
         </div>
       </div>
       <el-button
+        v-if="noUniswap&&noMarket"
+        type="warning"
+        class="create-btn"
+        :loading="btnLoading"
+        :disabled="noticeDisabled"
+        @click="notice"
+      >
+        流动性不足，点击提醒作者
+      </el-button>
+      <el-button
+        v-else
         type="primary"
         class="create-btn"
         :disabled="noUniswap&&noMarket"
@@ -92,6 +109,10 @@ export default {
         id: '',
       })
     },
+    article: {
+      type: Object,
+      required: true
+    },
   },
   data() {
     return {
@@ -108,7 +129,10 @@ export default {
       },
       noUniswap: true,
       noMarket: true,
-      loading: true
+      loading: true,
+      noticeDisabled: false,
+      btnLoading: false,
+      uniswapNeedPay: 0
     }
   },
   computed: {
@@ -120,6 +144,23 @@ export default {
     },
     tokenId() {
       return this.token.id
+    },
+    // uniswap流动性不足
+    uniswapInsufficientLiquidity() {
+      if (this.uniswap.balance < parseFloat(this.amount)) {
+        return true
+      }
+      return false
+    },
+    // 直通车流动性不足
+    directTradeInsufficientLiquidity() {
+      if (this.directTrade.balance < parseFloat(this.amount)) {
+        return true
+      }
+      return false
+    },
+    directTradeNeedPay() {
+      return parseFloat(this.amount) * parseFloat(this.directTrade.price)
     }
   },
   watch: {
@@ -137,6 +178,27 @@ export default {
     // if (this.tokenId) this.getExsInfo(this.tokenId)
   },
   methods: {
+    async notice() {
+      const tokenId = this.token.id
+      const postId = this.article.id
+      if (tokenId && postId) {
+        this.btnLoading = true
+        await this.$API.insufficientLiquidity({ postId, tokenId })
+        this.noticeDisabled = true
+        this.btnLoading = false
+        this.$message({
+          showClose: true,
+          message: '通知成功~',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          showClose: true,
+          message: '数据出错，刷新后重试',
+          type: 'error'
+        })
+      }
+    },
     async createOrder() {
       let params = {
         output: this.amount,
@@ -148,7 +210,6 @@ export default {
     async getExsInfo(tokenId) {
       this.loading = true
       const uniswapResult = await this.$API.getCurrentPoolSize(tokenId)
-      // const price = await this.$API.getOutputAmount(tokenId, 0, 10000)
       let uniswapBalance = 0
       let uniswapPrice = 0
       if (uniswapResult.code === 0) {
@@ -160,7 +221,6 @@ export default {
       } else {
         this.noUniswap = true
       }
-      if (uniswapBalance <= 0) this.noUniswap = true
       let directTradeBalance = 0
       let directTradePrice = 0
       const marketResult = await this.$API.directTrade.getItem(tokenId)
@@ -171,11 +231,18 @@ export default {
       } else {
         this.noMarket = true
       }
-      if (directTradeBalance <= 0) this.noMarket = true
-      this.uniswap.balance =  this.$utils.fromDecimal(uniswapBalance)
-      this.uniswap.price =  this.$utils.fromDecimal(uniswapPrice)
-      this.directTrade.balance =  this.$utils.fromDecimal(directTradeBalance)
-      this.directTrade.price =  this.$utils.fromDecimal(directTradePrice)
+      this.uniswap.balance = this.$utils.fromDecimal(uniswapBalance)
+      if (this.uniswap.balance <= parseFloat(this.amount)) this.noUniswap = true
+      this.uniswap.price = this.$utils.fromDecimal(uniswapPrice)
+      this.directTrade.balance = this.$utils.fromDecimal(directTradeBalance)
+      this.directTrade.price = this.$utils.fromDecimal(directTradePrice)
+      if (this.directTrade.balance <= parseFloat(this.amount)) this.noMarket = true
+      if(!this.noUniswap) {
+        const uniswapAmountResult = await this.$API.getInputAmount(0, this.token.id, this.amount)
+        if (uniswapAmountResult.code === 0) {
+          this.uniswapNeedPay = this.$utils.fromDecimal(uniswapAmountResult.data)
+        }
+      }
       this.loading = false
       if(this.noUniswap) {
         if (this.noMarket) {

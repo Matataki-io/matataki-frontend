@@ -209,7 +209,7 @@
               class="lock-bottom"
             >
               <div class="btn-ccc">
-                <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span>
+                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
                 <el-tooltip
                   class="item"
                   effect="dark"
@@ -219,24 +219,17 @@
                   <el-button
                     type="primary"
                     size="small"
-                    :disabled="!readTokenExs"
                     @click="wxpayArticle"
                   >
                     {{ $t('paidRead.oneKey') + unlockText }}
                   </el-button>
                 </el-tooltip>
               </div>
-              <NoticeCreator
+              <!-- <NoticeCreator
                 v-if="!readTokenExs"
                 :tokenId="form.outputToken.id"
                 :postId="article.id"
-              />
-              <!-- <div v-if="!readTokenExs" class="notice-creator">
-                <span class="warn-tip">该Fan票流动性不足暂时无法解锁</span>
-                <el-button type="primary" plain size="mini">
-                  通知作者
-                </el-button>
-              </div> -->
+              /> -->
             </div>
           </div>
         </div>
@@ -348,6 +341,7 @@
       />
       <ExsModal
         v-model="showExs"
+        :article="article"
         :token="copyForm.outputToken"
         :amount="copyForm.output"
       />
@@ -405,7 +399,6 @@ import ExsModal from '@/components/ExsModal'
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
-import NoticeCreator from '@/components/NoticeCreator.vue'
 
 const markdownIt = require('markdown-it')({
   html: true,
@@ -439,7 +432,6 @@ export default {
     commentReward,
     ExsModal,
     bannerFan,
-    NoticeCreator
   },
   data() {
     return {
