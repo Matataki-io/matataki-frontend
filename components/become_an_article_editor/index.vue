@@ -132,12 +132,17 @@
             </el-button>
           </el-tooltip>
         </div>
-        <div v-if="!editTokenExs" class="notice-creator">
+        <NoticeCreator 
+          v-if="!editTokenExs"
+          :tokenId="form.outputToken.id"
+          :postId="article.id"
+        />
+        <!-- <div v-if="!editTokenExs" class="notice-creator">
           <span class="warn-tip">该Fan票流动性不足暂时无法解锁</span>
           <el-button type="primary" plain size="mini">
             通知作者
           </el-button>
-        </div>
+        </div> -->
       </div>
       <div
         v-else
@@ -163,13 +168,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import avatar from '@/components/avatar/index.vue'
+import NoticeCreator from '@/components/NoticeCreator.vue'
 import { precision } from '@/utils/precisionConversion'
 import utils from '@/utils/utils'
 
 export default {
   name: 'ArticleCard',
   components: {
-    avatar
+    avatar,
+    NoticeCreator
   },
   props: {
     // 文章数据

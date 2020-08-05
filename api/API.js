@@ -1216,4 +1216,5 @@ minetokenGetResources(tokenId) {
   apiMinetokenApplicationSurvey(data) { return request.post('/api/minetoken_application_survey', data) },
   // fan票提交校验 不能重复 symbol
   apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
+  insufficientLiquidity(data) { return request.post('/post/InsufficientLiquidity', data) },
 }
