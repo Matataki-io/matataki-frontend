@@ -10,6 +10,8 @@
           class="avatar"
           :recommend-author="card.is_recommend === 1"
           :level="1"
+          :token-user="card.user_is_token === 1"
+          :level-token="1"
         />
       </c-user-popover>
     </n-link>
@@ -110,10 +112,10 @@ export default {
     width: 45px;
     height: 45px;
     flex: 0 0 45px;
-    /deep/ .recommend.w60 .recommend-icon {
-      right: -10px;
-      bottom: -5px;
-      width: 26px;
+    /deep/ .recommend-icon {
+      right: -10px !important;
+      bottom: -5px !important;
+      width: 26px !important;
     }
   }
   .username {

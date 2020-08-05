@@ -11,6 +11,8 @@
             class="Avatar"
             :recommend-author="user.is_recommend === 1"
             :level="1"
+            :token-user="!!tokenInfo.id"
+            :level-token="1"
           />
         </c-user-popover>
       </router-link>
@@ -72,7 +74,8 @@ export default {
       info: {
         is_follow: 0 // 默认值
       },
-      user: Object.create(null) // 用户信息 
+      user: Object.create(null), // 用户信息 
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
@@ -94,12 +97,13 @@ export default {
     article() {
       // 完成获取用户信息
       this.getUserInfo(this.article.uid)
-      console.log('完成获取用户信息')
+      this.getTokenUser(this.article.uid)
     }
   },
   mounted() {
     // 完成获取用户信息
     this.getUserInfo(this.article.uid)
+    this.getTokenUser(this.article.uid)
   },
   methods: {
     // 主要获取关注状态
@@ -117,6 +121,12 @@ export default {
       }).catch(err => {
         console.log(`获取关注状态失败${err}`)
       })
+    },
+    async getTokenUser(id) {
+      // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
     followOrUnFollow() {
       if (this.info.is_follow) {
@@ -162,10 +172,10 @@ export default {
 .Avatar {
   width: 50px;
   height: 50px;
-  /deep/ .recommend.w60 .recommend-icon {
-    right: -10px;
-    bottom: -5px;
-    width: 26px;
+  /deep/ .recommend-icon {
+    right: -10px !important;
+    bottom: -2px !important;
+    width: 26px !important;
   }
 }
 .AuthorInfo-content {

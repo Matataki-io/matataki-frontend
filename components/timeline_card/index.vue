@@ -6,6 +6,7 @@
         <c-avatar
           :src="avatarImg"
           :recommend-author="card.user_is_recommend === 1"
+          :token-user="card.user_is_token === 1"
         />
       </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>

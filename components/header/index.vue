@@ -118,7 +118,12 @@
 
         <el-dropdown v-if="isLogined" class="user-menu">
           <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
-          <c-avatar :src="avatar" :recommend-author="user.is_recommend === 1" />
+          <c-avatar
+            :src="avatar"
+            :recommend-author="user.is_recommend === 1" 
+            :token-user="!!tokenInfo.id"
+            :level-token="1"
+          />
           <el-dropdown-menu
             slot="dropdown"
             class="user-dorpdown"
@@ -212,7 +217,13 @@
             <li class="menu-ul-item">
               <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
                 <div class="fl ac">
-                  <c-avatar :src="avatar" class="menu-avatar" />
+                  <c-avatar
+                    :src="avatar"
+                    class="menu-avatar"
+                    :recommend-author="user.is_recommend === 1" 
+                    :token-user="!!tokenInfo.id"
+                    :level-token="1"
+                  />
                   <span class="username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
                 </div>
               </n-link>
@@ -308,7 +319,8 @@ export default {
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
       notifyUnreadQuantity: 0,
-      user: Object.create(null) // 用户信息
+      user: Object.create(null), // 用户信息
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
@@ -364,7 +376,10 @@ export default {
   },
   watch: {
     isLogined(newState) {
-      if (newState) this.refreshUser()
+      if (newState) {
+        this.refreshUser()
+        this.getTokenUser(this.currentUserInfo.id)
+      }
     },
     searchQueryVal(newVal) {
       this.searchInput = newVal
@@ -376,7 +391,10 @@ export default {
   },
   created() {
     const { isLogined, refreshUser } = this
-    if (isLogined) refreshUser()
+    if (isLogined) {
+      refreshUser()
+      this.getTokenUser(this.currentUserInfo.id)
+    }
   },
   mounted() {
     this.getRecommend()
@@ -500,9 +518,16 @@ export default {
           if (res.code === 0) this.searchRecommendList = res.data
         })
         .catch(err => { console.log(err) })
-    }
+    },
+    async getTokenUser(id) {
+    // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
+    },
 
   }
+
 }
 </script>
 

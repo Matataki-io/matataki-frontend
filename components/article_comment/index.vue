@@ -5,6 +5,8 @@
       class="avatar"
       :recommend-author="user.is_recommend === 1"
       :level="1"
+      :token-user="!!tokenInfo.id"
+      :level-token="1"
     />
     <div class="comment-container">
       <el-input
@@ -35,7 +37,6 @@
 <script>
 import { mapGetters } from 'vuex'
 
-
 export default {
   props: {
     article: {
@@ -47,7 +48,8 @@ export default {
     return {
       comment: '',
       avatarSrc: '',
-      user: Object.create(null) // 用户信息 
+      user: Object.create(null), // 用户信息 
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
@@ -57,11 +59,17 @@ export default {
     isLogined(val) { // 监听登陆 重新获取头像
       // 切换文章时重置评论框内容
       this.comment = ''
-      if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
+      if (val && this.currentUserInfo.id) {
+        this.getUser(this.currentUserInfo.id)
+        this.getTokenUser(this.currentUserInfo.id)
+      }
     }
   },
   mounted() {
-    if (this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
+    if (this.currentUserInfo.id) {
+      this.getUser(this.currentUserInfo.id)
+      this.getTokenUser(this.currentUserInfo.id)
+    }
   },
   methods: {
     async getUser(id) { // 获取用户头像
@@ -77,6 +85,12 @@ export default {
         .catch(e => {
           console.log('get user info error', e)
         })
+    },
+    async getTokenUser(id) {
+      // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
     islogin() {
       if (!this.isLogined) {
@@ -150,10 +164,10 @@ export default {
     width: 40px;
     height: 40px;
     flex: 0 0 40px;
-    /deep/ .recommend.w60 .recommend-icon {
-      right: -10px;
-      bottom: -5px;
-      width: 26px;
+    /deep/ .recommend-icon {
+      right: -10px !important; 
+      bottom: -5px !important; 
+      width: 26px !important; 
     }
   }
   .btn-container {
