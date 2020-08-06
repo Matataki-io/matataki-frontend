@@ -349,7 +349,11 @@
           </el-tooltip>
         </h4>
         <div class="set-content">
-          <el-radio v-model="readConfigRadio" label="all">
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="all"
+          >
             所有人可见
           </el-radio>
           <br>
@@ -487,7 +491,11 @@
           </el-tooltip>
         </h4>
         <div class="set-content">
-          <el-radio v-model="editConfigRadio" label="all">
+          <el-radio
+            v-model="editConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="all"
+          >
             仅自己可编辑
           </el-radio>
           <br>
