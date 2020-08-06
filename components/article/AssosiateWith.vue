@@ -51,7 +51,7 @@
           </div>
           <div style="display:flex;">
             <div class="token-info-sub">
-              {{ minetokenExchange ? '¥ ' + minetokenExchange.price : '暂无价格' }}
+              {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : '暂无价格' }}
             </div>
             <div>
               <div class="float">
