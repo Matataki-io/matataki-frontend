@@ -70,17 +70,6 @@ export default {
               disabled: false
             },
             {
-              title: 'Fan票交换事务所',
-              description: '基于Uniswap的Fan票交易工具',
-              img: exchange,
-              width: '168px',
-              height: '99px',
-              url: 'https://www.matataki.io/exchange/',
-              repo: 'https://github.com/Matataki-io/Matataki-FE',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
               title: 'Matataki Airdrop',
               description: '基于Fan票的简单空投工具',
               img: airdrop,
@@ -99,6 +88,23 @@ export default {
               height: '123px',
               url: 'https://cryptomeetup.async.moe/',
               repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
+              btn: '访问网站',
+              disabled: false
+            },
+
+          ]
+        },
+        {
+          title: '工具',
+          list: [
+            {
+              title: 'Fan票交换事务所',
+              description: '基于Uniswap的Fan票交易工具',
+              img: exchange,
+              width: '168px',
+              height: '99px',
+              url: 'https://www.matataki.io/exchange/',
+              repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: '访问网站',
               disabled: false
             },

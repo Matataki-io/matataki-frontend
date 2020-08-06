@@ -252,7 +252,7 @@ export default {
 }
 @media screen and (min-width: 992px) {
   .token-fandom {
-    margin-top: 123px;
+    margin-top: 52px;
   }
 }
 </style>

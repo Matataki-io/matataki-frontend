@@ -52,7 +52,7 @@ export default {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;

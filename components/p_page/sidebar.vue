@@ -127,16 +127,18 @@ export default {
 
       &:active {
         transform: scale(0.9);
-        color: #4F2FD7;
+        color: #4f2fd7;
         background-color: #fff;
         box-shadow: 0 2px 25px rgba(163, 163, 163, 0.747);
       }
 
-      & > svg:hover {
-        color: #4F2FD7;
+      @media (hover: hover) {
+        & > svg:hover {
+          color: #4f2fd7;
+        }
       }
     }
-    
+
     p {
       text-align: center;
       font-size: 14px;
@@ -205,7 +207,7 @@ export default {
     padding-bottom: calc(2px + constant(safe-area-inset-bottom));
     padding-bottom: calc(2px + env(safe-area-inset-bottom));
     border-top: 1px solid #f1f1f1;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,.05);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
     .icon-num > div {
       box-shadow: none;
       width: 30px;
@@ -214,13 +216,15 @@ export default {
     .icon {
       font-size: 20px;
     }
-    .icon-num p {
-      font-size: 12px;
-      line-height: inherit;
-      margin: 0;
-      span {
+    .icon-num {
+      p {
         font-size: 12px;
         line-height: inherit;
+        margin: 0;
+        span {
+          font-size: 12px;
+          line-height: inherit;
+        }
       }
     }
   }
