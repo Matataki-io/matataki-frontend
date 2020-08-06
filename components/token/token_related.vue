@@ -204,11 +204,10 @@ export default {
       flex-direction: row;
       flex: 1;
       a {
-        font-size: 20px;
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 400;
         color: #B2B2B2;
-        line-height: 28px;
-        margin-right: 40px;
+        margin-right: 20px;
         cursor: pointer;
         &.active {
           color: black;
