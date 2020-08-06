@@ -191,7 +191,6 @@ export default {
 
 <style lang="less" scoped>
 .related {
-  margin: 20px 0 0;
   display: flex;
   flex-direction: column;
 
@@ -251,7 +250,6 @@ export default {
 
 .list {
   clear: left;
-  margin-top: 4px;
   .related-post-card {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   }
