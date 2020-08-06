@@ -801,7 +801,7 @@ export default {
         recommendMod: '推荐模组',
         quickEntrance: '快捷入口',
         tags: '标签',
-        exchangePrice: '交易所价格'
+        exchangePrice: '当前价格'
     },
     ipfsHash: {
         link: 'IPFS地址',

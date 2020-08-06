@@ -23,7 +23,7 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('token.unitPrice') }}:</span> {{ unitPrice }} CNY
+            <span>交易所价格:</span> {{ unitPrice }} CNY
           </p>
         </div>
         <div class="card-data-column">
