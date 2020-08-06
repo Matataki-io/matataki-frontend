@@ -1,8 +1,5 @@
 <template>
   <div class="related">
-    <h2 class="token-title">
-      {{ $t('token.relatedCreations') }}
-    </h2>
     <div class="header">
       <div class="post-nav">
         <a
@@ -197,15 +194,6 @@ export default {
   margin: 20px 0 0;
   display: flex;
   flex-direction: column;
-  
-  .token-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: @black;
-    line-height: 33px;
-    padding: 0;
-    margin: 0 0 14px 0;
-  }
 
   .header {
     display: flex;
