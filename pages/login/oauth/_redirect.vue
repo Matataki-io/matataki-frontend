@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ $route.params.redirect }}
     <LoginIndex 
       :value="isLogin"
       :single="true"
@@ -36,7 +35,6 @@ export default {
         this.isLogin = false
         let cookie = getCookie('ACCESS_TOKEN')
         cookie = '/type=token&token=' + cookie
-        decodeURIComponent(this.url + this.$route.params.redirect + cookie)
         window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
       }
     }
@@ -49,9 +47,14 @@ export default {
       this.isLogin = false
       let cookie = getCookie('ACCESS_TOKEN')
       cookie = '/type=token?&token=' + cookie
-      decodeURIComponent(this.url + this.$route.params.redirect + cookie)
       window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
     }
   }
 }
 </script>
+
+<style lang="less">
+.el-dialog__headerbtn {
+  display: none;
+}
+</style>
