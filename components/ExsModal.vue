@@ -7,6 +7,9 @@
     title="选择支付方式"
     custom-class="my-dialog br10 auth-dialog"
   >
+    <div class="token-title">
+      还需购买 <span>{{ amount }} {{ token.symbol }}</span> <span v-if="isPriceArticle">并支付</span>
+    </div>
     <section 
       v-loading="loading"
       class="exs-main"
@@ -23,10 +26,11 @@
         <div class="aui-flex-box aui-flex-box-clear">
           <h4>交易所支付</h4>
           <p v-if="noUniswap" class="warn-tip">
-            流动性不足，流动金：{{ uniswap.balance }} {{ token.symbol }}
+            流动性不足，剩余 {{ uniswap.balance }} {{ token.symbol }}
           </p>
           <!-- <p v-else-if="noUniswap" class="warn-tip">暂无流动性</p> -->
-          <p v-else>价格：¥{{ uniswap.price }}，需支付：¥{{ uniswapNeedPay }}</p>
+          <!-- 价格：¥{{ uniswap.price }}， -->
+          <p v-else>需支付：¥{{ uniswapNeedPay }}</p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="1" :disabled="noUniswap">
@@ -46,10 +50,11 @@
         <div class="aui-flex-box aui-flex-box-clear">
           <h4>直通车支付</h4>
           <p v-if="noMarket" class="warn-tip">
-            流动性不足，流动金：{{ directTrade.balance }} {{ token.symbol }}
+            流动性不足，剩余 {{ directTrade.balance }} {{ token.symbol }}
           </p>
           <!-- <p v-else-if="noMarket" class="warn-tip">暂无流动性</p> -->
-          <p v-else>价格：¥{{ directTrade.price }}，需支付：¥{{ directTradeNeedPay }}</p>
+          <!-- 价格：¥{{ directTrade.price }}， -->
+          <p v-else>需支付：¥{{ directTradeNeedPay }}</p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="2" :disabled="noMarket">
@@ -89,16 +94,6 @@ export default {
       type: Boolean,
       default: false
     },
-    form: {
-      type: Object,
-      default: () => ({
-        input: '',
-        inputToken: {},
-        output: '',
-        outputToken: {},
-        signId: ''
-      })
-    },
     amount: {
       type: [String, Number],
       default: 0
@@ -113,6 +108,14 @@ export default {
       type: Object,
       required: true
     },
+    needPrice: {
+      type: Boolean,
+      default: false
+    },
+    needToken: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -161,7 +164,15 @@ export default {
     },
     directTradeNeedPay() {
       return parseFloat(this.amount) * parseFloat(this.directTrade.price)
-    }
+    },
+    // 是否是付费文章
+    isPriceArticle() {
+      return (this.article.prices && this.article.prices.length !== 0)
+    },
+    // 是否是持通证文章
+    isTokenArticle() {
+      return (this.article.tokens && this.article.tokens.length !== 0)
+    },
   },
   watch: {
     showModal(val) {
@@ -202,7 +213,9 @@ export default {
     async createOrder() {
       let params = {
         output: this.amount,
-        outputToken: this.token
+        outputToken: this.token,
+        needPrice: this.needPrice,
+        needToken: this.needToken,
       }
       if (this.radio === '2') params.type = 'direct_trade'
       this.$store.dispatch('order/createOrder', params)
@@ -263,6 +276,13 @@ export default {
 @media screen and (max-width: 420px) {
   /deep/ .auth-dialog {
     width: 90% !important;
+  }
+}
+.token-title {
+  margin: 0;
+  padding: 20px 20px 0;
+  span {
+    font-weight: bolder;
   }
 }
 .exs-main {
