@@ -164,14 +164,17 @@
                       {{ getPayToken.symbol }}
                     </template>
                   </div>
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="$t('paidRead.purchaseHistory')"
-                    placement="left"
-                  >
-                    <svg-icon icon-class="anser" />
-                  </el-tooltip>
+                  <span>
+                    已持有：{{ payTokenBalance }} {{ getPayToken.symbol }}
+                    <el-tooltip
+                      class="item"
+                      effect="dark"
+                      :content="$t('paidRead.purchaseHistory')"
+                      placement="left"
+                    >
+                      <svg-icon icon-class="anser" />
+                    </el-tooltip>
+                  </span>
                 </li>
                 <li
                   v-if="isTokenArticle"
@@ -194,7 +197,16 @@
                     </router-link>
                   </div>
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }} 
+                    <el-tooltip
+                      class="item"
+                      effect="dark"
+                      content="只要满足持币条件随时可以查看全文"
+                      placement="left"
+                    >
+                      <svg-icon icon-class="anser" />
+                    </el-tooltip>
+                  </span>
                 </li>
               </ul>
             </p>
@@ -221,7 +233,7 @@
                     size="small"
                     @click="wxpayArticle"
                   >
-                    {{ $t('paidRead.oneKey') + unlockText }}
+                    {{ $t('paidRead.oneKey') + unlockText }}全文
                   </el-button>
                 </el-tooltip>
               </div>
@@ -344,6 +356,8 @@
         :article="article"
         :token="copyForm.outputToken"
         :amount="copyForm.output"
+        :need-price="copyForm.needPrice"
+        :need-token="copyForm.needToken"
       />
     </div>
     <div v-else class="container deleted">
@@ -521,10 +535,13 @@ export default {
         input: '',
         inputToken: CNY,
         output: '',
-        outputToken: {}
+        outputToken: {},
+        needPrice: false,
+        needToken: false
       },
       readTokenExs: true,
       editTokenExs: true,
+      payTokenBalance: 0
     }
   },
   head() {
@@ -929,8 +946,9 @@ export default {
           this.calPayFormParams()
           this.calPayEditFormParams()
           this.getSupportStatus(res.data)
+          this.getPayTokenBalance(this.getPayToken.token_id)
           this.isBookmarked = Boolean(res.data.is_bookmarked)
-          if (this.form.outputToken.id) {
+          if (this.form.outputToken) {
             this.readTokenExs = await this.hasExs(this.form.outputToken.id)
           }
           if (this.editForm.outputToken.id) {
@@ -1241,6 +1259,13 @@ export default {
         this.$store.commit('setCommentRequest')
       }, 3000)
     },
+    async getPayTokenBalance(id) {
+      // 查看余额
+      const res = await this.$API.getUserBalance(id)
+      console.log('getPayTokenBalance', id, res)
+      const balance = this.$utils.fromDecimal(res.data)
+      this.payTokenBalance = balance
+    },
     // 处理支付币阅读的文章
     async handlePayToken() {
       // 判断余额，余额不足->去创建买币订单，余额足->直接支付
@@ -1260,8 +1285,7 @@ export default {
       }
       const needPay = this.getArticlePrice
       // 查看余额
-      const res = await this.$API.getUserBalance(id)
-      const balance = this.$utils.fromDecimal(res.data, decimals)
+      const balance = this.payTokenBalance
       // 余额不足，去创建买币订单
       if (balance < needPay) {
         const _needPay = new BigNumber(needPay)
@@ -1331,15 +1355,22 @@ export default {
           needPrice = true
         }
       }
+      console.log(needPrice, needToken)
       if (_form === undefined) {
         this.copyForm = {
           input: this.form.input,
           inputToken: Object.assign({}, this.form.inputToken),
           output: this.form.output,
           outputToken: Object.assign({}, this.form.outputToken),
+          needPrice,
+          needToken,
         }
       } else {
-        this.copyForm = _form
+        this.copyForm = {
+          ..._form,
+          needPrice,
+          needToken,
+        }
       }
       if (needPrice) {
         // type这个字段不重要，可以去除
