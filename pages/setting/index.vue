@@ -40,6 +40,7 @@
               :placeholder="$t('rule.username')"
               maxlength="50"
               show-word-limit
+              class="customize-input"
               clearable
             />
           </div>
@@ -51,6 +52,7 @@
               v-model="email"
               :placeholder="$t('rule.loginEmailMessage')"
               show-word-limit
+              class="customize-input"
               clearable
             />
           </div>
@@ -65,6 +67,7 @@
               type="textarea"
               maxlength="200"
               show-word-limit
+              class="customize-input"
             />
           </div>
         </div>

@@ -472,6 +472,7 @@
                     placeholder="请输入内容"
                     maxlength="300"
                     show-word-limit
+                    class="customize-input"
                   />
                 </div>
               </transition>

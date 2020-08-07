@@ -45,7 +45,7 @@
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="tokenForm.name"
-          class="token-input"
+          class="token-input customize-input"
           maxlength="20"
           show-word-limit
         />
@@ -64,7 +64,7 @@
         </span>
         <el-input
           v-model="tokenForm.symbol"
-          class="token-input"
+          class="token-input customize-input"
           maxlength="20"
           show-word-limit
         />
@@ -83,7 +83,7 @@
         </span>
         <el-input
           v-model="tokenForm.brief"
-          class="token-input"
+          class="token-input customize-input"
           type="textarea"
           maxlength="100"
           :rows="6"

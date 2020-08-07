@@ -10,7 +10,8 @@
     />
     <div class="comment-container">
       <el-input
-        v-model="comment"
+        v-model="comment" 
+        class="customize-input"
         :autosize="{ minRows: 3}"
         :placeholder="$t('p.commentPointPlaceholder')"
         type="textarea"

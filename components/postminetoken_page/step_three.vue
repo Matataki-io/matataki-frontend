@@ -14,6 +14,7 @@
           v-model="tokenForm.introduction"
           type="textarea"
           show-word-limit
+          class="customize-input"
           maxlength="200"
           :rows="5"
           placeholder="请输入内容"
@@ -102,6 +103,7 @@
           type="textarea"
           show-word-limit
           maxlength="200"
+          class="customize-input"
           :rows="5"
           placeholder="请输入内容"
         />
@@ -112,6 +114,7 @@
           v-model="tokenForm.publish"
           type="textarea"
           show-word-limit
+          class="customize-input"
           maxlength="200"
           :rows="5"
           placeholder="请输入内容"
@@ -122,6 +125,7 @@
           v-model="tokenForm.info"
           type="textarea"
           show-word-limit
+          class="customize-input"
           maxlength="200"
           :rows="5"
           placeholder="请输入内容"
@@ -132,6 +136,7 @@
           v-model="tokenForm.promote"
           type="textarea"
           show-word-limit
+          class="customize-input"
           maxlength="200"
           :rows="5"
           placeholder="请输入内容"
