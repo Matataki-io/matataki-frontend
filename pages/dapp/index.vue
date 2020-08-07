@@ -12,10 +12,17 @@
         </div>
       </el-carousel-item>
       <el-carousel-item>
-        <div class="cryptohero">
+        <div class="crypto-hero">
           <p>一个基于Fan票的水浒集卡游戏</p>
           <img src="@/assets/img/dapp_cryptohero_text.png" alt="">
           <a href="https://dao-hero.netlify.app" target="_blank">立即游玩</a>
+        </div>
+      </el-carousel-item>
+      <el-carousel-item>
+        <div class="crypto-meet-up">
+          <p>一个基于Fan票的地理位置共享&订阅</p>
+          <h3>Crypto Meet Up</h3>
+          <a href="https://cryptomeetup.async.moe" target="_blank">访问网站</a>
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -194,7 +201,7 @@ export default {
 .swipe {
   margin: 40px 20px 0 20px;
 }
-.cryptohero {
+.crypto-hero {
   height: 240px;
   background-image: url(../../assets/img/dapp_cryptohero_bc.png);
   background-size: cover;
@@ -246,12 +253,76 @@ export default {
       border-radius: 3px;
       font-size: 14px;
       font-weight: 400;
-      color: #ffffff;
       line-height: 34px;
     }
   }
 }
 
+.crypto-meet-up {
+  height: 240px;
+  background-image: url(../../assets/img/dapp_cryptomeetup_bc.png);
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 140px 0 0;
+
+  p {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
+    line-height: 28px;
+    padding: 0;
+    margin: 0;
+  }
+  h3 {
+    font-size: 36px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 50px;
+    padding: 0;
+    margin: 5px 0 17px;
+  }
+  a {
+    width: 160px;
+    height: 40px;
+    background: rgba(21, 196, 255, 1);
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 40px;
+    text-align: center;
+  }
+  @media screen and (max-width: 700px) {
+    padding: 0;
+    align-items: center;
+    p {
+      font-size: 18px;
+      color: #fff;
+      text-shadow: 0 0 10px #000;
+    }
+    h3 {
+      font-size: 30px;
+      margin: 0px 0 10px;
+      text-shadow: 0 0 10px #000;
+    }
+    a {
+      width: 110px;
+      height: 34px;
+      border-radius: 3px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 34px;
+    }
+  }
+}
 .dapp-head {
   height: 240px;
   background-image: url(../../assets/img/dapp_head_bc.png);
