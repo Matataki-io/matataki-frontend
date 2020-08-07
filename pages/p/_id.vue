@@ -233,7 +233,8 @@
                     size="small"
                     @click="wxpayArticle"
                   >
-                    {{ $t('paidRead.oneKey') + unlockText }}全文
+                    {{ unlockTextFull }}
+                    <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
                   </el-button>
                 </el-tooltip>
               </div>
@@ -645,6 +646,9 @@ export default {
         return 0
       }
     },
+    payTokenEnough() {
+      return this.payTokenBalance >= this.getArticlePrice
+    },
     getPayToken() {
       if (this.isPriceArticle) {
         const ad = this.article.prices[0]
@@ -674,6 +678,13 @@ export default {
         return this.$t('p.buy')
       }
       return this.$t('p.unlock')
+    },
+    unlockTextFull() {
+      if (this.isPriceArticle) {
+        if (this.payTokenEnough) return '一键购买全文'
+        else return '余额不足，去购买'
+      }
+      return '一键解锁全文'
     },
     totalCny() {
       let result = 0
