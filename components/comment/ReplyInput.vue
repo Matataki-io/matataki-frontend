@@ -17,6 +17,7 @@
         type="textarea"
         maxlength="500"
         show-word-limit
+        class="customize-input"
         @keyup.native="postCommentKeyup"
       />
     </div>
