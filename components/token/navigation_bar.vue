@@ -62,16 +62,10 @@ export default {
   methods: {
     goAnchor(id) {
       var anchor = document.getElementById(id)
-      console.log(id, anchor)
       if(!anchor) return
 
       const offsetTop = anchor.offsetTop - 80
-
-      // chrome, firefox, safari
-      document.body.scrollTop = offsetTop
-      document.documentElement.scrollTop = offsetTop
-      // window.pageYOffset = offsetTop
-
+      window.scrollTo(0, offsetTop)
       anchor.classList.add('play-prompt')
     },
     _scrollShow() {
@@ -89,8 +83,6 @@ export default {
         else break
       }
       this.activeTag = activeTag
-      
-      console.log('位置：', currentTop, activeTag)
     }
   }
 }
