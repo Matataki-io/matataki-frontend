@@ -70,7 +70,7 @@
         :disabled="noticeDisabled"
         @click="notice"
       >
-        流动性不足，点击提醒作者
+        {{ noticeDisabled ? '流动性不足，已经提醒作者' : '流动性不足，点击提醒作者' }}
       </el-button>
       <el-button
         v-else
