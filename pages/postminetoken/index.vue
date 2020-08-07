@@ -1,26 +1,26 @@
 <template>
   <section v-loading.fullscreen.lock="loading" class="main">
     <span class="back" @click="backPage">
-      <svg-icon icon-class="arrow" class="icon" />返回Fan票
+      <svg-icon icon-class="arrow" class="icon" />{{ $t('postminetoken.back') }}
     </span>
 
     <div class="token">
       <section v-if="active < 3" class="steps">
         <section class="step" :class="active >= 0 && 'active'">
-          ① 基础信息
+          ① {{ $t('postminetoken.stepOne') }}
         </section>
         <section class="step" :class="active >= 1 && 'active'">
-          ② Fan票设置
+          ② {{ $t('postminetoken.stepTwo') }}
         </section>
         <section class="step" :class="active >= 2 && 'active'">
-          ③ 提交申请
+          ③ {{ $t('postminetoken.stepThree') }}
         </section>
       </section>
 
       <div class="token-head">
-        <span class="h-title">免费发行Fan票</span>
+        <span class="h-title">{{ $t('postminetoken.headTitle') }}</span>
         <a class="h-rule" href="https://www.yuque.com/matataki/matataki/whiigy" target="_blank">
-          Fan票申请帮助文档<svg-icon icon-class="arrow" class="icon" />
+          {{ $t('postminetoken.headHelp') }}<svg-icon icon-class="arrow" class="icon" />
         </a>
       </div>
 

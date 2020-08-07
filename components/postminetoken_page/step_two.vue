@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <p class="token-title">步骤2：设置您的Fan票信息</p>
+    <p class="token-title">{{ $t('postminetoken.stepTwoTitle') }}</p>
     <el-form
       ref="tokenForm"
       :model="tokenForm"
@@ -8,7 +8,7 @@
       label-width="80px"
       class="token-form"
     >
-      <el-form-item label="图标" prop="logo">
+      <el-form-item :label="$t('postminetoken.stepTwoLabelLogo')" prop="logo">
         <div class="upload">
           <img-upload
             v-show="!coinsCover"
@@ -38,11 +38,11 @@
             </div>
           </div>
 
-          <p class="upload-text">请上传512*512大小的PNG格式图片作为粉丝币logo</p>
+          <p class="upload-text">{{ $t('postminetoken.stepTwoLabelLogoText') }}</p>
         </div>
         <!-- <el-input v-model="tokenForm.logo" /> -->
       </el-form-item>
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="$t('postminetoken.stepTwoLabelName')" prop="name">
         <el-input
           v-model="tokenForm.name"
           class="token-input customize-input"
@@ -52,10 +52,10 @@
       </el-form-item>
       <el-form-item prop="symbol">
         <span slot="label">
-          缩写
+          {{ $t('postminetoken.stepTwoLabelSymbol') }}
           <el-tooltip
             effect="dark"
-            content="缩写"
+            :content="$t('postminetoken.stepTwoLabelSymbol')"
             placement="top"
             class="tag-help"
           >
@@ -71,10 +71,10 @@
       </el-form-item>
       <el-form-item prop="brief">
         <span slot="label">
-          简介
+          {{ $t('postminetoken.stepTwoLabelBrief') }}
           <el-tooltip
             effect="dark"
-            content="简介"
+            :content="$t('postminetoken.stepTwoLabelBrief')"
             placement="top"
             class="tag-help"
           >
@@ -92,10 +92,10 @@
       </el-form-item>
       <el-form-item prop="tag">
         <span slot="label">
-          标签
+          {{ $t('postminetoken.stepTwoLabelBrief') }}
           <el-tooltip
             effect="dark"
-            content="标签"
+            :content="$t('postminetoken.stepTwoLabelBrief')"
             placement="top"
             class="tag-help"
           >
@@ -111,22 +111,22 @@
       </el-form-item>
     </el-form>
 
-    <p class="token-remarks">请勿设置具有迷惑性、误导性的Fan票信息</p>
-    <p class="token-remarks mb20">请勿设置违反国家法律法规的Fan票信息</p>
+    <p class="token-remarks">{{ $t('postminetoken.stepTwoRemarks') }}</p>
+    <p class="token-remarks mb20">{{ $t('postminetoken.stepTwoRemarks1') }}</p>
     <div class="token-line" />
-    <p class="token-comment title">首次发行：</p>
-    <p class="token-comment">1. 首次发行的时候会自动默认发行 1000 个Fan票</p>
+    <p class="token-comment title">{{ $t('postminetoken.stepTwoRemarksTitle') }}：</p>
+    <p class="token-comment">1. {{ $t('postminetoken.stepTwoRemarks2') }}</p>
 
-    <p class="token-comment title">手动增发：</p>
-    <p class="token-comment">1. 首次发行成功后即可立即操作手动增发</p>
-    <p class="token-comment">1. 每次增发后需要等待10天可再次增发</p>
+    <p class="token-comment title">{{ $t('postminetoken.stepTwoRemarksTitle1') }}：</p>
+    <p class="token-comment">1. {{ $t('postminetoken.stepTwoRemarks3') }}</p>
+    <p class="token-comment">2. {{ $t('postminetoken.stepTwoRemarks4') }}</p>
 
     <div class="token-footer">  
       <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
-        任何反馈<svg-icon icon-class="arrow" class="icon" />
+        {{ $t('postminetoken.feedback') }}<svg-icon icon-class="arrow" class="icon" />
       </a>
-      <a href="javascript:;" class="f-btn prev" @click="prev">上一步</a>
-      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">下一步</a>
+      <a href="javascript:;" class="f-btn prev" @click="prev">{{ $t('postminetoken.prev') }}</a>
+      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">{{ $t('postminetoken.next') }}</a>
     </div>
   </section>
 </template>

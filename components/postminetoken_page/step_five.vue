@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <img src="@/assets/img/application_complete.png" alt="done" class="image">
-    <p class="text">您的Fan票申请已经成功</p>
-    <a href="javascript:;" class="f-btn" @click="done">确定</a>
+    <p class="text">{{ $t('postminetoken.stepFive') }}</p>
+    <a href="javascript:;" class="f-btn" @click="done">{{ $t('postminetoken.define') }}</a>
   </div>
 </template>
 

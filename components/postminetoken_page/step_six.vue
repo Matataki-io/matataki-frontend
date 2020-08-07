@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <img src="@/assets/img/application_complete.png" alt="done" class="image">
-    <p class="text">您的Fan票申请失败</p>
+    <p class="text">{{ $t('postminetoken.stepSix') }}</p>
     <p v-if="reason" class="token-reason">{{ reason }}</p>
-    <a href="javascript:;" class="f-btn" @click="done">重新申请</a>
+    <a href="javascript:;" class="f-btn" @click="done">{{ $t('postminetoken.stepSixRest') }}</a>
   </div>
 </template>
 
