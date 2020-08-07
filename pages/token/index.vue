@@ -1,8 +1,11 @@
 <template>
   <div class="token-container">
+    <navigationBar />
     <tokenBanner :show-publish-btn="showPublishBtnComputed" />
     <!-- 判断是否已经发币了 -->
     <!-- <tokenBannerFan v-if="!isPublishToken" class="token-banner-fan" /> -->
+    <!-- 这个div用来作为锚点使用，因为mytoken卡片在没有Fan票的用户上会消失，所以不可以直接把锚点定在那边 -->
+    <div id="my-token" style="position: relative; top: 20px;" />
     <myTokenHeader />
     <!-- 申请的token -->
     <tokenHeaderApplication v-if="minetokenApplicationShow" :info="minetokenApplication" />
@@ -16,7 +19,7 @@
     </div>
 
     <!-- 登录后显示 -->
-    <div v-if="isLogined" class="c-card">
+    <div v-if="isLogined" id="turnover" class="c-card">
       <span class="token-title" :class="flowTab === 0 && 'active'" @click="flowTab = 0">交易总流水</span>
       <span class="token-title" :class="flowTab === 1 && 'active'" @click="flowTab = 1">流动金总流水</span>
       <tokenTotalTransactionFlow v-if="flowTab === 0" class="token-flow" />
@@ -24,7 +27,7 @@
     </div>
 
     <!-- 总会显示 -->
-    <div class="c-card">
+    <div id="all-token" class="c-card">
       <span class="ticket-title">全部Fan票</span>
       <tokenList class="mt" />
     </div>
@@ -43,6 +46,7 @@ import holdLiquidity from '@/components/holdliquidity/index.vue'
 import tokenList from '@/components/token_list.vue'
 import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow.vue'
 import liquidityTotalTransactionFlow from '@/components/liquidity_total_transaction_flow.vue'
+import navigationBar from '@/components/token/navigation_bar.vue'
 import { isEmpty } from 'lodash'
 export default {
   components: {
@@ -55,6 +59,7 @@ export default {
     holdLiquidity,
     tokenTotalTransactionFlow,
     liquidityTotalTransactionFlow,
+    navigationBar
   },
   data() {
     return {
