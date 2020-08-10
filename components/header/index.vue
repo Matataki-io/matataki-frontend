@@ -167,7 +167,7 @@
             class="write-icon"
             icon-class="write"
           />
-          写文章
+          {{ $t('header.newArticle') }}
         </a>
         <!-- <language class="language" /> -->
       </div>
