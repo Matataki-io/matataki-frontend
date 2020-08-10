@@ -124,7 +124,7 @@ export default {
           ]
         },
         {
-          title: '工具',
+          title: this.$t('tool'),
           list: [
             {
               title: 'Fan票交换事务所',
@@ -160,7 +160,7 @@ export default {
           ]
         },
         {
-          title: '其他',
+          title: this.$t('other'),
           list: [
             {
               title: '开发文档',

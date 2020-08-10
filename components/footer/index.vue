@@ -22,7 +22,7 @@
             target="_blank"
             href="http://andoromeda.mikecrm.com/a93Le8z"
           >
-            任何反馈
+            {{ $t('anyFeedback') }}
           </a>
         </div>
         <p class="link">

@@ -12,23 +12,23 @@
     <!-- 登录后显示 -->
     <!-- fan ticket -->
     <div v-if="isLogined" class="c-card">
-      <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">Fan票夹</span>
-      <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">我的流动金</span>
+      <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">{{ $t('token.fanTicketHolder') }}</span>
+      <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">{{ $t('token.myFlowGold') }}</span>
       <holdTicket v-if="ticketTab === 0" />
       <holdLiquidity v-if="ticketTab === 1" />
     </div>
 
     <!-- 登录后显示 -->
     <div v-if="isLogined" id="turnover" class="c-card">
-      <span class="token-title" :class="flowTab === 0 && 'active'" @click="flowTab = 0">交易总流水</span>
-      <span class="token-title" :class="flowTab === 1 && 'active'" @click="flowTab = 1">流动金总流水</span>
+      <span class="token-title" :class="flowTab === 0 && 'active'" @click="flowTab = 0">{{ $t('token.totalTransactionFlow') }}</span>
+      <span class="token-title" :class="flowTab === 1 && 'active'" @click="flowTab = 1">{{ $t('token.flowGoldTotalFlow') }}</span>
       <tokenTotalTransactionFlow v-if="flowTab === 0" class="token-flow" />
       <liquidityTotalTransactionFlow v-if="flowTab === 1" class="token-flow" />
     </div>
 
     <!-- 总会显示 -->
     <div id="all-token" class="c-card">
-      <span class="ticket-title">全部Fan票</span>
+      <span class="ticket-title">{{ $t('token.allFanTicket') }}</span>
       <tokenList class="mt" />
     </div>
   </div>

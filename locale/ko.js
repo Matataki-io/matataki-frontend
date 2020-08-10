@@ -59,6 +59,11 @@ export default {
     quote: '引用',
     amount: '金额',
     filter: '过滤',
+    tool: '工具',
+    other: '其他',
+    anyFeedback: '任何反馈',
+    balance: '余额',
+    transferMoney: '转账',
     success: {
         success: '成功',
         copy: '复制成功',
@@ -345,7 +350,9 @@ export default {
         fanCircle: 'Fan圈',
         myFocus: '我的关注',
         ofFanCircle: '的Fan圈',
-        buyFanTickets: '购买Fan票'
+        buyFanTickets: '购买Fan票',
+        hotTag: '热门标签',
+        viewAll: '查看全部',
     },
     sidebar: {
         article: '篇',
@@ -370,6 +377,7 @@ export default {
         language: '中文/English'
     },
     publish: {
+        draft: '草稿',
         editorText: '文章',
         editorTextArticlePublic: '文章发布',
         editorTextArticleEditor: '编辑文章',
@@ -385,7 +393,7 @@ export default {
         commentContent: '用户需要向您支付对应的积分才可评论(1-99999)',
         point: '积分',
         coverTitle: '图文封面',
-        coverRecommendation: '推荐尺寸 1160*580 ；宽高比 2:1',
+        coverRecommendation: '推荐尺寸 1160*580 宽高比 2:1',
         coverDes: '请上传宽高2:1尺寸的图片',
         tagTitle: '选择标签',
         public: '公开发布',
@@ -801,7 +809,12 @@ export default {
         recommendMod: '推荐模组',
         quickEntrance: '快捷入口',
         tags: '标签',
-        exchangePrice: '当前价格'
+        exchangePrice: '当前价格',
+        fanTicketHolder: 'Fan票夹',
+        myFlowGold: '我的流动金',
+        totalTransactionFlow: '交易总流水',
+        flowGoldTotalFlow: '流动金总流水',
+        allFanTicket: '全部Fan票'
     },
     ipfsHash: {
         link: 'IPFS地址',
@@ -934,5 +947,14 @@ export default {
         stepFive: '您的Fan票申请已经成功',
         stepSix: '您的Fan票申请失败',
         stepSixRest: '重新申请',
+    },
+    timeline: {
+        timeline: '动态时间轴'
+    },
+    // setting system page
+    settingSystem: {
+        clearCache: '一键清除缓存',
+        helpAndSupport: '帮助和支持',
+        downloadAllArticle: '下载我的所有文章（zip）'
     }
 };
