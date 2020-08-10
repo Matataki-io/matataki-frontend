@@ -36,7 +36,7 @@ export default {
   created() {
     clearTimeout(this.timer)
     this.timer = setTimeout(() => {
-      this.$router.push('/')
+      // this.$router.push('/')
     }, 3000)
   }
 }
