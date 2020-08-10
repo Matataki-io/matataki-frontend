@@ -953,8 +953,8 @@ export default {
     },
     // setting system page
     settingSystem: {
-        clearCache: '一键清除缓存',
-        helpAndSupport: '帮助和支持',
-        downloadAllArticle: '下载我的所有文章（zip）'
+        clearCache: 'Clear Cache',
+        helpAndSupport: 'Help And Support',
+        downloadAllArticle: 'Download All Article (zip)'
     }
 };
