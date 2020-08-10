@@ -26,7 +26,7 @@
           :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
           class="save-draft"
         >
-          草稿
+          {{ $t('publish.draft') }}
         </router-link>
         <div
           class="import-button"
@@ -79,7 +79,7 @@
               :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
               class="draft-save-draft"
             >
-              草稿
+              {{ $t('publish.draft') }}
             </router-link>
           </div>
   
@@ -92,7 +92,7 @@
               :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
               class="draft-save-draft"
             >
-              草稿
+              {{ $t('publish.draft') }}
             </router-link>
           </div>
         </mavon-editor>

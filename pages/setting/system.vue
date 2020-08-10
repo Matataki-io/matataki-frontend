@@ -18,7 +18,7 @@
           icon="el-icon-delete"
           @click="clearCache"
         >
-          {{ $t('setting.clearCache') }}
+          {{ $t('settingSystem.clearCache') }}
         </el-button>
       </div>
 
@@ -28,7 +28,7 @@
           target="_blank"
           href="https://www.yuque.com/matataki"
         >
-          {{ $t('setting.helpAndSupport') }}
+          {{ $t('settingSystem.helpAndSupport') }}
         </a>
       </div>
       <div class="list">
@@ -37,7 +37,7 @@
           target="_blank"
           :href="downloaderUrl"
         >
-          {{ $t('setting.downloadAllArticle') }}
+          {{ $t('settingSystem.downloadAllArticle') }}
         </a>
       </div>
     </template>

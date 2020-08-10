@@ -377,6 +377,7 @@ export default {
         language: '中文/English'
     },
     publish: {
+        draft: '草稿',
         editorText: 'article',
         editorTextArticlePublic: 'publish',
         editorTextArticleEditor: 'edit article',
@@ -950,9 +951,8 @@ export default {
     timeline: {
         timeline: '动态时间轴'
     },
-    // setting page
-    setting: {
-        // system
+    // setting system page
+    settingSystem: {
         clearCache: '一键清除缓存',
         helpAndSupport: '帮助和支持',
         downloadAllArticle: '下载我的所有文章（zip）'
