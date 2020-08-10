@@ -352,7 +352,7 @@ export default {
         ofFanCircle: '的Fan圈',
         buyFanTickets: '购买Fan票',
         hotTag: '热门标签',
-        viewAll: '查看全部'
+        viewAll: '查看全部',
     },
     sidebar: {
         article: '篇',
@@ -946,9 +946,11 @@ export default {
         stepFour1: '审核结果将会在5个工作日内通过邮件发送',
         stepFive: '您的Fan票申请已经成功',
         stepSix: '您的Fan票申请失败',
-        stepSixRest: '重新申请'
+        stepSixRest: '重新申请',
     },
-    timeline: { timeline: '动态时间轴' },
+    timeline: {
+        timeline: '动态时间轴'
+    },
     // setting system page
     settingSystem: {
         clearCache: '一键清除缓存',
