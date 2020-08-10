@@ -82,7 +82,19 @@ export default {
           activeTag = this.tags[i].id
         else break
       }
-      this.activeTag = activeTag
+
+      // 判断是否滚到底部 底部取最后一个tag即可
+      let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+
+      // 允许偏差80px
+      if (clientHeight + scrollTop >= scrollHeight - 80) {
+        this.activeTag = this.tags[this.tags.length - 1].id
+      } else {
+        this.activeTag = activeTag
+      }
+
     }
   }
 }

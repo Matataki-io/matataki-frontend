@@ -128,7 +128,7 @@ export default {
   },
   // components
   header: {
-    newArticle: '创作文章'
+    newArticle: '写文章'
   },
   auth: {
     eosWallet: 'EOS钱包',

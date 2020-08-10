@@ -128,7 +128,7 @@ export default {
         passwordChangeFailed: 'Password change failed'
     },
     // components
-    header: { newArticle: '创作文章' },
+    header: { newArticle: '写文章' },
     auth: {
         eosWallet: 'EOS wallet',
         ontWallet: 'ONT wallet',
