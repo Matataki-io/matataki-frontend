@@ -105,6 +105,7 @@ export default {
         'exchange_removeliquidity': '删除流动金',
         'reward_article': '打赏文章',
         'pay_article': '支付文章',
+        'direct_trade': '直通车交易'
       }
 
       return list[type] || '其他'
