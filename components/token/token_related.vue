@@ -102,7 +102,7 @@ export default {
           }
         },
         {
-          title: '需持币',
+          title: '需持票',
           apiUrl: 'minetokenRelated',
           params: {
             filter: 1

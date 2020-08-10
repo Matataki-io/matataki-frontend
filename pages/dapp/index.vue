@@ -1,6 +1,6 @@
 <template>
   <div class="dapp">
-    <el-carousel trigger="click" height="240px" class="swipe">
+    <el-carousel trigger="click" height="240px" class="swipe-dapp">
       <el-carousel-item>
         <div class="dapp-head">
           <div class="head-text">
@@ -198,7 +198,7 @@ export default {
   width: 100%;
   margin: 0 auto 96px;
 }
-.swipe {
+.swipe-dapp {
   margin: 40px 20px 0 20px;
 }
 .crypto-hero {
