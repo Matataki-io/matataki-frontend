@@ -18,7 +18,7 @@
             <div>
               <a
                 class="help-link"
-                href="https://www.matataki.io/p/977"
+                href="https://www.yuque.com/matataki/matataki/hgc2e6"
                 target="_blank"
               >{{ $t('token.whatIsAFanTicket') }}</a>
             </div>
