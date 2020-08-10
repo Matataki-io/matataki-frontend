@@ -8,7 +8,7 @@
       <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
         {{ $t('postminetoken.feedback') }}<svg-icon icon-class="arrow" class="icon" />
       </a>
-      <a href="javascript:;" class="f-btn next" @click="done">{{ $t('postminetoken.define') }</a>
+      <a href="javascript:;" class="f-btn next" @click="done">{{ $t('postminetoken.define') }}</a>
     </div>
   </div>
 </template>
