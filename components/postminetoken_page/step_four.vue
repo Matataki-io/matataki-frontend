@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <img src="@/assets/img/application_complete.png" alt="done" class="image">
-    <p class="text">您的Fan票申请已经成功提交！</p>
-    <p class="text">审核结果将会在5个工作日内通过邮件发送</p>
+    <p class="text">{{ $t('postminetoken.stepFour') }}</p>
+    <p class="text">{{ $t('postminetoken.stepFour1') }}</p>
 
     <div class="token-footer">  
       <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
-        任何反馈<svg-icon icon-class="arrow" class="icon" />
+        {{ $t('postminetoken.feedback') }}<svg-icon icon-class="arrow" class="icon" />
       </a>
-      <a href="javascript:;" class="f-btn next" @click="done">确定</a>
+      <a href="javascript:;" class="f-btn next" @click="done">{{ $t('postminetoken.define') }}</a>
     </div>
   </div>
 </template>
@@ -71,11 +71,15 @@ export default {
       color: rgba(255, 255, 255, 1);
       border: 1px solid rgba(250, 100, 0, 1);
     }
-    &.prev {
-      background-color: #fff;
-      border: 1px solid rgba(250, 100, 0, 1);
-      color: rgba(250, 100, 0, 1);
-      margin-right: 20px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .token-footer {
+    margin-top: 70px;
+    .f-btn {
+      width: 100%;
+      margin: 10px 0 0 0;
     }
   }
 }

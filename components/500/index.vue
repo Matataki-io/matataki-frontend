@@ -82,6 +82,7 @@ export default {
     left: -20px;
     width: 435px;
     height: 210px;
+    max-width: 100%;
     background-image: url("../../assets/img/404/wall-1.png");
     background-size: 100%;
     background-repeat: no-repeat;
@@ -93,7 +94,8 @@ export default {
     z-index: 999;
     display: block;
     margin: 0 auto 80px;
-    transform: scale(1.8);
+    width: 400px;
+    max-width: 90%;
 }
 .info{
     position: relative;
@@ -118,5 +120,6 @@ export default {
     letter-spacing: 1px;
     font-size: 16px;
 }
+
 </style>
 

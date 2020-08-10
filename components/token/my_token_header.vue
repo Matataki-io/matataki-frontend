@@ -7,7 +7,7 @@
   >
     <div>
       <c-token-popover :token-id="Number(tokenData.id)">
-        <avatar :src="cover" size="60px" />
+        <c-avatar :src="cover" class="avatar" />
       </c-token-popover>
     </div>
     <div class="card-info">
@@ -32,9 +32,11 @@
         :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
         class="fl ac"
       >
-        <avatar
+        <c-avatar
           :src="avatar"
-          size="30px"
+          :recommend-author="user.is_recommend === 1"
+          :token-user="!!tokenInfo.id"
+          :level-token="1"
         />
         <span class="card-username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
       </router-link>
@@ -44,16 +46,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import avatar from '@/components/avatar/index.vue'
 export default {
-  components: {
-    avatar
-  },
   data() {
     return {
       tokenData: {},
       tokenUser: false,
-      avatar: ''
+      avatar: '',
+      user: Object.create(null), // 用户信息 
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
@@ -66,14 +66,16 @@ export default {
     isLogined(newState) {
       if (newState) {
         this.tokenUserId()
-        this.getAvatar()
+        this.getUserInfo()
+        this.getTokenUser(this.currentUserInfo.id)
       }
     }
   },
   created() {
     if (this.isLogined) {
       this.tokenUserId()
-      this.getAvatar()
+      this.getUserInfo()
+      this.getTokenUser(this.currentUserInfo.id)
     }
   },
   methods: {
@@ -89,15 +91,34 @@ export default {
         })
         .catch(err => console.log('get token user error', err))
     },
-    async getAvatar() {
-      const { avatar } = await this.getCurrentUser()
-      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
-    }
+    async getUserInfo() {
+      try {
+        const result = await this.getCurrentUser()
+        const { avatar } = result
+
+        this.user = result
+
+        if (avatar) this.avatar = this.$ossProcess(avatar, { h: 90 })
+      } catch (e) {
+        console.log('getCurrentUser error: ', e)
+      }
+    },
+    async getTokenUser(id) {
+      // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
+    },
   }
 }
 </script>
 
 <style scoped lang="less">
+.avatar {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+}
 .token-card {
   width: 100%;
   margin: 20px auto 20px;

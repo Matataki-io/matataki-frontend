@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <img src="@/assets/img/application_complete.png" alt="done" class="image">
-    <p class="text">您的Fan票申请已经成功</p>
-    <a href="javascript:;" class="f-btn" @click="done">确定</a>
+    <p class="text">{{ $t('postminetoken.stepFive') }}</p>
+    <a href="javascript:;" class="f-btn" @click="done">{{ $t('postminetoken.define') }}</a>
   </div>
 </template>
 
@@ -31,7 +31,6 @@ export default {
   display: block;
 }
 
-
 .f-btn {
   width: 300px;
   height: 40px;
@@ -45,5 +44,15 @@ export default {
   border: 1px solid rgba(250, 100, 0, 1);
   margin: 40px auto 0;
   display: block;
+}
+
+@media screen and (max-width: 540px) {
+  .image {
+    margin-top: 110px;
+  }
+  .f-btn {
+    width: 100%;
+    margin-top: 110px;
+  }
 }
 </style>

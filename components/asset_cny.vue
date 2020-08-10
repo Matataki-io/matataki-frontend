@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="assets">
-      <span>余额 ¥</span>
+      <span>{{ $t('balance') }} ¥</span>
     </div>
     <div class="total">
       <span>{{ playerincome }}</span>
       <el-button v-if="isShowTransfer" size="small" @click="giftDialogShow = true">
-        转账
+        {{ $t('transferMoney') }}
       </el-button>
     </div>
     <div class="line" />

@@ -136,8 +136,29 @@
       <historyIssued :minetoken-token="minetokenToken" />
     </div>
 
+    <!-- 历史收益 -->
+    <div v-if="active === 5" class="dashboard-block">
+      <div class="dashboard-block-head">
+        <h4>
+          历史收益
+        </h4>
+        <div class="chart-period">
+          <el-radio v-model="dataList[5].period" label="all">
+            全部
+          </el-radio>
+          <el-radio v-model="dataList[5].period" label="30d">
+            30天
+          </el-radio>
+        </div>
+      </div>
+      <historyIncome
+        :minetoken-token="minetokenToken"
+        :period="dataList[5].period"
+      />
+    </div>
+
     <!-- 不支持 -->
-    <div v-if="active === 5 || active === 6 || active === 7" class="dashboard-block">
+    <div v-if="active === 6 || active === 7" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
           {{ dataList[active].name }}
@@ -162,6 +183,7 @@ import historyLiquidity from './line_chart/history_liquidity'
 import historyIssued from './line_chart/history_issued'
 import historyAmount from './line_chart/history_amount'
 import historyVolume from './line_chart/history_volume'
+import historyIncome from './line_chart/history_income'
 
 export default {
   components: {
@@ -172,6 +194,7 @@ export default {
     historyIssued,
     historyAmount,
     historyVolume,
+    historyIncome,
     dataCard
   },
   props: {
@@ -253,7 +276,8 @@ export default {
           value: 0,
           float: 0,
           openChart: false,
-          permanent: false
+          permanent: false,
+          period: 'all'
         },
         {
           name: '持币者',

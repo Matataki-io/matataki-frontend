@@ -102,7 +102,7 @@ export default {
     assetType() {
       // type='withdraw'：0 待处理 1已转账待确认 2成功 3失败， 4审核 5审核拒绝
       // type=其他：只有2，表示成功
-      const { status, type, from_platform, to_platform } = this.data
+      const { status, type, from_platform, to_platform, memo } = this.data
       const switchStatus = {
         0: this.$t('assetCard.0'),
         1: this.$t('assetCard.1'),
@@ -143,6 +143,9 @@ export default {
 
       if (from === 'cny' || to === 'cny') {
         return '交易'
+      }
+      if (memo === 'direct_trade') {
+        return '直通车交易'
       }
       return switchType[type]
     },
