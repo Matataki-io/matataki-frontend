@@ -311,9 +311,9 @@ export default {
         stageDes32: '打造区块链永存知识数据库'
     },
     home: {
-        creation: '发现',
-        share: '分享',
-        timeline: '动态',
+        creation: 'Find',
+        share: 'Share',
+        timeline: 'Timeline',
         fanTicket: 'Fan票',
         signOut: '登出账户',
         signIn: '立即登录',
