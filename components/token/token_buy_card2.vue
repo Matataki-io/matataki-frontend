@@ -43,7 +43,7 @@
               <div v-if="isDirectTrade" class="market-info">
                 <span>价格：{{ market.price }} CNY</span>
                 <span>剩余：{{ market.balance }} {{ token.symbol }}</span><span v-if="NoMarket" class="warn-tip">（流动性不足）</span>
-                <span>已售出：{{ market.totalAmount - market.balance }} {{ token.symbol }}</span>
+                <span>已售出：{{ market.sellAmount }} {{ token.symbol }}</span>
               </div>
               <div v-if="isUniswap" class="market-info">
                 <!-- <span>价格：0 CNY</span> -->
@@ -115,7 +115,8 @@ export default {
       market: {
         price: 0,
         totalAmount: 0,
-        balance: 0
+        balance: 0,
+        sellAmount: 0
       },
       NoMarket: false
     }
@@ -174,6 +175,7 @@ export default {
             price: this.$utils.fromDecimal(market.price),
             totalAmount: this.$utils.fromDecimal(market.amount),
             balance: this.$utils.fromDecimal(market.balance),
+            sellAmount: this.$utils.fromDecimal(market.amount - market.balance),
           }
         } else { // 尚未启动market
           this.NoMarket = true
