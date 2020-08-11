@@ -891,17 +891,17 @@ export default {
     // page
     postminetoken: {
         back: '返回Fan票',
-        feedback: '任何反馈',
+        feedback: 'Any Feedback',
         prev: '上一步',
-        next: '下一步',
-        submit: '提交申请',
-        define: '提交申请',
-        stepOne: '基础信息',
-        stepTwo: 'Fan票设置',
-        stepThree: '提交申请',
-        headTitle: '免费发行Fan票',
-        headHelp: 'Fan票申请帮助文档',
-        stepOneTitle: '步骤 1：完善基础信息',
+        next: 'Next step',
+        submit: 'Submit',
+        define: 'submit application',
+        stepOne: 'basic infomation',
+        stepTwo: 'Token Setting',
+        stepThree: 'Submit',
+        headTitle: 'Issue Token for free',
+        headHelp: 'Documents of Token Application',
+        stepOneTitle: 'Step 1: Provide basic infomation',
         stepOneItem1: '完善个人信息：设置头像、昵称和简介',
         stepOneItem2: '至少在Matataki发布过一篇文章',
         stepOneItem3: '绑定邮箱账号，用于接收通知',
@@ -948,11 +948,11 @@ export default {
         stepSix: '您的Fan票申请失败',
         stepSixRest: '重新申请'
     },
-    timeline: { timeline: '动态时间轴' },
+    timeline: { timeline: 'Dynamic Timeline' },
     // setting system page
     settingSystem: {
-        clearCache: 'Clear Cache',
-        helpAndSupport: 'Help And Support',
-        downloadAllArticle: 'Download All Article (zip)'
+        clearCache: 'Clear the cache',
+        helpAndSupport: 'Help and Support',
+        downloadAllArticle: 'Download all of my posts'
     }
 };
