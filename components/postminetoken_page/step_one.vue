@@ -1,36 +1,36 @@
 <template>
   <div class="token-content">
-    <p class="token-title">{{ $t('postminetoken.stepOneTitle') }}</p>
+    <p class="token-title">步骤 1：完善基础信息</p>
     <ul>
       <li>
-        1.  {{ $t('postminetoken.stepOneItem1') }}
+        1.  完善个人信息：设置头像、昵称和简介
         <img v-if="isCompleteInfo" src="@/assets/img/token_banner_fan_done.svg" alt="done">
         <router-link v-else :to="{ name: 'setting' }" target="_blank">
-          {{ $t('postminetoken.stepOneSetting') }}
+          立即设置
         </router-link>
       </li>
       <li>
-        2. {{ $t('postminetoken.stepOneItem2') }}
+        2. 至少在Matataki发布过一篇文章
         <img v-if="articleNumber > 0" src="@/assets/img/token_banner_fan_done.svg" alt="done">
         <router-link v-else :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }" target="_blank">
-          {{ $t('postminetoken.stepOnePublish') }}
+          立即发布
         </router-link>
       </li>
       <li>
-        3. {{ $t('postminetoken.stepOneItem3') }}
+        3. 绑定邮箱账号，用于接收通知
         <img v-if="bindEmail" src="@/assets/img/token_banner_fan_done.svg" alt="done">
         <router-link v-else :to="{ name: 'setting-account' }" target="_blank">
-          {{ $t('postminetoken.stepOneBuild') }}
+          立即绑定
         </router-link>
       </li>
     </ul>
-    <p class="token-remarks"> {{ $t('postminetoken.stepOneRemarks') }}</p>
+    <p class="token-remarks">在收到您的申请后，我们将会使用电子邮件与您联系。</p>
 
     <div class="token-footer">  
       <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
-        {{ $t('postminetoken.feedback') }}<svg-icon icon-class="arrow" class="icon" />
+        任何反馈<svg-icon icon-class="arrow" class="icon" />
       </a>
-      <a href="javascript:;" class="f-btn" @click="next">{{ $t('postminetoken.next') }}</a>
+      <a href="javascript:;" class="f-btn" @click="next">下一步</a>
     </div>
   </div>
 </template>
@@ -118,10 +118,9 @@ export default {
       line-height: 22px;
       padding: 0;
       margin: 20px 0;
-      word-break: keep-all;
       a {
         text-decoration: underline;
-        color: #fa6400;
+        color: #FA6400;
       }
       img {
         width: 20px;
@@ -142,9 +141,9 @@ export default {
   }
 }
 .token-title {
-  font-size: 16px;
-  color: rgba(0, 0, 0, 1);
-  line-height: 22px;
+  font-size:16px;
+  color:rgba(0,0,0,1);
+  line-height:22px;
   padding: 0;
   margin: 0;
 }
@@ -170,26 +169,16 @@ export default {
   margin-top: 200px;
   text-align: right;
   .f-btn {
-    width: 300px;
-    height: 40px;
-    background: rgba(250, 100, 0, 1);
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 1);
-    line-height: 40px;
+    width:300px;
+    height:40px;
+    background:rgba(250,100,0,1);
+    border-radius:8px;
+    font-size:16px;
+    font-weight:500;
+    color:rgba(255,255,255,1);
+    line-height:40px;
     display: inline-block;
     text-align: center;
-  }
-}
-
-@media screen and (max-width: 540px) {
-  .token-footer {
-    margin-top: 70px;
-    .f-btn {
-      width: 100%;
-      margin: 10px 0 0 0;
-    }
   }
 }
 </style>

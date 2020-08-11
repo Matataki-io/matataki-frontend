@@ -15,11 +15,7 @@
       <template slot-scope="scope">
         <n-link :to="{name: 'user-id', params: {id: scope.row.uid}}" class="invite-block avatar" target="_blank">
           <c-user-popover :user-id="Number(scope.row.uid)">
-            <c-avatar
-              :src="cover(scope.row.avatar)"
-              :recommend-author="scope.row.user_is_recommend === 1"
-              :token-user="scope.row.user_is_token === 1"
-            />
+            <avatar :src="cover(scope.row.avatar)" size="30px" />
           </c-user-popover>
           <span class="username">{{ scope.row.nickname || scope.row.username }}</span>
         </n-link>
@@ -43,8 +39,12 @@
 
 <script>
 import { precision } from '@/utils/precisionConversion'
+import avatar from '@/components/avatar/index.vue'
 
 export default {
+  components: {
+    avatar
+  },
   props: {
     card: {
       type: Array,
@@ -81,7 +81,6 @@ export default {
 .invite-block.avatar {
   display: flex;
   align-items: center;
-  padding: 2px 0;
 }
 .username {
   margin-left: 10px;

@@ -9,15 +9,17 @@
     @hide="hide"
   >
     <div v-loading="loading" class="popover">
-      <router-link :to="{name: 'user-id', params: { id: userId }}" target="_blank">
-        <c-avatar
+      <router-link class="avatar-popover" :to="{name: 'user-id', params: { id: userId }}" target="_blank">
+        <img
+          v-if="userAvatar"
           :src="userAvatar"
-          class="avatar-popover" 
-          :recommend-author="userInfo.is_recommend === 1"
-          :level="1"
-          :token-user="!!tokenInfo.id"
-          :level-token="1"
-        />
+          alt="avatar"
+        >
+        <img
+          v-else
+          :src="defaultAvatar"
+          alt="avatar"
+        >
       </router-link>
       <div class="username">
         <router-link :to="{name: 'user-id', params: { id: userId }}" target="_blank">
@@ -241,9 +243,20 @@ export default {
 .avatar-popover {
   width: 60px;
   height: 60px;
-  flex: 0 0 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
   margin: 0 auto;
   display: block;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #f1f1f1;
+  }
 }
 
 .popover {

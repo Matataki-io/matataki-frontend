@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped>
 .btn{
     font-size: 18px;
     font-weight: 300;
@@ -84,7 +84,6 @@ export default {
     left: -20px;
     width: 435px;
     height: 210px;
-    max-width: 100%;
     background-image: url("../../assets/img/404/wall-1.png");
     background-size: 100%;
     background-repeat: no-repeat;
@@ -201,19 +200,5 @@ export default {
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 16px;
-}
-
-@media screen and (max-width: 800px) {
-  .number .four,
-  .number .zero {
-    width: 100px;
-    height: 130px;
-  }
-  .number .zero .nail {
-    width: 20px;
-    height: 40px;
-    top: 9px;
-    left: 44px;
-  }
 }
 </style>

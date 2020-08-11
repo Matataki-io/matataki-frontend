@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ $route.params.redirect }}
     <LoginIndex 
       :value="isLogin"
       :single="true"
@@ -21,8 +22,7 @@ export default {
   },
   data () {
     return {
-      isLogin: true,
-      url: process.env.VUE_APP_DEVELOPER
+      isLogin: true
     }
   },
   computed: {
@@ -34,8 +34,8 @@ export default {
       if (val.id !== null) {
         this.isLogin = false
         let cookie = getCookie('ACCESS_TOKEN')
-        cookie = '/type=token&token=' + cookie
-        window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
+        cookie = '&cookies=' + cookie
+        window.location = decodeURIComponent(this.$route.params.redirect + cookie)
       }
     }
   },
@@ -46,15 +46,9 @@ export default {
     if (this.currentUserInfo.id !== null) {
       this.isLogin = false
       let cookie = getCookie('ACCESS_TOKEN')
-      cookie = '/type=token?&token=' + cookie
-      window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
+      cookie = '&cookies=' + cookie
+      window.location = decodeURIComponent(this.$route.params.redirect + cookie)
     }
   }
 }
 </script>
-
-<style lang="less">
-.el-dialog__headerbtn {
-  display: none;
-}
-</style>

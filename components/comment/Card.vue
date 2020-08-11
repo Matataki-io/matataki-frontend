@@ -6,8 +6,9 @@
         class="comment-avatar"
         target="_blank"
       >
-        <c-avatar
+        <avatar
           :src="avatar"
+          size="30px"
         />
       </n-link>
       <div class="comment-head">
@@ -33,9 +34,13 @@
 
 <script>
 import { precision } from '@/utils/precisionConversion'
+import avatar from '@/components/avatar/index'
 
 export default {
   name: 'CommentCard',
+  components: {
+    avatar
+  },
   props: {
     comment: {
       type: Object,

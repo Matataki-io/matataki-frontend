@@ -3,11 +3,7 @@
     <!-- head -->
     <section class="card-head">
       <c-user-popover :user-id="Number(card.uid)">
-        <c-avatar
-          :src="avatarImg"
-          :recommend-author="card.user_is_recommend === 1"
-          :token-user="card.user_is_token === 1"
-        />
+        <c-avatar :src="avatarImg" />
       </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>
       <span class="card-description">发布了新作品</span>

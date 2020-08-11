@@ -1,20 +1,48 @@
 .overlay-box {
-  width: 80px;
-  height: 80px;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid #e9e9e9;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  &:hover,
+  &:focus {
+    .desc {
+      opacity: 1;
+    }
+  }
+
+  .desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
   }
 }
 
-.related-btn {
-  margin-left: 10px;
-  cursor: pointer;
+.img-cancel {
+  display: none;
+  position: absolute;
+}
+
+.img-hover {
+  width: 5rem;
+  height: 5rem;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.img-hover:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .editor {

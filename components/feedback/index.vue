@@ -4,7 +4,7 @@
       v-if="show"
       class="item"
       effect="dark"
-      :content="$t('anyFeedback')"
+      content="任何反馈"
       placement="left"
     >
       <!-- 84254 -->
@@ -12,7 +12,7 @@
         class="feedback"
         href="http://andoromeda.mikecrm.com/a93Le8z"
         target="_blank"
-        :title="$t('anyFeedback')"
+        title="反馈"
       >
         <svg-icon
           class="icon-feedback"

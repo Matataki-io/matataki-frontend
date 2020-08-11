@@ -1,31 +1,13 @@
 <template>
   <div class="dapp">
-    <el-carousel trigger="click" height="240px" class="swipe-dapp">
-      <el-carousel-item>
-        <div class="dapp-head">
-          <div class="head-text">
-            <p class="head-description">一个基于Fan票的简单空投工具</p>
-            <p class="head-title">Matataki Airdrop</p>
-            <a href="https://www.matataki-airdrop.xyz/" target="_blank" class="head-btn">访问网站</a>
-          </div>
-          <img class="computer" src="@/assets/img/dapp_head_computer.png" alt="computer">
-        </div>
-      </el-carousel-item>
-      <el-carousel-item>
-        <div class="crypto-hero">
-          <p>一个基于Fan票的水浒集卡游戏</p>
-          <img src="@/assets/img/dapp_cryptohero_text.png" alt="">
-          <a href="https://dao-hero.netlify.app" target="_blank">立即游玩</a>
-        </div>
-      </el-carousel-item>
-      <el-carousel-item>
-        <div class="crypto-meet-up">
-          <p>一个基于Fan票的地理位置共享&订阅</p>
-          <h3>Crypto Meet Up</h3>
-          <a href="https://cryptomeetup.async.moe" target="_blank">访问网站</a>
-        </div>
-      </el-carousel-item>
-    </el-carousel>
+    <div class="dapp-head">
+      <div class="head-text">
+        <p class="head-description">一个基于Fan票的简单空投工具</p>
+        <p class="head-title">Matataki Airdrop</p>
+        <a href="https://www.matataki-airdrop.xyz/" target="_blank" class="head-btn">访问网站</a>
+      </div>
+      <img class="computer" src="@/assets/img/dapp_head_computer.png" alt="computer">
+    </div>
 
     <div v-for="(item, index) in list" :key="index" class="dapp-container">
       <h3>{{ item.title }}</h3>
@@ -69,7 +51,6 @@ import doc from '@/assets/img/dapp_list_doc.png'
 import input from '@/assets/img/dapp_list_input.png'
 import output from '@/assets/img/dapp_list_output.png'
 import developer from '@/assets/img/dapp_list_developer.png'
-import cryptohero from '@/assets/img/dapp_list_cryptohero.png'
 export default {
   data() {
     return {
@@ -84,6 +65,17 @@ export default {
               width: '128px',
               height: '128px',
               url: 'https://www.matataki.io/',
+              repo: 'https://github.com/Matataki-io/Matataki-FE',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Fan票交换事务所',
+              description: '基于Uniswap的Fan票交易工具',
+              img: exchange,
+              width: '168px',
+              height: '99px',
+              url: 'https://www.matataki.io/exchange/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: '访问网站',
               disabled: false
@@ -111,33 +103,6 @@ export default {
               disabled: false
             },
             {
-              title: '水浒英雄',
-              description: '基于Fan票的水浒集卡游戏',
-              img: cryptohero,
-              width: '148px',
-              height: '143px',
-              url: 'https://dao-hero.netlify.app/',
-              repo: 'https://github.com/cryptohero/cryptohero-erc20-frontend-ng',
-              btn: '访问网站',
-              disabled: false
-            },
-          ]
-        },
-        {
-          title: this.$t('tool'),
-          list: [
-            {
-              title: 'Fan票交换事务所',
-              description: '基于Uniswap的Fan票交易工具',
-              img: exchange,
-              width: '168px',
-              height: '99px',
-              url: 'https://www.matataki.io/exchange/',
-              repo: 'https://github.com/Matataki-io/Matataki-FE',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
               title: 'Fan票提现',
               description: '将Fan票提现到Metamask钱包',
               img: output,
@@ -160,7 +125,7 @@ export default {
           ]
         },
         {
-          title: this.$t('other'),
+          title: '其他',
           list: [
             {
               title: '开发文档',
@@ -198,141 +163,18 @@ export default {
   width: 100%;
   margin: 0 auto 96px;
 }
-.swipe-dapp {
-  margin: 40px 20px 0 20px;
-}
-.crypto-hero {
-  height: 240px;
-  background-image: url(../../assets/img/dapp_cryptohero_bc.png);
-  background-size: cover;
-  background-position: left;
-  background-repeat: no-repeat;
-  border-radius: 10px;
-  overflow: hidden;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  p {
-    font-size: 20px;
-    font-weight: 400;
-    color: rgba(51, 51, 51, 1);
-    line-height: 28px;
-    padding: 0;
-    margin: 0;
-  }
-  img {
-    width: 436px;
-    margin: 18px 0 26px;
-  }
-  a {
-    width: 160px;
-    height: 40px;
-    background: #f34c20;
-    border-radius: 20px;
-    font-size: 20px;
-    font-weight: 500;
-    color: #ffffff;
-    line-height: 40px;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-  }
-  @media screen and (max-width: 700px) {
-    p {
-      font-size: 16px;
-    }
-    img {
-      width: 260px;
-      margin: 10px 0 20px;
-    }
-    a {
-      width: 110px;
-      height: 34px;
-      border-radius: 3px;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 34px;
-    }
-  }
-}
 
-.crypto-meet-up {
-  height: 240px;
-  background-image: url(../../assets/img/dapp_cryptomeetup_bc.png);
-  background-size: cover;
-  background-position: left;
-  background-repeat: no-repeat;
-  border-radius: 10px;
-  overflow: hidden;
-  box-sizing: border-box;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 140px 0 0;
-
-  p {
-    font-size: 20px;
-    font-weight: 400;
-    color: rgba(178, 178, 178, 1);
-    line-height: 28px;
-    padding: 0;
-    margin: 0;
-  }
-  h3 {
-    font-size: 36px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 1);
-    line-height: 50px;
-    padding: 0;
-    margin: 5px 0 17px;
-  }
-  a {
-    width: 160px;
-    height: 40px;
-    background: rgba(21, 196, 255, 1);
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 1);
-    line-height: 40px;
-    text-align: center;
-  }
-  @media screen and (max-width: 700px) {
-    padding: 0;
-    align-items: center;
-    p {
-      font-size: 18px;
-      color: #fff;
-      text-shadow: 0 0 10px #000;
-    }
-    h3 {
-      font-size: 30px;
-      margin: 0px 0 10px;
-      text-shadow: 0 0 10px #000;
-    }
-    a {
-      width: 110px;
-      height: 34px;
-      border-radius: 3px;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 34px;
-    }
-  }
-}
 .dapp-head {
   height: 240px;
   background-image: url(../../assets/img/dapp_head_bc.png);
   background-size: cover;
   background-position: center;
+  background-color: #181352;
   background-repeat: no-repeat;
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
-  margin: 0;
+  margin: 40px 20px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -459,12 +301,12 @@ export default {
         margin: 0 10px;
         display: inline-block;
         text-align: center;
-        transition: all 0.2s;
+        transition: all .2s;
         &.github {
           padding-left: 8px;
           padding-right: 8px;
           color: #333;
-          border: 1px solid rgba(178, 178, 178, 1);
+          border:1px solid rgba(178,178,178,1)
         }
         &.disabled {
           border-color: rgba(241, 241, 241, 1);
@@ -481,8 +323,8 @@ export default {
           background: rgba(84, 45, 224, 1);
           color: #fff;
           &.github {
-            border-color: rgba(178, 178, 178, 1);
-            background-color: rgba(178, 178, 178, 1);
+            border-color: rgba(178,178,178,1);
+            background-color: rgba(178,178,178,1);
           }
         }
       }

@@ -67,10 +67,6 @@
             >
               <c-user-popover :user-id="Number(card.uid)">
                 <c-avatar
-                  :recommend-author="card.user_is_recommend === 1"
-                  :level="1"
-                  :token-user="card.user_is_token === 1"
-                  :level-token="1"
                   :src="avatarImg" 
                   class="avatar"
                 />
@@ -356,7 +352,8 @@ export default {
   overflow: hidden;
   width: 192px;
   flex: 0 0 192px;
-  padding: 10px 0;
+  // margin-top: 29px;
+  // margin-bottom: auto;
   margin: auto;
   overflow: hidden;
   text-align: center;

@@ -106,7 +106,6 @@
           :rows="3"
           placeholder="请写下想对作者说的话（选填）"
           size="small"
-          class="customize-input"
           maxlength="500"
           show-word-limit
         />

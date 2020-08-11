@@ -21,7 +21,7 @@
         <div v-if="isLogined && Number(userInfo.follows) > 0">
           <section class="head">
             <h3 class="head-title">
-              {{ $t('timeline.timeline') }}
+              动态时间轴
             </h3>
           </section>
           <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
@@ -62,7 +62,7 @@
               href="javascript:;"
               class="btn"
               @click="login"
-            >{{ $t('home.signIn') }}</a>
+            >立即登录</a>
           </div>
         </div>
       </div>

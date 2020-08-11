@@ -11,12 +11,7 @@
         <div @click.stop>
           <router-link v-if="card.action !== 'annouce' || card.object_type === 'collaborator'" :to="{name: 'user-id', params:{id: card.user_id}}">
             <c-user-popover :user-id="Number(card.user_id)">
-              <c-avatar
-                :src="avatar"
-                class="avatar"
-                :recommend-author="user.is_recommend === 1"
-                :token-user="card.user_is_token === 1"
-              />
+              <c-avatar :src="avatar" class="avatar" />
             </c-user-popover>
             <div v-if="card.total > 1" class="round-silhouette" />
           </router-link>

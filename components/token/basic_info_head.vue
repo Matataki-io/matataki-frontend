@@ -18,7 +18,7 @@
             <div>
               <a
                 class="help-link"
-                href="https://www.yuque.com/matataki/matataki/hgc2e6"
+                href="https://www.matataki.io/p/977"
                 target="_blank"
               >{{ $t('token.whatIsAFanTicket') }}</a>
             </div>
@@ -109,7 +109,7 @@
         </el-button>
         <el-button
           v-if="isMyToken"
-          class="link-btn black"
+          class="link-btn"
           size="small"
           @click="switchDisplayAngle"
         >
@@ -288,16 +288,6 @@ export default {
     padding: 7px 7px;
     font-size: 14px;
     border-radius: 6px;
-    &.black {
-      background: #000;
-      color: #fff;
-      border-color: #000;
-      &:active,
-      &:focus,
-      &:hover {
-        border-color: #000;
-      }
-    }
   }
 }
 

@@ -4,7 +4,7 @@
     <template slot="main">
       <div class="bookmark-container">
         <h2 class="tag-title">
-          {{ $t('home.navArticle') }}
+          文章
         </h2>
         <div
           slot="list"

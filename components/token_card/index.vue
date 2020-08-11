@@ -23,7 +23,7 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>交易所价格:</span> {{ unitPrice }} CNY
+            <span>{{ $t('token.unitPrice') }}:</span> {{ unitPrice }} CNY
           </p>
         </div>
         <div class="card-data-column">
@@ -47,11 +47,7 @@
       <div class="card-user">
         <div class="fl ac user" @click.stop="$router.push({name: 'user-id', params: { id: card.uid }})">
           <c-user-popover :user-id="Number(card.uid)">
-            <c-avatar
-              :src="coverUser"
-              :recommend-author="card.user_is_recommend === 1"
-              :token-user="card.user_is_token === 1"
-            />
+            <c-avatar :src="coverUser" size="30px" />
           </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
         </div>

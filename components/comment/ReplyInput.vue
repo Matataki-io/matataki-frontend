@@ -1,12 +1,9 @@
 <template>
   <div class="fl comment-input">
-    <c-avatar
+    <avatar
       :src="avatarSrc"
+      size="40px"
       class="avatar"
-      :recommend-author="user.is_recommend === 1"
-      :level="1"
-      :token-user="!!tokenInfo.id"
-      :level-token="1"
     />
     <div class="comment-container">
       <el-input
@@ -17,7 +14,6 @@
         type="textarea"
         maxlength="500"
         show-word-limit
-        class="customize-input"
         @keyup.native="postCommentKeyup"
       />
     </div>
@@ -39,7 +35,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import avatar from '@/components/avatar/index'
+
 export default {
+  components: {
+    avatar
+  },
   props: {
     replyUsername: {
       type: String,
@@ -53,9 +54,7 @@ export default {
   data() {
     return {
       comment: '',
-      avatarSrc: '',
-      user: Object.create(null), // 用户信息
-      tokenInfo: Object.create(null), // token info
+      avatarSrc: ''
     }
   },
   computed: {
@@ -68,34 +67,17 @@ export default {
     isLogined(val) { // 监听登陆 重新获取头像
       // 切换文章时重置评论框内容
       this.comment = ''
-      if (val && this.currentUserInfo.id) {
-        this.getUser(this.currentUserInfo.id)
-        this.getTokenUser(this.currentUserInfo.id)
-      }
+      if (val && this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
     }
   },
   mounted() {
-    if (this.currentUserInfo.id) {
-      this.getUser(this.currentUserInfo.id)
-      this.getTokenUser(this.currentUserInfo.id)
-    }
+    if (this.currentUserInfo.id) this.getUser(this.currentUserInfo.id)
   },
   methods: {
     async getUser(id) { // 获取用户头像
       await this.$API.getUser(id).then(res => {
-        if (res.code === 0) {
-
-          this.user = res.data
-
-          this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
-        }
+        if (res.code === 0) this.avatarSrc = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
       })
-    },
-    async getTokenUser(id) {
-      // 获取是否有 token
-      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
-      // not token, data is null
-      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
     islogin() {
       if (!this.isLogined) {
@@ -148,16 +130,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.avatar {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  /deep/ .recommend-icon {
-    right: -10px !important; 
-    bottom: -5px !important; 
-    width: 26px !important; 
-  }
-}
 .comment-submit {
   /* width: 70px;
   height: 64px;
@@ -174,7 +146,7 @@ export default {
   cursor: pointer;
   background-color: #000;
   border: 1px solid #000;
-  transition: 0.1s;
+  transition: .1s;
   user-select: none;
   outline: none;
   margin-left: 10px;
@@ -198,10 +170,10 @@ export default {
     width: 100px;
   }
   .btn-des {
-    font-size: 14px;
-    font-weight: 400;
-    color: #9a9a9a;
-    line-height: 20px;
+    font-size:14px;
+    font-weight:400;
+    color:#9a9a9a;
+    line-height:20px;
     margin-right: 10px;
   }
   .btn {
@@ -220,7 +192,7 @@ export default {
   // min-height: 150px;
 }
 // 小于860
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 860px){
   .avatar {
     display: none;
   }

@@ -2,11 +2,7 @@
   <div class="card">
     <c-user-popover :user-id="Number(card.from_uid)">
       <router-link :to="{name: 'user-id', params: { id: card.from_uid }}" target="_blank">
-        <c-avatar
-          :src="cover"
-          :recommend-author="card.user_is_recommend === 1" 
-          :token-user="card.user_is_token === 1"
-        />
+        <c-avatar :src="cover" />
       </router-link>
     </c-user-popover>
     <div class="card-min">

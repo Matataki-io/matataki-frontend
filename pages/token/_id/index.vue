@@ -11,7 +11,6 @@
       @display-angle="setDisplayAngle"
     />
     <tokenBuyCard2 
-      v-if="clientVisible"
       :token="minetokenToken"
       :current-pool-size="currentPoolSize"
     />
@@ -20,12 +19,12 @@
       <!-- 左侧卡片 -->
       <el-col :span="17">
         <introduction v-if="clientVisible" :minetoken-token="minetokenToken" />
-        <!-- <tokenBuyCard
+        <tokenBuyCard
           v-if="clientVisible"
           class="buy-card1"
           :token="minetokenToken"
           :current-pool-size="currentPoolSize"
-        /> -->
+        />
         <management v-if="creatorVisible" />
         <dashboard
           :minetoken-token="minetokenToken"
@@ -37,6 +36,11 @@
       </el-col>
       <!-- 右侧卡片 -->
       <el-col v-show="clientVisible" :span="7">
+        <!-- <tokenBuyCard
+          class="buy-card2"
+          :token="minetokenToken"
+          :current-pool-size="currentPoolSize"
+        /> -->
         <tokenJoinFandom
           :token-symbol="minetokenToken.symbol || ''"
           :token-id="Number($route.params.id)"
@@ -71,6 +75,7 @@ import management from '@/components/token/management'
 import dashboard from '@/components/token/dashboard'
 import datasheets from '@/components/token/datasheets'
 // 右侧
+import tokenBuyCard from '@/components/token/token_buy_card'
 import tokenBuyCard2 from '@/components/token/token_buy_card2'
 import tokenJoinFandom from '@/components/token/token_join_fandom'
 import relatedWebsites from '@/components/token/related_websites'
@@ -89,6 +94,7 @@ export default {
     dashboard,
     datasheets,
     // 右侧
+    tokenBuyCard,
     tokenBuyCard2,
     tokenJoinFandom,
     relatedWebsites,

@@ -129,7 +129,7 @@
         <el-input
           v-model="form.introduction"
           :rows="6"
-          class="input customize-input"
+          class="input"
           type="textarea"
           maxlength="1000"
           show-word-limit

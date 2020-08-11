@@ -289,13 +289,6 @@ export const xssImageProcess = html => {
         let url = xss.friendlyAttrValue(value)
 
         if (isSelfOss(url)) {
-
-          // gif 不处理
-          let suffix = url.substring(url.lastIndexOf('.') + 1);
-          if (suffix.includes('gif')) {
-            return `${name}='${url}' alt='${url}'`
-          }
-
           // 是自己的oss
           if (isSupportWebp) {
             // 如果支持webp

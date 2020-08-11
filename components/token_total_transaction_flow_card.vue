@@ -47,7 +47,7 @@
       :width="$utils.clientWidth() >= 768 ? '160' : '' "
     >
       <template slot-scope="scope">
-        {{ formatType(scope.row.from_uid, scope.row.type) }}
+        {{ formatType(scope.row.type) }}
       </template>
     </el-table-column>
     <el-table-column
@@ -73,8 +73,6 @@
   </el-table>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-
 import txHash from '@/components/tx_hash_popover/index'
 import { precision } from '@/utils/precisionConversion'
 export default {
@@ -92,19 +90,13 @@ export default {
   
     }
   },
-  computed: {
-    ...mapGetters(['currentUserInfo']),
-  },
   methods: {
     // 格式化 amount
     formatPrecision (amount) {
       return precision(amount, 'CNY', 4)
     },
     // 格式化类型
-    formatType(from_uid, type) {
-      if (type === 'direct_trade' && this.currentUserInfo.id === from_uid) {
-        return '直通车转入'
-      }
+    formatType(type) {
       let list = {
         'mint': '增发',
         'transfer': '转账',
@@ -113,7 +105,6 @@ export default {
         'exchange_removeliquidity': '删除流动金',
         'reward_article': '打赏文章',
         'pay_article': '支付文章',
-        'direct_trade': '直通车交易'
       }
 
       return list[type] || '其他'

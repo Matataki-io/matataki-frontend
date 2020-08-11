@@ -40,7 +40,6 @@
               :placeholder="$t('rule.username')"
               maxlength="50"
               show-word-limit
-              class="customize-input"
               clearable
             />
           </div>
@@ -52,7 +51,6 @@
               v-model="email"
               :placeholder="$t('rule.loginEmailMessage')"
               show-word-limit
-              class="customize-input"
               clearable
             />
           </div>
@@ -67,7 +65,6 @@
               type="textarea"
               maxlength="200"
               show-word-limit
-              class="customize-input"
             />
           </div>
         </div>
@@ -350,17 +347,15 @@ export default {
       console.log(res)
       this.imgUploadDone += Date.now()
       this.refreshUser({ id: this.currentUserInfo.id })
-      this.getMyUserData(true)
+      this.getMyUserData()
     },
     // 获取用户信息 - 转让状态
-    async getMyUserData(updateAvatarOnly = false) {
+    async getMyUserData() {
       const setUser = data => {
         // console.log(data)
-        if (!updateAvatarOnly) {
-          this.userData = data
-          this.username = data.nickname || data.username
-          this.introduction = data.introduction || ''
-        }
+        this.userData = data
+        this.username = data.nickname || data.username
+        this.introduction = data.introduction || ''
         this.setAvatarImage(data.avatar)
       }
       const setLinks = data => {

@@ -157,9 +157,7 @@ export default {
             this.form.input = ''
           }
         } else {
-          // '没有交易对-->Fan票流动性不足，无法交易'
-          let message = res.code === 10807 ? 'Fan票流动性不足，无法交易' : res.message
-          this.$message({ showClose: true, message: message, type: 'error' })
+          this.$message({ showClose: true, message: res.message, type: 'error' })
           this.form.input = ''
         }
       })

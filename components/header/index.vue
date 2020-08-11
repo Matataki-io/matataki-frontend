@@ -116,14 +116,18 @@
           />
         </el-tooltip> -->
 
-        <el-dropdown v-if="isLogined" class="user-menu">
+        <el-dropdown
+          v-if="isLogined"
+          class="user-menu"
+        >
           <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
-          <c-avatar
-            :src="avatar"
-            :recommend-author="user.is_recommend === 1" 
-            :token-user="!!tokenInfo.id"
-            :level-token="1"
-          />
+          <div class="user-avatar">
+            <img
+              v-if="avatar"
+              :src="avatar"
+              alt="user avatar"
+            >
+          </div>
           <el-dropdown-menu
             slot="dropdown"
             class="user-dorpdown"
@@ -167,7 +171,7 @@
             class="write-icon"
             icon-class="write"
           />
-          {{ $t('header.newArticle') }}
+          写文章
         </a>
         <!-- <language class="language" /> -->
       </div>
@@ -217,13 +221,7 @@
             <li class="menu-ul-item">
               <n-link :to="{name: 'user-id', params:{id: currentUserInfo.id}}">
                 <div class="fl ac">
-                  <c-avatar
-                    :src="avatar"
-                    class="menu-avatar"
-                    :recommend-author="user.is_recommend === 1" 
-                    :token-user="!!tokenInfo.id"
-                    :level-token="1"
-                  />
+                  <c-avatar :src="avatar" class="menu-avatar" />
                   <span class="username">{{ currentUserInfo.nickname || currentUserInfo.name }}</span>
                 </div>
               </n-link>
@@ -318,9 +316,7 @@ export default {
       searchInput: this.searchQueryVal,
       searchRecommendList: [],
       toggleMenu: false, // 菜单切换
-      notifyUnreadQuantity: 0,
-      user: Object.create(null), // 用户信息
-      tokenInfo: Object.create(null), // token info
+      notifyUnreadQuantity: 0
     }
   },
   computed: {
@@ -376,10 +372,7 @@ export default {
   },
   watch: {
     isLogined(newState) {
-      if (newState) {
-        this.refreshUser()
-        this.getTokenUser(this.currentUserInfo.id)
-      }
+      if (newState) this.refreshUser()
     },
     searchQueryVal(newVal) {
       this.searchInput = newVal
@@ -391,10 +384,7 @@ export default {
   },
   created() {
     const { isLogined, refreshUser } = this
-    if (isLogined) {
-      refreshUser()
-      this.getTokenUser(this.currentUserInfo.id)
-    }
+    if (isLogined) refreshUser()
   },
   mounted() {
     this.getRecommend()
@@ -416,17 +406,9 @@ export default {
       else this.login()
     },
     async refreshUser() {
-      try {
-        const result = await this.getCurrentUser()
-        const { avatar } = result
-
-        this.user = result
-
-        if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
-        await this.getNotifyUnreadQuantity()
-      } catch (e) {
-        console.log('refreshUser error: ',e)
-      }
+      const { avatar } = await this.getCurrentUser()
+      if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
+      await this.getNotifyUnreadQuantity()
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -518,16 +500,9 @@ export default {
           if (res.code === 0) this.searchRecommendList = res.data
         })
         .catch(err => { console.log(err) })
-    },
-    async getTokenUser(id) {
-    // 获取是否有 token
-      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
-      // not token, data is null
-      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
-    },
+    }
 
   }
-
 }
 </script>
 
@@ -905,6 +880,19 @@ export default {
   }
 }
 
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+  border: 1px solid #ddd;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
 
 .menu {
   cursor: pointer;

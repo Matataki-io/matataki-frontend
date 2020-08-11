@@ -164,17 +164,14 @@
                       {{ getPayToken.symbol }}
                     </template>
                   </div>
-                  <span>
-                    已持有：{{ payTokenBalance }} {{ getPayToken.symbol }}
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
-                      :content="$t('paidRead.purchaseHistory')"
-                      placement="left"
-                    >
-                      <svg-icon icon-class="anser" />
-                    </el-tooltip>
-                  </span>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="$t('paidRead.purchaseHistory')"
+                    placement="left"
+                  >
+                    <svg-icon icon-class="anser" />
+                  </el-tooltip>
                 </li>
                 <li
                   v-if="isTokenArticle"
@@ -197,16 +194,7 @@
                     </router-link>
                   </div>
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }} 
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
-                      content="只要满足持币条件随时可以查看全文"
-                      placement="left"
-                    >
-                      <svg-icon icon-class="anser" />
-                    </el-tooltip>
-                  </span>
+                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
                 </li>
               </ul>
             </p>
@@ -220,29 +208,21 @@
               v-if="!hasPaied"
               class="lock-bottom"
             >
-              <div class="btn-ccc">
-                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="$t('paidRead.tounlockThisArticle')"
-                  placement="top-end"
+              <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="$t('paidRead.tounlockThisArticle')"
+                placement="top-end"
+              >
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="wxpayArticle"
                 >
-                  <el-button
-                    type="primary"
-                    size="small"
-                    @click="wxpayArticle"
-                  >
-                    {{ unlockTextFull }}
-                    <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
-                  </el-button>
-                </el-tooltip>
-              </div>
-              <!-- <NoticeCreator
-                v-if="!readTokenExs"
-                :tokenId="form.outputToken.id"
-                :postId="article.id"
-              /> -->
+                  {{ $t('paidRead.oneKey') + unlockText }}
+                </el-button>
+              </el-tooltip>
             </div>
           </div>
         </div>
@@ -258,7 +238,6 @@
           :lock-loading="lockLoading"
           :is-toll-read="isTokenArticle || isPriceArticle"
           :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
-          @createOrder="createEditOrder"
         />
       </div>
       <AssosiateWith 
@@ -353,12 +332,8 @@
         :trade-no="tradeNo"
       />
       <ExsModal
-        v-model="showExs"
-        :article="article"
-        :token="copyForm.outputToken"
-        :amount="copyForm.output"
-        :need-price="copyForm.needPrice"
-        :need-token="copyForm.needToken"
+        v-model="showExs" 
+        :form="{...form, signId: article.id}"
       />
     </div>
     <div v-else class="container deleted">
@@ -446,7 +421,7 @@ export default {
     fontSize,
     commentReward,
     ExsModal,
-    bannerFan,
+    bannerFan
   },
   data() {
     return {
@@ -531,18 +506,7 @@ export default {
       commentCount: 0, // 评论次数
       rewardCount: 0, // 赞赏次数
       viewerOptions: { filter: (image) => image.dataset.noenlarge !== '1' },
-      showExs: false,
-      copyForm: {
-        input: '',
-        inputToken: CNY,
-        output: '',
-        outputToken: {},
-        needPrice: false,
-        needToken: false
-      },
-      readTokenExs: true,
-      editTokenExs: true,
-      payTokenBalance: 0
+      showExs: false
     }
   },
   head() {
@@ -646,9 +610,6 @@ export default {
         return 0
       }
     },
-    payTokenEnough() {
-      return this.payTokenBalance >= this.getArticlePrice
-    },
     getPayToken() {
       if (this.isPriceArticle) {
         const ad = this.article.prices[0]
@@ -678,13 +639,6 @@ export default {
         return this.$t('p.buy')
       }
       return this.$t('p.unlock')
-    },
-    unlockTextFull() {
-      if (this.isPriceArticle) {
-        if (this.payTokenEnough) return '一键购买全文'
-        else return '余额不足，去购买'
-      }
-      return '一键解锁全文'
     },
     totalCny() {
       let result = 0
@@ -943,7 +897,7 @@ export default {
         id: id || this.$route.params.id
       }
       this.lockLoading = true
-      await this.$API.currentProfile(data).then(async res => {
+      await this.$API.currentProfile(data).then(res => {
         this.lockLoading = false
         if (res.code === 0) {
           // console.log('这是currentProfile的数据：', res.data)
@@ -957,14 +911,7 @@ export default {
           this.calPayFormParams()
           this.calPayEditFormParams()
           this.getSupportStatus(res.data)
-          this.getPayTokenBalance(this.getPayToken.token_id)
           this.isBookmarked = Boolean(res.data.is_bookmarked)
-          if (this.form.outputToken) {
-            this.readTokenExs = await this.hasExs(this.form.outputToken.id)
-          }
-          if (this.editForm.outputToken.id) {
-            this.editTokenExs = await this.hasExs(this.editForm.outputToken.id)
-          } 
         } else if (res.code === 401) {
           console.log(res.message)
         } else {
@@ -1270,13 +1217,6 @@ export default {
         this.$store.commit('setCommentRequest')
       }, 3000)
     },
-    async getPayTokenBalance(id) {
-      // 查看余额
-      const res = await this.$API.getUserBalance(id)
-      console.log('getPayTokenBalance', id, res)
-      const balance = this.$utils.fromDecimal(res.data)
-      this.payTokenBalance = balance
-    },
     // 处理支付币阅读的文章
     async handlePayToken() {
       // 判断余额，余额不足->去创建买币订单，余额足->直接支付
@@ -1296,7 +1236,8 @@ export default {
       }
       const needPay = this.getArticlePrice
       // 查看余额
-      const balance = this.payTokenBalance
+      const res = await this.$API.getUserBalance(id)
+      const balance = this.$utils.fromDecimal(res.data, decimals)
       // 余额不足，去创建买币订单
       if (balance < needPay) {
         const _needPay = new BigNumber(needPay)
@@ -1346,59 +1287,37 @@ export default {
           }
         })
     },
-    async createEditOrder(nt) {
-      this.copyForm = this.editForm
-      this.$nextTick(() => {
-        this.createOrder(nt, false, this.editForm)
+    async createOrder() {
+      let needToken = false
+      let needPrice = false
+      // 是持币阅读文章 或者 是需要买币阅读（非cny）
+      if ((this.isTokenArticle && !this.tokenHasPaied) || this.getPayToken.token_id !== 0) {
+        needToken = true
+      }
+      if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id === 0) {
+        needPrice = true
+      }
+      console.log(this.form)
+      // if (needPrice) {
+      // type这个字段不重要，可以去除
+      this.$store.dispatch('order/createOrder', {
+        ...this.form,
+        needToken,
+        needPrice,
+        signId: this.article.id
       })
-    },
-    async createOrder(nt, np, _form) {
-      let needToken = nt === undefined ? false : nt
-      let needPrice = np === undefined ? false : np
-      if (nt === undefined) {
-        // 是持币阅读文章 或者 是需要买币阅读（非cny）
-        if ((this.isTokenArticle && !this.tokenHasPaied) || this.getPayToken.token_id !== 0) {
-          needToken = true
-        }
-      }
-      if (np === undefined) {
-        if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id === 0) {
-          needPrice = true
-        }
-      }
-      console.log(needPrice, needToken)
-      if (_form === undefined) {
-        this.copyForm = {
-          input: this.form.input,
-          inputToken: Object.assign({}, this.form.inputToken),
-          output: this.form.output,
-          outputToken: Object.assign({}, this.form.outputToken),
-          needPrice,
-          needToken,
-        }
-      } else {
-        this.copyForm = {
-          ..._form,
-          needPrice,
-          needToken,
-        }
-      }
-      if (needPrice) {
-        // type这个字段不重要，可以去除
-        this.$store.dispatch('order/createOrder', {
-          ...this.copyForm,
-          needToken,
-          needPrice,
-          signId: this.article.id
-        })
-      } else {
+      /* } else {
         this.showExs = true
-      }
+      } */
     },
     async wxpayArticle() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
         return false
+      }
+      if (this.getInputAmountError) {
+        this.$message.error(this.getInputAmountError)
+        return
       }
       // 如果是付币阅读的文章
       if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id !== 0) {
@@ -1406,26 +1325,6 @@ export default {
       } else {
         this.createOrder()
       }
-    },
-    async hasExs(tokenId) {
-      let hasMarket = true
-      let hasUniswap = true
-      const uniswapResult = await this.$API.getCurrentPoolSize(tokenId)
-      if (uniswapResult.code === 0) {
-        hasUniswap = true
-        if (uniswapResult.data.token_amount <= 0) hasUniswap = false
-      } else {
-        hasUniswap = false
-      }
-      const marketResult = await this.$API.directTrade.getItem(tokenId)
-      if (marketResult.code === 0) {
-        hasMarket = true
-        if (marketResult.data.balance <= 0) hasMarket = false // 余额不足
-        if (marketResult.data.status !== 0) hasMarket = false // 市场被关闭
-      } else {
-        hasMarket = false
-      }
-      return hasMarket || hasUniswap
     },
     async calPayFormParams() {
       if (this.article.tokens && this.article.tokens.length !== 0) {
@@ -1645,16 +1544,18 @@ export default {
         const {data, error} = await this.getInputAmount(0, need[0].id, difference / 10000)
         loading.close()
         if(error) return this.$message.error(error)
-        const _form = {
+        this.$store.dispatch('order/createOrder', {
           input: data,
           output: need[0].amount / 10000,
           outputToken: {
             decimals: 4,
             id: need[0].id
           },
-          inputToken: CNY
-        }
-        this.createOrder(true, false, _form)
+          type: 'buy_token_output',
+          needToken: true,
+          needPrice: false,
+          signId: this.id
+        })
       }
       catch(e) {
         loading.close()

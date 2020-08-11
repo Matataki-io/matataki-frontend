@@ -58,11 +58,6 @@ export default {
   quote: '引用',
   amount: '金额',
   filter: '过滤',
-  tool: '工具',
-  other: '其他',
-  anyFeedback: '任何反馈',
-  balance: '余额',
-  transferMoney: '转账',
   success: {
     success: '成功',
     copy: '复制成功',
@@ -128,7 +123,7 @@ export default {
   },
   // components
   header: {
-    newArticle: '写文章'
+    newArticle: '创作文章'
   },
   auth: {
     eosWallet: 'EOS钱包',
@@ -363,9 +358,7 @@ export default {
     fanCircle: 'Fan圈',
     myFocus: '我的关注',
     ofFanCircle: '的Fan圈',
-    buyFanTickets: '购买Fan票',
-    hotTag: '热门标签',
-    viewAll: '查看全部',
+    buyFanTickets: '购买Fan票'
   },
   sidebar: {
     article: '篇', //公用名称
@@ -389,7 +382,6 @@ export default {
     language: '中文/English'
   },
   publish: {
-    draft: '草稿',
     editorText: '文章',
     editorTextArticlePublic: '文章发布',
     editorTextArticleEditor: '编辑文章',
@@ -405,7 +397,7 @@ export default {
     commentContent: '用户需要向您支付对应的积分才可评论(1-99999)',
     point: '积分',
     coverTitle: '图文封面',
-    coverRecommendation: '推荐尺寸 1160*580 宽高比 2:1',
+    coverRecommendation: '推荐尺寸 1160*580 ；宽高比 2:1',
     coverDes: '请上传宽高2:1尺寸的图片',
     tagTitle: '选择标签',
     public: '公开发布',
@@ -827,12 +819,7 @@ export default {
     recommendMod: '推荐模组',
     quickEntrance: '快捷入口',
     tags: '标签',
-    exchangePrice: '当前价格',
-    fanTicketHolder: 'Fan票夹',
-    myFlowGold: '我的流动金',
-    totalTransactionFlow: '交易总流水',
-    flowGoldTotalFlow: '流动金总流水',
-    allFanTicket: '全部Fan票'
+    exchangePrice: '当前价格'
   },
   ipfsHash: {
     link: 'IPFS地址',
@@ -906,73 +893,4 @@ export default {
     enterYourEmailPassword: '请输入邮箱密码',
     whetherToSwitchAccounts: '此操作将切换主账号, 是否继续?'
   },
-  // page
-  postminetoken: {
-    back: '返回Fan票',
-    feedback: '任何反馈',
-    prev: '上一步',
-    next: '下一步',
-    submit: '提交申请',
-    define: '提交申请',
-    stepOne: '基础信息',
-    stepTwo: 'Fan票设置',
-    stepThree: '提交申请',
-    headTitle: '免费发行Fan票',
-    headHelp: 'Fan票申请帮助文档',
-    stepOneTitle: '步骤 1：完善基础信息',
-    stepOneItem1: '完善个人信息：设置头像、昵称和简介',
-    stepOneItem2: '至少在Matataki发布过一篇文章',
-    stepOneItem3: '绑定邮箱账号，用于接收通知',
-    stepOneSetting: '立即设置',
-    stepOnePublish: '立即发布',
-    stepOneBuild: '立即绑定',
-    stepOneRemarks: '在收到您的申请后，我们将会使用电子邮件与您联系。',
-    stepTwoTitle: '步骤2：设置您的Fan票信息',
-    stepTwoLabelLogo: '图标',
-    stepTwoLabelLogoText: '请上传512*512大小的PNG格式图片作为粉丝币logo',
-    stepTwoLabelName: '名称',
-    stepTwoLabelSymbol: '缩写',
-    stepTwoLabelBrief: '简介',
-    stepTwoLabelTag: '标签',
-    stepTwoRemarks: '请勿设置具有迷惑性、误导性的Fan票信息',
-    stepTwoRemarks1: '请勿设置违反国家法律法规的Fan票信息',
-    stepTwoRemarks2: '首次发行的时候会自动默认发行 1000 个Fan票',
-    stepTwoRemarks3: '首次发行成功后即可立即操作手动增发',
-    stepTwoRemarks4: '每次增发后需要等待10天可再次增发',
-    stepTwoRemarksTitle: '首次发行',
-    stepTwoRemarksTitle1: '手动增发',
-    stepThreeTitle: '步骤3：有奖小调研（选填）',
-    stepThreeDescription: '参与调研后，通过了Fan票申请即有可能得到Fan票空投奖励',
-    stepThreeSurveyTitle: '基本信息',
-    stepThreeSurveyTitle1: '主要创作者身份',
-    stepThreeSurveyTitle2: '其他问答',
-    stepThreeInputPlaceholder: '请输入内容',
-    stepThreeLabelIntroduction: '自我介绍',
-    stepThreeLabelAge: '您的年龄',
-    stepThreeLabelNumber: '手机号码',
-    stepThreeLabelCareer: '职业领域',
-    stepThreeLabelField: '创作领域',
-    stepThreeLabelPlatform: '创作平台',
-    stepThreeLabelNickname: '创作者昵称',
-    stepThreeLabelLink: '主页链接',
-    stepThreeLabelInterview: '是否愿意参与Fan票产品的用户访谈？',
-    stepThreeLabelKnow: '您如何了解到了Fan票？',
-    stepThreeLabelPublish: '为什么想要发行Fan票？',
-    stepThreeLabelInfo: '您希望了解什么信息？',
-    stepThreeLabelPromote: '您会如何推广自己的Fan票？',
-    stepFour: '您的Fan票申请已经成功提交！',
-    stepFour1: '审核结果将会在5个工作日内通过邮件发送',
-    stepFive: '您的Fan票申请已经成功',
-    stepSix: '您的Fan票申请失败',
-    stepSixRest: '重新申请',
-  },
-  timeline: {
-    timeline: '动态时间轴'
-  },
-  // setting system page
-  settingSystem: {
-    clearCache: '一键清除缓存',
-    helpAndSupport: '帮助和支持',
-    downloadAllArticle: '下载我的所有文章（zip）'
-  }
 }

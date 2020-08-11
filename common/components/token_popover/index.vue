@@ -22,7 +22,7 @@
       <div class="user-data">
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ exchangeInfo.price || 0 }}<span>CNY</span></p>
-          <p class="user-data-title">当前价格</p>
+          <p class="user-data-title">当前现价</p>
         </router-link>
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ exchangeAmount || 0 }}<span>CNY</span></p>
@@ -38,13 +38,8 @@
       <div class="line" />
       <div class="user-token">
         <div class="token">
-          <router-link :to="{name: 'user-id', params: { id: userInfo.id }}" target="_blank">
-            <c-avatar
-              :src="userAvatar"
-              class="token-popover" 
-              :recommend-author="userInfo.is_recommend === 1"
-              :token-user="!!tokenInfo.id"
-            />
+          <router-link :to="{name: 'user-id', params: { id: userInfo.id }}" target="_blank" class="token-cover">
+            <img v-if="userAvatar" :src="userAvatar" alt="logo">
           </router-link>
           <div class="token-info">
             <router-link :to="{name: 'user-id', params: { id: userInfo.id }}" target="_blank" class="token-name">
@@ -297,7 +292,6 @@ export default {
   align-items: center;
   width: 100%;
   overflow: hidden;
-  padding: 0 2px;
 }
 .user-token {
   display: flex;
@@ -306,6 +300,23 @@ export default {
   margin-top: 10px;
 }
 .token-cover {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: block;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #f1f1f1;
+  }
 }
 .token-info {
   margin-left: 5px;
