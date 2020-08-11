@@ -2,14 +2,14 @@
   <settingLayout>
     <NoTokenTip v-if="NoToken" />
     <div v-else class="mint-setting">
-      <a href="https://www.yuque.com/matataki/matataki">完整Fan票规则说明 ></a>
+      <a href="https://www.yuque.com/matataki/matataki">Fan票使用手册 ></a>
       <div v-loading="loading" class="form-container">
         <div class="mint-info">
           <span class="mint-setting-label black">已增发：</span>
           <span class="mint-setting-num">{{ mintDetail.count }}</span> 
           <span class="mint-setting-symbol">次</span> 
           <span class="mint-setting-num">{{ mintDetail.totalSupply.toLocaleString() }}</span> 
-          <span class="mint-setting-symbol">LJM</span> 
+          <span class="mint-setting-symbol">{{ token.symbol }}</span> 
         </div>
         <div
           v-loading="amountUpperLimit"
@@ -61,7 +61,8 @@ export default {
       mintDetail: {
         count: 0,
         totalSupply: 0,
-      }
+      },
+      token: {}
     }
   },
   computed: {
@@ -82,6 +83,10 @@ export default {
     async getMintDetail() {
       this.loading = true
       const result = await this.$API.getMintDetail()
+      const tokenDetail = await this.$API.tokenDetail()
+      if (tokenDetail.code === 0) {
+        this.token = tokenDetail.data.token
+      }
       if (result.code === 0) {
         this.NoToken = false
         this.mintDetail = {

@@ -5,6 +5,7 @@
         <avatar :src="cover" size="45px" />
       </c-token-popover>
     </div>
+
     <div class="fl cards-content">
       <div class="card-info">
         <div>
@@ -22,7 +23,7 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('token.unitPrice') }}:</span> {{ unitPrice }} CNY
+            <span>交易所价格:</span> {{ unitPrice }} CNY
           </p>
         </div>
         <div class="card-data-column">
@@ -44,12 +45,16 @@
         </div>
       </div>
       <div class="card-user">
-        <router-link :to="{name: 'user-id', params: { id: card.uid }}" class="fl ac" target="_blank">
+        <div class="fl ac user" @click.stop="$router.push({name: 'user-id', params: { id: card.uid }})">
           <c-user-popover :user-id="Number(card.uid)">
-            <c-avatar :src="coverUser" size="30px" />
+            <c-avatar
+              :src="coverUser"
+              :recommend-author="card.user_is_recommend === 1"
+              :token-user="card.user_is_token === 1"
+            />
           </c-user-popover>
           <span class="card-username">{{ card.nickname || card.username }}</span>
-        </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -170,6 +175,9 @@ export default {
   justify-content: flex-start;
   align-items: flex-end;
   flex-direction: column;
+  .user {
+    cursor: pointer;
+  }
 }
 .card-username {
   margin-left: 6px;

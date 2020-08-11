@@ -18,7 +18,7 @@
             <div>
               <a
                 class="help-link"
-                href="https://www.matataki.io/p/977"
+                href="https://www.yuque.com/matataki/matataki/hgc2e6"
                 target="_blank"
               >{{ $t('token.whatIsAFanTicket') }}</a>
             </div>
@@ -109,7 +109,7 @@
         </el-button>
         <el-button
           v-if="isMyToken"
-          class="link-btn"
+          class="link-btn black"
           size="small"
           @click="switchDisplayAngle"
         >
@@ -172,9 +172,15 @@ export default {
     }
   },
   data() {
+    const setDisplayAngle = () => {
+      if (this.$route.name === 'token-id')
+        return this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client'
+      else
+        return 'client'
+    }
     return {
       shareModalShow: false,
-      displayAngle: this.isMyToken ? this.$route.params.displayAngle || 'creator' : 'client', // 创建者、客户
+      displayAngle: setDisplayAngle(), // 创建者、客户
       tagPattern: [
         {name:'个人', label: 'personal', checked: false},
         {name:'组织', label: 'organization', checked: false},
@@ -282,6 +288,16 @@ export default {
     padding: 7px 7px;
     font-size: 14px;
     border-radius: 6px;
+    &.black {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+      &:active,
+      &:focus,
+      &:hover {
+        border-color: #000;
+      }
+    }
   }
 }
 

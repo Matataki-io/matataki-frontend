@@ -1,67 +1,81 @@
 <template>
   <div class="container-padding">
-    <div class="container-inner">
-      <div class="buy-card">
-        <!-- <h2 class="token-title">
-          {{ $t('token.quickPurchase') }}
-        </h2> -->
-        <div class="buy-flex">
-          <div>
-            <span 
-              :class="[ 'token-title', { 'active': isUniswap } ]"
-              @click="tabChange('uniswap')"
-            >Uniswap交易所</span>
-            <span 
-              :class="[ 'token-title', { 'active': isDirectTrade } ]"
-              @click="tabChange('direct')"
-            >直通车</span>
-          </div>
-          <router-link class="center" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
-            Uniswap <i class="el-icon-arrow-right" />
-          </router-link>
-        </div>
-        <el-input
-          v-model="inputModel"
-          :placeholder="base === baseType[0] ? $t('token.enterBudget') : $t('token.enterPurchaseQuantity')"
-          @input="inputChange"
-          @keypress.native="isNumber"
-        >
-          <span slot="prefix" class="prefix-switch" @click="baseSwitch">
-            <svg-icon icon-class="switch" />
-          </span>
-          <span
-            slot="suffix"
-            class="el-input__icon suffix-text"
-          >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
-        </el-input>
-        <div class="btns">
-          <div class="market-info-container">
-            <div v-if="isDirectTrade" class="market-info">
-              <span>价格：{{ market.price }} CNY</span>
-              <span>剩余：{{ market.balance }} {{ token.symbol }}</span>
-              <span>已售出：{{ market.totalAmount - market.balance }} {{ token.symbol }}</span>
+    <div class="container-outer">
+      <h2 class="card-title">
+        {{ $t('token.quickPurchase') }}
+      </h2>
+      <div class="container-inner">
+        <div class="buy-card">
+          <!-- <h2 class="token-title">
+            {{ $t('token.quickPurchase') }}
+          </h2> -->
+          <div class="buy-flex">
+            <div>
+              <span 
+                :class="[ 'token-title', { 'active': isUniswap } ]"
+                @click="tabChange('uniswap')"
+              >Uniswap交易所</span>
+              <span 
+                :class="[ 'token-title', { 'active': isDirectTrade } ]"
+                @click="tabChange('direct')"
+              >直通车</span>
             </div>
-            <div v-if="isUniswap" class="market-info">
-              <!-- <span>价格：0 CNY</span> -->
-              <span>剩余：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span>
-            </div>
+            <router-link class="center" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
+              Uniswap <i class="el-icon-arrow-right" />
+            </router-link>
           </div>
-          <el-button
-            type="primary"
-            class="pay-btn"
-            @click="pay"
+          <el-input
+            v-model="inputModel"
+            :placeholder="base === baseType[0] ? $t('token.enterBudget') : $t('token.enterPurchaseQuantity')"
+            @input="inputChange"
+            @keypress.native="isNumber"
           >
-            {{ $t('token.payImmediately') }}
-          </el-button>
+            <span slot="prefix" class="prefix-switch" @click="baseSwitch">
+              <svg-icon icon-class="switch" />
+            </span>
+            <span
+              slot="suffix"
+              class="el-input__icon suffix-text"
+            >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
+          </el-input>
+          <div class="btns">
+            <div class="market-info-container">
+              <div v-if="isDirectTrade" class="market-info">
+                <span>价格：{{ market.price }} CNY</span>
+                <span>剩余：{{ market.balance }} {{ token.symbol }}</span><span v-if="NoMarket" class="warn-tip">（流动性不足）</span>
+                <span>已售出：{{ market.totalAmount - market.balance }} {{ token.symbol }}</span>
+              </div>
+              <div v-if="isUniswap" class="market-info">
+                <!-- <span>价格：0 CNY</span> -->
+                <span>剩余：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span><span v-if="noUniswap" class="warn-tip">（流动性不足）</span>
+              </div>
+            </div>
+            <el-button
+              type="primary"
+              class="pay-btn"
+              :disabled="isUniswap ? noUniswap : NoMarket"
+              @click="pay"
+            >
+              {{ $t('token.payImmediately') }}
+            </el-button>
+          </div>
         </div>
-      </div>
-      <el-divider direction="vertical" class="middle-divider" />
-      <div class="tips-card">
-        <ul>
-          <ol>1. 首次发行的时候会自动默认发行 1000 个Fan票</ol>
-          <ol>2. 首次发行成功后即可立即操作手动增发</ol>
-          <ol>3. 每次增发后需要等待10天可再次增发</ol>
-        </ul>
+        <el-divider direction="vertical" class="middle-divider" />
+        <div class="tips-card">
+          <h3>小贴士</h3>
+          <ul v-if="isUniswap">
+            <ol>1. 此处是通过Uniswap交易机制实现的快捷购买功能</ol>
+            <ol>2. 点击界面右上角的 ”Uniswap“按钮可进入 对应的交易所</ol>
+            <ol>3. 当交易所中的流动性不足时，<a href="https://www.yuque.com/matataki/matataki/xzzv3r" target="_blank">如何提供流动性</a></ol>
+            <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">更多帮助信息</a></ol>
+          </ul>
+          <ul v-else>
+            <ol>1. 直通车中的价格由创始人设置，且不可修改</ol>
+            <ol>2. 通过直通车支付的金额将会直接转给创始人</ol>
+            <ol>3. 当直通车中流动性不足时，则无法使用直通车快捷购买Fan票</ol>
+            <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">更多帮助信息</a></ol>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -126,6 +140,9 @@ export default {
     },
     isDirectTrade() {
       return this.buyExchange === 'direct'
+    },
+    noUniswap() {
+      return this.currentPoolSize.token_amount === 0
     }
   },
   watch: {
@@ -234,7 +251,9 @@ export default {
             this.form.input = ''
           }
         } else {
-          this.$message({ showClose: true, message: res.message, type: 'error' })
+          // '没有交易对-->Fan票流动性不足，无法交易'
+          let message = res.code === 10807 ? 'Fan票流动性不足，无法交易' : res.message
+          this.$message({ showClose: true, message: message, type: 'error' })
           this.form.input = ''
         }
       })
@@ -279,11 +298,15 @@ export default {
   position: relative;
   padding-left: 10px;
   padding-right: 10px;
-  .container-inner {
+  .container-outer {
     background: @white;
-    width: 100%;
     border-radius: @br10;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+    width: 100%;
+    padding: 20px;;
+    box-sizing: border-box;
+  }
+  .container-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -291,6 +314,7 @@ export default {
   .tips-card {
     width: 45%;
     display: inline-block;
+    padding-bottom: 20px;
     ul > ol {
       line-height: 30px;
     }
@@ -316,7 +340,7 @@ export default {
 .buy-card {
   display: inline-block;
   width: 45%;
-  padding: 20px 0 20px 20px;
+  // padding: 20px 0 20px 20px;
   margin: 0;
   .suffix-text {
     color: @purpleDark;
@@ -372,23 +396,38 @@ export default {
   white-space: nowrap;
 }
 
+.warn-tip {
+  color: #FB6877!important;
+}
+.card-title {
+  font-size:24px;
+  font-weight:bold;
+  color:@black;
+  line-height:33px;
+  padding: 0;
+  margin: 0;
+}
+
 @media screen and (max-width: 600px) {
   .token-title  {
     font-size: 20px;
   }
 }
 @media screen and (max-width: 800px) {
-  .middle-divider, .tips-card  {
+  .middle-divider {
     display: none!important;
   }
-  .buy-card {
+  .buy-card, .tips-card {
     padding: 20px;
-    width: 100%;
+    width: 100%!important;
   }
   .market-info {
     span {
       display: block;
     }
+  }
+  .container-inner {
+    flex-direction: column;
   }
 }
 </style>

@@ -2,7 +2,7 @@
   <div>
     <div class="token-help">
       <a href="https://www.yuque.com/matataki/matataki" target="_blank">
-        完整Fan票规则说明
+        Fan票使用手册
         <i class="el-icon-arrow-right" />
       </a>
     </div>
@@ -129,7 +129,7 @@
         <el-input
           v-model="form.introduction"
           :rows="6"
-          class="input"
+          class="input customize-input"
           type="textarea"
           maxlength="1000"
           show-word-limit
@@ -763,7 +763,6 @@ export default {
 
 .token-help {
   display: flex;
-  justify-content: flex-end;
   a {
     font-size: 16px;
     color: black;

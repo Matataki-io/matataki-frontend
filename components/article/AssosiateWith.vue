@@ -1,24 +1,13 @@
 <template>
-  <div class="container">
+  <router-link :to="{name: 'token-id', params: {id: article.assosiate_with}}">
     <div class="token-detail" style="display: flex;">
       <c-token-popover :token-id="Number(minetokenToken.id)">
         <avatar :src="logo" size="60px" />
       </c-token-popover>
       <div class="token-detail-info">
-        <div class="balance">
-          <a
-            v-if="isLogined || balance"
-            :href="'/token/' + article.assosiate_with"
-            class="balance"
-            style="color: #542DE0"
-          >
-            {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
-            <i class="el-icon-arrow-right" />
-          </a>
-        </div>
         <div class="fl info-line">
           <div class="token-info-title bold">
-            {{ minetokenToken.symbol }}
+            {{ minetokenToken.symbol || 'Loading...' }}
           </div>
           <div style="flex-direction: row;display: flex;align-items: center;">
             <div class="token-info-sub" style="font-size: 1.1rem">
@@ -37,6 +26,10 @@
               </div>
             </div>
           </div>
+          <span v-if="isLogined || balance" class="balance">
+            {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
+            <i class="el-icon-arrow-right" />
+          </span>
         </div>
         <div class="fl info-line">
           <div class="token-info-title">
@@ -45,7 +38,7 @@
           <div>
             <p class="token-info-sub">
               <c-user-popover :user-id="Number(minetokenToken.uid)">
-                <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
                   {{ minetokenUser.nickname || minetokenUser.username }}
                 </router-link>
               </c-user-popover>
@@ -54,11 +47,11 @@
         </div>
         <div class="fl info-line">
           <div class="token-info-title">
-            {{ $t('token.unitPrice') }}：
+            {{ $t('token.exchangePrice') }}：
           </div>
           <div style="display:flex;">
             <div class="token-info-sub">
-              {{ minetokenExchange !== null ? '¥' + minetokenExchange.price : 'N/A' }}
+              {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : '暂无价格' }}
             </div>
             <div>
               <div class="float">
@@ -66,7 +59,7 @@
                   v-if="float !== 0"
                   :class="float < 0 && 'red'"
                 >
-                  {{ float > 0 ? `${float}` : float }}%
+                  {{ float > 0 ? `+${float}` : float }}%
                 </span>
               </div>
             </div>
@@ -83,20 +76,19 @@
             </p>
           </div>
         </div>
-        <div class="info-btns">
-          <el-button size="small">
-            交易
-          </el-button>
-          <el-button size="small">
-            分享
-          </el-button>
-          <el-button size="small" style="color: white;background-color: black;">
-            详情页
-          </el-button>
+        <div class="fl info-line balance-mobile">
+          <div class="token-info-title">
+            {{ $t('token.owned') }}：
+          </div>
+          <div>
+            <p class="token-info-sub">
+              {{ balance }} {{ minetokenToken.symbol }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -115,7 +107,7 @@ export default {
   },
   data() {
     return {
-      minetokenExchange: {},
+      minetokenExchange: null,
       minetokenToken: {},
       minetokenUser: {},
       float: 0,
@@ -180,12 +172,14 @@ export default {
 <style lang="less" scoped>
 
 .balance {
-  position: absolute;
-  width: 84%;
-  top: 0.8rem;
+  flex: 1;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  color: #542DE0;
+}
+
+.balance-mobile {
+  display: none;
 }
 
 .info-btns {
@@ -213,26 +207,20 @@ export default {
     background-color: #D6CDFF;
     margin-right: 0.5rem;  
 }
-.container {
-  margin: 20px auto 0;
-  background: #fff;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
 
 .token-detail {
   position: relative;
   margin: 20px auto 0;
   padding: 20px;
   background: @white;
-  border-radius: @br10;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 .info-line {
   margin: 6px 0;
 }
 .token-detail-info {
-  width: 60%;
+  width: 100%;
   margin-left: 20px;
   font-size: 16px;
   font-weight: 400;
@@ -264,10 +252,6 @@ export default {
 // 小于992
 @media screen and (max-width: 992px) {
 
-  .balance {
-    width: 81%;
-  }
-
   .info-btns {
     position: absolute;
     left: 69%;
@@ -276,10 +260,11 @@ export default {
 
 // <600
 @media screen and (max-width: 650px) {
-
   .balance {
-    width: 75%;
-    top: 0.5rem;
+    display: none;
+  }
+  .balance-mobile {
+    display: flex;
   }
 
   .info-btns {
@@ -306,8 +291,5 @@ export default {
   .token-info-title.bold {
     font-size: 20px;
   }
-}
-
-@media screen and (max-width: 540px) {
 }
 </style>

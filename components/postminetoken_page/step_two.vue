@@ -1,7 +1,6 @@
 <template>
   <section class="container">
-    <p class="token-title">步骤2：设置您的Fan票信息</p>
-
+    <p class="token-title">{{ $t('postminetoken.stepTwoTitle') }}</p>
     <el-form
       ref="tokenForm"
       :model="tokenForm"
@@ -9,7 +8,7 @@
       label-width="80px"
       class="token-form"
     >
-      <el-form-item label="图标" prop="logo">
+      <el-form-item :label="$t('postminetoken.stepTwoLabelLogo')" prop="logo">
         <div class="upload">
           <img-upload
             v-show="!coinsCover"
@@ -39,40 +38,71 @@
             </div>
           </div>
 
-          <p class="upload-text">请上传512*512大小的PNG格式图片作为粉丝币logo</p>
+          <p class="upload-text">{{ $t('postminetoken.stepTwoLabelLogoText') }}</p>
         </div>
         <!-- <el-input v-model="tokenForm.logo" /> -->
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="tokenForm.name" class="token-input" />
+      <el-form-item :label="$t('postminetoken.stepTwoLabelName')" prop="name">
+        <el-input
+          v-model="tokenForm.name"
+          class="token-input customize-input"
+          maxlength="20"
+          show-word-limit
+        />
       </el-form-item>
       <el-form-item prop="symbol">
         <span slot="label">
-          缩写
+          {{ $t('postminetoken.stepTwoLabelSymbol') }}
           <el-tooltip
             effect="dark"
-            content="缩写"
+            :content="$t('postminetoken.stepTwoLabelSymbol')"
             placement="top"
             class="tag-help"
           >
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
-        <el-input v-model="tokenForm.symbol" class="token-input" />
+        <el-input
+          v-model="tokenForm.symbol"
+          class="token-input customize-input"
+          maxlength="20"
+          show-word-limit
+        />
+      </el-form-item>
+      <el-form-item prop="brief">
+        <span slot="label">
+          {{ $t('postminetoken.stepTwoLabelBrief') }}
+          <el-tooltip
+            effect="dark"
+            :content="$t('postminetoken.stepTwoLabelBrief')"
+            placement="top"
+            class="tag-help"
+          >
+            <svg-icon class="help-icon" icon-class="help" />
+          </el-tooltip>
+        </span>
+        <el-input
+          v-model="tokenForm.brief"
+          class="token-input customize-input"
+          type="textarea"
+          maxlength="100"
+          :rows="6"
+          show-word-limit
+        />
       </el-form-item>
       <el-form-item prop="tag">
         <span slot="label">
-          标签
+          {{ $t('postminetoken.stepTwoLabelBrief') }}
           <el-tooltip
             effect="dark"
-            content="标签"
+            :content="$t('postminetoken.stepTwoLabelBrief')"
             placement="top"
             class="tag-help"
           >
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
-        <el-checkbox-group v-model="tokenForm.tag" class="token-checkbox">
+        <el-checkbox-group v-model="tokenForm.tag" class="token-checkbox" size="mini">
           <el-checkbox label="个人" />
           <el-checkbox label="组织" />
           <el-checkbox label="产品" />
@@ -80,22 +110,23 @@
         </el-checkbox-group>
       </el-form-item>
     </el-form>
-    <p class="token-remarks">请勿设置具有迷惑性、误导性的Fan票信息</p>
-    <p class="token-remarks mb20">请勿设置违反国家法律法规的Fan票信息</p>
-    <div class="token-line" />
-    <p class="token-comment title">首次发行：</p>
-    <p class="token-comment">1. 首次发行的时候会自动默认发行 1000 个Fan票</p>
 
-    <p class="token-comment title">手动增发：</p>
-    <p class="token-comment">1. 首次发行成功后即可立即操作手动增发</p>
-    <p class="token-comment">1. 每次增发后需要等待10天可再次增发</p>
+    <p class="token-remarks">{{ $t('postminetoken.stepTwoRemarks') }}</p>
+    <p class="token-remarks mb20">{{ $t('postminetoken.stepTwoRemarks1') }}</p>
+    <div class="token-line" />
+    <p class="token-comment title">{{ $t('postminetoken.stepTwoRemarksTitle') }}：</p>
+    <p class="token-comment">1. {{ $t('postminetoken.stepTwoRemarks2') }}</p>
+
+    <p class="token-comment title">{{ $t('postminetoken.stepTwoRemarksTitle1') }}：</p>
+    <p class="token-comment">1. {{ $t('postminetoken.stepTwoRemarks3') }}</p>
+    <p class="token-comment">2. {{ $t('postminetoken.stepTwoRemarks4') }}</p>
 
     <div class="token-footer">  
       <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
-        任何反馈<svg-icon icon-class="arrow" class="icon" />
+        {{ $t('postminetoken.feedback') }}<svg-icon icon-class="arrow" class="icon" />
       </a>
-      <a href="javascript:;" class="f-btn prev" @click="prev">上一步</a>
-      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">下一步</a>
+      <a href="javascript:;" class="f-btn prev" @click="prev">{{ $t('postminetoken.prev') }}</a>
+      <a href="javascript:;" class="f-btn next" @click="next('tokenForm')">{{ $t('postminetoken.next') }}</a>
     </div>
   </section>
 </template>
@@ -128,6 +159,7 @@ export default {
         logo: '',
         name: '',
         symbol: '',
+        brief: '',
         tag: [],
       },
       tokenRules: {
@@ -140,6 +172,9 @@ export default {
         symbol: [
           { required: true, message: '请输入缩写', trigger: 'blur' },
           { validator: checkSymbol, trigger: 'blur' },
+        ],
+        brief: [
+          { required: true, message: '请输入简介', trigger: 'blur' },
         ],
         tag: [
           { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
@@ -181,6 +216,7 @@ export default {
       this.tokenForm.logo = info.logo
       this.tokenForm.name = info.name
       this.tokenForm.symbol = info.symbol
+      this.tokenForm.brief = info.brief
       this.tokenForm.tag =  this.tagDataToShow(info.tag.split(','))
     },
     // 数据转换显示
@@ -218,6 +254,7 @@ export default {
         logo: this.tokenForm.logo,
         name: this.tokenForm.name,
         symbol: this.tokenForm.symbol,
+        brief: this.tokenForm.brief,
         tag: this.tagDataToPost(this.tokenForm.tag)
       }
       await this.$utils.factoryRequest(this.$API.apiMinetokenApplication(data))
@@ -235,6 +272,7 @@ export default {
             logo: this.tokenForm.logo,
             name: this.tokenForm.name,
             symbol: this.tokenForm.symbol,
+            brief: this.tokenForm.brief,
             tag: this.tagDataToPost(this.tokenForm.tag)
           }
           this.$emit('done', data)
@@ -428,6 +466,54 @@ export default {
     .remove {
       font-size: 20px;
       color: #fff;
+    }
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .token-footer {
+    text-align: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    .f-btn {
+      margin: 10px 0 0;
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .token-form {
+    max-width: 100%;
+    .token-input {
+      width: 100%;
+    }
+  }
+
+  .upload {
+    align-items: baseline;
+    flex-direction: column;
+    &-text {
+      font-size: 12px;
+      line-height: 1;
+      margin: 10px 0 0 0;
+    }
+  }
+
+  /deep/ .token-checkbox {
+    .el-checkbox {
+      padding: 0 10px;
+      margin-right: 8px;
+      line-height: 30px;
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .token-footer {
+    margin-top: 70px;
+    .f-btn {
+      width: 100%;
     }
   }
 }

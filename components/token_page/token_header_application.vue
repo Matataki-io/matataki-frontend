@@ -3,7 +3,7 @@
     <h3 class="token-title">
       我申请的Fan票
     </h3>
-    <section class="fl">
+    <section class="fl token-container">
       <section>
         <c-token-popover :token-id="Number(info.uid)">
           <avatar :src="cover" size="60px" />
@@ -12,8 +12,9 @@
       <section class="card-info">
         <h2>{{ info.symbol }}</h2>
         <p>{{ info.name }}</p>
+        <p>{{ info.brief }}</p>
       </section>
-      <section>
+      <section class="other-info">
         <template v-if="info.status === 0">
           <p class="token-text">您的Fan票申请申请成功!</p>
         </template>
@@ -34,7 +35,7 @@
             <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'modify')">修改申请信息</a>
           </template>
           <template v-else-if="info.status === 3">
-            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">重新申请</a>
+            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">我知道了</a>
           </template>
         </div>
       </section>
@@ -107,10 +108,8 @@ export default {
         type
       }))
       if (resultMinetokenApplication) {
-        if (status === 'close') {
+        if (status === 'close' || status === 'reset') {
           window.location.reload()
-        } else if (status === 'reset') {
-          this.$router.push({ name: 'postminetoken' })
         }
       }
     }
@@ -120,18 +119,18 @@ export default {
 
 <style scoped lang="less">
 .token-title {
-  font-size:20px;
-  font-weight:500;
-  color:rgba(0,0,0,1);
-  line-height:28px;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  line-height: 28px;
   padding: 0;
   margin: 0 0 20px;
 }
 .token-text {
-  font-size:16px;
-  font-weight:400;
-  color:rgba(0,0,0,1);
-  line-height:30px;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 30px;
   padding: 0;
   margin: 0;
 }
@@ -154,15 +153,15 @@ export default {
       color: #000;
       line-height: 28px;
       padding: 0;
-      margin: 6px 0 0 0;
+      margin: 0;
     }
     P {
       font-size: 14px;
       font-weight: 400;
-      color: #B2B2B2;
+      color: #b2b2b2;
       line-height: 20px;
       padding: 0;
-      margin: 4px 0 0 0;
+      margin: 0;
       max-width: 400px;
       word-break: break-all;
       white-space: pre-wrap;
@@ -182,7 +181,7 @@ export default {
 .h-rule {
   font-size: 14px;
   font-weight: 500;
-  color: #542DE0;
+  color: #542de0;
   line-height: 20px;
   margin-right: 20px;
   .icon {
@@ -209,14 +208,14 @@ export default {
     text-align: center;
     &.close {
       background-color: #fff;
-      border: 1px solid #542DE0;
-      color: #542DE0;
+      border: 1px solid #542de0;
+      color: #542de0;
       margin-right: 20px;
     }
     &.modify {
-      background: #542DE0;
+      background: #542de0;
       color: rgba(255, 255, 255, 1);
-      border: 1px solid #542DE0;
+      border: 1px solid #542de0;
     }
   }
 }
@@ -231,5 +230,24 @@ export default {
   max-width: 400px;
   overflow: hidden;
   word-break: break-all;
+}
+
+.token-container {
+  flex-wrap: wrap;
+}
+@media screen and (max-width: 540px) {
+  .token-footer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .token-footer {
+    .f-btn {
+      margin: 10px 0 0;
+      &.close {
+        margin-right: 0;
+      }
+    }
+  }
 }
 </style>
