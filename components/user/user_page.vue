@@ -9,10 +9,14 @@
     <div class="user-info user-page-info">
       <div class="user-info-center">
         <div class="fl ac jc token-avatar">
-          <avatar
+          <c-avatar
             :src="userInfo.avatar"
-            size="120px"
             class="avatar"
+            :recommend-author="user.is_recommend === 1"
+            :level="3"
+            :token-user="!!tokenInfo.id"
+            :level-token="3"
+            :class="{'has-border': !tokenInfo.id }"
           />
           <img
             v-if="tokenUser"
@@ -125,7 +129,6 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import userPageNav from './user_page_nav'
 import tokenAvatar from './token_avatar.vue'
-import avatar from '@/components/avatar/index'
 import followBtn from '@/components/follow_btn'
 import Share from '@/components/token/token_share.vue'
 
@@ -133,7 +136,6 @@ import bannerUpload from '@/components/bannerUpload/index.vue'
 
 export default {
   components: {
-    avatar,
     followBtn,
     userPageNav,
     tokenAvatar,
@@ -153,14 +155,16 @@ export default {
       tokenUser: false,
       tokenData: Object.create(null),
       shareModalShow: false,
-      imgUploadDone: 0 // 图片是否上传完成
+      imgUploadDone: 0, // 图片是否上传完成
+      user: Object.create(null), // 用户信息 
+      tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
     ...mapState({
       userInfo: state => state.user.userInfo
     }),
-    ...mapGetters(['isMe', 'isLogined'])
+    ...mapGetters(['isMe', 'isLogined']),
   },
   created() {
     // this.getMyUserData()
@@ -168,6 +172,8 @@ export default {
   mounted() {
     if (process.browser) {
       if (!this.$route.params.id) this.$router.go(-1)
+      this.getUserInfo(this.$route.params.id)
+      this.getTokenUser(this.$route.params.id)
 
       this.$nextTick(() => {
         this.refreshUser({ id: this.$route.params.id })
@@ -177,6 +183,25 @@ export default {
   },
   methods: {
     ...mapActions('user', ['refreshUser', 'followOrUnfollowUser']),
+    getUserInfo(id) {
+      this.$API.getUser(id)
+        .then(res => {
+          if (res.code === 0) {
+
+            this.user = res.data
+
+          }
+        })
+        .catch(e => {
+          console.log('get user info error', e)
+        })
+    },
+    async getTokenUser(id) {
+      // 获取是否有 token
+      const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
+      // not token, data is null
+      this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
+    },
     async getMyUserData() {
       await this.$API
         .getMyUserData()
@@ -281,10 +306,12 @@ export default {
     box-sizing: border-box;
   }
   .avatar {
-    border: 6px solid #fff;
     display: inline-block;
     background: #fff;
     box-sizing: border-box;
+    width: 120px;
+    height: 120px;
+    border: 6px solid #fff;
   }
   .username {
     font-size: 24px;
@@ -404,9 +431,27 @@ export default {
       margin-top: -32px;
     }
     .avatar {
-      border: 2px solid #fff;
       width: 60px !important;
       height: 60px !important;
+      &.no-recommend {
+        border: 2px solid #fff;
+      }
+      // 同步组件内的 w60
+
+      /deep/ .avatar-box {
+        border-width: 2px;
+      }
+      /deep/ .recommend-icon {
+        right: -8px !important;
+        bottom: -2px !important;
+        width: 30px !important;
+      }
+      /deep/ .recommend::after {
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+      }
     }
     .token-link {
       width: 25px;
@@ -416,13 +461,11 @@ export default {
   .token {
     width: 60px;
     height: 60px;
+    /deep/ .minetoken {
+      width: 36px;
+      height: 36px;
+      margin: -5px 0 0 -5px;
+    }
   }
-
-  .token .minetoken {
-    width: 36px;
-    height: 36px;
-    margin: -5px 0 0 -5px;
-  }
-
 }
 </style>

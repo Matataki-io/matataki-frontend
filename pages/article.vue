@@ -12,10 +12,10 @@
           <popularArticles :list="popularlist" />
           <section class="head ra-head tag">
             <h3 class="head-title">
-              热门标签
+              {{ $t('home.hotTag') }}
             </h3>
             <router-link :to="{name: 'tags'}">
-              查看全部
+              {{ $t('home.viewAll') }}
               <svg-icon icon-class="arrow" class="icon" />
             </router-link>
           </section>

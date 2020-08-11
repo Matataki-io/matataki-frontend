@@ -183,12 +183,7 @@ export default {
       if(!anchor) return
 
       const offsetTop = anchor.offsetTop - 100
-
-      // chrome, firefox, safari
-      document.body.scrollTop = offsetTop
-      document.documentElement.scrollTop = offsetTop
-      window.pageYOffset = offsetTop
-
+      window.scrollTo(0, offsetTop)
       anchor.classList.add('play-prompt')
     },
     /** 通过评论id获取评论在当前页面中的位置，不存在这条评论则返回false */

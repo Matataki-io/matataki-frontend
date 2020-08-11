@@ -5,7 +5,14 @@
       target="_blank"
     >
       <c-user-popover :user-id="Number(card.id)">
-        <avatar :src="avatarSrc" size="45px" />
+        <c-avatar
+          :src="avatarSrc"
+          class="avatar"
+          :recommend-author="card.is_recommend === 1"
+          :level="1"
+          :token-user="card.user_is_token === 1"
+          :level-token="1"
+        />
       </c-user-popover>
     </n-link>
     <n-link
@@ -36,11 +43,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import avatar from '@/components/avatar'
 
 export default {
   components: {
-    avatar
   },
   props: {
     card: {
@@ -102,6 +107,16 @@ export default {
   padding: 20px 0 0;
   &:nth-child(1) {
     padding-top: 0;
+  }
+  .avatar {
+    width: 45px;
+    height: 45px;
+    flex: 0 0 45px;
+    /deep/ .recommend-icon {
+      right: -10px !important;
+      bottom: -5px !important;
+      width: 26px !important;
+    }
   }
   .username {
     font-size: 16px;

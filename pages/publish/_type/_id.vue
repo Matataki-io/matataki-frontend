@@ -26,7 +26,7 @@
           :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
           class="save-draft"
         >
-          草稿
+          {{ $t('publish.draft') }}
         </router-link>
         <div
           class="import-button"
@@ -79,7 +79,7 @@
               :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
               class="draft-save-draft"
             >
-              草稿
+              {{ $t('publish.draft') }}
             </router-link>
           </div>
   
@@ -92,7 +92,7 @@
               :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}"
               class="draft-save-draft"
             >
-              草稿
+              {{ $t('publish.draft') }}
             </router-link>
           </div>
         </mavon-editor>
@@ -118,31 +118,12 @@
     <!-- 设置 发布 dialog -->
     <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
-        <!-- <h3 v-if="isShowDraftPreview" class="set-title">
-          预览设置
-        </h3>
-        <div v-if="isShowDraftPreview" class="set-content">
-          <el-button round size="medium" @click="goPreview">
-            立即预览
-          </el-button>
-          <el-button round size="medium" @click="copyPreview">
-            复制链接
-          </el-button>
-          <p class="preview">将此链接发送给他人, 可以提前预览您还未发布的草稿(24h有效)</p>
-        </div> -->
-        
         <h1 class="set-title">
           基础设置
         </h1>
         <h4 class="set-subtitle">
-          {{ $t('publish.coverTitle') }}
+          {{ $t('publish.coverTitle') }}<span class="remarks">{{ $t('publish.coverRecommendation') }}</span>  
         </h4>
-        <el-alert
-          :title="$t('publish.coverRecommendation')"
-          :closable="false"
-          type="info"
-          show-icon
-        />
         <div class="set-content">
           <div class="cover">
             <img-upload
@@ -171,7 +152,7 @@
             </div>
             <img
               v-show="cover"
-              class="cover-btn"
+              class="cover-remove"
               src="@/assets/img/del.svg"
               alt="remove"
               @click.prevent="removeCover"
@@ -235,16 +216,16 @@
           </el-button>
         </div>
         <div v-if="isAssosiateWith" class="set-content">
-          <div class="img-container">
-            <div
-              class="overlay-box"
-              :style="{backgroundImage: `url(${assosiateFanLogo})`}"
-              @click="cancelAssosiate"
-            >
-              <div class="desc">
-                <p>取消关联</p>
-              </div>
+          <div class="img-container fl ac">
+            <div class="overlay-box">
+              <img :src="assosiateFanLogo" alt="logo">
             </div>
+            <img
+              class="related-btn"
+              src="@/assets/img/del.svg"
+              alt="remove"
+              @click.prevent="cancelAssosiate"
+            >
           </div>
         </div>
         <h4 class="set-subtitle">
@@ -349,7 +330,11 @@
           </el-tooltip>
         </h4>
         <div class="set-content">
-          <el-radio v-model="readConfigRadio" label="all">
+          <el-radio
+            v-model="readConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="all"
+          >
             所有人可见
           </el-radio>
           <br>
@@ -468,6 +453,7 @@
                     placeholder="请输入内容"
                     maxlength="300"
                     show-word-limit
+                    class="customize-input"
                   />
                 </div>
               </transition>
@@ -487,7 +473,11 @@
           </el-tooltip>
         </h4>
         <div class="set-content">
-          <el-radio v-model="editConfigRadio" label="all">
+          <el-radio
+            v-model="editConfigRadio"
+            :disabled="prohibitEditingPrices"
+            label="all"
+          >
             仅自己可编辑
           </el-radio>
           <br>

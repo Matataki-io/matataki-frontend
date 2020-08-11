@@ -1,8 +1,5 @@
 <template>
   <div class="related">
-    <h2 class="token-title">
-      {{ $t('token.relatedCreations') }}
-    </h2>
     <div class="header">
       <div class="post-nav">
         <a
@@ -105,7 +102,7 @@ export default {
           }
         },
         {
-          title: '需持币',
+          title: '需持票',
           apiUrl: 'minetokenRelated',
           params: {
             filter: 1
@@ -194,18 +191,8 @@ export default {
 
 <style lang="less" scoped>
 .related {
-  margin: 20px 0 0;
   display: flex;
   flex-direction: column;
-  
-  .token-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: @black;
-    line-height: 33px;
-    padding: 0;
-    margin: 0 0 14px 0;
-  }
 
   .header {
     display: flex;
@@ -216,11 +203,10 @@ export default {
       flex-direction: row;
       flex: 1;
       a {
-        font-size: 20px;
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 400;
         color: #B2B2B2;
-        line-height: 28px;
-        margin-right: 40px;
+        margin-right: 20px;
         cursor: pointer;
         &.active {
           color: black;
@@ -264,7 +250,6 @@ export default {
 
 .list {
   clear: left;
-  margin-top: 4px;
   .related-post-card {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   }

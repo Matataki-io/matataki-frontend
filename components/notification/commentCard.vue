@@ -7,7 +7,14 @@
       <div class="fl user">
         <router-link :to="{name: 'user-id', params:{id: card.user_id}}">
           <c-user-popover :user-id="Number(card.user_id)">
-            <c-avatar :src="avatar" class="avatar" />
+            <c-avatar
+              :src="avatar"
+              class="avatar"
+              :recommend-author="card.user.is_recommend === 1"
+              :level="1"
+              :token-user="card.user_is_token === 1"
+              :level-token="1"
+            />
           </c-user-popover>
         </router-link>
         <div class="user-info">
@@ -41,9 +48,6 @@
 import { isNDaysAgo } from '@/utils/momentFun'
 
 export default {
-  components: {
-
-  },
   props: {
     card: {
       type: Object,
