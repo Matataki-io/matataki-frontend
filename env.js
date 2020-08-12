@@ -27,7 +27,7 @@ module.exports = {
   },
   testing: {
     NODE: 'testing',
-    NODE_ENV: 'production',
+    NODE_ENV: 'testing',
     VUE_APP_API: 'https://apitest.smartsignature.io',
     VUE_APP_URL: 'https://test.smartsignature.io',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
