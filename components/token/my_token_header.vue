@@ -115,8 +115,8 @@ export default {
 
 <style scoped lang="less">
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 60px !important;
+  height: 60px !important;
   flex: 0 0 60px;
 }
 .token-card {
