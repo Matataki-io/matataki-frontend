@@ -1,11 +1,11 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <c-user-popover :user-id="Number(article.uid)">
-        <router-link
-          :to="{name: 'user-id', params: {id : article.uid}}"
-          target="_blank"
-        >
+      <router-link
+        :to="{name: 'user-id', params: {id : article.uid}}"
+        target="_blank"
+      >
+        <c-user-popover :user-id="Number(article.uid)">
           <c-avatar
             :src="avatarSrc"
             class="Avatar"
@@ -14,8 +14,8 @@
             :token-user="!!tokenInfo.id"
             :level-token="1"
           />
-        </router-link>
-      </c-user-popover>
+        </c-user-popover>
+      </router-link>
       <div class="AuthorInfo-content">
         <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
           {{ avatarName || '&nbsp;' }}
