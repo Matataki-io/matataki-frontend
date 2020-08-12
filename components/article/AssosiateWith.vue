@@ -1,94 +1,92 @@
 <template>
-  <router-link :to="{name: 'token-id', params: {id: article.assosiate_with}}">
-    <div class="token-detail" style="display: flex;">
-      <c-token-popover :token-id="Number(minetokenToken.id)">
-        <avatar :src="logo" size="60px" />
-      </c-token-popover>
-      <div class="token-detail-info">
-        <div class="fl info-line">
-          <div class="token-info-title bold">
-            {{ minetokenToken.symbol || 'Loading...' }}
+  <div class="token-detail" style="display: flex;" @click="$router.push({ name: 'token-id', params: {id: article.assosiate_with} })">
+    <c-token-popover :token-id="Number(minetokenToken.id)">
+      <avatar :src="logo" size="60px" />
+    </c-token-popover>
+    <div class="token-detail-info">
+      <div class="fl info-line">
+        <div class="token-info-title bold">
+          {{ minetokenToken.symbol || 'Loading...' }}
+        </div>
+        <div style="flex-direction: row;display: flex;align-items: center;">
+          <div class="token-info-sub" style="font-size: 1.1rem">
+            {{ minetokenToken.name }}
           </div>
-          <div style="flex-direction: row;display: flex;align-items: center;">
-            <div class="token-info-sub" style="font-size: 1.1rem">
-              {{ minetokenToken.name }}
+          <div v-if="tags && tags.length !== 0" style="display: flex; margin-left: 0.5rem;">
+            <div
+              v-for="(tag, index) in tags" 
+              :key="index" 
+              class="tag-item" 
+              style="margin-right:0.5rem;"
+            >
+              <div size="small" plain>
+                {{ tagPattern.find(item => item.label === tag.tag).name }}
+              </div>
             </div>
-            <div v-if="tags && tags.length !== 0" style="display: flex; margin-left: 0.5rem;">
-              <div
-                v-for="(tag, index) in tags" 
-                :key="index" 
-                class="tag-item" 
-                style="margin-right:0.5rem;"
+          </div>
+        </div>
+        <span v-if="isLogined || balance" class="balance">
+          {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
+          <i class="el-icon-arrow-right" />
+        </span>
+      </div>
+      <div class="fl info-line">
+        <div class="token-info-title">
+          {{ $t('token.founder') }}：
+        </div>
+        <div>
+          <p class="token-info-sub">
+            <c-user-popover :user-id="Number(minetokenToken.uid)">
+              <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
+                {{ minetokenUser.nickname || minetokenUser.username }}
+              </router-link>
+            </c-user-popover>
+          </p>
+        </div>
+      </div>
+      <div class="fl info-line">
+        <div class="token-info-title">
+          {{ $t('token.exchangePrice') }}：
+        </div>
+        <div style="display:flex;">
+          <div class="token-info-sub">
+            {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : '暂无价格' }}
+          </div>
+          <div>
+            <div class="float">
+              <span
+                v-if="float !== 0"
+                :class="float < 0 && 'red'"
               >
-                <div size="small" plain>
-                  {{ tagPattern.find(item => item.label === tag.tag).name }}
-                </div>
-              </div>
+                {{ float }}%
+              </span>
             </div>
-          </div>
-          <span v-if="isLogined || balance" class="balance">
-            {{ $t('token.owned') }}：{{ balance }} {{ minetokenToken.symbol }}
-            <i class="el-icon-arrow-right" />
-          </span>
-        </div>
-        <div class="fl info-line">
-          <div class="token-info-title">
-            {{ $t('token.founder') }}：
-          </div>
-          <div>
-            <p class="token-info-sub">
-              <c-user-popover :user-id="Number(minetokenToken.uid)">
-                <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
-                  {{ minetokenUser.nickname || minetokenUser.username }}
-                </router-link>
-              </c-user-popover>
-            </p>
-          </div>
-        </div>
-        <div class="fl info-line">
-          <div class="token-info-title">
-            {{ $t('token.exchangePrice') }}：
-          </div>
-          <div style="display:flex;">
-            <div class="token-info-sub">
-              {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : '暂无价格' }}
-            </div>
-            <div>
-              <div class="float">
-                <span
-                  v-if="float !== 0"
-                  :class="float < 0 && 'red'"
-                >
-                  {{ float > 0 ? `+${float}` : float }}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="fl info-line">
-          <div
-            class="token-info-title"
-            v-html="$t('token.summary')"
-          />
-          <div>
-            <p class="token-info-sub">
-              {{ minetokenToken.brief || $t('not') }}
-            </p>
-          </div>
-        </div>
-        <div class="fl info-line balance-mobile">
-          <div class="token-info-title">
-            {{ $t('token.owned') }}：
-          </div>
-          <div>
-            <p class="token-info-sub">
-              {{ balance }} {{ minetokenToken.symbol }}
-            </p>
           </div>
         </div>
       </div>
+      <div class="fl info-line">
+        <div
+          class="token-info-title"
+          v-html="$t('token.summary')"
+        />
+        <div>
+          <p class="token-info-sub">
+            {{ minetokenToken.brief || $t('not') }}
+          </p>
+        </div>
+      </div>
+      <div class="fl info-line balance-mobile">
+        <div class="token-info-title">
+          {{ $t('token.owned') }}：
+        </div>
+        <div>
+          <p class="token-info-sub">
+            {{ balance }} {{ minetokenToken.symbol }}
+          </p>
+        </div>
+      </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
@@ -215,6 +213,7 @@ export default {
   background: @white;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  cursor: pointer;
 }
 .info-line {
   margin: 6px 0;
