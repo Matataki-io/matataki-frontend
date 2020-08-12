@@ -170,8 +170,8 @@ export default {
   box-shadow: 0 2px 25px rgba(163, 163, 163, 0.747);
 }
 .Avatar {
-  width: 50px;
-  height: 50px;
+  width: 50px !important;
+  height: 50px !important;
   /deep/ .recommend-icon {
     right: -10px !important;
     bottom: -2px !important;
@@ -244,8 +244,8 @@ export default {
 @media screen and (max-width: 600px) {
   .Post-Author .Avatar {
     /deep/ .c-avatar {
-      width: 30px;
-      height: 30px;
+      width: 30px !important;
+      height: 30px !important;
     }
   }
   .Post-Author .AuthorInfo-name {

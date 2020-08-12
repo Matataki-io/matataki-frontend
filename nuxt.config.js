@@ -18,6 +18,7 @@ function cdnPublicPath (env) {
   const list = {
     'development': '/_nuxt/',
     'testing': 'https://cdntest.frontenduse.top',
+    'release': 'https://cdntest.frontenduse.top/release',
     'production': 'https://cdn.frontenduse.top',
   }
   return list[env] || '/_nuxt/'
