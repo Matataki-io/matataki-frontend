@@ -1,11 +1,11 @@
 <template>
   <div class="Post-Author">
     <div class="AuthorInfo">
-      <router-link
-        :to="{name: 'user-id', params: {id : article.uid}}"
-        target="_blank"
-      >
-        <c-user-popover :user-id="Number(article.uid)">
+      <c-user-popover :user-id="Number(article.uid)">
+        <router-link
+          :to="{name: 'user-id', params: {id : article.uid}}"
+          target="_blank"
+        >
           <c-avatar
             :src="avatarSrc"
             class="Avatar"
@@ -14,8 +14,8 @@
             :token-user="!!tokenInfo.id"
             :level-token="1"
           />
-        </c-user-popover>
-      </router-link>
+        </router-link>
+      </c-user-popover>
       <div class="AuthorInfo-content">
         <router-link class="UserLink AuthorInfo-name" :to="`/user/${article.uid}`" target="_blank">
           {{ avatarName || '&nbsp;' }}
@@ -170,8 +170,8 @@ export default {
   box-shadow: 0 2px 25px rgba(163, 163, 163, 0.747);
 }
 .Avatar {
-  width: 50px;
-  height: 50px;
+  width: 50px !important;
+  height: 50px !important;
   /deep/ .recommend-icon {
     right: -10px !important;
     bottom: -2px !important;
@@ -244,8 +244,8 @@ export default {
 @media screen and (max-width: 600px) {
   .Post-Author .Avatar {
     /deep/ .c-avatar {
-      width: 30px;
-      height: 30px;
+      width: 30px !important;
+      height: 30px !important;
     }
   }
   .Post-Author .AuthorInfo-name {
