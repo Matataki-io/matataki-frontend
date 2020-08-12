@@ -18,7 +18,7 @@
     </template>
     <!-- 推荐用户 -->
     <img
-      v-if="recommendAuthor"
+      v-show="recommendAuthor"
       src="@/assets/img/recommend_author.svg"
       alt="icon"
       class="recommend-icon"
