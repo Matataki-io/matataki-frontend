@@ -58,7 +58,7 @@
                 v-if="float !== 0"
                 :class="float < 0 && 'red'"
               >
-                {{ float > 0 ? `+${float}` : float }}%
+                {{ float }}%
               </span>
             </div>
           </div>
