@@ -191,7 +191,12 @@
         <h4 class="set-subtitle">
           关联 Fan 票
         </h4>
-        <div v-if="!isAssosiateWith" class="set-content" style="display: flex;align-items: center;">
+        <div
+          v-if="!isAssosiateWith"
+          v-loading="alltokenLoading"
+          class="set-content"
+          style="display: flex;align-items: center;"
+        >
           <el-select
             v-model="assosiateWith"
             size="small"
@@ -761,7 +766,8 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
-      editorPlaceholder: ''
+      editorPlaceholder: '',
+      alltokenLoading: true
     }
   },
   computed: {
@@ -1149,7 +1155,7 @@ export default {
           this.tags = res.data.tags.map(i => i.name)
 
           this.assosiateWith = res.data.assosiate_with
-          if (this.assosiateWith) {
+          if (this.assosiateWith && this.allTokenOptions.length > 0) {
             this.setAssosiateWith()
           }
 
@@ -1317,6 +1323,7 @@ export default {
     async getAllTokens() {
       const pagesize = 999
       await this.$API.allToken({ pagesize }).then(res => {
+        this.alltokenLoading = false
         if (res.code === 0) {
           // 如果有的话，吧自己发行的Fan票放到第一位
           this.allTokenOptions = this.topOwnToken(res.data.list)
@@ -1324,8 +1331,8 @@ export default {
           const isNewArticle = this.$route.params.type === 'draft' && this.$route.params.id === 'create'
           if (isNewArticle && this.isMe({...this.allTokenOptions[0]}.uid)) {
             this.assosiateWith = this.allTokenOptions[0].id
-            this.setAssosiateWith()
           }
+          if (this.assosiateWith) this.setAssosiateWith()
         }
       }).catch(err => console.log(err))
     },
