@@ -148,6 +148,7 @@ export default {
   user-select: none;
   outline: none;
   margin-left: 10px;
+  height: 75px;
   &:hover {
     background: #333;
     border-color: #333;
