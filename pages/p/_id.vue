@@ -391,7 +391,7 @@ import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import CommentList from '@/components/comment/List'
-import { ipfsData, wxShare } from '@/api/async_data_api.js'
+import { wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
@@ -804,52 +804,44 @@ export default {
       const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
       accessToekn = token ? token[0] : ''
     }
-
-    const hashOrId = route.params.id
-    // post hash获取; p id 短链接;
-    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios({
-      url: `/${url}/${hashOrId}`,
-      methods: 'get',
-      headers: { 'x-access-token': accessToekn }
-    })
     let data = {}
+
+    // 文章ID
+    const id = route.params.id
+    if (!id) return data
+
+    // 获取数据
+    let post = {}
+    try {
+      post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
+      if (post.code !== 0) throw new Error(post.message)
+    } catch (e) {
+      console.log('get article data error', e)
+      return data
+    }
+    // 解藕文章数据 ipfs
+    let { p: info, ipfs } = post.data
+
     // 判断是否为付费阅读文章
-    const isProduct = info.data.channel_id === 2
-    if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
+    const isProduct = info.channel_id === 2
+    if (((info.tokens && info.tokens.length !== 0) || (info.prices && info.prices.length > 0)) && !isProduct) {
       data = {
-        article: info.data,
+        article: info,
         post: {
-          content: info.data.short_content
+          content: info.short_content
         }
       }
     } else {
-      const { hash } = info.data
-      // 有hash
-      if (hash) {
-        const res = await ipfsData($axios, hash)
-        if (res.code === 0) {
-          // console.log('return', res.data)
-          data = {
-            article: info.data,
-            post: res.data
-          }
-        } else {
-          // 获取失败
-          data = {
-            article: info.data,
-            post: {
-              content: info.data.short_content
-            }
-          }
+      if (ipfs.code === 0) {
+        data = {
+          article: info,
+          post: ipfs.data
         }
       } else {
-        // 没有hash
-        // console.log('not hash')
         data = {
-          article: info.data,
+          article: info,
           post: {
-            content: info.data.short_content
+            content: info.short_content
           }
         }
       }
@@ -860,7 +852,7 @@ export default {
     const isWeixin = () => /micromessenger/.test(userAgent)
     // 在微信内才请求分享 避免造成不必要的请求
     if (isWeixin()) {
-      console.log('yes', req.headers['user-agent'].toLowerCase())
+      console.log('is wechat env', req.headers['user-agent'].toLowerCase())
       
       let defaultLink = ''
       if (process.server) {
