@@ -1,10 +1,8 @@
-/* eslint-disable */
-"use strict";
 
-import axios from "axios";
-import { Loading, Message } from 'element-ui';
-import utils from './utils'
-import { removeCookie, clearAllCookie } from '@/utils/cookie'
+import axios from 'axios'
+// import { Loading } from 'element-ui'
+import { Message } from 'element-ui'
+import { getCookie, removeCookie, clearAllCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 
 // Full config:  https://github.com/axios/axios#request-config
@@ -20,58 +18,64 @@ const _axios = axios.create({
   baseURL: process.env.VUE_APP_API,
   timeout: 20000,
   headers: {},
-});
+})
 
 // let loadingInstance = null;
 _axios.interceptors.request.use(
   (config) => {
     // console.log('user request interceptors', config, config.noLoading)
     // if (!config.noLoading) {
-      // loadingInstance = Loading.service({
-      //   background: 'rgba(0, 0, 0, 0.1)'
-      // });
+    // loadingInstance = Loading.service({
+    //   background: 'rgba(0, 0, 0, 0.1)'
+    // });
     // }
-    if (utils.getCookie('ACCESS_TOKEN')) config.headers['x-access-token'] = utils.getCookie('ACCESS_TOKEN');
-    return config;
+
+    // 客户端执行
+    if (process.browser) {
+      if (getCookie('ACCESS_TOKEN')) {
+        config.headers['x-access-token'] = getCookie('ACCESS_TOKEN')
+      }
+    }
+    return config
   },
   (error) => {
     // Do something with request error
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 // Add a response interceptor
 _axios.interceptors.response.use(
-    (response) => {
-      // if(loadingInstance) loadingInstance.close();
-      if(response.status === 429) {
-        Message.closeAll()
-        Message({
-          message: '发文频繁，请稍后重试',
-          type: 'error'
-        })
-      }
-      return response.data;
-    },
-    (error) => {
-      // loadingInstance.close()
-      console.log(error.message)
+  (response) => {
+    // if(loadingInstance) loadingInstance.close();
+    if(response.status === 429) {
+      Message.closeAll()
+      Message({
+        message: '发文频繁，请稍后重试',
+        type: 'error'
+      })
+    }
+    return response.data
+  },
+  (error) => {
+    // loadingInstance.close()
+    console.log(error.message)
 
-      if (error.message.includes('status code 401')) {
-        console.log('登录状态异常,请重新登录')
-        // Message.closeAll()
-        // Message({
-        //   message: '登录状态异常,请重新登录',
-        //   type: 'error'
-        // })
+    if (error.message.includes('status code 401')) {
+      console.log('登录状态异常,请重新登录')
+      // Message.closeAll()
+      // Message({
+      //   message: '登录状态异常,请重新登录',
+      //   type: 'error'
+      // })
 
-        if (process.browser && window && window.$nuxt) {
+      if (process.browser && window && window.$nuxt) {
 
-          // window.$nuxt.$store.commit('setLoginModal', true)
+        // window.$nuxt.$store.commit('setLoginModal', true)
           
-          try {
-            // 重置all store
-            window.$nuxt.$store.dispatch('resetAllStore')
+        try {
+          // 重置all store
+          window.$nuxt.$store.dispatch('resetAllStore')
             .then(() => {
               clearAllCookie()
               // 防止没有清除干净
@@ -84,32 +88,32 @@ _axios.interceptors.response.use(
               console.log(err)
               removeCookie('ACCESS_TOKEN')
             })
-          } catch(e) {
-            console.log(e)
-            removeCookie('ACCESS_TOKEN')
-          }
+        } catch(e) {
+          console.log(e)
+          removeCookie('ACCESS_TOKEN')
         }
       }
-
-      // 超时处理
-      if (error.message.includes('timeout')) {
-        Message.closeAll()
-        Message({
-          message: '请求超时',
-          type: 'error'
-        })
-      }
-      if (error.message.includes('Network Error')) {
-        // Message.closeAll()
-        // Message({
-        //   message: '网络错误',
-        //   type: 'error'
-        // })
-        console.log('Network Error')
-      }
-      // loadingInstance.close()
-      return Promise.reject(error);
     }
-);
 
-export default _axios;
+    // 超时处理
+    if (error.message.includes('timeout')) {
+      Message.closeAll()
+      Message({
+        message: '请求超时',
+        type: 'error'
+      })
+    }
+    if (error.message.includes('Network Error')) {
+      // Message.closeAll()
+      // Message({
+      //   message: '网络错误',
+      //   type: 'error'
+      // })
+      console.log('Network Error')
+    }
+    // loadingInstance.close()
+    return Promise.reject(error)
+  }
+)
+
+export default _axios

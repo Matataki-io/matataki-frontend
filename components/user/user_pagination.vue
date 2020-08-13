@@ -127,7 +127,10 @@ export default {
         const res = await this.$API.getBackendData({ url, params, urlReplace: this.urlReplace }, this.needAccessToken)
         if (res.code === 0) getDataSuccess(res)
         else getDataFail(res.message)
-      } catch (error) { getDataFail() }
+      } catch (error) { 
+        getDataFail()
+        console.log('error', error)
+      }
     },
     togglePage(i) {
       this.$emit('togglePage', i)
