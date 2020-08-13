@@ -1234,6 +1234,9 @@ export default {
           this.assosiateWith = data.assosiate_with
           this.ipfs_hide = Boolean(data.ipfs_hide)
 
+          if (this.allTokenOptions.length !== 0 && this.assosiate_with !== undefined) {
+            this.setAssosiateWith()
+          }
 
           this.setCCLicense(data.cc_license)
 
