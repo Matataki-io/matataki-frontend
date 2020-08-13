@@ -1,7 +1,10 @@
 import API from '@/api/API'
 // 这里和移动端有细微差别, 因为nuxt....... 于是多加了一个判断
 const isSupportWebp = process.browser ? !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0 : false
-console.log(isSupportWebp)
+if (process.browser) {
+  console.log('oss_process support webp', isSupportWebp)
+}
+
 /** oss process image
  * @param {String} src 地址
  * @param {String} w 宽度
