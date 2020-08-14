@@ -607,6 +607,46 @@
             公开可见
           </el-radio>
         </div>
+        
+        <div v-if="$route.params.type !== 'edit'">
+          <h1 class="set-title set-title-border">
+            发布设置
+          </h1>
+          <h4 class="set-subtitle">
+            定时发布
+            <el-tooltip
+              effect="dark"
+              content="成功设置后文章不支持修改，但在设定的时间之前可取消发布"
+              placement="top-start"
+            >
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
+            </el-tooltip>
+
+            <el-switch
+              v-model="timedForm.switch"
+              class="timed-switch"
+              active-color="#542DE0"
+              inactive-color="#DBDBDB"
+            />
+          </h4>
+          <div class="set-content timed-picker">
+            <el-date-picker
+              v-if="timedForm.switch"
+              v-model="timedForm.date"
+              size="small"
+              type="datetime"
+              placeholder="选择日期时间"
+              align="right"
+              format="yyyy-MM-dd HH:mm"
+              :picker-options="timedOptions"
+            />
+          </div>
+        </div>
+
+
 
         <div class="set-footer">
           <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
@@ -650,7 +690,7 @@
             :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
             @click="sendThePost"
           >
-            立即发布
+            {{ timedForm.switch ? '定时发布' : '立即发布' }} 
           </el-button>
         </div>
 
@@ -681,6 +721,14 @@ import statement from '@/components/statement/index.vue'
 import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 import { CNY } from '@/components/exchange/consts.js'
+
+function newDatePicker(time) {
+  const date = new Date()
+  date.setSeconds(0)
+  date.setMilliseconds(0)
+  date.setTime(date.getTime() + time)
+  return date
+}
 
 export default {
   layout: 'empty',
@@ -767,7 +815,39 @@ export default {
       editConfigRadio: 'all',
       ipfs_hide: true,
       editorPlaceholder: '',
-      alltokenLoading: true
+      alltokenLoading: true,
+      timedForm: {
+        switch: false,
+        date: ''
+      },
+      timedOptions: {
+        shortcuts: [
+          {
+            text: '一小时后',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000))
+            }
+          },
+          {
+            text: '明天',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000 * 24))
+            }
+          },
+          {
+            text: '后天',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000 * 48))
+            }
+          },
+          {
+            text: '一周后',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000 * 24 * 7))
+            }
+          }
+        ]
+      }
     }
   },
   computed: {
@@ -871,6 +951,9 @@ export default {
     }
   },
   watch: {
+    'timedForm.dateText': function (val) {
+      console.log(JSON.stringify(val))
+    },
     fissionNum() {
       this.fissionFactor = this.fissionNum * 1000
     },
@@ -1462,6 +1545,36 @@ export default {
         this.$message.error(error.toString())
       }
     },
+    // 定时发布文章
+    async timedPublish() {
+      if (!this.id) {
+        this.fullscreenLoading = false
+        this.$message.warning('创建定时任务的草稿不存在')
+        return
+      }
+      if (!this.timedForm.date) {
+        this.fullscreenLoading = false
+        this.$message.warning('请填写发布时间')
+        return
+      }
+      try {
+        const result = await this.$API.timedPublishArticle(
+          this.id,
+          this.timedForm.date
+        )
+        this.fullscreenLoading = false
+        if (result.code === 0) {
+          this.$message.success('成功创建定时发布任务')
+          this.$router.push({name: 'user-id-draft', params: {id: this.currentUserInfo.id}})
+        }
+        else this.$message.error(result.message)
+      }
+      catch (e) {
+        this.fullscreenLoading = false
+        console.error(e)
+        this.$message.error(`错误：${e.toString()}`)
+      }
+    },
     // 自动创建草稿
     async autoCreateDraft(article) {
       this.saveDraft = '保存中...'
@@ -1633,15 +1746,20 @@ export default {
         const data = { title, author, content }
         // this.fullscreenLoading = false // remove full loading
 
-        this.publishArticle({
-          author,
-          title,
-          data,
-          fissionFactor,
-          cover,
-          isOriginal,
-          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
-        })
+        if (this.timedForm.switch) {
+          this.timedPublish()
+        }
+        else {
+          this.publishArticle({
+            author,
+            title,
+            data,
+            fissionFactor,
+            cover,
+            isOriginal,
+            shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
+          })
+        }
       }
       // 编辑发送
       const editPost = () => {

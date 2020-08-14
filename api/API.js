@@ -243,6 +243,21 @@ export default {
   editArticle({ article }) {
     return this._sendArticle('/post/edit', article)
   },
+  /**
+   * 定时发布文章
+   * @param {Number} draftId 草稿 id
+   * @param {Date} postTime 发布时间
+   */
+  timedPublishArticle(draftId, postTime) {
+    return request.post(`/post/timed/${draftId}`, { postTime })
+  },
+  /**
+   * 删除定时发布任务
+   * @param {Number} draftId 草稿 id
+   */
+  deleteTimedPublishTask(draftId) {
+    return request.delete(`/post/timed/${draftId}`)
+  },
   // 创建草稿
   createDraft(data) {
     return request({
