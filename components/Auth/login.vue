@@ -463,10 +463,10 @@ export default {
     getWeixinCode() {
       if(this.$utils.isInWeixin()) {
         this.setPathToSession('wechatFrom')
-        this.$router.push({ name: 'login-weixin', query: { from: this.$route.name } })
+        this.$router.replace({ name: 'login-weixin', query: { from: this.$route.name } })
       } else {
         let to = encodeURIComponent(window.location.href)
-        this.$router.push({ name: 'login-auth', query: { to: to } })
+        this.$router.replace({ name: 'login-auth', query: { to: to } })
       }
     },
     // 检测域名
