@@ -114,20 +114,20 @@
         class="lock-bottom"
       >
         <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
-        <el-tooltip
+        <!-- <el-tooltip
           class="item"
           effect="dark"
           :content="$t('paidRead.tounlockThisArticle')"
           placement="top-end"
+        > -->
+        <el-button
+          type="primary"
+          size="small"
+          @click="wxpayArticle"
         >
-          <el-button
-            type="primary"
-            size="small"
-            @click="wxpayArticle"
-          >
-            {{ $t('paidRead.oneKey') + unlockText }}
-          </el-button>
-        </el-tooltip>
+          {{ $t('paidRead.oneKey') + unlockText }}
+        </el-button>
+        <!-- </el-tooltip> -->
       </div>
     </div>
   </div>
