@@ -705,6 +705,16 @@
 </template>
 
 <script>
+
+let mavonEditor = {
+  mavonEditor: null
+}
+if (process.client) {
+  mavonEditor = require('@matataki/editor')
+}
+
+import '@matataki/editor/dist/css/index.css'
+
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -734,6 +744,7 @@ export default {
   layout: 'empty',
   name: 'NewPost',
   components: {
+    'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,
     articleTransfer,
     articleImport,

@@ -140,6 +140,12 @@ export default {
             priority: 20,
             name: true
           },
+          echarts: {
+            test: /node_modules[\\/]echarts/,
+            chunks: 'all',
+            priority: 20,
+            name: true
+          },
         }
       }
     },

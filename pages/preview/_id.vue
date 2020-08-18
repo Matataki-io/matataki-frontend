@@ -6,7 +6,7 @@
         <img v-lazy="cover" alt="cover">
       </div>
 
-      <header>
+      <header class="header">
         <!-- 标题 -->
         <h1>{{ article.title }}</h1>
         <el-alert
@@ -32,13 +32,7 @@
 
       <article>
         <!-- 文章内容 -->
-        <no-ssr>
-          <mavon-editor v-show="false" style="display: none;" />
-        </no-ssr>
-        <div
-          class="markdown-body article-content"
-          v-html="compiledMarkdown"
-        />
+        <markdownView id="doc" :content="compiledMarkdown" />
       </article>
     </div>
   </div>
@@ -48,7 +42,31 @@
 <script>
 import { xssFilter, xssImageProcess } from '@/utils/xss'
 
+let markdown = null
+let finishView = null
+
+if (process.client) {
+  let md = require('markdown-render-js')
+
+  markdown = md.markdown
+  finishView = md.finishView 
+}
+
+// import { markdown, finishView } from '../../static/markdown-render-js.min.js'
+import '@matataki/editor/dist/css/index.css'
+import markdownView from '@/components/markdown_view'
+
 export default {
+  head() {
+    return {
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
+      ]
+    }
+  },
+  components: {
+    markdownView
+  },
   data(){
     return {
       article: Object.create(null),
@@ -67,14 +85,14 @@ export default {
       // 如果已经上传过webp 在允许webp返回webp 如果不允许则修改格式为png (上传接口取消webp格式上传 因为在ipfs模版页面会出问题)
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       if (process.browser && this.article.content) {
-
-        const markdownItEditor = this.$mavonEditor.markdownIt
-        let md = markdownItEditor.render(this.article.content)
-
+        let md = markdown.render(this.article.content)
         return this.$utils.compose(xssImageProcess, xssFilter)(md)
       } else {
         return ''
       }
+    },
+    markdownContent () {
+      return this.article.content
     },
     // 头绪
     avatar() {
@@ -98,9 +116,9 @@ export default {
     }
   },
   watch: {
-    compiledMarkdown() {
-      this.formatPreview()
-    }
+    markdownContent() {
+      this.finishViewContent()
+    },
   },
   created() {
     if (process.browser) {
@@ -111,9 +129,7 @@ export default {
     }
   },
   mounted() {
-    window.onload = () => {
-      this.formatPreview()
-    }
+
   },
   methods: {
     // 初始化
@@ -146,15 +162,25 @@ export default {
           console.log(err)
         })
     },
-    // 格式化文章样式
-    formatPreview() {
-      try {
-        if (window.$ && window.finishView) {
-          window.finishView(window.$('.article-content'))
+    // 完成优化文章样式
+    finishViewContent() {
+      this.$nextTick(() => {
+        try {
+          // eslint-disable-next-line no-undef
+          if ($) {
+            // eslint-disable-next-line no-undef
+            finishView($('#doc'))
+            // eslint-disable-next-line no-undef
+          } else if (jQuery) {
+            // eslint-disable-next-line no-undef
+            finishView(jQuery('#doc'))
+          } else {
+            console.log('not $ jQuery')
+          }
+        } catch (e) {
+          console.log('compiledMarkdown change', e)
         }
-      } catch (e) {
-        console.log(e)
-      }
+      })
     }
   }
 }
@@ -237,11 +263,6 @@ export default {
 article {
   padding: 0 20px 20px;
 }
-.article-content {
-  margin-top: 20px;
-  font-size: 16px;
-  font-weight: 400px;
-}
 
 .tag-card {
   display: inline-block;
@@ -258,5 +279,9 @@ article {
     background-color: @purpleDark;
     color: #fff;
   }
+}
+
+.header {
+  margin-bottom: 20px;
 }
 </style>
