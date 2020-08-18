@@ -71,7 +71,7 @@
           <h3 class="head-title">
             {{ $t('home.recommendAuthor') }}
           </h3>
-          <span class="ra-head-random" @click="usersRecommend">
+          <div class="ra-head-random" @click="usersRecommend">
             <div class="change">
               <svg-icon
                 :class="usersLoading && 'rotate'"
@@ -80,7 +80,7 @@
               />
             </div>
             <span>{{ $t('home.random') }}</span>
-          </span>
+          </div>
         </section>
         <div class="ra-content">
           <r-a-list

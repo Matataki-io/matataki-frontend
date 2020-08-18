@@ -55,9 +55,9 @@
             DeFi.wtf
           </a>
         </p>
-        <p>
+        <div class="language">
           <language />
-        </p>
+        </div>
       </div>
       <div class="footer-c4">
         <div>
@@ -323,6 +323,10 @@ export default {
 .footer-content {
   flex-direction: row;
   align-items: flex-start;
+}
+
+.language {
+  margin: 10px 0 0;
 }
 // 小于1200
 @media screen and (max-width: 1200px) {

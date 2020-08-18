@@ -224,21 +224,21 @@
             >
               <div class="btn-ccc">
                 <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
-                <el-tooltip
+                <!-- <el-tooltip
                   class="item"
                   effect="dark"
                   :content="$t('paidRead.tounlockThisArticle')"
                   placement="top-end"
+                > -->
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="wxpayArticle"
                 >
-                  <el-button
-                    type="primary"
-                    size="small"
-                    @click="wxpayArticle"
-                  >
-                    {{ unlockTextFull }}
-                    <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
-                  </el-button>
-                </el-tooltip>
+                  {{ unlockTextFull }}
+                  <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
+                </el-button>
+                <!-- </el-tooltip> -->
               </div>
               <!-- <NoticeCreator
                 v-if="!readTokenExs"
