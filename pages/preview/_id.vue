@@ -6,7 +6,7 @@
         <img v-lazy="cover" alt="cover">
       </div>
 
-      <header>
+      <header class="header">
         <!-- 标题 -->
         <h1>{{ article.title }}</h1>
         <el-alert
@@ -41,7 +41,18 @@
 
 <script>
 import { xssFilter, xssImageProcess } from '@/utils/xss'
-import { markdown, finishView } from '../../static/markdown-render-js.min.js'
+
+let markdown = null
+let finishView = null
+
+if (process.client) {
+  let md = require('markdown-render-js')
+
+  markdown = md.markdown
+  finishView = md.finishView 
+}
+
+// import { markdown, finishView } from '../../static/markdown-render-js.min.js'
 import '@matataki/editor/dist/css/index.css'
 import markdownView from '@/components/markdown_view'
 
@@ -268,5 +279,9 @@ article {
     background-color: @purpleDark;
     color: #fff;
   }
+}
+
+.header {
+  margin-bottom: 20px;
 }
 </style>

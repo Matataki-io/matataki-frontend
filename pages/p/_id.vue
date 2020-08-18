@@ -413,7 +413,18 @@ import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
 
-import { markdown, finishView } from '../../static/markdown-render-js.min.js'
+
+let markdown = null
+let finishView = null
+
+if (process.client) {
+  let md = require('markdown-render-js')
+
+  markdown = md.markdown
+  finishView = md.finishView 
+}
+
+// import { markdown, finishView } from '../../static/markdown-render-js.min.js'
 import '@matataki/editor/dist/css/index.css'
 import markdownView from '@/components/markdown_view'
 
