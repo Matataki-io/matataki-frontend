@@ -19,6 +19,7 @@
             :index="index"
             :card="item"
             @del="del"
+            @deltimer="cancelTimer"
           />
         </n-link>
         <user-pagination
@@ -105,6 +106,27 @@ export default {
         type: 'warning'
       }).then(() => {
         asyncSuccessDel(this.articleCardData.articles[i].id, i)
+      })
+    },
+    cancelTimer(i) {
+      this.$confirm('是否取消定时发布？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          const res = await this.$API.deleteTimedPublishTask(this.articleCardData.articles[i].id)
+          if (res.code === 0) {
+            this.articleCardData.articles[i].triggered = null
+            this.articleCardData.articles[i].trigger_time = null
+            this.$message.success('取消成功')
+          }
+          else this.$message.error(res.message)
+        }
+        catch (e) {
+          console.error(e)
+          this.$message.error(`错误：${e.toString()}`)
+        }
       })
     }
   }
