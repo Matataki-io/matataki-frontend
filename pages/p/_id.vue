@@ -60,20 +60,16 @@
           </header>
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
-          <!-- <no-ssr> -->
-          <!-- <mavon-editor v-show="false" style="display: none;" /> -->
-          <!-- </no-ssr> -->
           <!-- v-highlight -->
-          <!-- <div
+          <markdownView
+            id="doc"
             v-viewer="viewerOptions"
-            class="markdown-body article-content"
+            :content="compiledMarkdown"
             :class="fontSizeComputed"
-            v-html="compiledMarkdown"
-          /> -->
-          <markdownView id="doc" :content="compiledMarkdown" class="container" />
+            class="article-content"
+          />
 
           <!-- 文章页脚 声明 是否原创 -->
-
           <div
             v-if="!hasPaied && !isProduct && (isTokenArticle || isPriceArticle)"
             class="lock-line"
@@ -606,9 +602,7 @@ export default {
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       try {
         if (process.browser) {
-          const { content } = this.post
-
-          let md = markdown.render(content)
+          let md = markdown.render(this.post.content)
 
           return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
         } else {
@@ -619,7 +613,9 @@ export default {
         return this.post.content
       }
 
-
+    },
+    markdownContent () {
+      return this.post.content
     },
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
@@ -796,25 +792,9 @@ export default {
     compiledMarkdown() {
       this.setAllHideContentStyle()
       this.formatPreview()
-
-      this.$nextTick(() => {
-        try {
-          // eslint-disable-next-line no-undef
-          if ($) {
-            // eslint-disable-next-line no-undef
-            finishView($('#doc'))
-            // eslint-disable-next-line no-undef
-          } else if (jQuery) {
-            // eslint-disable-next-line no-undef
-            finishView(jQuery('#doc'))
-          } else {
-            console.log('not $ jQuery')
-          }
-        } catch (e) {
-          console.log('compiledMarkdown change', e)
-        }
-      })
-
+    },
+    markdownContent() {
+      this.finishViewContent()
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
@@ -912,6 +892,9 @@ export default {
   },
   mounted() {
     if (process.browser) {
+
+      this.finishViewContent()
+
       // read语法的解锁方法，需要使用onclick触发
       window.unlock = (need, hold) => this.unlock(need, hold)
 
@@ -1777,6 +1760,26 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    // 完成优化文章样式
+    finishViewContent() {
+      this.$nextTick(() => {
+        try {
+          // eslint-disable-next-line no-undef
+          if ($) {
+            // eslint-disable-next-line no-undef
+            finishView($('#doc'))
+            // eslint-disable-next-line no-undef
+          } else if (jQuery) {
+            // eslint-disable-next-line no-undef
+            finishView(jQuery('#doc'))
+          } else {
+            console.log('not $ jQuery')
+          }
+        } catch (e) {
+          console.log('compiledMarkdown change', e)
+        }
+      })
     }
   }
 
