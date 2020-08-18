@@ -6,13 +6,11 @@
       v-loading="loading"
     >
       <no-content-prompt :list="articleCardData.articles">
-        <n-link
+        <a
           v-for="(item, index) in articleCardData.articles"
           :key="item.id"
-          :to="{
-            name: 'publish-type-id',
-            params: { type: 'draft', id: item.id },
-          }"
+          class="tiny-hand"
+          @click="routerGo(item)"
         >
           <draftArticleCardMini
             :is-draft-card="true"
@@ -21,7 +19,7 @@
             @del="del"
             @deltimer="cancelTimer"
           />
-        </n-link>
+        </a>
         <user-pagination
           v-show="!loading"
           :current-page="currentPage"
@@ -128,6 +126,39 @@ export default {
           this.$message.error(`错误：${e.toString()}`)
         }
       })
+    },
+    routerGo(data) {
+      if (!data.trigger_time) {
+        this.$router.push({
+          name: 'publish-type-id',
+          params: { type: 'draft', id: data.id }
+        })
+      }
+      else this.preview(data)
+    },
+    async preview(data) {
+      const res = await this.previewSetId(data.id)
+      if (res) {
+        this.$router.push({
+          name: 'preview-id',
+          params: { id: data.id }
+        })
+      }
+    },
+    // 允许草稿预览
+    async previewSetId(id) {
+      try {
+        const res = await this.$API.previewSetId({ id })
+        if (res.code === 0) {
+          return true
+        } else {
+          this.$message({ showClose: true, message: res.message, type: 'error' })
+          return false
+        }
+      } catch (e) {
+        console.log(e)
+        return false
+      }
     }
   }
 }
@@ -136,5 +167,8 @@ export default {
 <style scoped>
 .pagination {
   padding: 40px 5px;
+}
+.tiny-hand {
+  cursor: pointer;
 }
 </style>
