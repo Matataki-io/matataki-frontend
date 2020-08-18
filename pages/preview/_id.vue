@@ -17,6 +17,15 @@
           :closable="false"
           style="margin-bottom: 20px;"
         />
+        <el-alert
+          v-if="postTime"
+          title="草稿定时发布计划"
+          type="warning"
+          :description="postTime"
+          show-icon
+          :closable="false"
+          style="margin-bottom: 20px;"
+        />
         <div class="fl ac">
           <router-link v-if="avatar" :to="{ name: 'user-id', params: {id: article.uid}}" target="_blank">
             <c-avatar :src="avatar" />
@@ -41,6 +50,7 @@
 
 <script>
 import { xssFilter, xssImageProcess } from '@/utils/xss'
+import { isNDaysAgo } from '@/utils/momentFun'
 
 let markdown = null
 let finishView = null
@@ -113,6 +123,14 @@ export default {
         let m = parseInt(time / 60 % 60)
         return `预览链接${h}小时${m}分钟后失效`
       }
+    },
+    postTime() {
+      const helpText = '，如需修改内容请先取消发布'
+      if (!this.article || !this.article.trigger_time) return ''
+      if (this.article.triggered === 2) return '定时发布失败' + helpText
+      const time = this.moment(this.article.trigger_time)
+      const dateText = isNDaysAgo(-2, time) ? time.calendar() : time.format('MMMDo HH:mm')
+      return `计划于 ${dateText} 发布` + helpText
     }
   },
   watch: {
