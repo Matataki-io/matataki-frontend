@@ -14,7 +14,17 @@
           {{ card && card.title }}
         </h3>
         <p class="date">
-          {{ time }}
+          <span class="time">
+            {{ time }}
+          </span>
+          <span v-if="triggerTime && triggered !== 2" class="timed">
+            <svg-icon icon-class="clock" />
+            {{ triggerTime }} 发布
+          </span>
+          <span v-if="triggered === 2" class="timed">
+            <svg-icon icon-class="clock" />
+            定时发布失败
+          </span>
         </p>
       </div>
     </div>
@@ -55,6 +65,15 @@ export default {
       if (!this.card) return ''
       const time = this.moment(this.card.create_time)
       return isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
+    },
+    triggered() {
+      if (!this.card) return null
+      return this.card.triggered
+    },
+    triggerTime() {
+      if (!this.card || !this.card.trigger_time) return ''
+      const time = this.moment(this.card.trigger_time)
+      return isNDaysAgo(-2, time) ? time.calendar() : time.format('MMMDo HH:mm')
     }
   }
 }
@@ -108,6 +127,16 @@ export default {
   line-height:22px;
   padding: 0;
   margin: 0;
+  .time {
+    min-width: 110px;
+    display: inline-flex;
+    white-space: nowrap;
+  }
+  .timed {
+    margin-left: 10px;
+    color:rgba(251,104,119,1);
+    white-space: nowrap;
+  }
 }
 .del {
   width: 66px;
@@ -118,5 +147,21 @@ export default {
   padding: 4px 0;
   cursor: pointer;
   border-radius: @borderRadius6;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .date {
+    font-size: 12px;
+    line-height:20px;
+    display: flex;
+    flex-direction: column;
+    .timed {
+      margin-left: 0;
+    }
+  }
 }
 </style>
