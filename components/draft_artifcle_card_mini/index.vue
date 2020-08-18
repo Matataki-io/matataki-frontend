@@ -29,10 +29,21 @@
       </div>
     </div>
     <a
+      v-if="triggerTime"
+      class="del"
+      href="javascript:;"
+      @click.stop="$emit('deltimer', index)"
+    >
+      取消发布
+    </a>
+    <a
+      v-else
       class="del"
       href="javascript:;"
       @click.stop="$emit('del', index)"
-    >{{ $t('delete') }}</a>
+    >
+      {{ $t('delete') }}
+    </a>
   </div>
 </template>
 
@@ -139,7 +150,8 @@ export default {
   }
 }
 .del {
-  width: 66px;
+  width: 70px;
+  font-size: 14px;
   background: #000;
   text-align: center;
   color: #fff;
