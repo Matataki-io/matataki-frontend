@@ -60,16 +60,18 @@
           </header>
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
-          <no-ssr>
-            <mavon-editor v-show="false" style="display: none;" />
-          </no-ssr>
+          <!-- <no-ssr> -->
+          <!-- <mavon-editor v-show="false" style="display: none;" /> -->
+          <!-- </no-ssr> -->
           <!-- v-highlight -->
-          <div
+          <!-- <div
             v-viewer="viewerOptions"
             class="markdown-body article-content"
             :class="fontSizeComputed"
             v-html="compiledMarkdown"
-          />
+          /> -->
+          <markdownView id="doc" :content="compiledMarkdown" class="container" />
+
           <!-- 文章页脚 声明 是否原创 -->
 
           <div
@@ -415,16 +417,51 @@ import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
 
-const markdownIt = require('markdown-it')({
+import { markdown, finishView } from '../../static/markdown-render-js.min.js'
+import '@matataki/editor/dist/css/index.css'
+import markdownView from '@/components/markdown_view'
+
+const markdownItRender = require('markdown-it')({
   html: true,
   breaks: true
 })
 const mkItFootnote = require('markdown-it-footnote')
 const mkItKatex = require('markdown-it-katex')
-markdownIt.use(mkItKatex)
-markdownIt.use(mkItFootnote)
+markdownItRender.use(mkItKatex)
+markdownItRender.use(mkItFootnote)
 
 export default {
+  head() {
+    return {
+      title: this.article.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.article.short_content },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
+        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.articleTimeISO },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
+        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
+        /* end */
+      ],
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
+        // {
+        //   // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+        //   src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        // }
+      ]
+    }
+  },
   components: {
     CommentList,
     InvestModal,
@@ -447,6 +484,7 @@ export default {
     commentReward,
     ExsModal,
     bannerFan,
+    markdownView
   },
   data() {
     return {
@@ -545,36 +583,7 @@ export default {
       payTokenBalance: 0
     }
   },
-  head() {
-    return {
-      title: this.article.title,
-      meta: [
-        { hid: 'description', name: 'description', content: this.article.short_content },
-        /* <!--  Meta for Twitter Card --> */
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
-        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
-        /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
-        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.articleTimeISO },
-        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
-        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
-        /* end */
-      ],
-      script: [
-        {
-          // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
-          src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
-        }
-      ]
-    }
-  },
+
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'currentUserInfo']),
     articleTimeISO() {
@@ -597,14 +606,13 @@ export default {
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       try {
         if (process.browser) {
-          const markdownItEditor = this.$mavonEditor.markdownIt
           const { content } = this.post
 
-          let md = markdownItEditor.render(content)
+          let md = markdown.render(content)
 
           return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
         } else {
-          let md = markdownIt.render(this.post.content)
+          let md = markdownItRender.render(this.post.content)
           return this.$utils.compose(xssImageProcess, xssFilter)(md)
         }
       } catch (e) {
@@ -788,6 +796,25 @@ export default {
     compiledMarkdown() {
       this.setAllHideContentStyle()
       this.formatPreview()
+
+      this.$nextTick(() => {
+        try {
+          // eslint-disable-next-line no-undef
+          if ($) {
+            // eslint-disable-next-line no-undef
+            finishView($('#doc'))
+            // eslint-disable-next-line no-undef
+          } else if (jQuery) {
+            // eslint-disable-next-line no-undef
+            finishView(jQuery('#doc'))
+          } else {
+            console.log('not $ jQuery')
+          }
+        } catch (e) {
+          console.log('compiledMarkdown change', e)
+        }
+      })
+
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
@@ -1673,8 +1700,7 @@ export default {
       let desc = ''
       try {
         // 解析html
-        const markdownIt = this.$mavonEditor.markdownIt
-        let md = markdownIt.render(this.post.content)
+        let md = markdown.render(this.post.content)
         // 过滤所有的html标签
         desc = this.$utils.compose(filterOutHtmlTags)(md)
       } catch (error) {
