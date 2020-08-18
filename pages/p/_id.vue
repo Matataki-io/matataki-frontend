@@ -791,7 +791,6 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
-      this.formatPreview()
     },
     markdownContent() {
       this.finishViewContent()
@@ -909,11 +908,6 @@ export default {
       this.$nextTick(() => {
         this.setFontSize()
         this.getCommentRewardCount()
-
-        window.onload = () => {
-          this.formatPreview()
-        }
-
       })
     }
 
@@ -1750,16 +1744,6 @@ export default {
     async getCommentRewardCount() {
       await this.getCommentCount()
       await this.getRewardCount()
-    },
-    // 格式化文章样式
-    formatPreview() {
-      try {
-        if (window.$ && window.finishView) {
-          window.finishView(window.$('.article-content'))
-        }
-      } catch (e) {
-        console.log(e)
-      }
     },
     // 完成优化文章样式
     finishViewContent() {
