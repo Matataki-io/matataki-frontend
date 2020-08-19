@@ -1,0 +1,102 @@
+// common style
+
+.dashboard-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.db-mt10 {
+  margin-top: 10px !important;
+}
+.db-mt20 {
+  margin-top: 20px !important;
+}
+
+.db-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  line-height: 22px;
+  padding: 0;
+  margin: 0;
+}
+
+.db-toggle {
+  .clearfix();
+
+  .db-t-block {
+    float: left;
+    width: calc(25% - 7.5px);
+    height: 136px;
+    background: rgba(241, 241, 241, 1);
+    border-radius: 8px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(241, 241, 241, 1);
+
+    &:hover {
+      border: 1px solid #886cff;
+      .db-t-b-number {
+        color: #542de0;
+      }
+    }
+
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+
+    .db-t-b-title {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 1);
+      line-height: 20px;
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(178, 178, 178, 1);
+        line-height: 20px;
+      }
+    }
+
+    .db-t-b-number {
+      font-size: 36px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 1);
+      line-height: 50px;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.table-list {
+  .table-text {
+    color: #333;
+    &.one {
+      color: #f7b500;
+    }
+    &.two {
+      color: #b2b2b2;
+    }
+    &.three {
+      color: #de660d;
+    }
+  }
+}
+// common style end
