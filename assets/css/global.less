@@ -24,3 +24,16 @@
 @linkHeight1: 56px;
 @linkHeight2: 33px;
 @linkHeight3: 28px;
+
+
+// 清除浮动
+.clearfix() {
+  &::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
