@@ -4,7 +4,7 @@
       :to="{name: 'user-id', params: {id: card.id}}"
       target="_blank"
     >
-      <no-ssr>
+      <object>
         <c-user-popover :user-id="Number(card.id)">
           <c-avatar
             :src="avatarSrc"
@@ -15,7 +15,7 @@
             :level-token="1"
           />
         </c-user-popover>
-      </no-ssr>
+      </object>
     </n-link>
     <n-link
       :to="{name: 'user-id', params: {id: card.id}}"
