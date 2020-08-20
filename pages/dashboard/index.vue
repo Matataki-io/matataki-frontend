@@ -29,9 +29,7 @@
         数据增量趋势
       </h4>
       <tab class="db-mt10" :tab="tabListData" />
-      <no-ssr>
-        <v-chart :options="chartsOptionsLine" class="db-chart" />
-      </no-ssr>
+      <dbChart class="db-mt20" :options="chartsOptionsLine" />
     </div>
 
     <!-- 来源稿件 -->
@@ -73,6 +71,7 @@
 <script>
 import headTab from '@/components/dashboard/dashboard_head_tab'
 import tab from '@/components/dashboard/dashboard_tab'
+import dbChart from '@/components/dashboard/dashboard_chart'
 
 let ICountUp = null
 if (process.client) {
@@ -83,6 +82,7 @@ export default {
   components: {
     headTab,
     tab,
+    dbChart,
     ICountUp
   },
   data() {
@@ -237,10 +237,3 @@ export default {
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
-
-<style lang="less" scoped>
-.db-chart {
-  width: 100%;
-  margin-top: 20px;
-}
-</style>
