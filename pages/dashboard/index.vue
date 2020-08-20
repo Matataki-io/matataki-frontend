@@ -43,22 +43,32 @@
         :data="articleList"
         style="width: 100%"
       >
-        <el-table-column label="排名" width="80">
+        <el-table-column label="排名" width="50">
           <template slot-scope="scope">
             <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="标题">
+        <el-table-column
+          label="标题" 
+        >
           <template slot-scope="scope">
             <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="发布时间" width="200">
+        <el-table-column
+          v-if="$utils.clientWidth() >= 768"
+          label="发布时间"
+          width="200"
+        >
           <template slot-scope="scope">
             <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.create_time }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="点赞次数" width="100">
+        <el-table-column
+          v-if="$utils.clientWidth() >= 768"
+          label="点赞次数"
+          width="100"
+        >
           <template slot-scope="scope">
             <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.like }}</span>
           </template>

@@ -15,6 +15,11 @@
   padding-left: 20px;
   padding-right: 20px;
   box-sizing: border-box;
+  @media screen and ( max-width: 540px ) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   .head {
     width: 100%;
     height: 240px;

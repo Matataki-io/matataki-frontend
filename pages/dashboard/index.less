@@ -9,6 +9,7 @@
 .db-mt10 {
   margin-top: 10px !important;
 }
+
 .db-mt20 {
   margin-top: 20px !important;
 }
@@ -46,6 +47,7 @@
 
     &:hover {
       border: 1px solid #886cff;
+
       .db-t-b-number {
         color: #542de0;
       }
@@ -82,21 +84,84 @@
       padding: 0;
       margin: 0;
     }
+
+    @media screen and (max-width: 992px) {
+      .db-t-b-number {
+        font-size: 26px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      width: calc(33.33% - 6.666px);
+
+      .db-t-b-number {
+        font-size: 20px;
+      }
+
+      &:nth-child(4n) {
+        margin-right: 10px;
+      }
+
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
+
+    @media screen and (max-width: 540px) {
+      width: calc(50% - 5px);
+      height: auto;
+      align-items: flex-start;
+      flex-direction: column;
+
+      .db-t-b-title {
+        position: static;
+        top: 0;
+        left: 0;
+        font-size: 12px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+
+      .db-t-b-number {
+        font-size: 18px;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+        line-height: 1.5;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      &:nth-child(4n),
+      &:nth-child(3n) {
+        margin-right: 10px;
+      }
+
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
   }
 }
 
 .table-list {
   .table-text {
     color: #333;
+
     &.one {
       color: #f7b500;
     }
+
     &.two {
       color: #b2b2b2;
     }
+
     &.three {
       color: #de660d;
     }
   }
 }
+
 // common style end

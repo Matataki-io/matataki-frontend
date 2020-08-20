@@ -33,7 +33,8 @@ export default {
   },
   methods: {
     change(label) {
-      this.value = label
+      console.log('label value', label, this.value)
+      // this.value = label
     }
   }
 }
