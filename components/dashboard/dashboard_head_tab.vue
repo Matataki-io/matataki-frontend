@@ -60,8 +60,8 @@ export default {
 .tab-link {
   padding: 0;
   margin: 0;
-  font-size:20px;
-  font-weight:600;
+  font-size: 20px;
+  font-weight: bold;
   color:rgba(178,178,178,1);
   line-height:28px;
   margin-right: 40px;
@@ -71,8 +71,14 @@ export default {
   &.active {
     color: #000;
   }
+
+  @media screen and (max-width: 540px) {
+    font-size: 16px;
+    margin-right: 20px;
+  }
 }
 .select {
+  width: 100px;
   margin-left: auto;
 }
 </style>

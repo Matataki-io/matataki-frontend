@@ -101,7 +101,7 @@ export default {
           label: '阅读',
         },
         {
-          value: '点赞',
+          value: 'like',
           label: '点赞',
         },
         {

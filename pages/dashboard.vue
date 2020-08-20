@@ -47,6 +47,20 @@
       opacity: 0;
       animation: 1.2s fadeInUp 1s both;
     }
+
+    @media screen and ( max-width: 540px ) {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      height: 140px;
+      h3 {
+        font-size: 30px;
+        line-height: 1.5;
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    }
   }
 }
 </style>
