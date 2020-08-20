@@ -33,6 +33,7 @@
       </h4>
       <tab class="db-mt10" :tab="tabListArticleType" />
       <el-table
+        v-show="$utils.clientWidth() >= 768"
         class="db-mt20 table-list"
         :data="articleList"
         style="width: 100%"
@@ -55,6 +56,23 @@
         <el-table-column label="支付金额" width="100">
           <template slot-scope="scope">
             <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.money }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="$utils.clientWidth() < 768"
+        class="db-mt20 table-list"
+        :data="articleList"
+        style="width: 100%"
+      >
+        <el-table-column label="排名" width="50">
+          <template slot-scope="scope">
+            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="标题">
+          <template slot-scope="scope">
+            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -86,7 +104,7 @@
       >
         <el-table-column
           label="序号"
-          width="80"
+          width="50"
           type="index"
         />
         <el-table-column label="明细">
@@ -94,7 +112,11 @@
             <span class="table-text">{{ scope.row.detail }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="时间" width="200">
+        <el-table-column
+          v-if="$utils.clientWidth() >= 768"
+          label="时间"
+          width="200"
+        >
           <template slot-scope="scope">
             <span class="table-text">{{ scope.row.create_time }}</span>
           </template>

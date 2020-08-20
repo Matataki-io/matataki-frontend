@@ -39,6 +39,7 @@
       </h4>
       <tab class="db-mt10" :tab="tabListData" />
       <el-table
+        v-show="$utils.clientWidth() >= 768"
         class="db-mt20 table-list"
         :data="articleList"
         style="width: 100%"
@@ -56,7 +57,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="$utils.clientWidth() >= 768"
           label="发布时间"
           width="200"
         >
@@ -65,12 +65,30 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="$utils.clientWidth() >= 768"
           label="点赞次数"
           width="100"
         >
           <template slot-scope="scope">
             <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.like }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="$utils.clientWidth() < 768"
+        class="db-mt20 table-list"
+        :data="articleList"
+        style="width: 100%"
+      >
+        <el-table-column label="排名" width="50">
+          <template slot-scope="scope">
+            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="标题" 
+        >
+          <template slot-scope="scope">
+            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
           </template>
         </el-table-column>
       </el-table>
