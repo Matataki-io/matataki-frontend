@@ -1174,6 +1174,10 @@ minetokenGetResources(tokenId) {
   getAddSupplyChart(id) {
     return request.get(`/minetoken/${id}/supplyChart`)
   },
+  /** 文章分享事件上报 */
+  shareCount(postId) {
+    return request.post(`/post/${postId}/shareCount`)
+  },
   // -------------------- token历史记录 --------------------
   // token历史价格
   getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
