@@ -10,7 +10,8 @@ export default ({ app }) => {
       'minetoken', 'editminetoken', 'postminetoken',
       'user-id-buy', 'publish-type-id',
       'user-id-buy', 'user-id-buy-other',
-      'setting', 'setting-account', 'setting-system' // setting page
+      'setting', 'setting-account', 'setting-system', // setting page
+      'dashboard'
     ] // 需要登陆才能进入
     // TODO: 单纯用 document.referrer判断暂未想好, 目前跳转到首页
     // 需要登陆的页面没有token

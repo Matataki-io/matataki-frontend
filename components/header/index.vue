@@ -144,6 +144,14 @@
                 {{ $t('home.account') }}
               </el-dropdown-item>
             </n-link>
+            <n-link
+              :to="{name: 'dashboard'}"
+              class="link"
+            >
+              <el-dropdown-item>
+                Dashboard
+              </el-dropdown-item>
+            </n-link>
 
             <div
               class="link border-br-bl"
@@ -231,6 +239,11 @@
             <li class="menu-ul-item">
               <n-link :to="{name: 'setting', params:{id: currentUserInfo.id}}" class="link">
                 <svg-icon icon-class="menu_account" class="icon" />{{ $t('home.account') }}
+              </n-link>
+            </li>
+            <li class="menu-ul-item">
+              <n-link :to="{name: 'dashboard'}" class="link">
+                <svg-icon icon-class="menu_account" class="icon" />Dashboard
               </n-link>
             </li>
             <li class="menu-ul-item" @click="btnsignOut">

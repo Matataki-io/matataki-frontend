@@ -15,6 +15,11 @@
   padding-left: 20px;
   padding-right: 20px;
   box-sizing: border-box;
+  @media screen and ( max-width: 540px ) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   .head {
     width: 100%;
     height: 240px;
@@ -46,6 +51,20 @@
       margin: 0;
       opacity: 0;
       animation: 1.2s fadeInUp 1s both;
+    }
+
+    @media screen and ( max-width: 540px ) {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      height: 140px;
+      h3 {
+        font-size: 30px;
+        line-height: 1.5;
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.5;
+      }
     }
   }
 }
