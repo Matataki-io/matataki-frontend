@@ -9,17 +9,16 @@
         数据统计
       </h4>
       <div class="db-toggle">
-        <div v-for="item in [1,2,3,4,5,6,7,8]" :key="item" class="db-t-block">
+        <div v-for="(item, index) in typeToggle" :key="index" class="db-t-block">
           <p class="db-t-b-title">
-            阅读次数&nbsp;<span>昨日<span>+182</span></span>
+            {{ item.type }}&nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span>
           </p>
           <no-ssr>
             <ICountUp
               :delay="delay"
-              :end-val="endVal"
+              :end-val="item.nowadays"
               :options="options"
               class="db-t-b-number"
-              @ready="onReady"
             />
           </no-ssr>
         </div>
@@ -123,6 +122,48 @@ export default {
     }
 
     return {
+      typeToggle: [
+        {
+          type: '阅读',
+          yesterday: 123,
+          nowadays: 1111,
+        },
+        {
+          type: '点赞',
+          yesterday: 3,
+          nowadays: 23,
+        },
+        {
+          type: '收藏',
+          yesterday: 12,
+          nowadays: 444,
+        },
+        {
+          type: '评论',
+          yesterday: 333,
+          nowadays: 3144124,
+        },
+        {
+          type: '分享',
+          yesterday: 11,
+          nowadays: 232,
+        },
+        {
+          type: '解锁',
+          yesterday: 1123,
+          nowadays: 123,
+        },
+        {
+          type: '支付',
+          yesterday: 3342,
+          nowadays: 1242,
+        },
+        {
+          type: '打赏',
+          yesterday: 55,
+          nowadays: 122,
+        }
+      ],
       tabListData: [
         {
           value: 'read',
@@ -247,10 +288,6 @@ export default {
     }
   },
   methods: {
-    onReady(instance) {
-      const that = this
-      instance.update(that.endVal + 100)
-    },
     // 返回排名
     getRankClass(rank) {
       let list = {

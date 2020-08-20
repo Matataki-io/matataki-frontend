@@ -9,17 +9,16 @@
         数据统计
       </h4>
       <div class="db-toggle">
-        <div v-for="item in [1,2,3,4]" :key="item" class="db-t-block">
+        <div v-for="(item, index) in typeToggle" :key="index" class="db-t-block">
           <p class="db-t-b-title">
-            阅读次数&nbsp;<span>昨日<span>+182</span></span>
+            {{ item.type }}&nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span>
           </p>
           <no-ssr>
             <ICountUp
               :delay="delay"
-              :end-val="endVal"
+              :end-val="item.nowadays"
               :options="CountUpOptions"
               class="db-t-b-number"
-              @ready="onReady"
             />
           </no-ssr>
         </div>
@@ -143,6 +142,43 @@ export default {
   },
   data() {
     return {
+      typeToggle: [
+        {
+          type: 'CNY',
+          yesterday: 123,
+          nowadays: 1111,
+        },
+        {
+          type: 'XTB',
+          yesterday: 3,
+          nowadays: 23,
+        },
+        {
+          type: 'BDJ',
+          yesterday: 12,
+          nowadays: 444,
+        },
+        {
+          type: 'VVV',
+          yesterday: 333,
+          nowadays: 3144124,
+        },
+        {
+          type: 'DGB',
+          yesterday: 11,
+          nowadays: 232,
+        },
+        {
+          type: 'EJG',
+          yesterday: 1123,
+          nowadays: 123,
+        },
+        {
+          type: 'FUG',
+          yesterday: 3342,
+          nowadays: 1242,
+        },
+      ],
       tabListArticleType: [
         {
           value: 'reward',
@@ -254,7 +290,6 @@ export default {
         }
       ],
       delay: 1000,
-      endVal: 120500,
       CountUpOptions: {
         useEasing: true,
         useGrouping: true,
@@ -266,10 +301,6 @@ export default {
     }
   },
   methods: {
-    onReady(instance) {
-      const that = this
-      instance.update(that.endVal + 100)
-    },
     // 返回排名
     getRankClass(rank) {
       let list = {
