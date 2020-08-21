@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    v-show="total > pageSize"
     :total="total"
     :page-size="pageSize"
     :current-page.sync="currentPageCopy"
