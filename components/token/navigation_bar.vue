@@ -123,7 +123,7 @@ export default {
     p {
       transition: all 0.3s ease-in;
       margin: 0;
-      font-size: 16px;
+      font-size: 14px;
       color: #B2B2B2;
       white-space:nowrap;
     }
