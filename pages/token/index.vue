@@ -28,8 +28,11 @@
 
     <!-- 总会显示 -->
     <div id="all-token" class="c-card">
-      <span class="ticket-title">{{ $t('token.allFanTicket') }}</span>
-      <tokenList class="mt" />
+      <div class="fl ac jsb">
+        <span class="ticket-title">{{ $t('token.allFanTicket') }}</span>
+        <searchToken class="all-token-search" @clear="allTokenSearch = ''" @search="val => allTokenSearch = val" />
+      </div>
+      <tokenList :all-token-search="allTokenSearch" class="mt" />
     </div>
   </div>
 </template>
@@ -48,6 +51,9 @@ import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow
 import liquidityTotalTransactionFlow from '@/components/liquidity_total_transaction_flow.vue'
 import navigationBar from '@/components/token/navigation_bar.vue'
 import { isEmpty } from 'lodash'
+
+import searchToken from '@/components/search_token'
+
 export default {
   components: {
     tokenBanner,
@@ -59,7 +65,8 @@ export default {
     holdLiquidity,
     tokenTotalTransactionFlow,
     liquidityTotalTransactionFlow,
-    navigationBar
+    navigationBar,
+    searchToken
   },
   data() {
     return {
@@ -67,7 +74,8 @@ export default {
       flowTab: 0,
       showPublishBtn: false,
       isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
-      minetokenApplication: Object.create(null) // 申请信息
+      minetokenApplication: Object.create(null), // 申请信息
+      allTokenSearch: '', // all token search word
     }
   },
   computed: {
@@ -127,7 +135,6 @@ export default {
         }
       }
 
- 
     },
   }
 }
@@ -183,4 +190,9 @@ export default {
   margin-top: 10px;
 }
 
+
+.all-token-search {
+  width: 200px;
+  margin-left: auto;
+}
 </style>

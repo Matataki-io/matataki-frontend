@@ -87,12 +87,12 @@
       </no-content-prompt>
     </div>
     <user-pagination
-      v-show="!loading"
       :current-page="currentPage"
       :params="pull.params"
       :api-url="pull.apiUrl"
       :page-size="10"
       :total="total"
+      :reload="reload"
       :need-access-token="true"
       class="pagination"
       @paginationData="paginationData"
@@ -110,6 +110,12 @@ export default {
     // avatar,
     tokenCard,
     userPagination,
+  },
+  props: {
+    allTokenSearch: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -129,12 +135,24 @@ export default {
       },
       viewStatus: 0, // 0 1
       amount: 0,
-      selectedDropdown: this.$route.query.sort || 'general'
+      selectedDropdown: this.$route.query.sort || 'general',
+      reload: 0,
+    }
+  },
+  watch: {
+    allTokenSearch(val) {
+      this.pull.params.search = val
+      this.loading = true
+      this.currentPage = 1
+
+      this.reload = Date.now()
     }
   },
   methods: {
     paginationData(res) {
       // console.log(res)
+      this.pull.list.length = 0
+
       this.pull.list = res.data.list
       this.assets = res.data
       this.total = res.data.count || 0
@@ -143,12 +161,10 @@ export default {
     },
     togglePage(i) {
       this.loading = true
-      this.pull.list = []
       this.currentPage = i
       this.$router.push({
         query: {
           sort: this.$route.query.sort,
-          page: i
         }
       })
     },
