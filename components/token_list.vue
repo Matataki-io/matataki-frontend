@@ -3,14 +3,8 @@
     <div class="fl jsb">
       <div class="tokens-list-header">
         <div class="tokens-list-header-left-column">
-          <el-dropdown
-            trigger="click"
-            @command="toggleDropdown"
-          >
-            <span
-              :class="sort === selectedDropdown && 'active'"
-              class="el-dropdown-link"
-            >
+          <el-dropdown trigger="click" @command="toggleDropdown">
+            <span :class="sort === selectedDropdown && 'active'" class="el-dropdown-link">
               <span v-if="selectedDropdown === 'name-asc'">{{ $t('token.ascendingAlphabeticalOrder') }}</span>
               <span v-else-if="selectedDropdown === 'name-desc'">{{ $t('token.descendingFirstLetter') }}</span>
               <span v-else-if="selectedDropdown === 'time-asc'">{{ $t('token.ascendingTime') }}</span>
@@ -169,6 +163,8 @@ export default {
       })
     },
     toggleSort(name) {
+      if (this.sort === name) return
+
       let sort
 
       switch (name) {
@@ -188,6 +184,7 @@ export default {
           }
           break
       }
+
 
       this.currentPage = 1
       // const query = {
