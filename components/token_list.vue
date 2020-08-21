@@ -135,7 +135,7 @@ export default {
   },
   watch: {
     allTokenSearch(val) {
-      this.pull.params.search = val
+      this.pull.params.search = val.trim()
       this.loading = true
       this.currentPage = 1
 

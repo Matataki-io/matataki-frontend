@@ -12,9 +12,19 @@
     <!-- 登录后显示 -->
     <!-- fan ticket -->
     <div v-if="isLogined" class="c-card">
-      <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">{{ $t('token.fanTicketHolder') }}</span>
-      <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">{{ $t('token.myFlowGold') }}</span>
-      <holdTicket v-if="ticketTab === 0" />
+      <div class="fl ac token-hold-head">
+        <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">{{ $t('token.fanTicketHolder') }}</span>
+        <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">{{ $t('token.myFlowGold') }}</span>
+        <!-- fan票夹 搜索 -->
+        <searchToken
+          v-show="ticketTab === 0"
+          class="all-token-search"
+          api-url="tokenByUser"
+          @clear="userTokenSearch = ''"
+          @search="val => userTokenSearch = val"
+        />
+      </div>
+      <holdTicket v-if="ticketTab === 0" :user-token-search="userTokenSearch" />
       <holdLiquidity v-if="ticketTab === 1" />
     </div>
 
@@ -30,7 +40,13 @@
     <div id="all-token" class="c-card">
       <div class="fl ac jsb">
         <span class="ticket-title">{{ $t('token.allFanTicket') }}</span>
-        <searchToken class="all-token-search" @clear="allTokenSearch = ''" @search="val => allTokenSearch = val" />
+        <!-- 全部token搜索 -->
+        <searchToken
+          class="all-token-search"
+          api-url="token"
+          @clear="allTokenSearch = ''"
+          @search="val => allTokenSearch = val"
+        />
       </div>
       <tokenList :all-token-search="allTokenSearch" class="mt" />
     </div>
@@ -76,6 +92,7 @@ export default {
       isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
       minetokenApplication: Object.create(null), // 申请信息
       allTokenSearch: '', // all token search word
+      userTokenSearch: '', // 用户 token 搜索
     }
   },
   computed: {
@@ -190,6 +207,9 @@ export default {
   margin-top: 10px;
 }
 
+.token-hold-head {
+  height: 32px;
+}
 
 .all-token-search {
   width: 200px;

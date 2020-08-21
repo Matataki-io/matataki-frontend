@@ -198,6 +198,12 @@ export default {
     avatar,
     TransferDialog
   },
+  props: {
+    userTokenSearch: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     const validateToken = (rule, value, callback) => {
       if (!value) {
@@ -263,6 +269,13 @@ export default {
     searchUserName() {
       this.searchUser()
     },
+    userTokenSearch(val) {
+      this.pointLog.params.search = val.trim()
+      this.loading = true
+      this.currentPage = 1
+
+      this.reload = Date.now()
+    }
   },
   methods: {
     createTime(time) {

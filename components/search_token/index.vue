@@ -25,6 +25,11 @@ export default {
     placeholder: {
       type: String,
       default: '请输入搜索内容'
+    },
+    // 接口地址 对应后端api
+    apiUrl: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -36,8 +41,8 @@ export default {
     // 自动搜索
     async querySearchAsync(queryString, cb) {
       if (queryString.trim()) {
-        const res = await this.$utils.factoryRequest(this.$API.searchDb('token', { 
-          word:  this.value,
+        const res = await this.$utils.factoryRequest(this.$API.searchDb(this.apiUrl, { 
+          word:  this.value.trim(),
           pagesize: 5
         }))
 
