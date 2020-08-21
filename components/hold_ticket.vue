@@ -167,7 +167,6 @@
       </ul>
     </div>
     <user-pagination
-      v-show="!loading"
       :reload="reload"
       :current-page="currentPage"
       :params="pointLog.params"
