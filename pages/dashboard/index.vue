@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- head tab 切换 -->
-    <headTab />
+    <headTab :sort-value="sortValue" @change="val => sortValue = val" />
 
     <!-- 数据统计 -->
     <div class="c-card dashboard-container">
@@ -9,14 +9,21 @@
         数据统计
       </h4>
       <div class="db-toggle">
-        <div v-for="(item, index) in typeToggle" :key="index" class="db-t-block">
+        <div
+          v-for="(item, index) in typeToggle"
+          :key="index"
+          class="db-t-block"
+          :class="item.type === typeToggleVal && 'active'"
+          @click="typeToggleVal = item.type"
+        >
           <p class="db-t-b-title">
-            {{ item.type }}&nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span>
+            {{ item.title }}
+            <!-- &nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span> -->
           </p>
           <no-ssr>
             <ICountUp
               :delay="delay"
-              :end-val="item.nowadays"
+              :end-val="item.count"
               :options="options"
               class="db-t-b-number"
             />
@@ -27,8 +34,27 @@
       <h4 class="db-title db-mt20">
         数据增量趋势
       </h4>
-      <tab class="db-mt10" :tab="tabListData" />
-      <dbChart class="db-mt20" :options="chartsOptionsLine" />
+      <tab
+        class="db-mt10"
+        :value="typeToggleVal"
+        :tab="tabListData"
+        @change="chartsTabChange"
+      />
+      <div class="charts">
+        <no-ssr>
+          <v-chart
+            id="dashboard-chart"
+            :class="!isHaveData && 'hide'" 
+            :options="chartsOptionsLine"
+            :auto-resize="true"
+            class="db-chart"
+          />
+        </no-ssr>
+
+        <div v-show="!isHaveData" class="not">
+          暂无数据
+        </div>
+      </div>
     </div>
 
     <!-- 来源稿件 -->
@@ -96,9 +122,12 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle'
+
 import headTab from '@/components/dashboard/dashboard_head_tab'
 import tab from '@/components/dashboard/dashboard_tab'
-import dbChart from '@/components/dashboard/dashboard_chart'
+// import dbChart from '@/components/dashboard/dashboard_chart'
 
 let ICountUp = null
 if (process.client) {
@@ -109,61 +138,55 @@ export default {
   components: {
     headTab,
     tab,
-    dbChart,
+    // dbChart,
     ICountUp
   },
   data() {
-    let data = []
-
-    for (let i = 0; i <= 360; i++) {
-      let t = i / 180 * Math.PI
-      let r = Math.sin(2 * t) * Math.cos(2 * t)
-      data.push([r, i])
-    }
-
     return {
-      typeToggle: [
-        {
-          type: '阅读',
-          yesterday: 123,
-          nowadays: 1111,
+      sortValue: '30',
+      typeToggleVal: 'read',
+      typeToggle: {
+        readCount: {
+          type: 'read',
+          title: '阅读',
+          count: 0,
         },
-        {
-          type: '点赞',
-          yesterday: 3,
-          nowadays: 23,
+        likeCount: {
+          type: 'like',
+          title: '点赞',
+          count: 0,
         },
-        {
-          type: '收藏',
-          yesterday: 12,
-          nowadays: 444,
+        bookmarkCount: {
+          type: 'bookmark',
+          title: '收藏',
+          count: 0,
         },
-        {
-          type: '评论',
-          yesterday: 333,
-          nowadays: 3144124,
+        commentCount: {
+          type: 'comment',
+          title: '评论',
+          count: 0,
         },
-        {
-          type: '分享',
-          yesterday: 11,
-          nowadays: 232,
+        shareCount:{
+          type: 'share',
+          title: '分享',
+          count: 0,
         },
-        {
-          type: '解锁',
-          yesterday: 1123,
-          nowadays: 123,
+        unlockCount:{
+          type: 'unlock',
+          title: '解锁',
+          count: 0,
         },
-        {
-          type: '支付',
-          yesterday: 3342,
-          nowadays: 1242,
+        saleCount: {
+          type: 'sale',
+          title: '支付',
+          count: 0,
         },
-        {
-          type: '打赏',
-          yesterday: 55,
-          nowadays: 122,
+        rewardCount: {
+          type: 'reward',
+          title: '打赏',
+          count: 0,
         }
-      ],
+      },
       tabListData: [
         {
           value: 'read',
@@ -174,27 +197,27 @@ export default {
           label: '点赞',
         },
         {
-          value: '收藏',
+          value: 'bookmark',
           label: '收藏',
         },
         {
-          value: '评论',
+          value: 'comment',
           label: '评论',
         },
         {
-          value: '分享',
+          value: 'share',
           label: '分享',
         },
         {
-          value: '解锁',
+          value: 'unlock',
           label: '解锁',
         },
         {
-          value: '支付',
+          value: 'sale',
           label: '支付',
         },
         {
-          value: '打赏',
+          value: 'reward',
           label: '打赏',
         },
       ],
@@ -248,30 +271,36 @@ export default {
           like: 19
         }
       ],
+      chart: null,
+      resizeEvent: null,
       chartsOptionsLine: {
         title: {
-          text: '阅读次数'
+          text: '次数',
+          top: '20px',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+          },
         },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: [],
         },
         yAxis: {
           type: 'value',
         },
         color: [ '#542DE0' ],
         grid: {
-          left: '60px',
-          right: '60px',
+          top: '60px',
+          left: '4%',
+          right: '4%',
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          data: [],
           type: 'line',
           smooth: true,
-          lineStyle: {
-            width: 1,
-            // color: '#542DE0'
-          },
         }],
         animationDuration: 2000
       },
@@ -284,10 +313,149 @@ export default {
         decimal: '.',
         prefix: '',
         suffix: ''
-      }
+      },
     }
   },
+  computed: {
+    isHaveData() {
+      return this.chartsOptionsLine.xAxis.data.length > 0 || this.chartsOptionsLine.series[0].data.length > 0
+    }
+  },
+  watch: {
+    // 天数切换
+    sortValue(val) {
+      this.getData(val)
+      this.getChartsData(this.typeToggleVal, val)
+    },
+    // 类别切换
+    typeToggleVal(val) {
+      this.getChartsData(val, this.sortValue)
+    }
+  },
+  created() {
+    if (process.browser) {
+      this.$nextTick(() => {
+        try {
+          this.chart = this.getChartsDom()
+        } catch (e) {
+          console.log('error', e)
+        }
+        
+        this.resizeEvent = throttle(this.resizeChart, 300)
+        window.addEventListener('resize', this.resizeEvent)
+      })
+
+      this.getData(this.sortValue)
+      this.getChartsData(this.typeToggleVal, this.sortValue)
+    }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeEvent)
+  },
   methods: {
+    // 获取数据
+    async getData(days) {
+      let dataCountParams = null
+      if (days !== 'all') {
+        dataCountParams = {
+          days
+        }
+      }
+      const dataCountResult = await this.$utils.factoryRequest(this.$API.dbBrowseCount(dataCountParams))
+      if (dataCountResult) {
+        this.formatDataCount(dataCountResult.data)
+      }
+    },
+    // 获取图表数据
+    async getChartsData(type, days) {
+      let chartsDataParams = null
+      if (days !== 'all') {
+        chartsDataParams = {
+          days
+        }
+      }
+
+      // 检查 dom
+      if (!this.chart) {
+        this.chart = this.getChartsDom()
+      }
+
+      if (this.chart) {
+        this.resizeChart()
+        this.chart.showLoading({
+          text: '正在请求数据...',
+        })
+      }
+
+      const chartsRes = await this.$utils.factoryRequest(this.$API.dbBrowseHistoryType(type, chartsDataParams))
+
+      if (this.chart) {
+        this.chart.hideLoading()
+      }
+
+      if (chartsRes) {
+        
+        // 如果没数据
+        if (chartsRes.data.length <= 0) {
+          this.chartsOptionsLine.xAxis.data = []
+          this.chartsOptionsLine.series[0].data = []
+          return
+        }
+
+        if (days === 'all') {
+          this.chartsOptionsLine.xAxis.data = chartsRes.data.map(i => i.create_time)
+          this.chartsOptionsLine.series[0].data = chartsRes.data.map(i => i.count)
+        } else {
+          let res = this.chartsFormatDays(days, chartsRes.data)
+
+          this.chartsOptionsLine.xAxis.data = res.map(i => i.create_time)
+          this.chartsOptionsLine.series[0].data = res.map(i => i.count)
+        }
+        
+      }
+    },
+    // 格式化数据统计
+    formatDataCount(data) {
+      for (const key in data) {
+        if (this.typeToggle[key]) {
+          this.typeToggle[key].count = data[key]
+        }
+      }
+    },
+    // charts format days
+    // 需要的天数 需要的数据
+    chartsFormatDays(days, data) {
+      days = parseInt(days)
+
+      const date = []
+      const dateList = []
+      for (let i = days - 1; i >= 0; i--) {
+        const dayCalendar = this.moment().subtract(i, 'days')
+        const day = this.moment(dayCalendar).format('YYYY-MM-DD')
+        date.push(day)
+      }
+
+      for (let i = 0; i < date.length; i++) {
+        const result = data.filter(item => item.create_time === date[i])
+        if (result.length >= 1) {
+          dateList.push({
+            create_time: date[i],
+            count: result[0].count,
+          })
+        } else {
+          dateList.push({
+            create_time: date[i],
+            count: 0,
+          })
+        }
+      }
+      return dateList
+
+    },
+    // 图表tab切换
+    chartsTabChange: debounce(function(label) {
+      this.getChartsData(label, this.sortValue)
+    }, 300),
     // 返回排名
     getRankClass(rank) {
       let list = {
@@ -296,9 +464,51 @@ export default {
         3: 'three'
       }
       return list[rank] || ''
+    },
+    // 缩放图表
+    resizeChart() {
+      try {
+        this.chart.resize()
+      } catch (e) {
+        console.log('resizeChart error', e)
+      }
+    },
+    // 获取图表Dom
+    getChartsDom() {
+      try {
+        return this.$echarts.init(document.querySelector('#dashboard-chart'))	
+      } catch (e) {
+        return null 
+      }
     }
   }
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+
+<style lang="less" scoped>
+.charts {
+  position: relative;
+  height: 400px;
+}
+.db-chart {
+  width: 100%;
+  &.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.not {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+</style>

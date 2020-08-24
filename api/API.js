@@ -1239,4 +1239,11 @@ minetokenGetResources(tokenId) {
   // fan票提交校验 不能重复 symbol
   apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
   insufficientLiquidity(data) { return request.post('/post/InsufficientLiquidity', data) },
+
+  // ---------------- Dashboard ----------------------------------------
+  // 阅览数据
+  //    数据统计
+  dbBrowseCount(params) { return request.get('/db/browse/count', { params }) },
+  // 数据增量趋势
+  dbBrowseHistoryType(type, params) { return request.get(`/db/browse/history/${type}`, { params }) },
 }
