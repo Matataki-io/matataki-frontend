@@ -1,6 +1,6 @@
 <template>
   <el-radio-group
-    v-model="value"
+    v-model="val"
     size="small" 
     @change="change"
   >
@@ -21,20 +21,28 @@ export default {
     tab: {
       type: Array,
       default: () => [],
+    },
+    value: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      value: 'read',
+      val: '',
+    }
+  },
+  watch: {
+    value(val) {
+      this.val = val
     }
   },
   created() {
-    this.value = this.tab.length >= 1 ? this.tab[0].value : ''
+    this.val = this.value || this.tab.length >= 1 ? this.tab[0].value : ''
   },
   methods: {
     change(label) {
-      console.log('label value', label, this.value)
-      // this.value = label
+      this.$emit('change', label)
     }
   }
 }

@@ -11,6 +11,7 @@
       placeholder="请选择"
       class="select"
       size="small"
+      @change="change"
     >
       <el-option
         v-for="item in options"
@@ -29,6 +30,10 @@ export default {
     active: {
       type: String,
       default: ''
+    },
+    sortValue: {
+      type: String,
+      default: '30'
     }
   },
   data() {
@@ -37,16 +42,18 @@ export default {
         value: '30',
         label: '30天'
       }, {
-        value: '15',
-        label: '15天'
-      }, {
-        value: '7',
-        label: '7天'
-      }, {
-        value: '1',
-        label: '1天'
+        value: 'all',
+        label: '全部'
       }],
-      value: '30'
+      value: ''
+    }
+  },
+  created() {
+    this.value = this.sortValue
+  },
+  methods: {
+    change(value) {
+      this.$emit('change', value)
     }
   }
 }
