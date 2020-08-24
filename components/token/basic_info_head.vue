@@ -99,6 +99,15 @@
             {{ $t('token.viewOnChain') }}
           </el-button>
         </a>
+        
+        <el-button
+          class="link-btn"
+          size="small"
+          @click="copy(minetokenToken.contract_address)"
+        >
+          <svg-icon icon-class="copy" />
+          复制按钮
+        </el-button>
         <el-button
           class="btn"
           size="small"
@@ -222,6 +231,16 @@ export default {
     switchDisplayAngle() {
       if(!this.isMyToken) return console.error('No permission to switch perspectives')
       this.displayAngle = this.displayAngle === 'client' ? 'creator' : 'client'
+    },
+    copy(val) {
+      this.$copyText(val).then(
+        () => this.$message({
+          showClose: true,
+          message: this.$t('success.copy'),
+          type: 'success'
+        }),
+        () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+      )
     }
   }
 }
@@ -258,6 +277,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 20px;
 }
 .token-info-title {
   // width: 70px;
@@ -356,5 +376,9 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
+  .share-btn .link-btn.black {
+    margin-left: 0;
+    margin-top: 10px;
+  }
 }
 </style>
