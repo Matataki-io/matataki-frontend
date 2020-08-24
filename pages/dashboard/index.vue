@@ -127,7 +127,6 @@ import throttle from 'lodash/throttle'
 
 import headTab from '@/components/dashboard/dashboard_head_tab'
 import tab from '@/components/dashboard/dashboard_tab'
-// import dbChart from '@/components/dashboard/dashboard_chart'
 
 let ICountUp = null
 if (process.client) {
@@ -138,7 +137,6 @@ export default {
   components: {
     headTab,
     tab,
-    // dbChart,
     ICountUp
   },
   data() {

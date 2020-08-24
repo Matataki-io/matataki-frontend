@@ -32,6 +32,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
     h3 {
       font-size:36px;
       font-weight:600;
