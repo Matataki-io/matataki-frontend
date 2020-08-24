@@ -142,12 +142,6 @@ export default {
     Share,
     bannerUpload
   },
-  props: {
-    userData: {
-      type: Object,
-      default: null
-    }
-  },
   data() {
     return {
       token: false,
@@ -189,7 +183,6 @@ export default {
           if (res.code === 0) {
 
             this.user = res.data
-
           }
         })
         .catch(e => {
@@ -246,8 +239,8 @@ export default {
         return
       }
 
-      const userDataWithId = this.userData ? {
-        ...this.userData,
+      const userDataWithId = this.user ? {
+        ...this.user,
         id: Number(this.$route.params.id)
       } : null
 
