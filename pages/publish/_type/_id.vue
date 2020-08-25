@@ -1688,13 +1688,17 @@ export default {
       }
 
       // 标题或内容为空时
-      if (!strTrim(this.title) || !strTrim(this.markdownData)) return this.failed(this.$t('warning.titleOrContent'))
-
-      // 没有封面 (开发者模式不强制封面 浪费oss空间)
-      if (!this.isDevelopmentMode && !this.cover) {
-        this.failed(this.$t('warning.cover'))
+      if (!strTrim(this.title) || !strTrim(this.markdownData)) {
+        this.failed(this.$t('warning.titleOrContent'))
         return
       }
+
+      // 没有封面 (开发者模式不强制封面 浪费oss空间)
+      // 取消强制上传封面
+      // if (!this.cover) {
+      //   this.failed(this.$t('warning.cover'))
+      //   return
+      // }
 
       // 用户不填写裂变系数则默认为2
       if (this.fissionFactor === '') this.fissionFactor = 2
@@ -1759,8 +1763,7 @@ export default {
 
         if (this.timedForm.switch) {
           this.timedPublish()
-        }
-        else {
+        } else {
           this.publishArticle({
             author,
             title,
