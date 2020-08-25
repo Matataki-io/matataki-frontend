@@ -53,5 +53,8 @@ export default {
   &.el-radio-button--small .el-radio-button__inner {
     padding: 8px 32px;
   }
+  &.el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
+    box-shadow: none;
+  }
 }
 </style>
