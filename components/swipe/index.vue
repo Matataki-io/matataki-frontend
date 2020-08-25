@@ -23,7 +23,6 @@
             @click="viewP(index, item.id)"
           >
             <img
-              v-if="item.cover"
               v-lazy="cover(item.cover)"
               :alt="item.title"
             >
@@ -48,7 +47,6 @@
           @click="viewPM(item.id)"
         >
           <img
-            v-if="item.cover"
             :src="cover(item.cover)"
             :alt="item.title"
           >
@@ -111,7 +109,7 @@ export default {
       }
     },
     cover(src) {
-      return src ? this.$ossProcess(src, { h: 390 }) : ''
+      return src ? this.$ossProcess(src, { h: 390 }) : this.$ossProcess('/material/default_cover.png', { h: 390 })
     },
     swipeChange(i) {
       this.swipeIndex = i
