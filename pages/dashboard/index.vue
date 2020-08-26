@@ -14,7 +14,7 @@
           :key="index"
           class="db-t-block"
           :class="item.type === typeToggleVal && 'active'"
-          @click="typeToggleVal = item.type"
+          @click="() => { typeToggleVal = typeToggleValArticleList = item.type }"
         >
           <p class="db-t-b-title">
             {{ item.title }}
@@ -62,23 +62,28 @@
       <h4 class="db-title">
         数据统计
       </h4>
-      <tab class="db-mt10" :tab="tabListData" />
+      <tab
+        class="db-mt10"
+        :value="typeToggleValArticleList"
+        :tab="articleListData" 
+        @change="articleListTabChange"
+      />
       <el-table
         v-show="$utils.clientWidth() >= 768"
         class="db-mt20 table-list"
-        :data="articleList"
+        :data="pull.list"
         style="width: 100%"
       >
         <el-table-column label="排名" width="50">
           <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
+            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="标题" 
         >
           <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
+            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -86,7 +91,7 @@
           width="200"
         >
           <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.create_time }}</span>
+            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ time(scope.row.create_time) }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -94,29 +99,42 @@
           width="100"
         >
           <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.like }}</span>
+            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.count }}</span>
           </template>
         </el-table-column>
       </el-table>
       <el-table
         v-show="$utils.clientWidth() < 768"
         class="db-mt20 table-list"
-        :data="articleList"
+        :data="pull.list"
         style="width: 100%"
       >
         <el-table-column label="排名" width="50">
           <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
+            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="标题" 
         >
           <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
+            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
           </template>
         </el-table-column>
       </el-table>
+      <c-user-pagination
+        :url-replace="typeToggleValArticleList"
+        :current-page="pull.currentPage"
+        :params="pull.params"
+        :api-url="pull.apiUrl"
+        :page-size="pull.params.pagesize"
+        :total="pull.total"
+        :reload="pull.reload"
+        :need-access-token="true"
+        class="pagination"
+        @paginationData="paginationData"
+        @togglePage="togglePage"
+      />
     </div>
   </div>
 </template>
@@ -143,6 +161,7 @@ export default {
     return {
       sortValue: '30',
       typeToggleVal: 'read',
+      typeToggleValArticleList: 'read',
       typeToggle: {
         readCount: {
           type: 'read',
@@ -219,56 +238,41 @@ export default {
           label: '打赏',
         },
       ],
-      articleList: [
+      articleListData: [
         {
-          rank: 1,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'read',
+          label: '阅读',
         },
         {
-          rank: 2,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'like',
+          label: '点赞',
         },
         {
-          rank: 3,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'bookmark',
+          label: '收藏',
         },
         {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'comment',
+          label: '评论',
         },
         {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'share',
+          label: '分享',
         },
         {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'unlock',
+          label: '解锁',
         },
         {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
+          value: 'sale',
+          label: '支付',
         },
         {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          like: 19
-        }
+          value: 'reward',
+          label: '打赏',
+        },
       ],
+      articleList: [],
       chart: null,
       resizeEvent: null,
       chartsOptionsLine: {
@@ -312,6 +316,19 @@ export default {
         prefix: '',
         suffix: ''
       },
+
+      pull: {
+        params: {
+          days: this.sortValue === 'all' ? '' : this.sortValue,
+          pagesize: 10
+        },
+        apiUrl: 'dbBrowseRankType',
+        list: [],
+        currentPage:1,
+        total: 0,
+        loading: false,
+        reload: 0
+      },
     }
   },
   computed: {
@@ -324,10 +341,17 @@ export default {
     sortValue(val) {
       this.getData(val)
       this.getChartsData(this.typeToggleVal, val)
+
+      this.pull.params.days = this.sortValue === 'all' ? '' : this.sortValue
+      this.toggleRankList()
     },
     // 类别切换
     typeToggleVal(val) {
       this.getChartsData(val, this.sortValue)
+    },
+    // 数据统计切换
+    typeToggleValArticleList() {
+      this.toggleRankList()
     }
   },
   created() {
@@ -450,9 +474,13 @@ export default {
       return dateList
 
     },
-    // 图表tab切换
+    // tab切换
     chartsTabChange: debounce(function(label) {
-      this.getChartsData(label, this.sortValue)
+      this.typeToggleVal = label
+    }, 300),
+    // tab切换
+    articleListTabChange: debounce(function(label) {
+      this.typeToggleValArticleList = label
     }, 300),
     // 返回排名
     getRankClass(rank) {
@@ -478,6 +506,33 @@ export default {
       } catch (e) {
         return null 
       }
+    },
+    time(time) {
+      return time ? this.moment(time).format('YYYY-MM-DD HH:mm') : ''
+    },
+    // index rank
+    rank(index, page, pagesize) {
+      const indexFunc = (index, page, pagesize) => {
+        let limit = (page - 1) * pagesize
+        return (index + limit) + 1
+      }
+      return indexFunc(index, page, pagesize)
+    },
+    // 切换数据统计数据
+    toggleRankList() {
+      this.pull.currentPage = 1
+      this.pull.reload = Date.now()
+    },
+    paginationData(res) {
+      // console.log('res', res)
+      this.pull.list = res.data.list
+      this.pull.total = res.data.count || 0
+      this.pull.loading = false
+    },
+    togglePage(i) {
+      this.pull.loading = true
+      this.pull.currentPage = i
+      this.pull.list.length = 0
     }
   }
 }

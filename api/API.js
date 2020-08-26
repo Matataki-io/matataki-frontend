@@ -95,7 +95,7 @@ export default {
       })
     } else {
       const pullApiUrl = paginationUrl
-      let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
+      let urlReg = pullApiUrl[url].replace(/\$\{.*?\}/, urlReplace)
       return request({
         url: urlReg,
         method: 'get',
