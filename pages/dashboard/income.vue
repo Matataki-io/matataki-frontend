@@ -323,7 +323,7 @@ export default {
         this.pull.params = {
           tokenId,
           days: this.sortValue === 'all' ? '' : this.sortValue,
-          pagesize: 1
+          pagesize: 10
         }
       }, 25)
     },
