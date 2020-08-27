@@ -13,8 +13,8 @@
           v-for="(item, index) in typeToggle"
           :key="index"
           class="db-t-block"
-          :class="item.type === typeToggleVal && 'active'"
-          @click="() => { typeToggleVal = typeToggleValArticleList = item.type }"
+          :class="item.type === typeToggleBlockVal && 'active'"
+          @click="() => { typeToggleBlockVal = typeToggleVal = typeToggleValArticleList = item.type }"
         >
           <p class="db-t-b-title">
             {{ item.title }}
@@ -68,60 +68,62 @@
         :tab="articleListData" 
         @change="articleListTabChange"
       />
-      <el-table
-        v-show="$utils.clientWidth() >= 768"
-        class="db-mt20 table-list"
-        :data="pull.list"
-        style="width: 100%"
-      >
-        <el-table-column label="排名" width="50">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="标题" 
+      <no-ssr>
+        <el-table
+          v-show="$utils.clientWidth() >= 768"
+          class="db-mt20 table-list"
+          :data="pull.list"
+          style="width: 100%"
         >
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="发布时间"
-          width="200"
+          <el-table-column label="排名" width="50">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="标题" 
+          >
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="发布时间"
+            width="200"
+          >
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ time(scope.row.create_time) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="点赞次数"
+            width="100"
+          >
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.count }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table
+          v-show="$utils.clientWidth() < 768"
+          class="db-mt20 table-list"
+          :data="pull.list"
+          style="width: 100%"
         >
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ time(scope.row.create_time) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="点赞次数"
-          width="100"
-        >
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.count }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-table
-        v-show="$utils.clientWidth() < 768"
-        class="db-mt20 table-list"
-        :data="pull.list"
-        style="width: 100%"
-      >
-        <el-table-column label="排名" width="50">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="标题" 
-        >
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column label="排名" width="50">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="标题" 
+          >
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </no-ssr>
       <c-user-pagination
         :url-replace="typeToggleValArticleList"
         :current-page="pull.currentPage"
@@ -159,9 +161,11 @@ export default {
   },
   data() {
     return {
-      sortValue: '30',
-      typeToggleVal: 'read',
-      typeToggleValArticleList: 'read',
+      sortValue: '30', // 天数排序
+      typeToggleBlockVal: 'read', // tab 切换
+      typeToggleVal: 'read', // tab 切换
+      typeToggleValArticleList: 'read', // tag 切换
+      // tab list
       typeToggle: {
         readCount: {
           type: 'read',
@@ -204,6 +208,7 @@ export default {
           count: 0,
         }
       },
+      // tab list
       tabListData: [
         {
           value: 'read',
@@ -238,6 +243,7 @@ export default {
           label: '打赏',
         },
       ],
+      // tab list
       articleListData: [
         {
           value: 'read',
@@ -272,9 +278,9 @@ export default {
           label: '打赏',
         },
       ],
-      articleList: [],
       chart: null,
       resizeEvent: null,
+      // charts options
       chartsOptionsLine: {
         title: {
           text: '次数',
@@ -306,6 +312,7 @@ export default {
         }],
         animationDuration: 2000
       },
+      // 数字动画 config
       delay: 1000,
       endVal: 120500,
       options: {
@@ -316,7 +323,8 @@ export default {
         prefix: '',
         suffix: ''
       },
-
+      // 数字动画 config end
+      // 分页数据
       pull: {
         params: {
           days: this.sortValue === 'all' ? '' : this.sortValue,
@@ -520,8 +528,11 @@ export default {
     },
     // 切换数据统计数据
     toggleRankList() {
-      this.pull.currentPage = 1
-      this.pull.reload = Date.now()
+      if (this.pull.currentPage === 1) {
+        this.pull.reload = Date.now()
+      } else {
+        this.pull.currentPage = 1
+      }
     },
     paginationData(res) {
       // console.log('res', res)

@@ -1246,4 +1246,6 @@ minetokenGetResources(tokenId) {
   dbBrowseCount(params) { return request.get('/db/browse/count', { params }) },
   // 数据增量趋势
   dbBrowseHistoryType(type, params) { return request.get(`/db/browse/history/${type}`, { params }) },
+  // 获取用户所有文章的总收益
+  dbIncomeSum(params) { return request.get('/db/income/sum', { params }) },
 }

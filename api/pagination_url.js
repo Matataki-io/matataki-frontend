@@ -93,4 +93,8 @@ export const paginationUrl = {
   tokenAllLiquidityLogs: 'token/allLiquidityLogs',
   // 获取用户的文章排名
   dbBrowseRankType: '/db/browse/rank/${type}',
+  // 获取用户某个 token 的收益来源于哪些文章，并以金额倒序。
+  dbIncomeSourceType: '/db/income/source/${type}',
+  // 获取用户的收益历史（该用户所有文章的付费解锁和打赏收益）。
+  dbIncomeHistory:'/db/income/history',
 }

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="head">
       <h3>Dashboard</h3>
-      <p>每日中午12:00更新前一日数据</p>
+      <!-- <p>每日中午12:00更新前一日数据</p> -->
     </div>
     <router-view />
   </div>
