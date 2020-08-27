@@ -70,7 +70,11 @@
           </el-table-column>
           <el-table-column label="标题">
             <template slot-scope="scope">
-              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.post_title }}</span>
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
+                <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
+                  {{ scope.row.post_title }}
+                </n-link>
+              </span>
             </template>
           </el-table-column>
           <el-table-column label="发布时间" width="200">
@@ -97,7 +101,11 @@
           </el-table-column>
           <el-table-column label="标题">
             <template slot-scope="scope">
-              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.post_title }}</span>
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
+                <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
+                  {{ scope.row.post_title }}
+                </n-link>
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -149,7 +157,21 @@
           </el-table-column>
           <el-table-column label="明细">
             <template slot-scope="scope">
-              <span class="table-text">{{ scope.row.post_title }}</span>
+              <span class="table-text">
+                <n-link target="_blank" :to="{name: 'user-id', params: { id: scope.row.user_id }}">
+                  {{ scope.row.nickname || scope.row.username }}
+                </n-link>
+                在
+                <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
+                  「{{ scope.row.post_title }}」
+                </n-link>
+                打赏了
+                {{ amount(scope.row.amount , scope.row.decimals) }}
+                <n-link v-if="scope.row.token_id !== 0" target="_blank" :to="{name: 'token-id', params: { id: scope.row.token_id }}">
+                  {{ scope.row.symbol }}
+                </n-link>
+                <template v-else>{{ scope.row.symbol }}</template>
+              </span>
             </template>
           </el-table-column>
           <el-table-column
