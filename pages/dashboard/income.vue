@@ -339,6 +339,7 @@ export default {
     },
     // 获取来源稿件
     getArticleList(tokenId) {
+      this.pull.list.length = 0
       this.pull.params = {} // 不进行请求
       this.pull.currentPage = 1
       setTimeout(() => { // 加入宏任务等分页组件判断完
@@ -351,6 +352,7 @@ export default {
     },
     // 收益流水
     getFlowList(tokenId) {
+      this.pullFlow.list.length = 0
       this.pullFlow.params = {} // 不进行请求
       this.pullFlow.currentPage = 1
       setTimeout(() => {  // 加入宏任务等分页组件判断完
