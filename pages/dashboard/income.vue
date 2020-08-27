@@ -165,7 +165,7 @@
                 <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
                   「{{ scope.row.post_title }}」
                 </n-link>
-                打赏了
+                {{ scope.row.type === 'reward' ? '打赏了' : scope.row.type === 'sale' ? '支付了' : '消费了' }}
                 {{ amount(scope.row.amount , scope.row.decimals) }}
                 <n-link v-if="scope.row.token_id !== 0" target="_blank" :to="{name: 'token-id', params: { id: scope.row.token_id }}">
                   {{ scope.row.symbol }}
