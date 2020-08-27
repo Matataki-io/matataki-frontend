@@ -958,9 +958,16 @@ export default {
 
       .username {
         margin-left: 10px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        word-break: break-all;
       }
     }
     .menu-avatar {
+      min-width: 20px;
+      min-height: 20px;
       width: 20px;
       height: 20px;
       box-sizing: border-box;
