@@ -60,7 +60,7 @@
     <!-- 来源稿件 -->
     <div class="c-card dashboard-container">
       <h4 class="db-title">
-        数据统计
+        来源稿件
       </h4>
       <tab
         class="db-mt10"
@@ -84,7 +84,11 @@
             label="标题" 
           >
             <template slot-scope="scope">
-              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
+                <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.id }}">
+                  {{ scope.row.title }}
+                </n-link>
+              </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -119,7 +123,11 @@
             label="标题" 
           >
             <template slot-scope="scope">
-              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.title }}</span>
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
+                <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.id }}">
+                  {{ scope.row.title }}
+                </n-link>
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -502,7 +510,12 @@ export default {
     // 缩放图表
     resizeChart() {
       try {
-        this.chart.resize()
+        if (this.chart) {
+          this.chart.resize()
+        } else {
+          let chart = this.$echarts.init(document.querySelector('#dashboard-chart'))
+          chart.resize()
+        }
       } catch (e) {
         console.log('resizeChart error', e)
       }
