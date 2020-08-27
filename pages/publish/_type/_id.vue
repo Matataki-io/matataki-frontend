@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <no-ssr>
+      <client-only>
         <mavon-editor
           ref="md"
           v-model="markdownData"
@@ -96,7 +96,7 @@
             </router-link>
           </div>
         </mavon-editor>
-      </no-ssr>
+      </client-only>
     </div>
 
     <article-transfer

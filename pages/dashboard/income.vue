@@ -21,7 +21,7 @@
               {{ item.symbol }}
             <!-- &nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span> -->
             </p>
-            <no-ssr>
+            <client-only>
               <span 
                 v-if="amount(item.amount, item.decimals) < 1"
                 class="db-t-b-number"
@@ -33,7 +33,7 @@
                 :options="CountUpOptions"
                 class="db-t-b-number"
               />
-            </no-ssr>
+            </client-only>
           </div>
         </div>
       </transition>
@@ -56,7 +56,7 @@
         :value="tabListArticleVal"
         @change="tabListArticleChange"
       />
-      <no-ssr>
+      <client-only>
         <el-table
           v-show="$utils.clientWidth() >= 768"
           class="db-mt20 table-list"
@@ -109,7 +109,7 @@
             </template>
           </el-table-column>
         </el-table>
-      </no-ssr>
+      </client-only>
       <c-user-pagination
         :url-replace="tabListArticleVal"
         :current-page="pull.currentPage"
@@ -144,7 +144,7 @@
           />
         </el-select>
       </div>
-      <no-ssr>
+      <client-only>
         <el-table
           class="db-mt20 table-list"
           :data="pullFlow.list"
@@ -184,7 +184,7 @@
             </template>
           </el-table-column>
         </el-table>
-      </no-ssr>
+      </client-only>
       <c-user-pagination
         :current-page="pullFlow.currentPage"
         :params="pullFlow.params"

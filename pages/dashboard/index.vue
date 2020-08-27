@@ -20,14 +20,14 @@
             {{ item.title }}
             <!-- &nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span> -->
           </p>
-          <no-ssr>
+          <client-only>
             <ICountUp
               :delay="delay"
               :end-val="item.count"
               :options="options"
               class="db-t-b-number"
             />
-          </no-ssr>
+          </client-only>
         </div>
       </div>
       <!-- 数据增量趋势 -->
@@ -41,7 +41,7 @@
         @change="chartsTabChange"
       />
       <div class="charts">
-        <no-ssr>
+        <client-only>
           <v-chart
             id="dashboard-chart"
             :class="!isHaveData && 'hide'" 
@@ -49,7 +49,7 @@
             :auto-resize="true"
             class="db-chart"
           />
-        </no-ssr>
+        </client-only>
 
         <div v-show="!isHaveData" class="not">
           暂无数据
@@ -68,7 +68,7 @@
         :tab="articleListData" 
         @change="articleListTabChange"
       />
-      <no-ssr>
+      <client-only>
         <el-table
           v-show="$utils.clientWidth() >= 768"
           class="db-mt20 table-list"
@@ -131,7 +131,7 @@
             </template>
           </el-table-column>
         </el-table>
-      </no-ssr>
+      </client-only>
       <c-user-pagination
         :url-replace="typeToggleValArticleList"
         :current-page="pull.currentPage"
