@@ -59,7 +59,7 @@ _axios.interceptors.response.use(
   },
   (error) => {
     // loadingInstance.close()
-    console.log(error.message)
+    console.log('axios interceptors response error', error)
 
     if (error.message.includes('status code 401')) {
       console.log('登录状态异常,请重新登录')

@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <no-ssr>
+      <client-only>
         <mavon-editor
           ref="md"
           v-model="markdownData"
@@ -96,7 +96,7 @@
             </router-link>
           </div>
         </mavon-editor>
-      </no-ssr>
+      </client-only>
     </div>
 
     <article-transfer
@@ -1080,6 +1080,7 @@ export default {
     this.getBindableTokenList()
     this.getAllTokens()
     // this.setToolBar()
+
   },
   beforeRouteLeave(to, from, next) {
     // 只有编辑页面使用
@@ -2158,11 +2159,15 @@ export default {
       setTimeout(() => {
         let previewContent = document.querySelector('#previewContent')
         // console.log('innerHTML', previewContent.innerHTML)
+
+        let errorTips = `
+          <span class="error-tips">发生了一些意料之外的错误，请尝试刷新或者改变左侧内容重新渲染界面！<br/><a onClick="window.location.reload();">立即刷新</a></span>
+        `
+
         if (!previewContent.innerHTML) {
           this.allowLeave = true
-          setTimeout(() => {
-            window.location.reload()
-          }, 300)
+          previewContent.innerHTML = errorTips
+
         }
       }, 1000)
     },

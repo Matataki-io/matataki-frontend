@@ -93,9 +93,9 @@ export default {
     }
   },
   created() {
-    this.currentPageData(this.apiUrl, this.params, this.currentPage)
-
     if (process.browser) {
+      this.currentPageData(this.apiUrl, this.params, this.currentPage)
+
       this.$nextTick(() => {
         this.resizeInit()
         this.resizeEvent = throttle(this.resizeInit, 300)
