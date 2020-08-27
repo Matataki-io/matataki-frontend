@@ -1,28 +1,48 @@
 <template>
   <div>
     <!-- head tab 切换 -->
-    <headTab />
+    <headTab :sort-value="sortValue" @change="val => sortValue = val" />
 
     <!-- 数据统计 -->
     <div class="c-card dashboard-container">
       <h4 class="db-title">
         数据统计
       </h4>
-      <div class="db-toggle">
-        <div v-for="(item, index) in typeToggle" :key="index" class="db-t-block">
-          <p class="db-t-b-title">
-            {{ item.type }}&nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span>
-          </p>
-          <no-ssr>
-            <ICountUp
-              :delay="delay"
-              :end-val="item.nowadays"
-              :options="CountUpOptions"
-              class="db-t-b-number"
-            />
-          </no-ssr>
+      <transition name="fade">
+        <div ref="toggle" class="db-toggle" :class="typeToggleSwitch && 'showAll'">
+          <div
+            v-for="(item, index) in typeToggle"
+            :key="index"
+            class="db-t-block"
+            :class="item.token_id == typeToggleVal && 'active'"
+            @click="toggleType(item.token_id)"
+          >
+            <p class="db-t-b-title">
+              {{ item.symbol }}
+            <!-- &nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span> -->
+            </p>
+            <no-ssr>
+              <span 
+                v-if="amount(item.amount, item.decimals) < 1"
+                class="db-t-b-number"
+              >{{ amount(item.amount, item.decimals) }}</span>
+              <ICountUp
+                v-show="amount(item.amount, item.decimals) >= 1"
+                :delay="delay"
+                :end-val="amount(item.amount, item.decimals)"
+                :options="CountUpOptions"
+                class="db-t-b-number"
+              />
+            </no-ssr>
+          </div>
         </div>
-      </div>
+      </transition>
+      <section v-if="showToggleSwitch" class="toggle">
+        <span @click="typeToggleSwitchClick">
+          {{ typeToggleSwitch ? '收起全部' : '展开全部' }}
+          <i class="el-icon-d-arrow-right icon" :class="typeToggleSwitch && 'active'" />
+        </span>
+      </section>
     </div>
 
     <!-- 来源稿件 -->
@@ -30,51 +50,71 @@
       <h4 class="db-title">
         来源稿件
       </h4>
-      <tab class="db-mt10" :tab="tabListArticleType" />
-      <el-table
-        v-show="$utils.clientWidth() >= 768"
-        class="db-mt20 table-list"
-        :data="articleList"
-        style="width: 100%"
-      >
-        <el-table-column label="排名" width="80">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="标题">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="发布时间" width="200">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.create_time }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="支付金额" width="100">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.money }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-table
-        v-show="$utils.clientWidth() < 768"
-        class="db-mt20 table-list"
-        :data="articleList"
-        style="width: 100%"
-      >
-        <el-table-column label="排名" width="50">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.rank }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="标题">
-          <template slot-scope="scope">
-            <span class="table-text" :class="getRankClass(scope.row.rank)">{{ scope.row.title }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
+      <tab
+        class="db-mt10"
+        :tab="tabListArticleType"
+        :value="tabListArticleVal"
+        @change="tabListArticleChange"
+      />
+      <no-ssr>
+        <el-table
+          v-show="$utils.clientWidth() >= 768"
+          class="db-mt20 table-list"
+          :data="pull.list"
+          style="width: 100%"
+        >
+          <el-table-column label="排名" width="80">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="标题">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.post_title }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="发布时间" width="200">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ time(scope.row.create_time) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="支付金额" width="100">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ amount(scope.row.amount , scope.row.decimals ) }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table
+          v-show="$utils.clientWidth() < 768"
+          class="db-mt20 table-list"
+          :data="pull.list"
+          style="width: 100%"
+        >
+          <el-table-column label="排名" width="50">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="标题">
+            <template slot-scope="scope">
+              <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ scope.row.post_title }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </no-ssr>
+      <c-user-pagination
+        :url-replace="tabListArticleVal"
+        :current-page="pull.currentPage"
+        :params="pull.params"
+        :api-url="pull.apiUrl"
+        :page-size="pull.params.pagesize"
+        :total="pull.total"
+        :reload="pull.reload"
+        :need-access-token="true"
+        class="pagination"
+        @paginationData="paginationData"
+        @togglePage="togglePage"
+      />
     </div>
     
     <!-- 收益流水 -->
@@ -84,43 +124,57 @@
           收益流水
         </h4>
         <el-select
-          v-model="value"
+          v-model="flowValue"
           placeholder="请选择"
           size="small"
         >
           <el-option
-            v-for="item in options"
+            v-for="item in flowOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
         </el-select>
       </div>
-      <el-table
-        class="db-mt20 table-list"
-        :data="incomeList"
-        style="width: 100%"
-      >
-        <el-table-column
-          label="序号"
-          width="50"
-          type="index"
-        />
-        <el-table-column label="明细">
-          <template slot-scope="scope">
-            <span class="table-text">{{ scope.row.detail }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-if="$utils.clientWidth() >= 768"
-          label="时间"
-          width="200"
+      <no-ssr>
+        <el-table
+          class="db-mt20 table-list"
+          :data="pullFlow.list"
+          style="width: 100%"
         >
-          <template slot-scope="scope">
-            <span class="table-text">{{ scope.row.create_time }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column label="序号" width="50">
+            <template slot-scope="scope">
+              <span class="table-text">{{ rank(scope.$index, pullFlow.currentPage, pullFlow.params.pagesize) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="明细">
+            <template slot-scope="scope">
+              <span class="table-text">{{ scope.row.post_title }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="$utils.clientWidth() >= 768"
+            label="时间"
+            width="200"
+          >
+            <template slot-scope="scope">
+              <span class="table-text">{{ time(scope.row.create_time) }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </no-ssr>
+      <c-user-pagination
+        :current-page="pullFlow.currentPage"
+        :params="pullFlow.params"
+        :api-url="pullFlow.apiUrl"
+        :page-size="pullFlow.params.pagesize"
+        :total="pullFlow.total"
+        :reload="pullFlow.reload"
+        :need-access-token="true"
+        class="pagination"
+        @paginationData="paginationDataFlow"
+        @togglePage="togglePageFlow"
+      />
     </div>
   </div>
 </template>
@@ -128,6 +182,8 @@
 <script>
 import headTab from '@/components/dashboard/dashboard_head_tab'
 import tab from '@/components/dashboard/dashboard_tab'
+import { precision } from '@/utils/precisionConversion'
+import debounce from 'lodash/debounce'
 
 let ICountUp = null
 if (process.client) {
@@ -142,153 +198,29 @@ export default {
   },
   data() {
     return {
-      typeToggle: [
-        {
-          type: 'CNY',
-          yesterday: 123,
-          nowadays: 1111,
-        },
-        {
-          type: 'XTB',
-          yesterday: 3,
-          nowadays: 23,
-        },
-        {
-          type: 'BDJ',
-          yesterday: 12,
-          nowadays: 444,
-        },
-        {
-          type: 'VVV',
-          yesterday: 333,
-          nowadays: 3144124,
-        },
-        {
-          type: 'DGB',
-          yesterday: 11,
-          nowadays: 232,
-        },
-        {
-          type: 'EJG',
-          yesterday: 1123,
-          nowadays: 123,
-        },
-        {
-          type: 'FUG',
-          yesterday: 3342,
-          nowadays: 1242,
-        },
-      ],
+      sortValue: '30', // 天数排序
+      typeToggleVal: 0,
+      typeToggle: [],
+      typeToggleSwitch: false,
+      tabListArticleVal: 'reward',
       tabListArticleType: [
         {
           value: 'reward',
           label: '打赏',
         },
         {
-          value: 'pay',
+          value: 'sale',
           label: '支付',
         }
       ],
-      options: [{
+      flowOptions: [{
         value: 'follow',
         label: '跟随筛选'
       }, {
         value: 'notFollow',
         label: '不跟随筛选'
       }],
-      value: 'follow',
-      articleList: [
-        {
-          rank: 1,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 2,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 3,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        },
-        {
-          rank: 4,
-          title: '当你的产品面临先有鸡还是先有蛋的问题...',
-          create_time: '2020-20-20 11:11:11',
-          money: 19
-        }
-      ],
-      incomeList: [
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        },
-        {
-          detail: '蠢朋克天下第一DJ组合 在「当你的产品面临先有鸡还是先有蛋的问题…」打赏了1000KJM',
-          create_time: '2020-20-20 11:11:11',
-        }
-      ],
+      flowValue: 'follow',
       delay: 1000,
       CountUpOptions: {
         useEasing: true,
@@ -297,10 +229,137 @@ export default {
         decimal: '.',
         prefix: '',
         suffix: ''
+      },
+      // 分页数据
+      pull: {
+        params: {},
+        apiUrl: 'dbIncomeSourceType',
+        list: [],
+        currentPage:1,
+        total: 0,
+        loading: false,
+        reload: 0
+      },
+      // 分页数据
+      pullFlow: {
+        params: {},
+        apiUrl: 'dbIncomeHistory',
+        list: [],
+        currentPage:1,
+        total: 0,
+        loading: false,
+        reload: 0
+      },
+    }
+  },
+  computed: {
+    showToggleSwitch() {
+      if (process.browser) {
+        try {
+          let width = document.body.clientWidth || document.documentElement.clientWidth
+          if (width > 768) { // 一行 四个 大于八个显示
+            return this.typeToggle.length > 8
+          } else if (width <= 768) { // 一行两个、三个 大于六个显示
+            return this.typeToggle.length > 6
+          } else { // 不在范围内
+            return false
+          }
+        } catch (e) {
+          console.log(e)
+          return false
+        }
+      } else {
+        return this.typeToggle.length > 8
       }
     }
   },
+  watch: {
+    // 天数切换
+    sortValue(val) {
+      this.getData(val)
+    },
+    // 类别切换
+    tabListArticleVal() {
+      if (this.pull.currentPage === 1) {
+        this.pull.reload = Date.now()
+      } else {
+        this.pull.currentPage = 1
+      }
+    },
+  },
+  created() {
+    if (process.browser) {
+      this.getData(this.sortValue)
+    }
+  },
   methods: {
+    // 获取数据
+    async getData(days) {
+      let dataCountParams = null
+      if (days !== 'all') {
+        dataCountParams = {
+          days
+        }
+      }
+      const dataCountResult = await this.$utils.factoryRequest(this.$API.dbIncomeSum(dataCountParams))
+      if (dataCountResult) {
+        this.typeToggle = dataCountResult.data
+
+        if (dataCountResult.data.length >= 1) {
+          
+          // 设置第一个块聚焦
+          this.typeToggleVal = dataCountResult.data[0].token_id
+
+          this.getArticleList(dataCountResult.data[0].token_id)
+          this.getFlowList(dataCountResult.data[0].token_id)
+        }
+      }
+    },
+    // 获取来源稿件
+    getArticleList(tokenId) {
+      this.pull.params = {} // 不进行请求
+      this.pull.currentPage = 1
+      setTimeout(() => { // 加入宏任务等分页组件判断完
+        this.pull.params = {
+          tokenId,
+          days: this.sortValue === 'all' ? '' : this.sortValue,
+          pagesize: 10
+        }
+      }, 25)
+    },
+    // 收益流水
+    getFlowList(tokenId) {
+      this.pullFlow.params = {} // 不进行请求
+      this.pullFlow.currentPage = 1
+      setTimeout(() => {  // 加入宏任务等分页组件判断完
+        this.pullFlow.params = {
+          tokenId,
+          days: this.sortValue === 'all' ? '' : this.sortValue,
+          pagesize: 20
+        }
+      }, 25)
+    },
+    // 切换数据统计模块
+    toggleType(tokenId) {
+
+      // 切换块
+      this.typeToggleVal = tokenId
+
+      this.getArticleList(tokenId)
+
+      // 跟随切换
+      if (this.flowValue === 'follow') {
+        this.getFlowList(tokenId)
+      }
+    },
+    // tab切换
+    tabListArticleChange: debounce(function(label) {
+      this.tabListArticleVal = label
+    }, 300),
+    // 精度格式化
+    amount(amount, decimals) {
+      return precision(amount, 'CNY', decimals)
+    },
     // 返回排名
     getRankClass(rank) {
       let list = {
@@ -309,9 +368,80 @@ export default {
         3: 'three'
       }
       return list[rank] || ''
-    }
+    },
+    time(time) {
+      return time ? this.moment(time).format('YYYY-MM-DD HH:mm') : ''
+    },
+    // index rank
+    rank(index, page, pagesize) {
+      const indexFunc = (index, page, pagesize) => {
+        let limit = (page - 1) * pagesize
+        return (index + limit) + 1
+      }
+      return indexFunc(index, page, pagesize)
+    },
+    paginationData(res) {
+      // console.log('res', res)
+      this.pull.list = res.data.list
+      this.pull.total = res.data.count || 0
+      this.pull.loading = false
+    },
+    togglePage(i) {
+      this.pull.loading = true
+      this.pull.currentPage = i
+      this.pull.list.length = 0
+    },
+    paginationDataFlow(res) {
+      // console.log('res', res)
+      this.pullFlow.list = res.data.list
+      this.pullFlow.total = res.data.count || 0
+      this.pullFlow.loading = false
+    },
+    togglePageFlow(i) {
+      this.pullFlow.loading = true
+      this.pullFlow.currentPage = i
+      this.pullFlow.list.length = 0
+    },
+    // 数据统计展开和收回切换
+    typeToggleSwitchClick() {
+
+      try {
+        this.$refs.toggle.scrollTop = 0
+      } catch (e) {
+        console.log(e)
+      }
+
+      this.typeToggleSwitch = !this.typeToggleSwitch
+    },
   }
 }
 </script>
 
 <style lang="less" scoped src="./index.less"></style>
+
+<style lang="less" scoped>
+.toggle {
+  text-align: center;
+  margin-top: 20px;
+  span {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    .icon {
+      transform: rotate(90deg);
+      &.active {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+}
+.db-toggle {
+  max-height: 302px;
+  transition: all .3s ease;
+  overflow: hidden;
+}
+.showAll {
+  max-height: 594px !important;
+  overflow: auto !important;
+}
+</style>

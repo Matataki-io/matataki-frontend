@@ -76,6 +76,7 @@ export default {
   },
   watch: {
     currentPage(newVal) {
+      this.currentPageCopy = this.currentPage
       this.currentPageData(this.apiUrl, this.params, newVal)
     },
     params: {
