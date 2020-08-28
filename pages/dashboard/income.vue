@@ -6,7 +6,7 @@
     <!-- 数据统计 -->
     <div class="c-card dashboard-container">
       <h4 class="db-title">
-        数据统计
+        {{ $t("dashboard.statistics") }}
       </h4>
       <transition name="fade">
         <div ref="toggle" class="db-toggle" :class="typeToggleSwitch && 'showAll'">
@@ -18,7 +18,7 @@
             @click="toggleType(item.token_id)"
           >
             <p class="db-t-b-title">
-              {{ item.symbol }}&nbsp;<span>今日<span>+{{ amount(item.now, item.decimals) || 0 }}</span></span>
+              {{ item.symbol }}&nbsp;<span>{{ $t("dashboard.today") }}<span>+{{ amount(item.now, item.decimals) || 0 }}</span></span>
             </p>
             <client-only>
               <span 
@@ -38,7 +38,7 @@
       </transition>
       <section v-if="showToggleSwitch" class="toggle">
         <span @click="typeToggleSwitchClick">
-          {{ typeToggleSwitch ? '收起全部' : '展开全部' }}
+          {{ typeToggleSwitch ? $t("dashboard.collapseAll") : $t("dashboard.expandAll") }}
           <i class="el-icon-d-arrow-right icon" :class="typeToggleSwitch && 'active'" />
         </span>
       </section>
@@ -47,7 +47,7 @@
     <!-- 来源稿件 -->
     <div class="c-card dashboard-container">
       <h4 class="db-title">
-        来源稿件
+        {{ $t("dashboard.sourceManuscript") }}
       </h4>
       <tab
         class="db-mt10"
@@ -62,12 +62,12 @@
           :data="pull.list"
           style="width: 100%"
         >
-          <el-table-column label="排名" width="80">
+          <el-table-column :label="$t('rank')" width="80">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="标题">
+          <el-table-column :label="$t('title')">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
                 <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
@@ -76,12 +76,12 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="发布时间" width="200">
+          <el-table-column :label="$t('releaseTime')" width="200">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ time(scope.row.create_time) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="支付金额" width="100">
+          <el-table-column :label="$t('dashboard.paymentAmount')" width="100">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ amount(scope.row.amount , scope.row.decimals ) }}</span>
             </template>
@@ -93,12 +93,12 @@
           :data="pull.list"
           style="width: 100%"
         >
-          <el-table-column label="排名" width="50">
+          <el-table-column :label="$t('rank')" width="50">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="标题">
+          <el-table-column :label="$t('title')">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
                 <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
@@ -128,11 +128,11 @@
     <div class="c-card dashboard-container">
       <div class="fl ac jsb">
         <h4 class="db-title">
-          收益流水
+          {{ $t("dashboard.revenueStream") }}
         </h4>
         <el-select
           v-model="flowValue"
-          placeholder="请选择"
+          :placeholder="$t('dashboard.pleaseChoose')"
           size="small"
         >
           <el-option
@@ -149,22 +149,22 @@
           :data="pullFlow.list"
           style="width: 100%"
         >
-          <el-table-column label="序号" width="50">
+          <el-table-column :label="$t('dashboard.serialNumber')" width="50">
             <template slot-scope="scope">
               <span class="table-text">{{ rank(scope.$index, pullFlow.currentPage, pullFlow.params.pagesize) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="明细">
+          <el-table-column :label="$t('dashboard.detail')">
             <template slot-scope="scope">
               <span class="table-text">
                 <n-link target="_blank" :to="{name: 'user-id', params: { id: scope.row.user_id }}">
                   {{ scope.row.nickname || scope.row.username }}
                 </n-link>
-                在
+                {{ $t('dashboard.in') }}
                 <n-link target="_blank" :to="{name: 'p-id', params: { id: scope.row.post_id }}">
                   「{{ scope.row.post_title }}」
                 </n-link>
-                {{ scope.row.type === 'reward' ? '打赏了' : scope.row.type === 'sale' ? '支付了' : '消费了' }}
+                {{ scope.row.type === 'reward' ? $t('dashboard.rewarded') : scope.row.type === 'sale' ? $t('dashboard.paid') : $t('dashboard.consumed') }}
                 {{ amount(scope.row.amount , scope.row.decimals) }}
                 <n-link v-if="scope.row.token_id !== 0" target="_blank" :to="{name: 'token-id', params: { id: scope.row.token_id }}">
                   {{ scope.row.symbol }}
@@ -175,7 +175,7 @@
           </el-table-column>
           <el-table-column
             v-if="$utils.clientWidth() >= 768"
-            label="时间"
+            :label="$t('time')"
             width="200"
           >
             <template slot-scope="scope">
@@ -227,19 +227,19 @@ export default {
       tabListArticleType: [
         {
           value: 'reward',
-          label: '打赏',
+          label: this.$t('reward'),
         },
         {
           value: 'sale',
-          label: '支付',
+          label: this.$t('pay'),
         }
       ],
       flowOptions: [{
         value: 'follow',
-        label: '跟随筛选'
+        label: this.$t('dashboard.followFilter'),
       }, {
         value: 'notFollow',
-        label: '不跟随筛选'
+        label: this.$t('dashboard.notFollowFilter'),
       }],
       flowValue: 'follow',
       delay: 1000,

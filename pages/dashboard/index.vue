@@ -6,7 +6,7 @@
     <!-- 数据统计 -->
     <div class="c-card dashboard-container">
       <h4 class="db-title">
-        数据统计
+        {{ $t("dashboard.statistics") }}
       </h4>
       <div class="db-toggle">
         <div
@@ -17,7 +17,7 @@
           @click="() => { typeToggleBlockVal = typeToggleVal = typeToggleValArticleList = item.type }"
         >
           <p class="db-t-b-title">
-            {{ item.title }}&nbsp;<span>今日<span>+{{ item.now || 0 }}</span></span>
+            {{ item.title }}&nbsp;<span>{{ $t("dashboard.today") }}<span>+{{ item.now || 0 }}</span></span>
           </p>
           <client-only>
             <ICountUp
@@ -31,7 +31,7 @@
       </div>
       <!-- 数据增量趋势 -->
       <h4 class="db-title db-mt20">
-        数据增量趋势
+        {{ $t("dashboard.dataIncrementTrend") }}
       </h4>
       <tab
         class="db-mt10"
@@ -51,7 +51,7 @@
         </client-only>
 
         <div v-show="!isHaveData" class="not">
-          暂无数据
+          {{ $t("noData") }}
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
     <!-- 来源稿件 -->
     <div class="c-card dashboard-container">
       <h4 class="db-title">
-        来源稿件
+        {{ $t("dashboard.sourceManuscript") }}
       </h4>
       <tab
         class="db-mt10"
@@ -74,13 +74,13 @@
           :data="pull.list"
           style="width: 100%"
         >
-          <el-table-column label="排名" width="50">
+          <el-table-column :label="$t('rank')" width="50">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="标题" 
+            :label="$t('title')"
           >
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
@@ -91,7 +91,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="发布时间"
+            :label="$t('releaseTime')"
             width="200"
           >
             <template slot-scope="scope">
@@ -99,7 +99,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="点赞次数"
+            :label="$t('dashboard.likes')"
             width="100"
           >
             <template slot-scope="scope">
@@ -113,13 +113,13 @@
           :data="pull.list"
           style="width: 100%"
         >
-          <el-table-column label="排名" width="50">
+          <el-table-column :label="$t('rank')" width="50">
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">{{ rank(scope.$index, pull.currentPage, pull.params.pagesize) }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="标题" 
+            :label="$t('title')"
           >
             <template slot-scope="scope">
               <span class="table-text" :class="getRankClass(rank(scope.$index, pull.currentPage, pull.params.pagesize))">
@@ -176,49 +176,49 @@ export default {
       typeToggle: {
         readCount: {
           type: 'read',
-          title: '阅读',
+          title: this.$t('read'),
           count: 0,
           now: 0,
         },
         likeCount: {
           type: 'like',
-          title: '点赞',
+          title: this.$t('like'),
           count: 0,
           now: 0,
         },
         bookmarkCount: {
           type: 'bookmark',
-          title: '收藏',
+          title: this.$t('bookmark'),
           count: 0,
           now: 0,
         },
         commentCount: {
           type: 'comment',
-          title: '评论',
+          title: this.$t('comment'),
           count: 0,
           now: 0,
         },
         shareCount:{
           type: 'share',
-          title: '分享',
+          title: this.$t('share'),
           count: 0,
           now: 0,
         },
         unlockCount:{
           type: 'unlock',
-          title: '解锁',
+          title: this.$t('unlock'),
           count: 0,
           now: 0,
         },
         saleCount: {
           type: 'sale',
-          title: '支付',
+          title: this.$t('pay'),
           count: 0,
           now: 0,
         },
         rewardCount: {
           type: 'reward',
-          title: '打赏',
+          title: this.$t('reward'),
           count: 0,
           now: 0,
         }
@@ -227,70 +227,70 @@ export default {
       tabListData: [
         {
           value: 'read',
-          label: '阅读',
+          label: this.$t('read'),
         },
         {
           value: 'like',
-          label: '点赞',
+          label: this.$t('like'),
         },
         {
           value: 'bookmark',
-          label: '收藏',
+          label: this.$t('bookmark'),
         },
         {
           value: 'comment',
-          label: '评论',
+          label: this.$t('comment'),
         },
         {
           value: 'share',
-          label: '分享',
+          label: this.$t('share'),
         },
         {
           value: 'unlock',
-          label: '解锁',
+          label: this.$t('unlock'),
         },
         {
           value: 'sale',
-          label: '支付',
+          label: this.$t('pay'),
         },
         {
           value: 'reward',
-          label: '打赏',
+          label: this.$t('reward'),
         },
       ],
       // tab list
       articleListData: [
         {
           value: 'read',
-          label: '阅读',
+          label: this.$t('read'),
         },
         {
           value: 'like',
-          label: '点赞',
+          label: this.$t('like'),
         },
         {
           value: 'bookmark',
-          label: '收藏',
+          label: this.$t('bookmark'),
         },
         {
           value: 'comment',
-          label: '评论',
+          label: this.$t('comment'),
         },
         {
           value: 'share',
-          label: '分享',
+          label: this.$t('share'),
         },
         {
           value: 'unlock',
-          label: '解锁',
+          label: this.$t('unlock'),
         },
         {
           value: 'sale',
-          label: '支付',
+          label: this.$t('pay'),
         },
         {
           value: 'reward',
-          label: '打赏',
+          label: this.$t('reward'),
         },
       ],
       chart: null,
@@ -298,7 +298,7 @@ export default {
       // charts options
       chartsOptionsLine: {
         title: {
-          text: '次数',
+          text: this.$t('dashboard.frequency'),
           top: '20px',
         },
         tooltip: {
@@ -435,7 +435,7 @@ export default {
       if (this.chart) {
         this.resizeChart()
         this.chart.showLoading({
-          text: '正在请求数据...',
+          text: this.$t('dashboard.requestingData'),
         })
       }
 

@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-tab">
     <router-link :to="{ name: 'dashboard' }" class="tab-link" :class="$route.name === 'dashboard' && 'active'">
-      阅览数据
+      {{ $t("dashboard.readData") }}
     </router-link>
     <router-link :to="{ name: 'dashboard-income' }" class="tab-link" :class="$route.name === 'dashboard-income' && 'active'">
-      收益数据
+      {{ $t("dashboard.incomeData") }}
     </router-link>
     <el-select
       v-model="value"
@@ -40,10 +40,10 @@ export default {
     return {
       options: [{
         value: '30',
-        label: '30天'
+        label: this.$t('dashboard.thirtyDays')
       }, {
         value: 'all',
-        label: '全部'
+        label: this.$t('dashboard.all')
       }],
       value: ''
     }
