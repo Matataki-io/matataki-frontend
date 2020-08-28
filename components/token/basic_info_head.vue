@@ -30,7 +30,7 @@
             <div>
               <p class="token-info-sub">
                 <c-user-popover :user-id="Number(minetokenToken.uid)">
-                  <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                  <router-link class="token-username" :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
                     {{ minetokenUser.nickname || minetokenUser.username }}
                   </router-link>
                 </c-user-popover>
@@ -56,8 +56,8 @@
                 无标签
               </p>
             </div>
-            <div v-else class="token-info-sub" style="display: flex;">
-              <div v-for="(tag, index) in tags" :key="index" style="margin-right:0.5rem;">
+            <div v-else class="token-info-sub token-tags">
+              <div v-for="(tag, index) in tags" :key="index" class="token-tag">
                 <el-button size="small">
                   {{ {...tagPattern.find(item => item.label === tag.tag)}.name || tag.tag }}
                 </el-button>
@@ -336,6 +336,23 @@ export default {
   cursor: pointer;
   &:hover {
     color: #542de0;
+  }
+}
+
+.token {
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &-tag {
+    margin: 0 5px 5px 0;
+  }
+  &-username {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
   }
 }
 

@@ -8,16 +8,15 @@
         <div class="token-info-title bold">
           {{ minetokenToken.symbol || 'Loading...' }}
         </div>
-        <div style="flex-direction: row;display: flex;align-items: center;">
+        <div class="token-header">
           <div class="token-info-sub" style="font-size: 1.1rem">
             {{ minetokenToken.name }}
           </div>
-          <div v-if="tags && tags.length !== 0" style="display: flex; margin-left: 0.5rem;">
+          <div v-if="tags && tags.length !== 0" class="token-tags">
             <div
               v-for="(tag, index) in tags" 
               :key="index" 
-              class="tag-item" 
-              style="margin-right:0.5rem;"
+              class="tag-item"
             >
               <div size="small" plain>
                 {{ tagPattern.find(item => item.label === tag.tag).name }}
@@ -37,7 +36,7 @@
         <div>
           <p class="token-info-sub">
             <c-user-popover :user-id="Number(minetokenToken.uid)">
-              <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
+              <router-link class="token-username" :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
                 {{ minetokenUser.nickname || minetokenUser.username }}
               </router-link>
             </c-user-popover>
@@ -196,15 +195,6 @@ export default {
       }
     }
 }
-.tag-item {
-    width: 100%;
-    height: 100%;
-    padding: 1px 8px 1px;
-    color: #542DE0;
-    border-radius: 5px;
-    background-color: #D6CDFF;
-    margin-right: 0.5rem;  
-}
 
 .token-detail {
   position: relative;
@@ -245,7 +235,31 @@ export default {
   }
 }
 
-@media screen and (max-width: 1200px) {
+.token {
+  &-tags {
+    display: flex;
+    margin-left: 10px;
+    flex-wrap: wrap;
+    .tag-item {
+      padding: 1px 8px 1px;
+      color: #542DE0;
+      border-radius: 5px;
+      background-color: #D6CDFF;
+      margin-right: 5px;
+    }
+  }
+  &-header {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+  }
+  &-username {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
+  }
 }
 
 // 小于992
@@ -254,6 +268,17 @@ export default {
   .info-btns {
     position: absolute;
     left: 69%;
+  }
+  .token {
+    &-header {
+      display: block;
+    }
+    &-tags {
+      margin-top: 10px;
+      .tag-item {
+        margin: 0 5px 5px 0;
+      }
+    }
   }
 }
 
