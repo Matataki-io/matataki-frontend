@@ -17,8 +17,7 @@
           @click="() => { typeToggleBlockVal = typeToggleVal = typeToggleValArticleList = item.type }"
         >
           <p class="db-t-b-title">
-            {{ item.title }}
-            <!-- &nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span> -->
+            {{ item.title }}&nbsp;<span>今日<span>+{{ item.now || 0 }}</span></span>
           </p>
           <client-only>
             <ICountUp
@@ -179,41 +178,49 @@ export default {
           type: 'read',
           title: '阅读',
           count: 0,
+          now: 0,
         },
         likeCount: {
           type: 'like',
           title: '点赞',
           count: 0,
+          now: 0,
         },
         bookmarkCount: {
           type: 'bookmark',
           title: '收藏',
           count: 0,
+          now: 0,
         },
         commentCount: {
           type: 'comment',
           title: '评论',
           count: 0,
+          now: 0,
         },
         shareCount:{
           type: 'share',
           title: '分享',
           count: 0,
+          now: 0,
         },
         unlockCount:{
           type: 'unlock',
           title: '解锁',
           count: 0,
+          now: 0,
         },
         saleCount: {
           type: 'sale',
           title: '支付',
           count: 0,
+          now: 0,
         },
         rewardCount: {
           type: 'reward',
           title: '打赏',
           count: 0,
+          now: 0,
         }
       },
       // tab list
@@ -401,7 +408,14 @@ export default {
       }
       const dataCountResult = await this.$utils.factoryRequest(this.$API.dbBrowseCount(dataCountParams))
       if (dataCountResult) {
-        this.formatDataCount(dataCountResult.data)
+        this.formatDataCount(dataCountResult.data, 'count')
+      }
+      // 今天的数据
+      const nowDataCountResult = await this.$utils.factoryRequest(this.$API.dbBrowseCount({
+        days: 1
+      }))
+      if (nowDataCountResult) {
+        this.formatDataCount(nowDataCountResult.data, 'now')
       }
     },
     // 获取图表数据
@@ -453,10 +467,10 @@ export default {
       }
     },
     // 格式化数据统计
-    formatDataCount(data) {
+    formatDataCount(data, keyName) {
       for (const key in data) {
         if (this.typeToggle[key]) {
-          this.typeToggle[key].count = data[key]
+          this.typeToggle[key][keyName] = data[key]
         }
       }
     },

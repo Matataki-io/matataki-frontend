@@ -18,8 +18,7 @@
             @click="toggleType(item.token_id)"
           >
             <p class="db-t-b-title">
-              {{ item.symbol }}
-            <!-- &nbsp;<span>昨日<span>+{{ item.yesterday }}</span></span> -->
+              {{ item.symbol }}&nbsp;<span>今日<span>+{{ amount(item.now, item.decimals) || 0 }}</span></span>
             </p>
             <client-only>
               <span 
@@ -334,6 +333,22 @@ export default {
 
           this.getArticleList(dataCountResult.data[0].token_id)
           this.getFlowList(dataCountResult.data[0].token_id)
+        }
+      }
+      // 今日数据
+      const nowDataCountResult = await this.$utils.factoryRequest(this.$API.dbIncomeSum({
+        days: 1
+      }))
+      if (nowDataCountResult) {
+        let list = nowDataCountResult.data
+        for (let i = 0, len = list.length; i < len; i++) {
+          for (let j = 0, len = this.typeToggle.length; j < len; j++) {
+            if (list[i].token_id === this.typeToggle[j].token_id && list[i].symbol === this.typeToggle[j].symbol) {
+              this.typeToggle[j].now = list[i].amount
+            } else {
+              this.typeToggle[j].now = 0
+            }
+          }
         }
       }
     },
