@@ -455,8 +455,10 @@ export default {
         }
 
         if (days === 'all') {
-          this.chartsOptionsLine.xAxis.data = chartsRes.data.map(i => i.create_time)
-          this.chartsOptionsLine.series[0].data = chartsRes.data.map(i => i.count)
+          let res = this.chartsFormat(chartsRes.data)
+
+          this.chartsOptionsLine.xAxis.data = res.map(i => i.create_time)
+          this.chartsOptionsLine.series[0].data = res.map(i => i.count)
         } else {
           let res = this.chartsFormatDays(days, chartsRes.data)
 
@@ -502,7 +504,22 @@ export default {
         }
       }
       return dateList
-
+    },
+    /** 给历史数据折线图补全无数据的天数 */
+    chartsFormat(data) {
+      if (!data || !data.length) return []
+      const date = new Date(data[0].create_time)
+      const now = new Date()
+      let res = []
+      do {
+        const dateText = this.moment(date).format('YYYY-MM-DD')
+        res.push({
+          create_time: dateText,
+          count: { ...data.find(item => item.create_time === dateText) }.count || 0
+        })
+        date.setDate(date.getDate() + 1)
+      } while(date < now)
+      return res
     },
     // tab切换
     chartsTabChange: debounce(function(label) {
