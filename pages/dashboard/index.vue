@@ -8,6 +8,14 @@
       <h4 class="db-title">
         {{ $t("dashboard.statistics") }}
       </h4>
+      <div v-if="sortValue !== 'all' && noData" class="nodata-switch">
+        <p>
+          {{ $t('dashboard.noNewData', [sortValue]) }}
+          <a @click="sortValue = 'all'">
+            {{ $t('dashboard.viewAll') }}
+          </a>
+        </p>
+      </div>
       <div class="db-toggle">
         <div
           v-for="(item, index) in typeToggle"
@@ -357,6 +365,12 @@ export default {
   computed: {
     isHaveData() {
       return this.chartsOptionsLine.xAxis.data.length > 0 || this.chartsOptionsLine.series[0].data.length > 0
+    },
+    noData() {
+      let count = 0
+      Object.keys(this.typeToggle).forEach(key => count += this.typeToggle[key].count)
+      console.log('结果：', count)
+      return count === 0
     }
   },
   watch: {
