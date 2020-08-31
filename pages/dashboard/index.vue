@@ -51,7 +51,7 @@
         <client-only>
           <v-chart
             id="dashboard-chart"
-            :class="!isHaveData && 'hide'" 
+            :class="(!isHaveData && !chartLoading) && 'hide'" 
             :options="chartsOptionsLine"
             :auto-resize="true"
             class="db-chart"
@@ -180,6 +180,7 @@ export default {
       typeToggleBlockVal: 'read', // tab 切换
       typeToggleVal: 'read', // tab 切换
       typeToggleValArticleList: 'read', // tag 切换
+      chartLoading: false,
       // tab list
       typeToggle: {
         readCount: {
@@ -451,9 +452,11 @@ export default {
         this.chart.showLoading({
           text: this.$t('dashboard.requestingData'),
         })
+        this.chartLoading = true
       }
 
       const chartsRes = await this.$utils.factoryRequest(this.$API.dbBrowseHistoryType(type, chartsDataParams))
+      this.chartLoading = false
 
       if (this.chart) {
         this.chart.hideLoading()
