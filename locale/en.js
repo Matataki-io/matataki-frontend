@@ -814,18 +814,18 @@ export default {
         underDeployment: 'Fan票正在部署中，请稍后过来操作!',
         enterTheNumber: '请先输入购买数量',
         relatedActivities: '相关活动',
-        tokenManagement: 'Token management',
-        expandMod: 'Mod',
-        recommendMod: 'Recommened Mod',
-        quickEntrance: 'Quick Entrance',
-        tags: 'Tags',
-        exchangePrice: 'Price',
-        fanTicketHolder: 'Fan ticket holder',
-        myFlowGold: 'My Liqidity',
-        totalTransactionFlow: 'Txs',
-        flowGoldTotalFlow: 'Liqidity Txs',
-        allFanTicket: 'All Tokens',
-        hashCopySuccess: 'Hash Copy success'
+        tokenManagement: 'Fan票管理',
+        expandMod: '拓展MOD',
+        recommendMod: '推荐模组',
+        quickEntrance: '快捷入口',
+        tags: '标签',
+        exchangePrice: '当前价格',
+        fanTicketHolder: 'Fan票夹',
+        myFlowGold: '我的流动金',
+        totalTransactionFlow: '交易总流水',
+        flowGoldTotalFlow: '流动金总流水',
+        allFanTicket: '全部Fan票',
+        hashCopySuccess: 'Hash 复制成功'
     },
     ipfsHash: {
         link: 'IPFS地址',
@@ -991,6 +991,8 @@ export default {
         paid: '支付了',
         consumed: '消费了',
         followFilter: '跟随筛选',
-        notFollowFilter: '查看全部'
+        notFollowFilter: '查看全部',
+        noNewData: '{0}天内没有新增数据，',
+        viewAll: '查看全部数据'
     }
 };
