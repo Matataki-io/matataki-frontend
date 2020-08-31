@@ -60,18 +60,16 @@
           </header>
           <fontSize v-model="fontSizeVal" />
           <!-- 文章内容 -->
-          <no-ssr>
-            <mavon-editor v-show="false" style="display: none;" />
-          </no-ssr>
           <!-- v-highlight -->
-          <div
+          <markdownView
+            id="doc"
             v-viewer="viewerOptions"
-            class="markdown-body article-content"
+            :content="compiledMarkdown"
             :class="fontSizeComputed"
-            v-html="compiledMarkdown"
+            class="article-content"
           />
-          <!-- 文章页脚 声明 是否原创 -->
 
+          <!-- 文章页脚 声明 是否原创 -->
           <div
             v-if="!hasPaied && !isProduct && (isTokenArticle || isPriceArticle)"
             class="lock-line"
@@ -222,21 +220,21 @@
             >
               <div class="btn-ccc">
                 <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
-                <el-tooltip
+                <!-- <el-tooltip
                   class="item"
                   effect="dark"
                   :content="$t('paidRead.tounlockThisArticle')"
                   placement="top-end"
+                > -->
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="wxpayArticle"
                 >
-                  <el-button
-                    type="primary"
-                    size="small"
-                    @click="wxpayArticle"
-                  >
-                    {{ unlockTextFull }}
-                    <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
-                  </el-button>
-                </el-tooltip>
+                  {{ unlockTextFull }}
+                  <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
+                </el-button>
+                <!-- </el-tooltip> -->
               </div>
               <!-- <NoticeCreator
                 v-if="!readTokenExs"
@@ -391,7 +389,7 @@ import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
 import commentInput from '@/components/article_comment'
 import CommentList from '@/components/comment/List'
-import { ipfsData, wxShare } from '@/api/async_data_api.js'
+import { wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
 import { precision } from '@/utils/precisionConversion'
 import OrderModal from '@/components/article/ArticleOrderModal'
@@ -415,16 +413,62 @@ import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
 
-const markdownIt = require('markdown-it')({
+
+let markdown = null
+let finishView = null
+
+if (process.client) {
+  let md = require('markdown-render-js')
+
+  markdown = md.markdown
+  finishView = md.finishView 
+}
+
+// import { markdown, finishView } from '../../static/markdown-render-js.min.js'
+import '@matataki/editor/dist/css/index.css'
+import markdownView from '@/components/markdown_view'
+
+const markdownItRender = require('markdown-it')({
   html: true,
   breaks: true
 })
 const mkItFootnote = require('markdown-it-footnote')
 const mkItKatex = require('markdown-it-katex')
-markdownIt.use(mkItKatex)
-markdownIt.use(mkItFootnote)
+markdownItRender.use(mkItKatex)
+markdownItRender.use(mkItFootnote)
 
 export default {
+  head() {
+    return {
+      title: this.article.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.article.short_content },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
+        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.articleTimeISO },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
+        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
+        /* end */
+      ],
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
+        // {
+        //   // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+        //   src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        // }
+      ]
+    }
+  },
   components: {
     CommentList,
     InvestModal,
@@ -447,6 +491,7 @@ export default {
     commentReward,
     ExsModal,
     bannerFan,
+    markdownView
   },
   data() {
     return {
@@ -545,36 +590,7 @@ export default {
       payTokenBalance: 0
     }
   },
-  head() {
-    return {
-      title: this.article.title,
-      meta: [
-        { hid: 'description', name: 'description', content: this.article.short_content },
-        /* <!--  Meta for Twitter Card --> */
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
-        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
-        /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
-        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.articleTimeISO },
-        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
-        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
-        /* end */
-      ],
-      script: [
-        {
-          // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
-          src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
-        }
-      ]
-    }
-  },
+
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe', 'currentUserInfo']),
     articleTimeISO() {
@@ -597,21 +613,20 @@ export default {
       // 如果上传的是默认的图片, 在允许webp返回webp 如果不允许则返回默认的格式
       try {
         if (process.browser) {
-          const markdownItEditor = this.$mavonEditor.markdownIt
-          const { content } = this.post
-
-          let md = markdownItEditor.render(content)
+          let md = markdown.render(this.post.content)
 
           return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
         } else {
-          let md = markdownIt.render(this.post.content)
+          let md = markdownItRender.render(this.post.content)
           return this.$utils.compose(xssImageProcess, xssFilter)(md)
         }
       } catch (e) {
         return this.post.content
       }
 
-
+    },
+    markdownContent () {
+      return this.post.content
     },
     cover() {
       if (this.article.cover) return this.$ossProcess(this.article.cover)
@@ -787,7 +802,9 @@ export default {
     },
     compiledMarkdown() {
       this.setAllHideContentStyle()
-      this.formatPreview()
+    },
+    markdownContent() {
+      this.finishViewContent()
     },
     // 保存font size 选择
     fontSizeVal(newVal) {
@@ -804,52 +821,44 @@ export default {
       const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
       accessToekn = token ? token[0] : ''
     }
-
-    const hashOrId = route.params.id
-    // post hash获取; p id 短链接;
-    const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
-    const info = await $axios({
-      url: `/${url}/${hashOrId}`,
-      methods: 'get',
-      headers: { 'x-access-token': accessToekn }
-    })
     let data = {}
+
+    // 文章ID
+    const id = route.params.id
+    if (!id) return data
+
+    // 获取数据
+    let post = {}
+    try {
+      post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
+      if (post.code !== 0) throw new Error(post.message)
+    } catch (e) {
+      console.log('get article data error', e)
+      return data
+    }
+    // 解藕文章数据 ipfs
+    let { p: info, ipfs } = post.data
+
     // 判断是否为付费阅读文章
-    const isProduct = info.data.channel_id === 2
-    if (((info.data.tokens && info.data.tokens.length !== 0) || (info.data.prices && info.data.prices.length > 0)) && !isProduct) {
+    const isProduct = info.channel_id === 2
+    if (((info.tokens && info.tokens.length !== 0) || (info.prices && info.prices.length > 0)) && !isProduct) {
       data = {
-        article: info.data,
+        article: info,
         post: {
-          content: info.data.short_content
+          content: info.short_content
         }
       }
     } else {
-      const { hash } = info.data
-      // 有hash
-      if (hash) {
-        const res = await ipfsData($axios, hash)
-        if (res.code === 0) {
-          // console.log('return', res.data)
-          data = {
-            article: info.data,
-            post: res.data
-          }
-        } else {
-          // 获取失败
-          data = {
-            article: info.data,
-            post: {
-              content: info.data.short_content
-            }
-          }
+      if (ipfs.code === 0) {
+        data = {
+          article: info,
+          post: ipfs.data
         }
       } else {
-        // 没有hash
-        // console.log('not hash')
         data = {
-          article: info.data,
+          article: info,
           post: {
-            content: info.data.short_content
+            content: info.short_content
           }
         }
       }
@@ -860,7 +869,7 @@ export default {
     const isWeixin = () => /micromessenger/.test(userAgent)
     // 在微信内才请求分享 避免造成不必要的请求
     if (isWeixin()) {
-      console.log('yes', req.headers['user-agent'].toLowerCase())
+      console.log('is wechat env', req.headers['user-agent'].toLowerCase())
       
       let defaultLink = ''
       if (process.server) {
@@ -893,6 +902,9 @@ export default {
   },
   mounted() {
     if (process.browser) {
+
+      this.finishViewContent()
+
       // read语法的解锁方法，需要使用onclick触发
       window.unlock = (need, hold) => this.unlock(need, hold)
 
@@ -907,11 +919,6 @@ export default {
       this.$nextTick(() => {
         this.setFontSize()
         this.getCommentRewardCount()
-
-        window.onload = () => {
-          this.formatPreview()
-        }
-
       })
     }
 
@@ -1681,8 +1688,7 @@ export default {
       let desc = ''
       try {
         // 解析html
-        const markdownIt = this.$mavonEditor.markdownIt
-        let md = markdownIt.render(this.post.content)
+        let md = markdown.render(this.post.content)
         // 过滤所有的html标签
         desc = this.$utils.compose(filterOutHtmlTags)(md)
       } catch (error) {
@@ -1750,15 +1756,25 @@ export default {
       await this.getCommentCount()
       await this.getRewardCount()
     },
-    // 格式化文章样式
-    formatPreview() {
-      try {
-        if (window.$ && window.finishView) {
-          window.finishView(window.$('.article-content'))
+    // 完成优化文章样式
+    finishViewContent() {
+      this.$nextTick(() => {
+        try {
+          // eslint-disable-next-line no-undef
+          if ($) {
+            // eslint-disable-next-line no-undef
+            finishView($('#doc'))
+            // eslint-disable-next-line no-undef
+          } else if (jQuery) {
+            // eslint-disable-next-line no-undef
+            finishView(jQuery('#doc'))
+          } else {
+            console.log('not $ jQuery')
+          }
+        } catch (e) {
+          console.log('compiledMarkdown change', e)
         }
-      } catch (e) {
-        console.log(e)
-      }
+      })
     }
   }
 

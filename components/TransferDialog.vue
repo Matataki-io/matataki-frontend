@@ -70,7 +70,13 @@
             :value="item.token_id"
           >
             <div class="token-container">
-              <img :src="cover(item.logo)" :alt="item.symbol" class="token-logo">
+              <img
+                v-if="item.logo"
+                :src="cover(item.logo)"
+                :alt="item.symbol"
+                class="token-logo"
+              >
+              <svg-icon v-else class="token-icon" icon-class="currency" />
               <span class="token-symbol">{{ item.symbol }}</span>
               <span class="token-symbol">{{ tokenAmount(item.amount, item.decimals) }}</span>
             </div>
@@ -101,6 +107,7 @@
       </p>
       <el-form-item label="留言">
         <el-input
+          v-if="form.tokenId !== 0"
           v-model="form.memo"
           type="textarea"
           :rows="3"
@@ -110,6 +117,10 @@
           maxlength="500"
           show-word-limit
         />
+        <p v-else class="cny-help">
+          <i class="el-icon-circle-close" />
+          CNY 转账暂不支持留言
+        </p>
       </el-form-item>
       <div class="form-button">
         <el-button
@@ -167,7 +178,8 @@ export default {
       } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
       } else if (Number(value) > this.form.max) {
-        callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
+        if (this.form.max === 0) callback(new Error('余额不足'))
+        else callback(new Error(`发送数量不能大于${this.form.max || 99999999}`))
       } else {
         callback()
       }
@@ -201,7 +213,8 @@ export default {
       selectedToken: {},
       userVal: '',
       userLoading: false,
-      userList: [] // 用户列表
+      userList: [], // 用户列表
+      cnyBalance: 0
     }
   },
   computed: {
@@ -241,7 +254,11 @@ export default {
 
     changeTokenSelect(id) {
       this.form.tokenId = id
-      this.getUserBalance(id)
+      if (id === 0) { // 处理是 CNY 的情况
+        this.form.balance = Number(this.tokenAmount(this.cnyBalance, 4))
+        this.form.max = this.form.balance
+      }
+      else this.getUserBalance(id)
     },
     // 获取所有token
     async tokenTokenList() {
@@ -253,6 +270,7 @@ export default {
         if (res.code === 0) {
           this.tokenOptions = res.data.list
           this.topOwnToken()
+          this.addCnyToken()
         } else {
           this.tokenOptions = []
         }
@@ -300,8 +318,13 @@ export default {
         return
       }
 
-      if (!this.form.tokenId) {
+      if (!this.form.tokenId && this.form.tokenId !== 0) {
         this.$message({ showClose: true, message: '请选择类型', type: 'info' })
+        return
+      }
+
+      if (this.form.tokenId === 0) { // 如果是 CNY 转账，则跳转至专用方法。
+        this.transferCny(toId, this.form.tokens)
         return
       }
 
@@ -333,6 +356,34 @@ export default {
           console.log(err)
           this.$message.error('转账失败')
         }).finally(() => {
+          this.transferLoading = false
+          this.showModal = false
+        })
+    },
+    /** CNY 转账 */
+    transferCny(userId, amount) {
+
+      this.transferLoading = true
+      const data = {
+        symbol: 'CNY',
+        to: userId,
+        amount: toPrecision(amount, 'CNY', 4)
+      }
+      this.$API
+        .transferAsset(data)
+        .then(res => {
+          if (res.code === 0) {
+            this.transferLoading = false
+            this.$message({ showClose: true, message: '转账成功', type: 'success'})
+          } else {
+            this.$message({ showClose: true, message: res.message, type: 'error' })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.error('转账失败')
+        })
+        .finally(() => {
           this.transferLoading = false
           this.showModal = false
         })
@@ -418,6 +469,29 @@ export default {
       list.forEach((token,index) => {
         if(this.isMe(token.uid)) list.unshift(list.splice(index, 1)[0])
       })
+    },
+    /** 添加 CNY 到最前 */
+    async addCnyToken() {
+      await this.getCnyBalance()
+      this.tokenOptions.unshift({
+        token_id: 0,
+        name: '人民币',
+        symbol: 'CNY',
+        logo: '',
+        amount: this.cnyBalance,
+        decimals: 4
+      })
+    },
+    // 获取用户账户余额
+    async getCnyBalance() {
+      try {
+        const res = await this.$API.getCNYBalance()
+        this.cnyBalance = res
+      }
+      catch (e) {
+        this.$message.error('CNY 余额获取失败')
+        console.error(e)
+      }
     }
   }
 }
@@ -435,7 +509,16 @@ export default {
   }
   .token-logo {
     width: 26px;
+    height: 26px;
+    min-width: 26px;
+    min-height: 26px;
     border-radius: 50%;
+  }
+  .token-icon {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    min-height: 26px;
   }
 }
 .balance {
@@ -553,6 +636,15 @@ export default {
   margin: 0 0 0 10px;
   font-size: 14px;
   font-weight: 400;
+}
+
+.cny-help {
+  font-size: 14px;
+  line-height: 20px;
+  width: 100%;
+  margin: 10px 0 0;
+  white-space: nowrap;
+  color: #B2B2B2;
 }
 
 /deep/ .transfer-dialog {

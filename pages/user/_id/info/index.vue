@@ -196,7 +196,7 @@ export default {
 
 <style lang="less" scoped>
 .user-info-content {
-  padding-bottom: 100px;
+  padding: 20px 20px 100px;
 }
 .social-icons {
   margin: 10px 10px 0 0;

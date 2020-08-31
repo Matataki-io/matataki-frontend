@@ -1,10 +1,12 @@
 /**
  * 用户文章的XSS过滤, 开发者如果修改规则请同步两端规则
  */
-/* eslint-disable */
 import xss from 'xss'
 const isSupportWebp = process.browser ? !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0 : false
-console.log('xss', isSupportWebp)
+
+if (process.browser) {
+  console.log('xss support webp', isSupportWebp)
+}
 
 export const xssFilter = html => {
   // 自定义规则
@@ -261,7 +263,7 @@ export const xssFilter = html => {
     onIgnoreTag(tag, html, options) {
       console.log(`Tag 不支持的标签属性，请联系客服：${tag}, ${html}, ${options}`)
     },
-    onIgnoreTagAttr(tag, name, value, isWhiteAttr) {
+    onIgnoreTagAttr(tag, name, value) {
       // 过滤输出data-自定义属性
       if (!(/data-.*?/.test(name))) {
         console.log(`Attr 不支持的标签属性，请联系客服：${tag}, ${name}, ${value}`)
@@ -283,15 +285,15 @@ export const xssImageProcess = html => {
   }
 
   return xss(html, {
-    onTagAttr: function(tag, name, value, isWhiteAttr) {
-      if (tag === "img" && name === "src") {
+    onTagAttr: function(tag, name, value) {
+      if (tag === 'img' && name === 'src') {
 
         let url = xss.friendlyAttrValue(value)
 
         if (isSelfOss(url)) {
 
           // gif 不处理
-          let suffix = url.substring(url.lastIndexOf('.') + 1);
+          let suffix = url.substring(url.lastIndexOf('.') + 1)
           if (suffix.includes('gif')) {
             return `${name}='${url}' alt='${url}'`
           }
@@ -308,6 +310,7 @@ export const xssImageProcess = html => {
               }
             } else {
               // 没有x-ossprocess=image
+              // eslint-disable-next-line no-useless-escape
               if (new RegExp(/\?*\=/).test('')) {
                 // 有别的参数了
                 url+= '&x-oss-process=image/format,webp'
@@ -333,7 +336,7 @@ export const xssImageProcess = html => {
         }
       }
     }
-  });
+  })
 }
 
 // 过滤html标签
@@ -342,16 +345,16 @@ export const filterOutHtmlTags = (html, whiteList = []) => {
   return xss(html, {
     whiteList: whiteList,
     stripIgnoreTag: true,
-    stripIgnoreTagBody: ["script"]
-  });
+    stripIgnoreTagBody: ['script']
+  })
 }
 
 // 处理文章 link 增加 属性, 新页面打开
 export const processLink = html => {
   return xss(html, {
-    onTagAttr: function(tag, name, value, isWhiteAttr) {
+    onTagAttr: function(tag, name, value) {
       // 为 a 并且有 href 则添加 target
-      if (tag === "a" && name === "href") {
+      if (tag === 'a' && name === 'href') {
         let val = xss.friendlyAttrValue(value)
 
         let firstStr = val.slice(0, 1) // #
@@ -361,5 +364,5 @@ export const processLink = html => {
         }
       }
     }
-  });
+  })
 }

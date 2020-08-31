@@ -2,6 +2,9 @@ import Vue from 'vue'
 import noContentPrompt from '@/components/no_content_prompt/index.vue'
 import header from '~/components/header/index.vue'
 
+import userPagination from '@/components/user/user_pagination.vue'
+
+
 // common/components
 import ipfs from '@/common/components/ipfs/index'
 import dialog from '@/common/components/dialog/index'
@@ -19,3 +22,5 @@ Vue.component('m-dialog', dialog) // dialog
 Vue.component('c-avatar', avatar) // avatar
 Vue.component('c-user-popover', userPopover) // user popover
 Vue.component('c-token-popover', tokenPopover) // token popover
+
+Vue.component('c-user-pagination', userPagination) // user pagination

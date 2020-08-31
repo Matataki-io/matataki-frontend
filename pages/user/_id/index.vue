@@ -1,6 +1,6 @@
 
 <template>
-  <userPage :user-data="userData">
+  <userPage>
     <div
       slot="list"
       v-loading="loading"

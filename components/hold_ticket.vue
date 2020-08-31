@@ -167,7 +167,6 @@
       </ul>
     </div>
     <user-pagination
-      v-show="!loading"
       :reload="reload"
       :current-page="currentPage"
       :params="pointLog.params"
@@ -198,6 +197,12 @@ export default {
     tokensDetail,
     avatar,
     TransferDialog
+  },
+  props: {
+    userTokenSearch: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     const validateToken = (rule, value, callback) => {
@@ -264,6 +269,13 @@ export default {
     searchUserName() {
       this.searchUser()
     },
+    userTokenSearch(val) {
+      this.pointLog.params.search = val.trim()
+      this.loading = true
+      this.currentPage = 1
+
+      this.reload = Date.now()
+    }
   },
   methods: {
     createTime(time) {

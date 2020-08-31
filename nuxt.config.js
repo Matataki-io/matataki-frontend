@@ -18,6 +18,7 @@ function cdnPublicPath (env) {
   const list = {
     'development': '/_nuxt/',
     'testing': 'https://cdntest.frontenduse.top',
+    'release': 'https://cdntest.frontenduse.top/release',
     'production': 'https://cdn.frontenduse.top',
   }
   return list[env] || '/_nuxt/'
@@ -135,6 +136,12 @@ export default {
           },
           elementui: {
             test: /node_modules[\\/]element-ui/,
+            chunks: 'all',
+            priority: 20,
+            name: true
+          },
+          echarts: {
+            test: /node_modules[\\/]echarts/,
             chunks: 'all',
             priority: 20,
             name: true

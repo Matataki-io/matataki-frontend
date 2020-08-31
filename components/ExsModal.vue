@@ -251,7 +251,8 @@ export default {
       this.directTrade.price = this.$utils.fromDecimal(directTradePrice)
       if (this.directTrade.balance <= parseFloat(this.amount)) this.noMarket = true
       if(!this.noUniswap) {
-        const uniswapAmountResult = await this.$API.getInputAmount(0, this.token.id, this.amount)
+        const _amount = this.$utils.toDecimal(this.amount)
+        const uniswapAmountResult = await this.$API.getInputAmount(0, this.token.id, _amount)
         if (uniswapAmountResult.code === 0) {
           this.uniswapNeedPay = this.$utils.fromDecimal(uniswapAmountResult.data)
         }

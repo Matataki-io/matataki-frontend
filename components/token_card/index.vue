@@ -185,8 +185,11 @@ export default {
   font-weight: 400;
   color: @black;
   line-height: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
   overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-all;
   max-width: 250px;
 }
 .card-user-icon {
