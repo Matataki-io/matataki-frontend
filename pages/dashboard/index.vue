@@ -107,7 +107,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t(articleListData.find(tab => tab.value === typeToggleValArticleList).label) + $t('dashboard.frequency')"
+            :label="articleListData.find(tab => tab.value === typeToggleValArticleList).label + $t('dashboard.frequency')"
             width="100"
           >
             <template slot-scope="scope">
