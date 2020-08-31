@@ -162,7 +162,7 @@
         >
           <el-table-column :label="$t('dashboard.serialNumber')" width="50">
             <template slot-scope="scope">
-              <span class="table-text">{{ rank(scope.$index, pullFlow.currentPage, pullFlow.params.pagesize) }}</span>
+              <span class="table-text">{{ pullFlow.total - rank(scope.$index, pullFlow.currentPage, pullFlow.params.pagesize) + 1 }}</span>
             </template>
           </el-table-column>
           <el-table-column :label="$t('dashboard.detail')">
