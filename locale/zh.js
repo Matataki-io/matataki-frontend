@@ -1010,6 +1010,6 @@ export default {
     paid: '支付了',
     consumed: '消费了',
     followFilter: '跟随筛选',
-    notFollowFilter: '不跟随筛选',
+    notFollowFilter: '查看全部',
   }
 }
