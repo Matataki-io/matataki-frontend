@@ -95,7 +95,7 @@ export default {
       })
     } else {
       const pullApiUrl = paginationUrl
-      let urlReg = replaceStr(pullApiUrl[url], ':', '/', urlReplace)
+      let urlReg = pullApiUrl[url].replace(/\$\{.*?\}/, urlReplace)
       return request({
         url: urlReg,
         method: 'get',
@@ -242,6 +242,21 @@ export default {
    */
   editArticle({ article }) {
     return this._sendArticle('/post/edit', article)
+  },
+  /**
+   * 定时发布文章
+   * @param {Number} draftId 草稿 id
+   * @param {Date} postTime 发布时间
+   */
+  timedPublishArticle(draftId, postTime) {
+    return request.post(`/post/timed/${draftId}`, { postTime })
+  },
+  /**
+   * 删除定时发布任务
+   * @param {Number} draftId 草稿 id
+   */
+  deleteTimedPublishTask(draftId) {
+    return request.delete(`/post/timed/${draftId}`)
   },
   // 创建草稿
   createDraft(data) {
@@ -968,6 +983,9 @@ minetokenGetResources(tokenId) {
   search(type, params) {
     return request.get(`/search/${type}`, { params })
   },
+  searchDb(type, params) {
+    return request.get(`/search/db/${type}`, { params })
+  },
   // 常用候选列表
   historyUser(params) {
     return request.get(`/history/user`, { params })
@@ -1159,6 +1177,10 @@ minetokenGetResources(tokenId) {
   getAddSupplyChart(id) {
     return request.get(`/minetoken/${id}/supplyChart`)
   },
+  /** 文章分享事件上报 */
+  shareCount(postId) {
+    return request.post(`/post/${postId}/shareCount`)
+  },
   // -------------------- token历史记录 --------------------
   // token历史价格
   getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
@@ -1217,4 +1239,13 @@ minetokenGetResources(tokenId) {
   // fan票提交校验 不能重复 symbol
   apiMinetokenApplicationVerify(data) { return request.post('/api/minetoken_application_verify', data) },
   insufficientLiquidity(data) { return request.post('/post/InsufficientLiquidity', data) },
+
+  // ---------------- Dashboard ----------------------------------------
+  // 阅览数据
+  //    数据统计
+  dbBrowseCount(params) { return request.get('/db/browse/count', { params }) },
+  // 数据增量趋势
+  dbBrowseHistoryType(type, params) { return request.get(`/db/browse/history/${type}`, { params }) },
+  // 获取用户所有文章的总收益
+  dbIncomeSum(params) { return request.get('/db/income/sum', { params }) },
 }

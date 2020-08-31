@@ -134,6 +134,7 @@ export default {
     width: 260px;
     top: auto;
     bottom: 0;
+    height: auto;
   }
 }
 

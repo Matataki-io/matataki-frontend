@@ -30,7 +30,7 @@
 
       <router-link
         :to="{name: 'user-id', params: { id: currentUserInfo.id }}"
-        class="fl ac"
+        class="fl ac card-user"
       >
         <c-avatar
           :src="avatar"
@@ -156,9 +156,17 @@ export default {
     font-weight: 400;
     color: #000;
     line-height: 20px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: break-all;
     max-width: 250px;
+  }
+}
+@media screen and (max-width: 880px) {
+  .card-user {
+    display: none;
   }
 }
 </style>

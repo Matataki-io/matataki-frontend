@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     cover(src) {
-      return src ? this.$ossProcess(src, { h: 80 }) : ''
+      return src ? this.$ossProcess(src, { h: 80 }) : this.$ossProcess('/material/default_cover.png', { h: 80 })
     }
   }
 }

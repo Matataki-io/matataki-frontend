@@ -26,7 +26,7 @@
         </div>
         <div
           class="widget-button"
-          @click="widgetModalStatus = 4"
+          @click="sharePoster"
         >
           <div class="widget-button-img">
             <img
@@ -38,7 +38,7 @@
         </div>
         <div
           class="widget-button"
-          @click="copyCode(clipboard)"
+          @click="copyShareUrl"
         >
           <div class="widget-button-img">
             <img
@@ -52,6 +52,7 @@
       <SocialShare
         v-if="socialShow"
         :article="article"
+        @share-count="shareCount"
       />
       <wechat
         :link="shareLink"
@@ -178,6 +179,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 import QRCodeDialog from './QRCodeDialog'
 import SocialShare from './SocialShare'
 import wechat from '@/components/scan/wechat.vue'
@@ -281,11 +283,16 @@ export default {
     reviewHelp() {
       this.widgetModalStatus = 2
     },
+    sharePoster() {
+      this.widgetModalStatus = 4
+      this.shareCount()
+    },
     backPage() {
       this.widgetModalStatus = this.oldWidgetModalStatus
     },
     createWidgetContent() {
       this.widgetModalStatus = 3
+      this.shareCount()
     },
     copyCode(code) {
       this.$copyText(code).then(
@@ -296,6 +303,10 @@ export default {
           this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
+    },
+    copyShareUrl() {
+      this.copyCode(this.clipboard)
+      this.shareCount()
     },
     selectValue() {
       event.currentTarget.select()
@@ -309,7 +320,19 @@ export default {
       this.showModal = false
       await this.$utils.sleep(300)
       !status && this.resetStatus()
-    }
+    },
+    /** 文章分享事件上报 */
+    shareCount: debounce(async function() {
+      console.log('开始了上报')
+      try {
+        const res = await this.$API.shareCount(this.article.id)
+        console.log('上报结果：', res)
+        if (res.code !== 0) this.$message.error(res.message)
+      }
+      catch (e) {
+        console.error(e)
+      }
+    }, 2000)
   }
 }
 </script>

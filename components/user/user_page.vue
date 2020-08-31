@@ -142,12 +142,6 @@ export default {
     Share,
     bannerUpload
   },
-  props: {
-    userData: {
-      type: Object,
-      default: null
-    }
-  },
   data() {
     return {
       token: false,
@@ -189,7 +183,6 @@ export default {
           if (res.code === 0) {
 
             this.user = res.data
-
           }
         })
         .catch(e => {
@@ -246,8 +239,8 @@ export default {
         return
       }
 
-      const userDataWithId = this.userData ? {
-        ...this.userData,
+      const userDataWithId = this.user ? {
+        ...this.user,
         id: Number(this.$route.params.id)
       } : null
 
@@ -300,7 +293,7 @@ export default {
     max-width: 766px;
     height: 100%;
     margin: 0 auto;
-    padding: 1px 10px 20px;
+    padding: 1px 10px 40px;
     text-align: center;
     position: relative;
     box-sizing: border-box;
@@ -377,17 +370,17 @@ export default {
   .transfer {
     position: absolute;
     right: 10px;
-    bottom: 0px;
+    bottom: 10px;
   }
   .share {
     position: absolute;
     right: 10px;
-    bottom: 40px;
+    bottom: 50px;
   }
   .banner-upload {
     position: absolute;
     right: 10px;
-    bottom: 250px;
+    top: -40px;
     .ibutton {
       font-size: 18px;
       padding: 5px;
@@ -401,7 +394,7 @@ export default {
   .follow {
     position: absolute;
     right: 10px;
-    bottom: 80px;
+    bottom: 90px;
     &.edit {
       padding-left: 11px;
       padding-right: 11px;

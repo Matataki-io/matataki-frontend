@@ -64,7 +64,7 @@ export default {
     },
     // 封面
     coverImg() {
-      return this.card.cover ? this.$ossProcess(this.card.cover, { h: 200 }) : ''
+      return this.card.cover ? this.$ossProcess(this.card.cover, { h: 200 }) : this.$ossProcess('/material/default_cover.png', { h: 200 })
     },
     // 时间
     time() {
@@ -119,6 +119,11 @@ export default {
   line-height: 22px;
   padding: 0;
   margin: 0 0 0 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  word-break: break-all;
 }
 .card-description {
   font-size: 16px;
@@ -127,6 +132,7 @@ export default {
   line-height: 22px;
   padding: 0;
   margin: 0 0 0 10px;
+  white-space: nowrap;
 }
 
 // main

@@ -5,93 +5,97 @@
       target="_blank"
       class="card-link"
     >
-      <div class="article">
-        <div class="container">
-          <div class="article-title">
-            <n-link
-              class="title search-res"
-              :to="{ name: 'p-id', params: {id: card && card.id} }"
-              target="_blank"
-              v-html="xssTitle"
-            />
-          </div>
-          <div
-            class="content-text search-res"
-            v-html="xssContent"
-          />
-          <div class="des">
+      <object>
+        <div class="article">
+          <div class="container">
+            <div class="article-title">
+              <n-link
+                class="title search-res"
+                :to="{ name: 'p-id', params: {id: card && card.id} }"
+                target="_blank"
+                v-html="xssTitle"
+              />
+            </div>
             <div
-              v-if="card && card.status === 1"
-              class="off-shelves"
-            >
-              {{ $t('articleCard.deleted') }}
-            </div>
-            <!-- 文章发布时间 -->
-            <div class="date">
-              {{ dateCard }}
-            </div>
-            <div class="empty" />
-            <div class="fl ac">
-              <!-- 付费文章 -->
-              <span class="lock-text">{{ lock }}</span>
-              <!-- 阅读量 -->
-              <span class="data">
-                <i class="el-icon-view" />
-                {{ read }}
-              </span>
-              <!-- 点赞量 -->
-              <span class="data like">
-                <svg-icon icon-class="like" />
-                {{ likes }}
-              </span>
-              <!-- 复制分享链接 -->
-              <a href="javascript:;" class="copy-tag">
-                <span
-                  class="copy"
-                  @click="copyCode(clipboard(card))"
-                >
-                  <svg-icon icon-class="copy_mini" />
+              class="content-text search-res"
+              v-html="xssContent"
+            />
+            <div class="des">
+              <div
+                v-if="card && card.status === 1"
+                class="off-shelves"
+              >
+                {{ $t('articleCard.deleted') }}
+              </div>
+              <!-- 文章发布时间 -->
+              <div class="date">
+                {{ dateCard }}
+              </div>
+              <div class="empty" />
+              <div class="fl ac">
+                <!-- 付费文章 -->
+                <span class="lock-text">{{ lock }}</span>
+                <!-- 阅读量 -->
+                <span class="data">
+                  <i class="el-icon-view" />
+                  {{ read }}
                 </span>
-              </a>
+                <!-- 点赞量 -->
+                <span class="data like">
+                  <svg-icon icon-class="like" />
+                  {{ likes }}
+                </span>
+                <!-- 复制分享链接 -->
+                <a href="javascript:;" class="copy-tag">
+                  <span
+                    class="copy"
+                    @click="copyCode(clipboard(card))"
+                  >
+                    <svg-icon icon-class="copy_mini" />
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <template v-if="!hideAuthor">
-          <div class="split-line" />
-          <!-- 适用于 首页, Fan圈 -->
-          <!-- 区分那种卡 -->
-          <div class="author">
-            <n-link
-              :to="{ name: 'user-id', params: {id: card && card.uid} }"
-              target="_blank"
-            >
-              <c-user-popover :user-id="Number(card.uid)">
-                <c-avatar
-                  :recommend-author="card.user_is_recommend === 1"
-                  :level="1"
-                  :token-user="card.user_is_token === 1"
-                  :level-token="1"
-                  :src="avatarImg" 
-                  class="avatar"
-                />
-              </c-user-popover>
-            </n-link>
-            <n-link
-              :to="{ name: 'user-id', params: {id: card && card.uid} }"
-              target="_blank"
-              class="username"
-            >
-              {{ card && (card.nickname || card.author || '') }}
-            </n-link>
+          <template v-if="!hideAuthor">
+            <div class="split-line" />
+            <!-- 适用于 首页, Fan圈 -->
+            <!-- 区分那种卡 -->
+            <div class="author">
+              <n-link
+                :to="{ name: 'user-id', params: {id: card && card.uid} }"
+                target="_blank"
+              >
+                <object>
+                  <c-user-popover :user-id="Number(card.uid)">
+                    <c-avatar
+                      :recommend-author="card.user_is_recommend === 1"
+                      :level="1"
+                      :token-user="card.user_is_token === 1"
+                      :level-token="1"
+                      :src="avatarImg" 
+                      class="avatar"
+                    />
+                  </c-user-popover>
+                </object>
+              </n-link>
+              <n-link
+                :to="{ name: 'user-id', params: {id: card && card.uid} }"
+                target="_blank"
+                class="username"
+              >
+                {{ card && (card.nickname || card.author || '') }}
+              </n-link>
             <!-- 关注按钮 -->
             <!-- <div class="follow">
               <svg-icon
                 icon-class="add"
               />
             </div>-->
-          </div>
-        </template>
-      </div>
+            </div>
+          </template>
+        </div>
+      </object>
     </n-link>
   </div>
 </template>

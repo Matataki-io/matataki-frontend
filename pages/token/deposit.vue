@@ -10,8 +10,7 @@
       <h2 class="subtitle">
         你需要先登录才能使用这个功能
       </h2>
-      <el-button
-        @click="login">
+      <el-button @click="login">
         注册/登录
       </el-button>
     </div>
