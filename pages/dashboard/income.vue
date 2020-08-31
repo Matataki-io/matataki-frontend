@@ -307,6 +307,9 @@ export default {
         this.pull.currentPage = 1
       }
     },
+    flowValue(val) {
+      this.getFlowList(val === 'follow' ? this.typeToggleVal : undefined)
+    }
   },
   created() {
     if (process.browser) {
