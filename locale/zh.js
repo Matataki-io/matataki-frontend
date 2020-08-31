@@ -842,7 +842,8 @@ export default {
     myFlowGold: '我的流动金',
     totalTransactionFlow: '交易总流水',
     flowGoldTotalFlow: '流动金总流水',
-    allFanTicket: '全部Fan票'
+    allFanTicket: '全部Fan票',
+    hashCopySuccess: 'Hash 复制成功'
   },
   ipfsHash: {
     link: 'IPFS地址',

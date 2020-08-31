@@ -87,6 +87,13 @@
         <i class="el-icon-arrow-right" />
       </router-link>
       <div class="share-btn">
+        <el-button
+          class="link-btn"
+          size="small"
+          @click="copy(minetokenToken.contract_address)"
+        >
+          <svg-icon icon-class="copy" />
+        </el-button>
         <a
           :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
           target="_blank"
@@ -99,15 +106,6 @@
             {{ $t('token.viewOnChain') }}
           </el-button>
         </a>
-        
-        <el-button
-          class="link-btn"
-          size="small"
-          @click="copy(minetokenToken.contract_address)"
-        >
-          <svg-icon icon-class="copy" />
-          复制按钮
-        </el-button>
         <el-button
           class="btn"
           size="small"
@@ -236,7 +234,7 @@ export default {
       this.$copyText(val).then(
         () => this.$message({
           showClose: true,
-          message: this.$t('success.copy'),
+          message: this.$t('token.hashCopySuccess'),
           type: 'success'
         }),
         () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })

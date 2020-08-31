@@ -814,7 +814,8 @@ export default {
         myFlowGold: 'My Liqidity',
         totalTransactionFlow: 'Txs',
         flowGoldTotalFlow: 'Liqidity Txs',
-        allFanTicket: 'All Tokens'
+        allFanTicket: 'All Tokens',
+        hashCopySuccess: 'Hash Copy success'
     },
     ipfsHash: {
         link: 'IPFS address',
