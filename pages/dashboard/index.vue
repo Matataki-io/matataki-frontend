@@ -370,7 +370,6 @@ export default {
     noData() {
       let count = 0
       Object.keys(this.typeToggle).forEach(key => count += this.typeToggle[key].count)
-      console.log('结果：', count)
       return count === 0
     }
   },
