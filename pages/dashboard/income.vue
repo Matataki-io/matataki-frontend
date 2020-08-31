@@ -348,6 +348,14 @@ export default {
           this.getArticleList(dataCountResult.data[0].token_id)
           this.getFlowList(dataCountResult.data[0].token_id)
         }
+        else {
+          this.pullFlow.list.length = 0
+          this.pullFlow.params = {}
+          this.pullFlow.currentPage = 1
+          this.pull.list.length = 0
+          this.pull.params = {}
+          this.pull.currentPage = 1
+        }
       }
       // 今日数据
       const nowDataCountResult = await this.$utils.factoryRequest(this.$API.dbIncomeSum({
