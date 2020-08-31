@@ -8,6 +8,14 @@
       <h4 class="db-title">
         {{ $t("dashboard.statistics") }}
       </h4>
+      <div v-if="sortValue !== 'all' && noData" class="nodata-switch">
+        <p>
+          {{ $t('dashboard.noNewData', [sortValue]) }}
+          <a @click="sortValue = 'all'">
+            {{ $t('dashboard.viewAll') }}
+          </a>
+        </p>
+      </div>
       <div class="db-toggle">
         <div
           v-for="(item, index) in typeToggle"
@@ -43,7 +51,7 @@
         <client-only>
           <v-chart
             id="dashboard-chart"
-            :class="!isHaveData && 'hide'" 
+            :class="(!isHaveData && !chartLoading) && 'hide'" 
             :options="chartsOptionsLine"
             :auto-resize="true"
             class="db-chart"
@@ -99,7 +107,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('dashboard.likes')"
+            :label="articleListData.find(tab => tab.value === typeToggleValArticleList).label + $t('dashboard.frequency')"
             width="100"
           >
             <template slot-scope="scope">
@@ -172,6 +180,7 @@ export default {
       typeToggleBlockVal: 'read', // tab 切换
       typeToggleVal: 'read', // tab 切换
       typeToggleValArticleList: 'read', // tag 切换
+      chartLoading: false,
       // tab list
       typeToggle: {
         readCount: {
@@ -357,6 +366,11 @@ export default {
   computed: {
     isHaveData() {
       return this.chartsOptionsLine.xAxis.data.length > 0 || this.chartsOptionsLine.series[0].data.length > 0
+    },
+    noData() {
+      let count = 0
+      Object.keys(this.typeToggle).forEach(key => count += this.typeToggle[key].count)
+      return count === 0
     }
   },
   watch: {
@@ -437,9 +451,11 @@ export default {
         this.chart.showLoading({
           text: this.$t('dashboard.requestingData'),
         })
+        this.chartLoading = true
       }
 
       const chartsRes = await this.$utils.factoryRequest(this.$API.dbBrowseHistoryType(type, chartsDataParams))
+      this.chartLoading = false
 
       if (this.chart) {
         this.chart.hideLoading()
@@ -455,8 +471,10 @@ export default {
         }
 
         if (days === 'all') {
-          this.chartsOptionsLine.xAxis.data = chartsRes.data.map(i => i.create_time)
-          this.chartsOptionsLine.series[0].data = chartsRes.data.map(i => i.count)
+          let res = this.chartsFormat(chartsRes.data)
+
+          this.chartsOptionsLine.xAxis.data = res.map(i => i.create_time)
+          this.chartsOptionsLine.series[0].data = res.map(i => i.count)
         } else {
           let res = this.chartsFormatDays(days, chartsRes.data)
 
@@ -502,7 +520,22 @@ export default {
         }
       }
       return dateList
-
+    },
+    /** 给历史数据折线图补全无数据的天数 */
+    chartsFormat(data) {
+      if (!data || !data.length) return []
+      const date = new Date(data[0].create_time)
+      const now = new Date()
+      let res = []
+      do {
+        const dateText = this.moment(date).format('YYYY-MM-DD')
+        res.push({
+          create_time: dateText,
+          count: { ...data.find(item => item.create_time === dateText) }.count || 0
+        })
+        date.setDate(date.getDate() + 1)
+      } while(date < now)
+      return res
     },
     // tab切换
     chartsTabChange: debounce(function(label) {

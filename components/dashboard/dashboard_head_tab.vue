@@ -48,6 +48,11 @@ export default {
       value: ''
     }
   },
+  watch: {
+    sortValue(val) {
+      this.value = val
+    }
+  },
   created() {
     this.value = this.sortValue
   },

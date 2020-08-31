@@ -8,6 +8,17 @@
       <h4 class="db-title">
         {{ $t("dashboard.statistics") }}
       </h4>
+      <div v-if="!typeToggle || !typeToggle.length" class="nodata-switch">
+        <p v-if="sortValue !== 'all'">
+          {{ $t('dashboard.noNewData', [sortValue]) }}
+          <a @click="sortValue = 'all'">
+            {{ $t('dashboard.viewAll') }}
+          </a>
+        </p>
+        <p v-else>
+          {{ $t('noData') }}
+        </p>
+      </div>
       <transition name="fade">
         <div ref="toggle" class="db-toggle" :class="typeToggleSwitch && 'showAll'">
           <div
@@ -336,6 +347,14 @@ export default {
 
           this.getArticleList(dataCountResult.data[0].token_id)
           this.getFlowList(dataCountResult.data[0].token_id)
+        }
+        else {
+          this.pullFlow.list.length = 0
+          this.pullFlow.params = {}
+          this.pullFlow.currentPage = 1
+          this.pull.list.length = 0
+          this.pull.params = {}
+          this.pull.currentPage = 1
         }
       }
       // 今日数据
