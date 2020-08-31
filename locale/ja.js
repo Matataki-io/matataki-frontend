@@ -824,7 +824,8 @@ export default {
         myFlowGold: '我的流动金',
         totalTransactionFlow: '交易总流水',
         flowGoldTotalFlow: '流动金总流水',
-        allFanTicket: '全部Fan票'
+        allFanTicket: '全部Fan票',
+        hashCopySuccess: 'Hash 复制成功'
     },
     ipfsHash: {
         link: 'IPFS地址',
@@ -990,6 +991,6 @@ export default {
         paid: '支付了',
         consumed: '消费了',
         followFilter: '跟随筛选',
-        notFollowFilter: '不跟随筛选'
+        notFollowFilter: '查看全部'
     }
 };
