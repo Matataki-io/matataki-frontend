@@ -351,7 +351,7 @@ export default {
       // 分页数据
       pull: {
         params: {
-          days: this.sortValue === 'all' ? '' : this.sortValue,
+          days: '30',
           pagesize: 10
         },
         apiUrl: 'dbBrowseRankType',
