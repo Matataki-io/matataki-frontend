@@ -3,7 +3,7 @@
     v-loading="loading"
     class="tg-container"
   >
-    <no-ssr>
+    <client-only>
       <TelegramLogin
         :telegram-login="TELEGRAM_BOT_NAME"
         mode="callback"
@@ -11,7 +11,7 @@
         radius="6"
         @callback="login"
       />
-    </no-ssr>
+    </client-only>
     <p class="tips">
       使用该功能需要“科学上网”
     </p>

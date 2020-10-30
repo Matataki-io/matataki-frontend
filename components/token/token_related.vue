@@ -91,7 +91,7 @@ export default {
       total: 0,
       checkedFilter: ['1', '2'],
       tabPage: Number(this.$route.query.tab) || 0,
-      sort: this.$route.query.sort || 'popular-desc',
+      sort: this.$route.query.sort || 'time-desc',
       onlyCreator: Number(this.$route.query.solo) || 0,
       tabs: [
         {

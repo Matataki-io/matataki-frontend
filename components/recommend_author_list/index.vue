@@ -4,16 +4,18 @@
       :to="{name: 'user-id', params: {id: card.id}}"
       target="_blank"
     >
-      <c-user-popover :user-id="Number(card.id)">
-        <c-avatar
-          :src="avatarSrc"
-          class="avatar"
-          :recommend-author="card.is_recommend === 1"
-          :level="1"
-          :token-user="card.user_is_token === 1"
-          :level-token="1"
-        />
-      </c-user-popover>
+      <object>
+        <c-user-popover :user-id="Number(card.id)">
+          <c-avatar
+            :src="avatarSrc"
+            class="avatar"
+            :recommend-author="card.is_recommend === 1"
+            :level="1"
+            :token-user="card.user_is_token === 1"
+            :level-token="1"
+          />
+        </c-user-popover>
+      </object>
     </n-link>
     <n-link
       :to="{name: 'user-id', params: {id: card.id}}"

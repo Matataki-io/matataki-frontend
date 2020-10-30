@@ -140,6 +140,7 @@ export default {
   methods: {
     windowSmallOpen(url) {
       window.open(url, '_blank', 'width=760,height=640')
+      this.$emit('share-count')
     }
   }
 }

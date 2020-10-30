@@ -70,6 +70,7 @@ import input from '@/assets/img/dapp_list_input.png'
 import output from '@/assets/img/dapp_list_output.png'
 import developer from '@/assets/img/dapp_list_developer.png'
 import cryptohero from '@/assets/img/dapp_list_cryptohero.png'
+import mine from '@/assets/img/dapp_list_mine.png'
 export default {
   data() {
     return {
@@ -156,6 +157,16 @@ export default {
               url: '/token/deposit',
               btn: '访问网站',
               disabled: false
+            },
+            {
+              title: 'Fan票挖矿',
+              description: '利用Fan票来挖矿',
+              img: mine,
+              width: '120px',
+              height: '120px',
+              url: '',
+              btn: '即将推出',
+              disabled: true
             },
           ]
         },

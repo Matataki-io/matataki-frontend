@@ -39,11 +39,14 @@ import {
   Option,
   Divider,
   Radio,
+  RadioGroup,
+  RadioButton,
   Alert,
   Carousel,
   CarouselItem,
   Badge,
-  Autocomplete
+  Autocomplete,
+  DatePicker
 } from 'element-ui'
 
 Vue.use(Row)
@@ -80,11 +83,14 @@ Vue.use(Row)
   .use(Option)
   .use(Divider)
   .use(Radio)
+  .use(RadioGroup)
+  .use(RadioButton)
   .use(Alert)
   .use(Carousel)
   .use(CarouselItem)
   .use(Badge)
   .use(Autocomplete)
+  .use(DatePicker)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

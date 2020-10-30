@@ -121,7 +121,7 @@ export default {
     try {
       return (document.body.clientWidth || document.documentElement.clientWidth) || 0
     } catch (e) {
-      console.log(e)
+      // console.log(e)
       return 0
     }
   },
@@ -129,7 +129,7 @@ export default {
     try {
       return (document.body.clientHeight || document.documentElement.clientHeight) || 0
     } catch (e) {
-      console.log(e)
+      // console.log(e)
       return 0
     }
   }

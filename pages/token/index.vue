@@ -12,9 +12,19 @@
     <!-- 登录后显示 -->
     <!-- fan ticket -->
     <div v-if="isLogined" class="c-card">
-      <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">{{ $t('token.fanTicketHolder') }}</span>
-      <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">{{ $t('token.myFlowGold') }}</span>
-      <holdTicket v-if="ticketTab === 0" />
+      <div class="fl ac token-hold-head">
+        <span class="token-title" :class="ticketTab === 0 && 'active'" @click="ticketTab = 0">{{ $t('token.fanTicketHolder') }}</span>
+        <span class="token-title" :class="ticketTab === 1 && 'active'" @click="ticketTab = 1">{{ $t('token.myFlowGold') }}</span>
+        <!-- fan票夹 搜索 -->
+        <searchToken
+          v-show="ticketTab === 0"
+          class="all-token-search"
+          api-url="tokenByUser"
+          @clear="userTokenSearch = ''"
+          @search="val => userTokenSearch = val"
+        />
+      </div>
+      <holdTicket v-if="ticketTab === 0" :user-token-search="userTokenSearch" />
       <holdLiquidity v-if="ticketTab === 1" />
     </div>
 
@@ -28,8 +38,17 @@
 
     <!-- 总会显示 -->
     <div id="all-token" class="c-card">
-      <span class="ticket-title">{{ $t('token.allFanTicket') }}</span>
-      <tokenList class="mt" />
+      <div class="fl ac jsb">
+        <span class="ticket-title">{{ $t('token.allFanTicket') }}</span>
+        <!-- 全部token搜索 -->
+        <searchToken
+          class="all-token-search"
+          api-url="token"
+          @clear="allTokenSearch = ''"
+          @search="val => allTokenSearch = val"
+        />
+      </div>
+      <tokenList :all-token-search="allTokenSearch" class="mt" />
     </div>
   </div>
 </template>
@@ -48,6 +67,9 @@ import tokenTotalTransactionFlow from '@/components/token_total_transaction_flow
 import liquidityTotalTransactionFlow from '@/components/liquidity_total_transaction_flow.vue'
 import navigationBar from '@/components/token/navigation_bar.vue'
 import { isEmpty } from 'lodash'
+
+import searchToken from '@/components/search_token'
+
 export default {
   components: {
     tokenBanner,
@@ -59,7 +81,8 @@ export default {
     holdLiquidity,
     tokenTotalTransactionFlow,
     liquidityTotalTransactionFlow,
-    navigationBar
+    navigationBar,
+    searchToken
   },
   data() {
     return {
@@ -67,7 +90,9 @@ export default {
       flowTab: 0,
       showPublishBtn: false,
       isPublishToken: true, // 是否发行token 默认为 true 没有 banner 体验会好一点
-      minetokenApplication: Object.create(null) // 申请信息
+      minetokenApplication: Object.create(null), // 申请信息
+      allTokenSearch: '', // all token search word
+      userTokenSearch: '', // 用户 token 搜索
     }
   },
   computed: {
@@ -127,7 +152,6 @@ export default {
         }
       }
 
- 
     },
   }
 }
@@ -183,4 +207,12 @@ export default {
   margin-top: 10px;
 }
 
+.token-hold-head {
+  height: 32px;
+}
+
+.all-token-search {
+  width: 200px;
+  margin-left: auto;
+}
 </style>

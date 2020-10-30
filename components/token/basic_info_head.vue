@@ -30,7 +30,7 @@
             <div>
               <p class="token-info-sub">
                 <c-user-popover :user-id="Number(minetokenToken.uid)">
-                  <router-link :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
+                  <router-link class="token-username" :to="{name: 'user-id', params: {id: minetokenToken.uid}}" target="_blank">
                     {{ minetokenUser.nickname || minetokenUser.username }}
                   </router-link>
                 </c-user-popover>
@@ -56,8 +56,8 @@
                 无标签
               </p>
             </div>
-            <div v-else class="token-info-sub" style="display: flex;">
-              <div v-for="(tag, index) in tags" :key="index" style="margin-right:0.5rem;">
+            <div v-else class="token-info-sub token-tags">
+              <div v-for="(tag, index) in tags" :key="index" class="token-tag">
                 <el-button size="small">
                   {{ {...tagPattern.find(item => item.label === tag.tag)}.name || tag.tag }}
                 </el-button>
@@ -87,6 +87,13 @@
         <i class="el-icon-arrow-right" />
       </router-link>
       <div class="share-btn">
+        <el-button
+          class="link-btn"
+          size="small"
+          @click="copy(minetokenToken.contract_address)"
+        >
+          <svg-icon icon-class="copy" />
+        </el-button>
         <a
           :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
           target="_blank"
@@ -222,6 +229,16 @@ export default {
     switchDisplayAngle() {
       if(!this.isMyToken) return console.error('No permission to switch perspectives')
       this.displayAngle = this.displayAngle === 'client' ? 'creator' : 'client'
+    },
+    copy(val) {
+      this.$copyText(val).then(
+        () => this.$message({
+          showClose: true,
+          message: this.$t('token.hashCopySuccess'),
+          type: 'success'
+        }),
+        () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+      )
     }
   }
 }
@@ -258,6 +275,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 20px;
 }
 .token-info-title {
   // width: 70px;
@@ -319,6 +337,23 @@ export default {
   }
 }
 
+.token {
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &-tag {
+    margin: 0 5px 5px 0;
+  }
+  &-username {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
+  }
+}
+
 @media screen and (max-width: 1200px) {
 }
 
@@ -356,5 +391,9 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
+  .share-btn .link-btn.black {
+    margin-left: 0;
+    margin-top: 10px;
+  }
 }
 </style>

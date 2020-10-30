@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    v-show="total > pageSize"
     :total="total"
     :page-size="pageSize"
     :current-page.sync="currentPageCopy"
@@ -75,6 +76,7 @@ export default {
   },
   watch: {
     currentPage(newVal) {
+      this.currentPageCopy = this.currentPage
       this.currentPageData(this.apiUrl, this.params, newVal)
     },
     params: {
@@ -91,9 +93,9 @@ export default {
     }
   },
   created() {
-    this.currentPageData(this.apiUrl, this.params, this.currentPage)
-
     if (process.browser) {
+      this.currentPageData(this.apiUrl, this.params, this.currentPage)
+
       this.$nextTick(() => {
         this.resizeInit()
         this.resizeEvent = throttle(this.resizeInit, 300)
@@ -127,7 +129,10 @@ export default {
         const res = await this.$API.getBackendData({ url, params, urlReplace: this.urlReplace }, this.needAccessToken)
         if (res.code === 0) getDataSuccess(res)
         else getDataFail(res.message)
-      } catch (error) { getDataFail() }
+      } catch (error) { 
+        getDataFail()
+        console.log('error', error)
+      }
     },
     togglePage(i) {
       this.$emit('togglePage', i)
