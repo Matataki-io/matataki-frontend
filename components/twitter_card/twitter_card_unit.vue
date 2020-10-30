@@ -1,36 +1,40 @@
 <template>
-  <div class="card">
-    <div class="card-l">
-      <c-avatar
-        class="card-l-avatar"
-        :src="avatarImg"
-      />
-    </div>
-    <div class="card-r">
-      <div class="card-r-header">
-        <p class="card-r-header-user">
-          <span class="card-r-header-user-nickname">
-            {{ nickname }}
-          </span>
-          <span class="card-r-header-user-name">
-            @{{ username }}
-          </span>
-        </p>
-        <p class="card-r-header-time">
-          •
-          {{ createTime }}
-        </p>
-        <svg-icon
-          class="card-r-header-logo"
-          icon-class="twitter"
+  <div class="cardunit-bg">
+    <div v-if="showUpLine" class="cardunit-bg-uline" />
+    <div class="cardunit">
+      <div class="cardunit-l">
+        <c-avatar
+          class="cardunit-l-avatar"
+          :src="avatarImg"
         />
+        <div v-if="showDownLine" class="cardunit-l-dline" />
       </div>
-      <p class="card-r-content" v-html="content" />
-      <div class="card-r-photoalbum">
-        <div class="card-r-photoalbum-pillar" />
-        <twitterPhotoAlbum class="card-r-photoalbum-main" />
+      <div class="cardunit-r">
+        <div class="cardunit-r-header">
+          <p class="cardunit-r-header-user">
+            <span class="cardunit-r-header-user-nickname">
+              {{ nickname }}
+            </span>
+            <span class="cardunit-r-header-user-name">
+              @{{ username }}
+            </span>
+          </p>
+          <p class="cardunit-r-header-time">
+            •
+            {{ createTime }}
+          </p>
+          <svg-icon
+            class="cardunit-r-header-logo"
+            icon-class="twitter"
+          />
+        </div>
+        <p class="cardunit-r-content" v-html="content" />
+        <div class="cardunit-r-photoalbum">
+          <div class="cardunit-r-photoalbum-pillar" />
+          <twitterPhotoAlbum class="cardunit-r-photoalbum-main" />
+        </div>
+        <twitterQuote />
       </div>
-      <twitterQuote />
     </div>
   </div>
 </template>
@@ -50,6 +54,14 @@ export default {
       type: Object,
       required: true
     },
+    showUpLine: {
+      type: Boolean,
+      default: false
+    },
+    showDownLine: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     avatarImg () {
@@ -82,22 +94,42 @@ span {
   padding: 0;
 }
 
-.card {
+.cardunit-bg {
+  .cardunit-bg-uline {
+    display: block;
+    height: 5px;
+    width: 2px;
+    margin-left: 23.5px;
+    margin-bottom: 5px;
+    background: #ccd6dd;
+  }
+}
+
+.cardunit {
   background: rgba(255, 255, 255, 1);
-  border-radius: 10px;
-  padding: 20px;
   box-sizing: border-box;
   display: flex;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
 
   &-l {
-    height: 100%;
     width: 49px;
     margin-right: 10px;
+    display: flex;
+    flex-direction: column;
 
     &-avatar {
       width: 49px;
       height: 49px;
+    }
+
+    // &-uline {
+      
+    // }
+
+    &-dline {
+      width: 2px;
+      margin: 5px auto 0;
+      background: #ccd6dd;
+      flex: 1;
     }
   }
 
