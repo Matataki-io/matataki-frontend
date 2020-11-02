@@ -25,6 +25,15 @@
           <a href="https://cryptomeetup.async.moe" target="_blank">访问网站</a>
         </div>
       </el-carousel-item>
+      <el-carousel-item>
+        <div class="dapp-head mining">
+          <div class="head-text">
+            <p class="head-description">一个利用Fan票来挖矿</p>
+            <p class="head-title">Matataki Mining</p>
+            <a href="https://matataki-mining.netlify.app/" target="_blank" class="head-btn">访问网站</a>
+          </div>
+        </div>
+      </el-carousel-item>
     </el-carousel>
 
     <div v-for="(item, index) in list" :key="index" class="dapp-container">
@@ -164,9 +173,10 @@ export default {
               img: mine,
               width: '120px',
               height: '120px',
-              url: '',
-              btn: '即将推出',
-              disabled: true
+              url: 'https://matataki-mining.netlify.app/',
+              repo: 'https://github.com/Andoromeda-Foundation/Matataki-Mining-Interface',
+              btn: '访问网站',
+              disabled: false
             },
           ]
         },
@@ -347,6 +357,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &.mining {
+    justify-content: center;
+    .head-text {
+      margin-left: 0;
+      text-align: center;
+    }
+  }
   .computer {
     height: 200px;
     margin-right: 180px;
