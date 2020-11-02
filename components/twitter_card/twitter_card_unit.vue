@@ -34,6 +34,26 @@
           <twitterPhotoAlbum class="cardunit-r-photoalbum-main" />
         </div>
         <twitterQuote />
+        <div class="cardunit-r-flows">
+          <div class="cardunit-r-flows-comment">
+            <svg-icon icon-class="twitter-comment" />
+            <span>
+              {{ flows.comment }}
+            </span>
+          </div>
+          <div class="cardunit-r-flows-forward">
+            <svg-icon icon-class="twitter-forward" />
+            <span>
+              {{ flows.forward }}
+            </span>
+          </div>
+          <div class="cardunit-r-flows-like">
+            <svg-icon icon-class="twitter-like" />
+            <span>
+              {{ flows.like }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -78,6 +98,13 @@ export default {
     },
     content () {
       return '张三和李四、王五、王大麻子通常联系在一起被使用。'
+    },
+    flows () {
+      return {
+        comment: 13,
+        forward: 5,
+        like: 57,
+      }
     }
   }
 }
@@ -206,12 +233,30 @@ span {
       }
     }
 
-    &-quote {
-      margin-top: 10px;
-      background: #B2B2B2;
-      border-radius: 16px;
-      height: 145px;
-      width: 100%;
+    &-flows {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0 10px;
+      max-width: 500px;
+      .flow-default {
+        svg {
+          height: 18px;
+          width: 18px;
+          color: #657786;
+        }
+        span {
+          margin:  0 0 0 5px;
+        }
+      }
+      &-comment {
+        .flow-default();
+      }
+      &-forward {
+        .flow-default();
+      }
+      &-like {
+        .flow-default();
+      }
     }
   }
 }
