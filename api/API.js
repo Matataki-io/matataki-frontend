@@ -1248,4 +1248,8 @@ minetokenGetResources(tokenId) {
   dbBrowseHistoryType(type, params) { return request.get(`/db/browse/history/${type}`, { params }) },
   // 获取用户所有文章的总收益
   dbIncomeSum(params) { return request.get('/db/income/sum', { params }) },
+
+  // ---------------- 获取推特授权 ----------------------------------------
+  twitterRequestToken(callbackUrl) { return request.get(`/authorize/twitter/prepare`, { params: { callbackUrl } }) },
+  twitterAccessToken(oauthToken, oauthVerifier) { return request.post(`/authorize/twitter`, { oauthToken, oauthVerifier }) }
 }
