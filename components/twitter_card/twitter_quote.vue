@@ -19,44 +19,59 @@
       </p>
     </div>
     <div class="quote-cols">
-      <div class="quote-cols-photoalbum">
+      <div
+        v-if="media && media.length > 0"
+        class="quote-cols-photoalbum"
+      >
         <div class="quote-cols-photoalbum-pillar" />
-        <twitterPhotoAlbum class="quote-cols-photoalbum-main" />
+        <twitterPhotoAlbum
+          class="quote-cols-photoalbum-main"
+          :media="media"
+        />
       </div>
-      <p class="quote-cols-content" v-html="content" />
+      <twitterContent class="quote-cols-content" :card="card" />
     </div>
   </div>
 </template>
 
 <script>
 import twitterPhotoAlbum from './twitter_photo_album'
+import twitterContent from './twitter_content'
 
 export default {
   components: {
-    twitterPhotoAlbum
+    twitterPhotoAlbum,
+    twitterContent
   },
   props: {
     // 卡片数据
     card: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
     avatarImg () {
-      return 'https://picsum.photos/1280/720?random'
+      return this.card.user.profile_image_url_https || ''
     },
     nickname () {
-      return '张三'
+      return this.card.user.name || this.card.user.screen_name
     },
     username () {
-      return 'zhang_san'
+      return this.card.user.screen_name
     },
     createTime () {
-      return '39分钟前'
+      const time = this.moment(this.card.created_at)
+      return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo') : time.fromNow()
     },
-    content () {
-      return '张三和李四、王五、王大麻子通常联系在一起被使用。'
+    media () {
+      if (this.card.extended_entities && this.card.extended_entities.media) {
+        const imgUrls = this.card.extended_entities.media
+          .filter(item => item.type === 'photo')
+          .map(item => item.media_url_https)
+        return imgUrls
+      }
+      else return null
     }
   }
 }
