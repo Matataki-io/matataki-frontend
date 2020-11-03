@@ -25,12 +25,12 @@
             </h3>
           </section>
           <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
-          <twitterCard class="timeline-card" />
-          <timelineCard
-            v-for="item in pull.list"
-            :key="item.id"
+          <twitterCard
+            v-for="(item, index) in pull.list"
+            :key="index"
             class="timeline-card"
-            :card="item"
+            :card="item.card"
+            :front-queue="item.frontQueue"
           />
           <div class="load-more-button">
             <buttonLoadMore
@@ -101,14 +101,12 @@ import throttle from 'lodash/throttle'
 
 import { mapGetters, mapActions } from 'vuex'
 
-import timelineCard from '@/components/timeline_card/index.vue'
 import twitterCard from '@/components/twitter_card'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 
 export default {
   components: {
-    timelineCard,
     twitterCard,
     buttonLoadMore,
     RAList,
@@ -117,12 +115,8 @@ export default {
     return {
       userInfo: {}, // 用户信息
       pull: {
-        params: {
-          channel: 1,
-          filter: null,
-          extra: 'short_content'
-        },
-        apiUrl: 'followedPosts',
+        params: {},
+        apiUrl: 'getTwitterTimeline',
         list: [],
       },
       usersLoading: false,
@@ -166,9 +160,16 @@ export default {
     },
     // 点击更多按钮返回的数据
     buttonLoadMoreRes(res) {
-      console.log(res)
-      if (res.data && res.data.list && res.data.list.length !== 0) {
-        this.pull.list = this.pull.list.concat(res.data.list)
+      console.log([ ...res.data ])
+      if (res.data && res.data.length !== 0) {
+        const list = []
+        for (let i = 0; i < res.data.length; i++) {
+          list.push({
+            card: res.data[i],
+            frontQueue: this.getFrontQueue(res.data, i)
+          })
+        }
+        this.pull.list = this.pull.list.concat(list)
       }
     },
     // 获取推荐作者
@@ -195,6 +196,20 @@ export default {
           }, 300)
         })
     }, 800),
+    getFrontQueue(list, index) {
+      console.log(index, list.length)
+      let replyId = list[index].in_reply_to_status_id
+      const resQueue = []
+      for(let i = index + 1; i < list.length; i++) {
+        if (!replyId) break
+        if (list[i].id === replyId) {
+          replyId = list[i].in_reply_to_status_id
+          resQueue.unshift(list.splice(i, 1)[0])
+          i-- // 修正因为 splice 导致的索引位移
+        }
+      }
+      return resQueue
+    }
   }
 }
 </script>
