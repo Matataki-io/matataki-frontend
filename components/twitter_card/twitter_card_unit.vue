@@ -1,6 +1,14 @@
 <template>
   <div class="cardunit-bg">
     <div v-if="showUpLine" class="cardunit-bg-uline" />
+    <div v-if="isRetweeted" class="cardunit-bg-retweeted">
+      <div class="cardunit-bg-retweeted-l">
+        <svg-icon icon-class="twitter-forward" />
+      </div>
+      <div class="cardunit-bg-retweeted-r">
+        {{ card.user.name || card.user.screen_name }} 转推了
+      </div>
+    </div>
     <div class="cardunit">
       <div class="cardunit-l">
         <c-avatar
@@ -146,13 +154,37 @@ span {
 }
 
 .cardunit-bg {
-  .cardunit-bg-uline {
+  &-uline {
     display: block;
     height: 5px;
     width: 2px;
     margin-left: 23.5px;
     margin-bottom: 5px;
     background: #ccd6dd;
+  }
+
+  &-retweeted {
+    display: block;
+    display: flex;
+    margin-bottom: 5px;
+    &-l {
+      width: 49px;
+      margin-right: 10px;
+      display: flex;
+      justify-content: flex-end;
+      svg {
+        height: 18px;
+        width: 18px;
+        color: #657786;
+      }
+    }
+    &-r {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 17px;
+      color: #657786;
+    }
   }
 }
 
