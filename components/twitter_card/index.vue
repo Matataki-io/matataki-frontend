@@ -2,7 +2,8 @@
   <div class="card">
     <div v-for="(item, index) in queue" :key="index">
       <twitterCardUnit
-        v-if="item !== 1"
+        v-if="!item.showMoreButton"
+        :card="item"
         :show-up-line="index !== 0"
         :show-down-line="index !== queue.length - 1"
       />
@@ -26,14 +27,28 @@ export default {
       type: Object,
       required: true
     },
+    frontQueue: {
+      type: Array,
+      default: new Array()
+    }
   },
   data() {
     return {
-      queue: [ ...Array(3) ]
+      replyQueue: []
     }
   },
   computed: {
+    queue() {
+      return [ ...this.replyQueue, this.card ]
+    }
+  },
+  mounted () {
+    this.replyQueue = this.frontQueue
+    if (this.queue[0].in_reply_to_status_id) {
+      this.replyQueue.unshift({ showMoreButton: true, inReplyToStatusId: this.queue[0].in_reply_to_status_id })
+    }
   }
+  
 }
 </script>
 

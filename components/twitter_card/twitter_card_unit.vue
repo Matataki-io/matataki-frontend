@@ -23,34 +23,40 @@
             •
             {{ createTime }}
           </p>
-          <svg-icon
+          <!-- <svg-icon
             class="cardunit-r-header-logo"
             icon-class="twitter"
+          /> -->
+        </div>
+        <twitterContent class="cardunit-r-content" :card="sCard" />
+        <div 
+          v-if="media && media.length > 0"
+          class="cardunit-r-photoalbum"
+        >
+          <div class="cardunit-r-photoalbum-pillar" />
+          <twitterPhotoAlbum
+            class="cardunit-r-photoalbum-main"
+            :media="media"
           />
         </div>
-        <p class="cardunit-r-content" v-html="content" />
-        <div class="cardunit-r-photoalbum">
-          <div class="cardunit-r-photoalbum-pillar" />
-          <twitterPhotoAlbum class="cardunit-r-photoalbum-main" />
-        </div>
-        <twitterQuote />
+        <twitterQuote v-if="card.quoted_status" :card="card.quoted_status" />
         <div class="cardunit-r-flows">
           <div class="cardunit-r-flows-comment">
             <svg-icon icon-class="twitter-comment" />
-            <span>
+            <span v-if="flows.comment">
               {{ flows.comment }}
             </span>
           </div>
           <div class="cardunit-r-flows-forward">
             <svg-icon icon-class="twitter-forward" />
-            <span>
-              {{ flows.forward }}
+            <span v-if="flows.retweet">
+              {{ flows.retweet }}
             </span>
           </div>
           <div class="cardunit-r-flows-like">
             <svg-icon icon-class="twitter-like" />
-            <span>
-              {{ flows.like }}
+            <span v-if="flows.favorite">
+              {{ flows.favorite }}
             </span>
           </div>
         </div>
@@ -62,11 +68,13 @@
 <script>
 import twitterPhotoAlbum from './twitter_photo_album'
 import twitterQuote from './twitter_quote'
+import twitterContent from './twitter_content'
 
 export default {
   components: {
     twitterPhotoAlbum,
-    twitterQuote
+    twitterQuote,
+    twitterContent
   },
   props: {
     // 卡片数据
@@ -84,29 +92,45 @@ export default {
     }
   },
   computed: {
+    isRetweeted () {
+      return !!this.card.retweeted_status
+    },
+    sCard () {
+      return this.isRetweeted ? this.card.retweeted_status : this.card
+    },
     avatarImg () {
-      return 'https://picsum.photos/1280/720?random'
+      return this.sCard.user.profile_image_url_https || ''
     },
     nickname () {
-      return '张三'
+      return this.sCard.user.name || this.sCard.user.screen_name
     },
     username () {
-      return 'zhang_san'
+      return this.sCard.user.screen_name
     },
     createTime () {
-      return '39分钟前'
-    },
-    content () {
-      return '张三和李四、王五、王大麻子通常联系在一起被使用。'
+      const time = this.moment(this.sCard.created_at)
+      if (!this.$utils.isNDaysAgo(2, time)) return time.fromNow()
+      else if (!this.$utils.isNDaysAgo(365, time)) return time.format('MMMDo') 
+      return time.format('YYYY MMMDo')
+      
     },
     flows () {
       return {
-        comment: 13,
-        forward: 5,
-        like: 57,
+        comment: 0,
+        retweet: this.sCard.retweet_count,
+        favorite: this.sCard.favorite_count
       }
+    },
+    media () {
+      if (this.sCard.extended_entities && this.sCard.extended_entities.media) {
+        const imgUrls = this.sCard.extended_entities.media
+          .filter(item => item.type === 'photo')
+          .map(item => item.media_url_https)
+        return imgUrls
+      }
+      else return null
     }
-  }
+  },
 }
 </script>
 
@@ -213,6 +237,7 @@ span {
       font-size: 15px;
       font-weight: 400;
       line-height: 20px;
+      white-space: pre-line;
     }
 
     &-photoalbum {
@@ -235,10 +260,9 @@ span {
 
     &-flows {
       display: flex;
-      justify-content: space-between;
       margin: 10px 0 10px;
-      max-width: 500px;
       .flow-default {
+        flex: 1;
         svg {
           height: 18px;
           width: 18px;
