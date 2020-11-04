@@ -117,10 +117,6 @@ export default {
     media: {
       type: Array,
       required: true
-    },
-    length: {
-      type: Number,
-      default: 1,
     }
   },
   computed: {

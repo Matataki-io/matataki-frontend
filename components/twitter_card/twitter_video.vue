@@ -19,7 +19,7 @@ export default {
   props: {
     // 卡片数据
     video: {
-      type: Array,
+      type: Object,
       required: true
     }
   },
