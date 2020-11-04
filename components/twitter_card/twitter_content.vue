@@ -49,7 +49,6 @@ export default {
 
         if (urls) {
           urls.forEach(url => {
-            console.log('url:', url)
             textArr.fill('', url.indices[0], url.indices[1])
             textArr[url.indices[0]] = `<a href="${url.expanded_url}" target="_blank">${url.display_url}</a>`
           })

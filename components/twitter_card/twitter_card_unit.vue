@@ -37,7 +37,8 @@
           /> -->
         </div>
         <twitterContent class="cardunit-r-content" :card="sCard" />
-        <div 
+        <!-- 图片 -->
+        <div
           v-if="media && media.length > 0"
           class="cardunit-r-photoalbum"
         >
@@ -45,6 +46,17 @@
           <twitterPhotoAlbum
             class="cardunit-r-photoalbum-main"
             :media="media"
+          />
+        </div>
+        <!-- 视频 -->
+        <div
+          v-if="video"
+          class="cardunit-r-photoalbum"
+        >
+          <div class="cardunit-r-photoalbum-pillar" />
+          <twitterVideo
+            class="cardunit-r-photoalbum-main"
+            :video="video"
           />
         </div>
         <twitterQuote v-if="card.quoted_status" :card="card.quoted_status" />
@@ -75,12 +87,14 @@
 
 <script>
 import twitterPhotoAlbum from './twitter_photo_album'
+import twitterVideo from './twitter_video'
 import twitterQuote from './twitter_quote'
 import twitterContent from './twitter_content'
 
 export default {
   components: {
     twitterPhotoAlbum,
+    twitterVideo,
     twitterQuote,
     twitterContent
   },
@@ -137,6 +151,19 @@ export default {
         return imgUrls
       }
       else return null
+    },
+    video () {
+      if (this.sCard.extended_entities && this.sCard.extended_entities.media) {
+        const media = this.sCard.extended_entities.media
+        // 找到这个视频媒体
+        for (let i = 0; i < media.length; i++) {
+          if (media[i].type === 'video') {
+            // 将这个视频媒体中码率最高的 mp4 原作为返回值
+            return media[i].video_info.variants.filter(variant => variant.content_type === 'video/mp4').sort((a,b) => b.bitrate - a.bitrate)[0]
+          }
+        }
+      }
+      return null
     }
   },
 }
