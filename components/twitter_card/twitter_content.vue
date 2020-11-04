@@ -16,9 +16,7 @@ export default {
   },
   computed: {
     content () {
-      let text = this.removeTwitterLink(this.card.text)
-      text = this.annotateHighlightText(text)
-      return text
+      return this.annotateHighlightText(this.card.text)
     }
   },
   methods: {
@@ -28,7 +26,7 @@ export default {
     annotateHighlightText(text) {
       const textArr = text.split('')
       if (this.card.entities) {
-        const { user_mentions, hashtags } = this.card.entities
+        const { user_mentions, hashtags, media, urls } = this.card.entities
         if (user_mentions) {
           user_mentions.forEach(mention => {
             textArr[mention.indices[0]] = '<span>' + textArr[mention.indices[0]]
@@ -40,6 +38,20 @@ export default {
           hashtags.forEach(hashtag => {
             textArr[hashtag.indices[0]] = '<span>' + textArr[hashtag.indices[0]]
             textArr[hashtag.indices[1] - 1] = textArr[hashtag.indices[1] - 1] + '</span>'
+          })
+        }
+
+        if (media) {
+          media.forEach(aMedia => {
+            textArr.fill('', aMedia.indices[0], aMedia.indices[1])
+          })
+        }
+
+        if (urls) {
+          urls.forEach(url => {
+            console.log('url:', url)
+            textArr.fill('', url.indices[0], url.indices[1])
+            textArr[url.indices[0]] = `<a href="${url.expanded_url}" target="_blank">${url.display_url}</a>`
           })
         }
       }
@@ -54,6 +66,12 @@ export default {
   color: black;
   white-space: pre-line;
   /deep/ span {
+    color: #1b95e0;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  /deep/ a {
     color: #1b95e0;
     &:hover {
       text-decoration: underline;
