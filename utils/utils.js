@@ -132,18 +132,5 @@ export default {
       // console.log(e)
       return 0
     }
-  },
-  // 解析 url 中的 query 项目
-  queryParse (search) {
-      if (!search) return {}
-      const queryString = search[0] === '?' ? search.substring(1) : search
-      const query = {}
-      queryString
-          .split('&')
-          .forEach(queryStr => {
-              const [key, value] = queryStr.split('=')
-              if (key) query[decodeURIComponent(key)] = decodeURIComponent(value)
-          })
-      return query
   }
 };
