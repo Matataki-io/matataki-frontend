@@ -4,8 +4,13 @@
     <p v-if="oauthVerifier || loading" class="tips">
       loading...
     </p>
-    <el-button v-else @click="authorizeClick">
-      授权推特时间线
+    <el-button
+      v-else
+      type="primary"
+      @click="authorizeClick"
+    >
+      <svg-icon icon-class="twitter" />
+      授权访问你 Twitter 的账号
     </el-button>
     <p class="tips">
       使用该功能需要“科学上网”
@@ -51,12 +56,16 @@ export default {
           }
           else this.$message.error(res.message)
         }
-        else this.$message.error(this.$t('error.fail'))
+        else {
+          console.error('[Twitter authorize failed (get token)] res:', res)
+          this.$message.error(this.$t('error.fail'))
+        }
       }
       catch (e) {
-        console.error(e)
+        console.error('[Twitter authorize failed (get token)] error:', e)
         this.$message.error(this.$t('error.fail'))
       }
+      this.loading = false
     },
     async callback () {
       if (this.callbackFunLock) return
@@ -67,12 +76,16 @@ export default {
           if (res.code === 0 ) this.$message.success(this.$t('success.success'))
           else this.$message.error(res.message)
         }
-        else this.$message.error(this.$t('error.fail'))
+        else {
+          console.error('[Twitter authorize failed (callback)] res:', res)
+          this.$message.error(this.$t('error.fail'))
+        }
       }
       catch (e) {
-        console.error(e)
+        console.error('[Twitter authorize failed (callback)] error:', e)
         this.$message.error(this.$t('error.fail'))
       }
+      this.$router.replace({ name: 'timeline-twitter' })
     }
   }
 }
