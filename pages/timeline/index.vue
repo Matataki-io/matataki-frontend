@@ -19,9 +19,14 @@
       <div class="col-6">
         <!-- have 登录 并且 关注过人 -->
         <div v-if="isLogined && Number(userInfo.follows) > 0">
-          <section class="head">
-            <h3 class="head-title">
+          <section class="head topnav">
+            <h3 class="head-title topnav-tag">
               {{ $t('timeline.timeline') }}
+            </h3>
+            <h3 class="head-title topnav-tag">
+              <router-link :to="{ name: 'timeline-twitter' }">
+                Twitter 时间轴
+              </router-link>
             </h3>
           </section>
           <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
@@ -65,6 +70,12 @@
             >{{ $t('home.signIn') }}</a>
           </div>
         </div>
+        <h4 v-if="isLogined && !Number(userInfo.follows)" class="twitter-timeline-link">
+          <router-link :to="{ name: 'timeline-twitter' }">
+            浏览 Twitter 时间轴
+            <i class="el-icon-arrow-right" />
+          </router-link>
+        </h4>
       </div>
       <div class="col-3 recommend">
         <section class="head ra-head">
@@ -443,6 +454,30 @@ export default {
   font-size: 16px;
   color: #333;
   letter-spacing: 1px;
+}
+
+.twitter-timeline-link {
+  a {
+    text-decoration: none;
+    color: #542de0;
+    &:hover {
+      color: #8d70f5;
+    }
+  }
+}
+
+.topnav {
+  display: flex;
+  &-tag {
+    margin-right: 20px;
+    color: black;
+    a {
+      color: #B2B2B2;
+      &:hover {
+        color: #737373;
+      }
+    }
+  }
 }
 
 // 页面小于
