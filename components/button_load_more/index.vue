@@ -104,14 +104,17 @@ export default {
           isEmpty: isEmpty
         })
       }
-      const getDataFail = message => message ? console.log(message) : console.log('获取数据失败')
+      const getDataFail = res => {
+        this.$emit('getDataFail', res)
+        res.message ? console.log(res.message) : console.log('获取数据失败')
+      }
 
       // 获取数据
       try {
         this.loading = true
         const res = await this.$API.getBackendData({ url, params, urlReplace: this.urlReplace }, false)
         if (res.code === 0) getDataSuccess(res)
-        else getDataFail(res.message)
+        else getDataFail(res)
         this.loading = false
       } catch (error) {
         console.log(error)
