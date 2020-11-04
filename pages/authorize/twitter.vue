@@ -48,7 +48,7 @@ export default {
     async authorizeClick () {
       this.loading = true
       try {
-        const res = await this.$API.twitterRequestToken('http://localhost:8080/authorize/twitter')
+        const res = await this.$API.twitterRequestToken(process.env.VUE_APP_URL + '/authorize/twitter')
         if (res) {
           if (res.code === 0) {
             window.location = 'https://api.twitter.com/oauth/authorize?oauth_token=' + res.data
