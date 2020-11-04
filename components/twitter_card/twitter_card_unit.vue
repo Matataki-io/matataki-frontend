@@ -53,7 +53,7 @@
           v-if="video"
           class="cardunit-r-photoalbum"
         >
-          <div class="cardunit-r-photoalbum-pillar" />
+          <div :style="`padding-bottom: ${video.heightRatio}%;`" class="cardunit-r-photoalbum-pillar" />
           <twitterVideo
             class="cardunit-r-photoalbum-main"
             :video="video"
@@ -157,9 +157,19 @@ export default {
         const media = this.sCard.extended_entities.media
         // 找到这个视频媒体
         for (let i = 0; i < media.length; i++) {
-          if (media[i].type === 'video') {
+          if (media[i].type === 'video' || media[i].type === 'animated_gif') {
             // 将这个视频媒体中码率最高的 mp4 原作为返回值
-            return media[i].video_info.variants.filter(variant => variant.content_type === 'video/mp4').sort((a,b) => b.bitrate - a.bitrate)[0]
+            const res = media[i].video_info.variants.filter(variant => variant.content_type === 'video/mp4').sort((a,b) => b.bitrate - a.bitrate)[0]
+            res
+            if (res) {
+              // mini播放器的宽高比
+              res.heightRatio = Number((media[i].video_info.aspect_ratio[1] / media[i].video_info.aspect_ratio[0] * 100).toFixed(2))
+              if (res.heightRatio > 100) res.heightRatio = 100
+              else if (res.heightRatio < 35) res.heightRatio = 35
+              // 是不是 gif
+              if (media[i].type === 'animated_gif') res.type = 'gif'
+            }
+            return res
           }
         }
       }
