@@ -34,11 +34,15 @@ export default {
       default: function () {
         return this.$t('notContent')
       }
+    },
+    hide: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     hasList() {
-      return this.list.length !== 0
+      return this.list.length !== 0 || this.hide
     }
   }
 }
