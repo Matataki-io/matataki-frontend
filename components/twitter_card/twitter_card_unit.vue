@@ -31,10 +31,9 @@
             •
             {{ createTime }}
           </p>
-          <!-- <svg-icon
-            class="cardunit-r-header-logo"
-            icon-class="twitter"
-          /> -->
+          <a class="cardunit-r-header-logo" :href="`https://twitter.com/${sCard.user.screen_name}/status/${sCard.id_str}`" target="_blank">
+            <i class="el-icon-link" />
+          </a>
         </div>
         <twitterContent class="cardunit-r-content" :card="sCard" />
         <!-- 图片 -->
@@ -298,6 +297,11 @@ span {
       &-logo {
         font-size: 20px;
         color: #00ACED;
+        margin: 0 0 0 5px;
+        transition: all ease-in 0.1s;
+        &:hover {
+          transform: scale(1.2);
+        }
       }
     }
 
