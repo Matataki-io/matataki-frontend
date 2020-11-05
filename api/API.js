@@ -1254,5 +1254,6 @@ minetokenGetResources(tokenId) {
   twitterAccessToken(oauthToken, oauthVerifier) { return request.post(`/authorize/twitter`, { oauthToken, oauthVerifier }) },
 
   // ---------------- 获取推特时间线 ----------------------------------------
-  getTwitterTimeline(page = 1, pagesize = 20) { return request.get(`/timeline/twitter`, { params: { page, pagesize } }) }
+  getTwitterTimeline(page = 1, pagesize = 20) { return request.get(`/timeline/twitter`, { params: { page, pagesize } }) },
+  setTwitterUserTimeLineSwitch(timelineSwitch) { return request.post('/timeline/twitter/user', { timelineSwitch }) }
 }
