@@ -45,7 +45,7 @@
             class="fl"
           >
             <div class="fl price">
-              解锁本文阅读权限
+              需先解锁本文阅读权限
               <svg-icon
                 icon-class="read"
                 class="avatar-read"
@@ -398,7 +398,7 @@ export default {
   }
 }
 
-.prompt-svg-token { 
+.prompt-svg-token {
   padding-left: 8px;
 }
 .notice-creator-container {

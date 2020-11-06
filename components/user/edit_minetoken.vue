@@ -245,15 +245,15 @@ export default {
     socialIcon
   },
   data() {
-    const checkSymbol = (rule, value, callback) => {
-      const reg = /^[A-Z]+$/
-      const res = reg.test(this.form.symbol)
-      if (!res) {
-        callback(new Error('Fan票缩写仅限大写英文字符'))
-      } else {
-        callback()
-      }
-    }
+    // const checkSymbol = (rule, value, callback) => {
+    //   const reg = /^[A-Z]+$/
+    //   const res = reg.test(this.form.symbol)
+    //   if (!res) {
+    //     callback(new Error('Fan票缩写仅限大写英文字符'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       checked: false,
       tokenId: null,
@@ -283,7 +283,7 @@ export default {
         symbol: [
           { required: true, message: '请输入Fan票缩写', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
-          { validator: checkSymbol, trigger: ['blur', 'change'] }
+          // { validator: checkSymbol, trigger: ['blur', 'change'] }
         ],
         tag: [
           { required: false, message: '请选择至少一种标签:', trigger: 'blur' }

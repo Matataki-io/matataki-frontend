@@ -97,4 +97,8 @@ export const paginationUrl = {
   dbIncomeSourceType: '/db/income/source/${type}',
   // 获取用户的收益历史（该用户所有文章的付费解锁和打赏收益）。
   dbIncomeHistory:'/db/income/history',
+  // 获取用户的推特主页时间线（关注的人）。
+  getTwitterTimeline: '/timeline/twitter',
+  // 获取用户的推特用户时间线（自己）。
+  getTwitterUserTimeline: '/timeline/twitter/user'
 }

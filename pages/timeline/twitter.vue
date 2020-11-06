@@ -1,7 +1,7 @@
 <template>
   <div class="timeline">
     <!-- banner -->
-    <div v-if="isLogined && Number(userInfo.follows) > 0" class="banner">
+    <div v-if="isLogined" class="banner">
       <section class="banner-main">
         <h2 class="banner-title">
           欢迎加入瞬Matataki
@@ -17,26 +17,40 @@
     <!-- row main -->
     <div class="row">
       <div class="col-6">
-        <!-- have 登录 并且 关注过人 -->
-        <div v-if="isLogined && Number(userInfo.follows) > 0">
+        <!-- have 登录 -->
+        <div v-if="isLogined">
           <section class="head topnav">
             <h3 class="head-title topnav-tag">
-              {{ $t('timeline.timeline') }}
-            </h3>
-            <h3 class="head-title topnav-tag">
-              <router-link :to="{ name: 'timeline-twitter' }">
-                Twitter 时间轴
+              <router-link :to="{ name: 'timeline' }">
+                {{ $t('timeline.timeline') }}
               </router-link>
             </h3>
+            <h3 class="head-title topnav-tag">
+              Twitter 时间轴
+            </h3>
           </section>
-          <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
-          <timelineCard
-            v-for="item in pull.list"
-            :key="item.id"
+          <div v-if="unauthorized" class="apply-authorize">
+            <p>
+              授权你的 Twitter 账号，在 Matataki 浏览你的 Twitter 时间轴。
+            </p>
+            <router-link :to="{ name: 'authorize-twitter' }">
+              <el-button
+                type="primary"
+              >
+                <svg-icon icon-class="twitter" />
+                授权 Twitter 账号
+              </el-button>
+            </router-link>
+          </div>
+          <p v-if="pull.list.length === 0 && !unauthorized" class="not-content">{{ $t('not') }}</p>
+          <twitterCard
+            v-for="(item, index) in pull.list"
+            :key="index"
             class="timeline-card"
-            :card="item"
+            :card="item.card"
+            :front-queue="item.frontQueue"
           />
-          <div class="load-more-button">
+          <div v-if="!unauthorized" class="load-more-button">
             <buttonLoadMore
               :type-index="0"
               :params="pull.params"
@@ -44,10 +58,11 @@
               :is-atuo-request="pull.isAtuoRequest"
               :auto-request-time="pull.autoRequestTime"
               @buttonLoadMore="buttonLoadMoreRes"
+              @getDataFail="getDataFail"
             />
           </div>
         </div>
-        <!-- no 没有关注人 -->
+        <!-- no 没有登录 -->
         <div v-else class="welcome">
           <!-- -- -->
           <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
@@ -60,7 +75,6 @@
 
           <div class="welcome-text">
             <p v-if="!isLogined" class="welcome-description">请 <span @click="login">登录</span> 后查看您的</p>
-            <p v-else class="welcome-description">请至少 <span>关注1位创作者</span> 以开启您的</p>
             <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
             <a
               v-if="!isLogined"
@@ -70,12 +84,6 @@
             >{{ $t('home.signIn') }}</a>
           </div>
         </div>
-        <h4 v-if="isLogined && !Number(userInfo.follows)" class="twitter-timeline-link">
-          <router-link :to="{ name: 'timeline-twitter' }">
-            浏览 Twitter 时间轴
-            <i class="el-icon-arrow-right" />
-          </router-link>
-        </h4>
       </div>
       <div class="col-3 recommend">
         <section class="head ra-head">
@@ -111,13 +119,13 @@ import throttle from 'lodash/throttle'
 
 import { mapGetters, mapActions } from 'vuex'
 
-import timelineCard from '@/components/timeline_card/index.vue'
+import twitterCard from '@/components/twitter_card'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 
 export default {
   components: {
-    timelineCard,
+    twitterCard,
     buttonLoadMore,
     RAList,
   },
@@ -125,16 +133,13 @@ export default {
     return {
       userInfo: {}, // 用户信息
       pull: {
-        params: {
-          channel: 1,
-          filter: null,
-          extra: 'short_content'
-        },
-        apiUrl: 'followedPosts',
+        params: {},
+        apiUrl: 'getTwitterTimeline',
         list: [],
       },
       usersLoading: false,
       usersRecommendList: [{},{},{},{},{}],
+      unauthorized: false
     }
   },
   computed: {
@@ -174,9 +179,31 @@ export default {
     },
     // 点击更多按钮返回的数据
     buttonLoadMoreRes(res) {
-      console.log(res)
-      if (res.data && res.data.list && res.data.list.length !== 0) {
-        this.pull.list = this.pull.list.concat(res.data.list)
+      try {
+        console.log([ ...res.data ])
+        if (res.data && res.data.length !== 0) {
+          const list = []
+          for (let i = 0; i < res.data.length; i++) {
+            list.push({
+              card: res.data[i],
+              frontQueue: this.getFrontQueue(res.data, i)
+            })
+          }
+          this.pull.list = this.pull.list.concat(list)
+        }
+      }
+      catch (e) {
+        console.error('[get twitter timeline failure] [res, e]:', res, e)
+        this.$message.error(this.$t('error.getDataError'))
+      }
+    },
+    getDataFail(res) {
+      if (res.code === 11501) {
+        this.unauthorized = true
+      }
+      else {
+        console.error('[get twitter timeline failure] res:', res)
+        this.$message.error(this.$t(res.message))
       }
     },
     // 获取推荐作者
@@ -203,6 +230,20 @@ export default {
           }, 300)
         })
     }, 800),
+    getFrontQueue(list, index) {
+      console.log(index, list.length)
+      let replyId = list[index].in_reply_to_status_id
+      const resQueue = []
+      for(let i = index + 1; i < list.length; i++) {
+        if (!replyId) break
+        if (list[i].id === replyId) {
+          replyId = list[i].in_reply_to_status_id
+          resQueue.unshift(list.splice(i, 1)[0])
+          i-- // 修正因为 splice 导致的索引位移
+        }
+      }
+      return resQueue
+    }
   }
 }
 </script>
@@ -456,16 +497,6 @@ export default {
   letter-spacing: 1px;
 }
 
-.twitter-timeline-link {
-  a {
-    text-decoration: none;
-    color: #542de0;
-    &:hover {
-      color: #8d70f5;
-    }
-  }
-}
-
 .topnav {
   display: flex;
   &-tag {
@@ -477,6 +508,17 @@ export default {
         color: #737373;
       }
     }
+  }
+}
+
+.apply-authorize {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0 40px;
+  padding: 0 20px;
+  p {
+    text-align: center;
   }
 }
 

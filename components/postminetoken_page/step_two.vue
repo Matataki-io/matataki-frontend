@@ -46,8 +46,9 @@
         <el-input
           v-model="tokenForm.name"
           class="token-input customize-input"
-          maxlength="20"
+          maxlength="10"
           show-word-limit
+          placeholder="请输入Token名称"
         />
       </el-form-item>
       <el-form-item prop="symbol">
@@ -55,7 +56,7 @@
           {{ $t('postminetoken.stepTwoLabelSymbol') }}
           <el-tooltip
             effect="dark"
-            :content="$t('postminetoken.stepTwoLabelSymbol')"
+            content="请输入大写英文字母"
             placement="top"
             class="tag-help"
           >
@@ -65,8 +66,9 @@
         <el-input
           v-model="tokenForm.symbol"
           class="token-input customize-input"
-          maxlength="20"
+          maxlength="10"
           show-word-limit
+          placeholder="请输入Token Symbol"
         />
       </el-form-item>
       <el-form-item prop="brief">
@@ -74,7 +76,7 @@
           {{ $t('postminetoken.stepTwoLabelBrief') }}
           <el-tooltip
             effect="dark"
-            :content="$t('postminetoken.stepTwoLabelBrief')"
+            content="请输入Token的简介信息"
             placement="top"
             class="tag-help"
           >
@@ -88,6 +90,7 @@
           maxlength="100"
           :rows="6"
           show-word-limit
+          placeholder="请输入Token的简介信息"
         />
       </el-form-item>
       <el-form-item prop="tag">
@@ -149,7 +152,9 @@ export default {
     const checkSymbol = async (rule, value, callback) => {
       const res = await this.$API.apiMinetokenApplicationVerify({ symbol: value })
       if (res.code !== 0) {
-        callback(new Error('缩写不能重复~'))
+        callback(new Error('缩写不能重复'))
+      } else if (!(/^[A-Z]+$/.test(value))) {
+        callback(new Error('Symbol只能为大写英文字母'))
       } else {
         callback()
       }
@@ -167,14 +172,17 @@ export default {
           { required: true, message: '请上传图标', trigger: 'blur' },
         ],
         name: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
+          { required: true, message: '请输入Token Name', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
         ],
         symbol: [
-          { required: true, message: '请输入缩写', trigger: 'blur' },
+          { required: true, message: '请输入Token Symbol', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
           { validator: checkSymbol, trigger: 'blur' },
         ],
         brief: [
           { required: true, message: '请输入简介', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: ['blur', 'change'] },
         ],
         tag: [
           { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
