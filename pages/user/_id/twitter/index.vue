@@ -236,7 +236,6 @@ export default {
       if (res && res.data) this.screenName = res.data.screen_name || ''
     },
     getFrontQueue(list, index) {
-      console.log(index, list.length)
       let replyId = list[index].in_reply_to_status_id
       const resQueue = []
       for(let i = index + 1; i < list.length; i++) {

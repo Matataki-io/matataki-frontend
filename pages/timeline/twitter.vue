@@ -198,7 +198,6 @@ export default {
     // 点击更多按钮返回的数据
     buttonLoadMoreRes(res) {
       try {
-        console.log([ ...res.data ])
         if (res.data && res.data.length !== 0) {
           const list = []
           for (let i = 0; i < res.data.length; i++) {
@@ -249,7 +248,6 @@ export default {
         })
     }, 800),
     getFrontQueue(list, index) {
-      console.log(index, list.length)
       let replyId = list[index].in_reply_to_status_id
       const resQueue = []
       for(let i = index + 1; i < list.length; i++) {
