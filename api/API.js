@@ -1252,6 +1252,7 @@ minetokenGetResources(tokenId) {
   // ---------------- 获取推特授权 ----------------------------------------
   twitterRequestToken(callbackUrl) { return request.get(`/authorize/twitter/prepare`, { params: { callbackUrl } }) },
   twitterAccessToken(oauthToken, oauthVerifier) { return request.post(`/authorize/twitter`, { oauthToken, oauthVerifier }) },
+  deleteTwitterAccessToken() { return request.delete(`/authorize/twitter`) },
 
   // ---------------- 获取推特时间线 ----------------------------------------
   getTwitterTimeline(page = 1, pagesize = 20) { return request.get(`/timeline/twitter`, { params: { page, pagesize } }) },

@@ -12,15 +12,6 @@
 <script>
 
 export default {
-  props: {
-    // 卡片数据
-    video: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-  }
 }
 </script>
 

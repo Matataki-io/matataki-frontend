@@ -28,6 +28,24 @@
             <h3 class="head-title topnav-tag">
               Twitter 时间轴
             </h3>
+            <div class="flex-support" />
+            <el-dropdown
+              v-if="!unauthorized"
+              trigger="click"
+              @command="dropdownCommand"
+            >
+              <span class="clickable">
+                <i class="el-icon-more" />
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="reauthorize">
+                  更换 Twitter 授权
+                </el-dropdown-item>
+                <el-dropdown-item command="deauthorize">
+                  取消 Twitter 授权
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </section>
           <div v-if="unauthorized" class="apply-authorize">
             <p>
@@ -143,7 +161,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'isMe']),
   },
   watch: {
     isLogined(newState) {
@@ -243,6 +261,25 @@ export default {
         }
       }
       return resQueue
+    },
+    async dropdownCommand(command) {
+      if(command === 'deauthorize') {
+        await this.deleteAuthorize(0)
+      }
+      else if(command === 'reauthorize') {
+        this.$router.push({ name: 'authorize-twitter' })
+      }
+    },
+    async deleteAuthorize() {
+      try {
+        await this.$API.deleteTwitterAccessToken()
+        this.$message.success(this.$t('success.success'))
+        this.$router.go(0)
+      }
+      catch (e) {
+        console.error('[delete authorize failure] Error:', e)
+        this.$message.error(this.$t('error.fail'))
+      }
     }
   }
 }
@@ -499,6 +536,7 @@ export default {
 
 .topnav {
   display: flex;
+  align-items: center;
   &-tag {
     margin-right: 20px;
     color: black;
@@ -519,6 +557,26 @@ export default {
   padding: 0 20px;
   p {
     text-align: center;
+  }
+}
+
+.flex-support {
+  flex: 1;
+}
+
+.clickable {
+  padding: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  color: black;
+  line-height: 26px;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-right: 5px;
+  &:hover {
+    color: #542DE0;
+    background: #e5e9ef;
   }
 }
 
