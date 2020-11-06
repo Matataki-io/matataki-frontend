@@ -36,9 +36,11 @@
           </a>
         </div>
         <twitterContent class="cardunit-r-content" :card="sCard" />
+        <!-- 敏感媒体 -->
+        <sensitiveMedia v-if="hideSensitiveMedia" class="cardunit-r-sensitive" @view="showSensitiveMedia = true" />
         <!-- 图片 -->
         <div
-          v-if="media && media.length > 0"
+          v-if="media && media.length > 0 && !hideSensitiveMedia"
           class="cardunit-r-photoalbum"
         >
           <div class="cardunit-r-photoalbum-pillar" />
@@ -49,7 +51,7 @@
         </div>
         <!-- 视频 -->
         <div
-          v-if="video"
+          v-if="video && !hideSensitiveMedia"
           class="cardunit-r-photoalbum"
         >
           <div :style="`padding-bottom: ${video.heightRatio}%;`" class="cardunit-r-photoalbum-pillar" />
@@ -89,13 +91,15 @@ import twitterPhotoAlbum from './twitter_photo_album'
 import twitterVideo from './twitter_video'
 import twitterQuote from './twitter_quote'
 import twitterContent from './twitter_content'
+import sensitiveMedia from './sensitive_media'
 
 export default {
   components: {
     twitterPhotoAlbum,
     twitterVideo,
     twitterQuote,
-    twitterContent
+    twitterContent,
+    sensitiveMedia
   },
   props: {
     // 卡片数据
@@ -110,6 +114,11 @@ export default {
     showDownLine: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      showSensitiveMedia: false
     }
   },
   computed: {
@@ -141,6 +150,9 @@ export default {
         retweet: this.sCard.retweet_count,
         favorite: this.sCard.favorite_count
       }
+    },
+    hideSensitiveMedia () {
+      return this.card.possibly_sensitive && !this.showSensitiveMedia
     },
     media () {
       if (this.sCard.extended_entities && this.sCard.extended_entities.media) {
@@ -354,6 +366,11 @@ span {
       &-like {
         .flow-default();
       }
+    }
+
+    &-sensitive {
+      border: 1px solid #ccd6dd;
+      margin-top: 10px;
     }
   }
 }

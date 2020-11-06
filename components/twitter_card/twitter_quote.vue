@@ -20,34 +20,44 @@
     </div>
     <div class="quote-cols">
       <div
-        v-if="media && media.length > 0"
-        class="quote-cols-photoalbum"
+        v-if="media && media.length > 0 && !hideSensitiveMedia"
+        class="quote-cols-media"
       >
-        <div class="quote-cols-photoalbum-pillar" />
-        <twitterPhotoAlbum
-          class="quote-cols-photoalbum-main"
-          :media="media"
-        />
+        <div class="quote-cols-media-pillar" />
+        <div class="quote-cols-media-main">
+          <twitterPhotoAlbum
+            class="quote-cols-media-main-imgs"
+            :media="media"
+          />
+        </div>
       </div>
       <twitterContent class="quote-cols-content" :card="card" />
     </div>
+    <sensitiveMedia v-if="hideSensitiveMedia" class="quote-sensitive" @view="showSensitiveMedia = true" />
   </div>
 </template>
 
 <script>
 import twitterPhotoAlbum from './twitter_photo_album'
 import twitterContent from './twitter_content'
+import sensitiveMedia from './sensitive_media'
 
 export default {
   components: {
     twitterPhotoAlbum,
-    twitterContent
+    twitterContent,
+    sensitiveMedia
   },
   props: {
     // 卡片数据
     card: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      showSensitiveMedia: false
     }
   },
   computed: {
@@ -63,6 +73,9 @@ export default {
     createTime () {
       const time = this.moment(this.card.created_at)
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo') : time.fromNow()
+    },
+    hideSensitiveMedia () {
+      return this.card.possibly_sensitive && !this.showSensitiveMedia
     },
     media () {
       if (this.card.extended_entities && this.card.extended_entities.media) {
@@ -145,7 +158,7 @@ span {
   &-cols {
     display: flex;
 
-    &-photoalbum {
+    &-media {
       position: relative;
       flex: 1;
 
@@ -159,6 +172,10 @@ span {
         bottom: 0;
         left: 0;
         right: 0;
+        &-imgs {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     
@@ -170,6 +187,10 @@ span {
       font-weight: 400;
       line-height: 20px;
     }
+  }
+
+  &-sensitive {
+    margin-top: 5px;
   }
 }
 </style>

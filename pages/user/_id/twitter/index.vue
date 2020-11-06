@@ -6,11 +6,28 @@
       class="listbox"
     >
       <div v-if="screenName" class="user-mark">
-        <svg-icon icon-class="twitter" />
-        Twitter:
-        <a :href="`https://twitter.com/${screenName}`" target="_blank">
-          @{{ screenName }}
-        </a>
+        <p>
+          <svg-icon icon-class="twitter" />
+          Twitter:
+          <a :href="`https://twitter.com/${screenName}`" target="_blank">
+            @{{ screenName }}
+          </a>
+        </p>
+        <el-dropdown
+          v-if="isMe($route.params.id)"
+          trigger="click"
+          class="clickablebox"
+          @command="dropdownCommand"
+        >
+          <span class="clickable">
+            <i class="el-icon-more" />
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="closeTimeline">
+              关闭推文同步
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <div v-if="unauthorized" class="twitter-lock">
         <img src="@/assets/img/lock.png" alt="lock">
@@ -176,9 +193,8 @@ export default {
     buttonLoadMoreRes(res) {
       this.loading = false
       try {
-        console.log([ ...res.data.list ])
-        if (res.data && res.data.length !== 0) {
-          this.screenName = res.data.screen_name
+        this.screenName = res.data.screen_name
+        if (res.data.list && res.data.list.length !== 0) {
           if (!this.pull.params.maxId) this.pull.params.maxId = res.data.list[0].id
 
           const list = []
@@ -200,8 +216,10 @@ export default {
       this.loading = false
       if (!res) {
         this.$message.error(this.$t('error.getDataError'))
+        return
       }
-      else if (res.code === 11503) {
+  
+      if (res.code === 11503) {
         this.unauthorized = true
       }
       else if (res.code === 11504) {
@@ -214,9 +232,10 @@ export default {
         console.error('[get twitter timeline failure] res:', res)
         this.$message.error(res.message)
       }
+
+      if (res && res.data) this.screenName = res.data.screen_name || ''
     },
     getFrontQueue(list, index) {
-      console.log(index, list.length)
       let replyId = list[index].in_reply_to_status_id
       const resQueue = []
       for(let i = index + 1; i < list.length; i++) {
@@ -240,6 +259,11 @@ export default {
         console.error('[switch user timeline failure] Error:', e)
         this.$message.error(this.$t('error.fail'))
         this.switchLoding = false
+      }
+    },
+    async dropdownCommand(command) {
+      if(command === 'closeTimeline') {
+        await this.switchUserTimeLine(0)
       }
     }
   }
@@ -270,16 +294,45 @@ export default {
   box-sizing: border-box;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  svg {
-    color: #1b95e0;
-    margin-right: 5px;
-  }
-  a {
-    color: #1b95e0;
-    text-decoration: none;
-    &:hover {
+  position: relative;
+  height: 58px;
+  p {
+    color: black;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
+    svg {
       color: #1b95e0;
-      text-decoration: underline;
+      margin-right: 5px;
+    }
+    a {
+      color: #1b95e0;
+      text-decoration: none;
+      &:hover {
+        color: #1b95e0;
+        text-decoration: underline;
+      }
+    }
+  }
+  .clickablebox {
+    position: absolute;
+    right: 20px;
+  }
+  .clickable {
+    padding: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    color: #99a2aa;
+    line-height: 26px;
+    font-size: 12px;
+    white-space: nowrap;
+    &:hover {
+      color: #542DE0;
+      background: #e5e9ef;
     }
   }
 }
