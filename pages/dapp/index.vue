@@ -79,6 +79,8 @@ import input from '@/assets/img/dapp_list_input.png'
 import output from '@/assets/img/dapp_list_output.png'
 import developer from '@/assets/img/dapp_list_developer.png'
 import cryptohero from '@/assets/img/dapp_list_cryptohero.png'
+import nft from '@/assets/img/dapp_list_nft.png'
+import dao from '@/assets/img/dapp_list_dao.png'
 import mine from '@/assets/img/dapp_list_mine.png'
 export default {
   data() {
@@ -131,6 +133,39 @@ export default {
               btn: '访问网站',
               disabled: false
             },
+            {
+              title: 'Matataki NFT',
+              description: '基于Fan票的NFT生成和交易工具',
+              img: nft,
+              width: '120px',
+              height: '120px',
+              url: 'https://matataki-nft.netlify.app/',
+              repo: 'https://github.com/Matataki-io/Matataki-NFT',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Matataki DAO',
+              description: '基于Fan票和二次方投票系统的DAO',
+              img: dao,
+              width: '120px',
+              height: '120px',
+              url: 'https://matataki-dao.netlify.app/#/',
+              repo: 'https://github.com/Matataki-io/Matataki-DAO',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Fan票挖矿',
+              description: '利用Fan票来挖矿',
+              img: mine,
+              width: '120px',
+              height: '120px',
+              url: 'https://matataki-mining.netlify.app/',
+              repo: 'https://github.com/Andoromeda-Foundation/Matataki-Mining-Interface',
+              btn: '访问网站',
+              disabled: false
+            },
           ]
         },
         {
@@ -164,17 +199,6 @@ export default {
               width: '138px',
               height: '148px',
               url: '/token/deposit',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan票挖矿',
-              description: '利用Fan票来挖矿',
-              img: mine,
-              width: '120px',
-              height: '120px',
-              url: 'https://matataki-mining.netlify.app/',
-              repo: 'https://github.com/Andoromeda-Foundation/Matataki-Mining-Interface',
               btn: '访问网站',
               disabled: false
             },
