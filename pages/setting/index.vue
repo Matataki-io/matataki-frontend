@@ -62,7 +62,7 @@
           <div class="input">
             <el-input
               v-model="introduction"
-              :rows="4"
+              :rows="6"
               :placeholder="$t('rule.content')"
               type="textarea"
               maxlength="200"
