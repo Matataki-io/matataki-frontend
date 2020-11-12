@@ -3,7 +3,7 @@ module.exports = {
     NODE: 'development',
     NODE_ENV: 'development',
     VUE_APP_API: 'https://apitest.smartsignature.io',
-    VUE_APP_MATATAKIAUTH_API: 'http://127.0.0.1:8083',
+    VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
     VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
     VUE_APP_URL: 'https://test.smartsignature.io',
