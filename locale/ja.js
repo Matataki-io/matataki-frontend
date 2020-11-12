@@ -126,7 +126,7 @@ export default {
         pleaseDoneRule: '请先完成校验',
         notExceedStr: '不能超过{0}位字符',
         profileNotExceedStr: '简介不能超过{0}位字符',
-        strEnglishNumber: '{0}位字符,包含中文、英文、数字',
+        strEnglishNumber: '昵称只能包含中文、英文、数字 {0}位字符',
         username: '请输入昵称',
         content: '请输入内容',
         forgetPassword: '忘记密码',
