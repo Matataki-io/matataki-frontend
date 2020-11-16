@@ -38,7 +38,8 @@ export default {
         { title: this.$t('user.follow'), url: 'user-id-follow', self: false },
         // { title: this.$t('user.buy'), url: 'user-id-buy', self: true },
         // { title: this.$t('user.bookmark'), url: 'user-id-bookmark', self: true },
-        { title: this.$t('user.information'), url: 'user-id-info', self: false }
+        { title: this.$t('user.information'), url: 'user-id-info', self: false },
+        { title: '收藏', url: 'user-id-favlist', self: false }
       ]
     }
   }
@@ -47,6 +48,7 @@ export default {
 
 <style lang="less" scoped>
 .nav {
+  max-width: 766px;
   text-align: center;
   margin: 0 auto;
   padding: 20px 0 10px;

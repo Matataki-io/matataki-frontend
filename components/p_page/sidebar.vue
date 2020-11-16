@@ -10,7 +10,6 @@
       </div>
       <p>{{ $t('p.like') }}<span>{{ likes }}</span></p>
     </el-badge>
-
     <el-badge :value="dislikes" type="primary" class="icon-num dislike-btn">
       <div @click="$emit('like', 1)">
         <svg-icon
@@ -21,10 +20,18 @@
       </div>
       <p>{{ $t('p.unlike') }}<span>{{ dislikes }}</span></p>
     </el-badge>
-
-    
     <div class="icon-num">
       <div @click="$emit('bookmarked', bookmarked)">
+        <svg-icon
+          :class="bookmarked && 'active'"
+          class="icon"
+          icon-class="bookmark-solid"
+        />
+      </div>
+      <p>{{ !bookmarked ? $t('bookmark') : $t('unbookmark') }}</p>
+    </div>
+    <div class="icon-num">
+      <div @click="$emit('fav')">
         <svg-icon
           :class="bookmarked && 'active'"
           class="icon"
@@ -46,6 +53,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     // 是否收藏
