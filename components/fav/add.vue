@@ -36,11 +36,14 @@
         新建收藏夹
       </el-button>
     </div>
-    <CreateFavForm v-if="step === 1" @create-done="step = 0">
-      <el-button slot="button" size="medium" @click="step = 0">
-        返回
-      </el-button>
-    </CreateFavForm>
+
+    <div v-if="step === 1" class="content-create">
+      <CreateFavForm @create-done="createFavDone">
+        <el-button slot="button" size="medium" @click="step = 0">
+          返回
+        </el-button>
+      </CreateFavForm>
+    </div>
   </m-dialog>
 </template>
 
@@ -64,7 +67,7 @@ export default {
   data() {
     return {
       createFavShowModal: false,
-      step: 0,
+      step: 0, // 0 收藏夹列表 1 创建收藏夹
     }
   },
   computed: {},
@@ -77,6 +80,13 @@ export default {
     },
   },
   methods: {
+    // 创建收藏夹完成
+    createFavDone() {
+      // 1. 需要刷新收藏夹列表
+      // 2. 需要返回到列表页面
+      this.$emit('reload-fav')
+      this.step = 0
+    }
   },
 }
 </script>
@@ -90,12 +100,15 @@ export default {
 .form-button {
   text-align: center;
   border-top: 1px solid #e5e9ef;
+  margin: 0 36px;
   .btn {
     margin-top: 18px;
     margin-bottom: 18px;
   }
 }
-
+.content-create {
+  padding: 24px 36px;
+}
 .content {
   padding: 0 36px;
   height: 300px;

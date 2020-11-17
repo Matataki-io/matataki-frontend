@@ -359,7 +359,12 @@
         :need-price="copyForm.needPrice"
         :need-token="copyForm.needToken"
       />
-      <addFav v-model="addFavModal" :fav-related-list="favRelatedList" @handle-change="handleChange" />
+      <addFav
+        v-model="addFavModal"
+        :fav-related-list="favRelatedList"
+        @handle-change="handleChange"
+        @reload-fav="favRelated($route.params.id)"
+      />
     </div>
     <div v-else class="container deleted">
       <div>
