@@ -1259,9 +1259,13 @@ minetokenGetResources(tokenId) {
   setTwitterUserTimeLineSwitch(timelineSwitch) { return request.post('/timeline/twitter/user', { timelineSwitch }) },
 
 
-    // -------------------------------- 收藏夹 --------------------------------
+  // -------------------------------- 收藏夹 --------------------------------
   // 创建收藏夹
   favCreate(data) { return request.post(`/favorites/create`, data ) },
+  // 编辑收藏夹
+  favEdit(data) { return request.put(`/favorites/edit`, data ) },
+  // 删除收藏夹
+  favDelete(data) { return request.delete(`/favorites/delete`, { data } ) },
   // 保存收藏夹
   favSave(data) { return request.post(`/favorites/save`, data ) },
   favCancelSave(data) { return request.post(`/favorites/cancel_save`, data ) },

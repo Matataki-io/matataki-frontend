@@ -1,11 +1,7 @@
 
 <template>
   <userPage>
-    <div
-      id="page-fav"
-      slot="list"
-      class="wrapper"
-    >
+    <div id="page-fav" slot="list" class="wrapper">
       <div class="col-full">
         <div class="fav-sidenav">
           <div class="nav-container fav-container">
@@ -49,7 +45,6 @@
                   </div>
                 </div> -->
                 <ul class="fav-list">
-                  <!---->
                   <li
                     v-for="(item, i) in favListData"
                     :key="i"
@@ -57,11 +52,13 @@
                     @click="favPost(item.id)"
                   >
                     <span title="拖动排序" class="icon icon-cursor" />
-                    <span
-                      class="iconfont icon-bodan"
-                    />
+                    <span class="iconfont icon-bodan" />
                     <router-link
-                      :to="{ name: 'user-id-favlist', params: { id: $route.params.id }, query: { fid: item.id } }"
+                      :to="{
+                        name: 'user-id-favlist',
+                        params: { id: $route.params.id },
+                        query: { fid: item.id },
+                      }"
                       class="text"
                       :title="item.name"
                       draggable="false"
@@ -69,43 +66,21 @@
                       {{ item.name }}
                     </router-link>
                     <span class="num">{{ item.count }}</span>
-                    <div class="be-dropdown">
-                      <div class="be-dropdown-trigger">
-                        <i title="更多操作" class="iconfont icon-ic_more" />
-                      </div>
-                      <ul
-                        class="be-dropdown-menu menu-align-"
-                        style="
-                          left: 309px;
-                          top: 464px;
-                          transform-origin: center top;
-                          display: none;
-                        "
-                      >
-                        <li class="be-dropdown-item be-dropdown-item-delimiter">
-                          编辑信息
-                        </li>
-                        <li class="be-dropdown-item">
+                    <el-dropdown @command="handleCommand">
+                      <span class="el-dropdown-link">
+                        ---
+                      </span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :command="{ key: 'edit', val: item.id }">
+                          编辑
+                        </el-dropdown-item>
+                        <el-dropdown-item :command="{ key: 'delete', val: item.id }">
                           删除
-                        </li>
-                      </ul>
-                    </div>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
                   </li>
                 </ul>
-                <div class="ps__rail-x" style="left: 0px; bottom: 0px">
-                  <div
-                    class="ps__thumb-x"
-                    tabindex="0"
-                    style="left: 0px; width: 0px"
-                  />
-                </div>
-                <div class="ps__rail-y" style="top: 0px; right: 0px">
-                  <div
-                    class="ps__thumb-y"
-                    tabindex="0"
-                    style="top: 0px; height: 0px"
-                  />
-                </div>
               </div>
             </div>
           </div>
@@ -115,13 +90,21 @@
           <div v-if="!isEmpty(favPostData)" class="favList-info">
             <div class="favInfo-box">
               <div class="favInfo-details">
-                <p class="fav-name">{{ favPostData.info.name || '' }}</p>
-                <p class="fav-brief">{{ favPostData.info.brief || '' }}</p>
+                <p class="fav-name">{{ favPostData.info.name || "" }}</p>
+                <p class="fav-brief">{{ favPostData.info.brief || "" }}</p>
                 <div class="fav-meta">
-                  <span class="fav-up-name">创建者：{{ favPostData.info.nickname || favPostData.info.username || '' }}</span>
+                  <span
+                    class="fav-up-name"
+                  >创建者：{{
+                    favPostData.info.nickname ||
+                      favPostData.info.username ||
+                      ""
+                  }}</span>
                 </div>
                 <div class="fav-meta">
-                  <span>{{ favPostData.count || 0 }}个内容</span><span class="dot">·</span><span>{{ favPostData.info.status === 0 ? '公开' : '私密' || '' }}</span>
+                  <span>{{ favPostData.count || 0 }}个内容</span><span class="dot">·</span><span>{{
+                    favPostData.info.status === 0 ? "公开" : "私密" || ""
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -129,10 +112,18 @@
           <ul v-if="!isEmpty(favPostData)" class="fav-post-list">
             <li v-for="(item, i) in favPostData.list" :key="i">
               <router-link :to="{ name: 'p-id', params: { id: item.pid } }">
-                <p>{{ item.title }}</p>
-                <p class="description">{{ item.cover }}</p>
-                <p class="description">{{ item.short_content }}</p>
-                <p class="description">{{ item.create_time }}</p>
+                <p class="fav-title">{{ item.title }}</p>
+                <div class="fav-content">
+                  <div v-if="item.cover" class="fav-cover">
+                    <img
+                      :src="postCover(item.cover)"
+                      alt="cover"
+                      aria-label="cover"
+                    >
+                  </div>
+                  <p class="fav-shortcontent">{{ item.short_content }}</p>
+                </div>
+                <p class="fav-time">收藏于：{{ time(item.create_time) }}</p>
               </router-link>
             </li>
           </ul>
@@ -151,13 +142,14 @@ import { extractChar } from '@/utils/reg'
 import { mapGetters } from 'vuex'
 import createFav from '@/components/fav/create'
 import { isEmpty } from 'lodash'
+import { isNDaysAgo } from '@/utils/momentFun'
 
 export default {
   components: {
     userPage,
     // userPagination,
     // articleCardListNew,
-    createFav
+    createFav,
   },
   head() {
     return {
@@ -294,6 +286,16 @@ export default {
     isEmpty(a) {
       return isEmpty(a)
     },
+    // 文章封面
+    postCover(src) {
+      return src ? this.$ossProcess(src) : ''
+    },
+    // 收藏时间
+    time(t) {
+      if(!t) return ''
+      const time = this.moment(t)
+      return isNDaysAgo(2, time) ? time.format('YYYY-MM-DD HH:mm') : time.fromNow()
+    },
     // 设置微信分享
     setWeChatShare() {
       this.$wechatShare({
@@ -311,7 +313,7 @@ export default {
         return
       }
       const params = {
-        userId: userId
+        userId: userId,
       }
       const res = await this.$utils.factoryRequest(this.$API.favList(params))
       if (res) {
@@ -321,7 +323,7 @@ export default {
           this.favPost(res.data.list[0].id)
         }
       } else {
-        // 
+        //
       }
     },
     // 获取自己的收藏夹列表
@@ -332,16 +334,32 @@ export default {
       }
       const params = {
         userId: userId,
-        fid: fid
+        fid: fid,
       }
       const res = await this.$utils.factoryRequest(this.$API.favPost(params))
       if (res) {
         console.log('res', res)
         this.favPostData = res.data
       } else {
-        // 
+        //
       }
     },
+    // 收藏夹多选操作
+    async handleCommand(command) {
+      console.log('comm', command)
+      this.$message('click on item ' + command)
+      if (command.key === 'delete') {
+        const res = await this.$utils.factoryRequest(this.$API.favDelete({ fid: command.val }))
+        if (res) {
+          console.log('res', res)
+          this.favList()
+        } else {
+        //
+        }
+      } else if (command.key === 'edit') {
+        //
+      }
+    }
   },
 }
 </script>
@@ -360,7 +378,7 @@ export default {
 <style lang="less" scoped>
 .wrapper {
   width: 1100px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
   position: relative;
   .col-full {
     // min-height: 500px;
@@ -368,7 +386,7 @@ export default {
     box-shadow: 0 0 0 1px #eee;
     border-radius: 4px;
     padding: 0;
-    .clearfix()
+    .clearfix();
   }
 }
 
@@ -394,8 +412,11 @@ export default {
     white-space: nowrap;
   }
 }
-#page-fav .fav-sidenav .fav-item.cur .be-dropdown-trigger .icon-ic_more, #page-fav .fav-sidenav .fav-item.cur .iconfont, #page-fav .fav-sidenav .fav-item.cur .num, #page-fav .fav-sidenav .fav-item.cur .text {
-    color: #fff;
+#page-fav .fav-sidenav .fav-item.cur .be-dropdown-trigger .icon-ic_more,
+#page-fav .fav-sidenav .fav-item.cur .iconfont,
+#page-fav .fav-sidenav .fav-item.cur .num,
+#page-fav .fav-sidenav .fav-item.cur .text {
+  color: #fff;
 }
 #page-fav {
   .fav-sidenav {
@@ -495,46 +516,80 @@ export default {
   }
 }
 
-
 .favInfo-box .favInfo-details .fav-name {
-    display: block;
-    font-size: 14px;
-    color: #212121;
-    line-height: 17px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 0;
-    margin: 0;
-    font-weight: bold;
-
+  display: block;
+  font-size: 14px;
+  color: #212121;
+  line-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
 }
 .favInfo-box .favInfo-details .fav-brief {
-    display: inline-block;
-    font-size: 12px;
-    vertical-align: middle;
-    color: #99a2aa;
-    padding: 0;
-    margin: 6px 0 14px;
+  display: inline-block;
+  font-size: 12px;
+  vertical-align: middle;
+  color: #99a2aa;
+  padding: 0;
+  margin: 6px 0 14px;
 }
 #page-fav .fav-main .fav-meta span {
-    display: inline-block;
-    font-size: 12px;
-    vertical-align: middle;
-    color: #99a2aa;
+  display: inline-block;
+  font-size: 12px;
+  vertical-align: middle;
+  color: #99a2aa;
 }
 #page-fav .fav-main .fav-meta .dot {
-    margin: 0 8px;
+  margin: 0 8px;
 }
-
 
 .fav-post-list {
   margin: 20px 20px 50px;
   li {
     word-break: break-word;
-    margin: 0 0 10px;
+    margin: 0 0 20px;
     a {
-
+      color: #222;
+    }
+    .fav-title {
+      font-size: 16px;
+      padding: 0;
+      margin: 0;
+      font-weight: bold;
+    }
+    .fav-content {
+      display: flex;
+      align-items: flex-start;
+      margin: 4px 0 2px;
+      .fav-cover {
+        display: inline-block;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        margin-right: 4px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .fav-shortcontent {
+        font-size: 14px;
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        word-break: break-word;
+        color: #999;
+      }
+    }
+    .fav-time {
+      color: #999;
+      padding: 0;
+      margin: 0;
+      font-size: 12px;
     }
   }
 }
