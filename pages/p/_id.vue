@@ -287,6 +287,7 @@
         :is-liked="Number(ssToken.is_liked)"
         :likes="article.likes"
         :dislikes="article.dislikes"
+        :fav-related-sidebar="favRelatedSidebar"
         @like="likeEvent"
         @bookmarked="toggleBookmark"
         @share="share"
@@ -800,6 +801,19 @@ export default {
       } catch(e) {
         return ''
       }
+    },
+    // 计算是否已经添加到收藏夹内
+    favRelatedSidebar() {
+      let len = this.favRelatedList.length
+      if (len) {
+        for (let i = 0; i < len; i++) {
+          // 如果存在任何一个文件夹内则为以收藏
+          if (Number(this.favRelatedList[i].related) === 1) {
+            return true
+          }
+        }
+      }
+      return false
     }
   },
   watch: {

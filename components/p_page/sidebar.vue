@@ -33,12 +33,12 @@
     <div class="icon-num">
       <div @click="$emit('fav')">
         <svg-icon
-          :class="bookmarked && 'active'"
+          :class="favRelatedSidebar && 'active'"
           class="icon"
           icon-class="bookmark-solid"
         />
       </div>
-      <p>{{ !bookmarked ? $t('bookmark') : $t('unbookmark') }}</p>
+      <p>{{ !favRelatedSidebar ? $t('bookmark') : $t('unbookmark') }}</p>
     </div>
     <div class="icon-num">
       <div @click="$emit('share')">
@@ -75,6 +75,11 @@ export default {
     dislikes: {
       type: Number,
       default: 0
+    },
+    // 是否在收藏夹
+    favRelatedSidebar: {
+      type: Boolean,
+      default: false
     }
   },
 }
