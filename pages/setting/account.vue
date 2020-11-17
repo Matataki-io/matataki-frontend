@@ -241,7 +241,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['scatter', 'metamask', '']),
+    ...mapState(['scatter', 'metamask']),
     ...mapGetters(['scatter/currentUsername', 'isLogined']),
     ...mapGetters(['currentUserInfo'])
   },
