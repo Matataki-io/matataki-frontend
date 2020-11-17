@@ -5,6 +5,11 @@
       slot="list"
       v-loading="loading"
     >
+      <div v-if="isMe(this.$route.params.id)" class="view-all">
+        <el-checkbox v-model="showAll" @change="handleShowAllChange">
+          显示所有文章
+        </el-checkbox>
+      </div>
       <no-content-prompt :list="articleCardData.articles">
         <articleCardListNew
           v-for="(item, index) in articleCardData.articles"
@@ -19,6 +24,7 @@
           :api-url="articleCardData.apiUrl"
           :page-size="articleCardData.params.pagesize"
           :total="total"
+          :reload="articleCardData.reload"
           class="pagination"
           @paginationData="paginationData"
           @togglePage="togglePage"
@@ -33,6 +39,7 @@ import userPage from '@/components/user/user_page.vue'
 import userPagination from '@/components/user/user_pagination.vue'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import { extractChar } from '@/utils/reg'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -69,16 +76,23 @@ export default {
         params: {
           author: this.$route.params.id,
           pagesize: 20,
-          extra: 'short_content'
+          extra: 'short_content',
+          showAll: this.showAll ? '1' : '0'
         },
         apiUrl: 'homeTimeRanking',
-        articles: []
+        articles: [],
+        checked: true,
+        reload: 0
       },
       currentPage: Number(this.$route.query.page) || 1,
       loading: false, // 加载数据
       total: 0,
-      userData: Object.create(null)
+      userData: Object.create(null),
+      showAll: false
     }
+  },
+  computed: {
+    ...mapGetters(['isMe']),
   },
   async asyncData({ $axios, route, req }) {
     // 获取cookie token
@@ -130,7 +144,12 @@ export default {
           page: i
         }
       })
+    },
+    // 显示所有文章Event
+    handleShowAllChange() {
+      this.articleCardData.params.showAll = this.showAll ? '1' : '0'
     }
+
   }
 }
 </script>
@@ -138,5 +157,10 @@ export default {
 <style scoped>
 .pagination {
   padding: 40px 5px;
+}
+.view-all {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>

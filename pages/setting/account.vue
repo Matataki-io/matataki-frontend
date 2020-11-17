@@ -51,6 +51,54 @@
           {{ $t('thirdParty.bindExplanation2') }}
         </p>
       </div>
+      <h2 class="tag-title">
+        {{ $t('user.matatakiAuthAccountSetting') }}
+      </h2>
+      <div class="list">
+        <div
+          v-for="(item, idx) in matatakiAuthAccountList"
+          :key="idx"
+          class="fl ac"
+        >
+          <div
+            v-loading="item.loading"
+            :class="[item.type, item.status && 'bind']"
+            :data-disabled="item.disabled"
+            class="list-account matataki-auth-account"
+            :style="'background-color: ' + item.color + ';'"
+            @click="matatakiAuthBuildAccount(item.type, item.typename, idx)"
+          >
+            <img :src="item.icon" class="image-icon">
+            <span class="typename">{{ item.typename }}</span>
+            <span class="username">{{ item.username }}</span>
+            <span class="close">{{ $t('thirdParty.unbind') }}</span>
+            <svg-icon
+              icon-class="correct"
+              class="correct"
+            />
+            <svg-icon
+              icon-class="close_thin"
+              class="close_thin"
+            />
+          </div>
+          <!-- <el-radio
+            :value="accountRadio"
+            :label="item.type"
+            :disabled="item.disabled"
+            style="margin-left: 10px;"
+            @change="accountChangeFunc(item.type, idx)"
+          >
+            <span v-if="accountRadio === item.type">{{ $t('thirdParty.mainAccount') }}</span>
+            <span v-else>&nbsp;</span>
+          </el-radio> -->
+        </div>
+        <p class="list-p">
+          {{ $t('thirdParty.bindExplanation3') }}
+        </p>
+        <p class="list-p">
+          {{ $t('thirdParty.bindExplanation4') }}
+        </p>
+      </div>
     </template>
     <template slot="nav">
       <myAccountNav />
@@ -66,6 +114,8 @@ import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import { getSignatureForLogin } from '@/api/eth'
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
+
+import Axios from 'axios'
 
 export default {
   components: {
@@ -186,7 +236,8 @@ export default {
           is_main: 0,
           disabled: false
         }
-      ]
+      ],
+      matatakiAuthAccountList: []
     }
   },
   computed: {
@@ -194,8 +245,14 @@ export default {
     ...mapGetters(['scatter/currentUsername', 'isLogined']),
     ...mapGetters(['currentUserInfo'])
   },
+  watch: {
+    currentUserInfo(val) {
+      if (val) this.getMatatakiAuthAccountList()
+    }
+  },
   mounted() {
     this.getAccountList()
+    if (this.currentUserInfo) this.getMatatakiAuthAccountList()
   },
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
@@ -605,14 +662,79 @@ export default {
         console.log(e)
         return false
       }
-    }
+    },
+    async getMatatakiAuthAccountList () {
+      const list = await Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/app/availableBinding')
+      list.data.forEach(item => {
+        item.icon = process.env.VUE_APP_MATATAKIAUTH_API + item.icon
+        Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/' + this.currentUserInfo.id, { params: { platform: 'Bilibili' } }).then(async res => {
+          if (res.data.code === 0) {
+            if (res.data.message !== 'User Not Found') {
+              const filterPlatform = res.data.data.filter(j => j.platform === item.type)
+              console.log(filterPlatform)
+              if (filterPlatform.length > 0) {
+                item.username = filterPlatform[0].account
+                item.status = filterPlatform[0].status
+              }
+            }
+            console.log(item)
+            this.matatakiAuthAccountList = this.matatakiAuthAccountList.filter(item => item.type !== 'bilibili')
+            this.matatakiAuthAccountList.push(item)
+          }
+          else {
+            console.log(res.data.message)
+          }
+        }).catch(err => console.error(err))
+      })
+    },
+    matatakiAuthBuildAccount: debounce(function (type, typename, idx) {
+      if (this.accountList[idx].disabled) return
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      // if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
+      if (this.matatakiAuthAccountList[idx].status) {
+        this.matatakiAuthAccountUnbild({
+          platform: typename,
+          account: this.matatakiAuthAccountList[idx].username
+        }, idx)
+      } else {
+        this.matatakiAuthAccountBind(type, typename, idx)
+      }
+    }, 300),
+    matatakiAuthAccountBind(type, typename, idx) {
+      if (this.matatakiAuthAccountList[idx].loading) return
+      this.matatakiAuthAccountList[idx].loading = true
+
+      this.$message.warning(this.$t('thirdParty.useMatatakiAuthToBind'))
+
+      setTimeout(() => {
+        window.open(process.env.VUE_APP_MATATAKIAUTH_API + '/auth/' + type, '_blank')
+        this.matatakiAuthAccountList[idx].loading = false
+      }, 3000)
+
+    },
+    matatakiAuthAccountUnbild(params, idx) {
+      this.matatakiAuthAccountList[idx].loading = true
+      const userId = this.currentUserInfo.id
+      console.log(params)
+      Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/unbinding', { params: { userId: userId, platform: params.platform, account: params.account } }).then(res => {
+        if (res.data.code === 0) {
+          this.$message({ showClose: true, message: res.message, type: 'success'})
+          this.getMatatakiAuthAccountList()
+        } else {
+          this.$message({ showClose: true, message: res.message, type: 'warning'})
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message.error(this.$t('thirdParty.unbindingFailed') + params.platform.toUpperCase())
+      }).finally(() => {
+        this.matatakiAuthAccountList[idx].loading = false
+      })
+    },
   }
 }
 </script>
 
 <style lang="less" scoped>
-.list {
-}
 .list-account {
   display: flex;
   align-items: center;
@@ -807,6 +929,14 @@ export default {
   /deep/ .el-loading-mask {
     z-index: 1;
   }
+}
+.matataki-auth-account {
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+.image-icon {
+  height: 20px;
 }
 .list-p{
   font-size: 12px;
