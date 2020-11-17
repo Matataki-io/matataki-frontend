@@ -149,7 +149,7 @@ import userPage from '@/components/user/user_page.vue'
 // import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import { extractChar } from '@/utils/reg'
 import { mapGetters } from 'vuex'
-import createFav from '@/components/create_fav/index'
+import createFav from '@/components/fav/create'
 import { isEmpty } from 'lodash'
 
 export default {

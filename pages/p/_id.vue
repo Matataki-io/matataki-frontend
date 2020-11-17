@@ -414,7 +414,7 @@ import ExsModal from '@/components/ExsModal'
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
-import addFav from '@/components/add_fav'
+import addFav from '@/components/fav/add'
 
 
 let markdown = null
