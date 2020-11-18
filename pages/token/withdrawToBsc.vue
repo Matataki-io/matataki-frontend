@@ -219,7 +219,7 @@ export default {
       this.$emit('login')
     },
     goToMintPermitList() {
-      this.$router.push('/token/bscMintWithPermit')
+      this.$router.push('/token/myBscPermit')
     },
     async sendPermit() {
       try {

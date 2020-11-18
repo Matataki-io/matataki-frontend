@@ -1144,6 +1144,13 @@ minetokenGetResources(tokenId) {
         timeout: 60 * 1000
       })
   },
+  // 获取我的 BSC 许可
+  listMyBscPermit() {
+      return request({
+        method: 'GET',
+        url: `/minetoken/crosschain/permit`,
+      })
+  },
   // Token转入同步到DB
   depositToken(txHash) {
     return request({
