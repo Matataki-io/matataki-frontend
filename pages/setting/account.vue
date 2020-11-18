@@ -245,9 +245,14 @@ export default {
     ...mapGetters(['scatter/currentUsername', 'isLogined']),
     ...mapGetters(['currentUserInfo'])
   },
+  watch: {
+    currentUserInfo(val) {
+      if (val) this.getMatatakiAuthAccountList()
+    }
+  },
   mounted() {
     this.getAccountList()
-    this.getMatatakiAuthAccountList()
+    if (this.currentUserInfo) this.getMatatakiAuthAccountList()
   },
   methods: {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
@@ -659,26 +664,27 @@ export default {
       }
     },
     async getMatatakiAuthAccountList () {
-      this.$API.accountList().then(async res => {
-        if (res.code === 0) {
-          const list = await Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/app/availableBinding')
-          console.log(res.data)
-          list.data.forEach(item => {
-            item.icon = process.env.VUE_APP_MATATAKIAUTH_API + item.icon
-            const filterPlatform = res.data.filter(j => j.platform === item.type)
-            // console.log(filterPlatform)
-            if (filterPlatform.length > 0) {
-              item.username = filterPlatform[0].account
-              item.status = filterPlatform[0].status
+      const list = await Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/app/availableBinding')
+      list.data.forEach(item => {
+        item.icon = process.env.VUE_APP_MATATAKIAUTH_API + item.icon
+        Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/' + this.currentUserInfo.id, { params: { platform: 'Bilibili' } }).then(async res => {
+          if (res.data.code === 0) {
+            if (res.data.message !== 'User Not Found') {
+              const filterPlatform = res.data.data.filter(j => j.platform === item.type)
+              console.log(filterPlatform)
+              if (filterPlatform.length > 0) {
+                item.username = filterPlatform[0].account
+                item.status = filterPlatform[0].status
+              }
             }
             console.log(item)
+            this.matatakiAuthAccountList = this.matatakiAuthAccountList.filter(item => item.type !== 'bilibili')
             this.matatakiAuthAccountList.push(item)
-          })
-        } else {
-          console.log(res.message)
-        }
-      }).catch(err => {
-        console.log('err', err)
+          }
+          else {
+            console.log(res.data.message)
+          }
+        }).catch(err => console.error(err))
       })
     },
     matatakiAuthBuildAccount: debounce(function (type, typename, idx) {
@@ -687,7 +693,7 @@ export default {
       // if (this.accountList[idx].is_main === 1) return this.$message.warning('主账号不允许绑定或解除')
       if (this.matatakiAuthAccountList[idx].status) {
         this.matatakiAuthAccountUnbild({
-          platform: type.toLocaleLowerCase(),
+          platform: typename,
           account: this.matatakiAuthAccountList[idx].username
         }, idx)
       } else {
@@ -707,36 +713,13 @@ export default {
 
     },
     matatakiAuthAccountUnbild(params, idx) {
-      this.accountList[idx].loading = true
-      alert(JSON.stringify(params))
-      this.$API.accountUnbind(params).then(res => {
-        if (res.code === 0) {
-          let idProvider = getCookie('idProvider').toLocaleLowerCase()
-          idProvider = idProvider === 'metamask' ? 'eth' : idProvider
-          if (idProvider === this.accountList[idx].type.toLocaleLowerCase()) {
-            this.$message.warning(this.$t('thirdParty.loginAgainAfterUnbinding'))
-            // this.signOut()
-            this.$utils.delCookie('ACCESS_TOKEN')
-            this.$utils.delCookie('idProvider')
-            store.clear()
-            sessionStorage.clear()
-            // this.$utils.deleteAllCookies()
-            setTimeout(() => {
-              window.location.reload()
-            }, 300)
-          } else {
-            this.$message({ showClose: true, message: res.message, type: 'success'})
-            this.getMatatakiAuthAccountList()
-          }
-        } else if (res.code === 999) {
-          let msg = '<ul>'
-          msg += res.message.reduce((accumulator, item) => {
-            return accumulator + `<li>${item.error}</li>`
-          }, '')
-          msg += '</ul>'
-          this.$alert(msg, this.$t('thirdParty.accountRiskWarning'), {
-            dangerouslyUseHTMLString: true
-          })
+      this.matatakiAuthAccountList[idx].loading = true
+      const userId = this.currentUserInfo.id
+      console.log(params)
+      Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/unbinding', { params: { userId: userId, platform: params.platform, account: params.account } }).then(res => {
+        if (res.data.code === 0) {
+          this.$message({ showClose: true, message: res.message, type: 'success'})
+          this.getMatatakiAuthAccountList()
         } else {
           this.$message({ showClose: true, message: res.message, type: 'warning'})
         }
@@ -744,7 +727,7 @@ export default {
         console.log(err)
         this.$message.error(this.$t('thirdParty.unbindingFailed') + params.platform.toUpperCase())
       }).finally(() => {
-        this.accountList[idx].loading = false
+        this.matatakiAuthAccountList[idx].loading = false
       })
     },
   }
