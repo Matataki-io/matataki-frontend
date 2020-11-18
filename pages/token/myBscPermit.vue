@@ -110,7 +110,8 @@ export default {
       transferLoading: false,
       mintResult: null,
       listOfToken: [],
-      listOfTokenAndItsPermit: []
+      listOfTokenAndItsPermit: [],
+      interval: null
     }
   },
   computed: {
@@ -119,6 +120,10 @@ export default {
   watch: {
     isLogined(val) {
       if (val) this.fetchPermit()
+      // 每一分钟刷新一次
+      this.interval = setInterval(() => {
+        this.fetchPermit()
+      }, 1000 * 60)
     }
   },
   mounted() {
