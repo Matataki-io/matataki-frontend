@@ -111,9 +111,7 @@
     </div>
     <div class="user-page-content">
       <userPageNav />
-      <div class="article">
-        <slot name="list" />
-      </div>
+      <slot name="list" />
     </div>
     <Share
       :share-modal-show="shareModalShow"
@@ -275,6 +273,8 @@ export default {
   background-color: #c8d7ff;
   box-sizing: border-box;
   img {
+    width: 100%;
+    object-fit: contain;
     height: 100%;
     display: block;
     margin: 0 auto;
@@ -402,14 +402,7 @@ export default {
   }
 }
 
-.article {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-}
 .user-page-content {
-  max-width: 766px;
   margin: 0 auto;
   padding: 0 10px;
 }

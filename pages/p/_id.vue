@@ -287,9 +287,11 @@
         :is-liked="Number(ssToken.is_liked)"
         :likes="article.likes"
         :dislikes="article.dislikes"
+        :fav-related-sidebar="favRelatedSidebar"
         @like="likeEvent"
         @bookmarked="toggleBookmark"
         @share="share"
+        @fav="handleFavEvent"
       />
 
       <!-- 内容居中 -->
@@ -358,6 +360,12 @@
         :need-price="copyForm.needPrice"
         :need-token="copyForm.needToken"
       />
+      <addFav
+        v-model="addFavModal"
+        :fav-related-list="favRelatedList"
+        @handle-change="handleChange"
+        @reload-fav="favRelated($route.params.id)"
+      />
     </div>
     <div v-else class="container deleted">
       <div>
@@ -412,6 +420,7 @@ import ExsModal from '@/components/ExsModal'
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import bannerFan from '@/components/p_page/banner_fan'
+import addFav from '@/components/fav/add'
 
 
 let markdown = null
@@ -421,7 +430,7 @@ if (process.client) {
   let md = require('markdown-render-js')
 
   markdown = md.markdown
-  finishView = md.finishView 
+  finishView = md.finishView
 }
 
 // import { markdown, finishView } from '../../static/markdown-render-js.min.js'
@@ -491,7 +500,8 @@ export default {
     commentReward,
     ExsModal,
     bannerFan,
-    markdownView
+    markdownView,
+    addFav
   },
   data() {
     return {
@@ -587,7 +597,9 @@ export default {
       },
       readTokenExs: true,
       editTokenExs: true,
-      payTokenBalance: 0
+      payTokenBalance: 0,
+      addFavModal: false, // 添加到收藏夹
+      favRelatedList: [], // 收藏夹列表关系
     }
   },
 
@@ -789,6 +801,19 @@ export default {
       } catch(e) {
         return ''
       }
+    },
+    // 计算是否已经添加到收藏夹内
+    favRelatedSidebar() {
+      let len = this.favRelatedList.length
+      if (len) {
+        for (let i = 0; i < len; i++) {
+          // 如果存在任何一个文件夹内则为以收藏
+          if (Number(this.favRelatedList[i].related) === 1) {
+            return true
+          }
+        }
+      }
+      return false
     }
   },
   watch: {
@@ -919,6 +944,7 @@ export default {
       this.$nextTick(() => {
         this.setFontSize()
         this.getCommentRewardCount()
+        this.favRelated(this.$route.params.id)
       })
     }
 
@@ -1775,6 +1801,43 @@ export default {
           console.log('compiledMarkdown change', e)
         }
       })
+    },
+    // 获取文章和收藏夹关系
+    async favRelated(pid) {
+      if (!pid) return
+
+      const params = {
+        pid,
+      }
+      const res = await this.$utils.factoryRequest(this.$API.favRelated(params))
+      if (res) {
+        console.log('res', res)
+        let list = res.data.list
+        list.forEach(l => {
+          l.related = Number(l.related) === 1
+        })
+        this.favRelatedList = list
+      } else {
+        //
+      }
+    },
+    // 添加到收藏夹
+    handleFavEvent() {
+      this.addFavModal = true
+    },
+    // 切换文章收藏
+    async handleChange(v) {
+      console.log('v', v)
+      const data = {
+        fid: v.fid,
+        pid: this.$route.params.id
+      }
+      if (v.val) {
+        await this.$utils.factoryRequest(this.$API.favSave(data))
+      } else {
+        await this.$utils.factoryRequest(this.$API.favCancelSave(data))
+      }
+      this.favRelated(this.$route.params.id)
     }
   }
 

@@ -1256,5 +1256,23 @@ minetokenGetResources(tokenId) {
 
   // ---------------- 获取推特时间线 ----------------------------------------
   getTwitterTimeline(page = 1, pagesize = 20) { return request.get(`/timeline/twitter`, { params: { page, pagesize } }) },
-  setTwitterUserTimeLineSwitch(timelineSwitch) { return request.post('/timeline/twitter/user', { timelineSwitch }) }
+  setTwitterUserTimeLineSwitch(timelineSwitch) { return request.post('/timeline/twitter/user', { timelineSwitch }) },
+
+
+  // -------------------------------- 收藏夹 --------------------------------
+  // 创建收藏夹
+  favCreate(data) { return request.post(`/favorites/create`, data ) },
+  // 编辑收藏夹
+  favEdit(data) { return request.put(`/favorites/edit`, data ) },
+  // 删除收藏夹
+  favDelete(data) { return request.delete(`/favorites/delete`, { data } ) },
+  // 保存收藏夹
+  favSave(data) { return request.post(`/favorites/save`, data ) },
+  favCancelSave(data) { return request.post(`/favorites/cancel_save`, data ) },
+  // 获取自己的收藏夹列表
+  favList(params) { return request.get(`/favorites/list`, { params }) },
+  // 获取自己的收藏夹列表文章
+  favPost(params) { return request.get(`/favorites/post`, { params }) },
+  // 获取文章和自己的收藏夹关系
+  favRelated(params) { return request.get(`/favorites/related`, { params }) },
 }
