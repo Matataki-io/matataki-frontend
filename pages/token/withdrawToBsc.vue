@@ -2,7 +2,7 @@
   <div class="withdraw-container">
     <!-- Frank 留言：可以先不整这个，我还在弄后端接口 -->
     <h1 class="title">
-      提取 Fan票到币安智能链（Binance Smart Chain）
+      跨链提取 Fan票到币安智能链（Binance Smart Chain）
     </h1>
     <div v-if="!isLogined" class="card not-logined">
       <h1 class="title">
@@ -20,36 +20,42 @@
         <h2 class="title">
           ⚠️你找到了暂未对公众开放的试验性功能⚠️
         </h2>
-        提取出Fan票到我们在币安智能链上托管(Pegged)的 ERC20 代币。
+        提取出Fan票到我们在币安智能链（BSC）上托管(Pegged)的 ERC20 代币。
+        <br> <b>该功能为公测版，暂不对所有Fan票开放，可能存在不稳定的现象。</b>
         <br>
-        请确保你自己知道你在做啥，并提供的一个有效的币安智能链地址，我们不为搞错地址所造成的丢币负责。
+        需要MetaMask钱包接入 BSC 主网，拥有 BNB。<a 
+          style="color: #1989FA;"
+          href="https://www.readblocks.com/archives/32275" 
+          target="_blank" 
+          rel="noreferrer"
+        >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+        <br>
+        并提供的一个有效的币安智能链地址，我们不为搞错地址所造成的丢币负责。
       </el-alert>
       <el-alert type="info">
         <h2 class="title">
-          ❓怎么在以太坊钱包显示我提现出来的Fan票？ 
+          ❓怎么在 MetaMask 钱包显示我提现出来的 BSC Fan票？ 
         </h2>
+
         <a 
           style="color: #1989FA;"
           href="https://matataki.io/p/4881" 
           target="_blank" 
           rel="noreferrer"
         >👉在 MetaMask 添加 Fan票的指南👈</a>
-        <a 
-          style="color: #1989FA;"
-          href="https://www.readblocks.com/archives/32275" 
-          target="_blank" 
-          rel="noreferrer"
-        >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
       </el-alert>
       <el-form
         ref="form"
         v-loading="transferLoading"
         :model="form"
         :rules="rules"
-        label-width="60px"
+        label-width="120px"
         class="withdraw-form"
       >
-        <el-form-item label="类型" prop="tokenId">
+        <h4 class="title">
+          跨链转账到币安智能区块链 主网 BSC Mainnet
+        </h4>
+        <el-form-item label="要转出的Fan票" prop="tokenId">
           <el-select
             v-model="form.tokenId"
             filterable
@@ -88,10 +94,10 @@
             @click="form.amount = form.balance"
           >全部转出</a>
         </p>
-        <el-form-item label="目标地址" prop="to">
+        <el-form-item label="转账目的地" prop="to">
           <el-input
             v-model="form.to"
-            placeholder="请输入目标钱包的以太坊地址，以 0x 开头。"
+            placeholder="请输入目标钱包的BSC地址，以 0x 开头。"
             clearable
           />
         </el-form-item>
@@ -107,17 +113,18 @@
         </div>
         <el-alert v-if="withdrawResult" type="success">
           <h1 class="title">
-            Fan 票提现成功
+            Fan 票 BSC 跨链转账许可证已下发
           </h1>
-          这笔交易已经提交到区块链网络，等待网络确认。
-          <a 
-            style="color: #1989FA;"
-            :href="`https://rinkeby.etherscan.io/tx/${withdrawResult.txHash}`" 
-            target="_blank" 
-            rel="noreferrer"
-          >
-            👉 在 EtherScan 查看这笔提现交易 👈
-          </a>
+          因为这是 BSC 主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的 BNB，以创建跨链资产。
+          <br>
+          你的提现许可证如下（不用怕，你可以随时到许可证列表查看之前申请过的）
+          <br>
+          <textarea v-model="permitOfMint" disabled style="width: 381px; height: 295px;" />
+          <div class="actions">
+            <el-button @click="goToMintPermitList">
+              查看我申请过的许可证 / 发送激活
+            </el-button>
+          </div>
         </el-alert>
       </el-form>
     </div>
@@ -127,6 +134,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import { precision, toPrecision } from '@/utils/precisionConversion'
+import { ethers } from 'ethers'
+import { mintWithPermit } from '../../utils/ethers'
+
+// @todo: 到时候成熟了去掉
+const BSC_PEGGED_WHITELIST = [
+  'DEV', 'DAO', 'META', 'SSS'
+]
 
 export default {
   name: 'TokenWithdraw',
@@ -148,9 +162,9 @@ export default {
       if (!value) {
         callback('目标钱包地址不能为空')
       } else if (value.length !== 42) {
-        callback(new Error('钱包地址长度不正确，请再次确认是否为以太坊钱包地址'))
+        callback(new Error('钱包地址长度不正确，请再次确认是否为币安智能区块链钱包地址'))
       } else if (value.slice(0, 2) !== '0x') {
-        callback('地址不是0x开头，应该不是以太坊地址🤔')
+        callback('地址不是0x开头，应该不是币安智能区块链的钱包地址🤔')
       } else {
         callback()
       }
@@ -178,23 +192,14 @@ export default {
       },
       transferLoading: false,
       tokenOptions: [],
-      withdrawResult: null,
-      permit: {
-        sig: {
-          r: '0x38fb8b99ec663c221c595e69f8f8c6a00b5d8543e1ecfd21b709fbcc99b58fab',
-          s: '0x17ccb0a240ba8fae8cc3fe25bcd431b802ca97ca6a9365522ec241fa7df9cec4',
-          v: 28
-        },
-        token: '0x14372C682A88f5F2A5eFc0d3A65195C91AbF7754',
-        to: '0x2F129a52aAbDcb9Fa025BFfF3D4C731c2D914932',
-        value: '123456789',
-        nonce: 2,
-        deadline: 1605611329
-      }
+      withdrawResult: null
     }
   },
   computed: {
     ...mapGetters(['isMe', 'isLogined', 'currentUserInfo']),
+    permitOfMint() {
+      return this.withdrawResult ? JSON.stringify(this.withdrawResult, null, 2) : ''
+    },
     isGoodToWithdraw() {
       if (!this.form.amount) return false
       return Number(this.form.amount) <= this.form.max
@@ -212,6 +217,19 @@ export default {
     login() {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
+    },
+    goToMintPermitList() {
+      this.$router.push('/token/bscMintWithPermit')
+    },
+    async sendPermit() {
+      try {
+        const { withdrawResult: permit } = this
+        const provider = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+        const result = await mintWithPermit(provider, permit.token, permit.to, permit.value, permit.deadline, permit.sig.v, permit.sig.r, permit.sig.s)
+        this.$message.success(`上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`)
+      } catch (error) {
+        this.$message.error(error.message)
+      }
     },
     getUserBalance(tokenId) {
       this.$API.getUserBalance(tokenId).then((res) => {
@@ -243,7 +261,7 @@ export default {
         target: this.form.to,
         amount: toPrecision(this.form.amount, 'CNY', 4),
       }
-      this.$API.withdrawToken(this.form.tokenId, data)
+      this.$API.withdrawTokenToBsc(this.form.tokenId, data)
         .then(res => {
           if (res.code === 0) {
             this.$emit('success')
@@ -275,7 +293,7 @@ export default {
       }
       await this.$API.tokenTokenList(data).then(res => {
         if (res.code === 0) {
-          this.tokenOptions = res.data.list
+          this.tokenOptions = res.data.list.filter(({ symbol }) => BSC_PEGGED_WHITELIST.indexOf(symbol.toUpperCase()) > -1)
           this.topOwnToken()
         } else {
           this.tokenOptions = []
