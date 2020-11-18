@@ -1135,6 +1135,22 @@ minetokenGetResources(tokenId) {
         timeout: 40 * 1000
       })
   },
+    // Token提现去BSC
+  withdrawTokenToBsc(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/crosschain/${tid}/withdrawToBsc`,
+        data,
+        timeout: 60 * 1000
+      })
+  },
+  // 获取我的 BSC 许可
+  listMyBscPermit() {
+      return request({
+        method: 'GET',
+        url: `/minetoken/crosschain/permit`,
+      })
+  },
   // Token转入同步到DB
   depositToken(txHash) {
     return request({
