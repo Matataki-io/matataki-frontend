@@ -4,7 +4,7 @@
     width="446px"
     title="收藏夹信息"
   >
-    <CreateFavForm @create-done="createFavShowModal = false" />
+    <CreateFavForm type="create" @create-done="createFavShowModal = false" />
   </m-dialog>
 </template>
 

@@ -50,6 +50,10 @@ export default {
     form: {
       type: Object,
       default: () => {}
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -73,12 +77,7 @@ export default {
     form: {
       deep: true,
       handler() {
-        console.log('form', this.form)
-        if (!isEmpty(this.form)) {
-          this.formFav.name = this.form.name
-          this.formFav.brief = this.form.brief
-          this.formFav.status = this.form.status
-        }
+        this.initForm()
       }
     }
 
@@ -89,7 +88,7 @@ export default {
   methods: {
     initForm() {
       console.log('init form', this.form)
-      if (!isEmpty(this.form)) {
+      if (this.type === 'edit' && !isEmpty(this.form)) {
         this.formFav.name = this.form.name
         this.formFav.brief = this.form.brief
         this.formFav.status = this.form.status
@@ -151,9 +150,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // form 空 并且 form 也没有 fid
-          if (isEmpty(this.form) && !this.form.fid) {
+          if (this.type === 'create') {
             this.favCreate()
-          } else {
+          } else if (this.type === 'edit' && this.form.fid) {
             this.favEdit()
           }
         } else {
