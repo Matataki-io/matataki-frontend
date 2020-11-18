@@ -345,8 +345,6 @@ export default {
             pagesize: 10
           }
         }
-      } else {
-        //
       }
     },
     toggleFavPost(fid) {
@@ -368,8 +366,15 @@ export default {
         if (res) {
           console.log('res', res)
           this.favList()
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
         } else {
-          //
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
         }
       } else if (command.key === 'edit') {
         // 编辑

@@ -1817,8 +1817,6 @@ export default {
           l.related = Number(l.related) === 1
         })
         this.favRelatedList = list
-      } else {
-        //
       }
     },
     // 添加到收藏夹

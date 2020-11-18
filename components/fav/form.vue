@@ -155,6 +155,8 @@ export default {
             this.favCreate()
           } else if (this.type === 'edit' && this.form.fid) {
             this.favEdit()
+          } else {
+            console.log('type ', this.type)
           }
         } else {
           console.log('error submit!!')
