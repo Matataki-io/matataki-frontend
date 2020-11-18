@@ -6,50 +6,24 @@
         <div class="fav-sidenav">
           <div class="nav-container fav-container">
             <div class="favlist-title">
-              <p>我的创建</p>
-              <!-- <i class="icon icon-arrow arrow-transform" /> -->
+              <p>{{ isMe($route.params.id) ? '我的创建' : 'TA的创建' }}</p>
             </div>
             <div style="display: block">
               <div
                 id="fav-createdList-container"
                 class="be-scrollbar fav-list-container ps"
               >
-                <div class="nav-title nav-add" @click="createFavModal = true">
+                <div v-if="isMe($route.params.id)" class="nav-title nav-add" @click="createFavModal = true">
                   <i class="el-icon-circle-plus fav-add-icon" />
                   <span class="text">新建收藏夹</span>
                 </div>
-                <!-- <div fid="61280084" class="fav-item cur">
-                  <span class="iconfont icon-bodan" /><a
-                    href="/94919784/favlist?fid=61280084"
-                    class="text router-link-exact-active router-link-active"
-                    title="默认收藏夹"
-                  >默认收藏夹</a><span class="num">14</span>
-                  <div class="be-dropdown">
-                    <div class="be-dropdown-trigger">
-                      <i title="更多操作" class="iconfont icon-ic_more" />
-                    </div>
-                    <ul
-                      class="be-dropdown-menu menu-align-"
-                      style="
-                        left: 164px;
-                        top: 459px;
-                        transform-origin: center top;
-                        display: none;
-                      "
-                    >
-                      <li class="be-dropdown-item">
-                        编辑信息
-                      </li>
-                    </ul>
-                  </div>
-                </div> -->
-                <ul class="fav-list">
+                <ul v-if="favListData.length" class="fav-list">
                   <li
                     v-for="(item, i) in favListData"
                     :key="i"
                     class="fav-item"
                     :class="Number($route.query.fid) === Number(item.id) && 'cur'"
-                    @click="favPost(item.id)"
+                    @click="toggleFavPost(item.id)"
                   >
                     <router-link
                       :to="{
@@ -86,6 +60,7 @@
                     </el-dropdown>
                   </li>
                 </ul>
+                <p v-else class="not-fav">暂时没有收藏夹～</p>
               </div>
             </div>
           </div>
@@ -114,9 +89,9 @@
               </div>
             </div>
           </div>
-          <ul v-if="!isEmpty(favPostData)" class="fav-post-list">
-            <li v-for="(item, i) in favPostData.list" :key="i">
-              <router-link :to="{ name: 'p-id', params: { id: item.pid } }">
+          <ul v-if="!isEmpty(pull.list)" class="fav-post-list">
+            <li v-for="(item, i) in pull.list" :key="i">
+              <router-link :to="{ name: 'p-id', params: { id: item.pid } }" target="_blank">
                 <p class="fav-title">{{ item.title }}</p>
                 <div class="fav-content">
                   <div v-if="item.cover" class="fav-cover">
@@ -132,6 +107,19 @@
               </router-link>
             </li>
           </ul>
+          <p v-if="!isEmpty(favPostData) && isEmpty(pull.list)" class="not-fav-post">该收藏夹还没有文章哦~</p>
+          <user-pagination
+            :current-page="pull.currentPage"
+            :params="pull.params"
+            :api-url="pull.apiUrl"
+            :page-size="pull.params.pagesize"
+            :total="pull.total"
+            :reload="pull.reload"
+            :need-access-token="true"
+            class="pagination"
+            @paginationData="paginationData"
+            @togglePage="togglePage"
+          />
         </div>
       </div>
       <createFav v-model="createFavModal" @create-done="favList()" />
@@ -142,8 +130,7 @@
 
 <script>
 import userPage from '@/components/user/user_page.vue'
-// import userPagination from '@/components/user/user_pagination.vue'
-// import articleCardListNew from '@/components/article_card_list_new/index.vue'
+import userPagination from '@/components/user/user_pagination.vue'
 import { extractChar } from '@/utils/reg'
 import { mapGetters } from 'vuex'
 import createFav from '@/components/fav/create'
@@ -154,8 +141,7 @@ import { isNDaysAgo } from '@/utils/momentFun'
 export default {
   components: {
     userPage,
-    // userPagination,
-    // articleCardListNew,
+    userPagination,
     createFav,
     editFav,
   },
@@ -257,6 +243,15 @@ export default {
       editFavPropsFrom: Object.create(null), // 编辑收藏夹数据
       favListData: [],
       favPostData: Object.create(null),
+      pull: {
+        params: {},
+        apiUrl: 'favPost',
+        list: [],
+        loading: false,
+        currentPage: 1,
+        total: 0,
+        reload: 0,
+      },
     }
   },
   computed: {
@@ -332,28 +327,30 @@ export default {
         console.log('res', res)
         this.favListData = res.data.list
         if (res.data.list.length) {
-          this.favPost(res.data.list[0].id)
+          const fid = this.$route.query.fid ? this.$route.query.fid : res.data.list[0].id
+          // 添加query
+          this.$router.push({
+            query: {
+              fid: fid
+            }
+          })
+          // 请求文章数据
+          this.pull.params = {
+            userId: this.$route.params.id,
+            fid: fid,
+            pagesize: 3
+          }
         }
       } else {
         //
       }
     },
-    // 获取自己的收藏夹列表
-    async favPost(fid) {
-      const userId = this.$route.params.id
-      if (!userId) {
-        return
-      }
-      const params = {
-        userId: userId,
+    toggleFavPost(fid) {
+      // 请求文章数据
+      this.pull.params = {
+        userId: this.$route.params.id,
         fid: fid,
-      }
-      const res = await this.$utils.factoryRequest(this.$API.favPost(params))
-      if (res) {
-        console.log('res', res)
-        this.favPostData = res.data
-      } else {
-        //
+        pagesize: 3
       }
     },
     // 收藏夹多选操作
@@ -380,6 +377,19 @@ export default {
         }
         this.editFavModal = true
       }
+    },
+    // 分页处理
+    paginationData(res) {
+      // console.log('res', res)
+      this.favPostData = res.data
+      this.pull.list = []
+      this.pull.list = res.data.list
+      this.pull.total = res.data.count || 0
+      this.pull.loading = false
+    },
+    togglePage(i) {
+      this.pull.loading = true
+      this.pull.currentPage = i
     },
   },
 }
@@ -617,8 +627,9 @@ export default {
       margin: 4px 0 2px;
       .fav-cover {
         display: inline-block;
-        max-width: 200px;
-        max-height: 100px;
+        width: 200px;
+        height: 100px;
+        flex: 0 0 200px;
         overflow: hidden;
         margin-right: 4px;
         img {
@@ -634,6 +645,12 @@ export default {
         margin: 0;
         word-break: break-word;
         color: #999;
+        max-height: 100px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        white-space: pre-wrap;
       }
     }
     .fav-time {
@@ -651,5 +668,17 @@ export default {
   justify-content: center;
   cursor: pointer;
   padding: 0 10px;
+}
+
+.not-fav {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+.not-fav-post {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  margin-top: 120px;
 }
 </style>

@@ -100,5 +100,7 @@ export const paginationUrl = {
   // 获取用户的推特主页时间线（关注的人）。
   getTwitterTimeline: '/timeline/twitter',
   // 获取用户的推特用户时间线（自己）。
-  getTwitterUserTimeline: '/timeline/twitter/user'
+  getTwitterUserTimeline: '/timeline/twitter/user',
+  // 收藏夹文章列表
+  favPost: '/favorites/post',
 }
