@@ -342,7 +342,7 @@ export default {
           this.pull.params = {
             userId: this.$route.params.id,
             fid: fid,
-            pagesize: 3
+            pagesize: 10
           }
         }
       } else {
