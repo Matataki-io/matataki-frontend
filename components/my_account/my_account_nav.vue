@@ -23,7 +23,7 @@ export default {
       tagsList: [
         { title: this.$t('user.userInformation'), url: 'setting' },
         { title: this.$t('user.accountSetting'), url: 'setting-account' },
-        { title: this.$t('user.myBookmark'), url: 'bookmark' },
+        // { title: this.$t('user.myBookmark'), url: 'bookmark' },
         { title: this.$t('user.wallet'), url: 'account' },
         { title: this.$t('user.buyHistory'), url: 'buy' },
         { title: this.$t('user.invite'), url: 'invite' },

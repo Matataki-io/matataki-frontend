@@ -20,7 +20,7 @@
       </div>
       <p>{{ $t('p.unlike') }}<span>{{ dislikes }}</span></p>
     </el-badge>
-    <div class="icon-num">
+    <!-- <div class="icon-num">
       <div @click="$emit('bookmarked', bookmarked)">
         <svg-icon
           :class="bookmarked && 'active'"
@@ -29,7 +29,7 @@
         />
       </div>
       <p>{{ !bookmarked ? $t('bookmark') : $t('unbookmark') }}</p>
-    </div>
+    </div> -->
     <div class="icon-num">
       <div @click="$emit('fav')">
         <svg-icon

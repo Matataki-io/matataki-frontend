@@ -38,7 +38,7 @@
     </div>
 
     <div v-if="step === 1" class="content-create">
-      <CreateFavForm @create-done="createFavDone">
+      <CreateFavForm type="create" @create-done="createFavDone">
         <el-button slot="button" size="medium" @click="step = 0">
           返回
         </el-button>
