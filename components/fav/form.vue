@@ -42,9 +42,16 @@
 </template>
 
 <script>
+import { isEmpty } from 'lodash'
 
 export default {
-  name: 'CreateFavForm',
+  name: 'FavForm',
+  props: {
+    form: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
       formFav: {
@@ -61,7 +68,33 @@ export default {
       submitLoading: false // submit button loading
     }
   },
+  watch: {
+    // 如果是编辑 并且传参数进来了
+    form: {
+      deep: true,
+      handler() {
+        console.log('form', this.form)
+        if (!isEmpty(this.form)) {
+          this.formFav.name = this.form.name
+          this.formFav.brief = this.form.brief
+          this.formFav.status = this.form.status
+        }
+      }
+    }
+
+  },
+  created() {
+    this.initForm()
+  },
   methods: {
+    initForm() {
+      console.log('init form', this.form)
+      if (!isEmpty(this.form)) {
+        this.formFav.name = this.form.name
+        this.formFav.brief = this.form.brief
+        this.formFav.status = this.form.status
+      }
+    },
     // 创建收藏夹
     async favCreate() {
       this.submitLoading = true
@@ -87,11 +120,42 @@ export default {
         })
       }
     },
+    // 编辑收藏夹
+    async favEdit() {
+      this.submitLoading = true
+      const data = {
+        fid: this.form.fid,
+        name: this.formFav.name,
+        brief: this.formFav.brief,
+        status: this.formFav.status ? '0' : '1'
+      }
+      const res = await this.$utils.factoryRequest(this.$API.favEdit(data))
+      this.submitLoading = false
+
+      if (res) {
+        console.log('res', res)
+        this.$emit('create-done')
+        this.$message({
+          message: '编辑收藏夹成功',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          message: '编辑收藏夹失败',
+          type: 'error'
+        })
+      }
+    },
     // 创建收藏夹表单提交处理
     handleFormFavOnSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.favCreate()
+          // form 空 并且 form 也没有 fid
+          if (isEmpty(this.form) && !this.form.fid) {
+            this.favCreate()
+          } else {
+            this.favEdit()
+          }
         } else {
           console.log('error submit!!')
           return false

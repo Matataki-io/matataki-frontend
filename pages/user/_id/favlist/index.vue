@@ -15,9 +15,8 @@
                 class="be-scrollbar fav-list-container ps"
               >
                 <div class="nav-title nav-add" @click="createFavModal = true">
-                  <span title="创建收藏夹" class="icon icon-add" /><span
-                    class="text"
-                  >新建收藏夹</span>
+                  <i class="el-icon-circle-plus fav-add-icon" />
+                  <span class="text">新建收藏夹</span>
                 </div>
                 <!-- <div fid="61280084" class="fav-item cur">
                   <span class="iconfont icon-bodan" /><a
@@ -49,10 +48,9 @@
                     v-for="(item, i) in favListData"
                     :key="i"
                     class="fav-item"
+                    :class="$route.query.fid === item.id && 'cur'"
                     @click="favPost(item.id)"
                   >
-                    <span title="拖动排序" class="icon icon-cursor" />
-                    <span class="iconfont icon-bodan" />
                     <router-link
                       :to="{
                         name: 'user-id-favlist',
@@ -61,20 +59,27 @@
                       }"
                       class="text"
                       :title="item.name"
-                      draggable="false"
                     >
+                      <svg-icon
+                        v-if="Number(item.status) === 0"
+                        icon-class="fav"
+                        class="fav-icon"
+                      />
+                      <svg-icon v-else icon-class="fav-lock" class="fav-icon" />
                       {{ item.name }}
                     </router-link>
                     <span class="num">{{ item.count }}</span>
                     <el-dropdown @command="handleCommand">
-                      <span class="el-dropdown-link">
-                        ---
-                      </span>
+                      <div class="fav-more">
+                        <svg-icon icon-class="fav-more" class="fav-more-icon" />
+                      </div>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :command="{ key: 'edit', val: item.id }">
+                        <el-dropdown-item :command="{ key: 'edit', val: item }">
                           编辑
                         </el-dropdown-item>
-                        <el-dropdown-item :command="{ key: 'delete', val: item.id }">
+                        <el-dropdown-item
+                          :command="{ key: 'delete', val: item }"
+                        >
                           删除
                         </el-dropdown-item>
                       </el-dropdown-menu>
@@ -130,6 +135,7 @@
         </div>
       </div>
       <createFav v-model="createFavModal" />
+      <editFav v-model="editFavModal" :form="editFavPropsFrom" />
     </div>
   </userPage>
 </template>
@@ -141,6 +147,7 @@ import userPage from '@/components/user/user_page.vue'
 import { extractChar } from '@/utils/reg'
 import { mapGetters } from 'vuex'
 import createFav from '@/components/fav/create'
+import editFav from '@/components/fav/edit'
 import { isEmpty } from 'lodash'
 import { isNDaysAgo } from '@/utils/momentFun'
 
@@ -150,6 +157,7 @@ export default {
     // userPagination,
     // articleCardListNew,
     createFav,
+    editFav,
   },
   head() {
     return {
@@ -244,7 +252,9 @@ export default {
   },
   data() {
     return {
-      createFavModal: false,
+      createFavModal: false, // 创建收藏夹
+      editFavModal: false, // 编辑收藏夹
+      editFavPropsFrom: Object.create(null), // 编辑收藏夹数据
       favListData: [],
       favPostData: Object.create(null),
     }
@@ -292,9 +302,11 @@ export default {
     },
     // 收藏时间
     time(t) {
-      if(!t) return ''
+      if (!t) return ''
       const time = this.moment(t)
-      return isNDaysAgo(2, time) ? time.format('YYYY-MM-DD HH:mm') : time.fromNow()
+      return isNDaysAgo(2, time)
+        ? time.format('YYYY-MM-DD HH:mm')
+        : time.fromNow()
     },
     // 设置微信分享
     setWeChatShare() {
@@ -347,19 +359,28 @@ export default {
     // 收藏夹多选操作
     async handleCommand(command) {
       console.log('comm', command)
-      this.$message('click on item ' + command)
+      // 删除
       if (command.key === 'delete') {
-        const res = await this.$utils.factoryRequest(this.$API.favDelete({ fid: command.val }))
+        const res = await this.$utils.factoryRequest(
+          this.$API.favDelete({ fid: command.val.id })
+        )
         if (res) {
           console.log('res', res)
           this.favList()
         } else {
-        //
+          //
         }
       } else if (command.key === 'edit') {
-        //
+        // 编辑
+        this.editFavPropsFrom = {
+          fid: command.val.id,
+          name: command.val.name,
+          brief: command.val.brief,
+          status: Number(command.val.status) === 0,
+        }
+        this.editFavModal = true
       }
-    }
+    },
   },
 }
 </script>
@@ -410,6 +431,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
   }
 }
 #page-fav .fav-sidenav .fav-item.cur .be-dropdown-trigger .icon-ic_more,
@@ -473,16 +495,29 @@ export default {
       white-space: nowrap;
       font-size: 0;
       overflow: hidden;
+      display: flex;
+      align-items: center;
       &:hover {
         background-color: #f4f5f7;
+        .num {
+          display: none;
+        }
+        .fav-more {
+          display: flex;
+        }
       }
       a {
         color: inherit;
         text-decoration: none;
         transition: color 0.2s ease, background-color 0.2s ease;
       }
+
       &.cur {
-        background-color: #00a1d6;
+        background-color: #542DE0;
+        .fav-more-icon,
+        .fav-icon {
+          color: #fff;
+        }
       }
     }
     .num {
@@ -492,7 +527,23 @@ export default {
       color: #99a2aa;
       vertical-align: middle;
       text-align: center;
-      font-family: Arial;
+    }
+
+    .fav-add-icon {
+      width: 30px;
+      height: 30px;
+      color: #999;
+      font-size: 22px;
+      line-height: 30px;
+    }
+    .fav-more-icon {
+      color: #999;
+    }
+    .fav-icon {
+      color: #999;
+      font-size: 22px;
+      vertical-align: middle;
+      margin-right: 10px;
     }
   }
 }
@@ -592,5 +643,13 @@ export default {
       font-size: 12px;
     }
   }
+}
+
+.fav-more {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 10px;
 }
 </style>
