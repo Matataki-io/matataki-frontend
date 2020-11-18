@@ -112,6 +112,7 @@ export default {
           message: '创建收藏夹成功',
           type: 'success'
         })
+        this.$refs['formFav'].resetFields()
       } else {
         this.$message({
           message: '创建收藏夹失败',
@@ -133,7 +134,7 @@ export default {
 
       if (res) {
         console.log('res', res)
-        this.$emit('create-done')
+        this.$emit('edit-done')
         this.$message({
           message: '编辑收藏夹成功',
           type: 'success'

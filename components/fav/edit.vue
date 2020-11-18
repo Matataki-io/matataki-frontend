@@ -1,19 +1,19 @@
 <template>
   <m-dialog
-    v-model="createFavShowModal"
+    v-model="editFavShowModal"
     width="446px"
     title="收藏夹信息"
   >
-    <CreateFavForm :form="form" type="edit" @create-done="createFavShowModal = false" />
+    <favForm :form="form" type="edit" @edit-done="editDone" />
   </m-dialog>
 </template>
 
 <script>
-import CreateFavForm from './form'
+import favForm from './form'
 export default {
   name: 'EditFav',
   components: {
-    CreateFavForm
+    favForm
   },
   props: {
     value: {
@@ -27,16 +27,22 @@ export default {
   },
   data() {
     return {
-      createFavShowModal: false,
+      editFavShowModal: false,
     }
   },
   watch: {
     value(newVal) {
-      this.createFavShowModal = newVal
+      this.editFavShowModal = newVal
     },
-    createFavShowModal(newVal) {
+    editFavShowModal(newVal) {
       this.$emit('input', newVal)
     },
   },
+  methods: {
+    editDone() {
+      this.$emit('edit-done')
+      this.editFavShowModal = false
+    }
+  }
 }
 </script>

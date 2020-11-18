@@ -4,16 +4,16 @@
     width="446px"
     title="收藏夹信息"
   >
-    <CreateFavForm type="create" @create-done="createFavShowModal = false" />
+    <favForm type="create" @create-done="createDone" />
   </m-dialog>
 </template>
 
 <script>
-import CreateFavForm from './form'
+import favForm from './form'
 export default {
   name: 'CreateFav',
   components: {
-    CreateFavForm
+    favForm
   },
   props: {
     value: {
@@ -34,5 +34,11 @@ export default {
       this.$emit('input', newVal)
     },
   },
+  methods: {
+    createDone() {
+      this.$emit('create-done')
+      this.createFavShowModal = false
+    }
+  }
 }
 </script>

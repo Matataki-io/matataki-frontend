@@ -48,7 +48,7 @@
                     v-for="(item, i) in favListData"
                     :key="i"
                     class="fav-item"
-                    :class="$route.query.fid === item.id && 'cur'"
+                    :class="Number($route.query.fid) === Number(item.id) && 'cur'"
                     @click="favPost(item.id)"
                   >
                     <router-link
@@ -134,8 +134,8 @@
           </ul>
         </div>
       </div>
-      <createFav v-model="createFavModal" />
-      <editFav v-model="editFavModal" :form="editFavPropsFrom" />
+      <createFav v-model="createFavModal" @create-done="favList()" />
+      <editFav v-model="editFavModal" :form="editFavPropsFrom" @edit-done="favList()" />
     </div>
   </userPage>
 </template>
