@@ -273,6 +273,8 @@ export default {
   background-color: #c8d7ff;
   box-sizing: border-box;
   img {
+    width: 100%;
+    object-fit: contain;
     height: 100%;
     display: block;
     margin: 0 auto;

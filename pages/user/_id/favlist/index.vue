@@ -3,7 +3,7 @@
   <userPage>
     <div id="page-fav" slot="list" class="wrapper">
       <div class="col-full">
-        <div class="fav-sidenav">
+        <div class="fav-sidenav" :class="favToggle && 'cur'">
           <div class="nav-container fav-container">
             <div class="favlist-title">
               <p>{{ isMe($route.params.id) ? '我的创建' : 'TA的创建' }}</p>
@@ -63,6 +63,9 @@
                 <p v-else class="not-fav">暂时没有收藏夹～</p>
               </div>
             </div>
+          </div>
+          <div class="toggle-sidenav" @click="favToggle = !favToggle">
+            <svg-icon icon-class="fav" class="fav-toggle-icon" />
           </div>
         </div>
 
@@ -252,6 +255,7 @@ export default {
         total: 0,
         reload: 0,
       },
+      favToggle: false,
     }
   },
   computed: {
@@ -411,7 +415,11 @@ export default {
   width: 1100px;
   margin: 0 auto 60px;
   position: relative;
+  @media screen and (max-width:  1100px) {
+    max-width: 100%;
+  }
   .col-full {
+    position: relative;
     // min-height: 500px;
     background: #fff;
     box-shadow: 0 0 0 1px #eee;
@@ -460,6 +468,20 @@ export default {
     color: #222;
     border-right: 1px solid #eee;
     box-sizing: border-box;
+    @media screen and (max-width: 768px) {
+      position: fixed;
+      background: #fff;
+      left: 0;
+      bottom: 0;
+      border: 1px solid #eee;
+      box-sizing: border-box;
+      z-index: 99;
+      transform: translate(-100%, 0);
+      transition: all .2s;
+    }
+    &.cur {
+      transform: translate(0, 0);
+    }
 
     .favlist-title {
       padding-right: 11px;
@@ -574,6 +596,12 @@ export default {
       box-sizing: border-box;
       border-bottom: 1px solid #e5e9ef;
     }
+    @media screen and (max-width:  1100px) {
+      width: calc(100% - 180px);
+    }
+    @media screen and (max-width:  768px) {
+      width: 100%;
+    }
   }
 }
 
@@ -680,5 +708,29 @@ export default {
   color: #999;
   font-size: 14px;
   margin-top: 120px;
+}
+
+.toggle-sidenav {
+  position: absolute;
+  right: -52px;
+  bottom: 10px;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  cursor: pointer;
+  box-sizing: border-box;
+  .fav-toggle-icon {
+    color: #999;
+    font-size: 20px;
+    vertical-align: middle;
+  }
+  @media screen and (max-width:  768px) {
+    display: flex;
+  }
 }
 </style>

@@ -55,6 +55,7 @@ export default {
   display: block;
   flex-wrap: wrap;
   a {
+    word-break: keep-all;
     font-size: 18px;
     line-height:33px;
     text-decoration: none;
