@@ -1821,6 +1821,11 @@ export default {
     },
     // 添加到收藏夹
     handleFavEvent() {
+      if (!this.isLogined) {
+        this.$store.commit('setLoginModal', true)
+        return
+      }
+
       this.addFavModal = true
     },
     // 切换文章收藏
