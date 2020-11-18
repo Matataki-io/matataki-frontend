@@ -54,13 +54,10 @@ const BSC_CALL_ONLY_PROVIDER = {
 export async function batchQueryNonceFor(queries) {
   const provider = BSC_CALL_ONLY_PROVIDER.TESTNET
   const fragment = IPeggedMinter.getFunction('getNoncesOf')
-  console.log('getNoncesOf', fragment)
-  console.info('queries', queries)
   const calls = queries.map(({ token, who }) => ({
     target: PeggedTokenMinterAddress,
     callData: IPeggedMinter.encodeFunctionData(fragment, [token, who])
   }))
-  console.log('calls', calls)
   const [, returnData] = await aggerate(provider, calls)
   return returnData.map((bytesLike) => IPeggedMinter.decodeFunctionResult(fragment, bytesLike)).map(([ num ]) => num)
 }

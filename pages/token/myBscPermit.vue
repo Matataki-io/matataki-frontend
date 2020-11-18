@@ -147,7 +147,6 @@ export default {
       const after = await Promise.all(listOfTokenAndItsPermit.map(async ({ token, permits }) => {
         const queries = permits.map(({ to }) => ({ token, who: to }))
         const nonces = await batchQueryNonceFor(queries)
-        console.log('nonces', nonces)
         const parsedPermits = permits.map((p, idx) => ({ 
           ...p, 
           currentNonces: nonces[idx].toNumber(),
