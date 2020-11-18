@@ -132,11 +132,13 @@ export default {
         }
         .fav-label {
           cursor: pointer;
-          display: block;
+          display: flex;
+          align-items: center;
           .count {
             float: right;
             color: #6d757a;
             font-size: 12px;
+            margin-left: auto;
           }
         }
         .personal {
@@ -151,6 +153,7 @@ export default {
           white-space: nowrap;
           vertical-align: middle;
           margin-left: 18px;
+          margin-right: 2px;
         }
       }
     }
