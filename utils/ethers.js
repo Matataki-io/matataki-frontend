@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { IMulticall, IPeggedMinter } from './abi/'
 
-const PeggedTokenMinterAddress = '0xe8142C86f7c25A8bF1c73Ab2A5Dd7a7A5C429171'
+const PeggedTokenMinterAddress = process.env.VUE_APP_PeggedTokenMinterAddress
 
 const mintContract = new ethers.Contract(PeggedTokenMinterAddress, IPeggedMinter)
 const BscMulticall = new ethers.Contract('0xe348b292e8eA5FAB54340656f3D374b259D658b8', IMulticall)
@@ -51,8 +51,10 @@ const BSC_CALL_ONLY_PROVIDER = {
   })
 }
 
+const isTesting = process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'development'
+
 export async function batchQueryNonceFor(queries) {
-  const provider = BSC_CALL_ONLY_PROVIDER.TESTNET
+  const provider = isTesting ? BSC_CALL_ONLY_PROVIDER.TESTNET : BSC_CALL_ONLY_PROVIDER.MAINNET
   const fragment = IPeggedMinter.getFunction('getNoncesOf')
   const calls = queries.map(({ token, who }) => ({
     target: PeggedTokenMinterAddress,
