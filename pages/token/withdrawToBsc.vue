@@ -1,7 +1,7 @@
 <template>
   <div class="withdraw-container">
     <!-- Frank 留言：可以先不整这个，我还在弄后端接口 -->
-    <h1 class="title">
+    <h1 class="withdraw-title">
       跨链提取 Fan票到币安智能链（Binance Smart Chain）
     </h1>
     <div v-if="!isLogined" class="card not-logined">
@@ -16,34 +16,11 @@
       </el-button>
     </div>
     <div v-else class="card">
-      <el-alert type="warning">
-        <h2 class="title">
-          ⚠️你找到了暂未对公众开放的试验性功能⚠️
-        </h2>
-        提取出Fan票到我们在币安智能链（BSC）上托管(Pegged)的 ERC20 代币。
-        <br> <b>该功能为公测版，暂不对所有Fan票开放，可能存在不稳定的现象。</b>
-        <br>
-        需要MetaMask钱包接入 BSC 主网，拥有 BNB。<a 
-          style="color: #1989FA;"
-          href="https://www.readblocks.com/archives/32275" 
-          target="_blank" 
-          rel="noreferrer"
-        >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
-        <br>
-        并提供的一个有效的币安智能链地址，我们不为搞错地址所造成的丢币负责。
-      </el-alert>
-      <el-alert type="info">
-        <h2 class="title">
-          ❓怎么在 MetaMask 钱包显示我提现出来的 BSC Fan票？ 
-        </h2>
-
-        <a 
-          style="color: #1989FA;"
-          href="https://matataki.io/p/4881" 
-          target="_blank" 
-          rel="noreferrer"
-        >👉在 MetaMask 添加 Fan票的指南👈</a>
-      </el-alert>
+      <wbAlertWarning />
+      <wbAlertTips />
+      <h4 class="title">
+        跨链转账到币安智能区块链 主网 BSC Mainnet
+      </h4>
       <el-form
         ref="form"
         v-loading="transferLoading"
@@ -52,14 +29,11 @@
         label-width="120px"
         class="withdraw-form"
       >
-        <h4 class="title">
-          跨链转账到币安智能区块链 主网 BSC Mainnet
-        </h4>
         <el-form-item label="要转出的Fan票" prop="tokenId">
           <el-select
             v-model="form.tokenId"
             filterable
-            placeholder="请选择" 
+            placeholder="请选择"
             style="width: 100%"
             @change="changeTokenSelect"
           >
@@ -70,9 +44,18 @@
               :value="item.token_id"
             >
               <div class="token-container">
-                <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
-                <span class="token-symbol">{{ item.name }}({{ item.symbol }})</span>
-                <span class="token-symbol">余额: {{ tokenAmount(item.amount, item.decimals) }} {{ item.symbol }}</span>
+                <img
+                  :src="tokenLogo(item.logo)"
+                  :alt="item.symbol"
+                  class="token-logo"
+                >
+                <span
+                  class="token-symbol"
+                >{{ item.name }}({{ item.symbol }})</span>
+                <span
+                  class="token-symbol"
+                >余额: {{ tokenAmount(item.amount, item.decimals) }}
+                  {{ item.symbol }}</span>
               </div>
             </el-option>
           </el-select>
@@ -111,22 +94,44 @@
             确定
           </el-button>
         </div>
-        <el-alert v-if="withdrawResult" type="success">
+        <el-alert v-if="withdrawResult" type="success" class="withdraw-result">
           <h1 class="title">
             Fan 票 BSC 跨链转账许可证已下发
           </h1>
-          因为这是 BSC 主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的 BNB，以创建跨链资产。
-          <br>
-          你的提现许可证如下（不用怕，你可以随时到许可证列表查看之前申请过的）
-          <br>
-          <textarea v-model="permitOfMint" disabled style="width: 381px; height: 295px;" />
+          <p class="description">
+            因为这是 BSC
+            主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的
+            BNB，以创建跨链资产。
+          </p>
+          <p class="description">
+            你的提现许可证如下（不用怕，你可以随时到许可证列表查看之前申请过的）
+          </p>
+          <el-input
+            v-model="permitOfMint"
+            type="textarea"
+            :rows="6"
+            class="withdraw-result-textarea"
+            autosize
+          />
           <div class="actions">
             <el-button @click="goToMintPermitList">
               查看我申请过的许可证 / 发送激活
             </el-button>
+            <el-button @click="copyGoToMintPermitList(permitOfMint)">
+              复制许可证 / 发送激活
+            </el-button>
           </div>
         </el-alert>
       </el-form>
+      <h4 class="title">
+        其他
+      </h4>
+      <el-button @click="$router.push({ name: 'token-myBscPermit' })">
+        查看自己的可证
+      </el-button>
+      <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
+        上传提现许可
+      </el-button>
     </div>
   </div>
 </template>
@@ -136,19 +141,23 @@ import { mapGetters } from 'vuex'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { ethers } from 'ethers'
 import { mintWithPermit } from '../../utils/ethers'
+import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
+import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
 
 // @todo: 到时候成熟了去掉
-const BSC_PEGGED_WHITELIST = [
-  'DEV', 'DAO', 'META', 'SSS'
-]
+const BSC_PEGGED_WHITELIST = ['DEV', 'DAO', 'META', 'SSS']
 
 export default {
   name: 'TokenWithdraw',
+  components: {
+    wbAlertWarning,
+    wbAlertTips,
+  },
   data() {
     const validateToken = (rule, value, callback) => {
       if (!value) {
         callback('发送数量不能为空')
-      } else if (!(/^[0-9]+(\.[0-9]{1,4})?$/.test(value))) {
+      } else if (!/^[0-9]+(\.[0-9]{1,4})?$/.test(value)) {
         callback(new Error('发送的数量小数不能超过4位'))
       } else if (Number(value) < this.form.min) {
         callback(new Error('发送数量不能少于0.0001'))
@@ -162,7 +171,11 @@ export default {
       if (!value) {
         callback('目标钱包地址不能为空')
       } else if (value.length !== 42) {
-        callback(new Error('钱包地址长度不正确，请再次确认是否为币安智能区块链钱包地址'))
+        callback(
+          new Error(
+            '钱包地址长度不正确，请再次确认是否为币安智能区块链钱包地址'
+          )
+        )
       } else if (value.slice(0, 2) !== '0x') {
         callback('地址不是0x开头，应该不是币安智能区块链的钱包地址🤔')
       } else {
@@ -177,33 +190,41 @@ export default {
         min: 0.0001,
         max: 99999999, // 默认最大
         balance: 0,
-        to: ''
+        to: '',
       },
       rules: {
-        tokenId: [
-          { required: true, message: '请选择类型', trigger: 'change' }
-        ],
+        tokenId: [{ required: true, message: '请选择类型', trigger: 'change' }],
         amount: [
-          { required: true, validator: validateToken, trigger: ['blur', 'change'] }
+          {
+            required: true,
+            validator: validateToken,
+            trigger: ['blur', 'change'],
+          },
         ],
         to: [
-          { required: true, validator: validateEthereumAddress, trigger: ['blur', 'change'] }
+          {
+            required: true,
+            validator: validateEthereumAddress,
+            trigger: ['blur', 'change'],
+          },
         ],
       },
       transferLoading: false,
       tokenOptions: [],
-      withdrawResult: null
+      withdrawResult: null,
     }
   },
   computed: {
     ...mapGetters(['isMe', 'isLogined', 'currentUserInfo']),
     permitOfMint() {
-      return this.withdrawResult ? JSON.stringify(this.withdrawResult, null, 2) : ''
+      return this.withdrawResult
+        ? JSON.stringify(this.withdrawResult, null, 2)
+        : ''
     },
     isGoodToWithdraw() {
       if (!this.form.amount) return false
       return Number(this.form.amount) <= this.form.max
-    }
+    },
   },
   watch: {
     isLogined(val) {
@@ -221,12 +242,54 @@ export default {
     goToMintPermitList() {
       this.$router.push('/token/myBscPermit')
     },
+    copyGoToMintPermitList(val) {
+      let str = ''
+      try {
+        str = JSON.stringify(val)
+        console.log('str', str)
+      } catch (error) {
+        console.log('error', error)
+        str = val
+      }
+      this.$copyText(str).then(
+        () => {
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success',
+          })
+          let routeData = this.$router.resolve({
+            name: 'token-bscMintWithPermit',
+          })
+          window.open(routeData.href, '_blank')
+        },
+        () =>
+          this.$message({
+            showClose: true,
+            message: this.$t('error.copy'),
+            type: 'error',
+          })
+      )
+    },
     async sendPermit() {
       try {
         const { withdrawResult: permit } = this
-        const provider = new ethers.providers.Web3Provider(window.ethereum).getSigner()
-        const result = await mintWithPermit(provider, permit.token, permit.to, permit.value, permit.deadline, permit.sig.v, permit.sig.r, permit.sig.s)
-        this.$message.success(`上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`)
+        const provider = new ethers.providers.Web3Provider(
+          window.ethereum
+        ).getSigner()
+        const result = await mintWithPermit(
+          provider,
+          permit.token,
+          permit.to,
+          permit.value,
+          permit.deadline,
+          permit.sig.v,
+          permit.sig.r,
+          permit.sig.s
+        )
+        this.$message.success(
+          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
+        )
       } catch (error) {
         this.$message.error(error.message)
       }
@@ -255,14 +318,19 @@ export default {
     },
     withdrawMinetoken() {
       this.transferLoading = true
-      this.$message({ showClose: true, message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）', type: 'info' })
+      this.$message({
+        showClose: true,
+        message: '链上转账中，请耐心等待（关闭此页面不影响转账进度）',
+        type: 'info',
+      })
 
       const data = {
         target: this.form.to,
         amount: toPrecision(this.form.amount, 'CNY', 4),
       }
-      this.$API.withdrawTokenToBsc(this.form.tokenId, data)
-        .then(res => {
+      this.$API
+        .withdrawTokenToBsc(this.form.tokenId, data)
+        .then((res) => {
           if (res.code === 0) {
             this.$emit('success')
 
@@ -274,12 +342,18 @@ export default {
             this.form.max = Number(endAmount)
             this.withdrawResult = res.data
           } else {
-            this.$message({ showClose: true, message: res.message, type: 'error' })
+            this.$message({
+              showClose: true,
+              message: res.message,
+              type: 'error',
+            })
           }
-        }).catch(err => {
+        })
+        .catch((err) => {
           console.log(err)
           this.$message.error('提现失败')
-        }).finally(() => {
+        })
+        .finally(() => {
           this.transferLoading = false
         })
     },
@@ -289,21 +363,27 @@ export default {
     async tokenTokenList() {
       let data = {
         pagesize: 999,
-        order: 0
+        order: 0,
       }
-      await this.$API.tokenTokenList(data).then(res => {
-        if (res.code === 0) {
-          this.tokenOptions = res.data.list.filter(({ symbol }) => BSC_PEGGED_WHITELIST.indexOf(symbol.toUpperCase()) > -1)
-          this.topOwnToken()
-        } else {
+      await this.$API
+        .tokenTokenList(data)
+        .then((res) => {
+          if (res.code === 0) {
+            this.tokenOptions = res.data.list.filter(
+              ({ symbol }) =>
+                BSC_PEGGED_WHITELIST.indexOf(symbol.toUpperCase()) > -1
+            )
+            this.topOwnToken()
+          } else {
+            this.tokenOptions = []
+          }
+        })
+        .catch((err) => {
+          console.log(err)
           this.tokenOptions = []
-        }
-      }).catch(err => {
-        console.log(err)
-        this.tokenOptions = []
-      })
+        })
     },
-    // logo 
+    // logo
     tokenLogo(cover) {
       return cover ? this.$ossProcess(cover) : ''
     },
@@ -315,11 +395,11 @@ export default {
     /** 吧自己的Fan票排到最前面 */
     topOwnToken() {
       let list = this.tokenOptions
-      list.forEach((token,index) => {
-        if(this.isMe(token.uid)) list.unshift(list.splice(index, 1)[0])
+      list.forEach((token, index) => {
+        if (this.isMe(token.uid)) list.unshift(list.splice(index, 1)[0])
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -327,20 +407,20 @@ export default {
 .withdraw-container {
   max-width: 1200px;
   width: 100%;
-  margin: 40px auto 0;
+  margin: 0 auto 40px;
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
 }
 .card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
-    box-sizing: border-box;
-    padding: 10px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  padding: 10px;
 }
 .card .el-alert {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 </style>
 
@@ -360,20 +440,7 @@ export default {
     border-radius: 50%;
   }
 }
-.balance {
-  float: right;
-  padding: 0;
-  margin: -20px 0 10px 0;
-  font-size: 14px;
-  font-weight: 400;
-  color: #777777;
-  word-spacing: 1px;
-  a {
-    font-size: 14px;
-    color: #542de0;
-    cursor: pointer;
-  }
-}
+
 .form-button {
   display: flex;
   justify-content: center;
@@ -389,7 +456,7 @@ export default {
   right: 0;
   top: 32px;
   background: #fff;
-  border: 1px solid #B2B2B2;
+  border: 1px solid #b2b2b2;
   border-top: none;
   border-radius: 0 0 8px 8px;
   z-index: 1;
@@ -409,9 +476,9 @@ export default {
       background: #f1f1f1;
     }
     span {
-      font-size:14px;
-      font-weight:400;
-      color:rgba(178,178,178,1);
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(178, 178, 178, 1);
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -429,9 +496,9 @@ export default {
     flex: 0 0 40px;
   }
   span {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -448,17 +515,11 @@ export default {
     font-size: 20px;
   }
 }
-.withdraw-form {
-  margin: 10px;
-  .tokenname {
-    padding: 0;
-    margin: 0;
-  }
-}
+
 .history-user {
   &::after {
     display: block;
-    content: '';
+    content: "";
     width: 0;
     height: 0;
     clear: both;
@@ -495,6 +556,64 @@ export default {
     color: #777;
     font-size: 16px;
     font-weight: 400;
+  }
+}
+
+.withdraw-title {
+  font-size: 24px;
+  color: #222;
+  margin: 40px 0 20px 0;
+  padding: 0;
+}
+.withdraw-form-title {
+  font-size: 20px;
+  color: #222;
+  margin: 20px 0 20px 0;
+  padding: 0;
+}
+
+.withdraw-form {
+  max-width: 560px;
+  margin: 40px auto;
+  .tokenname {
+    padding: 0;
+    margin: 0;
+  }
+
+  .balance {
+    text-align: right;
+    padding: 0;
+    margin: -20px 0 10px 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: #777777;
+    word-spacing: 1px;
+    .clearfix();
+    a {
+      font-size: 14px;
+      color: #542de0;
+      cursor: pointer;
+    }
+  }
+}
+
+.withdraw-result {
+  margin-top: 40px !important;
+  .title {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+  .description {
+    font-size: 14px;
+    padding: 0;
+    margin: 4px 0 0 0;
+    line-height: 1.5;
+  }
+  .withdraw-result-textarea {
+    margin: 10px 0;
   }
 }
 </style>
