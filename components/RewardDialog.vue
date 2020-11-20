@@ -229,7 +229,7 @@ export default {
         this.tokenOptions = []
       })
     },
-    // logo 
+    // logo
     tokenLogo(cover) {
       return cover ? this.$ossProcess(cover) : ''
     },

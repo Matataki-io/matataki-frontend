@@ -1,63 +1,59 @@
 <template>
   <div class="withdraw-container">
     <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
-    <h1 class="title">
+    <h1 class="withdraw-title">
       上传 BSC 提现许可，把资产搬到币安智能链（Binance Smart Chain）
     </h1>
     <div class="card">
-      <el-alert type="warning">
-        <h2 class="title">
-          ⚠️你找到了暂未对公众开放的试验性功能⚠️
-        </h2>
-        上传 BSC 提现许可，即可生成在 BSC 上的Fan票资产。<b>你需要 MetaMask 连接上币安智能链主网，并有足够的 BNB 去上传提现许可。</b>
-        <br>
-        <a 
-          style="color: #1989FA;"
-          href="https://www.readblocks.com/archives/32275" 
-          target="_blank" 
-          rel="noreferrer"
-        >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
-        <br>
-        如果你没有足够的 BNB，你可以把许可分享给有 BNB 的朋友，让 Ta 帮你生成币安智能链上的 Fan票 资产
-      </el-alert>
-      <el-alert type="info">
-        <h2 class="title">
-          ❓分享我的「提现许可」给他人会造成 Fan 票损失吗？ 
-        </h2>
-        不会，提现许可包含了： Token 、收款账户、许可发行号码的这三个要素。
-        <br> 我们的智能合约会校验这一点。上传提现许可到智能合约只会把 Token 转到许可指定的账户里。
-        <br> 但是最好不要在第三方网站上传提现许可。因为钓鱼网站可能会诱导把Fan票转账到他们的账户。
-      </el-alert>
-      <textarea 
+      <wbAlertWarning />
+      <wbAlertTips />
+      <el-input
         v-model.trim="permitInput"
-        :placeholder="placeholderForPermitInput" 
-        style="width: 387px; height: 431px;"
+        type="textarea"
+        :rows="6"
+        class="withdraw-result-textarea"
+        autosize
+        :placeholder="placeholderForPermitInput"
         @change="onPermitInput"
       />
+
       <div v-if="permit" class="parsedPermit">
-        <p>解析出来的提现许可</p>
-        <p> 在 BSC 的 Fan票 地址: {{ permit.token }}</p>
-        <p> 提现到: {{ permit.to }}</p>
-        <p> 提现金额: {{ permit.value / 1e4 }}</p>
-        <p> 许可号: {{ permit.nonce }}</p>
-        <p> 许可证截止使用时间: {{ permitExpiry.toLocaleString() }} </p>
+        <p class="parse-title">解析出来的提现许可</p>
+        <p class="parse-item">在 BSC 的 Fan票 地址: {{ permit.token }}</p>
+        <p class="parse-item">提现到: {{ permit.to }}</p>
+        <p class="parse-item">提现金额: {{ permit.value / 1e4 }}</p>
+        <p class="parse-item">许可号: {{ permit.nonce }}</p>
+        <p class="parse-item">
+          许可证截止使用时间: {{ permitExpiry.toLocaleString() }}
+        </p>
         <!-- :disabled="isPermitExpired" -->
-        <el-button 
-          type="primary" 
-          
-          @click="sendPermit"
-        >
-          {{ isPermitExpired ? '许可证已过期' : '上传许可' }}
-        </el-button>
+        <div class="parse-btn">
+          <el-button type="primary" @click="sendPermit">
+            {{ isPermitExpired ? "许可证已过期" : "上传许可" }}
+          </el-button>
+        </div>
         <el-alert v-if="mintResult" type="success">
           <h2>发送成功</h2>
           交易哈希: {{ mintResult.hash }}
           <!-- todo: 上正式网记得删掉 testnet. -->
-          <a :href="`https://testnet.bscscan.com/tx/${mintResult.hash}`" target="_blank">
+          <a
+            :href="`https://testnet.bscscan.com/tx/${mintResult.hash}`"
+            target="_blank"
+          >
             在 BSCScan 查看这个交易 ↗️
           </a>
         </el-alert>
       </div>
+
+      <h4 class="title">
+        其他
+      </h4>
+      <el-button @click="$router.push({ name: 'token-withdrawToBsc' })">
+        提现自己的资产
+      </el-button>
+      <el-button @click="$router.push({ name: 'token-myBscPermit' })">
+        查看自己的可证
+      </el-button>
     </div>
   </div>
 </template>
@@ -67,9 +63,15 @@ import { ethers } from 'ethers'
 import { mintWithPermit } from '../../utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
+import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
+import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
 
 export default {
   name: 'MintWithPermit',
+  components: {
+    wbAlertWarning,
+    wbAlertTips,
+  },
   data() {
     return {
       transferLoading: false,
@@ -90,16 +92,18 @@ export default {
 }`,
       permit: {
         sig: {
-          'r': '0x38fb8b99ec663c221c595e69f8f8c6a00b5d8543e1ecfd21b709fbcc99b58fab',
-          's': '0x17ccb0a240ba8fae8cc3fe25bcd431b802ca97ca6a9365522ec241fa7df9cec4',
-          'v': 28
+          r:
+            '0x38fb8b99ec663c221c595e69f8f8c6a00b5d8543e1ecfd21b709fbcc99b58fab',
+          s:
+            '0x17ccb0a240ba8fae8cc3fe25bcd431b802ca97ca6a9365522ec241fa7df9cec4',
+          v: 28,
         },
-        'token': '0x14372C682A88f5F2A5eFc0d3A65195C91AbF7754',
-        'to': '0x2F129a52aAbDcb9Fa025BFfF3D4C731c2D914932',
-        'value': '123456789',
-        'nonce': 2,
-        'deadline': 1605611329
-      }
+        token: '0x14372C682A88f5F2A5eFc0d3A65195C91AbF7754',
+        to: '0x2F129a52aAbDcb9Fa025BFfF3D4C731c2D914932',
+        value: '123456789',
+        nonce: 2,
+        deadline: 1605611329,
+      },
     }
   },
   computed: {
@@ -111,10 +115,9 @@ export default {
     isPermitExpired() {
       if (!this.permitExpiry) return null
       return new Date().getTime() > this.permitExpiry.getTime()
-    }
+    },
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     onPermitInput(e) {
       const { value } = e.target
@@ -135,11 +138,24 @@ export default {
       try {
         const { permit } = this
         await window.ethereum.enable()
-        const provider = new ethers.providers.Web3Provider(window.ethereum).getSigner()
-        const result = await mintWithPermit(provider, permit.token, permit.to, permit.value, permit.deadline, permit.sig.v, permit.sig.r, permit.sig.s)
+        const provider = new ethers.providers.Web3Provider(
+          window.ethereum
+        ).getSigner()
+        const result = await mintWithPermit(
+          provider,
+          permit.token,
+          permit.to,
+          permit.value,
+          permit.deadline,
+          permit.sig.v,
+          permit.sig.r,
+          permit.sig.s
+        )
         console.log(result)
         this.mintResult = result
-        this.$message.success(`上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`)
+        this.$message.success(
+          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
+        )
       } catch (error) {
         this.$message.error(error)
       }
@@ -149,7 +165,7 @@ export default {
       const tokenamount = precision(amount, 'CNY', decimals)
       return this.$publishMethods.formatDecimal(tokenamount, 4)
     },
-  }
+  },
 }
 </script>
 
@@ -157,20 +173,20 @@ export default {
 .withdraw-container {
   max-width: 1200px;
   width: 100%;
-  margin: 40px auto 0;
+  margin: 0 auto 40px;
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
 }
 .card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
-    box-sizing: border-box;
-    padding: 10px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  padding: 10px;
 }
 .card .el-alert {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 </style>
 
@@ -219,7 +235,7 @@ export default {
   right: 0;
   top: 32px;
   background: #fff;
-  border: 1px solid #B2B2B2;
+  border: 1px solid #b2b2b2;
   border-top: none;
   border-radius: 0 0 8px 8px;
   z-index: 1;
@@ -239,9 +255,9 @@ export default {
       background: #f1f1f1;
     }
     span {
-      font-size:14px;
-      font-weight:400;
-      color:rgba(178,178,178,1);
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(178, 178, 178, 1);
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -259,9 +275,9 @@ export default {
     flex: 0 0 40px;
   }
   span {
-    font-size:14px;
-    font-weight:400;
-    color:rgba(178,178,178,1);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(178, 178, 178, 1);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -288,7 +304,7 @@ export default {
 .history-user {
   &::after {
     display: block;
-    content: '';
+    content: "";
     width: 0;
     height: 0;
     clear: both;
@@ -326,5 +342,33 @@ export default {
     font-size: 16px;
     font-weight: 400;
   }
+}
+
+.withdraw-title {
+  font-size: 24px;
+  color: #222;
+  margin: 40px 0 20px 0;
+  padding: 0;
+}
+.withdraw-result-textarea {
+  margin: 10px 0;
+}
+.parse-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 20px 0 10px 0;
+  padding: 0;
+  line-height: 1.5;
+}
+.parse-item {
+  padding: 0;
+  margin: 8px 0;
+  line-height: 1.5;
+  font-size: 16px;
+  color: #333;
+  word-break: break-all;
+}
+.parse-btn {
+  margin: 20px 0 0 0;
 }
 </style>

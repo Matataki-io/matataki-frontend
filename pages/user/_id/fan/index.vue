@@ -4,6 +4,7 @@
     <div
       slot="list"
       v-loading="loading"
+      class="wrapper"
     >
       <no-content-prompt :list="articleCardData.articles">
         <fansCard
@@ -77,6 +78,10 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  max-width: 766px;
+  margin: 0 auto;
+}
 .pagination {
   padding: 40px 5px;
 }
