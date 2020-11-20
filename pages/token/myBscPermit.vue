@@ -28,7 +28,8 @@
               href="https://www.readblocks.com/archives/32275"
               target="_blank"
               rel="noopener noreferrer"
-            >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a></li>
+            >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+          </li>
         </ul>
       </div>
       <wbAlertWarning />
