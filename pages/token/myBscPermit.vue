@@ -118,7 +118,7 @@ import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
 import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
 
 export default {
-  name: 'MintWithPermit',
+  name: 'MyBscPermit',
   components: {
     wbAlertWarning,
     wbAlertTips,

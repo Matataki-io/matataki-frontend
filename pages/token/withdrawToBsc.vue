@@ -148,7 +148,7 @@ import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
 const BSC_PEGGED_WHITELIST = ['DEV', 'DAO', 'META', 'SSS']
 
 export default {
-  name: 'TokenWithdraw',
+  name: 'TokenWithdrawToBsc',
   components: {
     wbAlertWarning,
     wbAlertTips,
