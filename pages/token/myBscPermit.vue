@@ -156,6 +156,7 @@ export default {
     },
     async sendPermit(permit) {
       try {
+        await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(
           window.ethereum
         ).getSigner()

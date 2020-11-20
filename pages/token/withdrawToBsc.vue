@@ -274,6 +274,7 @@ export default {
     async sendPermit() {
       try {
         const { withdrawResult: permit } = this
+        await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(
           window.ethereum
         ).getSigner()
