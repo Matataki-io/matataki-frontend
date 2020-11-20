@@ -5,8 +5,42 @@
       我的 BSC 许可
     </h1>
     <div class="card">
+      <div class="checklist">
+        <h4>环境检查</h4>
+        <ul>
+          <li>是否已经有 MetaMask 钱包: {{ renderIconWithBool(isMetaMaskActive) }}</li>
+          <li>
+            是否已经授权我们访问: {{ renderIconWithBool(selectedWallet) }}
+            <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
+              授权钱包地址
+            </el-button>
+          </li>
+          <li v-if="selectedWallet">
+            当前操作的钱包地址: {{ selectedWallet }}
+            <br>
+            BNB 余额： {{ bnbBalance }}
+          </li>
+          <li>
+            是否在币安智能区块链网络: {{ renderIconWithBool(isOnBsc) }} 
+            <a 
+              v-if="!isOnBsc"
+              class="link"
+              href="https://www.readblocks.com/archives/32275"
+              target="_blank"
+              rel="noopener noreferrer"
+            >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a></li>
+        </ul>
+      </div>
       <wbAlertWarning />
       <wbAlertTips />
+      <div class="others">
+        <el-button type="primary" @click="$router.push({ name: 'token-withdrawToBsc' })">
+          申请提现自己的资产
+        </el-button>
+        <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
+          （替别人）上传提现许可
+        </el-button>
+      </div>
       <div
         v-for="listItem in listOfTokenAndItsPermit"
         :key="listItem.token"
@@ -38,7 +72,7 @@
                 {{ scope.row.expiryDate.toLocaleDateString() }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200">
+            <el-table-column fixed="right" label="操作" width="240">
               <template slot-scope="scope">
                 <el-button
                   type="primary"
@@ -49,34 +83,33 @@
                 >
                   {{
                     scope.row.isExpired
-                      ? "许可证已过期"
+                      ? "已过期"
                       : scope.row.status === 1
-                        ? "先处理前面的"
+                        ? "先处理前面"
                         : scope.row.status === -1
                           ? "已发送"
                           : "上传许可"
                   }}
                 </el-button>
+                <el-button
+                  :disabled="
+                    scope.row.isPermitExpired || scope.row.status !== 0
+                  "
+                  @click="copyPermit(scope.row)"
+                >
+                  分享
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
-        <h4 class="parse-title">
-          其他
-        </h4>
-        <el-button @click="$router.push({ name: 'token-withdrawToBsc' })">
-          提现自己的资产
-        </el-button>
-        <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
-          上传提现许可
-        </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ethers } from 'ethers'
+import { ethers, utils } from 'ethers'
 import { batchQueryNonceFor, mintWithPermit } from '../../utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
@@ -96,6 +129,11 @@ export default {
       listOfToken: [],
       listOfTokenAndItsPermit: [],
       interval: null,
+      isMetaMaskActive: false,
+      isOnBsc: false,
+      selectedWallet: null,
+      isChecked: false,
+      bnbBalance: null
     }
   },
   computed: {
@@ -103,17 +141,45 @@ export default {
   },
   watch: {
     isLogined(val) {
-      if (val) this.fetchPermit()
+      if (val && this.isMetaMaskActive) this.fetchPermit()
       // 每一分钟刷新一次
       this.interval = setInterval(() => {
         this.fetchPermit()
       }, 1000 * 60)
     },
   },
-  mounted() {
+  async mounted() {
     if (this.isLogined) this.fetchPermit()
+    this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
+    if (!window.ethereum) return
+    const { networkVersion, selectedAddress } = window.ethereum 
+    this.selectedWallet = selectedAddress
+    this.isOnBsc = (56 === Number(networkVersion) || 97 === Number(networkVersion))
+    if (selectedAddress) { this.fetchBNBBalance() }
+    window.ethereum.on('chainChanged', chainId => {
+      // handle the new network
+      this.isOnBsc = (56 === Number(chainId) || 97 === Number(chainId))
+    })
+    window.ethereum.on('accountsChanged',  ([ primaryAcc ]) => {
+      this.selectedWallet = primaryAcc
+      if (primaryAcc) {
+        this.fetchBNBBalance()
+      } else {
+        this.bnbBalance = null
+      }
+    })
   },
   methods: {
+    renderIconWithBool(val) {
+      return val ? '☑️': '✖️'
+    },
+    async fetchBNBBalance() {
+      const provider = new ethers.providers.Web3Provider(
+        window.ethereum
+      )
+      const balanceBN = await provider.getBalance(this.selectedWallet)
+      this.bnbBalance = utils.formatEther(balanceBN)
+    },
     async fetchPermit() {
       const { data } = await this.$API.listMyBscPermit()
       this.listOfToken = [
@@ -154,9 +220,16 @@ export default {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
     },
+    async requestEtherumAccounts() {
+      try {
+        const [ defaultAccount ] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        this.selectedWallet = defaultAccount
+      } catch (error) {
+        this.$message.error('对不起，这个操作需要你授权我们访问你的 MetaMask 钱包')
+      }
+    },
     async sendPermit(permit) {
       try {
-        await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(
           window.ethereum
         ).getSigner()
@@ -178,6 +251,22 @@ export default {
         this.$message.error(error.message)
       }
     },
+    copyPermit(permit) {
+      const stringify = JSON.stringify(permit)
+      console.info('Ready for clipboard', stringify)
+      this.$copyText(stringify).then(
+        () => {
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
+    }, 
     // token amount 单位换算
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)
