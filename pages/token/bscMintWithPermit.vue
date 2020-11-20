@@ -7,12 +7,11 @@
     <div class="card">
       <wbAlertWarning />
       <wbAlertTips />
-      <el-input
-        v-model.trim="permitInput"
-        type="textarea"
+      <textarea
+        v-model.trim="permitInput" 
+        style="width: 100%; margin: 10px 0px;height: 286px;"
         :rows="6"
         class="withdraw-result-textarea"
-        autosize
         :placeholder="placeholderForPermitInput"
         @change="onPermitInput"
       />
@@ -90,20 +89,7 @@ export default {
   "nonce": 2,
   "deadline": 1605611329
 }`,
-      permit: {
-        sig: {
-          r:
-            '0x38fb8b99ec663c221c595e69f8f8c6a00b5d8543e1ecfd21b709fbcc99b58fab',
-          s:
-            '0x17ccb0a240ba8fae8cc3fe25bcd431b802ca97ca6a9365522ec241fa7df9cec4',
-          v: 28,
-        },
-        token: '0x14372C682A88f5F2A5eFc0d3A65195C91AbF7754',
-        to: '0x2F129a52aAbDcb9Fa025BFfF3D4C731c2D914932',
-        value: '123456789',
-        nonce: 2,
-        deadline: 1605611329,
-      },
+      permit: null
     }
   },
   computed: {
@@ -120,6 +106,7 @@ export default {
   watch: {},
   methods: {
     onPermitInput(e) {
+      console.info('onPermitInput event e', e)
       const { value } = e.target
       if (!value) return
       let permitData
