@@ -96,7 +96,10 @@ export default ({ app }) => {
       'user-id-follow': '用户关注-瞬MATATAKI',
       'user-id-info': '用户信息-瞬MATATAKI',
       'token-withdraw': '提取代币 - 瞬MATATAKI',
-      'token-deposit': '转入代币 - 瞬MATATAKI'
+      'token-deposit': '转入代币 - 瞬MATATAKI',
+      'token-withdrawToBsc': '提取代币到币安智能链 - 瞬MATATAKI',
+      'token-myBscPermit': '我的提取许可 - 瞬MATATAKI',
+      'token-bscMintWithPermit': '上传提取许可 - 瞬MATATAKI',
     }
     // 不需要设置微信分享的页面列表
     let weChatShareNoSetList = [
