@@ -224,6 +224,7 @@ export default {
     async sendPermit() {
       try {
         const { withdrawResult: permit } = this
+        await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(window.ethereum).getSigner()
         const result = await mintWithPermit(provider, permit.token, permit.to, permit.value, permit.deadline, permit.sig.v, permit.sig.r, permit.sig.s)
         this.$message.success(`上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`)

@@ -134,6 +134,7 @@ export default {
     async sendPermit() {
       try {
         const { permit } = this
+        await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(window.ethereum).getSigner()
         const result = await mintWithPermit(provider, permit.token, permit.to, permit.value, permit.deadline, permit.sig.v, permit.sig.r, permit.sig.s)
         console.log(result)
