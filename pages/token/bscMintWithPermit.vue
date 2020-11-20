@@ -1,59 +1,61 @@
 <template>
   <div class="withdraw-container">
-    <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
-    <h1 class="withdraw-title">
-      上传 BSC 提现许可，把资产搬到币安智能链（Binance Smart Chain）
-    </h1>
-    <div class="card">
-      <wbAlertWarning />
-      <wbAlertTips />
-      <textarea
-        v-model.trim="permitInput" 
-        style="width: 100%; margin: 10px 0px;height: 286px;"
-        :rows="6"
-        class="withdraw-result-textarea"
-        :placeholder="placeholderForPermitInput"
-        @change="onPermitInput"
-      />
+    <client-only>
+      <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
+      <h1 class="withdraw-title">
+        上传 BSC 提现许可，把资产搬到币安智能链（Binance Smart Chain）
+      </h1>
+      <div class="card">
+        <wbAlertWarning />
+        <wbAlertTips />
+        <textarea
+          v-model.trim="permitInput" 
+          style="width: 100%; margin: 10px 0px;height: 286px;"
+          :rows="6"
+          class="withdraw-result-textarea"
+          :placeholder="placeholderForPermitInput"
+          @change="onPermitInput"
+        />
 
-      <div v-if="permit" class="parsedPermit">
-        <p class="parse-title">解析出来的提现许可</p>
-        <p class="parse-item">在 BSC 的 Fan票 地址: {{ permit.token }}</p>
-        <p class="parse-item">提现到: {{ permit.to }}</p>
-        <p class="parse-item">提现金额: {{ permit.value / 1e4 }}</p>
-        <p class="parse-item">许可号: {{ permit.nonce }}</p>
-        <p class="parse-item">
-          许可证截止使用时间: {{ permitExpiry.toLocaleString() }}
-        </p>
-        <!-- :disabled="isPermitExpired" -->
-        <div class="parse-btn">
-          <el-button type="primary" @click="sendPermit">
-            {{ isPermitExpired ? "许可证已过期" : "上传许可" }}
-          </el-button>
+        <div v-if="permit" class="parsedPermit">
+          <p class="parse-title">解析出来的提现许可</p>
+          <p class="parse-item">在 BSC 的 Fan票 地址: {{ permit.token }}</p>
+          <p class="parse-item">提现到: {{ permit.to }}</p>
+          <p class="parse-item">提现金额: {{ permit.value / 1e4 }}</p>
+          <p class="parse-item">许可号: {{ permit.nonce }}</p>
+          <p class="parse-item">
+            许可证截止使用时间: {{ permitExpiry.toLocaleString() }}
+          </p>
+          <!-- :disabled="isPermitExpired" -->
+          <div class="parse-btn">
+            <el-button type="primary" @click="sendPermit">
+              {{ isPermitExpired ? "许可证已过期" : "上传许可" }}
+            </el-button>
+          </div>
+          <el-alert v-if="mintResult" type="success">
+            <h2>发送成功</h2>
+            交易哈希: {{ mintResult.hash }}
+            <!-- todo: 上正式网记得删掉 testnet. -->
+            <a
+              :href="`https://testnet.bscscan.com/tx/${mintResult.hash}`"
+              target="_blank"
+            >
+              在 BSCScan 查看这个交易 ↗️
+            </a>
+          </el-alert>
         </div>
-        <el-alert v-if="mintResult" type="success">
-          <h2>发送成功</h2>
-          交易哈希: {{ mintResult.hash }}
-          <!-- todo: 上正式网记得删掉 testnet. -->
-          <a
-            :href="`https://testnet.bscscan.com/tx/${mintResult.hash}`"
-            target="_blank"
-          >
-            在 BSCScan 查看这个交易 ↗️
-          </a>
-        </el-alert>
-      </div>
 
-      <h4 class="title">
-        其他
-      </h4>
-      <el-button @click="$router.push({ name: 'token-withdrawToBsc' })">
-        提现自己的资产
-      </el-button>
-      <el-button @click="$router.push({ name: 'token-myBscPermit' })">
-        查看自己的可证
-      </el-button>
-    </div>
+        <h4 class="title">
+          其他
+        </h4>
+        <el-button @click="$router.push({ name: 'token-withdrawToBsc' })">
+          提现自己的资产
+        </el-button>
+        <el-button @click="$router.push({ name: 'token-myBscPermit' })">
+          查看自己的可证
+        </el-button>
+      </div>
+    </client-only>
   </div>
 </template>
 

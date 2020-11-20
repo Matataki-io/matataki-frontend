@@ -1,138 +1,140 @@
 <template>
   <div class="withdraw-container">
-    <!-- Frank 留言：可以先不整这个，我还在弄后端接口 -->
-    <h1 class="withdraw-title">
-      跨链提取 Fan票到币安智能链（Binance Smart Chain）
-    </h1>
-    <div v-if="!isLogined" class="card not-logined">
-      <h1 class="title">
-        😺嗯？你好像还没有登录？
+    <client-only>
+      <!-- Frank 留言：可以先不整这个，我还在弄后端接口 -->
+      <h1 class="withdraw-title">
+        跨链提取 Fan票到币安智能链（Binance Smart Chain）
       </h1>
-      <h2 class="subtitle">
-        你需要先登录才能使用这个功能
-      </h2>
-      <el-button @click="login">
-        注册/登录
-      </el-button>
-    </div>
-    <div v-else class="card">
-      <wbAlertWarning />
-      <wbAlertTips />
-      <h4 class="title">
-        跨链转账到币安智能区块链 主网 BSC Mainnet
-      </h4>
-      <el-form
-        ref="form"
-        v-loading="transferLoading"
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="withdraw-form"
-      >
-        <el-form-item label="要转出的Fan票" prop="tokenId">
-          <el-select
-            v-model="form.tokenId"
-            filterable
-            placeholder="请选择"
-            style="width: 100%"
-            @change="changeTokenSelect"
-          >
-            <el-option
-              v-for="item in tokenOptions"
-              :key="item.token_id"
-              :label="`${item.name}(${item.symbol})`"
-              :value="item.token_id"
+      <div v-if="!isLogined" class="card not-logined">
+        <h1 class="title">
+          😺嗯？你好像还没有登录？
+        </h1>
+        <h2 class="subtitle">
+          你需要先登录才能使用这个功能
+        </h2>
+        <el-button @click="login">
+          注册/登录
+        </el-button>
+      </div>
+      <div v-else class="card">
+        <wbAlertWarning />
+        <wbAlertTips />
+        <h4 class="title">
+          跨链转账到币安智能区块链 主网 BSC Mainnet
+        </h4>
+        <el-form
+          ref="form"
+          v-loading="transferLoading"
+          :model="form"
+          :rules="rules"
+          label-width="120px"
+          class="withdraw-form"
+        >
+          <el-form-item label="要转出的Fan票" prop="tokenId">
+            <el-select
+              v-model="form.tokenId"
+              filterable
+              placeholder="请选择"
+              style="width: 100%"
+              @change="changeTokenSelect"
             >
-              <div class="token-container">
-                <img
-                  :src="tokenLogo(item.logo)"
-                  :alt="item.symbol"
-                  class="token-logo"
-                >
-                <span
-                  class="token-symbol"
-                >{{ item.name }}({{ item.symbol }})</span>
-                <span
-                  class="token-symbol"
-                >余额: {{ tokenAmount(item.amount, item.decimals) }}
-                  {{ item.symbol }}</span>
-              </div>
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="数量" prop="amount">
-          <el-input
-            v-model="form.amount"
-            :max="form.max"
-            :min="form.min"
-            placeholder="请输入数量"
-            clearable
-          />
-        </el-form-item>
-        <p class="balance">
-          余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
-          <a
-            v-if="form.balance"
-            href="javascript:;"
-            @click="form.amount = form.balance"
-          >全部转出</a>
-        </p>
-        <el-form-item label="转账目的地" prop="to">
-          <el-input
-            v-model="form.to"
-            placeholder="请输入目标钱包的BSC地址，以 0x 开头。"
-            clearable
-          />
-        </el-form-item>
-        <div class="form-button">
-          <el-button
-            :disabled="!isGoodToWithdraw"
-            type="primary"
-            class="submit-btn"
-            @click="submitForm('form')"
-          >
-            确定
-          </el-button>
-        </div>
-        <el-alert v-if="withdrawResult" type="success" class="withdraw-result">
-          <h1 class="title">
-            Fan 票 BSC 跨链转账许可证已下发
-          </h1>
-          <p class="description">
-            因为这是 BSC
-            主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的
-            BNB，以创建跨链资产。
+              <el-option
+                v-for="item in tokenOptions"
+                :key="item.token_id"
+                :label="`${item.name}(${item.symbol})`"
+                :value="item.token_id"
+              >
+                <div class="token-container">
+                  <img
+                    :src="tokenLogo(item.logo)"
+                    :alt="item.symbol"
+                    class="token-logo"
+                  >
+                  <span
+                    class="token-symbol"
+                  >{{ item.name }}({{ item.symbol }})</span>
+                  <span
+                    class="token-symbol"
+                  >余额: {{ tokenAmount(item.amount, item.decimals) }}
+                    {{ item.symbol }}</span>
+                </div>
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="数量" prop="amount">
+            <el-input
+              v-model="form.amount"
+              :max="form.max"
+              :min="form.min"
+              placeholder="请输入数量"
+              clearable
+            />
+          </el-form-item>
+          <p class="balance">
+            余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
+            <a
+              v-if="form.balance"
+              href="javascript:;"
+              @click="form.amount = form.balance"
+            >全部转出</a>
           </p>
-          <p class="description">
-            你的提现许可证如下（不用怕，你可以随时到许可证列表查看之前申请过的）
-          </p>
-          <el-input
-            v-model="permitOfMint"
-            type="textarea"
-            :rows="6"
-            class="withdraw-result-textarea"
-            autosize
-          />
-          <div class="actions">
-            <el-button @click="goToMintPermitList">
-              查看我申请过的许可证 / 发送激活
-            </el-button>
-            <el-button @click="copyGoToMintPermitList(permitOfMint)">
-              复制许可证 / 发送激活
+          <el-form-item label="转账目的地" prop="to">
+            <el-input
+              v-model="form.to"
+              placeholder="请输入目标钱包的BSC地址，以 0x 开头。"
+              clearable
+            />
+          </el-form-item>
+          <div class="form-button">
+            <el-button
+              :disabled="!isGoodToWithdraw"
+              type="primary"
+              class="submit-btn"
+              @click="submitForm('form')"
+            >
+              确定
             </el-button>
           </div>
-        </el-alert>
-      </el-form>
-      <h4 class="title">
-        其他
-      </h4>
-      <el-button @click="$router.push({ name: 'token-myBscPermit' })">
-        查看自己的可证
-      </el-button>
-      <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
-        上传提现许可
-      </el-button>
-    </div>
+          <el-alert v-if="withdrawResult" type="success" class="withdraw-result">
+            <h1 class="title">
+              Fan 票 BSC 跨链转账许可证已下发
+            </h1>
+            <p class="description">
+              因为这是 BSC
+              主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的
+              BNB，以创建跨链资产。
+            </p>
+            <p class="description">
+              你的提现许可证如下（不用怕，你可以随时到许可证列表查看之前申请过的）
+            </p>
+            <el-input
+              v-model="permitOfMint"
+              type="textarea"
+              :rows="6"
+              class="withdraw-result-textarea"
+              autosize
+            />
+            <div class="actions">
+              <el-button @click="goToMintPermitList">
+                查看我申请过的许可证 / 发送激活
+              </el-button>
+              <el-button @click="copyGoToMintPermitList(permitOfMint)">
+                复制许可证 / 发送激活
+              </el-button>
+            </div>
+          </el-alert>
+        </el-form>
+        <h4 class="title">
+          其他
+        </h4>
+        <el-button @click="$router.push({ name: 'token-myBscPermit' })">
+          查看自己的可证
+        </el-button>
+        <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
+          上传提现许可
+        </el-button>
+      </div>
+    </client-only>
   </div>
 </template>
 
@@ -232,7 +234,7 @@ export default {
     },
   },
   mounted() {
-    this.tokenTokenList()
+    if (process.browser) { this.tokenTokenList() }
   },
   methods: {
     login() {
