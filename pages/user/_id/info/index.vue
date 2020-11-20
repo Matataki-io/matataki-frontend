@@ -1,7 +1,7 @@
 
 <template>
   <userPage>
-    <div slot="list" v-loading="loading" class="user-info-content">
+    <div slot="list" v-loading="loading" class="user-info-content wrapper">
       <template v-if="urls.length !== 0">
         <h3 class="title">
           {{ $t('social.relatedWebsites') }}
@@ -195,6 +195,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.wrapper {
+  max-width: 766px;
+  margin: 0 auto;
+}
 .user-info-content {
   padding: 20px 20px 100px;
 }

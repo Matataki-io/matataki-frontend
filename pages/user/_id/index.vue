@@ -4,6 +4,7 @@
     <div
       slot="list"
       v-loading="loading"
+      class="wrapper"
     >
       <div v-if="isMe(this.$route.params.id)" class="view-all">
         <el-checkbox v-model="showAll" @change="handleShowAllChange">
@@ -155,6 +156,10 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  max-width: 766px;
+  margin: 0 auto;
+}
 .pagination {
   padding: 40px 5px;
 }
