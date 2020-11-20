@@ -1,5 +1,6 @@
 <template>
   <div class="withdraw-container">
+    <client-only>
     <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
     <h1 class="withdraw-title">
       上传 BSC 提现许可，把资产搬到币安智能链（Binance Smart Chain）
@@ -54,6 +55,7 @@
         查看自己的可证
       </el-button>
     </div>
+    </client-only>
   </div>
 </template>
 

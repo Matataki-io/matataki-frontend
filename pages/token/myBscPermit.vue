@@ -1,6 +1,7 @@
 <template>
   <div class="withdraw-container">
-    <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
+    <client-only>
+     <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
     <h1 class="withdraw-title">
       我的 BSC 许可
     </h1>
@@ -106,6 +107,7 @@
         </div>
       </div>
     </div>
+    </client-only>
   </div>
 </template>
 
@@ -150,6 +152,7 @@ export default {
     },
   },
   async mounted() {
+    if (!process.browser) return // NO SSR 
     if (this.isLogined) this.fetchPermit()
     this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
     if (!window.ethereum) return
