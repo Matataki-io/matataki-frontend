@@ -7,12 +7,11 @@
     <div class="card">
       <wbAlertWarning />
       <wbAlertTips />
-      <el-input
-        v-model.trim="permitInput"
-        type="textarea"
+      <textarea
+        v-model.trim="permitInput" 
+        style="width: 100%; margin: 10px 0px;height: 286px;"
         :rows="6"
         class="withdraw-result-textarea"
-        autosize
         :placeholder="placeholderForPermitInput"
         @change="onPermitInput"
       />
@@ -107,6 +106,7 @@ export default {
   watch: {},
   methods: {
     onPermitInput(e) {
+      console.info('onPermitInput event e', e)
       const { value } = e.target
       if (!value) return
       let permitData
