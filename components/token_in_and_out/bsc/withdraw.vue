@@ -207,7 +207,8 @@ export default {
       this.$emit('login')
     },
     goToMintPermitList() {
-      this.$router.push('/token/myBscPermit')
+      // update parent
+      this.$emit('update:selection', 'my')
     },
     copyGoToMintPermitList(val) {
       let str = ''
@@ -225,10 +226,10 @@ export default {
             message: this.$t('success.copy'),
             type: 'success',
           })
-          let routeData = this.$router.resolve({
-            name: 'token-bscMintWithPermit',
-          })
-          window.open(routeData.href, '_blank')
+          // let routeData = this.$router.resolve({
+          //   name: 'token-bscMintWithPermit',
+          // })
+          // window.open(routeData.href, '_blank')
         },
         () =>
           this.$message({

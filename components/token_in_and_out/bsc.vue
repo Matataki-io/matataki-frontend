@@ -15,9 +15,9 @@
         替别人提现许可
       </el-radio>
       <wbAlertWarning />
-      <MyBscPermit v-if="selection === 'my'" />
-      <BscWithdraw v-if="selection === 'apply'" />
-      <MintWithPermit v-if="selection === 'upload'" />
+      <MyBscPermit v-if="selection === 'my'" :selection.sync="selection" />
+      <BscWithdraw v-if="selection === 'apply'" :selection.sync="selection" />
+      <MintWithPermit v-if="selection === 'upload'" :selection.sync="selection" />
     </div>
   </div>
 </template>
