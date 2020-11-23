@@ -3,7 +3,7 @@
     <div v-if="isDepositSelected" class="deposit">
       Deposit
     </div>
-    <div v-else class="withdraw">
+    <div v-if="isWithdrawSelected" class="withdraw">
       <el-radio v-model="selection" label="apply">
         申请提现许可
       </el-radio>
@@ -14,14 +14,16 @@
         替别人提现许可
       </el-radio>
       <wbAlertWarning />
+      <MyBscPermit v-if="selection === 'my'" />
+      <BscWithdraw v-if="selection === 'apply'" />
+      <MintWithPermit v-if="selection === 'upload'" />
     </div>
-    <MyBscPermit v-if="selection === 'my'" />
-    <MintWithPermit v-if="selection === 'upload'" />
   </div>
 </template>
 
 <script>
-import MyBscPermit from './bsc/myBscPermit.vue'
+import MyBscPermit from './bsc/myPermit.vue'
+import BscWithdraw from './bsc/withdraw.vue'
 import MintWithPermit from './bsc/mintWithPermit.vue'
 import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
 
@@ -30,6 +32,7 @@ export default {
   components: {
     MyBscPermit,
     MintWithPermit,
+    BscWithdraw,
     wbAlertWarning,
   },
   props: {
