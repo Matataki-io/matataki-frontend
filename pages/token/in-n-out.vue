@@ -1,6 +1,17 @@
 <template>
   <div class="in-out-container">
-    <client-only>
+    <div v-if="!isLogined" class="card not-logined">
+      <h1 class="title">
+        😺嗯？你好像还没有登录？
+      </h1>
+      <h2 class="subtitle">
+        你需要先登录才能使用这个功能
+      </h2>
+      <el-button @click="login">
+        注册/登录
+      </el-button>
+    </div>
+    <client-only v-else>
       <div class="card">
         <el-page-header content="Fan票折跃门" @back="$router.back()" />
         <div class="chain-selection">
@@ -31,6 +42,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import RinkebyInAndOut from '../../components/token_in_and_out/rinkeby.vue'
 import BscInAndOut from '../../components/token_in_and_out/bsc.vue'
 
@@ -45,6 +57,7 @@ export default {
     direction: 'withdraw'
   }),
   computed: {
+    ...mapGetters(['isLogined']),
     isRinkebySelected() {
       return this.chainSelection === 'rinkeby'
     },
@@ -52,6 +65,12 @@ export default {
       return this.chainSelection === 'bsc'
     },
   },
+  methods: {
+    login() {
+      this.$store.commit('setLoginModal', true)
+      this.$emit('login')
+    },
+  }
 }
 </script>
 
@@ -59,7 +78,8 @@ export default {
 .in-out-container {
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto 40px;
+  /* margin-top: 20px; */
+  margin: 20px auto;
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
