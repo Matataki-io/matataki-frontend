@@ -1,8 +1,5 @@
 <template>
   <div class="withdraw-container">
-    <h1 class="title">
-      提取 Fan票
-    </h1>
     <div v-if="!isLogined" class="card not-logined">
       <h1 class="title">
         😺嗯？你好像还没有登录？
@@ -15,6 +12,7 @@
       </el-button>
     </div>
     <div v-else class="card">
+      <el-page-header content="提取 Fan票到 Rinkeby Testnet" @back="$router.back()" />
       <el-alert type="warning">
         <h2 class="title">
           ⚠️你找到了暂未对公众开放的试验性功能⚠️
