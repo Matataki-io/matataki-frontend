@@ -46,6 +46,7 @@ import {
   CarouselItem,
   Badge,
   Autocomplete,
+  PageHeader,
   DatePicker
 } from 'element-ui'
 
@@ -60,6 +61,7 @@ Vue.use(Row)
   .use(DropdownItem)
   .use(Pagination)
   .use(Checkbox)
+  .use(PageHeader)
   .use(CheckboxButton)
   .use(CheckboxGroup)
   .use(Slider)

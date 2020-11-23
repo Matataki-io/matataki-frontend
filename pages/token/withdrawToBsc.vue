@@ -1,10 +1,6 @@
 <template>
   <div class="withdraw-container">
     <client-only>
-      <!-- Frank 留言：可以先不整这个，我还在弄后端接口 -->
-      <h1 class="withdraw-title">
-        跨链提取 Fan票到币安智能链（Binance Smart Chain）
-      </h1>
       <div v-if="!isLogined" class="card not-logined">
         <h1 class="title">
           😺嗯？你好像还没有登录？
@@ -17,11 +13,9 @@
         </el-button>
       </div>
       <div v-else class="card">
+        <el-page-header content="跨链转账到币安智能区块链(BSC Mainnet)" @back="$router.back()" />
         <wbAlertWarning />
         <wbAlertTips />
-        <h4 class="title">
-          跨链转账到币安智能区块链 主网 BSC Mainnet
-        </h4>
         <el-form
           ref="form"
           v-loading="transferLoading"
