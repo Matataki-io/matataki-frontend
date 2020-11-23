@@ -1,33 +1,8 @@
 <template>
   <div class="withdraw-container">
     <client-only>
-      <div class="checklist">
-        <h4>环境检查</h4>
-        <ul>
-          <li>是否已经有 MetaMask 钱包: {{ renderIconWithBool(isMetaMaskActive) }}</li>
-          <li>
-            是否已经授权我们访问: {{ renderIconWithBool(selectedWallet) }}
-            <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
-              授权钱包地址
-            </el-button>
-          </li>
-          <li v-if="selectedWallet">
-            当前操作的钱包地址: {{ selectedWallet }}
-            <br>
-            BNB 余额： {{ bnbBalance }}
-          </li>
-          <li>
-            是否在币安智能区块链网络: {{ renderIconWithBool(isOnBsc) }} 
-            <a 
-              v-if="!isOnBsc"
-              class="link"
-              href="https://www.readblocks.com/archives/32275"
-              target="_blank"
-              rel="noopener noreferrer"
-            >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
-          </li>
-        </ul>
-      </div>
+      <!-- Env Check Here -->
+      <EnvironmentCheck />
       <wbAlertTips />
       <div
         v-for="listItem in listOfTokenAndItsPermit"
@@ -95,16 +70,18 @@
 </template>
 
 <script>
-import { ethers, utils } from 'ethers'
+import { ethers } from 'ethers'
 import { batchQueryNonceFor, mintWithPermit } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import EnvironmentCheck from './EnvironmentCheck'
 
 export default {
   name: 'MyBscPermit',
   components: {
     wbAlertTips,
+    EnvironmentCheck,
   },
   data() {
     return {
@@ -113,11 +90,6 @@ export default {
       listOfToken: [],
       listOfTokenAndItsPermit: [],
       interval: null,
-      isMetaMaskActive: false,
-      isOnBsc: false,
-      selectedWallet: null,
-      isChecked: false,
-      bnbBalance: null
     }
   },
   computed: {
@@ -125,7 +97,7 @@ export default {
   },
   watch: {
     isLogined(val) {
-      if (val && this.isMetaMaskActive) this.fetchPermit()
+      if (val) this.fetchPermit()
       // 每一分钟刷新一次
       this.interval = setInterval(() => {
         this.fetchPermit()
@@ -135,36 +107,9 @@ export default {
   async mounted() {
     if (!process.browser) return // NO SSR 
     if (this.isLogined) this.fetchPermit()
-    this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
-    if (!window.ethereum) return
-    const { networkVersion, selectedAddress } = window.ethereum 
-    this.selectedWallet = selectedAddress
-    this.isOnBsc = (56 === Number(networkVersion) || 97 === Number(networkVersion))
-    if (selectedAddress) { this.fetchBNBBalance() }
-    window.ethereum.on('chainChanged', chainId => {
-      // handle the new network
-      this.isOnBsc = (56 === Number(chainId) || 97 === Number(chainId))
-    })
-    window.ethereum.on('accountsChanged',  ([ primaryAcc ]) => {
-      this.selectedWallet = primaryAcc
-      if (primaryAcc) {
-        this.fetchBNBBalance()
-      } else {
-        this.bnbBalance = null
-      }
-    })
+    this.isMetaMaskActive
   },
   methods: {
-    renderIconWithBool(val) {
-      return val ? '☑️': '✖️'
-    },
-    async fetchBNBBalance() {
-      const provider = new ethers.providers.Web3Provider(
-        window.ethereum
-      )
-      const balanceBN = await provider.getBalance(this.selectedWallet)
-      this.bnbBalance = utils.formatEther(balanceBN)
-    },
     async fetchPermit() {
       const { data } = await this.$API.listMyBscPermit()
       this.listOfToken = [
@@ -204,14 +149,6 @@ export default {
     login() {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
-    },
-    async requestEtherumAccounts() {
-      try {
-        const [ defaultAccount ] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-        this.selectedWallet = defaultAccount
-      } catch (error) {
-        this.$message.error('对不起，这个操作需要你授权我们访问你的 MetaMask 钱包')
-      }
     },
     async sendPermit(permit) {
       try {

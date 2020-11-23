@@ -1,7 +1,8 @@
 <template>
   <div class="bsc-in-n-out">
     <div v-if="isDepositSelected" class="deposit">
-      Deposit
+      To be continuted...
+      敬请期待
     </div>
     <div v-if="isWithdrawSelected" class="withdraw">
       <el-radio v-model="selection" label="apply">

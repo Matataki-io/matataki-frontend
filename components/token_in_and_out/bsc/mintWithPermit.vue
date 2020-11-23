@@ -37,16 +37,6 @@
           </a>
         </el-alert>
       </div>
-
-      <h4 class="title">
-        其他
-      </h4>
-      <el-button @click="$router.push({ name: 'token-withdrawToBsc' })">
-        提现自己的资产
-      </el-button>
-      <el-button @click="$router.push({ name: 'token-myBscPermit' })">
-        查看自己的可证
-      </el-button>
     </client-only>
   </div>
 </template>
