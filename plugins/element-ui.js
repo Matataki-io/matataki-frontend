@@ -22,6 +22,7 @@ import {
   Popover,
   Tooltip,
   Button,
+  ButtonGroup,
   Switch,
   Steps,
   Step,
@@ -68,6 +69,7 @@ Vue.use(Row)
   .use(Popover)
   .use(Tooltip)
   .use(Button)
+  .use(ButtonGroup)
   .use(Switch)
   .use(Steps)
   .use(Step)
