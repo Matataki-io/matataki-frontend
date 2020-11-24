@@ -1,5 +1,10 @@
 <template>
   <div class="in-out-container">
+    <div class="banner">
+        <h1 class="title">
+            Fan票的提取&转入
+        </h1>
+    </div>
     <div v-if="!isLogined" class="card not-logined">
       <h1 class="title">
         😺嗯？你好像还没有登录？
@@ -83,6 +88,21 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
+}
+img.banner {
+    width: 100%;
+}
+div.banner {
+    background-image: url("../../assets/img/token-banner.png");
+    background-size: 100% 100%;
+    height: 260px;
+    width: auto;
+    margin: 20px;
+}
+div.banner .title {
+    padding-top: 110px;
+    text-align: center;
+    margin: 0;
 }
 .card {
   background: white;
