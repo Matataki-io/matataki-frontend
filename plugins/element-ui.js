@@ -22,6 +22,7 @@ import {
   Popover,
   Tooltip,
   Button,
+  ButtonGroup,
   Switch,
   Steps,
   Step,
@@ -46,6 +47,7 @@ import {
   CarouselItem,
   Badge,
   Autocomplete,
+  PageHeader,
   DatePicker
 } from 'element-ui'
 
@@ -60,12 +62,14 @@ Vue.use(Row)
   .use(DropdownItem)
   .use(Pagination)
   .use(Checkbox)
+  .use(PageHeader)
   .use(CheckboxButton)
   .use(CheckboxGroup)
   .use(Slider)
   .use(Popover)
   .use(Tooltip)
   .use(Button)
+  .use(ButtonGroup)
   .use(Switch)
   .use(Steps)
   .use(Step)

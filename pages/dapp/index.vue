@@ -202,6 +202,26 @@ export default {
               btn: '访问网站',
               disabled: false
             },
+            {
+              title: 'Fan提取',
+              description: '跨链提取 Fan票到币安智能链（Binance Smart Chain）',
+              img: output,
+              width: '138px',
+              height: '148px',
+              url: '/token/withdrawToBsc',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Fan票提取和转入',
+              description: '将Fan票提现到Metamask钱包或者转入Fan票到Matataki',
+              img: output,
+              width: '138px',
+              height: '148px',
+              url: '/token/withdrawToBsc',
+              btn: '访问网站',
+              disabled: false
+            },
           ]
         },
         {

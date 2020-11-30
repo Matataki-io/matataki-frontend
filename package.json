@@ -40,6 +40,7 @@
     "echarts": "^4.8.0",
     "element-ui": "2.13.2",
     "eosjs": "^16.0.9",
+    "ethers": "^5.0.19",
     "highlightjs-solidity": "1.0.18",
     "hover.css": "2.3.2",
     "js-base64": "^2.5.1",

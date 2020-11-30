@@ -87,7 +87,7 @@
           v-model="tokenForm.brief"
           class="token-input customize-input"
           type="textarea"
-          maxlength="100"
+          maxlength="50"
           :rows="6"
           show-word-limit
           placeholder="请输入Token的简介信息"
@@ -182,7 +182,7 @@ export default {
         ],
         brief: [
           { required: true, message: '请输入简介', trigger: 'blur' },
-          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: ['blur', 'change'] },
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: ['blur', 'change'] },
         ],
         tag: [
           { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }

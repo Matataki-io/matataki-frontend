@@ -117,8 +117,11 @@
       >
         <el-input
           v-model="form.brief"
-          class="input"
+          :rows="3"
+          class="input customize-input"
+          type="textarea"
           maxlength="50"
+          show-word-limit
           placeholder="简介"
         />
       </el-form-item>
