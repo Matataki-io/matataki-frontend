@@ -1,5 +1,5 @@
 <template>
-  <a :href="'https://www.bilibili.com/video/av' + card.aid" target="_blank">
+  <a class="linkbox" :href="'https://www.bilibili.com/video/av' + card.aid" target="_blank">
     <div class="videocard">
       <div class="videocard-l">
         <el-image
@@ -51,8 +51,9 @@ export default {
 
 <style lang="less" scoped>
 
-a {
+.linkbox {
   text-decoration: none;
+  display: block;
 }
 
 .word-limit {
@@ -64,7 +65,6 @@ a {
 }
 
 .videocard {
-  margin-top: 10px;
   border: 1px solid #E6E9EE;
   background: white;
   border-radius: 5px;

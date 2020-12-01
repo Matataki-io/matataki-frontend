@@ -1,5 +1,5 @@
 <template>
-  <a :href="sketch.target_url" target="_blank">
+  <a class="linkbox" :href="sketch.target_url" target="_blank">
     <div class="videocard">
       <div class="videocard-l">
         <el-image
@@ -46,12 +46,12 @@ export default {
   word-break: break-all;
 }
 
-a {
+.linkbox {
   text-decoration: none;
+  display: block;
 }
 
 .videocard {
-  margin-top: 10px;
   border: 1px solid #E6E9EE;
   background: white;
   border-radius: 5px;
