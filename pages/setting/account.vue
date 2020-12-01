@@ -667,7 +667,7 @@ export default {
       const list = await Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/app/availableBinding')
       list.data.forEach(item => {
         item.icon = process.env.VUE_APP_MATATAKIAUTH_API + item.icon
-        Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/' + this.currentUserInfo.id, { params: { platform: 'Bilibili' } }).then(async res => {
+        Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/id', { params: { platform: 'Bilibili' }, headers: { 'x-access-token': this.currentUserInfo.accessToken } }).then(async res => {
           if (res.data.code === 0) {
             if (res.data.message !== 'User Not Found') {
               const filterPlatform = res.data.data.filter(j => j.platform === item.type)
