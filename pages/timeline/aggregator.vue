@@ -26,10 +26,10 @@
               </router-link>
             </h3>
             <h3 class="head-title topnav-tag">
-              Twitter 时间轴
+              第三方时间轴
             </h3>
             <div class="flex-support" />
-            <el-dropdown
+            <!-- <el-dropdown
               v-if="!unauthorized"
               trigger="click"
               @command="dropdownCommand"
@@ -45,7 +45,7 @@
                   取消 Twitter 授权
                 </el-dropdown-item>
               </el-dropdown-menu>
-            </el-dropdown>
+            </el-dropdown> -->
           </section>
           <div v-if="unauthorized" class="apply-authorize">
             <p>
@@ -68,6 +68,7 @@
           >
             <twitterCard
               v-if="item.platform === 'twitter'"
+              show-logo
               :card="item.card"
               :front-queue="item.frontQueue"
             />
@@ -163,7 +164,7 @@ export default {
     return {
       userInfo: {}, // 用户信息
       pull: {
-        params: { page: 4 },
+        params: { page: 1, network: '' },
         apiUrl: 'https://cache.ayaka.moe/matataki/status/timeline',
         list: [],
       },
@@ -190,6 +191,10 @@ export default {
 
       this.usersRecommend()
     }
+  },
+  mounted() {
+    this.pull.params.network = this.$utils.getNetwork(window)
+    if (this.pull.params.network === 'dev') this.pull.params.network = 'test'
   },
   methods: {
     ...mapActions(['getCurrentUser']),
@@ -228,17 +233,17 @@ export default {
         console.log('结果：', res, this.pull.list)
       }
       catch (e) {
-        console.error('[get twitter timeline failure] [res, e]:', res, e)
+        console.error('[get aggregator timeline failure] [res, e]:', res, e)
         this.$message.error(this.$t('error.getDataError'))
       }
     },
     getDataFail(res) {
-      if (!res) return
-      if (res.code === 11501) {
-        this.unauthorized = true
+      if (!res) {
+        console.error('[get aggregator timeline failure]')
+        this.$message.error('获取聚合时间线失败')
       }
       else {
-        console.error('[get twitter timeline failure] res:', res)
+        console.error('[get aggregator timeline failure] res:', res)
         this.$message.error(this.$t(res.message))
       }
     },

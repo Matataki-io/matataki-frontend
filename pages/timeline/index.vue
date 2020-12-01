@@ -23,9 +23,14 @@
             <h3 class="head-title topnav-tag">
               {{ $t('timeline.timeline') }}
             </h3>
-            <h3 class="head-title topnav-tag">
+            <!-- <h3 class="head-title topnav-tag">
               <router-link :to="{ name: 'timeline-twitter' }">
                 Twitter 时间轴
+              </router-link>
+            </h3> -->
+            <h3 class="head-title topnav-tag">
+              <router-link :to="{ name: 'timeline-aggregator' }">
+                第三方时间轴
               </router-link>
             </h3>
           </section>
@@ -71,8 +76,8 @@
           </div>
         </div>
         <h4 v-if="isLogined && !Number(userInfo.follows)" class="twitter-timeline-link">
-          <router-link :to="{ name: 'timeline-twitter' }">
-            浏览 Twitter 时间轴
+          <router-link :to="{ name: 'timeline-aggregator' }">
+            浏览第三方时间轴
             <i class="el-icon-arrow-right" />
           </router-link>
         </h4>
