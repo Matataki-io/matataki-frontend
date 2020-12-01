@@ -170,7 +170,7 @@ export default {
         const parsedValue = (Number(value) * 10000)
         const approveTx = await approve(signer, token, process.env.VUE_APP_PeggedTokenBurner, parsedValue)
         alert('正在 Approve，确认后需要再次签名 Burn，请稍后')
-        await approveTx.wait(1);
+        await approveTx.wait(1)
         const uid = this.currentUserInfo.id
         const burnTx = await burn(signer, token, uid, parsedValue)
         console.log(burnTx)
