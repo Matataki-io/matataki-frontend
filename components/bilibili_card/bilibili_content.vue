@@ -35,6 +35,8 @@ export default {
           return card.dynamic
         case 3:
           return card.vest.content
+        case 4:
+          return card.intro
         default:
           return ''
       }
@@ -58,7 +60,7 @@ export default {
           textArr[index] = '<span>' + char
         } else if (mention && [' ', ':', '@', '\n'].includes(char)) {
           mention = false
-          textArr[index] = char + '</span>'
+          textArr[index] = '</span>' + char
         }
       })
       return textArr.join('')
