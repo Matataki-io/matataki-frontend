@@ -132,5 +132,12 @@ export default {
       // console.log(e)
       return 0
     }
+  },
+
+  getNetwork(window) {
+    const determinator = window.location.host.split('.')[0]
+    if (/^localhost.*/.test(determinator)) return 'dev'
+    if (/(www)?test/.test(determinator)) return 'test'
+    return 'main'
   }
 };
