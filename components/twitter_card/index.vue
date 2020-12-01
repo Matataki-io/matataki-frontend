@@ -6,6 +6,7 @@
         :card="item"
         :show-up-line="index !== 0"
         :show-down-line="index !== queue.length - 1"
+        :show-logo="showLogo"
       />
       <moreReplies v-else />
     </div>
@@ -30,6 +31,10 @@ export default {
     frontQueue: {
       type: Array,
       default: new Array()
+    },
+    showLogo: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -48,7 +53,7 @@ export default {
       this.replyQueue.unshift({ showMoreButton: true, inReplyToStatusId: this.queue[0].in_reply_to_status_id })
     }
   }
-  
+
 }
 </script>
 
