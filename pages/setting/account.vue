@@ -671,13 +671,11 @@ export default {
           if (res.data.code === 0) {
             if (res.data.message !== 'User Not Found') {
               const filterPlatform = res.data.data.filter(j => j.platform === item.type)
-              console.log(filterPlatform)
               if (filterPlatform.length > 0) {
                 item.username = filterPlatform[0].account
                 item.status = filterPlatform[0].status
               }
             }
-            console.log(item)
             this.matatakiAuthAccountList = this.matatakiAuthAccountList.filter(item => item.type !== 'bilibili')
             this.matatakiAuthAccountList.push(item)
           }
@@ -707,7 +705,11 @@ export default {
       this.$message.warning(this.$t('thirdParty.useMatatakiAuthToBind'))
 
       setTimeout(() => {
-        window.open(process.env.VUE_APP_MATATAKIAUTH_API + '/auth/' + type, '_blank')
+        let network = ''
+        let determinator = window.location.host.split('.')[0]
+        if (/^localhost.*/.test(determinator)) network = '&network=test'
+        else network = /(www)?test/.test(determinator) ? '&network=test' : '&network=main'
+        window.open(process.env.VUE_APP_MATATAKIAUTH_API + '/auth/' + type + '?token=' + this.currentUserInfo.accessToken + network, '_blank')
         this.matatakiAuthAccountList[idx].loading = false
       }, 3000)
 
@@ -715,7 +717,6 @@ export default {
     matatakiAuthAccountUnbild(params, idx) {
       this.matatakiAuthAccountList[idx].loading = true
       const userId = this.currentUserInfo.id
-      console.log(params)
       Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/unbinding', { params: { userId: userId, platform: params.platform, account: params.account } }).then(res => {
         if (res.data.code === 0) {
           this.$message({ showClose: true, message: res.message, type: 'success'})
