@@ -17,13 +17,11 @@
           •
           {{ createTime }}
         </p>
-        <!-- <a class="cardunit-r-header-logo" :href="`https://t.bilibili.com/461467903514442263?tab=2`" target="_blank">
-          <i class="el-icon-link" />
-        </a> -->
+        <a class="cardunit-r-header-logo" :href="originUrl" target="_blank">
+          <svg-icon icon-class="bilibili_tv" />
+        </a>
       </div>
       <bilibiliContent class="cardunit-r-content" :card="card" :mode="stype" />
-      <!-- 敏感媒体 -->
-      <!-- <sensitiveMedia v-if="hideSensitiveMedia" class="cardunit-r-sensitive" @view="showSensitiveMedia = true" /> -->
       <!-- 图片 -->
       <div
         v-if="media && media.length > 0"
@@ -38,12 +36,30 @@
       <!-- 视频 -->
       <bilibiliVideo
         v-if="stype === 2"
-        class="cardunit-r-video"
+        class="cardtop10"
         :card="card"
+      />
+      <!-- 专栏 -->
+      <bilibiliColumn
+        v-if="type === 64"
+        class="cardtop10"
+        :card="card"
+      />
+      <!-- 音乐 -->
+      <bilibiliMusic
+        v-if="type === 256"
+        class="cardtop10"
+        :card="card"
+      />
+      <bilibiliOrigin
+        v-if="card.origin"
+        class="cardtop10"
+        :type="card.item.orig_type"
+        :card="jsonp(card.origin)"
+        :user="card.origin_user"
       />
       <!-- 特殊卡片 -->
       <bilibiliSpecial v-if="sketch" :sketch="sketch" />
-      <!-- <twitterQuote v-if="card.quoted_status" :card="card.quoted_status" /> -->
       <div class="cardunit-r-flows">
         <div class="cardunit-r-flows-comment">
           <svg-icon icon-class="twitter-comment" />
@@ -71,19 +87,21 @@
 <script>
 import bilibiliPhotoAlbum from './bilibili_photo_album'
 import bilibiliVideo from './bilibili_video'
-// import twitterQuote from './twitter_quote'
-// import sensitiveMedia from './sensitive_media'
+import bilibiliColumn from './bilibili_column'
+import bilibiliMusic from './bilibili_music'
 import bilibiliSpecial from './bilibili_special'
 import bilibiliContent from './bilibili_content'
+import bilibiliOrigin from './bilibili_origin'
 
 export default {
   components: {
     bilibiliPhotoAlbum,
     bilibiliVideo,
-    // twitterQuote,
-    // sensitiveMedia,
+    bilibiliColumn,
+    bilibiliMusic,
     bilibiliSpecial,
-    bilibiliContent
+    bilibiliContent,
+    bilibiliOrigin
   },
   props: {
     // 卡片数据
@@ -102,7 +120,11 @@ export default {
       if (this.card.item) return 1
       if (this.card.aid) return 2
       if (this.card.rid) return 3
+      if (this.type === 256) return 4
       return 0
+    },
+    type () {
+      return this.data.desc.type
     },
     avatarImg () {
       if (!this.card) return ''
@@ -122,15 +144,21 @@ export default {
     flows () {
       if (!this.card) return {}
       const desc = { ...this.data.desc }
-      let comment
-      if (this.stype === 2) comment = this.card.stat.reply
-      else comment = desc.comment
-
-      return {
-        comment,
+      const res = {
+        comment: desc.comment,
         retweet: desc.repost,
         favorite: desc.like
       }
+      if (this.stype === 2) res.comment = this.card.stat.reply
+      else if (this.type === 64) {
+        res.comment = this.card.stats.reply
+        res.retweet = this.card.stats.dynamic
+      }
+      else if (this.type === 256) {
+        res.comment = this.card.replyCnt
+      }
+
+      return res
     },
     media () {
       if (!this.card || this.stype !== 1 || !this.card.item.pictures) return []
@@ -139,16 +167,32 @@ export default {
     sketch () {
       if (!this.card || this.stype !== 3 || !this.card.sketch) return null
       return this.card.sketch
-    }
+    },
+    originUrl () {
+      if (this.stype === 1) return `https://t.bilibili.com/${this.data.desc.dynamic_id_str}?tab=2`
+      else if (this.stype === 2) return 'https://www.bilibili.com/video/av' + this.card.aid
+      else if (this.type === 64) return 'https://www.bilibili.com/read/cv' + this.card.id
+      else if (this.type === 256) return 'https://www.bilibili.com/audio/au' + this.card.id
+      else return ''
+    },
   },
   mounted () {
-    console.log(this.stype, this.data, this.card)
+    console.log(this.type, this.data, this.card)
     let meta = document.createElement('meta')
     meta.name = 'referrer'
     meta.content = 'no-referrer'
     document.getElementsByTagName('head')[0].appendChild(meta)
   },
   methods: {
+    jsonp(str) {
+      try {
+        return JSON.parse(str)
+      }
+      catch (e) {
+        console.error(str, e)
+        return null
+      }
+    }
   }
 }
 </script>
@@ -256,7 +300,7 @@ span {
       }
     }
 
-    &-video {
+    .cardtop10 {
       margin-top: 10px;
     }
 
