@@ -1,8 +1,7 @@
 <template>
   <div class="bsc-in-n-out">
     <div v-if="isDepositSelected" class="deposit">
-      To be continuted...
-      敬请期待
+      <BscDeposit :selection.sync="selection" />
     </div>
     <div v-if="isWithdrawSelected" class="withdraw">
       <el-radio v-model="selection" label="apply">
@@ -25,6 +24,7 @@
 <script>
 import MyBscPermit from './bsc/myPermit.vue'
 import BscWithdraw from './bsc/withdraw.vue'
+import BscDeposit from './bsc/deposit.vue'
 import MintWithPermit from './bsc/mintWithPermit.vue'
 import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
 
@@ -34,6 +34,7 @@ export default {
     MyBscPermit,
     MintWithPermit,
     BscWithdraw,
+    BscDeposit,
     wbAlertWarning,
   },
   props: {
