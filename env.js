@@ -62,7 +62,7 @@ module.exports = {
     VUE_APP_API: 'https://api.smartsignature.io',
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
     // @todo: change when go to mainnet
-    VUE_APP_PeggedTokenBurner: '0xBDa8a23018f2E0cfEe8f777455dD4b85943a7b79',
+    VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
     VUE_APP_URL: 'https://matataki.io',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
@@ -91,7 +91,7 @@ module.exports = {
     VUE_APP_API: 'https://api.smartsignature.io',
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
     // @todo: change when go to mainnet
-    VUE_APP_PeggedTokenBurner: '0xBDa8a23018f2E0cfEe8f777455dD4b85943a7b79',
+    VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
     VUE_APP_URL: 'https://matataki.io',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
