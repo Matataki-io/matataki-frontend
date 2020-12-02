@@ -46,10 +46,55 @@
         </div>
       </el-form>
     </client-only>
+    <div class="my-deposits">
+      <h1 class="title">
+        我的跨链Fan票存入记录
+      </h1>
+      <el-table
+        :data="myDeposit"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="id"
+          label="#编号"
+          width="100" 
+        />
+        <el-table-column
+          prop="burnTx"
+          label="Tx ID"
+          width="180"
+        >
+          <template slot-scope="scope">
+            <a :href="`http://bscscan.com/tx/${scope.row.burnTx}`" target="_blank" style="font-size: 10px">
+              ...{{ scope.row.burnTx.slice(-6) }} ↗️
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="value"
+          label="金额"
+        >
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.value / 10000 }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态"
+          width="150"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <span>{{ depositStatusRenderer(scope.row.status).message }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
 <script>
+import { depositStatusRenderer } from './util'
 import { ethers } from 'ethers'
 import { approve, burn } from './PeggedToken'
 // import { mintWithPermit } from '@/utils/ethers'
@@ -112,6 +157,7 @@ export default {
           },
         ]
       },
+      myDeposit: [],
       permit: null
     }
   },
@@ -132,6 +178,11 @@ export default {
     //   //   this.checkNew()
     //   // }
     // }
+  },
+  async mounted() {
+    const { data } = await this.$API.listMyCrossChainDeposit()
+    console.log('listMyCrossChainDeposit', data)
+    this.myDeposit = data.deposits
   },
   methods: {
     // async signPermitOfApproval() {
@@ -190,6 +241,9 @@ export default {
         this.$message.error(error)
         console.error(error)
       }
+    },
+    depositStatusRenderer(code) {
+      return depositStatusRenderer(code)
     },
     login() {
       this.$store.commit('setLoginModal', true)
