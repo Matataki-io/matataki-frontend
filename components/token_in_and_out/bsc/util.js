@@ -16,7 +16,7 @@ export function depositStatusRenderer(statusCode) {
   switch(statusCode) {
     case EnumForPeggedAssetDeposit.START: return '开始'
     case EnumForPeggedAssetDeposit.BURN_EVENT_CREATED: return { message: '等待网络确认' }
-    case EnumForPeggedAssetDeposit.BURN_EVENT_CONFIRMED: return  { message: '已确认，等待转账' }
+    case EnumForPeggedAssetDeposit.BURN_EVENT_CONFIRMED: return  { message: '已确认，稍后转账' }
     case EnumForPeggedAssetDeposit.RINKEBY_DEPOSIT_CREATED: return  { message: '已存入' }
     case EnumForPeggedAssetDeposit.RINKEBY_DEPOSIT_CONFIRMED: return  { message: '存入已到账' }
     default: return { message: '订单异常，请联系 Matataki 支持' }
