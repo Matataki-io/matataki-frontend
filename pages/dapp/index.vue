@@ -1,6 +1,21 @@
 <template>
   <div class="dapp">
-    <el-carousel trigger="click" height="240px" class="swipe-dapp">
+    <el-carousel
+      trigger="click"
+      height="240px"
+      class="swipe-dapp"
+    >
+      <el-carousel-item>
+        <div class="dapp-head-shuttle">
+          <div class="head-text">
+            <p class="head-description">一个基于Fan票提现和转入的工具</p>
+            <p class="head-title">Fan票折跃门</p>
+            <n-link :to="{ path: '/token/in-n-out' }" target="_blank" class="head-btn">
+              立即使用
+            </n-link>
+          </div>
+        </div>
+      </el-carousel-item>
       <el-carousel-item>
         <div class="dapp-head">
           <div class="head-text">
@@ -441,6 +456,55 @@ export default {
     padding: 8px 40px;
     margin: 18px 0 0 0;
     display: inline-block;
+  }
+}
+
+.dapp-head-shuttle {
+  height: 240px;
+  background-image: url(../../assets/img/dapp-banner-shuttle.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .head-description {
+    font-size: 20px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 28px;
+    padding: 0;
+    margin: 0;
+  }
+  .head-text {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .head-title {
+    padding: 0;
+    margin: 7px 0 0;
+    font-size: 48px;
+    font-weight: 900;
+    color: #F7B500;
+    line-height: 67px;
+    text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    font-family: STSongti-SC-Black STSongti-SC serif;
+  }
+  .head-btn {
+    // background: #542de0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ffffff;
+    padding: 8px 40px;
+    margin: 18px 0 0 0;
+    display: inline-block;
+    background: #6236FF;
+    border-radius: 20px;
   }
 }
 
