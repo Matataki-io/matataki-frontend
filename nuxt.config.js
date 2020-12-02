@@ -17,7 +17,7 @@ console.log(NODE_ENV)
 function cdnPublicPath (env) {
   const list = {
     'development': '/_nuxt/',
-    'testing': 'https://cdntest.frontenduse.top',
+    'testing': 'https://cdntest.frontenduse.top/test',
     'release': 'https://cdntest.frontenduse.top/release',
     'production': 'https://cdn.frontenduse.top',
   }

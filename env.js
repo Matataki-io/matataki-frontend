@@ -4,7 +4,8 @@ module.exports = {
     NODE_ENV: 'development',
     VUE_APP_API: 'https://apitest.smartsignature.io',
     VUE_APP_PeggedTokenMinterAddress: '0xe8142C86f7c25A8bF1c73Ab2A5Dd7a7A5C429171',
-    VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
+    VUE_APP_PeggedTokenBurner: '0xEF0B6c622c63860d9C29CD5Eac442f626F2cFF1E',
+    VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/apitest',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
     VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
     VUE_APP_URL: 'https://test.smartsignature.io',
@@ -32,8 +33,9 @@ module.exports = {
     NODE_ENV: 'testing',
     VUE_APP_API: 'https://apitest.smartsignature.io',
     VUE_APP_PeggedTokenMinterAddress: '0xe8142C86f7c25A8bF1c73Ab2A5Dd7a7A5C429171',
+    VUE_APP_PeggedTokenBurner: '0xEF0B6c622c63860d9C29CD5Eac442f626F2cFF1E',
     VUE_APP_URL: 'https://test.smartsignature.io',
-    VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
+    VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/apitest',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
     VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
     VUE_APP_SIGNATURE_CONTRACT: 'dragonquest2',
@@ -58,8 +60,9 @@ module.exports = {
     NODE: 'production',
     NODE_ENV: 'production',
     VUE_APP_API: 'https://api.smartsignature.io',
-    // @todo: change when go to mainnet
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
+    // @todo: change when go to mainnet
+    VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
     VUE_APP_URL: 'https://matataki.io',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
@@ -86,8 +89,9 @@ module.exports = {
     NODE: 'production',
     NODE_ENV: 'production',
     VUE_APP_API: 'https://api.smartsignature.io',
-    // @todo: change when go to mainnet
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
+    // @todo: change when go to mainnet
+    VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
     VUE_APP_URL: 'https://matataki.io',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',

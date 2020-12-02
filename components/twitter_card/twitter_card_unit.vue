@@ -32,7 +32,8 @@
             {{ createTime }}
           </p>
           <a class="cardunit-r-header-logo" :href="`https://twitter.com/${sCard.user.screen_name}/status/${sCard.id_str}`" target="_blank">
-            <i class="el-icon-link" />
+            <svg-icon v-if="showLogo" icon-class="twitter" />
+            <i v-else class="el-icon-link" />
           </a>
         </div>
         <twitterContent class="cardunit-r-content" :card="sCard" />
@@ -114,6 +115,10 @@ export default {
     showDownLine: {
       type: Boolean,
       default: false
+    },
+    showLogo: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -140,9 +145,9 @@ export default {
     createTime () {
       const time = this.moment(this.sCard.created_at)
       if (!this.$utils.isNDaysAgo(2, time)) return time.fromNow()
-      else if (!this.$utils.isNDaysAgo(365, time)) return time.format('MMMDo') 
+      else if (!this.$utils.isNDaysAgo(365, time)) return time.format('MMMDo')
       return time.format('YYYY MMMDo')
-      
+
     },
     flows () {
       return {
@@ -253,7 +258,7 @@ span {
     }
 
     // &-uline {
-      
+
     // }
 
     &-dline {
@@ -267,7 +272,7 @@ span {
   &-r {
     flex: 1;
     height: 100%;
-  
+
     &-header {
       display: flex;
       margin-bottom: 5px;
