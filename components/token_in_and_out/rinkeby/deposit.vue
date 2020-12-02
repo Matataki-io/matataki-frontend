@@ -1,36 +1,38 @@
 <template>
   <div class="card">
-    <el-alert v-if="myHostingAccount" type="info">
+    <el-alert v-if="myHostingAccount" type="info" class="elalert">
       <h2 class="title">
         我的托管钱包
       </h2>
-      地址: 
-      <code @click="copy">
-        {{ myHostingAccount }}
-      </code>
-      <button @click="copy">
-        复制
-      </button>
-      <br>
+      <p class="description">
+        地址: 
+        <code @click="copy">
+          {{ myHostingAccount }}
+        </code>
+        <button @click="copy">
+          复制
+        </button>
+      </p>
       <a 
         :href="etherscanLink" 
         target="_blank"
         rel="noreferrer"
+        class="link"
       >
         👉在 Etherscan 看这个托管账户的链上交易（找到 txHash） 👈
       </a>
     </el-alert>
+    <h1 class="withdraw-title">
+      申报充值
+    </h1>
     <el-form
       ref="form"
       v-loading="transferLoading"
       :model="form"
       :rules="rules"
-      label-width="60px"
+      label-width="80px"
       class="withdraw-form"
     >
-      <h1 class="title">
-        申报充值
-      </h1>
       <el-form-item label="txHash" prop="txHash">
         <el-input v-model="form.txHash" placeholder="请输入你充币的交易 Hash，以 0x 开头。" clearable />
       </el-form-item>
@@ -217,11 +219,7 @@ export default {
   box-sizing: border-box;
 }
 .card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
-  padding: 10px;
 }
 .card .el-alert {
   margin: 10px 0;
@@ -230,6 +228,37 @@ export default {
 
 
 <style lang="less" scoped>
+.elalert {
+  .title {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+  .description {
+    font-size: 14px;
+    padding: 0;
+    margin: 4px 0 0 0;
+    line-height: 1.5;
+  }
+  .link {
+    color: rgb(25, 137, 250);
+    display: inline-block;
+    font-size: 14px;
+    text-decoration: underline;
+    padding: 0;
+    margin: 4px 0 0 0;
+    line-height: 1.5;
+  }
+}
+.withdraw-title {
+  padding: 0;
+  margin: 20px 0 0 0;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.5;
+}
 .mttk-select {
   width: 100%;
 }
@@ -333,7 +362,8 @@ export default {
   }
 }
 .withdraw-form {
-  margin: 10px;
+  max-width: 500px;
+  margin: 10px auto;
   .tokenname {
     padding: 0;
     margin: 0;
