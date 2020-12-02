@@ -1,91 +1,64 @@
 <template>
-  <div class="withdraw-container">
-    <div v-if="!isLogined" class="card not-logined">
-      <h1 class="title">
-        😺 嗯？你好像还没有登录？
-      </h1>
-      <h2 class="subtitle">
-        你需要先登录才能使用这个功能
+  <div class="card">
+    <el-alert v-if="myHostingAccount" type="info">
+      <h2 class="title">
+        我的托管钱包
       </h2>
-      <el-button @click="login">
-        注册/登录
-      </el-button>
-    </div>
-    <div v-else class="card">
-      <el-page-header content="存入在 Rinkeby 的站外 Fan票" @back="$router.back()" />
-      <el-alert type="warning">
-        <h2 class="title">
-          ⚠️你找到了暂未对公众开放的试验性功能⚠️
-        </h2>存入站外的Fan票（在 Rinkeby Testnet 上）
-        <br><b>请不要充值 Fan 票以外的代币，可能会导致锁币</b>
-        <a 
-          href="https://matataki.io/p/5013" 
-          target="_blank"
-          rel="noreferrer"
-        >
-          👉查看充值站外Fan票的教程 👈
-        </a>
-      </el-alert>
-      <el-alert v-if="myHostingAccount" type="info">
-        <h2 class="title">
-          我的托管钱包
-        </h2>
-        地址: 
-        <code @click="copy">
-          {{ myHostingAccount }}
-        </code>
-        <button @click="copy">
-          复制
-        </button>
-        <br>
-        <a 
-          :href="etherscanLink" 
-          target="_blank"
-          rel="noreferrer"
-        >
-          👉在 Etherscan 看这个托管账户的链上交易（找到 txHash） 👈
-        </a>
-      </el-alert>
-      <el-form
-        ref="form"
-        v-loading="transferLoading"
-        :model="form"
-        :rules="rules"
-        label-width="60px"
-        class="withdraw-form"
+      地址: 
+      <code @click="copy">
+        {{ myHostingAccount }}
+      </code>
+      <button @click="copy">
+        复制
+      </button>
+      <br>
+      <a 
+        :href="etherscanLink" 
+        target="_blank"
+        rel="noreferrer"
       >
+        👉在 Etherscan 看这个托管账户的链上交易（找到 txHash） 👈
+      </a>
+    </el-alert>
+    <el-form
+      ref="form"
+      v-loading="transferLoading"
+      :model="form"
+      :rules="rules"
+      label-width="60px"
+      class="withdraw-form"
+    >
+      <h1 class="title">
+        申报充值
+      </h1>
+      <el-form-item label="txHash" prop="txHash">
+        <el-input v-model="form.txHash" placeholder="请输入你充币的交易 Hash，以 0x 开头。" clearable />
+      </el-form-item>
+      <div class="form-button">
+        <el-button
+          :disabled="!isGoodToWithdraw"
+          type="primary"
+          class="submit-btn"
+          @click="submitForm('form')"
+        >
+          确定
+        </el-button>
+      </div>
+      <el-alert v-if="depositResult" type="success">
         <h1 class="title">
-          申报充值
-        </h1>
-        <el-form-item label="txHash" prop="txHash">
-          <el-input v-model="form.txHash" placeholder="请输入你充币的交易 Hash，以 0x 开头。" clearable />
-        </el-form-item>
-        <div class="form-button">
-          <el-button
-            :disabled="!isGoodToWithdraw"
-            type="primary"
-            class="submit-btn"
-            @click="submitForm('form')"
-          >
-            确定
-          </el-button>
-        </div>
-        <el-alert v-if="depositResult" type="success">
-          <h1 class="title">
-            Fan 票充值成功
-          </h1>这笔交易已经同步到数据库。
-          <p>来自钱包地址: <code>{{ depositResult.from }}</code></p>
-          <p v-if="depositResult.token">
-            Fan票名：{{ depositResult.token.name }}
-            符号：{{ depositResult.token.symbol }}
-            <router-link :to="'/token/' + depositResult.token.id" target="_blank">
-              ↗️ 查看该饭票详情
-            </router-link>
-          </p>
-          <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
-        </el-alert>
-      </el-form>
-    </div>
+          Fan 票充值成功
+        </h1>这笔交易已经同步到数据库。
+        <p>来自钱包地址: <code>{{ depositResult.from }}</code></p>
+        <p v-if="depositResult.token">
+          Fan票名：{{ depositResult.token.name }}
+          符号：{{ depositResult.token.symbol }}
+          <router-link :to="'/token/' + depositResult.token.id" target="_blank">
+            ↗️ 查看该饭票详情
+          </router-link>
+        </p>
+        <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
+      </el-alert>
+    </el-form>
   </div>
 </template>
 
