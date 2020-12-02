@@ -1153,6 +1153,12 @@ minetokenGetResources(tokenId) {
       timeout: 60 * 1000
     })
   },
+  listMyCrossChainDeposit() {
+    return request({
+      method: 'GET',
+      url: '/minetoken/crosschain/myDeposits',
+    })
+  },
   listCrossChainToken() {
     return request({
       method: 'GET',
