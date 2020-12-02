@@ -1153,6 +1153,18 @@ minetokenGetResources(tokenId) {
       timeout: 60 * 1000
     })
   },
+  listCrossChainToken() {
+    return request({
+      method: 'GET',
+      url: '/minetoken/crosschain/',
+    })
+  },
+  isCrossChainToken(tokenAddress) {
+    return request({
+      method: 'GET',
+      url: `/minetoken/crosschain/isToken/${tokenAddress}`,
+    })
+  },
   // 获取我的 BSC 许可
   listMyBscPermit() {
       return request({
