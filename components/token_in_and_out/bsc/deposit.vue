@@ -211,7 +211,7 @@ export default {
       // Init Ethers
       try {
         const { token, value } = this.form
-        const { data: tokenDetail } = await this.$API.isCrossChainToken(token)
+        const { data: tokenDetail } = await this.$API.isCrossChainToken(token.toLowerCase())
         console.log('tokenDetail', tokenDetail)
         await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(
