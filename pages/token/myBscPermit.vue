@@ -1,111 +1,113 @@
 <template>
   <div class="withdraw-container">
-    <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
-    <h1 class="withdraw-title">
-      我的 BSC 许可
-    </h1>
-    <div class="card">
-      <div class="checklist">
-        <h4>环境检查</h4>
-        <ul>
-          <li>是否已经有 MetaMask 钱包: {{ renderIconWithBool(isMetaMaskActive) }}</li>
-          <li>
-            是否已经授权我们访问: {{ renderIconWithBool(selectedWallet) }}
-            <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
-              授权钱包地址
-            </el-button>
-          </li>
-          <li v-if="selectedWallet">
-            当前操作的钱包地址: {{ selectedWallet }}
-            <br>
-            BNB 余额： {{ bnbBalance }}
-          </li>
-          <li>
-            是否在币安智能区块链网络: {{ renderIconWithBool(isOnBsc) }} 
-            <a 
-              v-if="!isOnBsc"
-              class="link"
-              href="https://www.readblocks.com/archives/32275"
-              target="_blank"
-              rel="noopener noreferrer"
-            >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
-          </li>
-        </ul>
-      </div>
-      <wbAlertWarning />
-      <wbAlertTips />
-      <div class="others">
-        <el-button type="primary" @click="$router.push({ name: 'token-withdrawToBsc' })">
-          申请提现自己的资产
-        </el-button>
-        <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
-          （替别人）上传提现许可
-        </el-button>
-      </div>
-      <div
-        v-for="listItem in listOfTokenAndItsPermit"
-        :key="listItem.token"
-        class="parsedPermit"
-      >
-        <p class="parse-title">Token: {{ listItem.token }}</p>
-        <div>
-          <el-table :data="listItem.permits" style="width: 100%">
-            <el-table-column prop="to" label="提现到" width="400" />
-            <el-table-column prop="nonce" label="许可号(顺序）" width="80" />
-            <el-table-column label="状态" width="140">
-              <template slot-scope="scope">
-                {{
-                  scope.row.status === 0
-                    ? "待发送"
-                    : scope.row.status === -1
-                      ? "已发送"
-                      : "请先处理待发送"
-                }}
-              </template>
-            </el-table-column>
-            <el-table-column prop="value" label="提现金额" width="160">
-              <template slot-scope="scope">
-                {{ scope.row.value / 1e4 }}
-              </template>
-            </el-table-column>
-            <el-table-column label="有效期" width="140">
-              <template slot-scope="scope">
-                {{ scope.row.expiryDate.toLocaleDateString() }}
-              </template>
-            </el-table-column>
-            <el-table-column fixed="right" label="操作" width="240">
-              <template slot-scope="scope">
-                <el-button
-                  type="primary"
-                  :disabled="
-                    scope.row.isPermitExpired || scope.row.status !== 0
-                  "
-                  @click="sendPermit(scope.row)"
-                >
+    <client-only>
+      <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
+      <h1 class="withdraw-title">
+        我的 BSC 许可
+      </h1>
+      <div class="card">
+        <div class="checklist">
+          <h4>环境检查</h4>
+          <ul>
+            <li>是否已经有 MetaMask 钱包: {{ renderIconWithBool(isMetaMaskActive) }}</li>
+            <li>
+              是否已经授权我们访问: {{ renderIconWithBool(selectedWallet) }}
+              <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
+                授权钱包地址
+              </el-button>
+            </li>
+            <li v-if="selectedWallet">
+              当前操作的钱包地址: {{ selectedWallet }}
+              <br>
+              BNB 余额： {{ bnbBalance }}
+            </li>
+            <li>
+              是否在币安智能区块链网络: {{ renderIconWithBool(isOnBsc) }} 
+              <a 
+                v-if="!isOnBsc"
+                class="link"
+                href="https://www.readblocks.com/archives/32275"
+                target="_blank"
+                rel="noopener noreferrer"
+              >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+            </li>
+          </ul>
+        </div>
+        <wbAlertWarning />
+        <wbAlertTips />
+        <div class="others">
+          <el-button type="primary" @click="$router.push({ name: 'token-withdrawToBsc' })">
+            申请提现自己的资产
+          </el-button>
+          <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
+            （替别人）上传提现许可
+          </el-button>
+        </div>
+        <div
+          v-for="listItem in listOfTokenAndItsPermit"
+          :key="listItem.token"
+          class="parsedPermit"
+        >
+          <p class="parse-title">Token: {{ listItem.token }}</p>
+          <div>
+            <el-table :data="listItem.permits" style="width: 100%">
+              <el-table-column prop="to" label="提现到" width="400" />
+              <el-table-column prop="nonce" label="许可号(顺序）" width="80" />
+              <el-table-column label="状态" width="140">
+                <template slot-scope="scope">
                   {{
-                    scope.row.isExpired
-                      ? "已过期"
-                      : scope.row.status === 1
-                        ? "先处理前面"
-                        : scope.row.status === -1
-                          ? "已发送"
-                          : "上传许可"
+                    scope.row.status === 0
+                      ? "待发送"
+                      : scope.row.status === -1
+                        ? "已发送"
+                        : "请先处理待发送"
                   }}
-                </el-button>
-                <el-button
-                  :disabled="
-                    scope.row.isPermitExpired || scope.row.status !== 0
-                  "
-                  @click="copyPermit(scope.row)"
-                >
-                  分享
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+                </template>
+              </el-table-column>
+              <el-table-column prop="value" label="提现金额" width="160">
+                <template slot-scope="scope">
+                  {{ scope.row.value / 1e4 }}
+                </template>
+              </el-table-column>
+              <el-table-column label="有效期" width="140">
+                <template slot-scope="scope">
+                  {{ scope.row.expiryDate.toLocaleDateString() }}
+                </template>
+              </el-table-column>
+              <el-table-column fixed="right" label="操作" width="240">
+                <template slot-scope="scope">
+                  <el-button
+                    type="primary"
+                    :disabled="
+                      scope.row.isPermitExpired || scope.row.status !== 0
+                    "
+                    @click="sendPermit(scope.row)"
+                  >
+                    {{
+                      scope.row.isExpired
+                        ? "已过期"
+                        : scope.row.status === 1
+                          ? "先处理前面"
+                          : scope.row.status === -1
+                            ? "已发送"
+                            : "上传许可"
+                    }}
+                  </el-button>
+                  <el-button
+                    :disabled="
+                      scope.row.isPermitExpired || scope.row.status !== 0
+                    "
+                    @click="copyPermit(scope.row)"
+                  >
+                    分享
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </div>
       </div>
-    </div>
+    </client-only>
   </div>
 </template>
 
@@ -118,7 +120,7 @@ import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
 import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
 
 export default {
-  name: 'MintWithPermit',
+  name: 'MyBscPermit',
   components: {
     wbAlertWarning,
     wbAlertTips,
@@ -150,6 +152,7 @@ export default {
     },
   },
   async mounted() {
+    if (!process.browser) return // NO SSR 
     if (this.isLogined) this.fetchPermit()
     this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
     if (!window.ethereum) return
