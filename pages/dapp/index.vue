@@ -75,13 +75,14 @@ import exchange from '@/assets/img/dapp_list_exchange.png'
 import airdrop from '@/assets/img/dapp_list_airdrop.png'
 import map from '@/assets/img/dapp_list_map.png'
 import doc from '@/assets/img/dapp_list_doc.png'
-import input from '@/assets/img/dapp_list_input.png'
-import output from '@/assets/img/dapp_list_output.png'
+// import input from '@/assets/img/dapp_list_input.png'
+// import output from '@/assets/img/dapp_list_output.png'
 import developer from '@/assets/img/dapp_list_developer.png'
 import cryptohero from '@/assets/img/dapp_list_cryptohero.png'
 import nft from '@/assets/img/dapp_list_nft.png'
 import dao from '@/assets/img/dapp_list_dao.png'
 import mine from '@/assets/img/dapp_list_mine.png'
+import shuttle from '@/assets/img/dapp_list_shuttle.png'
 export default {
   data() {
     return {
@@ -182,43 +183,43 @@ export default {
               btn: '访问网站',
               disabled: false
             },
+            // {
+            //   title: 'Fan票提现',
+            //   description: '将Fan票提现到Metamask钱包',
+            //   img: output,
+            //   width: '138px',
+            //   height: '159px',
+            //   url: '/token/withdraw',
+            //   btn: '访问网站',
+            //   disabled: false
+            // },
+            // {
+            //   title: 'Fan票转入',
+            //   description: '将Metamask钱包中的Fan票充值到Matataki',
+            //   img: input,
+            //   width: '138px',
+            //   height: '148px',
+            //   url: '/token/deposit',
+            //   btn: '访问网站',
+            //   disabled: false
+            // },
+            // {
+            //   title: 'Fan提取',
+            //   description: '跨链提取 Fan票到币安智能链（Binance Smart Chain）',
+            //   img: output,
+            //   width: '138px',
+            //   height: '148px',
+            //   url: '/token/withdrawToBsc',
+            //   btn: '访问网站',
+            //   disabled: false
+            // },
             {
-              title: 'Fan票提现',
-              description: '将Fan票提现到Metamask钱包',
-              img: output,
-              width: '138px',
-              height: '159px',
-              url: '/token/withdraw',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan票转入',
-              description: '将Metamask钱包中的Fan票充值到Matataki',
-              img: input,
-              width: '138px',
-              height: '148px',
-              url: '/token/deposit',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan提取',
-              description: '跨链提取 Fan票到币安智能链（Binance Smart Chain）',
-              img: output,
-              width: '138px',
-              height: '148px',
-              url: '/token/withdrawToBsc',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan票提取和转入',
-              description: '将Fan票提现到Metamask钱包或者转入Fan票到Matataki',
-              img: output,
-              width: '138px',
-              height: '148px',
-              url: '/token/withdrawToBsc',
+              title: 'Fan票折跃门',
+              description: 'Fan票跨链导入导出工具',
+              img: shuttle,
+              width: 'auto',
+              height: '100%',
+              url: '/token/in-n-out',
               btn: '访问网站',
               disabled: false
             },
@@ -497,7 +498,7 @@ export default {
         img {
           width: 168px;
           height: 168px;
-          object-fit: cover;
+          object-fit: contain;
         }
       }
 
