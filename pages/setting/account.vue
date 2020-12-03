@@ -682,7 +682,11 @@ export default {
           else {
             console.log(res.data.message)
           }
-        }).catch(err => console.error(err))
+        }).catch(err => {
+          console.error(err)
+          this.matatakiAuthAccountList.push(item)
+          this.$message.error(this.$t('error.getDataError'))
+        })
       })
     },
     matatakiAuthBuildAccount: debounce(function (type, typename, idx) {
