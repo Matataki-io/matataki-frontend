@@ -71,10 +71,12 @@
               show-logo
               :card="item.card"
               :front-queue="item.frontQueue"
+              :from-user="getSourceUser(item)"
             />
             <bilibiliCard
               v-else-if="item.platform === 'bilibili'"
               :data="item.card"
+              :from-user="getSourceUser(item)"
             />
             <div v-else>
               不支持的平台类型: {{ item.platform }}
@@ -138,6 +140,20 @@
             :card="item"
           />
         </div>
+
+        <section class="head ra-head">
+          <h3 class="head-title">
+            已关注的跨平台作者
+          </h3>
+        </section>
+        <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">
+          <userPlatformCard
+            v-for="(item, index) in userPlatformList"
+            :key="index"
+            :card="item"
+          />
+          <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -145,20 +161,25 @@
 
 <script>
 import throttle from 'lodash/throttle'
+import axios from 'axios'
 
 import { mapGetters, mapActions } from 'vuex'
+
+import { getCookie } from '@/utils/cookie'
 
 import twitterCard from '@/components/twitter_card'
 import bilibiliCard from '@/components/bilibili_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
+import userPlatformCard from '@/components/user/user_platform_card'
 
 export default {
   components: {
     twitterCard,
     bilibiliCard,
     buttonLoadMore,
-    RAList
+    RAList,
+    userPlatformCard
   },
   data() {
     return {
@@ -170,7 +191,9 @@ export default {
       },
       usersLoading: false,
       usersRecommendList: [{},{},{},{},{}],
-      unauthorized: false
+      unauthorized: false,
+      userPlatformList: [],
+      userPlatformListLoading: false
     }
   },
   computed: {
@@ -195,6 +218,8 @@ export default {
   mounted() {
     this.pull.params.network = this.$utils.getNetwork(window)
     if (this.pull.params.network === 'dev') this.pull.params.network = 'test'
+
+    this.getUserPlatformList()
   },
   methods: {
     ...mapActions(['getCurrentUser']),
@@ -221,7 +246,9 @@ export default {
             list.push({
               card: JSON.parse(res.data.list[i].data),
               frontQueue: [],
-              platform: res.data.list[i].platform
+              platform: res.data.list[i].platform,
+              platform_user_id: res.data.list[i].platform_user_id,
+              platform_username: res.data.list[i].platform_username
               // frontQueue: this.getFrontQueue(res.data, i)
             })
             if (res.data.list[i].platform === 'bilibili') {
@@ -301,6 +328,33 @@ export default {
       catch (e) {
         console.error('[delete authorize failure] Error:', e)
         this.$message.error(this.$t('error.fail'))
+      }
+    },
+    async getUserPlatformList () {
+      this.userPlatformListLoading = true
+      const url = 'https://cache.ayaka.moe/matataki/status/subscriptions'
+      const headers = {}
+      const accessToken = getCookie('ACCESS_TOKEN')
+      if (accessToken) headers['x-access-token'] = accessToken
+      try {
+        const { data: res } = await axios.get(url, { params: { network: this.pull.params.network }, headers })
+        this.userPlatformList = res && res.data ? res.data : []
+      }
+      catch (e) {
+        console.error('[Get user dplatform list failure]:', e)
+        this.$message.error('获取关注者的第三方平台信息失败')
+      }
+      this.userPlatformListLoading = false
+    },
+    getSourceUser (info) {
+      if (!info) return null
+      switch (info.platform) {
+        case 'bilibili':
+          return this.userPlatformList.find(item => item.bilibili_id === info.platform_user_id)
+        case 'twitter':
+          return this.userPlatformList.find(item => item.twitter_name === info.platform_username)
+        default:
+          return null
       }
     }
   }
@@ -455,6 +509,12 @@ export default {
 
 .head {
   height: 24px;
+  margin-top: 20px;
+
+  &:nth-child(1) {
+    margin-top: 0;
+  }
+
   &-title {
     margin: 0;
     padding: 0;
@@ -599,6 +659,36 @@ export default {
   &:hover {
     color: #542DE0;
     background: #e5e9ef;
+  }
+}
+
+.user-platform-list {
+  max-height: 330px;
+  min-height: 45px;
+  overflow-y: auto;
+  padding: 20px 14px 20px 20px !important;
+
+  &::-webkit-scrollbar {
+    width: 17px;
+    height: 18px;
+  }
+  &::-webkit-scrollbar-thumb {
+      height: 6px;
+      border: 4px solid rgba(0, 0, 0, 0);
+      background-clip: padding-box;
+      border-radius: 20px;
+      -webkit-border-radius: 20px;
+      background-color: rgba(0, 0, 0, 0.15);
+      box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+      -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+  }
+  &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+      display: none;
+  }
+  &::-webkit-scrollbar-corner {
+      background-color: transparent;
   }
 }
 

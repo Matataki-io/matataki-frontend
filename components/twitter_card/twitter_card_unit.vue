@@ -5,13 +5,25 @@
       <div class="cardunit-bg-retweeted-l">
         <svg-icon icon-class="twitter-forward" />
       </div>
-      <div class="cardunit-bg-retweeted-r">
+      <foreignUserPopover v-if="fromUser" :card="fromUser">
+        <div class="cardunit-bg-retweeted-r">
+          {{ card.user.name || card.user.screen_name }} 转推了
+        </div>
+      </foreignUserPopover>
+      <div v-else class="cardunit-bg-retweeted-r">
         {{ card.user.name || card.user.screen_name }} 转推了
       </div>
     </div>
     <div class="cardunit">
       <div class="cardunit-l">
+        <foreignUserPopover v-if="fromUser && fromUser.twitter_name === username" :card="fromUser">
+          <c-avatar
+            class="cardunit-l-avatar"
+            :src="avatarImg"
+          />
+        </foreignUserPopover>
         <c-avatar
+          v-else
           class="cardunit-l-avatar"
           :src="avatarImg"
         />
@@ -93,6 +105,7 @@ import twitterVideo from './twitter_video'
 import twitterQuote from './twitter_quote'
 import twitterContent from './twitter_content'
 import sensitiveMedia from './sensitive_media'
+import foreignUserPopover from '@/components/user/foreign_user_popover'
 
 export default {
   components: {
@@ -100,7 +113,8 @@ export default {
     twitterVideo,
     twitterQuote,
     twitterContent,
-    sensitiveMedia
+    sensitiveMedia,
+    foreignUserPopover
   },
   props: {
     // 卡片数据
@@ -119,6 +133,10 @@ export default {
     showLogo: {
       type: Boolean,
       default: false
+    },
+    fromUser: {
+      type: Object,
+      default: null
     }
   },
   data() {

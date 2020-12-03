@@ -1,7 +1,14 @@
 <template>
   <div class="cardunit">
     <div class="cardunit-l">
+      <foreignUserPopover v-if="fromUser" :card="fromUser">
+        <c-avatar
+          class="cardunit-l-avatar"
+          :src="avatarImg"
+        />
+      </foreignUserPopover>
       <c-avatar
+        v-else
         class="cardunit-l-avatar"
         :src="avatarImg"
       />
@@ -92,6 +99,7 @@ import bilibiliMusic from './bilibili_music'
 import bilibiliSpecial from './bilibili_special'
 import bilibiliContent from './bilibili_content'
 import bilibiliOrigin from './bilibili_origin'
+import foreignUserPopover from '@/components/user/foreign_user_popover'
 
 export default {
   components: {
@@ -101,13 +109,18 @@ export default {
     bilibiliMusic,
     bilibiliSpecial,
     bilibiliContent,
-    bilibiliOrigin
+    bilibiliOrigin,
+    foreignUserPopover
   },
   props: {
     // 卡片数据
     data: {
       type: Object,
       required: true
+    },
+    fromUser: {
+      type: Object,
+      default: null
     }
   },
   computed: {
