@@ -4,6 +4,7 @@
       <!-- Env Check Here -->
       <EnvironmentCheck />
       <wbAlertTips />
+      <p style=" font-size: 10px; ">约每一分钟更新一次许可的情况，上一次更新：{{ lastUpdated }}</p>
       <div
         v-for="listItem in listOfTokenAndItsPermit"
         :key="listItem.token"
@@ -37,10 +38,12 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="240">
               <template slot-scope="scope">
+                <div v-if="scope.row.status === -1" class="action-for-sent" />
                 <el-button
+                  v-else-if="scope.row.status !== -1 && !scope.row.isExpired"
                   type="primary"
                   :disabled="
-                    scope.row.isPermitExpired || scope.row.status !== 0
+                    scope.row.status !== 0
                   "
                   @click="sendPermit(scope.row)"
                 >
@@ -48,13 +51,19 @@
                     ? "先处理前面"
                     : scope.row.status === -1
                       ? "已发送"
-                      : scope.row.isExpired
-                        ? "已过期" : "上传许可"
+                      : "上传许可"
                   }}
                 </el-button>
                 <el-button
+                  v-else
+                  type="primary"
+                  @click="updatePermit(scope.row)"
+                >
+                  更新许可
+                </el-button>
+                <el-button
                   :disabled="
-                    scope.row.isPermitExpired || scope.row.status !== 0
+                    scope.row.isExpired || scope.row.status !== 0
                   "
                   @click="copyPermit(scope.row)"
                 >
@@ -90,6 +99,7 @@ export default {
       listOfToken: [],
       listOfTokenAndItsPermit: [],
       interval: null,
+      lastUpdated: '...Loading...'
     }
   },
   computed: {
@@ -107,7 +117,9 @@ export default {
   async mounted() {
     if (!process.browser) return // NO SSR 
     if (this.isLogined) this.fetchPermit()
-    this.isMetaMaskActive
+    this.interval = setInterval(() => {
+      this.fetchPermit()
+    }, 1000 * 60)
   },
   methods: {
     async fetchPermit() {
@@ -145,6 +157,7 @@ export default {
         })
       )
       this.listOfTokenAndItsPermit = after
+      this.lastUpdated = new Date().toLocaleString()
     },
     login() {
       this.$store.commit('setLoginModal', true)
@@ -172,6 +185,11 @@ export default {
       } catch (error) {
         this.$message.error(error.message)
       }
+    },
+    async updatePermit(permit) {
+      await this.$API.renewBscWithdrawPermit(permit.id)
+      await this.fetchPermit()
+      this.$message.success('提现许可更新成功')
     },
     copyPermit(permit) {
       const stringify = JSON.stringify(permit)
