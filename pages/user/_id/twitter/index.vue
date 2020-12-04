@@ -281,6 +281,8 @@ export default {
 
 .listbox {
   padding-bottom: 1px;
+  max-width: 766px;
+  margin: 0 auto;
 }
 
 .user-mark {
