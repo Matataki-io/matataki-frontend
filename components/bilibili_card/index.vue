@@ -42,7 +42,7 @@
       </div>
       <!-- 视频 -->
       <bilibiliVideo
-        v-if="stype === 2"
+        v-if="type === 8"
         class="cardtop10"
         :card="card"
       />
@@ -174,7 +174,7 @@ export default {
       return res
     },
     media () {
-      if (!this.card || this.stype !== 1 || !this.card.item.pictures) return []
+      if (!this.card || this.type !== 2 || !this.card.item.pictures) return []
       return this.card.item.pictures
     },
     sketch () {

@@ -28,7 +28,7 @@
     </div>
     <!-- 视频 -->
     <bilibiliVideo
-      v-if="stype === 2"
+      v-if="type === 8"
       class="cardtop10"
       :card="card"
     />
@@ -38,9 +38,15 @@
       class="cardtop10"
       :card="card"
     />
-    <!-- 专栏 -->
+    <!-- 音乐 -->
     <bilibiliMusic
       v-if="type === 256"
+      class="cardtop10"
+      :card="card"
+    />
+    <!-- 番剧 -->
+    <bilibiliAnime
+      v-if="type === 512"
       class="cardtop10"
       :card="card"
     />
@@ -54,6 +60,7 @@ import bilibiliPhotoAlbum from './bilibili_photo_album'
 import bilibiliVideo from './bilibili_video'
 import bilibiliColumn from './bilibili_column'
 import bilibiliMusic from './bilibili_music'
+import bilibiliAnime from './bilibili_anime'
 import bilibiliSpecial from './bilibili_special'
 import bilibiliContent from './bilibili_content'
 
@@ -63,6 +70,7 @@ export default {
     bilibiliVideo,
     bilibiliColumn,
     bilibiliMusic,
+    bilibiliAnime,
     bilibiliSpecial,
     bilibiliContent
   },
@@ -92,14 +100,20 @@ export default {
     },
     avatarImg () {
       if (!this.user) return ''
+      if (this.type === 512 && this.card && this.card.apiSeasonInfo && this.card.apiSeasonInfo.cover) {
+        return this.card.apiSeasonInfo.cover
+      }
       return this.user.info.face
     },
     nickname () {
       if (!this.user) return ''
+      if (this.type === 512 && this.card && this.card.apiSeasonInfo && this.card.apiSeasonInfo.title) {
+        return this.card.apiSeasonInfo.title
+      }
       return this.user.info.uname
     },
     media () {
-      if (!this.card || this.stype !== 1 || !this.card.item.pictures) return []
+      if (!this.card || this.type !== 2 || !this.card.item.pictures) return []
       return this.card.item.pictures
     },
     sketch () {
