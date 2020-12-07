@@ -60,7 +60,9 @@
               </el-button>
             </router-link>
           </div>
-          <p v-if="pull.list.length === 0 && !unauthorized" class="not-content">{{ $t('not') }}</p>
+          <p v-if="pull.list.length === 0 && !unauthorized && !filterLoading" class="not-content">
+            {{ actions.length > 0 ? $t('notContent') : '筛选项不能为空' }}
+          </p>
           <div
             v-for="(item, index) in pull.list"
             :key="index"
@@ -88,7 +90,7 @@
               :params="pull.params"
               :api-url="pull.apiUrl"
               :is-atuo-request="pull.isAtuoRequest"
-              :auto-request-time="pull.autoRequestTime"
+              :auto-request-time="autoRequestTime"
               @buttonLoadMore="buttonLoadMoreRes"
               @getDataFail="getDataFail"
             />
@@ -118,7 +120,8 @@
         </div>
       </div>
       <div class="col-3 recommend">
-        <section class="head ra-head">
+        <!-- 推荐用户列表 -->
+        <!-- <section class="head ra-head">
           <h3 class="head-title">
             {{ $t('home.recommendAuthor') }}
           </h3>
@@ -139,8 +142,41 @@
             :key="item.id"
             :card="item"
           />
+        </div> -->
+
+        <!-- 平台筛选器 -->
+        <section v-if="isLogined" class="head ra-head">
+          <h3 class="head-title">
+            平台筛选
+          </h3>
+        </section>
+        <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
+          <el-checkbox
+            v-model="checkAll"
+            :indeterminate="isIndeterminate"
+            class="checkbox-all"
+            @change="handleCheckAllChange"
+          >
+            全选
+          </el-checkbox>
+          <el-divider />
+          <el-checkbox-group
+            v-model="checkedCities"
+            class="fl checkbox-group"
+            @change="handleCheckedCitiesChange"
+          >
+            <el-checkbox
+              v-for="action in actionTypes"
+              :key="action.key"
+              class="checkbox"
+              :label="action.key"
+            >
+              {{ action.label }}
+            </el-checkbox>
+          </el-checkbox-group>
         </div>
 
+        <!-- 已关注的用户列表 -->
         <section class="head ra-head">
           <h3 class="head-title">
             已关注的跨平台作者
@@ -160,7 +196,7 @@
 </template>
 
 <script>
-import throttle from 'lodash/throttle'
+// import throttle from 'lodash/throttle'
 import axios from 'axios'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -170,7 +206,7 @@ import { getCookie } from '@/utils/cookie'
 import twitterCard from '@/components/twitter_card'
 import bilibiliCard from '@/components/bilibili_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
-import RAList from '@/components/recommend_author_list'
+// import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
 
 export default {
@@ -178,14 +214,14 @@ export default {
     twitterCard,
     bilibiliCard,
     buttonLoadMore,
-    RAList,
+    // RAList,
     userPlatformCard
   },
   data() {
     return {
       userInfo: {}, // 用户信息
       pull: {
-        params: { page: 1, network: '' },
+        params: { page: 1, network: '', filters: undefined },
         apiUrl: 'https://cache.ayaka.moe/matataki/status/timeline',
         list: [],
       },
@@ -193,7 +229,23 @@ export default {
       usersRecommendList: [{},{},{},{},{}],
       unauthorized: false,
       userPlatformList: [],
-      userPlatformListLoading: false
+      userPlatformListLoading: false,
+      filterLoading: true,
+      isIndeterminate: true,
+      checkAll: true,
+      checkedCities: [],
+      actionTypes: [
+        {
+          key: 'twitter',
+          label: 'Twitter'
+        },
+        {
+          key: 'bilibili',
+          label: '哔哩哔哩'
+        }
+      ],
+      actions: null,
+      autoRequestTime: 0,
     }
   },
   computed: {
@@ -204,15 +256,17 @@ export default {
       if (newState) {
         this.getCurrentUserInfo()
       }
+    },
+    actions (val) {
+      this.pull.params.filters = JSON.stringify(val) || undefined
     }
   },
   created() {
+    this.initActions()
     if (process.browser) {
       if (this.isLogined) {
         this.getCurrentUserInfo()
       }
-
-      this.usersRecommend()
     }
   },
   mounted() {
@@ -239,6 +293,7 @@ export default {
     },
     // 点击更多按钮返回的数据
     buttonLoadMoreRes(res) {
+      this.filterLoading = false
       try {
         if (res.data && res.data.list && res.data.list.length !== 0) {
           const list = []
@@ -265,6 +320,7 @@ export default {
       }
     },
     getDataFail(res) {
+      this.filterLoading = false
       if (!res) {
         console.error('[get aggregator timeline failure]')
         this.$message.error('获取聚合时间线失败')
@@ -275,29 +331,29 @@ export default {
       }
     },
     // 获取推荐作者
-    usersRecommend: throttle(async function () {
-      this.usersLoading = true
-      const params = {
-        amount: 5
-      }
-      await this.$API
-        .usersRecommend(params)
-        .then(res => {
-          if (res.code === 0) {
-            this.usersRecommendList = res.data
-          } else {
-            console.log(`获取推荐用户失败${res.message}`)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.usersLoading = false
-          }, 300)
-        })
-    }, 800),
+    // usersRecommend: throttle(async function () {
+    //   this.usersLoading = true
+    //   const params = {
+    //     amount: 5
+    //   }
+    //   await this.$API
+    //     .usersRecommend(params)
+    //     .then(res => {
+    //       if (res.code === 0) {
+    //         this.usersRecommendList = res.data
+    //       } else {
+    //         console.log(`获取推荐用户失败${res.message}`)
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //     })
+    //     .finally(() => {
+    //       setTimeout(() => {
+    //         this.usersLoading = false
+    //       }, 300)
+    //     })
+    // }, 800),
     getFrontQueue(list, index) {
       let replyId = list[index].in_reply_to_status_id
       const resQueue = []
@@ -356,7 +412,45 @@ export default {
         default:
           return null
       }
-    }
+    },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? this.actionTypes.map(action => action.key) : []
+      this.isIndeterminate = false
+      this.actions = this.checkedCities
+      this.updateList()
+      this.updateQuery('filters', JSON.stringify(this.checkedCities))
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.actionTypes.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.actionTypes.length
+      this.actions = value
+      this.updateList()
+      this.updateQuery('filters', JSON.stringify(value))
+    },
+    initActions() {
+      let actions = this.$route.query.actions
+      if(actions) {
+        this.actions = JSON.parse(this.$route.query.actions)
+        this.checkedCities = this.actions
+      }
+      else {
+        this.checkedCities = this.actionTypes.map(action => action.key)
+        this.actions = this.checkedCities
+      }
+      this.isIndeterminate = this.checkedCities.length > 0 && this.checkedCities.length < this.actionTypes.length
+      this.checkAll = this.checkedCities.length === this.actionTypes.length
+    },
+    updateQuery(key, val) {
+      const query = { ...this.$route.query }
+      query[key] = val
+      this.$router.replace({ query })
+    },
+    updateList() {
+      this.filterLoading = true
+      this.pull.list = []
+      this.autoRequestTime = Date.now()
+    },
   }
 }
 </script>
@@ -692,6 +786,27 @@ export default {
   }
 }
 
+.platform-filters {
+  .checkbox-group {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(auto-fill, 60px);
+    grid-gap: 10px;
+
+    .checkbox {
+      margin-top: 5px;
+    }
+  }
+
+  .checkbox-all {
+    margin: 0;
+  }
+
+  .el-divider--horizontal {
+    margin: 10px 0;
+  }
+}
+
 // 页面小于
 @media screen and (max-width: 992px) {
   .welcome-people {
@@ -721,10 +836,6 @@ export default {
 @media screen and (max-width: 600px) {
   .timeline-card {
     margin-top: 10px;
-  }
-
-  .head {
-    // display: none;
   }
 
   .banner {
