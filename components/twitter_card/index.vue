@@ -7,6 +7,7 @@
         :show-up-line="index !== 0"
         :show-down-line="index !== queue.length - 1"
         :show-logo="showLogo"
+        :from-user="fromUser"
       />
       <moreReplies v-else />
     </div>
@@ -35,6 +36,10 @@ export default {
     showLogo: {
       type: Boolean,
       default: false
+    },
+    fromUser: {
+      type: Object,
+      default: null
     }
   },
   data() {

@@ -1,12 +1,14 @@
 <template>
   <client-only>
     <div class="checklist">
-      <h4>环境检查</h4>
-      <ul>
+      <h4 class="title">
+        环境检查
+      </h4>
+      <ul class="info-list">
         <li> 
-          MetaMask: {{ renderIconWithBool(isMetaMaskActive) }}，
-          钱包连接: {{ renderIconWithBool(selectedWallet) }}，
-          网络: {{ renderIconWithBool(isOnBsc) }} 
+          MetaMask: {{ renderIconWithBool(isMetaMaskActive) }}&nbsp;
+          钱包连接: {{ renderIconWithBool(selectedWallet) }}&nbsp;
+          网络: {{ renderIconWithBool(isOnBsc) }}
           <a 
             v-if="!isOnBsc"
             class="link"
@@ -19,7 +21,7 @@
           </el-button>
         </li>
         <li v-if="selectedWallet">
-          👛地址: <code>{{ selectedWallet }}</code>， 余额 <code>{{ bnbBalance }}</code> BNB
+          👛&nbsp;地址: <span class="address">{{ selectedWallet }}</span>， 余额 <b>{{ bnbBalance }}</b> BNB
         </li>
       </ul>
     </div>
@@ -62,7 +64,7 @@ export default {
   },
   methods: {
     renderIconWithBool(val) {
-      return val ? '☑️': '✖️'
+      return val ? '✅': '❌'
     },
     async fetchBNBBalance() {
       const provider = new ethers.providers.Web3Provider(
@@ -82,3 +84,23 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.checklist {
+  .title {
+    margin: 10px 0;
+    padding: 0;
+    font-size: 18px;
+  }
+  .info-list {
+    li {
+      margin: 8px 0;
+      .address {
+        font-size: 14px;
+    color: #9f9f9f;
+    font-weight: 400;
+      }
+    }
+  }
+}
+</style>
