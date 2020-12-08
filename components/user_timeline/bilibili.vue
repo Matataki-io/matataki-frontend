@@ -64,7 +64,7 @@ export default {
     return {
       pull: {
         params: {
-          network: 'test',
+          network: '',
           pagesize: 12,
           start: ''
         },
@@ -79,6 +79,10 @@ export default {
   },
   computed: {
     ...mapGetters(['isMe']),
+  },
+  mounted () {
+    this.pull.params.network = this.$utils.getNetwork(window)
+    if (this.pull.params.network === 'dev') this.pull.params.network = 'test'
   },
   methods: {
     // 点击更多按钮返回的数据
