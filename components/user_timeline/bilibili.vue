@@ -51,7 +51,7 @@
 import { mapGetters } from 'vuex'
 
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
-import bilibiliCard from '@/components/bilibili_card'
+import bilibiliCard from '@/components/platform_status/bilibili_card'
 import userTimelineNav from '@/components/user_timeline/user_timeline_nav'
 
 export default {
