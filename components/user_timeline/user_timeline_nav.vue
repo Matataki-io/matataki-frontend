@@ -59,6 +59,10 @@ export default {
         {
           label: 'bilibili',
           value: 'bilibili'
+        },
+        {
+          label: 'mastodon',
+          value: 'mastodon'
         }
       ]
     }
@@ -170,7 +174,7 @@ export default {
       font-size: 18px;
       line-height: 22px;
       height: 58px;
-      width: 54px;
+      width: 95px;
       box-sizing: border-box;
       display: flex;
       justify-content: center;
