@@ -191,10 +191,7 @@ export default {
   },
   mounted () {
     console.log(this.type, this.data, this.card)
-    let meta = document.createElement('meta')
-    meta.name = 'referrer'
-    meta.content = 'no-referrer'
-    document.getElementsByTagName('head')[0].appendChild(meta)
+    this.clearReferer()
   },
   methods: {
     jsonp(str) {
@@ -205,6 +202,13 @@ export default {
         console.error(str, e)
         return null
       }
+    },
+    /** 清除 referer，否则无法加载B站的图片资源 */
+    clearReferer() {
+      let meta = document.createElement('meta')
+      meta.name = 'referrer'
+      meta.content = 'no-referrer'
+      document.getElementsByTagName('head')[0].appendChild(meta)
     }
   }
 }
