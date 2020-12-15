@@ -2,11 +2,14 @@
 <template>
   <div v-loading="switchLoding" class="user-mark">
     <nav class="user-mark-nav">
-      <div class="user-mark-nav-tab" :class="tab === 'twitter' && 'active'" @click="updateQuery('tab', 'twitter')">
-        twitter
-      </div>
-      <div class="user-mark-nav-tab" :class="tab === 'bilibili' && 'active'" @click="updateQuery('tab', 'bilibili')">
-        bilibili
+      <div
+        v-for="(item, index) in tabs"
+        :key="index"
+        class="user-mark-nav-tab"
+        :class="tab === item.value && 'active'"
+        @click="updateQuery('tab', item.value)"
+      >
+        {{ item.label }}
       </div>
     </nav>
     <p v-if="screenName">
@@ -47,7 +50,17 @@ export default {
   },
   data() {
     return {
-      switchLoding: false
+      switchLoding: false,
+      tabs: [
+        {
+          label: 'twitter',
+          value: 'twitter'
+        },
+        {
+          label: 'bilibili',
+          value: 'bilibili'
+        }
+      ]
     }
   },
   computed: {

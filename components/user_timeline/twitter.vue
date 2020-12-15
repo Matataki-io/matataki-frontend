@@ -72,7 +72,7 @@
 import { mapGetters } from 'vuex'
 
 import buttonLoadMore from '@/components/button_load_more/index.vue'
-import twitterCard from '@/components/twitter_card'
+import twitterCard from '@/components/platform_status/twitter_card'
 import userTimelineNav from '@/components/user_timeline/user_timeline_nav'
 
 export default {
