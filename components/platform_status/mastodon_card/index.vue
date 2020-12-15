@@ -1,0 +1,301 @@
+<template>
+  <div class="cardunit">
+    <div class="cardunit-l">
+      <foreignUserPopover v-if="fromUser" :card="fromUser">
+        <c-avatar
+          class="cardunit-l-avatar"
+          :src="avatarImg"
+        />
+      </foreignUserPopover>
+      <c-avatar
+        v-else
+        class="cardunit-l-avatar"
+        :src="avatarImg"
+      />
+    </div>
+    <div class="cardunit-r">
+      <div class="cardunit-r-header">
+        <p class="cardunit-r-header-user">
+          <span class="cardunit-r-header-user-nickname">
+            {{ nickname }}
+          </span>
+          <span class="cardunit-r-header-user-name">
+            @{{ username }}
+          </span>
+        </p>
+        <p class="cardunit-r-header-time">
+          •
+          {{ createTime }}
+        </p>
+        <!-- <a class="cardunit-r-header-logo" :href="originUrl" target="_blank">
+          <svg-icon icon-class="bilibili_tv" />
+        </a> -->
+      </div>
+      <mastodonContent
+        class="cardunit-r-content"
+        :card="card"
+      />
+      <!-- 图片 -->
+      <div
+        v-if="media && media.length > 0"
+        class="cardunit-r-photoalbum"
+      >
+        <div class="cardunit-r-photoalbum-pillar" />
+        <mastodonPhotoAlbum
+          class="cardunit-r-photoalbum-main"
+          :sensitive="sensitive"
+          :media="media"
+        />
+      </div>
+      <!-- 特殊卡片 -->
+      <!-- <mastodonSpecial v-if="false" :sketch="sketch" /> -->
+      <!-- <div class="cardunit-r-flows">
+        <div class="cardunit-r-flows-comment">
+          <svg-icon icon-class="twitter-comment" />
+          <span v-if="flows.comment">
+            {{ flows.comment }}
+          </span>
+        </div>
+        <div class="cardunit-r-flows-forward">
+          <svg-icon icon-class="twitter-forward" />
+          <span v-if="flows.retweet">
+            {{ flows.retweet }}
+          </span>
+        </div>
+        <div class="cardunit-r-flows-like">
+          <svg-icon icon-class="twitter-like" />
+          <span v-if="flows.favorite">
+            {{ flows.favorite }}
+          </span>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</template>
+
+<script>
+import url from 'url'
+
+import foreignUserPopover from '@/components/user/foreign_user_popover'
+import mastodonContent from './mastodon_content'
+import mastodonPhotoAlbum from './mastodon_photo_album'
+// import mastodonSpecial from './mastodon_special'
+
+export default {
+  components: {
+    foreignUserPopover,
+    mastodonContent,
+    mastodonPhotoAlbum,
+    // mastodonSpecial
+  },
+  props: {
+    // 卡片数据
+    card: {
+      type: Object,
+      required: true
+    },
+    fromUser: {
+      type: Object,
+      default: null
+    }
+  },
+  computed: {
+    avatarImg () {
+      if (!this.card) return ''
+      return this.card.account.avatar
+    },
+    nickname () {
+      if (!this.card) return ''
+      return this.card.account.display_name
+    },
+    username () {
+      if (!this.card) return ''
+      return this.card.account.username + '@' + url.parse(this.card.account.url).hostname
+    },
+    createTime () {
+      if (!this.card) return ''
+      const time = this.moment(this.card.created_at)
+      if (!this.$utils.isNDaysAgo(2, time)) return time.fromNow()
+      else if (!this.$utils.isNDaysAgo(365, time)) return time.format('MMMDo')
+      return time.format('YYYY MMMDo')
+    },
+    media () {
+      if (!this.card || !this.card.media_attachments) return []
+      return this.card.media_attachments
+    },
+    sensitive () {
+      return this.card && this.card.sensitive
+    }
+  },
+  mounted () {
+    console.log(this.type, this.data, this.card)
+    this.clearReferer()
+  },
+  methods: {
+    jsonp(str) {
+      try {
+        return JSON.parse(str)
+      }
+      catch (e) {
+        console.error(str, e)
+        return null
+      }
+    },
+    /** 清除 referer，否则无法加载 Mastodon 的图片资源 */
+    clearReferer() {
+      let meta = document.createElement('meta')
+      meta.name = 'referrer'
+      meta.content = 'no-referrer'
+      document.getElementsByTagName('head')[0].appendChild(meta)
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+p {
+  margin: 0;
+  padding: 0;
+}
+
+span {
+  margin: 0;
+  padding: 0;
+}
+
+.cardunit {
+  background: rgba(255, 255, 255, 1);
+  padding: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: flex;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &-l {
+    width: 49px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+
+    &-avatar {
+      width: 49px;
+      height: 49px;
+    }
+  }
+
+  &-r {
+    flex: 1;
+    height: 100%;
+
+    &-header {
+      display: flex;
+      margin-bottom: 5px;
+
+      &-user {
+        height: 20px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        word-break: break-all;
+
+        &-nickname {
+          font-size: 15px;
+          color: black;
+          line-height: 20px;
+          font-weight: 700;
+        }
+
+        &-name {
+          margin-left: 5px;
+          color: #657786;
+          font-size: 15px;
+          font-weight: 400;
+          line-height: 20px;
+        }
+      }
+
+      &-time {
+        margin-left: 5px;
+        color: #657786;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        white-space: nowrap;
+        flex: 1;
+      }
+
+      &-logo {
+        font-size: 20px;
+        color: #00ACED;
+        margin: 0 0 0 5px;
+        transition: all ease-in 0.1s;
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    &-content {
+      color: black;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 20px;
+      white-space: pre-line;
+    }
+
+    &-photoalbum {
+      position: relative;
+      margin-top: 10px;
+      width: 100%;
+
+      &-pillar {
+        padding-bottom: 56.25%;
+      }
+
+      &-main {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    .cardtop10 {
+      margin-top: 10px;
+    }
+
+    &-flows {
+      display: flex;
+      margin: 10px 0 10px;
+      .flow-default {
+        flex: 1;
+        svg {
+          height: 18px;
+          width: 18px;
+          color: #657786;
+        }
+        span {
+          margin:  0 0 0 5px;
+        }
+      }
+      &-comment {
+        .flow-default();
+      }
+      &-forward {
+        .flow-default();
+      }
+      &-like {
+        .flow-default();
+      }
+    }
+
+    &-sensitive {
+      border: 1px solid #ccd6dd;
+      margin-top: 10px;
+    }
+  }
+}
+</style>
