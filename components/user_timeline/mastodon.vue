@@ -13,7 +13,7 @@
         v-for="(item, index) in pull.list"
         :key="index"
         class="timeline-card"
-        :card="item"
+        :data="item"
       />
       <!-- <div v-if="!unboundBilibili" class="load-more-button">
         <buttonLoadMore

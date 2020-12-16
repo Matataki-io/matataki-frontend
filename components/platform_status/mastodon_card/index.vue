@@ -1,74 +1,98 @@
 <template>
-  <div class="cardunit">
-    <div class="cardunit-l">
+  <div class="cardunit-bg">
+    <div v-if="isForward" class="cardunit-bg-retweeted">
+      <div class="cardunit-bg-retweeted-l">
+        <svg-icon icon-class="twitter-forward" />
+      </div>
       <foreignUserPopover v-if="fromUser" :card="fromUser">
+        <div class="cardunit-bg-retweeted-r">
+          {{ data.account.display_name || data.account.username }} 转嘟了
+        </div>
+      </foreignUserPopover>
+      <div v-else class="cardunit-bg-retweeted-r">
+        {{ data.account.display_name || data.account.username }} 转嘟了
+      </div>
+    </div>
+    <div class="cardunit">
+      <div class="cardunit-l">
+        <foreignUserPopover v-if="fromUser" :card="fromUser">
+          <c-avatar
+            class="cardunit-l-avatar"
+            :src="avatarImg"
+          />
+        </foreignUserPopover>
         <c-avatar
+          v-else
           class="cardunit-l-avatar"
           :src="avatarImg"
         />
-      </foreignUserPopover>
-      <c-avatar
-        v-else
-        class="cardunit-l-avatar"
-        :src="avatarImg"
-      />
-    </div>
-    <div class="cardunit-r">
-      <div class="cardunit-r-header">
-        <p class="cardunit-r-header-user">
-          <span class="cardunit-r-header-user-nickname">
-            {{ nickname }}
-          </span>
-          <span class="cardunit-r-header-user-name">
-            @{{ username }}
-          </span>
-        </p>
-        <p class="cardunit-r-header-time">
-          •
-          {{ createTime }}
-        </p>
-        <!-- <a class="cardunit-r-header-logo" :href="originUrl" target="_blank">
-          <svg-icon icon-class="bilibili_tv" />
-        </a> -->
       </div>
-      <mastodonContent
-        class="cardunit-r-content"
-        :card="card"
-      />
-      <!-- 图片 -->
-      <div
-        v-if="media && media.length > 0"
-        class="cardunit-r-photoalbum"
-      >
-        <div class="cardunit-r-photoalbum-pillar" />
-        <mastodonPhotoAlbum
-          class="cardunit-r-photoalbum-main"
-          :sensitive="sensitive"
-          :media="media"
+      <div class="cardunit-r">
+        <div class="cardunit-r-header">
+          <p class="cardunit-r-header-user">
+            <span class="cardunit-r-header-user-nickname">
+              {{ nickname }}
+            </span>
+            <span class="cardunit-r-header-user-name">
+              @{{ username }}
+            </span>
+          </p>
+          <p class="cardunit-r-header-time">
+            •
+            {{ createTime }}
+          </p>
+          <a class="cardunit-r-header-logo" :href="originUrl" target="_blank">
+            <svg-icon icon-class="mastodon" />
+          </a>
+        </div>
+        <div v-if="hiddenContent" class="cardunit-r-spoilertext">
+          {{ spoilerText }}
+          <span class="show-content" @click="showHiddenContent = !showHiddenContent">
+            {{ showHiddenContent ? '隐藏内容' : '显示内容' }}
+          </span>
+        </div>
+        <!-- 正文 -->
+        <mastodonContent
+          v-if="!hiddenContent || showHiddenContent"
+          class="cardunit-r-content"
+          :card="card"
         />
+        <!-- 图片 -->
+        <div
+          v-if="media && media.length > 0"
+          class="cardunit-r-photoalbum"
+        >
+          <div class="cardunit-r-photoalbum-pillar" />
+          <mastodonPhotoAlbum
+            class="cardunit-r-photoalbum-main"
+            :sensitive="sensitive"
+            :media="media"
+          />
+        </div>
+        <!-- 特殊卡片 -->
+        <mastodonSpecial v-if="special" :special="special" />
+        <!-- 统计数据 -->
+        <div class="cardunit-r-flows">
+          <div class="cardunit-r-flows-comment">
+            <svg-icon icon-class="mastodon-reply" />
+            <span v-if="flows.comment">
+              {{ flows.comment }}
+            </span>
+          </div>
+          <div class="cardunit-r-flows-forward">
+            <svg-icon icon-class="mastodon-retweet" />
+            <span v-if="flows.retweet">
+              {{ flows.retweet }}
+            </span>
+          </div>
+          <div class="cardunit-r-flows-like">
+            <svg-icon icon-class="mastodon-star" />
+            <span v-if="flows.favorite">
+              {{ flows.favorite }}
+            </span>
+          </div>
+        </div>
       </div>
-      <!-- 特殊卡片 -->
-      <!-- <mastodonSpecial v-if="false" :sketch="sketch" /> -->
-      <!-- <div class="cardunit-r-flows">
-        <div class="cardunit-r-flows-comment">
-          <svg-icon icon-class="twitter-comment" />
-          <span v-if="flows.comment">
-            {{ flows.comment }}
-          </span>
-        </div>
-        <div class="cardunit-r-flows-forward">
-          <svg-icon icon-class="twitter-forward" />
-          <span v-if="flows.retweet">
-            {{ flows.retweet }}
-          </span>
-        </div>
-        <div class="cardunit-r-flows-like">
-          <svg-icon icon-class="twitter-like" />
-          <span v-if="flows.favorite">
-            {{ flows.favorite }}
-          </span>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -79,18 +103,18 @@ import url from 'url'
 import foreignUserPopover from '@/components/user/foreign_user_popover'
 import mastodonContent from './mastodon_content'
 import mastodonPhotoAlbum from './mastodon_photo_album'
-// import mastodonSpecial from './mastodon_special'
+import mastodonSpecial from './mastodon_special'
 
 export default {
   components: {
     foreignUserPopover,
     mastodonContent,
     mastodonPhotoAlbum,
-    // mastodonSpecial
+    mastodonSpecial
   },
   props: {
     // 卡片数据
-    card: {
+    data: {
       type: Object,
       required: true
     },
@@ -99,7 +123,19 @@ export default {
       default: null
     }
   },
+  data () {
+    return {
+      showHiddenContent: false
+    }
+  },
   computed: {
+    isForward () {
+      return this.data && this.data.reblog
+    },
+    card () {
+      if (!this.data) return null
+      return this.isForward && this.data.reblog || this.data
+    },
     avatarImg () {
       if (!this.card) return ''
       return this.card.account.avatar
@@ -123,8 +159,34 @@ export default {
       if (!this.card || !this.card.media_attachments) return []
       return this.card.media_attachments
     },
+    spoilerText () {
+      return this.card && this.card.spoiler_text || ''
+    },
     sensitive () {
       return this.card && this.card.sensitive
+    },
+    // 标记为敏感并且含有警告文字的属于隐藏内容，不含警告文字的只属于敏感媒体。
+    hiddenContent () {
+      return this.card && this.card.sensitive && this.card.spoiler_text
+    },
+    special () {
+      return this.card && this.card.card || null
+    },
+    flows () {
+      if (!this.card) return
+      const {
+        replies_count,
+        reblogs_count,
+        favourites_count
+      } = this.card
+      return {
+        comment: replies_count,
+        retweet: reblogs_count,
+        favorite: favourites_count
+      }
+    },
+    originUrl () {
+      return this.card && this.card.url || ''
     }
   },
   mounted () {
@@ -163,13 +225,42 @@ span {
   padding: 0;
 }
 
-.cardunit {
+.cardunit-bg {
   background: rgba(255, 255, 255, 1);
   padding: 20px;
   border-radius: 10px;
   box-sizing: border-box;
-  display: flex;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &-retweeted {
+    display: block;
+    display: flex;
+    margin-bottom: 5px;
+    &-l {
+      width: 49px;
+      margin-right: 10px;
+      display: flex;
+      justify-content: flex-end;
+      svg {
+        height: 18px;
+        width: 18px;
+        color: #657786;
+      }
+    }
+    &-r {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 17px;
+      color: #657786;
+    }
+  }
+}
+
+.cardunit {
+  background: rgba(255, 255, 255, 1);
+  display: flex;
   overflow: hidden;
 
   &-l {
@@ -228,12 +319,34 @@ span {
 
       &-logo {
         font-size: 20px;
-        color: #00ACED;
+        color: #2D82D0;
         margin: 0 0 0 5px;
         transition: all ease-in 0.1s;
         &:hover {
           transform: scale(1.2);
         }
+      }
+    }
+
+    &-spoilertext {
+      color: black;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 20px;
+
+      .show-content {
+        background: #d9e1e8;
+        display: inline-block;
+        border-radius: 2px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 20px;
+        padding: 0 6px;
+        color: black;
+        cursor: pointer;
+        -moz-user-select:none;
+        -webkit-user-select:none;
+        user-select:none;
       }
     }
 
@@ -269,7 +382,7 @@ span {
 
     &-flows {
       display: flex;
-      margin: 10px 0 10px;
+      margin: 10px 0 0;
       .flow-default {
         flex: 1;
         svg {
