@@ -676,7 +676,7 @@ export default {
                 item.status = filterPlatform[0].status
               }
             }
-            this.matatakiAuthAccountList = this.matatakiAuthAccountList.filter(item => item.type !== 'bilibili')
+            this.matatakiAuthAccountList = this.matatakiAuthAccountList.filter(e => e.type !== item.type)
             this.matatakiAuthAccountList.push(item)
           }
           else {
