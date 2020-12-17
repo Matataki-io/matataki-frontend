@@ -10,7 +10,12 @@
       :class="locked && 'sensitive'"
       @click="openSensitiveShow"
     >
+      <mastodonGif
+        v-if="gifvs[0]"
+        :src="gifvs[0]"
+      />
       <el-image
+        v-else
         :src="previewUrls[0]"
         alt="image"
         :preview-src-list="imgUrls"
@@ -26,7 +31,12 @@
       @click="openSensitiveShow"
     >
       <div class="album-two-column">
+        <mastodonGif
+          v-if="gifvs[0]"
+          :src="gifvs[0]"
+        />
         <el-image
+          v-else
           :src="previewUrls[0]"
           alt="image"
           :preview-src-list="imgUrls"
@@ -35,7 +45,12 @@
         />
       </div>
       <div class="album-two-column">
+        <mastodonGif
+          v-if="gifvs[1]"
+          :src="gifvs[1]"
+        />
         <el-image
+          v-else
           :src="previewUrls[1]"
           alt="image"
           :preview-src-list="imgUrls"
@@ -52,7 +67,12 @@
       @click="openSensitiveShow"
     >
       <div class="album-three-column">
+        <mastodonGif
+          v-if="gifvs[0]"
+          :src="gifvs[0]"
+        />
         <el-image
+          v-else
           :src="previewUrls[0]"
           alt="image"
           :preview-src-list="imgUrls"
@@ -62,7 +82,12 @@
       </div>
       <div class="album-three-column">
         <div class="album-three-column-line">
+          <mastodonGif
+            v-if="gifvs[1]"
+            :src="gifvs[1]"
+          />
           <el-image
+            v-else
             :src="previewUrls[1]"
             alt="image"
             :preview-src-list="imgUrls"
@@ -71,7 +96,12 @@
           />
         </div>
         <div class="album-three-column-line">
+          <mastodonGif
+            v-if="gifvs[2]"
+            :src="gifvs[2]"
+          />
           <el-image
+            v-else
             :src="previewUrls[2]"
             alt="image"
             :preview-src-list="imgUrls"
@@ -90,7 +120,12 @@
     >
       <div class="album-three-column">
         <div class="album-three-column-line">
+          <mastodonGif
+            v-if="gifvs[0]"
+            :src="gifvs[0]"
+          />
           <el-image
+            v-else
             :src="previewUrls[0]"
             alt="image"
             :preview-src-list="imgUrls"
@@ -99,7 +134,12 @@
           />
         </div>
         <div class="album-three-column-line">
+          <mastodonGif
+            v-if="gifvs[2]"
+            :src="gifvs[2]"
+          />
           <el-image
+            v-else
             :src="previewUrls[2]"
             alt="image"
             :preview-src-list="imgUrls"
@@ -110,7 +150,12 @@
       </div>
       <div class="album-three-column">
         <div class="album-three-column-line">
+          <mastodonGif
+            v-if="gifvs[1]"
+            :src="gifvs[1]"
+          />
           <el-image
+            v-else
             :src="previewUrls[1]"
             alt="image"
             :preview-src-list="imgUrls"
@@ -119,7 +164,12 @@
           />
         </div>
         <div class="album-three-column-line">
+          <mastodonGif
+            v-if="gifvs[3]"
+            :src="gifvs[3]"
+          />
           <el-image
+            v-else
             :src="previewUrls[3]"
             alt="image"
             :preview-src-list="imgUrls"
@@ -133,8 +183,12 @@
 </template>
 
 <script>
+import mastodonGif from './mastodon_gif'
 
 export default {
+  components: {
+    mastodonGif
+  },
   props: {
     // 卡片数据
     media: {
@@ -155,7 +209,7 @@ export default {
     imgUrls () {
       try {
         if (this.locked) return null
-        return this.media.map(item => item.url)
+        return this.media.map(item => item.type === 'image' ? item.url : '').filter(item => item)
       } catch (e) {
         console.error('[Unable to display picture]:', e)
         return []
@@ -169,9 +223,21 @@ export default {
         return []
       }
     },
+    gifvs () {
+      try {
+        return this.media.map(item => item.type === 'gifv' ? item.url : '')
+      }
+      catch (e) {
+        console.error('[Unable to display picture]:', e)
+        return []
+      }
+    },
     locked () {
       return this.sensitive && !this.showSensitive
     }
+  },
+  mounted () {
+    console.log('图片TYPE:', this.media[0].type)
   },
   methods: {
     openSensitiveShow () {
