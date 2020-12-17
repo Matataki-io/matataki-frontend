@@ -1,5 +1,6 @@
 <template>
   <div class="cardunit-bg">
+    <!-- 转嘟 -->
     <div v-if="isForward" class="cardunit-bg-retweeted">
       <div class="cardunit-bg-retweeted-l">
         <svg-icon icon-class="twitter-forward" />
@@ -14,6 +15,7 @@
       </div>
     </div>
     <div class="cardunit">
+      <!-- 头像 -->
       <div class="cardunit-l">
         <foreignUserPopover v-if="fromUser" :card="fromUser">
           <c-avatar
@@ -28,6 +30,7 @@
         />
       </div>
       <div class="cardunit-r">
+        <!-- 用户名称与发布时间 -->
         <div class="cardunit-r-header">
           <p class="cardunit-r-header-user">
             <span class="cardunit-r-header-user-nickname">
@@ -45,6 +48,7 @@
             <svg-icon icon-class="mastodon" />
           </a>
         </div>
+        <!-- 隐藏内容的警告文本 -->
         <div v-if="hiddenContent" class="cardunit-r-spoilertext">
           {{ spoilerText }}
           <span class="show-content" @click="showHiddenContent = !showHiddenContent">
@@ -57,6 +61,14 @@
           class="cardunit-r-content"
           :card="card"
         />
+        <!-- 投票 -->
+        <mastodonPoll
+          v-if="poll && (!hiddenContent || showHiddenContent)"
+          :poll="poll"
+          class="cardtop10"
+        />
+        <!-- 特殊卡片 -->
+        <mastodonSpecial v-if="special && (!hiddenContent || showHiddenContent)" class="cardtop10" :special="special" />
         <!-- 图片 -->
         <div
           v-if="media && media.length > 0"
@@ -69,8 +81,16 @@
             :media="media"
           />
         </div>
-        <!-- 特殊卡片 -->
-        <mastodonSpecial v-if="special" :special="special" />
+        <div
+          v-if="video"
+          class="cardunit-r-photoalbum"
+        >
+          <div :style="`padding-bottom: ${video.heightRatio}%;`" class="cardunit-r-photoalbum-pillar" />
+          <mastodonVideo
+            class="cardunit-r-photoalbum-main"
+            :video="video"
+          />
+        </div>
         <!-- 统计数据 -->
         <div class="cardunit-r-flows">
           <div class="cardunit-r-flows-comment">
@@ -102,14 +122,18 @@ import url from 'url'
 
 import foreignUserPopover from '@/components/user/foreign_user_popover'
 import mastodonContent from './mastodon_content'
+import mastodonPoll from './mastodon_poll'
 import mastodonPhotoAlbum from './mastodon_photo_album'
+import mastodonVideo from './mastodon_video'
 import mastodonSpecial from './mastodon_special'
 
 export default {
   components: {
     foreignUserPopover,
     mastodonContent,
+    mastodonPoll,
     mastodonPhotoAlbum,
+    mastodonVideo,
     mastodonSpecial
   },
   props: {
@@ -157,7 +181,28 @@ export default {
     },
     media () {
       if (!this.card || !this.card.media_attachments) return []
-      return this.card.media_attachments
+      return this.card.media_attachments.filter(item => ['image', 'gifv'].includes({ ...item }.type))
+    },
+    video () {
+      if (!this.card || !this.card.media_attachments) return null
+      const video = this.card.media_attachments.find(item => item.type === 'video')
+      if (!video) return null
+
+      let heightRatio
+      try {
+        heightRatio = Number((video.meta.original.height / video.meta.original.width * 100).toFixed(2))
+        if (heightRatio > 100) heightRatio = 100
+        else if (heightRatio < 35) heightRatio = 35
+      }
+      catch (e) {
+        console.error('Unable to get video aspect ratio, video:',this.card.id ,video, e)
+        heightRatio = 100
+      }
+
+      return {
+        ...video,
+        heightRatio
+      }
     },
     spoilerText () {
       return this.card && this.card.spoiler_text || ''
@@ -173,12 +218,11 @@ export default {
       return this.card && this.card.card || null
     },
     flows () {
-      if (!this.card) return
       const {
         replies_count,
         reblogs_count,
         favourites_count
-      } = this.card
+      } = { ...this.card }
       return {
         comment: replies_count,
         retweet: reblogs_count,
@@ -187,6 +231,9 @@ export default {
     },
     originUrl () {
       return this.card && this.card.url || ''
+    },
+    poll () {
+      return this.card && this.card.poll || null
     }
   },
   mounted () {
