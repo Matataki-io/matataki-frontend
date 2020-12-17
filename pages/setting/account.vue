@@ -719,10 +719,10 @@ export default {
       const userId = this.currentUserInfo.id
       Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/unbinding', { params: { userId: userId, platform: params.platform, account: params.account } }).then(res => {
         if (res.data.code === 0) {
-          this.$message({ showClose: true, message: res.message, type: 'success'})
+          this.$message.success('取消绑定成功')
           this.getMatatakiAuthAccountList()
         } else {
-          this.$message({ showClose: true, message: res.message, type: 'warning'})
+          this.$message.warning('取消绑定失败')
         }
       }).catch(err => {
         console.log(err)
