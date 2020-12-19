@@ -203,8 +203,8 @@ import { mapGetters, mapActions } from 'vuex'
 
 import { getCookie } from '@/utils/cookie'
 
-import twitterCard from '@/components/twitter_card'
-import bilibiliCard from '@/components/bilibili_card'
+import twitterCard from '@/components/platform_status/twitter_card'
+import bilibiliCard from '@/components/platform_status/bilibili_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'

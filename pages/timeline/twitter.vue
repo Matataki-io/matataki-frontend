@@ -137,7 +137,7 @@ import throttle from 'lodash/throttle'
 
 import { mapGetters, mapActions } from 'vuex'
 
-import twitterCard from '@/components/twitter_card'
+import twitterCard from '@/components/platform_status/twitter_card'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 

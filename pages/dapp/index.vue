@@ -27,6 +27,17 @@
         </div>
       </el-carousel-item>
       <el-carousel-item>
+        <div class="dapp-head-quest">
+          <div class="head-text">
+            <p class="head-description">一个基于Fan票的任务悬赏平台</p>
+            <img src="@/assets/img/dapp-banner-quest-logo.png" alt="logo">
+            <a href="https://matataki-quest.netlify.app" target="_blank" class="head-btn">
+              立即前往
+            </a>
+          </div>
+        </div>
+      </el-carousel-item>
+      <el-carousel-item>
         <div class="crypto-hero">
           <p>一个基于Fan票的水浒集卡游戏</p>
           <img src="@/assets/img/dapp_cryptohero_text.png" alt="">
@@ -98,6 +109,7 @@ import nft from '@/assets/img/dapp_list_nft.png'
 import dao from '@/assets/img/dapp_list_dao.png'
 import mine from '@/assets/img/dapp_list_mine.png'
 import shuttle from '@/assets/img/dapp_list_shuttle.png'
+import quest from '@/assets/img/dapp_list_quest.png'
 export default {
   data() {
     return {
@@ -179,6 +191,17 @@ export default {
               height: '120px',
               url: 'https://matataki-mining.netlify.app/',
               repo: 'https://github.com/Andoromeda-Foundation/Matataki-Mining-Interface',
+              btn: '访问网站',
+              disabled: false
+            },
+            {
+              title: 'Matataki Quest',
+              description: '基于Fan票的任务悬赏平台',
+              img: quest,
+              width: '130px',
+              height: '147px',
+              url: 'https://matataki-quest.netlify.app/',
+              repo: 'https://github.com/Matataki-io/Fan-TaskBoard',
               btn: '访问网站',
               disabled: false
             },
@@ -502,6 +525,51 @@ export default {
     color: #ffffff;
     padding: 8px 40px;
     margin: 18px 0 0 0;
+    display: inline-block;
+    background: #6236FF;
+    border-radius: 20px;
+  }
+}
+
+.dapp-head-quest {
+  height: 240px;
+  background-image: url(../../assets/img/dapp-banner-quest.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .head-description {
+    width: 275px;
+    height: 28px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 28px;
+    padding: 0;
+    margin: 0;
+  }
+  .head-text {
+    margin: 0 0 0 180px;
+    img {
+      display: block;
+      width: 464px;
+      margin: 8px 0;
+    }
+  }
+  .head-btn {
+    // background: #542de0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ffffff;
+    padding: 8px 40px;
+    margin: 0;
     display: inline-block;
     background: #6236FF;
     border-radius: 20px;
