@@ -667,7 +667,7 @@ export default {
       const list = await Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/app/availableBinding')
       list.data.forEach(item => {
         item.icon = process.env.VUE_APP_MATATAKIAUTH_API + item.icon
-        Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/id', { params: { platform: 'Bilibili' }, headers: { 'x-access-token': this.currentUserInfo.accessToken } }).then(async res => {
+        Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/id', { params: { platform: item.typename }, headers: { 'x-access-token': this.currentUserInfo.accessToken } }).then(async res => {
           if (res.data.code === 0) {
             if (res.data.message !== 'User Not Found') {
               const filterPlatform = res.data.data.filter(j => j.platform === item.type)
@@ -723,10 +723,10 @@ export default {
       const userId = this.currentUserInfo.id
       Axios.get(process.env.VUE_APP_MATATAKIAUTH_API + '/user/unbinding', { params: { userId: userId, platform: params.platform, account: params.account } }).then(res => {
         if (res.data.code === 0) {
-          this.$message({ showClose: true, message: res.message, type: 'success'})
+          this.$message.success('取消绑定成功')
           this.getMatatakiAuthAccountList()
         } else {
-          this.$message({ showClose: true, message: res.message, type: 'warning'})
+          this.$message.warning('取消绑定失败')
         }
       }).catch(err => {
         console.log(err)
