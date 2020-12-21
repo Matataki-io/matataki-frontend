@@ -995,6 +995,8 @@ export default {
         paid: '支付了',
         consumed: '消费了',
         followFilter: '跟随筛选',
-        notFollowFilter: '查看全部'
+        notFollowFilter: '查看全部',
+        noNewData: '{0}天内没有新增数据，',
+        viewAll: '查看全部数据'
     }
 };
