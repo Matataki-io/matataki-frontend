@@ -81,6 +81,7 @@
             :media="media"
           />
         </div>
+        <!-- 视频 -->
         <div
           v-if="video"
           class="cardunit-r-photoalbum"
@@ -88,6 +89,7 @@
           <div :style="`padding-bottom: ${video.heightRatio}%;`" class="cardunit-r-photoalbum-pillar" />
           <mastodonVideo
             class="cardunit-r-photoalbum-main"
+            :sensitive="sensitive"
             :video="video"
           />
         </div>
