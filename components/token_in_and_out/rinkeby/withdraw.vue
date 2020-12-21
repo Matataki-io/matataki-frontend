@@ -5,7 +5,7 @@
       v-loading="transferLoading"
       :model="form"
       :rules="rules"
-      label-width="60px"
+      label-width="90px"
       class="withdraw-form"
     >
       <el-form-item label="类型" prop="tokenId">
@@ -263,7 +263,7 @@ export default {
 .card {
     background: white;
     border-radius: 10px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+    /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04); */
     box-sizing: border-box;
     padding: 10px;
 }
@@ -289,7 +289,7 @@ export default {
   }
 }
 .balance {
-  float: right;
+  text-align: right;
   padding: 0;
   margin: -20px 0 10px 0;
   font-size: 14px;
@@ -377,7 +377,8 @@ export default {
   }
 }
 .withdraw-form {
-  margin: 10px;
+  max-width: 500px;
+  margin: 10px auto;
   .tokenname {
     padding: 0;
     margin: 0;

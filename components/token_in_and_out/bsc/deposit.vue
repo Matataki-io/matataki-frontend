@@ -47,7 +47,7 @@
       </el-form>
     </client-only>
     <div class="my-deposits">
-      <h1 class="title">
+      <h1 class="history-title">
         我的跨链Fan票存入记录
       </h1>
       <el-table
@@ -211,7 +211,7 @@ export default {
       // Init Ethers
       try {
         const { token, value } = this.form
-        const { data: tokenDetail } = await this.$API.isCrossChainToken(token)
+        const { data: tokenDetail } = await this.$API.isCrossChainToken(token.toLowerCase())
         console.log('tokenDetail', tokenDetail)
         await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(
@@ -384,7 +384,8 @@ export default {
   }
 }
 .withdraw-form {
-  margin: 10px;
+  max-width: 500px;
+  margin: 40px auto 20px;
   .tokenname {
     padding: 0;
     margin: 0;
@@ -459,5 +460,13 @@ export default {
 }
 .parse-btn {
   margin: 20px 0 0 0;
+}
+
+.history-title {
+  padding: 0;
+  margin: 20px 0 0 0;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.5;
 }
 </style>

@@ -31,7 +31,7 @@ export default {
       return [
       // self 只有自己才能看
         { title: this.$t('user.creation'), url: 'user-id', self: false },
-        { title: 'Twitter', url: 'user-id-twitter', self: false },
+        { title: '动态', url: 'user-id-timeline', self: false },
         // { title: this.$t('share'), url: 'user-id-share', self: false },
         { title: this.$t('user.draft'), url: 'user-id-draft', self: true },
         { title: this.$t('user.fan'), url: 'user-id-fan', self: false },

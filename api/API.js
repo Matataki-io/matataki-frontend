@@ -1153,6 +1153,12 @@ minetokenGetResources(tokenId) {
       timeout: 60 * 1000
     })
   },
+  renewBscWithdrawPermit(permitId) {
+    return request({
+      method: 'GET',
+      url: `/minetoken/crosschain-permit/renew/${permitId}/`,
+    })
+  },
   listMyCrossChainDeposit() {
     return request({
       method: 'GET',

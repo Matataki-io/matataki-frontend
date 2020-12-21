@@ -4,15 +4,17 @@
       <BscDeposit :selection.sync="selection" />
     </div>
     <div v-if="isWithdrawSelected" class="withdraw">
-      <el-radio v-model="selection" label="apply">
-        申请提现许可
-      </el-radio>
-      <el-radio v-model="selection" label="my">
-        查看我的提现许可
-      </el-radio>
-      <el-radio v-model="selection" label="upload">
-        替别人提现许可
-      </el-radio>
+      <div class="withdraw-switch">
+        <el-radio v-model="selection" label="apply">
+          申请提现许可
+        </el-radio>
+        <el-radio v-model="selection" label="my">
+          查看我的提现许可
+        </el-radio>
+        <el-radio v-model="selection" label="upload">
+          替别人提现许可
+        </el-radio>
+      </div>
       <wbAlertWarning />
       <MyBscPermit v-if="selection === 'my'" :selection.sync="selection" />
       <BscWithdraw v-if="selection === 'apply'" :selection.sync="selection" />
@@ -56,3 +58,8 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.withdraw-switch {
+  margin: 10px 0;
+}
+</style>
