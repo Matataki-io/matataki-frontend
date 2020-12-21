@@ -221,8 +221,8 @@ export default {
     return {
       userInfo: {}, // 用户信息
       pull: {
-        params: { page: 1, network: '', filters: undefined },
-        apiUrl: 'https://cache.ayaka.moe/matataki/status/timeline',
+        params: { page: 1, filters: undefined },
+        apiUrl: process.env.VUE_APP_MATATAKI_CACHE + '/matataki/status/timeline',
         list: [],
       },
       usersLoading: false,
@@ -270,8 +270,6 @@ export default {
     }
   },
   mounted() {
-    this.pull.params.network = this.$utils.getNetwork(window)
-    if (this.pull.params.network === 'dev') this.pull.params.network = 'test'
 
     this.getUserPlatformList()
   },
@@ -388,12 +386,12 @@ export default {
     },
     async getUserPlatformList () {
       this.userPlatformListLoading = true
-      const url = 'https://cache.ayaka.moe/matataki/status/subscriptions'
+      const url = process.env.VUE_APP_MATATAKI_CACHE + '/status/subscriptions'
       const headers = {}
       const accessToken = getCookie('ACCESS_TOKEN')
       if (accessToken) headers['x-access-token'] = accessToken
       try {
-        const { data: res } = await axios.get(url, { params: { network: this.pull.params.network }, headers })
+        const { data: res } = await axios.get(url, { headers })
         this.userPlatformList = res && res.data ? res.data : []
       }
       catch (e) {
