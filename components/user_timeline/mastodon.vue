@@ -54,8 +54,6 @@ import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 import mastodonCard from '@/components/platform_status/mastodon_card'
 import userTimelineNav from '@/components/user_timeline/user_timeline_nav'
 
-import mastodonFakeData from './mastodonFakeData.json'
-
 export default {
   components: {
     buttonLoadMore,
@@ -77,8 +75,7 @@ export default {
       loading: true, // 加载数据
       unboundBilibili: false,
       switchLoding: false,
-      uuid: 0,
-      mastodonFakeData: mastodonFakeData
+      uuid: 0
     }
   },
   computed: {
