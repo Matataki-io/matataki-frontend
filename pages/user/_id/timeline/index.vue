@@ -2,7 +2,8 @@
 <template>
   <userPage>
     <userTwitterTimeline v-if="tab === 'twitter'" slot="list" />
-    <userBilibiliTimeline v-else slot="list" />
+    <userBilibiliTimeline v-else-if="tab === 'bilibili'" slot="list" />
+    <userMastodonTimeline v-else-if="tab === 'mastodon'" slot="list" />
   </userPage>
 </template>
 
@@ -12,12 +13,14 @@ import { extractChar } from '@/utils/reg'
 import userPage from '@/components/user/user_page.vue'
 import userTwitterTimeline from '@/components/user_timeline/twitter.vue'
 import userBilibiliTimeline from '@/components/user_timeline/bilibili.vue'
+import userMastodonTimeline from '@/components/user_timeline/mastodon.vue'
 
 export default {
   components: {
     userPage,
     userTwitterTimeline,
-    userBilibiliTimeline
+    userBilibiliTimeline,
+    userMastodonTimeline
   },
   head() {
     return {

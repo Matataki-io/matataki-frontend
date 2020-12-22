@@ -9,7 +9,7 @@
       :hide="loading || (unboundBilibili && isMe($route.params.id))"
       :prompt="unboundBilibili ? '未开启哔哩哔哩时间线' : undefined"
     >
-      <bilibiliCard
+      <mastodonCard
         v-for="(item, index) in pull.list"
         :key="index"
         class="timeline-card"
@@ -29,9 +29,9 @@
       </div>
     </no-content-prompt>
     <div v-if="unboundBilibili && isMe($route.params.id) " class="twitter-enable">
-      <svg-icon icon-class="bilibili_tv" />
+      <svg-icon icon-class="mastodon" />
       <h4>
-        将你的哔哩哔哩动态同步展示到 Matataki
+        将你的 Mastodon 动态同步展示到 Matataki
       </h4>
       <div class="twitter-enable-bind">
         <p>
@@ -39,7 +39,7 @@
         </p>
         <router-link :to="unboundBilibili ? { name: 'setting-account' } : {}">
           <el-button type="primary" :disabled="!unboundBilibili">
-            绑定哔哩哔哩账号
+            绑定 Mastodon 账号
           </el-button>
         </router-link>
       </div>
@@ -51,13 +51,13 @@
 import { mapGetters } from 'vuex'
 
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
-import bilibiliCard from '@/components/platform_status/bilibili_card'
+import mastodonCard from '@/components/platform_status/mastodon_card'
 import userTimelineNav from '@/components/user_timeline/user_timeline_nav'
 
 export default {
   components: {
     buttonLoadMore,
-    bilibiliCard,
+    mastodonCard,
     userTimelineNav
   },
   data() {
@@ -67,8 +67,10 @@ export default {
           pagesize: 12,
           start: ''
         },
-        apiUrl: `${process.env.VUE_APP_MATATAKI_CACHE}/status/user-timeline/bilibili/${this.$route.params.id}`,
-        list: []
+        apiUrl: `${process.env.VUE_APP_MATATAKI_CACHE}/status/user-timeline/mastodon/${this.$route.params.id}`,
+        list: [
+
+        ]
       },
       loading: true, // 加载数据
       unboundBilibili: false,
@@ -86,12 +88,12 @@ export default {
       try {
         this.uuid = Number(res.data.uuid)
         if (res.data.list && res.data.list.length !== 0) {
-          this.pull.params.start = res.data.list[res.data.list.length - 1].desc.dynamic_id_str
+          this.pull.params.start = res.data.list[res.data.list.length - 1].id
           this.pull.list = this.pull.list.concat(res.data.list)
         }
       }
       catch (e) {
-        console.error('[get bilibili timeline failure] [res, e]:', res, e)
+        console.error('[get mastodon timeline failure] [res, e]:', res, e)
         this.$message.error(this.$t('error.getDataError'))
       }
     },
@@ -105,7 +107,7 @@ export default {
         this.unboundBilibili = true
       }
       else {
-        console.error('[get bilibili timeline failure] res:', res)
+        console.error('[get mastodon timeline failure] res:', res)
         this.$message.error(res.error || this.$t('error.getDataError'))
       }
     }
@@ -142,7 +144,7 @@ export default {
   overflow: hidden;
 
   svg {
-    color: #44A0D1;
+    color: #3487D2;
     font-size: 50px;
     margin-bottom: 10px;
   }

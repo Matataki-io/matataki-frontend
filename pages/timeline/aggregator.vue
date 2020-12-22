@@ -80,6 +80,11 @@
               :data="item.card"
               :from-user="getSourceUser(item)"
             />
+            <mastodonCard
+              v-else-if="item.platform === 'mastodon'"
+              :data="item.card"
+              :from-user="getSourceUser(item)"
+            />
             <div v-else>
               不支持的平台类型: {{ item.platform }}
             </div>
@@ -205,6 +210,7 @@ import { getCookie } from '@/utils/cookie'
 
 import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
+import mastodonCard from '@/components/platform_status/mastodon_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
@@ -213,6 +219,7 @@ export default {
   components: {
     twitterCard,
     bilibiliCard,
+    mastodonCard,
     buttonLoadMore,
     // RAList,
     userPlatformCard
@@ -222,7 +229,7 @@ export default {
       userInfo: {}, // 用户信息
       pull: {
         params: { page: 1, filters: undefined },
-        apiUrl: process.env.VUE_APP_MATATAKI_CACHE + '/matataki/status/timeline',
+        apiUrl: process.env.VUE_APP_MATATAKI_CACHE + '/status/timeline',
         list: [],
       },
       usersLoading: false,
@@ -242,6 +249,10 @@ export default {
         {
           key: 'bilibili',
           label: '哔哩哔哩'
+        },
+        {
+          key: 'mastodon',
+          label: 'Mastodon'
         }
       ],
       actions: null,
@@ -300,6 +311,7 @@ export default {
               card: JSON.parse(res.data.list[i].data),
               frontQueue: [],
               platform: res.data.list[i].platform,
+              platform_user: res.data.list[i].platform_user,
               platform_user_id: res.data.list[i].platform_user_id,
               platform_username: res.data.list[i].platform_username
               // frontQueue: this.getFrontQueue(res.data, i)
@@ -407,6 +419,12 @@ export default {
           return this.userPlatformList.find(item => item.bilibili_id === info.platform_user_id)
         case 'twitter':
           return this.userPlatformList.find(item => item.twitter_name === info.platform_username)
+        case 'mastodon':
+          return this.userPlatformList.find(item => {
+            if (!item.mastodon_uesr) return
+            const fullUsername = `${item.mastodon_uesr.id}@${item.mastodon_uesr.domain.replace(/^(https?:\/\/)/gm, '')}`
+            return item.mastodon_uesr && (fullUsername === info.platform_user)
+          })
         default:
           return null
       }
