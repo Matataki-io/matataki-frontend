@@ -106,7 +106,7 @@ export default {
       }
       else {
         console.error('[get bilibili timeline failure] res:', res)
-        this.$message.error(res.message)
+        this.$message.error(res.error || this.$t('error.getDataError'))
       }
     }
   }
@@ -142,7 +142,7 @@ export default {
   overflow: hidden;
 
   svg {
-    color: #1b95e0;
+    color: #44A0D1;
     font-size: 50px;
     margin-bottom: 10px;
   }

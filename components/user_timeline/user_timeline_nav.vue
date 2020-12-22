@@ -114,7 +114,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding:  0 20px;
   color: black;
   background: #ffffff;
   border-radius: 10px;
@@ -123,6 +122,11 @@ export default {
   overflow: hidden;
   position: relative;
   height: 58px;
+  padding:  0 20px;
+  @media screen and (max-width: 580px) {
+    overflow-x: auto;
+  }
+
   p {
     color: black;
     margin: 0 0 0 10px;
@@ -144,6 +148,9 @@ export default {
         color: #1b95e0;
         text-decoration: underline;
       }
+    }
+    @media screen and (max-width: 580px) {
+      display: none;
     }
   }
   .clickablebox {
@@ -168,6 +175,10 @@ export default {
     flex: 1;
     display: flex;
     height: 58px;
+
+    @media screen and (max-width: 400px) {
+      flex: 0;
+    }
 
     &-tab {
       color: black;
