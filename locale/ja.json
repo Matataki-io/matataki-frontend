@@ -2,7 +2,7 @@
   "readMore": "続きを読む",
   "viewMore": "もっと見る",
   "hideMore": "收起更多",
-  "not": "暂无",
+  "not": "",
   "notContent": "暂无内容",
   "notProfile": "プロフィールなし",
   "notComment": "コメントはありません",
@@ -50,7 +50,7 @@
   "articleUtil": "篇",
   "referral": "助你量化社交影响力的价值，在这里对爱好的每一份投入都能获利！\n行业领先的区块链技术保证创作者权益不再被平台剥削！\n使用邀请链接注册的新用户即可领取500积分！\n持有积分未来可共享全平台收益！\n",
   "save": "保存",
-  "transaction": "交易",
+  "transaction": "",
   "gift": "转赠",
   "detail": "明细",
   "notice": "通知",
@@ -60,8 +60,8 @@
   "amount": "金额",
   "filter": "过滤",
   "tool": "工具",
-  "other": "其他",
-  "anyFeedback": "任何反馈",
+  "other": "",
+  "anyFeedback": "",
   "balance": "余额",
   "transferMoney": "转账",
   "rank": "排名",
@@ -72,7 +72,7 @@
   "unlock": "解锁",
   "pay": "支付",
   "reward": "打赏",
-  "time": "时间",
+  "time": "",
   "success": {
     "success": "成功",
     "copy": "复制成功",
@@ -105,9 +105,9 @@
   "warning": {
     "titleOrContent": "标题或正文不能为空",
     "cover": "请上传封面",
-    "searchContent": "搜索内容不能为空",
+    "searchContent": "検索コンテンツを空にすることはできません",
     "inventoryShortage": "库存不足",
-    "confirmLogout": "确定退出吗?"
+    "confirmLogout": "終了してもよろしいですか？"
   },
   "rule": {
     "loginEmailMessage": "请输入邮箱",
@@ -137,7 +137,7 @@
     "passwordChangeFailed": "密码修改失败"
   },
   "header": {
-    "newArticle": "写文章"
+    "newArticle": "小論を書く"
   },
   "auth": {
     "eosWallet": "EOS钱包",
@@ -304,7 +304,7 @@
     "blockTitle2": "IPFS存储内容，永久记录不删除",
     "blockDes2": "IPFS（InterPlanetary File System）は、中国語ではInterPlanetary File Systemと呼ばれ、コンテンツのアドレス指定、バージョン管理、およびポイントツーポイントに基づくハイパーメディア送信プロトコルです。P2Pネットワークテクノロジー、BitTorrent送信テクノロジー、Gitバージョン制御、自己認証ファイルシステムなどを統合します。\nネットワークの参加者が検証可能なデータを相互に保存、要求、および送信できるようにするテクノロジー。\nさらに、IPFSプロトコルのデータは、データを削除せずにWebに永続的に保存できます。\nバックボーンネットワークに依存しなくなった分散ネットワークは、集中型サーバーに対するハッカーの攻撃に効果的に抵抗でき、ユーザーデータとプライバシーをより適切に保護できます。",
     "blockTitle3": "平台积分奖励，与生态共建者共赢",
-    "blockDes31": "瞬MATATAKI将回馈所有参与生态建设的共建者！",
+    "blockDes31": "インスタントMATATAKIは、エコロジカルコンストラクションに参加しているすべての共同ビルダーに還元します！",
     "blockDes32": "因为你们付出的注意力帮助我们更好得判断内容质量，你们付出的注意力将直接帮助其他探索者节省时间！",
     "blockDes33": "因为你们付出的创作力帮助我们更好的发展壮大，你们付出的创作力将直接帮助每一位探索者进步！",
     "blockDes34": "因为你们付出的传播力帮助我们更好得被众人所知，你们付出的传播力将推动世界变得更加美好！",
@@ -319,25 +319,25 @@
     "stageDes32": "打造区块链永存知识数据库"
   },
   "home": {
-    "creation": "发现",
+    "creation": "検索",
     "share": "分享",
-    "timeline": "动态",
-    "fanTicket": "Fan票",
-    "signOut": "登出账户",
-    "signIn": "立即登录",
+    "timeline": "動的",
+    "fanTicket": "ファンチケット",
+    "signOut": "ログアウトアカウント",
+    "signIn": "すぐにログインする",
     "navArticle": "文章",
     "navShop": "商品",
-    "searchPlaceholder": "请输入搜索内容",
+    "searchPlaceholder": "検索コンテンツを入力してください",
     "pointPopover": "点击积分图标即可查看积分的获取记录",
     "pointPopoverConfirm": "知道了",
-    "account": "我的账户",
+    "account": "マイアカウント",
     "setting": "设置",
     "articleNavHot": "最热",
     "articleNavHotTitle": "最热文章",
     "articleNavNow": "最新",
     "articleNavNowTitle": "最新文章",
-    "articleNavFollow": "关注",
-    "articleNavFollowTitle": "我的关注",
+    "articleNavFollow": "",
+    "articleNavFollowTitle": "",
     "articleNavRecommend": "推荐文章",
     "shopNavNowTitle": "最新商品",
     "shopNavHotTitle": "最热商品",
@@ -349,17 +349,17 @@
     "bannerPoint": "已发放积分",
     "articleTagTitle": "文章标签",
     "shopTagTitle": "商品标签",
-    "recommendAuthor": "推荐作者",
-    "popularArticles": "不要错过",
-    "random": "换一换",
-    "allCreation": "最热作品",
-    "latestCreation": "最新作品",
-    "fanCircle": "Fan圈",
-    "myFocus": "我的关注",
+    "recommendAuthor": "",
+    "popularArticles": "",
+    "random": "",
+    "allCreation": "",
+    "latestCreation": "",
+    "fanCircle": "",
+    "myFocus": "",
     "ofFanCircle": "的Fan圈",
     "buyFanTickets": "购买Fan票",
-    "hotTag": "热门标签",
-    "viewAll": "查看全部"
+    "hotTag": "",
+    "viewAll": ""
   },
   "sidebar": {
     "article": "篇",
@@ -410,7 +410,7 @@
     "modalTextText": "确定离开页面吗？",
     "modalTextButton1": "再想想",
     "modalTextButton2": "退出",
-    "importArticle": "导入文章",
+    "importArticle": "記事をインポートする",
     "publishArticleSuccess": "发文成功，奖励{0}积分",
     "importInput": "请输入文章网址链接，包含http(s)://",
     "importDes1": "目前支持：链闻、橙皮书、微信、知乎专栏、Matters、简书、微博文章、币乎。",
@@ -713,18 +713,18 @@
   },
   "footer": {
     "helpAndSupport": "帮助和支持",
-    "hellpbook": "使用手册",
+    "hellpbook": "",
     "point": "平台积分",
     "privacyPolicy": "隐私政策",
     "userAgreement": "用户协议",
     "about": "关于我们",
-    "updateRecord": "更新记录",
+    "updateRecord": "",
     "billboard": "智能公告牌",
-    "link": "友情链接",
+    "link": "",
     "linkidol": "链接偶像",
     "orange": "橙皮书",
-    "scanCode": "扫码后备注“进群”",
-    "follow": "关注公众号"
+    "scanCode": "",
+    "follow": ""
   },
   "social": {
     "relatedWebsites": "相关网站",
@@ -778,7 +778,7 @@
     "currentPrice": "现价",
     "shareWidget": "分享挂件",
     "openPositions": "Fan票持仓",
-    "flow": "Fan票流水",
+    "flow": "",
     "liquidGoldPositions": "流动金持仓",
     "liquidGoldFlow": "流动金流水",
     "positionHolder": "持仓者",
@@ -798,17 +798,17 @@
     "underDeployment": "Fan票正在部署中，请稍后过来操作!",
     "enterTheNumber": "请先输入购买数量",
     "relatedActivities": "相关活动",
-    "tokenManagement": "Fan票管理",
+    "tokenManagement": "",
     "expandMod": "拓展MOD",
     "recommendMod": "推荐模组",
     "quickEntrance": "快捷入口",
     "tags": "标签",
     "exchangePrice": "当前价格",
-    "fanTicketHolder": "Fan票夹",
-    "myFlowGold": "我的流动金",
-    "totalTransactionFlow": "交易总流水",
-    "flowGoldTotalFlow": "流动金总流水",
-    "allFanTicket": "全部Fan票",
+    "fanTicketHolder": "",
+    "myFlowGold": "",
+    "totalTransactionFlow": "",
+    "flowGoldTotalFlow": "",
+    "allFanTicket": "",
     "hashCopySuccess": "Hash 复制成功"
   },
   "ipfsHash": {
@@ -946,7 +946,7 @@
     "stepSixRest": "重新申请"
   },
   "timeline": {
-    "timeline": "动态时间轴"
+    "timeline": ""
   },
   "settingSystem": {
     "clearCache": "一键清除缓存",
@@ -980,5 +980,8 @@
     "notFollowFilter": "查看全部",
     "noNewData": "{0}天内没有新增数据，",
     "viewAll": "查看全部数据"
-  }
+  },
+  "menu-dashboard": "ダッシュボード",
+  "header-tips": "公式QQグループを追加してください：766605671",
+  "message-center": "メッセージセンター"
 }

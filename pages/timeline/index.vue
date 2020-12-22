@@ -4,7 +4,7 @@
     <div v-if="isLogined && Number(userInfo.follows) > 0" class="banner">
       <section class="banner-main">
         <h2 class="banner-title">
-          欢迎加入瞬Matataki
+          {{ $t('welcome-to-join') }}
         </h2>
         <h2 class="banner-title bold">
           一个 <span>公开</span> <span>永存</span> 的数字作品库
@@ -30,7 +30,7 @@
             </h3> -->
             <h3 class="head-title topnav-tag">
               <router-link :to="{ name: 'timeline-aggregator' }">
-                第三方时间轴
+                {{ $t('other-timeline') }}
               </router-link>
             </h3>
           </section>

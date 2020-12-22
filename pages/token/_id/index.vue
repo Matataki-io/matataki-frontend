@@ -10,7 +10,7 @@
       :balance="balance"
       @display-angle="setDisplayAngle"
     />
-    <tokenBuyCard2 
+    <tokenBuyCard2
       v-if="clientVisible"
       :token="minetokenToken"
       :current-pool-size="currentPoolSize"

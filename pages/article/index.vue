@@ -2,7 +2,6 @@
   <div class="article-container">
     <div class="article-head">
       <tab :idx="0" />
-      
       <!-- <div
         class="sort"
       >
