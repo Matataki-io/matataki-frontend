@@ -282,7 +282,7 @@ span {
 
       &-logo {
         font-size: 20px;
-        color: #00ACED;
+        color: #44A0D1;
         margin: 0 0 0 5px;
         transition: all ease-in 0.1s;
         &:hover {

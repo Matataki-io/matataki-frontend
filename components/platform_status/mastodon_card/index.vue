@@ -368,7 +368,7 @@ span {
 
       &-logo {
         font-size: 20px;
-        color: #2D82D0;
+        color: #3487D2;
         margin: 0 0 0 5px;
         transition: all ease-in 0.1s;
         &:hover {

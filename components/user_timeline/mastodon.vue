@@ -66,11 +66,10 @@ export default {
     return {
       pull: {
         params: {
-          network: '',
           pagesize: 12,
           start: ''
         },
-        apiUrl: `https://cache.ayaka.moe/matataki/status/user-timeline/bilibili/${this.$route.params.id}`,
+        apiUrl: `${process.env.VUE_APP_MATATAKI_CACHE}/status/user-timeline/bilibili/${this.$route.params.id}`,
         list: [
 
         ]
@@ -86,8 +85,6 @@ export default {
     ...mapGetters(['isMe']),
   },
   mounted () {
-    this.pull.params.network = this.$utils.getNetwork(window)
-    if (this.pull.params.network === 'dev') this.pull.params.network = 'test',
     this.buttonLoadMoreRes({
       code: 0,
       data: {
