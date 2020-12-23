@@ -11,14 +11,14 @@
       </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>
       <span class="card-description">发布了新作品</span>
-      <!-- <router-link
+      <router-link
         v-if="showLogo"
         class="card-head-logo"
         :to="{ name: 'p-id', params: {id: card.id} }"
         target="_blank"
       >
-        <svg-icon icon-class="matataki-mini-logo" />
-      </router-link> -->
+        <svg-icon icon-class="matataki-square-logo" />
+      </router-link>
     </section>
 
     <!-- main -->
@@ -126,7 +126,7 @@ export default {
 
   &-logo {
     font-size: 20px;
-    color: #00ACED;
+    color: #542DE0;
     margin: 0 0 0 5px;
     transition: all ease-in 0.1s;
     &:hover {

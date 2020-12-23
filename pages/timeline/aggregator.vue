@@ -70,6 +70,7 @@
           >
             <timelineCard
               v-if="item.platform === 'matataki'"
+              show-logo
               :card="item.card"
             />
             <twitterCard
@@ -455,9 +456,9 @@ export default {
       this.updateQuery('filters', JSON.stringify(value))
     },
     initActions() {
-      let actions = this.$route.query.actions
+      let actions = this.$route.query.filters
       if(actions) {
-        this.actions = JSON.parse(this.$route.query.actions)
+        this.actions = JSON.parse(this.$route.query.filters)
         this.checkedCities = this.actions
       }
       else {
@@ -816,7 +817,7 @@ export default {
   .checkbox-group {
     display: grid;
     justify-content: space-between;
-    grid-template-columns: repeat(auto-fill, 60px);
+    grid-template-columns: repeat(auto-fill, 90px);
     grid-gap: 10px;
 
     .checkbox {
