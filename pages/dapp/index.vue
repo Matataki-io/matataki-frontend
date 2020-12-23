@@ -11,7 +11,7 @@
             <p class="head-description">一个基于Fan票提现和转入的工具</p>
             <p class="head-title">Fan票折跃门</p>
             <n-link :to="{ path: '/token/in-n-out' }" target="_blank" class="head-btn">
-              立即使用
+              {{ $t('visit-website') }}
             </n-link>
           </div>
         </div>
@@ -21,7 +21,7 @@
           <div class="head-text">
             <p class="head-description">一个基于Fan票的简单空投工具</p>
             <p class="head-title">Matataki Airdrop</p>
-            <a href="https://www.matataki-airdrop.xyz/" target="_blank" class="head-btn">访问网站</a>
+            <a href="https://www.matataki-airdrop.xyz/" target="_blank" class="head-btn">{{ $t('visit-website') }}</a>
           </div>
           <img class="computer" src="@/assets/img/dapp_head_computer.png" alt="computer">
         </div>
@@ -32,7 +32,7 @@
             <p class="head-description">一个基于Fan票的任务悬赏平台</p>
             <img src="@/assets/img/dapp-banner-quest-logo.png" alt="logo">
             <a href="https://matataki-quest.netlify.app" target="_blank" class="head-btn">
-              立即前往
+              {{ $t('visit-website') }}
             </a>
           </div>
         </div>
@@ -41,14 +41,14 @@
         <div class="crypto-hero">
           <p>一个基于Fan票的水浒集卡游戏</p>
           <img src="@/assets/img/dapp_cryptohero_text.png" alt="">
-          <a href="https://dao-hero.netlify.app" target="_blank">立即游玩</a>
+          <a href="https://dao-hero.netlify.app" target="_blank">{{ $t('visit-website') }}</a>
         </div>
       </el-carousel-item>
       <el-carousel-item>
         <div class="crypto-meet-up">
           <p>一个基于Fan票的地理位置共享&订阅</p>
           <h3>Crypto Meet Up</h3>
-          <a href="https://cryptomeetup.async.moe" target="_blank">访问网站</a>
+          <a href="https://cryptomeetup.async.moe" target="_blank">{{ $t('visit-website') }}</a>
         </div>
       </el-carousel-item>
       <el-carousel-item>
@@ -56,7 +56,7 @@
           <div class="head-text">
             <p class="head-description">一个利用Fan票来挖矿</p>
             <p class="head-title">Matataki Mining</p>
-            <a href="https://matataki-mining.netlify.app/" target="_blank" class="head-btn">访问网站</a>
+            <a href="https://matataki-mining.netlify.app/" target="_blank" class="head-btn">{{ $t('visit-website') }}</a>
           </div>
         </div>
       </el-carousel-item>
@@ -81,7 +81,7 @@
               :href="itemBlock.repo"
               class="item-btn github"
               target="_blank"
-            >GitHub地址</a>
+            >{{ $t('github-address') }}</a>
             <a
               :href="itemBlock.disabled ? 'javascript:;' :itemBlock.url"
               class="item-btn"
@@ -125,7 +125,7 @@ export default {
               height: '128px',
               url: 'https://www.matataki.io/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -136,7 +136,7 @@ export default {
               height: '173px',
               url: 'https://www.matataki-airdrop.xyz/',
               repo: 'https://github.com/NaoMikuOshi/Matataki-Token-AirDropper',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -147,7 +147,7 @@ export default {
               height: '123px',
               url: 'https://cryptomeetup.async.moe/',
               repo: 'https://github.com/crypto-meetup-dev/cryptomeetup-portal',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -158,7 +158,7 @@ export default {
               height: '143px',
               url: 'https://dao-hero.netlify.app/',
               repo: 'https://github.com/cryptohero/cryptohero-erc20-frontend-ng',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -169,7 +169,7 @@ export default {
               height: '120px',
               url: 'https://matataki-nft.netlify.app/',
               repo: 'https://github.com/Matataki-io/Matataki-NFT',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -180,7 +180,7 @@ export default {
               height: '120px',
               url: 'https://matataki-dao.netlify.app/#/',
               repo: 'https://github.com/Matataki-io/Matataki-DAO',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -191,7 +191,7 @@ export default {
               height: '120px',
               url: 'https://matataki-mining.netlify.app/',
               repo: 'https://github.com/Andoromeda-Foundation/Matataki-Mining-Interface',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -202,7 +202,7 @@ export default {
               height: '147px',
               url: 'https://matataki-quest.netlify.app/',
               repo: 'https://github.com/Matataki-io/Fan-TaskBoard',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
           ]
@@ -218,7 +218,7 @@ export default {
               height: '99px',
               url: 'https://www.matataki.io/exchange/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             // {
@@ -228,7 +228,7 @@ export default {
             //   width: '138px',
             //   height: '159px',
             //   url: '/token/withdraw',
-            //   btn: '访问网站',
+            //   btn: this.$t('visit-website'),
             //   disabled: false
             // },
             // {
@@ -238,7 +238,7 @@ export default {
             //   width: '138px',
             //   height: '148px',
             //   url: '/token/deposit',
-            //   btn: '访问网站',
+            //   btn: this.$t('visit-website'),
             //   disabled: false
             // },
             // {
@@ -248,7 +248,7 @@ export default {
             //   width: '138px',
             //   height: '148px',
             //   url: '/token/withdrawToBsc',
-            //   btn: '访问网站',
+            //   btn: this.$t('visit-website'),
             //   disabled: false
             // },
             {
@@ -258,7 +258,7 @@ export default {
               width: 'auto',
               height: '100%',
               url: '/token/in-n-out',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
           ]
@@ -274,7 +274,7 @@ export default {
               height: '140px',
               url: 'https://docs.matataki.io/',
               repo: 'https://github.com/Matataki-io/api-doc',
-              btn: '立即查看',
+              btn: this.$t('visit-website'),
               disabled: false
             },
             {
@@ -285,7 +285,7 @@ export default {
               height: '120px',
               url: 'https://developer.matataki.io',
               repo: 'https://github.com/Matataki-io/DeveloperPortal-FE',
-              btn: '访问网站',
+              btn: this.$t('visit-website'),
               disabled: false
             },
           ]

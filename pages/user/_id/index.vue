@@ -8,7 +8,7 @@
     >
       <div v-if="isMe(this.$route.params.id)" class="view-all">
         <el-checkbox v-model="showAll" @change="handleShowAllChange">
-          显示所有文章
+          {{ $t('show-all-articles') }}
         </el-checkbox>
       </div>
       <no-content-prompt :list="articleCardData.articles">
