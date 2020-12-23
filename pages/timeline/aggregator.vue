@@ -68,8 +68,12 @@
             :key="index"
             class="timeline-card"
           >
+            <timelineCard
+              v-if="item.platform === 'matataki'"
+              :card="item.card"
+            />
             <twitterCard
-              v-if="item.platform === 'twitter'"
+              v-else-if="item.platform === 'twitter'"
               show-logo
               :card="item.card"
               :front-queue="item.frontQueue"
@@ -208,6 +212,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import { getCookie } from '@/utils/cookie'
 
+import timelineCard from '@/components/timeline_card/index.vue'
 import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
 import mastodonCard from '@/components/platform_status/mastodon_card'
@@ -217,6 +222,7 @@ import userPlatformCard from '@/components/user/user_platform_card'
 
 export default {
   components: {
+    timelineCard,
     twitterCard,
     bilibiliCard,
     mastodonCard,
@@ -242,6 +248,10 @@ export default {
       checkAll: true,
       checkedCities: [],
       actionTypes: [
+        {
+          key: 'matataki',
+          label: 'Matataki'
+        },
         {
           key: 'twitter',
           label: 'Twitter'
