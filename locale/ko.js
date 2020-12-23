@@ -963,7 +963,11 @@ export default {
         stepSix: '您的Fan票申请失败',
         stepSixRest: '重新申请'
     },
-    timeline: { timeline: '动态时间轴' },
+    timeline: {
+        timeline: '动态时间轴',
+        localTimeline: '站内动态',
+        allTimeline: '聚合动态'
+    },
     // setting system page
     settingSystem: {
         clearCache: '一键清除缓存',
