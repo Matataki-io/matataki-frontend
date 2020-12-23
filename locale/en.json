@@ -947,7 +947,9 @@
     "stepSixRest": "重新申请"
   },
   "timeline": {
-    "timeline": "Dynamic timeline"
+    "timeline": "Dynamic timeline",
+    "localTimeline": "Local timeline",
+    "allTimeline": "All timeline"
   },
   "settingSystem": {
     "clearCache": "Clear cache with one click",
