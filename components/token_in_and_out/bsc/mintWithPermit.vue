@@ -3,14 +3,18 @@
     <client-only>
       <textarea
         v-model.trim="permitInput" 
-        style="width: 100%; margin: 10px 0px;height: 286px;"
+        style="width: 50%; margin: 10px 0px;height: 286px;"
         :rows="6"
         class="withdraw-result-textarea"
         :placeholder="placeholderForPermitInput"
         @change="onPermitInput"
       />
 
-      <div v-if="permit" class="parsedPermit">
+      <div 
+        v-if="permit" 
+        style="width: 50%;" 
+        class="parsedPermit" 
+      >
         <p class="parse-title">解析出来的提现许可</p>
         <p class="parse-item">在 BSC 的 Fan票 地址: {{ permit.token }}</p>
         <p class="parse-item">提现到: {{ permit.to }}</p>
@@ -139,6 +143,7 @@ export default {
 <style scoped>
 .withdraw-container {
   max-width: 1200px;
+  display: flex;
   width: 100%;
   margin: 0 auto 40px;
   padding-left: 10px;

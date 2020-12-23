@@ -4,6 +4,10 @@
       <h1 class="title">
         Fan票折跃门
       </h1>
+      <a href="https://www.yuque.com/matataki/matataki/zcs21y" class="faq-link" target="_blank">
+        使用教程
+        <svg-icon icon-class="anser" class="anser" />
+      </a>
     </div>
     <div v-if="!isLogined" class="card not-logined">
       <h1 class="title">
@@ -109,6 +113,13 @@ div.banner {
     height: 260px;
     width: auto;
     margin: 20px;
+}
+div.banner .faq-link {
+    text-align: center;
+    display: block;
+    color: #0289ff;
+    font-size: 16px;
+    margin-top: 10px;
 }
 div.banner .title {
     padding-top: 110px;
