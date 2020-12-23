@@ -263,6 +263,7 @@ export default {
     isLogined(newState) {
       if (newState) {
         this.getCurrentUserInfo()
+        this.getUserPlatformList()
       }
     },
     actions (val) {
@@ -398,6 +399,7 @@ export default {
       const url = process.env.VUE_APP_MATATAKI_CACHE + '/status/subscriptions'
       const headers = {}
       const accessToken = getCookie('ACCESS_TOKEN')
+      if (!accessToken) return this.userPlatformListLoading = false
       if (accessToken) headers['x-access-token'] = accessToken
       try {
         const { data: res } = await axios.get(url, { headers })

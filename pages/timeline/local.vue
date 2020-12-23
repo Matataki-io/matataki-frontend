@@ -76,7 +76,7 @@
           </div>
         </div>
         <h4 v-if="isLogined && !Number(userInfo.follows)" class="twitter-timeline-link">
-          <router-link :to="{ name: 'timeline-aggregator' }">
+          <router-link :to="{ name: 'timeline' }">
             浏览聚合动态
             <i class="el-icon-arrow-right" />
           </router-link>
