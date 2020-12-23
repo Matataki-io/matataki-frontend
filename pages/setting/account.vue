@@ -139,7 +139,7 @@ export default {
         {
           type: 'weixin',
           icon: 'wechat', // 随时可换 防止影响
-          typename: this.$t('thirdParty.wechatAccount'),
+          typename: this.$t('thirdParty.wechat'),
           username: '', // 最好后端混淆后返回
           loading: false,
           status: false,

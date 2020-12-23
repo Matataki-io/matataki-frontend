@@ -72,7 +72,7 @@
       <tab
         class="db-mt10"
         :value="typeToggleValArticleList"
-        :tab="articleListData" 
+        :tab="articleListData"
         @change="articleListTabChange"
       />
       <client-only>

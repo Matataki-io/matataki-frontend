@@ -1,12 +1,12 @@
 <template>
   <div class="dashboard">
     <h2 class="token-title">
-      Dashboard
+      {{ $t('dashboard-text') }}
     </h2>
     <div class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          增发持仓分布图
+          {{ $t('add-hold-map') }}
         </h4>
         <router-link
           :to="{name: 'exchange', hash: '#pool', query: { output: minetokenToken.symbol }}"
@@ -16,7 +16,7 @@
             size="small"
           >
             <svg-icon icon-class="eth_mini" />
-            添加流动金
+            {{ $t('add-liquidity') }}
           </el-button>
         </router-link>
       </div>
@@ -30,7 +30,7 @@
     <div class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          数据中心
+          {{ $t('data-center') }}
         </h4>
       </div>
       <div class="card-list">
@@ -49,14 +49,14 @@
     <div v-if="active === 0" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史价格
+          {{ $t('history-price') }}
         </h4>
         <div class="chart-period">
           <el-radio v-model="dataList[0].period" label="all">
-            全部
+            {{ $t('all') }}
           </el-radio>
           <el-radio v-model="dataList[0].period" label="30d">
-            30天
+            30{{ $t('day') }}
           </el-radio>
         </div>
       </div>
@@ -67,14 +67,14 @@
     <div v-if="active === 1" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史流动性池
+          {{ $t('history-liquidiity-pool') }}
         </h4>
         <div class="chart-period">
           <el-radio v-model="dataList[1].period" label="all">
-            全部
+            {{ $t('all') }}
           </el-radio>
           <el-radio v-model="dataList[1].period" label="30d">
-            30天
+            30{{ $t('day') }}
           </el-radio>
         </div>
       </div>
@@ -88,14 +88,14 @@
     <div v-if="active === 2" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史交易额
+          {{ $t('history-transaction-amount') }}
         </h4>
         <div class="chart-period">
           <el-radio v-model="dataList[2].period" label="all">
-            全部
+            {{ $t('all') }}
           </el-radio>
           <el-radio v-model="dataList[2].period" label="30d">
-            30天
+            30{{ $t('day') }}
           </el-radio>
         </div>
       </div>
@@ -109,14 +109,14 @@
     <div v-if="active === 3" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史交易量
+          {{ $t('history-trading-volume') }}
         </h4>
         <div class="chart-period">
           <el-radio v-model="dataList[3].period" label="all">
-            全部
+            {{ $t('all') }}
           </el-radio>
           <el-radio v-model="dataList[3].period" label="30d">
-            30天
+            30{{ $t('day') }}
           </el-radio>
         </div>
       </div>
@@ -130,7 +130,7 @@
     <div v-if="active === 4" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史增发
+          {{ $t('history-add') }}
         </h4>
       </div>
       <historyIssued :minetoken-token="minetokenToken" />
@@ -140,14 +140,14 @@
     <div v-if="active === 5" class="dashboard-block">
       <div class="dashboard-block-head">
         <h4>
-          历史收益
+          {{ $t('history-income') }}
         </h4>
         <div class="chart-period">
           <el-radio v-model="dataList[5].period" label="all">
-            全部
+            {{ $t('all') }}
           </el-radio>
           <el-radio v-model="dataList[5].period" label="30d">
-            30天
+            30{{ $t('day') }}
           </el-radio>
         </div>
       </div>
@@ -215,12 +215,12 @@ export default {
       default: 0
     }
   },
-  data() {  
+  data() {
     return {
       active: 0,
       dataList: [
         {
-          name: '当前价格',
+          name: this.$t('current-price'),
           label: 'price',
           symbol: '￥',
           value: 0,
@@ -230,7 +230,7 @@ export default {
           period: 'all'
         },
         {
-          name: '流动性',
+          name: this.$t('fluidity'),
           label: 'cny_reserve',
           symbol: '￥',
           value: 0,
@@ -240,7 +240,7 @@ export default {
           period: 'all'
         },
         {
-          name: '24h交易额',
+          name: `24h${this.$t('transaction-amount')}`,
           label: 'amount_24h',
           symbol: '￥',
           value: 0,
@@ -250,7 +250,7 @@ export default {
           period: 'all'
         },
         {
-          name: '24h交易量',
+          name: `24h${this.$t('trading-volume')}`,
           label: 'volume_24h',
           symbol: '',
           value: 0,
@@ -260,7 +260,7 @@ export default {
           period: 'all'
         },
         {
-          name: '已发行',
+          name: this.$t('issued'),
           label: 'total_supply',
           symbol: '',
           value: 0,
@@ -270,7 +270,7 @@ export default {
           period: 'all'
         },
         {
-          name: '收益',
+          name: this.$t('income'),
           label: 'income',
           symbol: '￥',
           value: 0,
@@ -280,7 +280,7 @@ export default {
           period: 'all'
         },
         {
-          name: '持币者',
+          name: this.$t('coin-holder'),
           label: 'number_of_holders',
           symbol: '',
           value: 0,
@@ -290,7 +290,7 @@ export default {
           period: 'all'
         },
         {
-          name: '做市商',
+          name: this.$t('market-maker'),
           label: 'number_of_liquidity_holders',
           symbol: '',
           value: 0,

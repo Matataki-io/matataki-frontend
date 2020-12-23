@@ -8,7 +8,7 @@
         <div>
           <img class="basic-settings" src="@/assets/img/token/basic_settings.png" alt="Basic Settings">
           <p>
-            基础设置
+            {{ $t('basic-settings') }}
           </p>
         </div>
       </router-link>
@@ -16,7 +16,7 @@
         <div>
           <img class="liquidity-management" src="@/assets/img/token/liquidity_management.png" alt="Liquidity Management">
           <p>
-            流动性管理
+            {{ $t('liquidity-management') }}
           </p>
         </div>
       </router-link>
@@ -24,7 +24,7 @@
         <div>
           <img class="marketing" src="@/assets/img/token/marketing.png" alt="Marketing">
           <p>
-            营销推广
+            {{ $t('marketing') }}
           </p>
         </div>
       </a>
