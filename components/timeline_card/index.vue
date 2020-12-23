@@ -11,6 +11,14 @@
       </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>
       <span class="card-description">发布了新作品</span>
+      <router-link
+        v-if="showLogo"
+        class="card-head-logo"
+        :to="{ name: 'p-id', params: {id: card.id} }"
+        target="_blank"
+      >
+        <svg-icon icon-class="matataki-square-logo" />
+      </router-link>
     </section>
 
     <!-- main -->
@@ -56,6 +64,10 @@ export default {
       type: Object,
       required: true
     },
+    showLogo: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     // 头像
@@ -83,7 +95,7 @@ export default {
     },
     lock() {
       if (this.card.is_ownpost && (this.card.pay_symbol || this.card.token_symbol)) return '我创建的'
-      
+
       if (this.card.pay_symbol) {
         if (this.card.pay_unlock) return '已付费'
         return `需付费 ${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
@@ -111,6 +123,16 @@ export default {
 .card-head {
   display: flex;
   align-items: center;
+
+  &-logo {
+    font-size: 20px;
+    color: #542DE0;
+    margin: 0 0 0 5px;
+    transition: all ease-in 0.1s;
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 }
 .card-name {
   font-size: 16px;
@@ -126,6 +148,7 @@ export default {
   word-break: break-all;
 }
 .card-description {
+  flex: 1;
   font-size: 16px;
   font-weight: 400;
   color: rgba(178, 178, 178, 1);
