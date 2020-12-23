@@ -1,6 +1,21 @@
 <template>
   <div class="dapp">
-    <el-carousel trigger="click" height="240px" class="swipe-dapp">
+    <el-carousel
+      trigger="click"
+      height="240px"
+      class="swipe-dapp"
+    >
+      <el-carousel-item>
+        <div class="dapp-head-shuttle">
+          <div class="head-text">
+            <p class="head-description">一个基于Fan票提现和转入的工具</p>
+            <p class="head-title">Fan票折跃门</p>
+            <n-link :to="{ path: '/token/in-n-out' }" target="_blank" class="head-btn">
+              立即使用
+            </n-link>
+          </div>
+        </div>
+      </el-carousel-item>
       <el-carousel-item>
         <div class="dapp-head">
           <div class="head-text">
@@ -9,6 +24,17 @@
             <a href="https://www.matataki-airdrop.xyz/" target="_blank" class="head-btn">访问网站</a>
           </div>
           <img class="computer" src="@/assets/img/dapp_head_computer.png" alt="computer">
+        </div>
+      </el-carousel-item>
+      <el-carousel-item>
+        <div class="dapp-head-quest">
+          <div class="head-text">
+            <p class="head-description">一个基于Fan票的任务悬赏平台</p>
+            <img src="@/assets/img/dapp-banner-quest-logo.png" alt="logo">
+            <a href="https://matataki-quest.netlify.app" target="_blank" class="head-btn">
+              立即前往
+            </a>
+          </div>
         </div>
       </el-carousel-item>
       <el-carousel-item>
@@ -75,13 +101,15 @@ import exchange from '@/assets/img/dapp_list_exchange.png'
 import airdrop from '@/assets/img/dapp_list_airdrop.png'
 import map from '@/assets/img/dapp_list_map.png'
 import doc from '@/assets/img/dapp_list_doc.png'
-import input from '@/assets/img/dapp_list_input.png'
-import output from '@/assets/img/dapp_list_output.png'
+// import input from '@/assets/img/dapp_list_input.png'
+// import output from '@/assets/img/dapp_list_output.png'
 import developer from '@/assets/img/dapp_list_developer.png'
 import cryptohero from '@/assets/img/dapp_list_cryptohero.png'
 import nft from '@/assets/img/dapp_list_nft.png'
 import dao from '@/assets/img/dapp_list_dao.png'
 import mine from '@/assets/img/dapp_list_mine.png'
+import shuttle from '@/assets/img/dapp_list_shuttle.png'
+import quest from '@/assets/img/dapp_list_quest.png'
 export default {
   data() {
     return {
@@ -166,6 +194,17 @@ export default {
               btn: '访问网站',
               disabled: false
             },
+            {
+              title: 'Matataki Quest',
+              description: '基于Fan票的任务悬赏平台',
+              img: quest,
+              width: '130px',
+              height: '147px',
+              url: 'https://matataki-quest.netlify.app/',
+              repo: 'https://github.com/Matataki-io/Fan-TaskBoard',
+              btn: '访问网站',
+              disabled: false
+            },
           ]
         },
         {
@@ -182,43 +221,43 @@ export default {
               btn: '访问网站',
               disabled: false
             },
+            // {
+            //   title: 'Fan票提现',
+            //   description: '将Fan票提现到Metamask钱包',
+            //   img: output,
+            //   width: '138px',
+            //   height: '159px',
+            //   url: '/token/withdraw',
+            //   btn: '访问网站',
+            //   disabled: false
+            // },
+            // {
+            //   title: 'Fan票转入',
+            //   description: '将Metamask钱包中的Fan票充值到Matataki',
+            //   img: input,
+            //   width: '138px',
+            //   height: '148px',
+            //   url: '/token/deposit',
+            //   btn: '访问网站',
+            //   disabled: false
+            // },
+            // {
+            //   title: 'Fan提取',
+            //   description: '跨链提取 Fan票到币安智能链（Binance Smart Chain）',
+            //   img: output,
+            //   width: '138px',
+            //   height: '148px',
+            //   url: '/token/withdrawToBsc',
+            //   btn: '访问网站',
+            //   disabled: false
+            // },
             {
-              title: 'Fan票提现',
-              description: '将Fan票提现到Metamask钱包',
-              img: output,
-              width: '138px',
-              height: '159px',
-              url: '/token/withdraw',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan票转入',
-              description: '将Metamask钱包中的Fan票充值到Matataki',
-              img: input,
-              width: '138px',
-              height: '148px',
-              url: '/token/deposit',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan提取',
-              description: '跨链提取 Fan票到币安智能链（Binance Smart Chain）',
-              img: output,
-              width: '138px',
-              height: '148px',
-              url: '/token/withdrawToBsc',
-              btn: '访问网站',
-              disabled: false
-            },
-            {
-              title: 'Fan票提取和转入',
-              description: '将Fan票提现到Metamask钱包或者转入Fan票到Matataki',
-              img: output,
-              width: '138px',
-              height: '148px',
-              url: '/token/withdrawToBsc',
+              title: 'Fan票折跃门',
+              description: 'Fan票跨链导入导出工具',
+              img: shuttle,
+              width: 'auto',
+              height: '100%',
+              url: '/token/in-n-out',
               btn: '访问网站',
               disabled: false
             },
@@ -443,6 +482,100 @@ export default {
   }
 }
 
+.dapp-head-shuttle {
+  height: 240px;
+  background-image: url(../../assets/img/dapp-banner-shuttle.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .head-description {
+    font-size: 20px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 28px;
+    padding: 0;
+    margin: 0;
+  }
+  .head-text {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .head-title {
+    padding: 0;
+    margin: 7px 0 0;
+    font-size: 48px;
+    font-weight: 900;
+    color: #F7B500;
+    line-height: 67px;
+    text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    font-family: STSongti-SC-Black STSongti-SC serif;
+  }
+  .head-btn {
+    // background: #542de0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ffffff;
+    padding: 8px 40px;
+    margin: 18px 0 0 0;
+    display: inline-block;
+    background: #6236FF;
+    border-radius: 20px;
+  }
+}
+
+.dapp-head-quest {
+  height: 240px;
+  background-image: url(../../assets/img/dapp-banner-quest.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .head-description {
+    width: 275px;
+    height: 28px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 28px;
+    padding: 0;
+    margin: 0;
+  }
+  .head-text {
+    margin: 0 0 0 180px;
+    img {
+      display: block;
+      width: 464px;
+      margin: 8px 0;
+    }
+  }
+  .head-btn {
+    // background: #542de0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ffffff;
+    padding: 8px 40px;
+    margin: 0;
+    display: inline-block;
+    background: #6236FF;
+    border-radius: 20px;
+  }
+}
+
 .dapp-container {
   margin: 40px 0 0;
   padding: 0 20px;
@@ -497,7 +630,7 @@ export default {
         img {
           width: 168px;
           height: 168px;
-          object-fit: cover;
+          object-fit: contain;
         }
       }
 

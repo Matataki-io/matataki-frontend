@@ -127,3 +127,9 @@ div.banner .title {
   margin: 10px 0;
 }
 </style>
+
+<style lang="less" scoped>
+.chain-selection {
+  margin: 10px 0 20px;
+}
+</style>

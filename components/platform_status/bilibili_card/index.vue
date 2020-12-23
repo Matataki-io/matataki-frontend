@@ -1,7 +1,14 @@
 <template>
   <div class="cardunit">
     <div class="cardunit-l">
+      <foreignUserPopover v-if="fromUser" :card="fromUser">
+        <c-avatar
+          class="cardunit-l-avatar"
+          :src="avatarImg"
+        />
+      </foreignUserPopover>
       <c-avatar
+        v-else
         class="cardunit-l-avatar"
         :src="avatarImg"
       />
@@ -35,7 +42,7 @@
       </div>
       <!-- 视频 -->
       <bilibiliVideo
-        v-if="stype === 2"
+        v-if="type === 8"
         class="cardtop10"
         :card="card"
       />
@@ -92,6 +99,7 @@ import bilibiliMusic from './bilibili_music'
 import bilibiliSpecial from './bilibili_special'
 import bilibiliContent from './bilibili_content'
 import bilibiliOrigin from './bilibili_origin'
+import foreignUserPopover from '@/components/user/foreign_user_popover'
 
 export default {
   components: {
@@ -101,13 +109,18 @@ export default {
     bilibiliMusic,
     bilibiliSpecial,
     bilibiliContent,
-    bilibiliOrigin
+    bilibiliOrigin,
+    foreignUserPopover
   },
   props: {
     // 卡片数据
     data: {
       type: Object,
       required: true
+    },
+    fromUser: {
+      type: Object,
+      default: null
     }
   },
   computed: {
@@ -161,7 +174,7 @@ export default {
       return res
     },
     media () {
-      if (!this.card || this.stype !== 1 || !this.card.item.pictures) return []
+      if (!this.card || this.type !== 2 || !this.card.item.pictures) return []
       return this.card.item.pictures
     },
     sketch () {
@@ -178,10 +191,7 @@ export default {
   },
   mounted () {
     console.log(this.type, this.data, this.card)
-    let meta = document.createElement('meta')
-    meta.name = 'referrer'
-    meta.content = 'no-referrer'
-    document.getElementsByTagName('head')[0].appendChild(meta)
+    this.clearReferer()
   },
   methods: {
     jsonp(str) {
@@ -192,6 +202,13 @@ export default {
         console.error(str, e)
         return null
       }
+    },
+    /** 清除 referer，否则无法加载B站的图片资源 */
+    clearReferer() {
+      let meta = document.createElement('meta')
+      meta.name = 'referrer'
+      meta.content = 'no-referrer'
+      document.getElementsByTagName('head')[0].appendChild(meta)
     }
   }
 }
@@ -265,7 +282,7 @@ span {
 
       &-logo {
         font-size: 20px;
-        color: #00ACED;
+        color: #44A0D1;
         margin: 0 0 0 5px;
         transition: all ease-in 0.1s;
         &:hover {
