@@ -965,8 +965,8 @@ export default {
     },
     timeline: {
         timeline: '动态时间轴',
-        localTimeline: 'Local timeline',
-        allTimeline: 'All timeline'
+        localTimeline: '站内动态',
+        allTimeline: '聚合动态'
     },
     // setting system page
     settingSystem: {
