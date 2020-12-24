@@ -4,7 +4,7 @@
       <el-col v-show="!showDetails" :span="16">
         <div class="fl notification-topbar">
           <h3 class="notification-topbar-title">
-            消息
+            {{ $t('news') }}
           </h3>
           <div class="notification-topbar-button">
             <el-button
@@ -14,7 +14,7 @@
               @click="notifyMarkReadAll"
             >
               <svg-icon icon-class="read-all" />
-              全部标记为已读
+              {{ $t('mark-all-as-read') }}
             </el-button>
           </div>
         </div>
@@ -32,7 +32,7 @@
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
-          {{ actions.length > 0 ? $t('notContent') : '筛选项不能为空' }}
+          {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
         </div>
         <div class="load-more">
           <buttonLoadMore
@@ -99,7 +99,7 @@
           <!-- 消息筛选 -->
           <div class="option">
             <h3 class="option-title">
-              消息筛选
+              {{ $t('message-screening') }}
             </h3>
             <div class="option-card">
               <el-checkbox
@@ -109,7 +109,7 @@
                 class="checkbox-all"
                 @change="handleCheckAllChange"
               >
-                全选
+                {{ $t('select-all') }}
               </el-checkbox>
               <el-divider />
               <el-checkbox-group
@@ -132,14 +132,14 @@
           <!-- 查看模式 -->
           <div class="option no-bottom">
             <h3 class="option-title">
-              查看模式
+              {{ $t('view-mode') }}
             </h3>
             <div class="option-card">
               <el-radio v-model="viewMode" :disabled="showDetails" label="all">
-                查看全部
+                {{ $t('view-all') }}
               </el-radio>
               <el-radio v-model="viewMode" :disabled="showDetails" label="unread">
-                只看未读
+                {{ $t('just-look-unread') }}
               </el-radio>
               <div class="button-hide">
                 <el-divider />
@@ -151,7 +151,7 @@
                     @click="notifyMarkReadAll"
                   >
                     <svg-icon icon-class="read-all" />
-                    全部标记为已读
+                    {{ $t('mark-all-as-read') }}
                   </el-button>
                 </div>
               </div>

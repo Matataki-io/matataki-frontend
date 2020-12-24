@@ -105,7 +105,7 @@
           @click="transfer"
         >
           <i class="el-icon-money" />
-          转账
+          {{ $t('transferMoney') }}
         </el-button>
       </div>
     </div>

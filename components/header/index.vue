@@ -30,7 +30,7 @@
 
       <div class="pc head-flex">
         <div class="qq-tips">
-          请加我们官方QQ群：766605671
+          {{ $t('header-tips') }}
         </div>
         <div class="search">
           <input
@@ -67,7 +67,7 @@
           v-if="isLogined"
           class="item"
           effect="dark"
-          content="消息中心"
+          :content="$t('message-center')"
           placement="bottom"
         >
           <n-link
@@ -149,7 +149,7 @@
               class="link"
             >
               <el-dropdown-item>
-                Dashboard
+                {{ $t('menu-dashboard') }}
               </el-dropdown-item>
             </n-link>
 
@@ -243,7 +243,7 @@
             </li>
             <li class="menu-ul-item">
               <n-link :to="{name: 'dashboard'}" class="link">
-                <svg-icon icon-class="menu_account" class="icon" />Dashboard
+                <svg-icon icon-class="menu_account" class="icon" />{{ $t('menu-dashboard') }}
               </n-link>
             </li>
             <li class="menu-ul-item" @click="btnsignOut">
@@ -259,7 +259,7 @@
           </li>
           <li class="menu-ul-item">
             <n-link to="/notification">
-              <svg-icon icon-class="menu_notice" class="icon" />消息中心
+              <svg-icon icon-class="menu_notice" class="icon" />{{ $t('message-center') }}
               <span v-if="numMessagesLabel" class="news">
                 {{ numMessagesLabel }}
               </span>

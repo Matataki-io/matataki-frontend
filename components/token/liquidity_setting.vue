@@ -2,11 +2,11 @@
   <div class="setting">
     <div class="setting-header">
       <h3 @click="$router.go(-1)">
-        管理后台
+        {{ $t('management-background') }}
       </h3>
       <h3>
         <i class="el-icon-arrow-right" />
-        流动性管理
+        {{ $t('liquidity-management') }}
       </h3>
     </div>
     <div class="setting-nav">
@@ -36,8 +36,8 @@ export default {
   data() {
     return {
       tagsList: [
-        { title: '增发设置', url: 'liquidity-mint' },
-        { title: '直通车', url: 'liquidity-trade' }
+        { title: this.$t('additional-issuance-settings'), url: 'liquidity-mint' },
+        { title: this.$t('through-train'), url: 'liquidity-trade' }
       ],
       tokens: false
     }

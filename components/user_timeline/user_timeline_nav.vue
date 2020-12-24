@@ -59,6 +59,10 @@ export default {
         {
           label: 'bilibili',
           value: 'bilibili'
+        },
+        {
+          label: 'mastodon',
+          value: 'mastodon'
         }
       ]
     }
@@ -110,7 +114,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding:  0 20px;
   color: black;
   background: #ffffff;
   border-radius: 10px;
@@ -119,6 +122,11 @@ export default {
   overflow: hidden;
   position: relative;
   height: 58px;
+  padding:  0 20px;
+  @media screen and (max-width: 580px) {
+    overflow-x: auto;
+  }
+
   p {
     color: black;
     margin: 0 0 0 10px;
@@ -140,6 +148,9 @@ export default {
         color: #1b95e0;
         text-decoration: underline;
       }
+    }
+    @media screen and (max-width: 580px) {
+      display: none;
     }
   }
   .clickablebox {
@@ -165,12 +176,16 @@ export default {
     display: flex;
     height: 58px;
 
+    @media screen and (max-width: 400px) {
+      flex: 0;
+    }
+
     &-tab {
       color: black;
       font-size: 18px;
       line-height: 22px;
       height: 58px;
-      width: 54px;
+      width: 95px;
       box-sizing: border-box;
       display: flex;
       justify-content: center;

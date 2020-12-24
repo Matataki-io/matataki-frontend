@@ -227,7 +227,7 @@ export default {
   overflow: hidden;
 
   svg {
-    color: #1b95e0;
+    color: #00ACED;
     font-size: 50px;
     margin-bottom: 10px;
   }

@@ -2,23 +2,23 @@
   <settingLayout>
     <NoTokenTip v-if="NoToken" />
     <div v-else class="mint-setting">
-      <a href="https://www.yuque.com/matataki/matataki">Fan票使用手册 ></a>
+      <a href="https://www.yuque.com/matataki/matataki">{{ $t('fan-ticket-user-manual') }} ></a>
       <div v-loading="loading" class="form-container">
         <div class="mint-info">
-          <span class="mint-setting-label black">已增发：</span>
+          <span class="mint-setting-label black">{{ $t('has-been-issued') }}：</span>
           <span class="mint-setting-num">{{ mintDetail.count }}</span> 
-          <span class="mint-setting-symbol">次</span> 
+          <span class="mint-setting-symbol">{{ $t('times') }}</span> 
           <span class="mint-setting-num">{{ mintDetail.totalSupply.toLocaleString() }}</span> 
           <span class="mint-setting-symbol">{{ token.symbol }}</span> 
         </div>
         <div
           v-loading="amountUpperLimit"
           class="mint-form"
-          element-loading-text="增发数量已到达上限"
+          :element-loading-text="$t('the-number-of-additional-issuances-has-reached-the-upper-limit')"
           element-loading-spinner="el-icon-warning"
           element-loading-background="rgba(0, 0, 0, 0.4)"
         >
-          <el-input v-model="form.amount" placeholder="增发数量(总量最多发行一亿)" class="mint-setting-input" />
+          <el-input v-model="form.amount" :placeholder="$t('number-of-additional-issuances-the-total-issuance-is-up-to-100-million')" class="mint-setting-input" />
           <el-button 
             type="primary" 
             class="mint-setting-btn" 
@@ -26,15 +26,15 @@
             :disabled="amountUpperLimit"
             @click="minetokenMint"
           >
-            立即增发
+            {{ $t('issuance-immediately') }}
           </el-button>
         </div>
       </div>
       <el-divider class="colla-splitline" />
       <p class="colla-help">
-        手动增发规则：<br>
-        1. 最大发行上限为1亿<br>
-        2. 首次发行成功后即可立即操作手动增发<br>
+        {{ $t('manual-additional-issuance-rules') }}：<br>
+        1. {{ $t('the-maximum-issuance-limit-is-100-million') }}<br>
+        2. {{ $t('after-the-first-issuance-is-successful-you-can-immediately-operate-the-manual-additional-issuance') }}<br>
         <!-- 2. 每次增发后需要等待10天可再次增发<br> -->
         <!-- 3. 发行者可以设置将每次增发Fan票的一定比例自动转入直通车中<br> -->
       </p>

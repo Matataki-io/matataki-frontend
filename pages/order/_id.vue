@@ -5,7 +5,7 @@
       class="order outer-container"
     >
       <el-alert
-        title="请仔细核对订单信息，如果有误请取消后再次尝试"
+        :title="$t('please-check-the-order-information-carefully-if-it-is-wrong-please-cancel-and-try-again')"
         effect="dark"
         type="warning"
       />
@@ -14,22 +14,22 @@
         <tbody>
           <tr>
             <td class="order-key">
-              交易账号：
+              {{ $t('trading-account') }}：
             </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
           </tr>
           <tr>
             <td class="order-key">
-              交易类型：
+              {{ $t('transaction-type') }}：
             </td><td>{{ tradeType }}</td>
           </tr>
           <tr>
             <td class="order-key">
-              创建时间：
+              {{ $t('creation-time') }}：
             </td><td>{{ friendlyTime }}</td>
           </tr>
           <tr>
             <td class="order-key">
-              订单编号：
+              {{ $t('order-number') }}：
             </td><td>{{ tradeNo }}</td>
           </tr>
         </tbody>
@@ -42,26 +42,26 @@
         >
           <el-table-column
             prop="name"
-            label="品名"
+            :label="$t('product-name')"
           />
           <el-table-column
             prop="operating"
-            label="操作"
+            :label="$t('operating')"
           />
           <el-table-column
             prop="amount"
-            label="数量"
+            :label="$t('quantity')"
           />
           <el-table-column
             prop="total"
-            label="小计"
+            :label="$t('subtotal')"
           />
         </el-table>
       </div>
       <div class="flexBox">
-        <span v-if="!isAdd">预期价格波动：1% </span>
+        <span v-if="!isAdd">{{ $t('expected-price-fluctuations') }}：1% </span>
         <div>
-          合计：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
+          {{ $t('total') }}：<span class="money">¥ {{ cnyAmount.toFixed(2) }}</span>
         </div>
       </div>
       <div class="flexBox">
@@ -70,27 +70,27 @@
             v-model="useBalance"
             @change="useBalanceChange"
           >
-            使用余额（¥ {{ balance }}）
+            {{ $t('use-balance') }}（¥ {{ balance }}）
           </el-checkbox>
         </div>
         <div>
-          抵扣：<span class="money">¥ {{ deduction.toFixed(2) }}</span>
+          {{ $t('deduction') }}：<span class="money">¥ {{ deduction.toFixed(2) }}</span>
         </div>
       </div>
       <div class="flexBox">
         <div />
         <div>
-          应付：<span class="money">¥ {{ needPay.toFixed(2) }}</span>
+          {{ $t('handle') }}：<span class="money">¥ {{ needPay.toFixed(2) }}</span>
         </div>
       </div>
       <div class="tip">
         <p>
           <i class="el-icon-warning" />
-          您的交易可能由于正常的价格波动而失败，预期价格波动区间将有助于您的交易成功。交易成功后，多支付的金额会退回。
+          {{ $t('your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-expected-price-fluctuation-range-will-help-your-transaction-succeed-after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded') }}
         </p>
         <p>
           <i class="el-icon-warning" />
-          CNY 交易金额精度大于 0.01 时会自动进位支付，多支付的金额会保留在您的CNY账户中。
+          {{ $t('when-the-accuracy-of-the-cny-transaction-amount-is-greater-than-0-01-it-will-automatically-be-paid-and-the-overpayment-amount-will-be-kept-in-your-cny-account') }}
         </p>
       </div>
       <div class="btns">
@@ -99,7 +99,7 @@
           class="pay-btn"
           @click="onSubmit"
         >
-          确认支付
+          {{ $t('confirm-payment') }}
         </el-button>
       </div>
       <el-dialog
@@ -160,14 +160,14 @@ export default {
     },
     tradeType() {
       const typeOptions = {
-        add: '添加流动性',
+        add: this.$t('add-liquidity'),
         buy_token_input: this.$t('home.buyFanTickets'),
         buy_token_output: this.$t('home.buyFanTickets'),
-        sale_token: '出售Fan票',
-        direct_trade: 'Fan票直售'
+        sale_token: this.$t('sell-fan-tickets'),
+        direct_trade: this.$t('fan-ticket-direct-sale')
       };
       if (this.articleId) {
-        return `购买文章${this.articleId}`
+        return `${this.$t('buy-article')}${this.articleId}`
       } else {
         const type = this.order.items ? this.order.items.orderTokenItem.type : null
         return typeOptions[type] || this.$t('not')

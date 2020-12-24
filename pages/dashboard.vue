@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="head">
-      <h3>Dashboard</h3>
+      <h3>{{ $t('dashboard-text') }}</h3>
       <!-- <p>每日中午12:00更新前一日数据</p> -->
     </div>
     <router-view />

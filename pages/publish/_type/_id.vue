@@ -119,10 +119,10 @@
     <div v-show="settingDialog" class="set-m-dialog">
       <div class="set-dialog">
         <h1 class="set-title">
-          基础设置
+          {{ $t('basic-settings') }}
         </h1>
         <h4 class="set-subtitle">
-          {{ $t('publish.coverTitle') }}<span class="remarks">{{ $t('publish.coverRecommendation') }}</span>  
+          {{ $t('publish.coverTitle') }}<span class="remarks">{{ $t('publish.coverRecommendation') }}</span>
         </h4>
         <div class="set-content">
           <div class="cover">
@@ -162,7 +162,7 @@
         <!-- tag -->
         <h4 class="set-subtitle">
           <!-- {{ $t('publish.tagTitle') }} -->
-          添加标签<span class="tag">（还可以添加{{ tagMaxLen - tags.length }}个标签）</span>
+          {{ $t('add-tag') }}<span class="tag">（{{ $t('you-can-also-add-tags', [ tagMaxLen - tags.length ]) }}）</span>
         </h4>
         <div class="set-content">
           <ul class="tag-list">
@@ -184,12 +184,12 @@
                 maxlength="20"
                 @keyup.enter="addTag"
               >
-              <span class="tag-tip">按回车Enter创建标签</span>
+              <span class="tag-tip">{{ $t('press-enter-to-create-the-label') }}</span>
             </li>
           </ul>
         </div>
         <h4 class="set-subtitle">
-          关联 Fan 票
+          {{ $t('link-fan-ticket') }}
         </h4>
         <div
           v-if="!isAssosiateWith"
@@ -200,7 +200,7 @@
           <el-select
             v-model="assosiateWith"
             size="small"
-            placeholder="请选择"
+            :placeholder="$t('please-choose')"
             style="width: 40%;"
             filterable
           >
@@ -217,7 +217,7 @@
             style="margin-left: 0.5rem;"
             @click="setAssosiateWith"
           >
-            关联
+            {{ $t('related') }}
           </el-button>
         </div>
         <div v-if="isAssosiateWith" class="set-content">
@@ -234,10 +234,10 @@
           </div>
         </div>
         <h4 class="set-subtitle">
-          原创声明
+          {{ $t('original-statement') }}
           <el-tooltip
             effect="dark"
-            content="来设置你的文章版权信息，发布后无法修改"
+            :content="$t('to-set-the-copyright-information-of-your-article-it-cannot-be-modified-after-publishing')"
             placement="top-start"
           >
             <svg-icon class="help-icon" icon-class="help" />
@@ -258,24 +258,24 @@
               class="cc-licensing"
             >
               <h3>
-                Creative Commons 授权许可协议
+                {{ $t('creative-commons-license-agreement') }}
                 <el-tooltip
                   effect="dark"
-                  content="CC是一种公共著作权许可协议，其允许分发受著作权保护的作品。一个创作共享许可用于一个作者想给他人分享，使用，甚至创作派生作品的权利。"
+                  :content="$t('creative-commons-tips')"
                   placement="top-start"
                 >
                   <i class="el-icon-info" />
                 </el-tooltip>
               </h3>
               <h3>
-                请问您允许本作品被别人转载、节选、混编、二次创作吗？
+                {{ $t('do-you-allow-this-work-to-be-reproduced-excerpted-mixed-or-re-created-by-others') }}
               </h3>
               <el-radio
                 v-model="ccLicenseOptions.share"
                 :disabled="$route.params.type === 'edit'"
                 label="true"
               >
-                允许
+                {{ $t('allow') }}
               </el-radio>
               <br>
               <el-radio
@@ -283,10 +283,10 @@
                 :disabled="$route.params.type === 'edit'"
                 label="false"
               >
-                不允许
+                {{ $t('not-allowed') }}
                 <el-tooltip
                   effect="dark"
-                  content="他人不能再混合、转换、或者基于该作品创作，且不能分发修改后的作品"
+                  :content="$t('others-can-no-longer-mix-convert-or-create-based-on-the-work-and-cannot-distribute-the-modified-work')"
                   placement="top-start"
                 >
                   <i class="el-icon-info" />
@@ -298,10 +298,10 @@
                 :disabled="$route.params.type === 'edit'"
                 label="SA"
               >
-                仅允许采用本协议授权的二次创作
+                {{ $t('only-secondary-creation-authorized-by-this-agreement-is-allowed') }}
                 <el-tooltip
                   effect="dark"
-                  content="他人再混合、转换或者基于本作品进行创作，必须基于与原先许可协议相同的许可协议分发作品。"
+                  :content="$t('sa-tips')"
                   placement="top-start"
                 >
                   <i class="el-icon-info" />
@@ -312,20 +312,20 @@
                 :disabled="$route.params.type === 'edit'"
                 class="is-original"
               >
-                允许商业性使用
+                {{ $t('commercial-use-allowed') }}
               </el-checkbox>
-              <p>则授权条款为： {{ CCLicenseCredit.chinese }}</p>
+              <p>{{ $t('the-authorization-terms-are') }}： {{ CCLicenseCredit.chinese }}</p>
             </div>
           </div>
         </div>
         <h1 class="set-title set-title-border">
-          权限设置
+          {{ $t('permission-settings') }}
         </h1>
         <h4 class="set-subtitle">
-          阅读权限设置
+          {{ $t('reading-permission-settings') }}
           <el-tooltip
             effect="dark"
-            content="添加限制条件后，读者只有在持有特定数量的Fan票后才可查看全文的。"
+            :content="$t('read-permission-settings-tips')"
             placement="top-start"
           >
             <svg-icon
@@ -340,7 +340,7 @@
             :disabled="prohibitEditingPrices"
             label="all"
           >
-            所有人可见
+            {{ $t('visible-to-all') }}
           </el-radio>
           <br>
           <!-- Fan票发行者特权功能 -->
@@ -350,18 +350,18 @@
               :disabled="prohibitEditingPrices || noTokenAvailable"
               label="token"
             >
-              持币可见
+              {{ $t('visible-with-currency') }}
             </el-radio>
             <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
               <span>
-                Fan票发行者和协作者特权功能
+                {{ $t('fan-ticket-issuer-and-collaborator-privilege-function') }}
               </span>
               <el-button
                 size="small"
                 type="warning"
                 @click="openWj"
               >
-                立即申请
+                {{ $t('apply-immediately') }}
               </el-button>
             </div>
           </div>
@@ -370,7 +370,7 @@
             :disabled="prohibitEditingPrices"
             label="cny"
           >
-            支付可见
+            {{ $t('payment-visible') }}
           </el-radio>
 
           <div class="post-content root-setting">
@@ -381,11 +381,11 @@
                   class="fl ac"
                 >
                   <div>
-                    <h3>Fan票类型</h3>
+                    <h3>{{ $t('fan-ticket-type') }}</h3>
                     <el-select
                       v-model="readSelectValue"
                       size="small"
-                      placeholder="请选择"
+                      :placeholder="$t('please-choose')"
                       style="width: 100%;"
                       filterable
                       :disabled="prohibitEditingPrices || noTokenAvailable"
@@ -399,13 +399,13 @@
                     </el-select>
                   </div>
                   <div style="margin-left: 10px;">
-                    <h3>持Fan票数量</h3>
+                    <h3>{{ $t('number-of-fan-tickets') }}</h3>
                     <el-input
                       v-model="readToken"
                       :min="1"
                       :max="100000000"
                       size="small"
-                      placeholder="请输入数量"
+                      :placeholder="$t('please-enter-the-quantity')"
                       :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
@@ -417,11 +417,11 @@
                   class="fl ac"
                 >
                   <div>
-                    <h3>支付类型</h3>
+                    <h3>{{ $t('payment-types') }}</h3>
                     <el-select
                       v-model="paymentSelectValue"
                       size="small"
-                      placeholder="请选择"
+                      :placeholder="$t('please-choose')"
                       style="width: 100%;"
                       filterable
                       :disabled="prohibitEditingPrices"
@@ -435,13 +435,13 @@
                     </el-select>
                   </div>
                   <div style="margin-left: 10px;">
-                    <h3>支付数量</h3>
+                    <h3>{{ $t('quantity-paid') }}</h3>
                     <el-input
                       v-model="paymentToken"
                       :min="1"
                       :max="100000000"
                       size="small"
-                      placeholder="请输入内容"
+                      :placeholder="$t('please-enter-content')"
                       :disabled="prohibitEditingPrices"
                     />
                   </div>
@@ -449,13 +449,13 @@
               </transition>
               <transition name="fade">
                 <div v-show="readauThority || paymentTokenVisible">
-                  <h3>内容摘要</h3>
+                  <h3>{{ $t('abstract') }}</h3>
                   <el-input
                     v-model="readSummary"
                     :autosize="{ minRows: 6, maxRows: 12}"
                     size="small"
                     type="textarea"
-                    placeholder="请输入内容"
+                    :placeholder="$t('please-enter-content')"
                     maxlength="300"
                     show-word-limit
                     class="customize-input"
@@ -466,9 +466,9 @@
           </div>
         </div>
         <h4 class="set-subtitle">
-          编辑权限设置(实验功能) <el-tooltip
+          {{ $t('edit-permission-settings-experimental-function') }} <el-tooltip
             effect="dark"
-            content="添加编辑权限后，读者在持有特定数量的Fan票或支付特定费用后可编辑文章。"
+            :content="$t('edit-permission-tips')"
             placement="top-start"
           >
             <svg-icon
@@ -483,7 +483,7 @@
             :disabled="prohibitEditingPrices"
             label="all"
           >
-            仅自己可编辑
+            {{ $t('only-you-can-edit') }}
           </el-radio>
           <br>
           <!-- Fan票发行者特权功能 -->
@@ -493,18 +493,18 @@
               :disabled="prohibitEditingPrices || noTokenAvailable"
               label="token"
             >
-              持币可编辑
+              {{ $t('currency-can-be-edited') }}
             </el-radio>
             <div class="privileged-guide" :class="noTokenAvailable && !prohibitEditingPrices && 'show-guide'">
               <span>
-                Fan票发行者和协作者特权功能
+                {{ $t('fan-ticket-issuer-and-collaborator-privilege-function') }}
               </span>
               <el-button
                 size="small"
                 type="warning"
                 @click="openWj"
               >
-                立即申请
+                {{ $t('apply-immediately') }}
               </el-button>
             </div>
           </div>
@@ -517,11 +517,11 @@
                   class="fl ac"
                 >
                   <div>
-                    <h3>Fan票类型</h3>
+                    <h3>{{ $t('fan-ticket-type') }}</h3>
                     <el-select
                       v-model="editSelectValue"
                       size="small"
-                      placeholder="请选择"
+                      :placeholder="$t('please-choose')"
                       style="width: 100%;"
                       filterable
                       :disabled="prohibitEditingPrices || noTokenAvailable"
@@ -535,13 +535,13 @@
                     </el-select>
                   </div>
                   <div style="margin-left: 10px;">
-                    <h3>持Fan票数量</h3>
+                    <h3>{{ $t('number-of-fan-tickets') }}</h3>
                     <el-input
                       v-model="editToken"
                       :min="1"
                       :max="100000000"
                       size="small"
-                      placeholder="请输入内容"
+                      :placeholder="$t('please-enter-content')"
                       :disabled="prohibitEditingPrices || noTokenAvailable"
                     />
                   </div>
@@ -553,11 +553,11 @@
                   class="fl ac"
                 >
                   <div>
-                    <h3>支付类型</h3>
+                    <h3>{{ $t('payment-types') }}</h3>
                     <el-select
                       v-model="paymentSelectValue"
                       size="small"
-                      placeholder="请选择"
+                      :placeholder="$t('please-choose')"
                       style="width: 100%;"
                       filterable
                     >
@@ -570,13 +570,13 @@
                     </el-select>
                   </div>
                   <div style="margin-left: 10px;">
-                    <h3>支付数量</h3>
+                    <h3>{{ $t('quantity-paid') }}</h3>
                     <el-input
                       v-model="editPaymentToken"
                       :min="1"
                       :max="100000000"
                       size="small"
-                      placeholder="请输入内容"
+                      :placeholder="$t('please-enter-content')"
                       :disabled="prohibitEditingPrices"
                     />
                   </div>
@@ -587,9 +587,9 @@
         </div>
 
         <h4 class="set-subtitle">
-          是否公开文章历史记录 <el-tooltip
+          {{ $t('whether-to-make-the-article-history-public') }} <el-tooltip
             effect="dark"
-            content="开启公开文章历史记录权限后，任何人都可以看到你这篇文章的历史版本。"
+            :content="$t('open-history-article-tips')"
             placement="top-start"
           >
             <svg-icon
@@ -600,23 +600,23 @@
         </h4>
         <div class="set-content">
           <el-radio v-model="ipfs_hide" :label="true">
-            仅自己可见
+            {{ $t('only-visible-to-you') }}
           </el-radio>
           <br>
           <el-radio v-model="ipfs_hide" :label="false">
-            公开可见
+            {{ $t('publicly-visible') }}
           </el-radio>
         </div>
         
         <div v-if="$route.params.type !== 'edit'">
           <h1 class="set-title set-title-border">
-            发布设置
+            {{ $t('publish-settings') }}
           </h1>
           <h4 class="set-subtitle">
-            定时发布
+            {{ $t('timed-release') }}
             <el-tooltip
               effect="dark"
-              content="成功设置后文章不支持修改，但在设定的时间之前可取消发布"
+              :content="$t('timed-release-tips')"
               placement="top-start"
             >
               <svg-icon
@@ -638,7 +638,7 @@
               v-model="timedForm.date"
               size="small"
               type="datetime"
-              placeholder="选择日期时间"
+              :placeholder="$t('choose-date-and-time')"
               align="right"
               format="yyyy-MM-dd HH:mm"
               :picker-options="timedOptions"
@@ -650,7 +650,7 @@
 
         <div class="set-footer">
           <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
-            立即预览
+            {{ $t('preview-now') }}
           </el-button>
           <!-- <router-link :to="{name: 'user-id-draft', params: {id: currentUserInfo.id}}">
             <el-button size="medium">
@@ -664,7 +664,7 @@
               size="medium"
               @click="delArticle"
             >
-              删除此篇
+              {{ $t('delete-this') }}
             </el-button>
             <el-button
               v-if="isShowTransfer"
@@ -672,7 +672,7 @@
               size="medium" 
               @click="transferArticle"
             >
-              转让草稿
+              {{ $t('transfer-draft') }}
             </el-button>
           </template>
           <el-button
@@ -681,7 +681,7 @@
             style="margin-left: 10px;"
             @click="saveAsDraft"
           >
-            另存为草稿
+            {{ $t('save-as-draft') }}
           </el-button>
           <el-button
             type="primary"
@@ -690,7 +690,7 @@
             :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
             @click="sendThePost"
           >
-            {{ timedForm.switch ? '定时发布' : '立即发布' }} 
+            {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
           </el-button>
         </div>
 

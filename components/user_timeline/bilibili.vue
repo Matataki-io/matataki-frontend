@@ -64,11 +64,10 @@ export default {
     return {
       pull: {
         params: {
-          network: '',
           pagesize: 12,
           start: ''
         },
-        apiUrl: `https://cache.ayaka.moe/matataki/status/user-timeline/bilibili/${this.$route.params.id}`,
+        apiUrl: `${process.env.VUE_APP_MATATAKI_CACHE}/status/user-timeline/bilibili/${this.$route.params.id}`,
         list: []
       },
       loading: true, // 加载数据
@@ -79,10 +78,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isMe']),
-  },
-  mounted () {
-    this.pull.params.network = this.$utils.getNetwork(window)
-    if (this.pull.params.network === 'dev') this.pull.params.network = 'test'
   },
   methods: {
     // 点击更多按钮返回的数据
@@ -111,7 +106,7 @@ export default {
       }
       else {
         console.error('[get bilibili timeline failure] res:', res)
-        this.$message.error(res.message)
+        this.$message.error(res.error || this.$t('error.getDataError'))
       }
     }
   }
@@ -147,7 +142,7 @@ export default {
   overflow: hidden;
 
   svg {
-    color: #1b95e0;
+    color: #44A0D1;
     font-size: 50px;
     margin-bottom: 10px;
   }
