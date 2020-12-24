@@ -4,7 +4,7 @@
     <div v-if="isLogined" class="banner">
       <section class="banner-main">
         <h2 class="banner-title">
-          欢迎加入瞬Matataki
+          {{ $t('welcome-to-join') }}
         </h2>
         <h2 class="banner-title bold">
           一个 <span>公开</span> <span>永存</span> 的数字作品库
@@ -85,7 +85,7 @@
           <!-- -- -->
           <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
           <h2 class="welcome-title">
-            欢迎加入瞬Matataki
+            {{ $t('welcome-to-join') }}
           </h2>
           <h2 class="welcome-title">
             一个 <span>公开</span> <span>永存</span> 的数字作品库

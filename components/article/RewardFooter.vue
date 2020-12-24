@@ -3,7 +3,7 @@
     <button
       class="reward-btn"
       :disabled="isMe(userData.id)"
-      :title="isMe(userData.id) && '不能给自己赞赏~'"
+      :title="isMe(userData.id) && $t('cant-praise-myself')"
       @click="reward"
     >
       <svg-icon
@@ -11,8 +11,8 @@
         class="reward-icon"
       />
     </button>
-    <p class="reward-tip">喜欢就打赏Fan票吧～</p>
-    <p v-if="rewardCount > 0" class="reward-list-tip">- {{ rewardCount }}位瞬Matataki用户已打赏 -</p>
+    <p class="reward-tip">{{ $t('if-you-like-get-a-fan-ticket') }}</p>
+    <p v-if="rewardCount > 0" class="reward-list-tip">- {{ $t('number-instant-matataki-users-have-rewarded', [ rewardCount ]) }} -</p>
     <div v-if="rewardCount > 0" class="recommended-designer-avatar-wrap js-recommended-avatar">
       <div v-for="(item, i) of list" :key="i" class="avatar-container-30">
         <c-user-popover :user-id="Number(item.from_uid)">
@@ -37,7 +37,7 @@
       </div>
       <div v-if="showAll" class="avatar-container-30">
         <button class="left-count" @click="showAll = false">
-          收起
+          {{ $t('put-away') }}
         </button>
       </div>
     </div>

@@ -6,7 +6,7 @@
         <div class="fav-sidenav" :class="favToggle && 'cur'">
           <div class="nav-container fav-container">
             <div class="favlist-title">
-              <p>{{ isMe($route.params.id) ? '我的创建' : 'TA的创建' }}</p>
+              <p>{{ isMe($route.params.id) ? $t('my-creation') : $t('creation-of-TA') }}</p>
             </div>
             <div style="display: block">
               <div
@@ -15,7 +15,7 @@
               >
                 <div v-if="isMe($route.params.id)" class="nav-title nav-add" @click="createFavModal = true">
                   <i class="el-icon-circle-plus fav-add-icon" />
-                  <span class="text">新建收藏夹</span>
+                  <span class="text">{{ $t('new-favorite') }}</span>
                 </div>
                 <ul v-if="favListData.length" class="fav-list">
                   <li
@@ -49,18 +49,18 @@
                       </div>
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item :command="{ key: 'edit', val: item }">
-                          编辑
+                          {{ $t('edit') }}
                         </el-dropdown-item>
                         <el-dropdown-item
                           :command="{ key: 'delete', val: item }"
                         >
-                          删除
+                          {{ $t('delete') }}
                         </el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </li>
                 </ul>
-                <p v-else class="not-fav">暂时没有收藏夹～</p>
+                <p v-else class="not-fav">{{ $t('no-favorites-yet') }}</p>
               </div>
             </div>
           </div>
@@ -78,16 +78,16 @@
                 <div class="fav-meta">
                   <span
                     class="fav-up-name"
-                  >创建者：{{
+                  >{{ $t('creator') }}：{{
                     favPostData.info.nickname ||
                       favPostData.info.username ||
                       ""
                   }}</span>
                 </div>
                 <div class="fav-meta">
-                  <span>{{ favPostData.count || 0 }}个内容</span><span class="dot">·</span><span>{{
-                    favPostData.info.status === 0 ? "公开" : "私密" || ""
-                  }}</span>
+                  <span>{{ $t('number-contents', [ favPostData.count || 0 ]) }}</span>
+                  <span class="dot">·</span>
+                  <span>{{ favPostData.info.status === 0 ? $t('public') : $t('private') || "" }}</span>
                 </div>
               </div>
             </div>
@@ -106,11 +106,11 @@
                   </div>
                   <p class="fav-shortcontent">{{ item.short_content }}</p>
                 </div>
-                <p class="fav-time">收藏于：{{ time(item.create_time) }}</p>
+                <p class="fav-time">{{ $t('collection-in') }}：{{ time(item.create_time) }}</p>
               </router-link>
             </li>
           </ul>
-          <p v-if="!isEmpty(favPostData) && isEmpty(pull.list)" class="not-fav-post">该收藏夹还没有文章哦~</p>
+          <p v-if="!isEmpty(favPostData) && isEmpty(pull.list)" class="not-fav-post">{{ $t('there-are-no-articles-in-this-favorite-yet') }}~</p>
           <user-pagination
             :current-page="pull.currentPage"
             :params="pull.params"

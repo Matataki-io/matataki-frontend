@@ -30,7 +30,7 @@
       </div> -->
     </div>
     <button type="submit" class="comment-submit" @click="postComment">
-      发表评论
+      {{ $t('post-a-comment') }}
     </button>
   </div>
 </template>

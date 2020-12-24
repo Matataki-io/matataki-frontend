@@ -300,8 +300,8 @@
         <commentInput v-if="!isProduct" :article="article" @success="getCommentCount" />
 
         <div class="comment-reward">
-          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">评论<span>{{ commentCount }}</span></span>
-          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">打赏<span>{{ rewardCount }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 0 && 'active'" @click="commentRewardTab = 0">{{ $t('comment') }}<span>{{ commentCount }}</span></span>
+          <span class="comment-reward-title" :class="commentRewardTab === 1 && 'active'" @click="commentRewardTab = 1">{{ $t('reward') }}<span>{{ rewardCount }}</span></span>
         </div>
         <!-- 这里的 success 通过 孙组件一层层上传发过来的事件 -->
         <CommentList

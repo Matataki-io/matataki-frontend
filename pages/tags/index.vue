@@ -13,13 +13,13 @@
             class="tags-title"
             :class="mode === 'hot' && 'active'"
             @click="toggleTag('hot')"
-          >最热</span>
+          >{{ $t('hottest') }}</span>
           <span
             v-show="searchResultShow"
             class="tags-title"
             :class="mode === 'new' && 'active'"
             @click="toggleTag('new')"
-          >最新</span>
+          >{{ $t('latest') }}</span>
           <svg-icon
             v-show="!searchResultShow"
             icon-class="arrow"
@@ -31,21 +31,21 @@
           v-model="tagSearchVal"
           class="tags-search"
           :fetch-suggestions="querySearchAsync"
-          placeholder="请输入搜索内容"
+          :placeholder="$t('please-enter-search-content')"
           @select="handleSelect"
           @keyup.enter.native="searchTag"
         />
       </div>
       <div v-loading="loading" class="tag-table">
         <el-table :data="tagsData" style="width: 100%" @row-click="rowClick">
-          <el-table-column label="标签名称">
+          <el-table-column :label="$t('label-name')">
             <template slot-scope="scope">
               <span class="tag-icon">#</span> <span class="tag-name">{{ scope.row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="num"
-            label="数量"
+            :label="$t('quantity')"
             width="100"
           >
             <template slot-scope="scope">

@@ -2,7 +2,7 @@
   <m-dialog
     v-model="giftDialog"
     width="600px"
-    title="转账"
+    :title="$t('transferMoney')"
   >
     <el-form
       ref="form"
@@ -12,10 +12,10 @@
       label-width="70px"
       class="gift-form"
     >
-      <el-form-item label="接受对象">
+      <el-form-item :label="$t('accepted-object')">
         <el-input
           v-model="form.username"
-          placeholder="请输入转账的对象"
+          :placeholder="$t('please-enter-the-transfer-destination')"
           size="small"
           style="z-index: 2;"
         />
@@ -86,14 +86,14 @@
         </el-form-item>
       </transition>
       <el-form-item
-        label="发送数量"
+        :label="$t('quantity-sent')"
         prop="amount"
       >
         <el-input
           v-model="form.amount"
           :max="form.max"
           :min="form.min"
-          placeholder="请输入数量"
+          :placeholder="$t('please-enter-the-quantity')"
           size="small"
           clearable
         />
@@ -102,7 +102,7 @@
         v-if="balance"
         class="balance"
       >
-        余额&nbsp;{{ balance }}&nbsp;
+        {{ $t('balance') }}&nbsp;{{ balance }}&nbsp;
         <a
           href="javascript:;"
           @click="form.amount = balance"

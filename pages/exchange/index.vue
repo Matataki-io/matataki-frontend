@@ -22,7 +22,7 @@
                   class="help-link"
                   target="_blank"
                   href="https://www.matataki.io/p/981"
-                >如何交易Fan票?</a>
+                >{{ $t('how-to-trade-fan-tickets') }}</a>
               </div>
             </Swap>
           </el-tab-pane>
@@ -41,7 +41,7 @@
                   class="help-link"
                   target="_blank"
                   href="https://www.matataki.io/p/981"
-                >如何交易Fan票?</a>
+                >{{ $t('how-to-trade-fan-tickets') }}</a>
               </div>
             </Pool>
           </el-tab-pane>
