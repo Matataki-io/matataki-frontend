@@ -1,10 +1,10 @@
 <template>
   <div class="timeline">
     <!-- banner -->
-    <div v-if="isLogined && Number(userInfo.follows) > 0" class="banner">
+    <div v-if="isLogined" class="banner">
       <section class="banner-main">
         <h2 class="banner-title">
-          欢迎加入瞬Matataki
+          {{ $t('welcome-to-join') }}
         </h2>
         <h2 class="banner-title bold">
           一个 <span>公开</span> <span>永存</span> 的数字作品库
@@ -17,42 +17,83 @@
     <!-- row main -->
     <div class="row">
       <div class="col-6">
-        <!-- have 登录 并且 关注过人 -->
-        <div v-if="isLogined && Number(userInfo.follows) > 0">
+        <!-- have 登录 -->
+        <div v-if="isLogined">
           <section class="head topnav">
             <h3 class="head-title topnav-tag">
-              {{ $t('timeline.timeline') }}
+              {{ $t('timeline.allTimeline') }}
             </h3>
-            <!-- <h3 class="head-title topnav-tag">
-              <router-link :to="{ name: 'timeline-twitter' }">
-                Twitter 时间轴
-              </router-link>
-            </h3> -->
             <h3 class="head-title topnav-tag">
-              <router-link :to="{ name: 'timeline-aggregator' }">
-                第三方时间轴
+              <router-link :to="{ name: 'timeline-local' }">
+                {{ $t('timeline.localTimeline') }}
               </router-link>
             </h3>
+            <div class="flex-support" />
+            <!-- <el-dropdown
+              v-if="!unauthorized"
+              trigger="click"
+              @command="dropdownCommand"
+            >
+              <span class="clickable">
+                <i class="el-icon-more" />
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="reauthorize">
+                  更换 Twitter 授权
+                </el-dropdown-item>
+                <el-dropdown-item command="deauthorize">
+                  取消 Twitter 授权
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown> -->
           </section>
-          <p v-if="pull.list.length === 0" class="not-content">{{ $t('not') }}</p>
-          <timelineCard
-            v-for="item in pull.list"
-            :key="item.id"
+          <p v-if="pull.list.length === 0 && !filterLoading" class="not-content">
+            {{ actions.length > 0 ? $t('notContent') : '筛选项不能为空' }}
+          </p>
+          <div
+            v-for="(item, index) in pull.list"
+            :key="index"
             class="timeline-card"
-            :card="item"
-          />
+          >
+            <timelineCard
+              v-if="item.platform === 'matataki'"
+              show-logo
+              :card="item.card"
+            />
+            <twitterCard
+              v-else-if="item.platform === 'twitter'"
+              show-logo
+              :card="item.card"
+              :front-queue="item.frontQueue"
+              :from-user="getSourceUser(item)"
+            />
+            <bilibiliCard
+              v-else-if="item.platform === 'bilibili'"
+              :data="item.card"
+              :from-user="getSourceUser(item)"
+            />
+            <mastodonCard
+              v-else-if="item.platform === 'mastodon'"
+              :data="item.card"
+              :from-user="getSourceUser(item)"
+            />
+            <div v-else>
+              不支持的平台类型: {{ item.platform }}
+            </div>
+          </div>
           <div class="load-more-button">
             <buttonLoadMore
               :type-index="0"
               :params="pull.params"
               :api-url="pull.apiUrl"
               :is-atuo-request="pull.isAtuoRequest"
-              :auto-request-time="pull.autoRequestTime"
+              :auto-request-time="autoRequestTime"
               @buttonLoadMore="buttonLoadMoreRes"
+              @getDataFail="getDataFail"
             />
           </div>
         </div>
-        <!-- no 没有关注人 -->
+        <!-- no 没有登录 -->
         <div v-else class="welcome">
           <!-- -- -->
           <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
@@ -65,7 +106,6 @@
 
           <div class="welcome-text">
             <p v-if="!isLogined" class="welcome-description">请 <span @click="login">登录</span> 后查看您的</p>
-            <p v-else class="welcome-description">请至少 <span>关注1位创作者</span> 以开启您的</p>
             <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
             <a
               v-if="!isLogined"
@@ -75,15 +115,10 @@
             >{{ $t('home.signIn') }}</a>
           </div>
         </div>
-        <h4 v-if="isLogined && !Number(userInfo.follows)" class="twitter-timeline-link">
-          <router-link :to="{ name: 'timeline-aggregator' }">
-            浏览第三方时间轴
-            <i class="el-icon-arrow-right" />
-          </router-link>
-        </h4>
       </div>
       <div class="col-3 recommend">
-        <section class="head ra-head">
+        <!-- 推荐用户列表 -->
+        <!-- <section class="head ra-head">
           <h3 class="head-title">
             {{ $t('home.recommendAuthor') }}
           </h3>
@@ -104,62 +139,148 @@
             :key="item.id"
             :card="item"
           />
+        </div> -->
+
+        <!-- 平台筛选器 -->
+        <section v-if="isLogined" class="head ra-head">
+          <h3 class="head-title">
+            平台筛选
+          </h3>
+        </section>
+        <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
+          <el-checkbox
+            v-model="checkAll"
+            :indeterminate="isIndeterminate"
+            class="checkbox-all"
+            @change="handleCheckAllChange"
+          >
+            全选
+          </el-checkbox>
+          <el-divider />
+          <el-checkbox-group
+            v-model="checkedCities"
+            class="fl checkbox-group"
+            @change="handleCheckedCitiesChange"
+          >
+            <el-checkbox
+              v-for="action in actionTypes"
+              :key="action.key"
+              class="checkbox"
+              :label="action.key"
+            >
+              {{ action.label }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+
+        <!-- 已关注的用户列表 -->
+        <section class="head ra-head">
+          <h3 class="head-title">
+            已关注的跨平台作者
+          </h3>
+        </section>
+        <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">
+          <userPlatformCard
+            v-for="(item, index) in userPlatformList"
+            :key="index"
+            :card="item"
+          />
+          <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import throttle from 'lodash/throttle'
+// import throttle from 'lodash/throttle'
+import axios from 'axios'
 
 import { mapGetters, mapActions } from 'vuex'
 
+import { getCookie } from '@/utils/cookie'
+
 import timelineCard from '@/components/timeline_card/index.vue'
-import buttonLoadMore from '@/components/button_load_more/index.vue'
-import RAList from '@/components/recommend_author_list'
+import twitterCard from '@/components/platform_status/twitter_card'
+import bilibiliCard from '@/components/platform_status/bilibili_card'
+import mastodonCard from '@/components/platform_status/mastodon_card'
+import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
+// import RAList from '@/components/recommend_author_list'
+import userPlatformCard from '@/components/user/user_platform_card'
 
 export default {
   components: {
     timelineCard,
+    twitterCard,
+    bilibiliCard,
+    mastodonCard,
     buttonLoadMore,
-    RAList,
+    // RAList,
+    userPlatformCard
   },
   data() {
     return {
       userInfo: {}, // 用户信息
       pull: {
-        params: {
-          channel: 1,
-          filter: null,
-          extra: 'short_content'
-        },
-        apiUrl: 'followedPosts',
+        params: { page: 1, filters: undefined },
+        apiUrl: process.env.VUE_APP_MATATAKI_CACHE + '/status/timeline',
         list: [],
       },
       usersLoading: false,
       usersRecommendList: [{},{},{},{},{}],
+      userPlatformList: [],
+      userPlatformListLoading: false,
+      filterLoading: true,
+      isIndeterminate: true,
+      checkAll: true,
+      checkedCities: [],
+      actionTypes: [
+        {
+          key: 'matataki',
+          label: 'Matataki'
+        },
+        {
+          key: 'twitter',
+          label: 'Twitter'
+        },
+        {
+          key: 'bilibili',
+          label: '哔哩哔哩'
+        },
+        {
+          key: 'mastodon',
+          label: 'Mastodon'
+        }
+      ],
+      actions: null,
+      autoRequestTime: 0,
     }
   },
   computed: {
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'isMe']),
   },
   watch: {
     isLogined(newState) {
       if (newState) {
         this.getCurrentUserInfo()
+        this.getUserPlatformList()
       }
+    },
+    actions (val) {
+      this.pull.params.filters = JSON.stringify(val) || undefined
     }
   },
   created() {
+    this.initActions()
     if (process.browser) {
       if (this.isLogined) {
         this.getCurrentUserInfo()
       }
-
-      this.usersRecommend()
     }
+  },
+  mounted() {
+
+    this.getUserPlatformList()
   },
   methods: {
     ...mapActions(['getCurrentUser']),
@@ -179,35 +300,172 @@ export default {
     },
     // 点击更多按钮返回的数据
     buttonLoadMoreRes(res) {
-      console.log(res)
-      if (res.data && res.data.list && res.data.list.length !== 0) {
-        this.pull.list = this.pull.list.concat(res.data.list)
+      this.filterLoading = false
+      try {
+        if (res.data && res.data.list && res.data.list.length !== 0) {
+          const list = []
+          for (let i = 0; i < res.data.list.length; i++) {
+            list.push({
+              card: JSON.parse(res.data.list[i].data),
+              frontQueue: [],
+              platform: res.data.list[i].platform,
+              platform_user: res.data.list[i].platform_user,
+              platform_user_id: res.data.list[i].platform_user_id,
+              platform_username: res.data.list[i].platform_username
+              // frontQueue: this.getFrontQueue(res.data, i)
+            })
+            if (res.data.list[i].platform === 'bilibili') {
+              console.log('stype：', JSON.parse(res.data.list[i].data).desc.stype)
+            }
+          }
+          this.pull.list = this.pull.list.concat(list)
+        }
+        console.log('结果：', res, this.pull.list)
+      }
+      catch (e) {
+        console.error('[get aggregator timeline failure] [res, e]:', res, e)
+        this.$message.error(this.$t('error.getDataError'))
+      }
+    },
+    getDataFail(res) {
+      this.filterLoading = false
+      if (!res) {
+        console.error('[get aggregator timeline failure]')
+        this.$message.error('获取聚合时间线失败')
+      }
+      else {
+        console.error('[get aggregator timeline failure] res:', res)
+        this.$message.error(this.$t(res.message))
       }
     },
     // 获取推荐作者
-    usersRecommend: throttle(async function () {
-      this.usersLoading = true
-      const params = {
-        amount: 5
+    // usersRecommend: throttle(async function () {
+    //   this.usersLoading = true
+    //   const params = {
+    //     amount: 5
+    //   }
+    //   await this.$API
+    //     .usersRecommend(params)
+    //     .then(res => {
+    //       if (res.code === 0) {
+    //         this.usersRecommendList = res.data
+    //       } else {
+    //         console.log(`获取推荐用户失败${res.message}`)
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //     })
+    //     .finally(() => {
+    //       setTimeout(() => {
+    //         this.usersLoading = false
+    //       }, 300)
+    //     })
+    // }, 800),
+    getFrontQueue(list, index) {
+      let replyId = list[index].in_reply_to_status_id
+      const resQueue = []
+      for(let i = index + 1; i < list.length; i++) {
+        if (!replyId) break
+        if (list[i].id === replyId) {
+          replyId = list[i].in_reply_to_status_id
+          resQueue.unshift(list.splice(i, 1)[0])
+          i-- // 修正因为 splice 导致的索引位移
+        }
       }
-      await this.$API
-        .usersRecommend(params)
-        .then(res => {
-          if (res.code === 0) {
-            this.usersRecommendList = res.data
-          } else {
-            console.log(`获取推荐用户失败${res.message}`)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.usersLoading = false
-          }, 300)
-        })
-    }, 800),
+      return resQueue
+    },
+    async dropdownCommand(command) {
+      if(command === 'deauthorize') {
+        await this.deleteAuthorize(0)
+      }
+      else if(command === 'reauthorize') {
+        this.$router.push({ name: 'authorize-twitter' })
+      }
+    },
+    async deleteAuthorize() {
+      try {
+        await this.$API.deleteTwitterAccessToken()
+        this.$message.success(this.$t('success.success'))
+        this.$router.go(0)
+      }
+      catch (e) {
+        console.error('[delete authorize failure] Error:', e)
+        this.$message.error(this.$t('error.fail'))
+      }
+    },
+    async getUserPlatformList () {
+      this.userPlatformListLoading = true
+      const url = process.env.VUE_APP_MATATAKI_CACHE + '/status/subscriptions'
+      const headers = {}
+      const accessToken = getCookie('ACCESS_TOKEN')
+      if (!accessToken) return this.userPlatformListLoading = false
+      if (accessToken) headers['x-access-token'] = accessToken
+      try {
+        const { data: res } = await axios.get(url, { headers })
+        this.userPlatformList = res && res.data ? res.data : []
+      }
+      catch (e) {
+        console.error('[Get user dplatform list failure]:', e)
+        this.$message.error('获取关注者的第三方平台信息失败')
+      }
+      this.userPlatformListLoading = false
+    },
+    getSourceUser (info) {
+      if (!info) return null
+      switch (info.platform) {
+        case 'bilibili':
+          return this.userPlatformList.find(item => item.bilibili_id === info.platform_user_id)
+        case 'twitter':
+          return this.userPlatformList.find(item => item.twitter_name === info.platform_username)
+        case 'mastodon':
+          return this.userPlatformList.find(item => {
+            if (!item.mastodon_uesr) return
+            const fullUsername = `${item.mastodon_uesr.id}@${item.mastodon_uesr.domain.replace(/^(https?:\/\/)/gm, '')}`
+            return item.mastodon_uesr && (fullUsername === info.platform_user)
+          })
+        default:
+          return null
+      }
+    },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? this.actionTypes.map(action => action.key) : []
+      this.isIndeterminate = false
+      this.actions = this.checkedCities
+      this.updateList()
+      this.updateQuery('filters', JSON.stringify(this.checkedCities))
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.actionTypes.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.actionTypes.length
+      this.actions = value
+      this.updateList()
+      this.updateQuery('filters', JSON.stringify(value))
+    },
+    initActions() {
+      let actions = this.$route.query.filters
+      if(actions) {
+        this.actions = JSON.parse(this.$route.query.filters)
+        this.checkedCities = this.actions
+      }
+      else {
+        this.checkedCities = this.actionTypes.map(action => action.key)
+        this.actions = this.checkedCities
+      }
+      this.isIndeterminate = this.checkedCities.length > 0 && this.checkedCities.length < this.actionTypes.length
+      this.checkAll = this.checkedCities.length === this.actionTypes.length
+    },
+    updateQuery(key, val) {
+      const query = { ...this.$route.query }
+      query[key] = val
+      this.$router.replace({ query })
+    },
+    updateList() {
+      this.filterLoading = true
+      this.pull.list = []
+      this.autoRequestTime = Date.now()
+    },
   }
 }
 </script>
@@ -360,6 +618,12 @@ export default {
 
 .head {
   height: 24px;
+  margin-top: 20px;
+
+  &:nth-child(1) {
+    margin-top: 0;
+  }
+
   &-title {
     margin: 0;
     padding: 0;
@@ -461,18 +725,9 @@ export default {
   letter-spacing: 1px;
 }
 
-.twitter-timeline-link {
-  a {
-    text-decoration: none;
-    color: #542de0;
-    &:hover {
-      color: #8d70f5;
-    }
-  }
-}
-
 .topnav {
   display: flex;
+  align-items: center;
   &-tag {
     margin-right: 20px;
     color: black;
@@ -482,6 +737,88 @@ export default {
         color: #737373;
       }
     }
+  }
+}
+
+.apply-authorize {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0 40px;
+  padding: 0 20px;
+  p {
+    text-align: center;
+  }
+}
+
+.flex-support {
+  flex: 1;
+}
+
+.clickable {
+  padding: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  color: black;
+  line-height: 26px;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-right: 5px;
+  &:hover {
+    color: #542DE0;
+    background: #e5e9ef;
+  }
+}
+
+.user-platform-list {
+  max-height: 330px;
+  min-height: 45px;
+  overflow-y: auto;
+  padding: 20px 14px 20px 20px !important;
+
+  &::-webkit-scrollbar {
+    width: 17px;
+    height: 18px;
+  }
+  &::-webkit-scrollbar-thumb {
+      height: 6px;
+      border: 4px solid rgba(0, 0, 0, 0);
+      background-clip: padding-box;
+      border-radius: 20px;
+      -webkit-border-radius: 20px;
+      background-color: rgba(0, 0, 0, 0.15);
+      box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+      -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+  }
+  &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+      display: none;
+  }
+  &::-webkit-scrollbar-corner {
+      background-color: transparent;
+  }
+}
+
+.platform-filters {
+  .checkbox-group {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(auto-fill, 90px);
+    grid-gap: 10px;
+
+    .checkbox {
+      margin-top: 5px;
+    }
+  }
+
+  .checkbox-all {
+    margin: 0;
+  }
+
+  .el-divider--horizontal {
+    margin: 10px 0;
   }
 }
 
@@ -514,10 +851,6 @@ export default {
 @media screen and (max-width: 600px) {
   .timeline-card {
     margin-top: 10px;
-  }
-
-  .head {
-    // display: none;
   }
 
   .banner {

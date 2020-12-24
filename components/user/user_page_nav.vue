@@ -31,7 +31,7 @@ export default {
       return [
       // self 只有自己才能看
         { title: this.$t('user.creation'), url: 'user-id', self: false },
-        { title: '动态', url: 'user-id-timeline', self: false },
+        { title: this.$t('dynamic'), url: 'user-id-timeline', self: false },
         // { title: this.$t('share'), url: 'user-id-share', self: false },
         { title: this.$t('user.draft'), url: 'user-id-draft', self: true },
         { title: this.$t('user.fan'), url: 'user-id-fan', self: false },
@@ -39,7 +39,7 @@ export default {
         // { title: this.$t('user.buy'), url: 'user-id-buy', self: true },
         // { title: this.$t('user.bookmark'), url: 'user-id-bookmark', self: true },
         { title: this.$t('user.information'), url: 'user-id-info', self: false },
-        { title: '收藏', url: 'user-id-favlist', self: false }
+        { title: this.$t('bookmark'), url: 'user-id-favlist', self: false }
       ]
     }
   }

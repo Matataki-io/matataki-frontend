@@ -34,7 +34,7 @@
         placement="top"
       >
         <a
-          class="userplatform-platform-unit"
+          class="userplatform-platform-unit twitter-color"
           :class="card.twitter_name || 'unit-disable'"
           :href="card.twitter_name && `https://twitter.com/${card.twitter_name}`"
           target="_blank"
@@ -50,12 +50,28 @@
         placement="top"
       >
         <a
-          class="userplatform-platform-unit"
+          class="userplatform-platform-unit bilibili-color"
           :class="card.bilibili_id || 'unit-disable'"
           :href="card.bilibili_id && `https://space.bilibili.com/${card.bilibili_id}`"
           target="_blank"
         >
           <svg-icon icon-class="bilibili_tv" />
+        </a>
+      </el-tooltip>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        :content="card.mastodon_uesr ? `@${card.mastodon_uesr.username}@${card.mastodon_uesr.domain.replace(/^(https?:\/\/)/gm, '')}`: ''"
+        :disabled="!card.mastodon_uesr"
+        placement="top"
+      >
+        <a
+          class="userplatform-platform-unit mastodon-color"
+          :class="card.mastodon_uesr || 'unit-disable'"
+          :href="card.mastodon_uesr && `${card.mastodon_uesr.domain}/web/accounts/${card.mastodon_uesr.id}`"
+          target="_blank"
+        >
+          <svg-icon icon-class="mastodon" />
         </a>
       </el-tooltip>
     </div>
@@ -162,6 +178,18 @@ export default {
       color: #00ACED;
       transition: all ease-in 0.1s;
       background: #00000000;
+
+      &.twitter-color {
+        color: #00ACED;
+      }
+
+      &.bilibili-color {
+        color: #44A0D1;
+      }
+
+      &.mastodon-color {
+        color: #3487D2;
+      }
 
       svg {
         transition: all ease-in 0.1s;

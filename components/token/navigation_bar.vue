@@ -27,15 +27,15 @@ export default {
       tags: [
         {
           id: 'my-token',
-          title: '我的'
+          title: this.$t('mine')
         },
         {
           id: 'turnover',
-          title: '流水'
+          title: this.$t('stream')
         },
         {
           id: 'all-token',
-          title: '全部'
+          title: this.$t('all')
         },
       ]
     }
