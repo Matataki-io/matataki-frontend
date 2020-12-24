@@ -4,10 +4,10 @@
       <img src="@/assets/img/gray_oops.png" alt="oops" class="oops">
       <img src="@/assets/img/gray_fanpiao.png" alt="Fan票">
     </div>
-    <p class="no-token-tip">尚未发行Fan票</p>
+    <p class="no-token-tip">{{ $t('fan-tickets-not-yet-issued') }}</p>
     <router-link :to="{ name: 'postminetoken' }">
       <el-button type="primary" class="issue-btn">
-        去发行
+        {{ $t('to-issue') }}
       </el-button>
     </router-link>
   </div>

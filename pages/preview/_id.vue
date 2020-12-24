@@ -10,7 +10,7 @@
         <!-- 标题 -->
         <h1>{{ article.title }}</h1>
         <el-alert
-          title="当前处于预览模式"
+          :title="$t('currently-in-preview-mode')"
           type="info"
           :description="draftTimeEnd"
           show-icon
@@ -19,7 +19,7 @@
         />
         <el-alert
           v-if="postTime"
-          title="草稿定时发布计划"
+          :title="$t('draft-scheduled-release-schedule')"
           type="warning"
           :description="postTime"
           show-icon

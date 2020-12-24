@@ -6,13 +6,13 @@
           <h3 class="head-title">
             <span># {{ $route.query.name }}</span>
             <router-link :to="{name: 'tags'}" class="title-link">
-              查看全部
+              {{ $t('view-all') }}
               <svg-icon icon-class="arrow" class="icon" />
             </router-link>
           </h3>
           <div class="tags-text">
-            <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">最热</span>
-            <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">最新</span>
+            <span class="tags-title" :class="mode === 'hot' && 'active'" @click="toggleTag('hot')">{{ $t('hottest') }}</span>
+            <span class="tags-title" :class="mode === 'new' && 'active'" @click="toggleTag('new')">{{ $t('latest') }}</span>
           </div>
         </section>
         <articleCardListNew
@@ -34,10 +34,10 @@
       <div class="col-3 sticky">
         <section class="head">
           <h3 class="head-title">
-            热门主题
+            {{ $t('popular-topics') }}
           </h3>
           <router-link :to="{name: 'tags'}">
-            查看全部
+            {{ $t('view-all') }}
             <svg-icon icon-class="arrow" class="icon" />
           </router-link>
         </section>

@@ -6,16 +6,16 @@
         placement="bottom"
       >
         <div slot="content">
-          点击可查看本文的授权许可详情
+          {{ $t('click-to-view-the-license-details-of-this-article') }}
         </div>
-        <span class="cc-license">本文使用
+        <span class="cc-license">{{ $t('this-article-uses') }}
           <a
             :href="license.url"
             class="license-statement"
             rel="noopener"
             target="_blank"
-          >知识共享 {{ license.chinese }} 4.0</a>
-          协议
+          >{{ $t('knowledge-sharing') }} {{ license.chinese }} 4.0</a>
+          {{ $t('protocol') }}
         </span>
       </el-tooltip>
       <template v-if="isOriginal">

@@ -48,7 +48,7 @@
             </el-dropdown> -->
           </section>
           <p v-if="pull.list.length === 0 && !filterLoading" class="not-content">
-            {{ actions.length > 0 ? $t('notContent') : '筛选项不能为空' }}
+            {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
           </p>
           <div
             v-for="(item, index) in pull.list"
@@ -98,14 +98,14 @@
           <!-- -- -->
           <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
           <h2 class="welcome-title">
-            欢迎加入瞬Matataki
+            {{ $t('welcome-to-join') }}
           </h2>
           <h2 class="welcome-title">
             一个 <span>公开</span> <span>永存</span> 的数字作品库
           </h2>
 
           <div class="welcome-text">
-            <p v-if="!isLogined" class="welcome-description">请 <span @click="login">登录</span> 后查看您的</p>
+            <p v-if="!isLogined" class="welcome-description">请 <span @click="login">{{ $t('login') }}</span> 后查看您的</p>
             <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
             <a
               v-if="!isLogined"
@@ -144,7 +144,7 @@
         <!-- 平台筛选器 -->
         <section v-if="isLogined" class="head ra-head">
           <h3 class="head-title">
-            平台筛选
+            {{ $t('platform-screening') }}
           </h3>
         </section>
         <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
@@ -154,7 +154,7 @@
             class="checkbox-all"
             @change="handleCheckAllChange"
           >
-            全选
+            {{ $t('select-all') }}
           </el-checkbox>
           <el-divider />
           <el-checkbox-group
@@ -176,7 +176,7 @@
         <!-- 已关注的用户列表 -->
         <section class="head ra-head">
           <h3 class="head-title">
-            已关注的跨平台作者
+            {{ $t('followed-cross-platform-authors') }}
           </h3>
         </section>
         <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">

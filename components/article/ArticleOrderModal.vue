@@ -16,27 +16,27 @@
           src="@/assets/img/m_logo.png"
           alt="logo"
         >
-        <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
+        <p>{{ $t('please-check-the-order-information-carefully-if-it-is-wrong-please-cancel-and-try-again') }}</p>
         <table class="order-table">
           <tbody>
             <tr>
               <td class="order-key">
-                交易账号：
+                {{ $t('trading-account') }}：
               </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                交易类型：
+                {{ $t('transaction-type') }}：
               </td><td>{{ tradeType }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                创建时间：
+                {{ $t('creation-time') }}：
               </td><td>{{ friendlyTime }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                订单编号：
+                {{ $t('order-number') }}：
               </td><td>{{ tradeNo }}</td>
             </tr>
           </tbody>
@@ -50,19 +50,19 @@
         >
           <el-table-column
             prop="name"
-            label="品名"
+            :label="$t('product-name')"
           />
           <el-table-column
             prop="operating"
-            label="操作"
+            :label="$t('operating')"
           />
           <el-table-column
             prop="amount"
-            label="数量"
+            :label="$t('quantity')"
           />
           <el-table-column
             prop="total"
-            label="小计"
+            :label="$t('subtotal')"
           />
         </el-table>
       </div>
@@ -74,13 +74,13 @@
               effect="light"
             >
               <div slot="content">
-                您的交易可能由于正常的价格波动而失败，<br>
-                预期价格波动区间将有助于您的交易成功。<br>
-                交易成功后，多支付的金额会退回。
+                {{ $t('your-transaction-may-fail-due-to-normal-price-fluctuations') }}<br>
+                {{ $t('the-expected-price-fluctuation-range-will-help-your-trading-success') }}<br>
+                {{ $t('after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded') }}
               </div>
               <i class="el-icon-question" />
             </el-tooltip>
-            预期价格波动：1%
+            {{ $t('expected-price-fluctuations') }}：1%
           </div>
           <div>
             <span class="money-label">
@@ -88,10 +88,10 @@
                 placement="bottom"
                 effect="light"
               >
-                <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br>多支付的金额会保留在您的CNY账户中。</div>
+                <div slot="content">{{ $t('when-the-accuracy-of-the-transaction-amount-of-cny-is-greater-than-0-01-it-will-be-automatically-carried-and-paid') }}<br>{{ $t('the-overpayment-amount-will-be-kept-in-your-cny-account') }}</div>
                 <i class="el-icon-question" />
               </el-tooltip>
-              合计：
+              {{ $t('total') }}：
             </span>
             <span class="money">{{ cnyAmount.toFixed(2) }} CNY</span>
           </div>
@@ -102,14 +102,14 @@
               v-model="useBalance"
               @change="useBalanceChange"
             >
-              使用余额（{{ balance }} CNY）
+              {{ $t('use-balance') }}（{{ balance }} CNY）
             </el-checkbox>
           </div>
-          <div><span class="money-label">抵扣：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('deduction') }}：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
         </div>
         <div class="flexBox padding20">
           <div />
-          <div><span class="money-label">应付：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('handle') }}：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
         </div>
       </div>
       <!-- <div class="payBtnBox">
@@ -137,7 +137,7 @@
           type="primary"
           @click="onSubmit"
         >
-          确认使用余额支付
+          {{ $t('confirm-payment-with-balance') }}
         </el-button>
       </div>
     </div>
@@ -202,18 +202,18 @@ export default {
     ...mapGetters(['currentUserInfo']),
     tradeType() {
       const typeOptions = {
-        add: '添加流动性',
+        add: this.$t('add-liquidity'),
         buy_token_input: this.$t('home.buyFanTickets'),
         buy_token_output: this.$t('home.buyFanTickets'),
-        sale_token: '出售Fan票',
+        sale_token: this.$t('sell-fan-tickets'),
       };
       if (this.articleId) {
-        return `购买文章${this.articleId}`
+        return `${this.$t('buy-article')}${this.articleId}`
       } else {
         const type = this.order.items ? this.order.items.orderTokenItem.type : null
         return typeOptions[type] || this.$t('not')
       }
-      return `购买文章${this.articleId}`
+      return `${this.$t('buy-article')}${this.articleId}`
     },
     friendlyTime() {
       return this.moment(this.order.create_time).format(

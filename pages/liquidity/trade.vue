@@ -2,7 +2,7 @@
   <settingLayout>
     <NoTokenTip v-if="NoToken" />
     <div v-else class="trade-setting">
-      <a href="https://www.yuque.com/matataki/matataki">Fan票使用手册 ></a>
+      <a href="https://www.yuque.com/matataki/matataki">{{ $t('fan-ticket-user-manual') }} ></a>
       <div v-loading="loading" class="form-container">
         <el-form 
           v-if="NoMarket" 
@@ -11,55 +11,55 @@
           label-width="80px"
         >
           <el-form-item label="单价">
-            <el-input v-model="form.price" placeholder="输入你的Fan票单价" class="trade-setting-input" />
+            <el-input v-model="form.price" :placeholder="$t('enter-the-unit-price-of-your-fan-ticket')" class="trade-setting-input" />
             <el-button type="primary" class="trade-setting-btn" @click="create">
-              设置
+              {{ $t('setting') }}
             </el-button>
-            <span class="price-setting-tip">* 价格设置后无法修改</span>
+            <span class="price-setting-tip">* {{ $t('the-price-cannot-be-modified-after-setting') }}</span>
           </el-form-item>
         </el-form>
         <div v-else>
           <div class="token-trade-disabled">
-            <span class="trade-setting-label">直通车销售功能</span>
+            <span class="trade-setting-label">{{ $t('through-train-sales-function') }}</span>
             <el-switch v-model="form.enabled" @change="changeStatus" />
           </div>
           <ul class="token-trade-info">
             <li>
-              <span class="trade-setting-label black">价格：</span>
+              <span class="trade-setting-label black">{{ $t('price') }}：</span>
               <span class="trade-setting-num">{{ market.price }}</span> 
               <span class="trade-setting-symbol">CNY/{{ market.symbol }}</span> 
             </li>
             <li v-if="market.amount > 0">
-              <span class="trade-setting-label black">待售：</span>
+              <span class="trade-setting-label black">{{ $t('for-sale') }}：</span>
               <span class="trade-setting-num">{{ market.restAmount }}</span> <span class="trade-setting-div">/</span> <span class="trade-setting-num gray">{{ market.amount }}</span>
               <span class="trade-setting-symbol">{{ market.symbol }}</span> 
             </li>
           </ul>
           <div>
-            <el-input v-model="form.amount" placeholder="输入数量" class="trade-setting-input" />
+            <el-input v-model="form.amount" :placeholder="$t('input-quantity')" class="trade-setting-input" />
             <el-button 
               type="primary" 
               class="trade-setting-btn" 
               :disabled="!form.enabled" 
               @click="updateAmount"
             >
-              立即转入
+              {{ $t('transfer-now') }}
             </el-button>
-            <p class="balance-tip">可用余额 {{ tokenBalance }} {{ market.symbol }}</p>
+            <p class="balance-tip">{{ $t('available-balance') }} {{ tokenBalance }} {{ market.symbol }}</p>
           </div>
         </div>
       </div>
       <el-divider class="colla-splitline" />
       <p class="colla-help">
-        什么是直通车： <br>
-        除了交易所外的Fan票销售渠道，由您设置直购价格  <br>
-        1. 直通车中的 Fan票 按照发行者设定的价格自动销售  <br>
-        2. 销售的收入会直接进入发行者的账户余额中  <br>
-        3. 直通车功能仅负责Fan票销售，不负责回购或销毁  <br>
+        {{ $t('what-is-a-through-train') }}： <br>
+        {{ $t('in-addition-to-the-fan-ticket-sales-channels-outside-the-exchange-you-set-the-direct-purchase-price') }}  <br>
+        1. {{ $t('fan-tickets-in-the-through-train-are-automatically-sold-at-the-price-set-by-the-issuer') }}  <br>
+        2. {{ $t('the-sales-revenue-will-go-directly-to-the-issuers-account-balance') }}  <br>
+        3. {{ $t('the-through-train-function-is-only-responsible-for-fan-ticket-sales-not-for-repurchase-or-destruction') }}  <br>
         <br>
-        直通车转入Fan票：  <br>
-        1. 发行者随时可以将自己持有的Fan票充入直通车用于销售  <br>
-        2. 发行者不可从直通车中直接取回已转入的Fan票  <br>
+        {{ $t('through-train-transfer-to-fan-ticket') }}：  <br>
+        1. {{ $t('issuers-can-recharge-their-own-fan-tickets-into-the-through-train-for-sale-at-any-time') }}  <br>
+        2. {{ $t('the-issuer-cannot-directly-retrieve-the-transferred-fan-ticket-from-the-through-train') }}  <br>
       </p>
     </div>
   </settingLayout>

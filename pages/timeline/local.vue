@@ -4,7 +4,7 @@
     <div v-if="isLogined && Number(userInfo.follows) > 0" class="banner">
       <section class="banner-main">
         <h2 class="banner-title">
-          欢迎加入瞬Matataki
+          {{ $t('welcome-to-join') }}
         </h2>
         <h2 class="banner-title bold">
           一个 <span>公开</span> <span>永存</span> 的数字作品库
@@ -57,14 +57,14 @@
           <!-- -- -->
           <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
           <h2 class="welcome-title">
-            欢迎加入瞬Matataki
+            {{ $t('welcome-to-join') }}
           </h2>
           <h2 class="welcome-title">
             一个 <span>公开</span> <span>永存</span> 的数字作品库
           </h2>
 
           <div class="welcome-text">
-            <p v-if="!isLogined" class="welcome-description">请 <span @click="login">登录</span> 后查看您的</p>
+            <p v-if="!isLogined" class="welcome-description">请 <span @click="login">{{ $t('login') }}</span> 后查看您的</p>
             <p v-else class="welcome-description">请至少 <span>关注1位创作者</span> 以开启您的</p>
             <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
             <a
@@ -77,7 +77,7 @@
         </div>
         <h4 v-if="isLogined && !Number(userInfo.follows)" class="twitter-timeline-link">
           <router-link :to="{ name: 'timeline' }">
-            浏览聚合动态
+            {{ $t('browse-aggregate-news') }}
             <i class="el-icon-arrow-right" />
           </router-link>
         </h4>

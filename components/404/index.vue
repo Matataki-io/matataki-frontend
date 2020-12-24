@@ -11,7 +11,7 @@
     <div class="info">
       <p>{{ $t('notPage') }}</p>
       <p class="back">
-        三秒后自动返回首页...
+        {{ $t('automatically-return-to-the-homepage-after-three-seconds') }}
       </p>
       <a
         href="/"
