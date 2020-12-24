@@ -31,7 +31,7 @@
           <div class="head-text">
             <p class="head-description">一个基于Fan票的任务悬赏平台</p>
             <img src="@/assets/img/dapp-banner-quest-logo.png" alt="logo">
-            <a href="https://matataki-quest.netlify.app" target="_blank" class="head-btn">
+            <a href="https://quest.matataki.io" target="_blank" class="head-btn">
               {{ $t('visit-website') }}
             </a>
           </div>
@@ -200,7 +200,7 @@ export default {
               img: quest,
               width: '130px',
               height: '147px',
-              url: 'https://matataki-quest.netlify.app/',
+              url: 'https://quest.matataki.io/',
               repo: 'https://github.com/Matataki-io/Fan-TaskBoard',
               btn: this.$t('visit-website'),
               disabled: false
