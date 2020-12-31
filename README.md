@@ -9,7 +9,8 @@
 <div align="center">
 我们帮助 <b>自由</b> 的创作者，获得更多收入&建立 <b>公开</b> <b>永存</b> 的数字作品库
 </div>
-<p align="center" style="margin-top: 10px;">
+<br />
+<p align="center">
   <a href="https://nuxtjs.org">
     <img src="https://img.shields.io/badge/nuxtjs-2.13.2-brightgreen.svg" alt="nuxtjs">
   </a>
@@ -55,6 +56,7 @@ Matataki希望围绕 有趣的话题、深度思考，吸引有独立精神的�
 
 ## ⌨️ Development
 
+> testing(default branch) is the development branch 🧑🏻‍💻
 
 ```bash
 $ git clone git@github.com:Matataki-io/Matataki-FE.git
