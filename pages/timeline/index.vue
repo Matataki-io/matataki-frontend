@@ -29,6 +29,7 @@
               </router-link>
             </h3>
             <div class="flex-support" />
+            <timelineHelp />
             <!-- <el-dropdown
               v-if="!unauthorized"
               trigger="click"
@@ -207,6 +208,7 @@ import mastodonCard from '@/components/platform_status/mastodon_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
+import timelineHelp from '@/components/help/timeline_help'
 
 export default {
   components: {
@@ -216,7 +218,8 @@ export default {
     mastodonCard,
     buttonLoadMore,
     // RAList,
-    userPlatformCard
+    userPlatformCard,
+    timelineHelp
   },
   data() {
     return {
@@ -253,7 +256,7 @@ export default {
         }
       ],
       actions: null,
-      autoRequestTime: 0,
+      autoRequestTime: 0
     }
   },
   computed: {
@@ -465,7 +468,7 @@ export default {
       this.filterLoading = true
       this.pull.list = []
       this.autoRequestTime = Date.now()
-    },
+    }
   }
 }
 </script>
