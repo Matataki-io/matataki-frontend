@@ -335,7 +335,6 @@ export default {
           }
           this.pull.list = this.pull.list.concat(list)
         }
-        console.log('结果：', res, this.pull.list)
       }
       catch (e) {
         console.error('[get aggregator timeline failure] [res, e]:', res, e)
@@ -482,7 +481,6 @@ export default {
       this.autoRequestTime = Date.now()
     },
     async likeEvent({type, platform, dynamicId}) {
-      console.log('likeEvent：', type, platform, dynamicId)
       const url = process.env.VUE_APP_MATATAKI_CACHE + '/status/interactive/' + type
       const headers = {}
       const accessToken = getCookie('ACCESS_TOKEN')

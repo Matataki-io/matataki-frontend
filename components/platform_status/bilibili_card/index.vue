@@ -201,7 +201,6 @@ export default {
     },
   },
   mounted () {
-    console.log(this.type, this.data, this.card)
     this.clearReferer()
   },
   methods: {

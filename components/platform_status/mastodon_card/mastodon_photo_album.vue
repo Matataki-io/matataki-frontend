@@ -236,9 +236,6 @@ export default {
       return this.sensitive && !this.showSensitive
     }
   },
-  mounted () {
-    console.log('图片TYPE:', this.media[0].type)
-  },
   methods: {
     openSensitiveShow () {
       if (!this.sensitive) return
