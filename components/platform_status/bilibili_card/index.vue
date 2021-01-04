@@ -81,9 +81,9 @@
           </span>
         </div>
         <div class="cardunit-r-flows-like">
-          <svg-icon icon-class="twitter-like" />
-          <span v-if="flows.favorite">
-            {{ flows.favorite }}
+          <svg-icon :class="`${stats && 'like-touch'} ${flows.localLiked && 'active'}`" :icon-class="flows.localLiked ? 'twitter-liked' : 'twitter-like'" @click="likeClick" />
+          <span v-if="flows.favorite + flows.localLike">
+            {{ flows.favorite + flows.localLike }}
           </span>
         </div>
       </div>
@@ -121,6 +121,15 @@ export default {
     fromUser: {
       type: Object,
       default: null
+    },
+    stats: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {
+      likeIt: false
     }
   },
   computed: {
@@ -160,7 +169,9 @@ export default {
       const res = {
         comment: desc.comment,
         retweet: desc.repost,
-        favorite: desc.like
+        favorite: desc.like,
+        localLike: this.stats ? (this.stats.like + this.likeIt) : 0,
+        localLiked: this.stats ? (this.likeIt || this.stats.liked) : 0
       }
       if (this.stype === 2) res.comment = this.card.stat.reply
       else if (this.type === 64) {
@@ -209,6 +220,12 @@ export default {
       meta.name = 'referrer'
       meta.content = 'no-referrer'
       document.getElementsByTagName('head')[0].appendChild(meta)
+    },
+    async likeClick () {
+      if (!this.stats) return
+      if (this.likeIt || this.stats.liked) return
+      this.likeIt = true
+      this.$emit('click-like', { type: 'like',  platform: 'bilibili', dynamicId: this.data.desc.dynamic_id })
     }
   }
 }
@@ -343,6 +360,25 @@ span {
       }
       &-like {
         .flow-default();
+        .like-touch {
+          -moz-user-select:none;
+          -webkit-user-select:none;
+          user-select:none;
+          transition: all ease-in 0.05s;
+          cursor: pointer;
+          &:hover {
+            color: #e0245e;
+            transform: scale(1.2);
+          }
+          &:active {
+            transform: scale(1);
+          }
+          &.active {
+            color: #e0245e;
+            transform: scale(1);
+            cursor: default;
+          }
+        }
       }
     }
 

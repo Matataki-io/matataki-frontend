@@ -1167,5 +1167,6 @@
   "post-a-comment": "发表评论",
   "accepted-object": "接受对象",
   "please-enter-the-transfer-destination": "请输入转账的对象",
-  "quantity-sent": "发送数量"
+  "quantity-sent": "发送数量",
+  "likeSuccess": "点赞成功"
 }

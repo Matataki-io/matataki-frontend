@@ -67,16 +67,22 @@
               :card="item.card"
               :front-queue="item.frontQueue"
               :from-user="getSourceUser(item)"
+              :stats="item.stats"
+              @click-like="likeEvent"
             />
             <bilibiliCard
               v-else-if="item.platform === 'bilibili'"
               :data="item.card"
               :from-user="getSourceUser(item)"
+              :stats="item.stats"
+              @click-like="likeEvent"
             />
             <mastodonCard
               v-else-if="item.platform === 'mastodon'"
               :data="item.card"
               :from-user="getSourceUser(item)"
+              :stats="item.stats"
+              @click-like="likeEvent"
             />
             <div v-else>
               不支持的平台类型: {{ item.platform }}
@@ -308,17 +314,23 @@ export default {
         if (res.data && res.data.list && res.data.list.length !== 0) {
           const list = []
           for (let i = 0; i < res.data.list.length; i++) {
+            const entry = res.data.list[i]
             list.push({
-              card: JSON.parse(res.data.list[i].data),
+              card: JSON.parse(entry.data),
               frontQueue: [],
-              platform: res.data.list[i].platform,
-              platform_user: res.data.list[i].platform_user,
-              platform_user_id: res.data.list[i].platform_user_id,
-              platform_username: res.data.list[i].platform_username
+              id: entry.id,
+              platform: entry.platform,
+              platform_user: entry.platform_user,
+              platform_user_id: entry.platform_user_id,
+              platform_username: entry.platform_username,
+              stats: {
+                like: entry.like,
+                liked: entry.liked
+              }
               // frontQueue: this.getFrontQueue(res.data, i)
             })
-            if (res.data.list[i].platform === 'bilibili') {
-              console.log('stype：', JSON.parse(res.data.list[i].data).desc.stype)
+            if (entry.platform === 'bilibili') {
+              console.log('stype：', JSON.parse(entry.data).desc.stype)
             }
           }
           this.pull.list = this.pull.list.concat(list)
@@ -468,6 +480,26 @@ export default {
       this.filterLoading = true
       this.pull.list = []
       this.autoRequestTime = Date.now()
+    },
+    async likeEvent({type, platform, dynamicId}) {
+      console.log('likeEvent：', type, platform, dynamicId)
+      const url = process.env.VUE_APP_MATATAKI_CACHE + '/status/interactive/' + type
+      const headers = {}
+      const accessToken = getCookie('ACCESS_TOKEN')
+      if (!accessToken) return this.$t('error.pleaseLogin')
+      if (accessToken) headers['x-access-token'] = accessToken
+
+      try {
+        const { data: res } = await axios.post(url, { platform, dynamicId }, { headers })
+        if (!res.code) {
+          this.$message.success(this.$t('likeSuccess'))
+        }
+        else this.$message.error(res.error)
+      }
+      catch (e) {
+        console.error('[Like failed]:', e)
+        this.$message.error(this.$t('fail'))
+      }
     }
   }
 }
