@@ -108,9 +108,9 @@
             </span>
           </div>
           <div class="cardunit-r-flows-like">
-            <svg-icon icon-class="mastodon-star" />
-            <span v-if="flows.favorite">
-              {{ flows.favorite }}
+            <svg-icon :class="`${stats && 'like-touch'} ${flows.localLiked && 'active'}`" icon-class="mastodon-star" @click="likeClick" />
+            <span v-if="flows.favorite + flows.localLike">
+              {{ flows.favorite + flows.localLike }}
             </span>
           </div>
         </div>
@@ -147,11 +147,16 @@ export default {
     fromUser: {
       type: Object,
       default: null
+    },
+    stats: {
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
-      showHiddenContent: false
+      showHiddenContent: false,
+      likeIt: false
     }
   },
   computed: {
@@ -228,7 +233,9 @@ export default {
       return {
         comment: replies_count,
         retweet: reblogs_count,
-        favorite: favourites_count
+        favorite: favourites_count,
+        localLike: this.stats ? (this.stats.like + this.likeIt) : 0,
+        localLiked: this.stats ? (this.likeIt || this.stats.liked) : 0
       }
     },
     originUrl () {
@@ -239,7 +246,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.type, this.data, this.card)
     this.clearReferer()
   },
   methods: {
@@ -258,6 +264,13 @@ export default {
       meta.name = 'referrer'
       meta.content = 'no-referrer'
       document.getElementsByTagName('head')[0].appendChild(meta)
+    },
+    async likeClick () {
+      if (!this.stats) return
+      if (this.likeIt || this.stats.liked) return
+      this.likeIt = true
+      const platformUrl = this.data.account.url.replace(/(http(s?):\/\/)/gm, '').replace('/@' + this.data.account.acct, '')
+      this.$emit('click-like', { type: 'like',  platform: 'mastodon' , dynamicId: `${platformUrl}_${this.data.id}` })
     }
   }
 }
@@ -451,6 +464,24 @@ span {
       }
       &-like {
         .flow-default();
+        .like-touch {
+          -moz-user-select:none;
+          -webkit-user-select:none;
+          user-select:none;
+          transition: all ease-in 0.05s;
+          cursor: pointer;
+          &:hover {
+            transform: scale(1.2);
+          }
+          &:active {
+            transform: scale(1);
+          }
+          &.active {
+            color: #ca8f04;
+            transform: scale(1);
+            cursor: default;
+          }
+        }
       }
     }
 

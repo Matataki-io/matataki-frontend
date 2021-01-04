@@ -391,14 +391,14 @@ export default {
       this.notifications = []
       this.autoRequestTime = Date.now()
     },
-    updateQuery(key, val) {      
+    updateQuery(key, val) {
       const query = { ...this.$route.query }
       query[key] = val
       this.$router.replace({ query })
     },
     initActions() {
       let actions = this.$route.query.actions
-      if(actions) { 
+      if(actions) {
         this.actions = JSON.parse(this.$route.query.actions)
         this.checkedCities = this.actions
       }

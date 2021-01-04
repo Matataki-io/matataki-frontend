@@ -1166,5 +1166,6 @@
   "put-away": "Put away",
   "post-a-comment": "Post a comment",
   "accepted-object": "Accepted object",
-  "please-enter-the-transfer-destination": "Please enter the transfer destination"
+  "please-enter-the-transfer-destination": "Please enter the transfer destination",
+  "likeSuccess": "Like success"
 }

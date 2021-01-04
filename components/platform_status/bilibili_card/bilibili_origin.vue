@@ -122,7 +122,6 @@ export default {
     }
   },
   mounted () {
-    console.log('[origin]:',this.type, this.card, this.user)
     let meta = document.createElement('meta')
     meta.name = 'referrer'
     meta.content = 'no-referrer'
