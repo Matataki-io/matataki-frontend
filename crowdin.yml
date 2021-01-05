@@ -1,3 +1,3 @@
 files:
-  - source: /locale/zh.js
-    translation: /locale/%two_letters_code%.js
+  - source: /locale/zh.json
+    translation: /locale/%two_letters_code%.json
