@@ -25,10 +25,7 @@
             数据来源是第三方，不断的请求动态数据会给服务器带来一定压力，所以我们会定期在一段时间内获取这些数据并且刷新展示到这里，如果你想知道各个不同的平台数据获取的频率，可以查看下面的表格：
           </p>
           <div>
-            <el-table :data="gridData">
-              <el-container>
-                什么是聚合动态？
-              </el-container>
+            <el-table style="max-width: 450px;" :data="gridData">
               <el-table-column property="platform" label="平台" width="100" />
               <el-table-column property="website" label="官网" width="200" />
               <el-table-column property="rate" label="频率" width="150" />
