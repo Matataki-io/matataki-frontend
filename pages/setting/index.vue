@@ -334,7 +334,8 @@ export default {
     // 输入框内容检测
     checkSaveParams() {
       // 中文 字母 数字 1-12
-      const reg = /^[\u4E00-\u9FFF\u3400-\u4DFF\u3131-\uD79Dぁ-んァ-ンA-Za-z0-9]{1,50}$/
+      // eslint-disable-next-line no-useless-escape
+      const reg = /^[\u4E00-\u9FFF\u3400-\u4DFF\u3131-\uD79Dぁ-んァ-ンA-Za-z0-9\s*\@\.\/\\\[\]]{1,50}$/
       // const regEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       if (!reg.test(this.username)) {
         throw this.$t('rule.strEnglishNumber', ['1-50'])
