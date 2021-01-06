@@ -732,6 +732,7 @@ import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 import { CNY } from '@/components/exchange/consts.js'
 
+
 function newDatePicker(time) {
   const date = new Date()
   date.setSeconds(0)
@@ -1765,6 +1766,7 @@ export default {
         if (this.timedForm.switch) {
           this.timedPublish()
         } else {
+          const _shortContent = this.generateShortContent()
           this.publishArticle({
             author,
             title,
@@ -1772,7 +1774,7 @@ export default {
             fissionFactor,
             cover,
             isOriginal,
-            shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
+            shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : _shortContent
           })
         }
       }
@@ -1804,6 +1806,8 @@ export default {
 
         this.fullscreenLoading = true
         const data = { title, author, content }
+        // 摘要
+        const _shortContent = this.generateShortContent()
         this.editArticle({
           signId: this.signId,
           author,
@@ -1812,7 +1816,7 @@ export default {
           fissionFactor,
           cover,
           isOriginal,
-          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
+          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : _shortContent
         })
       }
 
@@ -2136,9 +2140,9 @@ export default {
       data.editRequireToken = this.editRequireToken
 
       // 设置摘要
-      if (this.readauThority || this.paymentTokenVisible) {
-        data.short_content = this.readSummary
-      }
+      const _shortContent = this.generateShortContent()
+      data.short_content = (this.readauThority || this.paymentTokenVisible) ? this.readSummary : _shortContent
+
       return data
     },
     toolMobileImport() {
@@ -2173,6 +2177,15 @@ export default {
     },
     openWj() {
       window.open('/token', '_blank')
+    },
+    // 生成简介
+    generateShortContent() {
+      let dom = document.querySelectorAll('#previewContent > p')
+      const str = [...dom].reduce((t, c) => {
+        return `${t} ${c.outerText}`
+      }, '')
+      // console.log(str)
+      return (str.trim()).slice(0, 300)
     }
   }
 }
