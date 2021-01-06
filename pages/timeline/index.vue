@@ -149,50 +149,62 @@
         </div> -->
 
         <!-- 平台筛选器 -->
-        <section v-if="isLogined" class="head ra-head">
+        <section v-if="isLogined" class="head ra-head" @click="sidebarSwitch.filter = !sidebarSwitch.filter">
           <h3 class="head-title">
             {{ $t('platform-screening') }}
           </h3>
+          <i
+            class="el-icon-caret-bottom ra-head-caret"
+            :class="sidebarSwitch.filter && 'ra-caret-unfold'"
+          />
         </section>
-        <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
-          <el-checkbox
-            v-model="checkAll"
-            :indeterminate="isIndeterminate"
-            class="checkbox-all"
-            @change="handleCheckAllChange"
-          >
-            {{ $t('select-all') }}
-          </el-checkbox>
-          <el-divider />
-          <el-checkbox-group
-            v-model="checkedCities"
-            class="fl checkbox-group"
-            @change="handleCheckedCitiesChange"
-          >
+        <div class="ra-box" :class="sidebarSwitch.filter && 'ra-box-unfold'">
+          <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
             <el-checkbox
-              v-for="action in actionTypes"
-              :key="action.key"
-              class="checkbox"
-              :label="action.key"
+              v-model="checkAll"
+              :indeterminate="isIndeterminate"
+              class="checkbox-all"
+              @change="handleCheckAllChange"
             >
-              {{ action.label }}
+              {{ $t('select-all') }}
             </el-checkbox>
-          </el-checkbox-group>
+            <el-divider />
+            <el-checkbox-group
+              v-model="checkedCities"
+              class="fl checkbox-group"
+              @change="handleCheckedCitiesChange"
+            >
+              <el-checkbox
+                v-for="action in actionTypes"
+                :key="action.key"
+                class="checkbox"
+                :label="action.key"
+              >
+                {{ action.label }}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
         </div>
 
         <!-- 已关注的用户列表 -->
-        <section class="head ra-head">
+        <section class="head ra-head" @click="sidebarSwitch.authorList = !sidebarSwitch.authorList">
           <h3 class="head-title">
             {{ $t('followed-cross-platform-authors') }}
           </h3>
-        </section>
-        <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">
-          <userPlatformCard
-            v-for="(item, index) in userPlatformList"
-            :key="index"
-            :card="item"
+          <i
+            class="el-icon-caret-bottom ra-head-caret"
+            :class="sidebarSwitch.authorList && 'ra-caret-unfold'"
           />
-          <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
+        </section>
+        <div class="ra-box" :class="sidebarSwitch.authorList && 'ra-box-unfold'">
+          <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">
+            <userPlatformCard
+              v-for="(item, index) in userPlatformList"
+              :key="index"
+              :card="item"
+            />
+            <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -262,7 +274,11 @@ export default {
         }
       ],
       actions: null,
-      autoRequestTime: 0
+      autoRequestTime: 0,
+      sidebarSwitch: {
+        filter: false,
+        authorList: false
+      }
     }
   },
   computed: {
@@ -693,13 +709,21 @@ export default {
       color: @purpleDark;
       cursor: pointer;
     }
+
+    &-caret {
+      display: none;
+    }
   }
-  .ra-content {
-    background: rgba(255, 255, 255, 1);
-    border-radius: @br10;
-    padding: 20px;
+  .ra-box {
+    transition: all ease 0.5s;
     margin-top: 20px;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 1);
+    border-radius: @br10;
+    overflow: hidden;
+    .ra-content {
+      padding: 20px;
+    }
   }
 }
 
@@ -863,11 +887,36 @@ export default {
 }
 @media screen and (max-width: 768px) {
   .row {
+    display: flex;
+    flex-direction: column-reverse;
     .col-6 {
       width: 100%;
     }
     .col-3 {
-      display: none;
+      width: 100%;
+      position: static;
+      margin-bottom: 20px;
+    }
+  }
+  .recommend {
+    .ra-head {
+      cursor: pointer;
+      &-caret {
+        display: inline;
+        font-size: 20px;
+        transition: transform 0.4s;
+        &.ra-caret-unfold {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .ra-box {
+      margin-top: 0;
+      max-height: 0;
+      &.ra-box-unfold {
+        margin-top: 20px;
+        max-height: 330px;
+      }
     }
   }
   .banner-people {
