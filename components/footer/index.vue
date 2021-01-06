@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <div class="content footer-c6">
+      <div class="content footer-c5">
         <div class="nav">
           <a
             class="href"
@@ -59,7 +59,7 @@
           <language />
         </div>
       </div>
-      <div class="footer-c4">
+      <div class="footer-c5" style="text-align: right;">
         <div>
           <img
             class="logo"
@@ -120,6 +120,15 @@
               icon-class="twitter"
             />
           </a>
+          <a
+            target="_blank"
+            href="https://discord.gg/KGR4SHDhBa"
+          >
+            <svg-icon
+              class="icon discord-icon"
+              icon-class="discord"
+            />
+          </a>
           <!--
           <a
             target="_blank"
@@ -166,6 +175,9 @@ export default {
   }
   .footer-c6 {
     width: 60%;
+  }
+  .footer-c5 {
+    width: 50%;
   }
   .footer-c4 {
     width: 40%;
@@ -274,6 +286,14 @@ export default {
     color: #b2b2b2;
     &:hover {
       color: #00aced;
+    }
+  }
+  &.discord-icon {
+    width: 24px;
+    height: 24px;
+    color: #b2b2b2;
+    &:hover {
+      color: #7289da;
     }
   }
   &.facebook-icon {
