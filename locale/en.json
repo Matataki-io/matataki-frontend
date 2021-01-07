@@ -324,7 +324,7 @@
     "timeline": "Dynamic",
     "fanTicket": "Fan Ticket",
     "signOut": "Logout Account",
-    "signIn": "log in immediately",
+    "signIn": "登录",
     "navArticle": "文章",
     "navShop": "商品",
     "searchPlaceholder": "Enter search content",
@@ -383,7 +383,7 @@
     "language": "中文/English"
   },
   "publish": {
-    "draft": "Save to draft",
+    "draft": "草稿",
     "editorText": "文章",
     "editorTextArticlePublic": "文章发布",
     "editorTextArticleEditor": "编辑文章",
