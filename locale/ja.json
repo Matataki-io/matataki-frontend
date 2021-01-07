@@ -324,7 +324,7 @@
     "timeline": "動的",
     "fanTicket": "ファンチケット",
     "signOut": "ログアウトアカウント",
-    "signIn": "すぐにログインする",
+    "signIn": "登录",
     "navArticle": "文章",
     "navShop": "商品",
     "searchPlaceholder": "検索コンテンツを入力してください",
@@ -383,7 +383,7 @@
     "language": "中文/English"
   },
   "publish": {
-    "draft": "下書きに保存",
+    "draft": "草稿",
     "editorText": "文章",
     "editorTextArticlePublic": "文章发布",
     "editorTextArticleEditor": "编辑文章",
