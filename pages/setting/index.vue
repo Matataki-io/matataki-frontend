@@ -143,14 +143,16 @@
           </div>
         </div>
         <!-- 保存 -->
-        <el-button
-          :loading="loading"
-          :class="(setProfile || aboutModify || socialModify) && 'active'"
-          class="save "
-          @click="save"
-        >
-          {{ $t('save') }}
-        </el-button>
+        <div class="save-content">
+          <el-button
+            :loading="loading"
+            :class="(setProfile || aboutModify || socialModify) && 'active'"
+            class="save "
+            @click="save"
+          >
+            {{ $t('save') }}
+          </el-button>
+        </div>
       </div>
     </template>
     <template slot="nav">
@@ -547,6 +549,22 @@ export default {
 .input {
   width: 400px;
 }
+.save-content {
+  margin: 100px auto 0;
+   @media screen and (max-width: 540px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 10;
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom:  calc(20px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  }
+}
 .save {
   display: block;
   width: 200px;
@@ -555,9 +573,9 @@ export default {
   border: none;
   outline: none;
   color: #fff;
-  margin: 100px auto 0;
   background-color: #bfbfbf;
   cursor: pointer;
+  margin: 0 auto;
   &.active {
     background: @purpleDark;
   }
