@@ -33,9 +33,7 @@
           @row-click="selectToken"
         >
           <el-table-column
-            width="250px"
             label="Fan票"
-            class="test123"
           >
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -75,21 +73,29 @@
           </el-table-column>
           <el-table-column
             label=""
+            width="100px"
           >
             <template slot-scope="scope">
-              <n-link
-                v-if="scope.row.id !== 0"
-                :to="{name: 'token-id', params: {id: scope.row.id}}"
-                target="_blank"
-                class="gray-btn"
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="前往Fan票主页"
+                placement="top"
               >
-                <el-button circle>
-                  <svg-icon
-                    icon-class="share-link"
-                    style="color: #B2B2B2;"
-                  />
-                </el-button>
-              </n-link>
+                <n-link
+                  v-if="scope.row.id !== 0"
+                  :to="{name: 'token-id', params: {id: scope.row.id}}"
+                  target="_blank"
+                  class="gray-btn"
+                >
+                  <el-button circle>
+                    <svg-icon
+                      icon-class="fan-home"
+                      class="fan-home"
+                    />
+                  </el-button>
+                </n-link>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -103,7 +109,6 @@
         >
           <el-table-column
             label="Fan票"
-            class="test123"
           >
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
@@ -307,8 +312,14 @@ export default {
 }
 .gray-btn {
   .el-button {
-    background-color: #f1f1f1;
-    border-color: #f1f1f1;
+    background-color: transparent;
+    border-radius: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+  }
+  .fan-home {
+    font-size: 32px;
   }
 }
 .black-theme-dialog {
