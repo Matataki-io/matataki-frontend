@@ -551,7 +551,7 @@ export default {
 }
 .save-content {
   margin: 100px auto 0;
-   @media screen and (max-width: 540px) {
+  @media screen and (max-width: 768px) {
     position: fixed;
     bottom: 0;
     left: 0;

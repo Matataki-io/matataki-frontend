@@ -374,7 +374,7 @@
           </el-radio>
 
           <div class="post-content root-setting">
-            <div style="width: 380px;">
+            <div style="max-width: 380px;">
               <transition name="fade">
                 <div
                   v-show="readauThority"
@@ -510,7 +510,7 @@
           </div>
 
           <div class="post-content root-setting">
-            <div style="width: 380px;">
+            <div style="max-width: 380px;">
               <transition name="fade">
                 <div
                   v-show="tokenEditAuthority"
@@ -607,7 +607,7 @@
             {{ $t('publicly-visible') }}
           </el-radio>
         </div>
-        
+
         <div v-if="$route.params.type !== 'edit'">
           <h1 class="set-title set-title-border">
             {{ $t('publish-settings') }}
@@ -683,15 +683,16 @@
           >
             {{ $t('save-as-draft') }}
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            style="margin-left: 10px;"
-            :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
-            @click="sendThePost"
-          >
-            {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
-          </el-button>
+          <div class="publish-content">
+            <el-button
+              type="primary"
+              size="medium"
+              :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
+              @click="sendThePost"
+            >
+              {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
+            </el-button>
+          </div>
         </div>
 
         <svg-icon

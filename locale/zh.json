@@ -383,7 +383,7 @@
     "language": "中文/English"
   },
   "publish": {
-    "draft": "保存到草稿箱",
+    "draft": "草稿",
     "editorText": "文章",
     "editorTextArticlePublic": "文章发布",
     "editorTextArticleEditor": "编辑文章",
