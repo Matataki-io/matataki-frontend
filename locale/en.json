@@ -137,7 +137,7 @@
     "passwordChangeFailed": "密码修改失败"
   },
   "header": {
-    "newArticle": "Write an essay"
+    "newArticle": "Write"
   },
   "auth": {
     "eosWallet": "EOS钱包",
@@ -324,7 +324,7 @@
     "timeline": "Dynamic",
     "fanTicket": "Fan Ticket",
     "signOut": "Logout Account",
-    "signIn": "log in immediately",
+    "signIn": "Sign In",
     "navArticle": "文章",
     "navShop": "商品",
     "searchPlaceholder": "Enter search content",

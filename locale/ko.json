@@ -137,7 +137,7 @@
     "passwordChangeFailed": "密码修改失败"
   },
   "header": {
-    "newArticle": "에세이를 쓰다"
+    "newArticle": "쓰다"
   },
   "auth": {
     "eosWallet": "EOS钱包",
@@ -324,7 +324,7 @@
     "timeline": "동적",
     "fanTicket": "팬 티켓",
     "signOut": "로그 아웃 계정",
-    "signIn": "즉시 로그인",
+    "signIn": "로그인",
     "navArticle": "文章",
     "navShop": "商品",
     "searchPlaceholder": "검색 내용 입력",
