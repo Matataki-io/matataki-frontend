@@ -680,14 +680,17 @@ export default {
   }
   &-notlogin {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 400;
     color: #ffffff;
     letter-spacing: 2px;
-    padding: 6px 12px;
+    padding: 0 18px;
     background: #000;
-    border-radius: 6px;
+    border-radius: 4px;
     text-decoration: none;
     margin-left: 10px;
+    white-space: nowrap;
+    height: 40px;
+    line-height: 40px;
   }
   .nav {
     font-size: 18px;
@@ -1022,7 +1025,6 @@ export default {
   }
   .home-head-notlogin {
     font-size: 12px;
-    font-weight: 400;
   }
   .qq-tips {
     font-size: 13px;
