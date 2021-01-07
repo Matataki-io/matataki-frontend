@@ -13,13 +13,12 @@
         <div class="search-box">
           <i class="el-icon-search" />
         </div>
-        <input
+        <el-input
           v-model="search"
           type="text"
           placeholder="搜索Fan票"
           class="dHtVAe"
-          @keyup.enter="searchToken"
-        >
+        />
       </div>
       <div
         v-loading="loading"
@@ -153,6 +152,7 @@ import { CNY } from './consts.js'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'TokenListModal',
@@ -180,18 +180,15 @@ export default {
     }
   },
   watch: {
+    search(newVal) {
+      this.searchToken()
+    },
     showModal(val) {
       this.$emit('input', val)
     },
     value(val) {
       this.showModal = val
     },
-    search(v) {
-      if (v === '') {
-        this.page = 1
-        this.getAllToken()
-      }
-    }
   },
   data() {
     return {
@@ -231,10 +228,10 @@ export default {
       this.search = ''
       this.showModal = false
     },
-    searchToken() {
+    searchToken: debounce(function() {
       this.page = 1
       this.getAllToken()
-    },
+    }, 300),
     loadMore() {
       this.page = this.page + 1
       this.getAllToken()
@@ -415,13 +412,14 @@ export default {
     min-height: 2.5rem;
     text-align: left;
     padding-left: 1.6rem;
-    background-color: #f1f1f1;
-    outline: none;
-    border-width: initial;
-    border-style: none;
-    border-color: initial;
-    border-image: initial;
     flex: 1 0 auto;
+    /deep/ .el-input__inner {
+      outline: none;
+      border-image: initial;
+      border: none;
+      background: transparent;
+      border-radius: 0;
+    }
   }
 
   input {
