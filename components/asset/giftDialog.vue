@@ -106,7 +106,7 @@
         <a
           href="javascript:;"
           @click="form.amount = balance"
-        >全部转入</a>
+        >{{ $t('transfer-all-in') }}</a>
       </p>
       <el-form-item>
         <div class="form-button">
@@ -116,7 +116,7 @@
             size="small"
             @click="submitForm('form')"
           >
-            确定
+            {{ $t('confirm') }}
           </el-button>
         </div>
       </el-form-item>

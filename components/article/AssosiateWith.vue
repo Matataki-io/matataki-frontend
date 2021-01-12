@@ -34,13 +34,13 @@
           {{ $t('token.founder') }}：
         </div>
         <div>
-          <p class="token-info-sub">
+          <div class="token-info-sub">
             <c-user-popover :user-id="Number(minetokenToken.uid)">
               <router-link class="token-username" :to="{name: 'user-id', params: {id: minetokenToken.uid}}">
                 {{ minetokenUser.nickname || minetokenUser.username }}
               </router-link>
             </c-user-popover>
-          </p>
+          </div>
         </div>
       </div>
       <div class="fl info-line">
@@ -49,7 +49,7 @@
         </div>
         <div style="display:flex;">
           <div class="token-info-sub">
-            {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : '暂无价格' }}
+            {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : $t('no-price') }}
           </div>
           <div>
             <div class="float">
@@ -111,9 +111,9 @@ export default {
       balance: 0,
       tags: [],
       tagPattern: [
-        {name:'个人', label: 'personal', checked: false}, 
-        {name:'组织', label: 'organization', checked: false}, 
-        {name: '产品', label: 'product', checked: false}, 
+        {name:'个人', label: 'personal', checked: false},
+        {name:'组织', label: 'organization', checked: false},
+        {name: '产品', label: 'product', checked: false},
         { name: 'MEME', label: 'meme', checked: false}
       ]
     }

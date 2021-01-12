@@ -10,7 +10,7 @@
       label-width="70px"
       @submit.native.prevent
     >
-      <el-form-item label="接受对象">
+      <el-form-item :label="$t('accepted-object')">
         <el-input
           v-model="transferUsername"
           :placeholder="$t('p.articleTransferPlaceholder')"

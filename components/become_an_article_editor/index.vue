@@ -64,7 +64,7 @@
             class="fl"
           >
             <div class="fl price">
-              支付
+              {{ $t('pay') }}
               <span class="amount">{{ getArticlePrice }}</span>
               <svg-icon
                 icon-class="currency"
@@ -85,7 +85,7 @@
             class="fl"
           >
             <div class="fl price">
-              持有
+              {{ $t('hold') }}
               <span class="amount">{{ needTokenAmount }}</span>
               <router-link
                 :to="{name: 'token-id', params:{ id:needTokenId }}"
@@ -109,7 +109,7 @@
         v-else
         class="lock-info-des"
       >
-        自己发布的文章
+        {{ $t('self-publish-article') }}
       </p>
       <div
         v-if="!hasPaied"
@@ -146,7 +146,7 @@
           :disabled="!hasPaiedRead"
           @click="edit"
         >
-          编辑文章
+          {{ $t('edit-article') }}
         </el-button>
       </div>
     </div>

@@ -324,7 +324,7 @@
     "timeline": "动态",
     "fanTicket": "Fan票",
     "signOut": "登出账户",
-    "signIn": "立即登录",
+    "signIn": "登录",
     "navArticle": "文章",
     "navShop": "商品",
     "searchPlaceholder": "请输入搜索内容",
@@ -383,7 +383,7 @@
     "language": "中文/English"
   },
   "publish": {
-    "draft": "保存到草稿箱",
+    "draft": "草稿",
     "editorText": "文章",
     "editorTextArticlePublic": "文章发布",
     "editorTextArticleEditor": "编辑文章",
@@ -419,7 +419,7 @@
     "importAddressError": "请输入正确的地址",
     "importAddress": "来源链接：",
     "importSuccess": "导入成功",
-    "importError": "导入失败,目前只支持: 链闻、橙皮书、微信文章",
+    "importError": "导入失败,目前只支持: 链闻、橙皮书、微信、知乎专栏、Matters、简书、微博文章、币乎。",
     "originalStatement": "原创声明",
     "statement": "勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：",
     "statement1": "1.歪曲、篡改、抄袭、剽窃他人创作而产生的作品，",
@@ -1168,5 +1168,16 @@
   "accepted-object": "接受对象",
   "please-enter-the-transfer-destination": "请输入转账的对象",
   "quantity-sent": "发送数量",
-  "likeSuccess": "点赞成功"
+  "likeSuccess": "点赞成功",
+  "no-price": "暂无价格",
+  "transfer-all-in": "全部转入",
+  "hold": "持有",
+  "edit-article": "编辑文章",
+  "self-publish-article": "自己发布的文章",
+  "reply": "回复",
+  "click-to-view": "点击查看",
+  "unpublish": "取消发布",
+  "time-publish-fail": "定时发布失败",
+  "add-to": "添加",
+  "direction": "方向"
 }

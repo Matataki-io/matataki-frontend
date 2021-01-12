@@ -26,7 +26,7 @@
               {{ nickname }}
             </router-link>
             <span v-if="comment.reply_uid" class="text-con">
-              回复
+              {{ $t('reply') }}
             </span>
             <router-link
               v-if="comment.reply_uid"
@@ -42,7 +42,7 @@
               {{ friendlyDate }}
             </span>
 
-            <span class="reply" @click="switchShowInput">回复</span>
+            <span class="reply" @click="switchShowInput">{{ $t('reply') }}</span>
             <span class="flex1-scaffold" />
             <!-- 更多操作 -->
             <el-dropdown
@@ -55,7 +55,7 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="delete">
-                  删除
+                  {{ $t('delete') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
