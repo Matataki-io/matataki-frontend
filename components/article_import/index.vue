@@ -4,7 +4,7 @@
     :show-close="false"
     :close-on-click-modal="false"
     custom-class="import br10 import-article"
-    title="导入文章"
+    :title="$t('publish.importArticle')"
     @close="$emit('close')"
   >
     <el-input

@@ -49,7 +49,7 @@
         </div>
         <div style="display:flex;">
           <div class="token-info-sub">
-            {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : '暂无价格' }}
+            {{ minetokenExchange && minetokenExchange.price ? '¥ ' + minetokenExchange.price : $t('no-price') }}
           </div>
           <div>
             <div class="float">
@@ -111,9 +111,9 @@ export default {
       balance: 0,
       tags: [],
       tagPattern: [
-        {name:'个人', label: 'personal', checked: false}, 
-        {name:'组织', label: 'organization', checked: false}, 
-        {name: '产品', label: 'product', checked: false}, 
+        {name:'个人', label: 'personal', checked: false},
+        {name:'组织', label: 'organization', checked: false},
+        {name: '产品', label: 'product', checked: false},
         { name: 'MEME', label: 'meme', checked: false}
       ]
     }
