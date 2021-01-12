@@ -1,11 +1,11 @@
 {
   "readMore": "Read More",
   "viewMore": "View More",
-  "hideMore": "unfold",
-  "not": "Nothing",
+  "hideMore": "hide",
+  "not": "Not available",
   "notContent": "No content",
   "notProfile": "No profile",
-  "notComment": "No comment",
+  "notComment": "No comments",
   "notDraft": "No drafts",
   "notOriginal": "No original content",
   "notSupport": "No invest",
@@ -324,7 +324,7 @@
     "timeline": "Dynamic",
     "fanTicket": "Fan Ticket",
     "signOut": "Logout Account",
-    "signIn": "登录",
+    "signIn": "Sign In",
     "navArticle": "文章",
     "navShop": "商品",
     "searchPlaceholder": "Enter search content",
@@ -383,7 +383,7 @@
     "language": "中文/English"
   },
   "publish": {
-    "draft": "草稿",
+    "draft": "Draft",
     "editorText": "文章",
     "editorTextArticlePublic": "文章发布",
     "editorTextArticleEditor": "编辑文章",
@@ -439,11 +439,11 @@
     "optionText12": "分享",
     "optionText13": "Fan票",
     "optionText14": "用户",
-    "result": "的搜索结果",
-    "notResult": "暂无搜索结果"
+    "result": "search result",
+    "notResult": "No Result"
   },
   "p": {
-    "amount": "数量",
+    "amount": "Amouont",
     "articleTitle": "商品详情",
     "shopTitle": "文章详情",
     "buyHistory": "已购买成功，请前往“购买记录”页面查看！",
@@ -1167,6 +1167,6 @@
   "post-a-comment": "Post a comment",
   "accepted-object": "Accepted object",
   "please-enter-the-transfer-destination": "Please enter the transfer destination",
-  "quantity-sent": "发送数量",
+  "quantity-sent": "Amount to Send",
   "likeSuccess": "Like success"
 }
