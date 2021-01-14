@@ -6,6 +6,17 @@
       class="swipe-dapp"
     >
       <el-carousel-item>
+        <div class="dapp-head-governance">
+          <div class="head-text">
+            <p class="head-description">一个通过质押META来获取治理权限的Matataki管理后台</p>
+            <img class="head-logo" src="@/assets/img/dapp-banner-governance-text.png" alt="logo">
+            <a href="https://governance.matataki.io" target="_blank" class="head-btn">
+              {{ $t('visit-website') }}
+            </a>
+          </div>
+        </div>
+      </el-carousel-item>
+      <el-carousel-item>
         <div class="dapp-head-shuttle">
           <div class="head-text">
             <p class="head-description">一个基于Fan票提现和转入的工具</p>
@@ -110,6 +121,7 @@ import dao from '@/assets/img/dapp_list_dao.png'
 import mine from '@/assets/img/dapp_list_mine.png'
 import shuttle from '@/assets/img/dapp_list_shuttle.png'
 import quest from '@/assets/img/dapp_list_quest.png'
+import governance from '@/assets/img/dapp_list_governance.png'
 export default {
   data() {
     return {
@@ -202,6 +214,16 @@ export default {
               height: '147px',
               url: 'https://quest.matataki.io/',
               repo: 'https://github.com/Matataki-io/Fan-TaskBoard',
+              btn: this.$t('visit-website'),
+              disabled: false
+            },
+            {
+              title: 'Matataki治理委员会',
+              description: '通过质押META来获取治理权限的Matataki管理后台',
+              img: governance,
+              width: '156px',
+              height: 'auto',
+              url: 'https://governance.matataki.io',
               btn: this.$t('visit-website'),
               disabled: false
             },
@@ -479,6 +501,49 @@ export default {
     padding: 8px 40px;
     margin: 18px 0 0 0;
     display: inline-block;
+  }
+}
+.dapp-head-governance {
+  height: 240px;
+  background-image: url(../../assets/img/dapp-banner-governance.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .head-description {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 22px;
+    padding: 0;
+    margin: 0;
+  }
+  .head-logo {
+    display: block;
+    width: 450px;
+    margin: 8px 0 0 0;
+  }
+  .head-text {
+    margin: 0 0 0 190px;
+    text-align: left;
+  }
+  .head-btn {
+    // background: #542de0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #ffffff;
+    padding: 8px 40px;
+    margin: 18px 0 0 0;
+    display: inline-block;
+    background: #6236FF;
+    border-radius: 20px;
   }
 }
 
