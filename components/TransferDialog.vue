@@ -303,13 +303,19 @@ export default {
           } else {
             this.transferMinetoken()
           }
-        } else return false
+        } else {
+          return false
+        }
       })
     },
     // 转账
-    transferMinetoken() {    
+    transferMinetoken() {
       const toUserInfo = this.toUserInfo
-      if (this.$utils.isNull(toUserInfo)) return
+
+      if (this.$utils.isNull(toUserInfo)) {
+        this.$message({ showClose: true, message: '请选择转账用户', type: 'info' })
+        return
+      }
 
       const toId = this.$utils.isNull(toUserInfo) ? -1 : toUserInfo.id
 
@@ -410,11 +416,14 @@ export default {
       this.form.tokenId = ''
       this.form.decimals = ''
       this.form.tokens = ''
+      this.form.memo = ''
+
       this.form.max = 99999999
       this.form.balance = 0
       this.$refs.form.resetFields()
 
       this.toUserInfo = null
+      this.userVal = ''
     },
     // logo 
     cover(cover) {
