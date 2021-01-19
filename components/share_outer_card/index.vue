@@ -13,7 +13,7 @@
         :alt="card.title"
       >
     </div>
-    <div>
+    <div class="card-info">
       <div class="card-operate">
         <p
           :class="!shareCard && 'card-sharehall'"
@@ -117,24 +117,25 @@ export default {
 
 <style lang="less" scoped>
 .card {
-  background: #EAEAEA;
-  border-radius: 6px;
   display: flex;
-  align-items: center;
+  // align-items: center;
   position: relative;
-  padding: 10px;
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
   color: #000;
+  border-radius:6px;
+  background-color: transparent;
+  border: 1px solid #F2F4F7;
+  // padding: 10px;
+  box-sizing: border-box;
   &-cover {
-    width: 120px;
-    height: 60px;
+    width: 240px;
+    height: 120px;
     border-radius: 3px;
     overflow: hidden;
-    margin-right: 10px;
-    flex: 0 0 120px;
-    border: 1px solid #e0e0e0;
+    flex: 0 0 240px;
+    border-right: 1px solid #ededed;
     box-sizing: border-box;
     img {
       width: 100%;
@@ -208,5 +209,7 @@ export default {
     }
   }
 }
-
+.card-info {
+  padding: 10px;
+}
 </style>

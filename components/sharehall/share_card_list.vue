@@ -1,9 +1,10 @@
 <template>
-  <router-link
-    :to="cardUrl"
-    class="card"
+  <a
+    :href="card.url"
     target="_blank"
+    class="card"
   >
+    1
     <div
       v-if="card.cover"
       class="card-cover"
@@ -13,42 +14,12 @@
         :alt="card.title"
       >
     </div>
-    <div class="card-content">
-      <p
-        :class="!shareCard && 'card-sharehall'"
-        class="card-text"
-      >
-        {{ card.title || $t('not') }}
-      </p>
-      <div class="card-more">
-        <div
-          v-if="cardType !== 'edit'"
-          class="card-info"
-        >
-          <span v-if="!shareCard">
-            <svg-icon
-              icon-class="eye"
-              class="icon"
-            />{{ card.real_read_count }}
-          </span>
-          <span v-if="!shareCard">
-            <svg-icon
-              icon-class="like_thin"
-              class="icon"
-            />{{ card.likes }}
-          </span>
-          <span v-if="!shareCard">
-            <img
-              v-if="card.pay_symbol || card.token_symbol"
-              class="lock-img"
-              src="@/assets/img/lock.png"
-              alt="lock"
-            >{{ lock }}
-          </span>
-        <!-- <span>
-          <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
-        </span> -->
-        </div>
+    <div>
+      <div class="card-operate">
+        <p
+          :class="!shareCard && 'card-sharehall'"
+          class="card-text"
+        >{{ card.title || $t('not') }}</p>
         <div
           v-if="cardType !== 'edit' && $route.name === 'sharehall'"
           class="card-operate"
@@ -65,6 +36,10 @@
           />
         </div>
       </div>
+      <p
+        :class="!shareCard && 'card-sharehall'"
+        class="card-summary"
+      >{{ card.summary || $t('not') }}</p>
     </div>
     <span
       v-if="!shareCard && cardType === 'edit'"
@@ -73,12 +48,10 @@
     >
       <i class="el-icon-close icon" />
     </span>
-  </router-link>
+  </a>
 </template>
 
 <script>
-import { precision } from '@/utils/precisionConversion'
-
 export default {
   props: {
     cardType: {
@@ -100,22 +73,9 @@ export default {
     }
   },
   computed: {
-    cardUrl() {
-      if (this.cardType === 'edit') return {}
-      else return { name: 'p-id', params: { id: this.card.ref_sign_id } }
-    },
     coverSrc() {
-      if (this.card.cover) return this.$ossProcess(this.card.cover, { h: 90 })
+      if (this.card.cover) return this.$ossProcess(this.card.cover)
       return ''
-    },
-    lock() {
-      if (this.card.pay_symbol) {
-        return `${precision(this.card.pay_price, 'CNY', this.card.pay_decimals)} ${this.card.pay_symbol}`
-      } else if (this.card.token_symbol) {
-        return `${precision(this.card.token_amount, 'CNY', this.card.token_decimals)} ${this.card.token_symbol}`
-      } else {
-        return ''
-      }
     }
   },
   methods: {
@@ -137,7 +97,11 @@ export default {
       if (e && e.preventDefault) e.preventDefault()
       else if (e && e.stopPropagation) e.stopPropagation()
       this.$copyText(val).then(
-        () => this.$message({ showClose: true, message: this.$t('success.copy'), type: 'success' }),
+        () => this.$message({
+          showClose: true,
+          message: this.$t('success.copy'),
+          type: 'success'
+        }),
         () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
       )
       return false
@@ -154,23 +118,24 @@ export default {
 
 <style lang="less" scoped>
 .card {
-  background-color: transparent;
-  border: 1px solid #F2F4F7;
+  background: #EAEAEA;
   border-radius: 6px;
   display: flex;
-  // align-items: center;
+  align-items: center;
   position: relative;
+  padding: 10px;
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
   color: #000;
   &-cover {
-    width: 240px;
-    height: 120px;
+    width: 120px;
+    height: 60px;
     border-radius: 3px;
     overflow: hidden;
-    flex: 0 0 240px;
-    border-right: 1px solid #e0e0e0;
+    margin-right: 10px;
+    flex: 0 0 120px;
+    border: 1px solid #e0e0e0;
     box-sizing: border-box;
     img {
       width: 100%;
@@ -178,14 +143,10 @@ export default {
       object-fit: cover;
     }
   }
-  &-more {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
   &-operate {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     .icon {
       cursor: pointer;
       padding: 4px 6px;
@@ -196,49 +157,38 @@ export default {
       }
     }
   }
-  &-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-  }
   &-text {
     font-size:15px;
     font-weight: bold;
     color:rgba(0,0,0,1);
-    line-height:18px;
+    line-height: 18px;
     flex: 1;
-    max-height: 36px;
+    max-height: 18px;
     overflow: hidden;
-    // display: -webkit-box;
-    // -webkit-line-clamp: 2;
-    // -webkit-box-orient: vertical;
-    // white-space: pre-wrap;
-    white-space: normal;
+    white-space: pre-wrap;
     padding: 0;
     margin: 0;
     &.card-sharehall {
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
     }
   }
-  &-info {
-    display: flex;
-    span {
-      font-size:14px;
-      font-weight:400;
-      color:rgba(178,178,178,1);
-      line-height:17px;
-      margin-left: 10px;
-      .icon {
-        color:rgba(178,178,178,1);
-        padding: 0;
-        margin: 0 4px 0 0;
-      }
-      &:nth-child(1) {
-        margin-left: 0;
-      }
+  &-summary {
+    font-size:14px;
+    // font-weight: bold;
+    line-height: 18px;
+    flex: 1;
+    max-height: 36px;
+    overflow: hidden;
+    color: #737373;
+    white-space: pre-wrap;
+    padding: 0;
+    margin: 4px 0 0 0;
+    &.card-sharehall {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
   &-remove {
@@ -259,14 +209,5 @@ export default {
     }
   }
 }
-.lock-img {
-  margin: 0 4px 0 0;
-  height: 13px;
-}
-.lock-text {
-  color: #b2b2b2;
-  font-size: 14px;
-  line-height: 22px;
-  margin: 0 0 0 4px;
-}
+
 </style>

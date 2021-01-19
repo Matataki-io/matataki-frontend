@@ -173,7 +173,8 @@ export default {
 
 <style lang="less" scoped>
 .card {
-  background: #EAEAEA;
+  background-color: transparent;
+  border: 1px solid #F2F4F7;
   border-radius: 6px;
   display: flex;
   align-items: center;
