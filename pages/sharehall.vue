@@ -200,6 +200,8 @@ import { getCookie } from '@/utils/cookie'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 import shareImage from '@/components/share_image/index'
+// import shareCardList from '@/components/sharehall/share_card_list.vue'
+
 export default {
   components: {
     shareOuterCard,
@@ -208,7 +210,8 @@ export default {
     shareCard,
     buttonLoadMore,
     RAList,
-    shareImage
+    shareImage,
+    // shareCardList
   },
   data() {
     const httpTest = (rule, value, callback) => {
@@ -652,12 +655,11 @@ export default {
   display: flex;
 }
 .sharehall-main {
-  width: 766px;
-  flex: 0 0 766px;
+  width: calc(70% - 20px);
   margin: 0 20px 100px 0;
 }
 .sharehall-other {
-  flex: 1;
+  width: 30%;
 }
 .sharehall-head {
   display: flex;

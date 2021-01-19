@@ -174,17 +174,16 @@ export default {
 
 <style lang="less" scoped>
 .card-share__content {
-
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 .card-share {
   display: flex;
   align-items: center;
   flex-direction: column;
   position: relative;
-  box-sizing: border-box;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
 }
 
 .card {
@@ -303,13 +302,7 @@ export default {
     }
   }
   &-list {
-    border-radius:6px;
-    background-color: #eaeaea;
-    padding: 0;
     margin: 0px 20px 0 20px;
-    box-sizing: border-box;
-    // margin: 14px 0 0 0;
-    position: relative;
     // &::before {
     //   display: block;
     //   content: '';
