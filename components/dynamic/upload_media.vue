@@ -103,7 +103,14 @@ export default {
       this.$emit('uploading', value)
     },
     visibleState(value) {
-      if (value !== this.visible) this.visible = value
+      if (value !== this.visible) {
+        this.visible = value
+        // 如果是关闭状态，需要对 mediaList 进行清空
+        if (!value) {
+          this.mediaList = []
+          this.$emit('input', [])
+        }
+      }
     }
   },
   mounted() {
@@ -144,18 +151,16 @@ export default {
       if (newFile.file.type !== 'image/gif') {
         cFile = await this.compressorFunc(newFile.file)
       }
-      // 裁切缩略图
-      const previewFile = await this.compressorFunc(newFile.file, true)
 
       // 失败情况情况检查
       if (!this.visible) return prevent()
       if (this.mediaList.length >= 9) return prevent()
-      if (!cFile || !previewFile) {
-        console.error('图片或预览图压缩失败')
+      if (!cFile) {
+        console.error('图片压缩失败')
         return prevent()
       }
-      if (!this.maxSize(cFile, this.imgSize) || !this.maxSize(previewFile, this.imgSize)) {
-        console.error('图片或预览图大小超出限制')
+      if (!this.maxSize(cFile, this.imgSize)) {
+        console.error('图片大小超出限制')
         return prevent()
       }
       console.log('newFile:', cFile)
@@ -172,10 +177,9 @@ export default {
       const mediaObj = {
         id: mediaIndex,
         file: cFile,
-        previewFile,
         localPreviewUrl,
+        type: cFile.type,
         url: '',
-        previewUrl: '',
         uploading: true
       }
       this.mediaList.push(mediaObj)
@@ -187,20 +191,12 @@ export default {
         this.mediaList.splice(this.mediaList.findIndex(item => item.id === mediaIndex) ,1)
         return prevent()
       }
-      // 上传缩略图
-      const previewUrl = await this.uploadFile(mediaObj.previewFile)
-      // 如果失败了
-      if (!previewUrl) {
-        this.mediaList.splice(this.mediaList.findIndex(item => item.id === mediaIndex) ,1)
-        return prevent()
-      }
       // 检查是否在上传期间被取消
       if (!this.mediaList.find(item => item.id === mediaIndex)) return prevent()
 
-      console.log('全部上传完成', { imgUrl, previewUrl })
+      console.log('全部上传完成', { imgUrl })
       mediaObj.uploading = false
       mediaObj.url = imgUrl
-      mediaObj.previewUrl = previewUrl
       this.$emit('input', this.mediaList)
     },
 
@@ -229,7 +225,7 @@ export default {
           ...thumbnailConfig,
           quality: this.quality,
           strict: true,
-          convertSize: 0,
+          convertSize: 1024 * 1024 * this.imgSize,
           success: (newfile) => {
             const file = new File([newfile], newfile.name, {type: newfile.type, lastModified: Date.now()})
             resolve(file)
