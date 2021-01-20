@@ -1,14 +1,16 @@
 <template>
   <el-popover
     v-model="visible"
-    placement="bottom"
+    placement="bottom-start"
     width="245"
     trigger="manual"
   >
     <!-- Button -->
-    <span slot="reference" class="upload-media-button" @click="showPopover">
-      <i class="el-icon-picture-outline" />
-    </span>
+    <template slot="reference">
+      <span class="upload-media-button" :class="!visible && 'media-button-active'" @click="showPopover">
+        <i class="el-icon-picture-outline" />
+      </span>
+    </template>
 
     <!-- 内容 -->
     <div class="upload-main">
@@ -322,13 +324,19 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #b2b2b2;
+  color: black;
   font-size: 20px;
   border-radius: 5px;
-  background: #ffffff00;
+  outline: inherit;
+  background: #00000000;
 
-  &:hover {
-    background: #ffffff20;
+  &.media-button-active {
+    color: #b2b2b2;
+    cursor: pointer;
+    &:hover {
+      background: #00000010;
+      color: black;
+    }
   }
 }
 
@@ -445,6 +453,7 @@ export default {
         align-items: center;
         font-size: 50px;
         box-sizing: border-box;
+        cursor: pointer;
       }
 
       &:hover .upload-main-list-fileupload-add {

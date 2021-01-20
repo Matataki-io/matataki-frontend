@@ -720,7 +720,7 @@ export default {
 }
 .push-btn {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .recommend-author {
   position: sticky;
