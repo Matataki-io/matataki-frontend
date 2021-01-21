@@ -47,6 +47,7 @@ import debounce from 'lodash/debounce'
 import { mapGetters } from 'vuex'
 import { getCookie } from '@/utils/cookie'
 
+import { filterOutHtmlShare } from '@/utils/xss'
 export default {
   components: {
     VueTribute,
@@ -90,7 +91,7 @@ export default {
   },
   mounted() {
     if (process.browser) {
-      this.timer = setInterval(this.handleKeydown, 1000)
+      this.timer = setInterval(this.handleKeydown, 2000)
     }
   },
   computed: {
@@ -150,7 +151,7 @@ export default {
 
       const data = {
         author: author,
-        content: editDomContent,
+        content: filterOutHtmlShare(editDomContent),
         platform: idProvider.toLocaleLowerCase(),
         refs: [
           {
@@ -180,17 +181,25 @@ export default {
 
       console.log('emoji', emoji)
     },
+    // test xss
+    // test() {
+    //   let editDom = document.querySelector('.content-editable')
+    //   let editDomContent = editDom.innerHTML.toString()
+
+    //   const html = filterOutHtmlShare(editDomContent)
+    //   console.log(html)
+    // }
   },
 }
 </script>
 
 <style lang="less">
-.scroll {
-  width: 100%;
-  max-height: 300px;
-  overflow-y: auto;
-  position: relative;
-}
+// .scroll {
+//   width: 100%;
+//   max-height: 300px;
+//   overflow-y: auto;
+//   position: relative;
+// }
 .container {
   // max-width: 355px;
   width: 100%;
@@ -204,7 +213,7 @@ export default {
   width: 100%;
   position: relative;
 }
-input[type="text"],
+// input[type="text"],
 .content-editable {
   appearance: none;
   border: none;
@@ -212,6 +221,8 @@ input[type="text"],
   padding: 1rem 1rem;
   color: #666;
   width: 100%;
+  height: 120px;
+  overflow: auto;
   border-radius: 0.25rem;
   font-size: 16px;
   outline: none;
@@ -224,35 +235,35 @@ input[type="text"],
   display: block;
   color: #666;
 }
-textarea {
-  appearance: none;
-  border: none;
-  background: #eee;
-  padding: 1rem;
-  width: 100%;
-  border-radius: 0.25rem;
-  font-size: 16px;
-  height: 100px;
-  outline: none;
-  &:focus {
-    background: #fff;
-  }
-}
-.btn {
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  margin: 20px 0;
-  background: #fc466b;
-  color: #fff;
-  font-size: 16px;
-  padding: 8px 16px;
-  border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(#000, 0.18);
-  &:hover {
-    background: darken(#fc466b, 3%);
-  }
-}
+// textarea {
+//   appearance: none;
+//   border: none;
+//   background: #eee;
+//   padding: 1rem;
+//   width: 100%;
+//   border-radius: 0.25rem;
+//   font-size: 16px;
+//   height: 100px;
+//   outline: none;
+//   &:focus {
+//     background: #fff;
+//   }
+// }
+// .btn {
+//   appearance: none;
+//   border: none;
+//   cursor: pointer;
+//   margin: 20px 0;
+//   background: #fc466b;
+//   color: #fff;
+//   font-size: 16px;
+//   padding: 8px 16px;
+//   border-radius: 3px;
+//   box-shadow: 0 1px 3px rgba(#000, 0.18);
+//   &:hover {
+//     background: darken(#fc466b, 3%);
+//   }
+// }
 // Tribute-specific styles
 .tribute-container {
   position: absolute;
@@ -303,7 +314,7 @@ textarea {
   color: #1989fa;
 }
 .container-tribute {
-  min-height: 140px;
+  // min-height: 140px;
   background: #fff;
   border: 1px solid #e4e7ed;
   box-sizing: border-box;
