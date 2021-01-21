@@ -3,6 +3,8 @@
     <g-header />
     <div class="sharehall-push">
       <div class="sharehall-push__content">
+        <inputContent />
+
         <el-form
           ref="ruleForm"
           :model="ruleForm"
@@ -201,6 +203,7 @@ import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 import shareImage from '@/components/share_image/index'
 // import shareCardList from '@/components/sharehall/share_card_list.vue'
+import inputContent from '@/components/sharehall/input_content.vue'
 
 export default {
   components: {
@@ -212,6 +215,7 @@ export default {
     RAList,
     shareImage,
     // shareCardList
+    inputContent
   },
   data() {
     const httpTest = (rule, value, callback) => {
@@ -281,7 +285,7 @@ export default {
       },
       saveImg: '',
       createShareLoading: false,
-      saveLoading: false // 保存图片loading
+      saveLoading: false, // 保存图片loading
     }
   },
   computed: {
@@ -359,6 +363,9 @@ export default {
   },
   mounted() {
     this.usersrecommend()
+    if (process.browser) {
+      //
+    }
   },
   methods: {
     initShareLink() {
@@ -608,7 +615,7 @@ export default {
             })
         }, 1500)
       })
-    }
+    },
   }
 }
 </script>
