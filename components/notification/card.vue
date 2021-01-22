@@ -70,6 +70,7 @@
           :post="post"
           :comment="commentObject"
           :token="transferLog || token"
+          :share="share"
         />
       </div>
     </div>
@@ -115,6 +116,10 @@ export default {
       default: null
     },
     token: {
+      type: Object,
+      default: null
+    },
+    share: {
       type: Object,
       default: null
     }
@@ -235,6 +240,8 @@ export default {
         if (object_type === 'collaborator' && this.token && total < 2) return 'token'
         if (object_type === 'announcementToken' && this.token) return 'token'
         else if (this.post) return 'post'
+      } else if (action === 'at') {
+        return 'share' // 分享
       }
       return 'hide' // 隐藏
     }

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="url">
+  <n-link :to="url" target="_blank">
     <div
       :class="bgColor !== '#F1F1F1' && 'shadow'"
       class="card"
@@ -105,8 +105,14 @@
           </h4>
         </div>
       </div>
+      <!-- @分享 -->
+      <div v-if="mode === 'share'" class="fl share">
+        <n-link class="link" :to="{ name: 'share-id', params: { id: share.id } }" target="_blank">
+          在Ta的分享中提及(@)到了你
+        </n-link>
+      </div>
     </div>
-  </router-link>
+  </n-link>
 </template>
 <script>
 
@@ -135,6 +141,10 @@ export default {
       default:  null
     },
     token: {
+      type: Object,
+      default: null
+    },
+    share: {
       type: Object,
       default: null
     },
@@ -183,6 +193,7 @@ export default {
       else if(this.mode === 'token' && this.token.symbol === 'CNY') return {name: 'account'}
       else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id || this.token.id}}
       else if(this.mode === 'user') return {name: 'user-id', params:{id: this.user.id || 0}}
+      else if(this.mode === 'share') return {name: 'share-id', params:{id: this.share.id || 0}}
       return {}
     },
     followBtnText() {
@@ -502,6 +513,13 @@ export default {
     .introduction {
       display: none !important;
     }
+  }
+}
+
+.share {
+  .link {
+    color: #1989fa;
+    font-size: 14px;
   }
 }
 </style>

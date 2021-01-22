@@ -8,7 +8,8 @@
       class="icon"
       icon-class="quotation_marks"
     />
-    <p>{{ content }}</p>
+    <div class="content" v-html="content" />
+    <!-- <p></p> -->
   </div>
 </template>
 <script>
@@ -40,7 +41,7 @@ export default {
       transform: rotate(-180deg);
     }
   }
-  p {
+  .content {
     font-size: 16px;
     font-weight: 400;
     color: #000000;

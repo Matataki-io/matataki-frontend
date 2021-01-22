@@ -146,6 +146,11 @@ export default {
       let editDomContent = editDom.innerHTML.toString()
       console.log('editDom', editDom.innerHTML)
 
+      // 从 dom 获取 user id
+      let userIds = editDom.querySelectorAll('a.tribute-mention')
+      const receivingIds = [...userIds].map(i => i.getAttribute('data-user'))
+      // console.log('receivingIds', receivingIds)
+
       const idProvider = getCookie('idProvider')
       const { name: author = '' } = this.currentUserInfo
 
@@ -161,6 +166,7 @@ export default {
             url: 'https://test.smartsignature.io/share/102331',
           },
         ],
+        receivingIds
       }
       const res = await this.$API.createShare(data)
       try {
