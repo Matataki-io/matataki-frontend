@@ -124,6 +124,13 @@
         <span>{{ toggleMore ? $t('hideMore') : $t('viewMore') }}</span><i class="el-icon-d-arrow-left icon" />
       </div>
     </div>
+    <div
+      v-if="card.media && card.media.length > 0"
+      class="card-share-photoalbum"
+    >
+      <div class="card-share-photoalbum-pillar" />
+      <photoAlbum class="card-share-photoalbum-main" :media="card.media" />
+    </div>
   </div>
 </template>
 
@@ -132,12 +139,15 @@ import avatar from '@/components/avatar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
+import photoAlbum from '@/components/dynamic/photo_album'
+
 export default {
   components: {
     avatar,
     shareOuterCard,
     sharePCard,
-    shareInsideCard
+    shareInsideCard,
+    photoAlbum
   },
   props: {
     card: {
@@ -184,6 +194,24 @@ export default {
   align-items: center;
   flex-direction: column;
   position: relative;
+}
+
+.card-share-photoalbum {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+
+  &-pillar {
+    padding-bottom: 56.25%;
+  }
+
+  &-main {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 .card {
