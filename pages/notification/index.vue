@@ -29,6 +29,7 @@
           :comment-object="getCommentObject(item)"
           :transfer-log="getTransferLog(item)"
           :token="getToken(item)"
+          :share="getShare(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
@@ -183,6 +184,7 @@ export default {
       assetsLogs: [],
       minetokensLogs: [],
       tokens: [],
+      shares: [],
       detailsIndex: null,
       notificationDetails: [],
       pagePosition: 0,
@@ -221,6 +223,10 @@ export default {
         {
           key: 'transfer',
           label: '交易'
+        },
+        {
+          key: 'at',
+          label: '@'
         }
       ],
       actions: null,
@@ -277,6 +283,7 @@ export default {
         this.assetsLogs.push(...res.data.assetsLog)
         this.minetokensLogs.push(...res.data.minetokensLog)
         this.tokens.push(...res.data.tokens)
+        this.shares.push(...res.data.shares)
         // 标记已读
         this.markRead(res.data.list)
         // 设定起始查询位置
@@ -342,6 +349,11 @@ export default {
     getToken(notify) {
       if (notify.action === 'annouce' && ['announcementToken', 'collaborator'].includes(notify.object_type))
         return this.tokens.find(token => token.id === notify.remark)
+      else return null
+    },
+    getShare(notify) {
+      if (notify.action === 'at' && ['share'].includes(notify.object_type))
+        return this.shares.find(i => i.id === notify.object_id)
       else return null
     },
     openDetails(data) {

@@ -50,7 +50,7 @@
         />
         <p
           class="search-res"
-          v-html="card.short_content || '&nbsp;'"
+          v-html="content || '&nbsp;'"
         />
       </router-link>
     </div>
@@ -139,6 +139,8 @@ import avatar from '@/components/avatar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
+import { filterOutHtmlShare } from '@/utils/xss'
+import { renderLinkUser } from '@/utils/share'
 import photoAlbum from '@/components/dynamic/photo_album'
 
 export default {
@@ -175,6 +177,10 @@ export default {
     avatarSrc() {
       if (this.card.avatar) return this.$ossProcess(this.card.avatar, { h: 60 })
       return ''
+    },
+    // 分享内容
+    content() {
+      return this.$utils.compose(renderLinkUser, filterOutHtmlShare)(this.card.short_content)
     }
   },
   created() {
@@ -379,9 +385,15 @@ export default {
 </style>
 
 <style lang="less">
-.search-res em {
-  font-weight: bold;
-  font-style: normal;
-  color: @purpleDark;
+.search-res {
+  em {
+    font-weight: bold;
+    font-style: normal;
+    color: @purpleDark;
+  }
+  a {
+    color: rgb(47, 174, 227)
+  }
 }
+
 </style>
