@@ -21,7 +21,7 @@
         <span class="info-status">
           <span :style="{ color: currentText > totalText ? 'red' : '' }">{{ currentText }}</span>/{{ totalText }}</span>
         <div class="emoji-container">
-          <svg-icon icon-class="emoji" class="icon" @click="emoji = !emoji" />
+          <svg-icon icon-class="emoji" class="icon" @click.stop="emoji = !emoji" />
           <client-only>
             <picker
               v-show="emoji"
@@ -85,17 +85,24 @@ export default {
           },
         ],
       },
-      timer: null
+      timer: null,
+      // handleEventClick: null
     }
   },
   mounted() {
     if (process.browser) {
       this.timer = setInterval(this.handleCurrentText, 2000)
+      // this.handleEventClick = (e) => {
+      //   console.log(e)
+      //   this.emoji = false
+      // }
+      // document.addEventListener('click', this.handleEventClick, false)
     }
   },
   destroyed() {
     if (process.browser) {
       clearInterval(this.timer)
+      // document.removeEventListener(this.handleEventClick)
     }
   },
   methods: {
@@ -244,6 +251,7 @@ export default {
   border: 1px solid rgba(#000, 0.13);
   background-clip: padding-box;
   overflow: hidden;
+  word-spacing: 2px;
 }
 .tribute-container li {
   color: #3f5efb;
@@ -270,11 +278,11 @@ export default {
   color: #1989fa;
 }
 .container-tribute {
-  // min-height: 140px;
   background: #fff;
   border: 1px solid #e4e7ed;
   box-sizing: border-box;
   border-radius: 3px;
+  min-height: 120px;
 }
 .container-input {
   // max-width: 700px;
@@ -297,7 +305,7 @@ export default {
 .emoji-picker {
   position: absolute;
   left: 0px;
-  top: 30px;
+  top: 36px;
   z-index: 9;
 }
 .i-f-info {
