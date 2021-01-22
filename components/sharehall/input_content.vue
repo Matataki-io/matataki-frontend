@@ -46,8 +46,8 @@ import debounce from 'lodash/debounce'
 // import throttle from 'lodash/throttle'
 import { mapGetters } from 'vuex'
 import { getCookie } from '@/utils/cookie'
-
 import { filterOutHtmlShare } from '@/utils/xss'
+
 export default {
   components: {
     VueTribute,

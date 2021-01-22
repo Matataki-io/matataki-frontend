@@ -518,7 +518,7 @@ export default {
 
 .share {
   .link {
-    color: #1989fa;
+    color: rgb(47, 174, 227);
     font-size: 14px;
   }
 }
