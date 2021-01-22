@@ -382,6 +382,8 @@ export default {
       this.urlForm.url = ''
       this.shareLinkList = []
       this.$refs.urlForm.resetFields()
+      // 清空分享内容
+      document.querySelector('.content-editable').innerHTML = ''
     },
     setpFunc(formName) {
       return new Promise(resolve => this.$refs[formName].validate(valid => resolve(valid)))
@@ -440,6 +442,7 @@ export default {
       const data = {
         author,
         content: editDomContent.trim(),
+        short_content_share: (editDomContent.trim()).slice(0, 3000),
         platform: idProvider.toLocaleLowerCase(),
         refs: [],
         media: [],

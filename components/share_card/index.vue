@@ -48,7 +48,7 @@
           class="icon"
           icon-class="quotation_marks"
         />
-        <p
+        <div
           class="search-res"
           v-html="content || '&nbsp;'"
         />
@@ -180,7 +180,8 @@ export default {
     },
     // 分享内容
     content() {
-      return this.$utils.compose(renderLinkUser, filterOutHtmlShare)(this.card.short_content)
+      // 向后兼容 this.card.short_content_share || this.card.short_content
+      return this.$utils.compose(renderLinkUser, filterOutHtmlShare)(this.card.short_content_share || this.card.short_content)
     }
   },
   created() {
@@ -300,7 +301,7 @@ export default {
     position: relative;
     padding: 0 20px;
     width: 100%;
-    margin-top: 10px;
+    margin: 10px 0;
     text-decoration: none;
     cursor: pointer;
     box-sizing: border-box;
@@ -386,6 +387,14 @@ export default {
 
 <style lang="less">
 .search-res {
+  color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+  word-break: break-word;
+  line-height: 1.5;
   em {
     font-weight: bold;
     font-style: normal;
