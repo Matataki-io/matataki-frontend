@@ -83,6 +83,11 @@
             </div>
           </el-form-item>
           <div class="push-btn">
+            <uploadMedia
+              v-model="mediaList"
+              :visible-state.sync="uploadMediaVisible"
+              @uploading="item => mediaUploading = item"
+            />
             <el-button
               v-loading.fullscreen.lock="fullscreenLoading"
               type="primary"
@@ -204,6 +209,7 @@ import RAList from '@/components/recommend_author_list'
 import shareImage from '@/components/share_image/index'
 // import shareCardList from '@/components/sharehall/share_card_list.vue'
 import inputContent from '@/components/sharehall/input_content.vue'
+import uploadMedia from '@/components/dynamic/upload_media'
 
 export default {
   components: {
@@ -214,6 +220,7 @@ export default {
     buttonLoadMore,
     RAList,
     shareImage,
+    uploadMedia,
     // shareCardList
     inputContent
   },
@@ -286,6 +293,9 @@ export default {
       saveImg: '',
       createShareLoading: false,
       saveLoading: false, // 保存图片loading
+      uploadMediaVisible: false,
+      mediaList: [],
+      mediaUploading: false,
     }
   },
   computed: {
@@ -404,6 +414,7 @@ export default {
         // console.log('currentUserInfo', this.currentUserInfo)
         if (!this.isLogined) return this.$store.commit('setLoginModal', true)
         if (this.shareLinkList.length <= 0) return this.$message({ message: '分享引用不能为空', type: 'warning' })
+        if (this.mediaUploading) return this.$message.warning('媒体正在上传中，请稍后再试')
         // 平台检测
         const idProvider = getCookie('idProvider')
         if (!idProvider) {
@@ -417,7 +428,8 @@ export default {
           author,
           content: this.ruleForm.content.trim(),
           platform: idProvider.toLocaleLowerCase(),
-          refs: []
+          refs: [],
+          media: []
         }
         this.shareLinkList.map(i => {
           // 目前只有外展
@@ -428,6 +440,14 @@ export default {
             cover: i.cover
           })
         })
+        if (this.mediaList) {
+          data.media = this.mediaList.map(item => {
+            return {
+              type: item.type,
+              url: item.url
+            }
+          })
+        }
         // return false
         this.$API.createShare(data)
           .then(res => {
@@ -435,6 +455,7 @@ export default {
               this.createShareCard(res.data, this.ruleForm.content.trim())
               this.pull.list.length = 0
               this.pull.time = Date.now()
+              this.uploadMediaVisible = false
               this.resetForm()
               this.$message({ message: '发布成功', type: 'success' })
             } else {
@@ -706,7 +727,7 @@ export default {
 }
 .push-btn {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .recommend-author {
   position: sticky;
