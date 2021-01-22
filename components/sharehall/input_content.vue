@@ -11,14 +11,15 @@
             id="tributeShare"
             class="content-editable"
             contenteditable="true"
-            placeholder="..."
+            placeholder="谈谈感想"
           />
         </vue-tribute>
       </client-only>
     </div>
     <div class="input-footer">
       <div class="i-f-info">
-        <span class="info-status">{{ currentText }}/{{ totalText }}</span>
+        <span class="info-status">
+          <span :style="{ color: currentText > totalText ? 'red' : '' }">{{ currentText }}</span>/{{ totalText }}</span>
         <div class="emoji-container">
           <svg-icon icon-class="emoji" class="icon" @click="emoji = !emoji" />
           <client-only>
@@ -32,9 +33,6 @@
           </client-only>
         </div>
       </div>
-      <el-button v-loading="loadingSubmit" size="small" @click="handleSubmit">
-        提交
-      </el-button>
     </div>
   </div>
 </template>
@@ -43,21 +41,22 @@
 import { Picker } from 'emoji-mart-vue'
 import VueTribute from '@/plugins/vue-tribute.js'
 import debounce from 'lodash/debounce'
-// import throttle from 'lodash/throttle'
-import { mapGetters } from 'vuex'
-import { getCookie } from '@/utils/cookie'
-import { filterOutHtmlShare } from '@/utils/xss'
 
 export default {
   components: {
     VueTribute,
     Picker,
   },
+  props: {
+    totalText: {
+      type: Number,
+      default: 1000
+    }
+  },
   data() {
     return {
       emoji: false,
       loadingSubmit: false,
-      totalText: 500,
       currentText: 0,
       tributeOptions: {
         collection: [
@@ -91,11 +90,8 @@ export default {
   },
   mounted() {
     if (process.browser) {
-      this.timer = setInterval(this.handleKeydown, 2000)
+      this.timer = setInterval(this.handleCurrentText, 2000)
     }
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   destroyed() {
     if (process.browser) {
@@ -130,62 +126,16 @@ export default {
         return cb([])
       }
     }, 300),
-    handleKeydown() {
+    handleCurrentText() {
       let editDom = document.querySelector('.content-editable')
       let editDomText = editDom.innerText
       this.currentText = editDomText.length
-    },
-    async handleSubmit() {
-      if (!this.isLogined) {
-        this.$store.commit('setLoginModal', true)
-        return
-      }
-
-      this.loadingSubmit = true
-      let editDom = document.querySelector('.content-editable')
-      let editDomContent = editDom.innerHTML.toString()
-      console.log('editDom', editDom.innerHTML)
-
-      // 从 dom 获取 user id
-      let userIds = editDom.querySelectorAll('a.tribute-mention')
-      const receivingIds = [...userIds].map(i => i.getAttribute('data-user'))
-      // console.log('receivingIds', receivingIds)
-
-      const idProvider = getCookie('idProvider')
-      const { name: author = '' } = this.currentUserInfo
-
-      const data = {
-        author: author,
-        content: filterOutHtmlShare(editDomContent),
-        platform: idProvider.toLocaleLowerCase(),
-        refs: [
-          {
-            cover: null,
-            summary: '分享图片测试3',
-            title: null,
-            url: 'https://test.smartsignature.io/share/102331',
-          },
-        ],
-        receivingIds
-      }
-      const res = await this.$API.createShare(data)
-      try {
-        if (res.code === 0) {
-          this.$message({ message: '发布成功', type: 'success' })
-        } else {
-          throw new Error(res)
-        }
-      } catch (e) {
-        console.log(e.toString())
-        this.$message({ message: '发布失败', type: 'error' })
-      }
-      this.loadingSubmit = false
     },
     addEmoji(emoji) {
       let editDom = document.querySelector('.content-editable')
       editDom.insertAdjacentHTML('beforeend', emoji.native)
 
-      console.log('emoji', emoji)
+      // console.log('emoji', emoji)
     },
     // test xss
     // test() {
@@ -230,7 +180,7 @@ export default {
   height: 120px;
   overflow: auto;
   border-radius: 0.25rem;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
   &:focus {
     background: #fff;
@@ -328,7 +278,7 @@ export default {
 }
 .container-input {
   // max-width: 700px;
-  margin: 20px auto 0;
+  margin: 0 auto;
 }
 .input-footer {
   display: flex;

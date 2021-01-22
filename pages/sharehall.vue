@@ -3,26 +3,7 @@
     <g-header />
     <div class="sharehall-push">
       <div class="sharehall-push__content">
-        <inputContent />
-
-        <el-form
-          ref="ruleForm"
-          :model="ruleForm"
-          :rules="rules"
-          @submit.native.prevent
-        >
-          <el-form-item label="" prop="content">
-            <el-input
-              ref="shareContent"
-              v-model="ruleForm.content"
-              size="mini"
-              type="textarea"
-              rows="6"
-              placeholder="谈谈感想"
-            />
-          </el-form-item>
-        </el-form>
-
+        <inputContent :total-text="totalText" />
         <el-form
           ref="urlForm"
           :model="urlForm"
@@ -93,7 +74,7 @@
               type="primary"
               class="g-button__black "
               size="mini"
-              @click="pushShare('ruleForm')"
+              @click="pushShare()"
             >
               <svg-icon icon-class="edit" class="icon" />
               发布
@@ -210,6 +191,7 @@ import shareImage from '@/components/share_image/index'
 // import shareCardList from '@/components/sharehall/share_card_list.vue'
 import inputContent from '@/components/sharehall/input_content.vue'
 import uploadMedia from '@/components/dynamic/upload_media'
+import { filterOutHtmlShare } from '@/utils/xss'
 
 export default {
   components: {
@@ -234,9 +216,6 @@ export default {
     }
     return {
       showSidebar: false,
-      ruleForm: {
-        content: ''
-      },
       urlForm: {
         url: ''
       },
@@ -296,6 +275,7 @@ export default {
       uploadMediaVisible: false,
       mediaList: [],
       mediaUploading: false,
+      totalText: 1000, // 输入框最大限制
     }
   },
   computed: {
@@ -399,74 +379,108 @@ export default {
     },
     // 初始化所有表单内容
     resetForm() {
-      this.ruleForm.content = ''
       this.urlForm.url = ''
       this.shareLinkList = []
-      this.$refs.ruleForm.resetFields()
       this.$refs.urlForm.resetFields()
     },
     setpFunc(formName) {
       return new Promise(resolve => this.$refs[formName].validate(valid => resolve(valid)))
     },
+    // 获取输入框内容的信息
+    _getInputContent() {
+      // 获取分享内容
+      let editDom = document.querySelector('.content-editable')
+      let editDomContent = editDom.innerHTML.toString()
+      // console.log('editDom', editDom.innerHTML)
+
+      // 从 dom 获取 user id
+      let userIds = editDom.querySelectorAll('a.tribute-mention')
+      const receivingIds = [...userIds].map(i => i.getAttribute('data-user'))
+      // console.log('receivingIds', receivingIds)
+
+      return {
+        editDomContent: filterOutHtmlShare(editDomContent),
+        receivingIds
+      }
+    },
     // 发布分享
-    async pushShare(formName) {
-      if (await this.setpFunc(formName)) {
-        // console.log('currentUserInfo', this.currentUserInfo)
-        if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-        if (this.shareLinkList.length <= 0) return this.$message({ message: '分享引用不能为空', type: 'warning' })
-        if (this.mediaUploading) return this.$message.warning('媒体正在上传中，请稍后再试')
-        // 平台检测
-        const idProvider = getCookie('idProvider')
-        if (!idProvider) {
-          this.$message({ message: '发生错误, 请您重新登录', type: 'error' })
-          this.$store.commit('setLoginModal', true)
-          return false
-        }
-        const { name: author = '' } = this.currentUserInfo
-        this.fullscreenLoading = true
-        const data = {
-          author,
-          content: this.ruleForm.content.trim(),
-          platform: idProvider.toLocaleLowerCase(),
-          refs: [],
-          media: []
-        }
-        this.shareLinkList.map(i => {
-          // 目前只有外展
-          data.refs.push({
-            url: i.url,
-            title: i.title,
-            summary: i.summary,
-            cover: i.cover
-          })
+    async pushShare() {
+      // console.log('currentUserInfo', this.currentUserInfo)
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+
+      const { editDomContent, receivingIds } = this._getInputContent()
+
+      if (editDomContent.length <= 0) {
+        this.$message({ message: '分享内容不能为空', type: 'warning' })
+        return
+      }
+      if (editDomContent.length > this.totalText) {
+        this.$message({ message: '分享内容不能超过最高限制', type: 'warning' })
+        return
+      }
+      if (this.shareLinkList.length <= 0) {
+        this.$message({ message: '分享引用不能为空', type: 'warning' })
+        return
+      }
+      if (this.mediaUploading) {
+        this.$message.warning('媒体正在上传中，请稍后再试')
+        return
+      }
+      // 平台检测
+      const idProvider = getCookie('idProvider')
+      if (!idProvider) {
+        this.$message({ message: '发生错误, 请您重新登录', type: 'error' })
+        this.$store.commit('setLoginModal', true)
+        return false
+      }
+
+      const { name: author = '' } = this.currentUserInfo
+
+      this.fullscreenLoading = true
+      const data = {
+        author,
+        content: editDomContent.trim(),
+        platform: idProvider.toLocaleLowerCase(),
+        refs: [],
+        media: [],
+        receivingIds
+      }
+      this.shareLinkList.map(i => {
+        // 目前只有外展
+        data.refs.push({
+          url: i.url,
+          title: i.title,
+          summary: i.summary,
+          cover: i.cover
         })
-        if (this.mediaList) {
-          data.media = this.mediaList.map(item => {
-            return {
-              type: item.type,
-              url: item.url
-            }
-          })
+      })
+      if (this.mediaList) {
+        data.media = this.mediaList.map(item => {
+          return {
+            type: item.type,
+            url: item.url
+          }
+        })
+      }
+      // return false
+
+      try {
+        const res = await this.$API.createShare(data)
+        if (res.code === 0) {
+          this.createShareCard(res.data, editDomContent.trim())
+          this.pull.list.length = 0
+          this.pull.time = Date.now()
+          this.uploadMediaVisible = false
+          this.resetForm()
+          this.$message({ message: '发布成功', type: 'success' })
+        } else {
+          throw new Error(res)
         }
-        // return false
-        this.$API.createShare(data)
-          .then(res => {
-            if (res.code === 0) {
-              this.createShareCard(res.data, this.ruleForm.content.trim())
-              this.pull.list.length = 0
-              this.pull.time = Date.now()
-              this.uploadMediaVisible = false
-              this.resetForm()
-              this.$message({ message: '发布成功', type: 'success' })
-            } else {
-              this.$message({ message: '发布失败', type: 'error' })
-            }
-          }).catch(err => {
-            console.log(err)
-            this.$message({ message: '发布失败', type: 'error' })
-          }).finally(() => {
-            this.fullscreenLoading = false
-          })
+      } catch (e) {
+        console.log(e.toString())
+        this.$message({ message: '发布失败', type: 'error' })
+      } finally {
+        this.fullscreenLoading = false
       }
     },
     // 获取链接内容
