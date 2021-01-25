@@ -518,10 +518,10 @@
     "articleWidgetHelp": "What is an article widget",
     "articleWidgetContent": "The widget function can generate a beautiful display card for the current article. \nYou can copy the widget code into the article editor of Shun MATATAKI, so that you can insert beautiful article display cards in your article. \nOf course, the article card you show will also have an invitation link function.",
     "stepTitle": "Steps",
-    "stepContent1": "你可以选择自定义展示卡片上的简介内容",
-    "stepContent2": "点击“创建widget”按钮获取代码",
-    "stepContent3": "点击“复制代码”按钮获取widget代码",
-    "stepContent4": "粘贴代码到瞬MATATAKI编辑器中即可展示",
+    "stepContent1": "You can choose to customize the introduction content on the display card",
+    "stepContent2": "Click the \"Create widget\" button to get the code",
+    "stepContent3": "Click the \"Copy Code\" button to get the widget code",
+    "stepContent4": "Paste the code into the instant MATATAKI editor to display",
     "widgetView": "widget preview",
     "widgetCopyDes": "Copy the code below and paste it to your website to display",
     "copyCode": "Copy code",
@@ -1211,5 +1211,6 @@
   "unsupported-platform-type": "Unsupported platform type",
   "please-enter-the-profile-information-of-token": "Please enter the profile information of Token",
   "please-enter-token-symbol": "Please enter Token Symbol",
-  "please-enter-uppercase-english-letters": "Please enter uppercase English letters"
+  "please-enter-uppercase-english-letters": "Please enter uppercase English letters",
+  "add-introduction-optional": "Add introduction (optional)"
 }
