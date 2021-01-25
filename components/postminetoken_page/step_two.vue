@@ -56,7 +56,7 @@
           {{ $t('postminetoken.stepTwoLabelSymbol') }}
           <el-tooltip
             effect="dark"
-            content="请输入大写英文字母"
+            :content="$t('please-enter-uppercase-english-letters')"
             placement="top"
             class="tag-help"
           >
@@ -68,7 +68,7 @@
           class="token-input customize-input"
           maxlength="10"
           show-word-limit
-          placeholder="请输入Token Symbol"
+          :placeholder="$t('please-enter-token-symbol')"
         />
       </el-form-item>
       <el-form-item prop="brief">
@@ -76,7 +76,7 @@
           {{ $t('postminetoken.stepTwoLabelBrief') }}
           <el-tooltip
             effect="dark"
-            content="请输入Token的简介信息"
+            :content="$t('please-enter-the-profile-information-of-token')"
             placement="top"
             class="tag-help"
           >
@@ -90,7 +90,7 @@
           maxlength="50"
           :rows="6"
           show-word-limit
-          placeholder="请输入Token的简介信息"
+          :placeholder="$t('please-enter-the-profile-information-of-token')"
         />
       </el-form-item>
       <el-form-item prop="tag">
@@ -105,6 +105,7 @@
             <svg-icon class="help-icon" icon-class="help" />
           </el-tooltip>
         </span>
+        <!-- TODO 这里需要适配i18n调整 前后应该都要处理 --小田 -->
         <el-checkbox-group v-model="tokenForm.tag" class="token-checkbox" size="mini">
           <el-checkbox label="个人" />
           <el-checkbox label="组织" />

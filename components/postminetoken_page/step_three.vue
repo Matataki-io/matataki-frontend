@@ -60,7 +60,7 @@
         <section class="fl">
           <el-select
             v-model="tokenForm.field"
-            placeholder="请选择"
+            :placeholder="$t('please-choose')"
             clearable
             style="width: 40%;"
           >
@@ -87,7 +87,7 @@
         <section class="fl">
           <el-select
             v-model="tokenForm.platform"
-            placeholder="请选择"
+            :placeholder="$t('please-choose')"
             clearable
             style="width: 40%;"
           >
@@ -232,7 +232,7 @@ export default {
         info: '',
         promote: ''
       },
-
+      // TODO 这里需要适配i18n调整 前后应该都要处理 --小田
       fieldOptions: [
         {
           value: '财经',
