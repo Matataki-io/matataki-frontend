@@ -1,9 +1,9 @@
 <template>
   <div v-loading="pull.loading">
     <div>
-      <span class="head-title" :class="headTitle === 0 && 'active'" @click="headTitle = 0">全部</span>
-      <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">添加</span>
-      <span class="head-title" :class="headTitle === 2 && 'active'" @click="headTitle = 2">删除</span>
+      <span class="head-title" :class="headTitle === 0 && 'active'" @click="headTitle = 0">{{ $t('all') }}</span>
+      <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">{{ $t('add-to') }}</span>
+      <span class="head-title" :class="headTitle === 2 && 'active'" @click="headTitle = 2">{{ $t('delete') }}</span>
     </div>
 
     <tableCard class="table-card" :data="pull.list" />

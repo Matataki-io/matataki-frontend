@@ -17,7 +17,7 @@
               <i
                 v-else
                 class="el-icon-arrow-down el-icon--right"
-              /> 
+              />
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="general">
@@ -44,7 +44,7 @@
             class="sub-column cursor"
             @click="toggleSort('unit-price')"
           >
-            交易所价格
+            {{ $t('exchange-price') }}
             <i class="el-icon-d-caret" />
           </div>
           <div

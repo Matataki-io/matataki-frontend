@@ -6,7 +6,7 @@
   >
     <el-table-column
       prop="name"
-      label="名称"
+      :label="$t('name')"
     >
       <template slot-scope="scope">
         <span class="card-name" :class="$utils.clientWidth() >= 768 ? '' : 'mini'">
@@ -43,7 +43,7 @@
     <el-table-column
       v-if="$utils.clientWidth() >= 768"
       prop="type"
-      label="类型"
+      :label="$t('types-of')"
       :width="$utils.clientWidth() >= 768 ? '160' : '' "
     >
       <template slot-scope="scope">
@@ -52,7 +52,7 @@
     </el-table-column>
     <el-table-column
       prop="create_time"
-      label="时间"
+      :label="$t('time')"
       :align="$utils.clientWidth() >= 768 ? 'left' : 'center'"
       :width="$utils.clientWidth() >= 768 ? '180' : '146' "
     >
@@ -62,7 +62,7 @@
     </el-table-column>
     <el-table-column
       prop="amount"
-      label="数量"
+      :label="$t('quantity')"
       align="right"
     >
       <template slot-scope="scope">
@@ -106,14 +106,14 @@ export default {
         return '直通车转入'
       }
       let list = {
-        'mint': '增发',
-        'transfer': '转账',
-        'exchange_purchase': '交易所购买',
-        'exchange_addliquidity': '添加流动金',
-        'exchange_removeliquidity': '删除流动金',
-        'reward_article': '打赏文章',
-        'pay_article': '支付文章',
-        'direct_trade': '直通车交易'
+        'mint': this.$t('additional-issuance'),
+        'transfer': this.$t('transferMoney'),
+        'exchange_purchase': this.$t('exchange-purchase'),
+        'exchange_addliquidity': this.$t('add-liquidity'),
+        'exchange_removeliquidity': this.$t('delete-liquidity'),
+        'reward_article': this.$t('reward-articles'),
+        'pay_article': this.$t('payment-article'),
+        'direct_trade': this.$t('through-train-transaction')
       }
 
       return list[type] || '其他'

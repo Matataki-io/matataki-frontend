@@ -753,14 +753,14 @@
     "errorIncludeHttp": "请输入包含http(s)://的链接地址"
   },
   "token": {
-    "comprehensiveSort": "综合排序",
-    "ascendingAlphabeticalOrder": "首字母升序",
-    "descendingFirstLetter": "首字母降序",
-    "ascendingTime": "时间升序",
-    "descendingTime": "时间降序",
+    "comprehensiveSort": "Comprehensive ranking",
+    "ascendingAlphabeticalOrder": "First letter ascending",
+    "descendingFirstLetter": "First letter descending",
+    "ascendingTime": "Time ascending",
+    "descendingTime": "Time descending",
     "unitPrice": "单价",
     "liquidGold": "Liquid gold",
-    "turnover24h": "24h成交额",
+    "turnover24h": "24h turnover",
     "founder": "Founder",
     "releaseTime": "发布时间",
     "summary": "Introduction",
@@ -1179,5 +1179,11 @@
   "self-publish-article": "Self-published articles",
   "time-publish-fail": "Timed publishing failed",
   "transfer-all-in": "Transfer all in",
-  "unpublish": "Unpublish"
+  "unpublish": "Unpublish",
+  "exchange-price": "Exchange price",
+  "understand-more": "understand more",
+  "issue-coin": "Issue Fan Ticket",
+  "your-coin-application-failed": "Your Fan ticket application failed!",
+  "your-coin-application-is-successful": "Your Fan ticket application has been successfully submitted!",
+  "the-audit-result-will-be-sent-by-email-within-5-working-days": "The audit result will be sent by email within 5 working days"
 }
