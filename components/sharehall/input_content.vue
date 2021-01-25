@@ -58,7 +58,7 @@ export default {
       emoji: false,
       loadingSubmit: false,
       currentText: 0,
-      tributeOptions: {
+      tributeOptions: { // tribute options
         collection: [
           {
             trigger: '@',
@@ -81,6 +81,29 @@ export default {
                   href="javascript:;"
                   title="${item.original.value}"
                   data-user="${item.original.id}">@${item.original.value}</a>`
+            },
+          },
+          {
+            trigger: '#',
+            values: (query, cb) => {
+              console.log('query', query)
+              if (!query) {
+                return cb([])
+              }
+
+              return this.searchUser(query, cb)
+            },
+            loadingItemTemplate: '<div style="padding: 16px">Loading</div>',
+            lookup: 'key',
+            fillAttr: 'key',
+            selectTemplate: function (item) {
+              console.log('item', item)
+              return `<a
+                  class="tribute-mention"
+                  contenteditable="false"
+                  href="javascript:;"
+                  title="大咖解说"
+                  data-tag="1">#大咖解说</a>`
             },
           },
         ],
@@ -116,6 +139,7 @@ export default {
       )
       console.log('Matched item:', e.detail.item)
     },
+    // 搜索用户
     searchUser: debounce(async function (val, cb) {
       const params = {
         word: val.trim(),
@@ -133,11 +157,13 @@ export default {
         return cb([])
       }
     }, 300),
+    // 处理当前文本 （获取长度）
     handleCurrentText() {
       let editDom = document.querySelector('.content-editable')
       let editDomText = editDom.innerText
       this.currentText = editDomText.length
     },
+    // 添加 Emojii
     addEmoji(emoji) {
       let editDom = document.querySelector('.content-editable')
       editDom.insertAdjacentHTML('beforeend', emoji.native)
