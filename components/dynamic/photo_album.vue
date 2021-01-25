@@ -1,180 +1,206 @@
 <template>
-  <div class="album">
-    <div v-if="locked" class="album-sensitivetab" @click="openSensitiveShow">
-      敏感内容
-    </div>
-    <!-- 单张图片 -->
-    <div
-      v-if="previewUrls.length === 1"
-      class="album-one"
-      :class="locked && 'sensitive'"
-      @click="openSensitiveShow"
-    >
-      <photoAlbumGif
-        v-if="gifvs[0]"
-        :src="gifvs[0]"
-      />
-      <el-image
-        v-else
-        :src="previewUrls[0]"
-        alt="image"
-        :preview-src-list="imgUrls"
-        fit="cover"
-        lazy
-      />
-    </div>
-    <!-- 两张图片 -->
-    <div
-      v-else-if="previewUrls.length === 2"
-      class="album-two"
-      :class="locked && 'sensitive'"
-      @click="openSensitiveShow"
-    >
-      <div class="album-two-column">
-        <photoAlbumGif
-          v-if="gifvs[0]"
-          :src="gifvs[0]"
-        />
+  <div class="album-frame">
+    <div class="album-frame-pillar" />
+    <div class="album" :class="albumClass">
+      <div v-if="locked" class="album-sensitivetab" @click="openSensitiveShow">
+        敏感内容
+      </div>
+      <!-- 单张图片 -->
+      <div
+        v-if="previewUrls.length === 1"
+        class="album-one"
+        :class="locked && 'sensitive'"
+        @click="openSensitiveShow"
+      >
+        <div v-if="isGif(0)" class="gif-label">
+          GIF
+        </div>
         <el-image
-          v-else
           :src="previewUrls[0]"
           alt="image"
-          :preview-src-list="imgUrls"
+          :preview-src-list="getImgList(0)"
           fit="cover"
           lazy
+          @mouseenter="playGif(0)"
+          @mouseout="stopGif(0)"
         />
       </div>
-      <div class="album-two-column">
-        <photoAlbumGif
-          v-if="gifvs[1]"
-          :src="gifvs[1]"
-        />
-        <el-image
-          v-else
-          :src="previewUrls[1]"
-          alt="image"
-          :preview-src-list="imgUrls"
-          fit="cover"
-          lazy
-        />
-      </div>
-    </div>
-    <!-- 三张图片 -->
-    <div
-      v-else-if="previewUrls.length === 3"
-      class="album-three"
-      :class="locked && 'sensitive'"
-      @click="openSensitiveShow"
-    >
-      <div class="album-three-column">
-        <photoAlbumGif
-          v-if="gifvs[0]"
-          :src="gifvs[0]"
-        />
-        <el-image
-          v-else
-          :src="previewUrls[0]"
-          alt="image"
-          :preview-src-list="imgUrls"
-          fit="cover"
-          lazy
-        />
-      </div>
-      <div class="album-three-column">
-        <div class="album-three-column-line">
-          <photoAlbumGif
-            v-if="gifvs[1]"
-            :src="gifvs[1]"
-          />
+      <!-- 两张图片 -->
+      <div
+        v-else-if="previewUrls.length === 2"
+        class="album-two"
+        :class="locked && 'sensitive'"
+        @click="openSensitiveShow"
+      >
+        <div class="album-two-column">
+          <div v-if="isGif(0)" class="gif-label">
+            GIF
+          </div>
           <el-image
-            v-else
-            :src="previewUrls[1]"
-            alt="image"
-            :preview-src-list="imgUrls"
-            fit="cover"
-            lazy
-          />
-        </div>
-        <div class="album-three-column-line">
-          <photoAlbumGif
-            v-if="gifvs[2]"
-            :src="gifvs[2]"
-          />
-          <el-image
-            v-else
-            :src="previewUrls[2]"
-            alt="image"
-            :preview-src-list="imgUrls"
-            fit="cover"
-            lazy
-          />
-        </div>
-      </div>
-    </div>
-    <!-- 四张图片 -->
-    <div
-      v-else-if="previewUrls.length > 3"
-      class="album-three"
-      :class="locked && 'sensitive'"
-      @click="openSensitiveShow"
-    >
-      <div class="album-three-column">
-        <div class="album-three-column-line">
-          <photoAlbumGif
-            v-if="gifvs[0]"
-            :src="gifvs[0]"
-          />
-          <el-image
-            v-else
             :src="previewUrls[0]"
             alt="image"
-            :preview-src-list="imgUrls"
+            :preview-src-list="getImgList(0)"
             fit="cover"
             lazy
+            @mouseenter="playGif(0)"
+            @mouseout="stopGif(0)"
           />
         </div>
-        <div class="album-three-column-line">
-          <photoAlbumGif
-            v-if="gifvs[2]"
-            :src="gifvs[2]"
-          />
+        <div class="album-two-column">
+          <div v-if="isGif(1)" class="gif-label">
+            GIF
+          </div>
           <el-image
-            v-else
-            :src="previewUrls[2]"
+            :src="previewUrls[1]"
             alt="image"
-            :preview-src-list="imgUrls"
+            :preview-src-list="getImgList(1)"
             fit="cover"
             lazy
+            @mouseenter="playGif(1)"
+            @mouseout="stopGif(1)"
           />
         </div>
       </div>
-      <div class="album-three-column">
-        <div class="album-three-column-line">
-          <photoAlbumGif
-            v-if="gifvs[1]"
-            :src="gifvs[1]"
-          />
+      <!-- 三张图片 -->
+      <div
+        v-else-if="previewUrls.length === 3"
+        class="album-three"
+        :class="locked && 'sensitive'"
+        @click="openSensitiveShow"
+      >
+        <div class="album-three-column">
+          <div v-if="isGif(0)" class="gif-label">
+            GIF
+          </div>
           <el-image
-            v-else
-            :src="previewUrls[1]"
+            :src="previewUrls[0]"
             alt="image"
-            :preview-src-list="imgUrls"
+            :preview-src-list="getImgList(0)"
             fit="cover"
             lazy
+            @mouseenter="playGif(0)"
+            @mouseout="stopGif(0)"
           />
         </div>
-        <div class="album-three-column-line">
-          <photoAlbumGif
-            v-if="gifvs[3]"
-            :src="gifvs[3]"
-          />
+        <div class="album-three-column">
+          <div class="album-three-column-line">
+            <div v-if="isGif(1)" class="gif-label">
+              GIF
+            </div>
+            <el-image
+              :src="previewUrls[1]"
+              alt="image"
+              :preview-src-list="getImgList(1)"
+              fit="cover"
+              lazy
+              @mouseenter="playGif(1)"
+              @mouseout="stopGif(1)"
+            />
+          </div>
+          <div class="album-three-column-line">
+            <div v-if="isGif(2)" class="gif-label">
+              GIF
+            </div>
+            <el-image
+              :src="previewUrls[2]"
+              alt="image"
+              :preview-src-list="getImgList(2)"
+              fit="cover"
+              lazy
+              @mouseenter="playGif(2)"
+              @mouseout="stopGif(2)"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- 四张图片 -->
+      <div
+        v-else-if="previewUrls.length === 4"
+        class="album-three"
+        :class="locked && 'sensitive'"
+        @click="openSensitiveShow"
+      >
+        <div class="album-three-column">
+          <div class="album-three-column-line">
+            <div v-if="isGif(0)" class="gif-label">
+              GIF
+            </div>
+            <el-image
+              :src="previewUrls[0]"
+              alt="image"
+              :preview-src-list="getImgList(0)"
+              fit="cover"
+              lazy
+              @mouseenter="playGif(0)"
+              @mouseout="stopGif(0)"
+            />
+          </div>
+          <div class="album-three-column-line">
+            <div v-if="isGif(2)" class="gif-label">
+              GIF
+            </div>
+            <el-image
+              :src="previewUrls[2]"
+              alt="image"
+              :preview-src-list="getImgList(2)"
+              fit="cover"
+              lazy
+              @mouseenter="playGif(2)"
+              @mouseout="stopGif(2)"
+            />
+          </div>
+        </div>
+        <div class="album-three-column">
+          <div class="album-three-column-line">
+            <div v-if="isGif(1)" class="gif-label">
+              GIF
+            </div>
+            <el-image
+              :src="previewUrls[1]"
+              alt="image"
+              :preview-src-list="getImgList(1)"
+              fit="cover"
+              lazy
+              @mouseenter="playGif(1)"
+              @mouseout="stopGif(1)"
+            />
+          </div>
+          <div class="album-three-column-line">
+            <div v-if="isGif(3)" class="gif-label">
+              GIF
+            </div>
+            <el-image
+              :src="previewUrls[3]"
+              alt="image"
+              :preview-src-list="getImgList(3)"
+              fit="cover"
+              lazy
+              @mouseenter="playGif(3)"
+              @mouseout="stopGif(3)"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- 五到九张图片 -->
+      <div
+        v-else-if="previewUrls.length > 4"
+        class="album-nine"
+        :class="locked && 'sensitive'"
+        @click="openSensitiveShow"
+      >
+        <div v-for="(item, index) of previewUrls" :key="index" class="album-nine-column">
+          <div v-if="isGif(index)" class="gif-label">
+            GIF
+          </div>
           <el-image
-            v-else
-            :src="previewUrls[3]"
+            :src="item"
             alt="image"
-            :preview-src-list="imgUrls"
+            :preview-src-list="getImgList(index)"
             fit="cover"
             lazy
+            @mouseenter="playGif(index)"
+            @mouseout="stopGif(index)"
           />
         </div>
       </div>
@@ -183,11 +209,9 @@
 </template>
 
 <script>
-import photoAlbumGif from './photo_album_gif'
 
 export default {
   components: {
-    photoAlbumGif
   },
   props: {
     // 卡片数据
@@ -198,11 +222,13 @@ export default {
     sensitive: {
       type: Boolean,
       default: false
-    }
+    },
   },
   data () {
     return {
-      showSensitive: false
+      showSensitive: false,
+      gifSize: 320,
+      mediaPlays: [],
     }
   },
   computed: {
@@ -217,29 +243,48 @@ export default {
     },
     previewUrls () {
       try {
-        return this.media.map(item => this.$API.getImg(item.url) + '?x-oss-process=image/resize,l_680,m_mfit/format,jpg')
+        return this.media.map((item, index) => {
+          let xOssProcess = '?x-oss-process=image/resize,l_680,m_mfit/format,jpg'
+          if (item.type === 'image/gif' && this.mediaPlays[index])
+            xOssProcess = '?x-oss-process=image/resize,l_680,m_mfit'
+
+          return this.$API.getImg(item.url) + xOssProcess
+        })
       } catch (e) {
-        console.error('[Unable to display picture]:', e)
-        return []
-      }
-    },
-    gifvs () {
-      try {
-        return this.media.map(item => item.type === 'gifv' ? item.url : '')
-      }
-      catch (e) {
         console.error('[Unable to display picture]:', e)
         return []
       }
     },
     locked () {
       return this.sensitive && !this.showSensitive
+    },
+    albumClass () {
+      return {
+        'album-frameless': this.previewUrls.length > 4,
+        'album-six': this.previewUrls.length === 5 || this.previewUrls.length === 6
+      }
     }
   },
   methods: {
     openSensitiveShow () {
       if (!this.sensitive) return
       this.showSensitive = true
+    },
+    isGif(index) {
+      return { ...this.media[index] }.type === 'image/gif'
+    },
+    playGif(index) {
+      if (this.media[index].type !== 'image/gif') return
+      this.$set(this.mediaPlays, index, true)
+    },
+    stopGif(index) {
+      if (this.media[index].type !== 'image/gif') return
+      this.$set(this.mediaPlays, index, false)
+    },
+    getImgList(index) {
+      const imgs = [...this.imgUrls]
+      imgs.push(...imgs.splice(0, index))
+      return imgs
     }
   }
 }
@@ -251,13 +296,52 @@ img {
   width: 100%;
   height: 100%;
 }
+.gif-label {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: #000000c4;
+  border-radius: 4px;
+  font-size: 13px;
+  color: white;
+  font-weight: 700;
+  line-height: 20px;
+  height: 20px;
+  padding: 0 5px;
+  z-index: 1;
+}
+
+.album-frame {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+
+  &-pillar {
+    padding-bottom: 56.25%;
+  }
+}
 
 .album {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   border: 1px solid #ccd6dd;
   background: #f1f1f1;
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
+
+  &.album-frameless {
+    border: none;
+    background: none;
+    border-radius: 0;
+  }
+
+  &.album-six {
+    margin-bottom: -28.3%;
+  }
 
   .sensitive-filter {
     &.sensitive {
@@ -285,6 +369,7 @@ img {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    position: relative;
     .sensitive-filter();
 
     .el-image {
@@ -305,6 +390,7 @@ img {
       height: 100%;
     }
     &-column {
+      position: relative;
       height: 100%;
       flex: 1;
 
@@ -332,6 +418,7 @@ img {
       display: flex;
       flex-direction: column;
       &-line {
+        position: relative;
         height: 50%;
         flex: 1;
 
@@ -342,6 +429,41 @@ img {
 
       &:nth-child(1) {
         margin-right: 2px;
+      }
+    }
+
+  }
+
+  &-nine {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    .sensitive-filter();
+
+    .el-image {
+      width: 100%;
+      height: 100%;
+    }
+    &-column {
+      height: calc(33.3% - 1.33px);
+      width: calc(33.3% - 1.33px);
+      min-width: calc(33.3% - 1.33px);
+      min-height: calc(33.3% - 1.33px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      margin: 0 2px 2px 0;
+      border: 1px solid #ccd6dd;
+      box-sizing: border-box;
+      background: #f1f1f1;
+      border-radius: 10px;
+      overflow: hidden;
+
+      &:nth-child(3n+0) {
+        margin-right: 0;
       }
     }
 
