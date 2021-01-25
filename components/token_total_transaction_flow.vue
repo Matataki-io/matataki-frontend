@@ -1,14 +1,14 @@
 <template>
   <div v-loading="pull.loading">
     <div>
-      <span class="head-title" :class="headTitle === 0 && 'active'" @click="headTitle = 0">全部</span>
-      <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">转账</span>
-      <span class="head-title" :class="headTitle === 2 && 'active'" @click="headTitle = 2">交易</span>
-      <span class="head-title" :class="headTitle === 3 && 'active'" @click="headTitle = 3">添加</span>
-      <span class="head-title" :class="headTitle === 4 && 'active'" @click="headTitle = 4">删除</span>
-      <span class="head-title" :class="headTitle === 5 && 'active'" @click="headTitle = 5">打赏</span>
-      <span class="head-title" :class="headTitle === 6 && 'active'" @click="headTitle = 6">支付</span>
-      <span class="head-title" :class="headTitle === 7 && 'active'" @click="headTitle = 7">增发</span>
+      <span class="head-title" :class="headTitle === 0 && 'active'" @click="headTitle = 0">{{ $t('all') }}</span>
+      <span class="head-title" :class="headTitle === 1 && 'active'" @click="headTitle = 1">{{ $t('transferMoney') }}</span>
+      <span class="head-title" :class="headTitle === 2 && 'active'" @click="headTitle = 2">{{ $t('transaction') }}</span>
+      <span class="head-title" :class="headTitle === 3 && 'active'" @click="headTitle = 3">{{ $t('add-to') }}</span>
+      <span class="head-title" :class="headTitle === 4 && 'active'" @click="headTitle = 4">{{ $t('delete') }}</span>
+      <span class="head-title" :class="headTitle === 5 && 'active'" @click="headTitle = 5">{{ $t('reward') }}</span>
+      <span class="head-title" :class="headTitle === 6 && 'active'" @click="headTitle = 6">{{ $t('pay') }}</span>
+      <span class="head-title" :class="headTitle === 7 && 'active'" @click="headTitle = 7">{{ $t('additional-issuance') }}</span>
     </div>
 
     <tableCard class="table-card" :data="pull.list" />

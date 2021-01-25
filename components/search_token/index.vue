@@ -3,7 +3,7 @@
     v-model="value"
     class="search-token"
     :fetch-suggestions="querySearchAsync"
-    :placeholder="placeholder"
+    :placeholder="placeholder || $t('please-enter-search-content')"
     size="small"
     clearable
     @clear="clear"
@@ -24,7 +24,7 @@ export default {
   props: {
     placeholder: {
       type: String,
-      default: '请输入搜索内容'
+      default: ''
     },
     // 接口地址 对应后端api
     apiUrl: {
@@ -50,7 +50,6 @@ export default {
           cb([])
           return
         }
-        
         let list = res.data.list.map(i => {
           return {
             ...i,

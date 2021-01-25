@@ -11,7 +11,7 @@
       >
         <el-table-column
           prop="total_supply"
-          label="Fan票"
+          :label="$t('fan-ticket')"
           width="180"
         >
           <template slot-scope="scope">
@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column
           prop="total_supply"
-          label="我的流动金Token"
+          :label="$t('my-mobile-gold-token')"
           sortable="custom"
           width="180"
         >
@@ -58,14 +58,14 @@
                   v-if="expands[0] !== scope.row.token_id"
                   class="expand-button"
                 >
-                  展开明细
+                  {{ $t('expand-details') }}
                   <i class="el-icon-d-arrow-right i-spin-z90" />
                 </span>
                 <span
                   v-else
                   class="expand-button"
                 >
-                  收起明细
+                  {{ $t('collapse-details') }}
                   <i class="el-icon-d-arrow-right i-spin-f90" />
                 </span>
               </el-button>
@@ -84,8 +84,8 @@
 
       <ul class="hold-list">
         <li class="hold-header">
-          <span>Fan票</span>
-          <span @click="sortChangeM">我的流动金Token<i class="el-icon-d-caret" /></span>
+          <span>{{ $t('fan-ticket') }}</span>
+          <span @click="sortChangeM">{{ $t('my-mobile-gold-token') }}<i class="el-icon-d-caret" /></span>
         </li>
         <li v-for="(item, index) in pointLog.list" :key="index">
           <div class="item">

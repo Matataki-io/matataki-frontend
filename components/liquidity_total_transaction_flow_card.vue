@@ -6,21 +6,21 @@
   >
     <el-table-column
       v-if="$utils.clientWidth() >= 768" 
-      label="类型"
+      :label="$t('types-of')"
     >
       <template slot-scope="scope">
         {{ formatType(scope.row.liquidity) }}
       </template>
     </el-table-column>
     <el-table-column
-      label="时间" 
+      label="$t('time')" 
       :width="$utils.clientWidth() >= 768 ? '' : '146' "
     >
       <template slot-scope="scope">
         {{ $utils.formatTime(scope.row.create_time) }}
       </template>
     </el-table-column>
-    <el-table-column label="金额">
+    <el-table-column label="$t('amount')">
       <template slot-scope="scope">
         {{ formatPrecision(scope.row.cny_amount) }}
         CNY
@@ -28,7 +28,7 @@
     </el-table-column>
     <el-table-column
       v-if="$utils.clientWidth() >= 768"
-      label="Fan票" 
+      label="$t('fan-ticket')" 
     >
       <template slot-scope="scope">
         {{ formatPrecision(scope.row.token_amount) }}
@@ -36,7 +36,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="流动金Token"
+      :label="$t('liquid-gold-token')"
       align="right"
     >
       <template slot-scope="scope">
@@ -69,11 +69,11 @@ export default {
     // 格式化类型
     formatType(val) {
       if (val > 0) {
-        return '添加'
+        return this.$t('add-to')
       } else if (val < 0) {
-        return '删除'
+        return this.$t('delete')
       } else {
-        return '其他'
+        return this.$t('other')
       }
     },
   }

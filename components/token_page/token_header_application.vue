@@ -16,26 +16,26 @@
       </section>
       <section class="other-info">
         <template v-if="info.status === 0">
-          <p class="token-text">您的Fan票申请申请成功!</p>
+          <p class="token-text">{{ $t('your-coin-application-is-successful') }}</p>
         </template>
         <template v-else-if="info.status === 2">
-          <p class="token-text">您的Fan票申请已经成功提交！</p>
-          <p class="token-text">审核结果将会在5个工作日内通过邮件发送</p>
+          <p class="token-text">{{ $t('your-conin-application-has-been-successfully-submitted') }}</p>
+          <p class="token-text">{{ $t('the-audit-result-will-be-sent-by-email-within-5-working-days') }}</p>
         </template>
         <template v-else-if="info.status === 3">
-          <p class="token-text">您的Fan票申请申请失败!</p>
+          <p class="token-text">{{ $t('your-coin-application-failed') }}</p>
           <p v-if="info.reason" class="token-reason">{{ info.reason }}</p>
         </template>
         <div class="token-footer">  
           <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
-            任何反馈<svg-icon icon-class="arrow" class="icon" />
+            {{ $t('anyFeedback') }}<svg-icon icon-class="arrow" class="icon" />
           </a>
           <template v-if="info.status === 2">
-            <a href="javascript:;" class="f-btn close" @click="minetokenApplication('reset', 'close')">取消申请</a>
-            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'modify')">修改申请信息</a>
+            <a href="javascript:;" class="f-btn close" @click="minetokenApplication('reset', 'close')">{{ $t('cancel-application') }}</a>
+            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'modify')">{{ $t('modify-application-information') }}</a>
           </template>
           <template v-else-if="info.status === 3">
-            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">我知道了</a>
+            <a href="javascript:;" class="f-btn modify" @click="minetokenApplication('reset', 'reset')">{{ $t('i-know') }}</a>
           </template>
         </div>
       </section>
