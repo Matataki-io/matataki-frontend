@@ -108,7 +108,14 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxtjs/pwa',
-    ['nuxt-i18n', i18n]
+    ['nuxt-i18n', i18n],
+    [
+      '@nuxtjs/component-cache',
+      {
+        max: 10000,
+        maxAge: 1000 * 60 * 60
+      }
+    ]
   ],
   styleResources: {
     less: './assets/css/global.less'

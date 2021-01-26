@@ -1,19 +1,7 @@
 <template>
   <div class="timeline">
     <!-- banner -->
-    <div v-if="isLogined" class="banner">
-      <section class="banner-main">
-        <h2 class="banner-title">
-          {{ $t('welcome-to-join') }}
-        </h2>
-        <h2 class="banner-title bold">
-          一个 <span>公开</span> <span>永存</span> 的数字作品库
-        </h2>
-        <p class="banner-description">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
-        <img src="@/assets/img/dynamic_banner_people.png" alt="people" class="banner-people">
-        <img src="@/assets/img/dynamic_banner_decoration.png" alt="decoration" class="banner-decoration">
-      </section>
-    </div>
+    <timelineBanner v-if="isLogined" />
     <!-- row main -->
     <div class="row">
       <div class="col-6">
@@ -101,27 +89,7 @@
           </div>
         </div>
         <!-- no 没有登录 -->
-        <div v-else class="welcome">
-          <!-- -- -->
-          <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
-          <h2 class="welcome-title">
-            {{ $t('welcome-to-join') }}
-          </h2>
-          <h2 class="welcome-title">
-            一个 <span>公开</span> <span>永存</span> 的数字作品库
-          </h2>
-
-          <div class="welcome-text">
-            <p v-if="!isLogined" class="welcome-description">请 <span @click="login">{{ $t('login') }}</span> 后查看您的</p>
-            <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
-            <a
-              v-if="!isLogined"
-              href="javascript:;"
-              class="btn"
-              @click="login"
-            >{{ $t('home.signIn') }}</a>
-          </div>
-        </div>
+        <timelineWelcome v-else />
       </div>
       <div class="col-3 recommend">
         <!-- 推荐用户列表 -->
@@ -219,6 +187,8 @@ import { mapGetters, mapActions } from 'vuex'
 
 import { getCookie } from '@/utils/cookie'
 
+import timelineBanner from '@/components/timeline/timeline_banner.vue'
+import timelineWelcome from '@/components/timeline/timeline_welcome.vue'
 import timelineCard from '@/components/timeline_card/index.vue'
 import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
@@ -237,7 +207,9 @@ export default {
     buttonLoadMore,
     // RAList,
     userPlatformCard,
-    timelineHelp
+    timelineHelp,
+    timelineBanner,
+    timelineWelcome
   },
   data() {
     return {
@@ -309,13 +281,6 @@ export default {
   },
   methods: {
     ...mapActions(['getCurrentUser']),
-    login() {
-      try {
-        this.$store.commit('setLoginModal', true)
-      } catch (e) {
-        console.log(e)
-      }
-    },
     async getCurrentUserInfo() {
       try {
         this.userInfo = await this.getCurrentUser()
@@ -521,150 +486,6 @@ export default {
 
 
 <style lang="less" scoped>
-
-._mv() {
-  max-width: 1200px;
-  width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.banner {
-  ._mv();
-  box-sizing: border-box;
-  height: 240px;
-  margin-top: 40px;
-
-  &-main {
-    height: 100%;
-    background-color: #ece7ff;
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-    background-image: url(../../assets/img/dynamic_banner_bc.png);
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  &-people {
-    position: absolute;
-    left: -30px;
-    top: -20px;
-    height: calc(100% + 20px);
-  }
-
-  &-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1);
-    line-height: 40px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #fa6400;
-    }
-  }
-
-  &-description {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 10px;
-    padding: 0;
-    margin: 20px 0 0 0;
-    color: #000;
-    span {
-      color: #b2b2b2;
-    }
-  }
-
-  &-decoration {
-    height: 70%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-}
-.welcome {
-  height: 345px;
-  position: relative;
-  box-sizing: border-box;
-  background-color: #ece7ff;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  padding-right: 68px;
-  margin-top: 44px;
-  background-image: url(../../assets/img/dynamic_banner_bc.png);
-  background-size: cover;
-  &-people {
-    position: absolute;
-    left: 40px;
-    top: -20px;
-    height: calc(100% + 20px);
-  }
-
-  &-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1);
-    line-height: 40px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #fa6400;
-    }
-  }
-  &-text {
-    text-align: right;
-    margin-top: 22px;
-    .btn {
-      display: inline-block;
-      background: rgba(84, 45, 224, 1);
-      border-radius: 15px;
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 1);
-      line-height: 20px;
-      padding: 5px 47px;
-      margin: 30px 0 0 0;
-      &:hover {
-        background-color: mix(rgba(84, 45, 224, 1), #000, 90%);
-      }
-    }
-  }
-  &-description {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(51, 51, 51, 1);
-    line-height: 30px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #542de0;
-      cursor: pointer;
-    }
-  }
-  &-description-time {
-    font-size: 16px;
-    font-weight: 400;
-    color: #333333;
-    line-height: 22px;
-    letter-spacing: 10px;
-    padding: 0;
-    margin: 10px -10px 0 0;
-    span {
-      color: #b2b2b2;
-    }
-  }
-}
-
 .head {
   height: 24px;
   margin-top: 20px;

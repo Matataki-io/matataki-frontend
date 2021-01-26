@@ -27,6 +27,10 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'TokenBanner',
+  serverCacheKey(props) {
+    return `TokenBanner_${props.showPublishBtn ? 'true' : 'false'}`
+  },
   props: {
     showPublishBtn: {
       type: Boolean,
