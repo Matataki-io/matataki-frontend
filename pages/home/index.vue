@@ -37,7 +37,7 @@
                     {{ $t('home.account') }}
                   </el-dropdown-item>
                 </n-link>
-      
+
                 <div
                   class="link"
                   @click="btnsignOut"
@@ -72,9 +72,6 @@
               探索作品
             </router-link>
             <!-- <a href="javascript:;" class="screen1-more">订阅我们</a> -->
-          </section>
-          <section class="qq-notice">
-            <p>请加入我们的官QQ群：<a href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t" rel="noopener noreferrer" target="_blank">766605671</a></p>
           </section>
         </section>
         <section class="screen1-block__img">
@@ -395,7 +392,7 @@ export default {
       if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
       await this.getNotificationCounters()
     },
-    // 初始化轮播图 
+    // 初始化轮播图
     initSwipe() {
       try {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
