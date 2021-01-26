@@ -13,7 +13,7 @@
       class="noData"
     >
       <div>
-        暂无数据
+        {{ $t('noData') }}
       </div>
     </div>
   </div>

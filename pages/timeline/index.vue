@@ -85,7 +85,7 @@
               @click-like="likeEvent"
             />
             <div v-else>
-              不支持的平台类型: {{ item.platform }}
+              {{ $t('unsupported-platform-type') }}: {{ item.platform }}
             </div>
           </div>
           <div class="load-more-button">
