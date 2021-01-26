@@ -65,7 +65,6 @@ export default {
     async recommendFn(channel = 1, amount = 5) {
       try{
         const res = await this.$API.recommend({channel, amount})
-        
         if (res.code === 0) {
           return res.data
         }

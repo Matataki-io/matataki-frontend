@@ -13,6 +13,10 @@
 
 <script>
 export default {
+  name: 'TagsHot',
+  serverCacheKey() {
+    return 'TagsHot'
+  },
   data() {
     return {
       tags: []

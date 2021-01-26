@@ -164,6 +164,10 @@
 <script>
 import language from '../header/language'
 export default {
+  name: 'Footer',
+  serverCacheKey() {
+    return 'Footer'
+  },
   components: {
     language
   },
