@@ -91,7 +91,7 @@ export default {
                 return cb([])
               }
 
-              return this.searchUser(query, cb)
+              return this.searchTag(query, cb)
             },
             loadingItemTemplate: '<div style="padding: 16px">Loading</div>',
             lookup: 'key',
@@ -102,8 +102,8 @@ export default {
                   class="tribute-mention"
                   contenteditable="false"
                   href="javascript:;"
-                  title="大咖解说"
-                  data-tag="1">#大咖解说</a>`
+                  title="${item.original.value}"
+                  data-tag="${item.original.id}">#${item.original.value}</a>`
             },
           },
         ],
@@ -150,6 +150,24 @@ export default {
         const list = res.data.list.map((i) => ({
           key: i.nickname || i.username,
           value: i.nickname || i.username,
+          id: i.id,
+        }))
+        return cb(list)
+      } else {
+        return cb([])
+      }
+    }, 300),
+    // 搜索Tag
+    searchTag: debounce(async function (val, cb) {
+      const params = {
+        word: val.trim(),
+        pagesize: 10,
+      }
+      const res = await this.$API.searchDbTag(params)
+      if (res.code === 0) {
+        const list = res.data.list.map((i) => ({
+          key: i.name,
+          value: i.name,
           id: i.id,
         }))
         return cb(list)
