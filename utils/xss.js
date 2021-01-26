@@ -350,7 +350,7 @@ export const filterOutHtmlTags = (html, whiteList = []) => {
 }
 // 过滤分享内容
 const whiteListShare = {
-  a: [ 'class', 'contenteditable', 'href', 'title', 'data-user', 'target' ]
+  a: [ 'class', 'contenteditable', 'href', 'title', 'data-user', 'data-tag', 'target' ]
 }
 export const filterOutHtmlShare = (html, whiteList = whiteListShare) => {
   // 没有用markdownit渲染markdown文档, 因为可能造成不必要的消耗,(他只是一个摘要而已)

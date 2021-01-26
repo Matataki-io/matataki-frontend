@@ -6,6 +6,13 @@
           <a
             class="href"
             target="_blank"
+            href="/home"
+          >
+            {{ $t('footer.aboutMatataki') }}
+          </a>
+          <a
+            class="href"
+            target="_blank"
             href="https://www.yuque.com/matataki/matataki"
           >
             {{ $t('footer.hellpbook') }}
@@ -140,6 +147,15 @@
         <p class="copyright">
           Copyright © 2018-2020 ANDOROMEDA TECH.ltd
         </p>
+        <div>
+          <a href="https://www.producthunt.com/posts/matataki?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-matataki" target="_blank"><img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=281257&theme=light"
+            alt="瞬MATATAKI - We help creators distribute SocialMoney & provide services | Product Hunt"
+            style="width: 250px; height: 54px;"
+            width="250"
+            height="54"
+          ></a>
+        </div>
       </div>
     </div>
   </footer>

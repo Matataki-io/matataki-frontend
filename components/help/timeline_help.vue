@@ -1,12 +1,12 @@
 <template>
   <div class="help-container">
-    <span class="nav-title" @click="handleVisibilityChange(true)">什么是聚合动态？</span>
+    <span class="nav-title" @click="handleVisibilityChange(true)">{{ $t('what-is-aggregation-dynamics') }}</span>
     <span class="nav-title-mobile" @click="handleVisibilityChange(true)"><i class="el-icon-question" /></span>
     <el-dialog :visible.sync="visibility" :fullscreen="isSmallSizeScreen()" @before-close="handleVisibilityClose">
       <section class="help-container-section">
-        <span class="section-title">什么是聚合动态？</span>
+        <span class="section-title">{{ $t('what-is-aggregation-dynamics') }}</span>
         <div class="section-part">
-          <span class="section-part-title">聚合动态</span>
+          <span class="section-part-title">{{ $t('aggregate-dynamics') }}</span>
           <p class="section-part-inner">
             聚合动态是集成了各个第三方社交网站时间线的地方，这里的数据都来源于你关注的用户所绑定的平台的个人动态信息。在当前，我们提供了 Twitter，哔哩哔哩，以及 Mastodon 的动态更新。绑定平台成功后，动态、时间轴上的数据就会被展示在这个地方。
           </p>

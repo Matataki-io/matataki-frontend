@@ -70,7 +70,7 @@
         v-model="widgetContent"
         :rows="4"
         type="textarea"
-        placeholder="添加简介(选填)"
+        :placeholder="$t('add-introduction-optional')"
       />
       <div class="widget-footer">
         <a

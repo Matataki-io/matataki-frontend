@@ -724,7 +724,8 @@
     "linkidol": "链接偶像",
     "orange": "橙皮书",
     "scanCode": "扫码后备注“进群”",
-    "follow": "关注公众号"
+    "follow": "关注公众号",
+    "aboutMatataki": "关于瞬Matataki"
   },
   "social": {
     "relatedWebsites": "相关网站",
@@ -1205,5 +1206,12 @@
   "reward-articles": "打赏文章",
   "payment-article": "支付文章",
   "through-train-transaction": "直通车交易",
-  "liquid-gold-token": "流动金Token"
+  "liquid-gold-token": "流动金Token",
+  "unsupported-platform-type": "不支持的平台类型",
+  "what-is-aggregation-dynamics": "什么是聚合动态？",
+  "aggregate-dynamics": "聚合动态",
+  "please-enter-uppercase-english-letters": "请输入大写英文字母",
+  "please-enter-token-symbol": "请输入Token Symbol",
+  "please-enter-the-profile-information-of-token": "请输入Token的简介信息",
+  "add-introduction-optional": "添加简介(选填)"
 }

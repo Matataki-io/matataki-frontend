@@ -124,13 +124,11 @@
         <span>{{ toggleMore ? $t('hideMore') : $t('viewMore') }}</span><i class="el-icon-d-arrow-left icon" />
       </div>
     </div>
-    <div
+    <photoAlbum
       v-if="card.media && card.media.length > 0"
-      class="card-share-photoalbum"
-    >
-      <div class="card-share-photoalbum-pillar" />
-      <photoAlbum class="card-share-photoalbum-main" :media="card.media" />
-    </div>
+      class="card-share-photoalbum-main"
+      :media="card.media"
+    />
   </div>
 </template>
 
@@ -201,24 +199,6 @@ export default {
   align-items: center;
   flex-direction: column;
   position: relative;
-}
-
-.card-share-photoalbum {
-  position: relative;
-  margin-top: 10px;
-  width: 100%;
-
-  &-pillar {
-    padding-bottom: 56.25%;
-  }
-
-  &-main {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
 }
 
 .card {
