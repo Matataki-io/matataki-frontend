@@ -114,6 +114,7 @@ export default {
   }
   .el-tabs__content {
     background: @bg-color;
+    z-index: 0;
   }
   .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
     color: white;

@@ -5,7 +5,7 @@
       <div class="head-flex">
         <a
           class="logo-link"
-          href="/home"
+          href="/article"
         ><img
           :src="customizeHeaderLogoColorComputed"
           class="logo"
@@ -29,9 +29,6 @@
       </div>
 
       <div class="pc head-flex">
-        <div class="qq-tips">
-          {{ $t('header-tips') }}
-        </div>
         <div class="search">
           <input
             v-model="searchInput"
@@ -120,7 +117,7 @@
           <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
           <c-avatar
             :src="avatar"
-            :recommend-author="user.is_recommend === 1" 
+            :recommend-author="user.is_recommend === 1"
             :token-user="!!tokenInfo.id"
             :level-token="1"
           />
@@ -228,7 +225,7 @@
                   <c-avatar
                     :src="avatar"
                     class="menu-avatar"
-                    :recommend-author="user.is_recommend === 1" 
+                    :recommend-author="user.is_recommend === 1"
                     :token-user="!!tokenInfo.id"
                     :level-token="1"
                   />
