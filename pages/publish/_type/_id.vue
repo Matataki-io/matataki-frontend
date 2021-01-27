@@ -749,7 +749,7 @@ export default {
     return {
       title: '瞬MATATAKI - 创作',
       link: [
-        { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
       ],
     }
   },

@@ -59,11 +59,14 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', type: 'text/css', href: '/theme/index.css' }, // element ui css
+      // { rel: 'stylesheet', type: 'text/css', href: '/theme/index.css' }, // element ui css
       { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css' },
-      { rel: 'stylesheet', type: 'text/css', href: '/vant/index.css' }, // vant ui css
+      // { rel: 'stylesheet', type: 'text/css', href: '/vant/index.css' }, // vant ui css
     ],
-    script: []
+    script: [
+      { src: '/bowl.min.js' },
+      { src: '/bowlStore.js' },
+    ]
   },
   /*
   ** Customize the progress-bar color
