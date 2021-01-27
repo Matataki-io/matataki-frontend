@@ -239,8 +239,8 @@
     "buyad": "Bulletin board expenses",
     "earn": "Bulletin board revenue",
     "recharge": "Recharge",
-    "transfer_out": "Transfer out assets",
-    "transfer_in": "Transfer in assets"
+    "transfer_out": "transfer out",
+    "transfer_in": "transfer in"
   },
   "point": {
     "title": "我的积分",
@@ -248,7 +248,7 @@
     "list": "积分明细",
     "balance": "积分余额",
     "completeProfile": "完善个人资料",
-    "receive": "领取",
+    "receive": "receive",
     "uploadAvatar": "前往设置页上传头像+设置昵称即可领取{0}积分",
     "feedback": "用户回馈",
     "oldUser": "感谢8月30日前注册的老用户支持，点击领取{0}积分",
@@ -320,7 +320,7 @@
   },
   "home": {
     "creation": "Find",
-    "share": "share it",
+    "share": "share",
     "timeline": "Dynamic",
     "fanTicket": "Fan Ticket",
     "signOut": "Logout Account",
