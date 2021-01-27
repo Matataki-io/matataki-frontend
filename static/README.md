@@ -9,3 +9,12 @@ Thus you'd want to delete this README.md before deploying to production.
 Example: `/static/robots.txt` is mapped as `/robots.txt`.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/guide/assets#static).
+
+---
+
+更新组件库需要同步更新样式⚠️⚠️⚠️
+
+- theme -> element ui css
+- vant -> vant ui css
+- @matataki
+  - editor -> editor css
