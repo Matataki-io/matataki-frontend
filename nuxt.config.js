@@ -2,6 +2,7 @@ import path from 'path'
 import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import pkg from './package.json'
 
 import i18n from './plugins/i18n'
 import ENV from './env'
@@ -25,6 +26,7 @@ function cdnPublicPath (env) {
 }
 
 export default {
+  version: pkg.version,
   /*
   ** Headers of the page
   */
@@ -115,8 +117,21 @@ export default {
         max: 10000,
         maxAge: 1000 * 60 * 60
       }
-    ]
+    ],
+    'nuxt-ssr-cache'
   ],
+  cache: {
+    useHostPrefix: false,
+    pages: ['/dapp', '/agreement', '/policy'],
+    store: {
+      // 使用内存来存储页面内容
+      type: 'memory',
+      // 最多缓存100个页面
+      max: 100,
+      // 缓存时间，秒
+      ttl: 60
+    }
+  },
   styleResources: {
     less: './assets/css/global.less'
   },
@@ -156,7 +171,6 @@ export default {
         }
       }
     },
-    cache: true,
     parallel: true,
     // CSS提取
     // extractCSS: true,

@@ -1,3 +1,4 @@
+```vue
 <template>
   <div class="container">
     <div>
@@ -137,3 +138,4 @@
   }
 }
 </style>
+```

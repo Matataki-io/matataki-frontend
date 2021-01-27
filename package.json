@@ -58,6 +58,7 @@
     "moment": "^2.24.0",
     "nuxt": "2.13.2",
     "nuxt-i18n": "6.6.0",
+    "nuxt-ssr-cache": "^1.5.2",
     "oauth": "^0.9.15",
     "ontology-dapi": "^0.4.9",
     "qs": "^6.7.0",
