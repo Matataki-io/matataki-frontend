@@ -58,11 +58,6 @@ import Register from './register'
 import ResetPassword from './resetPassword'
 export default {
   name: 'AuthModal',
-  head: {
-    script: [
-      { src: '/bowl.min.js' }
-    ]
-  },
   components: {
     Wallet,
     Login,
@@ -98,26 +93,10 @@ export default {
   },
   created() {
     if (process.browser) {
-      this.injectScript()
-
       if (this.value && this.single) this.showModal = !this.showModal
     }
   },
   methods: {
-    injectScript() {
-      try {
-        // eslint-disable-next-line no-undef
-        var bowl = new Bowl()
-        bowl.add([
-          { url: '/gt.js', key: 'gt' }
-        ])
-        bowl.inject().then(() => {
-          console.log('success')
-        })
-      } catch (e) {
-        console.log(e)
-      }
-    }
   }
 }
 </script>

@@ -80,9 +80,7 @@ import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   head: {
-    script: [
-      { src: '/bowl.min.js' }
-    ]
+    script: []
   },
   components: {
     qrcode: VueQrcode
@@ -100,9 +98,6 @@ export default {
     }
   },
   created() {
-    if (process.browser) {
-      this.injectScript()
-    }
   },
   methods: {
     save() {
@@ -144,20 +139,6 @@ export default {
         loading.close()
       })
     },
-    injectScript() {
-      try {
-        // eslint-disable-next-line no-undef
-        var bowl = new Bowl()
-        bowl.add([
-          { url: '/html2canvas.min.js', key: 'html2canvas' }
-        ])
-        bowl.inject().then(() => {
-          console.log('success')
-        })
-      } catch (e) {
-        console.log(e)
-      }
-    }
   }
 }
 </script>

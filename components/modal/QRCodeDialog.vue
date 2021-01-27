@@ -78,28 +78,24 @@
 </template>
 
 <script>
-/* eslint-disable */
-
-import avatar from "@/components/avatar";
+import avatar from '@/components/avatar'
 import { xssFilter } from '@/utils/xss'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   name: 'QRCodeDialog',
   head: {
-    script: [
-      { src: '/bowl.min.js' }
-    ]
+    script: []
+  },
+  components: {
+    avatar,
+    qrcode: VueQrcode
   },
   props: {
     shareInfo: {
       type: Object,
       required: true
     }
-  },
-  components: {
-    avatar,
-    qrcode: VueQrcode
   },
   data() {
     return {
@@ -123,7 +119,7 @@ export default {
       // TODO:这边感觉有点问题, 只优先完成了 保留换行和去掉img引起的空行
       let filterStrRes = this.filterStr(this.shareInfo.content)
       let removeSpaceRes = this.removeSpace(filterStrRes)
-      return xssFilter(removeSpaceRes.substr(0, 400));
+      return xssFilter(removeSpaceRes.substr(0, 400))
     }
   },
   beforeDestroy(){
@@ -132,15 +128,12 @@ export default {
     if (downloadImg) downloadImg.remove()
   },
   created() {
-    if (process.browser) {
-      this.injectScript()
-    }
   },
   methods: {
     filterStr(str) {
-      let re = /<[^>]+>/gi;
-      str = str.replace(re, '');
-      return str;
+      let re = /<[^>]+>/gi
+      str = str.replace(re, '')
+      return str
     },
     removeSpace(str) {
       return str.replace(/\n\s*\n/gi, '\n')
@@ -149,13 +142,13 @@ export default {
       this.$emit('change', false)
     },
     saveLocal(canvas) {
-      let link = document.createElement("a");
+      let link = document.createElement('a')
       link.id = 'downloadImg'
-      link.href = canvas.toDataURL();
+      link.href = canvas.toDataURL()
       link.setAttribute('download', `${this.shareInfo.title}.png`)
-      link.style.display = "none";
-      document.body.appendChild(link);
-      link.click();
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
     },
     toCanvas() {
       const loading = this.$loading({
@@ -166,6 +159,7 @@ export default {
         loading.close()
         return
       }
+      // eslint-disable-next-line no-undef
       html2canvas(this.$refs.capture, {
         useCORS: true,
         scrollX: 0,
@@ -177,24 +171,11 @@ export default {
         this.saveLocal(canvas)
         loading.close()
       }).catch((error) => {
-        console.log(error);
+        console.log(error)
         loading.close()
         this.$message(this.$t('p.createFail'))
       })
     },
-    injectScript() {
-      try {
-        var bowl = new Bowl()
-        bowl.add([
-          { url: '/html2canvas.min.js', key: 'html2canvas' }
-        ])
-        bowl.inject().then(() => {
-          console.log('success')
-        })
-      } catch (e) {
-        console.log(e)
-      }
-    }
   }
 }
 </script>
