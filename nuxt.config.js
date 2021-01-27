@@ -2,6 +2,7 @@ import path from 'path'
 import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import pkg from './package.json'
 
 import i18n from './plugins/i18n'
 import ENV from './env'
@@ -24,35 +25,43 @@ function cdnPublicPath (env) {
   return list[env] || '/_nuxt/'
 }
 
+const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
+const metaDescription = '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。'
+const metaKeywords = '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS,ETH,BTC,DAO'
+const metaImage = 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
+
 export default {
+  version: pkg.version,
   /*
   ** Headers of the page
   */
   head: {
-    // title: process.env.npm_package_name || '',
-    title: '瞬MATATAKI',
+    title: '瞬MATATAKI', // process.env.npm_package_name || ''
     meta: [
       { hid: 'robots', name: 'robots', property: 'robots', content: 'index,follow' },
-      { hid: 'copyright', name: 'copyright', property: 'copyright', content: 'Copyright © 2018-2019 ANDOROMEDA TECH.ltd' },
-      { hid: 'description', name: 'description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
-      { hid: 'keywords', name: 'keywords', content: '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS' },
+      { hid: 'copyright', name: 'copyright', property: 'copyright', content: 'Copyright © 2018-2021 ANDOROMEDA TECH.ltd' },
+      { hid: 'description', name: 'description', content: metaDescription },
+      { hid: 'keywords', name: 'keywords', content: metaKeywords },
       /* <!--  Meta for Twitter Card --> */
       { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-      { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '瞬MATATAKI—发布瞬间，灵感永存' },
-      { hid: 'twitter:title', property: 'twitter:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
-      { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png' },
-      { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
+      { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: metaTitle },
+      { hid: 'twitter:title', property: 'twitter:title', content: metaTitle },
+      { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: metaImage },
+      { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: metaDescription },
       /* <!--  Meta for OpenGraph --> */
       { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'website' },
-      { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI—发布瞬间，灵感永存' },
-      { hid: 'og:title', property: 'og:title', content: '瞬MATATAKI—发布瞬间，灵感永存' },
-      { hid: 'og:image', name: 'og:image', property: 'og:image', content: 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png' },
-      { hid: 'og:description', name: 'description', property: 'og:description', content: '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。' },
+      { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: metaTitle },
+      { hid: 'og:title', property: 'og:title', content: metaTitle },
+      { hid: 'og:image', name: 'og:image', property: 'og:image', content: metaImage },
+      { hid: 'og:description', name: 'description', property: 'og:description', content: metaDescription },
       { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' }
       /* end */
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', type: 'text/css', href: '/theme/index.css' }, // element ui css
+      { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css' },
+      { rel: 'stylesheet', type: 'text/css', href: '/vant/index.css' }, // vant ui css
     ],
     script: []
   },
@@ -66,7 +75,7 @@ export default {
   ** Global CSS
   */
   css: [
-    './assets/css/index.less'
+    './assets/css/index.less',
   ],
   router: {
     // middleware: ''
@@ -115,8 +124,21 @@ export default {
         max: 10000,
         maxAge: 1000 * 60 * 60
       }
-    ]
+    ],
+    'nuxt-ssr-cache'
   ],
+  cache: {
+    useHostPrefix: false,
+    pages: ['/dapp', '/agreement', '/policy'],
+    store: {
+      // 使用内存来存储页面内容
+      type: 'memory',
+      // 最多缓存100个页面
+      max: 100,
+      // 缓存时间，秒
+      ttl: 60
+    }
+  },
   styleResources: {
     less: './assets/css/global.less'
   },
@@ -131,7 +153,7 @@ export default {
   */
   build: {
     publicPath: cdnPublicPath(NODE_ENV),
-    // analyze: true,
+    analyze: false,
     optimization: {
       splitChunks: {
         cacheGroups: {
@@ -156,7 +178,6 @@ export default {
         }
       }
     },
-    cache: true,
     parallel: true,
     // CSS提取
     // extractCSS: true,

@@ -434,7 +434,7 @@ if (process.client) {
 }
 
 // import { markdown, finishView } from '../../static/markdown-render-js.min.js'
-import '@matataki/editor/dist/css/index.css'
+// import '@matataki/editor/dist/css/index.css'
 import markdownView from '@/components/markdown_view'
 
 const markdownItRender = require('markdown-it')({
@@ -468,6 +468,9 @@ export default {
         { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
         { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
         /* end */
+      ],
+      link: [
+        { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
       ],
       script: [
         { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }

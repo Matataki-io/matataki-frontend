@@ -714,7 +714,7 @@ if (process.client) {
   mavonEditor = require('@matataki/editor')
 }
 
-import '@matataki/editor/dist/css/index.css'
+// import '@matataki/editor/dist/css/index.css'
 
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
@@ -745,6 +745,14 @@ function newDatePicker(time) {
 export default {
   layout: 'empty',
   name: 'NewPost',
+  head() {
+    return {
+      title: '瞬MATATAKI - 创作',
+      link: [
+        { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+      ],
+    }
+  },
   components: {
     'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,

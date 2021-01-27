@@ -1,6 +1,6 @@
 import Vue from 'vue'
-// import '../assets/theme/index.css'
-import '../static/theme/index.css'
+// import '../static/theme/index.css'
+
 import {
   Row,
   Col,

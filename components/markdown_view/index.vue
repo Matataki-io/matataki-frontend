@@ -4,13 +4,18 @@
 
 <script>
 /* eslint-disable */
-import '@matataki/editor/dist/css/index.css'
+// import '@matataki/editor/dist/css/index.css'
 
 export default {
-  head: {
-    script: [
-      { src: '/bowl.min.js' }
-    ]
+  head() {
+    return {
+      link: [
+        { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+      ],
+      script: [
+        { src: '/bowl.min.js' }
+      ]
+    }
   },
   props: {
     content: {
@@ -32,7 +37,7 @@ export default {
         console.log('done')
       }).catch(e => {
         console.log('error', e)
-      }) 
+      })
     }
   },
 }
