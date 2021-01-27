@@ -164,19 +164,57 @@ export default {
             test: /node_modules[\\/]@matataki\/editor/,
             chunks: 'all',
             priority: 20,
-            name: true
+            name: () => {
+              return 'chunk-editor'
+            }
           },
-          elementui: {
+          elementUI: {
             test: /node_modules[\\/]element-ui/,
             chunks: 'all',
             priority: 20,
-            name: true
+            name: () => {
+              return 'chunk-elementUI'
+            }
+          },
+          vant: {
+            test: /node_modules[\\/]vant/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-vant'
+            }
           },
           echarts: {
             test: /node_modules[\\/]echarts/,
             chunks: 'all',
             priority: 20,
-            name: true
+            name: () => {
+              return 'chunk-echarts'
+            }
+          },
+          ethers: {
+            test: /node_modules[\\/]ethers/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-ethers'
+            }
+          },
+          zrender: { // 和 echarts 有关系
+            test: /node_modules[\\/]zrender/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-zrender'
+            }
+          },
+          web3: {
+            test: /node_modules[\\/]web3/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-web3'
+            }
           },
         }
       }

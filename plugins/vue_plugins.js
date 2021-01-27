@@ -2,9 +2,10 @@ import Vue from 'vue'
 import clampy from '@clampy-js/vue-clampy'
 import VueClipboard from 'vue-clipboard2'
 import { ContentLoader } from 'vue-content-loader'
-
 import moment from 'moment'
-import '@/icons'
+
+import(/* webpackChunkName: "chunk-icons" */ '@/icons')
+
 moment.locale('zh-CN')
 Vue.config.devtools = true
 Vue.prototype.moment = moment
