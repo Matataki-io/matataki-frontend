@@ -5,7 +5,7 @@
       @search="search"
     />
     <div class="search-container">
-      <p class="search-google-tip">- 搜索不到你想要的结果？试试 <a :href="googleUrl" target="_blank">Google搜索</a> -</p>
+      <p class="search-google-tip">- 搜索不到你想要的结果？试试 <a :href="googleUrl" target="_blank">{{ $t('google-search') }}</a> -</p>
       <div class="search-head fl">
         <span
           v-for="(tag, index) in tagList"
