@@ -18,7 +18,7 @@
               <span 
                 :class="[ 'token-title', { 'active': isDirectTrade } ]"
                 @click="tabChange('direct')"
-              >直通车</span>
+              >{{ $t('through-train') }}</span>
             </div>
             <router-link class="center" :to="{name: 'exchange', hash: '#swap', query: { output: token.symbol }}">
               Uniswap <i class="el-icon-arrow-right" />
@@ -73,7 +73,7 @@
             <ol>1. 直通车中的价格由创始人设置，且不可修改</ol>
             <ol>2. 通过直通车支付的金额将会直接转给创始人</ol>
             <ol>3. 当直通车中流动性不足时，则无法使用直通车快捷购买Fan票</ol>
-            <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">更多帮助信息</a></ol>
+            <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">{{ $t('more-help-information') }}</a></ol>
           </ul>
         </div>
       </div>
