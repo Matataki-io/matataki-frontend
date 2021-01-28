@@ -7,7 +7,7 @@
       <div class="col-6">
         <!-- have 登录 -->
         <inputContent />
-        <div v-if="isLogined">
+        <div v-if="isLogined" style="margin-top: 20px;">
           <section class="head topnav">
             <h3 class="head-title topnav-tag">
               {{ $t('timeline.allTimeline') }}
@@ -76,6 +76,10 @@
             <div v-else>
               {{ $t('unsupported-platform-type') }}: {{ item.platform }}
             </div>
+            <!-- v-else-if="item.platform === 'dynamic'" -->
+            <dynamicCard
+              :data="{}"
+            />
           </div>
           <div class="load-more-button">
             <buttonLoadMore
@@ -194,6 +198,7 @@ import timelineCard from '@/components/timeline_card/index.vue'
 import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
 import mastodonCard from '@/components/platform_status/mastodon_card'
+import dynamicCard from '@/components/dynamic/dynamic_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
@@ -206,6 +211,7 @@ export default {
     twitterCard,
     bilibiliCard,
     mastodonCard,
+    dynamicCard,
     buttonLoadMore,
     // RAList,
     userPlatformCard,
