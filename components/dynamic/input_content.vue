@@ -31,14 +31,26 @@
             />
           </client-only>
         </div>
-        <svg-icon icon-class="image" class="icon" @click.stop="emoji = !emoji" />
+        <uploadMedia
+          v-model="mediaList"
+          :visible-state.sync="uploadMediaVisible"
+          @uploading="item => mediaUploading = item"
+        >
+          <svg-icon icon-class="image" class="icon" />
+        </uploadMedia>
       </div>
       <div class="fl ac">
         <span class="info-status">
           <span :style="{ color: currentText > totalText ? 'red' : '' }">{{ currentText }}</span>/{{ totalText }}
         </span>
         <div class="i-f-line" />
-        <el-button type="primary" size="small" class="btn-submit">
+        <el-button
+          v-loading="btnSubmitLoading"
+          type="primary"
+          size="small"
+          class="btn-submit"
+          @click="pushShare"
+        >
           发布动态
         </el-button>
       </div>
@@ -47,14 +59,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Picker } from 'emoji-mart-vue'
+
 import VueTribute from '@/plugins/vue-tribute.js'
 import debounce from 'lodash/debounce'
+import uploadMedia from '@/components/dynamic/upload_media'
+import { filterOutHtmlShare } from '@/utils/xss'
+import { getCookie } from '@/utils/cookie'
 
 export default {
   components: {
     VueTribute,
     Picker,
+    uploadMedia
   },
   props: {
     totalText: {
@@ -119,6 +137,16 @@ export default {
       },
       timer: null,
       // handleEventClick: null
+      shareLinkList: [ // 分享链接
+        // {
+        //   type: 'inside',
+        //   type: 'outer',
+        // }
+      ],
+      uploadMediaVisible: false,
+      mediaList: [],
+      mediaUploading: false,
+      btnSubmitLoading: false, // 发布动态loading
     }
   },
   mounted() {
@@ -136,6 +164,9 @@ export default {
       clearInterval(this.timer)
       // document.removeEventListener(this.handleEventClick)
     }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   methods: {
     noMatchFound() {
@@ -205,6 +236,103 @@ export default {
     //   const html = filterOutHtmlShare(editDomContent)
     //   console.log(html)
     // }
+    // 获取输入框内容的信息
+    _getInputContent() {
+      // 获取分享内容
+      let editDom = document.querySelector('.content-editable')
+      let editDomContent = editDom.innerHTML.toString()
+      // console.log('editDom', editDom.innerHTML)
+
+      // 从 dom 获取 user id
+      let userIds = editDom.querySelectorAll('a.tribute-mention')
+      const receivingIds = [...userIds].map(i => i.getAttribute('data-user'))
+      // console.log('receivingIds', receivingIds)
+
+      return {
+        editDomContent: filterOutHtmlShare(editDomContent),
+        receivingIds
+      }
+    },
+    // 重置数据
+    _reset() {
+      this.shareLinkList = []
+      this.mediaList = []
+      this.uploadMediaVisible = false
+      // 清空分享内容
+      document.querySelector('.content-editable').innerHTML = ''
+    },
+    // 发布分享
+    async pushShare() {
+      // console.log('currentUserInfo', this.currentUserInfo)
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+
+      const { editDomContent, receivingIds } = this._getInputContent()
+
+      if (editDomContent.length <= 0) {
+        this.$message({ message: '分享内容不能为空', type: 'warning' })
+        return
+      }
+      if (editDomContent.length > this.totalText) {
+        this.$message({ message: '分享内容不能超过最高限制', type: 'warning' })
+        return
+      }
+      if (this.mediaUploading) {
+        this.$message.warning('媒体正在上传中，请稍后再试')
+        return
+      }
+      // 平台检测
+      const idProvider = getCookie('idProvider')
+      if (!idProvider) {
+        this.$message({ message: '发生错误, 请您重新登录', type: 'error' })
+        this.$store.commit('setLoginModal', true)
+        return
+      }
+
+      const { name: author = '' } = this.currentUserInfo
+
+      const data = {
+        author,
+        content: editDomContent.trim(),
+        short_content_share: (editDomContent.trim()).slice(0, 3000),
+        platform: idProvider.toLocaleLowerCase(),
+        refs: [],
+        media: [],
+        receivingIds
+      }
+      this.shareLinkList.map(i => {
+        // 目前只有外展
+        data.refs.push({
+          url: i.url,
+          title: i.title,
+          summary: i.summary,
+          cover: i.cover
+        })
+      })
+      if (this.mediaList) {
+        data.media = this.mediaList.map(item => {
+          return {
+            type: item.type,
+            url: item.url
+          }
+        })
+      }
+
+      try {
+        this.btnSubmitLoading = true
+        const res = await this.$API.createShare(data)
+        if (res.code === 0) {
+          this.$message({ message: '发布成功', type: 'success' })
+          this._reset()
+        } else {
+          throw new Error(res)
+        }
+      } catch (e) {
+        console.log(e.toString())
+        this.$message({ message: '发布失败', type: 'error' })
+      } finally {
+        this.btnSubmitLoading = false
+      }
+    },
   },
 }
 </script>
@@ -328,6 +456,9 @@ export default {
     font-size: 24px;
     color: #657786;
     margin: 0 10px 0 0;
+    &:hover {
+      color: @purpleDark;
+    }
   }
 }
 .container-tribute {
