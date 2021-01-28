@@ -1213,5 +1213,7 @@
   "please-enter-uppercase-english-letters": "请输入大写英文字母",
   "please-enter-token-symbol": "请输入Token Symbol",
   "please-enter-the-profile-information-of-token": "请输入Token的简介信息",
-  "add-introduction-optional": "添加简介(选填)"
+  "add-introduction-optional": "添加简介(选填)",
+  "google-search": "Google搜索",
+  "more-help-information": "更多帮助信息"
 }
