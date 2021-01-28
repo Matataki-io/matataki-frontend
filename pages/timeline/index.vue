@@ -6,6 +6,7 @@
     <div class="row">
       <div class="col-6">
         <!-- have 登录 -->
+        <inputContent />
         <div v-if="isLogined">
           <section class="head topnav">
             <h3 class="head-title topnav-tag">
@@ -182,11 +183,11 @@
 <script>
 // import throttle from 'lodash/throttle'
 import axios from 'axios'
-
 import { mapGetters, mapActions } from 'vuex'
 
 import { getCookie } from '@/utils/cookie'
 
+import inputContent from '@/components/dynamic/input_content.vue'
 import timelineBanner from '@/components/timeline/timeline_banner.vue'
 import timelineWelcome from '@/components/timeline/timeline_welcome.vue'
 import timelineCard from '@/components/timeline_card/index.vue'
@@ -200,6 +201,7 @@ import timelineHelp from '@/components/help/timeline_help'
 
 export default {
   components: {
+    inputContent,
     timelineCard,
     twitterCard,
     bilibiliCard,
