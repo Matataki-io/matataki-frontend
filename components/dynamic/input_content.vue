@@ -18,7 +18,8 @@
     </div>
     <div class="input-footer">
       <div class="i-f-info">
-        <svg-icon icon-class="at" class="icon" @click.stop="emoji = !emoji" />
+        <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
+        <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
         <div class="emoji-container">
           <svg-icon icon-class="emoji1" class="icon" @click.stop="emoji = !emoji" />
           <client-only>
@@ -333,6 +334,14 @@ export default {
         this.btnSubmitLoading = false
       }
     },
+    showMenuForCollection(collectionIndex) {
+      try {
+        let input = document.getElementById('tributeShare')
+        window._tribute.showMenuForCollection(input, collectionIndex)
+      } catch (e) {
+        console.log(e)
+      }
+    }
   },
 }
 </script>

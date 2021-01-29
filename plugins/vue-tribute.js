@@ -51,6 +51,9 @@ const VueTribute = {
       $el.addEventListener('tribute-replaced', e => {
         e.target.dispatchEvent(new Event('input', { bubbles: true }))
       })
+
+      // 全局挂载
+      window._tribute = this.tribute
     }
   },
   beforeDestroy() {
