@@ -36,7 +36,7 @@
           {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
         </div>
         <div class="load-more">
-          <buttonLoadMore
+          <buttonLoadMoreComponents
             :type-index="0"
             :params="pull.params"
             :api-url="pull.apiUrl"
@@ -86,7 +86,7 @@
         </div>
 
         <div class="load-more">
-          <buttonLoadMore
+          <buttonLoadMoreComponents
             :type-index="0"
             :params="detailPull.params"
             :api-url="detailPull.apiUrl"
@@ -164,7 +164,7 @@
   </div>
 </template>
 <script>
-import buttonLoadMore from '@/components/button_load_more/index.vue'
+import buttonLoadMoreComponents from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
 import commentCard from '@/components/notification/commentCard.vue'
@@ -172,7 +172,7 @@ import rewardCard from '@/components/notification/rewardCard.vue'
 
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMore, notifyCard, objectCard, commentCard, rewardCard },
+  components: { buttonLoadMoreComponents, notifyCard, objectCard, commentCard, rewardCard },
   data() {
     return {
       showDetails: false,
@@ -269,7 +269,9 @@ export default {
     }
   },
   created() {
-    this.initActions()
+    if (process.client) {
+      this.initActions()
+    }
   },
   methods: {
     buttonLoadMore(res) {
