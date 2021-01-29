@@ -1,19 +1,7 @@
 <template>
   <div class="timeline">
     <!-- banner -->
-    <div v-if="isLogined" class="banner">
-      <section class="banner-main">
-        <h2 class="banner-title">
-          {{ $t('welcome-to-join') }}
-        </h2>
-        <h2 class="banner-title bold">
-          一个 <span>公开</span> <span>永存</span> 的数字作品库
-        </h2>
-        <p class="banner-description">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
-        <img src="@/assets/img/dynamic_banner_people.png" alt="people" class="banner-people">
-        <img src="@/assets/img/dynamic_banner_decoration.png" alt="decoration" class="banner-decoration">
-      </section>
-    </div>
+    <timelineBanner v-if="isLogined" />
     <!-- row main -->
     <div class="row">
       <div class="col-6">
@@ -136,13 +124,14 @@
 import throttle from 'lodash/throttle'
 
 import { mapGetters, mapActions } from 'vuex'
-
+import timelineBanner from '@/components/timeline/timeline_banner.vue'
 import twitterCard from '@/components/platform_status/twitter_card'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 import RAList from '@/components/recommend_author_list'
 
 export default {
   components: {
+    timelineBanner,
     twitterCard,
     buttonLoadMore,
     RAList,
@@ -295,64 +284,6 @@ export default {
   margin-right: auto;
 }
 
-.banner {
-  ._mv();
-  box-sizing: border-box;
-  height: 240px;
-  margin-top: 40px;
-
-  &-main {
-    height: 100%;
-    background-color: #ece7ff;
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-    background-image: url(../../assets/img/dynamic_banner_bc.png);
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  &-people {
-    position: absolute;
-    left: -30px;
-    top: -20px;
-    height: calc(100% + 20px);
-  }
-
-  &-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1);
-    line-height: 40px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #fa6400;
-    }
-  }
-
-  &-description {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 10px;
-    padding: 0;
-    margin: 20px 0 0 0;
-    color: #000;
-    span {
-      color: #b2b2b2;
-    }
-  }
-
-  &-decoration {
-    height: 70%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-}
 .welcome {
   height: 345px;
   position: relative;
@@ -593,15 +524,6 @@ export default {
       display: none;
     }
   }
-  .banner-people {
-    left: -30px;
-    top: auto;
-    bottom: 0;
-    height: 60%;
-  }
-  .banner-decoration {
-    height: 40%;
-  }
 }
 
 @media screen and (max-width: 600px) {
@@ -611,25 +533,6 @@ export default {
 
   .head {
     // display: none;
-  }
-
-  .banner {
-    height: 140px;
-    margin-top: 20px;
-  }
-  .banner-title {
-    font-size: 20px;
-    line-height: 30px;
-  }
-  .banner-description {
-    font-size: 14px;
-    line-height: 20px;
-    margin: 10px 0 0 0;
-  }
-
-  .banner-people,
-  .banner-decoration {
-    display: none;
   }
   .row {
     margin-top: 20px;
@@ -665,15 +568,6 @@ export default {
 }
 
 @media screen and (max-width: 520px) {
-  .banner-title {
-    font-size: 18px;
-    line-height: 24px;
-  }
-  .banner-description {
-    font-size: 12px;
-    line-height: 14px;
-    margin: 10px 0 0 0;
-  }
   .welcome {
     align-items: center;
     padding-right: 0;

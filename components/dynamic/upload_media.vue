@@ -336,8 +336,8 @@ export default {
     color: #b2b2b2;
     cursor: pointer;
     &:hover {
-      background: #00000010;
-      color: black;
+      // background: #00000010;
+      // color: black;
     }
   }
 }
