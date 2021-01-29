@@ -6,8 +6,7 @@
     <div class="row">
       <div class="col-6">
         <!-- have 登录 -->
-        <inputContent />
-        <div v-if="isLogined" style="margin-top: 20px;">
+        <div v-if="isLogined">
           <section class="head topnav">
             <h3 class="head-title topnav-tag">
               {{ $t('timeline.allTimeline') }}
@@ -37,6 +36,7 @@
               </el-dropdown-menu>
             </el-dropdown> -->
           </section>
+          <inputContent style="margin-top: 20px;" />
           <p v-if="pull.list.length === 0 && !filterLoading" class="not-content">
             {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
           </p>
