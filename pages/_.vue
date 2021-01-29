@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import noPage from '@/components/404/index'
+import noPage from '@/components/error/404.vue'
 export default {
   layout: 'empty',
   components: {
