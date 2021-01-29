@@ -6,7 +6,8 @@
     <div class="row">
       <div class="col-6">
         <!-- have 登录 -->
-        <div v-if="isLogined">
+        <inputContent />
+        <div v-if="isLogined" style="margin-top: 20px;">
           <section class="head topnav">
             <h3 class="head-title topnav-tag">
               {{ $t('timeline.allTimeline') }}
@@ -75,6 +76,10 @@
             <div v-else>
               {{ $t('unsupported-platform-type') }}: {{ item.platform }}
             </div>
+            <!-- v-else-if="item.platform === 'dynamic'" -->
+            <dynamicCard
+              :data="{}"
+            />
           </div>
           <div class="load-more-button">
             <buttonLoadMore
@@ -182,17 +187,18 @@
 <script>
 // import throttle from 'lodash/throttle'
 import axios from 'axios'
-
 import { mapGetters, mapActions } from 'vuex'
 
 import { getCookie } from '@/utils/cookie'
 
+import inputContent from '@/components/dynamic/input_content.vue'
 import timelineBanner from '@/components/timeline/timeline_banner.vue'
 import timelineWelcome from '@/components/timeline/timeline_welcome.vue'
 import timelineCard from '@/components/timeline_card/index.vue'
 import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
 import mastodonCard from '@/components/platform_status/mastodon_card'
+import dynamicCard from '@/components/dynamic/dynamic_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
@@ -200,10 +206,12 @@ import timelineHelp from '@/components/help/timeline_help'
 
 export default {
   components: {
+    inputContent,
     timelineCard,
     twitterCard,
     bilibiliCard,
     mastodonCard,
+    dynamicCard,
     buttonLoadMore,
     // RAList,
     userPlatformCard,
