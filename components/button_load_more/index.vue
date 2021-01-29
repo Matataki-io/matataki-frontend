@@ -1,13 +1,13 @@
 <template>
-  <el-button
+  <button
     v-if="!isLoadEnd"
-    :loading="loading"
+    v-loading="loading"
     :class="buttonType"
     class="load-more"
     @click="loadMore"
   >
     <slot>{{ $t('viewMore') }}</slot>
-  </el-button>
+  </button>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -71,9 +71,11 @@ export default {
     }
   },
   created() {
-    if (this.isAtuoRequest) {
-      this.getLoadMore(this.apiUrl, this.params)
+    if (process.client) {
+      if (this.isAtuoRequest) {
+        this.getLoadMore(this.apiUrl, this.params)
       // console.log(this.isAtuoRequest, this.params, this.apiUrl)
+      }
     }
   },
   methods: {
@@ -105,8 +107,9 @@ export default {
         })
       }
       const getDataFail = res => {
+        console.log('res', res)
         this.$emit('getDataFail', res)
-        res.message ? console.log(res.message) : console.log('获取数据失败')
+        console.log(res || '获取数据失败')
       }
 
       // 获取数据
