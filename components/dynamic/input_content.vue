@@ -187,6 +187,9 @@ export default {
       btnSubmitLoading: false, // 发布动态loading
     }
   },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined'])
+  },
   mounted() {
     if (process.browser) {
       this.timer = setInterval(this.handleCurrentText, 2000)
@@ -202,9 +205,6 @@ export default {
       clearInterval(this.timer)
       // document.removeEventListener(this.handleEventClick)
     }
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   methods: {
     noMatchFound() {
@@ -331,7 +331,7 @@ export default {
       const data = {
         author,
         content: editDomContent.trim(),
-        short_content_share: (editDomContent.trim()).slice(0, 3000),
+        short_content_share: (editDomContent.trim()).slice(0, 3000), // 数据库存的3000
         platform: idProvider.toLocaleLowerCase(),
         refs: [],
         media: [],
@@ -509,6 +509,9 @@ export default {
     margin: 0 10px 0 0;
     &:hover {
       color: @purpleDark;
+    }
+    @media screen and (max-width: 768px) {
+      font-size: 20px;
     }
   }
 }
