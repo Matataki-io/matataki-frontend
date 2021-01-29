@@ -40,14 +40,14 @@
         class="card-content"
         target="_blank"
       >
-        <svg-icon
+        <!-- <svg-icon
           class="icon"
           icon-class="quotation_marks"
         />
         <svg-icon
           class="icon"
           icon-class="quotation_marks"
-        />
+        /> -->
         <div
           class="search-res"
           v-html="content || '&nbsp;'"
