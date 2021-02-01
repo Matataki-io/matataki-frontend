@@ -28,7 +28,7 @@
       </div>
       <div class="list margin">
         <div class="list-title">
-          发行量：
+          {{ $t('circulation') }}：
         </div>
         <div class="list-content">
           {{ amount }}-{{ minetokenToken.symbol }}
@@ -36,7 +36,7 @@
       </div>
       <div class="list">
         <div class="list-title">
-          简&emsp;介：
+          {{ $t('Introduction') }}&emsp;：
         </div>
         <div
           v-clampy="6"
@@ -65,7 +65,7 @@
       </div>
       <el-divider>
         <div class="info">
-          扫描二维码&nbsp;&nbsp;了解Fan票
+          {{ $t('scan-QR-code') }}&nbsp;&nbsp;{{ $t('understanding-coin') }}
         </div>
       </el-divider>
     </div>

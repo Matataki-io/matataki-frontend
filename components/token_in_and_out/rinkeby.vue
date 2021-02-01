@@ -2,18 +2,18 @@
   <div class="rinkeby-in-n-out">
     <el-alert type="warning" class="elalert">
       <h2 class="title">
-        ⚠️你找到了暂未对公众开放的试验性功能⚠️
+        ⚠️{{ $t('you-found-an-experimental-feature-that-is-not-yet-open-to-the-public') }}⚠️
       </h2>
       <p class="description">
-        提取出站外的Fan票为普通的 ERC20 代币。（在 Rinkeby Testnet 上）
+        {{ $t('fan-tickets-drawn-out-of-the-station-are-ordinary-ERC20-tokens-On-Rinkeby-Testnet') }}
       </p>
       <p class="description">
-        请确保你自己知道你在做啥，并提供的一个有效的以太坊地址，我们不为搞错地址所造成的丢币负责。
+        {{ $t('please-make-sure-you-know-what-you-are-doing-and-provide-a-valid-Ethereum-address-we-are-not-responsible-for-the-loss-of-coins-caused-by-incorrect-addresses') }}
       </p>
     </el-alert>
     <el-alert type="info" class="elalert">
       <h2 class="title">
-        ❓怎么在以太坊钱包显示我提现出来的Fan票？
+        ❓{{ $t('how-to-display-the-Fan-ticket-that-I-have-withdrawn-in-the-Ethereum-wallet') }}
       </h2>
       <a
         class="link"
@@ -21,7 +21,7 @@
         href="https://matataki.io/p/4881"
         target="_blank"
         rel="noreferrer"
-      >👉在 MetaMask 添加 Fan票的指南👈</a>
+      >👉{{ $t('guide-to-add-fan-tickets-to-MetaMask') }}👈</a>
     </el-alert>
     <Deposit v-if="isDepositSelected" />
     <Withdraw v-else />

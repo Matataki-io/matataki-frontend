@@ -166,7 +166,7 @@
       </div>
       <div class="chart-no-data">
         <div>
-          暂不支持查看 {{ dataList[active].name }} 的历史数据
+          {{ $t('not-support-to-view-historical-data-of-x', [ dataList[active].name ]) }}
         </div>
       </div>
     </div>

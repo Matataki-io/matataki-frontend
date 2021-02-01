@@ -22,13 +22,13 @@
           size="small"
           @click="giftDialogShow = true"
         >
-          转账
+          {{ $t('transferMoney') }}
         </el-button>
         <p
           v-if="isWithdrawDisabled"
           class="mark-text"
         >
-          提现功能暂未开放
+          {{ $t('the-withdrawal-function-is-not-yet-open') }}
         </p>
       </div>
     </div>

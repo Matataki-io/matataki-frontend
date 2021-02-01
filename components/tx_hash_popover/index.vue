@@ -7,7 +7,7 @@
   >
     <div class="components-ipfs_all">
       <p class="tx_hash__title">
-        链上查看
+        {{ $t('view-on-the-chain') }}
       </p>
       <div
         v-if="hash"

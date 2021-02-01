@@ -1,7 +1,7 @@
 <template>
   <div class="token-card">
     <p class="title">
-      请选择其中一种卡片样式
+      {{ $t('please-choose-one-of-the-card-styles') }}
     </p>
     <div class="token-content">
       <div
@@ -41,7 +41,7 @@
       type="primary"
       @click="save"
     >
-      保存
+      {{ $t('save') }}
     </el-button>
   </div>
 </template>

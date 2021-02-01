@@ -7,7 +7,7 @@
     <no-content-prompt
       :list="pull.list"
       :hide="loading || (unboundBilibili && isMe($route.params.id))"
-      :prompt="unboundBilibili ? '未开启哔哩哔哩时间线' : undefined"
+      :prompt="unboundBilibili ? $t('bilibili-timeline-is-not-turned-on') : undefined"
     >
       <bilibiliCard
         v-for="(item, index) in pull.list"
@@ -31,15 +31,15 @@
     <div v-if="unboundBilibili && isMe($route.params.id) " class="twitter-enable">
       <svg-icon icon-class="bilibili_tv" />
       <h4>
-        将你的哔哩哔哩动态同步展示到 Matataki
+        {{ $t('display-your-bilibili-dynamic-synchronization-to-Matataki') }}
       </h4>
       <div class="twitter-enable-bind">
         <p>
-          第一步：<span>使用 Matataki Auth 绑定</span>
+          {{ $t('first-step') }}：<span>{{ $t('binding-with-Matataki-auth') }}</span>
         </p>
         <router-link :to="unboundBilibili ? { name: 'setting-account' } : {}">
           <el-button type="primary" :disabled="!unboundBilibili">
-            绑定哔哩哔哩账号
+            {{ $t('bind-bilibili-account') }}
           </el-button>
         </router-link>
       </div>

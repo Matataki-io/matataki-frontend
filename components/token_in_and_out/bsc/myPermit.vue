@@ -4,7 +4,7 @@
       <!-- Env Check Here -->
       <EnvironmentCheck />
       <wbAlertTips />
-      <p style=" font-size: 10px; ">约每一分钟更新一次许可的情况，上一次更新：{{ lastUpdated }}</p>
+      <p style=" font-size: 10px; ">{{ $t('when-the-license-is-updated-approximately-every-minute-the-last-update') }}：{{ lastUpdated }}</p>
       <div
         v-for="listItem in listOfTokenAndItsPermit"
         :key="listItem.token"
@@ -13,30 +13,30 @@
         <p class="parse-title">Token: {{ listItem.token }}</p>
         <div>
           <el-table :data="listItem.permits" style="width: 100%">
-            <el-table-column prop="to" label="提现到" width="400" />
-            <el-table-column prop="nonce" label="许可号(顺序）" width="80" />
-            <el-table-column label="状态" width="140">
+            <el-table-column prop="to" :label="$t('withdraw-to')" width="400" />
+            <el-table-column prop="nonce" :label="$t('license-number-sequence')" width="80" />
+            <el-table-column :label="$t('status')" width="140">
               <template slot-scope="scope">
                 {{
                   scope.row.status === 0
-                    ? "待发送"
+                    ? $t('to-be-sent')
                     : scope.row.status === -1
-                      ? "已发送"
-                      : "请先处理待发送"
+                      ? $t('has-been-sent')
+                      : $t('please-process-to-be-sent-first')
                 }}
               </template>
             </el-table-column>
-            <el-table-column prop="value" label="提现金额" width="160">
+            <el-table-column prop="value" :label="$t('withdrawal-amount')" width="160">
               <template slot-scope="scope">
                 {{ scope.row.value / 1e4 }}
               </template>
             </el-table-column>
-            <el-table-column label="有效期" width="140">
+            <el-table-column :label="$t('valid-period')" width="140">
               <template slot-scope="scope">
                 {{ scope.row.expiryDate.toLocaleDateString() }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="240">
+            <el-table-column fixed="right" :label="$t('operating')" width="240">
               <template slot-scope="scope">
                 <div v-if="scope.row.status === -1" class="action-for-sent" />
                 <el-button
@@ -48,10 +48,10 @@
                   @click="sendPermit(scope.row)"
                 >
                   {{ scope.row.status === 1
-                    ? "先处理前面"
+                    ? $t('deal-with-the-front-first')
                     : scope.row.status === -1
-                      ? "已发送"
-                      : "上传许可"
+                      ? $t('has-been-sent')
+                      : $t('upload-license')
                   }}
                 </el-button>
                 <el-button
@@ -59,7 +59,7 @@
                   type="primary"
                   @click="updatePermit(scope.row)"
                 >
-                  更新许可
+                  {{ $t('update-license') }}
                 </el-button>
                 <el-button
                   :disabled="
@@ -67,7 +67,7 @@
                   "
                   @click="copyPermit(scope.row)"
                 >
-                  分享
+                  {{ $t('share') }}
                 </el-button>
               </template>
             </el-table-column>

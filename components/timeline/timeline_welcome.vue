@@ -6,12 +6,12 @@
       {{ $t('welcome-to-join') }}
     </h2>
     <h2 class="welcome-title">
-      一个 <span>公开</span> <span>永存</span> 的数字作品库
+      {{ $t('an-open-and-permanent-digital-library') }}
     </h2>
 
     <div class="welcome-text">
-      <p class="welcome-description">请 <span @click="login">{{ $t('login') }}</span> 后查看您的</p>
-      <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
+      <p class="welcome-description">{{ $t('please') }} <span @click="login">{{ $t('login') }}</span> {{ $t('after-viewing-your') }}</p>
+      <p class="welcome-description-time">{{ $t('personalized-dynamic-timeline') }}</p>
       <a
         href="javascript:;"
         class="btn"

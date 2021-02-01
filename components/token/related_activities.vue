@@ -5,7 +5,7 @@
     </h2>
     <p>
       <i class="el-icon-s-cooperation" />
-      活动卡片正在施工中
+      {{ $t('activity-card-is-under-construction') }}
     </p>
   </div>
 </template>

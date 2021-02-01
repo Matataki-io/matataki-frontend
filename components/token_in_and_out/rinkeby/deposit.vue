@@ -2,15 +2,15 @@
   <div class="card">
     <el-alert v-if="myHostingAccount" type="info" class="elalert">
       <h2 class="title">
-        我的托管钱包
+        {{ $t('my-custody-wallet') }}
       </h2>
       <p class="description">
-        地址: 
+        {{ $t('address') }}:
         <code @click="copy">
           {{ myHostingAccount }}
         </code>
         <button @click="copy">
-          复制
+          {{ $t('copy') }}
         </button>
       </p>
       <a 
@@ -19,11 +19,11 @@
         rel="noreferrer"
         class="link"
       >
-        👉在 Etherscan 看这个托管账户的链上交易（找到 txHash） 👈
+        👉{{ $t('look-at-the-on-chain-transactions-of-this-escrow-account-on-Etherscan-find-txHash') }} 👈
       </a>
     </el-alert>
     <h1 class="withdraw-title">
-      申报充值
+      {{ $t('declare-recharge') }}
     </h1>
     <el-form
       ref="form"
@@ -43,22 +43,22 @@
           class="submit-btn"
           @click="submitForm('form')"
         >
-          确定
+          {{ $t('confirm') }}
         </el-button>
       </div>
       <el-alert v-if="depositResult" type="success">
         <h1 class="title">
-          Fan 票充值成功
-        </h1>这笔交易已经同步到数据库。
-        <p>来自钱包地址: <code>{{ depositResult.from }}</code></p>
+          {{ $t('coin-recharge-successfully') }}
+        </h1>{{ $t('this-transaction-has-been-synchronized-to-the-database') }}
+        <p>{{ $t('from-wallet-address') }}: <code>{{ depositResult.from }}</code></p>
         <p v-if="depositResult.token">
-          Fan票名：{{ depositResult.token.name }}
+          {{ $t('coin-name') }}：{{ depositResult.token.name }}
           符号：{{ depositResult.token.symbol }}
           <router-link :to="'/token/' + depositResult.token.id" target="_blank">
-            ↗️ 查看该饭票详情
+            ↗️ {{ $t('view-the-coin-details') }}
           </router-link>
         </p>
-        <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
+        <p>{{ $t('amount') }}: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
       </el-alert>
     </el-form>
   </div>

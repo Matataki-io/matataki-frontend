@@ -9,11 +9,11 @@
         label-width="120px"
         class="withdraw-form"
       >
-        <el-form-item label="要转出的Fan票" prop="tokenId">
+        <el-form-item :label="$t('coin-to-be-transferred')" prop="tokenId">
           <el-select
             v-model="form.tokenId"
             filterable
-            placeholder="请选择"
+            :placeholder="$t('please-choose')"
             style="width: 100%"
             @change="changeTokenSelect"
           >
@@ -34,33 +34,33 @@
                 >{{ item.name }}({{ item.symbol }})</span>
                 <span
                   class="token-symbol"
-                >余额: {{ tokenAmount(item.amount, item.decimals) }}
+                >{{ $t('balance') }}: {{ tokenAmount(item.amount, item.decimals) }}
                   {{ item.symbol }}</span>
               </div>
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="数量" prop="amount">
+        <el-form-item :label="$t('quantity')" prop="amount">
           <el-input
             v-model="form.amount"
             :max="form.max"
             :min="form.min"
-            placeholder="请输入数量"
+            :placeholder="$t('please-enter-the-quantity')"
             clearable
           />
         </el-form-item>
         <p class="balance">
-          余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
+          {{ $t('balance') }}&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
           <a
             v-if="form.balance"
             href="javascript:;"
             @click="form.amount = form.balance"
-          >全部转出</a>
+          >{{ $t('transfer-all-out') }}</a>
         </p>
-        <el-form-item label="转账目的地" prop="to">
+        <el-form-item :label="$t('transfer-destination')" prop="to">
           <el-input
             v-model="form.to"
-            placeholder="请输入目标钱包的BSC地址，以 0x 开头。"
+            :placeholder="$t('please-enter-the-BSC-address-of-the-target-wallet-starting-with-0x')"
             clearable
           />
         </el-form-item>
@@ -71,20 +71,18 @@
             class="submit-btn"
             @click="submitForm('form')"
           >
-            确定
+            {{ $t('confirm') }}
           </el-button>
         </div>
         <el-alert v-if="withdrawResult" type="success" class="withdraw-result">
           <h1 class="title">
-            Fan 票 BSC 跨链转账许可证已下发
+            {{ $t('coin-BSC-cross-chain-transfer-license-has-been-issued') }}
           </h1>
           <p class="description">
-            因为这是 BSC
-            主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的
-            BNB，以创建跨链资产。
+            {{ $t('because-this-is-a-cross-chain-asset-of-the-BSC-mainnet-you-need-to-consume-a-certain-fee-to-create-it-please-make-sure-that-your-wallet-has-enough-BNB-to-create-cross-chain-assets') }}
           </p>
           <p class="description">
-            你的提现许可证如下（不用怕，你可以随时到许可证列表查看之前申请过的）
+            {{ $t('your-withdrawal-permit-is-as-follows-dont-be-afraid-you-can-always-go-to-the-permit-list-to-check-the-previous-application') }}
           </p>
           <el-input
             v-model="permitOfMint"
@@ -95,10 +93,10 @@
           />
           <div class="actions">
             <el-button @click="goToMintPermitList">
-              查看我申请过的许可证 / 发送激活
+              {{ $t('view-the-licenses-I-applied-for') }} / {{ $t('send-activation') }}
             </el-button>
             <el-button @click="copyGoToMintPermitList(permitOfMint)">
-              复制许可证 / 发送激活
+              {{ $t('copy-license') }} / {{ $t('send-activation') }}
             </el-button>
           </div>
         </el-alert>

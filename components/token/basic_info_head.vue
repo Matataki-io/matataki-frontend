@@ -53,7 +53,7 @@
             </div>
             <div v-if="tags && tags.length === 0">
               <p class="token-info-sub">
-                无标签
+                {{ $t('no-label') }}
               </p>
             </div>
             <div v-else class="token-info-sub token-tags">
@@ -120,7 +120,7 @@
           size="small"
           @click="switchDisplayAngle"
         >
-          {{ displayAngle === 'client' ? '管理视角' : '粉丝视角' }}
+          {{ displayAngle === 'client' ? $t('management-perspective') : $t('fan-perspective') }}
           <svg-icon icon-class="switch" />
         </el-button>
       </div>
