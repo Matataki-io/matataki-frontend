@@ -1,18 +1,19 @@
 <template>
   <div class="error">
-    <notPage v-if="error.statusCode !=404" />
-    <errorPage v-else />
+    <errorPage v-if="error.statusCode == 500" />
+    <unknownPage v-else />
+    <span class="status">status: {{ (error.statusCode).toString() }}</span>
   </div>
 </template>
 
 <script>
-import notPage from '@/components/404'
-import errorPage from '@/components/500'
+import unknownPage from '@/components/error/unknown.vue'
+import errorPage from '@/components/error/500.vue'
 export default {
   layout: 'empty',
   name: 'Error',
   components: {
-    notPage,
+    unknownPage,
     errorPage
   },
   // nuxt 默认提供模版
@@ -44,5 +45,12 @@ h2 {
   font-size: 18px;
   padding: 0;
   margin: 30px 0 0;
+}
+.status {
+  position: fixed;
+  right: 40px;
+  top: 100px;
+  color: #ee0a24;
+  font-size: 16px;
 }
 </style>

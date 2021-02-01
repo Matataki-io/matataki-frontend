@@ -1,5 +1,6 @@
 <template>
   <div class="container-input">
+    <!-- 输入框 -->
     <div class="container-tribute">
       <client-only>
         <vue-tribute
@@ -16,9 +17,43 @@
         </vue-tribute>
       </client-only>
     </div>
+    <!-- 分享链接 -->
+    <div v-if="shareLinkList.length > 0" class="link-item">
+      <template v-for="(item, index) in shareLinkList">
+        <shareOuterCard
+          v-if="item.ref_sign_id === 0"
+          :key="'shareInsideCard' + index"
+          :card="item"
+          :idx="index"
+          class="list-card"
+          @removeShareLink="removeShareLink"
+        />
+        <sharePCard
+          v-else-if="item.ref_sign_id !== 0 && item.channel_id === 1"
+          :key="'shareInsideCard' + index"
+          :card="item"
+          :idx="index"
+          class="list-card"
+          @removeShareLink="removeShareLink"
+        />
+        <shareInsideCard
+          v-else-if="item.ref_sign_id && item.channel_id === 3"
+          :key="'shareOuterCard' + index"
+          :card="item"
+          :idx="index"
+          class="list-card"
+          @removeShareLink="removeShareLink"
+        />
+      </template>
+    </div>
+    <!-- 操作区域 -->
     <div class="input-footer">
       <div class="i-f-info">
-        <svg-icon icon-class="at" class="icon" @click.stop="emoji = !emoji" />
+        <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
+        <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
+        <shareLink :share-link-list="shareLinkList" @pushItem="item => shareLinkList.push(item.data)">
+          <svg-icon icon-class="link1" class="icon" />
+        </shareLink>
         <div class="emoji-container">
           <svg-icon icon-class="emoji1" class="icon" @click.stop="emoji = !emoji" />
           <client-only>
@@ -65,6 +100,10 @@ import { Picker } from 'emoji-mart-vue'
 import VueTribute from '@/plugins/vue-tribute.js'
 import debounce from 'lodash/debounce'
 import uploadMedia from '@/components/dynamic/upload_media'
+import shareLink from '@/components/dynamic/share_link'
+import shareOuterCard from '@/components/share_outer_card/index.vue'
+import sharePCard from '@/components/share_p_card/index.vue'
+import shareInsideCard from '@/components/share_inside_card/index.vue'
 import { filterOutHtmlShare } from '@/utils/xss'
 import { getCookie } from '@/utils/cookie'
 
@@ -72,7 +111,11 @@ export default {
   components: {
     VueTribute,
     Picker,
-    uploadMedia
+    uploadMedia,
+    shareLink,
+    shareOuterCard,
+    sharePCard,
+    shareInsideCard
   },
   props: {
     totalText: {
@@ -137,17 +180,15 @@ export default {
       },
       timer: null,
       // handleEventClick: null
-      shareLinkList: [ // 分享链接
-        // {
-        //   type: 'inside',
-        //   type: 'outer',
-        // }
-      ],
+      shareLinkList: [], // share link [ {}, {} ]
       uploadMediaVisible: false,
       mediaList: [],
       mediaUploading: false,
       btnSubmitLoading: false, // 发布动态loading
     }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   mounted() {
     if (process.browser) {
@@ -164,9 +205,6 @@ export default {
       clearInterval(this.timer)
       // document.removeEventListener(this.handleEventClick)
     }
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
   },
   methods: {
     noMatchFound() {
@@ -293,7 +331,7 @@ export default {
       const data = {
         author,
         content: editDomContent.trim(),
-        short_content_share: (editDomContent.trim()).slice(0, 3000),
+        short_content_share: (editDomContent.trim()).slice(0, 3000), // 数据库存的3000
         platform: idProvider.toLocaleLowerCase(),
         refs: [],
         media: [],
@@ -332,6 +370,19 @@ export default {
       } finally {
         this.btnSubmitLoading = false
       }
+    },
+    // 显示菜单 collectionIndex 集合索引
+    showMenuForCollection(collectionIndex) {
+      try {
+        let input = document.getElementById('tributeShare')
+        window._tribute.showMenuForCollection(input, collectionIndex)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 移除分享链接
+    removeShareLink(i) {
+      this.shareLinkList.splice(i, 1)
     },
   },
 }
@@ -459,6 +510,9 @@ export default {
     &:hover {
       color: @purpleDark;
     }
+    @media screen and (max-width: 768px) {
+      font-size: 20px;
+    }
   }
 }
 .container-tribute {
@@ -483,6 +537,15 @@ export default {
   outline: none;
   &:focus {
     background: #fff;
+  }
+}
+.link-item {
+  margin-top: 10px;
+}
+.list-card {
+  margin-top: 10px;
+  &:nth-child(1) {
+    margin-top: 0;
   }
 }
 .input-footer {

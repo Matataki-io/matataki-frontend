@@ -86,5 +86,21 @@ export default {
     right: 0;
     bottom: 0;
   }
+  @media screen and (max-width: 768px) {
+    .banner-people,
+    .banner-decoration {
+      display: none;
+    }
+    .banner-title {
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    .banner-description {
+      font-size: 12px;
+      line-height: 1.4;
+      letter-spacing: 2px;
+      margin: 10px 0 0 0;
+    }
+  }
 }
 </style>
