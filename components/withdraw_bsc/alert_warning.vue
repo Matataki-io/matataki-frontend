@@ -1,20 +1,20 @@
 <template>
   <el-alert :type="type">
     <h2 class="title">
-      ⚠️ 你找到了暂未对公众开放的试验性功能 ⚠️
+      ⚠️ {{ $t('you-found-an-experimental-feature-that-is-not-yet-open-to-the-public') }} ⚠️
     </h2>
     <p class="description">
-      这是目前你申请的 BSC 转账许可，一经上传即可生成在 BSC 上的Fan票资产。<b>你需要 MetaMask 连接上币安智能链主网，并有足够的 BNB
-        去上传提现许可。</b>
+      {{ $t('this-is-the-BSC-transfer-permission-you-currently-apply-for-once-uploaded-you-can-generate-Fan-ticket-assets-on-the-BSC') }}
+      <b>{{ $t('you-need-MetaMask-to-connect-to-the-Binance-Smartchain-mainnet-and-have-enough-BNB-to-upload-the-withdrawal-permission') }}</b>
     </p>
     <a
       class="link"
       href="https://www.readblocks.com/archives/32275"
       target="_blank"
       rel="noopener noreferrer"
-    >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+    >👉{{ $t('guide-to-add-Binance-Smartchain-in-MetaMask') }} ↗️ 👈</a>
     <p class="description">
-      如果你没有足够的 BNB，你可以把许可分享给有 BNB 的朋友，让 TA 帮你生成币安智能链上的 Fan票 资产
+      {{ $t('if-you-dont-have-enough-BNB-you-can-share-the-license-with-friends-who-have-BNB-and-let-TA-help-you-generate-Fan-ticket-assets-on-the-Binance-Smart-Chain') }}
     </p>
   </el-alert>
 </template>

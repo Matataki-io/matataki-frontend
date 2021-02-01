@@ -10,7 +10,7 @@
                 {{ iHold }}
               </h4>
               <p>
-                我持有
+                {{ $t('i-hold') }}
               </p>
             </span>
           </div>
@@ -25,7 +25,7 @@
                 {{ othersHold }}
               </h4>
               <p>
-                他人持有
+                {{ $t('held-by-others') }}
               </p>
             </span>
           </div>
@@ -40,7 +40,7 @@
                 {{ uniswapGoldPool }}
               </h4>
               <p>
-                流通中
+                {{ $t('in-circulation') }}
               </p>
             </span>
           </div>

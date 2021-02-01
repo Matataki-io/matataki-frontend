@@ -19,8 +19,8 @@
           :content="item.content"
         />
         <span>{{ item.content }}</span>
-        <a v-if="socialUrl(item.type, item.content)" :href="socialUrl(item.type, item.content)" target="_blank">跳转</a>
-        <a v-else href="Javascript:;" @click="copyCode(item.content)">复制</a>
+        <a v-if="socialUrl(item.type, item.content)" :href="socialUrl(item.type, item.content)" target="_blank">{{ $t('jump') }}</a>
+        <a v-else href="Javascript:;" @click="copyCode(item.content)">{{ $t('copy') }}</a>
       </div>
     </div>
     <span

@@ -14,7 +14,7 @@
               <span 
                 :class="[ 'token-title', { 'active': isUniswap } ]"
                 @click="tabChange('uniswap')"
-              >Uniswap交易所</span>
+              >{{ $t('uniswap-exchange') }}</span>
               <span 
                 :class="[ 'token-title', { 'active': isDirectTrade } ]"
                 @click="tabChange('direct')"
@@ -41,13 +41,13 @@
           <div class="btns">
             <div class="market-info-container">
               <div v-if="isDirectTrade" class="market-info">
-                <span>价格：{{ market.price }} CNY</span>
-                <span>剩余：{{ market.balance }} {{ token.symbol }}</span><span v-if="NoMarket" class="warn-tip">（流动性不足）</span>
-                <span>已售出：{{ market.sellAmount }} {{ token.symbol }}</span>
+                <span>{{ $t('price') }}：{{ market.price }} CNY</span>
+                <span>{{ $t('remaining') }}：{{ market.balance }} {{ token.symbol }}</span><span v-if="NoMarket" class="warn-tip">（{{ $t('insufficient-liquidity') }}）</span>
+                <span>{{ $t('sold') }}：{{ market.sellAmount }} {{ token.symbol }}</span>
               </div>
               <div v-if="isUniswap" class="market-info">
                 <!-- <span>价格：0 CNY</span> -->
-                <span>剩余：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span><span v-if="noUniswap" class="warn-tip">（流动性不足）</span>
+                <span>{{ $t('remaining') }}：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span><span v-if="noUniswap" class="warn-tip">（{{ $t('insufficient-liquidity') }}）</span>
               </div>
             </div>
             <el-button
@@ -62,17 +62,17 @@
         </div>
         <el-divider direction="vertical" class="middle-divider" />
         <div class="tips-card">
-          <h3>小贴士</h3>
+          <h3>{{ $t('tips') }}</h3>
           <ul v-if="isUniswap">
-            <ol>1. 此处是通过Uniswap交易机制实现的快捷购买功能</ol>
-            <ol>2. 点击界面右上角的 ”Uniswap“按钮可进入 对应的交易所</ol>
-            <ol>3. 当交易所中的流动性不足时，<a href="https://www.yuque.com/matataki/matataki/xzzv3r" target="_blank">如何提供流动性</a></ol>
-            <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">更多帮助信息</a></ol>
+            <ol>1. {{ $t('here-is-the-quick-purchase-function-realized-through-the-Uniswap-transaction-mechanism') }}</ol>
+            <ol>2. {{ $t('click-the-Uniswap-button-in-the-upper-right-corner-of-the-interface-to-enter-the-corresponding-exchange') }}</ol>
+            <ol>3. {{ $t('when-there-is-insufficient-liquidity-in-the-exchange') }}，<a href="https://www.yuque.com/matataki/matataki/xzzv3r" target="_blank">{{ $t('how-to-provide-liquidity') }}</a></ol>
+            <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">{{ $t('more-help-information') }}</a></ol>
           </ul>
           <ul v-else>
-            <ol>1. 直通车中的价格由创始人设置，且不可修改</ol>
-            <ol>2. 通过直通车支付的金额将会直接转给创始人</ol>
-            <ol>3. 当直通车中流动性不足时，则无法使用直通车快捷购买Fan票</ol>
+            <ol>1. {{ $t('the-price-in-the-through-train-is-set-by-the-founder-and-cannot-be-modified') }}</ol>
+            <ol>2. {{ $t('the-amount-paid-by-the-through-train-will-be-directly-transferred-to-the-founder') }}</ol>
+            <ol>3. {{ $t('When-there-is-insufficient-liquidity-in-the-through-train-you-cannot-use-the-through-train-to-quickly-purchase-coin') }}</ol>
             <ol><a href="https://www.yuque.com/matataki/matataki/pmu2dr" target="_blank">{{ $t('more-help-information') }}</a></ol>
           </ul>
         </div>

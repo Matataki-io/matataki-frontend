@@ -6,13 +6,13 @@
     <div v-if="isWithdrawSelected" class="withdraw">
       <div class="withdraw-switch">
         <el-radio v-model="selection" label="apply">
-          申请提现许可
+          {{ $t('apply-for-withdrawal-permission') }}
         </el-radio>
         <el-radio v-model="selection" label="my">
-          查看我的提现许可
+          {{ $t('check-my-withdrawal-permission') }}
         </el-radio>
         <el-radio v-model="selection" label="upload">
-          替别人提现许可
+          {{ $t('withdraw-permission-for-others') }}
         </el-radio>
       </div>
       <wbAlertWarning />

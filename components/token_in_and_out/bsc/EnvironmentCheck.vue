@@ -2,26 +2,26 @@
   <client-only>
     <div class="checklist">
       <h4 class="title">
-        环境检查
+        {{ $t('environmental-inspection') }}
       </h4>
       <ul class="info-list">
-        <li> 
+        <li>
           MetaMask: {{ renderIconWithBool(isMetaMaskActive) }}&nbsp;
-          钱包连接: {{ renderIconWithBool(selectedWallet) }}&nbsp;
-          网络: {{ renderIconWithBool(isOnBsc) }}
+          {{ $t('wallet-connection') }}: {{ renderIconWithBool(selectedWallet) }}&nbsp;
+          {{ $t('network') }}: {{ renderIconWithBool(isOnBsc) }}
           <a 
             v-if="!isOnBsc"
             class="link"
             href="https://www.readblocks.com/archives/32275"
             target="_blank"
             rel="noopener noreferrer"
-          >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+          >👉{{ $t('guide-to-add-Binance-Smartchain-in-MetaMask') }} ↗️ 👈</a>
           <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
-            连接
+            {{ $t('connection') }}
           </el-button>
         </li>
         <li v-if="selectedWallet">
-          👛&nbsp;地址: <span class="address">{{ selectedWallet }}</span>， 余额 <b>{{ bnbBalance }}</b> BNB
+          👛&nbsp;{{ $t('address') }}: <span class="address">{{ selectedWallet }}</span>， {{ $t('balance') }} <b>{{ bnbBalance }}</b> BNB
         </li>
       </ul>
     </div>

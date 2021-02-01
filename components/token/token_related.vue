@@ -18,7 +18,7 @@
           :false-label="0"
           class="only-creator"
         >
-          只看创始人
+          {{ $t('just-look-at-the-founder') }}
         </el-checkbox>
         <el-dropdown
           class="sort"

@@ -145,7 +145,7 @@ export default {
         list: [],
       },
       usersLoading: false,
-      usersRecommendList: [{},{},{},{},{}],
+      usersRecommendList: [],
       unauthorized: false
     }
   },
