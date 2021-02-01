@@ -128,7 +128,7 @@ export default {
         list: [],
       },
       usersLoading: false,
-      usersRecommendList: [{},{},{},{},{}],
+      usersRecommendList: [],
     }
   },
   computed: {

@@ -248,7 +248,7 @@ export default {
         list: []
       },
       usersLoading: false,
-      usersRecommendList: [{},{},{},{},{}],
+      usersRecommendList: [],
       userPlatformList: [],
       userPlatformListLoading: false,
       filterLoading: true,
