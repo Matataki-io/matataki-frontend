@@ -4,16 +4,13 @@
     :modal="true"
     :close-on-click-modal="false"
     width="380px"
-    title="选择支付方式"
+    :title="$t('select-payment-method')"
     custom-class="my-dialog br10 auth-dialog"
   >
     <div class="token-title">
-      还需购买 <span>{{ amount }} {{ token.symbol }}</span> <span v-if="isPriceArticle">并支付</span>
+      {{ $t('still-need-to-buy') }} <span>{{ amount }} {{ token.symbol }}</span> <span v-if="isPriceArticle">{{ $t('and-pay') }}</span>
     </div>
-    <section 
-      v-loading="loading"
-      class="exs-main"
-    > 
+    <section v-loading="loading" class="exs-main">
       <div
         :disabled="noUniswap"
         class="aui-flex b-line"
@@ -24,13 +21,13 @@
           <img :src="uniswapLogo" alt="uniswap">
         </div>
         <div class="aui-flex-box aui-flex-box-clear">
-          <h4>交易所支付</h4>
+          <h4>{{ $t('exchange-payment') }}</h4>
           <p v-if="noUniswap" class="warn-tip">
-            流动性不足，剩余 {{ uniswap.balance }} {{ token.symbol }}
+            {{ $t('insufficient-liquidity-surplus') }} {{ uniswap.balance }} {{ token.symbol }}
           </p>
           <!-- <p v-else-if="noUniswap" class="warn-tip">暂无流动性</p> -->
           <!-- 价格：¥{{ uniswap.price }}， -->
-          <p v-else>需支付：¥{{ uniswapNeedPay }}</p>
+          <p v-else>{{ $t('payable') }}：¥{{ uniswapNeedPay }}</p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="1" :disabled="noUniswap">
@@ -48,13 +45,13 @@
           <img :src="tradeLogo" alt="uniswap">
         </div>
         <div class="aui-flex-box aui-flex-box-clear">
-          <h4>直通车支付</h4>
+          <h4>{{ $t('through-train-payment') }}</h4>
           <p v-if="noMarket" class="warn-tip">
-            流动性不足，剩余 {{ directTrade.balance }} {{ token.symbol }}
+            {{ $t('insufficient-liquidity-surplus') }} {{ directTrade.balance }} {{ token.symbol }}
           </p>
           <!-- <p v-else-if="noMarket" class="warn-tip">暂无流动性</p> -->
           <!-- 价格：¥{{ directTrade.price }}， -->
-          <p v-else>需支付：¥{{ directTradeNeedPay }}</p>
+          <p v-else>{{ $t('payable') }}：¥{{ directTradeNeedPay }}</p>
         </div>
         <div class="aui-payment-method">
           <el-radio v-model="radio" label="2" :disabled="noMarket">
@@ -70,7 +67,7 @@
         :disabled="noticeDisabled"
         @click="notice"
       >
-        {{ noticeDisabled ? '流动性不足，已经提醒作者' : '流动性不足，点击提醒作者' }}
+        {{ noticeDisabled ? $t('insufficient-liquidity-the-author-has-been-reminded') : $t('insufficient-liquidity-click-to-remind-the-author') }}
       </el-button>
       <el-button
         v-else
@@ -79,7 +76,7 @@
         :disabled="noUniswap&&noMarket"
         @click="createOrder"
       >
-        创建订单
+        {{ $t('create-order') }}
       </el-button>
     </section>
   </el-dialog>
