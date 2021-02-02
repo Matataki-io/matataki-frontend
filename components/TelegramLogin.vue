@@ -13,7 +13,7 @@
       <a
         href="javascript:;"
         @click="createScript"
-      >重试</a>
+      >{{ $t('retry') }}</a>
     </div>
     <div
       v-show="status === 'completed'"
@@ -25,7 +25,7 @@
       href="https://www.matataki.io/p/2465"
       target="_blank"
     >
-      切换账号教程<svg-icon
+      {{ $t('switch-account-tutorial') }}<svg-icon
         icon-class="share3"
         class="icon"
       />

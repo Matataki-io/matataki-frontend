@@ -12,7 +12,7 @@
       <router-link :to="{name: 'user-id', params: { id: userId }}" target="_blank">
         <c-avatar
           :src="userAvatar"
-          class="avatar-popover" 
+          class="avatar-popover"
           :recommend-author="userInfo.is_recommend === 1"
           :level="1"
           :token-user="!!tokenInfo.id"
@@ -28,24 +28,24 @@
       <div class="user-data">
         <router-link :to="{name: 'user-id-follow', params: { id: userId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ userInfo.follows || 0 }}</p>
-          <p class="user-data-title">关注</p>
+          <p class="user-data-title">{{ $t('follow') }}</p>
         </router-link>
         <router-link :to="{name: 'user-id-fan', params: { id: userId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ userInfo.fans || 0 }}</p>
-          <p class="user-data-title">粉丝</p>
+          <p class="user-data-title">{{ $t('fans') }}</p>
         </router-link>
       </div>
       <div class="user-btn">
         <a href="javascript:;" @click="transfer">
           <svg-icon icon-class="user_avatar_popover_zhuanzhang" class="icon" />
-          转账</a>
+          {{ $t('transferMoney') }}</a>
         <a
           v-if="userInfo.is_follow"
           v-loading="followLoading"
           href="javascript:;"
           @click="unFollow"
         >
-          已关注</a>
+          {{ $t('following') }}</a>
         <a
           v-else
           v-loading="followLoading"
@@ -53,7 +53,7 @@
           @click="follow"
         >
           <svg-icon icon-class="user_avatar_popover_follow" class="icon" />
-          关注</a>
+          {{ $t('follow') }}</a>
       </div>
       <div v-if="tokenInfo.id" class="line" />
       <div v-if="tokenInfo.id" class="user-token">

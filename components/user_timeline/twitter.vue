@@ -7,13 +7,13 @@
     <div v-if="unauthorized" class="twitter-lock">
       <img src="@/assets/img/lock.png" alt="lock">
       <p>
-        用户的推文受到保护，无法查看
+        {{ $t('users-tweets-are-protected-and-cannot-be-viewed') }}
       </p>
     </div>
     <no-content-prompt
       :list="pull.list"
       :hide="loading || unauthorized || (timelineNotOpen || unboundTwitter && isMe($route.params.id))"
-      :prompt="timelineNotOpen || unboundTwitter ? '未开启 Twitter 时间线' : undefined"
+      :prompt="timelineNotOpen || unboundTwitter ? $t('twitter-timeline-not-open') : undefined"
     >
       <twitterCard
         v-for="(item, index) in pull.list"
@@ -38,22 +38,22 @@
     <div v-if="(timelineNotOpen || unboundTwitter) && isMe($route.params.id) " class="twitter-enable">
       <svg-icon icon-class="twitter" />
       <h4>
-        将你的推文同步展示到 Matataki
+        {{ $t('simultaneously-show-your-tweets-to-Matataki') }}
       </h4>
       <div class="twitter-enable-bind">
         <p>
-          第一步：<span>跳转至账户页面进行绑定</span>
+          {{ $t('first-step') }}：<span>{{ $t('jump-to-the-account-page-to-bind') }}</span>
         </p>
         <router-link :to="unboundTwitter ? { name: 'setting-account' } : {}">
           <el-button type="primary" :disabled="!unboundTwitter">
-            绑定推特账号
+            {{ $t('bind-twitter-account') }}
           </el-button>
         </router-link>
       </div>
 
       <div class="twitter-enable-bind">
         <p>
-          第二步：
+          {{ $t('second-step') }}：
         </p>
         <el-button
           type="primary"
@@ -61,7 +61,7 @@
           :loading="switchLoding"
           @click="switchUserTimeLine(1)"
         >
-          开启推文同步
+          {{ $t('turn-on-tweet-sync') }}
         </el-button>
       </div>
     </div>

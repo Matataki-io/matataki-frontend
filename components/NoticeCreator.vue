@@ -1,6 +1,6 @@
 <template>
   <div class="notice-creator">
-    <span class="warn-tip">该Fan票流动性不足暂时无法解锁</span>
+    <span class="warn-tip">{{ $t('the-coin-has-insufficient-liquidity-and-cannot-be-unlocked-temporarily') }}</span>
     <el-button
       type="primary"
       plain
@@ -9,7 +9,7 @@
       :loading="loading"
       @click="notice"
     >
-      通知作者
+      {{ $t('notify-the-author') }}
     </el-button>
   </div>
 </template>

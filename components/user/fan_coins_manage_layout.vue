@@ -30,32 +30,32 @@
           class="help-link"
           target="_blank"
           href="https://www.matataki.io/p/979"
-        >如何管理你的Fan票?</a>
+        >{{ $t('how-to-manage-your-coin') }}</a>
       </div>
 
       <div>
         <router-link :to="{name: 'token-id', params: { id: tokenDetailData.token.id || 0}}">
           <el-button size="small">
-            详情
+            {{ $t('details') }}
           </el-button>
         </router-link>
         <router-link :to="{name: 'editminetoken'}">
           <el-button size="small">
-            编辑
+            {{ $t('edit') }}
           </el-button>
         </router-link>
         <el-button
           size="small"
           @click="addCoins"
         >
-          增发
+          {{ $t('additional-issuance') }}
         </el-button>
         <router-link :to="{name: 'exchange', hash: '#swap', query: { output: tokenDetailData.token.symbol }}">
           <el-button
             size="small"
             type="primary"
           >
-            交易
+            {{ $t('transaction') }}
           </el-button>
         </router-link>
       </div>
@@ -65,19 +65,19 @@
       v-if="!tokenDetailData.token.contract_address"
       class="warning"
     >
-      Fan票正在部署中，请耐心等候。
+      {{ $t('coin-are-being-deployed-please-be-patient') }}
     </p>
     <!-- <div class="line" /> -->
 
     <h2 class="token-title">
-      简介
+      {{ $t('Introduction') }}
     </h2>
     <p class="token-sub">
       {{ tokenDetailData.token.brief || $t('not') }}
     </p>
 
     <h2 class="token-title">
-      介绍
+      {{ $t('presentation') }}
     </h2>
     <p class="token-sub">
       <!-- 开了wrap 这个span不能换行！ -->
@@ -130,7 +130,7 @@
     >{{ $t('not') }}</span>
 
     <h2 class="token-title">
-      分享挂件
+      {{ $t('share-widget') }}
     </h2>
 
     <el-input
@@ -138,7 +138,7 @@
       :rows="4"
       class="token-widget"
       type="textarea"
-      placeholder="请输入内容"
+      :placeholder="$t('please-enter-content')"
     />
   </div>
 </template>

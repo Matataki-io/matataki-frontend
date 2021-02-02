@@ -27,7 +27,7 @@
         slot="reference"
         class="head-sort"
       >
-        <i class="el-icon-s-operation" />筛选
+        <i class="el-icon-s-operation" />{{ $t('filter') }}
       </span>
     </el-popover>
 

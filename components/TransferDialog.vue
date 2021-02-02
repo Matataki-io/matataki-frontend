@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    title="转账"
+    :title="$t('transferMoney')"
     custom-class="transfer-dialog br10"
     :close-on-click-modal="false"
   >
@@ -13,13 +13,13 @@
       label-width="60px"
       class="gift-form"
     >
-      <el-form-item label="对象">
+      <el-form-item :label="$t('object')">
         <el-select
           v-model="userVal"
           filterable
           remote
           reserve-keyword
-          placeholder="请输入关键词"
+          :placeholder="$t('please-enter-a-keyword')"
           :remote-method="userRemoteMethod"
           :loading="userLoading"
           style="width: 100%;"
@@ -55,11 +55,11 @@
           </el-tag>
         </div>
       </el-form-item>
-      <el-form-item label="类型" prop="tokenId">
+      <el-form-item :label="$t('types-of')" prop="tokenId">
         <el-select
           v-model="form.tokenId"
           filterable
-          placeholder="请选择" 
+          :placeholder="$t('please-choose')"
           style="width: 100%"
           @change="changeTokenSelect"
         >
@@ -84,14 +84,14 @@
         </el-select>
       </el-form-item>
       <el-form-item
-        label="数量"
+        :label="$t('quantity')"
         prop="tokens"
       >
         <el-input
           v-model="form.tokens"
           :max="form.max"
           :min="form.min"
-          placeholder="请输入数量"
+          :placeholder="$t('please-enter-the-quantity')"
           clearable
         />
       </el-form-item>
@@ -99,19 +99,19 @@
         v-if="form.balance"
         class="balance"
       >
-        余额&nbsp;{{ form.balance }}&nbsp;
+        {{ $t('balance') }}&nbsp;{{ form.balance }}&nbsp;
         <a
           href="javascript:;"
           @click="form.tokens = form.balance"
-        >全部转入</a>
+        >{{ $t('transfer-all-in') }}</a>
       </p>
-      <el-form-item label="留言">
+      <el-form-item :label="$t('leave-a-message')">
         <el-input
           v-if="form.tokenId !== 0"
           v-model="form.memo"
           type="textarea"
           :rows="3"
-          placeholder="请写下想对作者说的话（选填）"
+          :placeholder="$t('please-write-down-what-you-want-to-say-to-the-author-optional')"
           size="small"
           class="customize-input"
           maxlength="500"
@@ -119,7 +119,7 @@
         />
         <p v-else class="cny-help">
           <i class="el-icon-circle-close" />
-          CNY 转账暂不支持留言
+          CNY {{ $t('message-transfer-is-temporarily-not-supported') }}
         </p>
       </el-form-item>
       <div class="form-button">
@@ -128,7 +128,7 @@
           type="primary"
           @click="submitForm('form')"
         >
-          确定
+          {{ $t('confirm') }}
         </el-button>
       </div>
     </el-form>

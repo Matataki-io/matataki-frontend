@@ -1,10 +1,10 @@
 <template>
   <el-radio-group
     v-model="val"
-    size="small" 
+    size="small"
     @change="change"
   >
-    <el-radio-button 
+    <el-radio-button
       v-for="(item, index) in tab"
       :key="index"
       class="db-tab-block"

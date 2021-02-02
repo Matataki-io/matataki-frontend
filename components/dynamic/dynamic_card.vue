@@ -1,5 +1,6 @@
 <template>
   <div class="dynamic-card">
+    <!-- demo 无需翻译 需要修改或删除 -->
     动态占位符
   </div>
 </template>

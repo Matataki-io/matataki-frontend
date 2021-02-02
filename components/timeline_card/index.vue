@@ -10,7 +10,7 @@
         />
       </c-user-popover>
       <span class="card-name">{{ card.nickname || card.author }}</span>
-      <span class="card-description">发布了新作品</span>
+      <span class="card-description">{{ $t('released-new-works') }}</span>
       <router-link
         v-if="showLogo"
         class="card-head-logo"

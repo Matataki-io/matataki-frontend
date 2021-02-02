@@ -2,7 +2,7 @@
   <div class="withdraw-container">
     <client-only>
       <textarea
-        v-model.trim="permitInput" 
+        v-model.trim="permitInput"
         style="width: 50%; margin: 10px 0px;height: 286px;"
         :rows="6"
         class="withdraw-result-textarea"
@@ -10,34 +10,34 @@
         @change="onPermitInput"
       />
 
-      <div 
-        v-if="permit" 
-        style="width: 50%;" 
-        class="parsedPermit" 
+      <div
+        v-if="permit"
+        style="width: 50%;"
+        class="parsedPermit"
       >
-        <p class="parse-title">解析出来的提现许可</p>
-        <p class="parse-item">在 BSC 的 Fan票 地址: {{ permit.token }}</p>
-        <p class="parse-item">提现到: {{ permit.to }}</p>
-        <p class="parse-item">提现金额: {{ permit.value / 1e4 }}</p>
-        <p class="parse-item">许可号: {{ permit.nonce }}</p>
+        <p class="parse-title">{{ $t('analyzed-withdrawal-permission') }}</p>
+        <p class="parse-item">{{ $t('coin-address-at-BSC') }}: {{ permit.token }}</p>
+        <p class="parse-item">{{ $t('withdraw-to') }}: {{ permit.to }}</p>
+        <p class="parse-item">{{ $t('withdrawal-amount') }}: {{ permit.value / 1e4 }}</p>
+        <p class="parse-item">{{ $t('license-number') }}: {{ permit.nonce }}</p>
         <p class="parse-item">
-          许可证截止使用时间: {{ permitExpiry.toLocaleString() }}
+          {{ $t('license-expiration-time') }}: {{ permitExpiry.toLocaleString() }}
         </p>
         <!-- :disabled="isPermitExpired" -->
         <div class="parse-btn">
           <el-button type="primary" @click="sendPermit">
-            {{ isPermitExpired ? "许可证已过期" : "上传许可" }}
+            {{ isPermitExpired ? $t('license-has-expired') : $t('upload-license') }}
           </el-button>
         </div>
         <el-alert v-if="mintResult" type="success">
-          <h2>发送成功</h2>
-          交易哈希: {{ mintResult.hash }}
+          <h2>{{ $t('sent-successfully') }}</h2>
+          {{ $t('transaction-hash') }}: {{ mintResult.hash }}
           <!-- todo: 上正式网记得删掉 testnet. -->
           <a
             :href="`https://testnet.bscscan.com/tx/${mintResult.hash}`"
             target="_blank"
           >
-            在 BSCScan 查看这个交易 ↗️
+            {{ $t('view-this-transaction-on-BSCScan') }} ↗️
           </a>
         </el-alert>
       </div>

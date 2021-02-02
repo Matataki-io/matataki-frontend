@@ -5,7 +5,7 @@
   >
     <div class="foreignuser">
       <p>
-        来自 Matataki 用户：
+        {{ $t('from-Matataki-user') }}：
       </p>
       <userPlatformCard
         :card="card"

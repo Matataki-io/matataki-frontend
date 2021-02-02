@@ -4,7 +4,7 @@
     :visible.sync="showModal"
     :lock-scroll="false"
     :before-close="handleClose"
-    title="选择Fan票"
+    :title="$t('choose-coin')"
     width="600px"
     custom-class="br10 black-theme-dialog token-list"
   >
@@ -16,7 +16,7 @@
         <el-input
           v-model="search"
           type="text"
-          placeholder="搜索Fan票"
+          :placeholder="$t('search-coin')"
           class="dHtVAe"
         />
       </div>
@@ -32,9 +32,7 @@
           style="width: 100%"
           @row-click="selectToken"
         >
-          <el-table-column
-            label="Fan票"
-          >
+          <el-table-column :label="$t('coin')">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
@@ -53,12 +51,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            label="流通量"
-          >
+          <el-table-column :label="$t('circulation')">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount || '暂无流通量' }}
+                {{ scope.row.amount || $t('no-liquidity') }}
               </span>
             </template>
           </el-table-column>
@@ -79,7 +75,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="前往Fan票主页"
+                :content="$t('go-to-coin-homepage')"
                 placement="top"
               >
                 <n-link
@@ -107,9 +103,7 @@
           style="width: 100%"
           @row-click="selectToken"
         >
-          <el-table-column
-            label="Fan票"
-          >
+          <el-table-column :label="$t('coin')">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
@@ -128,12 +122,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            label="流通量"
-          >
+          <el-table-column :label="$t('circulation')">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount || '暂无流通量' }}
+                {{ scope.row.amount || $t('no-liquidity') }}
               </span>
             </template>
           </el-table-column>
@@ -143,7 +135,7 @@
           class="loadmore"
         >
           <span @click="loadMore">
-            加载更多<i class="el-icon-arrow-down" />
+            {{ $t('load-more') }}<i class="el-icon-arrow-down" />
           </span>
         </div>
       </div>

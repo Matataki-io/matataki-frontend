@@ -4,10 +4,10 @@
       <user-nav nav-list-url="account" />
       <userNavType nav-list-url="setting" />
       <h1 class="title">
-        很抱歉，以太坊相关功能正在开发中
+        {{ $t('sorry-Ethereum-related-functions-are-under-development') }}
       </h1>
       <h2 class="subtitle">
-        暂时无法提现以太坊
+        {{ $t('unable-to-withdraw-Ethereum-temporarily') }}
       </h2>
       <template v-if="viewStatus === 0">
         <assets

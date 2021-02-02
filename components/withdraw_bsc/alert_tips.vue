@@ -1,11 +1,11 @@
 <template>
   <el-alert :type="type">
     <h2 class="title">
-      ❓分享我的「提现许可」给他人会造成 Fan 票损失吗？
+      ❓{{ $t('will-sharing-my-withdrawal-permission-to-others-cause-loss-of-coin') }}
     </h2>
-    <p class="description">不会，提现许可包含了： <b>Token</b> 、<b>收款账户</b>、<b>许可发行号码</b>的这三个要素。</p>
-    <p class="description">我们的智能合约会校验这一点。上传提现许可到智能合约只会把 Token 转到许可指定的账户里。</p>
-    <p class="description">但是最好不要在第三方网站上传提现许可。因为钓鱼网站可能会诱导把Fan票转账到他们的账户。</p>
+    <p class="description">{{ $t('no-the-withdrawal-permission-includes') }}： <b>Token</b> 、<b>{{ $t('accounts-receivable') }}</b>、<b>{{ $t('license-issue-number') }}</b>{{ $t('of-these-three-elements') }}</p>
+    <p class="description">{{ $t('our-smart-contract-will-verify-this-uploading-the-withdrawal-permission-to-the-smart-contract-will-only-transfer-the-Token-to-the-account-specified-by-the-permission') }}</p>
+    <p class="description">{{ $t('but-it-is-best-not-to-upload-a-withdrawal-permission-on-a-third-party-website-because-the-phishing-website-may-induce-the-Fan-ticket-to-be-transferred-to-their-account') }}</p>
   </el-alert>
 </template>
 
