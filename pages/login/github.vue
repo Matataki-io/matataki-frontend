@@ -2,7 +2,7 @@
   <div
     v-loading="loading"
     style="height: 100%;"
-    element-loading-text="登录中..."
+    :element-loading-text="`${$t('logging-in')}...`"
   />
 </template>
 

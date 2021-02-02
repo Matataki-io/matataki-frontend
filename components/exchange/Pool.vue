@@ -16,10 +16,10 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>{{ isDelete ? '删除' : '存入' }}</span>
+            <span>{{ isDelete ? $t('delete') : $t('deposit') }}</span>
           </div>
           <div v-if="isDelete && form.outputToken.symbol && form.outputToken.id !== 0">
-            流动金Token：{{ yourPoolSize.your_supply }}
+            {{ $t('liquid-gold-token') }}：{{ yourPoolSize.your_supply }}
           </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
@@ -43,7 +43,7 @@
             @click="tlShow = true;field = 'outputToken'"
           >
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '选择Fan票' }}
+              {{ form.outputToken.symbol || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -65,7 +65,7 @@
           >
           <button class="iAoRgd">
             <span class="rTZzf">
-              {{ form.inputToken.symbol || '选择Fan票' }}
+              {{ form.inputToken.symbol || $t('choose-coin') }}
               <!-- <i class="el-icon-arrow-down"></i> -->
             </span>
           </button>
@@ -91,10 +91,10 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>{{ isDelete ? '输出（预估）' : '存入' }}</span>
+            <span>{{ isDelete ? $t('output-estimated') : $t('deposit') }}</span>
           </div>
           <div v-if="form.outputToken.symbol && form.outputToken.id !== 0 && !isDelete">
-            余额：{{ balance.add }}
+            {{ $t('balance') }}：{{ balance.add }}
           </div>
         </div>
         <!--------------------- 删除流动金代码开始 ---------------------->
@@ -136,7 +136,7 @@
             @click="tlShow = true;field = 'outputToken'"
           >
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '选择Fan票' }}
+              {{ form.outputToken.symbol || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -146,17 +146,17 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">兑换比率</span>
+        <span class="sc-hORach icyNSS">{{ $t('exchange-ratio') }}</span>
         <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">当前流动金池总量</span>
+        <span class="sc-hORach icyNSS">{{ $t('current-total-liquid-gold-pool') }}</span>
         <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} CNY + {{ currentPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">你占流动金池份额 （{{ yourPercent }}）</span>
+        <span class="sc-hORach icyNSS">{{ $t('your-share-of-the-liquid-gold-pool') }} （{{ yourPercent }}）</span>
         <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} CNY + {{ yourPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
@@ -166,7 +166,7 @@
       class="mHVYT"
       @click="detailShow = !detailShow"
     >
-      <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
+      <span class="fZbbbs">{{ detailShow ? $t('collapse-details') : $t('see-details') }}</span>
       <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" />
     </div>
     <div
@@ -176,23 +176,23 @@
     >
       <div class="hRyusy">
         <div>
-          你正在添加
+          {{ $t('you-are-adding') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ form.input }} CNY</span>
-          </span> 和最多
+          </span> {{ $t('and-up-to') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
-          </span>到流动金池中。
+          </span>{{ $t('into-the-flowing-gold-pool') }}
         </div>
         <div class="sc-bsbRJL kxtVAF">
-          你将会挖到
+          {{ $t('you-will-dig') }}
           <span class="iDChvK">
             <span class="jbXIaP"> {{ youMintTokenAmount }} </span>
           </span>
-          流动金Token 作为凭证
+          {{ $t('liquid-gold-Token-as-a-certificate') }}
         </div>
         <div class="sc-bsbRJL kxtVAF">
-          当前 流动金Token 的总量是
+          {{ $t('the-current-total-amount-of-liquid-gold-Token-is') }}
           <span class="iDChvK">
             <span class="jbXIaP"> {{ currentPoolSize.total_supply || 0 }} </span>
           </span>

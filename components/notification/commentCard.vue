@@ -36,7 +36,7 @@
           <p v-if="comment !== false" class="user-info-content" v-html="comment" />
           <p v-else class="user-info-content no-data">
             <i class="el-icon-delete" />
-            此条评论已被删除
+            {{ $t('this-comment-has-been-deleted') }}
           </p>
         </div>
       </div>

@@ -2,11 +2,11 @@
   <div class="videobox">
     <video controls>
       <source :src="video.url">
-      您的浏览器不支持 HTML5 video 标签。
+      {{ $t('your-browser-does-not-support-the-HTML5-video-tag') }}
     </video>
     <div v-if="locked" class="videobox-sensitive" @click="openSensitiveShow">
       <div class="videobox-sensitive-tab">
-        敏感内容
+        {{ $t('sensitive-content') }}
       </div>
     </div>
   </div>

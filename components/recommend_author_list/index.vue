@@ -25,7 +25,7 @@
       <p class="username"> {{ card && card.nickname || card.username }}</p>
       <p class="introduction"> {{ card.introduction }}</p>
     </n-link>
-    
+
     <template v-if="!isMe(card.id)">
       <el-button
         :class="!card.is_follow && 'black'"

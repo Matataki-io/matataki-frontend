@@ -29,33 +29,33 @@
       <template slot="left">
         <div class="reference-header">
           <span class="reference-header__title">
-            已引用<span>{{ refernceTotal }}</span>
+            {{ $t('referenced') }}<span>{{ refernceTotal }}</span>
           </span>
 
           <span class="reference-header__sort">
-            正序
+            {{ $t('positive-order') }}
             <svg-icon icon-class="sort" />
           </span>
         </div>
       </template>
       <template slot="left-prompt">
-        已引用<span>{{ refernceTotal }}</span>
+        {{ $t('referenced') }}<span>{{ refernceTotal }}</span>
       </template>
 
       <template slot="right">
         <div class="reference-header">
           <span class="reference-header__title">
-            被引用<span>{{ berefernceTotal }}</span>
+            {{ $t('cited') }}<span>{{ berefernceTotal }}</span>
           </span>
 
           <span class="reference-header__sort">
-            倒序
+            {{ $t('reverse-order') }}
             <svg-icon icon-class="sort" />
           </span>
         </div>
       </template>
       <template slot="right-prompt">
-        被引用<span>{{ berefernceTotal }}</span>
+        {{ $t('cited') }}<span>{{ berefernceTotal }}</span>
       </template>
       <quoteReference slot="ref" :now-time="nowTime" @getArticle="getArticle" />
       <quoteBereference slot="beref" :now-time="nowTime" @getArticle="getArticle" />
@@ -68,7 +68,7 @@
             <svg-icon icon-class="share_img" />
           </div>
           <p class="btn-text">
-            生成图片
+            {{ $t('generate-picture') }}
           </p>
         </div>
         <div class="dialog-content__btn">
@@ -76,7 +76,7 @@
             <svg-icon icon-class="copy3" />
           </div>
           <p class="btn-text">
-            复制分享链接
+            {{ $t('copy-share-link') }}
           </p>
         </div>
       </div>
@@ -94,10 +94,10 @@
       <div>
         <img src="@/assets/img/done.png" alt="done" class="share-done">
         <h4 class="share-done__title">
-          分享已发布
+          {{ $t('share-published') }}
         </h4>
         <p class="share-done__desciption">
-          保存分享卡片把思考与灵感传达给更多的人
+          {{ $t('save-and-share-cards-to-convey-thoughts-and-inspiration-to-more-people') }}
         </p>
         <div
           ref="shareCard"
@@ -113,7 +113,7 @@
           class="share-card__btn"
           @click="downloadShareImage"
         >
-          保存并分享卡片
+          {{ $t('save-and-share-cards') }}
         </el-button>
         <shareImage
           v-if="!saveImg"

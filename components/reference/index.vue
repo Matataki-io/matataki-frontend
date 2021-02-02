@@ -19,7 +19,7 @@
           class="icon"
         />
         <span v-if="!relatedLeftCollapse">
-          <slot name="left-prompt">已引用</slot>
+          <slot name="left-prompt">{{ $t('referenced') }}</slot>
         </span>
       </div>
     </div>
@@ -41,7 +41,7 @@
           class="icon"
         />
         <span v-if="!relatedRightCollapse">
-          <slot name="right-prompt">被引用</slot>
+          <slot name="right-prompt">{{ $t('cited') }}</slot>
         </span>
       </div>
     </div>

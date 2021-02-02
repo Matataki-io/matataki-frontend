@@ -16,7 +16,7 @@
       />
     </div>
     <p class="mastodon-poll-footer">
-      {{ votersCount }}人 · {{ expiresAt }}
+      {{ votersCount }}{{ $t('people') }} · {{ expiresAt }}
     </p>
   </div>
 </template>

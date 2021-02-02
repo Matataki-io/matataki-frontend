@@ -4,7 +4,7 @@
       <!-- banner -->
       <div class="tags-banner">
         <img src="@/assets/img/tags_banner.png" alt="banner">
-        <p>个<span>/</span>性<span>/</span>化<span>/</span>自<span>/</span>定<span>/</span>义<span>/</span>标<span>/</span>签</p>
+        <p>{{ $t('personalized-custom-label') }}</p>
       </div>
       <div class="tags-head">
         <div class="tags-text">

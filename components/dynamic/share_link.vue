@@ -15,7 +15,7 @@
 
     <!-- 内容 -->
     <div class="link">
-      <el-input v-model="shareInput" placeholder="输入链接，包含http(s)://" />
+      <el-input v-model="shareInput" :placeholder="$t('enter-the-link-including-http')" />
     </div>
   </el-popover>
 </template>
