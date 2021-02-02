@@ -28,7 +28,7 @@
         <div :class="[ 'fall-rise end', amountClass(liquidityAmount) ]">
           {{ liquidityAmount }}
           <span class="symbol">
-            流动金Token
+            {{ $t('liquid-gold-token') }}
           </span>
         </div>
       </div>
@@ -64,7 +64,7 @@
         <span class="card-m-liquidity">
           {{ liquidityAmount }}
           <span>
-            流动金Token
+            {{ $t('liquid-gold-token') }}
           </span>
         </span>
       </div>

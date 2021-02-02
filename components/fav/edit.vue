@@ -2,7 +2,7 @@
   <m-dialog
     v-model="editFavShowModal"
     width="446px"
-    title="收藏夹信息"
+    :title="$t('favorites-information')"
   >
     <favForm :form="form" type="edit" @edit-done="editDone" />
   </m-dialog>

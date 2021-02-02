@@ -5,10 +5,10 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>输入</span>
+            <span>{{ $t('enter') }}</span>
           </div>
           <div v-if="form.inputToken.symbol && form.inputToken.id !== 0">
-            余额：{{ balance.input }}
+            {{ $t('balance') }}：{{ balance.input }}
           </div>
         </div>
         <div class="jbRmQG">
@@ -27,7 +27,7 @@
             @click="tlShow = true;field = 'inputToken'"
           >
             <span class="rTZzf">
-              {{ form.inputToken.symbol || '选择Fan票' }}
+              {{ form.inputToken.symbol || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -48,10 +48,10 @@
       <div class="iNUelT">
         <div class="OpDFW">
           <div class="jUAxZT">
-            <span>输出</span>
+            <span>{{ $t('output') }}</span>
           </div>
           <div v-if="form.outputToken.symbol && form.outputToken.id !== 0">
-            余额：{{ balance.output }}
+            {{ $t('balance') }}：{{ balance.output }}
           </div>
         </div>
         <div class="jbRmQG">
@@ -70,7 +70,7 @@
             @click="tlShow = true;field = 'outputToken'"
           >
             <span class="rTZzf">
-              {{ form.outputToken.symbol || '选择Fan票' }}
+              {{ form.outputToken.symbol || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -80,7 +80,7 @@
     <div class="hYLPFg">
       <div class="exKIZr" />
       <div class="lfiYXW">
-        <span class="sc-hORach icyNSS">兑换比率</span>
+        <span class="sc-hORach icyNSS">{{ $t('exchange-ratio') }}</span>
         <span v-if="exchangeRate">1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
         <span v-else> - </span>
       </div>
@@ -89,7 +89,7 @@
       class="mHVYT"
       @click="detailShow = !detailShow"
     >
-      <span class="fZbbbs">{{ detailShow ? '收起详情' : '查看详情' }}</span>
+      <span class="fZbbbs">{{ detailShow ? $t('collapse-details') : $t('see-details') }}</span>
       <i :class="detailShow ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" />
     </div>
     <div
@@ -98,25 +98,25 @@
     >
       <div class="hRyusy">
         <div v-if="base === 'input'">
-          你正在出售
+          {{ $t('you-are-selling') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ form.input }} {{ form.inputToken.symbol }}</span>
-          </span> 最少获得
+          </span> {{ $t('least-get') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
           </span>
         </div>
         <div v-else>
-          你正在购买
+          {{ $t('you-are-buying') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ form.output }} {{ form.outputToken.symbol }}</span>
-          </span> 最多需要
+          </span> {{ $t('most-needed') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ form.inputToken.symbol }}</span>
           </span>
         </div>
         <div class="sc-bsbRJL kxtVAF">
-          预期价格滑落
+          {{ $t('expected-price-drop') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ priceSlippage * 100 }}%</span>
           </span>
@@ -125,7 +125,7 @@
             effect="light"
           >
             <div slot="content">
-              您的交易可能由于正常的价格波动而失败，<br>价格滑落区间将有助于您的交易成功
+              {{ $t('your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-price-falling-range-will-help-your-transaction-succeed') }}
             </div>
             <i class="el-icon-question" />
           </el-tooltip>
@@ -138,7 +138,7 @@
         class="jBltiI"
         @click="onSubmit"
       >
-        交易
+        {{ $t('transaction') }}
       </button>
     </div>
     <OrderModal

@@ -6,7 +6,7 @@
   >
     <div>
       <p class="ipfs-tip">
-        本文内容已上传星际文件存储系统「IPFS」，永久保存。
+        {{ $t('ipfsHash.slogan') }}
       </p>
       <p class="ipfs-link">
         IPFS Hash: {{ hash }}

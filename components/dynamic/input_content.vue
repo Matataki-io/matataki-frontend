@@ -12,7 +12,7 @@
             id="tributeShare"
             class="content-editable"
             contenteditable="true"
-            placeholder="输入你想要发表的动态吧～"
+            :placeholder="$t('enter-the-activity-you-want-to-post')"
           />
         </vue-tribute>
       </client-only>
@@ -86,7 +86,7 @@
           class="btn-submit"
           @click="pushShare"
         >
-          发布动态
+          {{ $t('release-news') }}
         </el-button>
       </div>
     </div>

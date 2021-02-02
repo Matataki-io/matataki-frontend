@@ -10,10 +10,10 @@
       @click="authorizeClick"
     >
       <svg-icon icon-class="twitter" />
-      授权访问你 Twitter 的账号
+      {{ $t('authorize-access-to-your-Twitter-account') }}
     </el-button>
     <p class="tips">
-      使用该功能需要“科学上网”
+      {{ $t('scientific-Internet-access-is-required-to-use-this-function') }}
     </p>
   </div>
 </template>

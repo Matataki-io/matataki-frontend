@@ -2,7 +2,7 @@
   <div class="container">
     <div class="brick" />
     <div class="info">
-      <p>遇到点问题...</p>
+      <p>{{ $t('have-a-problem') }}...</p>
       <p class="back">
         {{ $t('automatically-return-to-the-homepage-after-three-seconds') }}
       </p>

@@ -7,7 +7,7 @@
     <el-carousel-item>
       <div class="dapp-head-governance">
         <div class="head-text">
-          <p class="head-description">一个通过质押META来获取治理权限的Matataki管理后台</p>
+          <p class="head-description">{{ $t('a-Matataki-management-background-that-obtains-governance-rights-by-staking-META') }}</p>
           <img class="head-logo" src="@/assets/img/dapp-banner-governance-text.png" alt="logo">
           <a href="https://governance.matataki.io" target="_blank" class="head-btn">
             {{ $t('visit-website') }}
@@ -18,8 +18,8 @@
     <el-carousel-item>
       <div class="dapp-head-shuttle">
         <div class="head-text">
-          <p class="head-description">一个基于Fan票提现和转入的工具</p>
-          <p class="head-title">Fan票折跃门</p>
+          <p class="head-description">{{ $t('a-tool-based-on-Fan-ticket-withdrawal-and-transfer') }}</p>
+          <p class="head-title">{{ $t('coin-folding-door') }}</p>
           <n-link :to="{ path: '/token/in-n-out' }" target="_blank" class="head-btn">
             {{ $t('visit-website') }}
           </n-link>
@@ -29,7 +29,7 @@
     <el-carousel-item>
       <div class="dapp-head">
         <div class="head-text">
-          <p class="head-description">一个基于Fan票的简单空投工具</p>
+          <p class="head-description">{{ $t('a-simple-airdrop-tool-based-on-coin') }}</p>
           <p class="head-title">Matataki Airdrop</p>
           <a href="https://www.matataki-airdrop.xyz/" target="_blank" class="head-btn">{{ $t('visit-website') }}</a>
         </div>
@@ -39,7 +39,7 @@
     <el-carousel-item>
       <div class="dapp-head-quest">
         <div class="head-text">
-          <p class="head-description">一个基于Fan票的任务悬赏平台</p>
+          <p class="head-description">{{ $t('a-task-reward-platform-based-on-coin') }}</p>
           <img src="@/assets/img/dapp-banner-quest-logo.png" alt="logo">
           <a href="https://quest.matataki.io" target="_blank" class="head-btn">
             {{ $t('visit-website') }}
@@ -49,14 +49,14 @@
     </el-carousel-item>
     <el-carousel-item>
       <div class="crypto-hero">
-        <p>一个基于Fan票的水浒集卡游戏</p>
+        <p>{{ $t('a-Water-Margin-Card-Game-Based-on-coin') }}</p>
         <img src="@/assets/img/dapp_cryptohero_text.png" alt="">
         <a href="https://dao-hero.netlify.app" target="_blank">{{ $t('visit-website') }}</a>
       </div>
     </el-carousel-item>
     <el-carousel-item>
       <div class="crypto-meet-up">
-        <p>一个基于Fan票的地理位置共享&订阅</p>
+        <p>{{ $t('a-location-sharing-subscription-based-on-coin') }}</p>
         <h3>Crypto Meet Up</h3>
         <a href="https://cryptomeetup.async.moe" target="_blank">{{ $t('visit-website') }}</a>
       </div>
@@ -64,7 +64,7 @@
     <el-carousel-item>
       <div class="dapp-head mining">
         <div class="head-text">
-          <p class="head-description">一个利用Fan票来挖矿</p>
+          <p class="head-description">{{ $t('one-uses-coin-to-mine') }}</p>
           <p class="head-title">Matataki Mining</p>
           <a href="https://matataki-mining.netlify.app/" target="_blank" class="head-btn">{{ $t('visit-website') }}</a>
         </div>

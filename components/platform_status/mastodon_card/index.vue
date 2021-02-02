@@ -7,11 +7,11 @@
       </div>
       <foreignUserPopover v-if="fromUser" :card="fromUser">
         <div class="cardunit-bg-retweeted-r">
-          {{ data.account.display_name || data.account.username }} 转嘟了
+          {{ data.account.display_name || data.account.username }} {{ $t('toot') }}
         </div>
       </foreignUserPopover>
       <div v-else class="cardunit-bg-retweeted-r">
-        {{ data.account.display_name || data.account.username }} 转嘟了
+        {{ data.account.display_name || data.account.username }} {{ $t('toot') }}
       </div>
     </div>
     <div class="cardunit">
@@ -52,7 +52,7 @@
         <div v-if="hiddenContent" class="cardunit-r-spoilertext">
           {{ spoilerText }}
           <span class="show-content" @click="showHiddenContent = !showHiddenContent">
-            {{ showHiddenContent ? '隐藏内容' : '显示内容' }}
+            {{ showHiddenContent ? $t('hide-content') : $t('display-content') }}
           </span>
         </div>
         <!-- 正文 -->

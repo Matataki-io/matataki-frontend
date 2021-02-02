@@ -14,7 +14,7 @@
         {{ card.nickname || card.username }}
       </router-link>
       <div class="card-min-amount">
-        <span class="action">打赏了</span>
+        <span class="action">{{ $t('rewarded') }}</span>
         <router-link :to="{name: 'token-id', params: { id: card.token_id }}" target="_blank" class="token">
           {{ tokenAmount }} {{ card.symbol }}
         </router-link>

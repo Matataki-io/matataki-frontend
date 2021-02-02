@@ -11,7 +11,7 @@
         <div class="line step" />
         <div class="line before" />
         <div class="line after" />
-        <span class="font-title">标准</span>
+        <span class="font-title">{{ $t('standard') }}</span>
         <el-slider
           v-model="value"
           :step="1"

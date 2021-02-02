@@ -9,7 +9,7 @@
           lazy
         />
         <div class="videocard-l-type">
-          投稿视频
+          {{ $t('contribution-video') }}
         </div>
       </div>
       <div class="videocard-r">

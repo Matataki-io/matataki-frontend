@@ -18,7 +18,7 @@
     <div class="upload-main">
       <div class="upload-main-topbar">
         <h3 class="upload-main-topbar-title">
-          上传图片
+          {{ $t('upload-image') }}
           <span>
             {{ mediaList.length }}/9
           </span>

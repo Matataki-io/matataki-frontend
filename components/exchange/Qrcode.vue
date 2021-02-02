@@ -5,7 +5,7 @@
       :options="{ width: '150' }"
       class="qrcode"
     />
-    <p class="text">请使用微信扫描二维码进行支付</p>
+    <p class="text">{{ $t('please-use-WeChat-to-scan-the-QR-code-to-pay') }}</p>
   </div>
 </template>
 

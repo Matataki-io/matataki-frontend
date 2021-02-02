@@ -6,13 +6,13 @@
         class="logo"
         alt="logo"
       >
-      <h1>绑定邮箱</h1>
+      <h1>{{ $t('bind-email') }}</h1>
       <div
         v-if="setp === 0"
         class="step"
       >
         <p class="setp-title">
-          请输入邮箱账号
+          {{ $t('please-enter-your-email-account') }}
         </p>
         <el-form
           ref="emailAddress"
@@ -26,7 +26,7 @@
           >
             <el-input
               v-model="emailAddress.email"
-              placeholder="请输入邮箱账号"
+              :placeholder="$t('please-enter-your-email-account')"
               clearable
               @change="emailAddressOnSubmit('emailAddress')"
             />
@@ -35,7 +35,7 @@
             v-loading="nextLoading"
             @click="emailAddressOnSubmit('emailAddress')"
           >
-            下一步
+            {{ $t('postminetoken.next') }}
           </el-button>
         </el-form>
       </div>
@@ -53,12 +53,12 @@
             prop="pass"
           >
             <p class="setp-title">
-              请设置密码
+              {{ $t('please-set-your-password') }}
             </p>
             <el-input
               v-model="emailPass.pass"
               type="text"
-              placeholder="请设置密码"
+              :placeholder="$t('please-set-your-password')"
               show-password
             />
           </el-form-item>
@@ -67,14 +67,14 @@
             prop="code"
           >
             <p class="setp-title code">
-              请输入验证码
+              {{ $t('please-enter-verification-code') }}
             </p>
             <div class="setp-code">
               <el-input
                 v-model="emailPass.code"
                 type="text"
                 maxlength="6"
-                placeholder="请输入验证码"
+                :placeholder="$t('please-enter-verification-code')"
               />
               <el-button
                 :loading="codeLoading"
@@ -83,19 +83,19 @@
                 class="btn"
                 @click="sendCode"
               >
-                {{ timer ? `${count}S` : '获取邮箱验证码' }}
+                {{ timer ? `${count}S` : $t('auth.getEmailCode') }}
               </el-button>
             </div>
           </el-form-item>
           <el-button @click="setp--">
-            上一步
+            {{ $t('postminetoken.prev') }}
           </el-button>
           <el-button
             v-loading="loading"
             type="primary"
             @click="emailPassOnSubmit('emailPass')"
           >
-            立即绑定
+            {{ $t('postminetoken.stepOneBuild') }}
           </el-button>
         </el-form>
       </div>

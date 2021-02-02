@@ -16,9 +16,9 @@
             </h1>
             <el-alert
               v-if="isDeleted"
-              title="这篇文章已隐藏"
+              :title="$t('this-article-has-been-hidden')"
               type="info"
-              description="加密文章只有你本人可见，普通文章仅作者和知晓文章IPFS哈希的人可见"
+              :description="$t('encrypted-articles-are-only-visible-to-you-and-ordinary-articles-are-only-visible-to-the-author-and-people-who-know-the-IPFS-hash-of-the-article')"
               show-icon
             />
             <div class="fl ac jsb article-header">
@@ -163,7 +163,7 @@
                     </template>
                   </div>
                   <span>
-                    已持有：{{ payTokenBalance }} {{ getPayToken.symbol }}
+                    {{ $t('already-held') }}：{{ payTokenBalance }} {{ getPayToken.symbol }}
                     <el-tooltip
                       class="item"
                       effect="dark"
@@ -259,7 +259,7 @@
           @createOrder="createEditOrder"
         />
       </div>
-      <AssosiateWith 
+      <AssosiateWith
         v-if="article.assosiate_with"
         :article="article"
       />
