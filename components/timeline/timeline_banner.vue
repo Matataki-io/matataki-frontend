@@ -69,7 +69,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: 22px;
-    letter-spacing: 10px;
+    word-spacing: 2px;
     padding: 0;
     margin: 20px 0 0 0;
     color: #000;
@@ -96,7 +96,6 @@ export default {
     .banner-description {
       font-size: 12px;
       line-height: 1.4;
-      letter-spacing: 2px;
       margin: 10px 0 0 0;
     }
   }
