@@ -3,7 +3,7 @@
     <div class="card-share">
       <div class="card-info">
         <router-link
-          :to="{ name: 'user-id-share', params: { id: card.uid } }"
+          :to="{ name: 'user-id', params: { id: card.uid } }"
           :target="blank && '_blank'"
           class="card-info__left"
         >
@@ -139,7 +139,7 @@ import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
 import { filterOutHtmlShare } from '@/utils/xss'
 import { renderLinkUser } from '@/utils/share'
-import photoAlbum from '@/components/dynamic/photo_album'
+import photoAlbum from '@/components/dynamic/card/photo_album'
 
 export default {
   components: {
@@ -181,8 +181,6 @@ export default {
       // 向后兼容 this.card.short_content_share || this.card.short_content
       return this.$utils.compose(renderLinkUser, filterOutHtmlShare)(this.card.short_content_share || this.card.short_content)
     }
-  },
-  created() {
   }
 }
 </script>

@@ -36,7 +36,7 @@
               </el-dropdown-menu>
             </el-dropdown> -->
           </section>
-          <inputContent style="margin-top: 20px;" />
+          <inputContent style="margin-top: 20px;" @pushed="updateList" />
           <p v-if="pull.list.length === 0 && !filterLoading" class="not-content">
             {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
           </p>
@@ -46,9 +46,14 @@
             class="timeline-card"
           >
             <timelineCard
-              v-if="item.platform === 'matataki'"
+              v-if="item.platform === 'matataki' && item.card && item.card.channel_id === 1"
               show-logo
               :card="item.card"
+            />
+            <dynamicCard
+              v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 3"
+              :key="index"
+              :data="item.card"
             />
             <twitterCard
               v-else-if="item.platform === 'twitter'"
@@ -73,11 +78,6 @@
               :stats="item.stats"
               @click-like="likeEvent"
             />
-            <shareCard
-              v-else-if="item.platform === 'dynamic'"
-              :key="index"
-              :card="item"
-            />
             <div v-else>
               {{ $t('unsupported-platform-type') }}: {{ item.platform }}
             </div>
@@ -92,13 +92,6 @@
               :auto-request-time="autoRequestTime"
               @buttonLoadMore="buttonLoadMoreRes"
               @getDataFail="getDataFail"
-            />
-            <buttonLoadMoreShare
-              :params="pullShare.params"
-              :api-url="pullShare.apiUrl"
-              :auto-request-time="pullShare.time"
-              :type-index="0"
-              @buttonLoadMore="getListData"
             />
           </div>
         </div>
@@ -208,11 +201,10 @@ import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
 import mastodonCard from '@/components/platform_status/mastodon_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
-import buttonLoadMoreShare from '@/components/button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
 import timelineHelp from '@/components/help/timeline_help'
-import shareCard from '@/components/share_card/index.vue'
+import dynamicCard from '@/components/dynamic/card'
 
 export default {
   components: {
@@ -222,13 +214,12 @@ export default {
     bilibiliCard,
     mastodonCard,
     buttonLoadMore,
-    buttonLoadMoreShare,
     // RAList,
     userPlatformCard,
     timelineHelp,
     timelineBanner,
     timelineWelcome,
-    shareCard
+    dynamicCard
   },
   data() {
     return {
@@ -237,15 +228,6 @@ export default {
         params: { page: 1, filters: undefined },
         apiUrl: process.env.VUE_APP_MATATAKI_CACHE + '/status/timeline',
         list: [],
-      },
-      pullShare: { // 分页
-        params: {
-          type: 'time',
-          pagesize: 20
-        },
-        time: 0,
-        apiUrl: 'share',
-        list: []
       },
       usersLoading: false,
       usersRecommendList: [],
@@ -506,18 +488,6 @@ export default {
       catch (e) {
         console.error('[Like failed]:', e)
         this.$message.error(this.$t('fail'))
-      }
-    },
-    getListData(res) {
-      console.log('res1', res)
-      if (res.data.list && res.data.list.length !== 0) {
-        // console.log('1111', res)
-        let list = res.data.list.map(i => ({
-          ...i,
-          platform: 'dynamic',
-        }))
-        this.pullShare.list = this.pullShare.list.concat(list)
-        this.pull.list.push(...this.pullShare.list)
       }
     },
   }
