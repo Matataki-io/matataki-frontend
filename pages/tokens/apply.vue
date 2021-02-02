@@ -11,15 +11,15 @@
           alt="cover"
         >
         <p>
-          聪明又创造力十足的你终于来到这里了！快来发布你的Fan票吧，这是作为你的社区一员的身份象征哦！<br>
-          填写表单，告诉我们你对社区的规划，工作人员会在1-5个工作日联系你为你提供专属服务。
+          {{ $t('smart-and-creative-you-are-finally-here-Come-and-publish-your-Fan-ticket-which-is-a-status-symbol-as-a-member-of-your-community') }}<br>
+          {{ $t('fill-in-the-form-to-tell-us-your-plan-for-the-community-and-the-staff-will-contact-you-within-1-5-working-days-to-provide-you-with-exclusive-services') }}
         </p>
         <a
           href="https://wj.qq.com/s2/5208015/8e5d"
           target="_blank"
         >
           <el-button type="primary">
-            立即申请
+            {{ $t('apply-immediately') }}
           </el-button>
         </a>
       </div>

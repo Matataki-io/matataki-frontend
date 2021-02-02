@@ -5,7 +5,7 @@
       loading...
     </p>
     <p class="tips">
-      使用该功能需要“科学上网”
+      {{ $t('scientific-Internet-access-is-required-to-use-this-function') }}
     </p>
   </div>
 </template>
