@@ -7,13 +7,13 @@
           :to="{ name: 'user-id-buy', params: { id: $route.params.id } }"
           :class="$route.name === 'user-id-buy' && 'active'"
         >
-          文章
+          {{ $t('article') }}
         </router-link>
         <router-link
           :to="{ name: 'user-id-buy-other', params: { id: $route.params.id } }"
           :class="$route.name === 'user-id-buy-other' && 'active'"
         >
-          其他
+          {{ $t('other') }}
         </router-link>
       </div>
       <slot />

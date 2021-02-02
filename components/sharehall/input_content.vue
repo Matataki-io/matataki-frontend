@@ -11,7 +11,7 @@
             id="tributeShare"
             class="content-editable"
             contenteditable="true"
-            placeholder="谈谈感想"
+            :placeholder="$t('talk-about-feelings')"
           />
         </vue-tribute>
       </client-only>

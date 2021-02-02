@@ -16,7 +16,7 @@ export default {
     messages: {
       zh: zh,
       en: en
-    }
+    },
   },
   detectBrowserLanguage: {
     // If enabled, a cookie is set once a user has been redirected to his

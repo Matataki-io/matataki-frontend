@@ -8,11 +8,11 @@
       label-width="90px"
       class="withdraw-form"
     >
-      <el-form-item label="类型" prop="tokenId">
+      <el-form-item :label="$t('types-of')" prop="tokenId">
         <el-select
           v-model="form.tokenId"
           filterable
-          placeholder="请选择" 
+          :placeholder="$t('please-choose')"
           style="width: 100%"
           @change="changeTokenSelect"
         >
@@ -25,32 +25,32 @@
             <div class="token-container">
               <img :src="tokenLogo(item.logo)" :alt="item.symbol" class="token-logo">
               <span class="token-symbol">{{ item.name }}({{ item.symbol }})</span>
-              <span class="token-symbol">余额: {{ tokenAmount(item.amount, item.decimals) }} {{ item.symbol }}</span>
+              <span class="token-symbol">{{ $t('balance') }}: {{ tokenAmount(item.amount, item.decimals) }} {{ item.symbol }}</span>
             </div>
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数量" prop="amount">
+      <el-form-item :label="$t('quantity')" prop="amount">
         <el-input
           v-model="form.amount"
           :max="form.max"
           :min="form.min"
-          placeholder="请输入数量"
+          :placeholder="$t('please-enter-the-quantity')"
           clearable
         />
       </el-form-item>
       <p class="balance">
-        余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
+        {{ $t('balance') }}&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
         <a
           v-if="form.balance"
           href="javascript:;"
           @click="form.amount = form.balance"
-        >全部转出</a>
+        >{{ $t('transfer-all-out') }}</a>
       </p>
-      <el-form-item label="目标地址" prop="to">
+      <el-form-item :label="$t('target-address')" prop="to">
         <el-input
           v-model="form.to"
-          placeholder="请输入目标钱包的以太坊地址，以 0x 开头。"
+          :placeholder="$t('please-enter-the-Ethereum-address-of-the-target-wallet-starting-with-0x')"
           clearable
         />
       </el-form-item>
@@ -61,21 +61,21 @@
           class="submit-btn"
           @click="submitForm('form')"
         >
-          确定
+          {{ $t('confirm') }}
         </el-button>
       </div>
       <el-alert v-if="withdrawResult" type="success">
         <h1 class="title">
-          Fan 票提现成功
+          {{ $t('coin-withdrawal-is-successful') }}
         </h1>
-        这笔交易已经提交到区块链网络，等待网络确认。
-        <a 
+        {{ $t('this-transaction-has-been-submitted-to-the-blockchain-network-waiting-for-the-network-to-confirm') }}
+        <a
           style="color: #1989FA;"
           :href="`https://rinkeby.etherscan.io/tx/${withdrawResult.txHash}`" 
           target="_blank" 
           rel="noreferrer"
         >
-          👉 在 EtherScan 查看这笔提现交易 👈
+          👉 {{ $t('check-this-withdrawal-transaction-in-EtherScan') }} 👈
         </a>
       </el-alert>
     </el-form>

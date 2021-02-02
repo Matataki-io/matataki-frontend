@@ -5,13 +5,10 @@
     <h2 class="welcome-title">
       {{ $t('welcome-to-join') }}
     </h2>
-    <h2 class="welcome-title">
-      一个 <span>公开</span> <span>永存</span> 的数字作品库
-    </h2>
-
+    <h2 class="welcome-title" v-html="$t('an-open-and-permanent-digital-library')" />
     <div class="welcome-text">
-      <p class="welcome-description">请 <span @click="login">{{ $t('login') }}</span> 后查看您的</p>
-      <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
+      <p class="welcome-description">{{ $t('please') }} <span @click="login">{{ $t('login') }}</span> {{ $t('after-viewing-your') }}</p>
+      <p class="welcome-description-time" v-html="$t('personalized-dynamic-timeline')" />
       <a
         href="javascript:;"
         class="btn"
@@ -57,7 +54,7 @@ export default {
   background-size: cover;
   &-people {
     position: absolute;
-    left: 40px;
+    left: -20px;
     top: -20px;
     height: calc(100% + 20px);
   }
@@ -108,7 +105,7 @@ export default {
     font-weight: 400;
     color: #333333;
     line-height: 22px;
-    letter-spacing: 10px;
+    word-spacing: 2px;
     padding: 0;
     margin: 10px -10px 0 0;
     span {

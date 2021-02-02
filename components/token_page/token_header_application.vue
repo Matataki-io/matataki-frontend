@@ -1,7 +1,7 @@
 <template>
   <section class="token-card">
     <h3 class="token-title">
-      我申请的Fan票
+      {{ $t('coin-i-applied-for') }}
     </h3>
     <section class="fl token-container">
       <section>
@@ -26,7 +26,7 @@
           <p class="token-text">{{ $t('your-coin-application-failed') }}</p>
           <p v-if="info.reason" class="token-reason">{{ info.reason }}</p>
         </template>
-        <div class="token-footer">  
+        <div class="token-footer">
           <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
             {{ $t('anyFeedback') }}<svg-icon icon-class="arrow" class="icon" />
           </a>

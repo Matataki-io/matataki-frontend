@@ -27,7 +27,7 @@
                     {{ issued24H }}
                   </h4>
                   <p>
-                    24h增发量
+                    24h{{ $t('additional-issuance') }}
                   </p>
                 </span>
               </div>
@@ -41,7 +41,7 @@
                   {{ issued7D }}
                 </h4>
                 <p>
-                  7D增发量
+                  7D{{ $t('additional-issuance') }}
                 </p>
               </span>
             </div>
@@ -55,7 +55,7 @@
                 {{ issued30D }}
               </h4>
               <p>
-                30D增发量
+                30D{{ $t('additional-issuance') }}
               </p>
             </span>
           </div>
@@ -69,7 +69,7 @@
               {{ totalIssued }}
             </h4>
             <p>
-              已发行总量
+              {{ $t('total-issued') }}
             </p>
           </span>
         </div>

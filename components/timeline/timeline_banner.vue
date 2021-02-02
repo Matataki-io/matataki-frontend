@@ -4,10 +4,8 @@
       <h2 class="banner-title">
         {{ $t('welcome-to-join') }}
       </h2>
-      <h2 class="banner-title bold">
-        一个 <span>公开</span> <span>永存</span> 的数字作品库
-      </h2>
-      <p class="banner-description">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
+      <h2 class="banner-title bold" v-html="$t('an-open-and-permanent-digital-library')" />
+      <p class="banner-description" v-html="$t('personalized-dynamic-timeline')" />
       <img src="@/assets/img/dynamic_banner_people.png" alt="people" class="banner-people">
       <img src="@/assets/img/dynamic_banner_decoration.png" alt="decoration" class="banner-decoration">
     </section>
@@ -71,7 +69,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: 22px;
-    letter-spacing: 10px;
+    word-spacing: 2px;
     padding: 0;
     margin: 20px 0 0 0;
     color: #000;
@@ -85,6 +83,21 @@ export default {
     position: absolute;
     right: 0;
     bottom: 0;
+  }
+  @media screen and (max-width: 768px) {
+    .banner-people,
+    .banner-decoration {
+      display: none;
+    }
+    .banner-title {
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    .banner-description {
+      font-size: 12px;
+      line-height: 1.4;
+      margin: 10px 0 0 0;
+    }
   }
 }
 </style>

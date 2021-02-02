@@ -10,7 +10,7 @@
       class="step"
     >
       <h1 class="step-title">
-        选择授权方式
+        {{ $t('choose-authorization-method') }}
       </h1>
       <div class="btns">
         <button
@@ -23,7 +23,7 @@
               alt="EOS"
             >
           </div>
-          <span>EOS 登录</span>
+          <span>EOS {{ $t('login') }}</span>
         </button>
         <button
           class="btn-base bg-blue"
@@ -33,7 +33,7 @@
             src="@/assets/img/icon_logo_ont.svg"
             alt="ONT"
           >
-          <span>ONT 登录</span>
+          <span>ONT {{ $t('login') }}</span>
         </button>
         <button
           class="btn-base bg-purple"
@@ -43,17 +43,17 @@
             src="@/assets/img/github.png"
             alt="github"
           >
-          <span>Github 登录</span>
+          <span>Github {{ $t('login') }}</span>
         </button>
         <div class="guide">
           <a
             target="_blank"
             href="https://www.matataki.io/p/515"
-          >EOS登录指南</a>
+          >EOS{{ $t('login-guide') }}</a>
           <a
             target="_blank"
             href="https://www.matataki.io/p/516"
-          >ONT登录指南</a>
+          >ONT{{ $t('login-guide') }}</a>
         </div>
       </div>
     </section>
@@ -62,7 +62,7 @@
       class="step"
     >
       <h1 class="step-title">
-        EOS钱包
+        EOS{{ $t('wallet') }}
       </h1>
       <div class="wallet">
         <a
@@ -78,7 +78,7 @@
         </a>
       </div>
       <h1 class="step-title">
-        ONT钱包
+        ONT{{ $t('wallet') }}
       </h1>
       <div class="wallet">
         <a
@@ -104,7 +104,7 @@
       >
         <i class="el-icon-arrow-left" />
       </div>
-      <span>{{ step === 1 ? '查看支持的钱包' : '返回登录' }}</span>
+      <span>{{ step === 1 ? $t('view-supported-wallets') : $t('back-to-login') }}</span>
       <div
         v-if="step === 1"
         class="arrow"

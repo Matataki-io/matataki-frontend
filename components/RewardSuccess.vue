@@ -10,14 +10,14 @@
       <div class="image">
         <img src="@/assets/img/zan.png" alt="zan">
       </div>
-      <h1>打赏成功！</h1>
-      <p class="success-tip">你的鼓励会成为作者的动力，感谢打赏！</p>
+      <h1>{{ $t('reward-success') }}</h1>
+      <p class="success-tip">{{ $t('your-encouragement-will-become-the-motivation-of-the-author-thank-you-for-your-reward') }}</p>
       <el-button
         type="primary"
         class="success-btn"
         @click="showModal = false"
       >
-        完成
+        {{ $t('done') }}
       </el-button>
     </div>
   </el-dialog>

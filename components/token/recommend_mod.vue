@@ -7,37 +7,37 @@
       <div class="module-list-card">
         <img src="@/assets/img/token/map.png" alt="Map">
         <p>
-          地图社交
+          {{ $t('map-social') }}
         </p>
         <el-button
           class="open-button"
           size="small"
         >
-          立即启用
+          {{ $t('enable-now') }}
         </el-button>
       </div>
       <div class="module-list-card">
         <img src="@/assets/img/token/hackmd.png" alt="Hackmd">
         <p>
-          共享文档
+          {{ $t('share-documents') }}
         </p>
         <el-button
           class="open-button"
           size="small"
         >
-          立即启用
+          {{ $t('enable-now') }}
         </el-button>
       </div>
       <div class="module-list-card">
         <img src="@/assets/img/token/candy_airdrop.png" alt="Candy Airdrop">
         <p>
-          领空投
+          {{ $t('airdrop') }}
         </p>
         <el-button
           class="open-button"
           size="small"
         >
-          立即启用
+          {{ $t('enable-now') }}
         </el-button>
       </div>
     </div>
