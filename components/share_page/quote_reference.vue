@@ -50,7 +50,7 @@
       v-if="pull.list.length === 0"
       class="not-prompt"
     >
-      暂无内容
+      {{ $t('notContent') }}
     </p>
   </div>
 </template>

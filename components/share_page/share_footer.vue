@@ -8,7 +8,7 @@
           icon-class="bookmark-solid"
         />
       </div>
-      <p>收藏</p>
+      <p>{{ $t('bookmark') }}</p>
     </div>
     <div class="icon-num">
       <div @click="pushShare">
@@ -26,7 +26,7 @@
           icon-class="share2"
         />
       </div>
-      <p>分享</p>
+      <p>{{ $t('share') }}</p>
     </div>
     <div class="icon-num">
       <div @click="$emit('like', 2)">

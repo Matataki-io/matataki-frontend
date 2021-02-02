@@ -2,7 +2,7 @@
   <m-dialog
     v-model="createFavShowModal"
     width="446px"
-    title="收藏夹信息"
+    :title="$t('favorites-information')"
   >
     <favForm type="create" @create-done="createDone" />
   </m-dialog>

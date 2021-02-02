@@ -9,7 +9,7 @@
           class="more-icon-setting"
           icon-class="setting"
         />
-        <span class="more-text-setting">设置</span>
+        <span class="more-text-setting">{{ $t('setting') }}</span>
       </div>
       <el-dropdown-menu
         slot="dropdown"

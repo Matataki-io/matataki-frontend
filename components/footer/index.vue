@@ -76,7 +76,7 @@
           <a
             target="_blank"
             href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t"
-            title="群号：766605671"
+            :title="`${$t('group-number')}：766605671`"
             class="icon qq"
           >
             <svg-icon
@@ -145,7 +145,7 @@
           </a> -->
         </div>
         <p class="copyright">
-          Copyright © 2018-2020 ANDOROMEDA TECH.ltd
+          Copyright © 2018-2021 ANDOROMEDA TECH.ltd
         </p>
         <div>
           <a href="https://www.producthunt.com/posts/matataki?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-matataki" target="_blank"><img

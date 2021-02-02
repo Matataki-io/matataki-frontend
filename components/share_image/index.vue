@@ -79,7 +79,7 @@
       class="share-image__code"
     />
     <p class="share-image__code__description">
-      扫码查看分享详情
+      {{ $t('scan-code-to-view-sharing-details') }}
     </p>
   </div>
 </template>

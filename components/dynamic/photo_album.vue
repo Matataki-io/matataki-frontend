@@ -3,7 +3,7 @@
     <div class="album-frame-pillar" />
     <div class="album" :class="albumClass">
       <div v-if="locked" class="album-sensitivetab" @click="openSensitiveShow">
-        敏感内容
+        {{ $t('sensitive-content') }}
       </div>
       <!-- 单张图片 -->
       <div

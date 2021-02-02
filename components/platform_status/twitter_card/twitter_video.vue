@@ -5,7 +5,7 @@
       :loop="video.type === 'gif'"
     >
       <source :src="video.url" :type="video.content_type">
-      您的浏览器不支持 HTML5 video 标签。
+      {{ $t('your-browser-does-not-support-the-HTML5-video-tag') }}
     </video>
     <div v-if="video.type === 'gif'" class="videobox-gif">
       GIF

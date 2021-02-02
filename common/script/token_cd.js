@@ -30,7 +30,6 @@ export default {
       // 当前用户已经成功发行过Fan票--不展示 
       // 当前用户已经尝试过申请发行Fan票--不展示
 
-      
       if (!this.isLogined) {
         // 当前用户尚未登陆--展示
         this.showBanner = true

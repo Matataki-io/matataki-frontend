@@ -7,11 +7,11 @@
       </div>
       <foreignUserPopover v-if="fromUser" :card="fromUser">
         <div class="cardunit-bg-retweeted-r">
-          {{ card.user.name || card.user.screen_name }} 转推了
+          {{ card.user.name || card.user.screen_name }} {{ $t('zhuan-tui-le') }}
         </div>
       </foreignUserPopover>
       <div v-else class="cardunit-bg-retweeted-r">
-        {{ card.user.name || card.user.screen_name }} 转推了
+        {{ card.user.name || card.user.screen_name }} {{ $t('zhuan-tui-le') }}
       </div>
     </div>
     <div class="cardunit">

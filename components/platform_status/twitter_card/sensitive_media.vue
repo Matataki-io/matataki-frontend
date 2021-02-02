@@ -1,10 +1,10 @@
 <template>
   <div class="sensitive">
     <p>
-      该媒体不可用，因为它包含敏感内容。
+      {{ $t('the-media-is-not-available-because-it-contains-sensitive-content') }}
     </p>
     <span @click="$emit('view')">
-      查看
+      {{ $t('view') }}
     </span>
   </div>
 </template>

@@ -48,7 +48,7 @@
             </p>
           </div>
           <p class="introduction">
-            {{ user.introduction || '暂无简介' }}
+            {{ user.introduction || $t('notProfile') }}
           </p>
         </div>
         <div v-if="user.id && !isMe(user.id)" class="user-button">
@@ -75,7 +75,7 @@
         </p>
         <p v-else>
           <i class="el-icon-delete" />
-          此条评论已被删除
+          {{ $t('this-comment-has-been-deleted') }}
         </p>
       </div>
       <!-- token -->
@@ -108,7 +108,7 @@
       <!-- @分享 -->
       <div v-if="mode === 'share'" class="fl share">
         <n-link class="link" :to="{ name: 'share-id', params: { id: share.id } }" target="_blank">
-          在Ta的分享中提及(@)到了你
+          {{ $t('mention-at-to-you-in-ta-sharing') }}
         </n-link>
       </div>
     </div>
