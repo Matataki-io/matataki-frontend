@@ -10,6 +10,7 @@
           :time="content.create_time"
           :read="content.read"
           :hash="content.hash"
+          :share-id="Number($route.params.id)"
         />
         <shareMain :content="shareContent" />
       </main>
