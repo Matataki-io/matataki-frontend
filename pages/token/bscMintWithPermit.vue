@@ -29,7 +29,7 @@
           <!-- :disabled="isPermitExpired" -->
           <div class="parse-btn">
             <el-button type="primary" @click="sendPermit">
-              {{ isPermitExpired ? "许可证已过期" : "上传许可" }}
+              {{ isPermitExpired ? $t('license-has-expired') : $t('upload-license') }}
             </el-button>
           </div>
           <el-alert v-if="mintResult" type="success">
