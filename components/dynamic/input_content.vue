@@ -10,8 +10,10 @@
         >
           <div
             id="tributeShare"
+            ref="contentEditable"
             class="content-editable"
             contenteditable="true"
+
             :placeholder="$t('enter-the-activity-you-want-to-post')"
           />
         </vue-tribute>
@@ -51,7 +53,7 @@
       <div class="i-f-info">
         <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
         <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
-        <shareLink :share-link-list="shareLinkList" @pushItem="item => shareLinkList.push(item.data)">
+        <shareLink v-model="refUrl" :share-link-list="shareLinkList" @pushItem="item => shareLinkList.push(item.data)">
           <svg-icon icon-class="link1" class="icon" />
         </shareLink>
         <div class="emoji-container">
@@ -121,6 +123,14 @@ export default {
     totalText: {
       type: Number,
       default: 1000
+    },
+    reference: {
+      type: String,
+      default: ''
+    },
+    reset: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -185,10 +195,23 @@ export default {
       mediaList: [],
       mediaUploading: false,
       btnSubmitLoading: false, // 发布动态loading
+      refUrl: '',
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  watch: {
+    reference(nVal) {
+      if (nVal !== this.refUrl) this.refUrl = nVal
+    },
+    reset() {
+      if (this.btnSubmitLoading) {
+        console.warn('发布中无法重制输入框状态')
+        return
+      }
+      this._reset()
+    }
   },
   mounted() {
     if (process.browser) {
@@ -199,6 +222,8 @@ export default {
       // }
       // document.addEventListener('click', this.handleEventClick, false)
     }
+    if (this.reference) this.refUrl = this.reference
+    // console.log('看看是什么：', this.$refs.containerInput.querySelector('.content-editable'))
   },
   destroyed() {
     if (process.browser) {
@@ -255,13 +280,13 @@ export default {
     }, 300),
     // 处理当前文本 （获取长度）
     handleCurrentText() {
-      let editDom = document.querySelector('.content-editable')
+      let editDom = this.$refs.contentEditable
       let editDomText = editDom.innerText
       this.currentText = editDomText.length
     },
     // 添加 Emojii
     addEmoji(emoji) {
-      let editDom = document.querySelector('.content-editable')
+      let editDom = this.$refs.contentEditable
       editDom.insertAdjacentHTML('beforeend', emoji.native)
 
       // console.log('emoji', emoji)
@@ -277,7 +302,7 @@ export default {
     // 获取输入框内容的信息
     _getInputContent() {
       // 获取分享内容
-      let editDom = document.querySelector('.content-editable')
+      let editDom = this.$refs.contentEditable
       let editDomContent = editDom.innerHTML.toString()
       // console.log('editDom', editDom.innerHTML)
 
@@ -296,8 +321,9 @@ export default {
       this.shareLinkList = []
       this.mediaList = []
       this.uploadMediaVisible = false
+      this.refUrl = ''
       // 清空分享内容
-      document.querySelector('.content-editable').innerHTML = ''
+      this.$refs.contentEditable.innerHTML = ''
     },
     // 发布分享
     async pushShare() {
@@ -375,7 +401,7 @@ export default {
     // 显示菜单 collectionIndex 集合索引
     showMenuForCollection(collectionIndex) {
       try {
-        let input = document.getElementById('tributeShare')
+        let input = this.$refs.contentEditable
         window._tribute.showMenuForCollection(input, collectionIndex)
       } catch (e) {
         console.log(e)

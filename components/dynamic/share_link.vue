@@ -29,6 +29,10 @@ export default {
     shareLinkList: { // 分享链接数组
       type: Array,
       required: true
+    },
+    value: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -41,10 +45,21 @@ export default {
   },
   watch: {
     shareInput(newVal) {
-      if (newVal) {
+      if (newVal !== this.value) {
+        this.$emit('input', newVal)
+      }
+      if (newVal.trim()) {
         this.searchLink(newVal.trim())
       }
+    },
+    value(newVal) {
+      if (newVal !== this.shareInput) {
+        this.shareInput = newVal
+      }
     }
+  },
+  mounted () {
+    if (this.addLink) this.shareInput = this.addLink
   },
   methods: {
     searchLink: debounce(async function(link) {
