@@ -1567,5 +1567,8 @@
   "how-to-display-the-coin-that-I-have-withdrawn-in-the-Ethereum-wallet": "怎么在以太坊钱包显示我提现出来的Fan票？",
   "cross-chain-transfer-to-Binance-Smart-Blockchain-BSC-Mainnet": "跨链转账到币安智能区块链(BSC Mainnet)",
   "because-this-is-a-cross-chain-asset-of-the-BSC-mainnet-you-need-to-consume-a-certain-fee-to-create-it-Please-make-sure-that-your-wallet-has-enough-BNB-to-create-cross-chain-assets": "因为这是 BSC 主网跨链资产，需要你消耗一定的手续费来创建。请确保你的钱包有足够的 BNB，以创建跨链资产。",
-  "upload-withdrawal-permission": "上传提现许可"
+  "upload-withdrawal-permission": "上传提现许可",
+  "there-doesnt-seem-to-be-what-you-want-here": "这里似乎没有你想要的哦~",
+  "no-nickname": "暂无昵称",
+  "founder": "创始人"
 }

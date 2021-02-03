@@ -1567,5 +1567,8 @@
   "withdraw-coin-to-Rinkeby-Testnet": "Withdraw Fan tickets to Rinkeby Testnet",
   "withdraw-your-own-assets": "Withdraw your own assets",
   "you-need-to-log-in-to-use-this-feature": "You need to log in to use this feature",
-  "you-seem-to-have-not-logged-in-yet": "Ok? \nYou seem to have not logged in yet?"
+  "you-seem-to-have-not-logged-in-yet": "Ok? \nYou seem to have not logged in yet?",
+  "founder": "Founder",
+  "no-nickname": "No nickname",
+  "there-doesnt-seem-to-be-what-you-want-here": "There doesn't seem to be what you want here~"
 }

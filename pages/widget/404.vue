@@ -1,6 +1,6 @@
 <template>
   <div class="text">
-    这里似乎没有你想要的哦~
+    {{ $t('there-doesnt-seem-to-be-what-you-want-here') }}
   </div>
 </template>
 
