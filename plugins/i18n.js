@@ -2,6 +2,9 @@ import Cookies from 'js-cookie'
 import zh from '../locale/zh'
 import en from '../locale/en'
 
+// import locale from 'element-ui/lib/locale'
+import elementEn from 'element-ui/lib/locale/lang/en'
+import elementZh from 'element-ui/lib/locale/lang/zh-CN'
 
 export default {
   // locales: [
@@ -14,8 +17,14 @@ export default {
   vueI18n: {
     fallbackLocale: 'zh',
     messages: {
-      zh: zh,
-      en: en
+      zh: {
+        ...elementZh,
+        ...zh
+      },
+      en: {
+        ...elementEn,
+        ...en
+      }
     },
   },
   detectBrowserLanguage: {
