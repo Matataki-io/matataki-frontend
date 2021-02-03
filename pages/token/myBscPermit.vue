@@ -3,31 +3,31 @@
     <client-only>
       <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
       <div class="card">
-        <el-page-header content="我的 BSC 许可" @back="$router.back()" />
+        <el-page-header :content="$t('my-BSC-license')" @back="$router.back()" />
         <div class="checklist">
-          <h4>环境检查</h4>
+          <h4>{{ $t('environmental-inspection') }}</h4>
           <ul>
-            <li>是否已经有 MetaMask 钱包: {{ renderIconWithBool(isMetaMaskActive) }}</li>
+            <li>{{ $t('do-you-already-have-a-MetaMask-wallet') }}: {{ renderIconWithBool(isMetaMaskActive) }}</li>
             <li>
-              是否已经授权我们访问: {{ renderIconWithBool(selectedWallet) }}
+              {{ $t('have-you-authorized-us-to-access') }}: {{ renderIconWithBool(selectedWallet) }}
               <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
-                授权钱包地址
+                {{ $t('authorized-wallet-address') }}
               </el-button>
             </li>
             <li v-if="selectedWallet">
-              当前操作的钱包地址: {{ selectedWallet }}
+              {{ $t('the-wallet-address-of-the-current-operation') }}: {{ selectedWallet }}
               <br>
-              BNB 余额： {{ bnbBalance }}
+              BNB {{ $t('balance') }}： {{ bnbBalance }}
             </li>
             <li>
-              是否在币安智能区块链网络: {{ renderIconWithBool(isOnBsc) }} 
-              <a 
+              {{ $t('is-it-on-the-Binance-Smart-Blockchain-Network') }}: {{ renderIconWithBool(isOnBsc) }} 
+              <a
                 v-if="!isOnBsc"
                 class="link"
                 href="https://www.readblocks.com/archives/32275"
                 target="_blank"
                 rel="noopener noreferrer"
-              >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+              >👉{{ $t('guide-to-add-Binance-Smartchain-in-MetaMask') }} ↗️ 👈</a>
             </li>
           </ul>
         </div>
@@ -35,10 +35,10 @@
         <wbAlertTips />
         <div class="others">
           <el-button type="primary" @click="$router.push({ name: 'token-withdrawToBsc' })">
-            申请提现自己的资产
+            {{ $t('apply-to-withdraw-your-own-assets') }}
           </el-button>
           <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
-            （替别人）上传提现许可
+            {{ $t('For-others-Upload-the-withdrawal-permission') }}
           </el-button>
         </div>
         <div
@@ -49,30 +49,30 @@
           <p class="parse-title">Token: {{ listItem.token }}</p>
           <div>
             <el-table :data="listItem.permits" style="width: 100%">
-              <el-table-column prop="to" label="提现到" width="400" />
-              <el-table-column prop="nonce" label="许可号(顺序）" width="80" />
-              <el-table-column label="状态" width="140">
+              <el-table-column prop="to" :label="$t('withdraw-to')" width="400" />
+              <el-table-column prop="nonce" :label="$t('license-number-sequence')" width="80" />
+              <el-table-column :label="$t('status')" width="140">
                 <template slot-scope="scope">
                   {{
                     scope.row.status === 0
-                      ? "待发送"
+                      ? $t('to-be-sent')
                       : scope.row.status === -1
-                        ? "已发送"
-                        : "请先处理待发送"
+                        ? $t('has-been-sent')
+                        : $t('please-process-to-be-sent-first')
                   }}
                 </template>
               </el-table-column>
-              <el-table-column prop="value" label="提现金额" width="160">
+              <el-table-column prop="value" :label="$t('withdrawal-amount')" width="160">
                 <template slot-scope="scope">
                   {{ scope.row.value / 1e4 }}
                 </template>
               </el-table-column>
-              <el-table-column label="有效期" width="140">
+              <el-table-column :label="$t('valid-period')" width="140">
                 <template slot-scope="scope">
                   {{ scope.row.expiryDate.toLocaleDateString() }}
                 </template>
               </el-table-column>
-              <el-table-column fixed="right" label="操作" width="240">
+              <el-table-column fixed="right" :label="$t('operating')" width="240">
                 <template slot-scope="scope">
                   <el-button
                     type="primary"
@@ -83,12 +83,12 @@
                   >
                     {{
                       scope.row.isExpired
-                        ? "已过期"
+                        ? $t('expired')
                         : scope.row.status === 1
-                          ? "先处理前面"
+                          ? $t('deal-with-the-front-first')
                           : scope.row.status === -1
-                            ? "已发送"
-                            : "上传许可"
+                            ? $t('has-been-sent')
+                            : $t('upload-license')
                     }}
                   </el-button>
                   <el-button
@@ -97,7 +97,7 @@
                     "
                     @click="copyPermit(scope.row)"
                   >
-                    分享
+                    {{ $t('share') }}
                   </el-button>
                 </template>
               </el-table-column>

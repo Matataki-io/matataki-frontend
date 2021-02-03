@@ -15,9 +15,9 @@
         slot="dropdown"
         class="user-dorpdown"
       >
-        <el-dropdown-item command="transfer">
+        <!-- <el-dropdown-item command="transfer">
           {{ $t('transfer') }}
-        </el-dropdown-item>
+        </el-dropdown-item> -->
         <el-dropdown-item command="del">
           {{ $t('delete') }}
         </el-dropdown-item>
@@ -60,14 +60,18 @@ export default {
     del() {
       // 删除方法
       const delFunc = async (id) => {
-        if (!id) return
+        if (!id) {
+          this.$message({ message: '发生错误' })
+          return
+        }
         try {
           const res = await this.$API.delArticle({ id })
           if (res.code === 0) {
             this.$message({ showClose: true, duration: 2000, message: '删除成功' })
-            this.$router.push('/sharehall')
+            this.$router.push('/timeline')
+          } else {
+            this.$message({ showClose: true, message: res.message, type: 'error' })
           }
-          else this.$message({ showClose: true, message: res.message, type: 'error' })
         } catch (error) {
           return console.error(error)
         }

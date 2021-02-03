@@ -9,26 +9,26 @@
         <div class="token-info">
           <div class="token-info-line">
             <div class="token-title bold">
-              {{ tokenData.token.symbol || '暂无' }}
+              {{ tokenData.token.symbol || $t('not') }}
             </div>
             <div class="token-sub">
-              {{ tokenData.token.name || '暂无' }}
+              {{ tokenData.token.name || $t('not') }}
             </div>
           </div>
           <div class="token-info-line">
             <div class="token-title">
-              创始人：
+              {{ $t('founder') }}：
             </div>
             <div class="token-sub">
-              {{ tokenData.user.nickname || tokenData.user.username || '暂无' }}
+              {{ tokenData.user.nickname || tokenData.user.username || $t('not') }}
             </div>
           </div>
           <div class="token-info-line">
             <div class="token-title">
-              简&emsp;介：
+              {{ $t('Introduction') }}&emsp;：
             </div>
             <div class="token-sub">
-              {{ tokenData.token.brief || '暂无' }}
+              {{ tokenData.token.brief || $t('not') }}
             </div>
           </div>
         </div>
