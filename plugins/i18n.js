@@ -2,9 +2,12 @@ import Cookies from 'js-cookie'
 import zh from '../locale/zh'
 import en from '../locale/en'
 
-// import locale from 'element-ui/lib/locale'
+// TODO: Element-ui lang 需要处理
+// import ElementLocale from 'element-ui/lib/locale'
 import elementEn from 'element-ui/lib/locale/lang/en'
 import elementZh from 'element-ui/lib/locale/lang/zh-CN'
+
+// ElementLocale.i18n((key, value) => app.i18n.t(key, value))
 
 export default {
   // locales: [
