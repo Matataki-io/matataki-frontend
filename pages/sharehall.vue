@@ -420,10 +420,10 @@ export default {
         this.$message({ message: '分享内容不能超过最高限制', type: 'warning' })
         return
       }
-      if (this.shareLinkList.length <= 0) {
-        this.$message({ message: '分享引用不能为空', type: 'warning' })
-        return
-      }
+      // if (this.shareLinkList.length <= 0) {
+      //   this.$message({ message: '分享引用不能为空', type: 'warning' })
+      //   return
+      // }
       if (this.mediaUploading) {
         this.$message.warning('媒体正在上传中，请稍后再试')
         return

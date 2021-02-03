@@ -360,6 +360,7 @@ export default {
         const res = await this.$API.createShare(data)
         if (res.code === 0) {
           this.$message({ message: '发布成功', type: 'success' })
+          this.$emit('pushed')
           this._reset()
         } else {
           throw new Error(res)
