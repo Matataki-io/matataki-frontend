@@ -60,7 +60,7 @@ export default {
     line-height: 40px;
     padding: 0;
     margin: 0;
-    span {
+    /deep/ span {
       color: #fa6400;
     }
   }
