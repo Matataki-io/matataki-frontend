@@ -17,7 +17,7 @@
                 v-model="urlForm.url"
                 size="mini"
                 class="push-input"
-                placeholder="输入链接，包含http(s)://"
+                :placeholder="$t('enter-the-link-including-http')"
                 @focus="focusInput"
                 @blur="blurInput"
                 @change="changeInput"
@@ -77,7 +77,7 @@
               @click="pushShare()"
             >
               <svg-icon icon-class="edit" class="icon" />
-              发布
+              {{ $t('publish.publish') }}
             </el-button>
           </div>
         </el-form>
@@ -88,7 +88,7 @@
       <div class="sharehall-main">
         <div class="sharehall-head">
           <h3 class="sharehall-title">
-            分享大厅
+            {{ $t('sharehall.hall') }}
           </h3>
           <div class="sort">
             <span :class="value === options[0].value && 'active'" @click="value = options[0].value">{{ options[0].label }}</span>
@@ -116,7 +116,7 @@
         <div v-if="usersRecommendList.length !== 0" class="recommend-author">
           <div class="ra-head">
             <h3 class="sharehall-title">
-              推荐作者
+              {{ $t('home.recommendAuthor') }}
             </h3>
             <span class="ra-head-random" @click="usersrecommend">
               <div class="change">
@@ -141,10 +141,10 @@
       <div class="dialog-content">
         <img src="@/assets/img/done.png" alt="done" class="share-done">
         <h4 class="share-done__title">
-          分享已发布
+          {{ $t('share-published') }}
         </h4>
         <p class="share-done__desciption">
-          保存分享卡片把思考与灵感传达给更多的人
+          {{ $t('sharehall.shareSlogan') }}
         </p>
         <div
           ref="shareCard"
@@ -160,7 +160,7 @@
           class="share-card__btn"
           @click="downloadShareImage"
         >
-          保存并分享卡片
+          {{ $t('save-and-share-cards') }}
         </el-button>
         <shareImage
           v-if="!saveImg"
