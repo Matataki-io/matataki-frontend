@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import zh from '../locale/zh'
 import en from '../locale/en'
+import ja from '../locale/ja'
 
 // TODO: Element-ui lang 需要处理
 // import ElementLocale from 'element-ui/lib/locale'
@@ -14,7 +15,7 @@ export default {
   //   { name: '中文简体', code: 'zh', file: zh },
   //   { name: 'English', code: 'en', file: en },
   // ],
-  locales: ['zh', 'en'],
+  locales: ['zh', 'en', 'ja'],
   strategy: 'no_prefix',
   defaultLocale: Cookies.get('language') || 'zh',
   vueI18n: {
@@ -27,6 +28,9 @@ export default {
       en: {
         ...elementEn,
         ...en
+      },
+      ja: {
+        ...ja
       }
     },
   },
