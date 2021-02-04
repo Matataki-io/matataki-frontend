@@ -59,7 +59,9 @@ export default {
     }
   },
   mounted () {
-    if (this.addLink) this.shareInput = this.addLink
+    if (this.value) {
+      this.shareInput = this.value
+    }
   },
   methods: {
     searchLink: debounce(async function(link) {
