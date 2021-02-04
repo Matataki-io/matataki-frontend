@@ -67,17 +67,24 @@
           :card="card"
         />
         <!-- 图片 -->
-        <a class="jump-shield cardtop10" href="javascript:;">
+        <a
+          v-if="media && media.length > 0"
+          class="jump-shield cardtop10"
+          href="javascript:;"
+        >
           <photoAlbum
-            v-if="media && media.length > 0"
             :media="media"
           />
         </a>
-        <references
+        <a
           v-if="refs && refs.length !== 0"
-          class="cardtop10"
-          :refs="refs"
-        />
+          class="jump-shield cardtop10"
+          href="javascript:;"
+        >
+          <references
+            :refs="refs"
+          />
+        </a>
         <!-- 统计数据 -->
         <a class="jump-shield" href="javascript:;">
           <div class="cardunit-r-flows">
@@ -323,6 +330,7 @@ span {
   }
   .jump-shield {
     cursor: default;
+    display: block;
   }
 }
 

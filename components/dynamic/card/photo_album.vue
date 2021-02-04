@@ -313,7 +313,6 @@ img {
 
 .album-frame {
   position: relative;
-  margin-top: 10px;
   width: 100%;
 
   &-pillar {
