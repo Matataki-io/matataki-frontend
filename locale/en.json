@@ -1562,7 +1562,7 @@
   "my-BSC-license": "My BSC license",
   "expired": "expired",
   "withdraw-coin-to-Rinkeby-Testnet": "Withdraw Fanticket to Rinkeby Testnet",
-  "coin-drawn-out-of-the-station-are-ordinary-ERC20-tokens-On-Rinkeby-Testnet": "提取出站外的Fan票为普通的 ERC20 代币。（在 Rinkeby Testnet 上）",
+  "coin-drawn-out-of-the-station-are-ordinary-ERC20-tokens-On-Rinkeby-Testnet": "Withdraw a Fanticket of other site and turn to regular ERC20 token. (on Rinkeby testnet)",
   "please-make-sure-you-know-what-you-are-doing-and-provide-a-valid-Ethereum-address-We-are-not-responsible-for-the-loss-of-coins-caused-by-incorrect-addresses": "请确保你自己知道你在做啥，并提供的一个有效的以太坊地址，我们不为搞错地址所造成的丢币负责。",
   "how-to-display-the-coin-that-I-have-withdrawn-in-the-Ethereum-wallet": "怎么在以太坊钱包显示我提现出来的Fan票？",
   "cross-chain-transfer-to-Binance-Smart-Blockchain-BSC-Mainnet": "跨链转账到币安智能区块链(BSC Mainnet)",
