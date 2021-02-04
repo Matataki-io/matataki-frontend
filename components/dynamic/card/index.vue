@@ -89,8 +89,15 @@
               </span>
             </div>
             <!-- 评论 -->
-            <div class="cardunit-r-flows-comment">
-              <svg-icon icon-class="dynamic-comment" />
+            <div class="cardunit-r-flows-comment flows-disable">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="🚧 “评论”功能正在施工"
+                placement="top"
+              >
+                <svg-icon icon-class="dynamic-comment" />
+              </el-tooltip>
               <span v-if="flows.comment">
                 {{ flows.comment }}
               </span>
@@ -110,7 +117,7 @@
             </div>
             <!-- 分享 -->
             <div class="cardunit-r-flows-share">
-              <svg-icon icon-class="dynamic-share" />
+              <svg-icon icon-class="dynamic-share" @click="copyCode(getShareLink())" />
             </div>
           </div>
         </a>
@@ -239,10 +246,30 @@ export default {
           this.likeLoading = false
         })
     },
+    // 获取分享链接
+    getShareLink() {
+      return `${process.env.VUE_APP_URL}/share/${this.card.id}`
+    },
     // 引用发布
     refPush() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      this.$emit('ref-push', `${process.env.VUE_APP_URL}/share/${this.card.id}`)
+      this.$emit('ref-push', this.getShareLink())
+    },
+    // 拷贝
+    copyCode(code) {
+      console.log(code)
+      this.$copyText(code).then(
+        () => {
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
     }
   }
 }
@@ -413,30 +440,39 @@ span {
           height: 18px;
           width: 18px;
           color: #657786;
+          -moz-user-select:none;
+          -webkit-user-select:none;
+          user-select:none;
         }
         span {
           margin:  0 0 0 5px;
           font-size: 15px;
         }
+        &.flows-disable {
+          svg {
+            color: #dcdcdc;
+          }
+        }
       }
+      .default-hover {
+        transition: all ease-in 0.05s;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+
+        &:active {
+          transform: scale(1);
+        }
+      }
+
       &-forward {
         .flow-default();
 
         svg {
+          .default-hover();
           width: 21px;
-          -moz-user-select:none;
-          -webkit-user-select:none;
-          user-select:none;
-          transition: all ease-in 0.05s;
-          cursor: pointer;
-
-          &:hover {
-            transform: scale(1.2);
-          }
-
-          &:active {
-            transform: scale(1);
-          }
         }
       }
 
@@ -484,6 +520,7 @@ span {
         margin-right: 5px;
 
         svg {
+          .default-hover();
           width: 17px;
         }
       }
