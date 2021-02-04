@@ -332,6 +332,7 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
+  color: white;
 
   &.album-frameless {
     border: none;
