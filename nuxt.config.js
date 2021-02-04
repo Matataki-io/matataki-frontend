@@ -1,7 +1,6 @@
 import path from 'path'
 import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
-// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import pkg from './package.json'
 
 import i18n from './plugins/i18n'
@@ -169,9 +168,9 @@ export default {
             }
           },
           elementUI: {
-            test: /node_modules[\\/]element-ui/,
+            test: /node_modules\/element-ui/,
             chunks: 'all',
-            priority: 20,
+            priority: 30,
             name: () => {
               return 'chunk-elementUI'
             }
@@ -179,13 +178,13 @@ export default {
           vant: {
             test: /node_modules[\\/]vant/,
             chunks: 'all',
-            priority: 20,
+            priority: 30,
             name: () => {
               return 'chunk-vant'
             }
           },
           echarts: {
-            test: /node_modules[\\/]echarts/,
+            test: /node_modules\/(echarts|zrender\/lib)/,
             chunks: 'all',
             priority: 20,
             name: () => {
@@ -200,14 +199,6 @@ export default {
               return 'chunk-ethers'
             }
           },
-          zrender: { // 和 echarts 有关系
-            test: /node_modules[\\/]zrender/,
-            chunks: 'all',
-            priority: 20,
-            name: () => {
-              return 'chunk-zrender'
-            }
-          },
           web3: {
             test: /node_modules[\\/]web3/,
             chunks: 'all',
@@ -216,6 +207,15 @@ export default {
               return 'chunk-web3'
             }
           },
+          // TODO: 有点问题 如果 priority 高于其他会有问题 小于又打包不进来
+          // utils: { // qs xss viewerjs
+          //   test: /node_modules\/(qs\/lib|xss\/lib|viewerjs\/dist|bignumber\.js|weixin-js-sdk)/,
+          //   chunks: 'all',
+          //   priority: 10,
+          //   name: () => {
+          //     return 'chunk-utils'
+          //   }
+          // },
         }
       }
     },
@@ -256,7 +256,6 @@ export default {
         /moment[/\\]locale$/,
         /zh-cn/
       )
-      // new BundleAnalyzerPlugin()
     ],
 
   },
