@@ -1583,7 +1583,7 @@
   "save-forever": "永久保存",
   "just-publish-with-confidence": "只管放心发表",
   "free-creation": "自由创作",
-  "standard-retractable": "尺度收放自如",
+  "standard-retractable": "Measure freely",
   "personal-pass": "个人通证",
   "digital-social-currency": "数字社交货币",
   "potential-income": "潜在收入",
@@ -1609,6 +1609,6 @@
   "this-article": "这篇",
   "home-qa-1": "个人通证是一种由个人发行的数字货币，在 瞬Matataki 上也被叫做Fan票，主要被用于支付解锁与你相关的个人创作内容。同时还可以被用作为“粉丝令牌”，只要持有一定数量也可以解锁一些你的创作内容。瞬Matataki 是首个引用了 个人通证 作为支付手段和核心验证手段的 内容创作平台。未来 瞬Matataki 也会开发出更多基于个人通证的有趣使用场景。更多说明可以查看",
   "home-qa-2": "瞬Matataki 对于创作者来说是个绝佳 且 安全的内容创作平台：我们没有签约和入驻，对于内容和发布的频次我们也没有任何限制。内置了强大的Markdown编辑器，并且支持直接导入您在其他多个内容平台上的作品。利用 去中心化存储技术强力保障您的作品安全，免受和谐之苦！您只管 自由 创作！",
-  "home-qa-3": "瞬Matataki 对于所有用户都是完全免费使用的。涉及到链上交易部分将会通过钱包扣除必要的交易手续费。",
-  "home-qa-4": "在Matataki的所有文章都使用区块链技术盖上了时间戳，并且无法被篡改。这将可以作为有力证据在维权的时候使用。我们正在逐步推出社区治理系统，加强对于侵权内容的管控。"
+  "home-qa-3": "Matataki is completely free to use for all users.Any transaction fees involved in the on-chain transaction will be deducted from the wallet.",
+  "home-qa-4": "All articles are time-stamped and use blockchain technology, and can't be tampered with. This can be used as strong evidence in the case of rights protection. We are gradually rolling out a community governance system to strengthen the control of infringing content."
 }
