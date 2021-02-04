@@ -313,7 +313,6 @@ img {
 
 .album-frame {
   position: relative;
-  margin-top: 10px;
   width: 100%;
 
   &-pillar {
@@ -332,6 +331,7 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
+  color: white;
 
   &.album-frameless {
     border: none;

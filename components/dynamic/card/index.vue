@@ -1,5 +1,9 @@
 <template>
-  <div class="cardunit-bg">
+  <router-link
+    class="cardunit-bg"
+    :to="{ name: 'share-id', params: { id: card && card.id } }"
+    target="_blank"
+  >
     <!-- 转发标签 -->
     <div v-if="isForward" class="cardunit-bg-retweeted">
       <div class="cardunit-bg-retweeted-l">
@@ -63,53 +67,70 @@
           :card="card"
         />
         <!-- 图片 -->
-        <photoAlbum
+        <a
           v-if="media && media.length > 0"
-          class="cardtop10"
-          :media="media"
-        />
-        <references
+          class="jump-shield cardtop10"
+          href="javascript:;"
+        >
+          <photoAlbum
+            :media="media"
+          />
+        </a>
+        <a
           v-if="refs && refs.length !== 0"
-          class="cardtop10"
-          :refs="refs"
-        />
+          class="jump-shield cardtop10"
+          href="javascript:;"
+        >
+          <references
+            :refs="refs"
+          />
+        </a>
         <!-- 统计数据 -->
-        <div class="cardunit-r-flows">
-          <!-- 转发 -->
-          <div class="cardunit-r-flows-forward">
-            <svg-icon icon-class="dynamic-repo" @click="refPush" />
-            <span v-if="flows.retweet">
-              {{ flows.retweet }}
-            </span>
+        <a class="jump-shield" href="javascript:;">
+          <div class="cardunit-r-flows">
+            <!-- 转发 -->
+            <div class="cardunit-r-flows-forward">
+              <svg-icon icon-class="dynamic-repo" @click="refPush" />
+              <span v-if="flows.retweet">
+                {{ flows.retweet }}
+              </span>
+            </div>
+            <!-- 评论 -->
+            <div class="cardunit-r-flows-comment flows-disable">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="🚧 “评论”功能正在施工"
+                placement="top"
+              >
+                <svg-icon icon-class="dynamic-comment" />
+              </el-tooltip>
+              <span v-if="flows.comment">
+                {{ flows.comment }}
+              </span>
+            </div>
+            <!-- 喜欢 -->
+            <div class="cardunit-r-flows-like">
+              <i v-if="likeLoading" class="el-icon-loading" />
+              <svg-icon
+                v-else
+                :class="likeIconClass"
+                icon-class="dynamic-good"
+                @click="likeClick"
+              />
+              <span v-if="flows.favorite">
+                {{ flows.favorite }}
+              </span>
+            </div>
+            <!-- 分享 -->
+            <div class="cardunit-r-flows-share">
+              <svg-icon icon-class="dynamic-share" @click="copyCode(getShareLink())" />
+            </div>
           </div>
-          <!-- 评论 -->
-          <div class="cardunit-r-flows-comment">
-            <svg-icon icon-class="dynamic-comment" />
-            <span v-if="flows.comment">
-              {{ flows.comment }}
-            </span>
-          </div>
-          <!-- 喜欢 -->
-          <div class="cardunit-r-flows-like">
-            <i v-if="likeLoading" class="el-icon-loading" />
-            <svg-icon
-              v-else
-              :class="likeIconClass"
-              icon-class="dynamic-good"
-              @click="likeClick"
-            />
-            <span v-if="flows.favorite">
-              {{ flows.favorite }}
-            </span>
-          </div>
-          <!-- 分享 -->
-          <div class="cardunit-r-flows-share">
-            <svg-icon icon-class="dynamic-share" />
-          </div>
-        </div>
+        </a>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -232,16 +253,39 @@ export default {
           this.likeLoading = false
         })
     },
+    // 获取分享链接
+    getShareLink() {
+      return `${process.env.VUE_APP_URL}/share/${this.card.id}`
+    },
     // 引用发布
     refPush() {
       if (!this.isLogined) return this.$store.commit('setLoginModal', true)
-      this.$emit('ref-push', `${process.env.VUE_APP_URL}/share/${this.card.id}`)
+      this.$emit('ref-push', this.getShareLink())
+    },
+    // 拷贝
+    copyCode(code) {
+      console.log(code)
+      this.$copyText(code).then(
+        () => {
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+a {
+  color: #000;
+}
 p {
   margin: 0;
   padding: 0;
@@ -253,6 +297,7 @@ span {
 }
 
 .cardunit-bg {
+  display: block;
   background: rgba(255, 255, 255, 1);
   padding: 20px;
   border-radius: 10px;
@@ -282,6 +327,10 @@ span {
       line-height: 17px;
       color: #657786;
     }
+  }
+  .jump-shield {
+    cursor: default;
+    display: block;
   }
 }
 
@@ -399,30 +448,39 @@ span {
           height: 18px;
           width: 18px;
           color: #657786;
+          -moz-user-select:none;
+          -webkit-user-select:none;
+          user-select:none;
         }
         span {
           margin:  0 0 0 5px;
           font-size: 15px;
         }
+        &.flows-disable {
+          svg {
+            color: #dcdcdc;
+          }
+        }
       }
+      .default-hover {
+        transition: all ease-in 0.05s;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+
+        &:active {
+          transform: scale(1);
+        }
+      }
+
       &-forward {
         .flow-default();
 
         svg {
+          .default-hover();
           width: 21px;
-          -moz-user-select:none;
-          -webkit-user-select:none;
-          user-select:none;
-          transition: all ease-in 0.05s;
-          cursor: pointer;
-
-          &:hover {
-            transform: scale(1.2);
-          }
-
-          &:active {
-            transform: scale(1);
-          }
         }
       }
 
@@ -470,6 +528,7 @@ span {
         margin-right: 5px;
 
         svg {
+          .default-hover();
           width: 17px;
         }
       }
