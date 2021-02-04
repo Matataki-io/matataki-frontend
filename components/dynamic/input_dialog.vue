@@ -11,6 +11,7 @@
       class="input-content"
       :reference="reference"
       :reset="reset"
+      input-id="dynamic-media-upload-dialog"
       @pushed="pushed"
     />
   </el-dialog>

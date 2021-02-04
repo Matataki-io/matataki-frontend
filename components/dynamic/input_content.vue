@@ -71,9 +71,10 @@
         <uploadMedia
           v-model="mediaList"
           :visible-state.sync="uploadMediaVisible"
+          :input-id="inputId"
           @uploading="item => mediaUploading = item"
         >
-          <svg-icon icon-class="image" class="icon" />
+          <svg-icon icon-class="image" class="icon no-poiniter" />
         </uploadMedia>
       </div>
       <div class="fl ac">
@@ -131,6 +132,11 @@ export default {
     reset: {
       type: Number,
       default: 0
+    },
+    // 如果需要在一个页面里面使用多个 FileUpload (图片上传功能包含该组件)，请务必设置独立的 inputId
+    inputId: {
+      type: String,
+      default: 'dynamic-media-upload'
     }
   },
   data() {
@@ -540,6 +546,10 @@ export default {
     }
     @media screen and (max-width: 768px) {
       font-size: 20px;
+    }
+    &.no-poiniter {
+      cursor: inherit;
+      color: inherit;
     }
   }
 }
