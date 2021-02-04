@@ -203,11 +203,12 @@ export default {
   },
   watch: {
     reference(nVal) {
-      if (nVal !== this.refUrl) this.refUrl = nVal
+      if (nVal !== this.refUrl) {
+        this.refUrl = nVal
+      }
     },
     reset() {
       if (this.btnSubmitLoading) {
-        console.warn('发布中无法重制输入框状态')
         return
       }
       this._reset()
@@ -222,8 +223,9 @@ export default {
       // }
       // document.addEventListener('click', this.handleEventClick, false)
     }
-    if (this.reference) this.refUrl = this.reference
-    // console.log('看看是什么：', this.$refs.containerInput.querySelector('.content-editable'))
+    if (this.reference) {
+      this.refUrl = this.reference
+    }
   },
   destroyed() {
     if (process.browser) {
@@ -321,7 +323,6 @@ export default {
       this.shareLinkList = []
       this.mediaList = []
       this.uploadMediaVisible = false
-      this.refUrl = ''
       // 清空分享内容
       this.$refs.contentEditable.innerHTML = ''
     },
