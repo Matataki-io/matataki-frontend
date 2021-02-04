@@ -75,24 +75,34 @@
         />
         <!-- 统计数据 -->
         <div class="cardunit-r-flows">
+          <!-- 转发 -->
           <div class="cardunit-r-flows-forward">
-            <svg-icon icon-class="dynamic-repo" />
+            <svg-icon icon-class="dynamic-repo" @click="refPush" />
             <span v-if="flows.retweet">
               {{ flows.retweet }}
             </span>
           </div>
+          <!-- 评论 -->
           <div class="cardunit-r-flows-comment">
             <svg-icon icon-class="dynamic-comment" />
             <span v-if="flows.comment">
               {{ flows.comment }}
             </span>
           </div>
+          <!-- 喜欢 -->
           <div class="cardunit-r-flows-like">
-            <svg-icon :class="`like-touch ${flows.localLiked && 'active'}`" icon-class="dynamic-good" @click="likeClick" />
-            <span v-if="flows.favorite + flows.localLike">
-              {{ flows.favorite + flows.localLike }}
+            <i v-if="likeLoading" class="el-icon-loading" />
+            <svg-icon
+              v-else
+              :class="likeIconClass"
+              icon-class="dynamic-good"
+              @click="likeClick"
+            />
+            <span v-if="flows.favorite">
+              {{ flows.favorite }}
             </span>
           </div>
+          <!-- 分享 -->
           <div class="cardunit-r-flows-share">
             <svg-icon icon-class="dynamic-share" />
           </div>
@@ -103,7 +113,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 import mainText from './main_text'
 import photoAlbum from './photo_album'
 import references from './references'
@@ -124,10 +134,18 @@ export default {
   data () {
     return {
       showHiddenContent: false,
-      likeIt: false
+      likeIt: false,
+      likeLoading: false
     }
   },
   computed: {
+    ...mapGetters(['isLogined']),
+    likeIconClass () {
+      return {
+        'like-touch': !this.likeLoading,
+        'active': !!this.flows.iLiked
+      }
+    },
     isForward () {
       return false
     },
@@ -162,15 +180,18 @@ export default {
     },
     flows () {
       const {
-        replies_count,
-        reblogs_count,
-        favourites_count
+        likes,
+        i_liked,
+        beRefs
       } = { ...this.card }
       return {
-        comment: replies_count,
-        retweet: reblogs_count,
-        favorite: favourites_count,
-        iLiked: 0
+        // 评论
+        comment: 0,
+        // 转发
+        retweet: beRefs ? beRefs.length : 0,
+        // 喜欢
+        favorite: likes + this.likeIt,
+        iLiked: i_liked || this.likeIt
       }
     },
     originUrl () {
@@ -178,10 +199,43 @@ export default {
     }
   },
   methods: {
-    async likeClick () {
-      if (this.likeIt) return
-      this.likeIt = true
-      this.$emit('click-like', { type: 'like',  platform: 'matataki' , dynamicId: this.card.id })
+    // async likeClick () {
+    //   if (this.likeIt) return
+    //   this.likeIt = true
+    //   this.$emit('click-like', { type: 'like',  platform: 'matataki' , dynamicId: this.card.id })
+    // },
+    // 推荐
+    async likeClick() {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      if (!this.card || this.flows.iLiked) return
+      this.likeLoading = true
+      // 文章在客户端打开后提交，表示开始阅读，不提交这个会出现点赞失败的情况
+      try {
+        await this.$API.reading(this.card.id)
+      }
+      catch (e) {
+        console.error(e)
+        this.$message({ type: 'error', message: this.$t('error.fail') })
+        return
+      }
+
+      await this.$API.like(this.card.id, { time: 0 })
+        .then(res => {
+          if (res.code === 0) {
+            this.likeIt = true
+            this.$message({ type: 'success', message: this.$t('likeSuccess') })
+          } else this.$message({ type: 'error', message: res.message })
+        }).catch(err => {
+          this.$message({ type: 'error', message: this.$t('error.fail') })
+          console.log(err)
+        }).finally(() => {
+          this.likeLoading = false
+        })
+    },
+    // 引用发布
+    refPush() {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      this.$emit('ref-push', `${process.env.VUE_APP_URL}/share/${this.card.id}`)
     }
   }
 }
@@ -339,6 +393,7 @@ span {
       display: flex;
       margin: 10px 0 0;
       .flow-default {
+        font-size: 18px;
         flex: 1;
         svg {
           height: 18px;
@@ -347,37 +402,60 @@ span {
         }
         span {
           margin:  0 0 0 5px;
-        }
-      }
-      &-comment {
-        .flow-default();
-        svg {
-          width: 19px;
+          font-size: 15px;
         }
       }
       &-forward {
         .flow-default();
+
         svg {
           width: 21px;
+          -moz-user-select:none;
+          -webkit-user-select:none;
+          user-select:none;
+          transition: all ease-in 0.05s;
+          cursor: pointer;
+
+          &:hover {
+            transform: scale(1.2);
+          }
+
+          &:active {
+            transform: scale(1);
+          }
         }
       }
+
+      &-comment {
+        .flow-default();
+
+        svg {
+          width: 19px;
+        }
+      }
+
       &-like {
         .flow-default();
+
         svg {
           width: 20px;
         }
+
         .like-touch {
           -moz-user-select:none;
           -webkit-user-select:none;
           user-select:none;
           transition: all ease-in 0.05s;
           cursor: pointer;
+
           &:hover {
             transform: scale(1.2);
           }
+
           &:active {
             transform: scale(1);
           }
+
           &.active {
             color: #ca8f04;
             transform: scale(1);
@@ -385,10 +463,12 @@ span {
           }
         }
       }
+
       &-share {
         .flow-default();
         flex: 0;
         margin-right: 5px;
+
         svg {
           width: 17px;
         }

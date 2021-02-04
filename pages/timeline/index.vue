@@ -45,8 +45,11 @@
             :key="index"
             class="timeline-card"
           >
+            <div v-if="!item.card">
+              {{ $t('error.getDataError') }}: {{ item.id }}
+            </div>
             <timelineCard
-              v-if="item.platform === 'matataki' && item.card && item.card.channel_id === 1"
+              v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 1"
               show-logo
               :card="item.card"
             />
@@ -54,6 +57,7 @@
               v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 3"
               :key="index"
               :data="item.card"
+              @ref-push="refPush"
             />
             <twitterCard
               v-else-if="item.platform === 'twitter'"
@@ -183,6 +187,7 @@
         </div>
       </div>
     </div>
+    <inputDialog v-model="showInputDialog" :preset="inputDialogPreset" />
   </div>
 </template>
 
@@ -194,6 +199,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { getCookie } from '@/utils/cookie'
 
 import inputContent from '@/components/dynamic/input_content.vue'
+import inputDialog from '@/components/dynamic/input_dialog'
 import timelineBanner from '@/components/timeline/timeline_banner.vue'
 import timelineWelcome from '@/components/timeline/timeline_welcome.vue'
 import timelineCard from '@/components/timeline_card/index.vue'
@@ -209,6 +215,7 @@ import dynamicCard from '@/components/dynamic/card'
 export default {
   components: {
     inputContent,
+    inputDialog,
     timelineCard,
     twitterCard,
     bilibiliCard,
@@ -260,7 +267,9 @@ export default {
       sidebarSwitch: {
         filter: false,
         authorList: false
-      }
+      },
+      showInputDialog: false,
+      inputDialogPreset: null
     }
   },
   computed: {
@@ -307,7 +316,7 @@ export default {
           for (let i = 0; i < res.data.list.length; i++) {
             const entry = res.data.list[i]
             list.push({
-              card: JSON.parse(entry.data),
+              card: this.tryJsonParse(entry.data),
               frontQueue: [],
               id: entry.id,
               platform: entry.platform,
@@ -341,6 +350,16 @@ export default {
       else {
         console.error('[get aggregator timeline failure] res:', res)
         this.$message.error(this.$t(res.message))
+      }
+    },
+    tryJsonParse(str) {
+      if (!str) return null
+      try {
+        return JSON.parse(str)
+      }
+      catch (e) {
+        console.warn('转换动态列表 JSON 时出现错误：', e)
+        return null
       }
     },
     // 获取推荐作者
@@ -490,6 +509,12 @@ export default {
         this.$message.error(this.$t('fail'))
       }
     },
+    refPush(url) {
+      this.inputDialogPreset = {
+        reference: url
+      }
+      this.showInputDialog = true
+    }
   }
 }
 </script>
