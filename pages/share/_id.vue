@@ -13,20 +13,36 @@
           :share-id="Number($route.params.id)"
         />
         <shareMain :content="shareContent" />
+        <photoAlbum
+          v-if="media && media.length"
+          class="cardtop10"
+          :media="media"
+        />
+        <references
+          v-if="shareCard.reference && shareCard.reference.length"
+          class="cardtop10"
+          :refs="shareCard.reference"
+        />
+        <el-divider class="container-divider" />
+        <shareFooter
+          v-loading="footerLoading"
+          :bookmarked="currentProfile.is_bookmarked"
+          :is-liked="Number(currentProfile.is_liked)"
+          :likes="content.likes"
+          :dislikes="content.dislikes"
+          @bookmarked="bookmarked"
+          @share="shareDialogVisible = true"
+          @like="like"
+          @ref-push="refPush(getShareLink())"
+          @copy-link="copyCode(getShareLink())"
+        />
       </main>
-      <shareFooter
-        v-loading="footerLoading"
-        :bookmarked="currentProfile.is_bookmarked"
-        :is-liked="Number(currentProfile.is_liked)"
-        :likes="content.likes"
-        :dislikes="content.dislikes"
-        class="footer"
-        @bookmarked="bookmarked"
-        @share="shareDialogVisible = true"
-        @like="like"
+      <bereference
+        v-if="shareCard.berefernce && shareCard.berefernce.length"
+        :befs="shareCard.berefernce"
       />
     </div>
-    <reference :show="true" :off-slidebar="offSlidebar">
+    <!-- <reference :show="true" :off-slidebar="offSlidebar">
       <template slot="left">
         <div class="reference-header">
           <span class="reference-header__title">
@@ -60,7 +76,7 @@
       </template>
       <quoteReference slot="ref" :now-time="nowTime" @getArticle="getArticle" />
       <quoteBereference slot="beref" :now-time="nowTime" @getArticle="getArticle" />
-    </reference>
+    </reference> -->
     <m-dialog v-model="shareDialogVisible" width="400px">
       <!-- 如果内容过多可以抽离 -->
       <div class="dialog-content">
@@ -129,6 +145,7 @@
         />
       </div>
     </m-dialog>
+    <inputDialog v-model="showInputDialog" :preset="inputDialogPreset" @pushed="pushed" />
   </div>
 </template>
 
@@ -139,23 +156,32 @@ import shareHeader from '@/components/share_page/share_header'
 import shareMain from '@/components/share_page/share_main'
 import shareFooter from '@/components/share_page/share_footer'
 // import quote from '@/components/share_page/quote'
-import reference from '@/components/reference/index'
+// import reference from '@/components/reference/index'
 import socialShare from '@/components/modal/social_share'
 import wechat from '@/components/scan/wechat.vue'
-import quoteReference from '@/components/share_page/quote_reference'
-import quoteBereference from '@/components/share_page/quote_bereference'
+// import quoteReference from '@/components/share_page/quote_reference'
+// import quoteBereference from '@/components/share_page/quote_bereference'
 import shareImage from '@/components/share_image/index'
+import photoAlbum from '@/components/dynamic/card/photo_album'
+import references from '@/components/dynamic/card/references'
+import bereference from '@/components/share_page/bereference'
+import inputDialog from '@/components/dynamic/input_dialog'
+
 export default {
   components: {
     shareHeader,
     shareMain,
     shareFooter,
-    reference,
+    // reference,
     socialShare,
     wechat,
-    quoteReference,
-    quoteBereference,
-    shareImage
+    // quoteReference,
+    // quoteBereference,
+    shareImage,
+    photoAlbum,
+    references,
+    bereference,
+    inputDialog,
   },
   data() {
     return {
@@ -177,11 +203,14 @@ export default {
         avatarSrc: '',
         username: '',
         reference: [],
+        berefernce: [],
         url: process.env.VUE_APP_URL
       },
       saveImg: '', // share img src
       createShareLoading: false,
-      saveLoading: false // 保存图片loading
+      saveLoading: false, // 保存图片loading
+      showInputDialog: false,
+      inputDialogPreset: null,
     }
   },
   computed: {
@@ -195,6 +224,10 @@ export default {
     },
     shareLink() {
       return `${this.title} - ${this.link}` || process.env.VUE_APP_URL
+    },
+    media() {
+      if (!this.content) return
+      return this.content.media || []
     }
   },
   watch: {
@@ -416,7 +449,10 @@ export default {
             this.refernceTotal = res.data.count
             // share
             this.setShareRef(res.data.list)
-          } else if (type === 'berefernce') this.berefernceTotal = res.data.count
+          } else if (type === 'berefernce') {
+            this.berefernceTotal = res.data.count
+            this.shareCard.berefernce = res.data.list
+          }
           else this.refernceTotal = res.data.count
         } else console.log(res.message)
       } catch (error) { console.log(error) }
@@ -491,6 +527,36 @@ export default {
             })
         }, 1500)
       })
+    },
+    // 获取分享链接
+    getShareLink() {
+      return `${process.env.VUE_APP_URL}/share/${this.content.id}`
+    },
+    // 引用发布
+    refPush(url) {
+      if (!this.isLogined) return this.$store.commit('setLoginModal', true)
+      this.inputDialogPreset = {
+        reference: url
+      }
+      this.showInputDialog = true
+    },
+    // 拷贝
+    copyCode(code) {
+      this.$copyText(code).then(
+        () => {
+          this.$message({
+            showClose: true,
+            message: this.$t('success.copy'),
+            type: 'success'
+          })
+        },
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
+    },
+    pushed() {
+      this.getReferenceCount('postsPosts', {}, 'berefernce')
     }
   }
 }
@@ -500,22 +566,32 @@ export default {
 .share {
   // .minHeight();
 }
-@width: 600px;
+@width: 820px;
 .container-loading {
-  width: @width;
+  max-width: @width;
   margin: 20px auto 0;
   padding: 0 0 100px 0;
 }
 .container {
   background-color: #fff;
   border-radius:10px;
-  padding: 0 0 20px 0;
-  margin: 0;
+  padding: 20px;
+  margin: 0 20px 0;
+  box-sizing: border-box;
+  box-shadow: 0 0 2px 0 #0000001a;
+  overflow: hidden;
+  .cardtop10 {
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  &-divider {
+    margin: 20px 0 0;
+  }
 }
 .footer {
-  width: @width;
   padding: 10px 0;
-  margin: 30px auto 0;
+  margin: 30px 20px 0;
 }
 .dialog-content {
   display: flex;

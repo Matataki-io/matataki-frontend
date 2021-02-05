@@ -422,13 +422,7 @@ export default {
 }
 </script>
 
-<style lang="less">
-// .scroll {
-//   width: 100%;
-//   max-height: 300px;
-//   overflow-y: auto;
-//   position: relative;
-// }
+<style lang="less" scoped>
 .container {
   // max-width: 355px;
   width: 100%;
@@ -438,6 +432,15 @@ export default {
   flex-direction: column;
   padding: 0 20px;
 }
+</style>
+
+<style lang="less">
+// .scroll {
+//   width: 100%;
+//   max-height: 300px;
+//   overflow-y: auto;
+//   position: relative;
+// }
 .v-tribute {
   width: 100%;
   position: relative;

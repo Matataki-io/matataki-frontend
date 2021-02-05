@@ -337,7 +337,6 @@ span {
 .cardunit {
   background: rgba(255, 255, 255, 1);
   display: flex;
-  overflow: hidden;
 
   &-l {
     width: 49px;
@@ -397,6 +396,7 @@ span {
         color: #542DE0;
         margin: 0 0 0 5px;
         transition: all ease-in 0.1s;
+        display: inherit;
         &:hover {
           transform: scale(1.2);
         }

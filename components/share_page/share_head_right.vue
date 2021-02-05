@@ -9,7 +9,7 @@
           class="more-icon-setting"
           icon-class="setting"
         />
-        <span class="more-text-setting">{{ $t('setting') }}</span>
+        <span>{{ $t('setting') }}</span>
       </div>
       <el-dropdown-menu
         slot="dropdown"
@@ -102,6 +102,7 @@ export default {
   margin-left: 10px;
   box-sizing: border-box;
   user-select: none;
+  white-space: nowrap;
 }
 .more-icon-setting {
   font-size: 18px;

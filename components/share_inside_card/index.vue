@@ -214,8 +214,11 @@ export default {
       color:rgba(0,0,0,1);
       line-height:17px;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      word-break: break-all;
     }
   }
   &-info__user {
