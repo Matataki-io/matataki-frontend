@@ -30,6 +30,7 @@
           :is-liked="Number(currentProfile.is_liked)"
           :likes="content.likes"
           :dislikes="content.dislikes"
+          :forwards="shareCard.berefernce.length"
           @bookmarked="bookmarked"
           @share="shareDialogVisible = true"
           @like="like"

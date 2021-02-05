@@ -57,11 +57,17 @@ export default {
       type: Number,
       default: 0
     },
+    // 转发数
+    forwards: {
+      type: Number,
+      default: 0
+    },
     // 不推荐数
     dislikes: {
       type: Number,
       default: 0
-    }
+    },
+
   },
   computed: {
     likeIconClass () {
@@ -75,7 +81,7 @@ export default {
         // 评论
         comment: 0,
         // 转发
-        retweet: 0,
+        retweet: this.forwards,
         // 喜欢
         favorite: this.likes,
         iLiked: this.isLiked === 2,
