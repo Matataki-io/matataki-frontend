@@ -95,7 +95,7 @@
           :update-popper="updatePopper"
           @uploading="item => mediaUploading = item"
         >
-          <svg-icon icon-class="image" class="icon no-poiniter" />
+          <svg-icon icon-class="image" class="no-poiniter" />
         </uploadMedia>
       </div>
       <div class="fl ac">
@@ -162,7 +162,6 @@ export default {
   },
   data() {
     return {
-      emoji: false,
       loadingSubmit: false,
       currentText: 0,
       tributeOptions: { // tribute options
@@ -255,7 +254,6 @@ export default {
       this.timer = setInterval(this.handleCurrentText, 2000)
       // this.handleEventClick = (e) => {
       //   console.log(e)
-      //   this.emoji = false
       // }
       // document.addEventListener('click', this.handleEventClick, false)
     }
@@ -575,15 +573,22 @@ export default {
     font-size: 24px;
     color: #657786;
     margin: 0 10px 0 0;
+    transition: all ease-in 0.05s;
     &:hover {
       color: @purpleDark;
+    }
+    &:active {
+      transform: scale(0.90);
     }
     @media screen and (max-width: 768px) {
       font-size: 20px;
     }
-    &.no-poiniter {
-      cursor: inherit;
-      color: inherit;
+  }
+  .no-poiniter {
+    margin: 0 10px 0 0;
+    font-size: 24px;
+    @media screen and (max-width: 768px) {
+      font-size: 20px;
     }
   }
 }
