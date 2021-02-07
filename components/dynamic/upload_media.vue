@@ -8,11 +8,16 @@
   >
     <!-- Button -->
     <template slot="reference">
-      <span class="upload-media-button" :class="!visible && 'media-button-active'" @click="showPopover">
+      <label
+        :for="inputId"
+        class="upload-media-button"
+        :class="!visible && 'media-button-active'"
+        @click="showPopover"
+      >
         <slot>
           <i class="el-icon-picture-outline" />
         </slot>
-      </span>
+      </label>
     </template>
 
     <!-- 内容 -->
