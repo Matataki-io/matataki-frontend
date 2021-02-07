@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    ref="popoRef"
     v-model="visible"
     placement="bottom-start"
     width="245"
@@ -86,6 +87,10 @@ export default {
     inputId: {
       type: String,
       default: 'media-upload'
+    },
+    updatePopper: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -99,7 +104,7 @@ export default {
       quality: 0.8, // 压缩品质
       updateType: 'artileCover', // 上传类型
       mediaList: [],
-      maxIndex: 0,
+      maxIndex: 0
     }
   },
   computed: {
@@ -120,6 +125,9 @@ export default {
           this.$emit('input', [])
         }
       }
+    },
+    updatePopper() {
+      this.$refs.popoRef.updatePopper()
     }
   },
   mounted() {

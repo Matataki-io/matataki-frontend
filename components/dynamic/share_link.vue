@@ -1,8 +1,10 @@
 <template>
   <el-popover
+    ref="popoRef"
     placement="bottom-start"
     width="260"
     trigger="click"
+    :tabindex="1"
   >
     <!-- Button -->
     <template slot="reference">
@@ -33,6 +35,11 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    // 更新 popper 的位置
+    updatePopper: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -56,6 +63,9 @@ export default {
       if (newVal !== this.shareInput) {
         this.shareInput = newVal
       }
+    },
+    updatePopper() {
+      this.$refs.popoRef.updatePopper()
     }
   },
   mounted () {
