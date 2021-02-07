@@ -51,27 +51,48 @@
     <!-- 操作区域 -->
     <div class="input-footer">
       <div class="i-f-info">
+        <!-- 提及 -->
         <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
+        <!-- 标签 -->
         <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
-        <shareLink v-model="refUrl" :share-link-list="shareLinkList" @pushItem="item => shareLinkList.push(item.data)">
+        <!-- 引用链接 -->
+        <shareLink
+          v-model="refUrl"
+          :share-link-list="shareLinkList"
+          :update-popper="updatePopper"
+          @pushItem="item => shareLinkList.push(item.data)"
+        >
           <svg-icon icon-class="link1" class="icon" />
         </shareLink>
+        <!-- emoji 选择器 -->
         <div class="emoji-container">
-          <svg-icon icon-class="emoji1" class="icon" @click.stop="emoji = !emoji" />
-          <client-only>
-            <picker
-              v-show="emoji"
-              title="Pick your emoji…"
-              emoji="point_up"
-              class="emoji-picker"
-              @select="addEmoji"
+          <el-popover
+            ref="emojiPopoRef"
+            trigger="click"
+            placement="bottom-start"
+            popper-class="input-emoji-picker-popover"
+          >
+            <svg-icon
+              slot="reference"
+              icon-class="emoji1"
+              class="icon"
             />
-          </client-only>
+            <client-only>
+              <picker
+                class="emoji-picker"
+                title="Pick your emoji…"
+                emoji="point_up"
+                @select="addEmoji"
+              />
+            </client-only>
+          </el-popover>
         </div>
+        <!-- 媒体上传 -->
         <uploadMedia
           v-model="mediaList"
           :visible-state.sync="uploadMediaVisible"
           :input-id="inputId"
+          :update-popper="updatePopper"
           @uploading="item => mediaUploading = item"
         >
           <svg-icon icon-class="image" class="icon no-poiniter" />
@@ -202,6 +223,7 @@ export default {
       mediaUploading: false,
       btnSubmitLoading: false, // 发布动态loading
       refUrl: '',
+      updatePopper: 0
     }
   },
   computed: {
@@ -218,6 +240,14 @@ export default {
         return
       }
       this._reset()
+    },
+    updatePopper() {
+      this.$refs.emojiPopoRef.updatePopper()
+    },
+    shareLinkList() {
+      this.$nextTick(() => {
+        this.updatePopper = Date.now()
+      })
     }
   },
   mounted() {
@@ -435,6 +465,7 @@ export default {
 </style>
 
 <style lang="less">
+
 // .scroll {
 //   width: 100%;
 //   max-height: 300px;
@@ -598,11 +629,12 @@ export default {
 .emoji-container {
   position: relative;
 }
+
+.input-emoji-picker-popover {
+  padding: 0;
+}
 .emoji-picker {
-  position: absolute;
-  left: 0px;
-  top: 36px;
-  z-index: 9;
+  border: none;
 }
 .i-f-info {
   display: flex;
@@ -618,7 +650,5 @@ export default {
 .info-status {
   font-size: 12px;
   color: #B2B2B2;
-}
-.btn-submit {
 }
 </style>
