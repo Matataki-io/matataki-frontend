@@ -4,7 +4,6 @@
     placement="bottom-start"
     width="260"
     trigger="click"
-    :tabindex="1"
   >
     <!-- Button -->
     <template slot="reference">
