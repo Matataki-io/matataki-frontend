@@ -10,27 +10,27 @@
         label-width="120px"
         class="withdraw-form"
       >
-        <el-form-item label="要转入的Fan票" prop="token">
+        <el-form-item :label="$t('coin-to-be-transferred')" prop="token">
           <el-input
             v-model="form.token"
-            placeholder="请输入Token地址"
+            :placeholder="$t('please-enter-Token-address')"
             clearable
           />
         </el-form-item>
-        <el-form-item label="数量" prop="value">
+        <el-form-item :label="$t('quantity')" prop="value">
           <el-input
             v-model="form.value"
             :max="form.max"
             :min="form.min"
-            placeholder="请输入数量"
+            :placeholder="$t('please-enter-the-quantity')"
             clearable
           />
         </el-form-item>
         <p class="balance">
-          余额&nbsp;<span>---.----</span>&nbsp;
+          {{ $t('balance') }}&nbsp;<span>---.----</span>&nbsp;
           <a
             href="javascript:;"
-          ><del>全部存入</del></a>
+          ><del>{{ $t('deposit-all') }}</del></a>
         </p>
         <div class="form-button">
           <!-- <el-button @click="signPermitOfApproval">
@@ -41,14 +41,14 @@
             class="submit-btn"
             @click="burn"
           >
-            确定
+            {{ $t('confirm') }}
           </el-button>
         </div>
       </el-form>
     </client-only>
     <div class="my-deposits">
       <h1 class="history-title">
-        我的跨链Fan票存入记录
+        {{ $t('my-cross-chain-coin-deposit-record') }}
       </h1>
       <el-table
         :data="myDeposit"
@@ -56,8 +56,8 @@
       >
         <el-table-column
           prop="id"
-          label="#编号"
-          width="100" 
+          :label="`#${$t('numbering')}`"
+          width="100"
         />
         <el-table-column
           prop="burnTx"
@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column
           prop="value"
-          label="金额"
+          :label="$t('amount')"
         >
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.value / 10000 }}</span>
@@ -80,7 +80,7 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="状态"
+          :label="$t('status')"
           width="150"
           align="center"
         >

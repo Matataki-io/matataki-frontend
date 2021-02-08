@@ -2,22 +2,22 @@
   <section class="login-page">
     <section class="inner">
       <section class="main">
-        <p class="method">微信扫码绑定</p>
+        <p class="method">{{ $t('weChat-scan-code-binding') }}</p>
         <section class="wrapper wechat-login">
           <section class="wechat-login">
             <section v-loading="loading" class="inner invalid">
-              <img v-if="qrCodeUrl" :src="qrCodeUrl" alt="二维码">
+              <img v-if="qrCodeUrl" :src="qrCodeUrl" :alt="$t('qr-code')">
               <section v-if="invalid <= 0" class="invalid" @click="refresh">
                 <section>
                   <i class="el-icon-refresh icon" />
-                  <p>二维码已过期，点击刷新</p>
+                  <p>{{ $t('qr-code-has-expired-click-refresh') }}</p>
                 </section>
               </section>
             </section>
           </section>
         </section>
         <!-- <div class="third-methods"></div> -->
-        <p class="follow-public-account">关注「Andoromeda仙女座」公众号，即可绑定。</p>
+        <p class="follow-public-account">{{ $t('follow-the-Andoromeda-public-account-to-bind') }}</p>
       </section>
       <img src="../../assets/img/login_auth.svg" alt="书桌" class="decoration">
     </section>

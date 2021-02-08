@@ -1,7 +1,7 @@
 <template>
   <div class="token-card">
     <p class="title">
-      请选择其中一种卡片样式
+      {{ $t('please-choose-one-of-the-card-styles') }}
     </p>
     <div class="token-content">
       <div
@@ -41,7 +41,7 @@
       type="primary"
       @click="save"
     >
-      保存
+      {{ $t('save') }}
     </el-button>
   </div>
 </template>
@@ -49,11 +49,6 @@
 import tokenShareCard from './token_share_card'
 
 export default {
-  head: {
-    script: [
-      { src: '/bowl.min.js' }
-    ]
-  },
   components: {
     tokenShareCard
   },
@@ -73,9 +68,6 @@ export default {
     }
   },
   created() {
-    if (process.browser) {
-      this.injectScript()
-    }
   },
   methods: {
     save() {
@@ -123,20 +115,6 @@ export default {
     toggleShareCard() {
       this.shareCardCheckedOne = !this.shareCardCheckedOne
     },
-    injectScript() {
-      try {
-        // eslint-disable-next-line no-undef
-        var bowl = new Bowl()
-        bowl.add([
-          { url: '/html2canvas.min.js', key: 'html2canvas' }
-        ])
-        bowl.inject().then(() => {
-          console.log('success')
-        })
-      } catch (e) {
-        console.log(e)
-      }
-    }
   }
 }
 </script>

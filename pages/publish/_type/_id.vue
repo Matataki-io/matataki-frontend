@@ -374,7 +374,7 @@
           </el-radio>
 
           <div class="post-content root-setting">
-            <div style="width: 380px;">
+            <div style="max-width: 380px;">
               <transition name="fade">
                 <div
                   v-show="readauThority"
@@ -510,7 +510,7 @@
           </div>
 
           <div class="post-content root-setting">
-            <div style="width: 380px;">
+            <div style="max-width: 380px;">
               <transition name="fade">
                 <div
                   v-show="tokenEditAuthority"
@@ -607,7 +607,7 @@
             {{ $t('publicly-visible') }}
           </el-radio>
         </div>
-        
+
         <div v-if="$route.params.type !== 'edit'">
           <h1 class="set-title set-title-border">
             {{ $t('publish-settings') }}
@@ -683,15 +683,16 @@
           >
             {{ $t('save-as-draft') }}
           </el-button>
-          <el-button
-            type="primary"
-            size="medium"
-            style="margin-left: 10px;"
-            :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
-            @click="sendThePost"
-          >
-            {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
-          </el-button>
+          <div class="publish-content">
+            <el-button
+              type="primary"
+              size="medium"
+              :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
+              @click="sendThePost"
+            >
+              {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
+            </el-button>
+          </div>
         </div>
 
         <svg-icon
@@ -713,7 +714,7 @@ if (process.client) {
   mavonEditor = require('@matataki/editor')
 }
 
-import '@matataki/editor/dist/css/index.css'
+// import '@matataki/editor/dist/css/index.css'
 
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
@@ -732,6 +733,7 @@ import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 import { CNY } from '@/components/exchange/consts.js'
 
+
 function newDatePicker(time) {
   const date = new Date()
   date.setSeconds(0)
@@ -743,6 +745,14 @@ function newDatePicker(time) {
 export default {
   layout: 'empty',
   name: 'NewPost',
+  head() {
+    return {
+      title: '瞬MATATAKI - 创作',
+      link: [
+        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+      ],
+    }
+  },
   components: {
     'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,
@@ -1765,6 +1775,7 @@ export default {
         if (this.timedForm.switch) {
           this.timedPublish()
         } else {
+          const _shortContent = this.generateShortContent()
           this.publishArticle({
             author,
             title,
@@ -1772,7 +1783,7 @@ export default {
             fissionFactor,
             cover,
             isOriginal,
-            shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
+            shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : _shortContent
           })
         }
       }
@@ -1804,6 +1815,8 @@ export default {
 
         this.fullscreenLoading = true
         const data = { title, author, content }
+        // 摘要
+        const _shortContent = this.generateShortContent()
         this.editArticle({
           signId: this.signId,
           author,
@@ -1812,7 +1825,7 @@ export default {
           fissionFactor,
           cover,
           isOriginal,
-          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : ''
+          shortContent: (this.readauThority || this.paymentTokenVisible) ? this.readSummary : _shortContent
         })
       }
 
@@ -2136,9 +2149,9 @@ export default {
       data.editRequireToken = this.editRequireToken
 
       // 设置摘要
-      if (this.readauThority || this.paymentTokenVisible) {
-        data.short_content = this.readSummary
-      }
+      const _shortContent = this.generateShortContent()
+      data.short_content = (this.readauThority || this.paymentTokenVisible) ? this.readSummary : _shortContent
+
       return data
     },
     toolMobileImport() {
@@ -2173,6 +2186,15 @@ export default {
     },
     openWj() {
       window.open('/token', '_blank')
+    },
+    // 生成简介
+    generateShortContent() {
+      let dom = document.querySelectorAll('#previewContent > p')
+      const str = [...dom].reduce((t, c) => {
+        return `${t} ${c.outerText}`
+      }, '')
+      // console.log(str)
+      return (str.trim()).slice(0, 300)
     }
   }
 }

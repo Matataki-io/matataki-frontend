@@ -26,7 +26,7 @@
           {{ dateCard }}
         </p>
         <p class="header-read" :class="card.state || 'unread'">
-          {{ card.state ? '已读' : '未读' }}
+          {{ card.state ? $t('have-read') : $t('unread') }}
         </p>
       </div>
       <div v-if="card.action !== 'annouce' || card.object_type === 'collaborator'" class="notify-right-title">
@@ -47,7 +47,7 @@
             {{ actionLabel }}
           </p>
           <p v-if="card.total > 1" class="view-all">
-            查看全部
+            {{ $t('view-all') }}
             <i class="el-icon-arrow-right" />
           </p>
         </div>
@@ -60,7 +60,7 @@
       <p v-if="content" class="notify-right-content" v-html="content" />
       <p v-if="noComment && !content" class="notify-right-content no-data">
         <i class="el-icon-delete" />
-        此条评论已被删除
+        {{ $t('this-comment-has-been-deleted') }}
       </p>
       <!-- 对象卡片 -->
       <div v-if="mode !== 'hide'" @click.stop>
@@ -70,6 +70,7 @@
           :post="post"
           :comment="commentObject"
           :token="transferLog || token"
+          :share="share"
         />
       </div>
     </div>
@@ -115,6 +116,10 @@ export default {
       default: null
     },
     token: {
+      type: Object,
+      default: null
+    },
+    share: {
       type: Object,
       default: null
     }
@@ -235,6 +240,8 @@ export default {
         if (object_type === 'collaborator' && this.token && total < 2) return 'token'
         if (object_type === 'announcementToken' && this.token) return 'token'
         else if (this.post) return 'post'
+      } else if (action === 'at') {
+        return 'share' // 分享
       }
       return 'hide' // 隐藏
     }

@@ -7,11 +7,11 @@
       </div>
       <foreignUserPopover v-if="fromUser" :card="fromUser">
         <div class="cardunit-bg-retweeted-r">
-          {{ card.user.name || card.user.screen_name }} 转推了
+          {{ card.user.name || card.user.screen_name }} {{ $t('zhuan-tui-le') }}
         </div>
       </foreignUserPopover>
       <div v-else class="cardunit-bg-retweeted-r">
-        {{ card.user.name || card.user.screen_name }} 转推了
+        {{ card.user.name || card.user.screen_name }} {{ $t('zhuan-tui-le') }}
       </div>
     </div>
     <div class="cardunit">
@@ -88,9 +88,9 @@
             </span>
           </div>
           <div class="cardunit-r-flows-like">
-            <svg-icon icon-class="twitter-like" />
-            <span v-if="flows.favorite">
-              {{ flows.favorite }}
+            <svg-icon :class="`${stats && 'like-touch'} ${flows.localLiked && 'active'}`" :icon-class="flows.localLiked ? 'twitter-liked' : 'twitter-like'" @click="likeClick" />
+            <span v-if="flows.favorite + flows.localLike">
+              {{ flows.favorite + flows.localLike }}
             </span>
           </div>
         </div>
@@ -100,6 +100,7 @@
 </template>
 
 <script>
+
 import twitterPhotoAlbum from './twitter_photo_album'
 import twitterVideo from './twitter_video'
 import twitterQuote from './twitter_quote'
@@ -137,11 +138,16 @@ export default {
     fromUser: {
       type: Object,
       default: null
+    },
+    stats: {
+      type: Object,
+      default: null
     }
   },
   data() {
     return {
-      showSensitiveMedia: false
+      showSensitiveMedia: false,
+      likeIt: false
     }
   },
   computed: {
@@ -171,7 +177,9 @@ export default {
       return {
         comment: 0,
         retweet: this.sCard.retweet_count,
-        favorite: this.sCard.favorite_count
+        favorite: this.sCard.favorite_count,
+        localLike: this.stats ? (this.stats.like + this.likeIt) : 0,
+        localLiked: this.stats ? (this.likeIt || this.stats.liked) : 0
       }
     },
     hideSensitiveMedia () {
@@ -208,8 +216,16 @@ export default {
         }
       }
       return null
-    }
+    },
   },
+  methods: {
+    async likeClick () {
+      if (!this.stats) return
+      if (this.likeIt || this.stats.liked) return
+      this.likeIt = true
+      this.$emit('click-like', { type: 'like',  platform: 'twitter', dynamicId: this.card.id_str })
+    }
+  }
 }
 </script>
 
@@ -388,6 +404,25 @@ span {
       }
       &-like {
         .flow-default();
+        .like-touch {
+          -moz-user-select:none;
+          -webkit-user-select:none;
+          user-select:none;
+          transition: all ease-in 0.05s;
+          cursor: pointer;
+          &:hover {
+            color: #e0245e;
+            transform: scale(1.2);
+          }
+          &:active {
+            transform: scale(1);
+          }
+          &.active {
+            color: #e0245e;
+            transform: scale(1);
+            cursor: default;
+          }
+        }
       }
     }
 

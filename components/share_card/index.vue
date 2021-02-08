@@ -3,7 +3,7 @@
     <div class="card-share">
       <div class="card-info">
         <router-link
-          :to="{ name: 'user-id-share', params: { id: card.uid } }"
+          :to="{ name: 'user-id', params: { id: card.uid } }"
           :target="blank && '_blank'"
           class="card-info__left"
         >
@@ -40,17 +40,17 @@
         class="card-content"
         target="_blank"
       >
-        <svg-icon
+        <!-- <svg-icon
           class="icon"
           icon-class="quotation_marks"
         />
         <svg-icon
           class="icon"
           icon-class="quotation_marks"
-        />
-        <p
+        /> -->
+        <div
           class="search-res"
-          v-html="card.short_content || '&nbsp;'"
+          v-html="content || '&nbsp;'"
         />
       </router-link>
     </div>
@@ -124,6 +124,11 @@
         <span>{{ toggleMore ? $t('hideMore') : $t('viewMore') }}</span><i class="el-icon-d-arrow-left icon" />
       </div>
     </div>
+    <photoAlbum
+      v-if="card.media && card.media.length > 0"
+      class="card-share-photoalbum-main"
+      :media="card.media"
+    />
   </div>
 </template>
 
@@ -132,12 +137,17 @@ import avatar from '@/components/avatar/index.vue'
 import shareOuterCard from '@/components/share_outer_card/index.vue'
 import sharePCard from '@/components/share_p_card/index.vue'
 import shareInsideCard from '@/components/share_inside_card/index.vue'
+import { filterOutHtmlShare } from '@/utils/xss'
+import { renderLinkUser } from '@/utils/share'
+import photoAlbum from '@/components/dynamic/card/photo_album'
+
 export default {
   components: {
     avatar,
     shareOuterCard,
     sharePCard,
-    shareInsideCard
+    shareInsideCard,
+    photoAlbum
   },
   props: {
     card: {
@@ -165,26 +175,28 @@ export default {
     avatarSrc() {
       if (this.card.avatar) return this.$ossProcess(this.card.avatar, { h: 60 })
       return ''
+    },
+    // 分享内容
+    content() {
+      // 向后兼容 this.card.short_content_share || this.card.short_content
+      return this.$utils.compose(renderLinkUser, filterOutHtmlShare)(this.card.short_content_share || this.card.short_content)
     }
-  },
-  created() {
   }
 }
 </script>
 
 <style lang="less" scoped>
 .card-share__content {
-
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 .card-share {
   display: flex;
   align-items: center;
   flex-direction: column;
   position: relative;
-  box-sizing: border-box;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
 }
 
 .card {
@@ -267,7 +279,7 @@ export default {
     position: relative;
     padding: 0 20px;
     width: 100%;
-    margin-top: 10px;
+    margin: 10px 0;
     text-decoration: none;
     cursor: pointer;
     box-sizing: border-box;
@@ -303,13 +315,7 @@ export default {
     }
   }
   &-list {
-    border-radius:6px;
-    background-color: #eaeaea;
-    padding: 0;
     margin: 0px 20px 0 20px;
-    box-sizing: border-box;
-    // margin: 14px 0 0 0;
-    position: relative;
     // &::before {
     //   display: block;
     //   content: '';
@@ -358,9 +364,23 @@ export default {
 </style>
 
 <style lang="less">
-.search-res em {
-  font-weight: bold;
-  font-style: normal;
-  color: @purpleDark;
+.search-res {
+  color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+  word-break: break-word;
+  line-height: 1.5;
+  em {
+    font-weight: bold;
+    font-style: normal;
+    color: @purpleDark;
+  }
+  a {
+    color: rgb(47, 174, 227)
+  }
 }
+
 </style>

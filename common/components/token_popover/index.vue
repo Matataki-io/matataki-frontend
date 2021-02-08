@@ -22,17 +22,17 @@
       <div class="user-data">
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ exchangeInfo.price || 0 }}<span>CNY</span></p>
-          <p class="user-data-title">当前价格</p>
+          <p class="user-data-title">{{ $t('current-price') }}</p>
         </router-link>
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank" class="user-data-block">
           <p class="user-data-number">{{ exchangeAmount || 0 }}<span>CNY</span></p>
-          <p class="user-data-title">24h成交额</p>
+          <p class="user-data-title">{{ $t('token.turnover24h') }}</p>
         </router-link>
       </div>
       <div class="user-btn">
         <router-link :to="{name: 'token-id', params: { id: tokenId }}" target="_blank">
-          <span class="view">查看详情</span>
-          <span class="transaction">立即交易</span>
+          <span class="view">{{ $t('see-details') }}</span>
+          <span class="transaction">{{ $t('trade-now') }}</span>
         </router-link>
       </div>
       <div class="line" />

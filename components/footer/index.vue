@@ -1,8 +1,15 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <div class="content footer-c6">
+      <div class="content footer-c5">
         <div class="nav">
+          <a
+            class="href"
+            target="_blank"
+            href="/home"
+          >
+            {{ $t('footer.aboutMatataki') }}
+          </a>
           <a
             class="href"
             target="_blank"
@@ -59,7 +66,7 @@
           <language />
         </div>
       </div>
-      <div class="footer-c4">
+      <div class="footer-c5" style="text-align: right;">
         <div>
           <img
             class="logo"
@@ -69,7 +76,7 @@
           <a
             target="_blank"
             href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t"
-            title="群号：766605671"
+            :title="`${$t('group-number')}：766605671`"
             class="icon qq"
           >
             <svg-icon
@@ -120,6 +127,15 @@
               icon-class="twitter"
             />
           </a>
+          <a
+            target="_blank"
+            href="https://discord.gg/KGR4SHDhBa"
+          >
+            <svg-icon
+              class="icon discord-icon"
+              icon-class="discord"
+            />
+          </a>
           <!--
           <a
             target="_blank"
@@ -129,8 +145,17 @@
           </a> -->
         </div>
         <p class="copyright">
-          Copyright © 2018-2020 ANDOROMEDA TECH.ltd
+          Copyright © 2018-2021 ANDOROMEDA TECH.ltd
         </p>
+        <div>
+          <a href="https://www.producthunt.com/posts/matataki?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-matataki" target="_blank"><img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=281257&theme=light"
+            alt="瞬MATATAKI - We help creators distribute SocialMoney & provide services | Product Hunt"
+            style="width: 250px; height: 54px;"
+            width="250"
+            height="54"
+          ></a>
+        </div>
       </div>
     </div>
   </footer>
@@ -139,6 +164,10 @@
 <script>
 import language from '../header/language'
 export default {
+  name: 'Footer',
+  serverCacheKey() {
+    return 'Footer'
+  },
   components: {
     language
   },
@@ -166,6 +195,9 @@ export default {
   }
   .footer-c6 {
     width: 60%;
+  }
+  .footer-c5 {
+    width: 50%;
   }
   .footer-c4 {
     width: 40%;
@@ -274,6 +306,14 @@ export default {
     color: #b2b2b2;
     &:hover {
       color: #00aced;
+    }
+  }
+  &.discord-icon {
+    width: 24px;
+    height: 24px;
+    color: #b2b2b2;
+    &:hover {
+      color: #7289da;
     }
   }
   &.facebook-icon {

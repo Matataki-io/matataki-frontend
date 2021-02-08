@@ -8,7 +8,7 @@
     </router-link>
     <el-select
       v-model="value"
-      placeholder="请选择"
+      :placeholder="$t('please-choose')"
       class="select"
       size="small"
       @change="change"

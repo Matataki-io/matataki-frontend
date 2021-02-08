@@ -986,6 +986,8 @@ minetokenGetResources(tokenId) {
   searchDb(type, params) {
     return request.get(`/search/db/${type}`, { params })
   },
+  // 搜索 db tag
+  searchDbTag(params) { return request.get(`/search/db/tag`, { params }) },
   // 常用候选列表
   historyUser(params) {
     return request.get(`/history/user`, { params })

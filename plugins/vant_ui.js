@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // import '@vant/touch-emulator' // 桌面端使用 vant
-import 'vant/lib/index.css'
+// import 'vant/lib/index.css'
 
 import {
   Swipe,

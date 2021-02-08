@@ -46,11 +46,6 @@ import TransferDialog from '@/components/TransferDialog'
 
 export default {
   name: 'Default',
-  head: {
-    script: [
-      { src: '/bowl.min.js' }
-    ]
-  },
   components: {
     gFooter: footer,
     AuthModal,
@@ -123,7 +118,6 @@ export default {
       // this.testDomain()
       console.log('NODE_ENV', process.env.NODE_ENV)
       console.log('NODE_ENV', process.env.NODE)
-      this.injectScript()
       this.debug()
     }
   },
@@ -159,10 +153,9 @@ export default {
     testDomain() {
       try {
         console.log('NODE_ENV', process.env.NODE_ENV)
-        
         // 开发模式不管
         if (process.env.NODE_ENV === 'development') return
-        // 在微信里面不管  
+        // 在微信里面不管
         if (this.$utils.isInWeixin()) return
 
         let IO = process.env.VUE_APP_DOMAIN_IO
@@ -170,20 +163,6 @@ export default {
         if (!isIo) {
           this.$message(`请使用非微信浏览器访问 ${IO} 使用该功能`)
         }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    injectScript() {
-      try {
-        // eslint-disable-next-line no-undef
-        var bowl = new Bowl()
-        bowl.add([
-          { url: '/bowl.min.js', key: 'bowl' }
-        ])
-        bowl.inject().then(() => {
-          console.log('success')
-        })
       } catch (e) {
         console.log(e)
       }

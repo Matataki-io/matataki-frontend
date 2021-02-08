@@ -19,7 +19,7 @@
           </h4>
           <div class="fl" style="flex: 1;">
             <p class="action">
-              打赏了
+              {{ $t('rewarded') }}
             </p>
             <p>
               {{ dateCard }}

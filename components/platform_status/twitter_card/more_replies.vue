@@ -6,7 +6,7 @@
       <div class="cardunit-bg-omit-point" />
     </div>
     <span class="cardunit-bg-more">
-      显示更多回复
+      {{ $t('show-more-responses') }}
     </span>
   </div>
 </template>

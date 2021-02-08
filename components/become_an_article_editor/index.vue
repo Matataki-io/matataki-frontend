@@ -20,13 +20,13 @@
     </div>
     <div class="lock-info">
       <h3 class="lock-info-title">
-        {{ !(hasPaied && hasPaiedRead) ? `${unlockText}编辑权限` : `已${unlockText}编辑权限` }}
+        {{ !(hasPaied && hasPaiedRead) ? `${$t('unlock-edit-permissions', [ unlockText ])}` : `${$t('unlock-edit-permission', [ unlockText ])}` }}
       </h3>
       <h5 class="lock-info-subtitle">
-        {{ !(hasPaied && hasPaiedRead) ? '您需要达成以下解锁条件' : '您已达成以下解锁条件' }}
+        {{ !(hasPaied && hasPaiedRead) ? $t('you-need-to-meet-the-following-unlock-conditions') : $t('you-have-fulfilled-the-following-unlock-conditions') }}
         <el-tooltip
           effect="dark"
-          content="满足全部条件后即可编辑文章。"
+          :content="$t('you-can-edit-the-article-after-all-the-conditions-are-met')"
           placement="top-start"
         >
           <svg-icon
@@ -45,7 +45,7 @@
             class="fl"
           >
             <div class="fl price">
-              需先解锁本文阅读权限
+              {{ $t('need-to-unlock-the-permission-to-read-this-article-first') }}
               <svg-icon
                 icon-class="read"
                 class="avatar-read"
@@ -53,7 +53,7 @@
             </div>
             <el-tooltip
               effect="dark"
-              content="此文设有阅读限制，如果需要编辑必须获得阅读权限"
+              :content="$t('this-article-has-reading-restrictions-if-you-need-to-edit-you-must-obtain-reading-permissions')"
               placement="left"
             >
               <svg-icon icon-class="anser" />
@@ -64,7 +64,7 @@
             class="fl"
           >
             <div class="fl price">
-              支付
+              {{ $t('pay') }}
               <span class="amount">{{ getArticlePrice }}</span>
               <svg-icon
                 icon-class="currency"
@@ -74,7 +74,7 @@
             </div>
             <el-tooltip
               effect="dark"
-              content="支付解锁的文章可在“购买记录”中永久查看。"
+              :content="$t('articles-unlocked-by-payment-can-be-viewed-permanently-in-the-Purchase-History')"
               placement="left"
             >
               <svg-icon icon-class="anser" />
@@ -85,7 +85,7 @@
             class="fl"
           >
             <div class="fl price">
-              持有
+              {{ $t('hold') }}
               <span class="amount">{{ needTokenAmount }}</span>
               <router-link
                 :to="{name: 'token-id', params:{ id:needTokenId }}"
@@ -101,7 +101,7 @@
               </router-link>
             </div>
             <!-- 不显示 - 号 -->
-            <span> {{ !tokenHasPaied ? '还需持有' : '已持有' }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+            <span> {{ !tokenHasPaied ? $t('still-need-to-hold') : $t('already-held') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
           </li>
         </ul>
       </p>
@@ -109,7 +109,7 @@
         v-else
         class="lock-info-des"
       >
-        自己发布的文章
+        {{ $t('self-publish-article') }}
       </p>
       <div
         v-if="!hasPaied"
@@ -119,7 +119,7 @@
           <!-- <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span> -->
           <el-tooltip
             effect="dark"
-            content="点击后支付即可解锁编辑权限。如果设有阅读限制，请先解锁(购买)全文"
+            :content="$t('click-and-pay-to-unlock-editing-permissions-if-there-are-reading-restrictions-please-unlock-purchase-the-full-text-first')"
             placement="top-end"
           >
             <el-button
@@ -127,7 +127,7 @@
               size="small"
               @click="wxpayEdit"
             >
-              一键{{ unlockText }}
+              {{ $t('one-key') }}{{ unlockText }}
             </el-button>
           </el-tooltip>
         </div>
@@ -139,14 +139,14 @@
         <span
           v-if="!hasPaiedRead"
           class="lock-bottom-total"
-        >此文设有阅读限制，如果需要编辑必须获得阅读权限</span>
+        >{{ $t('this-article-has-reading-restrictions-if-you-need-to-edit-you-must-obtain-reading-permissions') }}</span>
         <el-button
           type="primary"
           size="small"
           :disabled="!hasPaiedRead"
           @click="edit"
         >
-          编辑文章
+          {{ $t('edit-article') }}
         </el-button>
       </div>
     </div>

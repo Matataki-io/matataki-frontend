@@ -1,6 +1,6 @@
 import Vue from 'vue'
-// import '../assets/theme/index.css'
-import '../static/theme/index.css'
+// import '../static/theme/index.css'
+
 import {
   Row,
   Col,
@@ -48,7 +48,8 @@ import {
   Badge,
   Autocomplete,
   PageHeader,
-  DatePicker
+  DatePicker,
+  Upload
 } from 'element-ui'
 
 Vue.use(Row)
@@ -95,6 +96,7 @@ Vue.use(Row)
   .use(Badge)
   .use(Autocomplete)
   .use(DatePicker)
+  .use(Upload)
 
 Vue.use(Loading.directive)
 Vue.prototype.$message = Message

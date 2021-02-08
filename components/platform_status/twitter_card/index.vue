@@ -8,6 +8,8 @@
         :show-down-line="index !== queue.length - 1"
         :show-logo="showLogo"
         :from-user="fromUser"
+        :stats="index === queue.length-1 ? stats : undefined"
+        @click-like="value => $emit('click-like', value)"
       />
       <moreReplies v-else />
     </div>
@@ -38,6 +40,10 @@ export default {
       default: false
     },
     fromUser: {
+      type: Object,
+      default: null
+    },
+    stats: {
       type: Object,
       default: null
     }

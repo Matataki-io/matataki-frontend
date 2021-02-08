@@ -29,13 +29,14 @@
           :comment-object="getCommentObject(item)"
           :transfer-log="getTransferLog(item)"
           :token="getToken(item)"
+          :share="getShare(item)"
           @openDetails="openDetails"
         />
         <div v-if="notifications.length === 0 && !loading" class="noData">
           {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
         </div>
         <div class="load-more">
-          <buttonLoadMore
+          <buttonLoadMoreComponents
             :type-index="0"
             :params="pull.params"
             :api-url="pull.apiUrl"
@@ -85,7 +86,7 @@
         </div>
 
         <div class="load-more">
-          <buttonLoadMore
+          <buttonLoadMoreComponents
             :type-index="0"
             :params="detailPull.params"
             :api-url="detailPull.apiUrl"
@@ -163,7 +164,7 @@
   </div>
 </template>
 <script>
-import buttonLoadMore from '@/components/button_load_more/index.vue'
+import buttonLoadMoreComponents from '@/components/button_load_more/index.vue'
 import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
 import commentCard from '@/components/notification/commentCard.vue'
@@ -171,7 +172,7 @@ import rewardCard from '@/components/notification/rewardCard.vue'
 
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMore, notifyCard, objectCard, commentCard, rewardCard },
+  components: { buttonLoadMoreComponents, notifyCard, objectCard, commentCard, rewardCard },
   data() {
     return {
       showDetails: false,
@@ -183,6 +184,7 @@ export default {
       assetsLogs: [],
       minetokensLogs: [],
       tokens: [],
+      shares: [],
       detailsIndex: null,
       notificationDetails: [],
       pagePosition: 0,
@@ -221,6 +223,10 @@ export default {
         {
           key: 'transfer',
           label: '交易'
+        },
+        {
+          key: 'at',
+          label: '@'
         }
       ],
       actions: null,
@@ -263,7 +269,9 @@ export default {
     }
   },
   created() {
-    this.initActions()
+    if (process.client) {
+      this.initActions()
+    }
   },
   methods: {
     buttonLoadMore(res) {
@@ -277,6 +285,7 @@ export default {
         this.assetsLogs.push(...res.data.assetsLog)
         this.minetokensLogs.push(...res.data.minetokensLog)
         this.tokens.push(...res.data.tokens)
+        this.shares.push(...res.data.shares)
         // 标记已读
         this.markRead(res.data.list)
         // 设定起始查询位置
@@ -344,6 +353,11 @@ export default {
         return this.tokens.find(token => token.id === notify.remark)
       else return null
     },
+    getShare(notify) {
+      if (notify.action === 'at' && ['share'].includes(notify.object_type))
+        return this.shares.find(i => i.id === notify.object_id)
+      else return null
+    },
     openDetails(data) {
       this.pagePosition = document.documentElement.scrollTop
       window.scroll(0, 0)
@@ -391,14 +405,14 @@ export default {
       this.notifications = []
       this.autoRequestTime = Date.now()
     },
-    updateQuery(key, val) {      
+    updateQuery(key, val) {
       const query = { ...this.$route.query }
       query[key] = val
       this.$router.replace({ query })
     },
     initActions() {
       let actions = this.$route.query.actions
-      if(actions) { 
+      if(actions) {
         this.actions = JSON.parse(this.$route.query.actions)
         this.checkedCities = this.actions
       }

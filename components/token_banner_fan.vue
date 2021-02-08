@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO： 这个页面似乎没有使用了 暂时不翻译 后续确认后可删除 -->
   <div class="token-banner">
     <div class="token-up">
       <img class="up" src="@/assets/img/token_banner_fan_up.svg">
@@ -9,22 +10,22 @@
     <img class="token-todo" src="@/assets/img/token_banner_fan_todo.svg">
 
     <div class="token-content">
-      <p class="token-title">人人皆可免费发行</p>
+      <p class="token-title">{{ $t('free-for-everyone') }}</p>
       <template v-if="!isTokenUser">
-        <p class="token-description mode-one">按顺序完成以下任务，即可免费发行你的Fan票</p>
+        <p class="token-description mode-one">{{ $t('complete-the-following-tasks-in-order-to-issue-your-Fan-ticket-for-free') }}</p>
         <ul>
           <li>
-            1.  完善个人信息：设置头像、昵称和简介
+            1.  {{ $t('postminetoken.stepOneItem1') }}
             <img v-if="isCompleteInfo" src="@/assets/img/token_banner_fan_done.svg" alt="done">
             <router-link v-else :to="{ name: 'setting' }" target="_blank">
-              立即设置
+              {{ $t('set-up-now') }}
             </router-link>
           </li>
           <li>
-            2. 至少在Matataki发布过一篇文章
+            2. {{ $t('postminetoken.stepOneItem2') }}
             <img v-if="articleNumber > 0" src="@/assets/img/token_banner_fan_done.svg" alt="done">
             <router-link v-else :to="{ name: 'publish-type-id', params: { type: 'draft', id: 'create' } }" target="_blank">
-              立即发布
+              {{ $t('publish-now') }}
             </router-link>
           </li>
           <li>3. 提交&nbsp;<a href="https://wj.qq.com/s2/5208015/8e5d" target="_blank" @click="applicationForm">申请表单</a>&nbsp;进入waitlist（若已填写请勿重复提交）</li>
@@ -34,7 +35,7 @@
       <template v-else>
         <p class="token-description mode-two">您好！您的申请已经通过，请查收邮箱中的邮件。</p>
         <router-link :to="{name: 'postminetoken'}" target="_blank" class="token-more hvr-float">
-          发行Fan票
+          {{ $t('issue-coin') }}
         </router-link>
       </template>
     </div>

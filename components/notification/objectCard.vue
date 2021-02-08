@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="url">
+  <n-link :to="url" target="_blank">
     <div
       :class="bgColor !== '#F1F1F1' && 'shadow'"
       class="card"
@@ -48,7 +48,7 @@
             </p>
           </div>
           <p class="introduction">
-            {{ user.introduction || '暂无简介' }}
+            {{ user.introduction || $t('notProfile') }}
           </p>
         </div>
         <div v-if="user.id && !isMe(user.id)" class="user-button">
@@ -75,7 +75,7 @@
         </p>
         <p v-else>
           <i class="el-icon-delete" />
-          此条评论已被删除
+          {{ $t('this-comment-has-been-deleted') }}
         </p>
       </div>
       <!-- token -->
@@ -105,8 +105,14 @@
           </h4>
         </div>
       </div>
+      <!-- @分享 -->
+      <div v-if="mode === 'share'" class="fl share">
+        <n-link class="link" :to="{ name: 'share-id', params: { id: share.id } }" target="_blank">
+          {{ $t('mention-at-to-you-in-ta-sharing') }}
+        </n-link>
+      </div>
     </div>
-  </router-link>
+  </n-link>
 </template>
 <script>
 
@@ -135,6 +141,10 @@ export default {
       default:  null
     },
     token: {
+      type: Object,
+      default: null
+    },
+    share: {
       type: Object,
       default: null
     },
@@ -183,6 +193,7 @@ export default {
       else if(this.mode === 'token' && this.token.symbol === 'CNY') return {name: 'account'}
       else if(this.mode === 'token') return {name: 'token-id', params: {id: this.token.token_id || this.token.id}}
       else if(this.mode === 'user') return {name: 'user-id', params:{id: this.user.id || 0}}
+      else if(this.mode === 'share') return {name: 'share-id', params:{id: this.share.id || 0}}
       return {}
     },
     followBtnText() {
@@ -502,6 +513,13 @@ export default {
     .introduction {
       display: none !important;
     }
+  }
+}
+
+.share {
+  .link {
+    color: rgb(47, 174, 227);
+    font-size: 14px;
   }
 }
 </style>

@@ -5,7 +5,7 @@
       <div class="head-flex">
         <a
           class="logo-link"
-          href="/home"
+          href="/article"
         ><img
           :src="customizeHeaderLogoColorComputed"
           class="logo"
@@ -29,9 +29,6 @@
       </div>
 
       <div class="pc head-flex">
-        <div class="qq-tips">
-          {{ $t('header-tips') }}
-        </div>
         <div class="search">
           <input
             v-model="searchInput"
@@ -120,7 +117,7 @@
           <!-- <avatarComponents :size="'30px'" :src="avatar" class="home-head-avatar" /> -->
           <c-avatar
             :src="avatar"
-            :recommend-author="user.is_recommend === 1" 
+            :recommend-author="user.is_recommend === 1"
             :token-user="!!tokenInfo.id"
             :level-token="1"
           />
@@ -228,7 +225,7 @@
                   <c-avatar
                     :src="avatar"
                     class="menu-avatar"
-                    :recommend-author="user.is_recommend === 1" 
+                    :recommend-author="user.is_recommend === 1"
                     :token-user="!!tokenInfo.id"
                     :level-token="1"
                   />
@@ -680,14 +677,17 @@ export default {
   }
   &-notlogin {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 400;
     color: #ffffff;
     letter-spacing: 2px;
-    padding: 6px 12px;
+    padding: 0 18px;
     background: #000;
-    border-radius: 6px;
+    border-radius: 4px;
     text-decoration: none;
     margin-left: 10px;
+    white-space: nowrap;
+    height: 40px;
+    line-height: 40px;
   }
   .nav {
     font-size: 18px;
@@ -1022,7 +1022,6 @@ export default {
   }
   .home-head-notlogin {
     font-size: 12px;
-    font-weight: 400;
   }
   .qq-tips {
     font-size: 13px;

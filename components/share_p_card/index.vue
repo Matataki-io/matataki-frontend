@@ -1,79 +1,81 @@
 <template>
-  <router-link
-    :to="cardUrl"
-    class="card"
-    target="_blank"
-  >
-    <div
-      v-if="card.cover"
-      class="card-cover"
-    >
-      <img
-        :src="coverSrc"
-        :alt="card.title"
-      >
-    </div>
-    <div class="card-content">
-      <p
-        :class="!shareCard && 'card-sharehall'"
-        class="card-text"
-      >
-        {{ card.title || $t('not') }}
-      </p>
-      <div class="card-more">
-        <div
-          v-if="cardType !== 'edit'"
-          class="card-info"
-        >
-          <span v-if="!shareCard">
-            <svg-icon
-              icon-class="eye"
-              class="icon"
-            />{{ card.real_read_count }}
-          </span>
-          <span v-if="!shareCard">
-            <svg-icon
-              icon-class="like_thin"
-              class="icon"
-            />{{ card.likes }}
-          </span>
-          <span v-if="!shareCard">
-            <img
-              v-if="card.pay_symbol || card.token_symbol"
-              class="lock-img"
-              src="@/assets/img/lock.png"
-              alt="lock"
-            >{{ lock }}
-          </span>
-        <!-- <span>
-          <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
-        </span> -->
-        </div>
-        <div
-          v-if="cardType !== 'edit' && $route.name === 'sharehall'"
-          class="card-operate"
-        >
-          <svg-icon
-            class="icon"
-            icon-class="copy"
-            @click="copy(card.url, $event)"
-          />
-          <svg-icon
-            class="icon"
-            icon-class="quote"
-            @click="ref(card.url, $event)"
-          />
-        </div>
-      </div>
-    </div>
+  <div class="card-box">
     <span
       v-if="!shareCard && cardType === 'edit'"
-      class="card-remove"
+      class="card-box-remove"
       @click="removeCard"
     >
       <i class="el-icon-close icon" />
     </span>
-  </router-link>
+    <router-link
+      :to="cardUrl"
+      class="card"
+      target="_blank"
+    >
+      <div
+        v-if="card.cover"
+        class="card-cover"
+      >
+        <img
+          :src="coverSrc"
+          :alt="card.title"
+        >
+      </div>
+      <div class="card-content">
+        <p
+          :class="!shareCard && 'card-sharehall'"
+          class="card-text"
+        >
+          {{ card.title || $t('not') }}
+        </p>
+        <div class="card-more">
+          <div
+            v-if="cardType !== 'edit'"
+            class="card-info"
+          >
+            <span v-if="!shareCard">
+              <svg-icon
+                icon-class="eye"
+                class="icon"
+              />{{ card.real_read_count }}
+            </span>
+            <span v-if="!shareCard">
+              <svg-icon
+                icon-class="like_thin"
+                class="icon"
+              />{{ card.likes }}
+            </span>
+            <span v-if="!shareCard">
+              <img
+                v-if="card.pay_symbol || card.token_symbol"
+                class="lock-img"
+                src="@/assets/img/lock.png"
+                alt="lock"
+              >{{ lock }}
+            </span>
+            <!-- <span>
+          <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
+        </span> -->
+          </div>
+          <div
+            v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+            class="card-operate"
+          >
+            <svg-icon
+              class="icon"
+              icon-class="copy"
+              @click="copy(card.url, $event)"
+            />
+            <svg-icon
+              class="icon"
+              icon-class="quote"
+              @click="ref(card.url, $event)"
+            />
+          </div>
+        </div>
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -153,25 +155,46 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.card {
-  background: #EAEAEA;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
+.card-box {
   position: relative;
-  padding: 10px;
+  &-remove {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    cursor: pointer;
+    .icon {
+      font-size: 14px;
+    }
+  }
+}
+
+.card {
+  background-color: transparent;
+  border: 1px solid #ccd6dd;
+  border-radius: 10px;
+  display: flex;
+  // align-items: center;
+  position: relative;
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
   color: #000;
   &-cover {
-    width: 120px;
-    height: 60px;
+    width: 240px;
+    height: 120px;
     border-radius: 3px;
     overflow: hidden;
-    margin-right: 10px;
-    flex: 0 0 120px;
-    border: 1px solid #e0e0e0;
+    flex: 0 0 240px;
+    border-right: 1px solid #e0e0e0;
     box-sizing: border-box;
     img {
       width: 100%;
@@ -201,8 +224,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 60px;
-    width: 100%;
+    padding: 10px;
   }
   &-text {
     font-size:15px;
@@ -241,23 +263,6 @@ export default {
       &:nth-child(1) {
         margin-left: 0;
       }
-    }
-  }
-  &-remove {
-    position: absolute;
-    right: -10px;
-    top: -10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    .icon {
-      font-size: 14px;
     }
   }
 }

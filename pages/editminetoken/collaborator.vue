@@ -3,19 +3,19 @@
     <div class="colla-add">
       <searchUsers
         v-model="userData"
-        placeholder="输入对方昵称"
+        :placeholder="$t('enter-the-other-partys-nickname')"
       />
       <el-button
         type="primary"
         size="small"
         @click="addCollaborator"
       >
-        添加
+        {{ $t('add-to') }}
       </el-button>
     </div>
     <div class="colla-member">
       <h4 class="colla-member-title">
-        已添加的协作者（{{ collaborators.length }}/20）
+        {{ $t('collaborators-added') }}（{{ collaborators.length }}/20）
       </h4>
       <div v-loading="loading" class="colla-member-list">
         <div
@@ -37,31 +37,30 @@
             width="160"
             class="colla-member-card-button"
           >
-            <p>确定要移除协作者么？</p>
+            <p>{{ $t('are-you-sure-you-want-to-remove-collaborators') }}</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="colla.detelePopover = false">
-                取消
+                {{ $t('cancel') }}
               </el-button>
               <el-button type="primary" size="mini" @click="deleteClick(colla)">
-                确定
+                {{ $t('confirm') }}
               </el-button>
             </div>
             <el-button
               slot="reference"
               type="text"
             >
-              移除
+              {{ $t('remove') }}
             </el-button>
           </el-popover>
         </div>
         <div v-if="collaborators.length === 0 && !loading" class="no-data">
-          暂无协作者
+          {{ $t('no-collaborators') }}
         </div>
       </div>
       <el-divider class="colla-splitline" />
       <p class="colla-help">
-        什么是协作者：<br>
-        协作者可以在发布文章的时候，设置使用你的Fan票为解锁条件
+        {{ $t('what-is-a-collaborator') }}：<br> {{ $t('collaborators-can-set-the-use-of-your-coin-as-the-unlock-condition-when-publishing-the-article') }}
       </p>
     </div>
   </settingLayout>

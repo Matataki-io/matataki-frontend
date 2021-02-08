@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="showModal"
-    title="打赏作者"
+    :title="$t('reward-the-author')"
     custom-class="reward-dialog br10"
     :close-on-click-modal="false"
   >
@@ -13,11 +13,11 @@
       label-width="60px"
       class="gift-form"
     >
-      <el-form-item label="类型" prop="tokenId">
+      <el-form-item :label="$t('types-of')" prop="tokenId">
         <el-select
           v-model="form.tokenId"
           filterable
-          placeholder="请选择" 
+          :placeholder="$t('please-choose')"
           style="width: 100%"
           @change="changeTokenSelect"
         >
@@ -35,29 +35,29 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数量" prop="amount">
+      <el-form-item :label="$t('quantity')" prop="amount">
         <el-input
           v-model="form.amount"
           :max="form.max"
           :min="form.min"
-          placeholder="请输入数量"
+          :placeholder="$t('please-enter-the-quantity')"
           clearable
         />
       </el-form-item>
       <p class="balance">
-        余额&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
+        {{ $t('balance') }}&nbsp;<span v-if="form.balance">{{ form.balance }}</span>&nbsp;
         <a
           v-if="form.balance"
           href="javascript:;"
           @click="form.amount = form.balance"
-        >全部转入</a>
+        >{{ $t('transfer-all-in') }}</a>
       </p>
-      <el-form-item label="留言">
+      <el-form-item :label="$t('leave-a-message')">
         <el-input
           v-model="form.message"
           type="textarea"
           :rows="3"
-          placeholder="请写下想对作者说的话（选填）"
+          :placeholder="$t('please-write-down-what-you-want-to-say-to-the-author-optional')"
           size="small"
           class="customize-input"
           maxlength="500"
@@ -71,7 +71,7 @@
           class="submit-btn"
           @click="submitForm('form')"
         >
-          确定
+          {{ $t('confirm') }}
         </el-button>
       </div>
     </el-form>
@@ -126,7 +126,6 @@ export default {
           { required: true, validator: validateToken, trigger: ['blur', 'change'] }
         ],
       },
-      
       transferLoading: false,
       tokenOptions: [],
     }

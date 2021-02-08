@@ -8,8 +8,8 @@
       @success="$emit('success')"
     />
     <div v-show="!viewMore && count > 3" class="view-more">
-      共<b>{{ count }}</b>条回复, 
-      <a class="btn-more" @click="viewMore = true">点击查看</a>
+      {{ $t('x-total-replies', [ count ]) }},
+      <a class="btn-more" @click="viewMore = true">{{ $t('click-to-view') }}</a>
     </div>
     <div class="reply-pagination">
       <el-pagination

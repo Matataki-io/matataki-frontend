@@ -7,11 +7,11 @@
     cell-class-name="trade-log-row"
   >
     <el-table-column
-      label="方向"
+      :label="$t('direction')"
       width="60"
     >
       <template slot-scope="scope">
-        <span :class="scope.row.direction">{{ scope.row.direction === 'buy' ? '买' : '卖' }}</span>
+        <span :class="scope.row.direction">{{ scope.row.direction === 'buy' ? $t('buy') : $t('Sell') }}</span>
         <txHash
           v-if="scope.row.tx_hash"
           :hash="scope.row.tx_hash"
@@ -21,7 +21,7 @@
     </el-table-column>
     <el-table-column
       prop="price"
-      label="价格/CNY"
+      :label="`${$t('price')}/CNY`"
     >
       <template slot-scope="scope">
         <span :class="scope.row.direction">
@@ -31,7 +31,7 @@
     </el-table-column>
     <el-table-column
       prop="cny_amount"
-      label="金额/CNY"
+      :label="`${$t('money-amount')}/CNY`"
     >
       <template slot-scope="scope">
         <span :class="scope.row.direction">
@@ -40,12 +40,12 @@
       </template>
     </el-table-column>
     <el-table-column
-      :label="'数量'+symbol"
+      :label="`${$t('quantity')}${symbol}`"
       prop="token_amount"
     />
     <el-table-column
       prop="create_time"
-      label="时间"
+      :label="$t('time')"
     />
   </el-table>
 </template>

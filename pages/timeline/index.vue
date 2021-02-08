@@ -1,19 +1,7 @@
 <template>
   <div class="timeline">
     <!-- banner -->
-    <div v-if="isLogined" class="banner">
-      <section class="banner-main">
-        <h2 class="banner-title">
-          {{ $t('welcome-to-join') }}
-        </h2>
-        <h2 class="banner-title bold">
-          一个 <span>公开</span> <span>永存</span> 的数字作品库
-        </h2>
-        <p class="banner-description">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
-        <img src="@/assets/img/dynamic_banner_people.png" alt="people" class="banner-people">
-        <img src="@/assets/img/dynamic_banner_decoration.png" alt="decoration" class="banner-decoration">
-      </section>
-    </div>
+    <timelineBanner v-if="isLogined" />
     <!-- row main -->
     <div class="row">
       <div class="col-6">
@@ -48,6 +36,7 @@
               </el-dropdown-menu>
             </el-dropdown> -->
           </section>
+          <inputContent style="margin-top: 20px;" @pushed="updateList" />
           <p v-if="pull.list.length === 0 && !filterLoading" class="not-content">
             {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
           </p>
@@ -56,10 +45,19 @@
             :key="index"
             class="timeline-card"
           >
+            <div v-if="!item.card">
+              {{ $t('error.getDataError') }}: {{ item.id }}
+            </div>
             <timelineCard
-              v-if="item.platform === 'matataki'"
+              v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 1"
               show-logo
               :card="item.card"
+            />
+            <dynamicCard
+              v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 3"
+              :key="index"
+              :data="item.card"
+              @ref-push="refPush"
             />
             <twitterCard
               v-else-if="item.platform === 'twitter'"
@@ -67,20 +65,27 @@
               :card="item.card"
               :front-queue="item.frontQueue"
               :from-user="getSourceUser(item)"
+              :stats="item.stats"
+              @click-like="likeEvent"
             />
             <bilibiliCard
               v-else-if="item.platform === 'bilibili'"
               :data="item.card"
               :from-user="getSourceUser(item)"
+              :stats="item.stats"
+              @click-like="likeEvent"
             />
             <mastodonCard
               v-else-if="item.platform === 'mastodon'"
               :data="item.card"
               :from-user="getSourceUser(item)"
+              :stats="item.stats"
+              @click-like="likeEvent"
             />
             <div v-else>
-              不支持的平台类型: {{ item.platform }}
+              {{ $t('unsupported-platform-type') }}: {{ item.platform }}
             </div>
+            <!-- v-else-if="item.platform === 'dynamic'" -->
           </div>
           <div class="load-more-button">
             <buttonLoadMore
@@ -95,27 +100,7 @@
           </div>
         </div>
         <!-- no 没有登录 -->
-        <div v-else class="welcome">
-          <!-- -- -->
-          <img src="@/assets/img/dynamic_banner_people.png" alt="" class="welcome-people">
-          <h2 class="welcome-title">
-            {{ $t('welcome-to-join') }}
-          </h2>
-          <h2 class="welcome-title">
-            一个 <span>公开</span> <span>永存</span> 的数字作品库
-          </h2>
-
-          <div class="welcome-text">
-            <p v-if="!isLogined" class="welcome-description">请 <span @click="login">{{ $t('login') }}</span> 后查看您的</p>
-            <p class="welcome-description-time">个<span>/</span>性<span>/</span>化<span>/</span>动<span>/</span>态<span>/</span>时<span>/</span>间<span>/</span>轴</p>
-            <a
-              v-if="!isLogined"
-              href="javascript:;"
-              class="btn"
-              @click="login"
-            >{{ $t('home.signIn') }}</a>
-          </div>
-        </div>
+        <timelineWelcome v-else />
       </div>
       <div class="col-3 recommend">
         <!-- 推荐用户列表 -->
@@ -143,64 +128,80 @@
         </div> -->
 
         <!-- 平台筛选器 -->
-        <section v-if="isLogined" class="head ra-head">
+        <section v-if="isLogined" class="head ra-head" @click="sidebarSwitch.filter = !sidebarSwitch.filter">
           <h3 class="head-title">
             {{ $t('platform-screening') }}
           </h3>
+          <i
+            class="el-icon-caret-bottom ra-head-caret"
+            :class="sidebarSwitch.filter && 'ra-caret-unfold'"
+          />
         </section>
-        <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
-          <el-checkbox
-            v-model="checkAll"
-            :indeterminate="isIndeterminate"
-            class="checkbox-all"
-            @change="handleCheckAllChange"
-          >
-            {{ $t('select-all') }}
-          </el-checkbox>
-          <el-divider />
-          <el-checkbox-group
-            v-model="checkedCities"
-            class="fl checkbox-group"
-            @change="handleCheckedCitiesChange"
-          >
+        <div class="ra-box" :class="sidebarSwitch.filter && 'ra-box-unfold'">
+          <div v-if="isLogined" v-loading="filterLoading" class="ra-content platform-filters">
             <el-checkbox
-              v-for="action in actionTypes"
-              :key="action.key"
-              class="checkbox"
-              :label="action.key"
+              v-model="checkAll"
+              :indeterminate="isIndeterminate"
+              class="checkbox-all"
+              @change="handleCheckAllChange"
             >
-              {{ action.label }}
+              {{ $t('select-all') }}
             </el-checkbox>
-          </el-checkbox-group>
+            <el-divider />
+            <el-checkbox-group
+              v-model="checkedCities"
+              class="fl checkbox-group"
+              @change="handleCheckedCitiesChange"
+            >
+              <el-checkbox
+                v-for="action in actionTypes"
+                :key="action.key"
+                class="checkbox"
+                :label="action.key"
+              >
+                {{ action.label }}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
         </div>
 
         <!-- 已关注的用户列表 -->
-        <section class="head ra-head">
+        <section class="head ra-head" @click="sidebarSwitch.authorList = !sidebarSwitch.authorList">
           <h3 class="head-title">
             {{ $t('followed-cross-platform-authors') }}
           </h3>
-        </section>
-        <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">
-          <userPlatformCard
-            v-for="(item, index) in userPlatformList"
-            :key="index"
-            :card="item"
+          <i
+            class="el-icon-caret-bottom ra-head-caret"
+            :class="sidebarSwitch.authorList && 'ra-caret-unfold'"
           />
-          <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
+        </section>
+        <div class="ra-box" :class="sidebarSwitch.authorList && 'ra-box-unfold'">
+          <div v-loading="userPlatformListLoading" class="ra-content user-platform-list">
+            <userPlatformCard
+              v-for="(item, index) in userPlatformList"
+              :key="index"
+              :card="item"
+            />
+            <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
+          </div>
         </div>
       </div>
     </div>
+    <inputDialog v-model="showInputDialog" :preset="inputDialogPreset" />
   </div>
 </template>
 
 <script>
 // import throttle from 'lodash/throttle'
 import axios from 'axios'
-
 import { mapGetters, mapActions } from 'vuex'
 
 import { getCookie } from '@/utils/cookie'
 
+import inputContent from '@/components/dynamic/input_content.vue'
+import inputDialog from '@/components/dynamic/input_dialog'
+import timelineBanner from '@/components/timeline/timeline_banner.vue'
+import timelineWelcome from '@/components/timeline/timeline_welcome.vue'
 import timelineCard from '@/components/timeline_card/index.vue'
 import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
@@ -209,9 +210,12 @@ import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
 import timelineHelp from '@/components/help/timeline_help'
+import dynamicCard from '@/components/dynamic/card'
 
 export default {
   components: {
+    inputContent,
+    inputDialog,
     timelineCard,
     twitterCard,
     bilibiliCard,
@@ -219,7 +223,10 @@ export default {
     buttonLoadMore,
     // RAList,
     userPlatformCard,
-    timelineHelp
+    timelineHelp,
+    timelineBanner,
+    timelineWelcome,
+    dynamicCard
   },
   data() {
     return {
@@ -230,7 +237,7 @@ export default {
         list: [],
       },
       usersLoading: false,
-      usersRecommendList: [{},{},{},{},{}],
+      usersRecommendList: [],
       userPlatformList: [],
       userPlatformListLoading: false,
       filterLoading: true,
@@ -256,7 +263,13 @@ export default {
         }
       ],
       actions: null,
-      autoRequestTime: 0
+      autoRequestTime: 0,
+      sidebarSwitch: {
+        filter: false,
+        authorList: false
+      },
+      showInputDialog: false,
+      inputDialogPreset: null
     }
   },
   computed: {
@@ -287,13 +300,6 @@ export default {
   },
   methods: {
     ...mapActions(['getCurrentUser']),
-    login() {
-      try {
-        this.$store.commit('setLoginModal', true)
-      } catch (e) {
-        console.log(e)
-      }
-    },
     async getCurrentUserInfo() {
       try {
         this.userInfo = await this.getCurrentUser()
@@ -308,22 +314,27 @@ export default {
         if (res.data && res.data.list && res.data.list.length !== 0) {
           const list = []
           for (let i = 0; i < res.data.list.length; i++) {
+            const entry = res.data.list[i]
             list.push({
-              card: JSON.parse(res.data.list[i].data),
+              card: this.tryJsonParse(entry.data),
               frontQueue: [],
-              platform: res.data.list[i].platform,
-              platform_user: res.data.list[i].platform_user,
-              platform_user_id: res.data.list[i].platform_user_id,
-              platform_username: res.data.list[i].platform_username
+              id: entry.id,
+              platform: entry.platform,
+              platform_user: entry.platform_user,
+              platform_user_id: entry.platform_user_id,
+              platform_username: entry.platform_username,
+              stats: {
+                like: entry.like,
+                liked: entry.liked
+              }
               // frontQueue: this.getFrontQueue(res.data, i)
             })
-            if (res.data.list[i].platform === 'bilibili') {
-              console.log('stype：', JSON.parse(res.data.list[i].data).desc.stype)
+            if (entry.platform === 'bilibili') {
+              console.log('stype：', JSON.parse(entry.data).desc.stype)
             }
           }
           this.pull.list = this.pull.list.concat(list)
         }
-        console.log('结果：', res, this.pull.list)
       }
       catch (e) {
         console.error('[get aggregator timeline failure] [res, e]:', res, e)
@@ -339,6 +350,16 @@ export default {
       else {
         console.error('[get aggregator timeline failure] res:', res)
         this.$message.error(this.$t(res.message))
+      }
+    },
+    tryJsonParse(str) {
+      if (!str) return null
+      try {
+        return JSON.parse(str)
+      }
+      catch (e) {
+        console.warn('转换动态列表 JSON 时出现错误：', e)
+        return null
       }
     },
     // 获取推荐作者
@@ -468,6 +489,31 @@ export default {
       this.filterLoading = true
       this.pull.list = []
       this.autoRequestTime = Date.now()
+    },
+    async likeEvent({type, platform, dynamicId}) {
+      const url = process.env.VUE_APP_MATATAKI_CACHE + '/status/interactive/' + type
+      const headers = {}
+      const accessToken = getCookie('ACCESS_TOKEN')
+      if (!accessToken) return this.$t('error.pleaseLogin')
+      if (accessToken) headers['x-access-token'] = accessToken
+
+      try {
+        const { data: res } = await axios.post(url, { platform, dynamicId }, { headers })
+        if (!res.code) {
+          this.$message.success(this.$t('likeSuccess'))
+        }
+        else this.$message.error(res.error)
+      }
+      catch (e) {
+        console.error('[Like failed]:', e)
+        this.$message.error(this.$t('fail'))
+      }
+    },
+    refPush(url) {
+      this.inputDialogPreset = {
+        reference: url
+      }
+      this.showInputDialog = true
     }
   }
 }
@@ -475,150 +521,6 @@ export default {
 
 
 <style lang="less" scoped>
-
-._mv() {
-  max-width: 1200px;
-  width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.banner {
-  ._mv();
-  box-sizing: border-box;
-  height: 240px;
-  margin-top: 40px;
-
-  &-main {
-    height: 100%;
-    background-color: #ece7ff;
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-    background-image: url(../../assets/img/dynamic_banner_bc.png);
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  &-people {
-    position: absolute;
-    left: -30px;
-    top: -20px;
-    height: calc(100% + 20px);
-  }
-
-  &-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1);
-    line-height: 40px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #fa6400;
-    }
-  }
-
-  &-description {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 10px;
-    padding: 0;
-    margin: 20px 0 0 0;
-    color: #000;
-    span {
-      color: #b2b2b2;
-    }
-  }
-
-  &-decoration {
-    height: 70%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-}
-.welcome {
-  height: 345px;
-  position: relative;
-  box-sizing: border-box;
-  background-color: #ece7ff;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  padding-right: 68px;
-  margin-top: 44px;
-  background-image: url(../../assets/img/dynamic_banner_bc.png);
-  background-size: cover;
-  &-people {
-    position: absolute;
-    left: 40px;
-    top: -20px;
-    height: calc(100% + 20px);
-  }
-
-  &-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1);
-    line-height: 40px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #fa6400;
-    }
-  }
-  &-text {
-    text-align: right;
-    margin-top: 22px;
-    .btn {
-      display: inline-block;
-      background: rgba(84, 45, 224, 1);
-      border-radius: 15px;
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 1);
-      line-height: 20px;
-      padding: 5px 47px;
-      margin: 30px 0 0 0;
-      &:hover {
-        background-color: mix(rgba(84, 45, 224, 1), #000, 90%);
-      }
-    }
-  }
-  &-description {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(51, 51, 51, 1);
-    line-height: 30px;
-    padding: 0;
-    margin: 0;
-    span {
-      color: #542de0;
-      cursor: pointer;
-    }
-  }
-  &-description-time {
-    font-size: 16px;
-    font-weight: 400;
-    color: #333333;
-    line-height: 22px;
-    letter-spacing: 10px;
-    padding: 0;
-    margin: 10px -10px 0 0;
-    span {
-      color: #b2b2b2;
-    }
-  }
-}
-
 .head {
   height: 24px;
   margin-top: 20px;
@@ -663,13 +565,21 @@ export default {
       color: @purpleDark;
       cursor: pointer;
     }
+
+    &-caret {
+      display: none;
+    }
   }
-  .ra-content {
-    background: rgba(255, 255, 255, 1);
-    border-radius: @br10;
-    padding: 20px;
+  .ra-box {
+    transition: all ease 0.5s;
     margin-top: 20px;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 1);
+    border-radius: @br10;
+    overflow: hidden;
+    .ra-content {
+      padding: 20px;
+    }
   }
 }
 
@@ -833,11 +743,36 @@ export default {
 }
 @media screen and (max-width: 768px) {
   .row {
+    display: flex;
+    flex-direction: column-reverse;
     .col-6 {
       width: 100%;
     }
     .col-3 {
-      display: none;
+      width: 100%;
+      position: static;
+      margin-bottom: 20px;
+    }
+  }
+  .recommend {
+    .ra-head {
+      cursor: pointer;
+      &-caret {
+        display: inline;
+        font-size: 20px;
+        transition: transform 0.4s;
+        &.ra-caret-unfold {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .ra-box {
+      margin-top: 0;
+      max-height: 0;
+      &.ra-box-unfold {
+        margin-top: 20px;
+        max-height: 330px;
+      }
     }
   }
   .banner-people {

@@ -1,7 +1,7 @@
 <template>
   <div class="album">
     <div v-if="locked" class="album-sensitivetab" @click="openSensitiveShow">
-      敏感内容
+      {{ $t('sensitive-content') }}
     </div>
     <!-- 单张图片 -->
     <div
@@ -235,9 +235,6 @@ export default {
     locked () {
       return this.sensitive && !this.showSensitive
     }
-  },
-  mounted () {
-    console.log('图片TYPE:', this.media[0].type)
   },
   methods: {
     openSensitiveShow () {

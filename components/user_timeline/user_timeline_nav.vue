@@ -30,7 +30,7 @@
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="closeTimeline">
-          关闭推文同步
+          {{ $t('turn-off-tweet-sync') }}
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

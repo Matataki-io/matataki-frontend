@@ -2,7 +2,7 @@
   <div>
     <div class="token-help">
       <a href="https://www.yuque.com/matataki/matataki" target="_blank">
-        Fan票使用手册
+        {{ $t('coin-user-manual') }}
         <i class="el-icon-arrow-right" />
       </a>
     </div>
@@ -13,36 +13,30 @@
       class="input-form"
       label-width="80px"
     >
-      <el-form-item
-        label="名称"
-        prop="name"
-      >
+      <el-form-item :label="$t('name')" prop="name">
         <el-input
           v-model="form.name"
           class="input"
-          placeholder="请输入Fan票名称"
+          :placeholder="$t('please-enter-the-name-of-the-coin')"
         />
       </el-form-item>
 
-      <el-form-item
-        label="缩写"
-        prop="symbol"
-      >
+      <el-form-item :label="$t('abbreviation')" prop="symbol">
         <el-input
           v-model="form.symbol"
           :disabled="!isPost"
           class="input"
-          placeholder="请输入Fan票缩写(发行后不可修改)"
+          :placeholder="$t('please-enter-the-abbreviation-of-coin-cannot-be-modified-after-issuance')"
         />
       </el-form-item>
       <el-form-item
-        label="标签"
+        :label="$t('token.tags')"
         prop="tag"
         class="form-tags"
       >
         <el-checkbox-group v-model="form.tags">
           <el-checkbox-button
-            v-for="(tag, index) in tags" 
+            v-for="(tag, index) in tags"
             :key="index"
             :label="tag.label"
           >
@@ -51,7 +45,7 @@
         </el-checkbox-group>
         <el-tooltip
           effect="dark"
-          content="主体选择不影响相关功能"
+          :content="$t('subject-choice-does-not-affect-related-functions')"
           placement="right"
           class="tag-help"
         >
@@ -62,7 +56,7 @@
         </el-tooltip>
       </el-form-item>
       <el-form-item
-        label="图标"
+        :label="$t('icon')"
         prop="logo"
       >
         <el-input
@@ -101,13 +95,13 @@
       <!-- 编辑页面不需要显示 -->
       <el-form-item
         v-if="isPost"
-        label="发行数量"
+        :label="$t('issue-number')"
         prop="number"
       >
         <el-input
           v-model="form.number"
           class="input"
-          placeholder="请输入首次发行数量(最多发行1亿)"
+          :placeholder="$t('please-enter-the-number-of-initial-issuance-up-to-100-million-issuance')"
         />
       </el-form-item>
 
@@ -122,11 +116,11 @@
           type="textarea"
           maxlength="50"
           show-word-limit
-          placeholder="简介"
+          :placeholder="$t('Introduction')"
         />
       </el-form-item>
       <el-form-item
-        label="介绍"
+        :label="$t('presentation')"
         prop=""
       >
         <el-input
@@ -136,7 +130,7 @@
           type="textarea"
           maxlength="1000"
           show-word-limit
-          placeholder="介绍"
+          :placeholder="$t('presentation')"
         />
       </el-form-item>
 
@@ -152,7 +146,7 @@
           <el-input
             v-model="about[index].name"
             class="input web-name"
-            placeholder="网站名称"
+            :placeholder="$t('site-name')"
             :maxlength="20"
           />
           <el-input
@@ -214,7 +208,7 @@
           v-if="isPost"
           v-model="form.agree"
         >
-          我声明Fan票为本人自愿发行，由本人承担一切法律责任
+          {{ $t('I-declare-that-the-coin-is-issued-voluntarily-by-me-and-I-shall-bear-all-legal-responsibilities') }}
         </el-checkbox>
         <el-button
           :disabled="!form.agree"
@@ -222,13 +216,13 @@
           class="publish-btn"
           @click="submitForm('form')"
         >
-          {{ isPost ? '发行Fan票' : '保存' }}
+          {{ isPost ? $t('issue-coin') : $t('save') }}
         </el-button>
         <p
           v-if="isPost"
           class="tips"
         >
-          创建Fan票过程需要上链，请耐心等候。
+          {{ $t('the-process-of-creating-a-coin-requires-winding-please-wait-patiently') }}
         </p>
       </el-form-item>
     </el-form>

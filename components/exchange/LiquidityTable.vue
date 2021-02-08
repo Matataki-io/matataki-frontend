@@ -7,11 +7,11 @@
     cell-class-name="trade-log-row"
   >
     <el-table-column
-      label="方向"
+      :label="$t('direction')"
       width="70"
     >
       <template slot-scope="scope">
-        <span :class="direction(scope.row.liquidity)">{{ scope.row.liquidity >= 0 ? '添加' : '删除' }}</span>
+        <span :class="direction(scope.row.liquidity)">{{ scope.row.liquidity >= 0 ? $t('add-to') : $t('delete') }}</span>
         <txHash
           v-if="scope.row.tx_hash"
           :hash="scope.row.tx_hash"
@@ -41,11 +41,11 @@
     </el-table-column>
     <el-table-column
       prop="liquidity"
-      label="流动金Token"
+      :label="$t('token.liquidGoldToken')"
     />
     <el-table-column
       prop="create_time"
-      label="时间"
+      :label="$t('time')"
       width="133"
     />
   </el-table>

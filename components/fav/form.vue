@@ -6,10 +6,10 @@
     :rules="rulesFav"
     class="form-fav"
   >
-    <el-form-item label="收藏夹名称" prop="name">
+    <el-form-item :label="$t('favorite-name')" prop="name">
       <el-input
         v-model="formFav.name"
-        placeholder="收藏夹名称"
+        :placeholder="$t('favorite-name')"
         maxlength="20"
         show-word-limit
       />
@@ -19,12 +19,12 @@
         v-model="formFav.brief"
         type="textarea"
         :rows="7"
-        placeholder="可填写简介"
+        :placeholder="$t('fill-in-the-profile')"
         maxlength="200"
         show-word-limit
       />
       <el-checkbox v-model="formFav.status">
-        公开收藏夹
+        {{ $t('public-favorites') }}
       </el-checkbox>
     </el-form-item>
     <div class="form-button">
@@ -35,7 +35,7 @@
         :loading="submitLoading"
         @click="handleFormFavOnSubmit('formFav')"
       >
-        提交
+        {{ $t('submit') }}
       </el-button>
     </div>
   </el-form>

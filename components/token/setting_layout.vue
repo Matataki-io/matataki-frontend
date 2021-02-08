@@ -2,11 +2,11 @@
   <div class="setting">
     <div class="setting-header">
       <h3 @click="$router.go(-1)">
-        管理后台
+        {{ $t('management-background') }}
       </h3>
       <h3>
         <i class="el-icon-arrow-right" />
-        基础设置
+        {{ $t('basic-settings') }}
       </h3>
       <!-- <h3>
         <span @click="$router.go(-1)">

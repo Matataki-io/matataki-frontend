@@ -1,53 +1,55 @@
 <template>
-  <a
-    :href="card.url"
-    target="_blank"
-    class="card"
-  >
-    <div
-      v-if="card.cover"
-      class="card-cover"
-    >
-      <img
-        :src="coverSrc"
-        :alt="card.title"
-      >
-    </div>
-    <div>
-      <div class="card-operate">
-        <p
-          :class="!shareCard && 'card-sharehall'"
-          class="card-text"
-        >{{ card.title || $t('not') }}</p>
-        <div
-          v-if="cardType !== 'edit' && $route.name === 'sharehall'"
-          class="card-operate"
-        >
-          <svg-icon
-            class="icon"
-            icon-class="copy"
-            @click="copy(card.url, $event)"
-          />
-          <svg-icon
-            class="icon"
-            icon-class="quote"
-            @click="ref(card.url, $event)"
-          />
-        </div>
-      </div>
-      <p
-        :class="!shareCard && 'card-sharehall'"
-        class="card-summary"
-      >{{ card.summary || $t('not') }}</p>
-    </div>
+  <div class="card-box">
     <span
       v-if="!shareCard && cardType === 'edit'"
-      class="card-remove"
+      class="card-box-remove"
       @click="removeCard"
     >
       <i class="el-icon-close icon" />
     </span>
-  </a>
+    <a
+      :href="card.url"
+      target="_blank"
+      class="card"
+    >
+      <div
+        v-if="card.cover"
+        class="card-cover"
+      >
+        <img
+          :src="coverSrc"
+          :alt="card.title"
+        >
+      </div>
+      <div class="card-info">
+        <div class="card-operate">
+          <p
+            :class="!shareCard && 'card-sharehall'"
+            class="card-text"
+          >{{ card.title || $t('not') }}</p>
+          <div
+            v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+            class="card-operate"
+          >
+            <svg-icon
+              class="icon"
+              icon-class="copy"
+              @click="copy(card.url, $event)"
+            />
+            <svg-icon
+              class="icon"
+              icon-class="quote"
+              @click="ref(card.url, $event)"
+            />
+          </div>
+        </div>
+        <p
+          :class="!shareCard && 'card-sharehall'"
+          class="card-summary"
+        >{{ card.summary || $t('not') }}</p>
+      </div>
+    </a>
+  </div>
 </template>
 
 <script>
@@ -116,25 +118,49 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.card {
-  background: #EAEAEA;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
+.card-box {
   position: relative;
-  padding: 10px;
+  &-remove {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    cursor: pointer;
+    .icon {
+      font-size: 14px;
+    }
+  }
+}
+
+.card {
+  display: flex;
+  // align-items: center;
+  position: relative;
   box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
   color: #000;
+  border-radius: 10px;
+  background-color: transparent;
+  border: 1px solid #ccd6dd;
+  overflow: hidden;
+  // padding: 10px;
+  box-sizing: border-box;
   &-cover {
-    width: 120px;
-    height: 60px;
+    width: 240px;
+    height: 120px;
     border-radius: 3px;
     overflow: hidden;
-    margin-right: 10px;
-    flex: 0 0 120px;
-    border: 1px solid #e0e0e0;
+    flex: 0 0 240px;
+    border-right: 1px solid #ededed;
     box-sizing: border-box;
     img {
       width: 100%;
@@ -190,23 +216,8 @@ export default {
       -webkit-box-orient: vertical;
     }
   }
-  &-remove {
-    position: absolute;
-    right: -10px;
-    top: -10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    .icon {
-      font-size: 14px;
-    }
-  }
 }
-
+.card-info {
+  padding: 10px;
+}
 </style>

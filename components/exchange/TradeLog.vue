@@ -7,26 +7,26 @@
             :src="logo"
             size="20px"
           />
-          <span>{{ minetokenToken.symbol }}视角</span>
+          <span>{{ minetokenToken.symbol }}{{ $t('perspective') }}</span>
           <span
             v-if="tokensId.length >= 2"
-            title="切换视角"
+            :title="$t('switch-perspective')"
           ><svg-icon
             class="refresh"
             icon-class="refresh"
             @click="changeView"
           /></span>
         </div>
-        <span><span class="black">{{ price }}</span> 最新价格</span>
-        <span><span :class="changeClass">{{ change }}</span> 24h涨跌</span>
-        <span><span class="black">{{ volume }}</span> 24h成交</span>
+        <span><span class="black">{{ price }}</span> {{ $t('latest-price') }}</span>
+        <span><span :class="changeClass">{{ change }}</span> {{ $t('24h-change') }}</span>
+        <span><span class="black">{{ volume }}</span> {{ $t('24h-transaction') }}</span>
       </div>
       <!-- <div class="jJSpkX" /> -->
     </div>
     <div class="kvFQhz">
       <div class="iNUelT">
         <div class="content">
-          <span class="title">{{ type === 'purchase' ? '交易记录' : '流动金记录' }}</span>
+          <span class="title">{{ type === 'purchase' ? $t('transaction-record') : $t('mobile-gold-record') }}</span>
           <n-link
             v-if="currentId"
             :to="{name: 'token-id', params: {id: currentId}}"
@@ -45,7 +45,7 @@
             type="border-card"
           >
             <el-tab-pane
-              label="我的流水"
+              :label="$t('my-running-water')"
               name="my"
             >
               <TradeTable
@@ -60,7 +60,7 @@
               />
             </el-tab-pane>
             <el-tab-pane
-              label="全部流水"
+              :label="$t('all-flow')"
               name="all"
             >
               <TradeTable

@@ -16,32 +16,32 @@
           src="@/assets/img/m_logo.png"
           alt="logo"
         >
-        <p>请仔细核对订单信息，如果有误请取消后再次尝试</p>
+        <p>{{ $t('please-check-the-order-information-carefully-if-it-is-wrong-please-cancel-and-try-again') }}</p>
         <table class="order-table">
           <tbody>
             <tr>
               <td class="order-key">
-                交易账号：
+                {{ $t('trading-account') }}：
               </td><td>{{ currentUserInfo.nickname || currentUserInfo.name }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                交易内容：
+                {{ $t('transaction-content') }}：
               </td><td>{{ form.outputToken.symbol }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                交易数量：
+                {{ $t('number-of-transactions') }}：
               </td><td>{{ form.output }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                创建时间：
+                {{ $t('creation-time') }}：
               </td><td>{{ friendlyTime }}</td>
             </tr>
             <tr>
               <td class="order-key">
-                订单编号：
+                {{ $t('order-number') }}：
               </td><td>{{ order.trade_no }}</td>
             </tr>
             <!-- <tr>
@@ -67,13 +67,13 @@
               effect="light"
             >
               <div slot="content">
-                您的交易可能由于正常的价格波动而失败，<br>
-                预期价格波动区间将有助于您的交易成功。<br>
-                交易成功后，多支付的金额会退回。
+                {{ $t('your-transaction-may-fail-due-to-normal-price-fluctuations') }}<br>
+                {{ $t('the-expected-price-fluctuation-range-will-help-your-trading-success') }}<br>
+                {{ $t('after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded') }}
               </div>
               <i class="el-icon-question" />
             </el-tooltip>
-            预期价格波动：1%
+            {{ $t('expected-price-fluctuations') }}：1%
           </div>
           <div>
             <span class="money-label">
@@ -81,10 +81,10 @@
                 placement="bottom"
                 effect="light"
               >
-                <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br>多支付的金额会保留在您的CNY账户中。</div>
+                <div slot="content" v-html="$t('when-the-transaction-amount-accuracy-is-greater-than-x-it-will-automatically-be-paid-and-the-overpayment-amount-will-remain-in-your-CNY-account', [ 0.01 ])" />
                 <i class="el-icon-question" />
               </el-tooltip>
-              合计：
+              {{ $t('total') }}：
             </span>
             <span class="money">{{ input.toFixed(2) }} CNY</span>
           </div>
@@ -95,14 +95,14 @@
               v-model="useBalance"
               @change="useBalanceChange"
             >
-              使用余额（{{ balance }} CNY）
+              {{ $t('use-balance') }}（{{ balance }} CNY）
             </el-checkbox>
           </div>
-          <div><span class="money-label">抵扣：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('deduction') }}：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
         </div>
         <div class="flexBox padding20">
           <div />
-          <div><span class="money-label">应付：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('handle') }}：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
         </div>
       </div>
       <QRCode
@@ -117,7 +117,7 @@
           type="primary"
           @click="confirmPay"
         >
-          确认支付
+          {{ $t('confirm-payment') }}
         </el-button>
       </div>
     </div>

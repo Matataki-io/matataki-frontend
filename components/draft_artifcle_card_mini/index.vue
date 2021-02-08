@@ -19,11 +19,11 @@
           </span>
           <span v-if="triggerTime && triggered !== 2" class="timed">
             <svg-icon icon-class="clock" />
-            {{ triggerTime }} 发布
+            {{ triggerTime }} {{ $t('publish.publish') }}
           </span>
           <span v-if="triggered === 2" class="timed">
             <svg-icon icon-class="clock" />
-            定时发布失败
+            {{ $t('time-publish-fail') }}
           </span>
         </p>
       </div>
@@ -34,7 +34,7 @@
       href="javascript:;"
       @click.stop="$emit('deltimer', index)"
     >
-      取消发布
+      {{ $t('unpublish') }}
     </a>
     <a
       v-else

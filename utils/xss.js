@@ -348,6 +348,18 @@ export const filterOutHtmlTags = (html, whiteList = []) => {
     stripIgnoreTagBody: ['script']
   })
 }
+// 过滤分享内容
+const whiteListShare = {
+  a: [ 'class', 'contenteditable', 'href', 'title', 'data-user', 'data-tag', 'target' ]
+}
+export const filterOutHtmlShare = (html, whiteList = whiteListShare) => {
+  // 没有用markdownit渲染markdown文档, 因为可能造成不必要的消耗,(他只是一个摘要而已)
+  return xss(html, {
+    whiteList: whiteList,
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ['script']
+  })
+}
 
 // 处理文章 link 增加 属性, 新页面打开
 export const processLink = html => {

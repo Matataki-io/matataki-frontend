@@ -18,17 +18,11 @@
           v-for="(item, index) in card"
           :key="index"
         >
-          <div
-            class="swipe-content"
-            @click="viewP(index, item.id)"
-          >
-            <img
-              v-lazy="cover(item.cover)"
-              :alt="item.title"
-            >
-            <p>{{ item.title }}</p>
-            <div class="full" />
-          </div>
+          <ItemPc
+            :item="item"
+            :index="index"
+            @handleClick="e => viewP(e.index, e.id)"
+          />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -42,17 +36,11 @@
         v-for="(item, index) in card"
         :key="index"
       >
-        <div
-          class="swip-container"
-          @click="viewPM(item.id)"
-        >
-          <img
-            :src="cover(item.cover)"
-            :alt="item.title"
-          >
-          <p>{{ item.title }}</p>
-          <div class="full" />
-        </div>
+        <ItemMobile
+          :item="item"
+          :index="index"
+          @handleClick="e => viewPM(e.id)"
+        />
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -60,8 +48,15 @@
 
 <script>
 import throttle from 'lodash/throttle'
+import ItemPc from './item_pc.vue'
+import ItemMobile from './item_mobile.vue'
 
 export default {
+  name: 'ArticleSwipe',
+  components: {
+    ItemPc,
+    ItemMobile
+  },
   props: {
     card: {
       type: Array,
@@ -142,15 +137,7 @@ export default {
 .swipe-wrapper {
   overflow: hidden;
   min-height: 477px;
-}
-@media screen and (max-width: 768px) {
-  .pc {
-    display: none;
-  }
-  .mobile {
-    display: block !important;
-  }
-  .swipe-wrapper {
+  @media screen and (max-width: 768px) {
     min-height: 200px;
   }
 }
@@ -160,60 +147,12 @@ export default {
   margin: 0 auto;
   overflow: hidden;
   box-sizing: border-box;
-  &-content {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    background-color: #f1f1f1;
-    box-sizing: border-box;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    p {
-      position: absolute;
-      bottom: 40px;
-      left: 50px;
-      right: 40px;
-      font-size: 26px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      color: #ffffff;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      margin: 0;
-      z-index: 10;
-      opacity: 0.5;
-      padding: 0 0 0 15px;
-      &::before {
-        display: block;
-        content: "";
-        width: 5px;
-        // height: 30px;
-        background: #fff;
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-      }
-    }
-    .full {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 9;
-    }
-  }
 }
 .pc {
   margin: 20px 10px;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 }
 .mobile {
   display: none;
@@ -222,65 +161,15 @@ export default {
   box-sizing: border-box;
   /deep/ .van-swipe-item {
     box-sizing: border-box;
-    .swip-container {
-      overflow: hidden;
-      background: #f1f1f1;
-      border: 1px solid #f1f1f1;
-      box-sizing: border-box;
-      height: 170px;
-      position: relative;
-      border-radius: 10px;
-      overflow: hidden;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      p {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        font-size: 14px;
-        font-weight: bold;
-        letter-spacing: 1px;
-        color: rgba(255, 255, 255, 1);
-        line-height: 1;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        z-index: 10;
-        margin: 0;
-        padding: 0 0 0 8px;
-        &::before {
-          display: block;
-          content: "";
-          width: 2px;
-          // height: 30px;
-          background: #fff;
-          position: absolute;
-          left: 0;
-          top: 0;
-          bottom: 0;
-        }
-      }
-      .full {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 9;
-        height: 60px;
-        top: auto;
-        background: linear-gradient(0, rgba(0, 0, 0, 0.5) 0, transparent 100%);
-      }
-    }
   }
   /deep/ .van-swipe__indicators {
     .van-swipe__indicator {
       background: #dbdbdb;
       opacity: 1;
     }
+  }
+  @media screen and (max-width: 768px) {
+    display: block !important;
   }
 }
 </style>
@@ -331,18 +220,6 @@ export default {
     .el-carousel__item--card.is-active {
       width: 760px;
       transform: translateX(210px) scale(1) !important;
-    }
-  }
-}
-
-// 小于768
-@media screen and (max-width: 768px) {
-  .swipe {
-    .swipe-content p {
-      bottom: 30px;
-      left: 20px;
-      right: 20px;
-      font-size: 20px;
     }
   }
 }

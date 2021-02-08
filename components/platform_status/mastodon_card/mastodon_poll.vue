@@ -16,7 +16,7 @@
       />
     </div>
     <p class="mastodon-poll-footer">
-      {{ votersCount }}人 · {{ expiresAt }}
+      {{ votersCount }}{{ $t('people') }} · {{ expiresAt }}
     </p>
   </div>
 </template>
@@ -52,7 +52,6 @@ export default {
   },
   methods: {
     getPercent (value) {
-      console.log('value / this.votesCount', value, this.votesCount)
       return Math.round(value / this.votesCount * 100) || 0
     }
   }

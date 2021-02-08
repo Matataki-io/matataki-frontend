@@ -23,7 +23,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="持有"
+          :label="$t('hold')"
           prop="total_supply"
           sortable="custom"
           width="180"
@@ -40,7 +40,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="现价" width="180">
+        <el-table-column :label="$t('current-price')" width="180">
           <template slot-scope="scope">
             <span class="scope hold-z-index">
               {{ scope.row.current_price }}
@@ -74,14 +74,14 @@
                   v-if="expands[0] !== scope.row.token_id"
                   class="expand-button"
                 >
-                  展开明细
+                  {{ $t('expand-details') }}
                   <i class="el-icon-d-arrow-right i-spin-z90" />
                 </span>
                 <span
                   v-else
                   class="expand-button"
                 >
-                  收起明细
+                  {{ $t('collapse-details') }}
                   <i class="el-icon-d-arrow-right i-spin-f90" />
                 </span>
               </el-button>
@@ -97,22 +97,22 @@
 
               <el-dropdown size="small">
                 <el-button size="small">
-                  更多<i class="el-icon-arrow-down el-icon--right" />
+                  {{ $t('more') }}<i class="el-icon-arrow-down el-icon--right" />
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
                     <router-link class="token-more-link" :to="{name: 'exchange', hash: '#swap', query: { output: scope.row.symbol }}" target="_blank">
-                      交易
+                      {{ $t('transaction') }}
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <router-link class="token-more-link" :to="{name: 'token-id', params: { id: scope.row.token_id } }" target="_blank">
-                      进入主页
+                      {{ $t('go-to-homepage') }}
                     </router-link>
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <router-link class="token-more-link" :to="{name: 'exchange', hash: '#pool', query: { output: scope.row.symbol }}" target="_blank">
-                      添加流动性
+                      {{ $t('add-liquidity') }}
                     </router-link>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -125,8 +125,8 @@
 
       <ul class="hold-list">
         <li class="hold-header">
-          <span>Fan票</span>
-          <span @click="sortChangeM">持仓量<i class="el-icon-d-caret" /></span>
+          <span>{{ $t('fan-ticket') }}</span>
+          <span @click="sortChangeM">{{ $t('open-interest') }}<i class="el-icon-d-caret" /></span>
         </li>
         <li v-for="(item, index) in pointLog.list" :key="index">
           <div class="item">

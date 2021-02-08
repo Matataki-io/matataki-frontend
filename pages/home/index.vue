@@ -37,7 +37,7 @@
                     {{ $t('home.account') }}
                   </el-dropdown-item>
                 </n-link>
-      
+
                 <div
                   class="link"
                   @click="btnsignOut"
@@ -53,28 +53,25 @@
               href="javascript:;"
               class="login-btn"
               @click="login"
-            >注册/登录</a>
+            >{{ $t('register-or-log-in') }}</a>
           </div>
         </header>
         <section class="screen1-block__text">
           <div class="screen1-block__text__content">
-            <h1>我们帮助 <span>自由</span> 的创作者<br>获得更多收入<br>& 建立 <span>公开 永存</span> 的数字作品库</h1>
+            <h1 v-html="$t('home-title')" />
             <p>
-              所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个公共节点上分布式存储，实现永久可访问而无需担心被和谐删档，你的数据只属于你自己。
+              {{ $t('home-introduction-1') }}
               <br>
-              Matataki希望围绕 有趣的话题、深度思考，吸引有独立精神的创作者，构建独特的内容价值网络，依托于区块链技术搭建稳固优质社群平台，保护创作内容版权；配合独特算法让优质内容浮现，以数字货币和粉丝通证让创作者、参与者获得持续回报。
+              {{ $t('home-introduction-2') }}
             </p>
           </div>
 
           <section class="screen1-block__btn">
-            <a href="javascript:;" class="screen1-btn create" @click="writeP">立即创作</a>
+            <a href="javascript:;" class="screen1-btn create" @click="writeP">{{ $t('create-now') }}</a>
             <router-link :to="{name: 'article'}" class="screen1-btn subscribe">
-              探索作品
+              {{ $t('explore-works') }}
             </router-link>
             <!-- <a href="javascript:;" class="screen1-more">订阅我们</a> -->
-          </section>
-          <section class="qq-notice">
-            <p>请加入我们的官QQ群：<a href="https://jq.qq.com/?_wv=1027&k=gY0RKj2t" rel="noopener noreferrer" target="_blank">766605671</a></p>
           </section>
         </section>
         <section class="screen1-block__img">
@@ -95,7 +92,7 @@
     <!-- screen2 -->
     <section class="screen2">
       <h3 class="screen-title">
-        TA们也在使用Matataki
+        {{ $t('tas-are-also-using-Matataki') }}
       </h3>
       <section class="screen2-content">
         <el-carousel
@@ -128,7 +125,7 @@
                   </p>
                   <div class="swipe-line" />
                   <p class="swipe-publish">
-                    <span>{{ supporter.numPosts }}</span>篇文章已发表
+                    <span>{{ supporter.numPosts }}</span>{{ $t('articles-published') }}
                   </p>
                   <router-link :to="{name: 'p-id', params: { id: supporter.post.id } }" target="_blank">
                     <div class="swipe-article">
@@ -172,7 +169,7 @@
                   </p>
                   <div class="swipe-line" />
                   <p class="swipe-publish">
-                    <span>{{ supporter.numPosts }}</span>篇文章已发表
+                    <span>{{ supporter.numPosts }}</span>{{ $t('articles-published') }}
                   </p>
                   <router-link :to="{name: 'p-id', params: { id: supporter.post.id } }" target="_blank">
                     <div class="swipe-article">
@@ -195,28 +192,28 @@
         <img src="@/assets/img/home/home_screen3_icon1.png" alt="icon">
       </div>
       <h3 class="screen-title">
-        为什么要在Matataki上创作？
+        {{ $t('why-create-on-Matataki') }}
       </h3>
       <section class="screen3-content">
         <section class="screen3-block">
           <img src="@/assets/img/home/home_screen3_1.png" alt="icon">
-          <h4>永久保存<br>只管放心发表</h4>
-          <p>无需担心被和谐，你创造的内容被永久存储在IPFS分布式网络上，且无法被任何人进行再次修改，方便在其他平台日后维权。</p>
+          <h4>{{ $t('save-forever') }}<br>{{ $t('just-publish-with-confidence') }}</h4>
+          <p>{{ $t('no-need-to-worry-about-being-harmonized-The-content-you-create-is-permanently-stored-on-the-IPFS-distributed-network-and-cannot-be-modified-again-by-anyone-which-is-convenient-for-future-rights-protection-on-other-platforms') }}。</p>
         </section>
         <section class="screen3-block">
           <img src="@/assets/img/home/home_screen3_2.png" alt="icon">
-          <h4>自由创作<br>尺度收放自如</h4>
-          <p>功能强大的内容编辑器，没有人可以影响您的创作自由，一切尽在自己掌控之中。您也可以允许自己的真粉们向自己提出建议的特权。</p>
+          <h4>{{ $t('free-creation') }}<br>{{ $t('standard-retractable') }}</h4>
+          <p>{{ $t('powerful-content-editor-no-one-can-influence-your-creative-freedom-everything-is-under-your-control-You-can-also-allow-your-true-fans-the-privilege-of-making-suggestions-to-yourself') }}</p>
         </section>
         <section class="screen3-block">
           <img src="@/assets/img/home/home_screen3_3.png" alt="icon">
-          <h4>个人通证<br>数字社交货币</h4>
-          <p>让粉丝们使用你发行的个人通证来解锁文章！你的个人通证的价值将不断增加！粉丝通证不仅仅是你的专属货币，也是粉丝们作为同行者的印记。</p>
+          <h4>{{ $t('personal-pass') }}<br>{{ $t('digital-social-currency') }}</h4>
+          <p>{{ $t('let-fans-use-your-personal-token-to-unlock-articles-The-value-of-your-personal-token-will-continue-to-increase-Fan-Pass-is-not-only-your-exclusive-currency-but-also-the-mark-of-fans-as-fellow-travelers') }}</p>
         </section>
         <section class="screen3-block">
           <img src="@/assets/img/home/home_screen3_4.png" alt="icon">
-          <h4>潜在收入<br>内容付费和打赏</h4>
-          <p>你的任何文章都可设置付费解锁，不要低估粉丝对您作品的喜爱，只要是优质作品，即使需要付费，他们也会常有付费动力！甚至用个人通证打赏。</p>
+          <h4>{{ $t('potential-income') }}<br>{{ $t('content-payment-and-rewards') }}</h4>
+          <p>{{ $t('any-of-your-articles-can-be-set-to-pay-to-unlock-Dont-underestimate-the-fans-love-of-your-work.-As-long-as-it-is-a-high-quality-work-even-if-you-need-to-pay-they-will-often-have-the-motivation-to-pay-Even-rewards-with-personal-passes') }}</p>
         </section>
       </section>
     </section>
@@ -225,31 +222,31 @@
     <!-- screen4 -->
     <section class="screen4">
       <h3 class="screen-title">
-        三步 使用 MATATAKI
+        {{ $t('three-steps-to-use-MATATAKI') }}
       </h3>
       <section class="screen4-content">
         <section class="screen4-block">
-          <h4>1.创建内容</h4>
-          <p>无需担心被和谐，你创造的内容被永久存储在IPFS分布式网络上，且无法被任何人进行再次修改，方便在其他平台日后维权。</p>
+          <h4>1.{{ $t('create-content') }}</h4>
+          <p>{{ $t('there-is-no-need-to-worry-about-being-harmonized-The-content-you-create-is-permanently-stored-on-the-IPFS-distributed-network-and-cannot-be-modified-again-by-anyone-to-facilitate-future-rights-protection-on-other-platforms') }}</p>
           <img src="@/assets/img/home/home_screen4_1.png" alt="icon">
         </section>
         <img src="@/assets/img/home/home_screen4_arrow.png" alt="screen" class="screen4-arrow">
         <section class="screen4-block">
-          <h4>2.分享链接</h4>
-          <p>将你的作品连接分享到你的粉丝大本营，如微博、公众号、微信群等。</p>
+          <h4>2.{{ $t('share-link') }}</h4>
+          <p>{{ $t('connect-and-share-your-work-to-your-fan-base-such-as-Weibo-official-account-WeChat-group-etc') }}</p>
           <img src="@/assets/img/home/home_screen4_2.png" alt="icon">
         </section>
         <img src="@/assets/img/home/home_screen4_arrow.png" alt="screen" class="screen4-arrow">
         <section class="screen4-block">
-          <h4>3.获得收益</h4>
-          <p>当你设置付费可见的内容被查看了，当即获得收益。优秀的作品甚至可以收到额外打赏。</p>
+          <h4>3.{{ $t('gain-profit') }}</h4>
+          <p>{{ $t('when-the-content-that-you-set-paid-to-be-visible-is-viewed-you-immediately-get-revenue-Excellent-works-can-even-receive-additional-rewards') }}</p>
           <img src="@/assets/img/home/home_screen4_3.png" alt="icon">
         </section>
       </section>
 
-      <p class="screen4-title">每一篇自由的创作都应该被永远记录 <span>—— 瞬Matataki</span></p>
+      <p class="screen4-title">{{ $t('every-free-creation-should-be-recorded-forever') }} <span>—— 瞬Matataki</span></p>
       <p class="screen4-btn">
-        <router-link :to="{name: 'article'}" class="screen4-btn">探索更多</router-link>
+        <router-link :to="{name: 'article'}" class="screen4-btn">{{ $t('explore-more') }}</router-link>
       </p>
     </section>
 
@@ -269,23 +266,23 @@
       <h3>Q & A</h3>
       <section class="screen6-content">
         <section class="screen6-block">
-          <h4>1 个人通证 与 瞬Matataki 的关系？</h4>
-          <p>个人通证是一种由个人发行的数字货币，在 瞬Matataki 上也被叫做Fan票，主要被用于支付解锁与你相关的个人创作内容。同时还可以被用作为“粉丝令牌”，只要持有一定数量也可以解锁一些你的创作内容。瞬Matataki 是首个引用了 个人通证 作为支付手段和核心验证手段的 内容创作平台。未来 瞬Matataki 也会开发出更多基于个人通证的有趣使用场景。更多说明可以查看<a href="https://www.matataki.io/p/977?invite=9" target="_blank">这篇</a></p>
+          <h4>1 {{ $t('what-is-the-relationship-between-the-personal-pass-and-Shun-Matataki') }}</h4>
+          <p>{{ $t('home-qa-1') }}<a href="https://www.matataki.io/p/977?invite=9" target="_blank">{{ $t('this-article') }}</a></p>
         </section>
 
         <section class="screen6-block">
-          <h4>2 使用Matataki的优势在哪？</h4>
-          <p>瞬Matataki 对于创作者来说是个绝佳 且 安全的内容创作平台：我们没有签约和入驻，对于内容和发布的频次我们也没有任何限制。内置了强大的Markdown编辑器，并且支持直接导入您在其他多个内容平台上的作品。利用 去中心化存储技术强力保障您的作品安全，免受和谐之苦！您只管 自由 创作！</p>
+          <h4>2 {{ $t('what-are-the-advantages-of-using-Matataki') }}</h4>
+          <p>{{ $t('home-qa-2') }}</p>
         </section>
 
         <section class="screen6-block">
-          <h4>3 瞬Matataki 是否收费？</h4>
-          <p>瞬Matataki 对于所有用户都是完全免费使用的。涉及到链上交易部分将会通过钱包扣除必要的交易手续费。</p>
+          <h4>3 {{ $t('does-Shun-Matataki-charge') }}</h4>
+          <p>{{ $t('home-qa-3') }}</p>
         </section>
 
         <section class="screen6-block">
-          <h4>4 我的作品如果被侵权了怎么办？</h4>
-          <p>在Matataki的所有文章都使用区块链技术盖上了时间戳，并且无法被篡改。这将可以作为有力证据在维权的时候使用。我们正在逐步推出社区治理系统，加强对于侵权内容的管控。</p>
+          <h4>4 {{ $t('what-if-my-work-is-infringed') }}</h4>
+          <p>{{ $t('home-qa-4') }}</p>
         </section>
       </section>
     </section>
@@ -395,7 +392,7 @@ export default {
       if (avatar) this.avatar = this.$ossProcess(avatar, { h: 60 })
       await this.getNotificationCounters()
     },
-    // 初始化轮播图 
+    // 初始化轮播图
     initSwipe() {
       try {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth

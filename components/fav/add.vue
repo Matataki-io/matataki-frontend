@@ -2,7 +2,7 @@
   <m-dialog
     v-model="createFavShowModal"
     width="420px"
-    title="添加到收藏夹"
+    :title="$t('add-to-favorites')"
     class="add-fav"
   >
     <div v-if="step === 0" class="content">
@@ -18,7 +18,7 @@
               />
               <span :title="item.name" class="fav-title">{{ item.name }}</span>
               <i v-if="item.status === 1" class="personal">
-                [私密]
+                [{{ $t('private') }}]
               </i>
               <span class="count">{{ item.count }}</span>
             </label>
@@ -33,14 +33,14 @@
         class="btn"
         @click="step = 1"
       >
-        新建收藏夹
+        {{ $t('new-favorite') }}
       </el-button>
     </div>
 
     <div v-if="step === 1" class="content-create">
       <CreateFavForm type="create" @create-done="createFavDone">
         <el-button slot="button" size="medium" @click="step = 0">
-          返回
+          {{ $t('back') }}
         </el-button>
       </CreateFavForm>
     </div>

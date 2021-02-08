@@ -2,43 +2,43 @@
   <div class="in-out-container">
     <div class="banner">
       <h1 class="title">
-        Fan票折跃门
+        {{ $t('coin-folding-door') }}
       </h1>
       <a href="https://www.yuque.com/matataki/matataki/zcs21y" class="faq-link" target="_blank">
-        使用教程
+        {{ $t('use-tutorial') }}
         <svg-icon icon-class="anser" class="anser" />
       </a>
     </div>
     <div v-if="!isLogined" class="card not-logined">
       <h1 class="title">
-        😺嗯？你好像还没有登录？
+        😺{{ $t('you-seem-to-have-not-logged-in-yet') }}
       </h1>
       <h2 class="subtitle">
-        你需要先登录才能使用这个功能
+        {{ $t('you-need-to-log-in-to-use-this-feature') }}
       </h2>
       <el-button @click="login">
-        注册/登录
+        {{ $t('register-or-log-in') }}
       </el-button>
     </div>
     <client-only v-else>
       <div class="direction-selection">
         <el-button-group>
           <el-button :type="isWithdrawSelected ? 'primary' : ''" @click="direction = 'withdraw'">
-            提取
+            {{ $t('extract') }}
           </el-button>
           <el-button :type="isWithdrawSelected ? '' : 'primary'" @click="direction = 'deposit'">
-            转入
+            {{ $t('transfer-in') }}
           </el-button>
         </el-button-group>
       </div>
       <div class="card">
         <div class="chain-selection">
-          目标区块链：
+          {{ $t('target-blockchain') }}：
           <el-radio v-model="chainSelection" label="rinkeby">
-            以太坊 Rinkeby 测试网
+            {{ $t('ethereum-Rinkeby-testnet') }}
           </el-radio>
           <el-radio v-model="chainSelection" label="bsc">
-            币安智能链(BSC) 主网
+            {{ $t('binance-Smart-Chain-BSC-Mainnet') }}
           </el-radio>
         </div>
         <div class="logic-container">

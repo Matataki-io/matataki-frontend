@@ -4,7 +4,7 @@
     <p class="text">{{ $t('postminetoken.stepFour') }}</p>
     <p class="text">{{ $t('postminetoken.stepFour1') }}</p>
 
-    <div class="token-footer">  
+    <div class="token-footer">
       <a class="h-rule" href="http://andoromeda.mikecrm.com/a93Le8z" target="_blank">
         {{ $t('postminetoken.feedback') }}<svg-icon icon-class="arrow" class="icon" />
       </a>

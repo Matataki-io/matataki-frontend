@@ -4,7 +4,7 @@
     :visible.sync="showModal"
     :lock-scroll="false"
     :before-close="handleClose"
-    title="选择Fan票"
+    :title="$t('choose-coin')"
     width="600px"
     custom-class="br10 black-theme-dialog token-list"
   >
@@ -13,13 +13,12 @@
         <div class="search-box">
           <i class="el-icon-search" />
         </div>
-        <input
+        <el-input
           v-model="search"
           type="text"
-          placeholder="搜索Fan票"
+          :placeholder="$t('search-coin')"
           class="dHtVAe"
-          @keyup.enter="searchToken"
-        >
+        />
       </div>
       <div
         v-loading="loading"
@@ -33,11 +32,7 @@
           style="width: 100%"
           @row-click="selectToken"
         >
-          <el-table-column
-            width="250px"
-            label="Fan票"
-            class="test123"
-          >
+          <el-table-column :label="$t('coin')">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
@@ -56,12 +51,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            label="流通量"
-          >
+          <el-table-column :label="$t('circulation')">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount || '暂无流通量' }}
+                {{ scope.row.amount || $t('no-liquidity') }}
               </span>
             </template>
           </el-table-column>
@@ -76,21 +69,29 @@
           </el-table-column>
           <el-table-column
             label=""
+            width="100px"
           >
             <template slot-scope="scope">
-              <n-link
-                v-if="scope.row.id !== 0"
-                :to="{name: 'token-id', params: {id: scope.row.id}}"
-                target="_blank"
-                class="gray-btn"
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="$t('go-to-coin-homepage')"
+                placement="top"
               >
-                <el-button circle>
-                  <svg-icon
-                    icon-class="share-link"
-                    style="color: #B2B2B2;"
-                  />
-                </el-button>
-              </n-link>
+                <n-link
+                  v-if="scope.row.id !== 0"
+                  :to="{name: 'token-id', params: {id: scope.row.id}}"
+                  target="_blank"
+                  class="gray-btn"
+                >
+                  <el-button circle>
+                    <svg-icon
+                      icon-class="fan-home"
+                      class="fan-home"
+                    />
+                  </el-button>
+                </n-link>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -102,10 +103,7 @@
           style="width: 100%"
           @row-click="selectToken"
         >
-          <el-table-column
-            label="Fan票"
-            class="test123"
-          >
+          <el-table-column :label="$t('coin')">
             <template slot-scope="scope">
               <div class="sc-fYxtnH cjqFX">
                 <div class="favMUS">
@@ -124,12 +122,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            label="流通量"
-          >
+          <el-table-column :label="$t('circulation')">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount || '暂无流通量' }}
+                {{ scope.row.amount || $t('no-liquidity') }}
               </span>
             </template>
           </el-table-column>
@@ -139,7 +135,7 @@
           class="loadmore"
         >
           <span @click="loadMore">
-            加载更多<i class="el-icon-arrow-down" />
+            {{ $t('load-more') }}<i class="el-icon-arrow-down" />
           </span>
         </div>
       </div>
@@ -153,6 +149,7 @@ import { CNY } from './consts.js'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'TokenListModal',
@@ -180,18 +177,15 @@ export default {
     }
   },
   watch: {
+    search(newVal) {
+      this.searchToken()
+    },
     showModal(val) {
       this.$emit('input', val)
     },
     value(val) {
       this.showModal = val
     },
-    search(v) {
-      if (v === '') {
-        this.page = 1
-        this.getAllToken()
-      }
-    }
   },
   data() {
     return {
@@ -231,10 +225,10 @@ export default {
       this.search = ''
       this.showModal = false
     },
-    searchToken() {
+    searchToken: debounce(function() {
       this.page = 1
       this.getAllToken()
-    },
+    }, 300),
     loadMore() {
       this.page = this.page + 1
       this.getAllToken()
@@ -310,8 +304,14 @@ export default {
 }
 .gray-btn {
   .el-button {
-    background-color: #f1f1f1;
-    border-color: #f1f1f1;
+    background-color: transparent;
+    border-radius: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+  }
+  .fan-home {
+    font-size: 32px;
   }
 }
 .black-theme-dialog {
@@ -415,13 +415,14 @@ export default {
     min-height: 2.5rem;
     text-align: left;
     padding-left: 1.6rem;
-    background-color: #f1f1f1;
-    outline: none;
-    border-width: initial;
-    border-style: none;
-    border-color: initial;
-    border-image: initial;
     flex: 1 0 auto;
+    /deep/ .el-input__inner {
+      outline: none;
+      border-image: initial;
+      border: none;
+      background: transparent;
+      border-radius: 0;
+    }
   }
 
   input {

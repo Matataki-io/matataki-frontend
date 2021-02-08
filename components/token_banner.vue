@@ -8,14 +8,14 @@
     <div class="token-content">
       <img class="token-text" src="@/assets/img/token_banner_text.png">
       <div class="token-btn">
-        <a href="https://www.yuque.com/matataki/matataki/hgc2e6" target="_blank" class="token-more more hvr-float">了解更多</a>
+        <a href="https://www.yuque.com/matataki/matataki/hgc2e6" target="_blank" class="token-more more hvr-float">{{ $t('understand-more') }}</a>
         <a
           v-if="showPublishBtn"
           href="javascript:;"
           class="token-more publish hvr-float"
           @click="push"
         >
-          发行Fan票
+          {{ $t('issue-coin') }}
         </a>
       </div>
     </div>
@@ -27,6 +27,10 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'TokenBanner',
+  serverCacheKey(props) {
+    return `TokenBanner_${props.showPublishBtn ? 'true' : 'false'}`
+  },
   props: {
     showPublishBtn: {
       type: Boolean,

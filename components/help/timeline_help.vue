@@ -1,37 +1,34 @@
 <template>
   <div class="help-container">
-    <span class="nav-title" @click="handleVisibilityChange(true)">什么是聚合动态？</span>
+    <span class="nav-title" @click="handleVisibilityChange(true)">{{ $t('what-is-aggregation-dynamics') }}</span>
     <span class="nav-title-mobile" @click="handleVisibilityChange(true)"><i class="el-icon-question" /></span>
     <el-dialog :visible.sync="visibility" :fullscreen="isSmallSizeScreen()" @before-close="handleVisibilityClose">
       <section class="help-container-section">
-        <span class="section-title">什么是聚合动态？</span>
+        <span class="section-title">{{ $t('what-is-aggregation-dynamics') }}</span>
         <div class="section-part">
-          <span class="section-part-title">聚合动态</span>
+          <span class="section-part-title">{{ $t('aggregate-dynamics') }}</span>
           <p class="section-part-inner">
-            聚合动态是集成了各个第三方社交网站时间线的地方，这里的数据都来源于你关注的用户所绑定的平台的个人动态信息。在当前，我们提供了 Twitter，哔哩哔哩，以及 Mastodon 的动态更新。绑定平台成功后，动态、时间轴上的数据就会被展示在这个地方。
+            {{ $t('aggregate-dynamic-help-content') }}
           </p>
           <p class="section-part-inner">
-            你可以在侧边栏进行筛选、查看、浏览你关注的人们来自不同平台的不同动态信息，可以单独只开启一部分的平台，甚至是筛选为只显示一个平台；如果你不喜欢，可以直接点击「站内动态」来前往 Matataki 自身的动态页面。
+            {{ $t('aggregate-dynamic-help-content-1') }}
           </p>
           <p class="section-part-inner">
-            在筛选栏的下方，可以看到你关注的用户现在绑定过的平台状态，灰色即未绑定。
+            {{ $t('aggregate-dynamic-help-content-2') }}
           </p>
-          <span class="section-part-title">Q&A 疑问与解答</span><br>
-          <span class="section-part-subtitle">为什么我的动态发布出去没有在聚合动态显示出来？</span>
+          <span class="section-part-title">Q&A {{ $t('questions-and-answers') }}</span><br>
+          <span class="section-part-subtitle">{{ $t('why-isnt-my-news-published-in-the-aggregate-news') }}</span>
           <p class="section-part-inner">
-            因为数据需要等待服务器按照一定的频率获取数据的时候才能展示出来。
+            {{ $t('aggregate-dynamic-help-content-3') }}
           </p>
           <p class="section-part-inner">
-            数据来源是第三方，不断的请求动态数据会给服务器带来一定压力，所以我们会定期在一段时间内获取这些数据并且刷新展示到这里，如果你想知道各个不同的平台数据获取的频率，可以查看下面的表格：
+            {{ $t('aggregate-dynamic-help-content-4') }}
           </p>
           <div>
-            <el-table :data="gridData">
-              <el-container>
-                什么是聚合动态？
-              </el-container>
-              <el-table-column property="platform" label="平台" width="100" />
-              <el-table-column property="website" label="官网" width="200" />
-              <el-table-column property="rate" label="频率" width="150" />
+            <el-table style="max-width: 450px;" :data="gridData">
+              <el-table-column property="platform" :label="$t('platform')" width="100" />
+              <el-table-column property="website" :label="$t('official-website')" width="200" />
+              <el-table-column property="rate" :label="$t('frequency')" width="150" />
             </el-table>
           </div>
         </div>
