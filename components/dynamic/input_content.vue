@@ -51,10 +51,16 @@
     <!-- 操作区域 -->
     <div class="input-footer">
       <div class="i-f-info">
-        <!-- 提及 -->
-        <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
-        <!-- 标签 -->
-        <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
+        <!-- 媒体上传 -->
+        <uploadMedia
+          v-model="mediaList"
+          :visible-state.sync="uploadMediaVisible"
+          :input-id="inputId"
+          :update-popper="updatePopper"
+          @uploading="item => mediaUploading = item"
+        >
+          <svg-icon icon-class="image" class="no-poiniter" />
+        </uploadMedia>
         <!-- 引用链接 -->
         <shareLink
           v-model="refUrl"
@@ -86,17 +92,11 @@
               />
             </client-only>
           </el-popover>
+          <!-- 提及 -->
+          <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
+          <!-- 标签 -->
+          <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
         </div>
-        <!-- 媒体上传 -->
-        <uploadMedia
-          v-model="mediaList"
-          :visible-state.sync="uploadMediaVisible"
-          :input-id="inputId"
-          :update-popper="updatePopper"
-          @uploading="item => mediaUploading = item"
-        >
-          <svg-icon icon-class="image" class="no-poiniter" />
-        </uploadMedia>
       </div>
       <div class="fl ac">
         <span class="info-status">
