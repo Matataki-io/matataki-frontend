@@ -28,9 +28,6 @@ export default {
 <style lang="less" scoped>
 .dynamic-text {
   color: #333;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
   width: 100%;
   word-break: break-word;
