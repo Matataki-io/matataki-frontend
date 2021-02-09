@@ -357,7 +357,11 @@ export const filterOutHtmlShare = (html, whiteList = whiteListShare) => {
   return xss(html, {
     whiteList: whiteList,
     stripIgnoreTag: true,
-    stripIgnoreTagBody: ['script']
+    stripIgnoreTagBody: ['script'],
+    onTag(tag, name) {
+      if (tag !== 'div' || name !== '<div>') return
+      return '\n'
+    }
   })
 }
 
