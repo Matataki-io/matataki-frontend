@@ -9,20 +9,20 @@
         <div class="token-info">
           <div class="token-info-line">
             <div class="token-title">
-              {{ userData.nickname || userData.username || '暂无昵称' }}
+              {{ userData.nickname || userData.username || $t('no-nickname') }}
             </div>
           </div>
           <div class="token-info-line">
             <div class="token-sub">
-              关注：{{ userData.follows || 0 }}
+              {{ $t('follow') }}：{{ userData.follows || 0 }}
               &nbsp;
               &nbsp;
-              粉丝：{{ userData.fans || 0 }}
+              {{ $t('fans') }}：{{ userData.fans || 0 }}
             </div>
           </div>
           <div class="token-info-line">
             <div class="token-sub">
-              简介：{{ userData.introduction || '暂无' }}
+              {{ $t('Introduction') }}：{{ userData.introduction || $t('not') }}
             </div>
           </div>
         </div>

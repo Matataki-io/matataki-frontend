@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    ref="popoRef"
     placement="bottom-start"
     width="260"
     trigger="click"
@@ -29,6 +30,15 @@ export default {
     shareLinkList: { // 分享链接数组
       type: Array,
       required: true
+    },
+    value: {
+      type: String,
+      default: ''
+    },
+    // 更新 popper 的位置
+    updatePopper: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -41,9 +51,25 @@ export default {
   },
   watch: {
     shareInput(newVal) {
-      if (newVal) {
+      if (newVal !== this.value) {
+        this.$emit('input', newVal)
+      }
+      if (newVal.trim()) {
         this.searchLink(newVal.trim())
       }
+    },
+    value(newVal) {
+      if (newVal !== this.shareInput) {
+        this.shareInput = newVal
+      }
+    },
+    updatePopper() {
+      this.$refs.popoRef.updatePopper()
+    }
+  },
+  mounted () {
+    if (this.value) {
+      this.shareInput = this.value
     }
   },
   methods: {

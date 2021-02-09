@@ -10,8 +10,10 @@
         >
           <div
             id="tributeShare"
+            ref="contentEditable"
             class="content-editable"
             contenteditable="true"
+
             :placeholder="$t('enter-the-activity-you-want-to-post')"
           />
         </vue-tribute>
@@ -49,30 +51,52 @@
     <!-- 操作区域 -->
     <div class="input-footer">
       <div class="i-f-info">
-        <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
-        <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
-        <shareLink :share-link-list="shareLinkList" @pushItem="item => shareLinkList.push(item.data)">
-          <svg-icon icon-class="link1" class="icon" />
-        </shareLink>
-        <div class="emoji-container">
-          <svg-icon icon-class="emoji1" class="icon" @click.stop="emoji = !emoji" />
-          <client-only>
-            <picker
-              v-show="emoji"
-              title="Pick your emoji…"
-              emoji="point_up"
-              class="emoji-picker"
-              @select="addEmoji"
-            />
-          </client-only>
-        </div>
+        <!-- 媒体上传 -->
         <uploadMedia
           v-model="mediaList"
           :visible-state.sync="uploadMediaVisible"
+          :input-id="inputId"
+          :update-popper="updatePopper"
           @uploading="item => mediaUploading = item"
         >
-          <svg-icon icon-class="image" class="icon" />
+          <svg-icon icon-class="image" class="no-poiniter" />
         </uploadMedia>
+        <!-- 引用链接 -->
+        <shareLink
+          v-model="refUrl"
+          :share-link-list="shareLinkList"
+          :update-popper="updatePopper"
+          @pushItem="item => shareLinkList.push(item.data)"
+        >
+          <svg-icon icon-class="link1" class="icon" />
+        </shareLink>
+        <!-- emoji 选择器 -->
+        <div class="emoji-container">
+          <el-popover
+            ref="emojiPopoRef"
+            trigger="click"
+            placement="bottom-start"
+            popper-class="input-emoji-picker-popover"
+          >
+            <svg-icon
+              slot="reference"
+              icon-class="emoji1"
+              class="icon"
+            />
+            <client-only>
+              <picker
+                class="emoji-picker"
+                title="Pick your emoji…"
+                emoji="point_up"
+                @select="addEmoji"
+              />
+            </client-only>
+          </el-popover>
+          <!-- 提及 -->
+          <svg-icon icon-class="at" class="icon" @click.stop="showMenuForCollection(0)" />
+          <!-- 标签 -->
+          <svg-icon icon-class="topic" class="icon" @click.stop="showMenuForCollection(1)" />
+        </div>
       </div>
       <div class="fl ac">
         <span class="info-status">
@@ -121,11 +145,23 @@ export default {
     totalText: {
       type: Number,
       default: 1000
+    },
+    reference: {
+      type: String,
+      default: ''
+    },
+    reset: {
+      type: Number,
+      default: 0
+    },
+    // 如果需要在一个页面里面使用多个 FileUpload (图片上传功能包含该组件)，请务必设置独立的 inputId
+    inputId: {
+      type: String,
+      default: 'dynamic-media-upload'
     }
   },
   data() {
     return {
-      emoji: false,
       loadingSubmit: false,
       currentText: 0,
       tributeOptions: { // tribute options
@@ -185,19 +221,44 @@ export default {
       mediaList: [],
       mediaUploading: false,
       btnSubmitLoading: false, // 发布动态loading
+      refUrl: '',
+      updatePopper: 0
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined'])
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  watch: {
+    reference(nVal) {
+      if (nVal !== this.refUrl) {
+        this.refUrl = nVal
+      }
+    },
+    reset() {
+      if (this.btnSubmitLoading) {
+        return
+      }
+      this._reset()
+    },
+    updatePopper() {
+      this.$refs.emojiPopoRef.updatePopper()
+    },
+    shareLinkList() {
+      this.$nextTick(() => {
+        this.updatePopper = Date.now()
+      })
+    }
   },
   mounted() {
     if (process.browser) {
       this.timer = setInterval(this.handleCurrentText, 2000)
       // this.handleEventClick = (e) => {
       //   console.log(e)
-      //   this.emoji = false
       // }
       // document.addEventListener('click', this.handleEventClick, false)
+    }
+    if (this.reference) {
+      this.refUrl = this.reference
     }
   },
   destroyed() {
@@ -255,13 +316,13 @@ export default {
     }, 300),
     // 处理当前文本 （获取长度）
     handleCurrentText() {
-      let editDom = document.querySelector('.content-editable')
+      let editDom = this.$refs.contentEditable
       let editDomText = editDom.innerText
       this.currentText = editDomText.length
     },
     // 添加 Emojii
     addEmoji(emoji) {
-      let editDom = document.querySelector('.content-editable')
+      let editDom = this.$refs.contentEditable
       editDom.insertAdjacentHTML('beforeend', emoji.native)
 
       // console.log('emoji', emoji)
@@ -277,7 +338,7 @@ export default {
     // 获取输入框内容的信息
     _getInputContent() {
       // 获取分享内容
-      let editDom = document.querySelector('.content-editable')
+      let editDom = this.$refs.contentEditable
       let editDomContent = editDom.innerHTML.toString()
       // console.log('editDom', editDom.innerHTML)
 
@@ -297,7 +358,7 @@ export default {
       this.mediaList = []
       this.uploadMediaVisible = false
       // 清空分享内容
-      document.querySelector('.content-editable').innerHTML = ''
+      this.$refs.contentEditable.innerHTML = ''
     },
     // 发布分享
     async pushShare() {
@@ -360,6 +421,7 @@ export default {
         const res = await this.$API.createShare(data)
         if (res.code === 0) {
           this.$message({ message: '发布成功', type: 'success' })
+          this.$emit('pushed')
           this._reset()
         } else {
           throw new Error(res)
@@ -374,7 +436,7 @@ export default {
     // 显示菜单 collectionIndex 集合索引
     showMenuForCollection(collectionIndex) {
       try {
-        let input = document.getElementById('tributeShare')
+        let input = this.$refs.contentEditable
         window._tribute.showMenuForCollection(input, collectionIndex)
       } catch (e) {
         console.log(e)
@@ -388,13 +450,7 @@ export default {
 }
 </script>
 
-<style lang="less">
-// .scroll {
-//   width: 100%;
-//   max-height: 300px;
-//   overflow-y: auto;
-//   position: relative;
-// }
+<style lang="less" scoped>
 .container {
   // max-width: 355px;
   width: 100%;
@@ -404,6 +460,16 @@ export default {
   flex-direction: column;
   padding: 0 20px;
 }
+</style>
+
+<style lang="less">
+
+// .scroll {
+//   width: 100%;
+//   max-height: 300px;
+//   overflow-y: auto;
+//   position: relative;
+// }
 .v-tribute {
   width: 100%;
   position: relative;
@@ -507,9 +573,20 @@ export default {
     font-size: 24px;
     color: #657786;
     margin: 0 10px 0 0;
+    transition: all ease-in 0.05s;
     &:hover {
       color: @purpleDark;
     }
+    &:active {
+      transform: scale(0.90);
+    }
+    @media screen and (max-width: 768px) {
+      font-size: 20px;
+    }
+  }
+  .no-poiniter {
+    margin: 0 10px 0 0;
+    font-size: 24px;
     @media screen and (max-width: 768px) {
       font-size: 20px;
     }
@@ -557,11 +634,12 @@ export default {
 .emoji-container {
   position: relative;
 }
+
+.input-emoji-picker-popover {
+  padding: 0;
+}
 .emoji-picker {
-  position: absolute;
-  left: 0px;
-  top: 36px;
-  z-index: 9;
+  border: none;
 }
 .i-f-info {
   display: flex;
@@ -577,7 +655,5 @@ export default {
 .info-status {
   font-size: 12px;
   color: #B2B2B2;
-}
-.btn-submit {
 }
 </style>

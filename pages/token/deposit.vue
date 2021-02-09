@@ -2,40 +2,40 @@
   <div class="withdraw-container">
     <div v-if="!isLogined" class="card not-logined">
       <h1 class="title">
-        😺 嗯？你好像还没有登录？
+        😺 {{ $t('you-seem-to-have-not-logged-in-yet') }}
       </h1>
       <h2 class="subtitle">
-        你需要先登录才能使用这个功能
+        {{ $t('you-need-to-log-in-to-use-this-feature') }}
       </h2>
       <el-button @click="login">
-        注册/登录
+        {{ $t('register-or-log-in') }}
       </el-button>
     </div>
     <div v-else class="card">
-      <el-page-header content="存入在 Rinkeby 的站外 Fan票" @back="$router.back()" />
+      <el-page-header :content="$t('coin-deposited-outside-the-station-in-Rinkeby')" @back="$router.back()" />
       <el-alert type="warning">
         <h2 class="title">
-          ⚠️你找到了暂未对公众开放的试验性功能⚠️
-        </h2>存入站外的Fan票（在 Rinkeby Testnet 上）
-        <br><b>请不要充值 Fan 票以外的代币，可能会导致锁币</b>
+          ⚠️{{ $t('you-found-an-experimental-feature-that-is-not-yet-open-to-the-public') }}⚠️
+        </h2>{{ $t('coin-deposited-outside-the-station-on-Rinkeby-Testnet') }}
+        <br><b>{{ $t('please-do-not-recharge-tokens-other-than-coin-it-may-cause-token-lock') }}</b>
         <a 
           href="https://matataki.io/p/5013" 
           target="_blank"
           rel="noreferrer"
         >
-          👉查看充值站外Fan票的教程 👈
+          👉{{ $t('view-the-tutorial-of-recharging-coin-outside-the-station') }} 👈
         </a>
       </el-alert>
       <el-alert v-if="myHostingAccount" type="info">
         <h2 class="title">
-          我的托管钱包
+          {{ $t('my-custody-wallet') }}
         </h2>
-        地址: 
+        {{ $t('address') }}: 
         <code @click="copy">
           {{ myHostingAccount }}
         </code>
         <button @click="copy">
-          复制
+          {{ $t('copy') }}
         </button>
         <br>
         <a 
@@ -43,7 +43,7 @@
           target="_blank"
           rel="noreferrer"
         >
-          👉在 Etherscan 看这个托管账户的链上交易（找到 txHash） 👈
+          👉{{ $t('look-at-the-on-chain-transactions-of-this-escrow-account-on-Etherscan-find-txHash') }} 👈
         </a>
       </el-alert>
       <el-form
@@ -55,10 +55,10 @@
         class="withdraw-form"
       >
         <h1 class="title">
-          申报充值
+          {{ $t('declare-recharge') }}
         </h1>
         <el-form-item label="txHash" prop="txHash">
-          <el-input v-model="form.txHash" placeholder="请输入你充币的交易 Hash，以 0x 开头。" clearable />
+          <el-input v-model="form.txHash" :placeholder="$t('please-enter-the-transaction-Hash-of-your-deposit-starting-with-0x')" clearable />
         </el-form-item>
         <div class="form-button">
           <el-button
@@ -67,22 +67,22 @@
             class="submit-btn"
             @click="submitForm('form')"
           >
-            确定
+            {{ $t('confirm') }}
           </el-button>
         </div>
         <el-alert v-if="depositResult" type="success">
           <h1 class="title">
-            Fan 票充值成功
-          </h1>这笔交易已经同步到数据库。
-          <p>来自钱包地址: <code>{{ depositResult.from }}</code></p>
+            {{ $t('coin-recharge-successfully') }}
+          </h1>{{ $t('this-transaction-has-been-synchronized-to-the-database') }}
+          <p>{{ $t('from-wallet-address') }}: <code>{{ depositResult.from }}</code></p>
           <p v-if="depositResult.token">
-            Fan票名：{{ depositResult.token.name }}
-            符号：{{ depositResult.token.symbol }}
+            {{ $t('coin-name') }}：{{ depositResult.token.name }}
+            {{ $t('symbol') }}：{{ depositResult.token.symbol }}
             <router-link :to="'/token/' + depositResult.token.id" target="_blank">
-              ↗️ 查看该饭票详情
+              ↗️ {{ $t('view-the-coin-details') }}
             </router-link>
           </p>
-          <p>金额: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
+          <p>{{ $t('money-amount') }}: <code>{{ precision(depositResult.amount, 'CNY', 4) }} {{ depositResult.token && depositResult.token.symbol }}</code></p>
         </el-alert>
       </el-form>
     </div>

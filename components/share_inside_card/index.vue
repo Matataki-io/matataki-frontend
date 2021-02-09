@@ -1,74 +1,58 @@
 <template>
-  <router-link
-    :to="cardUrl"
-    class="card"
-    target="_blank"
-    @click.native="toggle"
-  >
-    <div class="card-info">
-      <div class="card-info__user">
-        <avatar
-          :src="avatarSrc"
-          class="card-avatar"
-        />
-        <span class="card-username">{{ username }}</span>
-      </div>
-      <div
-        v-if="cardType !== 'edit' && $route.name === 'sharehall'"
-        class="card-operate"
-      >
-        <svg-icon
-          class="icon"
-          icon-class="copy"
-          @click="copy(card.url, $event)"
-        />
-        <svg-icon
-          class="icon"
-          icon-class="quote"
-          @click="ref(card.url, $event)"
-        />
-      </div>
-    </div>
-    <div class="card-content">
-      <svg-icon
-        v-if="!shareCard"
-        class="icon"
-        icon-class="quotation_marks"
-      />
-      <svg-icon
-        v-if="!shareCard"
-        class="icon"
-        icon-class="quotation_marks"
-      />
-      <img
-        v-if="shareCard"
-        src="@/assets/img/quote.png"
-        alt="quote"
-        class="icon-img"
-      >
-      <img
-        v-if="shareCard"
-        src="@/assets/img/quote.png"
-        alt="quote"
-        class="icon-img"
-      >
-      <span
-        :class="!shareCard && 'card-sharehall'"
-        class="card-text"
-        v-html="card.short_content_share || card.summary || $t('not')"
-      />
-    </div>
+  <div class="card-box">
+    <!-- 编辑模式下的关闭按钮 -->
     <span
       v-if="!shareCard && cardType === 'edit'"
-      class="card-remove"
+      class="card-box-remove"
       @click="removeCard"
     >
       <i class="el-icon-close icon" />
     </span>
-  </router-link>
+    <!-- 卡片主体 -->
+    <router-link
+      :to="cardUrl"
+      class="card"
+      target="_blank"
+    >
+      <div class="card-info">
+        <div class="card-info__user">
+          <avatar
+            :src="avatarSrc"
+            class="card-avatar"
+          />
+          <span class="card-username">{{ username }}</span>
+        </div>
+        <div
+          v-if="cardType !== 'edit' && $route.name === 'sharehall'"
+          class="card-operate"
+        >
+          <svg-icon
+            class="icon"
+            icon-class="copy"
+            @click="copy(card.url, $event)"
+          />
+          <svg-icon
+            class="icon"
+            icon-class="quote"
+            @click="ref(card.url, $event)"
+          />
+        </div>
+      </div>
+      <div class="card-content">
+        <span
+          :class="!shareCard && 'card-sharehall'"
+          class="card-text"
+          v-html="content"
+        />
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
+import { renderLinkUser } from '@/utils/share'
+import { filterOutHtmlShare } from '@/utils/xss'
+
 import avatar from '@/components/avatar/index.vue'
 
 export default {
@@ -126,6 +110,10 @@ export default {
         if (this.card.avatar) return this.$ossProcess(this.card.avatar, { h: 60 })
         return ''
       } else return ''
+    },
+    content() {
+      // 向后兼容 this.card.short_content_share || this.card.short_content
+      return this.$utils.compose(renderLinkUser, filterOutHtmlShare)(this.card.short_content_share || this.card.short_content || this.card.summary || this.$t('not'))
     }
   },
   methods: {
@@ -173,10 +161,31 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.card-box {
+  position: relative;
+  &-remove {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    cursor: pointer;
+    .icon {
+      font-size: 14px;
+    }
+  }
+}
 .card {
   background-color: transparent;
-  border: 1px solid #F2F4F7;
-  border-radius: 6px;
+  border: 1px solid #ccd6dd;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -205,8 +214,11 @@ export default {
       color:rgba(0,0,0,1);
       line-height:17px;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      word-break: break-all;
     }
   }
   &-info__user {
@@ -229,79 +241,32 @@ export default {
   }
   &-content {
     position: relative;
-    padding: 0 20px;
     width: 100%;
     margin-top: 5px;
     text-decoration: none;
     cursor: pointer;
     box-sizing: border-box;
-    .icon {
-      position: absolute;
-      color: #000;
-      font-size: 8px;
-      &:nth-child(1) {
-        left: 0;
-        top: 0;
-      }
-      &:nth-child(2) {
-        bottom: 0;
-        right: 0;
-        transform: rotate(-180deg);
-      }
-    }
-
-    .icon-img {
-      position: absolute;
-      color: #000;
-      width: 8px;
-      &:nth-child(1) {
-        left: 0;
-        top: 0;
-      }
-      &:nth-child(2) {
-        bottom: 0;
-        right: 0;
-        transform: rotate(-180deg);
-      }
-    }
 
     .card-text {
       font-size:14px;
       font-weight:400;
-      color:rgba(178,178,178,1);
-      line-height:17px;
+      color: #333;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      max-height: 85px;
-      padding: 0;
-      margin: 0;
-      white-space: pre-wrap;
-      word-break: break-all;
-      /deep/ a {
+      width: 100%;
+      word-break: break-word;
+      white-space: pre-line;
+      line-height: 1.5;
+      em {
+        font-weight: bold;
+        font-style: normal;
+        color: @purpleDark;
+      }
+      a {
         color: rgb(47, 174, 227)
       }
-    }
-    .card-sharehall {
-      display: -webkit-box;
-      -webkit-line-clamp: 5;
-      -webkit-box-orient: vertical;
-    }
-  }
-
-  &-remove {
-    position: absolute;
-    right: -10px;
-    top: -10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    .icon {
-      font-size: 14px;
     }
   }
 }

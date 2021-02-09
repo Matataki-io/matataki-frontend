@@ -1,52 +1,40 @@
 <template>
-  <div class="share-footer">
-    <div class="icon-num">
-      <div @click="$emit('bookmarked', bookmarked)">
-        <svg-icon
-          :class="bookmarked && 'active'"
-          class="icon"
-          icon-class="bookmark-solid"
-        />
-      </div>
-      <p>{{ $t('bookmark') }}</p>
+  <div class="share-flows">
+    <!-- 转发 -->
+    <div class="share-flows-forward">
+      <svg-icon icon-class="dynamic-repo" @click="$emit('ref-push')" />
+      <span v-if="flows.retweet">
+        {{ flows.retweet }}
+      </span>
     </div>
-    <div class="icon-num">
-      <div @click="pushShare">
-        <svg-icon
-          class="icon"
-          icon-class="reference"
-        />
-      </div>
-      <p>{{ $t('quote') }}</p>
+    <!-- 评论 -->
+    <div class="share-flows-comment flows-disable">
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="🚧 “评论”功能正在施工"
+        placement="top"
+      >
+        <svg-icon icon-class="dynamic-comment" />
+      </el-tooltip>
+      <span v-if="flows.comment">
+        {{ flows.comment }}
+      </span>
     </div>
-    <div class="icon-num">
-      <div @click="$emit('share')">
-        <svg-icon
-          class="icon"
-          icon-class="share2"
-        />
-      </div>
-      <p>{{ $t('share') }}</p>
+    <!-- 喜欢 -->
+    <div class="share-flows-like">
+      <svg-icon
+        :class="likeIconClass"
+        icon-class="dynamic-good"
+        @click="$emit('like', 2)"
+      />
+      <span v-if="flows.favorite">
+        {{ flows.favorite }}
+      </span>
     </div>
-    <div class="icon-num">
-      <div @click="$emit('like', 2)">
-        <svg-icon
-          :class="isLiked === 2 && 'active'"
-          class="icon"
-          icon-class="great-solid"
-        />
-      </div>
-      <p>{{ $t('p.like') }}<span>{{ likes }}</span></p>
-    </div>
-    <div class="icon-num">
-      <div @click="$emit('like', 1)">
-        <svg-icon
-          :class="isLiked === 1 && 'active'"
-          class="icon"
-          icon-class="bullshit-solid"
-        />
-      </div>
-      <p>{{ $t('p.unlike') }}<span>{{ dislikes }}</span></p>
+    <!-- 分享 -->
+    <div class="share-flows-share">
+      <svg-icon icon-class="dynamic-share" @click="$emit('copy-link')" />
     </div>
   </div>
 </template>
@@ -69,11 +57,38 @@ export default {
       type: Number,
       default: 0
     },
+    // 转发数
+    forwards: {
+      type: Number,
+      default: 0
+    },
     // 不推荐数
     dislikes: {
       type: Number,
       default: 0
-    }
+    },
+
+  },
+  computed: {
+    likeIconClass () {
+      return {
+        'like-touch': true,
+        'active': !!this.flows.iLiked
+      }
+    },
+    flows () {
+      return {
+        // 评论
+        comment: 0,
+        // 转发
+        retweet: this.forwards,
+        // 喜欢
+        favorite: this.likes,
+        iLiked: this.isLiked === 2,
+        dislikes: this.dislikes,
+        iDislike: this.isLiked === 1,
+      }
+    },
   },
   methods: {
     pushShare() {
@@ -86,56 +101,99 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.share-footer {
-  // height: 50px;
-  box-sizing: border-box;
+.share-flows {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  .icon {
-    font-size: 32px;
-    color: #B2B2B2;
-    &.active {
-      color: @purpleDark;
+  padding: 10px 0 0;
+  margin: 0 10px 0;
+  .flow-default {
+    font-size: 18px;
+    flex: 1;
+    svg {
+      height: 18px;
+      width: 18px;
+      color: #657786;
+      -moz-user-select:none;
+      -webkit-user-select:none;
+      user-select:none;
+    }
+    span {
+      margin:  0 0 0 5px;
+      font-size: 15px;
+    }
+    &.flows-disable {
+      svg {
+        color: #dcdcdc;
+      }
+    }
+  }
+  .default-hover {
+    transition: all ease-in 0.05s;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &:active {
+      transform: scale(1);
     }
   }
 
-  .icon-num {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    // position: relative;
-    & > div {
-      width: 80px;
-      height: 80px;
-      background-color: #F1F1F1;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  &-forward {
+    .flow-default();
+
+    svg {
+      .default-hover();
+      width: 21px;
+    }
+  }
+
+  &-comment {
+    .flow-default();
+
+    svg {
+      width: 19px;
+    }
+  }
+
+  &-like {
+    .flow-default();
+
+    svg {
+      width: 20px;
+    }
+
+    .like-touch {
+      -moz-user-select:none;
+      -webkit-user-select:none;
+      user-select:none;
+      transition: all ease-in 0.05s;
       cursor: pointer;
-      transition: all .3s;
+
       &:hover {
-        transform: scale(1.07);
-        background-color: mix(#000, #f1f1f1, 2%);
+        transform: scale(1.2);
+      }
+
+      &:active {
+        transform: scale(1);
+      }
+
+      &.active {
+        color: #ca8f04;
+        transform: scale(1);
+        cursor: default;
       }
     }
-    p {
-      text-align: center;
-      font-size:16px;
-      font-weight: bold;
-      color:rgba(0,0,0,1);
-      line-height:22px;
-      padding: 0;
-      margin: 10px 0 0;
-      span {
-        font-size:16px;
-        font-weight:bold;
-        color: @purpleDark;
-        line-height:22px;
-        margin-left: 4px;
-      }
+  }
+
+  &-share {
+    .flow-default();
+    flex: 0;
+    margin-right: 5px;
+
+    svg {
+      .default-hover();
+      width: 17px;
     }
   }
 }

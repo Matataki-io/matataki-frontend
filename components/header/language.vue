@@ -14,6 +14,11 @@
           English
         </span>
       </el-dropdown-item>
+      <el-dropdown-item>
+        <span @click="changeLanguage('ja')">
+          Japanese
+        </span>
+      </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -31,7 +36,8 @@ export default {
     currentLanguage() {
       const language = {
         zh: '简体中文',
-        en: 'English'
+        en: 'English',
+        ja: 'Japanese',
       }
       return language[this.$i18n.locale] || '默认'
     }

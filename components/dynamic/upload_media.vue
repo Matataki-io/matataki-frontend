@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    ref="popoRef"
     v-model="visible"
     placement="bottom-start"
     width="245"
@@ -7,11 +8,16 @@
   >
     <!-- Button -->
     <template slot="reference">
-      <span class="upload-media-button" :class="!visible && 'media-button-active'" @click="showPopover">
+      <label
+        :for="inputId"
+        class="upload-media-button"
+        :class="!visible && 'media-button-active'"
+        @click="showPopover"
+      >
         <slot>
           <i class="el-icon-picture-outline" />
         </slot>
-      </span>
+      </label>
     </template>
 
     <!-- 内容 -->
@@ -43,6 +49,7 @@
           v-if="isShowFileUpload && mediaList.length < 9"
           ref="upload"
           v-model="files"
+          :input-id="inputId"
           extensions="gif,jpg,jpeg,png,webp"
           accept="image/png,image/gif,image/jpeg,image/webp"
           class="upload-main-list-fileupload"
@@ -80,6 +87,15 @@ export default {
     visibleState: {
       type: Boolean,
       default: false
+    },
+    // 如果需要在一个页面里面使用多个 FileUpload，请务必设置独立的 inputId
+    inputId: {
+      type: String,
+      default: 'media-upload'
+    },
+    updatePopper: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -93,7 +109,7 @@ export default {
       quality: 0.8, // 压缩品质
       updateType: 'artileCover', // 上传类型
       mediaList: [],
-      maxIndex: 0,
+      maxIndex: 0
     }
   },
   computed: {
@@ -103,7 +119,6 @@ export default {
   },
   watch: {
     isUploading(value) {
-      console.log('uploading:', value)
       this.$emit('uploading', value)
     },
     visibleState(value) {
@@ -115,6 +130,9 @@ export default {
           this.$emit('input', [])
         }
       }
+    },
+    updatePopper() {
+      this.$refs.popoRef.updatePopper()
     }
   },
   mounted() {
@@ -167,7 +185,6 @@ export default {
         console.error('图片大小超出限制')
         return prevent()
       }
-      console.log('newFile:', cFile)
 
       // 创建图片的本地预览 url，用于列表中展示图片
       const URL = window.URL || window.webkitURL
@@ -198,7 +215,6 @@ export default {
       // 检查是否在上传期间被取消
       if (!this.mediaList.find(item => item.id === mediaIndex)) return prevent()
 
-      console.log('全部上传完成', { imgUrl })
       mediaObj.uploading = false
       mediaObj.url = imgUrl
       this.$emit('input', this.mediaList)
@@ -206,9 +222,9 @@ export default {
 
     // 限定最大字节
     maxSize(file, size) {
-      console.log('检测字节数:', size, (file.size / 1024 / 1024).toFixed(4))
+      // console.log('检测字节数:', size, (file.size / 1000 / 1000).toFixed(3), 'MB')
       if (file.size >= 0 && file.size > 1024 * 1024 * size) {
-        console.log('超过字节数')
+        console.warn(`图片体积超过限定: ${(file.size / 1000 / 1000).toFixed(3)} / Max:${size} MB`)
         this.$message.error({
           duration: 1000,
           message: this.$t('imgUpload.imgVeryBIg')
@@ -247,7 +263,7 @@ export default {
     },
     // 上传图片
     async uploadFile(file) {
-      console.log('上传图片时的尺寸:', (file.size / 1024 / 1024).toFixed(4))
+      console.log('上传图片时的尺寸:', (file.size / 1000 / 1000).toFixed(3), 'MB')
       try {
         const res = await this.$API.uploadImage(this.updateType, file)
         if (res.code === 0 && res.data && res.data.cover) {
@@ -265,7 +281,7 @@ export default {
         // console.log(file)
       } catch (error) {
         // 捕获错误 未登陆提示
-        console.log(error)
+        console.warn(error)
         if (error.toString().includes('code 401')) {
           this.$message({
             showClose: true,
@@ -326,18 +342,22 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: @purpleDark;
   font-size: 20px;
   border-radius: 5px;
   outline: inherit;
   background: #00000000;
 
   &.media-button-active {
-    color: #b2b2b2;
+    color: #657786;
     cursor: pointer;
+    transition: all ease-in 0.05s;
     &:hover {
-      // background: #00000010;
-      // color: black;
+      color: @purpleDark;
+    }
+
+    &:active {
+      transform: scale(0.9);
     }
   }
 }
@@ -443,6 +463,7 @@ export default {
     }
 
     &-fileupload {
+      cursor: pointer;
 
       &-add {
         width: 75px;
@@ -455,12 +476,21 @@ export default {
         align-items: center;
         font-size: 50px;
         box-sizing: border-box;
+        transition: all ease-in 0.05s;
         cursor: pointer;
       }
 
       &:hover .upload-main-list-fileupload-add {
         color: #542DE0;
         border-color: #542DE0;
+      }
+
+      &:active .upload-main-list-fileupload-add {
+        transform: scale(0.95);
+      }
+
+      /deep/ label {
+        cursor: pointer;
       }
     }
   }

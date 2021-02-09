@@ -36,7 +36,7 @@
               </el-dropdown-menu>
             </el-dropdown> -->
           </section>
-          <inputContent style="margin-top: 20px;" />
+          <inputContent style="margin-top: 20px;" @pushed="updateList" />
           <p v-if="pull.list.length === 0 && !filterLoading" class="not-content">
             {{ actions.length > 0 ? $t('notContent') : $t('filter-item-cannot-be-empty') }}
           </p>
@@ -45,10 +45,19 @@
             :key="index"
             class="timeline-card"
           >
+            <div v-if="!item.card">
+              {{ $t('error.getDataError') }}: {{ item.id }}
+            </div>
             <timelineCard
-              v-if="item.platform === 'matataki'"
+              v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 1"
               show-logo
               :card="item.card"
+            />
+            <dynamicCard
+              v-else-if="item.platform === 'matataki' && item.card && item.card.channel_id === 3"
+              :key="index"
+              :data="item.card"
+              @ref-push="refPush"
             />
             <twitterCard
               v-else-if="item.platform === 'twitter'"
@@ -73,11 +82,6 @@
               :stats="item.stats"
               @click-like="likeEvent"
             />
-            <shareCard
-              v-else-if="item.platform === 'dynamic'"
-              :key="index"
-              :card="item"
-            />
             <div v-else>
               {{ $t('unsupported-platform-type') }}: {{ item.platform }}
             </div>
@@ -92,13 +96,6 @@
               :auto-request-time="autoRequestTime"
               @buttonLoadMore="buttonLoadMoreRes"
               @getDataFail="getDataFail"
-            />
-            <buttonLoadMoreShare
-              :params="pullShare.params"
-              :api-url="pullShare.apiUrl"
-              :auto-request-time="pullShare.time"
-              :type-index="0"
-              @buttonLoadMore="getListData"
             />
           </div>
         </div>
@@ -190,6 +187,7 @@
         </div>
       </div>
     </div>
+    <inputDialog v-model="showInputDialog" :preset="inputDialogPreset" />
   </div>
 </template>
 
@@ -201,6 +199,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { getCookie } from '@/utils/cookie'
 
 import inputContent from '@/components/dynamic/input_content.vue'
+import inputDialog from '@/components/dynamic/input_dialog'
 import timelineBanner from '@/components/timeline/timeline_banner.vue'
 import timelineWelcome from '@/components/timeline/timeline_welcome.vue'
 import timelineCard from '@/components/timeline_card/index.vue'
@@ -208,27 +207,26 @@ import twitterCard from '@/components/platform_status/twitter_card'
 import bilibiliCard from '@/components/platform_status/bilibili_card'
 import mastodonCard from '@/components/platform_status/mastodon_card'
 import buttonLoadMore from '@/components/aggregator_button_load_more/index.vue'
-import buttonLoadMoreShare from '@/components/button_load_more/index.vue'
 // import RAList from '@/components/recommend_author_list'
 import userPlatformCard from '@/components/user/user_platform_card'
 import timelineHelp from '@/components/help/timeline_help'
-import shareCard from '@/components/share_card/index.vue'
+import dynamicCard from '@/components/dynamic/card'
 
 export default {
   components: {
     inputContent,
+    inputDialog,
     timelineCard,
     twitterCard,
     bilibiliCard,
     mastodonCard,
     buttonLoadMore,
-    buttonLoadMoreShare,
     // RAList,
     userPlatformCard,
     timelineHelp,
     timelineBanner,
     timelineWelcome,
-    shareCard
+    dynamicCard
   },
   data() {
     return {
@@ -237,15 +235,6 @@ export default {
         params: { page: 1, filters: undefined },
         apiUrl: process.env.VUE_APP_MATATAKI_CACHE + '/status/timeline',
         list: [],
-      },
-      pullShare: { // 分页
-        params: {
-          type: 'time',
-          pagesize: 20
-        },
-        time: 0,
-        apiUrl: 'share',
-        list: []
       },
       usersLoading: false,
       usersRecommendList: [],
@@ -278,7 +267,9 @@ export default {
       sidebarSwitch: {
         filter: false,
         authorList: false
-      }
+      },
+      showInputDialog: false,
+      inputDialogPreset: null
     }
   },
   computed: {
@@ -325,7 +316,7 @@ export default {
           for (let i = 0; i < res.data.list.length; i++) {
             const entry = res.data.list[i]
             list.push({
-              card: JSON.parse(entry.data),
+              card: this.tryJsonParse(entry.data),
               frontQueue: [],
               id: entry.id,
               platform: entry.platform,
@@ -359,6 +350,16 @@ export default {
       else {
         console.error('[get aggregator timeline failure] res:', res)
         this.$message.error(this.$t(res.message))
+      }
+    },
+    tryJsonParse(str) {
+      if (!str) return null
+      try {
+        return JSON.parse(str)
+      }
+      catch (e) {
+        console.warn('转换动态列表 JSON 时出现错误：', e)
+        return null
       }
     },
     // 获取推荐作者
@@ -508,18 +509,12 @@ export default {
         this.$message.error(this.$t('fail'))
       }
     },
-    getListData(res) {
-      console.log('res1', res)
-      if (res.data.list && res.data.list.length !== 0) {
-        // console.log('1111', res)
-        let list = res.data.list.map(i => ({
-          ...i,
-          platform: 'dynamic',
-        }))
-        this.pullShare.list = this.pullShare.list.concat(list)
-        this.pull.list.push(...this.pullShare.list)
+    refPush(url) {
+      this.inputDialogPreset = {
+        reference: url
       }
-    },
+      this.showInputDialog = true
+    }
   }
 }
 </script>

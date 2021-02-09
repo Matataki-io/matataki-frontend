@@ -1,32 +1,40 @@
 <template>
   <div class="share-header">
-    <div class="share-header__info">
-      <router-link
-        :to="{name: 'user-id-share', params: {id: id}}"
-        class="share-header__author"
-        target="_blank"
-      >
-        <avatar
-          :src="avatarSrc"
-          class="avatar"
-        />
-        <span class="share-header__username">{{ username.length > 12 ? username.slice(0, 12) + '...' : username }}</span>
-      </router-link>
-      <span class="share-header__time">{{ timeFormat }}</span>
-      <span class="share-header__read">
-        <svg-icon
-          icon-class="eye_blod"
-          class="icon"
-        />
-        {{ read }}
-      </span>
-    </div>
-    <div class="share-header__right">
-      <m-ipfs :hash="hash" />
-      <shareHeadRight
-        v-if="isMe(id)"
-        :id="shareId"
+    <router-link
+      :to="{name: 'user-id', params: {id: id}}"
+      target="_blank"
+    >
+      <avatar
+        :src="avatarSrc"
+        class="share-header-avatar"
       />
+    </router-link>
+    <div class="share-header-info">
+      <div class="share-header-info-top">
+        <router-link
+          :to="{name: 'user-id', params: {id: id}}"
+          class="share-header__author"
+          target="_blank"
+        >
+          <span class="share-header__username">{{ username }}</span>
+        </router-link>
+        <div class="share-header__fl1" />
+        <m-ipfs :hash="hash" />
+        <shareHeadRight
+          v-if="isMe(id)"
+          :id="shareId"
+        />
+      </div>
+      <div class="share-header-info-bottom">
+        <span class="share-header__time">{{ timeFormat }}</span>
+        <span class="share-header__read">
+          <svg-icon
+            icon-class="eye_blod"
+            class="icon"
+          />
+          {{ read }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -91,27 +99,52 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 14px;
-  &__info {
-    display: flex;
-    align-items: center;
+  padding: 0 0 14px;
+
+  &-avatar {
+    width: 45px !important;
+    height: 45px !important;
   }
+  &-info {
+    flex: 1;
+
+    &-top {
+      display: flex;
+      margin: 0 0 5px;
+    }
+
+    &-bottom {
+      display: flex;
+    }
+  }
+
+  &__fl1 {
+    flex: 1;
+  }
+
   &__author {
     display: flex;
     align-items: center;
     text-decoration: none;
   }
-  .avatar {
-    width: 45px !important;
-    height: 45px !important;
-  }
+
   &__username {
     font-size:16px;
     font-weight: bold;
     color:rgba(0,0,0,1);
     line-height:17px;
     margin-left: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
+    &:hover {
+      color: #542DE0;
+      text-decoration: underline;
+    }
   }
+
   &__time {
     font-size:16px;
     font-weight:400;
@@ -119,16 +152,19 @@ export default {
     line-height:17px;
     margin-left: 10px;
   }
+
   &__read {
     font-size:16px;
     font-weight:400;
     color:rgba(178,178,178,1);
     line-height:17px;
     margin-left: 10px;
+
     .icon {
       font-size: 16px;
     }
   }
+
   &__right {
     display: flex;
     align-items: center;
