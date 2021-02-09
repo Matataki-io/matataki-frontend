@@ -33,6 +33,9 @@ export default {
   word-break: break-word;
   white-space: pre-line;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 20;
+  -webkit-box-orient: vertical;
   em {
     font-weight: bold;
     font-style: normal;

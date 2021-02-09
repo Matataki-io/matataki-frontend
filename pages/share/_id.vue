@@ -152,6 +152,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import xss from 'xss'
+
+import { extractChar } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
 import shareHeader from '@/components/share_page/share_header'
 import shareMain from '@/components/share_page/share_main'
@@ -169,6 +172,57 @@ import bereference from '@/components/share_page/bereference'
 import inputDialog from '@/components/dynamic/input_dialog'
 
 export default {
+  head() {
+    const getCover = () => {
+      if (this.content.media && this.content.media.length) {
+        const xOssProcess = '?x-oss-process=image/resize,l_680,m_mfit/format,jpg'
+        return this.$API.getImg(this.content.media[0].url) + xOssProcess
+      }
+      return ''
+    }
+    const getContent = () => {
+      let content = xss(this.content.short_content_share || this.content.short_content, {
+        whiteList: [],
+        stripIgnoreTag: true,
+        stripIgnoreTagBody: ['script']
+      })
+      content = content.replace(/&#?(([a-z0-9])([a-z0-9];)?)+;/gi,'')
+      if (content && content.length > 99) content = content.slice(0, 99) + '...'
+      return content
+    }
+    return {
+      title: this.content.nickname + ' 的动态',
+      meta: [
+        { hid: 'description', name: 'description', content: getContent() },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.content.nickname + ' 的动态' },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: getContent() },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/share/${this.content.id}` },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: getCover() },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.content.nickname + ' 的动态' },
+        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.dynamicTimeISO },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/share/${this.content.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: getCover() },
+        { hid: 'og:description', name: 'description', property: 'og:description', content: getContent() }
+        /* end */
+      ],
+      link: [
+        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+      ],
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
+        // {
+        //   // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+        //   src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        // }
+      ]
+    }
+  },
   components: {
     shareHeader,
     shareMain,
@@ -216,6 +270,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isLogined']),
+    dynamicTimeISO() {
+      const { create_time: createTime } = this.content
+      const time = this.moment(createTime)
+      return this.moment(time).toISOString()
+    },
     link() {
       if (process.browser) return `${process.env.VUE_APP_URL}/share/${this.$route.params.id}`
       else return process.env.VUE_APP_URL
@@ -249,6 +308,31 @@ export default {
       }
     }
   },
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToken = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToken = token ? token[0] : ''
+    }
+    if (process.browser) {
+      accessToken = getCookie('ACCESS_TOKEN')
+    }
+
+    const res = await $axios({
+      url: `/p/${route.params.id}`,
+      methods: 'get',
+      headers: { 'x-access-token': accessToken }
+    })
+
+    if (res.code === 0) {
+      return { content: res.data }
+    } else {
+      console.error(res.message)
+    }
+  },
   created() {
     // 无id
     const { id = '' } = this.$route.params
@@ -270,22 +354,17 @@ export default {
         .then(res => console.log(`reading ${res.message}`))
         .catch(err => console.log(`reading err ${err}`))
     },
+
     // 获取详情内容
     getDetail(id) {
+      if (this.content) return this.initDetail()
+
       this.loading = true
       this.$API.shareDetail(id)
         .then(res => {
           if (res.code === 0) {
             this.content = res.data
-            // 如果不是分享返回上一页
-            if (res.data.channel_id !== 3) return this.$router.go(-1)
-            else {
-              this.authorInfo(res.data.uid)
-              this.getIpfsData(res.data.hash)
-              this.read(res.data.hash)
-              // share
-              this.setShareContentAndUrl(res.data.short_content, res.data.id)
-            }
+            this.initDetail()
           } else {
             console.log(res.message)
             this.$message({ type: 'error', message: '获取内容失败, 请刷新后重试' })
@@ -296,6 +375,18 @@ export default {
           this.$message({ type: 'error', message: '获取内容失败, 请刷新后重试' })
           this.loading = false
         })
+    },
+    initDetail() {
+      const data = this.content
+      // 如果不是分享返回上一页
+      if (data.channel_id !== 3) return this.$router.go(-1)
+      else {
+        this.authorInfo(data.uid)
+        this.getIpfsData(data.hash)
+        this.read(data.hash)
+        // share
+        this.setShareContentAndUrl(data.short_content, data.id)
+      }
     },
     // 得到作者信息
     authorInfo(id) {
