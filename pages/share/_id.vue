@@ -181,11 +181,14 @@ export default {
       return ''
     }
     const getContent = () => {
-      return xss(this.content.short_content_share || this.content.short_content, {
+      let content = xss(this.content.short_content_share || this.content.short_content, {
         whiteList: [],
         stripIgnoreTag: true,
         stripIgnoreTagBody: ['script']
-      }).slice(0, 20)
+      })
+      content = content.replace(/&#?(([a-z0-9])([a-z0-9];)?)+;/gi,'')
+      if (content && content.length > 99) content = content.slice(0, 99) + '...'
+      return content
     }
     return {
       title: this.content.nickname + ' 的动态',
