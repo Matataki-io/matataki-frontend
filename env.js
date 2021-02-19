@@ -2,14 +2,14 @@ module.exports = {
   development: {
     NODE: 'development',
     NODE_ENV: 'development',
-    VUE_APP_API: 'https://apitest.smartsignature.io',
+    VUE_APP_API: 'https://apitest.mttk.net',
     VUE_APP_PeggedTokenMinterAddress: '0xe8142C86f7c25A8bF1c73Ab2A5Dd7a7A5C429171',
     VUE_APP_PeggedTokenBurner: '0xEF0B6c622c63860d9C29CD5Eac442f626F2cFF1E',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/apitest',
     VUE_APP_MATATAKI_CACHE: 'https://cache.ayaka.moe/matatakitest',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
     VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
-    VUE_APP_URL: 'https://test.smartsignature.io',
+    VUE_APP_URL: 'https://test.matataki.io',
     VUE_APP_SIGNATURE_CONTRACT: 'dragonquest2',
     VUE_APP_SCRIPT_HASH: '36df9722fc0ff5fa3979f2a844a012cabe1d4c56',
     VUE_APP_GITHUB_CLIENT_ID: '889e6eafa77e2e87a08c',
@@ -32,10 +32,10 @@ module.exports = {
   testing: {
     NODE: 'testing',
     NODE_ENV: 'testing',
-    VUE_APP_API: 'https://apitest.smartsignature.io',
+    VUE_APP_API: 'https://apitest.mttk.net',
     VUE_APP_PeggedTokenMinterAddress: '0xe8142C86f7c25A8bF1c73Ab2A5Dd7a7A5C429171',
     VUE_APP_PeggedTokenBurner: '0xEF0B6c622c63860d9C29CD5Eac442f626F2cFF1E',
-    VUE_APP_URL: 'https://test.smartsignature.io',
+    VUE_APP_URL: 'https://test.matataki.io',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/apitest',
     VUE_APP_MATATAKI_CACHE: 'https://cache.ayaka.moe/matatakitest',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
@@ -61,7 +61,7 @@ module.exports = {
   release: {
     NODE: 'production',
     NODE_ENV: 'production',
-    VUE_APP_API: 'https://api.smartsignature.io',
+    VUE_APP_API: 'https://api.mttk.net',
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
     // @todo: change when go to mainnet
     VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
@@ -91,7 +91,7 @@ module.exports = {
   production: {
     NODE: 'production',
     NODE_ENV: 'production',
-    VUE_APP_API: 'https://api.smartsignature.io',
+    VUE_APP_API: 'https://api.mttk.net',
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
     // @todo: change when go to mainnet
     VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
