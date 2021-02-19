@@ -61,7 +61,7 @@ module.exports = {
   release: {
     NODE: 'production',
     NODE_ENV: 'production',
-    VUE_APP_API: 'https://api.smartsignature.io',
+    VUE_APP_API: 'https://api.mttk.net',
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
     // @todo: change when go to mainnet
     VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
@@ -91,7 +91,7 @@ module.exports = {
   production: {
     NODE: 'production',
     NODE_ENV: 'production',
-    VUE_APP_API: 'https://api.smartsignature.io',
+    VUE_APP_API: 'https://api.mttk.net',
     VUE_APP_PeggedTokenMinterAddress: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
     // @todo: change when go to mainnet
     VUE_APP_PeggedTokenBurner: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
