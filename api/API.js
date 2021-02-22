@@ -1030,6 +1030,8 @@ minetokenGetResources(tokenId) {
   tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
   // 获取热门标签
   tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
+  // 热门标签 筛选对象为最近14天内应用次数最多的标签
+  hotestTags(params) { return request.get('/tags/hotestTags',  { params }) },
   // 删除文章
   delArticle({ id }) {
     return request({

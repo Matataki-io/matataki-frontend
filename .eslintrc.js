@@ -17,7 +17,10 @@ module.exports = {
   ],
   rules: {
     "vue/singleline-html-element-content-newline": ["error", {
-      "ignores": ["p", "span", "time", "a"]
+      "ignores": [
+        "p", "span", "time", "a",
+        "h1", "h2", "h3", "h4", "h5", "h6"
+      ]
     }],
     "vue/max-attributes-per-line": ["error", {
       "singleline": 3,
