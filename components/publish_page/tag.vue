@@ -25,30 +25,24 @@
                 ref="tagRef"
                 v-model="tagVal"
                 :fetch-suggestions="querySearchAsync"
-                placeholder="请输入内容"
+                :placeholder="$t('please-enter-content')"
                 size="small"
                 max="20"
                 class="tag-input-search"
-                @select="handleSelect"
-                @keyup.enter.native="addTag"
-              />
-              <!-- <input
-                ref="tagRef"
-                v-model="tagVal"
-                class="tag-input"
-                type="text"
-                maxlength="20"
-                @keyup.enter="addTag"
+                popper-class="tag-drag-item"
+                @select="dragHandleSelect"
+                @keyup.enter.native="addTag({ type: 'input' })"
               >
-              <ul v-if="searchResultTags.length > 0">
-                <li
-                  v-for="(item, index) in searchResultTags"
-                  :key="index"
-                  @click="$emit('addTag', { tag: item.trim() })"
-                >
-                  {{ item }}
-                </li>
-              </ul> -->
+                <template slot-scope="{ item }">
+                  <!-- id is -1 默认选择项 -->
+                  <div class="item" :class="item.id === -1 && 'fixed'">
+                    <svg-icon v-if="(item.id !== -1 && item.type === 'history')" icon-class="tag-time" class="icon" />
+                    <svg-icon v-else-if="(item.id !== -1 && item.type === 'hotest')" icon-class="tag-hotest" class="icon" />
+                    <svg-icon v-else-if="(item.id !== -1 && item.type === 'tag')" icon-class="tag" class="icon" />
+                    {{ item.value }}
+                  </div>
+                </template>
+              </el-autocomplete>
             </div>
             <span class="tag-tip">{{
               $t("press-enter-to-create-the-label")
@@ -57,21 +51,21 @@
         </li>
       </ul>
     </div>
-    <h5 class="hot-tag">推荐标签</h5>
+    <h5 class="hot-tag">{{ $t('hotest-tag') }}</h5>
     <ul class="hot-tag-item">
       <li
         v-for="(item, index) in hotTags"
         :key="index"
-        @click="$emit('addTag', { tag: item.trim() })"
+        @click="addTag({ type: 'hotest', data: { name: item.name.trim() } })"
       >
-        {{ item }}
+        <svg-icon icon-class="tag-hotest" class="icon" />{{ item.name }}
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { debounce } from 'lodash'
+import store from '@/utils/store.js'
 
 export default {
   props: {
@@ -89,8 +83,7 @@ export default {
   data() {
     return {
       tagVal: '', // 标签内容
-      hotTags: [], // 推荐标签
-      searchResultTags: [],
+      hotTags: [], // 推荐标签 { id, name, count }
     }
   },
   watch: {
@@ -98,7 +91,7 @@ export default {
     tagVal(val) {
       try {
         const tagContainer = this.$refs.tagRef
-        console.log('tagContainer', tagContainer)
+        // console.log('tagContainer', tagContainer)
         const tagEl = tagContainer.$el
         // const tag = tagContainer.$children[0].$el
 
@@ -116,8 +109,6 @@ export default {
       } catch (error) {
         console.log('error', error)
       }
-
-      // this.searchTag(val)
     },
   },
   mounted() {
@@ -131,57 +122,134 @@ export default {
       try {
         const result = await this.$API.hotestTags()
         if (result.code === 0) {
-          this.hotTags = result.data.map(i => i.name)
+          this.hotTags = result.data
         }
       } catch (error) {
         console.log('error', error)
       }
     },
-    // 添加标签
-    addTag() {
-      const val = this.tagVal.trim()
-      if (val) {
-        this.$emit('addTag', { tag: val })
-        this.tagVal = ''
+    // 记录 Tag 历史
+    tagHistory(val) {
+      try {
+        let tagHistory = store.get('tagHistory')
+        // console.log('tagHistory', tagHistory)
+        let list = []
+        if (tagHistory) {
+          list = JSON.parse(tagHistory)
+          // max 10
+          if (list.length >= 10) {
+            list.shift()
+          }
+          list.push(val)
+        } else {
+          list = [ val ]
+        }
+        store.set('tagHistory',  JSON.stringify(list))
+      } catch (error) {
+        console.log(error)
+        store.remove('tagHistory')
+      }
+    },
+    // 添加标签方法
+    addTag({ type, data = {} }) {
+      // 输入框添加标签
+      const _inputAddTagFn = (val) => {
+        if (val) {
+          this.$emit('addTag', { tag: val })
+          this.tagVal = ''
+        }
+
+        this.tagHistory(val)
+      }
+
+      if (type === 'input') {
+        _inputAddTagFn(this.tagVal.trim())
+      } else if (type === 'drag') {
+        // 默认选择项
+        if (data.id === -1) {
+          // data { id: -1, name: value, value: value }
+          this.$emit('addTag', { tag: data.name })
+          this.tagVal = ''
+        } else {
+          _inputAddTagFn(this.tagVal.trim())
+        }
+      } else if (type === 'hotest') {
+        // data { name: value }
+        this.$emit('addTag', { tag: data.name })
+      } else {
+        console.log('other')
       }
     },
     // 搜索tag
-    searchTag: debounce(async function (val) {
-      const params = {
-        word: val.trim(),
-        pagesize: 10,
-      }
-      const res = await this.$API.searchDbTag(params)
-      if (res.code === 0) {
-        const list = res.data.list.map((i) => i.name)
-        this.searchResultTags = list
-      }
-    }, 300),
     async querySearchAsync(queryString, cb) {
-      if (queryString.trim()) {
+      let queryStringTrim = queryString.trim()
+      if (queryStringTrim) {
         const res = await this.$utils.factoryRequest(this.$API.searchDbTag({
-          word:  queryString.trim(),
+          word:  queryStringTrim,
           pagesize: 5
         }))
-
+        let empty = {
+          id: -1,
+          name: queryStringTrim,
+          value: `创建“${queryStringTrim}”标签`
+        }
         if (!res) {
-          cb([])
+          cb([empty])
           return
         }
+
+        // { id, name, value }
         let list = res.data.list.map(i => {
           return {
             ...i,
-            'value' : i.name
+            'value' : i.name,
+            type: 'tag'
           }
         })
-        cb(list)
+
+        let _mergendList = this.mergedTagList({ query: queryStringTrim, data: list })
+        _mergendList.unshift(empty)
+        cb(_mergendList)
       } else {
-        cb([])
+        let _list = this.mergedTagList({ query: '', data: [] })
+        cb(_list)
       }
     },
-    handleSelect(item) {
-      console.log(item)
-      this.addTag()
+    // 搜索标签选择
+    dragHandleSelect(item) {
+      console.log('dragHandleSelect', item)
+      this.addTag({ type: 'drag', data: item })
+    },
+    // 合并数组 tag 数据
+    // 1. 优先展示我历史输入过的标签
+    // 2. 展示当前热门的标签
+    // 3. 最后展示其他标签
+    // 1 2， 3 1 2 简单合并 数据库搜索的已经是匹配的数据只需要在搜索的时候对 1 2 匹配即可
+    mergedTagList({ query = '', data = [] }) {
+      let _historyList = []
+      let _hotestList = this.hotTags.map(i => ({ ...i, value: i.name, type: 'hotest' }))
+
+      try {
+        let tagHistory = store.get('tagHistory')
+        let list = JSON.parse(tagHistory)
+        let listReverse = list.reverse()
+        _historyList = listReverse.map(i => ({ id: 0, name: i, value: i, type: 'history' }))
+      } catch (error) {
+        console.log('error', error)
+      }
+
+      if (query) {
+        const list = _historyList.concat(_hotestList)
+        const queryLower = query.toLocaleLowerCase()
+        const listSearchFn = i => {
+          let str = (i.name).toLocaleLowerCase()
+          return str.search(queryLower) !== -1
+        }
+        let listSearch = list.filter(listSearchFn)
+
+        return data.concat(listSearch)
+      }
+      return _historyList.concat(_hotestList)
     }
   },
 }
@@ -223,6 +291,7 @@ export default {
   font-size: 12px;
   font-weight: 400;
   transition: all 0.2s;
+  user-select: none;
 
   .icon {
     display: none;
@@ -252,7 +321,7 @@ export default {
   border: 1px solid #ccd0d7;
   box-sizing: border-box;
   transition: color 0.2s ease, background-color 0.2s ease,
-    border-color 0.2s ease;
+  border-color 0.2s ease;
   outline: none;
   color: #333;
   font-size: 12px;
@@ -301,6 +370,9 @@ export default {
     &:nth-last-child(1) {
       margin-right: 0;
     }
+    .icon {
+      margin-right: 6px;
+    }
   }
 }
 .item-input {
@@ -329,6 +401,37 @@ export default {
         color: #fff;
       }
     }
+  }
+}
+</style>
+
+<style lang="less">
+.tag-drag-item {
+  border: 1px solid #542ddf;
+  width: auto !important;
+  ul li {
+    padding-right: 5px;
+    padding-left: 5px;
+    .item {
+      .icon {
+        margin-right: 6px;
+      }
+      font-size: 14px;
+      font-weight: 500;
+      color: #542de0;
+      padding-right: 5px;
+      padding-left: 5px;
+      &.fixed {
+        background: #EBE6FF;
+        border-radius: 4px;
+      }
+    }
+    &:hover {
+      background: #EBE6FF;
+    }
+  }
+  .popper__arrow {
+    border-bottom-color: #542ddf !important;
   }
 }
 </style>
