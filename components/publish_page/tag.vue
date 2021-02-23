@@ -144,7 +144,11 @@ export default {
         } else {
           list = [ val ]
         }
-        store.set('tagHistory',  JSON.stringify(list))
+
+        // 去重 去空
+        let _listRemoveEmpty = list.filter(i => !!i)
+        let _listDeduplication = [ ...new Set( _listRemoveEmpty ) ]
+        store.set('tagHistory',  JSON.stringify(_listDeduplication))
       } catch (error) {
         console.log(error)
         store.remove('tagHistory')
