@@ -62,8 +62,18 @@
         <i class="el-icon-delete" />
         {{ $t('this-comment-has-been-deleted') }}
       </p>
+
+      <!-- @分享 -->
+      <div v-if="mode === 'share'" @click.stop>
+        <shareInsideCard
+          :key="'shareInsideCard'"
+          class="notify-right-share-card"
+          :card="share"
+          card-type="read"
+        />
+      </div>
       <!-- 对象卡片 -->
-      <div v-if="mode !== 'hide'" @click.stop>
+      <div v-else-if="mode !== 'hide'" @click.stop>
         <objectCard
           :mode="mode"
           :user="user"
@@ -81,10 +91,12 @@
 import { isNDaysAgo } from '@/utils/momentFun'
 import { precision } from '@/utils/precisionConversion'
 import objectCard from '@/components/notification/objectCard.vue'
+import shareInsideCard from '@/components/share_inside_card/index.vue'
 
 export default {
   components: {
-    objectCard
+    objectCard,
+    shareInsideCard
   },
   props: {
     card: {
@@ -134,7 +146,9 @@ export default {
         reply: '回复了你的评论',
         transfer: '向你转账',
         reward: '打赏了你',
-        collaborator: '已将你设置为协作者'
+        collaborator: '已将你设置为协作者',
+        likeShare: '推荐了你的动态',
+        at: '@了你'
       },
       iconTypes: {
         like: 'notify_recommend',
@@ -168,6 +182,7 @@ export default {
       const { action, object_type } = this.card
       if (action === 'transfer' && object_type === 'article') return this.actionLabels.reward
       if (action === 'annouce' && object_type === 'collaborator') return this.actionLabels.collaborator
+      if (action === 'like' && object_type === 'share') return this.actionLabels.likeShare
 
       return this.actionLabels[action]
     },
@@ -240,7 +255,7 @@ export default {
         if (object_type === 'collaborator' && this.token && total < 2) return 'token'
         if (object_type === 'announcementToken' && this.token) return 'token'
         else if (this.post) return 'post'
-      } else if (action === 'at') {
+      } else if (object_type === 'share') {
         return 'share' // 分享
       }
       return 'hide' // 隐藏
@@ -277,11 +292,14 @@ export default {
           else url = {}
           break
         case 'token':
-          if (this.transferLog) { 
+          if (this.transferLog) {
             if (this.transferLog.symbol === 'CNY') url = {name: 'account'}
             else url = {name: 'token-id', params: {id: this.transferLog.token_id}}
           }
           else if (this.token) url = {name: 'token-id', params: {id: this.token.id}}
+          break
+        case 'share':
+          url = {name: 'share-id', params: {id: this.share.id}}
           break
         default:
           url = {}
@@ -385,7 +403,7 @@ export default {
           }
           &:hover {
             text-decoration: underline;
-          }  
+          }
         }
       }
       p {
@@ -414,6 +432,12 @@ export default {
       &.no-data {
         white-space: normal;
         color: #b2b2b2;
+      }
+    }
+    &-share-card {
+      /deep/ .card {
+        border: none;
+        background: #f1f1f1;
       }
     }
   }

@@ -92,8 +92,8 @@ export default {
       // beref use sign_id
       if (this.toggleArticle) return {}
       else if (this.cardType === 'edit') return {}
-      else if (this.from === 'beref') return { name: 'share-id', params: { id: this.card.sign_id } }
-      else return { name: 'share-id', params: { id: this.card.ref_sign_id } }
+      else if (this.from === 'beref') return { name: 'share-id', params: { id: this.card.sign_id || this.card.id } }
+      else return { name: 'share-id', params: { id: this.card.ref_sign_id || this.card.id } }
     },
     username() {
       if (this.cardType === 'edit') {
