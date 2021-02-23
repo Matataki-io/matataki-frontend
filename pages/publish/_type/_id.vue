@@ -160,34 +160,12 @@
           </div>
         </div>
         <!-- tag -->
-        <h4 class="set-subtitle">
-          <!-- {{ $t('publish.tagTitle') }} -->
-          {{ $t('add-tag') }}<span class="tag">（{{ $t('you-can-also-add-tags', [ tagMaxLen - tags.length ]) }}）</span>
-        </h4>
-        <div class="set-content">
-          <ul class="tag-list">
-            <li
-              v-for="(item, index) in tags"
-              :key="index"
-              class="tag-item"
-              @click="removeTag(index)"
-            >
-              {{ item }}
-              <svg-icon icon-class="close_thin" class="icon" />
-            </li>
-            <li v-show="tags.length < tagMaxLen">
-              <input
-                ref="tagRef"
-                v-model="tagVal"
-                class="tag-input"
-                type="text"
-                maxlength="20"
-                @keyup.enter="addTag"
-              >
-              <span class="tag-tip">{{ $t('press-enter-to-create-the-label') }}</span>
-            </li>
-          </ul>
-        </div>
+        <tagModule
+          :tag-max-len="tagMaxLen"
+          :tags="tags"
+          @removeTag="removeTag"
+          @addTag="addTag"
+        />
         <h4 class="set-subtitle">
           {{ $t('link-fan-ticket') }}
         </h4>
@@ -212,8 +190,8 @@
             />
           </el-select>
           <el-button 
-            type="primary" 
-            size="small" 
+            type="primary"
+            size="small"
             style="margin-left: 0.5rem;"
             @click="setAssosiateWith"
           >
@@ -733,6 +711,7 @@ import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 import { CNY } from '@/components/exchange/consts.js'
 
+import tagModule from '@/components/publish_page/tag'
 
 function newDatePicker(time) {
   const date = new Date()
@@ -759,6 +738,7 @@ export default {
     articleTransfer,
     articleImport,
     statement,
+    tagModule
   },
   data() {
     return {
@@ -1002,17 +982,6 @@ export default {
       deep: true,
       handler() {
         this.updateDraftWatch()
-      }
-    },
-    // 监听tag设置width
-    tagVal(val) {
-      const tag = this.$refs.tagRef
-      const width = (val.length + 1 ) * 12
-
-      if (val && width > 104) {
-        tag.style.width = (width <= 282 ? width : 282) + 'px'
-      } else {
-        tag.style.width = '104px'
       }
     },
     // 协议
@@ -2020,15 +1989,22 @@ export default {
       }
     },
     // 添加标签
-    addTag() {
-      const val = this.tagVal.trim()
-      if (val) {
-        this.tags.push(val)
-        this.tagVal = ''
+    addTag(data) {
+      // 判断重复标签
+      let tag = this.tags.find(i => i === data.tag)
+      if (tag) {
+        this.$message({
+          showClose: true,
+          message: '标签重复了哦~',
+          type: 'warning'
+        })
+      } else {
+        this.tags.push(data.tag)
       }
     },
     // 删除标签
-    removeTag(i) {
+    removeTag(data) {
+      let i = data.index
       this.tags.splice(i, 1)
     },
     // 另存为草稿
