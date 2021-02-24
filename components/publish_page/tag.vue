@@ -51,8 +51,8 @@
         </li>
       </ul>
     </div>
-    <h5 class="hot-tag">{{ $t('hotest-tag') }}</h5>
-    <ul class="hot-tag-item">
+    <h5 v-if="hotTags.length > 0" class="hot-tag">{{ $t('hotest-tag') }}</h5>
+    <ul v-if="hotTags.length > 0" class="hot-tag-item">
       <li
         v-for="(item, index) in hotTags"
         :key="index"
