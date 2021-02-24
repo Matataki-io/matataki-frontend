@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-1102.000000, -194.000000)" fill-rule="nonzero">
+            <g transform="translate(1102.000000, 194.000000)">
+                <path d="M0,7.99927438 C0,10.8572247 1.52449793,13.4981342 3.99953432,14.9271461 C6.47457071,16.3561581 9.52397804,16.3561581 11.9990144,14.9271461 C14.4740508,13.4981342 15.9985487,10.8572247 15.9985487,7.99927438 C15.998352,3.58153629 12.4170125,0.000356332159 7.99927437,0.000356332159 C3.58153628,0.000356332159 0.000196790618,3.58153629 0,7.99927438 Z" fill="#627EEA"></path>
+                <polygon fill-opacity="0.602" fill="#FFFFFF" points="8.24888889 2.0003991 8.24888889 6.43541043 11.9965896 8.10956916"></polygon>
+                <polygon fill="#FFFFFF" points="8.24888889 2.0003991 4.49886621 8.10956916 8.24888889 6.43424943"></polygon>
+                <polygon fill-opacity="0.602" fill="#FFFFFF" points="8.24888889 10.9830386 8.24888889 13.9969887 11.9989116 8.80732879"></polygon>
+                <polygon fill="#FFFFFF" points="8.24888889 13.9969887 8.24888889 10.9830386 4.49886621 8.80732879"></polygon>
+                <polygon fill-opacity="0.2" fill="#FFFFFF" points="8.24888889 10.2864399 11.9965896 8.10956916 8.24888889 6.43541043"></polygon>
+                <polygon fill-opacity="0.602" fill="#FFFFFF" points="4.50002721 8.10956916 8.24888889 10.2864399 8.24888889 6.43541043"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
