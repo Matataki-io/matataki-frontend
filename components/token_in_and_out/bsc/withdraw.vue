@@ -111,8 +111,6 @@ import { precision, toPrecision } from '@/utils/precisionConversion'
 import { ethers } from 'ethers'
 import { mintWithPermit } from '@/utils/ethers'
 
-// @todo: 到时候成熟了去掉
-const BSC_PEGGED_WHITELIST = ['DEV', 'DAO', 'META', 'SSS']
 
 export default {
   name: 'TokenWithdrawToBsc',
@@ -333,13 +331,10 @@ export default {
         order: 0,
       }
       await this.$API
-        .tokenTokenList(data)
+        .listCrossChainToken(data)
         .then((res) => {
           if (res.code === 0) {
-            this.tokenOptions = res.data.list.filter(
-              ({ symbol }) =>
-                BSC_PEGGED_WHITELIST.indexOf(symbol.toUpperCase()) > -1
-            )
+            this.tokenOptions = res.data.list
             this.topOwnToken()
           } else {
             this.tokenOptions = []
