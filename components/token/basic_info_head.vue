@@ -87,25 +87,44 @@
         <i class="el-icon-arrow-right" />
       </router-link>
       <div class="share-btn">
-        <el-button
-          class="link-btn"
-          size="small"
-          @click="copy(minetokenToken.contract_address)"
-        >
-          <svg-icon icon-class="copy" />
-        </el-button>
-        <a
-          :href="'http://rinkeby.etherscan.io/address/' + minetokenToken.contract_address"
-          target="_blank"
-        >
-          <el-button
-            class="link-btn"
-            size="small"
-          >
-            <svg-icon icon-class="eth_mini" />
-            {{ $t('token.viewOnChain') }}
-          </el-button>
-        </a>
+        <el-dropdown placement="top" trigger="hover" @command="handleCommandAddress">
+          <span class="el-dropdown-link">
+            <el-button class="link-btn" size="small">
+              <svg-icon icon-class="copy" />
+              {{ $t('copy-address') }}
+            </el-button>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="eth" class="item-address" :class="!minetokenToken.contract_address && 'not'">
+              <svg-icon class="icon" icon-class="token-eth" />
+              Rinkeby{{ minetokenToken.contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
+            </el-dropdown-item>
+            <el-dropdown-item command="bsc" class="item-address" :class="!minetokenToken.bsc_contract_address && 'not'">
+              <svg-icon class="icon" icon-class="token-bsc" />
+              BSC{{ minetokenToken.bsc_contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown placement="top" trigger="hover" @command="handleCommandAddressEtherscan">
+          <span class="el-dropdown-link">
+            <el-button class="link-btn" size="small">
+              <svg-icon icon-class="eth_mini" />
+              {{ $t('token.viewOnChain') }}
+            </el-button>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="eth" class="item-address" :class="!minetokenToken.contract_address && 'not'">
+              <svg-icon class="icon" icon-class="token-eth" />
+              Rinkeby{{ minetokenToken.contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
+            </el-dropdown-item>
+            <el-dropdown-item command="bsc" class="item-address" :class="!minetokenToken.bsc_contract_address && 'not'">
+              <svg-icon class="icon" icon-class="token-bsc" />
+              BSC{{ minetokenToken.bsc_contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
         <el-button
           class="btn"
           size="small"
@@ -234,11 +253,37 @@ export default {
       this.$copyText(val).then(
         () => this.$message({
           showClose: true,
-          message: this.$t('token.hashCopySuccess'),
+          message: this.$t('success.copy'),
           type: 'success'
         }),
         () => this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
       )
+    },
+    handleCommandAddress(command) {
+      try {
+        if (command === 'eth' && this.minetokenToken.contract_address) {
+          this.copy(this.minetokenToken.contract_address)
+        } else if (command === 'bsc' && this.minetokenToken.bsc_contract_address) {
+          this.copy(this.minetokenToken.bsc_contract_address)
+        } else {
+          console.log('other', command)
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
+    },
+    handleCommandAddressEtherscan(command) {
+      try {
+        if (command === 'eth' && this.minetokenToken.contract_address) {
+          window.open(`${process.env.VUE_APP_ETHERSCAN}/address/${this.minetokenToken.contract_address}`, '_blank')
+        } else if (command === 'bsc' && this.minetokenToken.bsc_contract_address) {
+          window.open(`${process.env.VUE_APP_BSCSCAN}/address/${this.minetokenToken.bsc_contract_address}`, '_blank')
+        } else {
+          console.log('other', command)
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
     }
   }
 }
@@ -353,7 +398,19 @@ export default {
     word-break: break-all;
   }
 }
-
+.item-address {
+  display: flex;
+  align-items: center;
+  .icon {
+    size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+  }
+  &.not {
+    opacity: 0.5;
+  }
+}
 @media screen and (max-width: 1200px) {
 }
 
