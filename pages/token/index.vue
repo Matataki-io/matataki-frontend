@@ -143,7 +143,7 @@ export default {
         // 没有申请 || 或者申请没有提交 &&
         // 没有发币的用户
         if (
-          (isEmpty(this.minetokenApplication) || this.minetokenApplication.status === 1) && 
+          (isEmpty(this.minetokenApplication) || this.minetokenApplication.status === 1) &&
         !this.isPublishToken
         ) {
           this.showPublishBtn = true
@@ -214,5 +214,14 @@ export default {
 .all-token-search {
   width: 200px;
   margin-left: auto;
+}
+
+@media screen and (max-width: 540px) {
+  .token-title {
+    font-size: 18px;
+  }
+  .all-token-search {
+    width: 140px;
+  }
 }
 </style>

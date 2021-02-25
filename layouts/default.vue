@@ -189,7 +189,7 @@ export default {
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 115px;
+    bottom: 200px;
     color: #B2B2B2;
     display: flex;
     align-items: center;
@@ -222,7 +222,7 @@ export default {
       width: 30px;
       height: 30px;
       right: 20px;
-      bottom: 100px;
+      bottom: 380px;
       &-icon {
         font-size: 16px;
       }

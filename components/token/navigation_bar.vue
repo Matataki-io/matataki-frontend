@@ -104,7 +104,7 @@ export default {
 .navigation {
   position: fixed;
   right: 40px;
-  bottom: 170px;
+  bottom: 260px;
   width: 45px;
   background: white;
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.05);
@@ -153,7 +153,7 @@ export default {
   .navigation {
     right: 20px;
     width: 30px;
-    bottom: 140px;
+    bottom: 460px;
     &-entry {
       p {
         font-size: 12px;
