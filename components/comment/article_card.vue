@@ -8,7 +8,7 @@
       >
         <c-user-popover :user-id="Number(comment.uid)">
           <c-avatar
-            :src="avatar" 
+            :src="avatar"
             :recommend-author="comment.user_is_recommend === 1"
             :token-user="comment.user_is_token === 1"
           />
@@ -80,6 +80,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import replyInput from './ReplyInput'
+import {isNDaysAgo} from '~/utils/momentFun'
 
 export default {
   name: 'CommentCard',
@@ -105,7 +106,16 @@ export default {
     },
     friendlyDate() {
       const time = this.moment(this.comment.create_time)
-      return time.format('MMMDo HH:mm')
+      // 如果评论是不是今年的，就显示年份
+      if (!isNDaysAgo(2, time)) {
+        return time.fromNow()
+      } else {
+        if (time.format('YYYY') !== this.moment(new Date()).format('YYYY')) {
+          return time.format('YYYY年MMMDo HH:mm') // TODO i18n
+        } else {
+          return time.format('MMMDo HH:mm')
+        }
+      }
     },
     avatar() {
       if (this.comment.avatar) return this.$ossProcess(this.comment.avatar)

@@ -28,6 +28,8 @@ module.exports = {
     VUE_APP_DOMAIN_IO: 'matataki.io', // 前端用来判断在 io 还是非 io
     // VUE_APP_DOMAIN_IO: 'localhost', // 前端用来判断在 io 还是非 io
     VUE_APP_DOMAIN_CN: 'matataki.cn', // 前端用来判断在 cn 还是非 cn
+    VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
+    VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
   },
   testing: {
     NODE: 'testing',
@@ -57,6 +59,8 @@ module.exports = {
     VUE_APP_WX_URL: 'https://sstest.frontenduse.top',
     VUE_APP_DOMAIN_IO: 'matataki.io',
     VUE_APP_DOMAIN_CN: 'matataki.cn',
+    VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
+    VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
   },
   release: {
     NODE: 'production',
@@ -87,6 +91,8 @@ module.exports = {
     VUE_APP_WX_URL: 'https://smartsignature.frontenduse.top',
     VUE_APP_DOMAIN_IO: 'matataki.io',
     VUE_APP_DOMAIN_CN: 'matataki.cn',
+    VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
+    VUE_APP_BSCSCAN: 'https://bscscan.com',
   },
   production: {
     NODE: 'production',
@@ -117,5 +123,7 @@ module.exports = {
     VUE_APP_WX_URL: 'https://smartsignature.frontenduse.top',
     VUE_APP_DOMAIN_IO: 'matataki.io',
     VUE_APP_DOMAIN_CN: 'matataki.cn',
+    VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
+    VUE_APP_BSCSCAN: 'https://bscscan.com',
   }
 }

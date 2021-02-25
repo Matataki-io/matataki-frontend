@@ -591,7 +591,8 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: scale 0.3s ease-in-out 0s, ;
+    transition: scale 0.3s ease-in-out 0s ;
+    display: none;
   }
 
   &:hover, .button:focus {
@@ -601,6 +602,7 @@ export default {
 
   &:hover::before, &:focus::before {
     opacity: 1;
+    display: inline;
   }
 
   &:hover::after, &:focus::after {
@@ -608,7 +610,7 @@ export default {
     display: none;
   }
 
-  &::active {
+  &:active {
     transform: scale(0.8);
   }
 }
@@ -881,7 +883,6 @@ export default {
   display: block;
   text-decoration: none;
   color: #333;
-  text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -1031,6 +1032,10 @@ export default {
     width: 80px;
     line-height: 20px;
     font-size: 12px;
+    &::before {
+      min-width: calc(94px + 6px);
+      min-height: calc(34px + 6px);
+    }
   }
 }
 

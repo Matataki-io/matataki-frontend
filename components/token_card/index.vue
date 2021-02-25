@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="card-user">
-        <div class="fl ac user" @click.stop="$router.push({name: 'user-id', params: { id: card.uid }})">
+        <div class="fl ac user" @click.stop="jumpUser(card.uid)">
           <c-user-popover :user-id="Number(card.uid)">
             <c-avatar
               :src="coverUser"
@@ -101,6 +101,20 @@ export default {
       return this.$utils.isNDaysAgo(2, time) ? time.format('MMMDo HH:mm') : time.fromNow()
     },
   },
+  methods: {
+    // 跳转到用户页面
+    jumpUser(uid) {
+      try {
+        if (window) {
+          window.open(`/user/${uid}`, '_blank')
+        } else {
+          throw new Error('not window')
+        }
+      } catch (error) {
+        this.$router.push({name: 'user-id', params: { id: uid }})
+      }
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
