@@ -5,7 +5,7 @@
     :size="$utils.clientWidth() >= 768 ? '' : 'mini'"
   >
     <el-table-column
-      v-if="$utils.clientWidth() >= 768" 
+      v-if="$utils.clientWidth() >= 768"
       :label="$t('types-of')"
     >
       <template slot-scope="scope">
@@ -13,14 +13,14 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="$t('time')" 
+      :label="$t('time')"
       :width="$utils.clientWidth() >= 768 ? '' : '146' "
     >
       <template slot-scope="scope">
         {{ $utils.formatTime(scope.row.create_time) }}
       </template>
     </el-table-column>
-    <el-table-column label="$t('amount')">
+    <el-table-column :label="$t('amount')">
       <template slot-scope="scope">
         {{ formatPrecision(scope.row.cny_amount) }}
         CNY
@@ -28,7 +28,7 @@
     </el-table-column>
     <el-table-column
       v-if="$utils.clientWidth() >= 768"
-      label="$t('fan-ticket')" 
+      :label="$t('fan-ticket')"
     >
       <template slot-scope="scope">
         {{ formatPrecision(scope.row.token_amount) }}

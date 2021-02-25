@@ -66,7 +66,7 @@
           <language />
         </div>
       </div>
-      <div class="footer-c5" style="text-align: right;">
+      <div class="footer-c6">
         <div>
           <img
             class="logo"
@@ -151,9 +151,9 @@
           <a href="https://www.producthunt.com/posts/matataki?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-matataki" target="_blank"><img
             src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=281257&theme=light"
             alt="瞬MATATAKI - We help creators distribute SocialMoney & provide services | Product Hunt"
-            style="width: 250px; height: 54px;"
             width="250"
             height="54"
+            class="product-hunt"
           ></a>
         </div>
       </div>
@@ -178,11 +178,8 @@ export default {
 .footer {
   height: 180px;
   background: #333333;
-  padding-top: 52px;
-  // padding-bottom: 52px;
+  padding-top: 40px;
   box-sizing: border-box;
-  padding-bottom: calc(52px + constant(safe-area-inset-bottom));
-  padding-bottom: calc(52px + env(safe-area-inset-bottom));
   &-content {
     max-width: 1200px;
     height: 100%;
@@ -195,6 +192,7 @@ export default {
   }
   .footer-c6 {
     width: 60%;
+    text-align: right;
   }
   .footer-c5 {
     width: 50%;
@@ -264,7 +262,6 @@ export default {
       width: 0;
       height: 0;
       border: 10px solid #fff;
-      border-color: #fff transparent transparent;
     }
     img {
       border: 1px solid #eee;
@@ -365,6 +362,10 @@ export default {
   align-items: flex-start;
 }
 
+.product-hunt {
+  padding-top: 10px;
+}
+
 .language {
   margin: 10px 0 0;
 }
@@ -411,6 +412,14 @@ export default {
     }
     .footer-c4 {
       width: 90%;
+    }
+    .footer-c5 {
+      width: 100%;
+      text-align: center;
+    }
+    .logo {
+      margin: 0 auto 20px auto;
+      display: block;
     }
   }
 }
