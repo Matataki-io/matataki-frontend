@@ -1,24 +1,25 @@
 <template>
   <div class="fl card" @click.prevent="$router.push({name: 'token-id', params: { id: card.id }})">
-    <div class="token-cover">
-      <c-token-popover :token-id="Number(card.id)">
-        <avatar :src="cover" size="45px" />
-      </c-token-popover>
-    </div>
-
     <div class="fl cards-content">
       <div class="card-info">
-        <div>
-          <h2 class="card-info-symbol">
-            {{ card.symbol || $t('not') }}
-          </h2>
+        <div class="token-cover">
+          <c-token-popover :token-id="Number(card.id)">
+            <avatar :src="cover" size="45px" />
+          </c-token-popover>
         </div>
-        <p class="card-info-name">
-          {{ card.name || $t('not') }}
-        </p>
-        <p class="card-info-name brief">
-          {{ card.brief || $t('not') }}
-        </p>
+        <div class="token-info">
+          <div>
+            <h2 class="card-info-symbol">
+              {{ card.symbol || $t('not') }}
+            </h2>
+          </div>
+          <p class="card-info-name">
+            {{ card.name || $t('not') }}
+          </p>
+          <p class="card-info-name brief">
+            {{ card.brief || $t('not') }}
+          </p>
+        </div>
       </div>
       <div class="card-data">
         <div class="card-data-column">
@@ -35,13 +36,6 @@
           <p class="card-data-amount">
             <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} CNY
           </p>
-        </div>
-        <div class="card-data-column circle">
-          <!-- <router-link :to="{ name: 'token-id-circle', params: { id: card.id } }">
-            <el-button type="primary" size="small" @click.stop="">
-              圈子
-            </el-button>
-          </router-link> -->
         </div>
       </div>
       <div class="card-user">
@@ -131,7 +125,6 @@ export default {
 }
 .cards-content {
   flex: 1;
-  margin-left: 10px;
 }
 
 .card-info {
@@ -158,6 +151,14 @@ export default {
       overflow: hidden;
     }
   }
+  .token-cover {
+    float: left;
+    width: 35%;
+  }
+  .token-info {
+    float: left;
+    width: 65%;
+  }
 }
 
 .card-data {
@@ -165,7 +166,7 @@ export default {
 
   &-column {
     float: left;
-    width: 25%;
+    width: 33.3%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -176,7 +177,6 @@ export default {
     text-align: center;
     font-size: 16px;
     margin: 0;
-    line-height: 76px;
     span {
       display: none;
     }
@@ -186,7 +186,7 @@ export default {
 .card-user {
   width: 26%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-end;
   flex-direction: column;
   .user {
@@ -220,12 +220,6 @@ export default {
   .card-user {
     display: none;
   }
-  .card-data {
-    width: 69%;
-  }
-}
-// <600
-@media screen and (max-width: 600px) {
   .card-info {
     width: 35%;
   }
@@ -246,6 +240,13 @@ export default {
     display: block;
     .card-info {
       width: 100%;
+      .token-cover {
+        width: 10%;
+        min-width: 30px;
+      }
+      .token-info {
+        width: 90%;
+      }
     }
     .card-info-symbol {
       font-size: 16px;
@@ -257,6 +258,7 @@ export default {
     .card-data {
       width: 100%;
       margin-top: 10px;
+      margin-left: 10%;
       .card-data-column {
         float: none;
         width: 100%;
