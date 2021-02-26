@@ -304,7 +304,7 @@ export default {
   }
 
   &-left-column {
-    width: 30%;
+    width: 26%;
 
     .el-dropdown {
       font-size: 16px;
@@ -312,11 +312,11 @@ export default {
   }
 
   &-medium-column {
-    width: 44%;
+    width: 48%;
     text-align: center;
 
     .sub-column {
-      width: 25%;
+      width: 33.3%;
       &.cursor {
         cursor: pointer;
       }
@@ -337,6 +337,10 @@ export default {
 
 // <880
 @media screen and (max-width: 880px) {
+  .tokens-list-header-left-column {
+    width: 35%;
+  }
+
   .tokens-list-header-right-column {
     display: none;
   }
