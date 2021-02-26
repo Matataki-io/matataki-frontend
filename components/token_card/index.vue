@@ -241,11 +241,11 @@ export default {
     .card-info {
       width: 100%;
       .token-cover {
-        width: 10%;
+        width: 15%;
         min-width: 30px;
       }
       .token-info {
-        width: 90%;
+        width: 85%;
       }
     }
     .card-info-symbol {
@@ -258,7 +258,7 @@ export default {
     .card-data {
       width: 100%;
       margin-top: 10px;
-      margin-left: 10%;
+      margin-left: 15%;
       .card-data-column {
         float: none;
         width: 100%;
