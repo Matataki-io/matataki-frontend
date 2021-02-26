@@ -185,6 +185,23 @@
             <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
           </div>
         </div>
+
+        <div class="ra-box-rimless">
+          <el-button
+            class="ra-box-rimless-push"
+            type="primary"
+            round
+            @click="refPush()"
+          >
+            发布动态
+          </el-button>
+          <el-button
+            class="ra-box-rimless-refresh"
+            icon="el-icon-refresh"
+            circle
+            @click="updateList"
+          />
+        </div>
       </div>
     </div>
     <inputDialog v-model="showInputDialog" :preset="inputDialogPreset" />
@@ -581,6 +598,32 @@ export default {
       padding: 20px;
     }
   }
+  .ra-box-rimless {
+    margin-top: 20px;
+    display: flex;
+
+    &-push {
+      flex: 1;
+      height: 48px;
+      border-radius: 48px;
+      font-size: 16px;
+    }
+    &-refresh {
+      height: 48px;
+      width: 48px;
+      font-size: 20px;
+      animation: turn 1s linear 1;
+      &:active {
+
+        animation: none;
+      }
+    }
+  }
+
+  @keyframes turn{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(-360deg);}
+  }
 }
 
 .row {
@@ -736,6 +779,13 @@ export default {
 }
 
 // 页面小于
+@media screen and (max-width: 1350px) {
+  .recommend {
+    .ra-box-rimless {
+      margin-right: 90px;
+    }
+  }
+}
 @media screen and (max-width: 992px) {
   .welcome-people {
     left: -40px;
@@ -773,6 +823,10 @@ export default {
         margin-top: 20px;
         max-height: 330px;
       }
+    }
+
+    .ra-box-rimless {
+      display: none;
     }
   }
   .banner-people {
