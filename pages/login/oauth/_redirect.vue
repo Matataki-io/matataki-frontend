@@ -59,6 +59,6 @@ export default {
 
 <style lang="less">
 .el-dialog__headerbtn {
-  display: none;
+  // display: none;
 }
 </style>
