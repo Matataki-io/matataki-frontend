@@ -1,7 +1,7 @@
 <template>
   <div class="userplatform">
     <router-link
-      :to="{name: 'user-id', params: {id: card.id}}"
+      :to="{name: 'user-id-timeline', params: {id: card.id}}"
       target="_blank"
     >
       <c-user-popover :user-id="Number(card.id)">
@@ -15,7 +15,7 @@
     </router-link>
     <router-link
       class="userplatform-info"
-      :to="{name: 'user-id', params: {id: card.id}}"
+      :to="{name: 'user-id-timeline', params: {id: card.id}}"
       target="_blank"
     >
       <h4>
