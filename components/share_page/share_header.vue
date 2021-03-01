@@ -1,7 +1,7 @@
 <template>
   <div class="share-header">
     <router-link
-      :to="{name: 'user-id', params: {id: id}}"
+      :to="{name: 'user-id-timeline', params: {id: id}}"
       target="_blank"
     >
       <avatar
@@ -12,7 +12,7 @@
     <div class="share-header-info">
       <div class="share-header-info-top">
         <router-link
-          :to="{name: 'user-id', params: {id: id}}"
+          :to="{name: 'user-id-timeline', params: {id: id}}"
           class="share-header__author"
           target="_blank"
         >
