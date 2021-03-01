@@ -3,6 +3,7 @@
     :visible.sync="showModal"
     :modal="true"
     :close-on-click-modal="false"
+    :append-to-body="true"
     width="380px"
     custom-class="my-dialog br10 auth-dialog"
     @closed="() => {step = 1; isLogin = true}"
@@ -93,7 +94,9 @@ export default {
   },
   created() {
     if (process.browser) {
-      if (this.value && this.single) this.showModal = !this.showModal
+      if (this.value && this.single) {
+        this.$store.commit('setLoginModal', true)
+      }
     }
   },
   methods: {
