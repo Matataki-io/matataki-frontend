@@ -88,7 +88,7 @@
             <div class="wechat">
               <div class="wechat-img">
                 <img
-                  src="@/assets/img/wechat-group1.png"
+                  src="@/assets/img/wechat-group1.jpg"
                   alt="code"
                 >
                 <p class="wechat-title">
@@ -256,7 +256,7 @@ export default {
       position: absolute;
       bottom: -20px;
       left: 50%;
-      transform: translate(-50%, 0);
+      transform: translate(-50%, -50%) rotate(45deg);
       display: block;
       content: "";
       width: 0;
@@ -420,6 +420,18 @@ export default {
     .logo {
       margin: 0 auto 20px auto;
       display: block;
+    }
+  }
+}
+
+// 小于540, 移动端适配请写在这里面
+@media screen and (max-width: 540px) {
+  .icon {
+    .wechat {
+      left: -65px;
+      &::after {
+        left: 25%;
+      }
     }
   }
 }

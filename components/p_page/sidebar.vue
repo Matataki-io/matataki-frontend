@@ -104,7 +104,9 @@ export default {
       if (scrollTop + clientHeight() === scrollHeight()) {
         footer.classList.add('fade-out')
         footer.classList.remove('fade-in')
+        setTimeout(() => footer.classList.add('after-fade-out'), 250)
       } else {
+        footer.classList.remove('after-fade-out')
         footer.classList.add('fade-in')
         footer.classList.remove('fade-out')
       }
@@ -121,6 +123,9 @@ export default {
 .fade-out {
   transition: all 250ms;
   opacity: 0;
+}
+.after-fade-out {
+  visibility: hidden;
 }
 
 .sidebar {
