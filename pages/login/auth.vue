@@ -32,7 +32,7 @@ export default {
       loading: false,
       qrCodeUrl: '', // 二维码
       invalid: 60, // 过期时间
-      timer: null
+      timer: null,
     }
   },
   created() {
@@ -53,6 +53,11 @@ export default {
         this.loginByWx(res.data.scene)
       } else {
         console.log('生成二维码失败', res)
+        this.$message({
+          showClose: true,
+          message: '生成二维码失败，请刷新后重试',
+          type: 'warning'
+        })
         this.invalid = 0
       }
       this.loading = false
