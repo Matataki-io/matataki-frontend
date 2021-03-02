@@ -11,6 +11,7 @@
           v-model="registerForm.email"
           :placeholder="$t('rule.loginEmailMessage')"
           type=""
+          autocomplete="off"
         />
       </el-form-item>
       <el-form-item prop="password">
@@ -19,6 +20,7 @@
           :placeholder="$t('rule.setPassword')"
           type="password"
           show-password
+          autocomplete="new-password"
         />
       </el-form-item>
       <el-form-item prop="repassword">
@@ -27,6 +29,7 @@
           :placeholder="$t('rule.setPasswordAgain')"
           type="password"
           show-password
+          autocomplete="new-password"
         />
       </el-form-item>
       <el-form-item prop="smscode">
