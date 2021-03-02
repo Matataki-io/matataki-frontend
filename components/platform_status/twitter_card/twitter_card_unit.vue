@@ -386,6 +386,7 @@ span {
       display: flex;
       margin: 10px 0 10px;
       .flow-default {
+        color: #657786;
         flex: 1;
         svg {
           height: 18px;
@@ -393,7 +394,7 @@ span {
           color: #657786;
         }
         span {
-          margin:  0 0 0 5px;
+          margin:  0 0 0 3px;
         }
       }
       &-comment {
