@@ -4,7 +4,7 @@
       <!-- banner -->
       <div class="tags-banner">
         <img src="@/assets/img/tags_banner.png" alt="banner">
-        <p>{{ $t('personalized-custom-label') }}</p>
+        <p v-html="$t('personalized-custom-label')" />
       </div>
       <div class="tags-head">
         <div class="tags-text">
