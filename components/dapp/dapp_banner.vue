@@ -3,7 +3,6 @@
     trigger="click"
     height="240px"
     class="swipe-dapp"
-    interval="100000"
   >
     <el-carousel-item>
       <div class="dapp-head-governance">
