@@ -57,7 +57,6 @@ export default {
   background: rgba(255, 255, 255, 1);
   border-radius: 10px;
   float: left;
-  padding: 0 20px 20px;
   box-sizing: border-box;
   text-align: center;
   transition: all 0.3s;
