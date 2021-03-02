@@ -3,6 +3,7 @@
     trigger="click"
     height="240px"
     class="swipe-dapp"
+    interval="100000"
   >
     <el-carousel-item>
       <div class="dapp-head-governance">
@@ -114,11 +115,10 @@ export default {
     margin: 8px 0 0 0;
   }
   .head-text {
-    margin: 0 0 0 190px;
+    margin: 0 auto 0 auto;
     text-align: left;
   }
   .head-btn {
-    // background: #542de0;
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
@@ -204,7 +204,7 @@ export default {
     margin: 0;
   }
   .head-text {
-    margin: 0 0 0 180px;
+    margin: 0 auto 0 auto;
     img {
       display: block;
       width: 464px;
@@ -410,16 +410,6 @@ export default {
   .dapp-head .computer {
     margin-right: 60px;
   }
-
-  // .dapp-container .item li {
-  //   width: calc(33.33% - 13.33333px);
-  //   &:nth-of-type(3n) {
-  //     margin-right: 0;
-  //   }
-  //   &:nth-of-type(4n) {
-  //     margin-right: 20px;
-  //   }
-  // }
 }
 
 
@@ -436,18 +426,32 @@ export default {
       text-align: center;
     }
   }
-
-  // .dapp-container .item li {
-  //   width: calc(50% - 10px);
-  //   &:nth-of-type(2n) {
-  //     margin-right: 0;
-  //   }
-  //   &:nth-of-type(3n) {
-  //     margin-right: 20px;
-  //   }
-  // }
 }
 
+@media screen and (max-width: 600px) {
+  .dapp-head-governance {
+    .head-text {
+      text-align: center;
+    }
+    .head-logo {
+      width: 300px;
+    }
+    .head-description {
+      font-size: 12px;
+    }
+  }
+  .dapp-head-quest {
+    .head-text {
+      text-align: center;
+      img {
+        width: 300px;
+      }
+    }
+    .head-description {
+      margin: 0 auto 0 auto;
+    }
+  }
+}
 
 @media screen and (max-width: 540px) {
   .dapp-head {
@@ -460,6 +464,16 @@ export default {
     }
     .head-btn {
       font-size: 14px;
+    }
+  }
+}
+</style>
+
+<style lang="less">
+@media screen and (max-width: 600px){
+  .swipe-dapp {
+    .el-carousel__button {
+      width: 15px;
     }
   }
 }
