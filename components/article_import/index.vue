@@ -91,19 +91,31 @@ export default {
           if (res.code === 0) {
             const templateLink = `\n\n${this.$t('publish.importAddress')}[${url}](${url})`
             res.data.content += templateLink
-            const { title, content, cover } = res.data
+            const { title, content, cover, tags } = res.data
             if (this.openNewPage) {
+
+              let list = []
+
+              // max tags 10
+              if (tags) {
+                let _tags = tags
+                const tagsArr = _tags.split(',')
+                list = tagsArr.slice(0, 10)
+              }
+
               this.createDraft({
                 title,
                 content,
-                cover
+                cover,
+                tags: list
               })
             } else {
               this.$message.success(this.$t('publish.importSuccess'))
               this.$emit('res', {
                 title,
                 content,
-                cover
+                cover,
+                tags
               })
               this.loading = false
               this.visible = false

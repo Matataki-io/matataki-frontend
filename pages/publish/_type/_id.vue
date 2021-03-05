@@ -1881,6 +1881,14 @@ export default {
       this.title = res.title
       this.markdownData = res.content
       this.cover = res.cover
+
+      // max tags 10
+      if (res.tags) {
+        const tags = res.tags.split(',')
+        this.tags = tags.slice(0, 10)
+      } else {
+        this.tags = []
+      }
     },
     async generateBullshit() {
       const 扯淡生成器 = import('@/api/bullshit-generator.js')
