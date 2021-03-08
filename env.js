@@ -48,7 +48,7 @@ module.exports = {
     VUE_APP_PC_URL: 'https://test.matataki.io',
     WX_SHARE_HOST: 'https://sstest.frontenduse.top',
     TELEGRAM_IV_RHASH: '71acceb5462fa6',
-    TELEGRAM_BOT_NAME: 'matataki_test_pc_bot',
+    TELEGRAM_BOT_NAME: 'matataki_testing_bot',
     TELEGRAM_BOT_ROOT_NAME: 'matataki_test_mobile_bot',
     TELEGRAM_BOT_IN_WX: 'matataki_test_wx_bot',
     TELEGRAM_FANDOM_BOT: 'matataki_testing_bot',
