@@ -175,6 +175,10 @@ export default {
         {
           key: 'mastodon',
           label: 'Mastodon'
+        },
+        {
+          key: 'telegram_channel',
+          label: 'Telegram Channel'
         }
       ],
       actions: null,
