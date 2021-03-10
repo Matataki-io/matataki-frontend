@@ -786,12 +786,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 992px) {
-  .welcome-people {
-    left: -40px;
-  }
-}
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 960px) {
   .row {
     display: flex;
     flex-direction: column-reverse;
@@ -866,7 +861,7 @@ export default {
   .row {
     margin-top: 20px;
   }
-  }
+}
 
 @media screen and (max-width: 520px) {
   .banner-title {
