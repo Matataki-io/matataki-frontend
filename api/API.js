@@ -1143,8 +1143,17 @@ minetokenGetResources(tokenId) {
   withdrawTokenToBsc(tid, data) {
       return request({
         method: 'POST',
-        url: `/minetoken/crosschain/${tid}/withdrawToBsc`,
-        data,
+        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+        data: { ...data, chain: 'bsc' },
+        timeout: 60 * 1000
+      })
+  },
+  // Token提现去Matic
+  withdrawTokenToMatic(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+        data: { ...data, chain: 'matic' },
         timeout: 60 * 1000
       })
   },
