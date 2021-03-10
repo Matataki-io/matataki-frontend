@@ -1152,8 +1152,17 @@ minetokenGetResources(tokenId) {
   depositFromBsc(tid, data) {
     return request({
       method: 'POST',
-      url: `/minetoken/crosschain/${tid}/depositFromBsc`,
-      data,
+      url: `/minetoken/crosschain/${tid}/depositFromOtherChain`,
+      data: { ...data, chain: 'bsc' },
+      timeout: 60 * 1000
+    })
+  },
+    // Token 充值从 Matic
+  depositFromMatic(tid, data) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/crosschain/${tid}/depositFromOtherChain`,
+      data: { ...data, chain: 'matic' },
       timeout: 60 * 1000
     })
   },
