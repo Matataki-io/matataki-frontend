@@ -866,35 +866,7 @@ export default {
   .row {
     margin-top: 20px;
   }
-
-  .welcome {
-    height: 240px;
-    margin-top: 0;
   }
-
-  .welcome-people {
-    top: auto;
-    bottom: 0;
-    height: 80%;
-  }
-
-  .welcome-title {
-    font-size: 20px;
-    line-height: 30px;
-  }
-  .welcome-text {
-    margin-top: 10px;
-  }
-  .welcome-description {
-    font-size: 14px;
-    line-height: 20px;
-  }
-  .welcome-description-time {
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: 0;
-  }
-}
 
 @media screen and (max-width: 520px) {
   .banner-title {
@@ -905,19 +877,6 @@ export default {
     font-size: 12px;
     line-height: 14px;
     margin: 10px 0 0 0;
-  }
-  .welcome {
-    align-items: center;
-    padding-right: 0;
-  }
-  .welcome-text {
-    text-align: center;
-  }
-  .welcome-people {
-    display: none;
-  }
-  .welcome-description-time {
-    margin-right: 0;
   }
 }
 </style>
