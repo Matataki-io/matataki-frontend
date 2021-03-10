@@ -23,7 +23,7 @@ export default {
     const clientID = process.env.VUE_APP_GITHUB_CLIENT_ID
     // const clientID = '750700EDFF6D3C6199CD'
     const APP_URL = process.env.VUE_APP_URL
-    const scope = 'read:public_repo,read:user'
+    const scope = 'read:user'
     // if (from) sessionStorage.setItem('githubFrom', from) // set sessionStorage
     // const redirectUri = `${APP_URL}/login/github${from ? '?from=' + from : ''}`
     const redirectUri = `${APP_URL}/login/github`
