@@ -121,7 +121,7 @@ export default {
           permit.sig.v,
           permit.sig.r,
           permit.sig.s,
-          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+          isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         )
         console.log(result)
         this.mintResult = result

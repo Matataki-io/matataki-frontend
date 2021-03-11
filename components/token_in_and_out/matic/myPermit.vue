@@ -1,108 +1,77 @@
 <template>
   <div class="withdraw-container">
     <client-only>
-      <!-- Frank 留言：需要有人帮我修剪一下这个页面的 UI，功能应该都OK的 -->
-      <div class="card">
-        <el-page-header :content="$t('my-BSC-license')" @back="$router.back()" />
-        <div class="checklist">
-          <h4>{{ $t('environmental-inspection') }}</h4>
-          <ul>
-            <li>{{ $t('do-you-already-have-a-MetaMask-wallet') }}: {{ renderIconWithBool(isMetaMaskActive) }}</li>
-            <li>
-              {{ $t('have-you-authorized-us-to-access') }}: {{ renderIconWithBool(selectedWallet) }}
-              <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
-                {{ $t('authorized-wallet-address') }}
-              </el-button>
-            </li>
-            <li v-if="selectedWallet">
-              {{ $t('the-wallet-address-of-the-current-operation') }}: {{ selectedWallet }}
-              <br>
-              BNB {{ $t('balance') }}： {{ bnbBalance }}
-            </li>
-            <li>
-              {{ $t('is-it-on-the-Binance-Smart-Blockchain-Network') }}: {{ renderIconWithBool(isOnBsc) }} 
-              <a
-                v-if="!isOnBsc"
-                class="link"
-                href="https://www.readblocks.com/archives/32275"
-                target="_blank"
-                rel="noopener noreferrer"
-              >👉{{ $t('guide-to-add-Binance-Smartchain-in-MetaMask') }} ↗️ 👈</a>
-            </li>
-          </ul>
-        </div>
-        <wbAlertWarning />
-        <wbAlertTips />
-        <div class="others">
-          <el-button type="primary" @click="$router.push({ name: 'token-withdrawToBsc' })">
-            {{ $t('apply-to-withdraw-your-own-assets') }}
-          </el-button>
-          <el-button @click="$router.push({ name: 'token-bscMintWithPermit' })">
-            {{ $t('For-others-Upload-the-withdrawal-permission') }}
-          </el-button>
-        </div>
-        <div
-          v-for="listItem in listOfTokenAndItsPermit"
-          :key="listItem.token"
-          class="parsedPermit"
-        >
-          <p class="parse-title">Token: {{ listItem.token }}</p>
-          <div>
-            <el-table :data="listItem.permits" style="width: 100%">
-              <el-table-column prop="to" :label="$t('withdraw-to')" width="400" />
-              <el-table-column prop="nonce" :label="$t('license-number-sequence')" width="80" />
-              <el-table-column :label="$t('status')" width="140">
-                <template slot-scope="scope">
-                  {{
-                    scope.row.status === 0
-                      ? $t('to-be-sent')
-                      : scope.row.status === -1
-                        ? $t('has-been-sent')
-                        : $t('please-process-to-be-sent-first')
+      <!-- Env Check Here -->
+      <EnvironmentCheck />
+      <wbAlertTips />
+      <p style=" font-size: 10px; ">{{ $t('when-the-license-is-updated-approximately-every-minute-the-last-update') }}：{{ lastUpdated }}</p>
+      <div
+        v-for="listItem in listOfTokenAndItsPermit"
+        :key="listItem.token"
+        class="parsedPermit"
+      >
+        <p class="parse-title">Token: {{ listItem.token }}</p>
+        <div>
+          <el-table :data="listItem.permits" style="width: 100%">
+            <el-table-column prop="to" :label="$t('withdraw-to')" width="400" />
+            <el-table-column prop="nonce" :label="$t('license-number-sequence')" width="80" />
+            <el-table-column :label="$t('status')" width="140">
+              <template slot-scope="scope">
+                {{
+                  scope.row.status === 0
+                    ? $t('to-be-sent')
+                    : scope.row.status === -1
+                      ? $t('has-been-sent')
+                      : $t('please-process-to-be-sent-first')
+                }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="value" :label="$t('withdrawal-amount')" width="160">
+              <template slot-scope="scope">
+                {{ scope.row.value / 1e4 }}
+              </template>
+            </el-table-column>
+            <el-table-column :label="$t('valid-period')" width="140">
+              <template slot-scope="scope">
+                {{ scope.row.expiryDate.toLocaleDateString() }}
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" :label="$t('operating')" width="240">
+              <template slot-scope="scope">
+                <div v-if="scope.row.status === -1" class="action-for-sent" />
+                <el-button
+                  v-else-if="scope.row.status !== -1 && !scope.row.isExpired"
+                  type="primary"
+                  :disabled="
+                    scope.row.status !== 0
+                  "
+                  @click="sendPermit(scope.row)"
+                >
+                  {{ scope.row.status === 1
+                    ? $t('deal-with-the-front-first')
+                    : scope.row.status === -1
+                      ? $t('has-been-sent')
+                      : $t('upload-license')
                   }}
-                </template>
-              </el-table-column>
-              <el-table-column prop="value" :label="$t('withdrawal-amount')" width="160">
-                <template slot-scope="scope">
-                  {{ scope.row.value / 1e4 }}
-                </template>
-              </el-table-column>
-              <el-table-column :label="$t('valid-period')" width="140">
-                <template slot-scope="scope">
-                  {{ scope.row.expiryDate.toLocaleDateString() }}
-                </template>
-              </el-table-column>
-              <el-table-column fixed="right" :label="$t('operating')" width="240">
-                <template slot-scope="scope">
-                  <el-button
-                    type="primary"
-                    :disabled="
-                      scope.row.isPermitExpired || scope.row.status !== 0
-                    "
-                    @click="sendPermit(scope.row)"
-                  >
-                    {{
-                      scope.row.isExpired
-                        ? $t('expired')
-                        : scope.row.status === 1
-                          ? $t('deal-with-the-front-first')
-                          : scope.row.status === -1
-                            ? $t('has-been-sent')
-                            : $t('upload-license')
-                    }}
-                  </el-button>
-                  <el-button
-                    :disabled="
-                      scope.row.isPermitExpired || scope.row.status !== 0
-                    "
-                    @click="copyPermit(scope.row)"
-                  >
-                    {{ $t('share') }}
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
+                </el-button>
+                <el-button
+                  v-else
+                  type="primary"
+                  @click="updatePermit(scope.row)"
+                >
+                  {{ $t('update-license') }}
+                </el-button>
+                <el-button
+                  :disabled="
+                    scope.row.isExpired || scope.row.status !== 0
+                  "
+                  @click="copyPermit(scope.row)"
+                >
+                  {{ $t('share') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
     </client-only>
@@ -110,18 +79,18 @@
 </template>
 
 <script>
-import { ethers, utils } from 'ethers'
-import { batchQueryNonceFor, mintWithPermit } from '../../utils/ethers'
+import { ethers } from 'ethers'
+import { batchQueryNonceFor, mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
 import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import EnvironmentCheck from './EnvironmentCheck'
 
 export default {
   name: 'MyBscPermit',
   components: {
-    wbAlertWarning,
     wbAlertTips,
+    EnvironmentCheck,
   },
   data() {
     return {
@@ -130,11 +99,7 @@ export default {
       listOfToken: [],
       listOfTokenAndItsPermit: [],
       interval: null,
-      isMetaMaskActive: false,
-      isOnBsc: false,
-      selectedWallet: null,
-      isChecked: false,
-      bnbBalance: null
+      lastUpdated: '...Loading...'
     }
   },
   computed: {
@@ -142,7 +107,7 @@ export default {
   },
   watch: {
     isLogined(val) {
-      if (val && this.isMetaMaskActive) this.fetchPermit()
+      if (val) this.fetchPermit()
       // 每一分钟刷新一次
       this.interval = setInterval(() => {
         this.fetchPermit()
@@ -152,38 +117,13 @@ export default {
   async mounted() {
     if (!process.browser) return // NO SSR 
     if (this.isLogined) this.fetchPermit()
-    this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
-    if (!window.ethereum) return
-    const { networkVersion, selectedAddress } = window.ethereum 
-    this.selectedWallet = selectedAddress
-    this.isOnBsc = (56 === Number(networkVersion) || 97 === Number(networkVersion))
-    if (selectedAddress) { this.fetchBNBBalance() }
-    window.ethereum.on('chainChanged', chainId => {
-      // handle the new network
-      this.isOnBsc = (56 === Number(chainId) || 97 === Number(chainId))
-    })
-    window.ethereum.on('accountsChanged',  ([ primaryAcc ]) => {
-      this.selectedWallet = primaryAcc
-      if (primaryAcc) {
-        this.fetchBNBBalance()
-      } else {
-        this.bnbBalance = null
-      }
-    })
+    this.interval = setInterval(() => {
+      this.fetchPermit()
+    }, 1000 * 60)
   },
   methods: {
-    renderIconWithBool(val) {
-      return val ? '☑️': '✖️'
-    },
-    async fetchBNBBalance() {
-      const provider = new ethers.providers.Web3Provider(
-        window.ethereum
-      )
-      const balanceBN = await provider.getBalance(this.selectedWallet)
-      this.bnbBalance = utils.formatEther(balanceBN)
-    },
     async fetchPermit() {
-      const { data } = await this.$API.listMyCrosschainPermit()
+      const { data } = await this.$API.listMyCrosschainPermit('matic')
       this.listOfToken = [
         ...new Set(data.permits.map((permit) => permit.token)),
       ]
@@ -201,7 +141,7 @@ export default {
       const after = await Promise.all(
         listOfTokenAndItsPermit.map(async ({ token, permits }) => {
           const queries = permits.map(({ to }) => ({ token, who: to }))
-          const nonces = await batchQueryNonceFor(queries)
+          const nonces = await batchQueryNonceFor(queries, isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET)
           const parsedPermits = permits.map((p, idx) => ({
             ...p,
             currentNonces: nonces[idx].toNumber(),
@@ -217,18 +157,11 @@ export default {
         })
       )
       this.listOfTokenAndItsPermit = after
+      this.lastUpdated = new Date().toLocaleString()
     },
     login() {
       this.$store.commit('setLoginModal', true)
       this.$emit('login')
-    },
-    async requestEtherumAccounts() {
-      try {
-        const [ defaultAccount ] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-        this.selectedWallet = defaultAccount
-      } catch (error) {
-        this.$message.error('对不起，这个操作需要你授权我们访问你的 MetaMask 钱包')
-      }
     },
     async sendPermit(permit) {
       try {
@@ -243,7 +176,8 @@ export default {
           permit.deadline,
           permit.sig.v,
           permit.sig.r,
-          permit.sig.s
+          permit.sig.s,
+          isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         )
         console.log(result)
         this.$message.success(
@@ -252,6 +186,11 @@ export default {
       } catch (error) {
         this.$message.error(error.message)
       }
+    },
+    async updatePermit(permit) {
+      await this.$API.renewBscWithdrawPermit(permit.id)
+      await this.fetchPermit()
+      this.$message.success('提现许可更新成功')
     },
     copyPermit(permit) {
       const stringify = JSON.stringify(permit)

@@ -40,10 +40,14 @@
           <el-radio v-model="chainSelection" label="bsc">
             {{ $t('binance-Smart-Chain-BSC-Mainnet') }}
           </el-radio>
+          <el-radio v-model="chainSelection" label="matic">
+            {{ $t('Matic') }}
+          </el-radio>
         </div>
         <div class="logic-container">
           <RinkebyInAndOut v-if="isRinkebySelected" :direction="direction" />
           <BscInAndOut v-if="isBscSelected" :direction="direction" />
+          <MaticInAndOut v-if="isMaticSelected" :direction="direction" />
         </div>
       </div>
     </client-only>
@@ -54,12 +58,14 @@
 import { mapGetters } from 'vuex'
 import RinkebyInAndOut from '../../components/token_in_and_out/rinkeby.vue'
 import BscInAndOut from '../../components/token_in_and_out/bsc.vue'
+import MaticInAndOut from '../../components/token_in_and_out/matic.vue'
 
 export default {
   name: 'FanPiaoInAndOut',
   components: {
     RinkebyInAndOut,
-    BscInAndOut
+    BscInAndOut,
+    MaticInAndOut,
   },
   data: () => ({
     chainSelection: 'rinkeby',
@@ -72,6 +78,9 @@ export default {
     },
     isBscSelected() {
       return this.chainSelection === 'bsc'
+    },
+    isMaticSelected() {
+      return this.chainSelection === 'matic'
     },
     isWithdrawSelected() {
       return this.direction === 'withdraw'

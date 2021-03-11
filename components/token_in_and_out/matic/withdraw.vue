@@ -251,7 +251,7 @@ export default {
           permit.sig.v,
           permit.sig.r,
           permit.sig.s,
-          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+          isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         )
         this.$message.success(
           `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
@@ -295,7 +295,7 @@ export default {
         amount: toPrecision(this.form.amount, 'CNY', 4),
       }
       this.$API
-        .withdrawTokenToBsc(this.form.tokenId, data)
+        .withdrawTokenToMatic(this.form.tokenId, data)
         .then((res) => {
           if (res.code === 0) {
             this.$emit('success')
@@ -330,7 +330,7 @@ export default {
       let data = {
         pagesize: 999,
         order: 0,
-        chain: 'bsc'
+        chain: 'matic'
       }
       await this.$API
         .listCrossChainToken(data)
