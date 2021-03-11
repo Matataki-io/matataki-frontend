@@ -6,7 +6,6 @@
         v-loading="transferLoading"
         :model="form"
         :rules="rules"
-        label-width="120px"
         class="withdraw-form"
       >
         <el-form-item :label="$t('coin-to-be-transferred')" prop="tokenId">
