@@ -65,7 +65,7 @@
           width="180"
         >
           <template slot-scope="scope">
-            <a :href="`http://bscscan.com/tx/${scope.row.burnTx}`" target="_blank" style="font-size: 10px">
+            <a :href="`http://explorer.matic.network/tx/${scope.row.burnTx}`" target="_blank" style="font-size: 10px">
               ...{{ scope.row.burnTx.slice(-6) }} ↗️
             </a>
           </template>
@@ -129,11 +129,11 @@ export default {
       } else if (value.length !== 42) {
         callback(
           new Error(
-            '地址长度不正确，请再次确认是否为币安智能区块链钱包地址'
+            '地址长度不正确，请再次确认是否为 Matic 主网钱包地址'
           )
         )
       } else if (value.slice(0, 2) !== '0x') {
-        callback('地址不是0x开头，应该不是币安智能区块链地址🤔')
+        callback('地址不是0x开头，应该不是 Matic 主网地址🤔')
       } else {
         callback()
       }
@@ -147,7 +147,7 @@ export default {
         max: 9999999999999
       },
       rules: {
-        token: [{ 
+        token: [{
           required: true, validator: validateEthereumAddress,
           trigger: ['change', 'blur'] }
         ],

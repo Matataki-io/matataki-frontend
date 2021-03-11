@@ -8,14 +8,14 @@
         <li>
           MetaMask: {{ renderIconWithBool(isMetaMaskActive) }}&nbsp;
           {{ $t('wallet-connection') }}: {{ renderIconWithBool(selectedWallet) }}&nbsp;
-          {{ $t('network') }}: {{ renderIconWithBool(isOnBsc) }}
-          <a 
-            v-if="!isOnBsc"
+          {{ $t('network') }}: {{ renderIconWithBool(isOnMatic) }}
+          <a
+            v-if="!isOnMatic"
             class="link"
             href="https://www.readblocks.com/archives/32275"
             target="_blank"
             rel="noopener noreferrer"
-          >👉{{ $t('guide-to-add-Binance-Smartchain-in-MetaMask') }} ↗️ 👈</a>
+          >👉{{ $t('guide-to-add-matic-in-MetaMask') }} ↗️ 👈</a>
           <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
             {{ $t('connection') }}
           </el-button>
@@ -34,7 +34,7 @@ import { ethers, utils } from 'ethers'
 export default {
   data: () => ({
     isMetaMaskActive: false,
-    isOnBsc: false,
+    isOnMatic: false,
     selectedWallet: null,
     bnbBalance: null
   }),
@@ -42,16 +42,16 @@ export default {
     // ...mapGetters(['isMe', 'isLogined']),
   },
   async mounted() {
-    if (!process.browser) return // NO SSR 
+    if (!process.browser) return // NO SSR
     this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
     if (!window.ethereum) return
-    const { networkVersion, selectedAddress } = window.ethereum 
+    const { networkVersion, selectedAddress } = window.ethereum
     this.selectedWallet = selectedAddress
-    this.isOnBsc = (137 === Number(networkVersion) || 80001 === Number(networkVersion))
+    this.isOnMatic = (137 === Number(networkVersion) || 80001 === Number(networkVersion))
     if (selectedAddress) { this.fetchBNBBalance() }
     window.ethereum.on('chainChanged', chainId => {
       // handle the new network
-      this.isOnBsc = (80001 === Number(chainId) || 137 === Number(chainId))
+      this.isOnMatic = (80001 === Number(chainId) || 137 === Number(chainId))
     })
     window.ethereum.on('accountsChanged',  ([ primaryAcc ]) => {
       this.selectedWallet = primaryAcc

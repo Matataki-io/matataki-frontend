@@ -60,7 +60,7 @@
         <el-form-item :label="$t('transfer-destination')" prop="to">
           <el-input
             v-model="form.to"
-            :placeholder="$t('please-enter-the-BSC-address-of-the-target-wallet-starting-with-0x')"
+            :placeholder="$t('please-enter-the-matic-address')"
             clearable
           />
         </el-form-item>
@@ -76,10 +76,10 @@
         </div>
         <el-alert v-if="withdrawResult" type="success" class="withdraw-result">
           <h1 class="title">
-            {{ $t('coin-BSC-cross-chain-transfer-license-has-been-issued') }}
+            {{ $t('coin-matic-cross-chain-transfer-license') }}
           </h1>
           <p class="description">
-            {{ $t('because-this-is-a-cross-chain-asset-of-the-BSC-mainnet-you-need-to-consume-a-certain-fee-to-create-it-please-make-sure-that-your-wallet-has-enough-BNB-to-create-cross-chain-assets') }}
+            {{ $t('because-this-is-a-cross-chain-asset-of-the-matic-mainnet') }}
           </p>
           <p class="description">
             {{ $t('your-withdrawal-permit-is-as-follows-dont-be-afraid-you-can-always-go-to-the-permit-list-to-check-the-previous-application') }}
@@ -136,11 +136,11 @@ export default {
       } else if (value.length !== 42) {
         callback(
           new Error(
-            '钱包地址长度不正确，请再次确认是否为币安智能区块链钱包地址'
+            '钱包地址长度不正确，请再次确认是否为 Matic 主网钱包地址'
           )
         )
       } else if (value.slice(0, 2) !== '0x') {
-        callback('地址不是0x开头，应该不是币安智能区块链的钱包地址🤔')
+        callback('地址不是 0x 开头，应该不是 Matic 主网的钱包地址🤔')
       } else {
         callback()
       }
@@ -254,7 +254,7 @@ export default {
           isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         )
         this.$message.success(
-          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
+          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 Matic 区块浏览器检查交易情况。`
         )
       } catch (error) {
         this.$message.error(error.message)

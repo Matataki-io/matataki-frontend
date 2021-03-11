@@ -153,7 +153,7 @@
   "balance": "残高",
   "basic-settings": "基本設定",
   "because-this-is-a-cross-chain-asset-of-the-BSC-mainnet-you-need-to-consume-a-certain-fee-to-create-it-Please-make-sure-that-your-wallet-has-enough-BNB-to-create-cross-chain-assets": "これはBSCメインネットのクロスチェーンアセットであるため、作成するには一定の料金を消費する必要があります。\nウォレットにクロスチェーンアセットを作成するのに十分なBNBがあることを確認してください。",
-  "because-this-is-a-cross-chain-asset-of-the-BSC-mainnet-you-need-to-consume-a-certain-fee-to-create-it-please-make-sure-that-your-wallet-has-enough-BNB-to-create-cross-chain-assets": "これはBSCメインネットのクロスチェーンアセットであるため、作成するには一定の料金を消費する必要があります。\nウォレットにクロスチェーンアセットを作成するのに十分なBNBがあることを確認してください。",
+  "because-this-is-a-cross-chain-asset-of-the-matic-mainnet": "これはMaticメインネットのクロスチェーンアセットであるため、作成するには一定の料金を消費する必要があります。\nウォレットにクロスチェーンアセットを作成するのに十分なMATICがあることを確認してください。",
   "bilibili-timeline-is-not-turned-on": "Bilibiliタイムラインがオンになっていません",
   "binance-Smart-Chain-BSC-Mainnet": "Binance Smart Chain（BSC）メインネット",
   "bind-bilibili-account": "Bilibiliアカウントをバインドする",
@@ -185,7 +185,9 @@
   "close": "シャットダウン",
   "coin": "ファンチケット",
   "coin-BSC-cross-chain-transfer-license-has-been-issued": "ファンチケットBSCクロスチェーン転送ライセンスが発行されました",
+  "coin-matic-cross-chain-transfer-license": "ファンチケットMaticクロスチェーン転送ライセンスが発行されました",
   "coin-address-at-BSC": "BSCのファンチケットアドレス",
+  "coin-address-at-matic": "Maticのファンチケットアドレス",
   "coin-are-being-deployed-please-be-patient": "ファンチケットが展開されていますので、しばらくお待ちください。",
   "coin-deposited-outside-the-station-in-Rinkeby": "リンケビーの駅の外に預けられたファンチケット",
   "coin-deposited-outside-the-station-on-Rinkeby-Testnet": "駅の外（リンケビーテストネット）に預けられたファンチケット",
@@ -537,6 +539,7 @@
     "step": "ステップ"
   },
   "guide-to-add-Binance-Smartchain-in-MetaMask": "MetaMaskにBinanceSmartchainを追加するためのガイド",
+  "guide-to-add-matic-in-MetaMask": "MetaMaskにMaticを追加するためのガイド",
   "guide-to-add-fan-tickets-to-MetaMask": "メタマスクにファンチケットを追加するためのガイド",
   "handle": "扱う",
   "has-been-sent": "送られた",
@@ -840,6 +843,7 @@
   "please-enter-content": "コンテンツを入力してください",
   "please-enter-search-content": "検索コンテンツを入力してください",
   "please-enter-the-BSC-address-of-the-target-wallet-starting-with-0x": "ターゲットウォレットのBSCアドレスを0xから入力してください。",
+  "please-enter-the-matic-address": "ターゲットウォレットのMaticアドレスを0xから入力してください。",
   "please-enter-the-Ethereum-address-of-the-target-wallet-starting-with-0x": "ターゲットウォレットのイーサリアムアドレスを0xから入力してください。",
   "please-enter-the-abbreviation-of-coin-cannot-be-modified-after-issuance": "ファンチケットの略称を入力してください（発行後に変更することはできません）",
   "please-enter-the-name-of-the-coin": "ファンチケットの名前を入力してください",
@@ -1497,6 +1501,7 @@
   "view-the-licenses-I-applied-for": "申請したライセンスを表示する",
   "view-the-tutorial-of-recharging-coin-outside-the-station": "駅の外でファンチケットを充電するチュートリアルを見る",
   "view-this-transaction-on-BSCScan": "BSCScanでこのトランザクションを表示する",
+  "view-this-transaction-on-matic-explorer": "Matic でこのトランザクションを表示する",
   "viewMore": "続きを見る",
   "visible-to-all": "誰もが見ることができます",
   "visible-with-currency": "通貨で表示",
@@ -1610,5 +1615,6 @@
   "your-encouragement-will-become-the-motivation-of-the-author-thank-you-for-your-reward": "あなたの励ましが作者のモチベーションになります、あなたの報酬に感謝します！",
   "your-withdrawal-permit-is-as-follows-dont-be-afraid-you-can-always-go-to-the-permit-list-to-check-the-previous-application": "出国許可は次のとおりです（恐れることはありません。いつでも許可リストにアクセスして前の申請を確認できます）",
   "zhuan-tui-le": "リツイート",
-  "your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-price-falling-range-will-help-your-transaction-succeed": "通常の価格変動により取引が失敗する場合があります。<br>価格の下落範囲は取引の成功に役立ちます"
+  "your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-price-falling-range-will-help-your-transaction-succeed": "通常の価格変動により取引が失敗する場合があります。<br>価格の下落範囲は取引の成功に役立ちます",
+  "matic-mainnet": "Matic メインネット"
 }

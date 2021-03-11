@@ -1,5 +1,5 @@
 <template>
-  <div class="bsc-in-n-out">
+  <div class="matic-in-n-out">
     <div v-if="isDepositSelected" class="deposit">
       <Deposit :selection.sync="selection" />
     </div>
@@ -28,7 +28,7 @@ import MyPermit from './matic/myPermit.vue'
 import Withdraw from './matic/withdraw.vue'
 import Deposit from './matic/deposit.vue'
 import MintWithPermit from './matic/mintWithPermit.vue'
-import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
+import wbAlertWarning from '@/components/withdraw/matic/alert_warning'
 
 export default {
   name: 'MaticInAndOut',
