@@ -28,7 +28,7 @@ import MyBscPermit from './bsc/myPermit.vue'
 import BscWithdraw from './bsc/withdraw.vue'
 import BscDeposit from './bsc/deposit.vue'
 import MintWithPermit from './bsc/mintWithPermit.vue'
-import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
+import wbAlertWarning from '@/components/withdraw/bsc/alert_warning'
 
 export default {
   name: 'BscInAndOut',

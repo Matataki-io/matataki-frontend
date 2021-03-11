@@ -83,7 +83,7 @@ import { ethers } from 'ethers'
 import { batchQueryNonceFor, mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import wbAlertTips from '@/components/withdraw/bsc/alert_tips'
 import EnvironmentCheck from './EnvironmentCheck'
 
 export default {
@@ -115,7 +115,7 @@ export default {
     },
   },
   async mounted() {
-    if (!process.browser) return // NO SSR 
+    if (!process.browser) return // NO SSR
     if (this.isLogined) this.fetchPermit()
     this.interval = setInterval(() => {
       this.fetchPermit()
@@ -207,7 +207,7 @@ export default {
           this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
-    }, 
+    },
     // token amount 单位换算
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)

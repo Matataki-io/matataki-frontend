@@ -41,7 +41,7 @@
             {{ $t('binance-Smart-Chain-BSC-Mainnet') }}
           </el-radio>
           <el-radio v-model="chainSelection" label="matic">
-            {{ $t('Matic') }}
+            {{ $t('matic-mainnet') }}
           </el-radio>
         </div>
         <div class="logic-container">

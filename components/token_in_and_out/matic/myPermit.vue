@@ -83,7 +83,7 @@ import { ethers } from 'ethers'
 import { batchQueryNonceFor, mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import wbAlertTips from '@/components/withdraw/matic/alert_tips'
 import EnvironmentCheck from './EnvironmentCheck'
 
 export default {
@@ -115,7 +115,7 @@ export default {
     },
   },
   async mounted() {
-    if (!process.browser) return // NO SSR 
+    if (!process.browser) return // NO SSR
     if (this.isLogined) this.fetchPermit()
     this.interval = setInterval(() => {
       this.fetchPermit()
@@ -181,7 +181,7 @@ export default {
         )
         console.log(result)
         this.$message.success(
-          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
+          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 Matic 区块浏览器检查交易情况。`
         )
       } catch (error) {
         this.$message.error(error.message)
@@ -207,7 +207,7 @@ export default {
           this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
-    }, 
+    },
     // token amount 单位换算
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)

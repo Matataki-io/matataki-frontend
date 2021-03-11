@@ -20,7 +20,7 @@
               BNB {{ $t('balance') }}： {{ bnbBalance }}
             </li>
             <li>
-              {{ $t('is-it-on-the-Binance-Smart-Blockchain-Network') }}: {{ renderIconWithBool(isOnBsc) }} 
+              {{ $t('is-it-on-the-Binance-Smart-Blockchain-Network') }}: {{ renderIconWithBool(isOnBsc) }}
               <a
                 v-if="!isOnBsc"
                 class="link"
@@ -114,8 +114,8 @@ import { ethers, utils } from 'ethers'
 import { batchQueryNonceFor, mintWithPermit } from '../../utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
-import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import wbAlertWarning from '@/components/withdraw/bsc/alert_warning'
+import wbAlertTips from '@/components/withdraw/bsc/alert_tips'
 
 export default {
   name: 'MyBscPermit',
@@ -150,11 +150,11 @@ export default {
     },
   },
   async mounted() {
-    if (!process.browser) return // NO SSR 
+    if (!process.browser) return // NO SSR
     if (this.isLogined) this.fetchPermit()
     this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
     if (!window.ethereum) return
-    const { networkVersion, selectedAddress } = window.ethereum 
+    const { networkVersion, selectedAddress } = window.ethereum
     this.selectedWallet = selectedAddress
     this.isOnBsc = (56 === Number(networkVersion) || 97 === Number(networkVersion))
     if (selectedAddress) { this.fetchBNBBalance() }
@@ -268,7 +268,7 @@ export default {
           this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
-    }, 
+    },
     // token amount 单位换算
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)
