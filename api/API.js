@@ -1143,8 +1143,17 @@ minetokenGetResources(tokenId) {
   withdrawTokenToBsc(tid, data) {
       return request({
         method: 'POST',
-        url: `/minetoken/crosschain/${tid}/withdrawToBsc`,
-        data,
+        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+        data: { ...data, chain: 'bsc' },
+        timeout: 60 * 1000
+      })
+  },
+  // Token提现去Matic
+  withdrawTokenToMatic(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+        data: { ...data, chain: 'matic' },
         timeout: 60 * 1000
       })
   },
@@ -1152,8 +1161,17 @@ minetokenGetResources(tokenId) {
   depositFromBsc(tid, data) {
     return request({
       method: 'POST',
-      url: `/minetoken/crosschain/${tid}/depositFromBsc`,
-      data,
+      url: `/minetoken/crosschain/${tid}/depositFromOtherChain`,
+      data: { ...data, chain: 'bsc' },
+      timeout: 60 * 1000
+    })
+  },
+    // Token 充值从 Matic
+  depositFromMatic(tid, data) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/crosschain/${tid}/depositFromOtherChain`,
+      data: { ...data, chain: 'matic' },
       timeout: 60 * 1000
     })
   },
@@ -1169,10 +1187,11 @@ minetokenGetResources(tokenId) {
       url: '/minetoken/crosschain/myDeposits',
     })
   },
-  listCrossChainToken() {
+  listCrossChainToken(data) {
     return request({
       method: 'GET',
       url: '/minetoken/crosschain/',
+      params: { ...data }
     })
   },
   isCrossChainToken(tokenAddress) {
@@ -1182,10 +1201,11 @@ minetokenGetResources(tokenId) {
     })
   },
   // 获取我的 BSC 许可
-  listMyBscPermit() {
+  listMyCrosschainPermit(chain = 'bsc') {
       return request({
         method: 'GET',
         url: `/minetoken/crosschain/permit`,
+        params: { chain }
       })
   },
   // Token转入同步到DB

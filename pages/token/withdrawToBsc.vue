@@ -135,8 +135,8 @@ import { mapGetters } from 'vuex'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { ethers } from 'ethers'
 import { mintWithPermit } from '../../utils/ethers'
-import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
-import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import wbAlertWarning from '@/components/withdraw/bsc/alert_warning'
+import wbAlertTips from '@/components/withdraw/bsc/alert_tips'
 
 // @todo: 到时候成熟了去掉
 const BSC_PEGGED_WHITELIST = ['DEV', 'DAO', 'META', 'SSS']

@@ -1,7 +1,7 @@
 <template>
-  <div class="bsc-in-n-out">
+  <div class="matic-in-n-out">
     <div v-if="isDepositSelected" class="deposit">
-      <BscDeposit :selection.sync="selection" />
+      <Deposit :selection.sync="selection" />
     </div>
     <div v-if="isWithdrawSelected" class="withdraw">
       <div class="withdraw-switch">
@@ -16,27 +16,27 @@
         </el-radio>
       </div>
       <wbAlertWarning />
-      <MyBscPermit v-if="selection === 'my'" :selection.sync="selection" />
-      <BscWithdraw v-if="selection === 'apply'" :selection.sync="selection" />
+      <MyPermit v-if="selection === 'my'" :selection.sync="selection" />
+      <Withdraw v-if="selection === 'apply'" :selection.sync="selection" />
       <MintWithPermit v-if="selection === 'upload'" :selection.sync="selection" />
     </div>
   </div>
 </template>
 
 <script>
-import MyBscPermit from './bsc/myPermit.vue'
-import BscWithdraw from './bsc/withdraw.vue'
-import BscDeposit from './bsc/deposit.vue'
-import MintWithPermit from './bsc/mintWithPermit.vue'
-import wbAlertWarning from '@/components/withdraw/bsc/alert_warning'
+import MyPermit from './matic/myPermit.vue'
+import Withdraw from './matic/withdraw.vue'
+import Deposit from './matic/deposit.vue'
+import MintWithPermit from './matic/mintWithPermit.vue'
+import wbAlertWarning from '@/components/withdraw/matic/alert_warning'
 
 export default {
-  name: 'BscInAndOut',
+  name: 'MaticInAndOut',
   components: {
-    MyBscPermit,
+    MyPermit,
     MintWithPermit,
-    BscWithdraw,
-    BscDeposit,
+    Withdraw,
+    Deposit,
     wbAlertWarning,
   },
   props: {
