@@ -53,8 +53,8 @@ export async function mintWithPermit(provider, token, to, value, deadline, v, r,
   }
 }
 
-export function aggerate(provider, calls, chain) {
-  return Multicall.attach(MulticallContractAddress[chain]).connect(provider).callStatic.aggregate(calls)
+export function aggerate(provider, calls) {
+  return Multicall.connect(provider).attach(MulticallContractAddress[provider.network.chainId]).callStatic.aggregate(calls)
 }
 
 
