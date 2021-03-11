@@ -66,6 +66,7 @@ export default {
     line-height: 40px;
     padding: 0;
     margin: 0;
+    z-index: 1;
     /deep/ span {
       color: #fa6400;
     }
@@ -73,6 +74,7 @@ export default {
   &-text {
     text-align: right;
     margin-top: 22px;
+    z-index: 1;
     .btn {
       display: inline-block;
       background: rgba(84, 45, 224, 1);
@@ -111,6 +113,22 @@ export default {
     span {
       color: #b2b2b2;
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .welcome {
+    align-items: center;
+    padding-right: 0;
+  }
+  .welcome-text {
+    text-align: center;
+  }
+  .welcome-people {
+    display: none;
+  }
+  .welcome-description-time {
+    margin-right: 0;
   }
 }
 </style>
