@@ -1200,10 +1200,11 @@ minetokenGetResources(tokenId) {
     })
   },
   // 获取我的 BSC 许可
-  listMyBscPermit() {
+  listMyCrosschainPermit(chain = 'bsc') {
       return request({
         method: 'GET',
         url: `/minetoken/crosschain/permit`,
+        params: { chain }
       })
   },
   // Token转入同步到DB

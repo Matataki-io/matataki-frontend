@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     async fetchPermit() {
-      const { data } = await this.$API.listMyBscPermit()
+      const { data } = await this.$API.listMyCrosschainPermit('bsc')
       this.listOfToken = [
         ...new Set(data.permits.map((permit) => permit.token)),
       ]

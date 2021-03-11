@@ -183,7 +183,7 @@ export default {
       this.bnbBalance = utils.formatEther(balanceBN)
     },
     async fetchPermit() {
-      const { data } = await this.$API.listMyBscPermit()
+      const { data } = await this.$API.listMyCrosschainPermit()
       this.listOfToken = [
         ...new Set(data.permits.map((permit) => permit.token)),
       ]
