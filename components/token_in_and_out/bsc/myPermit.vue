@@ -80,7 +80,7 @@
 
 <script>
 import { ethers } from 'ethers'
-import { batchQueryNonceFor, mintWithPermit } from '@/utils/ethers'
+import { batchQueryNonceFor, mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
@@ -141,7 +141,7 @@ export default {
       const after = await Promise.all(
         listOfTokenAndItsPermit.map(async ({ token, permits }) => {
           const queries = permits.map(({ to }) => ({ token, who: to }))
-          const nonces = await batchQueryNonceFor(queries)
+          const nonces = await batchQueryNonceFor(queries, isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET)
           const parsedPermits = permits.map((p, idx) => ({
             ...p,
             currentNonces: nonces[idx].toNumber(),
@@ -176,7 +176,8 @@ export default {
           permit.deadline,
           permit.sig.v,
           permit.sig.r,
-          permit.sig.s
+          permit.sig.s,
+          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
         )
         console.log(result)
         this.$message.success(

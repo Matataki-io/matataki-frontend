@@ -109,7 +109,7 @@
 import { mapGetters } from 'vuex'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { ethers } from 'ethers'
-import { mintWithPermit } from '@/utils/ethers'
+import { mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 
 
 export default {
@@ -250,7 +250,8 @@ export default {
           permit.deadline,
           permit.sig.v,
           permit.sig.r,
-          permit.sig.s
+          permit.sig.s,
+          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
         )
         this.$message.success(
           `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`

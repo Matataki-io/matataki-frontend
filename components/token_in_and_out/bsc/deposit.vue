@@ -94,13 +94,14 @@
 </template>
 
 <script>
-import { depositStatusRenderer } from './util'
+import { depositStatusRenderer } from '../utils/util'
 import { ethers } from 'ethers'
-import { approve, burn } from './PeggedToken'
+import { approve, burn } from '../utils/PeggedToken'
 // import { mintWithPermit } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import EnvironmentCheck from './EnvironmentCheck'
 import { precision } from '@/utils/precisionConversion'
+import { isTesting, NetworksId, TokenBurnerContractAddress } from '../../../utils/ethers'
 
 export default {
   name: 'DepositFromBsc',
@@ -185,28 +186,6 @@ export default {
     this.myDeposit = data.deposits
   },
   methods: {
-    // async signPermitOfApproval() {
-    // Disabled for Timing
-    //   try {
-    //     // Init Ethers
-    //     await window.ethereum.enable()
-    //     const provider = new ethers.providers.Web3Provider(
-    //       window.ethereum
-    //     )
-    //     const signer = provider.getSigner()
-    //     const wallet = await signer.getAddress()
-    //     console.info('signer: ', wallet)
-        
-    //     const { token, value } = this.form
-
-    //     const permit = await signERC2612Permit(signer, token, wallet, process.env.VUE_APP_PeggedTokenBurner, value)
-    //     console.info('signed permit: ', permit)
-    //     this.permit = permit
-    //   } catch (error) {
-    //     console.error(error)
-    //     this.$message.error(error)
-    //   }
-    // },
     async burn() {
       // Init Ethers
       try {
@@ -221,7 +200,8 @@ export default {
         const wallet = await signer.getAddress()
         console.info('signer: ', wallet)
         const parsedValue = (Number(value) * 10000)
-        const approveTx = await approve(signer, token, process.env.VUE_APP_PeggedTokenBurner, parsedValue)
+        const chainId = isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+        const approveTx = await approve(signer, token, TokenBurnerContractAddress[chainId], parsedValue)
         alert('正在 Approve，确认后需要再次签名 Burn，请稍后')
         await approveTx.wait(1)
         const uid = this.currentUserInfo.id
