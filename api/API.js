@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith, hCaptchaData }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -224,7 +224,8 @@ export default {
         requireToken, requireBuy,
         editRequireToken, editRequireBuy,
         ipfs_hide,
-        assosiateWith
+        assosiateWith,
+        hCaptchaData
       },
       timeout: 30000
     })
@@ -247,9 +248,10 @@ export default {
    * 定时发布文章
    * @param {Number} draftId 草稿 id
    * @param {Date} postTime 发布时间
+   * @param {Object} hCaptchaData 验证码数据
    */
-  timedPublishArticle(draftId, postTime) {
-    return request.post(`/post/timed/${draftId}`, { postTime })
+  timedPublishArticle(draftId, postTime, hCaptchaData) {
+    return request.post(`/post/timed/${draftId}`, { postTime, hCaptchaData })
   },
   /**
    * 删除定时发布任务
@@ -1040,7 +1042,7 @@ minetokenGetResources(tokenId) {
     })
   },
   // 设置资料
-  setProfile({ nickname, introduction, email, accept }) {
+  setProfile({ nickname, introduction, email, accept, hCaptchaData }) {
     return request({
       method: 'POST',
       url: '/user/setProfile',
@@ -1048,7 +1050,8 @@ minetokenGetResources(tokenId) {
         nickname,
         introduction,
         email,
-        accept
+        accept,
+        hCaptchaData
       }
     })
   },
@@ -1143,8 +1146,17 @@ minetokenGetResources(tokenId) {
   withdrawTokenToBsc(tid, data) {
       return request({
         method: 'POST',
-        url: `/minetoken/crosschain/${tid}/withdrawToBsc`,
-        data,
+        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+        data: { ...data, chain: 'bsc' },
+        timeout: 60 * 1000
+      })
+  },
+  // Token提现去Matic
+  withdrawTokenToMatic(tid, data) {
+      return request({
+        method: 'POST',
+        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+        data: { ...data, chain: 'matic' },
         timeout: 60 * 1000
       })
   },
@@ -1152,8 +1164,17 @@ minetokenGetResources(tokenId) {
   depositFromBsc(tid, data) {
     return request({
       method: 'POST',
-      url: `/minetoken/crosschain/${tid}/depositFromBsc`,
-      data,
+      url: `/minetoken/crosschain/${tid}/depositFromOtherChain`,
+      data: { ...data, chain: 'bsc' },
+      timeout: 60 * 1000
+    })
+  },
+    // Token 充值从 Matic
+  depositFromMatic(tid, data) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/crosschain/${tid}/depositFromOtherChain`,
+      data: { ...data, chain: 'matic' },
       timeout: 60 * 1000
     })
   },
@@ -1169,10 +1190,11 @@ minetokenGetResources(tokenId) {
       url: '/minetoken/crosschain/myDeposits',
     })
   },
-  listCrossChainToken() {
+  listCrossChainToken(data) {
     return request({
       method: 'GET',
       url: '/minetoken/crosschain/',
+      params: { ...data }
     })
   },
   isCrossChainToken(tokenAddress) {
@@ -1182,10 +1204,11 @@ minetokenGetResources(tokenId) {
     })
   },
   // 获取我的 BSC 许可
-  listMyBscPermit() {
+  listMyCrosschainPermit(chain = 'bsc') {
       return request({
         method: 'GET',
         url: `/minetoken/crosschain/permit`,
+        params: { chain }
       })
   },
   // Token转入同步到DB

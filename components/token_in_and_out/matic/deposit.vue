@@ -65,7 +65,7 @@
           width="180"
         >
           <template slot-scope="scope">
-            <a :href="`http://bscscan.com/tx/${scope.row.burnTx}`" target="_blank" style="font-size: 10px">
+            <a :href="`http://explorer.matic.network/tx/${scope.row.burnTx}`" target="_blank" style="font-size: 10px">
               ...{{ scope.row.burnTx.slice(-6) }} ↗️
             </a>
           </template>
@@ -103,6 +103,7 @@ import EnvironmentCheck from './EnvironmentCheck'
 import { precision } from '@/utils/precisionConversion'
 import { isTesting, NetworksId, TokenBurnerContractAddress } from '../../../utils/ethers'
 
+
 export default {
   name: 'DepositFromBsc',
   components: {
@@ -128,11 +129,11 @@ export default {
       } else if (value.length !== 42) {
         callback(
           new Error(
-            '地址长度不正确，请再次确认是否为币安智能区块链钱包地址'
+            '地址长度不正确，请再次确认是否为 Matic 主网钱包地址'
           )
         )
       } else if (value.slice(0, 2) !== '0x') {
-        callback('地址不是0x开头，应该不是币安智能区块链地址🤔')
+        callback('地址不是0x开头，应该不是 Matic 主网地址🤔')
       } else {
         callback()
       }
@@ -146,7 +147,7 @@ export default {
         max: 9999999999999
       },
       rules: {
-        token: [{ 
+        token: [{
           required: true, validator: validateEthereumAddress,
           trigger: ['change', 'blur'] }
         ],
@@ -200,7 +201,7 @@ export default {
         const wallet = await signer.getAddress()
         console.info('signer: ', wallet)
         const parsedValue = (Number(value) * 10000)
-        const chainId = isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+        const chainId = isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         const approveTx = await approve(signer, token, TokenBurnerContractAddress[chainId], parsedValue)
         alert('正在 Approve，确认后需要再次签名 Burn，请稍后')
         await approveTx.wait(1)
@@ -209,7 +210,7 @@ export default {
         console.log(burnTx)
         alert('正在销毁跨链 Fan 票，不要走开，请等待稍后页面反馈')
         const receipt = await burnTx.wait(1)
-        await this.$API.depositFromBsc(tokenDetail.token.tokenId, {
+        await this.$API.depositFromMatic(tokenDetail.token.tokenId, {
           txHash: receipt.transactionHash
         })
         alert('跨链 Fan 票销毁成功，Matataki 站内Fan票将于稍后转移到你的账户')

@@ -16,7 +16,7 @@
         class="parsedPermit"
       >
         <p class="parse-title">{{ $t('analyzed-withdrawal-permission') }}</p>
-        <p class="parse-item">{{ $t('coin-address-at-BSC') }}: {{ permit.token }}</p>
+        <p class="parse-item">{{ $t('coin-address-at-matic') }}: {{ permit.token }}</p>
         <p class="parse-item">{{ $t('withdraw-to') }}: {{ permit.to }}</p>
         <p class="parse-item">{{ $t('withdrawal-amount') }}: {{ permit.value / 1e4 }}</p>
         <p class="parse-item">{{ $t('license-number') }}: {{ permit.nonce }}</p>
@@ -34,10 +34,10 @@
           {{ $t('transaction-hash') }}: {{ mintResult.hash }}
           <!-- todo: 上正式网记得删掉 testnet. -->
           <a
-            :href="`https://testnet.bscscan.com/tx/${mintResult.hash}`"
+            :href="`https://explorer.matic.network/tx/${mintResult.hash}`"
             target="_blank"
           >
-            {{ $t('view-this-transaction-on-BSCScan') }} ↗️
+            {{ $t('view-this-transaction-on-matic-explorer') }} ↗️
           </a>
         </el-alert>
       </div>
@@ -61,7 +61,7 @@ export default {
       permitInput: '',
       mintResult: null,
       placeholderForPermitInput: `请把许可复制到此处，例子：
-      {
+{
   "sig": {
     "r": "0x38fb8b99ec663c221c595e69f8f8c6a00b5d8543e1ecfd21b709fbcc99b58fab",
     "s": "0x17ccb0a240ba8fae8cc3fe25bcd431b802ca97ca6a9365522ec241fa7df9cec4",
@@ -121,12 +121,12 @@ export default {
           permit.sig.v,
           permit.sig.r,
           permit.sig.s,
-          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+          isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         )
         console.log(result)
         this.mintResult = result
         this.$message.success(
-          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
+          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 Matic 区块浏览器检查交易情况。`
         )
       } catch (error) {
         this.$message.error(error)

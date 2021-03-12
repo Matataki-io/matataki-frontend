@@ -64,8 +64,8 @@ import { ethers } from 'ethers'
 import { mintWithPermit } from '../../utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertWarning from '@/components/withdraw_bsc/alert_warning'
-import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import wbAlertWarning from '@/components/withdraw/bsc/alert_warning'
+import wbAlertTips from '@/components/withdraw/bsc/alert_tips'
 
 export default {
   name: 'MintWithPermit',

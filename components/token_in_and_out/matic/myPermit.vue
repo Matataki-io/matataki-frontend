@@ -83,7 +83,7 @@ import { ethers } from 'ethers'
 import { batchQueryNonceFor, mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertTips from '@/components/withdraw/bsc/alert_tips'
+import wbAlertTips from '@/components/withdraw/matic/alert_tips'
 import EnvironmentCheck from './EnvironmentCheck'
 
 export default {
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     async fetchPermit() {
-      const { data } = await this.$API.listMyCrosschainPermit('bsc')
+      const { data } = await this.$API.listMyCrosschainPermit('matic')
       this.listOfToken = [
         ...new Set(data.permits.map((permit) => permit.token)),
       ]
@@ -141,7 +141,7 @@ export default {
       const after = await Promise.all(
         listOfTokenAndItsPermit.map(async ({ token, permits }) => {
           const queries = permits.map(({ to }) => ({ token, who: to }))
-          const nonces = await batchQueryNonceFor(queries, isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET)
+          const nonces = await batchQueryNonceFor(queries, isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET)
           const parsedPermits = permits.map((p, idx) => ({
             ...p,
             currentNonces: nonces[idx].toNumber(),
@@ -177,11 +177,11 @@ export default {
           permit.sig.v,
           permit.sig.r,
           permit.sig.s,
-          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+          isTesting ? NetworksId.MATIC_TESTNET : NetworksId.MATIC_MAINNET
         )
         console.log(result)
         this.$message.success(
-          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
+          `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 Matic 区块浏览器检查交易情况。`
         )
       } catch (error) {
         this.$message.error(error.message)

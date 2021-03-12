@@ -82,7 +82,7 @@
               {{ $t('publish.draft') }}
             </router-link>
           </div>
-  
+
           <div slot="tool-view-mobile" class="draft-btn">
             <span
               class="draft-save-tips"
@@ -189,7 +189,7 @@
               :value="item.id"
             />
           </el-select>
-          <el-button 
+          <el-button
             type="primary"
             size="small"
             style="margin-left: 0.5rem;"
@@ -624,7 +624,14 @@
           </div>
         </div>
 
-
+        <div class="set-captcha">
+          <vue-hcaptcha
+            :sitekey="hCaptchaSiteKey"
+            @verify="onCaptchaVerify"
+            @expired="onExpire"
+            @error="onError"
+          />
+        </div>
 
         <div class="set-footer">
           <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
@@ -647,7 +654,7 @@
             <el-button
               v-if="isShowTransfer"
               type="danger"
-              size="medium" 
+              size="medium"
               @click="transferArticle"
             >
               {{ $t('transfer-draft') }}
@@ -666,6 +673,7 @@
               type="primary"
               size="medium"
               :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
+              :disabled="!isCaptchaOK"
               @click="sendThePost"
             >
               {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
@@ -693,7 +701,7 @@ if (process.client) {
 }
 
 // import '@matataki/editor/dist/css/index.css'
-
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -736,6 +744,7 @@ export default {
     'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,
     articleTransfer,
+    VueHcaptcha,
     articleImport,
     statement,
     tagModule
@@ -758,6 +767,12 @@ export default {
       ccLicenseOptions: {
         share: 'false',
         commercialUse: false
+      },
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
       },
       showModal: false, // 弹框显示
       modalText: {
@@ -855,6 +870,12 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
       return this.cover ? this.$ossProcess(this.cover) : ''
+    },
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'
@@ -1013,7 +1034,7 @@ export default {
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
     assosiateWith() { this.updateDraftWatch() },
-    
+
     // 是否公开
     ipfs_hide() { this.updateDraftWatch() }
   },
@@ -1102,6 +1123,16 @@ export default {
         this.assosiateFanName = token.name
         this.assosiateFanLogo = this.$API.getImg(token.logo)
       }
+    },
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error: ', err)
     },
     // 取消关联
     cancelAssosiate() {
@@ -1234,7 +1265,7 @@ export default {
           }
 
           this.setCCLicense(res.data.cc_license)
-          
+
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -1504,6 +1535,8 @@ export default {
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
+      article.hCaptchaData = this.hCaptchaData
+
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })
@@ -1551,7 +1584,8 @@ export default {
       try {
         const result = await this.$API.timedPublishArticle(
           this.id,
-          this.timedForm.date
+          this.timedForm.date,
+          this.hCaptchaData
         )
         this.fullscreenLoading = false
         if (result.code === 0) {
@@ -1881,6 +1915,14 @@ export default {
       this.title = res.title
       this.markdownData = res.content
       this.cover = res.cover
+
+      // max tags 10
+      if (res.tags) {
+        const tags = res.tags.split(',')
+        this.tags = tags.slice(0, 10)
+      } else {
+        this.tags = []
+      }
     },
     async generateBullshit() {
       const 扯淡生成器 = import('@/api/bullshit-generator.js')

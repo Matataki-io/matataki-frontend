@@ -19,7 +19,7 @@
       <div class="cardunit-l">
         <!-- 头像 -->
         <router-link
-          :to="{name: 'user-id', params: {id: card && card.uid}}"
+          :to="{name: 'user-id-timeline', params: {id: card && card.uid}}"
           target="_blank"
         >
           <c-user-popover :user-id="Number(card && card.uid)">
@@ -36,7 +36,7 @@
         <div class="cardunit-r-header">
           <p class="cardunit-r-header-user">
             <router-link
-              :to="{ name: 'user-id', params: { id: card.uid } }"
+              :to="{ name: 'user-id-timeline', params: { id: card.uid } }"
               target="_blank"
             >
               {{ nickname }}

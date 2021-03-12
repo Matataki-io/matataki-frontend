@@ -36,8 +36,9 @@ export default {
         let cookie = getCookie('ACCESS_TOKEN')
         cookie = '/type=token&token=' + cookie
 
-        console.log(this.url, this.$route.params.redirect, cookie)
-        window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
+        console.log(this.url, `app/${this.$route.params.redirect}/callback`, cookie)
+        let redirect = `app/${this.$route.params.redirect}/callback`
+        window.location = decodeURIComponent(this.url + '/' + redirect + cookie)
       }
     }
   },
@@ -50,8 +51,9 @@ export default {
       let cookie = getCookie('ACCESS_TOKEN')
       cookie = '/type=token?&token=' + cookie
 
-      console.log(this.url, this.$route.params.redirect, cookie)
-      window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
+      console.log(this.url, `app/${this.$route.params.redirect}/callback`, cookie)
+      let redirect = `app/${this.$route.params.redirect}/callback`
+      window.location = decodeURIComponent(this.url + '/' + redirect + cookie)
     }
   }
 }
