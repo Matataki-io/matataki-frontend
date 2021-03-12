@@ -627,6 +627,12 @@
 
 
         <div class="set-footer">
+          <vue-hcaptcha 
+            :sitekey="hCaptchaSiteKey" 
+            @verify="onCaptchaVerify"
+            @expired="onExpire"
+            @error="onError"
+          />
           <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
             {{ $t('preview-now') }}
           </el-button>
@@ -666,6 +672,7 @@
               type="primary"
               size="medium"
               :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
+              :disabled="!isCaptchaOK"
               @click="sendThePost"
             >
               {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
@@ -693,7 +700,7 @@ if (process.client) {
 }
 
 // import '@matataki/editor/dist/css/index.css'
-
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -736,6 +743,7 @@ export default {
     'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,
     articleTransfer,
+    VueHcaptcha,
     articleImport,
     statement,
     tagModule
@@ -758,6 +766,12 @@ export default {
       ccLicenseOptions: {
         share: 'false',
         commercialUse: false
+      },
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
       },
       showModal: false, // 弹框显示
       modalText: {
@@ -855,6 +869,12 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
       return this.cover ? this.$ossProcess(this.cover) : ''
+    },
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'
@@ -1102,6 +1122,16 @@ export default {
         this.assosiateFanName = token.name
         this.assosiateFanLogo = this.$API.getImg(token.logo)
       }
+    },
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error: ', err)
     },
     // 取消关联
     cancelAssosiate() {
@@ -1504,6 +1534,8 @@ export default {
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
+      article.hCaptchaData = this.hCaptchaData
+
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })
@@ -1551,7 +1583,8 @@ export default {
       try {
         const result = await this.$API.timedPublishArticle(
           this.id,
-          this.timedForm.date
+          this.timedForm.date,
+          this.hCaptchaData
         )
         this.fullscreenLoading = false
         if (result.code === 0) {

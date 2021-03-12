@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith, hCaptchaData }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -224,7 +224,8 @@ export default {
         requireToken, requireBuy,
         editRequireToken, editRequireBuy,
         ipfs_hide,
-        assosiateWith
+        assosiateWith,
+        hCaptchaData
       },
       timeout: 30000
     })
@@ -247,9 +248,10 @@ export default {
    * 定时发布文章
    * @param {Number} draftId 草稿 id
    * @param {Date} postTime 发布时间
+   * @param {Object} hCaptchaData 验证码数据
    */
-  timedPublishArticle(draftId, postTime) {
-    return request.post(`/post/timed/${draftId}`, { postTime })
+  timedPublishArticle(draftId, postTime, hCaptchaData) {
+    return request.post(`/post/timed/${draftId}`, { postTime, hCaptchaData })
   },
   /**
    * 删除定时发布任务
