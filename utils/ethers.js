@@ -16,24 +16,21 @@ export const TokenMinterContractAddress = {
   [NetworksId.BSC_MAINNET]: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
   [NetworksId.BSC_TESTNET]: '0xe8142C86f7c25A8bF1c73Ab2A5Dd7a7A5C429171',
   [NetworksId.MATIC_TESTNET]: '0xc0b159b61a03c5215E4BB0718E0441D2091B6312',
-  // @todo: replace when go mainnet
-  [NetworksId.MATIC_MAINNET]: ZERO,
+  [NetworksId.MATIC_MAINNET]: '0x9cCF53dF0E48D79EdC245D0545126B5Af91056FA',
 }
 
 export const TokenBurnerContractAddress = {
   [NetworksId.BSC_MAINNET]: '0xfD1227b1c36F689E74Ab59e72004E493d88A2259',
   [NetworksId.BSC_TESTNET]: '0xEF0B6c622c63860d9C29CD5Eac442f626F2cFF1E',
   [NetworksId.MATIC_TESTNET]: '0xB88aEC75a14c750652144E3F69BAcd4CEC323C60',
-  // @todo: replace when go mainnet
-  [NetworksId.MATIC_MAINNET]: ZERO,
+  [NetworksId.MATIC_MAINNET]: '0x8b9f45Db787cd766073ff318cc2fF7427f1F3A2E',
 }
 
 const MulticallContractAddress = {
   [NetworksId.BSC_MAINNET]: '0xe348b292e8eA5FAB54340656f3D374b259D658b8',
   [NetworksId.BSC_TESTNET]: '0xe348b292e8eA5FAB54340656f3D374b259D658b8',
   [NetworksId.MATIC_TESTNET]: '0x23E8A2e4f8160a5a685709dB72a4C35435C57118',
-  // @todo: replace when go mainnet
-  [NetworksId.MATIC_MAINNET]: ZERO,
+  [NetworksId.MATIC_MAINNET]: '0x5aF63F0956e004Eb6Fe9838fE5df2a2029858323',
 }
 
 const Multicall = new ethers.Contract(ZERO, IMulticall)
