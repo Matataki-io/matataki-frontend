@@ -82,7 +82,7 @@
               {{ $t('publish.draft') }}
             </router-link>
           </div>
-  
+
           <div slot="tool-view-mobile" class="draft-btn">
             <span
               class="draft-save-tips"
@@ -189,7 +189,7 @@
               :value="item.id"
             />
           </el-select>
-          <el-button 
+          <el-button
             type="primary"
             size="small"
             style="margin-left: 0.5rem;"
@@ -624,15 +624,16 @@
           </div>
         </div>
 
-
-
-        <div class="set-footer">
-          <vue-hcaptcha 
-            :sitekey="hCaptchaSiteKey" 
+        <div class="set-captcha">
+          <vue-hcaptcha
+            :sitekey="hCaptchaSiteKey"
             @verify="onCaptchaVerify"
             @expired="onExpire"
             @error="onError"
           />
+        </div>
+
+        <div class="set-footer">
           <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
             {{ $t('preview-now') }}
           </el-button>
@@ -653,7 +654,7 @@
             <el-button
               v-if="isShowTransfer"
               type="danger"
-              size="medium" 
+              size="medium"
               @click="transferArticle"
             >
               {{ $t('transfer-draft') }}
@@ -1033,7 +1034,7 @@ export default {
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
     assosiateWith() { this.updateDraftWatch() },
-    
+
     // 是否公开
     ipfs_hide() { this.updateDraftWatch() }
   },
@@ -1264,7 +1265,7 @@ export default {
           }
 
           this.setCCLicense(res.data.cc_license)
-          
+
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
