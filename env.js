@@ -72,8 +72,7 @@ module.exports = {
     VUE_APP_SIGNATURE_CONTRACT: 'signature.bp',
     VUE_APP_SCRIPT_HASH: '36df9722fc0ff5fa3979f2a844a012cabe1d4c56',
     VUE_APP_GITHUB_CLIENT_ID: '21cc5341ef03f40cd5a4',
-    // @todo: change them when go to mainnet
-    VUE_APP_HCAPTCHA_SITE_KEY: 'add3227a-649b-4e14-b286-d6c917f9b775',
+    VUE_APP_HCAPTCHA_SITE_KEY: '929510ae-ff3e-4ccc-bb8b-f7dd3983e791',
     VUE_APP_VNT_CONTRACT: '0xa5955423c3d3535206dd303359ed5f83b226d03a',
     ssImgAddress: 'https://ssimg.frontenduse.top',
     VUE_APP_PC_URL: 'https://www.matataki.io',
@@ -99,8 +98,7 @@ module.exports = {
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
     VUE_APP_MATATAKI_CACHE: 'https://cache.ayaka.moe/matataki',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
-    // @todo: change them when go to mainnet
-    VUE_APP_HCAPTCHA_SITE_KEY: 'add3227a-649b-4e14-b286-d6c917f9b775',
+    VUE_APP_HCAPTCHA_SITE_KEY: '929510ae-ff3e-4ccc-bb8b-f7dd3983e791',
     VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
     VUE_APP_SIGNATURE_CONTRACT: 'signature.bp',
     VUE_APP_SCRIPT_HASH: '36df9722fc0ff5fa3979f2a844a012cabe1d4c56',
