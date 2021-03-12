@@ -1042,7 +1042,7 @@ minetokenGetResources(tokenId) {
     })
   },
   // 设置资料
-  setProfile({ nickname, introduction, email, accept }) {
+  setProfile({ nickname, introduction, email, accept, hCaptchaData }) {
     return request({
       method: 'POST',
       url: '/user/setProfile',
@@ -1050,7 +1050,8 @@ minetokenGetResources(tokenId) {
         nickname,
         introduction,
         email,
-        accept
+        accept,
+        hCaptchaData
       }
     })
   },
