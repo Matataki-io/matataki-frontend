@@ -29,6 +29,7 @@
       </div>
 
       <div class="pc head-flex">
+        <metaComponents :token-id="metaData.tokenId" :token-amount="metaData.tokenAmount" :token-symbol="metaData.tokenSymbol" />
         <div class="search">
           <input
             v-model="searchInput"
@@ -239,6 +240,11 @@
               </n-link>
             </li>
             <li class="menu-ul-item">
+              <n-link :to="{name: 'token-id', params:{id: metaData.tokenId}}" class="link">
+                <svg-icon icon-class="menu_account" class="icon" />{{ metaData.tokenAmount }} {{ metaData.tokenSymbol }}
+              </n-link>
+            </li>
+            <li class="menu-ul-item">
               <n-link :to="{name: 'dashboard'}" class="link">
                 <svg-icon icon-class="menu_account" class="icon" />{{ $t('menu-dashboard') }}
               </n-link>
@@ -293,11 +299,14 @@ import { removeCookie } from '@/utils/cookie'
 import { strTrim } from '@/utils/reg'
 import store from '@/utils/store.js'
 
+import metaComponents from './meta'
+
 export default {
   name: 'HomeHead',
   components: {
     // avatarComponents,
     // language
+    metaComponents
   },
   props: {
     // 自定义头部背景
@@ -331,6 +340,11 @@ export default {
       notifyUnreadQuantity: 0,
       user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info
+      metaData: { // meta 组件数据
+        tokenId: 120,
+        tokenAmount: 0,
+        tokenSymbol: 'META'
+      }
     }
   },
   computed: {
@@ -389,6 +403,7 @@ export default {
       if (newState) {
         this.refreshUser()
         this.getTokenUser(this.currentUserInfo.id)
+        this.getToken()
       }
     },
     searchQueryVal(newVal) {
@@ -408,6 +423,9 @@ export default {
   },
   mounted() {
     this.getRecommend()
+    if (process.client) {
+      this.getToken()
+    }
   },
   methods: {
     ...mapActions(['getCurrentUser', 'signOut', 'resetAllStore']),
@@ -535,6 +553,41 @@ export default {
       // not token, data is null
       this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
+    // 获取token
+    getToken() {
+      // token list 因为测试网没有META用其他Token代替
+      const FSB = {
+        id: 21,
+        symbol: 'FSB'
+      }
+      const META = {
+        id: 120,
+        symbol: 'META'
+      }
+      const list = {
+        development: FSB,
+        testing: FSB,
+        production: META
+      }
+      // 获取token持有数据
+      const getTokenData = async ({ token }) => {
+        try {
+          const res = await this.$API.getUserBalance(token.id)
+          if (res.code === 0) {
+            this.metaData.tokenAmount = this.$utils.fromDecimal(res.data)
+            this.metaData.tokenId = token.id
+            this.metaData.tokenSymbol = token.symbol
+          }
+        } catch (error) {
+          console.log('error', error)
+        }
+      }
+
+      if (this.isLogined) {
+        let token = list[process.env.NODE] || list.production
+        getTokenData({ token })
+      }
+    }
 
   }
 
