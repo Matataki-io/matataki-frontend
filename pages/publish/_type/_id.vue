@@ -1637,6 +1637,8 @@ export default {
       article.editRequireBuy = this.editRequireBuy
       // History 权限
       article.ipfs_hide = this.ipfs_hide
+      article.hCaptchaData = this.hCaptchaData
+
 
       const { failed, success } = this
       try {
