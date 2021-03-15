@@ -175,6 +175,10 @@ export default {
         {
           key: 'mastodon',
           label: 'Mastodon'
+        },
+        {
+          key: 'telegram_channel',
+          label: 'Telegram Channel'
         }
       ],
       actions: null,
@@ -663,4 +667,28 @@ export default {
   }
 }
 
+@media screen and (max-width: 520px) {
+  .banner-title {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .banner-description {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 10px 0 0 0;
+  }
+  .welcome {
+    align-items: center;
+    padding-right: 0;
+  }
+  .welcome-text {
+    text-align: center;
+  }
+  .welcome-people {
+    display: none;
+  }
+  .welcome-description-time {
+    margin-right: 0;
+  }
+}
 </style>
