@@ -27,34 +27,34 @@ export default {
   name: 'CrossChainTokenList',
   props: {
     chain: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
   },
   data: () => ({
     list: [
     ]
   }),
-  methods: {
-    async fetchAllCrosschain() {
-        const { data } = await this.$API.listAllCrossChainToken(this.chain)
-        console.info('fetchAllCrosschain', data)
-        this.list = data.list
-    },
-    async fetchTokens() {
-        // for rinkeby
-        const { data } = await this.$API.allToken(1, 1000)
-        this.list = data.list.map(({ contract_address, ...rest }) => {
-            return {...rest, crossTokenAddress: contract_address}
-        })
+  async mounted() {
+    if (this.chain !== 'rinkeby') {
+      await this.fetchAllCrosschain()
+    } else {
+      await this.fetchTokens()
     }
   },
-  async mounted() {
-      if (this.chain !== 'rinkeby') {
-          await this.fetchAllCrosschain()
-      } else {
-          await this.fetchTokens()
-      }
+  methods: {
+    async fetchAllCrosschain() {
+      const { data } = await this.$API.listAllCrossChainToken(this.chain)
+      console.info('fetchAllCrosschain', data)
+      this.list = data.list
+    },
+    async fetchTokens() {
+      // for rinkeby
+      const { data } = await this.$API.allToken(1, 1000)
+      this.list = data.list.map(({ contract_address, ...rest }) => {
+        return {...rest, crossTokenAddress: contract_address}
+      })
+    }
   }
 }
 </script>
