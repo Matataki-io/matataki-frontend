@@ -419,6 +419,10 @@ export default {
   tokenTokenList(params) {
     return request.get('/token/tokenlist', { params })
   },
+  async doINeedHCaptcha() {
+    const { data } = await request.get('/captcha/doINeedHCaptcha')
+    return data.isInWhiteList
+  },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
       url: '/token/all',
