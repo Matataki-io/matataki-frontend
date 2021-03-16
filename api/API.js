@@ -421,7 +421,7 @@ export default {
   },
   async doINeedHCaptcha() {
     const { data } = await request.get('/captcha/doINeedHCaptcha')
-    return data.isInWhiteList
+    return !data.isInWhiteList
   },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
