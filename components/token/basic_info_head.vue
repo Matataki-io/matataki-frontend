@@ -103,6 +103,10 @@
               <svg-icon class="icon" icon-class="token-bsc" />
               BSC{{ minetokenToken.bsc_contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
             </el-dropdown-item>
+            <el-dropdown-item command="matic" class="item-address" :class="!minetokenToken.matic_contract_address && 'not'">
+              <svg-icon class="icon" icon-class="token-matic" />
+              MATIC{{ minetokenToken.matic_contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -121,6 +125,10 @@
             <el-dropdown-item command="bsc" class="item-address" :class="!minetokenToken.bsc_contract_address && 'not'">
               <svg-icon class="icon" icon-class="token-bsc" />
               BSC{{ minetokenToken.bsc_contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
+            </el-dropdown-item>
+            <el-dropdown-item command="matic" class="item-address" :class="!minetokenToken.matic_contract_address && 'not'">
+              <svg-icon class="icon" icon-class="token-matic" />
+              MATIC{{ minetokenToken.matic_contract_address ? '' : ` (${$t('not-currently-supported')}）` }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -265,6 +273,8 @@ export default {
           this.copy(this.minetokenToken.contract_address)
         } else if (command === 'bsc' && this.minetokenToken.bsc_contract_address) {
           this.copy(this.minetokenToken.bsc_contract_address)
+        } else if (command === 'matic' && this.minetokenToken.matic_contract_address) {
+          this.copy(this.minetokenToken.matic_contract_address)
         } else {
           console.log('other', command)
         }
@@ -278,6 +288,8 @@ export default {
           window.open(`${process.env.VUE_APP_ETHERSCAN}/address/${this.minetokenToken.contract_address}`, '_blank')
         } else if (command === 'bsc' && this.minetokenToken.bsc_contract_address) {
           window.open(`${process.env.VUE_APP_BSCSCAN}/address/${this.minetokenToken.bsc_contract_address}`, '_blank')
+        } else if (command === 'matic' && this.minetokenToken.matic_contract_address) {
+          window.open(`${process.env.VUE_APP_MATICSCAN}/address/${this.minetokenToken.matic_contract_address}`, '_blank')
         } else {
           console.log('other', command)
         }
