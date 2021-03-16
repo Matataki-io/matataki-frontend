@@ -139,5 +139,9 @@ export default {
     if (/^localhost.*/.test(determinator)) return 'dev'
     if (/(www)?test/.test(determinator)) return 'test'
     return 'main'
+  },
+  // 首字母大写
+  firstUpperCase([first, ...other]) {
+    return first.toLocaleUpperCase() + other.join('')
   }
 };
