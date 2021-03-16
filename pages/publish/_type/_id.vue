@@ -626,6 +626,7 @@
 
         <div class="set-captcha">
           <vue-hcaptcha
+            v-if="doINeedHCaptcha"
             :sitekey="hCaptchaSiteKey"
             @verify="onCaptchaVerify"
             @expired="onExpire"
@@ -755,6 +756,7 @@ export default {
       title: '',
       author: '',
       markdownData: '',
+      doINeedHCaptcha: true,
       fissionFactor: 2000,
       // toolbars: {},
       screenWidth: 1000,
@@ -875,6 +877,8 @@ export default {
       return process.env.VUE_APP_HCAPTCHA_SITE_KEY
     },
     isCaptchaOK() {
+      // 如果是白名单，则为 true
+      if (!this.doINeedHCaptcha) return true
       return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
     },
     isShowTransfer() {
@@ -1055,6 +1059,10 @@ export default {
     if (this.assosiateWith) {
       this.setAssosiateWith()
     }
+
+    this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
+      this.doINeedHCaptcha = _doINeedHCaptcha
+    })
 
     const { type, id } = this.$route.params
 
