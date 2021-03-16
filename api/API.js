@@ -1190,11 +1190,18 @@ minetokenGetResources(tokenId) {
       url: '/minetoken/crosschain/myDeposits',
     })
   },
-  listCrossChainToken(data) {
+  listMyCrossChainToken(data) {
     return request({
       method: 'GET',
       url: '/minetoken/crosschain/',
       params: { ...data }
+    })
+  },
+  listAllCrossChainToken(chain = 'bsc') {
+    return request({
+      method: 'GET',
+      url: '/minetoken/crosschain/ls',
+      params: { chain }
     })
   },
   isCrossChainToken(tokenAddress) {

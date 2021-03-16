@@ -333,7 +333,7 @@ export default {
         chain: 'bsc'
       }
       await this.$API
-        .listCrossChainToken(data)
+        .listMyCrossChainToken(data)
         .then((res) => {
           if (res.code === 0) {
             this.tokenOptions = res.data.list
