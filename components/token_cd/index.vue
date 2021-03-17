@@ -1,5 +1,26 @@
+<template>
+  <div>
+    <pCd v-if="mode === 'p'" v-show="showBanner" @publish="publish" />
+    <tCd v-else-if="mode === 'token'" v-show="showBanner" @publish="publish" />
+  </div>
+</template>
+
+<script>
 import { mapGetters } from 'vuex'
+import pCd from './p_cd'
+import tCd from './token_cd'
 export default {
+  name: 'TokenCd',
+  components: {
+    pCd,
+    tCd
+  },
+  props: {
+    mode: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       isPublishToken: false,
@@ -33,7 +54,7 @@ export default {
       if (!this.isLogined) {
         // 当前用户尚未登陆--展示
         this.showBanner = true
-        return 
+        return
       }
 
       const userResult = await this.$utils.factoryRequest(this.$API.tokenUserId(this.currentUserInfo.id))
@@ -62,3 +83,4 @@ export default {
     },
   }
 }
+</script>

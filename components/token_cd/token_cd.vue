@@ -1,12 +1,10 @@
 <template>
-  <div v-show="showBanner" class="cd" @click="publish">
+  <div class="cd" @click="$emit('publish')">
     <img src="@/assets/img/token_cd.png" alt="cd" class="cd-text">
     <img src="@/assets/img/token_cd_icon.png" alt="icon" class="cd-icon">
     <a href="javascript:;" class="cd-btn">{{ $t('apply-immediately') }}</a>
   </div>
 </template>
-
-<script src="../../common/script/token_cd"></script>
 
 <style lang="less" scoped>
 .cd {

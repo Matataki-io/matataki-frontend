@@ -46,7 +46,7 @@
         <socialAccount :resources-socialss="resourcesSocialss" />
         <widgetCopyBox />
         <quickEntrance style="margin-top: 20px;" />
-        <tokenCd style="margin-top: 20px;" />
+        <tokenCd mode="token" style="margin-top: 20px;" />
       </el-col>
       <!-- 管理视角的右侧卡片 -->
       <el-col v-if="creatorVisible" :span="7">
@@ -79,7 +79,7 @@ import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
 // import recommendMod from '@/components/token/recommend_mod'
 import quickEntrance from '@/components/token/quick_entrance'
-import tokenCd from '@/components/token/token_cd'
+import tokenCd from '@/components/token_cd/index'
 
 export default {
   components: {
