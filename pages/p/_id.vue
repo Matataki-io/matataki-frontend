@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <bannerFan />
+    <tokenCd mode="p" />
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
@@ -419,7 +419,7 @@ import ExsModal from '@/components/ExsModal'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
-import bannerFan from '@/components/p_page/banner_fan'
+import tokenCd from '@/components/token_cd/index.vue'
 import addFav from '@/components/fav/add'
 
 
@@ -502,7 +502,7 @@ export default {
     fontSize,
     commentReward,
     ExsModal,
-    bannerFan,
+    tokenCd,
     markdownView,
     addFav
   },
