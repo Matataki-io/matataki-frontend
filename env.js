@@ -29,6 +29,7 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn', // 前端用来判断在 cn 还是非 cn
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mumbai.maticvigil.com',
   },
   testing: {
     NODE: 'testing',
@@ -59,6 +60,7 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn',
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mumbai.maticvigil.com',
   },
   release: {
     NODE: 'production',
@@ -89,6 +91,7 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn',
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
   },
   production: {
     NODE: 'production',
@@ -119,5 +122,6 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn',
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
   }
 }

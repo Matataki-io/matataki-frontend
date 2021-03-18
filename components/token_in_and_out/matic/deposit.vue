@@ -215,7 +215,7 @@ export default {
         })
         alert('跨链 Fan 票销毁成功，Matataki 站内Fan票将于稍后转移到你的账户')
       } catch (error) {
-        if (error.response && error.response?.status === 404) {
+        if (error.response && error.response.status === 404) {
           console.error('network error: ', error.toJSON())
           return this.$message.error('该 Token 不是跨链Fan票')
         }
