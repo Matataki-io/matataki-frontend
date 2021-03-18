@@ -449,10 +449,12 @@ markdownItRender.use(mkItFootnote)
 export default {
   head() {
     const metaArr = []
-    // If no tags can keep use global meta keywords.
     if (this.article.tags.length) {
       const tags = this.article.tags.map(tag => tag.name).join()
-      metaArr.push({ hid: 'keywords', name: 'keywords', content: tags })
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: `${tags},${this.article.title}` })
+    } else {
+      // If article no tags use title only
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: this.article.title })
     }
     return {
       title: this.article.title,
