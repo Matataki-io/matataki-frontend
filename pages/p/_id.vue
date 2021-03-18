@@ -195,7 +195,7 @@
                     </router-link>
                   </div>
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }} 
+                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}
                     <el-tooltip
                       class="item"
                       effect="dark"
@@ -448,9 +448,18 @@ markdownItRender.use(mkItFootnote)
 
 export default {
   head() {
+    const metaArr = []
+    if (this.article.tags.length) {
+      const tags = this.article.tags.map(tag => tag.name).join()
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: `${tags},${this.article.title}` })
+    } else {
+      // If article no tags use title only
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: this.article.title })
+    }
     return {
       title: this.article.title,
       meta: [
+        ...metaArr,
         { hid: 'description', name: 'description', content: this.article.short_content },
         /* <!--  Meta for Twitter Card --> */
         { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
@@ -652,7 +661,7 @@ export default {
       if (this.isDeleted) {
         return this.isMe(this.article.uid)
       }
-      return this.article.status === 0 
+      return this.article.status === 0
     },
     isDeleted() {
       if (!this.article) return null
@@ -837,7 +846,7 @@ export default {
     // 保存font size 选择
     fontSizeVal(newVal) {
       store.set('p_font_size', newVal)
-    } 
+    }
   },
 
   async asyncData({ $axios, route, req }) {
@@ -892,13 +901,13 @@ export default {
       }
     }
 
-    // wx share 
+    // wx share
     let userAgent = req && req.headers['user-agent'].toLowerCase()
     const isWeixin = () => /micromessenger/.test(userAgent)
     // 在微信内才请求分享 避免造成不必要的请求
     if (isWeixin()) {
       console.log('is wechat env', req.headers['user-agent'].toLowerCase())
-      
+
       let defaultLink = ''
       if (process.server) {
         defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
@@ -955,7 +964,7 @@ export default {
   destroyed() {
     clearInterval(this.timer)
   },
-  methods: { 
+  methods: {
     // 增加文章阅读量
     async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
@@ -1000,7 +1009,7 @@ export default {
           }
           if (this.editForm.outputToken.id) {
             this.editTokenExs = await this.hasExs(this.editForm.outputToken.id)
-          } 
+          }
         } else if (res.code === 401) {
           console.log(res.message)
         } else {
