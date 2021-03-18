@@ -20,6 +20,15 @@
           </p>
         </div>
       </router-link>
+      <!-- todo: rename this router `to` when pages are OK -->
+      <router-link :to="{ name: 'liquidity-mint' }" class="management-list-card">
+        <div>
+          <img class="crosschain-management" src="@/assets/img/dapp_list_shuttle.png" alt="Liquidity Management">
+          <p>
+            {{ $t('crosschain-management') }}
+          </p>
+        </div>
+      </router-link>
       <a href="Javascript:;" class="management-list-card disable">
         <div>
           <img class="marketing" src="@/assets/img/token/marketing.png" alt="Marketing">
@@ -87,6 +96,9 @@ export default {
           }
           &.liquidity-management {
             width: 78px;
+            height: 66px;
+          }
+          &.crosschain-management {
             height: 66px;
           }
           &.marketing {
