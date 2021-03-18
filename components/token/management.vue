@@ -21,7 +21,7 @@
         </div>
       </router-link>
       <!-- todo: rename this router `to` when pages are OK -->
-      <router-link :to="{ name: 'liquidity-mint' }" class="management-list-card">
+      <router-link :to="{ name: 'editminetoken-crosschain' }" class="management-list-card">
         <div>
           <img class="crosschain-management" src="@/assets/img/dapp_list_shuttle.png" alt="Liquidity Management">
           <p>
