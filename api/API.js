@@ -516,6 +516,12 @@ minetokenGetResources(tokenId) {
   tokenDetail() {
     return request.get('/token/minetoken')
   },
+  /**
+   * 获取创建跨链 Fan 票的许可
+   */
+  requestPermitOfCreation(tokenId, chain) {
+    return request.put(`/minetoken/${tokenId}/crosschain`, {}, { params: { chain } })
+  },
   // -------------------------------- exchange API --------------------------------
   getCurrentPoolSize(tokenId) {
     return request({

@@ -44,7 +44,8 @@ export default {
     return {
       tagsList: [
         { title: '基础信息', url: 'editminetoken' },
-        { title: '协作者', url: 'editminetoken-collaborator' }
+        { title: '协作者', url: 'editminetoken-collaborator' },
+        { title: this.$t('crosschain-management'), url: 'editminetoken-crosschain' }
       ],
       tokens: false
     }
