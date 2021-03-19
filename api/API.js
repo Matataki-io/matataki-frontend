@@ -522,6 +522,10 @@ minetokenGetResources(tokenId) {
   requestPermitOfCreation(tokenId, chain) {
     return request.put(`/minetoken/${tokenId}/crosschain`, {}, { params: { chain } })
   },
+  appendCrosschainTokenByTxHash(txHash, chain) {
+    return request.put('/minetoken/crosschain/appendByTxHash', {}, { params: { chain, txHash } })
+  },
+  
   // -------------------------------- exchange API --------------------------------
   getCurrentPoolSize(tokenId) {
     return request({
