@@ -116,8 +116,6 @@ export default {
     if (process.browser) {
       this.removeOverflowHide()
       // this.testDomain()
-      console.log('NODE_ENV', process.env.NODE_ENV)
-      console.log('NODE_ENV', process.env.NODE)
       this.debug()
     }
   },
@@ -152,7 +150,6 @@ export default {
     // 检测域名
     testDomain() {
       try {
-        console.log('NODE_ENV', process.env.NODE_ENV)
         // 开发模式不管
         if (process.env.NODE_ENV === 'development') return
         // 在微信里面不管
