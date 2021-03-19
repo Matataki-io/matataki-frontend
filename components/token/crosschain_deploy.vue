@@ -86,7 +86,8 @@ export default {
         this.$message.success(
           `创建交易发送成功，Tx Hash: ${receipt.transactionHash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
         )
-        // @todo: send the txHash back to server and write token address to DB
+        // send the txHash back to server and write token address to DB
+        await this.$API.appendCrosschainTokenByTxHash(receipt.transactionHash, this.chainDetail.tag)
       } catch (error) {
         this.$message.error(error.message)
       }
