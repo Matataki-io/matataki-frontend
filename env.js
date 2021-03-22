@@ -1,5 +1,12 @@
-module.exports = {
+import { getGitInfo } from './scripts/git-info'
+
+const base = {
+  ...getGitInfo()
+}
+
+export default {
   development: {
+    ...base,
     NODE: 'development',
     NODE_ENV: 'development',
     VUE_APP_API: 'https://apitest.mttk.net',
@@ -29,8 +36,10 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn', // 前端用来判断在 cn 还是非 cn
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mumbai.maticvigil.com',
   },
   testing: {
+    ...base,
     NODE: 'testing',
     NODE_ENV: 'testing',
     VUE_APP_API: 'https://apitest.mttk.net',
@@ -59,8 +68,10 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn',
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mumbai.maticvigil.com',
   },
   release: {
+    ...base,
     NODE: 'production',
     NODE_ENV: 'production',
     VUE_APP_API: 'https://api.mttk.net',
@@ -89,8 +100,10 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn',
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
   },
   production: {
+    ...base,
     NODE: 'production',
     NODE_ENV: 'production',
     VUE_APP_API: 'https://api.mttk.net',
@@ -119,5 +132,6 @@ module.exports = {
     VUE_APP_DOMAIN_CN: 'matataki.cn',
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
   }
 }

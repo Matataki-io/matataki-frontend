@@ -23,11 +23,14 @@
     <client-only v-else>
       <div class="direction-selection">
         <el-button-group>
-          <el-button :type="isWithdrawSelected ? 'primary' : ''" @click="direction = 'withdraw'">
+          <el-button :type="isWithdrawSelected ? 'primary' : '' " @click="direction = 'withdraw'">
             {{ $t('extract') }}
           </el-button>
-          <el-button :type="isWithdrawSelected ? '' : 'primary'" @click="direction = 'deposit'">
+          <el-button :type="isDepositSelected ? 'primary' : '' " @click="direction = 'deposit'">
             {{ $t('transfer-in') }}
+          </el-button>
+          <el-button :type="isLsdrawSelected ? 'primary' : '' " @click="direction = 'ls'">
+            {{ $t('List') }}
           </el-button>
         </el-button-group>
       </div>
@@ -84,7 +87,13 @@ export default {
     },
     isWithdrawSelected() {
       return this.direction === 'withdraw'
-    }
+    },
+    isDepositSelected() {
+      return this.direction === 'deposit'
+    },
+    isLsdrawSelected() {
+      return this.direction === 'ls'
+    },
   },
   methods: {
     login() {

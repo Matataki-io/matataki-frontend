@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { IMulticall, IPeggedMinter } from './abi/'
+import { IMulticall, IPeggedMinter, IFactoryV2 } from './abi/'
 
 export const NetworksId = {
   BSC_MAINNET: 56,
@@ -11,6 +11,14 @@ export const NetworksId = {
 const ZERO = '0x0000000000000000000000000000000000001000'
 
 const mintContract = new ethers.Contract(ZERO, IPeggedMinter)
+const TokenFactoryV2 = new ethers.Contract(ZERO, IFactoryV2)
+
+export const TokenFactoryV2Address = {
+  [NetworksId.BSC_MAINNET]: '0x7d60564818Df371f200374e564d338De095B3Af4',
+  [NetworksId.BSC_TESTNET]: '0x40C7ea9d248A79504F6D3596119B0642a5699c64',
+  [NetworksId.MATIC_TESTNET]: '0x95BB56828B14E3A34d86eDcF40A15aa4eC82638E',
+  [NetworksId.MATIC_MAINNET]: '0x8B857ea22a34611F88f4F233Ba9C769dA4141180',
+}
 
 export const TokenMinterContractAddress = {
   [NetworksId.BSC_MAINNET]: '0xCaED74043e201D7323A8B5f71035DA185A03c4dF',
@@ -85,4 +93,19 @@ export async function batchQueryNonceFor(queries, chain) {
   }))
   const [, returnData] = await aggerate(provider, calls)
   return returnData.map((bytesLike) => IPeggedMinter.decodeFunctionResult(fragment, bytesLike)).map(([ num ]) => num)
+}
+
+export async function sendCreationPermit(wallet, name, symbol, tokenId, decimals, v, r,s, chain) {
+  const connectedFactory = TokenFactoryV2.attach(TokenFactoryV2Address[chain]).connect(wallet)
+  try {
+    const result = await connectedFactory.newAPeggedToken(name, symbol, tokenId, decimals, v, r, s)
+    return result
+  } catch (error) {
+    if (error.code === -32603) {
+      throw new Error('网络错误，请检查一下网络。如果网络正确，可能是: 这个Fan票可能已经创建了')
+    }
+    if (error.code === 4001) throw new Error('你拒绝了签名，交易取消')
+    console.error(error)
+    throw error
+  }
 }

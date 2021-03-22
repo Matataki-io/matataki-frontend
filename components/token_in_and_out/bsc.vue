@@ -20,12 +20,14 @@
       <BscWithdraw v-if="selection === 'apply'" :selection.sync="selection" />
       <MintWithPermit v-if="selection === 'upload'" :selection.sync="selection" />
     </div>
+    <ListCrosschain v-if="isLsSelected" chain="bsc" />
   </div>
 </template>
 
 <script>
 import MyBscPermit from './bsc/myPermit.vue'
 import BscWithdraw from './bsc/withdraw.vue'
+import ListCrosschain from './list'
 import BscDeposit from './bsc/deposit.vue'
 import MintWithPermit from './bsc/mintWithPermit.vue'
 import wbAlertWarning from '@/components/withdraw/bsc/alert_warning'
@@ -35,6 +37,7 @@ export default {
   components: {
     MyBscPermit,
     MintWithPermit,
+    ListCrosschain,
     BscWithdraw,
     BscDeposit,
     wbAlertWarning,
@@ -54,6 +57,9 @@ export default {
     },
     isDepositSelected() {
       return this.direction === 'deposit'
+    },
+    isLsSelected() {
+      return this.direction === 'ls'
     },
   },
 }

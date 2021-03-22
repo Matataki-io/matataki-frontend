@@ -24,17 +24,21 @@
       >👉{{ $t('guide-to-add-fan-tickets-to-MetaMask') }}👈</a>
     </el-alert>
     <Deposit v-if="isDepositSelected" />
-    <Withdraw v-else />
+    <Withdraw v-if="isWithdrawSelected" />
+    <ListCrosschain v-if="isLsSelected" chain="rinkeby" />
   </div>
 </template>
 
 <script>
 import Deposit from './rinkeby/deposit'
 import Withdraw from './rinkeby/withdraw'
+import ListCrosschain from './list'
+
 export default {
   name: 'RinkebyInAndOut',
   components: {
     Deposit,
+    ListCrosschain,
     Withdraw,
   },
   props: {
@@ -49,6 +53,9 @@ export default {
     },
     isDepositSelected() {
       return this.direction === 'deposit'
+    },
+    isLsSelected() {
+      return this.direction === 'ls'
     },
   },
 }

@@ -6,7 +6,6 @@
 
 - components
 - confiig
-- script
 
 ## 命名规范
 

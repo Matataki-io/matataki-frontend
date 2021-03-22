@@ -20,12 +20,14 @@
       <Withdraw v-if="selection === 'apply'" :selection.sync="selection" />
       <MintWithPermit v-if="selection === 'upload'" :selection.sync="selection" />
     </div>
+    <ListCrosschain v-if="isLsSelected" chain="matic" />
   </div>
 </template>
 
 <script>
 import MyPermit from './matic/myPermit.vue'
 import Withdraw from './matic/withdraw.vue'
+import ListCrosschain from './list'
 import Deposit from './matic/deposit.vue'
 import MintWithPermit from './matic/mintWithPermit.vue'
 import wbAlertWarning from '@/components/withdraw/matic/alert_warning'
@@ -35,6 +37,7 @@ export default {
   components: {
     MyPermit,
     MintWithPermit,
+    ListCrosschain,
     Withdraw,
     Deposit,
     wbAlertWarning,
@@ -54,6 +57,9 @@ export default {
     },
     isDepositSelected() {
       return this.direction === 'deposit'
+    },
+    isLsSelected() {
+      return this.direction === 'ls'
     },
   },
 }

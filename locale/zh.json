@@ -995,6 +995,7 @@
   "all": "全部",
   "basic-settings": "基础设置",
   "liquidity-management": "流动性管理",
+  "crosschain-management": "跨链设定",
   "marketing": "营销推广",
   "add-hold-map": "增发持仓分布图",
   "add-liquidity": "添加流动金",
@@ -1625,5 +1626,6 @@
   "home-qa-4": "在Matataki的所有文章都使用区块链技术盖上了时间戳，并且无法被篡改。这将可以作为有力证据在维权的时候使用。我们正在逐步推出社区治理系统，加强对于侵权内容的管控。",
   "hotest-tag": "推荐标签",
   "copy-address": "复制地址",
-  "matic-mainnet": "Matic 主网"
+  "matic-mainnet": "Matic 主网",
+  "List": "列表"
 }

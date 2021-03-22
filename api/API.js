@@ -419,6 +419,10 @@ export default {
   tokenTokenList(params) {
     return request.get('/token/tokenlist', { params })
   },
+  async doINeedHCaptcha() {
+    const { data } = await request.get('/captcha/doINeedHCaptcha')
+    return !data.isInWhiteList
+  },
   allToken({page = 1, pagesize = 10, search = ''}) {
     return request({
       url: '/token/all',
@@ -512,6 +516,16 @@ minetokenGetResources(tokenId) {
   tokenDetail() {
     return request.get('/token/minetoken')
   },
+  /**
+   * 获取创建跨链 Fan 票的许可
+   */
+  requestPermitOfCreation(tokenId, chain) {
+    return request.put(`/minetoken/${tokenId}/crosschain`, {}, { params: { chain } })
+  },
+  appendCrosschainTokenByTxHash(txHash, chain) {
+    return request.put('/minetoken/crosschain/appendByTxHash', {}, { params: { chain, txHash } })
+  },
+  
   // -------------------------------- exchange API --------------------------------
   getCurrentPoolSize(tokenId) {
     return request({
@@ -1190,11 +1204,18 @@ minetokenGetResources(tokenId) {
       url: '/minetoken/crosschain/myDeposits',
     })
   },
-  listCrossChainToken(data) {
+  listMyCrossChainToken(data) {
     return request({
       method: 'GET',
       url: '/minetoken/crosschain/',
       params: { ...data }
+    })
+  },
+  listAllCrossChainToken(chain = 'bsc') {
+    return request({
+      method: 'GET',
+      url: '/minetoken/crosschain/ls',
+      params: { chain }
     })
   },
   isCrossChainToken(tokenAddress) {
