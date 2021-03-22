@@ -8,7 +8,7 @@
         <li>
           MetaMask: {{ renderIconWithBool(isMetaMaskActive) }}&nbsp;
           {{ $t('wallet-connection') }}: {{ renderIconWithBool(selectedWallet) }}&nbsp;
-          {{ '现在 Metamask 的网络' }}: {{ getCurrentNetworkNameById }}
+          {{ '现在 Metamask 的网络' }}: <b>{{ getCurrentNetworkNameById }}</b>
 
           <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
             {{ $t('connection') }}
