@@ -68,8 +68,23 @@ export default {
         console.error('err', error)
       }
     },
+    getNetworkNameById(id) {
+      switch(id) {
+        case -1: return 'Loading'
+        case 1: return 'Ethereum Mainnet'
+        case 56: return 'BSC Mainnet'
+        case 137: return 'Polygon(Matic) Mainnet'
+        case 80001: return 'Polygon(Matic) Testnet'
+        case 97: return 'BSC Testnet'
+        default: return `Chain ID ${this.network}`
+      }
+    },
     async sendPermit() {
       try {
+        const { networkVersion } = window.ethereum
+        if (this.targetChainId !== Number(networkVersion)) {
+          throw new Error('请检查当前 MetaMask 所在的网络是否正确')
+        }
         const { permit } = this
         const provider = new ethers.providers.Web3Provider(
           window.ethereum
