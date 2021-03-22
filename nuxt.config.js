@@ -103,7 +103,8 @@ export default {
     // { src: '~/plugins/fundebug.js', ssr: false },
     { src: '@/plugins/sentry.js', ssr: false },
     { src: '@/plugins/v-viewer.js', ssr: false },
-    { src: '@/plugins/vue_echarts.js', ssr: false }
+    { src: '@/plugins/vue_echarts.js', ssr: false },
+    { src: '@/plugins/build-info.js', ssr: false },
   ],
   generate: {
     // routes: [
