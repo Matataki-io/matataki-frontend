@@ -23,6 +23,7 @@
 
 <script>
 import { ethers } from 'ethers'
+import { Notification } from 'element-ui'
 import { sendCreationPermit } from '@/utils/ethers'
 import avatar from '@/components/avatar/index.vue'
 
@@ -67,8 +68,23 @@ export default {
         console.error('err', error)
       }
     },
+    getNetworkNameById(id) {
+      switch(id) {
+        case -1: return 'Loading'
+        case 1: return 'Ethereum Mainnet'
+        case 56: return 'BSC Mainnet'
+        case 137: return 'Polygon(Matic) Mainnet'
+        case 80001: return 'Polygon(Matic) Testnet'
+        case 97: return 'BSC Testnet'
+        default: return `Chain ID ${this.network}`
+      }
+    },
     async sendPermit() {
       try {
+        const { networkVersion } = window.ethereum
+        if (this.targetChainId !== Number(networkVersion)) {
+          throw new Error('请检查当前 MetaMask 所在的网络是否正确')
+        }
         const { permit } = this
         const provider = new ethers.providers.Web3Provider(
           window.ethereum
@@ -81,16 +97,30 @@ export default {
           permit.sig.s,
           this.targetChainId
         )
+        Notification.info({
+          title: '创建交易发送成功',
+          message: `请不要关闭此页面，正在向区块链查询交易结果。交易ID: ${txResponse.hash}`,
+          duration: 0
+        })
         const receipt = await txResponse.wait()
         console.log('receipt', receipt)
-        this.$message.success(
-          `创建交易发送成功，Tx Hash: ${receipt.transactionHash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
-        )
-        // send the txHash back to server and write token address to DB
-        await this.$API.appendCrosschainTokenByTxHash(receipt.transactionHash, this.chainDetail.tag)
+        await this.uploadTxToServer(receipt.transactionHash)
       } catch (error) {
         this.$message.error(error.message)
       }
+    },
+    async uploadTxToServer(txHash) {
+      const result = await this.$API.appendCrosschainTokenByTxHash(txHash, this.chainDetail.tag)
+      console.info('result', result)
+      Notification.closeAll()
+      Notification.success({
+        title: '交易成功',
+        message: '数据库已收录该跨链 Fan 票，五秒后刷新本页面',
+        duration: 0
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000 * 5)
     }
   },
 }
