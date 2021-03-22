@@ -341,9 +341,9 @@ export default {
       user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info
       metaData: { // meta 组件数据
-        tokenId: 120,
+        tokenId: 238,
         tokenAmount: 0,
-        tokenSymbol: 'META'
+        tokenSymbol: 'METACC'
       }
     }
   },
@@ -560,14 +560,14 @@ export default {
         id: 21,
         symbol: 'FSB'
       }
-      const META = {
-        id: 120,
-        symbol: 'META'
+      const METACC = {
+        id: 238,
+        symbol: 'METACC'
       }
       const list = {
         development: FSB,
         testing: FSB,
-        production: META
+        production: METACC
       }
       // 获取token持有数据
       const getTokenData = async ({ token }) => {
