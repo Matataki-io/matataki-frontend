@@ -395,7 +395,7 @@ import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
-import commentInput from '@/components/article_comment'
+import commentInput from '@/components/p_page/article_comment'
 import CommentList from '@/components/comment/List'
 import { wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
@@ -868,9 +868,10 @@ export default {
     let post = {}
     try {
       post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
+      console.log('post', post)
       if (post.code !== 0) throw new Error(post.message)
     } catch (e) {
-      console.log('get article data error', e)
+      console.log('get article data error', e.toString())
       return data
     }
     // 解藕文章数据 ipfs
