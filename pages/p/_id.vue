@@ -386,7 +386,7 @@
 // import throttle from 'lodash/throttle'
 import { mapGetters } from 'vuex'
 import BigNumber from 'bignumber.js'
-import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
+import { xssFilter, xssImageProcess, xssIframeProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -639,10 +639,10 @@ export default {
         if (process.browser) {
           let md = markdown.render(this.post.content)
 
-          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(processLink, xssImageProcess, xssIframeProcess, xssFilter)(md)
         } else {
           let md = markdownItRender.render(this.post.content)
-          return this.$utils.compose(xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(xssImageProcess, xssIframeProcess, xssFilter)(md)
         }
       } catch (e) {
         return this.post.content
