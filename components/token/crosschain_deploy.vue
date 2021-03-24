@@ -1,19 +1,17 @@
 <template>
   <div class="token-detail" style="display: flex;">
-    <!-- <c-token-popover :token-id="Number(minetokenToken.id)"> -->
-    <avatar :src="chainDetail.logo" size="60px" />
-    <!-- </c-token-popover> -->
+    <avatar :src="chainDetail.logo" size="60px" class="token-logo" />
     <div class="token-detail-info">
       <div class="fl info-line">
-        <div class="token-info-title bold">
+        <span class="token-info-title">
           {{ chainDetail.name }}
-        </div>
+        </span>
       </div>
       <div class="fl info-line">
-        <el-button v-if="!permit" @click="requestPermit">
+        <el-button v-if="!permit" size="medium" @click="requestPermit">
           Request Creation Permit
         </el-button>
-        <el-button v-else @click="sendPermit">
+        <el-button v-else size="medium" @click="sendPermit">
           Send Creation Permit to Create on {{ chainDetail.name }}
         </el-button>
       </div>
@@ -128,46 +126,19 @@ export default {
 
 
 <style lang="less" scoped>
-
-.balance {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  color: #542DE0;
-}
-
-.balance-mobile {
-  display: none;
-}
-
-.info-btns {
-  top: 70%;
-  left: 72%;
-  position: absolute;
-}
-
-.float {
-  margin-left: 1rem;
-  span {
-      color: #15AD8B;
-      white-space: nowrap;
-      &.red {
-        color: #FB6877;
-      }
-    }
-}
-
 .token-detail {
   position: relative;
-  margin: 20px auto 0;
-  padding: 20px;
-  background: @white;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  margin: 0 auto 0;
+  padding: 20px 0;
   box-sizing: border-box;
   cursor: pointer;
 }
 .info-line {
-  margin: 6px 0;
+  margin: 2px 0;
+}
+.token-logo {
+  flex: 0 0 60px;
+  box-sizing: border-box;
 }
 .token-detail-info {
   width: 100%;
@@ -181,104 +152,7 @@ export default {
   justify-content: center;
 }
 .token-info-title {
-  // width: 70px;
-  flex: 0 0 170px;
-  &.bold {
-    font-weight: bold;
-    font-size: 14px;
-  }
-}
-.token-info-address {
-  padding: 0px;
-  margin: 0;
-  a {
-    color: #542de0;
-  }
-}
-.token-info-sub {
-  padding: 0 0 0 10px;
-  margin: 0;
-  a {
-    color: #542de0;
-  }
-}
-
-.token {
-  &-tags {
-    display: flex;
-    margin-left: 10px;
-    flex-wrap: wrap;
-    .tag-item {
-      padding: 1px 8px 1px;
-      color: #542DE0;
-      border-radius: 5px;
-      background-color: #D6CDFF;
-      margin-right: 5px;
-    }
-  }
-  &-header {
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-  }
-  &-username {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    overflow: hidden;
-    word-break: break-all;
-  }
-}
-
-// 小于992
-@media screen and (max-width: 992px) {
-
-  .info-btns {
-    position: absolute;
-    left: 69%;
-  }
-  .token {
-    &-header {
-      display: block;
-    }
-    &-tags {
-      margin-top: 10px;
-      .tag-item {
-        margin: 0 5px 5px 0;
-      }
-    }
-  }
-}
-
-// <600
-@media screen and (max-width: 650px) {
-  .balance {
-    display: none;
-  }
-  .balance-mobile {
-    display: flex;
-  }
-
-  .info-btns {
-    position: relative;
-    margin-top: 0px;
-    left: 0px;
-  }
-  .token-detail {
-    padding: 10px;
-  }
-  .token-detail-info {
-    width: 100%;
-  }
-  .token-detail /deep/ .g-avatar {
-    width: 60px !important;
-    height: 60px !important;
-    flex: 0 0 60px;
-  }
-  
-  .token-detail-info {
-    font-size: 14px;
-  }
-
+  font-weight: bold;
+  font-size: 18px;
 }
 </style>
