@@ -2,6 +2,7 @@
  * 用户文章的XSS过滤, 开发者如果修改规则请同步两端规则
  */
 import xss from 'xss'
+import whiteListOfIframe from '@/config/iframe-whitelist.json'
 const isSupportWebp = process.browser ? !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0 : false
 
 if (process.browser) {
@@ -30,6 +31,9 @@ export const xssFilter = html => {
     'style',
     'scrolling'
   ]
+
+
+
   whiteList.embed = ['src', 'allowFullScreen', 'quality', 'width', 'height', 'align', 'type']
   whiteList.section = [
     'class',
@@ -333,6 +337,33 @@ export const xssImageProcess = html => {
           }
           // console.log('url', url)
           return `${name}='${url}' alt='${url}'`
+        }
+      }
+    }
+  })
+}
+
+// 通过xss处理 iframe 站外嵌入
+export const xssIframeProcess = html => {
+  const getHostnameFromRegex = (url) => {
+    // run against regex
+    const matches = url.match(/\/\/([^/?#]+)(?:[/?#]|$)/i)
+    // extract hostname (will be null if no match is found)
+    return matches && matches[1]
+  }
+
+  return xss(html, {
+    onTagAttr: function (tag, name, value) {
+      // console.info('xssIframeProcess', tag, name, value)
+      if (tag === 'iframe' && name === 'src') {
+        let url = xss.friendlyAttrValue(value)
+
+        if (whiteListOfIframe.indexOf(getHostnameFromRegex(url)) > -1) {
+          console.info(`${getHostnameFromRegex(url)} is in the iframe whitelist`)
+          return `${name}='${url}' alt='${url}'`
+        } else {
+          console.info(`${getHostnameFromRegex(url)} is not in the iframe whitelist`)
+          return `${name}='https://bad-iframe.mttk.net/?url=${encodeURIComponent(url)}' width="800" height="250"`
         }
       }
     }
