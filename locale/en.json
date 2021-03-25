@@ -1627,5 +1627,12 @@
   "hotest-tag": "推荐标签",
   "copy-address": "复制地址",
   "matic-mainnet": "Matic 主网",
-  "List": "列表"
+  "List": "列表",
+  "already-cross-chain-token-tickets": "已经跨链 Fan 票",
+  "create-cross-chain-token-ticket": "创建跨链 Fan 票",
+  "metamask-network": "Metamask 网络",
+  "basic-information": "基础信息",
+  "collaborator": "协作者",
+  "help-manual": "帮助手册",
+  "development-document": "开发文档"
 }
