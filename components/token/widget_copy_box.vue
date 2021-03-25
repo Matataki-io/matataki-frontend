@@ -8,7 +8,7 @@
       type="textarea"
     />
     <el-button size="mini" style="margin-top: 10px;" @click="copy(tokenWidget)">
-      复制
+      {{ $t('copy') }}
     </el-button>
   </div>
 </template>
