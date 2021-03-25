@@ -1,15 +1,15 @@
 <template>
   <div class="share">
-    <h2 class="token-title">
-      {{ $t('token.shareWidget') }}
-    </h2>
+    <h2 class="token-title">{{ $t('token.shareWidget') }}</h2>
     <el-input
       v-model="tokenWidget"
-      :rows="6"
+      :rows="4"
       class="token-widget"
       type="textarea"
-      :placeholder="$t('rule.content')"
     />
+    <el-button size="mini" style="margin-top: 10px;" @click="copy(tokenWidget)">
+      复制
+    </el-button>
   </div>
 </template>
 <script>
@@ -19,6 +19,20 @@ export default {
     return {
       tokenWidget: `<iframe width="100%" height="200px" src='${process.env.VUE_APP_URL}/widget/token/?id=${this.$route.params.id}' frameborder=0></iframe>`
     }
+  },
+  methods: {
+    copy(val) {
+      this.$copyText(val).then(
+        () => this.$message({
+          showClose: true,
+          message: this.$t('success.copy'),
+          type: 'success'
+        }),
+        () => {
+          this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
+        }
+      )
+    },
   }
 }
 </script>
