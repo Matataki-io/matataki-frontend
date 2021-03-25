@@ -1,7 +1,7 @@
 <template>
   <settingLayout>
     <div v-loading="loading" class="cross-chain-settings">
-      <h2 v-if="tokenData.bsc_contract_address || tokenData.matic_contract_address" class="subtitle">已经跨链 Fan 票</h2>
+      <h2 v-if="tokenData.bsc_contract_address || tokenData.matic_contract_address" class="subtitle">{{ $t('already-cross-chain-token-tickets') }}</h2>
       <div v-if="!tokenData" class="loading">
         Loading
       </div>
@@ -10,7 +10,7 @@
         <crosschainCard v-if="tokenData.matic_contract_address" :chain-detail="maticDetail" :token-address="tokenData.matic_contract_address" />
       </div>
       <div v-if="tokenData.id" class="not-deployed">
-        <h2 class="subtitle">创建跨链 Fan 票</h2>
+        <h2 class="subtitle">{{ $t('create-cross-chain-token-ticket') }}</h2>
         <EnvironmentCheck />
         <crosschainDeploy v-if="!tokenData.bsc_contract_address" :chain-detail="bscDetail" :token-id="tokenData.id" />
         <crosschainDeploy v-if="!tokenData.matic_contract_address" :chain-detail="maticDetail" :token-id="tokenData.id" />
