@@ -89,6 +89,14 @@
             <img class="img-title" src="../../assets/img/footer-item-matataki.png" alt="瞬MATATAKI">
           </li>
           <li>
+            <a class="href" target="_blank" href="https://www.matataki.io">
+              <svg-icon
+                class="icon"
+                icon-class="matataki"
+              />Matataki.io
+            </a>
+          </li>
+          <li>
             <a class="href" target="_blank" href="https://github.com/Matataki-io/Matataki-FE">
               <svg-icon
                 class="icon"
@@ -126,6 +134,14 @@
             <img class="img-title" src="../../assets/img/footer-item-metanetwork.png" alt="Meta Network">
           </li>
           <li>
+            <a class="href" target="_blank" href="https://www.meta.io">
+              <svg-icon
+                class="icon"
+                icon-class="meta"
+              />Meta.io
+            </a>
+          </li>
+          <li>
             <a class="href" target="_blank" href="https://t.me/joinchat/7C_mfGzE7ksyNThl">
               <svg-icon
                 class="icon"
@@ -146,6 +162,14 @@
               <svg-icon
                 class="icon"
                 icon-class="twitter"
+              />@MetaNetwork
+            </a>
+          </li>
+          <li>
+            <a class="href" target="_blank" href="https://medium.com/meta-network">
+              <svg-icon
+                class="icon"
+                icon-class="medium"
               />@MetaNetwork
             </a>
           </li>
