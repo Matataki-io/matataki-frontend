@@ -1,13 +1,13 @@
 // 颜色
-@blue: #1C9CFE;
-@gray: #B2B2B2; // 辅助色
+@blue: #1c9cfe;
+@gray: #b2b2b2; // 辅助色
 @black: #000;
 @white: #fff;
 @yellow: #f7b500;
-@pink: #FB6877; // 辅助色
+@pink: #fb6877; // 辅助色
 
 @purpleLight: #ebe6ff;
-@purpleDark: #542DE0;
+@purpleDark: #542de0;
 
 @red: #d74e5a;
 @green: #41b37d;
@@ -25,15 +25,19 @@
 @linkHeight2: 33px;
 @linkHeight3: 28px;
 
-
 // 清除浮动
 .clearfix() {
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 0;
     height: 0;
     clear: both;
     visibility: hidden;
   }
+}
+
+iframe.bad-iframe {
+  width: 800px !important;
+  height: 300px !important;
 }

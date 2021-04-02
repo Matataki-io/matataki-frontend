@@ -1335,7 +1335,7 @@
   "environmental-inspection": "Environmental inspection",
   "wallet-connection": "Wallet connection",
   "network": "The internet",
-  "connection": "connection",
+  "connection": "Connection",
   "analyzed-withdrawal-permission": "Analyzed withdrawal permission",
   "coin-address-at-BSC": "Fan ticket address at BSC",
   "coin-address-at-matic": "Fan ticket address at Matic",
@@ -1627,5 +1627,12 @@
   "hotest-tag": "Recommend Tag",
   "copy-address": "Copy address",
   "matic-mainnet": "Matic Mainnet",
-  "List": "List"
+  "List": "List",
+  "already-cross-chain-token-tickets": "Already cross-chain Fan Ticket",
+  "create-cross-chain-token-ticket": "Create cross-chain Fan ticket",
+  "metamask-network": "Metamask network",
+  "collaborator": "Collaborator",
+  "basic-information": "Basic information",
+  "development-document": "Development Document",
+  "help-manual": "Help manual"
 }

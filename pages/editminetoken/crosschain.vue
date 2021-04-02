@@ -1,7 +1,7 @@
 <template>
   <settingLayout>
-    <div class="cross-chain-settings">
-      <h1 class="title">{{ $t('crosschain-management') }}</h1>
+    <div v-loading="loading" class="cross-chain-settings">
+      <h2 v-if="tokenData.bsc_contract_address || tokenData.matic_contract_address" class="subtitle">{{ $t('already-cross-chain-token-tickets') }}</h2>
       <div v-if="!tokenData" class="loading">
         Loading
       </div>
@@ -10,7 +10,7 @@
         <crosschainCard v-if="tokenData.matic_contract_address" :chain-detail="maticDetail" :token-address="tokenData.matic_contract_address" />
       </div>
       <div v-if="tokenData.id" class="not-deployed">
-        <h2 class="subtitle">创建跨链 Fan 票</h2>
+        <h2 class="subtitle">{{ $t('create-cross-chain-token-ticket') }}</h2>
         <EnvironmentCheck />
         <crosschainDeploy v-if="!tokenData.bsc_contract_address" :chain-detail="bscDetail" :token-id="tokenData.id" />
         <crosschainDeploy v-if="!tokenData.matic_contract_address" :chain-detail="maticDetail" :token-id="tokenData.id" />
@@ -48,7 +48,8 @@ export default {
         name: 'Polygon (Matic)',
         tag: 'matic',
         logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/matic/info/logo.png'
-      }
+      },
+      loading: false
     }
   },
   computed: {
@@ -56,16 +57,26 @@ export default {
   watch: {
   },
   async mounted() {
-    if (!getCookie('ACCESS_TOKEN')) return this.$router.go(-1)
-    await this.getTokenData()
+    if (!getCookie('ACCESS_TOKEN')) {
+      this.$router.go(-1)
+      return
+    }
+    this.getTokenData()
   },
   methods: {
     async getTokenData() {
-      const { data } = await this.$API.tokenDetail()
-      console.info('getTokenData', data)
-      if (!data.token) return this.$router.go(-1)
+      this.loading = true
+      try {
+        const { data } = await this.$API.tokenDetail()
+        console.info('getTokenData', data)
+        if (!data.token) return this.$router.go(-1)
 
-      this.tokenData = data.token
+        this.tokenData = data.token
+      } catch (e) {
+        console.log('e', e)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
@@ -73,8 +84,12 @@ export default {
 
 <style lang="less" scoped>
 .cross-chain-settings {
-//   display: flex;
-//   max-width: 340px;
-
+  min-height: 300px;
+}
+.subtitle {
+  padding: 0;
+  margin: 20px 0;
+  color: #333;
+  font-size: 24px;
 }
 </style>
