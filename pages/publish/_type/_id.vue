@@ -1545,6 +1545,8 @@ export default {
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
 
+      article.ipfs_or_github = 'ipfs'
+
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })

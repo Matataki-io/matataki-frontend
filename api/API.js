@@ -35,10 +35,15 @@ export default {
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
     return request.get(`/${url}/${hashOrId}`)
   },
-  // 通过hash获取文章内容
+  // 通过hash获取文章内容(For IPFS)
   getIpfsData(hash, edit = false) {
     const params = edit ? { params: {edit: true} } : {}
     return request.get(`/post/ipfs/${hash}`, params)
+  },
+  // title (For GitHub)
+  getGithubData(hash, edit = false) {
+    const params = edit ? { params: {edit: true} } : {}
+    return request.get(`/post/github/${hash}`, params)
   },
   getMyPost(id) {
     return request.get(`/mypost/${id}`)
@@ -49,6 +54,8 @@ export default {
   },
   // 获取文章的ipfs hash信息
   getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
+  // github title(essential?)
+  getArticleGithub(id) { return request.get(`/p/${id}/github`) },
   getImg(hash) {
     return `${process.env.ssImgAddress}${hash}`
   },

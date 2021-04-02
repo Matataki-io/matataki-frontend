@@ -418,7 +418,28 @@ export default {
         })
         .catch(err => {
           console.log(err)
-          this.$message({ type: 'error', message: '获取文章内容失败' })
+          this.$message({ type: 'error', message: '获取IPFS文章内容失败' })
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    // get github content
+    async getGithubContent(hash) {
+      if (!hash) return console.log('no gh hash')
+      await this.$API
+        .getGthubData(hash)
+        .then(res => {
+          if (res.code === 0) {
+            this.shareContent = res.data.content
+          } else {
+            this.$message({ type: 'error', message: res.message })
+            console.log(res.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message({ type: 'error', message: '获取GitHub文章内容失败' })
         })
         .finally(() => {
           this.loading = false
