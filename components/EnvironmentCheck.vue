@@ -8,14 +8,14 @@
         <li>
           MetaMask: {{ renderIconWithBool(isMetaMaskActive) }}&nbsp;
           {{ $t('wallet-connection') }}: {{ renderIconWithBool(selectedWallet) }}&nbsp;
-          {{ '现在 Metamask 的网络' }}: <b>{{ getCurrentNetworkNameById }}</b>
+          {{ $t('metamask-network') }}: <b>{{ getCurrentNetworkNameById }}</b>
 
-          <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
+          <el-button v-if="!selectedWallet && isMetaMaskActive" size="medium" @click="requestEtherumAccounts">
             {{ $t('connection') }}
           </el-button>
         </li>
         <li v-if="selectedWallet">
-          👛&nbsp;{{ $t('address') }}: <span class="address">{{ selectedWallet }}</span>， {{ $t('balance') }} <b>{{ bnbBalance }}</b> {{ getCurrentNetworkTokenName }}
+          👛&nbsp;{{ $t('address') }}: <a :href="`${addressSCAN}`" target="_blank" class="address">{{ selectedWallet }}</a> {{ $t('balance') }} <b>{{ bnbBalance }}</b> {{ getCurrentNetworkTokenName }}
         </li>
       </ul>
     </div>
@@ -39,6 +39,13 @@ export default {
     getCurrentNetworkTokenName() {
       return this.getNetworkTokenById(this.currentChainId)
     },
+    addressSCAN() {
+      if (process.client) {
+        return `${process.env.VUE_APP_BSCSCAN}/address/${ this.selectedWallet }`
+      } else {
+        return this.selectedWallet
+      }
+    }
   },
   async mounted() {
     if (!process.browser) return // NO SSR 
@@ -118,8 +125,12 @@ export default {
       margin: 8px 0;
       .address {
         font-size: 14px;
-    color: #9f9f9f;
-    font-weight: 400;
+        color: #9f9f9f;
+        font-weight: 400;
+        word-break: break-all;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }

@@ -386,7 +386,7 @@
 // import throttle from 'lodash/throttle'
 import { mapGetters } from 'vuex'
 import BigNumber from 'bignumber.js'
-import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
+import { xssFilter, xssImageProcess, xssIframeProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -395,7 +395,7 @@ import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
-import commentInput from '@/components/article_comment'
+import commentInput from '@/components/p_page/article_comment'
 import CommentList from '@/components/comment/List'
 import { wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
@@ -639,10 +639,10 @@ export default {
         if (process.browser) {
           let md = markdown.render(this.post.content)
 
-          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(processLink, xssImageProcess, xssIframeProcess, xssFilter)(md)
         } else {
           let md = markdownItRender.render(this.post.content)
-          return this.$utils.compose(xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(xssImageProcess, xssIframeProcess, xssFilter)(md)
         }
       } catch (e) {
         return this.post.content
@@ -868,9 +868,10 @@ export default {
     let post = {}
     try {
       post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
+      console.log('post', post)
       if (post.code !== 0) throw new Error(post.message)
     } catch (e) {
-      console.log('get article data error', e)
+      console.log('get article data error', e.toString())
       return data
     }
     // 解藕文章数据 ipfs

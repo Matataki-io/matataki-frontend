@@ -22,15 +22,15 @@ export default {
     return {
       list: [
         {
-          label: '帮助手册',
+          label: this.$t('help-manual'),
           url: 'https://www.yuque.com/matataki/matataki'
         },
         {
-          label: '开发文档',
+          label: this.$t('development-document'),
           url: 'https://docs.matataki.io'
         },
         {
-          label: '任何反馈',
+          label: this.$t('anyFeedback'),
           url: 'http://andoromeda.mikecrm.com/a93Le8z'
         }
       ]
@@ -62,6 +62,7 @@ export default {
       justify-content: center;
       border-radius:4px;
       background: #EBE6FF;
+      text-align: center;
     }
   }
 }
