@@ -110,7 +110,7 @@ export default {
       // not token, data is null
       this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
-    postComment() {
+    async postComment() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
         return
@@ -122,7 +122,7 @@ export default {
         let { contentEditable } = commentsInputRef.$refs
         let content = filterOutHtmlShare(contentEditable.innerHTML.toString())
 
-        if (!(content).trim()) {
+        if (!(content.trim())) {
           this.$message.error(this.$t('p.commentContent'))
           return
         }
@@ -134,7 +134,7 @@ export default {
           signId: this.article.id,
           comment: (content).trim()
         }
-        const res = this.$API.postPointComment(data)
+        const res = await this.$API.postPointComment(data)
         if (res.code === 0) {
           this.$message.success(this.$t('p.commentSuccess'))
           contentEditable.innerHTML = ''
