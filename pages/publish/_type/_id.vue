@@ -2220,12 +2220,18 @@ export default {
     },
     // 生成简介
     generateShortContent() {
-      let dom = document.querySelectorAll('#previewContent > p')
-      const str = [...dom].reduce((t, c) => {
-        return `${t} ${c.outerText}`
-      }, '')
-      // console.log(str)
-      return (str.trim()).slice(0, 300)
+      try {
+        let dom = document.querySelectorAll('#previewContent p') // 有些导入的文章是 Section 等标签包裹的，所以选择所有 P
+        let domList = [...dom].filter(i => !!(i.innerText.trim())) // 过滤一些没有内容的
+        const str = domList.reduce((t, c) => {
+          return `${t} ${c.innerText}`
+        }, '')
+        // console.log(str)
+        return (str.trim()).slice(0, 300)
+      } catch (e) {
+        console.log('e', e.toString())
+        return '...'
+      }
     },
     // 处理空标题 如果没有 Title 自动生成默认标题 发布时间 + “by” + 发布者username
     async processEmptyTitle(type) {
