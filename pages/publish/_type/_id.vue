@@ -2230,8 +2230,7 @@ export default {
         return (str.trim()).slice(0, 300)
       } catch (e) {
         console.log('e', e.toString())
-        let dom = document.querySelector('#previewContent')
-        return (dom.trim()).slice(0, 300)
+        return '...'
       }
     },
     // 处理空标题 如果没有 Title 自动生成默认标题 发布时间 + “by” + 发布者username
