@@ -104,7 +104,7 @@ export default {
       if (idProviderLower === 'eos') {
         // 小数点后三位 如果后面需要解除限制修改正则  {0,3}
         amountValue = amountValue.match(/^\d*(\.?\d{0,3})/g)[0] || null
-      } else if (idProviderLower === 'ont' || idProviderLower === 'vnt') {
+      } else if (idProviderLower === 'ont') {
         amountValue = amountValue.match(/^\d*/g)[0] || null
       }
       this.amount = amountValue
@@ -142,7 +142,6 @@ export default {
         let idProviderLower = idProvider.toLocaleLowerCase()
         if (idProviderLower === 'eos') return 0.01
         if (idProviderLower === 'ont') return 1
-        if (idProviderLower === 'vnt') return 1
       }
       checkPricesMatch = checkPrices(
         amount,
@@ -198,101 +197,12 @@ export default {
         if (idProviderLower === 'eos' && isOntAddressVerify) sponsor = { id: null, username: null }
         // 如果是ONT账户投资 但是邀请人EOS账户 则认为没有邀请
         else if (idProviderLower === 'ont' && !isOntAddressVerify) sponsor = { id: null, username: null }
-        else if (idProviderLower === 'vnt') sponsor = { id: null, username: null } // getInvite 都没有东西 邀请失效, 购买商品也一样 TODO !!!
 
-        this.loading = true
-        // 暂时同步商品购买, vnt走下面 其他默认没修改
-        if (idProviderLower === 'vnt') {
-          const faild = error => {
-            this.loading = false
-            this.$message.closeAll()
-            this.$message.error(error.toString())
-          }
-          try {
-
-            try {
-              let coinbase = await this.$store.dispatch('vnt/coinbase')
-              if (coinbase !== this.currentUserInfo.name) {
-                faild(this.$t('p.vntBuyAccount'))
-                return
-              }
-            } catch (error) {
-              faild(error)
-            }
-
-            let hash = ''
-            // 提交订单hash
-            const postOrderHah = async supportId => {
-              let params = {
-                supportId: supportId,
-                txhash: hash,
-              }
-              await this.$API.supportSaveHash(params)
-                .then(res => {
-                  if (res.code === 0) {
-                    this.loading = false
-                    this.$message.closeAll()
-                    this.$message.success(this.$t('p.buyDone'))
-                    this.showModal = false
-                  } else {
-                    console.log('购买商品失败 提交hash')
-                    reject(new Error(this.$t('p.buyFail')))
-                  }
-                })
-                .catch(err => {
-                  console.log('购买商品失败 提交hash err')
-                    reject(new Error(this.$t('p.buyFail')))
-                })
-            }
-
-            const postSupport = async () => {
-              let params = {
-                signId: signId,
-                amount: toPrecision(amount, idProviderLower),
-                comment: comment
-              }
-              if (sponsor.id) {
-                Object.assign(params, {
-                  referrer: sponsor.id,
-                })
-              }
-              await this.$API.support(params)
-                .then(res => {
-                  if (res.code === 0) {
-                    postOrderHah(res.data.supportId)
-                  }
-                  else faild(this.$t('p.buyFail')) //购买商品失败 创建订单失败
-                }).catch(err => {
-                  faild(this.$t('p.buyFail'))
-                })
-            }
-            // 转账
-            const transaction = async () => {
-              let data = { // 交易数据
-                data: `sid:${signId}`,
-                value: amount
-              }
-              try {
-                let res = await this.$store.dispatch('vnt/sendTransaction', data)
-                hash = res
-                postSupport()
-              } catch (error) {
-                faild(error)
-              }
-            }
-
-            transaction()
-
-          } catch (error) {
-            faild(error)
-          }
-        } else {
-          this.loading = false
-          await this.makeShare({ amount, signId, sponsor, comment })
-          this.$message.success(`${action_text}${this.$t('success.success')}`)
-          this.$emit('investDone')
-          done()
-        }
+        this.loading = false
+        await this.makeShare({ amount, signId, sponsor, comment })
+        this.$message.success(`${action_text}${this.$t('success.success')}`)
+        this.$emit('investDone')
+        done()
 
 
       } catch (error) {

@@ -362,7 +362,6 @@ export default {
     let address = { // 缺地址
       'eos': '',
       'ont': '',
-      'vnt': process.env.VUE_APP_VNT_CONTRACT
     }
     // 平台类型
     let idProvider = utils.getCookie('idProvider').toLocaleLowerCase()
@@ -380,7 +379,6 @@ export default {
     let address = { // 缺地址
       'eos': '',
       'ont': '',
-      'vnt': process.env.VUE_APP_VNT_CONTRACT
     }
     // 平台类型
     let idProvider = utils.getCookie('idProvider').toLocaleLowerCase()
