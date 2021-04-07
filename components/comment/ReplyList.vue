@@ -8,7 +8,7 @@
       @success="$emit('success')"
     />
     <div v-show="!viewMore && count > 3" class="view-more">
-      {{ $t('x-total-replies', [ count ]) }},
+      <span v-html="$t('x-total-replies', [ count ])" />
       <a class="btn-more" @click="viewMore = true">{{ $t('click-to-view') }}</a>
     </div>
     <div class="reply-pagination">

@@ -35,6 +35,8 @@ export default {
         this.isLogin = false
         let cookie = getCookie('ACCESS_TOKEN')
         cookie = '/type=token&token=' + cookie
+
+        console.log(this.url, this.$route.params.redirect, cookie)
         window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
       }
     }
@@ -47,6 +49,8 @@ export default {
       this.isLogin = false
       let cookie = getCookie('ACCESS_TOKEN')
       cookie = '/type=token?&token=' + cookie
+
+      console.log(this.url, this.$route.params.redirect, cookie)
       window.location = decodeURIComponent(this.url + '/' + this.$route.params.redirect + cookie)
     }
   }
@@ -55,6 +59,6 @@ export default {
 
 <style lang="less">
 .el-dialog__headerbtn {
-  display: none;
+  // display: none;
 }
 </style>

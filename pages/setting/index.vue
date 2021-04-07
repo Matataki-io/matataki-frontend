@@ -142,11 +142,20 @@
             </div>
           </div>
         </div>
+        <div class="human-verify">
+          <vue-hcaptcha
+            :sitekey="hCaptchaSiteKey"
+            @verify="onCaptchaVerify"
+            @expired="onCaptchaExpire"
+            @error="onCaptchaError"
+          />
+        </div>
         <!-- 保存 -->
         <div class="save-content">
           <el-button
             :loading="loading"
             :class="(setProfile || aboutModify || socialModify) && 'active'"
+            :disabled="!isCaptchaOK"
             class="save "
             @click="save"
           >
@@ -163,10 +172,10 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import socialIcon from '@/components/social_icon/index.vue'
-
 import imgUpload from '@/components/imgUpload/index.vue'
 
 export default {
@@ -174,7 +183,8 @@ export default {
     userLayout,
     imgUpload,
     socialIcon,
-    myAccountNav
+    myAccountNav,
+    VueHcaptcha
   },
   data() {
     return {
@@ -266,11 +276,23 @@ export default {
           url: 'https://github.com',
           value: ''
         }
-      ]
+      ],
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
+      },
     }
   },
   computed: {
-    ...mapGetters(['currentUserInfo'])
+    ...mapGetters(['currentUserInfo']),
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+    },
   },
   watch: {
     username(newVal) {
@@ -396,7 +418,8 @@ export default {
 
         const requestData = {
           nickname: this.username,
-          introduction: this.introduction
+          introduction: this.introduction,
+          hCaptchaData: this.hCaptchaData,
         }
         if (this.username === (this.userData.nickname || this.userData.username)) delete requestData.nickname
         if (this.introduction === this.userData.introduction) delete requestData.introduction
@@ -462,7 +485,17 @@ export default {
     abountLess(i) {
       if (this.about.length <= 1) return
       this.about.splice(i, 1)
-    }
+    },
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onCaptchaExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onCaptchaError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error:', err)
+    },
   }
 }
 </script>
@@ -549,8 +582,15 @@ export default {
 .input {
   width: 400px;
 }
+.human-verify {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin-top: 100px;
+}
 .save-content {
-  margin: 100px auto 0;
+  margin: 20px auto 0;
   @media screen and (max-width: 768px) {
     position: fixed;
     bottom: 0;

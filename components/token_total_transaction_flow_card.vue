@@ -113,7 +113,11 @@ export default {
         'exchange_removeliquidity': this.$t('delete-liquidity'),
         'reward_article': this.$t('reward-articles'),
         'pay_article': this.$t('payment-article'),
-        'direct_trade': this.$t('through-train-transaction')
+        'direct_trade': this.$t('through-train-transaction'),
+        'crosschain_bsc_transfer_out': this.$t('crosschain_bsc_transfer_out'),
+        'crosschain_bsc_deposit': this.$t('crosschain_bsc_deposit'),
+        'crosschain_matic_transfer_out': this.$t('crosschain_matic_transfer_out'),
+        'crosschain_matic_deposit': this.$t('crosschain_matic_deposit'),
       }
 
       return list[type] || '其他'

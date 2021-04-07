@@ -1,4 +1,5 @@
 import { Contract, utils } from 'ethers'
+import { TokenBurnerContractAddress } from '@/utils/ethers'
 import ERC20WithPermitABI from './ERC20WithPermit.json'
 import TokenBurnerABI from './TokenBurner.json'
 
@@ -53,7 +54,8 @@ export function approve(provider, token, to, value = '0xFFFFFFFFFFFFFFFFFFFFFFFF
   return tokenContract.approve(to, value)
 }
 
-export function burn(provider, token, uid, amount) {
-  const BurnerContract = new Contract(process.env.VUE_APP_PeggedTokenBurner, TokenBurnerABI, provider)
+export function burn(signer, token, uid, amount) {
+  const { chainId } = signer.provider.network
+  const BurnerContract = new Contract(TokenBurnerContractAddress[chainId], TokenBurnerABI, signer)
   return BurnerContract.burn(token, uid, amount)
 }

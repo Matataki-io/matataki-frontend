@@ -607,7 +607,7 @@ export default {
   padding: 0;
   color: #666;
   width: 100%;
-  height: 62px;
+  min-height: 62px;
   overflow: auto;
   border-radius: 0.25rem;
   font-size: 14px;

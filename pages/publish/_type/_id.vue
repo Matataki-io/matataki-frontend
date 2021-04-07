@@ -82,7 +82,7 @@
               {{ $t('publish.draft') }}
             </router-link>
           </div>
-  
+
           <div slot="tool-view-mobile" class="draft-btn">
             <span
               class="draft-save-tips"
@@ -160,34 +160,12 @@
           </div>
         </div>
         <!-- tag -->
-        <h4 class="set-subtitle">
-          <!-- {{ $t('publish.tagTitle') }} -->
-          {{ $t('add-tag') }}<span class="tag">（{{ $t('you-can-also-add-tags', [ tagMaxLen - tags.length ]) }}）</span>
-        </h4>
-        <div class="set-content">
-          <ul class="tag-list">
-            <li
-              v-for="(item, index) in tags"
-              :key="index"
-              class="tag-item"
-              @click="removeTag(index)"
-            >
-              {{ item }}
-              <svg-icon icon-class="close_thin" class="icon" />
-            </li>
-            <li v-show="tags.length < tagMaxLen">
-              <input
-                ref="tagRef"
-                v-model="tagVal"
-                class="tag-input"
-                type="text"
-                maxlength="20"
-                @keyup.enter="addTag"
-              >
-              <span class="tag-tip">{{ $t('press-enter-to-create-the-label') }}</span>
-            </li>
-          </ul>
-        </div>
+        <tagModule
+          :tag-max-len="tagMaxLen"
+          :tags="tags"
+          @removeTag="removeTag"
+          @addTag="addTag"
+        />
         <h4 class="set-subtitle">
           {{ $t('link-fan-ticket') }}
         </h4>
@@ -211,9 +189,9 @@
               :value="item.id"
             />
           </el-select>
-          <el-button 
-            type="primary" 
-            size="small" 
+          <el-button
+            type="primary"
+            size="small"
             style="margin-left: 0.5rem;"
             @click="setAssosiateWith"
           >
@@ -646,7 +624,15 @@
           </div>
         </div>
 
-
+        <div class="set-captcha">
+          <vue-hcaptcha
+            v-if="doINeedHCaptcha"
+            :sitekey="hCaptchaSiteKey"
+            @verify="onCaptchaVerify"
+            @expired="onExpire"
+            @error="onError"
+          />
+        </div>
 
         <div class="set-footer">
           <el-button v-if="isShowDraftPreview" size="medium" @click="goPreview">
@@ -669,7 +655,7 @@
             <el-button
               v-if="isShowTransfer"
               type="danger"
-              size="medium" 
+              size="medium"
               @click="transferArticle"
             >
               {{ $t('transfer-draft') }}
@@ -688,6 +674,7 @@
               type="primary"
               size="medium"
               :class="($route.params.type === 'draft' && settingDialogMode === 'setting') && 'set'"
+              :disabled="!isCaptchaOK"
               @click="sendThePost"
             >
               {{ timedForm.switch ? $t('timed-release') : $t('publish-now') }}
@@ -715,7 +702,7 @@ if (process.client) {
 }
 
 // import '@matataki/editor/dist/css/index.css'
-
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 import throttle from 'lodash/throttle'
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
@@ -733,6 +720,7 @@ import { toPrecision, precision } from '@/utils/precisionConversion'
 import { getCookie } from '@/utils/cookie'
 import { CNY } from '@/components/exchange/consts.js'
 
+import tagModule from '@/components/publish_page/tag'
 
 function newDatePicker(time) {
   const date = new Date()
@@ -757,8 +745,10 @@ export default {
     'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,
     articleTransfer,
+    VueHcaptcha,
     articleImport,
     statement,
+    tagModule
   },
   data() {
     return {
@@ -766,6 +756,7 @@ export default {
       title: '',
       author: '',
       markdownData: '',
+      doINeedHCaptcha: true,
       fissionFactor: 2000,
       // toolbars: {},
       screenWidth: 1000,
@@ -778,6 +769,12 @@ export default {
       ccLicenseOptions: {
         share: 'false',
         commercialUse: false
+      },
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
       },
       showModal: false, // 弹框显示
       modalText: {
@@ -875,6 +872,14 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined', 'metamask/account', 'isMe']),
     coverEditor() {
       return this.cover ? this.$ossProcess(this.cover) : ''
+    },
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      // 如果是白名单，则为 true
+      if (!this.doINeedHCaptcha) return true
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
     },
     isShowTransfer() {
       return this.$route.params.type === 'draft'
@@ -1004,17 +1009,6 @@ export default {
         this.updateDraftWatch()
       }
     },
-    // 监听tag设置width
-    tagVal(val) {
-      const tag = this.$refs.tagRef
-      const width = (val.length + 1 ) * 12
-
-      if (val && width > 104) {
-        tag.style.width = (width <= 282 ? width : 282) + 'px'
-      } else {
-        tag.style.width = '104px'
-      }
-    },
     // 协议
     CCLicenseCredit() { this.updateDraftWatch() },
     // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
@@ -1044,7 +1038,7 @@ export default {
     editSelectValue() { this.updateDraftWatch() },
     editToken() { this.updateDraftWatch() },
     assosiateWith() { this.updateDraftWatch() },
-    
+
     // 是否公开
     ipfs_hide() { this.updateDraftWatch() }
   },
@@ -1065,6 +1059,10 @@ export default {
     if (this.assosiateWith) {
       this.setAssosiateWith()
     }
+
+    this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
+      this.doINeedHCaptcha = _doINeedHCaptcha
+    })
 
     const { type, id } = this.$route.params
 
@@ -1133,6 +1131,16 @@ export default {
         this.assosiateFanName = token.name
         this.assosiateFanLogo = this.$API.getImg(token.logo)
       }
+    },
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error: ', err)
     },
     // 取消关联
     cancelAssosiate() {
@@ -1265,7 +1273,7 @@ export default {
           }
 
           this.setCCLicense(res.data.cc_license)
-          
+
           // 持通证阅读
           if (res.data.tokens && res.data.tokens.length !== 0) {
             this.readauThority = true
@@ -1535,6 +1543,8 @@ export default {
       // 设置积分
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
+      article.hCaptchaData = this.hCaptchaData
+
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
         const response = await this.$API.publishArticle({ article })
@@ -1582,7 +1592,8 @@ export default {
       try {
         const result = await this.$API.timedPublishArticle(
           this.id,
-          this.timedForm.date
+          this.timedForm.date,
+          this.hCaptchaData
         )
         this.fullscreenLoading = false
         if (result.code === 0) {
@@ -1634,6 +1645,8 @@ export default {
       article.editRequireBuy = this.editRequireBuy
       // History 权限
       article.ipfs_hide = this.ipfs_hide
+      article.hCaptchaData = this.hCaptchaData
+
 
       const { failed, success } = this
       try {
@@ -1691,15 +1704,15 @@ export default {
       }
     },
     // 发布||修改按钮
-    sendThePost() {
+    async sendThePost() {
       // 没有登录 点击发布按钮都提示登录  编辑获取内容的时候会被前面的func拦截并返回home page
       if (!getCookie('ACCESS_TOKEN')) {
         this.$store.commit('setLoginModal', true)
-        return 
+        return
       }
 
       // 标题或内容为空时
-      if (!strTrim(this.title) || !strTrim(this.markdownData)) {
+      if (!strTrim(this.markdownData)) {
         this.failed(this.$t('warning.titleOrContent'))
         return
       }
@@ -1731,23 +1744,24 @@ export default {
 
       const {
         currentUserInfo,
-        title,
         markdownData: content,
         fissionFactor,
         cover
       } = this
+      let title = await this.processEmptyTitle('post')
       const { name: author } = currentUserInfo
       const isOriginal = Number(this.isOriginal)
 
+
       // url draft edit
       // 草稿发送
-      const draftPost = () => {
+      const draftPost = async () => {
         if (this.readauThority) {
           if (!this.readSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
           else if (!(Number(this.readToken) > 0)) return this.$message({ showClose: true, message: '持通证数量设置不能小于0', type: 'warning'})
           else if (!this.readSummary) return this.$message({ showClose: true, message: '请填写摘要', type: 'warning'})
         }
-        
+
         // 持Fan票编辑
         if (this.tokenEditAuthority) {
           if (!this.editSelectValue) return this.$message({ showClose: true, message: '请选择持通证类型', type: 'warning'})
@@ -1773,7 +1787,9 @@ export default {
         // this.fullscreenLoading = false // remove full loading
 
         if (this.timedForm.switch) {
-          this.timedPublish()
+          // 更新草稿
+          await this.processEmptyTitle('time')
+          await this.timedPublish()
         } else {
           const _shortContent = this.generateShortContent()
           this.publishArticle({
@@ -1829,9 +1845,9 @@ export default {
         })
       }
 
-      if (type === 'draft') draftPost()
+      if (type === 'draft') await draftPost()
       else if (type === 'edit') editPost()
-      else draftPost() // 错误的路由, 当发布文章处理
+      else await draftPost() // 错误的路由, 当发布文章处理
     },
     // 图片上传的回调方法
     async imageUploadFn(file) {
@@ -1843,7 +1859,7 @@ export default {
           console.log(res.message)
         }
         return
-      } catch (e) { 
+      } catch (e) {
         console.log(e)
       }
     },
@@ -1909,6 +1925,14 @@ export default {
       this.title = res.title
       this.markdownData = res.content
       this.cover = res.cover
+
+      // max tags 10
+      if (res.tags) {
+        const tags = res.tags.split(',')
+        this.tags = tags.slice(0, 10)
+      } else {
+        this.tags = []
+      }
     },
     async generateBullshit() {
       const 扯淡生成器 = import('@/api/bullshit-generator.js')
@@ -2017,15 +2041,22 @@ export default {
       }
     },
     // 添加标签
-    addTag() {
-      const val = this.tagVal.trim()
-      if (val) {
-        this.tags.push(val)
-        this.tagVal = ''
+    addTag(data) {
+      // 判断重复标签
+      let tag = this.tags.find(i => i === data.tag)
+      if (tag) {
+        this.$message({
+          showClose: true,
+          message: '标签重复了哦~',
+          type: 'warning'
+        })
+      } else {
+        this.tags.push(data.tag)
       }
     },
     // 删除标签
-    removeTag(i) {
+    removeTag(data) {
+      let i = data.index
       this.tags.splice(i, 1)
     },
     // 另存为草稿
@@ -2189,12 +2220,63 @@ export default {
     },
     // 生成简介
     generateShortContent() {
-      let dom = document.querySelectorAll('#previewContent > p')
-      const str = [...dom].reduce((t, c) => {
-        return `${t} ${c.outerText}`
-      }, '')
-      // console.log(str)
-      return (str.trim()).slice(0, 300)
+      try {
+        let dom = document.querySelectorAll('#previewContent p') // 有些导入的文章是 Section 等标签包裹的，所以选择所有 P
+        let domList = [...dom].filter(i => !!(i.innerText.trim())) // 过滤一些没有内容的
+        const str = domList.reduce((t, c) => {
+          return `${t} ${c.innerText}`
+        }, '')
+        // console.log(str)
+        return (str.trim()).slice(0, 300)
+      } catch (e) {
+        console.log('e', e.toString())
+        return '...'
+      }
+    },
+    // 处理空标题 如果没有 Title 自动生成默认标题 发布时间 + “by” + 发布者username
+    async processEmptyTitle(type) {
+      let { title } = this
+      let _title
+
+      if (!(title.trim())) {
+        let _time = this.moment().format('YYYY.MM.DD HH:mm')
+        let _username = this.currentUserInfo.nickname || this.currentUserInfo.name
+        _title = `${_time} by ${_username}`
+      } else {
+        _title = title
+      }
+
+      // post // 发布文章处理空Title
+      if (type === 'time') { // time 发布定时文章
+        const {
+          markdownData: content,
+          fissionFactor,
+          cover,
+          tags
+        } = this
+        const is_original = Number(this.isOriginal)
+
+        let data = {
+          id: this.id,
+          title: _title,
+          content,
+          fissionFactor,
+          cover,
+          is_original,
+          tags,
+          assosiate_with: this.assosiateWith,
+          commentPayPoint: 0,
+          short_content: '',
+          cc_license: this.isOriginal ? this.CCLicenseCredit.license : '',
+          ipfs_hide : 0,
+          requireToken : [], // 阅读 持币
+          requireBuy : [], // 阅读 购买
+          editRequireToken : [], // 编辑 持币
+        }
+        await this.autoUpdateDraft(this.draftFactory(data))
+      }
+
+      return _title
     }
   }
 }

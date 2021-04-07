@@ -94,13 +94,14 @@
 </template>
 
 <script>
-import { depositStatusRenderer } from './util'
+import { depositStatusRenderer } from '../utils/util'
 import { ethers } from 'ethers'
-import { approve, burn } from './PeggedToken'
+import { approve, burn } from '../utils/PeggedToken'
 // import { mintWithPermit } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import EnvironmentCheck from './EnvironmentCheck'
 import { precision } from '@/utils/precisionConversion'
+import { isTesting, NetworksId, TokenBurnerContractAddress } from '../../../utils/ethers'
 
 export default {
   name: 'DepositFromBsc',
@@ -185,28 +186,6 @@ export default {
     this.myDeposit = data.deposits
   },
   methods: {
-    // async signPermitOfApproval() {
-    // Disabled for Timing
-    //   try {
-    //     // Init Ethers
-    //     await window.ethereum.enable()
-    //     const provider = new ethers.providers.Web3Provider(
-    //       window.ethereum
-    //     )
-    //     const signer = provider.getSigner()
-    //     const wallet = await signer.getAddress()
-    //     console.info('signer: ', wallet)
-        
-    //     const { token, value } = this.form
-
-    //     const permit = await signERC2612Permit(signer, token, wallet, process.env.VUE_APP_PeggedTokenBurner, value)
-    //     console.info('signed permit: ', permit)
-    //     this.permit = permit
-    //   } catch (error) {
-    //     console.error(error)
-    //     this.$message.error(error)
-    //   }
-    // },
     async burn() {
       // Init Ethers
       try {
@@ -221,20 +200,21 @@ export default {
         const wallet = await signer.getAddress()
         console.info('signer: ', wallet)
         const parsedValue = (Number(value) * 10000)
-        const approveTx = await approve(signer, token, process.env.VUE_APP_PeggedTokenBurner, parsedValue)
-        alert('正在 Approve，确认后需要再次签名 Burn，请稍后')
+        const chainId = isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+        const approveTx = await approve(signer, token, TokenBurnerContractAddress[chainId], parsedValue)
+        alert('正在 Approve，确认后需要再次签名 Burn，请点击确认，稍后确认成功后会进行下一步')
         await approveTx.wait(1)
         const uid = this.currentUserInfo.id
         const burnTx = await burn(signer, token, uid, parsedValue)
         console.log(burnTx)
-        alert('正在销毁跨链 Fan 票，不要走开，请等待稍后页面反馈')
-        const receipt = await burnTx.wait(1)
+        alert('正在销毁跨链 Fan 票，请点击确认，不要走开。大概1分钟后（视网络情况而定）页面会反馈')
+        const receipt = await burnTx.wait(3)
         await this.$API.depositFromBsc(tokenDetail.token.tokenId, {
           txHash: receipt.transactionHash
         })
         alert('跨链 Fan 票销毁成功，Matataki 站内Fan票将于稍后转移到你的账户')
       } catch (error) {
-        if (error.response && error.response?.status === 404) {
+        if (error.response && error.response.status === 404) {
           console.error('network error: ', error.toJSON())
           return this.$message.error('该 Token 不是跨链Fan票')
         }

@@ -8,7 +8,7 @@
       >
         <c-user-popover :user-id="Number(comment.uid)">
           <c-avatar
-            :src="avatar" 
+            :src="avatar"
             :recommend-author="comment.user_is_recommend === 1"
             :token-user="comment.user_is_token === 1"
           />
@@ -61,13 +61,16 @@
             </el-dropdown>
           </div>
         </div>
-        <p class="comment-content wrap-open">
-          <!-- 开了wrap 这个span不能换行！ -->
-          <span class="wrap-open">{{ displayMessage }}</span>
-        </p>
+        <!-- <p class="comment-content wrap-open"> -->
+        <!-- 开了wrap 这个span不能换行！ -->
+        <!-- <span class="markdown-body wrap-open" v-html="displayMessage" /> -->
+        <!-- </p> -->
+        <div class="comment-content">
+          <markdownView class="md" :content="displayMessage" />
+        </div>
       </div>
     </div>
-    <p class="comment-message" />
+    <!-- <p class="comment-message" /> -->
     <replyInput
       v-if="showInput"
       :reply-id="comment.id"
@@ -80,11 +83,21 @@
 <script>
 import { mapGetters } from 'vuex'
 import replyInput from './ReplyInput'
+import {isNDaysAgo} from '~/utils/momentFun'
+import { renderLinkUser } from '@/utils/share'
+import markdownView from '@/components/markdown_view'
+import { xssFilter, processLink } from '@/utils/xss'
+
+const markdownIt = require('markdown-it')({
+  html: true,
+  breaks: true
+})
 
 export default {
   name: 'CommentCard',
   components: {
-    replyInput
+    replyInput,
+    markdownView
   },
   props: {
     comment: {
@@ -100,12 +113,39 @@ export default {
   computed: {
     ...mapGetters(['isLogined', 'isMe']),
     displayMessage() {
-      // console.log('comment', this.comment.comment)
-      return this.comment.comment !== '' ? this.comment.comment : this.$t('p.commentNotContent')
+      try {
+        if (process.client) {
+          if (this.comment.comment) {
+            let md = markdownIt.render(this.comment.comment)
+            return this.$utils.compose(processLink, xssFilter, renderLinkUser)(md)
+          } else {
+            return this.$t('p.commentNotContent')
+          }
+        } else {
+          let md = markdownIt.render(this.post.content)
+          return this.$utils.compose(xssFilter)(md)
+        }
+      } catch (e) {
+        console.log('e', e)
+        if (this.comment.comment) {
+          return this.comment.comment
+        } else {
+          return this.$t('p.commentNotContent')
+        }
+      }
     },
     friendlyDate() {
       const time = this.moment(this.comment.create_time)
-      return time.format('MMMDo HH:mm')
+      // 如果评论是不是今年的，就显示年份
+      if (!isNDaysAgo(2, time)) {
+        return time.fromNow()
+      } else {
+        if (time.format('YYYY') !== this.moment(new Date()).format('YYYY')) {
+          return time.format('YYYY年MMMDo HH:mm') // TODO i18n
+        } else {
+          return time.format('MMMDo HH:mm')
+        }
+      }
     },
     avatar() {
       if (this.comment.avatar) return this.$ossProcess(this.comment.avatar)
@@ -152,7 +192,7 @@ export default {
 
 <style scoped lang="less">
 .comment {
-  margin: 20px 0;
+  margin: 20px 0 14px;
 }
 
 .comment-info {
@@ -205,6 +245,10 @@ export default {
   padding: 0;
   margin: 6px 0;
   word-break: break-all;
+  .md {
+    max-height: 500px;
+    overflow: auto;
+  }
 }
 .wrap-open {
   white-space: pre-wrap;

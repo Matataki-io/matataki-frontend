@@ -9,8 +9,9 @@
       :level-token="1"
     />
     <div class="comment-container">
-      <el-input
-        v-model="comment" 
+      <commentsInput ref="commentsInputRef" />
+      <!-- <el-input
+        v-model="comment"
         class="customize-input"
         :autosize="{ minRows: 3}"
         :placeholder="$t('p.commentPointPlaceholder')"
@@ -18,16 +19,8 @@
         maxlength="500"
         show-word-limit
         @keyup.native="postCommentKeyup"
-      />
-      <!-- <div class="btn-container fl ac jfe">
-        <el-button
-          size="small"
-          class="btn"
-          @click="postComment"
-        >
-          {{ $t('p.commentPointBtn') }}
-        </el-button>
-      </div> -->
+      /> -->
+      <span class="comments-input__count" :style="{ color: currentText > totalText ? 'red' : '' }">{{ currentText }}/{{ totalText }}</span>
     </div>
     <button type="submit" class="comment-submit" @click="postComment">
       {{ $t('post-a-comment') }}
@@ -37,8 +30,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import commentsInput from './comments_input'
+import { filterOutHtmlShare } from '@/utils/xss'
 
 export default {
+  components: {
+    commentsInput
+  },
   props: {
     article: {
       type: Object,
@@ -49,8 +47,11 @@ export default {
     return {
       comment: '',
       avatarSrc: '',
-      user: Object.create(null), // 用户信息 
+      user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info
+      timeLength: null,
+      totalText: 500,
+      currentText: 0,
     }
   },
   computed: {
@@ -67,12 +68,28 @@ export default {
     }
   },
   mounted() {
-    if (this.currentUserInfo.id) {
-      this.getUser(this.currentUserInfo.id)
-      this.getTokenUser(this.currentUserInfo.id)
+    if (process.client) {
+      if (this.currentUserInfo.id) {
+        this.getUser(this.currentUserInfo.id)
+        this.getTokenUser(this.currentUserInfo.id)
+      }
+      this.timeLength = setInterval(this.handleCurrentText, 1000)
     }
   },
+  beforeDestroy() {
+    clearInterval(this.timeLength)
+  },
   methods: {
+    handleCurrentText() {
+      try {
+        let { commentsInputRef } = this.$refs
+        let { contentEditable } = commentsInputRef.$refs
+        let content = contentEditable.innerText
+        this.currentText = (content.trim()).length
+      } catch (e) {
+        console.log('e', e)
+      }
+    },
     async getUser(id) { // 获取用户头像
       this.$API.getUser(id)
         .then(res => {
@@ -93,34 +110,44 @@ export default {
       // not token, data is null
       this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
     },
-    islogin() {
+    async postComment() {
       if (!this.isLogined) {
         this.$store.commit('setLoginModal', true)
-        return false
+        return
       }
-      return true
-    },
-    postComment() {
-      if (!this.islogin()) return
-      if (!(this.comment).trim()) return this.$message.error(this.$t('p.commentContent'))
-      const data = {
-        signId: this.article.id,
-        comment: (this.comment).trim()
+      try {
+        console.log('ref', this.$refs.commentsInputRef)
+
+        let { commentsInputRef } = this.$refs
+        let { contentEditable } = commentsInputRef.$refs
+        let content = filterOutHtmlShare(contentEditable.innerHTML.toString())
+
+        if (!(content.trim())) {
+          this.$message.error(this.$t('p.commentContent'))
+          return
+        }
+        if ((contentEditable.innerText.trim()).length > this.totalText) {
+          this.$message.error('评论内容不能超出上限')
+          return
+        }
+        const data = {
+          signId: this.article.id,
+          comment: (content).trim()
+        }
+        const res = await this.$API.postPointComment(data)
+        if (res.code === 0) {
+          this.$message.success(this.$t('p.commentSuccess'))
+          contentEditable.innerHTML = ''
+          this.$store.commit('setCommentRequest')
+          // this.$emit('doneComment')
+          this.$emit('success')
+        } else {
+          this.$message({ showClose: true, message: res.message, type: 'error' })
+        }
+      } catch (e) {
+        console.log('评论失败', e)
+        this.$message.error(this.$t('p.commentFail'))
       }
-      this.$API.postPointComment(data)
-        .then(res => {
-          if (res.code === 0) {
-            this.$message.success(this.$t('p.commentSuccess'))
-            this.comment = ''
-            this.$store.commit('setCommentRequest')
-            // this.$emit('doneComment')
-            this.$emit('success')
-          } else this.$message({ showClose: true, message: res.message, type: 'error' })
-        })
-        .catch(e => {
-          console.log('评论失败', e)
-          this.$message.error(this.$t('p.commentFail'))
-        })
     },
     postCommentKeyup(e) {
       // TODO 组合键调用方法 Ctrl or ⌘ + Enter
@@ -195,7 +222,9 @@ export default {
 .comment-container {
   // background-color: #fff;
   flex: 1;
+  overflow: hidden;
   // min-height: 150px;
+  .clearfix();
 }
 // 小于860
 @media screen and (max-width: 860px){
@@ -205,6 +234,19 @@ export default {
   .comment-input {
     padding: 0 10px;
   }
+}
+
+.comments-input__count {
+  color: #fff;
+  background: #b2b2b2;
+  position: static;
+  font-size: 12px;
+  padding: 0 5px;
+  line-height: 20px;
+  height: 20px;
+  border-radius: 2px;
+  float: right;
+  margin: 10px 0 0;
 }
 </style>
 

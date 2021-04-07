@@ -116,8 +116,6 @@ export default {
     if (process.browser) {
       this.removeOverflowHide()
       // this.testDomain()
-      console.log('NODE_ENV', process.env.NODE_ENV)
-      console.log('NODE_ENV', process.env.NODE)
       this.debug()
     }
   },
@@ -152,7 +150,6 @@ export default {
     // 检测域名
     testDomain() {
       try {
-        console.log('NODE_ENV', process.env.NODE_ENV)
         // 开发模式不管
         if (process.env.NODE_ENV === 'development') return
         // 在微信里面不管
@@ -189,7 +186,7 @@ export default {
     font-size: 14px;
     position: fixed;
     right: 40px;
-    bottom: 115px;
+    bottom: 200px;
     color: #B2B2B2;
     display: flex;
     align-items: center;
@@ -222,7 +219,7 @@ export default {
       width: 30px;
       height: 30px;
       right: 20px;
-      bottom: 100px;
+      bottom: 380px;
       &-icon {
         font-size: 16px;
       }

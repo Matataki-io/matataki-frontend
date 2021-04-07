@@ -47,7 +47,7 @@
 
 <script>
 import { ethers } from 'ethers'
-import { mintWithPermit } from '@/utils/ethers'
+import { mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
 
@@ -120,7 +120,8 @@ export default {
           permit.deadline,
           permit.sig.v,
           permit.sig.r,
-          permit.sig.s
+          permit.sig.s,
+          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
         )
         console.log(result)
         this.mintResult = result

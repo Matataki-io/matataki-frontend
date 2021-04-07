@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     :close-on-click-modal="false"
+    :append-to-body="true"
     :visible.sync="showModal"
     :lock-scroll="false"
     width="450px"

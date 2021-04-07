@@ -105,12 +105,6 @@
           </h4>
         </div>
       </div>
-      <!-- @分享 -->
-      <div v-if="mode === 'share'" class="fl share">
-        <n-link class="link" :to="{ name: 'share-id', params: { id: share.id } }" target="_blank">
-          {{ $t('mention-at-to-you-in-ta-sharing') }}
-        </n-link>
-      </div>
     </div>
   </n-link>
 </template>
@@ -121,7 +115,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   components: {
-
   },
   props: {
     mode: {
@@ -513,13 +506,6 @@ export default {
     .introduction {
       display: none !important;
     }
-  }
-}
-
-.share {
-  .link {
-    color: rgb(47, 174, 227);
-    font-size: 14px;
   }
 }
 </style>

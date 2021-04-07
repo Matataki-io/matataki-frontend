@@ -1,7 +1,7 @@
 <template>
   <div class="userplatform">
     <router-link
-      :to="{name: 'user-id', params: {id: card.id}}"
+      :to="{name: 'user-id-timeline', params: {id: card.id}}"
       target="_blank"
     >
       <c-user-popover :user-id="Number(card.id)">
@@ -15,7 +15,7 @@
     </router-link>
     <router-link
       class="userplatform-info"
-      :to="{name: 'user-id', params: {id: card.id}}"
+      :to="{name: 'user-id-timeline', params: {id: card.id}}"
       target="_blank"
     >
       <h4>
@@ -72,6 +72,20 @@
           target="_blank"
         >
           <svg-icon icon-class="mastodon" />
+        </a>
+      </el-tooltip>
+      <!-- Telegram Channel -->
+      <!-- TODO:用户名获取不到 -->
+      <el-tooltip
+        placement="top"
+        class="item"
+        effect="dark"
+        content="🚧暂时无法获取Telegram用户名"
+      >
+        <a
+          class="userplatform-platform-unit telegram-color"
+        >
+          <svg-icon icon-class="telegram" />
         </a>
       </el-tooltip>
     </div>
@@ -189,6 +203,12 @@ export default {
 
       &.mastodon-color {
         color: #3487D2;
+      }
+
+      &.telegram-color {
+        color: #0091FF;
+        // TG图标太小需要放大
+        transform: scale(1.15);
       }
 
       svg {

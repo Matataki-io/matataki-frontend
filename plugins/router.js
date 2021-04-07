@@ -27,7 +27,6 @@ export default ({ app }) => {
       'account-eth': '资产-瞬MATATAKI',
       'account': '资产-瞬MATATAKI',
       'account-ont': '资产-瞬MATATAKI',
-      'account-vnt': '资产-瞬MATATAKI',
 
       'agreement': '用户服务协议-瞬MATATAKI',
 

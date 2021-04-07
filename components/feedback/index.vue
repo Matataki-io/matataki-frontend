@@ -72,7 +72,7 @@ export default {
   font-size: 14px;
   position: fixed;
   right: 40px;
-  bottom: 60px;
+  bottom: 145px;
   color: #b2b2b2;
   display: flex;
   align-items: center;
@@ -96,6 +96,7 @@ export default {
     right: 20px;
     width: 30px;
     height: 30px;
+    bottom: 420px;
     .icon-feedback {
       font-size: 16px;
     }

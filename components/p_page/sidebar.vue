@@ -82,10 +82,52 @@ export default {
       default: false
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.scrollListener)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.scrollListener)
+  },
+  methods: {
+    // 当滑到最底时隐藏分享条
+    scrollListener() {
+      const screenWidth = document.documentElement.clientWidth || document.body.clientWidth
+      // 前置条件：处于移动端模式（屏幕宽度小于540px）
+      if (screenWidth > 540) {
+        return
+      }
+
+      const clientHeight = () => document.documentElement.clientHeight || document.body.clientHeight
+      const scrollHeight = () => document.documentElement.scrollHeight || document.body.scrollHeight
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      const footer = document.querySelector('.share-footer')
+      if (scrollTop + clientHeight() === scrollHeight()) {
+        footer.classList.add('fade-out')
+        footer.classList.remove('fade-in')
+        setTimeout(() => footer.classList.add('after-fade-out'), 250)
+      } else {
+        footer.classList.remove('after-fade-out')
+        footer.classList.add('fade-in')
+        footer.classList.remove('fade-out')
+      }
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
+.fade-in {
+  transition: all 250ms;
+  opacity: 1;
+}
+.fade-out {
+  transition: all 250ms;
+  opacity: 0;
+}
+.after-fade-out {
+  visibility: hidden;
+}
+
 .sidebar {
   max-width: 350px;
   margin: 30px auto 20px;

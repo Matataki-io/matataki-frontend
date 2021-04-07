@@ -129,6 +129,7 @@ export default {
     flex-flow: row nowrap;
     border-radius: 3rem;
     width: 400px;
+    z-index: 0;
   }
   .el-tabs__nav-scroll {
     display: flex;

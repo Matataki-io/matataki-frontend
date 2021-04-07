@@ -80,10 +80,10 @@
 
 <script>
 import { ethers } from 'ethers'
-import { batchQueryNonceFor, mintWithPermit } from '@/utils/ethers'
+import { batchQueryNonceFor, mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 import { mapGetters } from 'vuex'
 import { precision } from '@/utils/precisionConversion'
-import wbAlertTips from '@/components/withdraw_bsc/alert_tips'
+import wbAlertTips from '@/components/withdraw/bsc/alert_tips'
 import EnvironmentCheck from './EnvironmentCheck'
 
 export default {
@@ -115,7 +115,7 @@ export default {
     },
   },
   async mounted() {
-    if (!process.browser) return // NO SSR 
+    if (!process.browser) return // NO SSR
     if (this.isLogined) this.fetchPermit()
     this.interval = setInterval(() => {
       this.fetchPermit()
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     async fetchPermit() {
-      const { data } = await this.$API.listMyBscPermit()
+      const { data } = await this.$API.listMyCrosschainPermit('bsc')
       this.listOfToken = [
         ...new Set(data.permits.map((permit) => permit.token)),
       ]
@@ -141,7 +141,7 @@ export default {
       const after = await Promise.all(
         listOfTokenAndItsPermit.map(async ({ token, permits }) => {
           const queries = permits.map(({ to }) => ({ token, who: to }))
-          const nonces = await batchQueryNonceFor(queries)
+          const nonces = await batchQueryNonceFor(queries, isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET)
           const parsedPermits = permits.map((p, idx) => ({
             ...p,
             currentNonces: nonces[idx].toNumber(),
@@ -176,7 +176,8 @@ export default {
           permit.deadline,
           permit.sig.v,
           permit.sig.r,
-          permit.sig.s
+          permit.sig.s,
+          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
         )
         console.log(result)
         this.$message.success(
@@ -206,7 +207,7 @@ export default {
           this.$message({ showClose: true, message: this.$t('error.copy'), type: 'error' })
         }
       )
-    }, 
+    },
     // token amount 单位换算
     tokenAmount(amount, decimals) {
       const tokenamount = precision(amount, 'CNY', decimals)

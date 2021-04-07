@@ -13,6 +13,7 @@
           v-model="registerForm.email"
           :placeholder="$t('rule.loginEmailMessage')"
           type=""
+          autocomplete="off"
         />
       </el-form-item>
       <input
@@ -42,6 +43,7 @@
           type="password"
           :placeholder="$t('rule.enterANewPassword')"
           show-password
+          autocomplete="new-password"
         />
       </el-form-item>
       <el-form-item prop="repassword">
@@ -50,6 +52,7 @@
           type="password"
           :placeholder="$t('rule.enterTheNewPasswordAgain')"
           show-password
+          autocomplete="new-password"
         />
       </el-form-item>
       <el-form-item class="ss-btn">

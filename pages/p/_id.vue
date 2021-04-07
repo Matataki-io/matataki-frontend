@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <bannerFan />
+    <tokenCd mode="p" />
     <div v-if="havePermission">
       <div class="container">
         <!-- 文章封面 -->
@@ -195,7 +195,7 @@
                     </router-link>
                   </div>
                   <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }} 
+                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}
                     <el-tooltip
                       class="item"
                       effect="dark"
@@ -386,7 +386,7 @@
 // import throttle from 'lodash/throttle'
 import { mapGetters } from 'vuex'
 import BigNumber from 'bignumber.js'
-import { xssFilter, xssImageProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
+import { xssFilter, xssImageProcess, xssIframeProcess, filterOutHtmlTags, processLink } from '@/utils/xss'
 import UserInfoHeader from '@/components/article/UserInfoHeader'
 import ArticleFooter from '@/components/article/ArticleFooter'
 // import articleIpfs from '@/components/article/article_ipfs'
@@ -395,7 +395,7 @@ import PurchaseModal from '@/components/modal/Purchase'
 import ShareModal from '@/components/modal/Share'
 import articleTransfer from '@/components/articleTransfer'
 // import FeedbackModal from '@/components/article/Feedback'
-import commentInput from '@/components/article_comment'
+import commentInput from '@/components/p_page/article_comment'
 import CommentList from '@/components/comment/List'
 import { wxShare } from '@/api/async_data_api.js'
 import { extractChar } from '@/utils/reg'
@@ -419,7 +419,7 @@ import ExsModal from '@/components/ExsModal'
 
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
-import bannerFan from '@/components/p_page/banner_fan'
+import tokenCd from '@/components/token_cd/index.vue'
 import addFav from '@/components/fav/add'
 
 
@@ -448,9 +448,18 @@ markdownItRender.use(mkItFootnote)
 
 export default {
   head() {
+    const metaArr = []
+    if (this.article.tags.length) {
+      const tags = this.article.tags.map(tag => tag.name).join()
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: `${tags},${this.article.title}` })
+    } else {
+      // If article no tags use title only
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: this.article.title })
+    }
     return {
       title: this.article.title,
       meta: [
+        ...metaArr,
         { hid: 'description', name: 'description', content: this.article.short_content },
         /* <!--  Meta for Twitter Card --> */
         { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
@@ -502,7 +511,7 @@ export default {
     fontSize,
     commentReward,
     ExsModal,
-    bannerFan,
+    tokenCd,
     markdownView,
     addFav
   },
@@ -630,10 +639,10 @@ export default {
         if (process.browser) {
           let md = markdown.render(this.post.content)
 
-          return this.$utils.compose(processLink, xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(processLink, xssImageProcess, xssIframeProcess, xssFilter)(md)
         } else {
           let md = markdownItRender.render(this.post.content)
-          return this.$utils.compose(xssImageProcess, xssFilter)(md)
+          return this.$utils.compose(xssImageProcess, xssIframeProcess, xssFilter)(md)
         }
       } catch (e) {
         return this.post.content
@@ -652,7 +661,7 @@ export default {
       if (this.isDeleted) {
         return this.isMe(this.article.uid)
       }
-      return this.article.status === 0 
+      return this.article.status === 0
     },
     isDeleted() {
       if (!this.article) return null
@@ -837,7 +846,7 @@ export default {
     // 保存font size 选择
     fontSizeVal(newVal) {
       store.set('p_font_size', newVal)
-    } 
+    }
   },
 
   async asyncData({ $axios, route, req }) {
@@ -859,9 +868,10 @@ export default {
     let post = {}
     try {
       post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
+      console.log('post', post)
       if (post.code !== 0) throw new Error(post.message)
     } catch (e) {
-      console.log('get article data error', e)
+      console.log('get article data error', e.toString())
       return data
     }
     // 解藕文章数据 ipfs
@@ -892,13 +902,13 @@ export default {
       }
     }
 
-    // wx share 
+    // wx share
     let userAgent = req && req.headers['user-agent'].toLowerCase()
     const isWeixin = () => /micromessenger/.test(userAgent)
     // 在微信内才请求分享 避免造成不必要的请求
     if (isWeixin()) {
       console.log('is wechat env', req.headers['user-agent'].toLowerCase())
-      
+
       let defaultLink = ''
       if (process.server) {
         defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
@@ -955,7 +965,7 @@ export default {
   destroyed() {
     clearInterval(this.timer)
   },
-  methods: { 
+  methods: {
     // 增加文章阅读量
     async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
     // 获取用户在当前文章的属性
@@ -1000,7 +1010,7 @@ export default {
           }
           if (this.editForm.outputToken.id) {
             this.editTokenExs = await this.hasExs(this.editForm.outputToken.id)
-          } 
+          }
         } else if (res.code === 401) {
           console.log(res.message)
         } else {

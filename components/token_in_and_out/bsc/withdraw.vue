@@ -109,10 +109,8 @@
 import { mapGetters } from 'vuex'
 import { precision, toPrecision } from '@/utils/precisionConversion'
 import { ethers } from 'ethers'
-import { mintWithPermit } from '@/utils/ethers'
+import { mintWithPermit, isTesting, NetworksId } from '@/utils/ethers'
 
-// @todo: 到时候成熟了去掉
-const BSC_PEGGED_WHITELIST = ['DEV', 'DAO', 'META', 'SSS']
 
 export default {
   name: 'TokenWithdrawToBsc',
@@ -252,7 +250,8 @@ export default {
           permit.deadline,
           permit.sig.v,
           permit.sig.r,
-          permit.sig.s
+          permit.sig.s,
+          isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
         )
         this.$message.success(
           `上传交易发送成功，Tx Hash: ${result.hash} 请留意 MetaMask 交易结果通知，或前往 BSCScan 检查交易情况。`
@@ -331,15 +330,13 @@ export default {
       let data = {
         pagesize: 999,
         order: 0,
+        chain: 'bsc'
       }
       await this.$API
-        .tokenTokenList(data)
+        .listMyCrossChainToken(data)
         .then((res) => {
           if (res.code === 0) {
-            this.tokenOptions = res.data.list.filter(
-              ({ symbol }) =>
-                BSC_PEGGED_WHITELIST.indexOf(symbol.toUpperCase()) > -1
-            )
+            this.tokenOptions = res.data.list
             this.topOwnToken()
           } else {
             this.tokenOptions = []

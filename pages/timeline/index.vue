@@ -185,6 +185,23 @@
             <p v-if="userPlatformList.length === 0 && !userPlatformListLoading" style="margin: revert;" class="not-content">{{ $t('not') }}</p>
           </div>
         </div>
+
+        <div class="ra-box-rimless">
+          <el-button
+            class="ra-box-rimless-push"
+            type="primary"
+            round
+            @click="refPush()"
+          >
+            发布动态
+          </el-button>
+          <el-button
+            class="ra-box-rimless-refresh"
+            icon="el-icon-refresh"
+            circle
+            @click="updateList"
+          />
+        </div>
       </div>
     </div>
     <inputDialog v-model="showInputDialog" :preset="inputDialogPreset" />
@@ -260,6 +277,10 @@ export default {
         {
           key: 'mastodon',
           label: 'Mastodon'
+        },
+        {
+          key: 'telegram_channel',
+          label: 'Telegram Channel'
         }
       ],
       actions: null,
@@ -581,6 +602,32 @@ export default {
       padding: 20px;
     }
   }
+  .ra-box-rimless {
+    margin-top: 20px;
+    display: flex;
+
+    &-push {
+      flex: 1;
+      height: 48px;
+      border-radius: 48px;
+      font-size: 16px;
+    }
+    &-refresh {
+      height: 48px;
+      width: 48px;
+      font-size: 20px;
+      animation: turn 1s linear 1;
+      &:active {
+
+        animation: none;
+      }
+    }
+  }
+
+  @keyframes turn{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(-360deg);}
+  }
 }
 
 .row {
@@ -736,12 +783,14 @@ export default {
 }
 
 // 页面小于
-@media screen and (max-width: 992px) {
-  .welcome-people {
-    left: -40px;
+@media screen and (max-width: 1350px) {
+  .recommend {
+    .ra-box-rimless {
+      margin-right: 90px;
+    }
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 960px) {
   .row {
     display: flex;
     flex-direction: column-reverse;
@@ -773,6 +822,10 @@ export default {
         margin-top: 20px;
         max-height: 330px;
       }
+    }
+
+    .ra-box-rimless {
+      display: none;
     }
   }
   .banner-people {
@@ -812,34 +865,6 @@ export default {
   .row {
     margin-top: 20px;
   }
-
-  .welcome {
-    height: 240px;
-    margin-top: 0;
-  }
-
-  .welcome-people {
-    top: auto;
-    bottom: 0;
-    height: 80%;
-  }
-
-  .welcome-title {
-    font-size: 20px;
-    line-height: 30px;
-  }
-  .welcome-text {
-    margin-top: 10px;
-  }
-  .welcome-description {
-    font-size: 14px;
-    line-height: 20px;
-  }
-  .welcome-description-time {
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: 0;
-  }
 }
 
 @media screen and (max-width: 520px) {
@@ -851,19 +876,6 @@ export default {
     font-size: 12px;
     line-height: 14px;
     margin: 10px 0 0 0;
-  }
-  .welcome {
-    align-items: center;
-    padding-right: 0;
-  }
-  .welcome-text {
-    text-align: center;
-  }
-  .welcome-people {
-    display: none;
-  }
-  .welcome-description-time {
-    margin-right: 0;
   }
 }
 </style>

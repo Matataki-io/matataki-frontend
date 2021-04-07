@@ -23,11 +23,14 @@
     <client-only v-else>
       <div class="direction-selection">
         <el-button-group>
-          <el-button :type="isWithdrawSelected ? 'primary' : ''" @click="direction = 'withdraw'">
+          <el-button :type="isWithdrawSelected ? 'primary' : '' " @click="direction = 'withdraw'">
             {{ $t('extract') }}
           </el-button>
-          <el-button :type="isWithdrawSelected ? '' : 'primary'" @click="direction = 'deposit'">
+          <el-button :type="isDepositSelected ? 'primary' : '' " @click="direction = 'deposit'">
             {{ $t('transfer-in') }}
+          </el-button>
+          <el-button :type="isLsdrawSelected ? 'primary' : '' " @click="direction = 'ls'">
+            {{ $t('List') }}
           </el-button>
         </el-button-group>
       </div>
@@ -40,10 +43,14 @@
           <el-radio v-model="chainSelection" label="bsc">
             {{ $t('binance-Smart-Chain-BSC-Mainnet') }}
           </el-radio>
+          <el-radio v-model="chainSelection" label="matic">
+            {{ $t('matic-mainnet') }}
+          </el-radio>
         </div>
         <div class="logic-container">
           <RinkebyInAndOut v-if="isRinkebySelected" :direction="direction" />
           <BscInAndOut v-if="isBscSelected" :direction="direction" />
+          <MaticInAndOut v-if="isMaticSelected" :direction="direction" />
         </div>
       </div>
     </client-only>
@@ -54,12 +61,14 @@
 import { mapGetters } from 'vuex'
 import RinkebyInAndOut from '../../components/token_in_and_out/rinkeby.vue'
 import BscInAndOut from '../../components/token_in_and_out/bsc.vue'
+import MaticInAndOut from '../../components/token_in_and_out/matic.vue'
 
 export default {
   name: 'FanPiaoInAndOut',
   components: {
     RinkebyInAndOut,
-    BscInAndOut
+    BscInAndOut,
+    MaticInAndOut,
   },
   data: () => ({
     chainSelection: 'rinkeby',
@@ -73,9 +82,18 @@ export default {
     isBscSelected() {
       return this.chainSelection === 'bsc'
     },
+    isMaticSelected() {
+      return this.chainSelection === 'matic'
+    },
     isWithdrawSelected() {
       return this.direction === 'withdraw'
-    }
+    },
+    isDepositSelected() {
+      return this.direction === 'deposit'
+    },
+    isLsdrawSelected() {
+      return this.direction === 'ls'
+    },
   },
   methods: {
     login() {

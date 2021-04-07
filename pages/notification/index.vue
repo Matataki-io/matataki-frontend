@@ -56,6 +56,13 @@
           </h3>
         </div>
         <div style="margin-bottom: 20px;">
+          <shareInsideCard
+            v-if="detailsIndex.objectType === 'share'"
+            :key="'shareInsideCard'"
+            class="detail-share-card"
+            :card="shares.find(share => share.id === detailsIndex.objectId)"
+            card-type="read"
+          />
           <objectCard
             v-if="detailsIndex.objectType === 'article' || detailsIndex.objectType === 'comment'"
             :mode="detailsIndex.objectType === 'article' ? 'post' : 'reply'"
@@ -169,10 +176,18 @@ import notifyCard from '@/components/notification/card.vue'
 import objectCard from '@/components/notification/objectCard.vue'
 import commentCard from '@/components/notification/commentCard.vue'
 import rewardCard from '@/components/notification/rewardCard.vue'
+import shareInsideCard from '@/components/share_inside_card/index.vue'
 
 export default {
   name: 'NotificationPage',
-  components: { buttonLoadMoreComponents, notifyCard, objectCard, commentCard, rewardCard },
+  components: {
+    buttonLoadMoreComponents,
+    notifyCard,
+    objectCard,
+    commentCard,
+    rewardCard,
+    shareInsideCard
+  },
   data() {
     return {
       showDetails: false,
@@ -354,7 +369,7 @@ export default {
       else return null
     },
     getShare(notify) {
-      if (notify.action === 'at' && ['share'].includes(notify.object_type))
+      if (['at', 'like'].includes(notify.action) && ['share'].includes(notify.object_type))
         return this.shares.find(i => i.id === notify.object_id)
       else return null
     },
