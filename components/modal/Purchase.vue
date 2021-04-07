@@ -25,10 +25,6 @@
               <svg-icon icon-class="eos" />
               <span>{{ product.eosPrice }}</span>
             </span>
-            <span class="type-price">
-              <svg-icon icon-class="vnt" />
-              <span>{{ product.vntPrice }}</span>
-            </span>
           </div>
           <div class="product-amount">
             <span>
@@ -106,7 +102,6 @@ export default {
         let price = {
           eosPrice: 0,
           ontPrice: 0,
-          vntPrice: 0,
           stock: 0
         }
 
@@ -120,16 +115,12 @@ export default {
           } else if (i.platform.toLocaleLowerCase() === 'ont'){
           price.ontPrice = article.prices[index].price / 10 ** article.prices[index].decimals
           }
-          else if (i.platform.toLocaleLowerCase() === 'vnt'){
-            price.vntPrice = article.prices[index].price / 10 ** article.prices[index].decimals
-          }
         })
         return price
       } else {
         return {
           eosPrice: 0,
           ontPrice: 0,
-          vntPrice: 0,
           stock: 0
         }
       }
@@ -140,9 +131,6 @@ export default {
   },
   methods: {
     ...mapActions(['makeShare', 'makeOrder']),
-        ...mapActions('vnt', [
-      'sendTransaction',
-    ]),
     async buyProduct() {
 
       // TODO 没有配置商品价格的 不支持购买
@@ -151,9 +139,6 @@ export default {
       }
       else if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'ont') {
         if (this.product.ontPrice <= 0) return this.$message.error(this.$t('p.shopNotBuy', ['Ont']));
-      }
-      else if ( this.currentUserInfo.idProvider.toLocaleLowerCase() === 'vnt') {
-        if (this.product.vntPrice <= 0) return this.$message.error(this.$t('p.shopNotBuy', ['Vnt']));
       }
 
       // console.log(this.product)
@@ -170,8 +155,6 @@ export default {
           ? num * product.ontPrice
           : idProviderLower === 'eos'
           ? num * product.eosPrice
-          : idProviderLower === 'vnt'
-          ? num * product.vntPrice
           : 0
       const toSponsor = async idOrName => {
         if (!idOrName) return { id: null, username: null }
@@ -187,98 +170,15 @@ export default {
         return { id: null, username: idOrName }
       }
         let sponsor = await toSponsor(this.getInvite)
-        if (this.currentUserInfo.idProvider.toLocaleLowerCase() === 'vnt') { // vnt 交易
-        if (amount < 1)
-        return this.$message.error(this.$t('p.vntBuyMinMoney'))
-          const faild = error => {
-            loading.close()
-            this.$message.closeAll()
-            this.$message.error(error.toString())
-          }
-          try {
-            try {
-              let coinbase = await this.$store.dispatch('vnt/coinbase')
-              if (coinbase !== this.currentUserInfo.name) {
-                faild(this.$t('p.vntBuyAccount'))
-                return
-              }
-            } catch (error) {
-              faild(error)
-            }
-
-            let orderId = -1
-            // 提交订单hash
-            const postOrderHah = async hash => {
-              let params = {
-                orderId: orderId,
-                txhash: hash,
-              }
-              await this.$API.orderSaveHash(params)
-                .then(res => {
-                  if (res.code === 0) {
-                    loading.close()
-                    this.$message.closeAll()
-                    this.$message.success(this.$t('p.buyDone'))
-                    this.showModal = false
-                  } else {
-                    console.log('购买商品失败 提交hash')
-                    reject(new Error(this.$t('p.buyFail')))
-                  }
-                })
-                .catch(err => {
-                  console.log('购买商品失败 提交hash err')
-                    reject(new Error(this.$t('p.buyFail')))
-                })
-            }
-            // 转账
-            const transaction = async () => {
-              let data = { // 交易数据
-                data: `oid:${orderId}`,
-                value: amount
-              }
-              try {
-                let res = await this.$store.dispatch('vnt/sendTransaction', data)
-                postOrderHah(res)
-              } catch (error) {
-                faild(error)
-              }
-            }
-
-            let params = {
-              signId: signId,
-              amount: toPrecision(amount, idProviderLower),
-              num: num,
-              comment: comment
-            }
-            if (sponsor.id) {
-              Object.assign(params, {
-                referrer: sponsor.id,
-              })
-            }
-            await this.$API.reportOrder(params)
-              .then(res => {
-                if (res.code === 0) {
-                  orderId = res.data.orderId
-                  transaction()
-                }
-                else faild(this.$t('p.buyFail')) // '购买商品失败 创建订单失败'
-              }).catch(err => {
-                faild(this.$t('p.buyFail'))
-              })
-          } catch (error) {
-            faild(error)
-          }
-        } else { // other 交易
-          try {
-            await this.makeOrder({ amount, num, signId, sponsor, comment })
-            this.$message.success(this.$t('p.buyDone'))
-            this.showModal = false
-            this.$emit('purchaseDone')
-          } catch (error) {
-            loading.close()
-            this.$message.error(this.$t('p.buyFail'))
-            this.showModal = false
-          }
+        try {
+          await this.makeOrder({ amount, num, signId, sponsor, comment })
+          this.$message.success(this.$t('p.buyDone'))
+          this.showModal = false
+          this.$emit('purchaseDone')
+        } catch (error) {
+          loading.close()
+          this.$message.error(this.$t('p.buyFail'))
+          this.showModal = false
         }
     }
   }

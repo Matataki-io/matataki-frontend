@@ -139,7 +139,6 @@
     "telegramTitle": "電報ログイン",
     "twitterTitle": "Twitterログイン",
     "viewWallet": "サポートされているウォレットを表示する",
-    "vntTitle": "VNTログイン",
     "wechatTitle": "WeChatログイン"
   },
   "authorize-access-to-your-Twitter-account": "Twitterアカウントへのアクセスを承認する",
@@ -346,8 +345,6 @@
     "totalRevenue": "総収入",
     "unlike": "推奨されません",
     "unlock": "ロックを解除する",
-    "vntBuyAccount": "ログインVntアカウントは支払いアカウントとは異なります",
-    "vntBuyMinMoney": "Vntの最小購入額は1Vnt以上である必要があります",
     "widgetCopyDes": "以下のコードをコピーしてウェブサイトに貼り付けて表示します",
     "widgetHelp": "ウィジェットの使い方は？",
     "widgetView": "ウィジェットプレビュー"

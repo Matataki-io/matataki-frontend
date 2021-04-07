@@ -396,7 +396,6 @@ export const actions = {
         commit('ontology/resetState')
         commit('scatter/resetState')
         commit('scatter/resetState')
-        commit('vnt/resetState')
 
         // success
         resolve()
