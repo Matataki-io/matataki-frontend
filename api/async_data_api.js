@@ -20,9 +20,6 @@ export const getTags = (axios, type) => axios.get('/tag/tags', { params: { type 
 export const ipfsData = (axios, hash) => axios.get(`/post/ipfs/${hash}`)
 export const ipfsArticleData = (axios, hash) => axios.get(`/post/${hash}`)
 
-// GitHub article data
-export const githubData = (axios, title) => axios.get(`/post/github/${title}`)
-
 // wxSign share
 export const wxShare = (axios, defaultLink) => axios.get(`${process.env.VUE_APP_API}/wx/sign?url=${encodeURIComponent(defaultLink)}`)
 

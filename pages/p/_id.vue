@@ -1102,21 +1102,6 @@ export default {
         console.log('not hash')
         return
       } else {
-        if (hash.substring(0, 2) == 'Gh') {
-        await this.$API.getGithubData(hash)
-          .then(res => {
-            if (res.code === 0) {
-            // 在获取ipfs内容后替换title, 因为数据库存储的title有上限
-              this.article.title = res.data.title
-              this.post.content = res.data.content
-            } else {
-              this.$message({ showClose: true, message: res.message, type: 'warning'})
-            }
-          }).catch(err => {
-            console.log('err', err)
-          })
-        } 
-        else {
         await this.$API.getIpfsData(hash)
           .then(res => {
             if (res.code === 0) {
