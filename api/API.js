@@ -202,7 +202,7 @@ export default {
     { signId = null, author, data, title, fissionFactor,
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
-      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith, hCaptchaData }) {
+      editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith, hCaptchaData, ipfs_or_github = 'ipfs' }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -225,7 +225,8 @@ export default {
         editRequireToken, editRequireBuy,
         ipfs_hide,
         assosiateWith,
-        hCaptchaData
+        hCaptchaData,
+        ipfs_or_github
       },
       timeout: 30000
     })
@@ -525,7 +526,7 @@ minetokenGetResources(tokenId) {
   appendCrosschainTokenByTxHash(txHash, chain) {
     return request.put('/minetoken/crosschain/appendByTxHash', {}, { params: { chain, txHash } })
   },
-  
+
   // -------------------------------- exchange API --------------------------------
   getCurrentPoolSize(tokenId) {
     return request({
