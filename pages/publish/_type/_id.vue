@@ -622,6 +622,30 @@
               :picker-options="timedOptions"
             />
           </div>
+
+          <h4 class="set-subtitle">
+            {{ $t('publish.whereToPublish') }}
+            <!-- TODO：这个提示信息后期再弄 -->
+            <!--            <el-tooltip-->
+            <!--              effect="dark"-->
+            <!--              :content="$t('open-history-article-tips')"-->
+            <!--              placement="top-start"-->
+            <!--            >-->
+            <!--              <svg-icon-->
+            <!--                class="help-icon"-->
+            <!--                icon-class="help"-->
+            <!--              />-->
+            <!--            </el-tooltip>-->
+          </h4>
+          <div class="set-content">
+            <el-radio v-model="publishToGithub" :label="false">
+              {{ $t('publish.publishToIPFS') }}
+            </el-radio>
+            <br>
+            <el-radio v-model="publishToGithub" :label="true">
+              {{ $t('publish.publishToGithub') }}
+            </el-radio>
+          </div>
         </div>
 
         <div class="set-captcha">
@@ -832,6 +856,8 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
+      // 是否保存到GitHub
+      publishToGithub: false,
       editorPlaceholder: '',
       alltokenLoading: true,
       timedForm: {
@@ -1544,6 +1570,9 @@ export default {
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
+
+      // 设置文章保存位置
+      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
 
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start

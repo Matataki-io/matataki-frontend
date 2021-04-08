@@ -14,7 +14,8 @@
       popper-class="ipfs-popover"
     >
       <div class="components-ipfs_all">
-        <p class="ipfs_all__title">
+        <!--文章保存位置-->
+        <p v-if="!isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("ipfsHash.link") }}
           <span style="float: right;">
             <el-button
@@ -23,31 +24,60 @@
             >{{ $t('ipfsHash.historyBtn') }}</el-button>
           </span>
         </p>
+        <p v-else class="ipfs_all__title">
+          {{ $t("githubHash.link") }}
+          <span style="float: right;">
+            <a
+              :href="githubHistoryLink"
+            >{{ $t('ipfsHash.historyBtn') }}</a>
+          </span>
+        </p>
+
+        <!--文章Hash-->
         <div v-if="hash" class="ipfs_all__address">
-          <p>IPFS Hash: {{ hash }}</p>
+          <p>{{ isPublishedOnGithub ? 'File Hash: ' + hash : 'IPFS Hash: ' + hash }}</p>
+
           <svg-icon icon-class="copy" class="icon" @click="copy(hash)" />
         </div>
         <p v-else class="ipfs_all__not">
           {{ $t("not") }}
         </p>
-        <p class="ipfs_all__title">
+
+        <!--文章保存位置：标题-->
+        <p v-if="!isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("ipfsHash.publicNode") }}
         </p>
+        <p v-else class="ipfs_all__title">
+          {{ $t("githubHash.filePath") }}
+        </p>
+
+        <!--文章保存位置：详细地址-->
         <template v-if="hash">
-          <div
-            v-for="(item, index) in link"
-            :key="index"
-            class="ipfs_all__link"
-          >
-            <a :href="item + hash" target="_blank"> {{ item }}{{ hash }} </a>
-            <svg-icon icon-class="arrow" class="icon" />
-          </div>
+          <template v-if="!isPublishedOnGithub">
+            <div
+              v-for="(item, index) in link"
+              :key="index"
+              class="ipfs_all__link"
+            >
+              <a :href="item + hash" target="_blank"> {{ item }}{{ hash }} </a>
+              <svg-icon icon-class="arrow" class="icon" />
+            </div>
+          </template>
+          <template v-else>
+            <div
+              class="ipfs_all__link"
+            >
+              <a :href="githubLink" target="_blank"> {{ githubLink }} </a>
+              <svg-icon icon-class="arrow" class="icon" />
+            </div>
+          </template>
         </template>
         <p v-else class="ipfs_all__not">
           {{ $t("not") }}
         </p>
+
         <p class="ipfs_all__description">
-          {{ $t("ipfsHash.slogan") }}
+          {{ isPublishedOnGithub ? $t('githubHash.description') : $t('ipfsHash.slogan') }}
         </p>
       </div>
       <svg-icon slot="reference" icon-class="ipfs" class="ipfs_all__icon" />
@@ -64,6 +94,10 @@ export default {
   props: {
     articleIpfsArray: {
       type: Array,
+      required: true
+    },
+    user: {
+      type: Object,
       required: true
     }
   },
@@ -86,6 +120,19 @@ export default {
     historyDialogTitle() {
       return this.$t('ipfsHash.history.title')
     },
+    isPublishedOnGithub() {
+      return this.hash.startsWith('Gh')
+    },
+    githubLink() {
+      const year = this.hash.substring(2, 6)
+      const date = this.hash.substring(6, 8)
+      return `https://github.com/${this.user.username}/matataki-save/blob/main/${year}/${date}/${this.hash}.html`
+    },
+    githubHistoryLink() {
+      const year = this.hash.substring(2, 6)
+      const date = this.hash.substring(6, 8)
+      return `https://github.com/${this.user.username}/matataki-save/commits/main/${year}/${date}/${this.hash}.html`
+    }
   },
   methods: {
     copy(val) {
@@ -192,6 +239,10 @@ export default {
   /deep/ .el-dialog {
     width: 60%;
   }
+}
+
+a:visited {
+  color: @purpleDark;
 }
 
 
