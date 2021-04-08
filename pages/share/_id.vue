@@ -418,6 +418,7 @@ export default {
         })
         .catch(err => {
           console.log(err)
+          this.$message({ type: 'error', message: '获取文章内容失败' })
         })
         .finally(() => {
           this.loading = false
