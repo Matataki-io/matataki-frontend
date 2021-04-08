@@ -23,9 +23,9 @@
         <div class="fl ac author-info">
           <span class="Post-Time">{{ time }}</span>
           <span class="View-Num"><svg-icon class="icon" icon-class="read" />{{ article.read || 0 }}</span>
-          <ipfsAll :article-ipfs-array="articleIpfsArray" />
+          <ipfsAll :article-ipfs-array="articleIpfsArray" :user="user" />
           &nbsp;
-          <span class="article-head__ipfs">IPFS</span>
+          <span class="article-head__ipfs">{{ isPublishedOnGithub ? 'GitHub' : 'IPFS' }}</span>
         </div>
       </div>
     </div>
@@ -74,12 +74,20 @@ export default {
       info: {
         is_follow: 0 // 默认值
       },
-      user: Object.create(null), // 用户信息 
+      user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info
     }
   },
   computed: {
     ...mapGetters(['isLogined', 'isMe']),
+    hash() {
+      return this.articleIpfsArray.length !== 0
+        ? this.articleIpfsArray[0].htmlHash
+        : ''
+    },
+    isPublishedOnGithub() {
+      return this.hash.startsWith('Gh')
+    },
     avatarName() {
       // 因为内容比较宽 没有控制12字符
       const name = this.article.nickname || this.article.username

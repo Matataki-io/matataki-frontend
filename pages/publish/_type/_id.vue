@@ -622,6 +622,30 @@
               :picker-options="timedOptions"
             />
           </div>
+
+          <h4 class="set-subtitle">
+            {{ $t('publish.whereToPublish') }}
+            <!-- TODO：这个提示信息后期再弄 -->
+            <!--            <el-tooltip-->
+            <!--              effect="dark"-->
+            <!--              :content="$t('open-history-article-tips')"-->
+            <!--              placement="top-start"-->
+            <!--            >-->
+            <!--              <svg-icon-->
+            <!--                class="help-icon"-->
+            <!--                icon-class="help"-->
+            <!--              />-->
+            <!--            </el-tooltip>-->
+          </h4>
+          <div class="set-content">
+            <el-radio v-model="publishToGithub" :label="false">
+              {{ $t('publish.publishToIPFS') }}
+            </el-radio>
+            <br>
+            <el-radio v-model="publishToGithub" :label="true">
+              {{ $t('publish.publishToGithub') }}
+            </el-radio>
+          </div>
         </div>
 
         <div class="set-captcha">
@@ -832,6 +856,8 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
+      // 是否保存到GitHub
+      publishToGithub: false,
       editorPlaceholder: '',
       alltokenLoading: true,
       timedForm: {
@@ -1545,7 +1571,8 @@ export default {
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
 
-      article.ipfs_or_github = 'ipfs'
+      // 设置文章保存位置
+      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
 
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
@@ -2222,12 +2249,18 @@ export default {
     },
     // 生成简介
     generateShortContent() {
-      let dom = document.querySelectorAll('#previewContent > p')
-      const str = [...dom].reduce((t, c) => {
-        return `${t} ${c.outerText}`
-      }, '')
-      // console.log(str)
-      return (str.trim()).slice(0, 300)
+      try {
+        let dom = document.querySelectorAll('#previewContent p') // 有些导入的文章是 Section 等标签包裹的，所以选择所有 P
+        let domList = [...dom].filter(i => !!(i.innerText.trim())) // 过滤一些没有内容的
+        const str = domList.reduce((t, c) => {
+          return `${t} ${c.innerText}`
+        }, '')
+        // console.log(str)
+        return (str.trim()).slice(0, 300)
+      } catch (e) {
+        console.log('e', e.toString())
+        return '...'
+      }
     },
     // 处理空标题 如果没有 Title 自动生成默认标题 发布时间 + “by” + 发布者username
     async processEmptyTitle(type) {

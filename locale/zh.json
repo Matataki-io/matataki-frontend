@@ -148,7 +148,6 @@
     "eosDoc": "《如何使用EOS登录》",
     "ontTitle": "ONT登录",
     "ontType": "ONT",
-    "vntTitle": "VNT登录",
     "githubTitle": "GitHub登录",
     "wechatTitle": "微信登录",
     "telegramTitle": "Telegram登录",
@@ -420,6 +419,9 @@
     "importAddress": "来源链接：",
     "importSuccess": "导入成功",
     "importError": "导入失败,目前只支持: 链闻、橙皮书、微信、知乎专栏、Matters、简书、币乎、Steemit。",
+    "whereToPublish": "文章储存位置",
+    "publishToIPFS": "IPFS",
+    "publishToGithub": "Github",
     "originalStatement": "原创声明",
     "statement": "勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：",
     "statement1": "1.歪曲、篡改、抄袭、剽窃他人创作而产生的作品，",
@@ -559,8 +561,6 @@
     "importSuccess": "导入成功",
     "importError": "导入失败,目前只支持: 链闻、橙皮书、微信文章",
     "shopNotBuy": "该商品暂不支持{0}购买",
-    "vntBuyMinMoney": "Vnt购买最低不能小于1Vnt",
-    "vntBuyAccount": "登陆的Vnt账号与支付账号不相同",
     "shareWeibo": "微博",
     "shareWechat": "扫一扫，分享到微信",
     "deleted": "文章已经站内隐藏",
@@ -831,6 +831,12 @@
         "preview": "查看"
       }
     }
+  },
+  "githubHash": {
+    "link": "GitHub仓库",
+    "fileHash": "文件Hash",
+    "filePath": "存储地址",
+    "description": "本文内容存储于GitHub"
   },
   "group": {
     "joinFanBase": "加入{0}粉丝群",

@@ -89,6 +89,14 @@
             <img class="img-title" src="../../assets/img/footer-item-matataki.png" alt="瞬MATATAKI">
           </li>
           <li>
+            <a class="href" target="_blank" href="https://www.matataki.io">
+              <svg-icon
+                class="icon"
+                icon-class="matataki"
+              />Matataki.io
+            </a>
+          </li>
+          <li>
             <a class="href" target="_blank" href="https://github.com/Matataki-io/Matataki-FE">
               <svg-icon
                 class="icon"
@@ -120,10 +128,41 @@
               />@realmatataki
             </a>
           </li>
+          <li>
+            <el-popover
+              placement="top"
+              trigger="hover"
+            >
+              <div class="footer-wechat">
+                <img src="../../assets/img/wechat-bot.png" alt="WeChat Bot">
+                <p class="footer-wechat-title">
+                  {{ $t('footer.scanCode') }}
+                </p>
+              </div>
+              <a
+                slot="reference"
+                class="href"
+                href="javascript:;"
+              >
+                <svg-icon
+                  class="icon"
+                  icon-class="weixin"
+                />@MatatakiBot
+              </a>
+            </el-popover>
+          </li>
         </ul>
         <ul class="item-list">
           <li>
             <img class="img-title" src="../../assets/img/footer-item-metanetwork.png" alt="Meta Network">
+          </li>
+          <li>
+            <a class="href" target="_blank" href="https://www.meta.io">
+              <svg-icon
+                class="icon"
+                icon-class="meta"
+              />Meta.io
+            </a>
           </li>
           <li>
             <a class="href" target="_blank" href="https://t.me/joinchat/7C_mfGzE7ksyNThl">
@@ -146,6 +185,14 @@
               <svg-icon
                 class="icon"
                 icon-class="twitter"
+              />@MetaNetwork
+            </a>
+          </li>
+          <li>
+            <a class="href" target="_blank" href="https://medium.com/meta-network">
+              <svg-icon
+                class="icon"
+                icon-class="medium"
               />@MetaNetwork
             </a>
           </li>
@@ -289,5 +336,21 @@ export default {
   align-items: center;
 }
 
+.footer-wechat {
+  width: 200px;
+  text-align: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .footer-wechat-title {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+  }
+}
 
 </style>

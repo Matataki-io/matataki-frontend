@@ -177,16 +177,6 @@ export default {
           disabled: false
         },
         {
-          type: 'vnt',
-          icon: 'vnt', // 随时可换 防止影响
-          typename: 'VNT',
-          username: '', // 最好后端混淆后返回
-          loading: false,
-          status: false,
-          is_main: 0,
-          disabled: false
-        },
-        {
           type: 'github',
           icon: 'github', // 随时可换 防止影响
           typename: 'Github',
@@ -258,7 +248,6 @@ export default {
     ...mapActions('scatter', ['connect', 'getSignature', 'login']),
     ...mapActions('ontology', ['getAccount', 'getSignature']),
     ...mapActions('metamask', ['getSignature', 'fetchAccount']),
-    ...mapActions('vnt', ['bind']),
     // ...mapActions(['signOut']),
     telegramLogin(user) {
       alert(JSON.stringify(user))
@@ -497,19 +486,6 @@ export default {
 
           this.$message.warning(`请在钱包环境下操作,  错误信息${errText}`)
 
-        }
-      } else if (type === 'vnt') {
-        try {
-          const username = await this.$store.dispatch('vnt/bind')
-          if (!username) throw new Error('Vnt' + this.$t('thirdParty.failedGetAccount'))
-          await this.accountBild({
-            platform: type.toLocaleLowerCase(),
-            publickey: 'vnt',
-            sign: 'vnt',
-            username: username
-          }, idx)
-        } catch(e) {
-          this.$message.warning(`请在钱包环境下操作,  错误信息${e.toString()}`)
         }
       } else if (type === 'github') {
         if (this.testDomain()) {
@@ -795,15 +771,6 @@ export default {
     background-color: #4d9afd;
     &:hover {
       background-color: mix(#000, #4d9afd, 20%);
-    }
-    .icon {
-      font-size: 20px;
-    }
-  }
-  &.vnt {
-    background-color: #3289ff;
-    &:hover {
-      background-color: mix(#000, #3289ff, 20%);
     }
     .icon {
       font-size: 20px;
