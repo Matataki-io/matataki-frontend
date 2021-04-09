@@ -1173,6 +1173,15 @@ minetokenGetResources(tokenId) {
         timeout: 60 * 1000
       })
   },
+    // Token 充值从 BSC
+  depositFromExternalChain(data, chain) {
+    return request({
+      method: 'POST',
+      url: `/minetoken/crosschain/1/depositFromOtherChain`,
+      data: { ...data, chain },
+      timeout: 60 * 1000
+    })
+  },
   // Token 充值从 BSC
   depositFromBsc(tid, data) {
     return request({
