@@ -419,6 +419,11 @@
     "importAddress": "Source link:",
     "importSuccess": "Imported successfully",
     "importError": "Import failed, currently only supports: 链闻、橙皮书、微信、知乎专栏、Matters、简书、币乎、Steemit。",
+    "whereToPublish": "Article location",
+    "whereToPublishDescription": "Article will saved in your GitHub repository if you choose GitHub to save.",
+    "whereToPublishHelp": "See detail",
+    "publishToIPFS": "IPFS",
+    "publishToGithub": "Github",
     "originalStatement": "Original statement",
     "statement": "Checking this original statement means you confirm and promise that the article, including the pictures and other elements used in the article, was created independently by you (or the organization holding the account), or has obtained the right of the original work \nLicense. \nDo not check this original statement for articles with the following circumstances:",
     "statement1": "1. Works produced by distortion, falsification, plagiarism, and plagiarism created by others,",
@@ -828,6 +833,12 @@
         "preview": "View"
       }
     }
+  },
+  "githubHash": {
+    "link": "GitHub Repository",
+    "fileHash": "File Hash",
+    "filePath": "File Location",
+    "description": "The content of this article has been uploaded to GitHub"
   },
   "group": {
     "joinFanBase": "Join {0} fan group",
