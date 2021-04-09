@@ -625,17 +625,18 @@
 
           <h4 class="set-subtitle">
             {{ $t('publish.whereToPublish') }}
-            <!-- TODO：这个提示信息后期再弄 -->
-            <!--            <el-tooltip-->
-            <!--              effect="dark"-->
-            <!--              :content="$t('open-history-article-tips')"-->
-            <!--              placement="top-start"-->
-            <!--            >-->
-            <!--              <svg-icon-->
-            <!--                class="help-icon"-->
-            <!--                icon-class="help"-->
-            <!--              />-->
-            <!--            </el-tooltip>-->
+            <el-tooltip
+              effect="dark"
+              placement="top-start"
+            >
+              <div slot="content">
+                {{ $t('publish.whereToPublishDescription') }} <a href="https://matataki.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
+              </div>
+              <svg-icon
+                class="help-icon"
+                icon-class="help"
+              />
+            </el-tooltip>
           </h4>
           <div class="set-content">
             <el-radio v-model="publishToGithub" :label="false">

@@ -420,6 +420,8 @@
     "importSuccess": "导入成功",
     "importError": "导入失败,目前只支持: 链闻、橙皮书、微信、知乎专栏、Matters、简书、币乎、Steemit。",
     "whereToPublish": "文章储存位置",
+    "whereToPublishDescription": "当您把文章存储位置设置成GitHub之后，文章将保存到您的GitHub仓库",
+    "whereToPublishHelp": "查看更详细的信息",
     "publishToIPFS": "IPFS",
     "publishToGithub": "Github",
     "originalStatement": "原创声明",
