@@ -45,6 +45,7 @@
           </el-button>
         </div>
       </el-form>
+      <RecoverDeposit chain="bsc" />
     </client-only>
     <div class="my-deposits">
       <h1 class="history-title">
@@ -95,6 +96,7 @@
 
 <script>
 import { depositStatusRenderer } from '../utils/util'
+import RecoverDeposit from '../recover-deposit.vue'
 import { ethers } from 'ethers'
 import { approve, burn } from '../utils/PeggedToken'
 // import { mintWithPermit } from '@/utils/ethers'
@@ -106,6 +108,7 @@ import { isTesting, NetworksId, TokenBurnerContractAddress } from '../../../util
 export default {
   name: 'DepositFromBsc',
   components: {
+    RecoverDeposit,
     EnvironmentCheck,
   },
   data() {
@@ -202,13 +205,13 @@ export default {
         const parsedValue = (Number(value) * 10000)
         const chainId = isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
         const approveTx = await approve(signer, token, TokenBurnerContractAddress[chainId], parsedValue)
-        alert('正在 Approve，确认后需要再次签名 Burn，请稍后')
+        alert('正在 Approve，确认后需要再次签名 Burn，请点击确认，稍后确认成功后会进行下一步')
         await approveTx.wait(1)
         const uid = this.currentUserInfo.id
         const burnTx = await burn(signer, token, uid, parsedValue)
         console.log(burnTx)
-        alert('正在销毁跨链 Fan 票，不要走开，请等待稍后页面反馈')
-        const receipt = await burnTx.wait(1)
+        alert('正在销毁跨链 Fan 票，请点击确认，不要走开。大概1分钟后（视网络情况而定）页面会反馈')
+        const receipt = await burnTx.wait(3)
         await this.$API.depositFromBsc(tokenDetail.token.tokenId, {
           txHash: receipt.transactionHash
         })
