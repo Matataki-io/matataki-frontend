@@ -586,43 +586,47 @@
           </el-radio>
         </div>
 
-        <div v-if="$route.params.type !== 'edit'">
+        <div>
           <h1 class="set-title set-title-border">
             {{ $t('publish-settings') }}
           </h1>
-          <h4 class="set-subtitle">
-            {{ $t('timed-release') }}
-            <el-tooltip
-              effect="dark"
-              :content="$t('timed-release-tips')"
-              placement="top-start"
-            >
-              <svg-icon
-                class="help-icon"
-                icon-class="help"
-              />
-            </el-tooltip>
+          <!-- 选择发布时间 -->
+          <div v-if="$route.params.type !== 'edit'">
+            <h4 class="set-subtitle">
+              {{ $t('timed-release') }}
+              <el-tooltip
+                effect="dark"
+                :content="$t('timed-release-tips')"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
 
-            <el-switch
-              v-model="timedForm.switch"
-              class="timed-switch"
-              active-color="#542DE0"
-              inactive-color="#DBDBDB"
-            />
-          </h4>
-          <div class="set-content timed-picker">
-            <el-date-picker
-              v-if="timedForm.switch"
-              v-model="timedForm.date"
-              size="small"
-              type="datetime"
-              :placeholder="$t('choose-date-and-time')"
-              align="right"
-              format="yyyy-MM-dd HH:mm"
-              :picker-options="timedOptions"
-            />
+              <el-switch
+                v-model="timedForm.switch"
+                class="timed-switch"
+                active-color="#542DE0"
+                inactive-color="#DBDBDB"
+              />
+            </h4>
+            <div class="set-content timed-picker">
+              <el-date-picker
+                v-if="timedForm.switch"
+                v-model="timedForm.date"
+                size="small"
+                type="datetime"
+                :placeholder="$t('choose-date-and-time')"
+                align="right"
+                format="yyyy-MM-dd HH:mm"
+                :picker-options="timedOptions"
+              />
+            </div>
           </div>
 
+          <!-- 选择是否发文到GitHub -->
           <h4 class="set-subtitle">
             {{ $t('publish.whereToPublish') }}
             <el-tooltip
@@ -639,11 +643,11 @@
             </el-tooltip>
           </h4>
           <div class="set-content">
-            <el-radio v-model="publishToGithub" :label="false">
+            <el-radio v-model="publishToGithub" :label="false" :disabled="$route.params.type === 'edit'">
               {{ $t('publish.publishToIPFS') }}
             </el-radio>
             <br>
-            <el-radio v-model="publishToGithub" :label="true">
+            <el-radio v-model="publishToGithub" :label="true" :disabled="$route.params.type === 'edit'">
               {{ $t('publish.publishToGithub') }}
             </el-radio>
           </div>
@@ -1105,6 +1109,7 @@ export default {
       if (process.browser) {
         this.$nextTick(() => {
           this.setArticleDataById(hash, id)
+          this.publishToGithub = hash.startsWith('Gh')
         })
       }
     } else {
