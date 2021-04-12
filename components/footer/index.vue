@@ -134,7 +134,7 @@
               trigger="hover"
             >
               <div class="footer-wechat">
-                <img src="../../assets/img/wechat-bot.png" alt="WeChat Bot">
+                <img src="../../assets/img/wechat-bot.jpg" alt="WeChat Bot">
                 <p class="footer-wechat-title">
                   {{ $t('footer.scanCode') }}
                 </p>
@@ -337,7 +337,7 @@ export default {
 }
 
 .footer-wechat {
-  width: 200px;
+  width: 260px;
   text-align: center;
   img {
     width: 100%;
