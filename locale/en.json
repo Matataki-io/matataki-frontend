@@ -420,7 +420,7 @@
     "importSuccess": "Imported successfully",
     "importError": "Import failed, currently only supports: 链闻、橙皮书、微信、知乎专栏、Matters、简书、币乎、Steemit。",
     "whereToPublish": "Article location",
-    "whereToPublishDescription": "Article will saved in your GitHub repository if you choose GitHub to save.",
+    "whereToPublishDescription": "Article will saved in your GitHub repository if you choose GitHub to save. It cannot be modified after publishing",
     "whereToPublishHelp": "See detail",
     "publishToIPFS": "IPFS",
     "publishToGithub": "Github",
