@@ -128,6 +128,29 @@
               />@realmatataki
             </a>
           </li>
+          <li>
+            <el-popover
+              placement="top"
+              trigger="hover"
+            >
+              <div class="footer-wechat">
+                <img src="../../assets/img/wechat-bot.jpg" alt="WeChat Bot">
+                <p class="footer-wechat-title">
+                  {{ $t('footer.scanCode') }}
+                </p>
+              </div>
+              <a
+                slot="reference"
+                class="href"
+                href="javascript:;"
+              >
+                <svg-icon
+                  class="icon"
+                  icon-class="weixin"
+                />@MatatakiBot
+              </a>
+            </el-popover>
+          </li>
         </ul>
         <ul class="item-list">
           <li>
@@ -313,5 +336,21 @@ export default {
   align-items: center;
 }
 
+.footer-wechat {
+  width: 260px;
+  text-align: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .footer-wechat-title {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+  }
+}
 
 </style>
