@@ -248,8 +248,11 @@ export default {
             this.count = res.data.count
             let list = []
             if (this.addon) {
+              let CNYItem = Object.assign(CNY, {
+                name: this.$t('mttk-points')
+              })
               list = [
-                CNY,
+                CNYItem,
                 ...listFromDecimal
               ]
             } else {
