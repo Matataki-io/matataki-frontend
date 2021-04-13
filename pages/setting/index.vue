@@ -145,6 +145,7 @@
         <div class="human-verify">
           <vue-hcaptcha
             :sitekey="hCaptchaSiteKey"
+            :language="appLang"
             @verify="onCaptchaVerify"
             @expired="onCaptchaExpire"
             @error="onCaptchaError"
@@ -177,6 +178,7 @@ import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import socialIcon from '@/components/social_icon/index.vue'
 import imgUpload from '@/components/imgUpload/index.vue'
+import {getCookie} from '@/utils/cookie'
 
 export default {
   components: {
@@ -293,6 +295,9 @@ export default {
     isCaptchaOK() {
       return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
     },
+    appLang() {
+      return getCookie('language')
+    }
   },
   watch: {
     username(newVal) {

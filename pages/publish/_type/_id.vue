@@ -657,6 +657,7 @@
           <vue-hcaptcha
             v-if="doINeedHCaptcha"
             :sitekey="hCaptchaSiteKey"
+            :language="appLang"
             @verify="onCaptchaVerify"
             @expired="onExpire"
             @error="onError"
@@ -1005,6 +1006,9 @@ export default {
     },
     noTokenAvailable() {
       return !this.readSelectOptions || this.readSelectOptions.length === 0
+    },
+    appLang() {
+      return getCookie('language')
     }
   },
   watch: {
