@@ -1133,7 +1133,7 @@
   "handle": "应付",
   "confirm-payment": "确认支付",
   "your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-expected-price-fluctuation-range-will-help-your-transaction-succeed-after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded": "您的交易可能由于正常的价格波动而失败，预期价格波动区间将有助于您的交易成功。交易成功后，多支付的金额会退回。",
-  "when-the-accuracy-of-the-cny-transaction-amount-is-greater-than-0-01-it-will-automatically-be-paid-and-the-overpayment-amount-will-be-kept-in-your-cny-account": "CNY 交易金额精度大于 0.01 时会自动进位支付，多支付的金额会保留在您的CNY账户中。",
+  "when-the-accuracy-of-the-cny-transaction-amount-is-greater-than-0-01-it-will-automatically-be-paid-and-the-overpayment-amount-will-be-kept-in-your-cny-account": "MTTK积分 交易金额精度大于 0.01 时会自动进位支付，多支付的金额会保留在您的账户中。",
   "sell-fan-tickets": "出售Fan票",
   "fan-ticket-direct-sale": "Fan票直售",
   "buy-article": "购买文章",
@@ -1168,8 +1168,8 @@
   "your-transaction-may-fail-due-to-normal-price-fluctuations": "您的交易可能由于正常的价格波动而失败，",
   "the-expected-price-fluctuation-range-will-help-your-trading-success": "预期价格波动区间将有助于您的交易成功。",
   "after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded": "交易成功后，多支付的金额会退回。",
-  "when-the-accuracy-of-the-transaction-amount-of-cny-is-greater-than-0-01-it-will-be-automatically-carried-and-paid": "CNY 交易金额精度大于 0.01 时会自动进位支付，",
-  "the-overpayment-amount-will-be-kept-in-your-cny-account": "多支付的金额会保留在您的CNY账户中。",
+  "when-the-accuracy-of-the-transaction-amount-of-cny-is-greater-than-0-01-it-will-be-automatically-carried-and-paid": "MTTK积分 交易金额精度大于 0.01 时会自动进位支付，",
+  "the-overpayment-amount-will-be-kept-in-your-cny-account": "多支付的金额会保留在您的账户中。",
   "cant-praise-myself": "不能给自己赞赏~",
   "if-you-like-get-a-fan-ticket": "喜欢就打赏Fan票吧～",
   "put-away": "收起",
@@ -1455,7 +1455,7 @@
   "fill-in-the-profile": "可填写简介",
   "transaction-content": "交易内容",
   "number-of-transactions": "交易数量",
-  "when-the-transaction-amount-accuracy-is-greater-than-x-it-will-automatically-be-paid-and-the-overpayment-amount-will-remain-in-your-CNY-account": "CNY 交易金额精度大于 {0} 时会自动进位支付，<br>多支付的金额会保留在您的CNY账户中。",
+  "when-the-transaction-amount-accuracy-is-greater-than-x-it-will-automatically-be-paid-and-the-overpayment-amount-will-remain-in-your-CNY-account": "MTTK积分 交易金额精度大于 {0} 时会自动进位支付，<br>多支付的金额会保留在您的账户中。",
   "deposit": "存入",
   "choose-coin": "选择Fan票",
   "output-estimated": "输出（预估）",
@@ -1642,5 +1642,6 @@
   "basic-information": "基础信息",
   "collaborator": "协作者",
   "help-manual": "帮助手册",
-  "development-document": "开发文档"
+  "development-document": "开发文档",
+  "mttk-points": "MTTK积分"
 }

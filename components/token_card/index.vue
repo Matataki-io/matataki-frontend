@@ -24,17 +24,17 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('exchange-price') }}:</span> {{ unitPrice }} CNY
+            <span>{{ $t('exchange-price') }}:</span> {{ unitPrice }} {{ $t('mttk-points') }}
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('token.liquidGold') }}:</span>  {{ cnyReserve }} CNY
+            <span>{{ $t('token.liquidGold') }}:</span>  {{ cnyReserve }} {{ $t('mttk-points') }}
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} CNY
+            <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} {{ $t('mttk-points') }}
           </p>
         </div>
       </div>
@@ -248,7 +248,7 @@ export default {
         width: 85%;
       }
     }
-    .card-info-symbol {
+    .card-info-symbol {  
       font-size: 16px;
       line-height: 20px;
     }

@@ -68,7 +68,7 @@ export default {
         },{}],
         series: [
           {
-            name: 'CNY',
+            name: this.$t('mttk-points'),
             data: [],
             type: 'line',
             smooth: 0.25,

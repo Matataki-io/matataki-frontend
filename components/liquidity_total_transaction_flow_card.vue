@@ -23,7 +23,7 @@
     <el-table-column :label="$t('amount')">
       <template slot-scope="scope">
         {{ formatPrecision(scope.row.cny_amount) }}
-        CNY
+        {{ $t('mttk-points') }}
       </template>
     </el-table-column>
     <el-table-column

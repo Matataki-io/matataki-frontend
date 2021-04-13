@@ -27,7 +27,7 @@
             @click="tlShow = true;field = 'inputToken'"
           >
             <span class="rTZzf">
-              {{ form.inputToken.symbol || $t('choose-coin') }}
+              {{ exchangeSymbol(form.inputToken.symbol) || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -70,7 +70,7 @@
             @click="tlShow = true;field = 'outputToken'"
           >
             <span class="rTZzf">
-              {{ form.outputToken.symbol || $t('choose-coin') }}
+              {{ exchangeSymbol(form.outputToken.symbol) || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -81,7 +81,7 @@
       <div class="exKIZr" />
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('exchange-ratio') }}</span>
-        <span v-if="exchangeRate">1 {{ form.inputToken.symbol }} = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
+        <span v-if="exchangeRate">1 {{ exchangeSymbol(form.inputToken.symbol) }} = {{ exchangeRate }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
     </div>
@@ -100,19 +100,19 @@
         <div v-if="base === 'input'">
           {{ $t('you-are-selling') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ form.input }} {{ form.inputToken.symbol }}</span>
+            <span class="jbXIaP">{{ form.input }} {{ exchangeSymbol(form.inputToken.symbol) }}</span>
           </span> {{ $t('least-get') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
+            <span class="jbXIaP">{{ limitValue }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
           </span>
         </div>
         <div v-else>
           {{ $t('you-are-buying') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ form.output }} {{ form.outputToken.symbol }}</span>
+            <span class="jbXIaP">{{ form.output }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
           </span> {{ $t('most-needed') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ limitValue }} {{ form.inputToken.symbol }}</span>
+            <span class="jbXIaP">{{ limitValue }} {{ exchangeSymbol(form.inputToken.symbol) }}</span>
           </span>
         </div>
         <div class="sc-bsbRJL kxtVAF">
@@ -124,9 +124,7 @@
             placement="bottom"
             effect="light"
           >
-            <div slot="content">
-              {{ $t('your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-price-falling-range-will-help-your-transaction-succeed') }}
-            </div>
+            <div slot="content" v-html="$t('your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-price-falling-range-will-help-your-transaction-succeed')" />
             <i class="el-icon-question" />
           </el-tooltip>
         </div>
@@ -333,7 +331,7 @@ export default {
       const { input, inputToken, output, outputToken } = this.form
       if (parseFloat(input) < 0.01 && inputToken.id === 0) {
         this.$message.error({
-          message: '交易金额小于不得小于 0.01 CNY',
+          message: `交易金额小于不得小于 0.01 ${this.$t('mttk-points')}`,
           duration: 3000,
           showClose: true
         })
@@ -483,6 +481,11 @@ export default {
       this.$route.query.output = input
 
       this.getTokenBySymbol()
+    },
+    // 转换Symbol
+    exchangeSymbol(symbol) {
+      if (!symbol) return symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? this.$t('mttk-points') : symbol
     }
   }
 }

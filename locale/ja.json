@@ -428,7 +428,12 @@
     "statement5": "5.記事のメインシステムは、他の人の作品の内容を統合して編集します",
     "statement6": "6.著作権またはその他の権利を侵害するその他の手段によって形成されたコンテンツ。",
     "statement7": "原作者または権利者の同意を得た後、作品の改作、翻訳、再作成は原作とみなされます。",
-    "statement8": "Instant MATATAKIは、ユーザーにオリジナルの記事を投稿することを推奨し、このオリジナルのステートメントを含む記事にはオリジナルのロゴが表示されます。\nただし、この独自の声明は、記事の内容の独創性に対する一方的なコミットメントにすぎず、MATATAKIが記事の独創性を承認したことを意味するものではありません。\nこのオリジナルステートメントを確認し、記事が独立したオリジナルではないことが判明した場合、MATATAKIはプラットフォームの仕様に従って棚から削除されます。"
+    "statement8": "Instant MATATAKIは、ユーザーにオリジナルの記事を投稿することを推奨し、このオリジナルのステートメントを含む記事にはオリジナルのロゴが表示されます。\nただし、この独自の声明は、記事の内容の独創性に対する一方的なコミットメントにすぎず、MATATAKIが記事の独創性を承認したことを意味するものではありません。\nこのオリジナルステートメントを確認し、記事が独立したオリジナルではないことが判明した場合、MATATAKIはプラットフォームの仕様に従って棚から削除されます。",
+    "publishToGithub": "Github",
+    "publishToIPFS": "IPFS",
+    "whereToPublish": "記事の保管場所",
+    "whereToPublishDescription": "記事の保存場所をGitHubに設定すると、記事はGitHubリポジトリに保存されます。このオプションは、公開後に変更することはできません。",
+    "whereToPublishHelp": "より詳細な情報を見る"
   },
   "search": {
     "hot": "人気の検索",
@@ -1122,7 +1127,7 @@
   "handle": "扱う",
   "confirm-payment": "支払いを確認する",
   "your-transaction-may-fail-due-to-normal-price-fluctuations-and-the-expected-price-fluctuation-range-will-help-your-transaction-succeed-after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded": "通常の価格変動により取引が失敗する可能性があり、価格変動範囲が取引の成功に役立つことが期待されます。\n取引が成功した後、過払い額は返金されます。",
-  "when-the-accuracy-of-the-cny-transaction-amount-is-greater-than-0-01-it-will-automatically-be-paid-and-the-overpayment-amount-will-be-kept-in-your-cny-account": "人民元の取引金額の精度が0.01を超えると、自動的に支払われ、過払い額はCNYアカウントに保持されます。",
+  "when-the-accuracy-of-the-cny-transaction-amount-is-greater-than-0-01-it-will-automatically-be-paid-and-the-overpayment-amount-will-be-kept-in-your-cny-account": "MTTKポイント。取引金額の精度が0.01を超えると、自動的に支払われ、過払い金額はアカウントに残ります。",
   "sell-fan-tickets": "ファンチケットを販売する",
   "fan-ticket-direct-sale": "ファンチケット直販",
   "buy-article": "記事を購入する",
@@ -1157,8 +1162,8 @@
   "your-transaction-may-fail-due-to-normal-price-fluctuations": "通常の価格変動により、取引が失敗する場合があります。",
   "the-expected-price-fluctuation-range-will-help-your-trading-success": "予想される価格変動範囲は、取引の成功に役立ちます。",
   "after-the-transaction-is-successful-the-overpayment-amount-will-be-refunded": "取引が成功した後、過払い額は返金されます。",
-  "when-the-accuracy-of-the-transaction-amount-of-cny-is-greater-than-0-01-it-will-be-automatically-carried-and-paid": "CNYの取引金額の精度が0.01を超える場合、自動的に運ばれ、支払われます。",
-  "the-overpayment-amount-will-be-kept-in-your-cny-account": "過払い額は人民元に保管されます。",
+  "when-the-accuracy-of-the-transaction-amount-of-cny-is-greater-than-0-01-it-will-be-automatically-carried-and-paid": "MTTKポイント取引金額の精度が0.01を超えると、支払いは自動的に繰り越されます。",
+  "the-overpayment-amount-will-be-kept-in-your-cny-account": "過払い額はアカウントに残ります。",
   "cant-praise-myself": "自分を褒められない〜",
   "if-you-like-get-a-fan-ticket": "よろしければファンチケットをゲット〜",
   "put-away": "片付け",
@@ -1444,7 +1449,7 @@
   "fill-in-the-profile": "プロファイルに記入できます",
   "transaction-content": "取引内容",
   "number-of-transactions": "トランザクション数",
-  "when-the-transaction-amount-accuracy-is-greater-than-x-it-will-automatically-be-paid-and-the-overpayment-amount-will-remain-in-your-CNY-account": "人民元の取引金額の精度が{0}を超える場合、自動的に支払われます。<br>過払いの金額はCNYアカウントに保持されます。",
+  "when-the-transaction-amount-accuracy-is-greater-than-x-it-will-automatically-be-paid-and-the-overpayment-amount-will-remain-in-your-CNY-account": "MTTKポイント。取引金額の精度が{0}を超えると、自動的に支払われます。<br>過払い金額はアカウントに残ります。",
   "deposit": "保証金",
   "choose-coin": "ファンチケットを選択",
   "output-estimated": "出力（推定）",
@@ -1631,5 +1636,12 @@
   "basic-information": "基础信息",
   "collaborator": "协作者",
   "help-manual": "帮助手册",
-  "development-document": "开发文档"
+  "development-document": "开发文档",
+  "githubHash": {
+    "description": "この記事の内容はGitHubに保存されています",
+    "fileHash": "ファイルハッシュ",
+    "filePath": "ストレージアドレス",
+    "link": "GitHubリポジトリ"
+  },
+  "mttk-points": "MTTKポイント"
 }

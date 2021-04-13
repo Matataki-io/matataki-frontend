@@ -70,7 +70,7 @@
                 icon-class="currency"
                 class="avatar-cny"
               />
-              CNY
+              {{ $t('mttk-points') }}
             </div>
             <el-tooltip
               effect="dark"
@@ -116,7 +116,7 @@
         class="lock-bottom notice-creator-container"
       >
         <div class="btn-ccc">
-          <!-- <span class="lock-bottom-total">总计约{{ totalCny }}CNY</span> -->
+          <!-- <span class="lock-bottom-total">总计约{{ totalCny }}{{ $t('mttk-points') }}</span> -->
           <el-tooltip
             effect="dark"
             :content="$t('click-and-pay-to-unlock-editing-permissions-if-there-are-reading-restrictions-please-unlock-purchase-the-full-text-first')"

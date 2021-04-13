@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="assets">
-      <span>{{ $t('balance') }} ¥</span>
+      <span>{{ $t('mttk-points') }}</span>
     </div>
     <div class="total">
       <span>{{ playerincome }}</span>
