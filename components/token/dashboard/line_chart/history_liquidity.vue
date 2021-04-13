@@ -63,7 +63,7 @@ export default {
         },
         yAxis: [
           {
-            name: 'CNY',
+            name: this.$t('mttk-points'),
             type: 'value',
             scale: true,
             splitLine: {
@@ -84,7 +84,7 @@ export default {
         },{}],
         series: [
           {
-            name: 'CNY',
+            name: this.$t('mttk-points'),
             data: [],
             type: 'line',
             smooth: 0.25,

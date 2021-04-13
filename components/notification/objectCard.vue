@@ -101,7 +101,7 @@
         </div>
         <div v-else class="token-right">
           <h4>
-            CNY
+            {{ $t('mttk-points') }}
           </h4>
         </div>
       </div>

@@ -21,7 +21,7 @@
     </el-table-column>
     <el-table-column
       prop="cny_amount"
-      label="CNY"
+      :label="$t('mttk-points')"
     >
       <template slot-scope="scope">
         <span :class="direction(scope.row.liquidity)">

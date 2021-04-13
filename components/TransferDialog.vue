@@ -77,7 +77,7 @@
                 class="token-logo"
               >
               <svg-icon v-else class="token-icon" icon-class="currency" />
-              <span class="token-symbol">{{ item.symbol }}</span>
+              <span class="token-symbol">{{ exchangeSymbol(item.symbol) }}</span>
               <span class="token-symbol">{{ tokenAmount(item.amount, item.decimals) }}</span>
             </div>
           </el-option>
@@ -119,7 +119,7 @@
         />
         <p v-else class="cny-help">
           <i class="el-icon-circle-close" />
-          CNY {{ $t('message-transfer-is-temporarily-not-supported') }}
+          {{ $t('mttk-points') }} {{ $t('message-transfer-is-temporarily-not-supported') }}
         </p>
       </el-form-item>
       <div class="form-button">
@@ -484,7 +484,7 @@ export default {
       await this.getCnyBalance()
       this.tokenOptions.unshift({
         token_id: 0,
-        name: '人民币',
+        name: this.$t('mttk-points'),
         symbol: 'CNY',
         logo: '',
         amount: this.cnyBalance,
@@ -498,9 +498,14 @@ export default {
         this.cnyBalance = res
       }
       catch (e) {
-        this.$message.error('CNY 余额获取失败')
+        this.$message.error(`${this.$t('mttk-points')} 余额获取失败`)
         console.error(e)
       }
+    },
+    // 转换Symbol
+    exchangeSymbol(symbol) {
+      if (!symbol) return symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? this.$t('mttk-points') : symbol
     }
   }
 }

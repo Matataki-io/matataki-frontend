@@ -93,7 +93,7 @@
               </el-tooltip>
               {{ $t('total') }}：
             </span>
-            <span class="money">{{ cnyAmount.toFixed(2) }} CNY</span>
+            <span class="money">{{ cnyAmount.toFixed(2) }} {{ $t('mttk-points') }}</span>
           </div>
         </div>
         <div class="flexBox padding20 bgGray">
@@ -105,11 +105,11 @@
               {{ $t('use-balance') }}（{{ balance }} CNY）
             </el-checkbox>
           </div>
-          <div><span class="money-label">{{ $t('deduction') }}：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('deduction') }}：</span><span class="money">{{ deduction.toFixed(2) }} {{ $t('mttk-points') }}</span></div>
         </div>
         <div class="flexBox padding20">
           <div />
-          <div><span class="money-label">{{ $t('handle') }}：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('handle') }}：</span><span class="money">{{ needPay.toFixed(2) }} {{ $t('mttk-points') }}</span></div>
         </div>
       </div>
       <!-- <div class="payBtnBox">

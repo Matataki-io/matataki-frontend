@@ -54,7 +54,7 @@
               >{{ lock }}
             </span>
             <!-- <span>
-          <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;CNY
+          <svg-icon icon-class="lock" class="icon"></svg-icon>120&nbsp;{{ $t('mttk-points') }}
         </span> -->
           </div>
           <div
