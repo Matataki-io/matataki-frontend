@@ -189,29 +189,6 @@
             >
           </div>
         </el-tooltip>
-        <el-tooltip
-          :content="$t('auth.vntTitle')"
-          class="item"
-          effect="dark"
-          placement="top"
-        >
-          <div
-            class="oauth-bg bg-blue1"
-            @click="walletLogin('Vnt')"
-          >
-            <svg-icon
-              class="vnt"
-              icon-class="vnt"
-            />
-          </div>
-        </el-tooltip>
-        <!-- <el-tooltip class="item" effect="dark" content="微信登录" placement="top">
-          <a :href="wxloginHref" class="oauth-bg bg-green">
-            <div>
-              <svg-icon class="github" icon-class="weixin" />
-            </div>
-          </a>
-        </el-tooltip>-->
       </div>
     </div>
     <img
@@ -304,7 +281,6 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
-    ...mapActions('vnt', ['login']),
     ...mapActions('metamask', ['fetchAccount', 'login']),
     setPathToSession(name) {
       if (window.sessionStorage) {
@@ -320,8 +296,6 @@ export default {
         if (!this.testDomain()) return
         this.$router.push({ name: 'login-github'})
         return
-      } else if (type === 'Vnt') {
-        this.vntLogin()
       } else if (type === 'MetaMask') {
         this.loginWithMetaMask()
       } else if (type === 'Telegram') {
@@ -351,22 +325,6 @@ export default {
           console.log('signInx 错误', err)
           this.$message.error(this.$t('error.loginFail'))
         }
-      }
-    },
-    async vntLogin() {
-      this.loading = true
-      try {
-        let res = await this.$store.dispatch('vnt/login')
-        this.$store.commit('setUserConfig', { idProvider: 'Vnt' })
-        this.loading = false
-        this.$message.closeAll()
-        this.$message.success(res)
-        await this.$store.commit('setLoginModal', false)
-        window.location.reload()
-      } catch (error) {
-        this.loading = false
-        this.$message.closeAll()
-        this.$message.error(error.toString())
       }
     },
     async loginWithMetaMask() {
@@ -521,11 +479,6 @@ export default {
   }
   .oauth {
     flex-wrap: wrap;
-    .vnt {
-      font-size: 24px;
-      padding-top: 2px;
-      color: #fff;
-    }
     .eos {
       font-size: 24px;
       color: #fff;

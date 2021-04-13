@@ -586,41 +586,70 @@
           </el-radio>
         </div>
 
-        <div v-if="$route.params.type !== 'edit'">
+        <div>
           <h1 class="set-title set-title-border">
             {{ $t('publish-settings') }}
           </h1>
+          <!-- 选择发布时间 -->
+          <div v-if="$route.params.type !== 'edit'">
+            <h4 class="set-subtitle">
+              {{ $t('timed-release') }}
+              <el-tooltip
+                effect="dark"
+                :content="$t('timed-release-tips')"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
+
+              <el-switch
+                v-model="timedForm.switch"
+                class="timed-switch"
+                active-color="#542DE0"
+                inactive-color="#DBDBDB"
+              />
+            </h4>
+            <div class="set-content timed-picker">
+              <el-date-picker
+                v-if="timedForm.switch"
+                v-model="timedForm.date"
+                size="small"
+                type="datetime"
+                :placeholder="$t('choose-date-and-time')"
+                align="right"
+                format="yyyy-MM-dd HH:mm"
+                :picker-options="timedOptions"
+              />
+            </div>
+          </div>
+
+          <!-- 选择是否发文到GitHub -->
           <h4 class="set-subtitle">
-            {{ $t('timed-release') }}
+            {{ $t('publish.whereToPublish') }}
             <el-tooltip
               effect="dark"
-              :content="$t('timed-release-tips')"
               placement="top-start"
             >
+              <div slot="content">
+                {{ $t('publish.whereToPublishDescription') }} <a href="https://matataki.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
+              </div>
               <svg-icon
                 class="help-icon"
                 icon-class="help"
               />
             </el-tooltip>
-
-            <el-switch
-              v-model="timedForm.switch"
-              class="timed-switch"
-              active-color="#542DE0"
-              inactive-color="#DBDBDB"
-            />
           </h4>
-          <div class="set-content timed-picker">
-            <el-date-picker
-              v-if="timedForm.switch"
-              v-model="timedForm.date"
-              size="small"
-              type="datetime"
-              :placeholder="$t('choose-date-and-time')"
-              align="right"
-              format="yyyy-MM-dd HH:mm"
-              :picker-options="timedOptions"
-            />
+          <div class="set-content">
+            <el-radio v-model="publishToGithub" :label="false" :disabled="$route.params.type === 'edit'">
+              {{ $t('publish.publishToIPFS') }}
+            </el-radio>
+            <br>
+            <el-radio v-model="publishToGithub" :label="true" :disabled="$route.params.type === 'edit'">
+              {{ $t('publish.publishToGithub') }}
+            </el-radio>
           </div>
         </div>
 
@@ -628,6 +657,7 @@
           <vue-hcaptcha
             v-if="doINeedHCaptcha"
             :sitekey="hCaptchaSiteKey"
+            :language="appLang"
             @verify="onCaptchaVerify"
             @expired="onExpire"
             @error="onError"
@@ -832,6 +862,8 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
+      // 是否保存到GitHub
+      publishToGithub: false,
       editorPlaceholder: '',
       alltokenLoading: true,
       timedForm: {
@@ -974,6 +1006,9 @@ export default {
     },
     noTokenAvailable() {
       return !this.readSelectOptions || this.readSelectOptions.length === 0
+    },
+    appLang() {
+      return getCookie('language')
     }
   },
   watch: {
@@ -1078,6 +1113,7 @@ export default {
       if (process.browser) {
         this.$nextTick(() => {
           this.setArticleDataById(hash, id)
+          this.publishToGithub = hash.startsWith('Gh')
         })
       }
     } else {
@@ -1544,6 +1580,9 @@ export default {
       article.commentPayPoint = this.commentPayPoint
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
+
+      // 设置文章保存位置
+      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
 
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start

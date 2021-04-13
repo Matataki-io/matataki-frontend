@@ -8,7 +8,7 @@ export default {
    */
   invalidId(id) {
     const lowerId = id.toLocaleLowerCase()
-    const invalidProviders = ['github', 'email', 'vnt']
+    const invalidProviders = ['github', 'email']
     // The Array.includes() method is case sensitive.
     return invalidProviders.includes(lowerId) //如果是不能签名的Provider则返回true，没毛病
   },
