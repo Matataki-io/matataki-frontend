@@ -219,7 +219,7 @@
               class="lock-bottom"
             >
               <div class="btn-ccc">
-                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}MTTK积分</span> -->
+                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}{{$t('mttk-points')}}</span> -->
                 <!-- <el-tooltip
                   class="item"
                   effect="dark"

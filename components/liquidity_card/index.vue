@@ -16,7 +16,7 @@
         <div :class="[ 'fall-rise', amountClass(cnyAmount) ]">
           {{ cnyAmount }}
           <span class="symbol">
-            MTTK积分
+            {{ $t('mttk-points') }}
           </span>
         </div>
         <div :class="[ 'fall-rise', amountClass(tokenAmount) ]">

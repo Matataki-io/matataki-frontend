@@ -144,7 +144,7 @@
             <div class="token-data">
               <p class="token-num">
                 {{ cnyReserve }}
-                <sub>MTTK积分</sub>
+                <sub>{{ $t('mttk-points') }}</sub>
                 + {{ tokenReserve }}
                 <sub>{{ minetokenToken.symbol }}</sub>
               </p>
@@ -166,7 +166,7 @@
             <div class="token-data">
               <p class="token-num">
                 {{ exchangeAmount }}
-                <sub>MTTK积分</sub>
+                <sub>{{ $t('mttk-points') }}</sub>
               </p>
               <p class="token-name">
                 {{ $t('token.turnover24h') }}
@@ -188,7 +188,7 @@
             <div class="token-data">
               <p class="token-num">
                 {{ price }}
-                <sub>MTTK积分</sub>
+                <sub>{{ $t('mttk-points') }}</sub>
               </p>
               <p class="token-name">
                 {{ $t('token.currentPrice') }}
@@ -209,7 +209,7 @@
               <span class="total-item-title">{{ $t('token.liquidGoldPool') }}</span>
               <div class="total-item-content">
                 <div class="item">
-                  <span>{{ cnyReserve }}<sub>MTTK积分</sub></span>
+                  <span>{{ cnyReserve }}<sub>{{ $t('mttk-points') }}</sub></span>
                 </div>
                 <div class="item-symbol">
                   +
@@ -232,7 +232,7 @@
               <span class="total-item-title">{{ $t('token.turnover24h') }}</span>
               <div class="total-item-content">
                 <div class="item">
-                  <span>{{ exchangeAmount }}<sub>MTTK积分</sub></span>
+                  <span>{{ exchangeAmount }}<sub>{{ $t('mttk-points') }}</sub></span>
                 </div>
               </div>
             </li>
@@ -248,7 +248,7 @@
               <span class="total-item-title">{{ $t('token.currentPrice') }}</span>
               <div class="total-item-content">
                 <div class="item">
-                  <span>{{ price }}<sub>MTTK积分</sub></span>
+                  <span>{{ price }}<sub>{{$t('mttk-points')}}</sub></span>
                 </div>
               </div>
             </li>

@@ -104,7 +104,7 @@
         >
           <template v-if="outputPoolSize.cny_amount !== 0">
             <div class="kroqsf">
-              {{ outputPoolSize.cny_amount.toFixed(4) }} MTTK积分
+              {{ outputPoolSize.cny_amount.toFixed(4) }} {{ $t('mttk-points') }}
             </div>
             <div class="jlBXmz">
               +
@@ -147,17 +147,17 @@
       <div class="exKIZr" />
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('exchange-ratio') }}</span>
-        <span v-if="exchangeRate">1 MTTK积分 = {{ exchangeRate }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
+        <span v-if="exchangeRate">1 {{ $t('mttk-points') }} = {{ exchangeRate }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('current-total-liquid-gold-pool') }}</span>
-        <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} MTTK积分 + {{ currentPoolSize.token_amount }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
+        <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} {{ $t('mttk-points') }} + {{ currentPoolSize.token_amount }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('your-share-of-the-liquid-gold-pool') }} （{{ yourPercent }}）</span>
-        <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} MTTK积分 + {{ yourPoolSize.token_amount }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
+        <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} {{ $t('mttk-points') }} + {{ yourPoolSize.token_amount }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
     </div>
@@ -178,7 +178,7 @@
         <div>
           {{ $t('you-are-adding') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ form.input }} MTTK积分</span>
+            <span class="jbXIaP">{{ form.input }} {{ $t('mttk-points') }}</span>
           </span> {{ $t('and-up-to') }}
           <span class="iDChvK">
             <span class="jbXIaP">{{ limitValue }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>

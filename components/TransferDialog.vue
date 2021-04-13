@@ -119,7 +119,7 @@
         />
         <p v-else class="cny-help">
           <i class="el-icon-circle-close" />
-          MTTK积分 {{ $t('message-transfer-is-temporarily-not-supported') }}
+          {{ $t('mttk-points') }} {{ $t('message-transfer-is-temporarily-not-supported') }}
         </p>
       </el-form-item>
       <div class="form-button">

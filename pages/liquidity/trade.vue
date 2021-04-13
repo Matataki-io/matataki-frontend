@@ -27,7 +27,7 @@
             <li>
               <span class="trade-setting-label black">{{ $t('price') }}：</span>
               <span class="trade-setting-num">{{ market.price }}</span> 
-              <span class="trade-setting-symbol">MTTK积分/{{ market.symbol }}</span> 
+              <span class="trade-setting-symbol">{{ $t('mttk-points') }}/{{ market.symbol }}</span> 
             </li>
             <li v-if="market.amount > 0">
               <span class="trade-setting-label black">{{ $t('for-sale') }}：</span>
