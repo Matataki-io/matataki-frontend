@@ -21,7 +21,7 @@
     </el-table-column>
     <el-table-column
       prop="price"
-      :label="`${$t('price')}/CNY`"
+      :label="`${$t('price')}/MTTK积分`"
     >
       <template slot-scope="scope">
         <span :class="scope.row.direction">
@@ -31,7 +31,7 @@
     </el-table-column>
     <el-table-column
       prop="cny_amount"
-      :label="`${$t('money-amount')}/CNY`"
+      :label="`${$t('money-amount')}/MTTK积分`"
     >
       <template slot-scope="scope">
         <span :class="scope.row.direction">

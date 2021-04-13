@@ -43,7 +43,7 @@
             @click="tlShow = true;field = 'outputToken'"
           >
             <span class="rTZzf">
-              {{ form.outputToken.symbol || $t('choose-coin') }}
+              {{ exchangeSymbol(form.outputToken.symbol) || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -65,7 +65,7 @@
           >
           <button class="iAoRgd">
             <span class="rTZzf">
-              {{ form.inputToken.symbol || $t('choose-coin') }}
+              {{ exchangeSymbol(form.inputToken.symbol) || $t('choose-coin') }}
               <!-- <i class="el-icon-arrow-down"></i> -->
             </span>
           </button>
@@ -104,13 +104,13 @@
         >
           <template v-if="outputPoolSize.cny_amount !== 0">
             <div class="kroqsf">
-              {{ outputPoolSize.cny_amount.toFixed(4) }} CNY
+              {{ outputPoolSize.cny_amount.toFixed(4) }} MTTK积分
             </div>
             <div class="jlBXmz">
               +
             </div>
             <div class="kroqsf">
-              {{ outputPoolSize.token_amount.toFixed(4) }} {{ form.outputToken.symbol }}
+              {{ outputPoolSize.token_amount.toFixed(4) }} {{ exchangeSymbol(form.outputToken.symbol) }}
             </div>
           </template>
         </div>
@@ -136,7 +136,7 @@
             @click="tlShow = true;field = 'outputToken'"
           >
             <span class="rTZzf">
-              {{ form.outputToken.symbol || $t('choose-coin') }}
+              {{ exchangeSymbol(form.outputToken.symbol) || $t('choose-coin') }}
               <i class="el-icon-arrow-down" />
             </span>
           </button>
@@ -147,17 +147,17 @@
       <div class="exKIZr" />
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('exchange-ratio') }}</span>
-        <span v-if="exchangeRate">1 CNY = {{ exchangeRate }} {{ form.outputToken.symbol }}</span>
+        <span v-if="exchangeRate">1 MTTK积分 = {{ exchangeRate }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('current-total-liquid-gold-pool') }}</span>
-        <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} CNY + {{ currentPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
+        <span v-if="form.outputToken.symbol">{{ currentPoolSize.cny_amount }} MTTK积分 + {{ currentPoolSize.token_amount }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
       <div class="lfiYXW">
         <span class="sc-hORach icyNSS">{{ $t('your-share-of-the-liquid-gold-pool') }} （{{ yourPercent }}）</span>
-        <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} CNY + {{ yourPoolSize.token_amount }} {{ form.outputToken.symbol }}</span>
+        <span v-if="form.outputToken.symbol">{{ yourPoolSize.cny_amount }} MTTK积分 + {{ yourPoolSize.token_amount }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
         <span v-else> - </span>
       </div>
     </div>
@@ -178,10 +178,10 @@
         <div>
           {{ $t('you-are-adding') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ form.input }} CNY</span>
+            <span class="jbXIaP">{{ form.input }} MTTK积分</span>
           </span> {{ $t('and-up-to') }}
           <span class="iDChvK">
-            <span class="jbXIaP">{{ limitValue }} {{ form.outputToken.symbol }}</span>
+            <span class="jbXIaP">{{ limitValue }} {{ exchangeSymbol(form.outputToken.symbol) }}</span>
           </span>{{ $t('into-the-flowing-gold-pool') }}
         </div>
         <div class="sc-bsbRJL kxtVAF">
@@ -653,6 +653,11 @@ export default {
         }
       }
       return true
+    },
+    // 转换Symbol
+    exchangeSymbol(symbol) {
+      if (!symbol) return symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? 'MTTK积分' : symbol
     }
   }
 }

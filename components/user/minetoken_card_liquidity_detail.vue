@@ -36,7 +36,7 @@
       </div>
       <div class="amount">
         {{ tokenAmount(card.cny_amount) }}
-        <p>CNY</p>
+        <p>MTTK积分</p>
       </div>
       <div class="amount">
         {{ tokenAmount(card.liquidity) }}

@@ -16,7 +16,7 @@
         <div :class="[ 'fall-rise', amountClass(cnyAmount) ]">
           {{ cnyAmount }}
           <span class="symbol">
-            CNY
+            MTTK积分
           </span>
         </div>
         <div :class="[ 'fall-rise', amountClass(tokenAmount) ]">
@@ -56,7 +56,7 @@
         <span :class="amountClass(cnyAmount)" class="card-m-amount">
           {{ cnyAmount }}
           <span>
-            CNY
+            MTTK积分
           </span>
         </span>
       </div>

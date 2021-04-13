@@ -346,7 +346,7 @@
           <el-radio
             v-model="readConfigRadio"
             :disabled="prohibitEditingPrices"
-            label="cny"
+            label="MTTK积分"
           >
             {{ $t('payment-visible') }}
           </el-radio>

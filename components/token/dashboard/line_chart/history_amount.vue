@@ -73,7 +73,7 @@ export default {
         },{}],
         series: [
           {
-            name: 'CNY',
+            name: 'MTTK积分',
             data: [],
             type: 'line',
             smooth: 0.25,

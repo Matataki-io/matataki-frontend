@@ -21,7 +21,7 @@
     </el-table-column>
     <el-table-column
       prop="cny_amount"
-      label="CNY"
+      label="MTTK积分"
     >
       <template slot-scope="scope">
         <span :class="direction(scope.row.liquidity)">

@@ -63,7 +63,7 @@ export default {
         },
         yAxis: [
           {
-            name: 'CNY',
+            name: 'MTTK积分',
             type: 'value',
             scale: true,
             splitLine: {
@@ -84,7 +84,7 @@ export default {
         },{}],
         series: [
           {
-            name: 'CNY',
+            name: 'MTTK积分',
             data: [],
             type: 'line',
             smooth: 0.25,

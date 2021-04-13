@@ -51,7 +51,7 @@
               <td>
                 ￥ {{ input }}
                 <el-tooltip  placement="bottom" effect="light">
-                  <div slot="content">CNY 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
+                  <div slot="content">MTTK积分 交易金额精度大于 0.01 时会自动进位支付，<br/>多支付的金额会保留在您的CNY账户中。</div>
                   <i class="el-icon-question" />
                 </el-tooltip>
               </td>
@@ -86,7 +86,7 @@
               </el-tooltip>
               {{ $t('total') }}：
             </span>
-            <span class="money">{{ input.toFixed(2) }} CNY</span>
+            <span class="money">{{ input.toFixed(2) }} MTTK积分</span>
           </div>
         </div>
         <div class="flexBox padding20 bgGray">
@@ -98,11 +98,11 @@
               {{ $t('use-balance') }}（{{ balance }} CNY）
             </el-checkbox>
           </div>
-          <div><span class="money-label">{{ $t('deduction') }}：</span><span class="money">{{ deduction.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('deduction') }}：</span><span class="money">{{ deduction.toFixed(2) }} MTTK积分</span></div>
         </div>
         <div class="flexBox padding20">
           <div />
-          <div><span class="money-label">{{ $t('handle') }}：</span><span class="money">{{ needPay.toFixed(2) }} CNY</span></div>
+          <div><span class="money-label">{{ $t('handle') }}：</span><span class="money">{{ needPay.toFixed(2) }} MTTK积分</span></div>
         </div>
       </div>
       <QRCode

@@ -113,7 +113,7 @@
         v-if="!hasPaied"
         class="lock-bottom"
       >
-        <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
+        <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}MTTK积分</span> -->
         <!-- <el-tooltip
           class="item"
           effect="dark"

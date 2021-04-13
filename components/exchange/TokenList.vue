@@ -44,7 +44,7 @@
                   />
                 </div>
                 <div class="sc-tilXH egNEUM">
-                  <span id="symbol">{{ scope.row.symbol }}</span>
+                  <span id="symbol">{{ exchangeSymbol(scope.row.symbol) }}</span>
                   <div class="sc-hEsumM iHXZgD">
                     {{ scope.row.name }}
                   </div>
@@ -115,7 +115,7 @@
                   />
                 </div>
                 <div class="sc-tilXH egNEUM">
-                  <span id="symbol">{{ scope.row.symbol }}</span>
+                  <span id="symbol">{{ exchangeSymbol(scope.row.symbol) }}</span>
                   <div class="sc-hEsumM iHXZgD">
                     {{ scope.row.name }}
                   </div>
@@ -145,7 +145,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { CNY } from './consts.js'
 import utils from '@/utils/utils'
 import avatar from '@/components/avatar/index.vue'
@@ -167,27 +166,6 @@ export default {
       default: true
     }
   },
-  computed: {
-    showLoadMore() {
-      const { page, pagesize, count } = this
-      if (page * pagesize > count) {
-        return false
-      } else {
-        return true
-      }
-    }
-  },
-  watch: {
-    search(newVal) {
-      this.searchToken()
-    },
-    showModal(val) {
-      this.$emit('input', val)
-    },
-    value(val) {
-      this.showModal = val
-    },
-  },
   data() {
     return {
       search: '',
@@ -202,6 +180,27 @@ export default {
         mode: '', // simplify all
       }
     }
+  },
+  computed: {
+    showLoadMore() {
+      const { page, pagesize, count } = this
+      if (page * pagesize > count) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
+  watch: {
+    search() {
+      this.searchToken()
+    },
+    showModal(val) {
+      this.$emit('input', val)
+    },
+    value(val) {
+      this.showModal = val
+    },
   },
   created() {
     if (process.browser) {
@@ -276,7 +275,7 @@ export default {
       })
       return list
     },
-        // 初始化list
+    // 初始化list
     initTokenList() {
       try {
         const clientWidth = document.body.clientWidth || document.documentElement.clientWidth
@@ -294,6 +293,11 @@ export default {
         console.log(e)
       }
     },
+    // 转换Symbol
+    exchangeSymbol(symbol) {
+      if (!symbol) return symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? 'MTTK积分' : symbol
+    }
   }
 }
 </script>

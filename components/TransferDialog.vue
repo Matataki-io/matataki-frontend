@@ -119,7 +119,7 @@
         />
         <p v-else class="cny-help">
           <i class="el-icon-circle-close" />
-          CNY {{ $t('message-transfer-is-temporarily-not-supported') }}
+          MTTK积分 {{ $t('message-transfer-is-temporarily-not-supported') }}
         </p>
       </el-form-item>
       <div class="form-button">
@@ -498,7 +498,7 @@ export default {
         this.cnyBalance = res
       }
       catch (e) {
-        this.$message.error('CNY 余额获取失败')
+        this.$message.error('MTTK积分 余额获取失败')
         console.error(e)
       }
     }

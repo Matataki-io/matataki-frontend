@@ -24,17 +24,17 @@
       <div class="card-data">
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('exchange-price') }}:</span> {{ unitPrice }} CNY
+            <span>{{ $t('exchange-price') }}:</span> {{ unitPrice }} MTTK积分
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('token.liquidGold') }}:</span>  {{ cnyReserve }} CNY
+            <span>{{ $t('token.liquidGold') }}:</span>  {{ cnyReserve }} MTTK积分
           </p>
         </div>
         <div class="card-data-column">
           <p class="card-data-amount">
-            <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} CNY
+            <span>{{ $t('token.turnover24h') }}:</span> {{ exchangeAmount }} MTTK积分
           </p>
         </div>
       </div>
