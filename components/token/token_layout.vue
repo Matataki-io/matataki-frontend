@@ -248,7 +248,7 @@
               <span class="total-item-title">{{ $t('token.currentPrice') }}</span>
               <div class="total-item-content">
                 <div class="item">
-                  <span>{{ price }}<sub>{{$t('mttk-points')}}</sub></span>
+                  <span>{{ price }}<sub>{{ $t('mttk-points') }}</sub></span>
                 </div>
               </div>
             </li>

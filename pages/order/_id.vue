@@ -286,7 +286,7 @@ export default {
           name: t1.symbol,
           operating: '支付',
           amount: utils.fromDecimal(t1.amount),
-          total: utils.up2points(utils.fromDecimal(t1.price)) + ' MTTK积分'
+          total: utils.up2points(utils.fromDecimal(t1.price)) + ` ${this.$t('mttk-points')}`
         })
       }
       if (t2) {
@@ -294,7 +294,7 @@ export default {
           name: t2.symbol,
           operating: t2.type === 'add' ? '支付' : '购买',
           amount: utils.fromDecimal(t2.token_amount),
-          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ' MTTK积分'
+          total: utils.up2points(utils.fromDecimal(t2.cny_amount)) + ` ${this.$t('mttk-points')}`
         })
       }
       return result

@@ -346,7 +346,7 @@
           <el-radio
             v-model="readConfigRadio"
             :disabled="prohibitEditingPrices"
-            label="MTTK积分"
+            :label="$t('mttk-points')"
           >
             {{ $t('payment-visible') }}
           </el-radio>

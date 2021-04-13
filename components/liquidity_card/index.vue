@@ -56,7 +56,7 @@
         <span :class="amountClass(cnyAmount)" class="card-m-amount">
           {{ cnyAmount }}
           <span>
-            MTTK积分
+            {{ $t('mttk-points') }}
           </span>
         </span>
       </div>

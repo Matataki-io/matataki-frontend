@@ -657,7 +657,7 @@ export default {
     // 转换Symbol
     exchangeSymbol(symbol) {
       if (!symbol) return symbol
-      return symbol.toLocaleUpperCase() === 'CNY' ? 'MTTK积分' : symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? this.$t('mttk-points') : symbol
     }
   }
 }

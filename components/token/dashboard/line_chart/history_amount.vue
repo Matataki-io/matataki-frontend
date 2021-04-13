@@ -73,7 +73,7 @@ export default {
         },{}],
         series: [
           {
-            name: 'MTTK积分',
+            name: this.$t('mttk-points'),
             data: [],
             type: 'line',
             smooth: 0.25,

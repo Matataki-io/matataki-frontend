@@ -331,7 +331,7 @@ export default {
       const { input, inputToken, output, outputToken } = this.form
       if (parseFloat(input) < 0.01 && inputToken.id === 0) {
         this.$message.error({
-          message: '交易金额小于不得小于 0.01 MTTK积分',
+          message: `交易金额小于不得小于 0.01 ${this.$t('mttk-points')}`,
           duration: 3000,
           showClose: true
         })
@@ -485,7 +485,7 @@ export default {
     // 转换Symbol
     exchangeSymbol(symbol) {
       if (!symbol) return symbol
-      return symbol.toLocaleUpperCase() === 'CNY' ? 'MTTK积分' : symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? this.$t('mttk-points') : symbol
     }
   }
 }
