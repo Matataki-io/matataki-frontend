@@ -426,6 +426,7 @@ export default {
     return request({
       url: '/token/all',
       method: 'get',
+      timeout: 40 * 1000,
       noLoading: true,
       params: {
         page,
