@@ -656,11 +656,13 @@
         <div class="set-captcha">
           <vue-hcaptcha
             v-if="doINeedHCaptcha"
+            ref="hCaptcha"
             :sitekey="hCaptchaSiteKey"
             :language="appLang"
             @verify="onCaptchaVerify"
             @expired="onExpire"
             @error="onError"
+            @reset="onCaptchaReset"
           />
         </div>
 
@@ -1178,6 +1180,15 @@ export default {
       this.hCaptchaData = { token: null, eKey: null, expired: true }
       console.error('captcha error: ', err)
     },
+    // 当hCaptcha状态重置时，重置hCaptchaData对象的值
+    onCaptchaReset() {
+      this.hCaptchaData = {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
+      }
+    },
     // 取消关联
     cancelAssosiate() {
       this.isAssosiateWith = false
@@ -1614,6 +1625,8 @@ export default {
         console.log(error)
         this.fullscreenLoading = false // remove full loading
         this.$message.error(error.toString())
+        // 失败后重置hCaptcha状态
+        this.$refs.hCaptcha.reset()
       }
     },
     // 定时发布文章
@@ -1685,6 +1698,8 @@ export default {
       // History 权限
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
+      // 文章保存位置
+      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
 
 
       const { failed, success } = this
@@ -1717,6 +1732,8 @@ export default {
         console.error(error)
         this.fullscreenLoading = false // remove full loading
         failed(error)
+        // 失败后重置hCaptcha状态
+        this.$refs.hCaptcha.reset()
         throw error
       }
     },
