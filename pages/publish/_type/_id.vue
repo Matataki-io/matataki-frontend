@@ -343,10 +343,11 @@
               </el-button>
             </div>
           </div>
+          <!-- label="cny" 不需要改为 MTTK积分 -->
           <el-radio
             v-model="readConfigRadio"
             :disabled="prohibitEditingPrices"
-            :label="$t('mttk-points')"
+            label="cny"
           >
             {{ $t('payment-visible') }}
           </el-radio>
@@ -1048,6 +1049,7 @@ export default {
     CCLicenseCredit() { this.updateDraftWatch() },
     // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
     readConfigRadio(val) {
+      console.log('val', val)
       this.readauThority = val === 'token'
       this.paymentTokenVisible = val === 'cny'
 
