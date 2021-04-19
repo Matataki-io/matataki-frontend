@@ -149,7 +149,7 @@
             <a
               class="href"
               target="_blank"
-              href="https://t.me/joinchat/7C_mfGzE7ksyNThl"
+              href="https://t.me/metanetwork"
             >
               <svg-icon class="icon" icon-class="telegram1" />@MetaNetwork
             </a>
