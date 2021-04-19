@@ -142,6 +142,10 @@ export default {
     async getGithubId() {
       try {
         const res = await this.$API.getIpfsData(this.article.hash)
+        if (res.code !== 0) {
+          this.$message.error(res.message)
+          return
+        }
         this.githubId = res.data.github_id
       } catch (e) {
         this.$message.error(e.message)
