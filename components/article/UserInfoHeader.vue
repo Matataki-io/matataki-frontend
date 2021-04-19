@@ -23,7 +23,7 @@
         <div class="fl ac author-info">
           <span class="Post-Time">{{ time }}</span>
           <span class="View-Num"><svg-icon class="icon" icon-class="read" />{{ article.read || 0 }}</span>
-          <ipfsAll :article-ipfs-array="articleIpfsArray" :user="user" />
+          <ipfsAll :article-ipfs-array="articleIpfsArray" :user="user" :github-id="githubId" />
           &nbsp;
           <span class="article-head__ipfs">{{ isPublishedOnGithub ? 'GitHub' : 'IPFS' }}</span>
         </div>
@@ -75,7 +75,8 @@ export default {
         is_follow: 0 // 默认值
       },
       user: Object.create(null), // 用户信息
-      tokenInfo: Object.create(null), // token info
+      tokenInfo: Object.create(null), // token info,
+      githubId: ''
     }
   },
   computed: {
@@ -108,10 +109,11 @@ export default {
       this.getTokenUser(this.article.uid)
     }
   },
-  mounted() {
+  async mounted() {
     // 完成获取用户信息
     this.getUserInfo(this.article.uid)
-    this.getTokenUser(this.article.uid)
+    await this.getTokenUser(this.article.uid)
+    await this.getGithubId()
   },
   methods: {
     // 主要获取关注状态
@@ -135,6 +137,19 @@ export default {
       const tokenRes = await this.$utils.factoryRequest(this.$API.tokenUserId(id))
       // not token, data is null
       this.tokenInfo = tokenRes ? (tokenRes.data || {}) : {}
+    },
+    // 获取 GitHub ID
+    async getGithubId() {
+      try {
+        const res = await this.$API.getIpfsData(this.article.hash)
+        if (res.code !== 0) {
+          this.$message.error(res.message)
+          return
+        }
+        this.githubId = res.data.github_id
+      } catch (e) {
+        this.$message.error(e.message)
+      }
     },
     followOrUnFollow() {
       if (this.info.is_follow) {

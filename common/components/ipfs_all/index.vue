@@ -99,6 +99,11 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    githubId: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data() {
@@ -126,12 +131,12 @@ export default {
     githubLink() {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
-      return `https://github.com/${this.user.username}/matataki-save/blob/main/${year}/${date}/${this.hash}.html`
+      return `https://github.com/${this.githubId}/matataki-save/blob/main/${year}/${date}/${this.hash}.json`
     },
     githubHistoryLink() {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
-      return `https://github.com/${this.user.username}/matataki-save/commits/main/${year}/${date}/${this.hash}.html`
+      return `https://github.com/${this.githubId}/matataki-save/commits/main/${year}/${date}/${this.hash}.json`
     }
   },
   methods: {
