@@ -4,9 +4,6 @@
     <div class="note">
       {{ $t('ipfsHash.history.selectNode') }}
       <div class="note-item">
-        <el-radio v-model="historyPreviewSelect" label="mttk">
-          Matataki
-        </el-radio>
         <el-radio v-model="historyPreviewSelect" label="infura">
           Infura
         </el-radio>
@@ -56,9 +53,8 @@ export default {
   },
   data() {
     return {
-      historyPreviewSelect: 'mttk',
+      historyPreviewSelect: 'infura',
       ipfsNodeMap: {
-        mttk: 'https://ipfs.mttk.net/ipfs/',
         ipfs: 'https://ipfs.io/ipfs/',
         infura: 'https://ipfs.infura.io/ipfs/'
       }
@@ -114,6 +110,6 @@ export default {
       margin-right: 10px;
     }
   }
-  
+
 }
 </style>
