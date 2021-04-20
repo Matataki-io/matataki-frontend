@@ -19,7 +19,7 @@ function cdnPublicPath (env) {
     'development': '/_nuxt/',
     'testing': 'https://cdntest.frontenduse.top/test',
     'release': 'https://cdntest.frontenduse.top/release',
-    'production': 'https://cdn.frontenduse.top',
+    'production': 'https://cdn.frontenduse.top/prod',
   }
   return list[env] || '/_nuxt/'
 }
