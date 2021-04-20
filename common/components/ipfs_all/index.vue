@@ -110,7 +110,6 @@ export default {
     return {
       dialogVisible: false,
       link: [
-        'https://ipfs.mttk.net/ipfs/',
         'https://ipfs.io/ipfs/',
         'https://ipfs.infura.io/ipfs/'
       ],
@@ -131,12 +130,12 @@ export default {
     githubLink() {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
-      return `https://github.com/${this.githubId}/matataki-save/blob/main/${year}/${date}/${this.hash}.json`
+      return `https://github.com/${this.githubId}/matataki-save/blob/main/${year}/${date}/${this.hash}.md`
     },
     githubHistoryLink() {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
-      return `https://github.com/${this.githubId}/matataki-save/commits/main/${year}/${date}/${this.hash}.json`
+      return `https://github.com/${this.githubId}/matataki-save/commits/main/${year}/${date}/${this.hash}.md`
     }
   },
   methods: {
