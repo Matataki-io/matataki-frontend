@@ -674,7 +674,11 @@
     "myBookmark": "我的收藏",
     "message": "私信",
     "issuedFanTickets": "发行了Fan票的用户",
-    "registrationTime": "注册时间"
+    "registrationTime": "注册时间",
+    "indieBlogSettings": "独立子站",
+    "usesGitHubRepository": "文章存储仓库",
+    "usesTheme": "主题",
+    "indieBlogTitle": "站点名称"
   },
   "withdraw": {
     "title": "提现",

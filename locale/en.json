@@ -674,7 +674,11 @@
     "myBookmark": "my collection",
     "message": "Private letters",
     "issuedFanTickets": "Users who have issued Fan tickets",
-    "registrationTime": "Registration time"
+    "registrationTime": "Registration time",
+    "indieBlogSettings": "Indie Blog",
+    "usesGithubRepository": "Article saving repository",
+    "usesTheme": "Theme",
+    "indieBlogTitle": "Site title"
   },
   "withdraw": {
     "title": "withdraw",
