@@ -27,6 +27,7 @@ export default {
         { title: this.$t('user.wallet'), url: 'account' },
         { title: this.$t('user.buyHistory'), url: 'buy' },
         { title: this.$t('user.invite'), url: 'invite' },
+        { title: this.$t('user.indieBlogSettings'), url: 'setting-indieblog'},
         { title: this.$t('user.systemSetting'), url: 'setting-system' }
       ],
       tokens: false
