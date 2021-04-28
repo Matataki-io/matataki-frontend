@@ -195,7 +195,7 @@ export default {
           this.getStatusFailed = true
           this.$message.error('服务器返回的数据有点问题')
         }
-      }).then(e => {
+      }).catch(e => {
         console.log(e.message)
         this.loading = false
         this.getStatusFailed = true
