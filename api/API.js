@@ -1409,5 +1409,21 @@ minetokenGetResources(tokenId) {
    */
   modifyIndieBlogRepoName (params) {
     return request.post(`/user/repo`, params)
+  },
+  /**
+   * 获取子站设置项，成功后将返回以下 JSON
+   * {
+   *   "code": 0,
+   *   "message": "成功",
+   *   "data": {
+   *     "title": "titleName"
+   *   }
+   * }
+   */
+  getIndieBlogSiteConfig () {
+    return request.get(`/user/siteConfig`)
+  },
+  changeIndieBlogSiteConfig (params) {
+    return request.post(`/user/siteConfig`, params)
   }
 }

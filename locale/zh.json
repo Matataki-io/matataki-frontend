@@ -1649,7 +1649,7 @@
   "development-document": "开发文档",
   "mttk-points": "MTTK积分",
   "indie-blog": {
-    "title": "独立子站（实验性功能，尚不稳定）",
+    "page-tile": "独立子站（实验性功能，尚不稳定）",
     "status-loading": "独立子站状态加载中",
     "status-load-failed": "独立子站状态加载失败，请稍后重试",
     "unavailable": "独立子站尚不可用",
@@ -1665,6 +1665,15 @@
     "create": "开始创建子站",
     "get-repo-status-failed": "获取仓库名失败",
     "should-bind-github": "需要绑定 GitHub 账户",
-    "go-to-bind-github": "前往账户页面进行绑定"
+    "go-to-bind-github": "前往账户页面进行绑定",
+    "title": "标题",
+    "subtitle": "子标题",
+    "language": "语言",
+    "description": "描述",
+    "keywords": "关键字",
+    "author": "作者",
+    "timezone": "时间区域",
+    "theme": "主题名称",
+    "save": "保存"
   }
 }

@@ -2,7 +2,7 @@
   <userLayout>
     <template v-slot:main>
       <h2 class="tag-title">
-        {{ $t('indie-blog.title') }}
+        {{ $t('indie-blog.page-tile') }}
       </h2>
       <div v-if="loading" v-loading="true" class="list center">
         <span>{{ $t('indie-blog.status-loading') }}</span>
@@ -41,11 +41,15 @@
             </el-button>
           </a>
         </div>
-        <div v-if="allOK">
-          <div class="list">
-            <div class="list-title">
-              子站设置
-            </div>
+        <div v-if="allOK && settings">
+          <div v-for="(setting, index) in Object.keys(settings)" :key="index" class="list">
+            <span class="list-title">{{ $t('indie-blog.' + setting) }}</span>
+            <el-input v-model="settings[setting]" class="list-content" />
+          </div>
+          <div class="list center">
+            <el-button @click="saveSettings">
+              {{ $t('indie-blog.save') }}
+            </el-button>
           </div>
         </div>
       </div>
@@ -74,7 +78,8 @@ export default {
       repoName: '',
       showCreate: false,
       showBind: false,
-      creating: false
+      creating: false,
+      settings: []
     }
   },
   computed: {
@@ -142,7 +147,7 @@ export default {
               this.errorMessage = this.$t('indie-blog.should-bind-github')
             }
           } else {
-            this.loading = false
+            this.getSettingsItem()
           }
         } else {
           this.getStatusFailed = true
@@ -163,18 +168,38 @@ export default {
       }
       this.creating = true
       this.$API.modifyIndieBlogRepoName({ repo: this.repoName }).then((res) => {
-        console.log(this.repoName)
         if (res) {
           if (res.code === 0) {
             this.createRepo()
           } else {
-            this.$message(res.message)
+            this.$message.error(res.message)
           }
         } else {
-          this.$message(this.$t('indie-blog.save-repo-name-failed'))
+          this.$message.error(this.$t('indie-blog.save-repo-name-failed'))
         }
       }).catch((e) => {
         console.log(e)
+      })
+    },
+    getSettingsItem() {
+      this.$API.getIndieBlogSiteConfig().then((res) => {
+        this.loading = false
+        if (res) {
+          if (res.code === 0) {
+            this.settings = res.data
+          } else {
+            this.getStatusFailed = true
+            this.$message.error('服务器返回的数据有点问题')
+          }
+        } else {
+          this.getStatusFailed = true
+          this.$message.error('服务器返回的数据有点问题')
+        }
+      }).then(e => {
+        console.log(e.message)
+        this.loading = false
+        this.getStatusFailed = true
+        this.$message.error('网络问题')
       })
     },
     resetStatus() {
@@ -228,6 +253,22 @@ export default {
         this.$message.error('获取用户已绑定的平台失败')
         return undefined
       }
+    },
+    saveSettings() {
+      this.$API.changeIndieBlogSiteConfig(this.settings).then((res) => {
+        if (!res) {
+          this.$message.error('保存设置失败')
+        } else {
+          if (res.code === 0) {
+            this.$message.success('保存设置成功')
+          } else {
+            this.$message.error('保存设置失败')
+          }
+        }
+      }).catch((e) => {
+        console.log(e.message)
+        this.$message.error('保存设置失败')
+      })
     }
   }
 }
