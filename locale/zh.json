@@ -1680,7 +1680,15 @@
     "go-settings": "前往设置页面",
     "repo-name-format-error": "GitHub 仓库名称格式不正确",
     "ok": "好",
+    "cancel": "取消",
     "repo-exists": "可能是名为 {name} 的仓库已经存在",
-    "repo-name-rule": "GitHub 仓库名应当仅包含英文字母大小写、中划线和半角句号，例如 kawaii.lemon-neko"
+    "repo-name-rule": "GitHub 仓库名应当仅包含英文字母大小写、中划线和半角句号，例如 kawaii.lemon-neko",
+    "deployed": "您的独立子站已被部署至",
+    "this-user-has-been-deployed-indie-blog": "此用户已部署独立子站",
+    "two-step-confirm": "您修改了特殊项目，需要进行二次确认",
+    "timezone-modified": "时间区域：此项会影响子站中的时间显示格式",
+    "theme-modified": "主题：此项会影响子站的排版",
+    "is-continue": "您确认要进行这些修改吗？",
+    "no-items-modified": "您没有修改任何内容"
   }
 }

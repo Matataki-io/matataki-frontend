@@ -1,3 +1,7 @@
+<!--
+页面作者: 柠喵
+对此页代码有疑问请钉柠喵或发送邮件至 chheese048@gmail.com
+-->
 <template>
   <userLayout>
     <template v-slot:main>
@@ -8,6 +12,11 @@
         <el-tooltip :content="$t('indie-blog.experimental-feature')">
           <svgIcon icon-class="experimental" />
         </el-tooltip>
+      </div>
+      <div v-if="allOK" class="list">
+        <div class="list">
+          {{ $t('indie-blog.deployed') }} <div class="w-10px" /><a :href="'http://' + siteLink" target="_blank">http://{{ siteLink }}</a>
+        </div>
       </div>
       <div v-if="loading" v-loading="true" class="list center">
         <span>{{ $t('indie-blog.status-loading') }}</span>
@@ -63,12 +72,17 @@
           </el-button>
         </div>
         <div v-if="allOK && settings">
-          <div v-for="(setting, index) in Object.keys(settings)" :key="index" class="list">
-            <span class="list-title">{{ $t('indie-blog.' + setting) }}</span>
-            <el-input v-model="settings[setting]" class="list-content" />
+          <div v-for="(setting, index) in settings" :key="index" class="list">
+            <span class="list-title">{{ $t('indie-blog.' + setting.key) }}</span>
+            <el-input
+              v-model="setting.value"
+              class="list-content"
+              type="text"
+              :label="setting.key"
+            />
           </div>
           <div class="list center">
-            <el-button @click="saveSettings">
+            <el-button :loading="saving" @click="validateSettings">
               {{ $t('indie-blog.save') }}
             </el-button>
           </div>
@@ -107,7 +121,10 @@ export default {
         'indie-blog.complete'
       ],
       activeStep: -1,
-      repoInputDisabled: true
+      repoInputDisabled: true,
+      oldSettings: [],
+      siteLink: '',
+      saving: false
     }
   },
   computed: {
@@ -204,7 +221,17 @@ export default {
         this.loading = false
         if (res) {
           if (res.code === 0) {
-            this.settings = res.data
+            Object.keys(res.data).forEach((key) => {
+              if (key !== 'siteLink') {
+                const settingObj =                   {
+                  key: key,
+                  value: res.data[key]
+                }
+                this.settings.push({...settingObj})
+                this.oldSettings.push({...settingObj})
+              }
+            })
+            this.siteLink = res.data.siteLink
           } else {
             this.getStatusFailed = true
             this.$message.error('服务器返回的数据有点问题')
@@ -239,6 +266,7 @@ export default {
       this.showBind = false
       this.activeStep = -1
       this.repoInputDisabled = true
+      this.saving = false
     },
     async isBindOnGitHub() {
       try {
@@ -268,18 +296,60 @@ export default {
         this.getStatusFailed = true
       }
     },
+    validateSettings() {
+      if (this.isArrayEqual(this.settings, this.oldSettings)) {
+        this.$message.warning(this.$t('indie-blog.no-items-modified'))
+        return
+      }
+      const themeModified = this.getSettingsValueByKey('theme', this.settings) !== this.getSettingsValueByKey('theme', this.oldSettings)
+      const timezoneModified = this.getSettingsValueByKey('timezone', this.settings) !== this.getSettingsValueByKey('timezone', this.oldSettings)
+      if (!timezoneModified && !themeModified) {
+        this.saveSettings()
+        return
+      }
+      let alertMessage = '<div style="margin-left: 20px"><ol>'
+      if (themeModified) {
+        alertMessage += `<li style="list-style: decimal">${this.$t('indie-blog.theme-modified')}</li>`
+      }
+      if (timezoneModified) {
+        alertMessage += `<li style="list-style: decimal">${this.$t('indie-blog.timezone-modified')}</li>`
+      }
+      alertMessage += '</ol></div>' + this.$t('indie-blog.is-continue')
+      this.$alert(alertMessage, this.$t('indie-blog.two-step-confirm'), {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: this.$t('indie-blog.ok'),
+        cancelButtonText: this.$t('indie-blog.cancel'),
+        showCancelButton: true,
+        callback: (action) => {
+          if (action === 'confirm') {
+            this.saveSettings()
+          }
+        }
+      })
+    },
+    /**
+     * 保存设置 POST /user/siteConfig
+     */
     saveSettings() {
-      this.$API.changeIndieBlogSiteConfig(this.settings).then((res) => {
+      const settings = {}
+      this.settings.forEach((e) => {
+        settings[e.key] = e.value
+      })
+      this.saving = true
+      this.$API.changeIndieBlogSiteConfig(settings).then((res) => {
+        this.saving = false
         if (!res) {
           this.$message.error('保存设置失败')
         } else {
           if (res.code === 0) {
             this.$message.success('保存设置成功')
+            this.getSiteStatus()
           } else {
             this.$message.error('保存设置失败')
           }
         }
       }).catch((e) => {
+        this.saving = false
         console.log(e.message)
         this.$message.error('保存设置失败')
       })
@@ -292,6 +362,25 @@ export default {
       } else {
         return this.$t('indie-blog.step') + (index + 1)
       }
+    },
+    getSettingsValueByKey(key, settings) {
+      if (!settings) return ''
+      for (const setting of settings) {
+        if (setting.key === key) {
+          return setting.value
+        }
+      }
+    },
+    isArrayEqual(arr1, arr2) {
+      if (!arr1 || !arr2) return false
+      if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false
+      if (arr1.length !== arr2.length) return false
+      for (const item of arr1) {
+        if (this.getSettingsValueByKey(item.key, arr2) !== item.value) {
+          return false
+        }
+      }
+      return true
     }
   }
 }
