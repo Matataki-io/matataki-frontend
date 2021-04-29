@@ -16,30 +16,46 @@
       </div>
       <div>
         <div v-if="unavailable" class="list">
-          <span>{{ $t('indie-blog.unavailable') }}</span>
+          <span>{{ activeStep === 2 ? $t('indie-blog.you-are-done') : $t('indie-blog.follow-this-steps-to-create-indie-blog') }}</span>
         </div>
-        <div v-if="errorMessage !== ''" class="list">
-          <span>{{ errorMessage }}</span>
-        </div>
-        <div v-if="repoUsed" class="list">
-          <span class="list-title">{{ $t('indie-blog.repo-name') }}</span>
-          <el-input v-model="repoName" class="list-content" />
-          <div class="w-10px" />
-          <el-button :loading="creating" @click="modifyRepoNameAndContinue">
-            {{ $t('indie-blog.save-and-refresh') }}
-          </el-button>
-        </div>
-        <div v-if="showCreate" class="list center">
-          <el-button :loading="creating" @click="createSite">
-            {{ $t('indie-blog.create') }}
-          </el-button>
-        </div>
-        <div v-if="showBind" class="list center">
+        <el-steps
+          v-if="unavailable"
+          align-center
+          class="list"
+          :active="activeStep"
+          finish-status="success"
+        >
+          <el-step
+            v-for="(step, index) in steps"
+            :key="index"
+            :description="$t(step)"
+            :title="stepStatus(index, activeStep)"
+          />
+        </el-steps>
+        <div v-if="activeStep === 0" class="list center">
           <a href="/setting/account">
             <el-button>
               {{ $t('indie-blog.go-to-bind-github') }}
             </el-button>
           </a>
+        </div>
+        <div v-else-if="activeStep === 1" class="list">
+          <span class="list-title">{{ $t('indie-blog.repo-name') }}</span>
+          <el-input
+            v-model="repoName"
+            class="list-content"
+            :disabled="repoInputDisabled"
+            :prefix-icon="repoInputDisabled ? 'el-icon-loading' : ''"
+          />
+          <div class="w-10px" />
+          <el-button :loading="creating" @click="modifyRepoNameAndContinue">
+            {{ $t('indie-blog.save-and-refresh') }}
+          </el-button>
+        </div>
+        <div v-else class="list center">
+          <el-button @click="getSiteStatus">
+            {{ $t('indie-blog.go-settings') }}
+          </el-button>
         </div>
         <div v-if="allOK && settings">
           <div v-for="(setting, index) in Object.keys(settings)" :key="index" class="list">
@@ -73,13 +89,18 @@ export default {
       loading: false,
       getStatusFailed: false,
       unavailable: false,
-      errorMessage: '',
       repoUsed: false,
       repoName: '',
-      showCreate: false,
       showBind: false,
       creating: false,
-      settings: []
+      settings: [],
+      steps: [
+        'indie-blog.bind-github-account',
+        'indie-blog.create-repo-for-indie-blog',
+        'indie-blog.complete'
+      ],
+      activeStep: -1,
+      repoInputDisabled: true
     }
   },
   computed: {
@@ -105,7 +126,7 @@ export default {
               this.$message.error('创建子站失败')
             } else {
               this.$message.success('创建子站成功')
-              this.getSiteStatus()
+              this.activeStep = 2
             }
           }
         } else {
@@ -126,26 +147,13 @@ export default {
         const res = await this.$API.getIndieBlogSiteStatus()
         if (res) {
           const {code} = res
-          console.log(code)
           if (code === 10021) {
             this.loading = false
             this.unavailable = true
-            this.showCreate = true
-            this.errorMessage = this.$t('indie-blog.not-created')
+            this.activeStep = 1
+            this.getRepoName()
           } else if (code === 10019) {
-            const isBindOnGitHub = await this.isBindOnGitHub()
-            this.loading = false
-            if (isBindOnGitHub === true) {
-              this.unavailable = true
-              this.showBind = true
-              this.errorMessage = this.$t('indie-blog.should-rebind-github')
-            } else if (isBindOnGitHub === undefined) {
-              this.getStatusFailed = true
-            } else {
-              this.unavailable = true
-              this.showBind = true
-              this.errorMessage = this.$t('indie-blog.should-bind-github')
-            }
+            await this.isBindOnGitHub()
           } else {
             this.getSettingsItem()
           }
@@ -161,8 +169,8 @@ export default {
     modifyRepoNameAndContinue() {
       const repo = /^([a-zA-Z0-9]+-?\.?)+$/
       if (!this.repoName.match(repo)) {
-        this.$alert('一个好的 GitHub 仓库名称应当类似于 matataki-save', 'GitHub 仓库名称格式不正确', {
-          confirmButtonText: '确定'
+        this.$alert(this.$t('indie-blog.repo-name-rule'), this.$t('indie-blog.repo-name-format-error'), {
+          confirmButtonText: this.$t('indie-blog.ok')
         })
         return
       }
@@ -172,7 +180,10 @@ export default {
           if (res.code === 0) {
             this.createRepo()
           } else {
-            this.$message.error(res.message)
+            this.creating = false
+            this.$alert(this.$t('indie-blog.repo-exists', { name: this.repoName }), this.$t('indie-blog.save-repo-name-failed'),{
+              confirmButtonText: this.$t('indie-blog.ok')
+            })
           }
         } else {
           this.$message.error(this.$t('indie-blog.save-repo-name-failed'))
@@ -202,56 +213,52 @@ export default {
         this.$message.error('网络问题')
       })
     },
-    resetStatus() {
-      this.loading = true
-      this.unavailable = false
-      this.getStatusFailed = false
-      this.errorMessage = ''
-      this.repoUsed = false
-      this.showCreate = false
-      this.showBind = false
-    },
-    createSite() {
-      this.creating = true
+    getRepoName() {
       this.$API.getIndieBlogRepoStatus().then(res => {
-        if (res) {
-          const {code} = res
-          this.creating = false
-          if (code === undefined) {
-            this.$message(this.$t('indie-blog.get-repo-status-failed'))
-          } else {
-            if (code === 10020) {
-              this.repoUsed = true
-              this.showCreate = false
-              this.errorMessage = this.$t('indie-blog.repo-used-by-other')
-            } else {
-              this.createRepo()
-            }
-          }
-        } else {
-          this.$message(this.$t('indie-blog.get-repo-status-failed'))
+        if (!res) {
+          return
         }
+        this.repoName = res.data.articleRepo
+        this.repoInputDisabled = false
       }).catch(e => {
         console.log(e)
       })
     },
+    resetStatus() {
+      this.loading = true
+      this.unavailable = false
+      this.getStatusFailed = false
+      this.repoUsed = false
+      this.showBind = false
+      this.activeStep = -1
+      this.repoInputDisabled = true
+    },
     async isBindOnGitHub() {
       try {
         const res = await this.$API.accountList()
+        this.loading = false
         if (!res) {
           this.$message.error('服务器状态异常')
-          return undefined
+          this.getStatusFailed = true
         }
         const data = res.data
+        let isBind = false
         for (const account of data) {
           if (account.platform === 'github') {
-            return true
+            isBind =  true
+            break
           }
         }
-        return false
+        if (isBind) {
+          this.unavailable = true
+          this.activeStep = 0
+        } else {
+          this.unavailable = true
+          this.activeStep = 0
+        }
       } catch (e) {
         this.$message.error('获取用户已绑定的平台失败')
-        return undefined
+        this.getStatusFailed = true
       }
     },
     saveSettings() {
@@ -269,6 +276,15 @@ export default {
         console.log(e.message)
         this.$message.error('保存设置失败')
       })
+    },
+    stepStatus(index, activeStep) {
+      if (index < activeStep) {
+        return this.$t('indie-blog.done')
+      } else if (index === activeStep) {
+        return this.$t('indie-blog.processing')
+      } else {
+        return this.$t('indie-blog.step') + (index + 1)
+      }
     }
   }
 }
