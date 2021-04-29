@@ -39,7 +39,7 @@
             </el-button>
           </a>
         </div>
-        <div v-if="activeStep === 1" class="list">
+        <div v-else-if="activeStep === 1" class="list">
           <span class="list-title">{{ $t('indie-blog.repo-name') }}</span>
           <el-input
             v-model="repoName"
@@ -52,7 +52,7 @@
             {{ $t('indie-blog.save-and-refresh') }}
           </el-button>
         </div>
-        <div v-if="activeStep === 2" class="list center">
+        <div v-else class="list center">
           <el-button @click="getSiteStatus">
             {{ $t('indie-blog.go-settings') }}
           </el-button>
