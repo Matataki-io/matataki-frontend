@@ -34,7 +34,11 @@
             {{ userInfo.name }}
           </h1>
         </div>
-
+        <div v-if="user.siteLink" class="profile">
+          {{ $t('indie-blog.this-user-has-been-deployed-indie-blog') }}
+          <span style="width: 10px;" />
+          <a :href="'http://' + user.siteLink">http://{{ user.siteLink }}</a>
+        </div>
         <p class="profile">{{ userInfo.introduction || $t('not') }}</p>
         <div class="fl jc">
           <router-link
@@ -148,7 +152,7 @@ export default {
       tokenData: Object.create(null),
       shareModalShow: false,
       imgUploadDone: 0, // 图片是否上传完成
-      user: Object.create(null), // 用户信息 
+      user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info
     }
   },
