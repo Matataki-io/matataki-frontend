@@ -37,7 +37,7 @@
         <div v-if="user.siteLink" class="profile">
           {{ $t('indie-blog.this-user-has-been-deployed-indie-blog') }}
           <span style="width: 10px;" />
-          <a :href="'http://' + user.siteLink">http://{{ user.siteLink }}</a>
+          <a :href="'http://' + user.siteLink" target="_blank">http://{{ user.siteLink }}</a>
         </div>
         <p class="profile">{{ userInfo.introduction || $t('not') }}</p>
         <div class="fl jc">
