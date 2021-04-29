@@ -1649,7 +1649,8 @@
   "development-document": "开发文档",
   "mttk-points": "MTTK积分",
   "indie-blog": {
-    "page-tile": "独立子站（实验性功能，尚不稳定）",
+    "experimental-feature": "实验性功能，尚不稳定",
+    "page-tile": "独立子站",
     "status-loading": "独立子站状态加载中",
     "status-load-failed": "独立子站状态加载失败，请稍后重试",
     "retry": "重试",

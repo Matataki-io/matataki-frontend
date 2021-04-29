@@ -1,9 +1,14 @@
 <template>
   <userLayout>
     <template v-slot:main>
-      <h2 class="tag-title">
-        {{ $t('indie-blog.page-tile') }}
-      </h2>
+      <div>
+        <h2 class="tag-title">
+          {{ $t('indie-blog.page-tile') }}
+        </h2>
+        <el-tooltip :content="$t('indie-blog.experimental-feature')">
+          <svgIcon icon-class="experimental" />
+        </el-tooltip>
+      </div>
       <div v-if="loading" v-loading="true" class="list center">
         <span>{{ $t('indie-blog.status-loading') }}</span>
       </div>
@@ -52,7 +57,7 @@
             {{ $t('indie-blog.save-and-refresh') }}
           </el-button>
         </div>
-        <div v-else class="list center">
+        <div v-else-if="activeStep === 2" class="list center">
           <el-button @click="getSiteStatus">
             {{ $t('indie-blog.go-settings') }}
           </el-button>
@@ -78,11 +83,13 @@
 <script>
 import userLayout from '@/components/user/user_layout'
 import myAccountNav from '@/components/my_account/my_account_nav'
+import svgIcon from '@/components/SvgIcon'
 
 export default {
   components: {
     userLayout,
-    myAccountNav
+    myAccountNav,
+    svgIcon
   },
   data () {
     return {
@@ -294,6 +301,7 @@ export default {
   font-weight: bold;
   font-size: 20px;
   margin: 0 0 10px;
+  display: inline;
 }
 
 .list {
