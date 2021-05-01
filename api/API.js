@@ -1381,4 +1381,50 @@ minetokenGetResources(tokenId) {
   favPost(params) { return request.get(`/favorites/post`, { params }) },
   // 获取文章和自己的收藏夹关系
   favRelated(params) { return request.get(`/favorites/related`, { params }) },
+
+  // ------------------------------ 独立子站 ----------------------------------
+  /** 创建用于独立子站保存文章的仓库 */
+  createIndieBlogRepo () {
+    return request.post(`/user/prepareRepo`)
+  },
+  /**
+   * 获取仓库状态，将可能返回以下 4 种状态码
+   * 0: 一切正常
+   * 10020: 目标仓库没有留空
+   * 10019: 没有绑定 GitHub 账号，或 GitHub Token 不存在
+   */
+  getIndieBlogRepoStatus () {
+    return request.get(`/user/repoStatus`)
+  },
+  /**
+   * 获取独立子站状态
+   * 10021: 独立子站没有创建
+   */
+  getIndieBlogSiteStatus () {
+    return request.get(`/user/siteStatus`)
+  },
+  /**
+   * 修改子站仓库名，将可能返回以下 4 种状态码
+   * 0: 修改成功
+   * 10019: 没有绑定 GitHub 账号，或 GitHub Token 不存在
+   */
+  modifyIndieBlogRepoName (params) {
+    return request.post(`/user/repo`, params)
+  },
+  /**
+   * 获取子站设置项，成功后将返回以下 JSON
+   * {
+   *   "code": 0,
+   *   "message": "成功",
+   *   "data": {
+   *     "title": "titleName"
+   *   }
+   * }
+   */
+  getIndieBlogSiteConfig () {
+    return request.get(`/user/siteConfig`)
+  },
+  changeIndieBlogSiteConfig (params) {
+    return request.post(`/user/siteConfig`, params)
+  }
 }
