@@ -72,13 +72,74 @@
           </el-button>
         </div>
         <div v-if="allOK && settings">
-          <div v-for="(setting, index) in settings" :key="index" class="list">
-            <span class="list-title">{{ $t('indie-blog.' + setting.key) }}</span>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.title') }}</span>
             <el-input
-              v-model="setting.value"
+              v-model="settings.title"
               class="list-content"
-              type="text"
-              :label="setting.key"
+            />
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.subtitle') }}</span>
+            <el-input
+              v-model="settings.subtitle"
+              class="list-content"
+            />
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.description') }}</span>
+            <el-input
+              v-model="settings.description"
+              class="list-content"
+            />
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.keywords') }}</span>
+            <el-input
+              v-model="settings.keywords"
+              class="list-content"
+            />
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.author') }}</span>
+            <el-input
+              v-model="settings.author"
+              class="list-content"
+            />
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.language') }}</span>
+            <el-select v-model="settings.language" class="list-content">
+              <el-option
+                v-for="(language, index) in languages"
+                :key="index"
+                :value="language"
+                :label="$t('languages.' + language)"
+              >
+                <span style="float: left">{{ $t('languages.' + language) }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ language }}</span>
+              </el-option>
+            </el-select>
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.timezone') }}</span>
+            <el-select
+              v-model="settings.timezone"
+              class="list-content"
+            >
+              <el-option
+                v-for="(timezone, index) in timezones"
+                :key="index"
+                :label="timezone.name"
+                :value="timezone.value"
+              />
+            </el-select>
+          </div>
+          <div class="list">
+            <span class="list-title">{{ $t('indie-blog.theme') }}</span>
+            <el-input
+              v-model="settings.theme"
+              class="list-content"
             />
           </div>
           <div class="list center">
@@ -114,7 +175,7 @@ export default {
       repoName: '',
       showBind: false,
       creating: false,
-      settings: [],
+      settings: {},
       steps: [
         'indie-blog.bind-github-account',
         'indie-blog.create-repo-for-indie-blog',
@@ -122,9 +183,47 @@ export default {
       ],
       activeStep: -1,
       repoInputDisabled: true,
-      oldSettings: [],
+      oldSettings: {},
       siteLink: '',
-      saving: false
+      saving: false,
+      languages: ['en','zh','zh-TW', 'zh-HK','ja','fr','es'],
+      timezones: [
+        { name: 'UTC-12', value: 'IDLW'},
+        { name: 'UTC-11', value: 'SST'},
+        { name: 'UTC-10', value: 'HST'},
+        { name: 'UTC-9:30', value: 'MIT'},
+        { name: 'UTC-9', value: 'AKST'},
+        { name: 'UTC-8', value: 'PST'},
+        { name: 'UTC-7', value: 'MST'},
+        { name: 'UTC-6', value: 'CST'},
+        { name: 'UTC-5', value: 'EST'},
+        { name: 'UTC-4', value: 'AST'},
+        { name: 'UTC-3:30', value: 'EST'},
+        { name: 'UTC-2', value: 'FNT'},
+        { name: 'UTC-1', value: 'CVT'},
+        { name: 'UTC', value: 'GMT'},
+        { name: 'UTC+1', value: 'CET'},
+        { name: 'UTC+2', value: 'EET'},
+        { name: 'UTC+3', value: 'MSK'},
+        { name: 'UTC+3:30', value: 'IRST'},
+        { name: 'UTC+4', value: 'GST'},
+        { name: 'UTC+4:30', value: 'AFT'},
+        { name: 'UTC+5', value: 'PKT'},
+        { name: 'UTC+5:30', value: 'IST'},
+        { name: 'UTC+5:45', value: 'NPT'},
+        { name: 'UTC+6', value: 'BHT'},
+        { name: 'UTC+7', value: 'ICT'},
+        { name: 'UTC+8', value: 'CT'},
+        { name: 'UTC+9', value: 'JST'},
+        { name: 'UTC+9:30', value: 'ACST'},
+        { name: 'UTC+10', value: 'AEST'},
+        { name: 'UTC+10:30', value: 'LHST'},
+        { name: 'UTC+11', value: 'VUT'},
+        { name: 'UTC+12', value: 'NZST'},
+        { name: 'UTC+12:45', value: 'CHAST'},
+        { name: 'UTC+13', value: 'PHOST'},
+        { name: 'UTC+14', value: 'LINT'},
+      ]
     }
   },
   computed: {
@@ -221,16 +320,10 @@ export default {
         this.loading = false
         if (res) {
           if (res.code === 0) {
-            Object.keys(res.data).forEach((key) => {
-              if (key !== 'siteLink') {
-                const settingObj =                   {
-                  key: key,
-                  value: res.data[key]
-                }
-                this.settings.push({...settingObj})
-                this.oldSettings.push({...settingObj})
-              }
-            })
+            this.settings = {...res.data}
+            this.oldSettings = {...res.data}
+            this.settings.siteLink = undefined
+            this.oldSettings.siteLink = undefined
             this.siteLink = res.data.siteLink
           } else {
             this.getStatusFailed = true
@@ -297,12 +390,8 @@ export default {
       }
     },
     validateSettings() {
-      if (this.isArrayEqual(this.settings, this.oldSettings)) {
-        this.$message.warning(this.$t('indie-blog.no-items-modified'))
-        return
-      }
-      const themeModified = this.getSettingsValueByKey('theme', this.settings) !== this.getSettingsValueByKey('theme', this.oldSettings)
-      const timezoneModified = this.getSettingsValueByKey('timezone', this.settings) !== this.getSettingsValueByKey('timezone', this.oldSettings)
+      const themeModified = this.settings.theme !== this.oldSettings.theme
+      const timezoneModified = this.settings.timezone !== this.oldSettings.timezone
       if (!timezoneModified && !themeModified) {
         this.saveSettings()
         return
@@ -331,12 +420,8 @@ export default {
      * 保存设置 POST /user/siteConfig
      */
     saveSettings() {
-      const settings = {}
-      this.settings.forEach((e) => {
-        settings[e.key] = e.value
-      })
       this.saving = true
-      this.$API.changeIndieBlogSiteConfig(settings).then((res) => {
+      this.$API.changeIndieBlogSiteConfig(this.settings).then((res) => {
         this.saving = false
         if (!res) {
           this.$message.error('保存设置失败')
@@ -362,25 +447,6 @@ export default {
       } else {
         return this.$t('indie-blog.step') + (index + 1)
       }
-    },
-    getSettingsValueByKey(key, settings) {
-      if (!settings) return ''
-      for (const setting of settings) {
-        if (setting.key === key) {
-          return setting.value
-        }
-      }
-    },
-    isArrayEqual(arr1, arr2) {
-      if (!arr1 || !arr2) return false
-      if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false
-      if (arr1.length !== arr2.length) return false
-      for (const item of arr1) {
-        if (this.getSettingsValueByKey(item.key, arr2) !== item.value) {
-          return false
-        }
-      }
-      return true
     }
   }
 }
