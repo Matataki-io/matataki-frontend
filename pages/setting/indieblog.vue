@@ -13,10 +13,16 @@
           <svgIcon icon-class="experimental" />
         </el-tooltip>
       </div>
-      <div v-if="allOK" class="list">
-        <div class="list">
-          {{ $t('indie-blog.deployed') }} <div class="w-10px" /><a :href="'http://' + siteLink" target="_blank">http://{{ siteLink }}</a>
+      <div v-if="allOK">
+        <div v-if="siteAvailable" class="list">
+          <div>
+            {{ $t('indie-blog.deployed') }} <div class="w-10px" /><a :href="'http://' + siteLink" target="_blank">http://{{ siteLink }}</a>
+          </div>
         </div>
+        <!-- TODO:当后端可用时解除注释-->
+        <!--        <div v-else class="list">-->
+        <!--          NOT AVAILABLE-->
+        <!--        </div>-->
       </div>
       <div v-if="loading" v-loading="true" class="list center">
         <span>{{ $t('indie-blog.status-loading') }}</span>
@@ -188,42 +194,34 @@ export default {
       saving: false,
       languages: ['en','zh','zh-TW', 'zh-HK','ja','fr','es'],
       timezones: [
-        { name: 'UTC-12', value: 'IDLW'},
-        { name: 'UTC-11', value: 'SST'},
-        { name: 'UTC-10', value: 'HST'},
-        { name: 'UTC-9:30', value: 'MIT'},
-        { name: 'UTC-9', value: 'AKST'},
-        { name: 'UTC-8', value: 'PST'},
-        { name: 'UTC-7', value: 'MST'},
-        { name: 'UTC-6', value: 'CST'},
-        { name: 'UTC-5', value: 'EST'},
-        { name: 'UTC-4', value: 'AST'},
-        { name: 'UTC-3:30', value: 'EST'},
-        { name: 'UTC-2', value: 'FNT'},
-        { name: 'UTC-1', value: 'CVT'},
-        { name: 'UTC', value: 'GMT'},
-        { name: 'UTC+1', value: 'CET'},
-        { name: 'UTC+2', value: 'EET'},
-        { name: 'UTC+3', value: 'MSK'},
-        { name: 'UTC+3:30', value: 'IRST'},
-        { name: 'UTC+4', value: 'GST'},
-        { name: 'UTC+4:30', value: 'AFT'},
-        { name: 'UTC+5', value: 'PKT'},
-        { name: 'UTC+5:30', value: 'IST'},
-        { name: 'UTC+5:45', value: 'NPT'},
-        { name: 'UTC+6', value: 'BHT'},
-        { name: 'UTC+7', value: 'ICT'},
-        { name: 'UTC+8', value: 'CT'},
-        { name: 'UTC+9', value: 'JST'},
-        { name: 'UTC+9:30', value: 'ACST'},
-        { name: 'UTC+10', value: 'AEST'},
-        { name: 'UTC+10:30', value: 'LHST'},
-        { name: 'UTC+11', value: 'VUT'},
-        { name: 'UTC+12', value: 'NZST'},
-        { name: 'UTC+12:45', value: 'CHAST'},
-        { name: 'UTC+13', value: 'PHOST'},
-        { name: 'UTC+14', value: 'LINT'},
-      ]
+        { name: 'UTC-14', value: 'Etc/GMT-14'},
+        { name: 'UTC-13', value: 'Etc/GMT-13'},
+        { name: 'UTC-11', value: 'Etc/GMT-11'},
+        { name: 'UTC-10', value: 'Etc/GMT-10'},
+        { name: 'UTC-9', value: 'Etc/GMT-9'},
+        { name: 'UTC-8', value: 'Etc/GMT-8'},
+        { name: 'UTC-7', value: 'Etc/GMT-7'},
+        { name: 'UTC-6', value: 'Etc/GMT-6'},
+        { name: 'UTC-5', value: 'Etc/GMT-5'},
+        { name: 'UTC-4', value: 'Etc/GMT-4'},
+        { name: 'UTC-4', value: 'Etc/GMT-3'},
+        { name: 'UTC-2', value: 'Etc/GMT-2'},
+        { name: 'UTC-1', value: 'Etc/GMT-1'},
+        { name: 'UTC', value: 'Etc/GMT'},
+        { name: 'UTC+1', value: 'Etc/GMT+1'},
+        { name: 'UTC+2', value: 'Etc/GMT+2'},
+        { name: 'UTC+3', value: 'Etc/GMT+3'},
+        { name: 'UTC+4', value: 'Etc/GMT+4'},
+        { name: 'UTC+5', value: 'Etc/GMT+5'},
+        { name: 'UTC+6', value: 'Etc/GMT+6'},
+        { name: 'UTC+7', value: 'Etc/GMT+7'},
+        { name: 'UTC+8', value: 'Etc/GMT+8'},
+        { name: 'UTC+9', value: 'Etc/GMT+9'},
+        { name: 'UTC+10', value: 'Etc/GMT+10'},
+        { name: 'UTC+11', value: 'Etc/GMT+11'},
+        { name: 'UTC+12', value: 'Etc/GMT+12'}
+      ],
+      siteAvailable: false
     }
   },
   computed: {
@@ -231,6 +229,13 @@ export default {
       return this.loading === false
       && this.getStatusFailed === false
         && this.unavailable === false
+    }
+  },
+  watch: {
+    siteLink(val) {
+      if (!val) return
+      // TODO:后端可用时解除注释
+      // this.isSiteLinkAvailable()
     }
   },
   mounted() {
@@ -447,7 +452,26 @@ export default {
       } else {
         return this.$t('indie-blog.step') + (index + 1)
       }
-    }
+    },
+    /** 检测独立子站是否已经成功部署 */
+    // TODO:后端可用时解除注释
+    // async isSiteLinkAvailable() {
+    //   let siteLink = this.siteLink
+    //   if (!siteLink.startsWith('http://')) {
+    //     siteLink = 'http://' + siteLink
+    //   }
+    //   try {
+    //     const request = http.request(siteLink)
+    //     request.method = 'GET'
+    //     request.on('response', res => {
+    //       this.siteAvailable = res.statusCode !== 404
+    //       console.log(res)
+    //     })
+    //     request.end()
+    //   } catch (e) {
+    //     this.siteAvailable = false
+    //   }
+    // }
   }
 }
 </script>
