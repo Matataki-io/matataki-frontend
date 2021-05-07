@@ -1681,6 +1681,23 @@
     "repo-name-format-error": "Repository name invalid",
     "ok": "OK",
     "repo-exists": "Repository named {name} probably exists",
-    "repo-name-rule": "The name of the GitHub repository should only contain uppercase and lowercase letters, underscores, and periods, such as kawaii.lemon-neko"
+    "repo-name-rule": "The name of the GitHub repository should only contain uppercase and lowercase letters, underscores, and periods, such as kawaii.lemon-neko",
+    "cancel": "Cancel",
+    "deployed": "Your site is published at",
+    "this-user-has-been-deployed-indie-blog": "This user has deployed Indie Blog",
+    "two-step-confirm": "Double confirm",
+    "timezone-modified": "Time zone: This item will affect the time display format in the Indie Blog",
+    "theme-modified": "Theme: This item will affect the layout of the Indie-Blog",
+    "is-continue": "Are you sure you want to make these changes?",
+    "no-items-modified": "No item modified"
+  },
+  "languages": {
+    "en": "English",
+    "zh": "简体中文",
+    "fr": "français",
+    "zh-TW": "繁體中文（台灣）",
+    "zh-HK": "繁體中文（港澳地區）",
+    "es": "Español",
+    "ja": "日本語"
   }
 }
