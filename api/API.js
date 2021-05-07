@@ -1423,7 +1423,19 @@ minetokenGetResources(tokenId) {
   getIndieBlogSiteConfig () {
     return request.get(`/user/siteConfig`)
   },
+  /**
+   * 修改子站设置项
+   * @param params 应当为 Object 类型
+   * eg:
+   * {
+   *   "title": "LemonNeko's indie blog",
+   *   "timezone": "Etc/GMT+8"
+   * }
+   */
   changeIndieBlogSiteConfig (params) {
     return request.post(`/user/siteConfig`, params)
+  },
+  getIndieBlogPagesStatus () {
+    return request.get(`/user/pagesStatus`)
   }
 }
