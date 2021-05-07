@@ -1683,13 +1683,16 @@
     "repo-exists": "Repository named {name} probably exists",
     "repo-name-rule": "The name of the GitHub repository should only contain uppercase and lowercase letters, underscores, and periods, such as kawaii.lemon-neko",
     "cancel": "Cancel",
-    "deployed": "Your site is published at",
+    "deployed": "Your site is published at ",
+    "not-deployed": "Your indie blog has not been deployed yet, please check the GitHub Pages status in the repository settings",
     "this-user-has-been-deployed-indie-blog": "This user has deployed Indie Blog",
     "two-step-confirm": "Double confirm",
     "timezone-modified": "Time zone: This item will affect the time display format in the Indie Blog",
     "theme-modified": "Theme: This item will affect the layout of the Indie-Blog",
     "is-continue": "Are you sure you want to make these changes?",
-    "no-items-modified": "No item modified"
+    "no-items-modified": "No item modified",
+    "refresh-status": "Refresh deploy status",
+    "deploy-status-loading": "Loading deploy status..."
   },
   "languages": {
     "en": "English",

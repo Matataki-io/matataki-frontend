@@ -1,5 +1,5 @@
 <!--
-页面作者: 柠喵
+页面作者: 柠喵 LemonNekoGH
 对此页代码有疑问请钉柠喵或发送邮件至 chheese048@gmail.com
 -->
 <template>
@@ -14,15 +14,26 @@
         </el-tooltip>
       </div>
       <div v-if="allOK">
-        <div v-if="siteAvailable" class="list">
-          <div>
-            {{ $t('indie-blog.deployed') }} <div class="w-10px" /><a :href="'http://' + siteLink" target="_blank">http://{{ siteLink }}</a>
-          </div>
+        <div v-if="loadingPagesStatus" v-loading="true" class="list center">
+          {{ $t('indie-blog.deploy-status-loading') }}
         </div>
-        <!-- TODO:当后端可用时解除注释-->
-        <!--        <div v-else class="list">-->
-        <!--          NOT AVAILABLE-->
-        <!--        </div>-->
+        <div v-else-if="siteAvailable" class="list">
+          <div class="site-available">
+            <span style="flex: 1">{{ $t('indie-blog.deployed') }}</span>
+            <a class="site-link" :href="siteLink" target="_blank">{{ siteLink }}</a>
+          </div>
+          <el-button @click="isSiteLinkAvailable">
+            <i class="el-icon-refresh" />
+            {{ $t('indie-blog.refresh-status') }}
+          </el-button>
+        </div>
+        <div v-else class="list">
+          <span style="flex: 1">{{ $t('indie-blog.not-deployed') }}</span>
+          <el-button @click="isSiteLinkAvailable">
+            <i class="el-icon-refresh" />
+            {{ $t('indie-blog.refresh-status') }}
+          </el-button>
+        </div>
       </div>
       <div v-if="loading" v-loading="true" class="list center">
         <span>{{ $t('indie-blog.status-loading') }}</span>
@@ -221,7 +232,8 @@ export default {
         { name: 'UTC+11', value: 'Etc/GMT+11'},
         { name: 'UTC+12', value: 'Etc/GMT+12'}
       ],
-      siteAvailable: false
+      siteAvailable: false,
+      loadingPagesStatus: false
     }
   },
   computed: {
@@ -232,10 +244,9 @@ export default {
     }
   },
   watch: {
-    siteLink(val) {
+    allOK(val) {
       if (!val) return
-      // TODO:后端可用时解除注释
-      // this.isSiteLinkAvailable()
+      this.isSiteLinkAvailable()
     }
   },
   mounted() {
@@ -329,7 +340,6 @@ export default {
             this.oldSettings = {...res.data}
             this.settings.siteLink = undefined
             this.oldSettings.siteLink = undefined
-            this.siteLink = res.data.siteLink
           } else {
             this.getStatusFailed = true
             this.$message.error('服务器返回的数据有点问题')
@@ -365,6 +375,8 @@ export default {
       this.activeStep = -1
       this.repoInputDisabled = true
       this.saving = false
+      this.siteAvailable = false
+      this.loadingPagesStatus = false
     },
     async isBindOnGitHub() {
       try {
@@ -454,24 +466,22 @@ export default {
       }
     },
     /** 检测独立子站是否已经成功部署 */
-    // TODO:后端可用时解除注释
-    // async isSiteLinkAvailable() {
-    //   let siteLink = this.siteLink
-    //   if (!siteLink.startsWith('http://')) {
-    //     siteLink = 'http://' + siteLink
-    //   }
-    //   try {
-    //     const request = http.request(siteLink)
-    //     request.method = 'GET'
-    //     request.on('response', res => {
-    //       this.siteAvailable = res.statusCode !== 404
-    //       console.log(res)
-    //     })
-    //     request.end()
-    //   } catch (e) {
-    //     this.siteAvailable = false
-    //   }
-    // }
+    async isSiteLinkAvailable() {
+      try {
+        this.loadingPagesStatus = true
+        const res = await this.$API.getIndieBlogPagesStatus()
+        this.loadingPagesStatus = false
+        if (!res || res.code !== 0 || res.data.status !== 'built') {
+          this.siteAvailable = false
+        } else {
+          this.siteLink = res.data.url
+          this.siteAvailable = true
+        }
+      } catch (e) {
+        this.loadingPagesStatus = false
+        this.siteAvailable = false
+      }
+    }
   }
 }
 </script>
@@ -486,6 +496,7 @@ export default {
 .list {
   margin: 20px 0 0 0;
   display: flex;
+  align-items: center;
 
   .list-content {
     flex: 8;
@@ -513,5 +524,18 @@ export default {
 
 .w-10px {
   width: 10px;
+}
+
+.site {
+  &-available {
+    flex: 1;
+    display: flex;
+  }
+  &-link {
+    flex: 2;
+    &:visited {
+      color: #542DE0;
+    }
+  }
 }
 </style>
