@@ -631,11 +631,12 @@
           <h4 class="set-subtitle">
             {{ $t('publish.whereToPublish') }}
             <el-tooltip
+              class="max-width-80"
               effect="dark"
               placement="top-start"
             >
               <div slot="content">
-                {{ $t('publish.whereToPublishDescription') }} <a href="https://matataki.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
+                <div v-html="$t('publish.whereToPublishDescription')" /> <a href="https://matataki.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
               </div>
               <svg-icon
                 class="help-icon"
@@ -648,9 +649,30 @@
               {{ $t('publish.publishToIPFS') }}
             </el-radio>
             <br>
-            <el-radio v-model="publishToGithub" :label="true" :disabled="$route.params.type === 'edit'">
+            <el-radio
+              v-if="$route.params.type === 'edit'"
+              v-model="publishToGithub"
+              :label="true"
+              :disabled="true"
+            >
               {{ $t('publish.publishToGithub') }}
             </el-radio>
+            <el-radio
+              v-else-if="isIndieBlogCreated"
+              v-model="publishToGithub"
+              :label="true"
+            >
+              {{ $t('publish.publishToGithub') }}
+            </el-radio>
+            <el-tooltip v-else :content="$t('indie-blog.cannot-save-to-indie-blog')">
+              <el-radio
+                v-model="publishToGithub"
+                :label="true"
+                :disabled="true"
+              >
+                {{ $t('publish.publishToGithub') }}
+              </el-radio>
+            </el-tooltip>
           </div>
         </div>
 
@@ -900,7 +922,8 @@ export default {
             }
           }
         ]
-      }
+      },
+      isIndieBlogCreated: false
     }
   },
   computed: {
@@ -1128,6 +1151,7 @@ export default {
     this.getBindableTokenList()
     this.getAllTokens()
     // this.setToolBar()
+    this.getIndieBlogStatus()
 
   },
   beforeRouteLeave(to, from, next) {
@@ -2335,6 +2359,16 @@ export default {
       }
 
       return _title
+    },
+    /** 获取用户的独立子站状态 */
+    async getIndieBlogStatus() {
+      try {
+        const res = await this.$API.getIndieBlogSiteStatus()
+        this.isIndieBlogCreated = res && res.code !== 10021
+      } catch (e) {
+        this.isIndieBlogCreated = false
+        console.log(e.message)
+      }
     }
   }
 }

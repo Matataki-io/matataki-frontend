@@ -420,10 +420,10 @@
     "importSuccess": "Imported successfully",
     "importError": "Import failed, currently only supports: 链闻、橙皮书、微信、知乎专栏、Matters、简书、币乎、Steemit。",
     "whereToPublish": "Article location",
-    "whereToPublishDescription": "Article will saved in your GitHub repository if you choose GitHub to save. It cannot be modified after publishing",
+    "whereToPublishDescription": "If you create Indie Blog, you can save the article to the Indie Blog, and the article saved in the Indie Blog will be rendered to your Indie Blog.<br> This option cannot be modified after it is published",
     "whereToPublishHelp": "See detail",
     "publishToIPFS": "IPFS",
-    "publishToGithub": "Github",
+    "publishToGithub": "Indie Blog",
     "originalStatement": "Original statement",
     "statement": "Checking this original statement means you confirm and promise that the article, including the pictures and other elements used in the article, was created independently by you (or the organization holding the account), or has obtained the right of the original work \nLicense. \nDo not check this original statement for articles with the following circumstances:",
     "statement1": "1. Works produced by distortion, falsification, plagiarism, and plagiarism created by others,",
@@ -1692,7 +1692,8 @@
     "is-continue": "Are you sure you want to make these changes?",
     "no-items-modified": "No item modified",
     "refresh-status": "Refresh deploy status",
-    "deploy-status-loading": "Loading deploy status..."
+    "deploy-status-loading": "Loading deploy status...",
+    "cannot-save-to-indie-blog": "Cannot save article to Indie Blog, you should create Indie Blog first."
   },
   "languages": {
     "en": "English",
