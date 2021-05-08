@@ -37,6 +37,7 @@ export default {
   },
   data() {
     return {
+      // 因为不知道为什么渲染会丢掉 svg-icon 类名 如果有覆盖属性没有则使用
       styleSvg: {
         width: '1em',
         height: '1em',
