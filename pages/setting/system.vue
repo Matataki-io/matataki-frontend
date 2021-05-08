@@ -9,8 +9,19 @@
         <el-switch
           v-model="isTransfer"
           active-color="#542DE0"
-          @change="changeTransfer"
         />
+        <vue-captcha
+          ref="captcha"
+          :sitekey="hCaptchaSiteKey"
+          :language="appLang"
+          style="display: inline-block"
+          @verify="onCaptchaVerify"
+          @expired="onCaptchaExpire"
+          @error="onCaptchaError"
+        />
+        <el-button @click="changeTransfer(isTransfer)">
+          {{ $t('save') }}
+        </el-button>
       </div>
       <div class="list">
         <el-button
@@ -54,30 +65,57 @@ import myAccountNav from '@/components/my_account/my_account_nav.vue'
 import store from '@/utils/store.js'
 import { removeCookie, clearAllCookie } from '@/utils/cookie'
 import { getCookie } from '@/utils/cookie'
+import vueCaptcha from '@hcaptcha/vue-hcaptcha'
 
 export default {
   components: {
     userLayout,
-    myAccountNav
+    myAccountNav,
+    vueCaptcha
   },
   data() {
     return {
       isTransfer: true,
-      downloaderUrl: ''
+      downloaderUrl: '',
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
+      },
     }
   },
-  /* computed: {
-    downloaderUrl() {
-      const token = getCookie('ACCESS_TOKEN')
-      return `${process.env.VUE_APP_API}/dev/down/posts?token=${token}`
+  computed: {
+    // downloaderUrl() {
+    //   const token = getCookie('ACCESS_TOKEN')
+    //   return `${process.env.VUE_APP_API}/dev/down/posts?token=${token}`
+    // }
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+    },
+    appLang() {
+      return getCookie('language')
     }
-  }, */
+  },
   mounted() {
     this.getMyUserData()
     this.downloaderUrl = `${process.env.VUE_APP_API}/dev/down/posts?token=${getCookie('ACCESS_TOKEN')}`
   },
   methods: {
     ...mapActions(['resetAllStore']),
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onCaptchaExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onCaptchaError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error:', err)
+    },
     async downPosts() {
       await this.$API.downpost()
     },
@@ -97,7 +135,7 @@ export default {
       try {
         this.articleTransfer = status
         const accept = status ? 1 : 0
-        const res = await this.$API.setProfile({ accept })
+        const res = await this.$API.setProfile({ accept, hCaptchaData: this.hCaptchaData, })
         if (res.code === 0) {
           this.$message({
             showClose: true,
@@ -109,6 +147,7 @@ export default {
           this.articleTransfer = !status
         }
       } catch (error) {
+        this.$refs.captcha.reset()
         this.articleTransfer = !status
         console.log(`转让状态错误${error}`)
         this.$message({ showClose: true, message: this.$t('error.fail'), type: 'error'})
@@ -177,6 +216,9 @@ export default {
 }
 .list {
   margin: 20px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   a {
     color: #333;
     text-decoration: underline;
