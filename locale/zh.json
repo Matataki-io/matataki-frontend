@@ -420,10 +420,10 @@
     "importSuccess": "导入成功",
     "importError": "导入失败,目前只支持: 链闻、橙皮书、微信、知乎专栏、Matters、简书、币乎、Steemit。",
     "whereToPublish": "文章储存位置",
-    "whereToPublishDescription": "当您把文章存储位置设置成GitHub之后，文章将保存到您的GitHub仓库，此选项发布后不可修改",
+    "whereToPublishDescription": "如果您创建了独立子站，可以将文章保存到独立子站，保存到独立子站中的文章将被渲染到您的独立子站中，此选项发布后不可修改",
     "whereToPublishHelp": "查看更详细的信息",
     "publishToIPFS": "IPFS",
-    "publishToGithub": "Github",
+    "publishToGithub": "独立子站",
     "originalStatement": "原创声明",
     "statement": "勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：",
     "statement1": "1.歪曲、篡改、抄袭、剽窃他人创作而产生的作品，",
@@ -1692,7 +1692,8 @@
     "is-continue": "您确认要进行这些修改吗？",
     "no-items-modified": "您没有修改任何内容",
     "refresh-status": "刷新状态",
-    "deploy-status-loading": "部署状态加载中..."
+    "deploy-status-loading": "部署状态加载中...",
+    "cannot-save-to-indie-blog": "您没有创建独立子站，因此无法将文章储存至独立子站"
   },
   "languages": {
     "en": "English",
