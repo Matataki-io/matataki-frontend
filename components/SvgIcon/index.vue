@@ -12,6 +12,7 @@
     v-else
     :class="svgClass"
     aria-hidden="true"
+    :style="styleSvg"
     v-on="$listeners"
   >
     <use :xlink:href="iconName" />
@@ -34,6 +35,17 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      styleSvg: {
+        width: '1em',
+        height: '1em',
+        verticalAlign: '-0.15em',
+        fill: 'currentColor',
+        overflow: 'hidden',
+      }
+    }
+  },
   computed: {
     isExternal() {
       return isExternal(this.iconClass)
@@ -50,6 +62,7 @@ export default {
     },
     styleExternalIcon() {
       return {
+        ...this.styleSvg,
         mask: `url(${this.iconClass}) no-repeat 50% 50%`,
         '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`
       }
@@ -58,7 +71,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .svg-icon {
   width: 1em;
   height: 1em;
