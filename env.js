@@ -106,7 +106,7 @@ export default {
     VUE_APP_API: 'https://api.mttk.net',
     VUE_APP_URL: 'https://matataki.io',
     VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
-    VUE_APP_MATATAKI_CACHE: 'https://cache.ayaka.moe/matataki',
+    VUE_APP_MATATAKI_CACHE: 'https://cache-ore.mttk.net/matataki',
     VUE_APP_DEVELOPER: 'https://developer.matataki.io',
     VUE_APP_HCAPTCHA_SITE_KEY: '929510ae-ff3e-4ccc-bb8b-f7dd3983e791',
     VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
