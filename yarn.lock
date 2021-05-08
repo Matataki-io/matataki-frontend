@@ -7861,10 +7861,10 @@ markdown-it@^9.0.1:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-markdown-render-js@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/markdown-render-js/-/markdown-render-js-1.0.5.tgz#9d4e3d444953d850076010d973b474cd8c97016c"
-  integrity sha512-zx/aXO3OR+4+dC55GOK7DKSLpXeO0RHC5zhG6aMI0VfkhsVY+K66z0DvS2gQTU/tQ/U08Y+YAW/8Tqe17vgkmw==
+markdown-render-js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/markdown-render-js/-/markdown-render-js-1.0.6.tgz#f0a85e9dd7da2136ea9960ee02ef2cb14b840fc6"
+  integrity sha512-82soQeX0jvGB+aF3DfZ1a2f2JzMZS/8ho1vGKRHOMo4MaFgs2Gu+QzR6RLez8a0MknJIrjyYGluAGLJHzAy1KQ==
   dependencies:
     highlight.js "10.1.2"
     highlightjs-solidity "1.0.18"
