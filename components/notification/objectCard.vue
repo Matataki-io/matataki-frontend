@@ -168,7 +168,7 @@ export default {
     ...mapGetters(['currentUserInfo', 'isLogined', 'isMe']),
     cover() {
       if (!this.post) return ''
-      return this.post.cover ? this.$ossProcess(this.post.cover, { h: 60 }) : this.$ossProcess('/material/default_cover.png', { h: 60 })
+      return this.post.cover ? this.$ossProcess(this.post.cover, { h: 60 }) : this.$ossProcess('/material/default_cover_v1.png', { h: 60 })
     },
     likes() {
       if (!this.post || !this.post.likes) return 0
