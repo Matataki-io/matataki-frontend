@@ -1697,7 +1697,8 @@
     "refresh-status": "刷新状态",
     "deploy-status-loading": "部署状态加载中...",
     "cannot-save-to-indie-blog": "您没有创建独立子站，因此无法将文章储存至独立子站",
-    "auto-detect": "自动检测"
+    "auto-detect": "自动检测",
+    "enter-indie-blog": "子站"
   },
   "languages": {
     "en": "English",
