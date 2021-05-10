@@ -28,7 +28,15 @@
           </el-button>
         </div>
         <div v-else class="list">
-          <span style="flex: 1">{{ $t('indie-blog.not-deployed') }}</span>
+          <span>{{ $t('indie-blog.not-deployed-part1') }}</span>
+          <a
+            v-if="repoName && githubUserName"
+            class="link"
+            :href="`https://github.com/${githubUserName}/${repoName}/settings/pages`"
+            target="_blank"
+          >{{ $t('indie-blog.not-deployed-part2') }}</a>
+          <span v-else>{{ $t('indie-blog.not-deployed-part2') }}</span>
+          <span style="flex: 1">{{ $t('indie-blog.not-deployed-part3') }}</span>
           <el-button @click="isSiteLinkAvailable">
             <i class="el-icon-refresh" />
             {{ $t('indie-blog.refresh-status') }}
@@ -79,11 +87,16 @@
             :prefix-icon="repoInputDisabled ? 'el-icon-loading' : ''"
           />
           <div class="w-10px" />
-          <el-button :loading="creating" @click="modifyRepoNameAndContinue">
+          <el-button :loading="saving" @click="modifyRepoNameAndContinue">
             {{ $t('indie-blog.save-and-refresh') }}
           </el-button>
         </div>
         <div v-else-if="activeStep === 2" class="list center">
+          <el-button :loading="creating" @click="createRepo">
+            {{ $t('indie-blog.complete') }}
+          </el-button>
+        </div>
+        <div v-else-if="activeStep === 3" class="list center">
           <el-button @click="getSiteStatus">
             {{ $t('indie-blog.go-settings') }}
           </el-button>
@@ -190,13 +203,15 @@ export default {
       unavailable: false,
       repoUsed: false,
       repoName: '',
+      githubUserName: '',
       showBind: false,
       creating: false,
       settings: {},
       steps: [
         'indie-blog.bind-github-account',
         'indie-blog.create-repo-for-indie-blog',
-        'indie-blog.complete'
+        'indie-blog.complete',
+        'indie-blog.begin-setting'
       ],
       activeStep: -1,
       repoInputDisabled: true,
@@ -205,6 +220,7 @@ export default {
       saving: false,
       languages: ['en','zh','zh-TW', 'zh-HK','ja','fr','es'],
       timezones: [
+        { name: this.$t('indie-blog.auto-detect'), value: '' },
         { name: 'UTC-14', value: 'Etc/GMT-14'},
         { name: 'UTC-13', value: 'Etc/GMT-13'},
         { name: 'UTC-11', value: 'Etc/GMT-11'},
@@ -254,7 +270,9 @@ export default {
   },
   methods: {
     createRepo() {
+      this.creating = true
       this.$API.createIndieBlogRepo().then((res) => {
+        this.creating = false
         if (res) {
           const {code} = res
           if (code === undefined) {
@@ -265,7 +283,7 @@ export default {
               this.$message.error('创建子站失败')
             } else {
               this.$message.success('创建子站成功')
-              this.activeStep = 2
+              this.activeStep = 3
             }
           }
         } else {
@@ -290,11 +308,17 @@ export default {
             this.loading = false
             this.unavailable = true
             this.activeStep = 1
-            this.getRepoName()
+            const repo = await this.getRepoName()
+            if (repo) {
+              this.repoName = repo
+              this.repoInputDisabled = false
+            }
           } else if (code === 10019) {
             await this.isBindOnGitHub()
           } else {
             this.getSettingsItem()
+            this.repoName = await this.getRepoName()
+            this.githubUserName = await this.getGithubId()
           }
         } else {
           this.getStatusFailed = true
@@ -313,13 +337,13 @@ export default {
         })
         return
       }
-      this.creating = true
+      this.saving = true
       this.$API.modifyIndieBlogRepoName({ repo: this.repoName }).then((res) => {
         if (res) {
+          this.saving = false
           if (res.code === 0) {
-            this.createRepo()
+            this.activeStep = 2
           } else {
-            this.creating = false
             this.$alert(this.$t('indie-blog.repo-exists', { name: this.repoName }), this.$t('indie-blog.save-repo-name-failed'),{
               confirmButtonText: this.$t('indie-blog.ok')
             })
@@ -355,16 +379,31 @@ export default {
         this.$message.error('网络问题')
       })
     },
-    getRepoName() {
-      this.$API.getIndieBlogRepoStatus().then(res => {
-        if (!res) {
-          return
-        }
-        this.repoName = res.data.articleRepo
-        this.repoInputDisabled = false
-      }).catch(e => {
+    /** 获取仓库名称 */
+    async getRepoName() {
+      try {
+        const res = await this.$API.getIndieBlogRepoStatus()
+        if (!res) return ''
+        return res.data.articleRepo
+      } catch (e) {
         console.log(e)
-      })
+        return ''
+      }
+    },
+    async getGithubId() {
+      try {
+        const res = await this.$API.accountList()
+        if (!res) return ''
+        const list = res.data
+        const github = list.find(it => it.platform === 'github')
+        if (github) {
+          return github.account
+        }
+        return ''
+      } catch (e) {
+        console.log(e)
+        return ''
+      }
     },
     resetStatus() {
       this.loading = true
@@ -526,6 +565,12 @@ export default {
   width: 10px;
 }
 
+.normal-visited {
+  &:visited {
+    color: #542DE0;
+  }
+}
+
 .site {
   &-available {
     flex: 1;
@@ -533,9 +578,11 @@ export default {
   }
   &-link {
     flex: 2;
-    &:visited {
-      color: #542DE0;
-    }
+    .normal-visited();
   }
+}
+
+.link {
+  .normal-visited();
 }
 </style>
