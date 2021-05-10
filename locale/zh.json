@@ -1677,6 +1677,7 @@
     "done": "完成",
     "step": "步骤",
     "you-are-done": "您已完成创建独立子站的所有步骤，点击下方按钮即可进入设置页面",
+    "begin-setting": "开始设置",
     "go-settings": "前往设置页面",
     "repo-name-format-error": "GitHub 仓库名称格式不正确",
     "ok": "好",
@@ -1684,7 +1685,9 @@
     "repo-exists": "可能是名为 {name} 的仓库已经存在",
     "repo-name-rule": "GitHub 仓库名应当仅包含英文字母大小写、中划线和半角句号，例如 kawaii.lemon-neko",
     "deployed": "您的独立子站已被部署至：",
-    "not-deployed": "您的独立子站尚未完成部署，请到仓库设置中检查 GitHub Pages 开启状态",
+    "not-deployed-part1": "您的独立子站尚未完成部署，请到",
+    "not-deployed-part2": "仓库设置",
+    "not-deployed-part3": "中检查 GitHub Pages 开启状态",
     "this-user-has-been-deployed-indie-blog": "此用户已部署独立子站",
     "two-step-confirm": "您修改了重要项目，需要向您二次确认",
     "timezone-modified": "时间区域：此项会影响子站中的时间显示格式",
@@ -1693,7 +1696,8 @@
     "no-items-modified": "您没有修改任何内容",
     "refresh-status": "刷新状态",
     "deploy-status-loading": "部署状态加载中...",
-    "cannot-save-to-indie-blog": "您没有创建独立子站，因此无法将文章储存至独立子站"
+    "cannot-save-to-indie-blog": "您没有创建独立子站，因此无法将文章储存至独立子站",
+    "auto-detect": "自动检测"
   },
   "languages": {
     "en": "English",
