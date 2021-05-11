@@ -47,7 +47,8 @@
         <span>{{ $t('indie-blog.status-loading') }}</span>
       </div>
       <div v-if="getStatusFailed" class="list center">
-        <span>{{ $t('indie-blog.status-load-failed') }}</span>
+        <span v-if="siteCreated && getSettingsFailed">{{ $t('indie-blog.repository-deleted') }}</span>
+        <span v-else>{{ $t('indie-blog.status-load-failed') }}</span>
         <div class="w-10px" />
         <el-button @click="getSiteStatus">
           {{ $t('indie-blog.retry') }}
@@ -200,6 +201,8 @@ export default {
     return {
       loading: false,
       getStatusFailed: false,
+      siteCreated: false,
+      getSettingsFailed: false,
       unavailable: false,
       repoUsed: false,
       repoName: '',
@@ -269,10 +272,11 @@ export default {
     this.getSiteStatus()
   },
   methods: {
-    createRepo() {
-      this.creating = true
-      this.$API.createIndieBlogRepo().then((res) => {
-        this.creating = false
+    async createRepo() {
+      try {
+        this.creating = true
+        let res = await this.$API.createIndieBlogRepo()
+        let repoCreated = false
         if (res) {
           const {code} = res
           if (code === undefined) {
@@ -280,18 +284,37 @@ export default {
           } else {
             this.creating = false
             if (code === 1) {
-              this.$message.error('创建子站失败')
+              this.$message.error('创建子站仓库失败')
             } else {
-              this.$message.success('创建子站成功')
-              this.activeStep = 3
+              repoCreated = true
             }
           }
         } else {
           this.$message.error('服务器返回数据有问题')
         }
-      }).catch((e) => {
-        console.log(e)
-      })
+        if (repoCreated) {
+          res = await this.$API.initialIndieBlogRepo()
+          if (res) {
+            const {code} = res
+            if (code === undefined) {
+              this.$message('服务器返回数据有问题')
+            } else {
+              this.creating = false
+              if (code === 1) {
+                this.$message.error('初始化子站仓库失败')
+              } else {
+                this.activeStep = 3
+              }
+            }
+          } else {
+            this.$message.error('服务器返回数据有问题')
+          }
+        }
+      } catch (e) {
+        this.$message.error('服务器返回数据有问题')
+      } finally {
+        this.creating = false
+      }
     },
     /**
      * 点击独立子站 getSiteStatus /user/siteStatus
@@ -316,6 +339,7 @@ export default {
           } else if (code === 10019) {
             await this.isBindOnGitHub()
           } else {
+            this.siteCreated = true
             this.getSettingsItem()
             this.repoName = await this.getRepoName()
             this.githubUserName = await this.getGithubId()
@@ -365,8 +389,8 @@ export default {
             this.settings.siteLink = undefined
             this.oldSettings.siteLink = undefined
           } else {
+            this.getSettingsFailed = true
             this.getStatusFailed = true
-            this.$message.error('服务器返回的数据有点问题')
           }
         } else {
           this.getStatusFailed = true
@@ -416,6 +440,8 @@ export default {
       this.saving = false
       this.siteAvailable = false
       this.loadingPagesStatus = false
+      this.siteCreated = false
+      this.getSettingsFailed = false
     },
     async isBindOnGitHub() {
       try {
