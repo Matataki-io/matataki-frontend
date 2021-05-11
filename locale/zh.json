@@ -839,10 +839,10 @@
     }
   },
   "githubHash": {
-    "link": "GitHub仓库",
-    "fileHash": "文件Hash",
+    "link": "独立子站",
+    "fileHash": "文件 Hash",
     "filePath": "存储地址",
-    "description": "本文内容存储于GitHub"
+    "description": "本文内容存储于 GitHub"
   },
   "group": {
     "joinFanBase": "加入{0}粉丝群",
@@ -1650,7 +1650,7 @@
   "mttk-points": "MTTK积分",
   "indie-blog": {
     "experimental-feature": "实验性功能，尚不稳定",
-    "page-tile": "独立子站",
+    "page-title": "独立子站",
     "status-loading": "独立子站状态加载中",
     "status-load-failed": "独立子站状态加载失败，请稍后重试",
     "retry": "重试",

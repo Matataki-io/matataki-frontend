@@ -23,9 +23,14 @@
         <div class="fl ac author-info">
           <span class="Post-Time">{{ time }}</span>
           <span class="View-Num"><svg-icon class="icon" icon-class="read" />{{ article.read || 0 }}</span>
-          <ipfsAll :article-ipfs-array="articleIpfsArray" :user="user" :github-id="githubId" />
+          <ipfsAll
+            :article-ipfs-array="articleIpfsArray"
+            :user="user"
+            :github-id="githubId"
+            :github-repo="githubRepo"
+          />
           &nbsp;
-          <span class="article-head__ipfs">{{ isPublishedOnGithub ? 'GitHub' : 'IPFS' }}</span>
+          <span class="article-head__ipfs">{{ isPublishedOnGithub ? $t('indie-blog.page-title') : 'IPFS' }}</span>
         </div>
       </div>
     </div>
@@ -76,7 +81,8 @@ export default {
       },
       user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info,
-      githubId: ''
+      githubId: '',
+      githubRepo: ''
     }
   },
   computed: {
@@ -147,6 +153,7 @@ export default {
           return
         }
         this.githubId = res.data.github_id
+        this.githubRepo = res.data.github_repo
       } catch (e) {
         this.$message.error(e.message)
       }

@@ -7861,7 +7861,7 @@ markdown-it@^9.0.1:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-markdown-render-js@^1.0.6:
+markdown-render-js@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/markdown-render-js/-/markdown-render-js-1.0.6.tgz#f0a85e9dd7da2136ea9960ee02ef2cb14b840fc6"
   integrity sha512-82soQeX0jvGB+aF3DfZ1a2f2JzMZS/8ho1vGKRHOMo4MaFgs2Gu+QzR6RLez8a0MknJIrjyYGluAGLJHzAy1KQ==
