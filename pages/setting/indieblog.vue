@@ -7,7 +7,7 @@
     <template v-slot:main>
       <div>
         <h2 class="tag-title">
-          {{ $t('indie-blog.page-tile') }}
+          {{ $t('indie-blog.page-title') }}
         </h2>
         <el-tooltip :content="$t('indie-blog.experimental-feature')">
           <svgIcon icon-class="experimental" />
