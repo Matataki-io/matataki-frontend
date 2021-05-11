@@ -1387,6 +1387,13 @@ minetokenGetResources(tokenId) {
     return request.post(`/user/prepareRepo`)
   },
   /**
+   * 初始化仓库，进行设置项目的修改
+   * 应当在 /user/prepareRepo 调用成功之后调用
+   */
+  initialIndieBlogRepo () {
+    return request.post(`/user/prepareConfig`)
+  },
+  /**
    * 获取仓库状态，将可能返回以下 4 种状态码
    * 0: 一切正常
    * 10020: 目标仓库没有留空
@@ -1435,6 +1442,12 @@ minetokenGetResources(tokenId) {
   changeIndieBlogSiteConfig (params) {
     return request.post(`/user/siteConfig`, params)
   },
+  /**
+   * 获取子站部署状态
+   * NOT FOUND: 未开启 pages
+   * building: 正在构建
+   * built: 构建完成可以访问
+   */
   getIndieBlogPagesStatus () {
     return request.get(`/user/pagesStatus`)
   }

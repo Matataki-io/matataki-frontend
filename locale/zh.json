@@ -1698,7 +1698,8 @@
     "deploy-status-loading": "部署状态加载中...",
     "cannot-save-to-indie-blog": "您没有创建独立子站，因此无法将文章储存至独立子站",
     "auto-detect": "自动检测",
-    "enter-indie-blog": "子站"
+    "enter-indie-blog": "子站",
+    "repository-deleted": "获取子站状态失败，请检查用于子站的仓库是否存在并且没有被设为私有的"
   },
   "languages": {
     "en": "English",
