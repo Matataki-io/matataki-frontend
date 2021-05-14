@@ -1688,6 +1688,7 @@
     "not-deployed-part1": "您的独立子站尚未完成部署，请到",
     "not-deployed-part2": "仓库设置",
     "not-deployed-part3": "中检查 GitHub Pages 开启状态",
+    "deploying": "您的独立子站即将部署至：",
     "this-user-has-been-deployed-indie-blog": "此用户已部署独立子站",
     "two-step-confirm": "您修改了重要项目，需要向您二次确认",
     "timezone-modified": "时间区域：此项会影响子站中的时间显示格式",

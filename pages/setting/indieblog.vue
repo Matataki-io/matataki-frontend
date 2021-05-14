@@ -19,7 +19,7 @@
         </div>
         <div v-else-if="siteAvailable" class="list">
           <div class="site-available">
-            <span style="flex: 1">{{ $t('indie-blog.deployed') }}</span>
+            <span style="flex: 1">{{ siteBuilding ? $t('indie-blog.deploying') : $t('indie-blog.deployed') }}</span>
             <a class="site-link" :href="siteLink" target="_blank">{{ siteLink }}</a>
           </div>
           <el-button @click="isSiteLinkAvailable">
@@ -56,7 +56,9 @@
       </div>
       <div>
         <div v-if="unavailable" class="list">
-          <span>{{ activeStep === 2 ? $t('indie-blog.you-are-done') : $t('indie-blog.follow-this-steps-to-create-indie-blog') }}</span>
+          <span>{{
+            activeStep === 2 ? $t('indie-blog.you-are-done') : $t('indie-blog.follow-this-steps-to-create-indie-blog')
+          }}</span>
         </div>
         <el-steps
           v-if="unavailable"
@@ -168,10 +170,17 @@
           </div>
           <div class="list">
             <span class="list-title">{{ $t('indie-blog.theme') }}</span>
-            <el-input
+            <el-select
               v-model="settings.theme"
               class="list-content"
-            />
+            >
+              <el-option
+                v-for="(theme, index) in themeList"
+                :key="index"
+                :label="theme"
+                :value="theme"
+              />
+            </el-select>
           </div>
           <div class="list center">
             <el-button :loading="saving" @click="validateSettings">
@@ -190,6 +199,7 @@
 import userLayout from '@/components/user/user_layout'
 import myAccountNav from '@/components/my_account/my_account_nav'
 import svgIcon from '@/components/SvgIcon'
+import lodash from 'lodash'
 
 export default {
   components: {
@@ -197,7 +207,7 @@ export default {
     myAccountNav,
     svgIcon
   },
-  data () {
+  data() {
     return {
       loading: false,
       getStatusFailed: false,
@@ -221,44 +231,46 @@ export default {
       oldSettings: {},
       siteLink: '',
       saving: false,
-      languages: ['en','zh','zh-TW', 'zh-HK','ja','fr','es'],
+      languages: ['en', 'zh', 'zh-TW', 'zh-HK', 'ja', 'fr', 'es'],
       timezones: [
-        { name: this.$t('indie-blog.auto-detect'), value: '' },
-        { name: 'UTC-14', value: 'Etc/GMT-14'},
-        { name: 'UTC-13', value: 'Etc/GMT-13'},
-        { name: 'UTC-11', value: 'Etc/GMT-11'},
-        { name: 'UTC-10', value: 'Etc/GMT-10'},
-        { name: 'UTC-9', value: 'Etc/GMT-9'},
-        { name: 'UTC-8', value: 'Etc/GMT-8'},
-        { name: 'UTC-7', value: 'Etc/GMT-7'},
-        { name: 'UTC-6', value: 'Etc/GMT-6'},
-        { name: 'UTC-5', value: 'Etc/GMT-5'},
-        { name: 'UTC-4', value: 'Etc/GMT-4'},
-        { name: 'UTC-4', value: 'Etc/GMT-3'},
-        { name: 'UTC-2', value: 'Etc/GMT-2'},
-        { name: 'UTC-1', value: 'Etc/GMT-1'},
-        { name: 'UTC', value: 'Etc/GMT'},
-        { name: 'UTC+1', value: 'Etc/GMT+1'},
-        { name: 'UTC+2', value: 'Etc/GMT+2'},
-        { name: 'UTC+3', value: 'Etc/GMT+3'},
-        { name: 'UTC+4', value: 'Etc/GMT+4'},
-        { name: 'UTC+5', value: 'Etc/GMT+5'},
-        { name: 'UTC+6', value: 'Etc/GMT+6'},
-        { name: 'UTC+7', value: 'Etc/GMT+7'},
-        { name: 'UTC+8', value: 'Etc/GMT+8'},
-        { name: 'UTC+9', value: 'Etc/GMT+9'},
-        { name: 'UTC+10', value: 'Etc/GMT+10'},
-        { name: 'UTC+11', value: 'Etc/GMT+11'},
-        { name: 'UTC+12', value: 'Etc/GMT+12'}
+        {name: this.$t('indie-blog.auto-detect'), value: ''},
+        {name: 'UTC-14', value: 'Etc/GMT-14'},
+        {name: 'UTC-13', value: 'Etc/GMT-13'},
+        {name: 'UTC-11', value: 'Etc/GMT-11'},
+        {name: 'UTC-10', value: 'Etc/GMT-10'},
+        {name: 'UTC-9', value: 'Etc/GMT-9'},
+        {name: 'UTC-8', value: 'Etc/GMT-8'},
+        {name: 'UTC-7', value: 'Etc/GMT-7'},
+        {name: 'UTC-6', value: 'Etc/GMT-6'},
+        {name: 'UTC-5', value: 'Etc/GMT-5'},
+        {name: 'UTC-4', value: 'Etc/GMT-4'},
+        {name: 'UTC-4', value: 'Etc/GMT-3'},
+        {name: 'UTC-2', value: 'Etc/GMT-2'},
+        {name: 'UTC-1', value: 'Etc/GMT-1'},
+        {name: 'UTC', value: 'Etc/GMT'},
+        {name: 'UTC+1', value: 'Etc/GMT+1'},
+        {name: 'UTC+2', value: 'Etc/GMT+2'},
+        {name: 'UTC+3', value: 'Etc/GMT+3'},
+        {name: 'UTC+4', value: 'Etc/GMT+4'},
+        {name: 'UTC+5', value: 'Etc/GMT+5'},
+        {name: 'UTC+6', value: 'Etc/GMT+6'},
+        {name: 'UTC+7', value: 'Etc/GMT+7'},
+        {name: 'UTC+8', value: 'Etc/GMT+8'},
+        {name: 'UTC+9', value: 'Etc/GMT+9'},
+        {name: 'UTC+10', value: 'Etc/GMT+10'},
+        {name: 'UTC+11', value: 'Etc/GMT+11'},
+        {name: 'UTC+12', value: 'Etc/GMT+12'}
       ],
       siteAvailable: false,
-      loadingPagesStatus: false
+      siteBuilding: false,
+      loadingPagesStatus: false,
+      themeList: []
     }
   },
   computed: {
     allOK() {
       return this.loading === false
-      && this.getStatusFailed === false
+        && this.getStatusFailed === false
         && this.unavailable === false
     }
   },
@@ -272,6 +284,9 @@ export default {
     this.getSiteStatus()
   },
   methods: {
+    /**
+     * 创建仓库，并当完成时进行初始化
+     */
     async createRepo() {
       try {
         this.creating = true
@@ -317,11 +332,12 @@ export default {
       }
     },
     /**
+     * 获取子站状态
      * 点击独立子站 getSiteStatus /user/siteStatus
      * 如果已经创建独立子站 直接显示子站设置
      * 如果没有 显示一个按钮让他创建子站，点击完按钮之后刷新状态
      */
-    async getSiteStatus () {
+    async getSiteStatus() {
       this.resetStatus()
       try {
         const res = await this.$API.getIndieBlogSiteStatus()
@@ -343,6 +359,7 @@ export default {
             this.getSettingsItem()
             this.repoName = await this.getRepoName()
             this.githubUserName = await this.getGithubId()
+            this.getThemeList()
           }
         } else {
           this.getStatusFailed = true
@@ -353,6 +370,7 @@ export default {
         this.getStatusFailed = true
       }
     },
+    /** 第二步：修改仓库名并继续 */
     modifyRepoNameAndContinue() {
       const repo = /^([a-zA-Z0-9]+-?\.?)+$/
       if (!this.repoName.match(repo)) {
@@ -362,13 +380,13 @@ export default {
         return
       }
       this.saving = true
-      this.$API.modifyIndieBlogRepoName({ repo: this.repoName }).then((res) => {
+      this.$API.modifyIndieBlogRepoName({repo: this.repoName}).then((res) => {
         if (res) {
           this.saving = false
           if (res.code === 0) {
             this.activeStep = 2
           } else {
-            this.$alert(this.$t('indie-blog.repo-exists', { name: this.repoName }), this.$t('indie-blog.save-repo-name-failed'),{
+            this.$alert(this.$t('indie-blog.repo-exists', {name: this.repoName}), this.$t('indie-blog.save-repo-name-failed'), {
               confirmButtonText: this.$t('indie-blog.ok')
             })
           }
@@ -379,6 +397,7 @@ export default {
         console.log(e)
       })
     },
+    /** 获取设置项目 */
     getSettingsItem() {
       this.$API.getIndieBlogSiteConfig().then((res) => {
         this.loading = false
@@ -414,6 +433,7 @@ export default {
         return ''
       }
     },
+    /** 获取用户 GitHub ID */
     async getGithubId() {
       try {
         const res = await this.$API.accountList()
@@ -429,6 +449,7 @@ export default {
         return ''
       }
     },
+    /** 重置状态，只在 getSiteStatus 中调用 */
     resetStatus() {
       this.loading = true
       this.unavailable = false
@@ -442,7 +463,10 @@ export default {
       this.loadingPagesStatus = false
       this.siteCreated = false
       this.getSettingsFailed = false
+      this.siteBuilding = false
+      this.themeList = []
     },
+    /** 查询用户是否已经绑定 GitHub */
     async isBindOnGitHub() {
       try {
         const res = await this.$API.accountList()
@@ -455,7 +479,7 @@ export default {
         let isBind = false
         for (const account of data) {
           if (account.platform === 'github') {
-            isBind =  true
+            isBind = true
             break
           }
         }
@@ -471,7 +495,13 @@ export default {
         this.getStatusFailed = true
       }
     },
+    /** 修改设置之前进行校验 */
     validateSettings() {
+      if (lodash.isEqual(this.settings, this.oldSettings)) {
+        this.$message.info(this.$t('indie-blog.no-items-modified'))
+        return
+      }
+
       const themeModified = this.settings.theme !== this.oldSettings.theme
       const timezoneModified = this.settings.timezone !== this.oldSettings.timezone
       if (!timezoneModified && !themeModified) {
@@ -486,6 +516,7 @@ export default {
         alertMessage += `<li style="list-style: decimal">${this.$t('indie-blog.timezone-modified')}</li>`
       }
       alertMessage += '</ol></div>' + this.$t('indie-blog.is-continue')
+      // 警告用户是否进行修改
       this.$alert(alertMessage, this.$t('indie-blog.two-step-confirm'), {
         dangerouslyUseHTMLString: true,
         confirmButtonText: this.$t('indie-blog.ok'),
@@ -498,9 +529,7 @@ export default {
         }
       })
     },
-    /**
-     * 保存设置 POST /user/siteConfig
-     */
+    /** 保存设置 POST /user/siteConfig */
     saveSettings() {
       this.saving = true
       this.$API.changeIndieBlogSiteConfig(this.settings).then((res) => {
@@ -521,6 +550,12 @@ export default {
         this.$message.error('保存设置失败')
       })
     },
+    /**
+     * 返回步骤标题
+     * 完成：正在进行的步骤索引大于当前步骤
+     * 进行中：正在进行的步骤就是当前步骤
+     * 步骤<索引>：正在进行的步骤小于当前步骤
+     */
     stepStatus(index, activeStep) {
       if (index < activeStep) {
         return this.$t('indie-blog.done')
@@ -530,7 +565,7 @@ export default {
         return this.$t('indie-blog.step') + (index + 1)
       }
     },
-    /** 检测独立子站是否已经成功部署 */
+    /** 检查独立子站的部署状态 */
     async isSiteLinkAvailable() {
       try {
         this.loadingPagesStatus = true
@@ -538,14 +573,34 @@ export default {
         this.loadingPagesStatus = false
         if (!res || res.code !== 0 || res.data.status !== 'built') {
           this.siteAvailable = false
+          if (res.data.status === 'building') {
+            this.siteAvailable = true
+            this.siteBuilding = true
+          }
         } else {
           this.siteLink = res.data.url
           this.siteAvailable = true
+          if (res.data.status === 'building') {
+            this.siteBuilding = true
+          }
         }
       } catch (e) {
         this.loadingPagesStatus = false
         this.siteAvailable = false
       }
+    },
+    /** 获取所有可用主题列表 */
+    getThemeList() {
+      this.$API.getIndieBlogThemes().then((res) => {
+        if (res && res.code === 0) {
+          this.themeList = res.data
+        } else {
+          this.$message.error('服务器返回的数据有问题')
+        }
+      }).catch((e) => {
+        this.$message.error('获取主题列表失败')
+        console.log(e.message)
+      })
     }
   }
 }
@@ -591,24 +646,26 @@ export default {
   width: 10px;
 }
 
-.normal-visited {
-  &:visited {
-    color: #542DE0;
-  }
-}
-
 .site {
   &-available {
     flex: 1;
     display: flex;
   }
+
   &-link {
     flex: 2;
-    .normal-visited();
+    color: #542DE0;
+    font-weight: 600;
+    &:visited {
+      color: #542DE0;
+    }
   }
 }
 
 .link {
-  .normal-visited();
+  color: #542DE0;
+  &:visited {
+    color: #542DE0;
+  }
 }
 </style>

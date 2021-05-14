@@ -1450,5 +1450,9 @@ minetokenGetResources(tokenId) {
    */
   getIndieBlogPagesStatus () {
     return request.get(`/user/pagesStatus`)
+  },
+  /** 获取目前所有可用主题 */
+  getIndieBlogThemes () {
+    return request.get(`/user/themeList`)
   }
 }
