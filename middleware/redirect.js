@@ -14,6 +14,6 @@ export default function ({ redirect, route, req }) {
     accessToekn = getCookie('ACCESS_TOKEN')
   }
 
-  if (accessToekn) redirect('/timeline' + route.fullPath)
+  // if (accessToekn) redirect('/timeline' + route.fullPath)
   else redirect('/article' + route.fullPath)
 }
