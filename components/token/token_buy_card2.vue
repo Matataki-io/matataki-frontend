@@ -36,17 +36,17 @@
             <span
               slot="suffix"
               class="el-input__icon suffix-text"
-            >= {{ suffixAmount || 0 }} {{ suffixSymbol }}</span>
+            >= {{ suffixAmount || 0 }} {{ exchangeSymbol(suffixSymbol) }}</span>
           </el-input>
           <div class="btns">
             <div class="market-info-container">
               <div v-if="isDirectTrade" class="market-info">
-                <span>{{ $t('price') }}：{{ market.price }} CNY</span>
+                <span>{{ $t('price') }}：{{ market.price }} {{ $t('mttk-points') }}</span>
                 <span>{{ $t('remaining') }}：{{ market.balance }} {{ token.symbol }}</span><span v-if="NoMarket" class="warn-tip">（{{ $t('insufficient-liquidity') }}）</span>
                 <span>{{ $t('sold') }}：{{ market.sellAmount }} {{ token.symbol }}</span>
               </div>
               <div v-if="isUniswap" class="market-info">
-                <!-- <span>价格：0 CNY</span> -->
+                <!-- <span>价格：0 {{$t('mttk-points')}}</span> -->
                 <span>{{ $t('remaining') }}：{{ currentPoolSize.token_amount|| 0 }} {{ token.symbol }}</span><span v-if="noUniswap" class="warn-tip">（{{ $t('insufficient-liquidity') }}）</span>
               </div>
             </div>
@@ -285,6 +285,11 @@ export default {
         this.inputChange()
         return event.preventDefault()
       }
+    },
+    // 转换Symbol
+    exchangeSymbol(symbol) {
+      if (!symbol) return symbol
+      return symbol.toLocaleUpperCase() === 'CNY' ? this.$t('mttk-points') : symbol
     }
   }
 }

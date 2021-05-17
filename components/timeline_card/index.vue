@@ -76,7 +76,7 @@ export default {
     },
     // 封面
     coverImg() {
-      return this.card.cover ? this.$ossProcess(this.card.cover, { h: 200 }) : this.$ossProcess('/material/default_cover.png', { h: 200 })
+      return this.card.cover ? this.$ossProcess(this.card.cover, { h: 200 }) : this.$ossProcess('/material/default_cover_v1.png', { h: 200 })
     },
     // 时间
     time() {

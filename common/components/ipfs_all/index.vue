@@ -28,6 +28,7 @@
           {{ $t("githubHash.link") }}
           <span style="float: right;">
             <a
+              class="github-history-link"
               :href="githubHistoryLink"
             >{{ $t('ipfsHash.historyBtn') }}</a>
           </span>
@@ -99,13 +100,22 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    githubId: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    githubRepo: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data() {
     return {
       dialogVisible: false,
       link: [
-        'https://ipfs.mttk.net/ipfs/',
         'https://ipfs.io/ipfs/',
         'https://ipfs.infura.io/ipfs/'
       ],
@@ -126,12 +136,12 @@ export default {
     githubLink() {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
-      return `https://github.com/${this.user.username}/matataki-save/blob/main/${year}/${date}/${this.hash}.html`
+      return `https://github.com/${this.githubId}/${this.githubRepo}/blob/source/source/_posts/${year}/${date}/${this.hash}.md`
     },
     githubHistoryLink() {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
-      return `https://github.com/${this.user.username}/matataki-save/commits/main/${year}/${date}/${this.hash}.html`
+      return `https://github.com/${this.githubId}/${this.githubRepo}/commits/source/source/_posts/${year}/${date}/${this.hash}.md`
     }
   },
   methods: {
@@ -265,6 +275,12 @@ a:visited {
 </style>
 
 <style lang="less">
+.github-history-link {
+  color: @purpleDark;
+  &:visited {
+    color: @purpleDark;
+  }
+}
 .ipfs-popover {
   width: 370px;
 }

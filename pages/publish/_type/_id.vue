@@ -343,6 +343,7 @@
               </el-button>
             </div>
           </div>
+          <!-- label="cny" 不需要改为 MTTK积分 -->
           <el-radio
             v-model="readConfigRadio"
             :disabled="prohibitEditingPrices"
@@ -586,75 +587,105 @@
           </el-radio>
         </div>
 
-        <div v-if="$route.params.type !== 'edit'">
+        <div>
           <h1 class="set-title set-title-border">
             {{ $t('publish-settings') }}
           </h1>
+          <!-- 选择发布时间 -->
+          <div v-if="$route.params.type !== 'edit'">
+            <h4 class="set-subtitle">
+              {{ $t('timed-release') }}
+              <el-tooltip
+                effect="dark"
+                :content="$t('timed-release-tips')"
+                placement="top-start"
+              >
+                <svg-icon
+                  class="help-icon"
+                  icon-class="help"
+                />
+              </el-tooltip>
+
+              <el-switch
+                v-model="timedForm.switch"
+                class="timed-switch"
+                active-color="#542DE0"
+                inactive-color="#DBDBDB"
+              />
+            </h4>
+            <div class="set-content timed-picker">
+              <el-date-picker
+                v-if="timedForm.switch"
+                v-model="timedForm.date"
+                size="small"
+                type="datetime"
+                :placeholder="$t('choose-date-and-time')"
+                align="right"
+                format="yyyy-MM-dd HH:mm"
+                :picker-options="timedOptions"
+              />
+            </div>
+          </div>
+
+          <!-- 选择是否发文到GitHub -->
           <h4 class="set-subtitle">
-            {{ $t('timed-release') }}
+            {{ $t('publish.whereToPublish') }}
             <el-tooltip
+              class="max-width-80"
               effect="dark"
-              :content="$t('timed-release-tips')"
               placement="top-start"
             >
+              <div slot="content">
+                <div v-html="$t('publish.whereToPublishDescription')" /> <a href="https://matataki.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
+              </div>
               <svg-icon
                 class="help-icon"
                 icon-class="help"
               />
             </el-tooltip>
-
-            <el-switch
-              v-model="timedForm.switch"
-              class="timed-switch"
-              active-color="#542DE0"
-              inactive-color="#DBDBDB"
-            />
-          </h4>
-          <div class="set-content timed-picker">
-            <el-date-picker
-              v-if="timedForm.switch"
-              v-model="timedForm.date"
-              size="small"
-              type="datetime"
-              :placeholder="$t('choose-date-and-time')"
-              align="right"
-              format="yyyy-MM-dd HH:mm"
-              :picker-options="timedOptions"
-            />
-          </div>
-
-          <h4 class="set-subtitle">
-            {{ $t('publish.whereToPublish') }}
-            <!-- TODO：这个提示信息后期再弄 -->
-            <!--            <el-tooltip-->
-            <!--              effect="dark"-->
-            <!--              :content="$t('open-history-article-tips')"-->
-            <!--              placement="top-start"-->
-            <!--            >-->
-            <!--              <svg-icon-->
-            <!--                class="help-icon"-->
-            <!--                icon-class="help"-->
-            <!--              />-->
-            <!--            </el-tooltip>-->
           </h4>
           <div class="set-content">
-            <el-radio v-model="publishToGithub" :label="false">
+            <el-radio v-model="publishToGithub" :label="false" :disabled="$route.params.type === 'edit'">
               {{ $t('publish.publishToIPFS') }}
             </el-radio>
             <br>
-            <el-radio v-model="publishToGithub" :label="true">
+            <el-radio
+              v-if="$route.params.type === 'edit'"
+              v-model="publishToGithub"
+              :label="true"
+              :disabled="true"
+            >
               {{ $t('publish.publishToGithub') }}
             </el-radio>
+            <el-radio
+              v-else-if="isIndieBlogCreated"
+              v-model="publishToGithub"
+              :label="true"
+            >
+              {{ $t('publish.publishToGithub') }}
+            </el-radio>
+            <el-tooltip v-else :content="$t('indie-blog.cannot-save-to-indie-blog')">
+              <el-radio
+                v-model="publishToGithub"
+                :label="true"
+                :disabled="true"
+              >
+                {{ $t('publish.publishToGithub') }}
+              </el-radio>
+            </el-tooltip>
           </div>
         </div>
 
         <div class="set-captcha">
           <vue-hcaptcha
             v-if="doINeedHCaptcha"
+            ref="hCaptcha"
             :sitekey="hCaptchaSiteKey"
+            :language="appLang"
             @verify="onCaptchaVerify"
             @expired="onExpire"
             @error="onError"
+            @reset="onCaptchaReset"
           />
         </div>
 
@@ -891,7 +922,8 @@ export default {
             }
           }
         ]
-      }
+      },
+      isIndieBlogCreated: false
     }
   },
   computed: {
@@ -1000,6 +1032,9 @@ export default {
     },
     noTokenAvailable() {
       return !this.readSelectOptions || this.readSelectOptions.length === 0
+    },
+    appLang() {
+      return getCookie('language')
     }
   },
   watch: {
@@ -1039,6 +1074,7 @@ export default {
     CCLicenseCredit() { this.updateDraftWatch() },
     // 阅读权限  单选 设置持币 设置持币类型 设置持币数量
     readConfigRadio(val) {
+      console.log('val', val)
       this.readauThority = val === 'token'
       this.paymentTokenVisible = val === 'cny'
 
@@ -1104,6 +1140,7 @@ export default {
       if (process.browser) {
         this.$nextTick(() => {
           this.setArticleDataById(hash, id)
+          this.publishToGithub = hash.startsWith('Gh')
         })
       }
     } else {
@@ -1114,6 +1151,7 @@ export default {
     this.getBindableTokenList()
     this.getAllTokens()
     // this.setToolBar()
+    this.getIndieBlogStatus()
 
   },
   beforeRouteLeave(to, from, next) {
@@ -1167,6 +1205,15 @@ export default {
     onError(err) {
       this.hCaptchaData = { token: null, eKey: null, expired: true }
       console.error('captcha error: ', err)
+    },
+    // 当hCaptcha状态重置时，重置hCaptchaData对象的值
+    onCaptchaReset() {
+      this.hCaptchaData = {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
+      }
     },
     // 取消关联
     cancelAssosiate() {
@@ -1604,6 +1651,8 @@ export default {
         console.log(error)
         this.fullscreenLoading = false // remove full loading
         this.$message.error(error.toString())
+        // 失败后重置hCaptcha状态
+        this.$refs.hCaptcha.reset()
       }
     },
     // 定时发布文章
@@ -1675,6 +1724,8 @@ export default {
       // History 权限
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
+      // 文章保存位置
+      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
 
 
       const { failed, success } = this
@@ -1707,6 +1758,8 @@ export default {
         console.error(error)
         this.fullscreenLoading = false // remove full loading
         failed(error)
+        // 失败后重置hCaptcha状态
+        this.$refs.hCaptcha.reset()
         throw error
       }
     },
@@ -2306,6 +2359,16 @@ export default {
       }
 
       return _title
+    },
+    /** 获取用户的独立子站状态 */
+    async getIndieBlogStatus() {
+      try {
+        const res = await this.$API.getIndieBlogSiteStatus()
+        this.isIndieBlogCreated = res && res.code !== 10021
+      } catch (e) {
+        this.isIndieBlogCreated = false
+        console.log(e.message)
+      }
     }
   }
 }

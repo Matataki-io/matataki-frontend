@@ -12,6 +12,7 @@
     v-else
     :class="svgClass"
     aria-hidden="true"
+    :style="styleSvg"
     v-on="$listeners"
   >
     <use :xlink:href="iconName" />
@@ -34,6 +35,18 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      // 因为不知道为什么渲染会丢掉 svg-icon 类名 如果有覆盖属性没有则使用
+      styleSvg: {
+        width: '1em',
+        height: '1em',
+        verticalAlign: '-0.15em',
+        fill: 'currentColor',
+        overflow: 'hidden',
+      }
+    }
+  },
   computed: {
     isExternal() {
       return isExternal(this.iconClass)
@@ -50,6 +63,7 @@ export default {
     },
     styleExternalIcon() {
       return {
+        ...this.styleSvg,
         mask: `url(${this.iconClass}) no-repeat 50% 50%`,
         '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`
       }

@@ -16,7 +16,7 @@ import store from '@/utils/store.js'
 
 const _axios = axios.create({
   baseURL: process.env.VUE_APP_API,
-  timeout: 20000,
+  timeout: 60 * 1000,
   headers: {},
 })
 

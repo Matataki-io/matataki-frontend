@@ -219,7 +219,7 @@
               class="lock-bottom"
             >
               <div class="btn-ccc">
-                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}CNY</span> -->
+                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}{{$t('mttk-points')}}</span> -->
                 <!-- <el-tooltip
                   class="item"
                   effect="dark"
@@ -1592,7 +1592,21 @@ export default {
       await this.$API.getArticleIpfs(id)
         .then(res => {
           if (res.code === 0) {
-            this.articleIpfsArray = res.data
+            // 如果是发布在GitHub上的文章，不能用html的hash而要用json的hash
+            if (res.data[0].htmlHash.startsWith('Gh')) {
+              const data = []
+              for (const item of res.data) {
+                const modifiedItem = {
+                  ...item
+                }
+                // 将获取到的所有html文件hash换成json文件的hash
+                modifiedItem.htmlHash = this.article.hash
+                data.push(modifiedItem)
+              }
+              this.articleIpfsArray = data
+            } else {
+              this.articleIpfsArray = res.data
+            }
           } else {
             console.log(res.message)
           }

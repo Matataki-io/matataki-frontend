@@ -34,7 +34,6 @@
             {{ userInfo.name }}
           </h1>
         </div>
-
         <p class="profile">{{ userInfo.introduction || $t('not') }}</p>
         <div class="fl jc">
           <router-link
@@ -107,6 +106,19 @@
           <i class="el-icon-money" />
           {{ $t('transferMoney') }}
         </el-button>
+        <a
+          v-if="user.siteLink"
+          :href="user.siteLink"
+          target="_blank"
+        >
+          <el-button
+            size="small"
+            class="indie-blog"
+          >
+            <i class="el-icon-discover" />
+            {{ $t('indie-blog.enter-indie-blog') }}
+          </el-button>
+        </a>
       </div>
     </div>
     <div class="user-page-content">
@@ -148,7 +160,7 @@ export default {
       tokenData: Object.create(null),
       shareModalShow: false,
       imgUploadDone: 0, // 图片是否上传完成
-      user: Object.create(null), // 用户信息 
+      user: Object.create(null), // 用户信息
       tokenInfo: Object.create(null), // token info
     }
   },
@@ -371,6 +383,11 @@ export default {
     position: absolute;
     right: 10px;
     bottom: 10px;
+  }
+  .indie-blog {
+    position: absolute;
+    right: 10px;
+    bottom: 130px;
   }
   .share {
     position: absolute;

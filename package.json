@@ -55,7 +55,7 @@
     "markdown-it": "^9.0.1",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-katex": "^2.0.3",
-    "markdown-render-js": "1.0.5",
+    "markdown-render-js": "1.0.6",
     "moment": "^2.24.0",
     "nuxt": "2.13.2",
     "nuxt-i18n": "6.6.0",

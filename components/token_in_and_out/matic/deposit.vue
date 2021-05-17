@@ -45,6 +45,7 @@
           </el-button>
         </div>
       </el-form>
+      <RecoverDeposit chain="matic" />
     </client-only>
     <div class="my-deposits">
       <h1 class="history-title">
@@ -95,6 +96,7 @@
 
 <script>
 import { depositStatusRenderer } from '../utils/util'
+import RecoverDeposit from '../recover-deposit.vue'
 import { ethers } from 'ethers'
 import { approve, burn } from '../utils/PeggedToken'
 // import { mintWithPermit } from '@/utils/ethers'
@@ -108,6 +110,7 @@ export default {
   name: 'DepositFromBsc',
   components: {
     EnvironmentCheck,
+    RecoverDeposit,
   },
   data() {
     const validateToken = (rule, value, callback) => {

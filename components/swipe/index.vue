@@ -104,7 +104,7 @@ export default {
       }
     },
     cover(src) {
-      return src ? this.$ossProcess(src, { h: 390 }) : this.$ossProcess('/material/default_cover.png', { h: 390 })
+      return src ? this.$ossProcess(src, { h: 390 }) : this.$ossProcess('/material/default_cover_v1.png', { h: 390 })
     },
     swipeChange(i) {
       this.swipeIndex = i
