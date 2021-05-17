@@ -1385,14 +1385,14 @@ minetokenGetResources(tokenId) {
   // ------------------------------ 独立子站 ----------------------------------
   /** 创建用于独立子站保存文章的仓库 */
   createIndieBlogRepo () {
-    return request.post(`/user/prepareRepo`)
+    return request.post(`/indie/prepareRepo`)
   },
   /**
    * 初始化仓库，进行设置项目的修改
    * 应当在 /user/prepareRepo 调用成功之后调用
    */
   initialIndieBlogRepo () {
-    return request.post(`/user/prepareConfig`)
+    return request.post(`/indie/prepareConfig`)
   },
   /**
    * 获取仓库状态，将可能返回以下 4 种状态码
@@ -1401,14 +1401,14 @@ minetokenGetResources(tokenId) {
    * 10019: 没有绑定 GitHub 账号，或 GitHub Token 不存在
    */
   getIndieBlogRepoStatus () {
-    return request.get(`/user/repoStatus`)
+    return request.get(`/indie/repoStatus`)
   },
   /**
    * 获取独立子站状态
    * 10021: 独立子站没有创建
    */
   getIndieBlogSiteStatus () {
-    return request.get(`/user/siteStatus`)
+    return request.get(`/indie/siteStatus`)
   },
   /**
    * 修改子站仓库名，将可能返回以下 4 种状态码
@@ -1416,7 +1416,7 @@ minetokenGetResources(tokenId) {
    * 10019: 没有绑定 GitHub 账号，或 GitHub Token 不存在
    */
   modifyIndieBlogRepoName (params) {
-    return request.post(`/user/repo`, params)
+    return request.post(`/indie/repo`, params)
   },
   /**
    * 获取子站设置项，成功后将返回以下 JSON
@@ -1429,7 +1429,7 @@ minetokenGetResources(tokenId) {
    * }
    */
   getIndieBlogSiteConfig () {
-    return request.get(`/user/siteConfig`)
+    return request.get(`/indie/siteConfig`)
   },
   /**
    * 修改子站设置项
@@ -1441,7 +1441,7 @@ minetokenGetResources(tokenId) {
    * }
    */
   changeIndieBlogSiteConfig (params) {
-    return request.post(`/user/siteConfig`, params)
+    return request.post(`/indie/siteConfig`, params)
   },
   /**
    * 获取子站部署状态
@@ -1450,10 +1450,10 @@ minetokenGetResources(tokenId) {
    * built: 构建完成可以访问
    */
   getIndieBlogPagesStatus () {
-    return request.get(`/user/pagesStatus`)
+    return request.get(`/indie/pagesStatus`)
   },
   /** 获取目前所有可用主题 */
   getIndieBlogThemes () {
-    return request.get(`/user/themeList`)
+    return request.get(`/indie/themeList`)
   }
 }
