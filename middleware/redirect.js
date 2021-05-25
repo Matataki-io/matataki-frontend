@@ -3,6 +3,7 @@ import { extractChar } from '@/utils/reg'
 
 export default function ({ redirect, route, req }) {
   // 获取cookie token
+  // eslint-disable-next-line no-unused-vars
   let accessToekn = ''
   // 请检查您是否在服务器端
   if (process.server) {
