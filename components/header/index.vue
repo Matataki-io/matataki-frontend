@@ -168,13 +168,13 @@
           @click="login"
         >{{ $t('home.signIn') }}</a>
         <slot name="more" />
-        <a v-if="isLogined" class="btn write-btn" @click="writeP">
+        <div v-if="isLogined" class="write-btn" @click="writeP">
           <svg-icon
             class="write-icon"
             icon-class="write"
           />
           {{ $t('header.newArticle') }}
-        </a>
+        </div>
         <!-- <language class="language" /> -->
       </div>
       <div class="mobile">
@@ -603,69 +603,61 @@ export default {
 .user-menu  {
   margin-right: 20px;
 }
-.btn {
-  display: inline-block;
-  margin-bottom: 0;
+.write-btn {
   font-weight: 400;
   text-align: center;
   vertical-align: middle;
   touch-action: manipulation;
   cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
   white-space: nowrap;
-  padding: 6px;
-  font-size: 14px;
-  line-height: 1.42857;
-  border-radius: 4px;
   user-select: none;
-}
-.write-btn {
-  float: right;
-  width: 100px;
-  // height: 40px;
-  line-height: 24px;
-  // margin: 0 12px;
-  border-radius: 20px;
-  font-size: 15px;
+  border-radius: 30px;
+  font-size: 14px;
   color: #fff;
   background-color: #542DE0;
+  position: relative;
+  padding: 6px 22px;
+  border: 2px solid transparent;
+  transition: scale 0.3s ease-in-out;
   .write-icon {
     color: #fff;
   }
   &::before {
     content: '';
-    border-radius: 1000px;
-    min-width: calc(114px + 6px);
-    min-height: calc(38px + 6px);
-    border: 3px solid #4F2FD7;
+    border-radius: 30px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     opacity: 0;
-    transition: scale 0.3s ease-in-out 0s ;
     display: none;
+    border: 3px solid transparent;
+    left: -6px;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
   }
 
-  &:hover, .button:focus {
-    color: #fff;
-    transform: scale(0.9)
+  &:hover {
+    transform: scale(0.94);
+    border: 2px solid #fff;
+    &::before {
+      display: block;
+      opacity: 1;
+      border: 3px solid #542ddf;
+    }
   }
 
-  &:hover::before, &:focus::before {
-    opacity: 1;
-    display: inline;
-  }
+  // &:hover::before, &:focus::before {
+  //   opacity: 1;
+  //   display: inline;
+  // }
 
-  &:hover::after, &:focus::after {
-    animation: none;
-    display: none;
-  }
+  // &:hover::after, &:focus::after {
+  //   animation: none;
+  //   display: none;
+  // }
 
-  &:active {
-    transform: scale(0.8);
-  }
+  // &:active {
+  //   transform: scale(0.8);
+  // }
 }
 .header {
   width: 100%;
@@ -1082,13 +1074,7 @@ export default {
   }
 
   .write-btn {
-    width: 80px;
-    line-height: 20px;
     font-size: 12px;
-    &::before {
-      min-width: calc(94px + 6px);
-      min-height: calc(34px + 6px);
-    }
   }
 }
 
