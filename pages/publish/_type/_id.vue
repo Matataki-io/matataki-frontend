@@ -1156,7 +1156,7 @@ export default {
       if (process.browser) {
         this.$nextTick(() => {
           this.setArticleDataById(hash, id)
-          this.isIndiePost= hash.startsWith('Gh')
+          this.isIndiePost = hash.startsWith('Gh')
         })
       }
     } else {
@@ -1639,7 +1639,7 @@ export default {
 
       // 设置是否同步标签到个人子站
       /* 必须同时指定了发送到 Github 和选择了同步标签，才发送此属性为 true */
-      article.indie_sync_tags = this.isIndiePost&& this.indieSyncTags
+      article.indie_sync_tags = this.isIndiePost && this.indieSyncTags
 
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
