@@ -203,7 +203,7 @@ export default {
       cover, isOriginal, tags, commentPayPoint, shortContent, cc_license = null,
       requireToken, requireBuy,
       editRequireToken = null, editRequireBuy = null, ipfs_hide = true, assosiateWith, hCaptchaData,
-      ipfs_or_github = 'ipfs', indie_sync_tags=false, }) {
+      indie_post=false, indie_sync_tags=false, }) {
     // 账号类型
     let idProvider = (utils.getCookie('idProvider')).toLocaleLowerCase()
     return request({
@@ -227,7 +227,7 @@ export default {
         ipfs_hide,
         assosiateWith,
         hCaptchaData,
-        ipfs_or_github,
+        indie_post,
         indie_sync_tags,
       },
       timeout: 30000

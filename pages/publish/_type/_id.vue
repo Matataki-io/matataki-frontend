@@ -645,13 +645,13 @@
             </el-tooltip>
           </h4>
           <div class="set-content">
-            <el-radio v-model="publishToGithub" :label="false" :disabled="$route.params.type === 'edit'">
+            <el-radio v-model="isIndiePost" :label="false" :disabled="$route.params.type === 'edit'">
               {{ $t('publish.publishToIPFS') }}
             </el-radio>
             <br>
             <el-radio
               v-if="$route.params.type === 'edit'"
-              v-model="publishToGithub"
+              v-model="isIndiePost"
               :label="true"
               :disabled="true"
             >
@@ -659,14 +659,14 @@
             </el-radio>
             <el-radio
               v-else-if="isIndieBlogCreated"
-              v-model="publishToGithub"
+              v-model="isIndiePost"
               :label="true"
             >
               {{ $t('publish.publishToGithub') }}
             </el-radio>
             <el-tooltip v-else :content="$t('indie-blog.cannot-save-to-indie-blog')">
               <el-radio
-                v-model="publishToGithub"
+                v-model="isIndiePost"
                 :label="true"
                 :disabled="true"
               >
@@ -676,7 +676,7 @@
 
             <transition name="fade">
               <div
-                v-if="publishToGithub"
+                v-if="isIndiePost"
                 style="margin: 10px 0;"
               >
                 <el-checkbox
@@ -901,8 +901,8 @@ export default {
       // 编辑权限
       editConfigRadio: 'all',
       ipfs_hide: true,
-      // 是否保存到GitHub
-      publishToGithub: false,
+      // 是否为发布到独立子站的文章
+      isIndiePost: false,
       // 是否同步标签到独立子站
       indieSyncTags: false,
       editorPlaceholder: '',
@@ -1156,7 +1156,7 @@ export default {
       if (process.browser) {
         this.$nextTick(() => {
           this.setArticleDataById(hash, id)
-          this.publishToGithub = hash.startsWith('Gh')
+          this.isIndiePost= hash.startsWith('Gh')
         })
       }
     } else {
@@ -1635,11 +1635,11 @@ export default {
       article.hCaptchaData = this.hCaptchaData
 
       // 设置文章保存位置
-      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
+      article.indie_post = this.isIndiePost
 
       // 设置是否同步标签到个人子站
       /* 必须同时指定了发送到 Github 和选择了同步标签，才发送此属性为 true */
-      article.indie_sync_tags = this.publishToGithub && this.indieSyncTags
+      article.indie_sync_tags = this.isIndiePost&& this.indieSyncTags
 
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
@@ -1745,7 +1745,7 @@ export default {
       article.ipfs_hide = this.ipfs_hide
       article.hCaptchaData = this.hCaptchaData
       // 文章保存位置
-      article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
+      article.indie_post = this.isIndiePost
 
 
       const { failed, success } = this
