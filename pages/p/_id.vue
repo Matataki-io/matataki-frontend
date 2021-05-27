@@ -89,176 +89,180 @@
             style="margin-top: 20px;"
           />
         </article>
-
-        <!-- 解锁按钮 -->
-        <div
-          v-if="(isTokenArticle || isPriceArticle) && !isProduct"
-          v-loading="lockLoading"
-          class="lock"
-        >
-          <div class="lock-left">
-            <img
-              v-if="!hasPaied"
-              class="lock-img"
-              src="@/assets/img/lock.png"
-              alt="lock"
+      </div>
+      <!-- 解锁按钮 -->
+      <div
+        v-if="(isTokenArticle || isPriceArticle) && !isProduct"
+        v-loading="lockLoading"
+        class="lock"
+      >
+        <div class="lock-left">
+          <img
+            v-if="!hasPaied"
+            class="lock-img"
+            src="@/assets/img/lock.png"
+            alt="lock"
+          >
+          <img
+            v-else
+            class="lock-img"
+            src="@/assets/img/unlock.png"
+            alt="lock"
+          >
+        </div>
+        <div class="lock-info">
+          <h3 class="lock-info-title">
+            {{ !hasPaied ? unlockText + $t('paidRead.article') : $t('paidRead.already') + unlockText + $t('paidRead.article') }}
+          </h3>
+          <h5 class="lock-info-subtitle">
+            {{ !hasPaied ? $t('paidRead.needToReach') : $t('paidRead.hasBeenReached') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('paidRead.meetAllConditions') "
+              placement="top-start"
             >
-            <img
-              v-else
-              class="lock-img"
-              src="@/assets/img/unlock.png"
-              alt="lock"
-            >
-          </div>
-          <div class="lock-info">
-            <h3 class="lock-info-title">
-              {{ !hasPaied ? unlockText + $t('paidRead.article') : $t('paidRead.already') + unlockText + $t('paidRead.article') }}
-            </h3>
-            <h5 class="lock-info-subtitle">
-              {{ !hasPaied ? $t('paidRead.needToReach') : $t('paidRead.hasBeenReached') }}
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="$t('paidRead.meetAllConditions') "
-                placement="top-start"
+              <svg-icon
+                icon-class="anser"
+                class="prompt-svg"
+              />
+            </el-tooltip>
+          </h5>
+          <p
+            v-if="!isMe(article.uid)"
+            class="lock-info-des"
+          >
+            <ul>
+              <li
+                v-if="isPriceArticle"
+                class="fl"
               >
-                <svg-icon
-                  icon-class="anser"
-                  class="prompt-svg"
-                />
-              </el-tooltip>
-            </h5>
-            <p
-              v-if="!isMe(article.uid)"
-              class="lock-info-des"
-            >
-              <ul>
-                <li
-                  v-if="isPriceArticle"
-                  class="fl"
-                >
-                  <div class="fl price">
-                    {{ $t('paidRead.pay') }}
-                    <span class="amount">{{ getArticlePrice }}</span>
-                    <template v-if="getPayToken.token_id !== 0">
-                      <router-link
-                        :to="{name: 'token-id', params:{ id:getPayToken.token_id }}"
-                        target="_blank"
-                        class="fl"
-                      >
-                        <avatar
-                          :size="'16px'"
-                          :src="$API.getImg(getPayToken.logo)"
-                          class="avatar-token"
-                        />
-                        {{ getPayToken.symbol }} <template v-if="getPayToken.name">（{{ getPayToken.name }}）</template>
-                      </router-link>
-                    </template>
-                    <template v-else>
-                      <svg-icon
-                        icon-class="currency"
-                        class="avatar-cny"
-                      />
-                      {{ getPayToken.symbol }}
-                    </template>
-                  </div>
-                  <span>
-                    {{ $t('already-held') }}：{{ payTokenBalance }} {{ getPayToken.symbol }}
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
-                      :content="$t('paidRead.purchaseHistory')"
-                      placement="left"
-                    >
-                      <svg-icon icon-class="anser" />
-                    </el-tooltip>
-                  </span>
-                </li>
-                <li
-                  v-if="isTokenArticle"
-                  class="fl"
-                >
-                  <div class="fl price">
-                    {{ $t('paidRead.hold') }}
-                    <span class="amount">{{ needTokenAmount }}</span>
+                <div class="fl price">
+                  {{ $t('paidRead.pay') }}
+                  <span class="amount">{{ getArticlePrice }}</span>
+                  <template v-if="getPayToken.token_id !== 0">
                     <router-link
-                      :to="{name: 'token-id', params:{ id:needTokenId }}"
+                      :to="{name: 'token-id', params:{ id:getPayToken.token_id }}"
                       target="_blank"
                       class="fl"
                     >
                       <avatar
                         :size="'16px'"
-                        :src="needTokenLogo"
+                        :src="$API.getImg(getPayToken.logo)"
                         class="avatar-token"
                       />
-                      {{ needTokenSymbol }}（{{ needTokenName }}）
+                      {{ getPayToken.symbol }} <template v-if="getPayToken.name">（{{ getPayToken.name }}）</template>
                     </router-link>
-                  </div>
-                  <!-- 不显示 - 号 -->
-                  <span> {{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
-                      content="只要满足持币条件随时可以查看全文"
-                      placement="left"
-                    >
-                      <svg-icon icon-class="anser" />
-                    </el-tooltip>
-                  </span>
-                </li>
-              </ul>
-            </p>
-            <p
-              v-else
-              class="lock-info-des"
-            >
-              {{ $t('paidRead.myArticles') }}
-            </p>
-            <div
-              v-if="!hasPaied"
-              class="lock-bottom"
-            >
-              <div class="btn-ccc">
-                <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}{{$t('mttk-points')}}</span> -->
-                <!-- <el-tooltip
+                  </template>
+                  <template v-else>
+                    <svg-icon
+                      icon-class="currency"
+                      class="avatar-cny"
+                    />
+                    {{ getPayToken.symbol }}
+                  </template>
+                </div>
+                <span>
+                  <span class="price-name">{{ $t('already-held') }}:</span>
+                  <span class="price-amount">{{ payTokenBalance }} {{ getPayToken.symbol }}</span>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="$t('paidRead.purchaseHistory')"
+                    placement="left"
+                  >
+                    <svg-icon icon-class="anser" />
+                  </el-tooltip>
+                </span>
+              </li>
+              <li
+                v-if="isTokenArticle"
+                class="fl"
+              >
+                <div class="fl price">
+                  {{ $t('paidRead.hold') }}
+                  <span class="amount">{{ needTokenAmount }}</span>
+                  <router-link
+                    :to="{name: 'token-id', params:{ id:needTokenId }}"
+                    target="_blank"
+                    class="fl"
+                  >
+                    <avatar
+                      :size="'16px'"
+                      :src="needTokenLogo"
+                      class="avatar-token"
+                    />
+                    {{ needTokenSymbol }}（{{ needTokenName }}）
+                  </router-link>
+                </div>
+                <!-- 不显示 - 号 -->
+                <span>
+                  <span class="price-name">{{ !tokenHasPaied ? $t('paidRead.stillNeedToHold') : $t('paidRead.alreadyHeld') }}</span>
+                  <span class="price-amount">{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="只要满足持币条件随时可以查看全文"
+                    placement="left"
+                  >
+                    <svg-icon icon-class="anser" />
+                  </el-tooltip>
+                </span>
+              </li>
+            </ul>
+          </p>
+          <p
+            v-else
+            class="lock-info-des"
+          >
+            {{ $t('paidRead.myArticles') }}
+          </p>
+          <div
+            v-if="!hasPaied"
+            class="lock-bottom"
+          >
+            <div class="btn-ccc">
+              <!-- <span class="lock-bottom-total">{{ $t('paidRead.totalAbout') + totalCny }}{{$t('mttk-points')}}</span> -->
+              <!-- <el-tooltip
                   class="item"
                   effect="dark"
                   :content="$t('paidRead.tounlockThisArticle')"
                   placement="top-end"
                 > -->
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="wxpayArticle"
-                >
-                  {{ unlockTextFull }}
-                  <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
-                </el-button>
-                <!-- </el-tooltip> -->
-              </div>
-              <!-- <NoticeCreator
+              <el-button
+                type="primary"
+                size="small"
+                @click="wxpayArticle"
+              >
+                {{ unlockTextFull }}
+                <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
+              </el-button>
+              <!-- </el-tooltip> -->
+            </div>
+            <!-- <NoticeCreator
                 v-if="!readTokenExs"
                 :tokenId="form.outputToken.id"
                 :postId="article.id"
               /> -->
-            </div>
           </div>
         </div>
-
-        <!-- 编辑全文 -->
-        <becomeAnArticleEditor
-          :article="article"
-          :has-paied="editHasPaied"
-          :token-has-paied="editTokenHasPaied"
-          :difference-token="editDifferenceToken"
-          :form="editForm"
-          :input-amount-error="getEditInputAmountError"
-          :lock-loading="lockLoading"
-          :is-toll-read="isTokenArticle || isPriceArticle"
-          :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
-          @createOrder="createEditOrder"
-        />
       </div>
+
+
+      <!-- 编辑全文 -->
+      <becomeAnArticleEditor
+        :article="article"
+        :has-paied="editHasPaied"
+        :token-has-paied="editTokenHasPaied"
+        :difference-token="editDifferenceToken"
+        :form="editForm"
+        :input-amount-error="getEditInputAmountError"
+        :lock-loading="lockLoading"
+        :is-toll-read="isTokenArticle || isPriceArticle"
+        :has-paied-read="hasPaied || !(isTokenArticle || isPriceArticle)"
+        @createOrder="createEditOrder"
+      />
+
       <AssosiateWith
         v-if="article.assosiate_with"
         :article="article"
@@ -421,6 +425,7 @@ import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 import tokenCd from '@/components/token_cd/index.vue'
 import addFav from '@/components/fav/add'
+import { isEmpty } from 'lodash'
 
 
 let markdown = null
@@ -777,7 +782,7 @@ export default {
     },
     // 动态返回文章字号大小
     // >992 16 18 20 22 24
-    // >600 <=992 14 16 18 20 22
+    // >600 <= 992 14 16 18 20 22
     // <- 600 12 14 16 18 20
     // 第二个标准值是css文章的默认字体大小
     fontSizeComputed() {
@@ -949,10 +954,10 @@ export default {
       this.setAvatar()
       this.addReadAmount()
       this.getCurrentProfile()
-      this.getTags()
       this.getArticleIpfs()
-
       this.setAllHideContentStyle()
+
+      this.getTags()
 
       this.$nextTick(() => {
         this.setFontSize()
@@ -967,7 +972,10 @@ export default {
   },
   methods: {
     // 增加文章阅读量
-    async addReadAmount() { await this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))},
+    addReadAmount() {
+      // 不需要同步执行
+      this.$API.addReadAmount({ articlehash: this.article.hash }).catch(err => console.log('add read amount error', err))
+    },
     // 获取用户在当前文章的属性
     async getCurrentProfile(id) {
       if (!getCookie('ACCESS_TOKEN')) {
@@ -1095,25 +1103,23 @@ export default {
         }
       }
     },
-
+    // get ipfs data
     async getIpfsData() {
-      const { hash } = this.article
-      if (!hash) {
-        console.log('not hash')
-        return
-      } else {
-        await this.$API.getIpfsData(hash)
-          .then(res => {
-            if (res.code === 0) {
-            // 在获取ipfs内容后替换title, 因为数据库存储的title有上限
-              this.article.title = res.data.title
-              this.post.content = res.data.content
-            } else {
-              this.$message({ showClose: true, message: res.message, type: 'warning'})
-            }
-          }).catch(err => {
-            console.log('err', err)
-          })
+      try {
+        const { hash } = this.article
+        if (isEmpty(hash)) {
+          throw new Error('not hash')
+        }
+        const res = await this.$API.getIpfsData(hash)
+        if (res.code === 0) {
+          // 在获取ipfs内容后替换title, 因为数据库存储的title有上限
+          this.article.title = res.data.title
+          this.post.content = res.data.content
+        } else {
+          throw new Error(res.message)
+        }
+      } catch (e) {
+        console.log('err', e.toString())
       }
     },
     async getArticleInfoFunc() {
@@ -1291,14 +1297,19 @@ export default {
         }
       }
     },
+    // 设置用户头像
+    // 作用不大 重复请求了 可以考虑移除/修改
     async setAvatar() {
-      await this.$API.getUser(this.article.uid).then((res) => {
+      try {
+        const res = await this.$API.getUser(this.article.uid)
         if (res.code === 0) {
           this.avatar = res.data.avatar ? this.$ossProcess(res.data.avatar) : ''
-        } else this.$message({ showClose: true, message: res.message, type: 'warning'})
-      }).catch(err => {
-        console.log('err', err)
-      })
+        } else {
+          throw new Error(res.message)
+        }
+      } catch (e) {
+        console.log('setAvatar e', e.toString())
+      }
     },
     // 获取是否赞赏状态
     getSupportStatus(res) {

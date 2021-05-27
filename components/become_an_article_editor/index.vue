@@ -101,7 +101,10 @@
               </router-link>
             </div>
             <!-- 不显示 - 号 -->
-            <span> {{ !tokenHasPaied ? $t('still-need-to-hold') : $t('already-held') }}{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+            <span>
+              <span class="price-name">{{ !tokenHasPaied ? $t('still-need-to-hold') : $t('already-held') }}</span>
+              <span class="price-amount">{{ isLogined ? differenceToken.slice(1) : needTokenAmount }} {{ needTokenSymbol }}</span>
+            </span>
           </li>
         </ul>
       </p>
@@ -214,6 +217,8 @@ export default {
   data() {
     return {
       isProduct: false,
+      timer: null,
+      open: false
     }
   },
   computed: {
@@ -280,13 +285,28 @@ export default {
       return utils.up2points(result + this.getArticlePrice)
     }
   },
+  watch: {
+    lockLoading() {
+      // this.showOrder()
+    },
+  },
+  destroyed() {
+    window.sessionStorage.removeItem('show-edit-auth')
+  },
+  mounted() {
+  },
   methods: {
     // 购买编辑权限
     wxpayEdit() {
       if (!this.isLogined) {
+        if (process.browser) {
+          window.sessionStorage.setItem('show-edit-auth', Date.now())
+        }
         this.$store.commit('setLoginModal', true)
-        return false
+        return
       }
+      console.log('createOrder')
+      window.sessionStorage.removeItem('show-edit-auth')
       this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
     },
     edit() {
@@ -298,6 +318,37 @@ export default {
         })
       }
       else this.$message.error('无法获取文章Hash')
+    },
+    showOrder() {
+      if (process.browser) {
+        // 未登录
+        if (!this.isLogined) {
+          return
+        }
+
+        if (this.lockLoading) {
+          return
+        }
+
+        if (this.open) {
+          return
+        }
+        this.open = true
+
+        try {
+          let value = window.sessionStorage.getItem('show-edit-auth')
+          if (value) {
+            console.log('time1111', this.open)
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+              console.log('time')
+              this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
+            }, 5000)
+          }
+        } catch (e) {
+          console.log('e', e.toStriing())
+        }
+      }
     }
   }
 }
@@ -307,26 +358,28 @@ export default {
 .lock {
   background: #fff;
   display: flex;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
   &-left {
     align-self: flex-start;
     margin-right: 10px;
   }
   .lock-img {
-    width: 46px;
+    width: 36px;
   }
   &-info {
     width: 100%;
     &-title {
-      font-size: 22px;
+      font-size: 18px;
       color: #000000;
       padding: 0;
-      margin: 4px 0;
+      margin: 2px 0;
+      font-weight: 500;
     }
     &-subtitle {
-      font-size: 16px;
-      color: #B2B2B2;
+      font-size: 14px;
+      color: #b2b2b2;
       padding: 0;
-      margin: 8px 0;
+      margin: 0;
       font-weight: 400;
     }
   }
@@ -344,7 +397,7 @@ export default {
       margin-left: 6px;
       &.amount {
         color: #000000;
-        margin-left: 5;
+        margin-left: 5px;
         min-width: 36px;
       }
     }
@@ -353,13 +406,25 @@ export default {
     }
     .price {
       flex: 1;
+      display: flex;
+      align-items: center;
+      color: #333;
+      font-size: 14px;
+    }
+    .price-name {
+      font-size: 14px;
+      margin-left: 0;
+    }
+    .price-amount {
+      font-size: 16px;
+      margin-left: 0;
     }
   }
   &-bottom {
     display: flex;
     justify-content: flex-end;
     align-content: center;
-    border-top: 1px solid #DBDBDB;
+    border-top: 1px solid #e9e9e9;
     margin-top: 10px;
     padding-top: 10px;
     align-items:center;

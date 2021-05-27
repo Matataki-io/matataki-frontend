@@ -9,13 +9,13 @@
           {{ minetokenToken.symbol || 'Loading...' }}
         </div>
         <div class="token-header">
-          <div class="token-info-sub" style="font-size: 1.1rem">
+          <div class="token-info-sub symbol" style="font-size: 1.1rem">
             {{ minetokenToken.name }}
           </div>
           <div v-if="tags && tags.length !== 0" class="token-tags">
             <div
-              v-for="(tag, index) in tags" 
-              :key="index" 
+              v-for="(tag, index) in tags"
+              :key="index"
               class="tag-item"
             >
               <div size="small" plain>
@@ -69,7 +69,7 @@
           v-html="$t('token.summary')"
         />
         <div>
-          <p class="token-info-sub">
+          <p class="token-info-sub brief">
             {{ minetokenToken.brief || $t('not') }}
           </p>
         </div>
@@ -232,6 +232,13 @@ export default {
   margin: 0;
   a {
     color: #542de0;
+  }
+  &.symbol {
+    color: #333;
+  }
+  &.brief {
+    font-size: 14px;
+    color: #333;
   }
 }
 
