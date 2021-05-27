@@ -149,7 +149,8 @@ export default {
       try {
         const res = await this.$API.getIpfsData(this.article.hash)
         if (res.code !== 0) {
-          this.$message.error(res.message)
+          // 不需要 message 通知
+          console.log(res.message)
           return
         }
         this.githubId = res.data.github_id
