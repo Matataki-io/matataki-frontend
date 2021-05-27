@@ -1271,10 +1271,6 @@ export default {
       }
     },
     async wxpayArticle() {
-      if (!this.isLogined) {
-        this.$store.commit('setLoginModal', true)
-        return false
-      }
       // 如果是付币阅读的文章
       if (this.isPriceArticle && !this.priceHasPaied && this.getPayToken.token_id !== 0) {
         await this.handlePayToken()

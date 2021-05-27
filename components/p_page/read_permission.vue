@@ -142,7 +142,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="$emit('wxpayArticle')"
+            @click="wxpayArticleFn"
           >
             {{ unlockTextFull }}
             <!-- {{ $t('paidRead.oneKey') + unlockText }}全文 -->
@@ -217,6 +217,11 @@ export default {
       required: true
     },
   },
+  data() {
+    return {
+      timer: null
+    }
+  },
   computed: {
     ...mapGetters(['isLogined', 'isMe']),
     unlockText() {
@@ -259,6 +264,60 @@ export default {
       }
       return '一键解锁全文'
     },
+  },
+  watch: {
+    lockLoading() {
+      this.autoShowOrder()
+    },
+  },
+  destroyed() {
+    window.sessionStorage.removeItem('show-read-auth')
+  },
+  methods: {
+    wxpayArticleFn() {
+      if (!this.isLogined) {
+        if (process.browser) {
+          window.sessionStorage.setItem('show-read-auth', Date.now())
+        }
+        this.$store.commit('setLoginModal', true)
+        return
+      }
+      window.sessionStorage.removeItem('show-read-auth')
+      this.$emit('wxpayArticle')
+    },
+    // 自动显示创建订单窗口
+    autoShowOrder() {
+      if (process.browser) {
+        if (!this.isLogined) {
+          return
+        }
+
+        if (this.lockLoading) {
+          return
+        }
+
+        try {
+          let value = window.sessionStorage.getItem('show-read-auth')
+          if (!value) {
+            return
+          }
+          let lastTime = Math.floor(Number(value) / 1000)
+          let currentTime = Math.floor(Number(Date.now()) / 1000)
+          console.log('time', lastTime, currentTime)
+          if (currentTime - lastTime <= 180) {
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+              this.$emit('wxpayArticle')
+              window.sessionStorage.removeItem('show-read-auth')
+            }, 2000)
+          } else {
+            window.sessionStorage.removeItem('show-read-auth')
+          }
+        } catch (e) {
+          console.log('e', e.toStriing())
+        }
+      }
+    }
   }
 }
 </script>

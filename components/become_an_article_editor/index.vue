@@ -304,7 +304,6 @@ export default {
         this.$store.commit('setLoginModal', true)
         return
       }
-      console.log('createOrder')
       window.sessionStorage.removeItem('show-edit-auth')
       this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
     },
@@ -331,10 +330,13 @@ export default {
 
         try {
           let value = window.sessionStorage.getItem('show-edit-auth')
+          if (!value) {
+            return
+          }
           let lastTime = Math.floor(Number(value) / 1000)
           let currentTime = Math.floor(Number(Date.now()) / 1000)
           console.log('time', lastTime, currentTime)
-          if (value && currentTime - lastTime <= 180) {
+          if (currentTime - lastTime <= 180) {
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
               this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
