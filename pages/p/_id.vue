@@ -114,7 +114,7 @@
           <h3 class="lock-info-title">
             {{ !hasPaied ? unlockText + $t('paidRead.article') : $t('paidRead.already') + unlockText + $t('paidRead.article') }}
           </h3>
-          <h5 class="lock-info-subtitle">
+          <div class="lock-info-subtitle">
             {{ !hasPaied ? $t('paidRead.needToReach') : $t('paidRead.hasBeenReached') }}
             <el-tooltip
               class="item"
@@ -127,8 +127,8 @@
                 class="prompt-svg"
               />
             </el-tooltip>
-          </h5>
-          <p
+          </div>
+          <div
             v-if="!isMe(article.uid)"
             class="lock-info-des"
           >
@@ -151,7 +151,9 @@
                         :src="$API.getImg(getPayToken.logo)"
                         class="avatar-token"
                       />
-                      {{ getPayToken.symbol }} <template v-if="getPayToken.name">（{{ getPayToken.name }}）</template>
+                      {{ getPayToken.symbol }} <template v-if="getPayToken.name">
+                        （{{ getPayToken.name }}）
+                      </template>
                     </router-link>
                   </template>
                   <template v-else>
@@ -210,13 +212,13 @@
                 </span>
               </li>
             </ul>
-          </p>
-          <p
+          </div>
+          <div
             v-else
             class="lock-info-des"
           >
             {{ $t('paidRead.myArticles') }}
-          </p>
+          </div>
           <div
             v-if="!hasPaied"
             class="lock-bottom"

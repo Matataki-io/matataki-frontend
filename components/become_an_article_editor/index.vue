@@ -22,7 +22,7 @@
       <h3 class="lock-info-title">
         {{ !(hasPaied && hasPaiedRead) ? `${$t('unlock-edit-permissions', [ unlockText ])}` : `${$t('unlock-edit-permission', [ unlockText ])}` }}
       </h3>
-      <h5 class="lock-info-subtitle">
+      <div class="lock-info-subtitle">
         {{ !(hasPaied && hasPaiedRead) ? $t('you-need-to-meet-the-following-unlock-conditions') : $t('you-have-fulfilled-the-following-unlock-conditions') }}
         <el-tooltip
           effect="dark"
@@ -34,8 +34,8 @@
             class="prompt-svg"
           />
         </el-tooltip>
-      </h5>
-      <p
+      </div>
+      <div
         v-if="!isMe(article.uid)"
         class="lock-info-des"
       >
@@ -107,13 +107,13 @@
             </span>
           </li>
         </ul>
-      </p>
-      <p
+      </div>
+      <div
         v-else
         class="lock-info-des"
       >
         {{ $t('self-publish-article') }}
-      </p>
+      </div>
       <div
         v-if="!hasPaied"
         class="lock-bottom notice-creator-container"
@@ -218,7 +218,6 @@ export default {
     return {
       isProduct: false,
       timer: null,
-      open: false
     }
   },
   computed: {
@@ -287,7 +286,7 @@ export default {
   },
   watch: {
     lockLoading() {
-      // this.showOrder()
+      this.autoShowOrder()
     },
   },
   destroyed() {
@@ -319,9 +318,9 @@ export default {
       }
       else this.$message.error('无法获取文章Hash')
     },
-    showOrder() {
+    // 自动显示创建订单窗口
+    autoShowOrder() {
       if (process.browser) {
-        // 未登录
         if (!this.isLogined) {
           return
         }
@@ -330,20 +329,19 @@ export default {
           return
         }
 
-        if (this.open) {
-          return
-        }
-        this.open = true
-
         try {
           let value = window.sessionStorage.getItem('show-edit-auth')
-          if (value) {
-            console.log('time1111', this.open)
+          let lastTime = Math.floor(Number(value) / 1000)
+          let currentTime = Math.floor(Number(Date.now()) / 1000)
+          console.log('time', lastTime, currentTime)
+          if (value && currentTime - lastTime <= 180) {
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
-              console.log('time')
               this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
-            }, 5000)
+              window.sessionStorage.removeItem('show-edit-auth')
+            }, 2000)
+          } else {
+            window.sessionStorage.removeItem('show-edit-auth')
           }
         } catch (e) {
           console.log('e', e.toStriing())
