@@ -364,7 +364,7 @@ export default {
       font-size: 18px;
       color: #000000;
       padding: 0;
-      margin: 2px 0;
+      margin: 4px 0;
       font-weight: 500;
     }
 
