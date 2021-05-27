@@ -424,6 +424,7 @@
     "whereToPublishHelp": "See detail",
     "publishToIPFS": "IPFS",
     "publishToGithub": "Indie Blog",
+    "syncTagsToIndieBlog": "Sync tags to Indie Blog",
     "originalStatement": "Original statement",
     "statement": "Checking this original statement means you confirm and promise that the article, including the pictures and other elements used in the article, was created independently by you (or the organization holding the account), or has obtained the right of the original work \nLicense. \nDo not check this original statement for articles with the following circumstances:",
     "statement1": "1. Works produced by distortion, falsification, plagiarism, and plagiarism created by others,",

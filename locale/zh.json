@@ -424,6 +424,7 @@
     "whereToPublishHelp": "查看更详细的信息",
     "publishToIPFS": "IPFS",
     "publishToGithub": "独立子站",
+    "syncTagsToIndieBlog": "同步标签到独立子站",
     "originalStatement": "原创声明",
     "statement": "勾选本原创声明，即代表您确认并承诺该文章，包括文章中的使用的图片等其他元素，是由您本人（或持有该账号之组织）独立创作完成，或者已取得原作权利人的使用许可。有如下情况的文章请勿勾选本原创声明：",
     "statement1": "1.歪曲、篡改、抄袭、剽窃他人创作而产生的作品，",

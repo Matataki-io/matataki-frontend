@@ -673,6 +673,20 @@
                 {{ $t('publish.publishToGithub') }}
               </el-radio>
             </el-tooltip>
+
+            <transition name="fade">
+              <div
+                v-if="publishToGithub"
+                style="margin: 10px 0;"
+              >
+                <el-checkbox
+                  v-model="indieSyncTags"
+                  :label="true"
+                >
+                  {{ $t('publish.syncTagsToIndieBlog') }}
+                </el-checkbox>
+              </div>
+            </transition>
           </div>
         </div>
 
@@ -889,6 +903,8 @@ export default {
       ipfs_hide: true,
       // 是否保存到GitHub
       publishToGithub: false,
+      // 是否同步标签到独立子站
+      indieSyncTags: false,
       editorPlaceholder: '',
       alltokenLoading: true,
       timedForm: {
@@ -1035,7 +1051,7 @@ export default {
     },
     appLang() {
       return getCookie('language')
-    }
+    },
   },
   watch: {
     'timedForm.dateText': function (val) {
@@ -1609,7 +1625,7 @@ export default {
       article.requireBuy = this.requireBuy
       article.requireToken = this.requireToken
 
-      //编辑权限
+      // 编辑权限
       article.editRequireToken = this.editRequireToken
       article.editRequireBuy = this.editRequireBuy
 
@@ -1620,6 +1636,10 @@ export default {
 
       // 设置文章保存位置
       article.ipfs_or_github = this.publishToGithub ? 'github' : 'ipfs'
+
+      // 设置是否同步标签到个人子站
+      /* 必须同时指定了发送到 Github 和选择了同步标签，才发送此属性为 true */
+      article.indie_sync_tags = this.publishToGithub && this.indieSyncTags
 
       try {
         // 取消钱包签名, 暂注释后面再彻底删除 start
