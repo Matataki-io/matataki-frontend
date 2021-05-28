@@ -23,12 +23,14 @@
         <div class="fl ac author-info">
           <span class="Post-Time">{{ time }}</span>
           <span class="View-Num"><svg-icon class="icon" icon-class="read" />{{ article.read || 0 }}</span>
-          <ipfsAll
-            :article-ipfs-array="articleIpfsArray"
-            :user="user"
-            :github-id="githubId"
-            :github-repo="githubRepo"
-          />
+          <client-only>
+            <ipfsAll
+              :article-ipfs-array="articleIpfsArray"
+              :user="user"
+              :github-id="githubId"
+              :github-repo="githubRepo"
+            />
+          </client-only>
           &nbsp;
           <span class="article-head__ipfs">{{ isPublishedOnGithub ? $t('indie-blog.page-title') : 'IPFS' }}</span>
         </div>
