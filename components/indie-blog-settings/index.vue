@@ -29,42 +29,96 @@
       </el-button>
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.title') }}</span>
+      <span class="list-title">{{ $t('indie-blog.title') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.titleHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-input
         v-model="settings.title"
         class="list-content"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.subtitle') }}</span>
+      <span class="list-title">{{ $t('indie-blog.subtitle') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.subtitleHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-input
         v-model="settings.subtitle"
         class="list-content"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.description') }}</span>
+      <span class="list-title">{{ $t('indie-blog.description') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.descriptionHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-input
         v-model="settings.description"
         class="list-content"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.keywords') }}</span>
+      <span class="list-title">{{ $t('indie-blog.keywords') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.keywordsHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-input
         v-model="settings.keywords"
         class="list-content"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.author') }}</span>
+      <span class="list-title">{{ $t('indie-blog.author') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.authorHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-input
         v-model="settings.author"
         class="list-content"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.language') }}</span>
+      <span class="list-title">{{ $t('indie-blog.language') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.languageHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-select v-model="settings.language" class="list-content">
         <el-option
           v-for="(language, index) in languages"
@@ -78,7 +132,16 @@
       </el-select>
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.timezone') }}</span>
+      <span class="list-title">{{ $t('indie-blog.timezone') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.timezoneHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-select
         v-model="settings.timezone"
         class="list-content"
@@ -92,7 +155,16 @@
       </el-select>
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.theme') }}</span>
+      <span class="list-title">{{ $t('indie-blog.theme') }}
+        <el-tooltip
+          class="max-width-80"
+          effect="dark"
+          :content="$t('indie-blog.themeHelp')"
+          placement="top-start"
+        >
+          <svg-icon class="help-icon" icon-class="help" />
+        </el-tooltip>
+      </span>
       <el-select
         v-model="settings.theme"
         class="list-content"
