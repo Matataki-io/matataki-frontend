@@ -15,16 +15,7 @@
     >
       <div class="components-ipfs_all">
         <!--文章保存位置-->
-        <p v-if="!isPublishedOnGithub" class="ipfs_all__title">
-          {{ $t("ipfsHash.link") }}
-          <span style="float: right;">
-            <el-button
-              type="text"
-              @click="dialogVisible = true"
-            >{{ $t('ipfsHash.historyBtn') }}</el-button>
-          </span>
-        </p>
-        <p v-else class="ipfs_all__title">
+        <p v-show="isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("githubHash.link") }}
           <span style="float: right;">
             <a
@@ -33,28 +24,45 @@
             >{{ $t('ipfsHash.historyBtn') }}</a>
           </span>
         </p>
+        <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
+          {{ $t("ipfsHash.link") }}
+          <span style="float: right;">
+            <el-button
+              type="text"
+              @click="dialogVisible = true"
+            >{{ $t('ipfsHash.historyBtn') }}</el-button>
+          </span>
+        </p>
 
         <!--文章Hash-->
-        <div v-if="hash" class="ipfs_all__address">
+        <div v-show="hash" class="ipfs_all__address">
           <p>{{ isPublishedOnGithub ? 'File Hash: ' + hash : 'IPFS Hash: ' + hash }}</p>
 
           <svg-icon icon-class="copy" class="icon" @click="copy(hash)" />
         </div>
-        <p v-else class="ipfs_all__not">
+        <p v-show="!hash" class="ipfs_all__not">
           {{ $t("not") }}
         </p>
 
         <!--文章保存位置：标题-->
-        <p v-if="!isPublishedOnGithub" class="ipfs_all__title">
-          {{ $t("ipfsHash.publicNode") }}
-        </p>
-        <p v-else class="ipfs_all__title">
+        <p v-show="isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("githubHash.filePath") }}
+        </p>
+        <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
+          {{ $t("ipfsHash.publicNode") }}
         </p>
 
         <!--文章保存位置：详细地址-->
-        <template v-if="hash">
-          <template v-if="!isPublishedOnGithub">
+        <template v-show="hash">
+          <template v-show="isPublishedOnGithub">
+            <div
+              class="ipfs_all__link"
+            >
+              <a :href="githubLink" target="_blank"> {{ githubLink }} </a>
+              <svg-icon icon-class="arrow" class="icon" />
+            </div>
+          </template>
+          <template v-show="!isPublishedOnGithub">
             <div
               v-for="(item, index) in link"
               :key="index"
@@ -64,16 +72,8 @@
               <svg-icon icon-class="arrow" class="icon" />
             </div>
           </template>
-          <template v-else>
-            <div
-              class="ipfs_all__link"
-            >
-              <a :href="githubLink" target="_blank"> {{ githubLink }} </a>
-              <svg-icon icon-class="arrow" class="icon" />
-            </div>
-          </template>
         </template>
-        <p v-else class="ipfs_all__not">
+        <p v-show="!hash" class="ipfs_all__not">
           {{ $t("not") }}
         </p>
 
