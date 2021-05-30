@@ -37,10 +37,26 @@
         {{ $t('indie-blog.save-and-refresh') }}
       </el-button>
     </div>
-    <div v-else-if="activeStep === 2" class="list center">
-      <el-button :loading="creating" @click="createRepo">
-        {{ $t('indie-blog.complete') }}
-      </el-button>
+    <div v-else-if="activeStep === 2">
+      <div class="list center">
+        <div class="set-captcha">
+          <vue-hcaptcha
+            v-if="doINeedHCaptcha"
+            ref="hCaptcha"
+            :sitekey="hCaptchaSiteKey"
+            :language="appLang"
+            @verify="onCaptchaVerify"
+            @expired="onExpire"
+            @error="onError"
+            @reset="onCaptchaReset"
+          />
+        </div>
+      </div>
+      <div class="list center">
+        <el-button :disabled="!isCaptchaOK">
+          {{ $t('indie-blog.complete') }}
+        </el-button>
+      </div>
     </div>
     <div v-else-if="activeStep === 3" class="list center">
       <el-button @click="$emit('refresh')">
@@ -51,8 +67,13 @@
 </template>
 <script>
 import Vue from 'vue'
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
+import { getCookie } from '@/utils/cookie'
 
 export default Vue.extend({
+  components: {
+    VueHcaptcha,
+  },
   data() {
     return {
       steps: [
@@ -66,10 +87,33 @@ export default Vue.extend({
       repoName: '',
       saving: false,
       creating: false,
+      doINeedHCaptcha: true,
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
+      },
     }
+  },
+  computed: {
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      // 如果是白名单，则为 true
+      if (!this.doINeedHCaptcha) return true
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+    },
+    appLang() {
+      return getCookie('language')
+    },
   },
   mounted() {
     this.isBindOnGitHub()
+    this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
+      this.doINeedHCaptcha = _doINeedHCaptcha
+    })
   },
   methods: {
     /**
@@ -201,6 +245,26 @@ export default Vue.extend({
         return ''
       } finally {
         this.repoInputDisabled = false
+      }
+    },
+    /** Captcha 验证相关 */
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error: ', err)
+    },
+    // 当hCaptcha状态重置时，重置hCaptchaData对象的值
+    onCaptchaReset() {
+      this.hCaptchaData = {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
       }
     },
   }
