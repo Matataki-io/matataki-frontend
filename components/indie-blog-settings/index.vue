@@ -202,7 +202,7 @@ export default Vue.extend({
       ],
       settings: {},
       oldSettings: {},
-      languages: ['en', 'zh', 'zh-TW', 'zh-HK', 'ja', 'fr', 'es'],
+      languages: ['en', 'zh-CN', 'zh-TW', 'zh-HK', 'ja', 'fr', 'es'],
       themeList: [],
       saving: false,
       loadingPagesStatus: false,
@@ -309,7 +309,12 @@ export default Vue.extend({
     /** 保存设置 POST /user/siteConfig */
     saveSettings() {
       this.saving = true
-      this.$API.changeIndieBlogSiteConfig(this.hCaptchaData, this.settings).then((res) => {
+      // Fix issue #1257 https://github.com/Matataki-io/Matataki-FE/issues/1257
+      const siteSettings = this.settings
+      if (siteSettings.theme === 'cake') {
+        siteSettings.language = 'zh'
+      }
+      this.$API.changeIndieBlogSiteConfig(this.hCaptchaData, siteSettings).then((res) => {
         this.saving = false
         if (!res) {
           this.$message.error('保存设置失败')

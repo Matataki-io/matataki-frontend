@@ -1675,7 +1675,7 @@
     "timezone": "时间区域",
     "timezoneHelp": "为您的博客设置时区",
     "theme": "主题名称",
-    "themeHelp": "为您的博客设置主题",
+    "themeHelp": "为您的博客设置主题，主题切换太频繁会偶尔出现页面空白，请等待或稍后重试",
     "save": "保存",
     "config-guide": "设置指南",
     "siteLink": "网站链接",
