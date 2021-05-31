@@ -1385,9 +1385,12 @@ minetokenGetResources(tokenId) {
   favRelated(params) { return request.get(`/favorites/related`, { params }) },
 
   // ------------------------------ 独立子站 ----------------------------------
-  /** 创建用于独立子站保存文章的仓库 */
-  createIndieBlogRepo () {
-    return request.post('/indie/prepareRepo')
+  /**
+   * 创建用于独立子站保存文章的仓库
+   * @param {Object} hCaptchaData 验证码数据
+   * */
+  createIndieBlogRepo (hCaptchaData) {
+    return request.post('/indie/prepareRepo', { hCaptchaData })
   },
   /**
    * 初始化仓库，进行设置项目的修改
@@ -1435,15 +1438,16 @@ minetokenGetResources(tokenId) {
   },
   /**
    * 修改子站设置项
-   * @param params 应当为 Object 类型
+   * @param {Object} hCaptchaData 验证码数据
+   * @param {Object} params 修改设置内容
    * eg:
    * {
    *   "title": "LemonNeko's indie blog",
    *   "timezone": "Etc/GMT+8"
    * }
    */
-  changeIndieBlogSiteConfig (params) {
-    return request.post(`/indie/siteConfig`, params)
+  changeIndieBlogSiteConfig (hCaptchaData, params) {
+    return request.post(`/indie/siteConfig`, { hCaptchaData, ...params })
   },
   /**
    * 获取子站部署状态
