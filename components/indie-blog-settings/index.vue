@@ -29,96 +29,42 @@
       </el-button>
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.title') }}
-        <el-tooltip
-          class="max-width-80"
-          effect="dark"
-          :content="$t('indie-blog.titleHelp')"
-          placement="top-start"
-        >
-          <svg-icon class="help-icon" icon-class="help" />
-        </el-tooltip>
-      </span>
+      <span class="list-title">{{ $t('indie-blog.title') }}</span>
       <el-input
         v-model="settings.title"
-        class="list-content"
+        class="list-content setting-input"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.subtitle') }}
-        <el-tooltip
-          class="max-width-80"
-          effect="dark"
-          :content="$t('indie-blog.subtitleHelp')"
-          placement="top-start"
-        >
-          <svg-icon class="help-icon" icon-class="help" />
-        </el-tooltip>
-      </span>
+      <span class="list-title">{{ $t('indie-blog.subtitle') }}</span>
       <el-input
         v-model="settings.subtitle"
-        class="list-content"
+        class="list-content setting-input"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.description') }}
-        <el-tooltip
-          class="max-width-80"
-          effect="dark"
-          :content="$t('indie-blog.descriptionHelp')"
-          placement="top-start"
-        >
-          <svg-icon class="help-icon" icon-class="help" />
-        </el-tooltip>
-      </span>
-      <el-input
-        v-model="settings.description"
-        class="list-content"
-      />
-    </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.keywords') }}
-        <el-tooltip
-          class="max-width-80"
-          effect="dark"
-          :content="$t('indie-blog.keywordsHelp')"
-          placement="top-start"
-        >
-          <svg-icon class="help-icon" icon-class="help" />
-        </el-tooltip>
-      </span>
-      <el-input
-        v-model="settings.keywords"
-        class="list-content"
-      />
-    </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.author') }}
-        <el-tooltip
-          class="max-width-80"
-          effect="dark"
-          :content="$t('indie-blog.authorHelp')"
-          placement="top-start"
-        >
-          <svg-icon class="help-icon" icon-class="help" />
-        </el-tooltip>
-      </span>
+      <span class="list-title">{{ $t('indie-blog.author') }}</span>
       <el-input
         v-model="settings.author"
         class="list-content"
       />
     </div>
     <div class="list">
-      <span class="list-title">{{ $t('indie-blog.language') }}
-        <el-tooltip
-          class="max-width-80"
-          effect="dark"
-          :content="$t('indie-blog.languageHelp')"
-          placement="top-start"
-        >
-          <svg-icon class="help-icon" icon-class="help" />
-        </el-tooltip>
-      </span>
+      <span class="list-title">{{ $t('indie-blog.description') }}</span>
+      <el-input
+        v-model="settings.description"
+        class="list-content"
+      />
+    </div>
+    <div class="list">
+      <span class="list-title">{{ $t('indie-blog.keywords') }}</span>
+      <el-input
+        v-model="settings.keywords"
+        class="list-content"
+      />
+    </div>
+    <div class="list">
+      <span class="list-title">{{ $t('indie-blog.language') }}</span>
       <el-select v-model="settings.language" class="list-content">
         <el-option
           v-for="(language, index) in languages"
@@ -196,14 +142,18 @@
     <div class="list">
       <div class="list-title" />
       <div class="list-content">
-        <el-button :loading="saving" :disabled="!isCaptchaOK" @click="validateSettings">
+        <el-button
+          :class="(isCaptchaOK && modified) && 'active'"
+          class="save"
+          :loading="saving"
+          :disabled="!isCaptchaOK"
+          @click="validateSettings"
+        >
           {{ $t('indie-blog.save') }}
         </el-button>
-        <el-button>
-          <a href="https://www.matataki.io/p/8864">
-            {{ $t('indie-blog.config-guide') }}
-            <i class="el-icon-position" />
-          </a>
+        <el-button @click="window.location.href = 'https://www.matataki.io/p/8864'">
+          {{ $t('indie-blog.config-guide') }}
+          <i class="el-icon-position" />
         </el-button>
       </div>
     </div>
@@ -271,6 +221,9 @@ export default Vue.extend({
     }
   },
   computed: {
+    modified() {
+      return !lodash.isEqual(this.settings, this.oldSettings)
+    },
     hCaptchaSiteKey() {
       return process.env.VUE_APP_HCAPTCHA_SITE_KEY
     },
@@ -356,7 +309,7 @@ export default Vue.extend({
     /** 保存设置 POST /user/siteConfig */
     saveSettings() {
       this.saving = true
-      this.$API.changeIndieBlogSiteConfig(this.settings).then((res) => {
+      this.$API.changeIndieBlogSiteConfig(this.hCaptchaData, this.settings).then((res) => {
         this.saving = false
         if (!res) {
           this.$message.error('保存设置失败')
