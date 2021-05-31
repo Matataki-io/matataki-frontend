@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="list center">
-        <el-button :disabled="!isCaptchaOK">
+        <el-button :disabled="!isCaptchaOK" :loading="creating" @click="createRepo">
           {{ $t('indie-blog.complete') }}
         </el-button>
       </div>
@@ -165,7 +165,7 @@ export default Vue.extend({
     async createRepo() {
       try {
         this.creating = true
-        let res = await this.$API.createIndieBlogRepo()
+        let res = await this.$API.createIndieBlogRepo(this.hCaptchaData)
         let repoCreated = false
         if (res) {
           const {code} = res

@@ -309,7 +309,7 @@ export default Vue.extend({
     /** 保存设置 POST /user/siteConfig */
     saveSettings() {
       this.saving = true
-      this.$API.changeIndieBlogSiteConfig(this.settings).then((res) => {
+      this.$API.changeIndieBlogSiteConfig(this.hCaptchaData, this.settings).then((res) => {
         this.saving = false
         if (!res) {
           this.$message.error('保存设置失败')
