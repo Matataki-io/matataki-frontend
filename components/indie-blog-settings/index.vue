@@ -314,7 +314,7 @@ export default Vue.extend({
       if (siteSettings.theme === 'cake') {
         siteSettings.language = 'zh'
       }
-      this.$API.changeIndieBlogSiteConfig(this.hCaptchaData, this.settings).then((res) => {
+      this.$API.changeIndieBlogSiteConfig(this.hCaptchaData, siteSettings).then((res) => {
         this.saving = false
         if (!res) {
           this.$message.error('保存设置失败')
