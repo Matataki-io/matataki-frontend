@@ -177,18 +177,48 @@
         />
       </el-select>
     </div>
-    <div class="list center">
-      <el-button :loading="saving" @click="validateSettings">
-        {{ $t('indie-blog.save') }}
-      </el-button>
+    <div class="list">
+      <div class="list-title" />
+      <div class="list-content set-captcha">
+        <vue-hcaptcha
+          v-if="doINeedHCaptcha"
+          ref="hCaptcha"
+          :sitekey="hCaptchaSiteKey"
+          :language="appLang"
+          @verify="onCaptchaVerify"
+          @expired="onExpire"
+          @error="onError"
+          @reset="onCaptchaReset"
+        />
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="list-title" />
+      <div class="list-content">
+        <el-button :loading="saving" :disabled="!isCaptchaOK" @click="validateSettings">
+          {{ $t('indie-blog.save') }}
+        </el-button>
+        <el-button>
+          <a href="https://www.matataki.io/p/8864">
+            {{ $t('indie-blog.config-guide') }}
+            <i class="el-icon-position" />
+          </a>
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 import lodash from 'lodash'
+import { getCookie } from '@/utils/cookie'
+import VueHcaptcha from '@hcaptcha/vue-hcaptcha'
 
 export default Vue.extend({
+  components: {
+    VueHcaptcha,
+  },
   data() {
     return {
       timezones: [
@@ -228,10 +258,30 @@ export default Vue.extend({
       loadingPagesStatus: false,
       siteBuilding: false,
       siteAvailable: false,
+      doINeedHCaptcha: true,
       siteLink: '',
       repoName: '',
       githubUserName: '',
+      hCaptchaData: {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
+      },
     }
+  },
+  computed: {
+    hCaptchaSiteKey() {
+      return process.env.VUE_APP_HCAPTCHA_SITE_KEY
+    },
+    isCaptchaOK() {
+      // 如果是白名单，则为 true
+      if (!this.doINeedHCaptcha) return true
+      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+    },
+    appLang() {
+      return getCookie('language')
+    },
   },
   mounted() {
     this.getSettingsItem()
@@ -239,6 +289,9 @@ export default Vue.extend({
     this.getRepoName()
     this.getGithubId()
     this.isSiteLinkAvailable()
+    this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
+      this.doINeedHCaptcha = _doINeedHCaptcha
+    })
   },
   methods: {
     /** 获取设置项目 */
@@ -383,6 +436,26 @@ export default Vue.extend({
       } catch (e) {
         console.log(e)
         this.githubUserName = ''
+      }
+    },
+    /** Captcha 验证相关 */
+    onCaptchaVerify(token, eKey) {
+      this.hCaptchaData = { token, eKey, expired: false }
+    },
+    onExpire() {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+    },
+    onError(err) {
+      this.hCaptchaData = { token: null, eKey: null, expired: true }
+      console.error('captcha error: ', err)
+    },
+    // 当hCaptcha状态重置时，重置hCaptchaData对象的值
+    onCaptchaReset() {
+      this.hCaptchaData = {
+        expired: false,
+        token: null,
+        eKey: null,
+        error: null,
       }
     },
   }

@@ -1677,6 +1677,7 @@
     "theme": "主题名称",
     "themeHelp": "为您的博客设置主题",
     "save": "保存",
+    "config-guide": "设置指南",
     "siteLink": "网站链接",
     "follow-this-steps-to-create-indie-blog": "您尚未创建独立子站，通过以下步骤即可创建您的独立子站",
     "bind-github-account": "绑定 GitHub 账户",

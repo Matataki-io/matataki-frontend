@@ -1387,7 +1387,7 @@ minetokenGetResources(tokenId) {
   // ------------------------------ 独立子站 ----------------------------------
   /** 创建用于独立子站保存文章的仓库 */
   createIndieBlogRepo () {
-    return request.post(`/indie/prepareRepo`)
+    return request.post('/indie/prepareRepo')
   },
   /**
    * 初始化仓库，进行设置项目的修改
