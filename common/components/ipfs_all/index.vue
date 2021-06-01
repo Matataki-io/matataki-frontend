@@ -1,12 +1,5 @@
 <template>
   <div class="ipfs">
-    <el-dialog
-      :title="historyDialogTitle"
-      :visible.sync="dialogVisible"
-      class="history-dialog"
-    >
-      <ArticleHistory :article-ipfs-array="articleIpfsArray" />
-    </el-dialog>
     <el-popover
       placement="top"
       trigger="hover"
@@ -30,7 +23,9 @@
             type="text"
             style="float: right;"
             @click="dialogVisible = true"
-          >{{ $t('ipfsHash.historyBtn') }}</el-button>
+          >
+            {{ $t('ipfsHash.historyBtn') }}
+          </el-button>
         </p>
 
         <!--文章Hash-->
@@ -79,8 +74,17 @@
           {{ isPublishedOnGithub ? $t('githubHash.description') : $t('ipfsHash.slogan') }}
         </p>
       </div>
-      <svg-icon slot="reference" icon-class="ipfs" class="ipfs_all__icon" />
+      <div slot="reference">
+        <svg-icon icon-class="ipfs" class="ipfs_all__icon" />
+      </div>
     </el-popover>
+    <el-dialog
+      :title="historyDialogTitle"
+      :visible.sync="dialogVisible"
+      class="history-dialog"
+    >
+      <ArticleHistory :article-ipfs-array="articleIpfsArray" />
+    </el-dialog>
   </div>
 </template>
 
