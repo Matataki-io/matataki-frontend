@@ -74,7 +74,7 @@
           {{ isPublishedOnGithub ? $t('githubHash.description') : $t('ipfsHash.slogan') }}
         </p>
       </div>
-      <div slot="reference">
+      <div slot="reference" class="ipfs_box">
         <svg-icon icon-class="ipfs" class="ipfs_all__icon" />
       </div>
     </el-popover>
@@ -163,9 +163,13 @@ export default {
 
 <style lang="less" scoped>
 .components-ipfs_all {
+  .ipfs_box {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
   .ipfs_all__icon {
     font-size: 20px;
-    cursor: pointer;
   }
   .ipfs_all__title {
     padding: 0;
