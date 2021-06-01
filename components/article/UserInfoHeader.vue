@@ -266,6 +266,7 @@ export default {
   font-weight: bold;
   color: rgba(84, 45, 224, 1);
   line-height: 14px;
+  margin-left: 4px;
 }
 
 .author-info {
