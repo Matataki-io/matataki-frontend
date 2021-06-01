@@ -26,18 +26,16 @@
         </p>
         <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("ipfsHash.link") }}
-          <span style="float: right;">
-            <el-button
-              type="text"
-              @click="dialogVisible = true"
-            >{{ $t('ipfsHash.historyBtn') }}</el-button>
-          </span>
+          <el-button
+            type="text"
+            style="float: right;"
+            @click="dialogVisible = true"
+          >{{ $t('ipfsHash.historyBtn') }}</el-button>
         </p>
 
         <!--文章Hash-->
         <div v-show="hash" class="ipfs_all__address">
           <p>{{ isPublishedOnGithub ? 'File Hash: ' + hash : 'IPFS Hash: ' + hash }}</p>
-
           <svg-icon icon-class="copy" class="icon" @click="copy(hash)" />
         </div>
         <p v-show="!hash" class="ipfs_all__not">
