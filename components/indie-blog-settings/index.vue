@@ -8,77 +8,94 @@
         <span style="flex: 1">{{ siteBuilding ? $t('indie-blog.deploying') : $t('indie-blog.deployed') }}</span>
         <a class="site-link" :href="siteLink" target="_blank">{{ siteLink }}</a>
       </div>
+    </div>
+    <div v-else>
+      <div class="item list">
+        <span>{{ $t('indie-blog.not-deployed-part1') }}</span>
+        <a
+          v-if="repoName && githubUserName"
+          class="link"
+          :href="`https://github.com/${githubUserName}/${repoName}/settings/pages`"
+          target="_blank"
+        >{{ $t('indie-blog.not-deployed-part2') }}</a>
+        <span v-else>{{ $t('indie-blog.not-deployed-part2') }}</span>
+        <span style="flex: 1">{{ $t('indie-blog.not-deployed-part3') }}</span>
+      </div>
+    </div>
+    <!-- only displaying when not loading -->
+    <div v-if="!loadingPagesStatus" class="list">
       <el-button @click="isSiteLinkAvailable">
         <i class="el-icon-refresh" />
         {{ $t('indie-blog.refresh-status') }}
       </el-button>
-    </div>
-    <div v-else class="list">
-      <span>{{ $t('indie-blog.not-deployed-part1') }}</span>
-      <a
-        v-if="repoName && githubUserName"
-        class="link"
-        :href="`https://github.com/${githubUserName}/${repoName}/settings/pages`"
-        target="_blank"
-      >{{ $t('indie-blog.not-deployed-part2') }}</a>
-      <span v-else>{{ $t('indie-blog.not-deployed-part2') }}</span>
-      <span style="flex: 1">{{ $t('indie-blog.not-deployed-part3') }}</span>
-      <el-button @click="isSiteLinkAvailable">
-        <i class="el-icon-refresh" />
-        {{ $t('indie-blog.refresh-status') }}
+      <el-button @click="window.location.href = 'https://www.matataki.io/p/8864'">
+        {{ $t('indie-blog.config-guide') }}
+        <i class="el-icon-position" />
       </el-button>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.title') }}</span>
-      <el-input
-        v-model="settings.title"
-        class="list-content setting-input"
-      />
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.title') }}</span>
+      <div class="input">
+        <el-input
+          v-model="settings.title"
+          class="list-content setting-input"
+        />
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.subtitle') }}</span>
-      <el-input
-        v-model="settings.subtitle"
-        class="list-content setting-input"
-      />
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.subtitle') }}</span>
+      <div class="input">
+        <el-input
+          v-model="settings.subtitle"
+          class="list-content setting-input"
+        />
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.author') }}</span>
-      <el-input
-        v-model="settings.author"
-        class="list-content"
-      />
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.author') }}</span>
+      <div class="input">
+        <el-input
+          v-model="settings.author"
+          class="list-content"
+        />
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.description') }}</span>
-      <el-input
-        v-model="settings.description"
-        class="list-content"
-      />
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.description') }}</span>
+      <div class="input">
+        <el-input
+          v-model="settings.description"
+          class="list-content"
+        />
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.keywords') }}</span>
-      <el-input
-        v-model="settings.keywords"
-        class="list-content"
-      />
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.keywords') }}</span>
+      <div class="input">
+        <el-input
+          v-model="settings.keywords"
+          class="list-content"
+        />
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.language') }}</span>
-      <el-select v-model="settings.language" class="list-content">
-        <el-option
-          v-for="(language, index) in languages"
-          :key="index"
-          :value="language"
-          :label="$t('languages.' + language)"
-        >
-          <span style="float: left">{{ $t('languages.' + language) }}</span>
-          <span style="float: right; color: #8492a6; font-size: 13px">{{ language }}</span>
-        </el-option>
-      </el-select>
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.language') }}</span>
+      <div class="input">
+        <el-select v-model="settings.language" class="list-content">
+          <el-option
+            v-for="(language, index) in languages"
+            :key="index"
+            :value="language"
+            :label="$t('languages.' + language)"
+          >
+            <span style="float: left">{{ $t('languages.' + language) }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px">{{ language }}</span>
+          </el-option>
+        </el-select>
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.timezone') }}
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.timezone') }}
         <el-tooltip
           class="max-width-80"
           effect="dark"
@@ -88,20 +105,22 @@
           <svg-icon class="help-icon" icon-class="help" />
         </el-tooltip>
       </span>
-      <el-select
-        v-model="settings.timezone"
-        class="list-content"
-      >
-        <el-option
-          v-for="(timezone, index) in timezones"
-          :key="index"
-          :label="timezone.name"
-          :value="timezone.value"
-        />
-      </el-select>
+      <div class="input">
+        <el-select
+          v-model="settings.timezone"
+          class="list-content"
+        >
+          <el-option
+            v-for="(timezone, index) in timezones"
+            :key="index"
+            :label="timezone.name"
+            :value="timezone.value"
+          />
+        </el-select>
+      </div>
     </div>
-    <div class="list">
-      <span class="list-title">{{ $t('indie-blog.theme') }}
+    <div class="item list">
+      <span class="item-label title">{{ $t('indie-blog.theme') }}
         <el-tooltip
           class="max-width-80"
           effect="dark"
@@ -111,51 +130,42 @@
           <svg-icon class="help-icon" icon-class="help" />
         </el-tooltip>
       </span>
-      <el-select
-        v-model="settings.theme"
-        class="list-content"
-      >
-        <el-option
-          v-for="(theme, index) in themeList"
-          :key="index"
-          :label="theme"
-          :value="theme"
-        />
-      </el-select>
-    </div>
-    <div class="list">
-      <div class="list-title" />
-      <div class="list-content set-captcha">
-        <vue-hcaptcha
-          v-if="doINeedHCaptcha"
-          ref="hCaptcha"
-          :sitekey="hCaptchaSiteKey"
-          :language="appLang"
-          @verify="onCaptchaVerify"
-          @expired="onExpire"
-          @error="onError"
-          @reset="onCaptchaReset"
-        />
-      </div>
-    </div>
-
-    <div class="list">
-      <div class="list-title" />
-      <div class="list-content">
-        <el-button
-          :class="(isCaptchaOK && modified) && 'active'"
-          class="save"
-          :loading="saving"
-          :disabled="!isCaptchaOK"
-          @click="validateSettings"
+      <div class="input">
+        <el-select
+          v-model="settings.theme"
+          class="list-content"
         >
-          {{ $t('indie-blog.save') }}
-        </el-button>
-        <el-button @click="window.location.href = 'https://www.matataki.io/p/8864'">
-          {{ $t('indie-blog.config-guide') }}
-          <i class="el-icon-position" />
-        </el-button>
+          <el-option
+            v-for="(theme, index) in themeList"
+            :key="index"
+            :label="theme"
+            :value="theme"
+          />
+        </el-select>
       </div>
+    </div>
+    <div class="human-verify">
+      <vue-hcaptcha
+        v-if="doINeedHCaptcha"
+        ref="hCaptcha"
+        :sitekey="hCaptchaSiteKey"
+        :language="appLang"
+        @verify="onCaptchaVerify"
+        @expired="onExpire"
+        @error="onError"
+        @reset="onCaptchaReset"
+      />
+    </div>
+    <div class="save-content center">
+      <el-button
+        :class="(isCaptchaOK && modified) && 'active'"
+        class="save"
+        :loading="saving"
+        :disabled="!isCaptchaOK"
+        @click="validateSettings"
+      >
+        {{ $t('indie-blog.save') }}
+      </el-button>
     </div>
   </div>
 </template>
