@@ -10,7 +10,7 @@
         {{ $t('view-on-the-chain') }}
       </p>
       <div
-        v-if="hash"
+        v-show="hash"
         class="tx_hash__address"
       >
         <a

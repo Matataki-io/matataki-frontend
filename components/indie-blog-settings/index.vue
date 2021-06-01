@@ -102,7 +102,7 @@
           :content="$t('indie-blog.timezoneHelp')"
           placement="top-start"
         >
-          <svg-icon class="help-icon" icon-class="help" />
+          <svg-icon color="#b2b2b2" class="help-icon" icon-class="help" />
         </el-tooltip>
       </span>
       <div class="input">
@@ -127,7 +127,7 @@
           :content="$t('indie-blog.themeHelp')"
           placement="top-start"
         >
-          <svg-icon class="help-icon" icon-class="help" />
+          <svg-icon color="#b2b2b2" class="help-icon" icon-class="help" />
         </el-tooltip>
       </span>
       <div class="input">
