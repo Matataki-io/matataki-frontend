@@ -1,13 +1,14 @@
 <template>
-  <router-link class="wrapper" :to="{ name: 'token-id', params: { id: tokenId } }" target="_blank">
-    <svg-icon icon-class="meta-logo" class="logo" />
+  <div class="wrapper" @click="openToken">
+    <div>
+      <svg-icon icon-class="meta-logo" class="logo" />
+    </div>
     <span class="token">{{ tokenAmount }} {{ tokenSymbol }}</span>
-  </router-link>
+  </div>
 </template>
 
 <script>
 export default {
-
   props: {
     tokenId: {
       type: Number,
@@ -21,6 +22,15 @@ export default {
       type: String,
       default: 'META'
     },
+  },
+  methods: {
+    openToken() {
+      try {
+        window.open(`/token/${this.tokenId}`, '_blank')
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
 }
@@ -28,14 +38,15 @@ export default {
 
 <style lang="less" scoped>
 .wrapper {
-    height: 40px;
-    background: #3c68ff;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    padding: 0 14px;
-    box-sizing: border-box;
-    margin-right: 10px;
+  height: 40px;
+  background: #3c68ff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  box-sizing: border-box;
+  margin-right: 10px;
+  cursor: pointer;
   .logo {
     font-size: 26px;
   }
