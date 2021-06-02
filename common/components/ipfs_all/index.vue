@@ -9,7 +9,10 @@
       <div class="components-ipfs_all">
         <!--文章保存位置-->
         <p v-show="isPublishedOnGithub" class="ipfs_all__title">
-          {{ $t("githubHash.link") }}
+          <a
+            class="github-history-link"
+            :href="githubBlog"
+          >{{ $t('githubHash.link') }}</a>
           <span style="float: right;">
             <a
               class="github-history-link"
@@ -46,8 +49,8 @@
         </p>
 
         <!--文章保存位置：详细地址-->
-        <template v-show="hash">
-          <template v-show="isPublishedOnGithub">
+        <template v-if="hash">
+          <template v-if="isPublishedOnGithub">
             <div
               class="ipfs_all__link"
             >
@@ -55,7 +58,7 @@
               <svg-icon icon-class="arrow" class="icon" />
             </div>
           </template>
-          <template v-show="!isPublishedOnGithub">
+          <template v-else>
             <div
               v-for="(item, index) in link"
               :key="index"
@@ -144,6 +147,9 @@ export default {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
       return `https://github.com/${this.githubId}/${this.githubRepo}/commits/source/source/_posts/${year}/${date}/${this.hash}.md`
+    },
+    githubBlog() {
+      return `https://${this.githubId}.github.io/${this.githubRepo}/`
     }
   },
   methods: {
