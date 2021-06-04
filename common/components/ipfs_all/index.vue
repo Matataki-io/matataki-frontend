@@ -9,13 +9,25 @@
       <div class="components-ipfs_all">
         <!--文章保存位置-->
         <p v-show="isPublishedOnGithub" class="ipfs_all__title">
-          {{ $t("githubHash.link") }}
+          <a
+            class="github-history-link"
+            :href="githubBlogLink"
+          >{{ $t('githubHash.link') }}</a>
           <span style="float: right;">
             <a
               class="github-history-link"
               :href="githubHistoryLink"
             >{{ $t('ipfsHash.historyBtn') }}</a>
           </span>
+        </p>
+        <p>
+          <a
+            class="github-history-link"
+            :href="githubBlogArticleLink"
+          >
+            {{ $t('githubHash.indieArticle') }}
+            <i class="el-icon-position" />
+          </a>
         </p>
         <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("ipfsHash.link") }}
@@ -38,16 +50,16 @@
         </p>
 
         <!--文章保存位置：标题-->
-        <p v-show="isPublishedOnGithub" class="ipfs_all__title">
+        <p v-if="isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("githubHash.filePath") }}
         </p>
-        <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
+        <p v-else class="ipfs_all__title">
           {{ $t("ipfsHash.publicNode") }}
         </p>
 
         <!--文章保存位置：详细地址-->
-        <template v-show="hash">
-          <template v-show="isPublishedOnGithub">
+        <template v-if="hash">
+          <template v-if="isPublishedOnGithub">
             <div
               class="ipfs_all__link"
             >
@@ -55,7 +67,7 @@
               <svg-icon icon-class="arrow" class="icon" />
             </div>
           </template>
-          <template v-show="!isPublishedOnGithub">
+          <template v-else>
             <div
               v-for="(item, index) in link"
               :key="index"
@@ -144,7 +156,15 @@ export default {
       const year = this.hash.substring(2, 6)
       const date = this.hash.substring(6, 8)
       return `https://github.com/${this.githubId}/${this.githubRepo}/commits/source/source/_posts/${year}/${date}/${this.hash}.md`
-    }
+    },
+    githubBlogLink() {
+      return this.user.siteLink
+    },
+    githubBlogArticleLink() {
+      const year = this.hash.substring(2, 6)
+      const date = this.hash.substring(6, 8)
+      return `${this.user.siteLink}${year}/${date}/${this.hash}`
+    },
   },
   methods: {
     copy(val) {

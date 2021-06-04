@@ -28,7 +28,7 @@
         <i class="el-icon-refresh" />
         {{ $t('indie-blog.refresh-status') }}
       </el-button>
-      <el-button @click="window.location.href = 'https://www.matataki.io/p/8864'">
+      <el-button @click="openConfigGuideLink">
         {{ $t('indie-blog.config-guide') }}
         <i class="el-icon-position" />
       </el-button>
@@ -100,7 +100,7 @@
           class="max-width-80"
           effect="dark"
           :content="$t('indie-blog.timezoneHelp')"
-          placement="top-start"
+          placement="top"
         >
           <svg-icon color="#b2b2b2" class="help-icon" icon-class="help" />
         </el-tooltip>
@@ -125,7 +125,7 @@
           class="max-width-80"
           effect="dark"
           :content="$t('indie-blog.themeHelp')"
-          placement="top-start"
+          placement="top"
         >
           <svg-icon color="#b2b2b2" class="help-icon" icon-class="help" />
         </el-tooltip>
@@ -426,6 +426,10 @@ export default Vue.extend({
         error: null,
       }
     },
+    /** 打开配置教程的链接，必须放在 methods 中 */
+    openConfigGuideLink() {
+      window.open('https://www.matataki.io/p/8864', '_blank').focus()
+    }
   }
 })
 </script>

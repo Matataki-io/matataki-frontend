@@ -119,6 +119,7 @@ export default {
     this.getUserInfo(this.article.uid)
     await this.getTokenUser(this.article.uid)
     await this.getGithubId()
+    console.log(this.article)
   },
   methods: {
     // 主要获取关注状态
