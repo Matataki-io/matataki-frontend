@@ -843,6 +843,7 @@
     "link": "独立子站",
     "fileHash": "文件 Hash",
     "filePath": "存储地址",
+    "indieArticle": "在独立子站阅读本文",
     "description": "本文内容存储于 GitHub"
   },
   "group": {

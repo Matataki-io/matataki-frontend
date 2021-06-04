@@ -11,7 +11,7 @@
         <p v-show="isPublishedOnGithub" class="ipfs_all__title">
           <a
             class="github-history-link"
-            :href="githubBlog"
+            :href="githubBlogLink"
           >{{ $t('githubHash.link') }}</a>
           <span style="float: right;">
             <a
@@ -19,6 +19,15 @@
               :href="githubHistoryLink"
             >{{ $t('ipfsHash.historyBtn') }}</a>
           </span>
+        </p>
+        <p>
+          <a
+            class="github-history-link"
+            :href="githubBlogArticleLink"
+          >
+            {{ $t('githubHash.indieArticle') }}
+            <i class="el-icon-position" />
+          </a>
         </p>
         <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("ipfsHash.link") }}
@@ -41,10 +50,10 @@
         </p>
 
         <!--文章保存位置：标题-->
-        <p v-show="isPublishedOnGithub" class="ipfs_all__title">
+        <p v-if="isPublishedOnGithub" class="ipfs_all__title">
           {{ $t("githubHash.filePath") }}
         </p>
-        <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
+        <p v-else class="ipfs_all__title">
           {{ $t("ipfsHash.publicNode") }}
         </p>
 
@@ -148,9 +157,14 @@ export default {
       const date = this.hash.substring(6, 8)
       return `https://github.com/${this.githubId}/${this.githubRepo}/commits/source/source/_posts/${year}/${date}/${this.hash}.md`
     },
-    githubBlog() {
-      return `https://${this.githubId}.github.io/${this.githubRepo}/`
-    }
+    githubBlogLink() {
+      return this.user.siteLink
+    },
+    githubBlogArticleLink() {
+      const year = this.hash.substring(2, 6)
+      const date = this.hash.substring(6, 8)
+      return `${this.user.siteLink}${year}/${date}/${this.hash}`
+    },
   },
   methods: {
     copy(val) {
