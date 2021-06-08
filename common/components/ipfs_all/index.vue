@@ -8,28 +8,30 @@
     >
       <div class="components-ipfs_all">
         <!--文章保存位置-->
-        <p v-show="isPublishedOnGithub" class="ipfs_all__title">
-          <a
-            class="github-history-link"
-            :href="githubBlogLink"
-          >{{ $t('githubHash.link') }}</a>
-          <span style="float: right;">
+        <div v-if="isPublishedOnGithub">
+          <p class="ipfs_all__title">
             <a
               class="github-history-link"
-              :href="githubHistoryLink"
-            >{{ $t('ipfsHash.historyBtn') }}</a>
-          </span>
-        </p>
-        <p>
-          <a
-            class="github-history-link"
-            :href="githubBlogArticleLink"
-          >
-            {{ $t('githubHash.indieArticle') }}
-            <i class="el-icon-position" />
-          </a>
-        </p>
-        <p v-show="!isPublishedOnGithub" class="ipfs_all__title">
+              :href="githubBlogLink"
+            >{{ $t('githubHash.link') }}</a>
+            <span style="float: right;">
+              <a
+                class="github-history-link"
+                :href="githubHistoryLink"
+              >{{ $t('ipfsHash.historyBtn') }}</a>
+            </span>
+          </p>
+          <p class="ipfs_all__title">
+            <a
+              class="github-history-link"
+              :href="githubBlogArticleLink"
+            >
+              {{ $t('githubHash.indieArticle') }}
+              <i class="el-icon-position" />
+            </a>
+          </p>
+        </div>
+        <p v-else class="ipfs_all__title">
           {{ $t("ipfsHash.link") }}
           <el-button
             type="text"
