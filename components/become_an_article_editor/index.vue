@@ -216,7 +216,6 @@ export default {
   },
   data() {
     return {
-      isProduct: false,
       timer: null,
     }
   },
@@ -282,7 +281,10 @@ export default {
         result += parseFloat(this.form.input || 0)
       }
       return utils.up2points(result + this.getArticlePrice)
-    }
+    },
+    isProduct() {
+      return this.article.channel_id === 2
+    },
   },
   watch: {
     lockLoading() {
@@ -339,7 +341,14 @@ export default {
           if (currentTime - lastTime <= 180) {
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
-              this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
+
+              console.log('hasPaied', this.hasPaied)
+              console.log('hasPaiedRead', this.hasPaiedRead)
+
+              if (!(this.hasPaied && this.hasPaiedRead)) {
+                this.$emit('createOrder', { nt: this.isTokenArticle && !this.tokenHasPaied })
+              }
+
               window.sessionStorage.removeItem('show-edit-auth')
             }, 2000)
           } else {

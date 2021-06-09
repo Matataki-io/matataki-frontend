@@ -307,7 +307,12 @@ export default {
           if (currentTime - lastTime <= 180) {
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
-              this.$emit('wxpayArticle')
+
+              console.log('hasPaied', this.hasPaied)
+
+              if (!this.hasPaied) {
+                this.$emit('wxpayArticle')
+              }
               window.sessionStorage.removeItem('show-read-auth')
             }, 2000)
           } else {
