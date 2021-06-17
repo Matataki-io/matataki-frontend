@@ -33,6 +33,7 @@ import mine from '@/assets/img/dapp_list_mine.png'
 import shuttle from '@/assets/img/dapp_list_shuttle.png'
 import quest from '@/assets/img/dapp_list_quest.png'
 import governance from '@/assets/img/dapp_list_governance.png'
+import matatakiMD from '@/assets/img/dapp_list_matatakimd.png'
 
 export default {
   components: {
@@ -196,6 +197,17 @@ export default {
               width: 'auto',
               height: '100%',
               url: '/token/in-n-out',
+              btn: this.$t('visit-website'),
+              disabled: false
+            },
+            {
+              title: 'MatatakiMD',
+              description: '用 Markdown 即时创作发布到 Web3',
+              img: matatakiMD,
+              width: '168px',
+              height: '168px',
+              url: 'http://md.mttk.net',
+              repo: 'https://github.com/Matataki-io/matatakiMD',
               btn: this.$t('visit-website'),
               disabled: false
             },
