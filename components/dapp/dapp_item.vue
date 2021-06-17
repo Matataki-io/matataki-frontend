@@ -94,7 +94,7 @@ export default {
     font-weight: 400;
     color: rgba(178, 178, 178, 1);
     line-height: 22px;
-    padding: 0;
+    padding: 0 10px;
     margin: 20px 0 44px;
     text-align: center;
     flex: 1;
