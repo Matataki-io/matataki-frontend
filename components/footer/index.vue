@@ -198,7 +198,7 @@
       <div class="line" />
       <div class="footer-copyright fl jsb">
         <span class="copyright">Copyright © 2018-2021 ANDOROMEDA.
-          <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备19020303号
+          <a href="https://beian.miit.gov.cn/" style="color: white;" target="_blank">沪ICP备19020303号
           </a>
         </span>
         <language class="footer-language" />
