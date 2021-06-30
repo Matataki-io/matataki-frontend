@@ -14,10 +14,22 @@ import store from '@/utils/store.js'
 // timeout: 60 * 1000, // Timeout
 // withCredentials: true, // Check cross-site Access-Control
 
+import {
+  cacheAdapterEnhancer,
+  throttleAdapterEnhancer,
+} from 'axios-extensions'
+
+const options = {
+  enabledByDefault: false,
+}
+
 const _axios = axios.create({
   baseURL: process.env.VUE_APP_API,
   timeout: 60 * 1000,
-  headers: {},
+  headers: { 'Cache-Control': 'no-cache' },
+  adapter: throttleAdapterEnhancer(
+    cacheAdapterEnhancer(axios.defaults.adapter, options)
+  ),
 })
 
 // let loadingInstance = null;

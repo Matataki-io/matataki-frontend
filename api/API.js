@@ -29,7 +29,10 @@ export default {
     )
   },
   // 推荐信息
-  recommend(params) { return request.get('/posts/recommend', { params }) },
+  recommend(params) { return request.get('/posts/recommend', { params, cache: true }) },
+  /**
+   * 获取文章信息
+   */
   getArticleInfo(hashOrId) {
     // post hash获取; p id 短链接;
     const url = /^[0-9]*$/.test(hashOrId) ? 'p' : 'post'
@@ -49,6 +52,7 @@ export default {
   },
   // 获取文章的ipfs hash信息
   getArticleIpfs(id) { return request.get(`/p/${id}/ipfs`) },
+  // 获取图片地址
   getImg(hash) {
     return `${process.env.ssImgAddress}${hash}`
   },
@@ -87,20 +91,20 @@ export default {
   async getBackendData({ url, params, urlReplace }) {
     if (!urlReplace) {
       const pullApiUrl = paginationUrl
-      return request({
+      return await request({
         url: pullApiUrl[url],
         method: 'get',
         noLoading: true,
-        params
+        params,
       })
     } else {
       const pullApiUrl = paginationUrl
       let urlReg = pullApiUrl[url].replace(/\$\{.*?\}/, urlReplace)
-      return request({
+      return await request({
         url: urlReg,
         method: 'get',
         noLoading: true,
-        params
+        params,
       })
       }
   },
@@ -334,7 +338,7 @@ export default {
   },
   // 搜索推荐
   searchRecommend(params){
-    return request('/search/recommend', params)
+    return request('/search/recommend', { params, cache: true })
   },
   // 推荐作者||用户
   usersRecommend(params){
@@ -434,7 +438,8 @@ export default {
         page,
         pagesize,
         search
-      }
+      },
+      cache: true
     })
   },
   /**
@@ -483,10 +488,14 @@ minetokenResources(data, tokenId) {
       data: data
     })
   },
+/**
+ * 自己 Token resources 信息
+ */
 minetokenGetResources(tokenId) {
     return request({
       method: 'GET',
       url: `/minetoken/${tokenId}/resources`,
+      cache: true
     })
   },
   /**
@@ -508,6 +517,7 @@ minetokenGetResources(tokenId) {
     return request({
       method: 'GET',
       url: `/minetoken/${id}`,
+      cache: true
     })
   },
   /**
@@ -629,10 +639,14 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  /**
+   * 通过 User Id 获取 token 信息
+   */
   tokenUserId(id) {
     return request({
       method: 'get',
       url: `/token/user/${id}`,
+      cache: true
     })
   },
   getCNYBalance() {
@@ -795,7 +809,7 @@ minetokenGetResources(tokenId) {
 
   // 根据id获取个人资料中的社交账号和相关网站
   getUserLinks({id}) {
-    return request.get(`/user/${id}/links`);
+    return request.get(`/user/${id}/links`, { cache: true });
   },
   // 设置用户links
   setUserLinks({websites, socialAccounts}) {
@@ -915,7 +929,7 @@ minetokenGetResources(tokenId) {
     return request.post('/login/github', params)
   },
   // 得到用户信息
-  getUser(id) { return request.get(`/user/${id}`) },
+  getUser(id) { return request.get(`/user/${id}`, { cache: true }) },
   // 增加阅读量
   read(hash) { return request.post(`/post/show/${hash}`) },
   // 获取当前用户的文章信息
@@ -1041,15 +1055,16 @@ minetokenGetResources(tokenId) {
     return request.get('/tag/tags', {
       params:{
         type
-      }
+      },
+      cache: true
     })
   },
   // 获取某篇文章的标签
-  tagsById(params) { return request.get(`/tags/get_by_post`,  { params }) },
+  tagsById(params) { return request.get(`/tags/get_by_post`,  { params, cache: true }) },
   // 获取热门标签
-  tagsHotest(params) { return request.get(`/tags/hotest`,  { params }) },
+  tagsHotest(params) { return request.get(`/tags/hotest`,  { params, cache: true }) },
   // 热门标签 筛选对象为最近14天内应用次数最多的标签
-  hotestTags(params) { return request.get('/tags/hotestTags',  { params }) },
+  hotestTags(params) { return request.get('/tags/hotestTags',  { params, cache: true }) },
   // 删除文章
   delArticle({ id }) {
     return request({
@@ -1283,7 +1298,7 @@ minetokenGetResources(tokenId) {
     })
   },
   getAddSupplyChart(id) {
-    return request.get(`/minetoken/${id}/supplyChart`)
+    return request.get(`/minetoken/${id}/supplyChart`, { cache: true })
   },
   /** 文章分享事件上报 */
   shareCount(postId) {
@@ -1291,17 +1306,17 @@ minetokenGetResources(tokenId) {
   },
   // -------------------- token历史记录 --------------------
   // token历史价格
-  getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }}) },
+  getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }, cache: true }) },
   // token流动金历史
-  getLiquidityHistory(tokenId) { return request.get(`/token/${tokenId}/history/liquidity`) },
+  getLiquidityHistory(tokenId) { return request.get(`/token/${tokenId}/history/liquidity`, { cache: true }) },
   // token历史增发
-  getIssuedHistory(tokenId) { return request.get(`/token/${tokenId}/history/issued`) },
+  getIssuedHistory(tokenId) { return request.get(`/token/${tokenId}/history/issued`, { cache: true }) },
   // token交易额历史
-  getAmountHistory(tokenId) { return request.get(`/token/${tokenId}/history/amount`) },
+  getAmountHistory(tokenId) { return request.get(`/token/${tokenId}/history/amount`, { cache: true }) },
   // token交易量历史
-  getVolumeHistory(tokenId) { return request.get(`/token/${tokenId}/history/volume`) },
+  getVolumeHistory(tokenId) { return request.get(`/token/${tokenId}/history/volume`, { cache: true }) },
   // token收益历史
-  getIncomeHistory(tokenId) { return request.get(`/token/${tokenId}/history/income`) },
+  getIncomeHistory(tokenId) { return request.get(`/token/${tokenId}/history/income`, { cache: true }) },
 
   // -------------------- 微信服务号 扫码登录 --------------------------------------
   apiWeChatQRCode(data) { return request.post('/api/wechat/qrcode', data) },
@@ -1339,7 +1354,7 @@ minetokenGetResources(tokenId) {
 
   // ---------------- Fan票申请 ----------------------------------------
   // fan票提交申请
-  apiGetMinetokenApplication() { return request.get('/api/minetoken_application') },
+  apiGetMinetokenApplication() { return request.get('/api/minetoken_application', { cache: true }) },
   apiMinetokenApplication(data) { return request.post('/api/minetoken_application', data) },
   // fan票提交申请调研表单
   apiMinetokenApplicationSurveyGet(data) { return request.get('/api/minetoken_application_survey', data) },
@@ -1350,12 +1365,12 @@ minetokenGetResources(tokenId) {
 
   // ---------------- Dashboard ----------------------------------------
   // 阅览数据
-  //    数据统计
-  dbBrowseCount(params) { return request.get('/db/browse/count', { params }) },
+  // 数据统计
+  dbBrowseCount(params) { return request.get('/db/browse/count', { params, cache: true }) },
   // 数据增量趋势
-  dbBrowseHistoryType(type, params) { return request.get(`/db/browse/history/${type}`, { params }) },
+  dbBrowseHistoryType(type, params) { return request.get(`/db/browse/history/${type}`, { params, cache: true }) },
   // 获取用户所有文章的总收益
-  dbIncomeSum(params) { return request.get('/db/income/sum', { params }) },
+  dbIncomeSum(params) { return request.get('/db/income/sum', { params, cache: true }) },
 
   // ---------------- 获取推特授权 ----------------------------------------
   twitterRequestToken(callbackUrl) { return request.get(`/authorize/twitter/prepare`, { params: { callbackUrl } }) },
