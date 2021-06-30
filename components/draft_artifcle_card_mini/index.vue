@@ -36,14 +36,12 @@
     >
       {{ $t('unpublish') }}
     </a>
-    <a
+    <el-button
       v-else
-      class="del"
-      href="javascript:;"
+      icon="el-icon-delete"
+      size="mini"
       @click.stop="$emit('del', index)"
-    >
-      {{ $t('delete') }}
-    </a>
+    />
   </div>
 </template>
 

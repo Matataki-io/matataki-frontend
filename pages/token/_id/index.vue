@@ -247,6 +247,8 @@ export default {
             total_supply: this.$utils.fromDecimal(res.data.total_supply, 4)
           }
         }
+      }).catch(e => {
+        console.log('e', e.toString())
       })
     }
   }
