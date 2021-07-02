@@ -36,6 +36,7 @@ export default {
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
     VUE_APP_MATICSCAN: 'https://explorer-mumbai.maticvigil.com',
+    VUE_APP_NFT: 'https://nft-market-test.mttk.net',
   },
   testing: {
     ...base,
@@ -67,6 +68,7 @@ export default {
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://testnet.bscscan.com',
     VUE_APP_MATICSCAN: 'https://explorer-mumbai.maticvigil.com',
+    VUE_APP_NFT: 'https://nft-market-test.mttk.net',
   },
   release: {
     ...base,
@@ -98,6 +100,7 @@ export default {
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://bscscan.com',
     VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
+    VUE_APP_NFT: 'https://nft-market-test.mttk.net',
   },
   production: {
     ...base,
@@ -129,5 +132,6 @@ export default {
     VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
     VUE_APP_BSCSCAN: 'https://bscscan.com',
     VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
+    VUE_APP_NFT: 'https://nft-market-test.mttk.net',
   }
 }

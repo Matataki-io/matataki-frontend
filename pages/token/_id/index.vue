@@ -34,6 +34,7 @@
           :balance="balance"
         />
         <datasheets :minetoken-token="minetokenToken" />
+        <tokenNft :address="minetokenToken.bsc_contract_address" />
       </el-col>
       <!-- 右侧卡片 -->
       <el-col v-show="clientVisible" :span="7">
@@ -79,6 +80,7 @@ import socialAccount from '@/components/token/social_account'
 import widgetCopyBox from '@/components/token/widget_copy_box'
 // import recommendMod from '@/components/token/recommend_mod'
 import quickEntrance from '@/components/token/quick_entrance'
+import tokenNft from '@/components/token/token_nft'
 import tokenCd from '@/components/token_cd/index'
 
 export default {
@@ -97,7 +99,8 @@ export default {
     socialAccount,
     widgetCopyBox,
     quickEntrance,
-    tokenCd
+    tokenCd,
+    tokenNft
   },
   head() {
     return {
