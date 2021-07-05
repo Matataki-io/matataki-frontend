@@ -1,5 +1,6 @@
 <template>
   <div v-if="nfts.length" class="wrapper">
+    <h1 class="title">NFT</h1>
     <div class="nfts">
       <a
         v-for="(item, idx) in nfts"
@@ -101,6 +102,14 @@ export default {
   border-radius: 10px;
   margin-top: 20px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+}
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  line-height: 33px;
+  padding: 0;
+  margin: 0 0 20px 0;
 }
 .nfts {
   width: 100%;
