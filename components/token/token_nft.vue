@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div v-if="nfts.length" class="wrapper">
     <div class="nfts">
       <a
         v-for="(item, idx) in nfts"

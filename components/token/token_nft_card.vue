@@ -158,7 +158,7 @@ export default {
     white-space: nowrap;
     width: 100%;
     font-size: 24px;
-    font-family: "Playfair Display", serif;
+    font-family: serif;
     font-weight: 500;
     color: #333333;
     line-height: 28px;
@@ -174,7 +174,6 @@ export default {
   width: 100%;
   .price {
     font-size: 20px;
-    font-family: DINAlternate-Bold, DINAlternate;
     font-weight: bold;
     color: #193cb1;
     line-height: 24px;
@@ -183,7 +182,6 @@ export default {
   }
   .name {
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #193cb1;
     line-height: 17px;

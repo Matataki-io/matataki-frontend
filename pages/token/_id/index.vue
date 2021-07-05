@@ -34,7 +34,7 @@
           :balance="balance"
         />
         <datasheets :minetoken-token="minetokenToken" />
-        <tokenNft :address="minetokenToken.bsc_contract_address" />
+        <tokenNft :address="minetokenToken.bsc_contract_address || ''" />
       </el-col>
       <!-- 右侧卡片 -->
       <el-col v-show="clientVisible" :span="7">
