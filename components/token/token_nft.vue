@@ -16,6 +16,10 @@
 
 <script>
 import tokenNftCard from './token_nft_card'
+import { utils } from 'ethers'
+import { ERC20Profile } from '../../utils/ethers'
+import { cloneDeep } from 'lodash'
+
 export default {
   components: {
     tokenNftCard,
@@ -44,7 +48,7 @@ export default {
   watch: {
     address(newVal) {
       this.nftSearchByAskTokenFn(newVal)
-    }
+    },
   },
   created() {
     if (process.browser) {
@@ -62,11 +66,29 @@ export default {
         const res = await this.$API.nftSearchByAskToken({ tokenAddress: address })
         console.log(res)
         if (res.code === 200) {
-          this.nfts = res.data
+          const list = res.data.map(i => ({ ...i, price: '---' }))
+          this.nfts = list
+          this.processTokenPrice()
         }
       } catch (e) {
         console.log(e)
       }
+    },
+    // 处理 token price
+    async processTokenPrice() {
+      const list = cloneDeep(this.nfts)
+
+      for (let i = 0; i < list.length; i++) {
+        const ele = list[i]
+        const res = await ERC20Profile(ele.currentAsk.currency)
+        if (res) {
+          const price = utils.formatUnits(ele.currentAsk.amount, res.decimals)
+          // console.log(price)
+          const priceText = `${price} ${res.symbol}`
+          list[i].price = priceText
+        }
+      }
+      this.nfts = list
     }
   }
 }

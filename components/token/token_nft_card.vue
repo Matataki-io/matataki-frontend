@@ -26,7 +26,7 @@
       <h5>{{ card.title || '' }}</h5>
       <div class="card-footer-price">
         <div>
-          <p class="price">{{ card.currentAsk.amount || '---' }}</p>
+          <p class="price">{{ card.price }}</p>
           <p class="name">List price</p>
         </div>
       </div>
@@ -50,8 +50,8 @@ export default {
       } else {
         return ''
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

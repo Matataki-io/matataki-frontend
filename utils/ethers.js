@@ -1,5 +1,5 @@
-import { ethers } from 'ethers'
-import { IMulticall, IPeggedMinter, IFactoryV2 } from './abi/'
+import { ethers, utils } from 'ethers'
+import { IMulticall, IPeggedMinter, IFactoryV2, ERC20 } from './abi/'
 
 export const NetworksId = {
   BSC_MAINNET: 56,
@@ -107,5 +107,36 @@ export async function sendCreationPermit(wallet, name, symbol, tokenId, decimals
     if (error.code === 4001) throw new Error('你拒绝了签名，交易取消')
     console.error(error)
     throw error
+  }
+}
+
+/**
+ * 获取 Token 信息
+ * @param {*} address token address
+ * @param {*} chain
+ * @returns { symbol, name, decimals }
+ */
+export async function ERC20Profile(address) {
+
+  if (!address) return
+  if (address === ZERO) return
+
+  try {
+    const chain = isTesting ? NetworksId.BSC_TESTNET : NetworksId.BSC_MAINNET
+    const provider = CALL_ONLY_PROVIDER[chain]
+    const ERC20Contract = new ethers.Contract(utils.getAddress(address), ERC20, provider)
+
+    const symbol = await ERC20Contract.symbol()
+    const name = await ERC20Contract.name()
+    const decimals = await ERC20Contract.decimals()
+
+    return {
+      symbol,
+      name,
+      decimals: decimals || 18,
+    }
+  } catch (e) {
+    console.log(e)
+    return
   }
 }
