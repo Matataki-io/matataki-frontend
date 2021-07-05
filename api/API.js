@@ -1476,5 +1476,10 @@ minetokenGetResources(tokenId) {
   /** 获取目前所有可用主题 */
   getIndieBlogThemes () {
     return request.get(`/indie/themeList`)
+  },
+  // ----------------------- MTK NFT ------------------
+  // 通过 token address 获取 nft
+  nftSearchByAskToken ({ tokenAddress }) {
+    return request.get(`/api/nft/search/byAskToken/${tokenAddress}`, { cache: true })
   }
 }
