@@ -96,8 +96,8 @@ export default {
               img: nft,
               width: '120px',
               height: '120px',
-              url: 'https://matataki-nft.netlify.app/',
-              repo: 'https://github.com/Matataki-io/Matataki-NFT',
+              url: 'https://nft-market.matataki.io',
+              repo: 'https://github.com/Matataki-io/Matataki-NFT-Market',
               btn: this.$t('visit-website'),
               disabled: false
             },
