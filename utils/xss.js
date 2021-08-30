@@ -363,7 +363,7 @@ export const xssIframeProcess = html => {
           return `${name}='${url}' alt='${url}'`
         } else {
           console.info(`${getHostnameFromRegex(url)} is not in the iframe whitelist`)
-          return `${name}='https://bad-iframe.mttk.net/?url=${encodeURIComponent(url)}' width="800" height="250"`
+          return `${name}='https://bad-iframe-nu.vercel.app/?url=${encodeURIComponent(url)}' width="800" height="250"`
         }
       }
     }
