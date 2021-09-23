@@ -29,7 +29,7 @@ export default {
     )
   },
   // 推荐信息
-  recommend(params) { return request.get('/posts/recommend', { params, cache: true }) },
+  recommend(params) { return request.get('/posts/recommend', { params }) },
   /**
    * 获取文章信息
    */

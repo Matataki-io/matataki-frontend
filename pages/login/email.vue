@@ -87,7 +87,7 @@
               </el-button>
             </div>
           </el-form-item>
-          <el-button @click="setp--">
+          <el-button @click="setp = 0">
             {{ $t('postminetoken.prev') }}
           </el-button>
           <el-button
@@ -184,8 +184,7 @@ export default {
     async emailAddressOnSubmit(formName) {
       if (!getCookie('ACCESS_TOKEN')) return this.$store.commit('setLoginModal', true)
       if (await this.setpFunc(formName)) {
-        if (this.setp >= 2) return
-        ++this.setp
+        this.setp = 1
       }
     },
     async emailPassOnSubmit(formName) {
