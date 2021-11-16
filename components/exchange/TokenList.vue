@@ -55,7 +55,7 @@
           <el-table-column :label="$t('circulation')">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount || $t('no-liquidity') }}
+                {{ formatAmount(scope.row.amount) }}
               </span>
             </template>
           </el-table-column>
@@ -126,7 +126,7 @@
           <el-table-column :label="$t('circulation')">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount || $t('no-liquidity') }}
+                {{ formatAmount(scope.row.amount) }}
               </span>
             </template>
           </el-table-column>
@@ -242,7 +242,7 @@ export default {
       this.loading = true
       this.$API.allToken({ page, pagesize, search }).then(res => {
         this.loading = false
-        let listFromDecimal = this.listFromDecimal(res.data.list || [])
+        let listFromDecimal = res.data.list || []
         if (search === '') {
           if (page === 1) {
             this.count = res.data.count
@@ -272,12 +272,6 @@ export default {
         }
       })
     },
-    listFromDecimal(list) {
-      list.forEach((item) => {
-        item.amount = utils.fromDecimal(item.amount)
-      })
-      return list
-    },
     // 初始化list
     initTokenList() {
       try {
@@ -300,6 +294,10 @@ export default {
     exchangeSymbol(symbol) {
       if (!symbol) return symbol
       return symbol.toLocaleUpperCase() === 'CNY' ? this.$t('mttk-points') : symbol
+    },
+    formatAmount(amount) {
+      if (!amount) return this.$t('no-liquidity')
+      return utils.fromDecimal(amount)
     }
   }
 }
