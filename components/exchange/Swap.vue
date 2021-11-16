@@ -7,7 +7,7 @@
           <div class="jUAxZT">
             <span>{{ $t('enter') }}</span>
           </div>
-          <div v-if="form.inputToken.symbol && form.inputToken.id !== 0">
+          <div>
             {{ $t('balance') }}：{{ balance.input }}
           </div>
         </div>
@@ -50,7 +50,7 @@
           <div class="jUAxZT">
             <span>{{ $t('output') }}</span>
           </div>
-          <div v-if="form.outputToken.symbol && form.outputToken.id !== 0">
+          <div>
             {{ $t('balance') }}：{{ balance.output }}
           </div>
         </div>
@@ -243,10 +243,13 @@ export default {
     async getTokenBySymbol() {
       const { input = '', output = '' } = this.$route.query
       // 输入
-      if (!this.$utils.isNull(input)) {
+      if (this.$utils.isNull(input)) {
+        this.getUserBalance(0, 'input')
+      } else {
         this.field = INPUT
-        if (input.toLowerCase() === 'cny') {
+        if (input === '') {
           this.form.inputToken = CNY
+          this.getUserBalance(0, 'input')
         } else {
           const inputRes = await this.$API.getTokenBySymbol(input)
           this.selectToken(inputRes.data || {})
@@ -257,6 +260,7 @@ export default {
         this.field = OUTPUT
         if (output.toLowerCase() === 'cny') {
           this.form.outputToken = CNY
+          this.getUserBalance(0, 'output')
         } else {
           const ouputRes = await this.$API.getTokenBySymbol(output)
           this.selectToken(ouputRes.data || {})
@@ -433,7 +437,11 @@ export default {
     getUserBalance(tokenId, type) {
       // RMB 不计算余额
       if (tokenId === 0) {
-        this.balance[type] = 0
+        this.$API.getMatatakiPoint().then((res) => { // eslint-disable-next-line
+          this.balance[type] = parseFloat(utils.fromDecimal(res, 4))
+          // 检查用户余额
+          this.checkBalance()
+        })
         return
       }
       this.$API.getUserBalance(tokenId).then((res) => {

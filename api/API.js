@@ -639,6 +639,12 @@ minetokenGetResources(tokenId) {
       }
     })
   },
+  getMatatakiPoint() {
+    return request({
+      method: 'get',
+      url: '/asset/balance'
+    })
+  },
   /**
    * 通过 User Id 获取 token 信息
    */
