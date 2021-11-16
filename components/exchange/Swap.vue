@@ -247,7 +247,7 @@ export default {
         this.getUserBalance(0, 'input')
       } else {
         this.field = INPUT
-        if (input === '') {
+        if (input === 'cny') {
           this.form.inputToken = CNY
           this.getUserBalance(0, 'input')
         } else {
