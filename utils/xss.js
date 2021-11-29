@@ -54,6 +54,7 @@ export const xssFilter = html => {
   let aTag = ['class', 'style', 'href', 'data-url', 'target', 'id']
   whiteList.a.push(...aTag)
   whiteList.img.push('data-ratio')
+  whiteList.img.push('data-link')
   whiteList.img.push('style')
   whiteList.img.push('referrer')
   whiteList.div.push('align')
@@ -288,6 +289,9 @@ export const xssImageProcess = html => {
     return new RegExp(oss).test(url)
   }
 
+  const oldUrl = 'https://ssimg.frontenduse.top'
+  const isOldOss = url => new RegExp(oldUrl).test(url)
+
   return xss(html, {
     onTagAttr: function(tag, name, value) {
       if (tag === 'img' && name === 'src') {
@@ -337,6 +341,11 @@ export const xssImageProcess = html => {
           }
           // console.log('url', url)
           return `${name}='${url}' alt='${url}'`
+        } else if (isOldOss(url)) {
+          const originalLink = url
+
+          url = url.replace(oldUrl, process.env.ssImgAddress)
+          return `${name}='${url}' data-link=${originalLink} alt='${url}'`
         }
       }
     }
