@@ -17,7 +17,7 @@ export default ({ title = '', desc = '', link = '', imgUrl = '', data = {}}) => 
     // let defaultLink = regStr.substring(0, regStr.length - 1) //为了去掉 CACHE=xxxxxx
     let defaultLink = window.location.href
     let defaultimgUrl =
-    'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
+    'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
 
     // console.log('wx data', data)
     

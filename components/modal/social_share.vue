@@ -100,7 +100,7 @@ export default {
   computed: {
     ...mapGetters(['currentUserInfo', 'isLogined']),
     cover() {
-      return this.img || 'https://ssimg.frontenduse.top/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
+      return this.img || 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
     },
     socialLink() {
       const title = this.title.length <= 120 ? this.title : this.title.slice(0, 120) + '...'
