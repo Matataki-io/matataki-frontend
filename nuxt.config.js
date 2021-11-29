@@ -14,15 +14,14 @@ function resolve(dir) {
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 
-function cdnPublicPath () {
-  // const list = {
-  //   'development': '/_nuxt/',
-  //   'testing': 'https://cdntest.frontenduse.top/test',
-  //   'release': 'https://cdntest.frontenduse.top/release',
-  //   'production': 'https://cdn.frontenduse.top/prod',
-  // }
-  // return list[env] || '/_nuxt/'
-  return '/_nuxt/'
+function cdnPublicPath (env) {
+  const list = {
+    'development': '/_nuxt/',
+    'testing': 'https://matataki-client-test.oss-cn-shanghai.aliyuncs.com/test',
+    'release': 'https://matataki-client-test.oss-cn-shanghai.aliyuncs.com/release',
+    'production': 'https://matataki-client.oss-cn-shanghai.aliyuncs.com/prod',
+  }
+  return list[env] || '/_nuxt/'
 }
 
 const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
