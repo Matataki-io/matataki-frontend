@@ -10,7 +10,7 @@ export const urlAddress = process.env.VUE_APP_URL
 // 获取图片直接使用接口地址
 export const apiServer = process.env.VUE_APP_API
 
-const ssImgAddress = 'https://ssimg.frontenduse.top'
+const ssImgAddress = 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com'
 
 const axiosforApiServer = axios.create({
   baseURL: apiServer,

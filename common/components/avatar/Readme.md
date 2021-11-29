@@ -2,16 +2,16 @@
 <template>
   <div class="container">
     <div>
-      <c-avatar style="width:30px;height:30px;" src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
+      <c-avatar style="width:30px;height:30px;" src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
       <br>
       <br>
-      <c-avatar style="width:60px;height:60px;" src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
+      <c-avatar style="width:60px;height:60px;" src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
       <br>
       <br>
-      <c-avatar style="width:90px;height:90px;" src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
+      <c-avatar style="width:90px;height:90px;" src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
       <br>
       <br>
-      <c-avatar style="width:120px;height:120px;" src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
+      <c-avatar style="width:120px;height:120px;" src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp" />
       <br>
       <br>
     </div>
@@ -20,7 +20,7 @@
         :recommend-author="true"
         :level="0"
         style="width:30px;height:30px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -28,7 +28,7 @@
         :recommend-author="true"
         :level="1"
         style="width:60px;height:60px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -36,7 +36,7 @@
         :recommend-author="true"
         :level="2"
         style="width:90px;height:90px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -44,7 +44,7 @@
         :recommend-author="true"
         :level="3"
         style="width:120px;height:120px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -54,7 +54,7 @@
         :token-user="true"
         :level-token="0"
         style="width:30px;height:30px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -62,7 +62,7 @@
         :token-user="true"
         :level-token="1"
         style="width:60px;height:60px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -70,7 +70,7 @@
         :token-user="true"
         :level-token="2"
         style="width:90px;height:90px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -78,7 +78,7 @@
         :token-user="true"
         :level-token="3"
         style="width:120px;height:120px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -91,7 +91,7 @@
         :level="0"
         :level-token="0"
         style="width:30px;height:30px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -101,7 +101,7 @@
         :level="1"
         :level-token="1"
         style="width:60px;height:60px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -111,7 +111,7 @@
         :level="2"
         :level-token="2"
         style="width:90px;height:90px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
@@ -121,7 +121,7 @@
         :level="3"
         :level-token="3"
         style="width:120px;height:120px;"
-        src="https://ssimg.frontenduse.top/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
+        src="https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/11/07/740fd91594538dbe1f016bd301e7e234.jpg?x-oss-process=image/resize,h_90/format,webp"
       />
       <br>
       <br>
