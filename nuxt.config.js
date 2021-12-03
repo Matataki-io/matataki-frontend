@@ -246,7 +246,13 @@ export default {
         /zh-cn/
       )
     ],
-
+    babel: {
+      presets(env, [, options ]) {
+        return [
+          [ '@babel/preset-env', options ]
+        ]
+      }
+    }
   },
   server: {
     port: 8080, // default: 3000
