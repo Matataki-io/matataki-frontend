@@ -29,6 +29,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/component-cache": "^1.1.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
+    "@nuxtjs/vercel-builder": "^0.22.1",
     "@sentry/browser": "5.9.1",
     "@sentry/integrations": "5.8.0",
     "@vant/touch-emulator": "1.2.0",
