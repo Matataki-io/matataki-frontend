@@ -14,16 +14,6 @@ function resolve(dir) {
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 
-function cdnPublicPath (env) {
-  const list = {
-    'development': '/_nuxt/',
-    'testing': 'https://matataki-client-test.oss-cn-shanghai.aliyuncs.com/test',
-    'release': 'https://matataki-client-test.oss-cn-shanghai.aliyuncs.com/release',
-    'production': 'https://matataki-client.oss-cn-shanghai.aliyuncs.com/prod',
-  }
-  return list[env] || '/_nuxt/'
-}
-
 const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
 const metaDescription = '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。'
 const metaKeywords = '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS,ETH,BTC,DAO'
@@ -155,7 +145,6 @@ export default {
   ** Build configuration
   */
   build: {
-    publicPath: cdnPublicPath(NODE_ENV),
     analyze: false,
     optimization: {
       splitChunks: {
