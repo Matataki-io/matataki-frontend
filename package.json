@@ -23,13 +23,18 @@
     "vercel-build": "yarn global add node-gyp-build"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/component-cache": "^1.1.6",
+    "@nuxtjs/pwa": "^3.0.0-beta.16",
+    "nuxt": "2.13.2",
+    "nuxt-i18n": "6.6.0",
+    "nuxt-ssr-cache": "^1.5.2"
+  },
+  "devDependencies": {
     "@chenfengyuan/vue-qrcode": "1.0.1",
     "@clampy-js/vue-clampy": "^1.0.6",
     "@hcaptcha/vue-hcaptcha": "^0.3.0",
     "@matataki/editor": "1.3.13",
-    "@nuxtjs/axios": "^5.3.6",
-    "@nuxtjs/component-cache": "^1.1.6",
-    "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@sentry/browser": "5.9.1",
     "@sentry/integrations": "5.8.0",
     "@vant/touch-emulator": "1.2.0",
@@ -58,9 +63,6 @@
     "markdown-it-katex": "^2.0.3",
     "markdown-render-js": "1.0.6",
     "moment": "^2.24.0",
-    "nuxt": "2.13.2",
-    "nuxt-i18n": "6.6.0",
-    "nuxt-ssr-cache": "^1.5.2",
     "oauth": "^0.9.15",
     "ontology-dapi": "^0.4.9",
     "qs": "^6.7.0",
@@ -83,9 +85,7 @@
     "vue-upload-component": "^2.8.20",
     "web3": "^1.2.2",
     "weixin-js-sdk": "1.6.0",
-    "xss": "^1.0.6"
-  },
-  "devDependencies": {
+    "xss": "^1.0.6",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@nuxtjs/eslint-module": "^0.0.1",
     "@nuxtjs/style-resources": "^0.1.2",
