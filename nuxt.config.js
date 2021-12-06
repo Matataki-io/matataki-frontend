@@ -107,7 +107,7 @@ export default {
       }
     ],
     'nuxt-ssr-cache',
-    ['nuxt-svg-sprite-loader', {
+    ['~/modules/nuxt-svg-sprite-loader.js', { 
       symbolId: 'icon-[name]'
     }]
   ],

@@ -14,7 +14,8 @@
           "plugins/i18n.js",
           "env.js",
           "scripts/git-info.js",
-          "locale/**"
+          "locale/**",
+          "modules/nuxt-svg-sprite-loader.js"
         ]
       }
     }
