@@ -2,9 +2,9 @@ import path from 'path'
 import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import pkg from './package.json'
+
 import i18n from './plugins/i18n'
 import ENV from './env'
-
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -12,20 +12,22 @@ function resolve(dir) {
 
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
-
 const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
 const metaDescription = '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。'
 const metaKeywords = '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS,ETH,BTC,DAO'
 const metaImage = 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
 
+
 export default {
+  // Global page headers: https://go.nuxtjs.dev/config-head
   version: pkg.version,
-  /*
-  ** Headers of the page
-  */
   head: {
-    title: '瞬MATATAKI', // process.env.npm_package_name || ''
+    title: '瞬MATATAKI',
     meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: '' },
+      { name: 'format-detection', content: 'telephone=no' },
       { hid: 'robots', name: 'robots', property: 'robots', content: 'index,follow' },
       { hid: 'copyright', name: 'copyright', property: 'copyright', content: 'Copyright © 2018-2021 ANDOROMEDA TECH.ltd' },
       { hid: 'description', name: 'description', content: metaDescription },
@@ -56,24 +58,16 @@ export default {
       { src: '/bowlStore.js' },
     ]
   },
-  /*
-  ** Customize the progress-bar color
-  */
   loading: {
     color: '#542DE0'
   },
-  /*
-  ** Global CSS
-  */
+  // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     './assets/css/index.less',
+    'element-ui/lib/theme-chalk/index.css'
   ],
-  router: {
-    // middleware: ''
-  },
-  /*
-  ** Plugins to load before mounting the App
-  */
+
+  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/axios',
     '@/plugins/combined-inject.js',
@@ -95,20 +89,25 @@ export default {
     { src: '@/plugins/vue_echarts.js', ssr: false },
     { src: '@/plugins/build-info.js', ssr: false },
   ],
-  generate: {
-    // routes: [
-    //   '/', '/en'
-    // ]
-  },
-  /*
-  ** Nuxt.js modules
-  */
+
+  // Auto import components: https://go.nuxtjs.dev/config-components
+  components: true,
+
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  buildModules: [
+    // https://go.nuxtjs.dev/eslint
+    '@nuxtjs/eslint-module'
+  ],
+
+  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
+    // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/pwa',
+    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    '@nuxtjs/pwa',
     ['nuxt-i18n', i18n],
     [
       '@nuxtjs/component-cache',
@@ -119,6 +118,8 @@ export default {
     ],
     'nuxt-ssr-cache'
   ],
+  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  axios: {},
   cache: {
     useHostPrefix: false,
     pages: ['/dapp', '/agreement', '/policy'],
@@ -131,89 +132,21 @@ export default {
       ttl: 60
     }
   },
+
+  // PWA module configuration: https://go.nuxtjs.dev/pwa
+  pwa: {
+    manifest: {
+      lang: 'en',
+      name: 'Matataki',
+      gcm_sender_id: '1011435306795'
+    }
+  },
   styleResources: {
     less: './assets/css/global.less'
   },
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-  },
-  /*
-  ** Build configuration
-  */
+  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    analyze: false,
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          editor: {
-            test: /node_modules[\\/]@matataki\/editor/,
-            chunks: 'all',
-            priority: 20,
-            name: () => {
-              return 'chunk-editor'
-            }
-          },
-          elementUI: {
-            test: /node_modules\/element-ui/,
-            chunks: 'all',
-            priority: 30,
-            name: () => {
-              return 'chunk-elementUI'
-            }
-          },
-          vant: {
-            test: /node_modules[\\/]vant/,
-            chunks: 'all',
-            priority: 30,
-            name: () => {
-              return 'chunk-vant'
-            }
-          },
-          echarts: {
-            test: /node_modules\/(echarts|zrender\/lib)/,
-            chunks: 'all',
-            priority: 20,
-            name: () => {
-              return 'chunk-echarts'
-            }
-          },
-          ethers: {
-            test: /node_modules[\\/]ethers/,
-            chunks: 'all',
-            priority: 20,
-            name: () => {
-              return 'chunk-ethers'
-            }
-          },
-          web3: {
-            test: /node_modules[\\/]web3/,
-            chunks: 'all',
-            priority: 20,
-            name: () => {
-              return 'chunk-web3'
-            }
-          },
-          // TODO: 有点问题 如果 priority 高于其他会有问题 小于又打包不进来
-          // utils: { // qs xss viewerjs
-          //   test: /node_modules\/(qs\/lib|xss\/lib|viewerjs\/dist|bignumber\.js|weixin-js-sdk)/,
-          //   chunks: 'all',
-          //   priority: 10,
-          //   name: () => {
-          //     return 'chunk-utils'
-          //   }
-          // },
-        }
-      }
-    },
-    parallel: true,
-    // CSS提取
-    // extractCSS: true,
-    /*
-    ** You can extend webpack config here
-    */
+    transpile: [/^element-ui/],
     extend(config, { isDev, isClient }) {
       if (isDev) {
         config.devtool = isClient ? 'source-map' : 'inline-source-map'
@@ -245,27 +178,7 @@ export default {
         /moment[/\\]locale$/,
         /zh-cn/
       )
-    ],
-    babel: {
-      presets(env, [, options ]) {
-        return [
-          [ '@babel/preset-env', options ]
-        ]
-      }
-    }
-  },
-  server: {
-    port: 8080, // default: 3000
-    host: '0.0.0.0'
-  },
-  pwa: {
-    manifest: {
-      name: 'Matataki',
-      gcm_sender_id: '1011435306795'
-    },
-    workbox: {
-
-    }
+    ]
   },
   env: ENV[process.env.NODE_ENV]
 }
