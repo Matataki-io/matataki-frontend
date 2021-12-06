@@ -1,7 +1,5 @@
 import path from 'path'
-import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import pkg from './package.json'
-
 import i18n from './plugins/i18n'
 import ENV from './env'
 
@@ -170,7 +168,6 @@ export default {
       }
     },
     plugins: [
-      new SpriteLoaderPlugin()
     ]
   },
   env: ENV[process.env.NODE_ENV]
