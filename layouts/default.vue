@@ -116,7 +116,6 @@ export default {
     if (process.browser) {
       this.removeOverflowHide()
       // this.testDomain()
-      this.debug()
     }
   },
   methods: {
@@ -160,14 +159,6 @@ export default {
         if (!isIo) {
           this.$message(`请使用非微信浏览器访问 ${IO} 使用该功能`)
         }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    // 开启调试
-    debug() {
-      try {
-        getCookie('VConsole') === 'true' && new this.$VConsole()
       } catch (e) {
         console.log(e)
       }

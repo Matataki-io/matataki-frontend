@@ -296,7 +296,7 @@ export default {
   align-items: flex-end;
   padding-right: 68px;
   margin-top: 44px;
-  background-image: url(../../assets/img/dynamic_banner_bc.png);
+  background-image: url(../../assets/img/dynamic_banner_bc.jpeg);
   background-size: cover;
   &-people {
     position: absolute;

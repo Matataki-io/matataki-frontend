@@ -25,7 +25,7 @@
     height: 240px;
     margin-top: 40px;
     margin-bottom: 40px;
-    background-image: url(../assets/img/dashboard_head_bc.png);
+    background-image: url(../assets/img/dashboard_head_bc.jpeg);
     background-color: #ebe6fe;
     background-size: cover;
     display: flex;

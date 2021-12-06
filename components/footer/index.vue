@@ -121,7 +121,7 @@
           <li>
             <el-popover placement="top" trigger="hover" popper-class="footer-wechat-popover">
               <div class="footer-wechat">
-                <img src="../../assets/img/wechat-bot-1.jpg" alt="WeChat Bot">
+                <img src="../../assets/img/wechat-bot-1.jpeg" alt="WeChat Bot">
                 <p class="footer-wechat-title">
                   {{ $t("footer.scanCode") }}
                 </p>

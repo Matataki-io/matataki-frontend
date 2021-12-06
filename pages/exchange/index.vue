@@ -3,7 +3,7 @@
     <div class="outer-container">
       <img
         class="ma-banner"
-        src="@/assets/img/exchange-banner.png"
+        src="@/assets/img/exchange-banner.jpeg"
         alt="banner"
       >
       <div class="p-w">

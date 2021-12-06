@@ -3,7 +3,7 @@
     <div class="tags-main">
       <!-- banner -->
       <div class="tags-banner">
-        <img src="@/assets/img/tags_banner.png" alt="banner">
+        <img src="@/assets/img/tags_banner.jpeg" alt="banner">
         <p v-html="$t('personalized-custom-label')" />
       </div>
       <div class="tags-head">
