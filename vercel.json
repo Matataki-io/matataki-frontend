@@ -11,7 +11,7 @@
       "config": {
         "serverFiles": [
           "package.json",
-          "plugins/i18n"
+          "plugins/**"
         ]
       }
     }
