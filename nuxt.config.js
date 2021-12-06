@@ -1,10 +1,3 @@
-import path from 'path'
-import ENV from './env'
-
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
-
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
@@ -144,5 +137,35 @@ export default {
       config.devtool = false;
     },
   },
-  env: ENV[process.env.NODE_ENV]
+  env: {
+    NODE: 'production',
+    NODE_ENV: 'production',
+    VUE_APP_API: 'https://api.mttk.net',
+    VUE_APP_URL: 'https://matataki.io',
+    VUE_APP_MATATAKIAUTH_API: 'https://auth.matataki.io/api',
+    VUE_APP_MATATAKI_CACHE: 'https://cache-ore.mttk.net/matataki',
+    VUE_APP_DEVELOPER: 'https://developer.matataki.io',
+    VUE_APP_HCAPTCHA_SITE_KEY: '929510ae-ff3e-4ccc-bb8b-f7dd3983e791',
+    VUE_APP_DEVELOPER_API: 'https://developer.matataki.io/api',
+    VUE_APP_SIGNATURE_CONTRACT: 'signature.bp',
+    VUE_APP_SCRIPT_HASH: '36df9722fc0ff5fa3979f2a844a012cabe1d4c56',
+    VUE_APP_GITHUB_CLIENT_ID: '21cc5341ef03f40cd5a4',
+    ssImgAddress: 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com',
+    VUE_APP_PC_URL: 'https://www.matataki.io',
+    WX_SHARE_HOST: 'https://smartsignature.frontenduse.top',
+    TELEGRAM_IV_RHASH: '6937cb5e3b86c1',
+    TELEGRAM_BOT_NAME: 'matataki_prod_pc_bot',
+    TELEGRAM_BOT_ROOT_NAME: 'matataki_prod_mobile_bot',
+    TELEGRAM_BOT_IN_WX: 'matataki_prod_wx_bot',
+    TELEGRAM_FANDOM_BOT: 'matatakibot',
+    TWITTER_APP_KEY: 'vvaFC5N3pYhkF2HsKQFFaLGct',
+    FANDOM_SERVER_API: 'https://fanpiao-bot-data-prod.web.app',
+    VUE_APP_WX_URL: 'https://smartsignature.frontenduse.top',
+    VUE_APP_DOMAIN_IO: 'matataki.io',
+    VUE_APP_DOMAIN_CN: 'matataki.cn',
+    VUE_APP_ETHERSCAN: 'https://rinkeby.etherscan.io',
+    VUE_APP_BSCSCAN: 'https://bscscan.com',
+    VUE_APP_MATICSCAN: 'https://explorer-mainnet.maticvigil.com',
+    VUE_APP_NFT: 'https://nft-market.matataki.io',
+  }
 }
