@@ -1,5 +1,6 @@
 import i18n from './plugins/i18n'
 import ENV from './env'
+import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
@@ -139,7 +140,30 @@ export default {
     transpile: [/^element-ui/],
     extend(config, { isDev, isClient }) {
       config.devtool = false;
+      // set svg-sprite-loader
+      if (isClient) {
+        config.module.rules.forEach((rule) => { // 移除默认处理svg的配置
+          if (~rule.test.source.indexOf('|svg')) {
+            rule.exclude = [resolve('icons/svg')]
+          }
+        })
+
+        config.module.rules.push(
+          { // 使用svg
+            test: /\.svg$/,
+            loader: 'svg-sprite-loader',
+            include: [resolve('icons/svg')], // include => 只处理指定的文件夹下的文件
+            options: {
+              symbolId: 'icon-[name]'
+            }
+          })
+        // console.log(config.module.rules)
+        // set svg-sprite-loader end
+      }
     },
+    plugins: [
+      new SpriteLoaderPlugin(), // set svg-sprite-loader
+    ],
   },
   env: ENV[process.env.NODE_ENV]
 }
