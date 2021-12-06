@@ -1,5 +1,4 @@
 import path from 'path'
-import webpack from 'webpack'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import pkg from './package.json'
 
@@ -171,11 +170,7 @@ export default {
       }
     },
     plugins: [
-      new SpriteLoaderPlugin(), // set svg-sprite-loader
-      new webpack.ContextReplacementPlugin(
-        /moment[/\\]locale$/,
-        /zh-cn/
-      )
+      new SpriteLoaderPlugin()
     ]
   },
   env: ENV[process.env.NODE_ENV]
