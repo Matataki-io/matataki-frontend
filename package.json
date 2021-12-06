@@ -55,7 +55,6 @@
     "cross-env": "^5.2.0",
     "cyanobridge": "^0.1.0",
     "echarts": "^4.8.0",
-    "element-ui": "^2.15.2",
     "emoji-mart-vue": "^2.6.6",
     "eosjs": "^16.0.9",
     "eslint": "^7.29.0",
@@ -118,6 +117,7 @@
     "xss": "^1.0.6"
   },
   "dependencies": {
+    "element-ui": "^2.15.6",
     "esm": "^3.2.25",
     "js-cookie": "^3.0.1"
   }
