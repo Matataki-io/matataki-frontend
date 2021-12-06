@@ -13,6 +13,7 @@
           "package.json",
           "plugins/i18n.js",
           "env.js",
+          "scripts/git-info.js",
           "locale/**"
         ]
       }
