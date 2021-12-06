@@ -1,6 +1,7 @@
 import i18n from './plugins/i18n'
 import ENV from './env'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
+import path from 'path'
 
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
@@ -9,6 +10,7 @@ const metaDescription = '瞬MATATAKI是一个永久存储和版权确权的内�
 const metaKeywords = '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS,ETH,BTC,DAO'
 const metaImage = 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
 
+const resolve = (dir) => path.join(__dirname, dir)
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
