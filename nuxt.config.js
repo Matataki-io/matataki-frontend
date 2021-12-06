@@ -1,3 +1,5 @@
+import i18n from './plugins/i18n'
+
 const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
@@ -95,6 +97,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
+    ['nuxt-i18n', i18n],
     [
       '@nuxtjs/component-cache',
       {

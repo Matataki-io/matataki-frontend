@@ -9,7 +9,10 @@
       "src": "nuxt.config.js",
       "use": "@nuxtjs/vercel-builder",
       "config": {
-        "serverFiles": ["package.json"]
+        "serverFiles": [
+          "package.json",
+          "plugins/i18n"
+        ]
       }
     }
   ],
