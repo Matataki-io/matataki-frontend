@@ -1,5 +1,4 @@
 import path from 'path'
-import i18n from './plugins/i18n'
 import ENV from './env'
 
 function resolve(dir) {
@@ -103,7 +102,6 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
-    ['nuxt-i18n', i18n],
     [
       '@nuxtjs/component-cache',
       {
