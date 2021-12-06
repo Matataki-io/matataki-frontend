@@ -117,6 +117,7 @@
     "vue-tribute": "^1.0.6",
     "vue-upload-component": "^2.8.20",
     "web3": "^1.2.2",
+    "webpack": "^5.64.4",
     "webpack-bundle-analyzer": "^3.3.2",
     "weixin-js-sdk": "1.6.0",
     "xss": "^1.0.6"
