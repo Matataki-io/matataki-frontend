@@ -22,7 +22,9 @@
     "svgo": "svgo -f icons/filter --config=icons/svgo.yml",
     "vercel-build": "yarn global add node-gyp-build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "esm": "^3.2.25"
+  },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/eslint-parser": "^7.14.7",
