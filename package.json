@@ -22,10 +22,7 @@
     "svgo": "svgo -f icons/filter --config=icons/svgo.yml",
     "vercel-build": "yarn global add node-gyp-build"
   },
-  "dependencies": {
-  },
   "devDependencies": {
-    "esm": "^3.2.25",
     "@babel/core": "^7.16.0",
     "@babel/eslint-parser": "^7.14.7",
     "@babel/preset-env": "^7.16.4",
@@ -73,6 +70,7 @@
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
     "eslint-plugin-vue": "^7.12.1",
+    "esm": "^3.2.25",
     "ethers": "5.0.18",
     "highlightjs-solidity": "1.0.18",
     "hover.css": "2.3.2",
