@@ -1,5 +1,4 @@
 import path from 'path'
-import pkg from './package.json'
 import i18n from './plugins/i18n'
 import ENV from './env'
 
@@ -17,7 +16,6 @@ const metaImage = 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avata
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-  version: pkg.version,
   head: {
     title: '瞬MATATAKI',
     meta: [
@@ -143,32 +141,7 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [/^element-ui/],
-    extend(config, { isDev, isClient }) {
-      config.devtool = false;
-      // set svg-sprite-loader
-      if (isClient) {
-        config.module.rules.forEach((rule) => { // 移除默认处理svg的配置
-          if (~rule.test.source.indexOf('|svg')) {
-            rule.exclude = [resolve('icons/svg')]
-          }
-        })
-
-        config.module.rules.push(
-          { // 使用svg
-            test: /\.svg$/,
-            loader: 'svg-sprite-loader',
-            include: [resolve('icons/svg')], // include => 只处理指定的文件夹下的文件
-            options: {
-              symbolId: 'icon-[name]'
-            }
-          })
-        // console.log(config.module.rules)
-      // set svg-sprite-loader end
-      }
-    },
-    plugins: [
-    ]
+    transpile: [/^element-ui/]
   },
   env: ENV[process.env.NODE_ENV]
 }
