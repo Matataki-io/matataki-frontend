@@ -1,16 +1,13 @@
 import i18n from './plugins/i18n'
 import ENV from './env'
-import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
-import path from 'path'
+// import path from 'path'
 
-const NODE_ENV = process.env.NODE_ENV
-console.log(NODE_ENV)
 const metaTitle = '瞬MATATAKI—发布瞬间，灵感永存'
 const metaDescription = '瞬MATATAKI是一个永久存储和版权确权的内容平台，通过IPFS协议保障内容的永久可访问和确权信息可查询。使用了Fan票来激励创作者、探索者、布道者共建未来的超级知识链接网络。'
 const metaKeywords = '岛娘,小岛美奈子,唐飞虎,仙女座科技,瞬MATATAKI,智能公告牌,智能投资,裂变营销,价值投资,区块链,比特币,以太坊,去中心化社交,去中心化商店,去中心化,DApp,EOS,ETH,BTC,DAO'
 const metaImage = 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com/avatar/2019/08/30/c1d6ae7ed4e6102cb45d0a8f656d5569.png'
 
-const resolve = (dir) => path.join(__dirname, dir)
+// const resolve = (dir) => path.join(__dirname, dir)
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -43,12 +40,12 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // { rel: 'stylesheet', type: 'text/css', href: '/theme/index.css' }, // element ui css
-      { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css' }
       // { rel: 'stylesheet', type: 'text/css', href: '/vant/index.css' }, // vant ui css
     ],
     script: [
       { src: '/bowl.min.js' },
-      { src: '/bowlStore.js' },
+      { src: '/bowlStore.js' }
     ]
   },
   loading: {
@@ -80,11 +77,11 @@ export default {
     { src: '@/plugins/sentry.js', ssr: false },
     { src: '@/plugins/v-viewer.js', ssr: false },
     { src: '@/plugins/vue_echarts.js', ssr: false },
-    { src: '@/plugins/build-info.js', ssr: false },
+    { src: '@/plugins/build-info.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  // components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -109,7 +106,10 @@ export default {
         maxAge: 1000 * 60 * 60
       }
     ],
-    'nuxt-ssr-cache'
+    'nuxt-ssr-cache',
+    ['nuxt-svg-sprite-loader', {
+      symbolId: 'icon-[name]'
+    }]
   ],
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
@@ -140,32 +140,9 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
-    extend(config, { isDev, isClient }) {
-      config.devtool = false;
-      // set svg-sprite-loader
-      if (isClient) {
-        config.module.rules.forEach((rule) => { // 移除默认处理svg的配置
-          if (~rule.test.source.indexOf('|svg')) {
-            rule.exclude = [resolve('icons/svg')]
-          }
-        })
-
-        config.module.rules.push(
-          { // 使用svg
-            test: /\.svg$/,
-            loader: 'svg-sprite-loader',
-            include: [resolve('icons/svg')], // include => 只处理指定的文件夹下的文件
-            options: {
-              symbolId: 'icon-[name]'
-            }
-          })
-        // console.log(config.module.rules)
-        // set svg-sprite-loader end
-      }
-    },
-    plugins: [
-      new SpriteLoaderPlugin(), // set svg-sprite-loader
-    ],
+    extend (config) {
+      config.devtool = false
+    }
   },
   env: ENV[process.env.NODE_ENV]
 }
