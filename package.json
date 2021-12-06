@@ -74,7 +74,6 @@
     "highlightjs-solidity": "1.0.18",
     "hover.css": "2.3.2",
     "js-base64": "^2.5.1",
-    "js-cookie": "^2.2.1",
     "js-sha256": "^0.9.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
@@ -119,6 +118,7 @@
     "xss": "^1.0.6"
   },
   "dependencies": {
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "js-cookie": "^3.0.1"
   }
 }
