@@ -1,7 +1,7 @@
 
 import { MessageBox, Loading } from 'element-ui'
 import utils from '@/utils/utils'
-import API from '@/api/API'
+import API from '@/request/API'
 
 export const getters = {
   makeOrderParams: () => ({ input, output, outputToken, needToken = true, needPrice = false, signId, type }) => {

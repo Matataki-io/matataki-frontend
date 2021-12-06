@@ -59,7 +59,7 @@
 import VueUploadComponent from 'vue-upload-component'
 import Cropper from 'cropperjs'
 import Compressor from 'compressorjs'
-import { ifpsUpload } from '@/api/ipfs'
+import { ifpsUpload } from '@/request/ipfs'
 
 export default {
   name: 'ImgUpload',

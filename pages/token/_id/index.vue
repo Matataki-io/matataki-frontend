@@ -62,7 +62,7 @@ import { extractChar } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
 import utils from '@/utils/utils'
 import socialTypes from '@/config/social_types'
-import { accessTokenAPI } from '@/api/backend'
+import { accessTokenAPI } from '@/request/backend'
 
 import basicInfoHead from '@/components/token/basic_info_head'
 import tokenNav from '@/components/token/token_nav'

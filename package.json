@@ -19,11 +19,9 @@
     "start-aws-testing": "cross-env NODE_ENV=testing nuxt start --hostname 0.0.0.0 --port 8180",
     "start-aws-prod": "cross-env NODE_ENV=production nuxt start --hostname 0.0.0.0 --port 8190",
     "generate": "nuxt generate",
-    "svgo": "svgo -f icons/filter --config=icons/svgo.yml",
-    "vercel-build": "yarn global add node-gyp-build"
+    "svgo": "svgo -f icons/filter --config=icons/svgo.yml"
   },
   "dependencies": {
-    "esm": "^3.2.25"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
@@ -117,7 +115,6 @@
     "vue-tribute": "^1.0.6",
     "vue-upload-component": "^2.8.20",
     "web3": "^1.2.2",
-    "webpack": "^5.64.4",
     "webpack-bundle-analyzer": "^3.3.2",
     "weixin-js-sdk": "1.6.0",
     "xss": "^1.0.6"

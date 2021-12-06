@@ -47,7 +47,7 @@
 
 <script>
 import { xssFilter } from '@/utils/xss'
-import { ipfsData, ipfsArticleData } from '@/api/async_data_api.js'
+import { ipfsData, ipfsArticleData } from '@/request/async_data_api.js'
 
 const markdownIt = require('markdown-it')({
   html: true,

@@ -1,4 +1,4 @@
-import API from '@/api/API'
+import API from '@/request/API'
 
 export const state = () => ({})
 

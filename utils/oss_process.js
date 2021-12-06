@@ -1,4 +1,4 @@
-import API from '@/api/API'
+import API from '@/request/API'
 // 这里和移动端有细微差别, 因为nuxt....... 于是多加了一个判断
 const isSupportWebp = process.browser ? !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0 : false
 if (process.browser) {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { apiServer } from '@/api/backend'
+import { apiServer } from '@/request/backend'
 
 function sendPost({ title, author, desc, content }) {
   const stringifyData = qs.stringify({
