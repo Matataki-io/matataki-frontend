@@ -148,9 +148,7 @@ export default {
   build: {
     transpile: [/^element-ui/],
     extend(config, { isDev, isClient }) {
-      if (isDev) {
-        config.devtool = isClient ? 'source-map' : 'inline-source-map'
-      }
+      config.devtool = false;
       // set svg-sprite-loader
       if (isClient) {
         config.module.rules.forEach((rule) => { // 移除默认处理svg的配置
