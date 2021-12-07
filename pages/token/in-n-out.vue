@@ -125,7 +125,7 @@ img.banner {
     padding: 10px 45px;
 }
 div.banner {
-    background-image: url("../../assets/img/token-banner.png");
+    background-image: url("../../assets/img/token-banner.jpeg");
     background-repeat: no-repeat;
     background-size: 1160px 240px;
     height: 260px;

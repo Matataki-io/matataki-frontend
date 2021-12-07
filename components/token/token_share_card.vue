@@ -129,7 +129,7 @@ export default {
   overflow: hidden;
   text-align: center;
   &.bg1 {
-    background-image: url('../../assets/img/token_share_bg1.png');
+    background-image: url('../../assets/img/token_share_bg1.jpeg');
   }
   &.bg2 {
     background-image: url('../../assets/img/token_share_bg2.png');

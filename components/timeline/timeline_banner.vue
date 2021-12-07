@@ -39,7 +39,7 @@ export default {
     border-radius: 10px;
     position: relative;
     text-align: center;
-    background-image: url(../../assets/img/dynamic_banner_bc.png);
+    background-image: url(../../assets/img/dynamic_banner_bc.jpeg);
     background-size: cover;
     display: flex;
     flex-direction: column;

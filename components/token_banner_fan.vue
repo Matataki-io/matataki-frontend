@@ -107,7 +107,7 @@ export default {
   background-color: #ffefe6;
   border-radius: 10px;
   position: relative;
-  background-image: url("../assets/img/token_banner_fan_bc.png");
+  background-image: url("../assets/img/token_banner_fan_bc.jpeg");
   background-size: cover;
   display: flex;
   align-items: center;

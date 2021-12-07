@@ -89,7 +89,7 @@ export default {
 
 .dapp-head-governance {
   height: 240px;
-  background-image: url(../../assets/img/dapp-banner-governance.png);
+  background-image: url(../../assets/img/dapp-banner-governance.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -132,7 +132,7 @@ export default {
 
 .dapp-head-shuttle {
   height: 240px;
-  background-image: url(../../assets/img/dapp-banner-shuttle.png);
+  background-image: url(../../assets/img/dapp-banner-shuttle.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -181,7 +181,7 @@ export default {
 
 .dapp-head-quest {
   height: 240px;
-  background-image: url(../../assets/img/dapp-banner-quest.png);
+  background-image: url(../../assets/img/dapp-banner-quest.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -226,7 +226,7 @@ export default {
 
 .crypto-hero {
   height: 240px;
-  background-image: url(../../assets/img/dapp_cryptohero_bc.png);
+  background-image: url(../../assets/img/dapp_cryptohero_bc.jpeg);
   background-size: cover;
   background-position: left;
   background-repeat: no-repeat;
@@ -283,7 +283,7 @@ export default {
 
 .crypto-meet-up {
   height: 240px;
-  background-image: url(../../assets/img/dapp_cryptomeetup_bc.png);
+  background-image: url(../../assets/img/dapp_cryptomeetup_bc.jpeg);
   background-size: cover;
   background-position: left;
   background-repeat: no-repeat;
@@ -349,7 +349,7 @@ export default {
 
 .dapp-head {
   height: 240px;
-  background-image: url(../../assets/img/dapp_head_bc.png);
+  background-image: url(../../assets/img/dapp_head_bc.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

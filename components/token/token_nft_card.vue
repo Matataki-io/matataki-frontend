@@ -167,7 +167,6 @@ export default {
 .card-footer-price {
   display: flex;
   align-items: center;
-  justify-content: start;
   & > div:nth-child(1) {
     margin-right: 62px;
   }

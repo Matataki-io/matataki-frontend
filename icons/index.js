@@ -3,6 +3,7 @@ import Vue from 'vue'
 import SvgIcon from '@/components/SvgIcon/index' // svg component
 
 // register globally
+// eslint-disable-next-line vue/component-definition-name-casing
 Vue.component('svg-icon', SvgIcon)
 
 const req = require.context('./svg', false, /\.svg$/)
