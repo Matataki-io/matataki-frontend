@@ -2037,7 +2037,7 @@ export default {
       }
     },
     async generateBullshit() {
-      const 扯淡生成器 = import('@/request/bullshit-generator.js')
+      const 扯淡生成器 = import('@/api/bullshit-generator.js')
       this.title = '【扯淡警告】只是一篇用来开发测试的文章'
       this.cover = '/image/2019/11/20/ebf10fad1a4a2e8e77f33140a1411b09.jpg'
       const { 生成文章 } = await 扯淡生成器

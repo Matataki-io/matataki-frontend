@@ -40,7 +40,7 @@ import debounce from 'lodash/debounce'
 import tab from '@/components/article_page/tab'
 import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
-import { paginationUrl } from '@/request/pagination_url'
+import { paginationUrl } from '@/api/pagination_url'
 import { extractChar } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
 

@@ -1,6 +1,6 @@
 /* eslint-disable */
-import backendAPI from '@/request/backend'
-import { accessTokenAPI } from '@/request/backend'
+import backendAPI from '@/api/backend'
+import { accessTokenAPI } from '@/api/backend'
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {

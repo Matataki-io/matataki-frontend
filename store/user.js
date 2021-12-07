@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Message } from 'element-ui';
-import backendAPI from '@/request/backend'
-import API from '@/request/API'
+import backendAPI from '@/api/backend'
+import API from '@/api/API'
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {

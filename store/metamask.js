@@ -3,8 +3,8 @@
  */
 import BigNumber from 'bignumber.js'
 import { setToken, removeToken } from '../utils/auth'
-import { getSignatureForLogin } from '@/request/eth'
-import API from '@/request/API'
+import { getSignatureForLogin } from '@/api/eth'
+import API from '@/api/API'
 
 // 工厂函数 getDefaultState 初始化、重置
 const getDefaultState = () => {

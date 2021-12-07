@@ -52,7 +52,7 @@ export const mutations = {
 export const actions = {
   async getAPI({ commit, state }) {
     if (!state.api) {
-      const { default: API } = await import(/* webpackChunkName: "EOS" */ '@/request/scatter')
+      const { default: API } = await import(/* webpackChunkName: "EOS" */ '@/api/scatter')
       commit('setAPI', API)
     }
     return state.api
@@ -84,7 +84,7 @@ export const actions = {
   // tokenName 传进来判断是提现什么通证
   async getSignature({ dispatch, state }, { mode, rawSignData, tokenName }) {
     const api = await dispatch('getAPI')
-    const { eos } = await import(/* webpackChunkName: "EOS" */ '@/request/scatter')
+    const { eos } = await import(/* webpackChunkName: "EOS" */ '@/api/scatter')
     const { account } = state
     const result = await eos().getAccount(account.name)
     // 获取当前权限
@@ -129,7 +129,7 @@ export const actions = {
     },
     order
   ) {
-    const { recordOrder } = await import(/* webpackChunkName: "EOS" */ '@/request/contractEOS')
+    const { recordOrder } = await import(/* webpackChunkName: "EOS" */ '@/api/contractEOS')
     return recordOrder({ account, ...order })
   },
   async recordShare(
@@ -138,7 +138,7 @@ export const actions = {
     },
     share
   ) {
-    const { recordShare } = await import(/* webpackChunkName: "EOS" */ '@/request/contractEOS')
+    const { recordShare } = await import(/* webpackChunkName: "EOS" */ '@/api/contractEOS')
     return recordShare({ account, ...share })
   },
   async setBalances({ commit, dispatch, state }) {

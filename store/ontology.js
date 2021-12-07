@@ -1,4 +1,4 @@
-import API from '@/request/ontology'
+import API from '@/api/ontology'
 
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
@@ -63,7 +63,7 @@ export const actions = {
     order
   ) {
     const { recordOrder } = await import(
-      /* webpackChunkName: "contract-Ontology" */ '@/request/contractOntology'
+      /* webpackChunkName: "contract-Ontology" */ '@/api/contractOntology'
     )
     return recordOrder({ owner: account, ...order })
   },
@@ -74,7 +74,7 @@ export const actions = {
     share
   ) {
     const { recordShare } = await import(
-      /* webpackChunkName: "contract-Ontology" */ '@/request/contractOntology'
+      /* webpackChunkName: "contract-Ontology" */ '@/api/contractOntology'
     )
     return recordShare({ owner: account, ...share })
   },

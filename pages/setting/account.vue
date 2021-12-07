@@ -111,7 +111,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import userLayout from '@/components/user/user_layout.vue'
 import myAccountNav from '@/components/my_account/my_account_nav.vue'
-import { getSignatureForLogin } from '@/request/eth'
+import { getSignatureForLogin } from '@/api/eth'
 import { getCookie } from '@/utils/cookie'
 import store from '@/utils/store.js'
 
