@@ -4,7 +4,8 @@ import VueClipboard from 'vue-clipboard2'
 import { ContentLoader } from 'vue-content-loader'
 import moment from 'moment'
 
-import(/* webpackChunkName: "chunk-icons" */ '@/icons')
+// import(/* webpackChunkName: "chunk-icons" */ '@/icons')
+import '@/icons/index'
 
 moment.locale('zh-CN')
 Vue.config.devtools = true
