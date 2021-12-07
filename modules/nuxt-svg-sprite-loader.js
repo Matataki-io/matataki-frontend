@@ -8,7 +8,6 @@ export default function (moduleOptions) {
   const options = { ...this.options.spriteSvgLoader, ...moduleOptions }
   this.extendBuild(config => {
     const imageLoaderRule = config.module.rules.find(svgRulePredicate)
-    console.log('imageLoaderRule', imageLoaderRule, resolve('../icons/svg'))
     imageLoaderRule.exclude = [resolve('../icons/svg')]
 
     config.module.rules.push({

@@ -15,9 +15,8 @@ export default {
     title: '瞬MATATAKI',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover' },
+      // ---
       { hid: 'robots', name: 'robots', property: 'robots', content: 'index,follow' },
       { hid: 'copyright', name: 'copyright', property: 'copyright', content: 'Copyright © 2018-2021 ANDOROMEDA TECH.ltd' },
       { hid: 'description', name: 'description', content: metaDescription },
@@ -53,8 +52,7 @@ export default {
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    './assets/css/index.less',
-    'element-ui/lib/theme-chalk/index.css'
+    './assets/css/index.less'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -139,9 +137,73 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    analyze: false,
     transpile: [/^element-ui/],
-    extend (config) {
-      config.devtool = false
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          editor: {
+            test: /node_modules[\\/]@matataki\/editor/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-editor'
+            }
+          },
+          elementUI: {
+            test: /node_modules\/element-ui/,
+            chunks: 'all',
+            priority: 30,
+            name: () => {
+              return 'chunk-elementUI'
+            }
+          },
+          vant: {
+            test: /node_modules[\\/]vant/,
+            chunks: 'all',
+            priority: 30,
+            name: () => {
+              return 'chunk-vant'
+            }
+          },
+          echarts: {
+            test: /node_modules\/(echarts|zrender\/lib)/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-echarts'
+            }
+          },
+          ethers: {
+            test: /node_modules[\\/]ethers/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-ethers'
+            }
+          },
+          web3: {
+            test: /node_modules[\\/]web3/,
+            chunks: 'all',
+            priority: 20,
+            name: () => {
+              return 'chunk-web3'
+            }
+          },
+          // TODO: 有点问题 如果 priority 高于其他会有问题 小于又打包不进来
+          // utils: { // qs xss viewerjs
+          //   test: /node_modules\/(qs\/lib|xss\/lib|viewerjs\/dist|bignumber\.js|weixin-js-sdk)/,
+          //   chunks: 'all',
+          //   priority: 10,
+          //   name: () => {
+          //     return 'chunk-utils'
+          //   }
+          // },
+        }
+      }
+    },
+    extend (config, { isDev }) {
+      config.devtool = isDev && 'cheap-module-source-map'
     }
   },
   env: ENV[process.env.NODE_ENV]
