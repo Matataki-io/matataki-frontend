@@ -8,6 +8,8 @@
     "lint": "eslint --ext .js,.vue --ignore-path .eslintignore .",
     "precommit": "yarn lint",
     "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
     "build-dev": "cross-env NODE_ENV=development nuxt build",
     "build-test": "cross-env NODE_ENV=testing nuxt build",
     "build-release": "cross-env NODE_ENV=release nuxt build",
