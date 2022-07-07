@@ -80,7 +80,7 @@
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-katex": "^2.0.3",
     "markdown-render-js": "1.0.6",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "nodemon": "^1.18.9",
     "nuxt": "^2.15.7",
     "oauth": "^0.9.15",
