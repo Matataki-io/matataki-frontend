@@ -76,7 +76,7 @@
     "lint-staged": "^10.5.4",
     "lodash": "^4.17.21",
     "lru-cache": "^6.0.0",
-    "markdown-it": "^9.0.1",
+    "markdown-it": "^12.3.2",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-katex": "^2.0.3",
     "markdown-render-js": "1.0.6",
