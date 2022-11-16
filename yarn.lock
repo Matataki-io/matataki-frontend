@@ -14102,10 +14102,10 @@ vue-tribute@^1.0.6:
   resolved "https://registry.yarnpkg.com/vue-tribute/-/vue-tribute-1.0.7.tgz#6c80ffe7409799e3f5cdaed72a856f2ad22faa34"
   integrity sha512-RtoDOzeme0/+Q9fsKDpdbRUhBI+BQR16NbAOQIHG8k94Mf2qXxpMGQeXMxZ1s75zgs2HmlQZIZ8eObWIumnmog==
 
-vue-upload-component@^2.8.20:
-  version "2.8.22"
-  resolved "https://registry.yarnpkg.com/vue-upload-component/-/vue-upload-component-2.8.22.tgz#7a1573149a4afa5ca6e8c7e0bc70533925fe26b7"
-  integrity sha512-AJpETqiZrgqs8bwJQpWTFrRg3i6s7cUodRRZVnb1f94Jvpd0YYfzGY4zluBqPmssNSkUaYu7EteXaK8aW17Osw==
+vue-upload-component@2.8.20:
+  version "2.8.20"
+  resolved "https://registry.yarnpkg.com/vue-upload-component/-/vue-upload-component-2.8.20.tgz#60824d3f20f3216dca90d8c86a5c980851b04ea0"
+  integrity sha512-zrnJvULu4rnZe36Ib2/AZrI/h/mmNbUJZ+acZD652PyumzbvjCOQeYHe00sGifTdYjzzS66CwhTT+ubZ2D0Aow==
 
 vue@^2.0.0, vue@^2.6.12:
   version "2.6.14"
