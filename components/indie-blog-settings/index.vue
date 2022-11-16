@@ -428,7 +428,7 @@ export default Vue.extend({
     },
     /** 打开配置教程的链接，必须放在 methods 中 */
     openConfigGuideLink() {
-      window.open('https://www.matataki.io/p/8864', '_blank').focus()
+      window.open('https://meta.io/p/8864', '_blank').focus()
     }
   }
 })

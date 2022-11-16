@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.matataki.io" target="_blank">
+  <a href="https://meta.io" target="_blank">
     <img width="200" src="https://i.loli.net/2019/09/03/9NAspLIWTPy5kRB.png">
   </a>
 </p>
@@ -29,7 +29,7 @@ English | [简体中文](./README.md)
 
 ## 🌈  Introduction
 
-[瞬MATATAKI](https://www.matataki.io)是一个保护创作者权益的高质量内容平台。
+[瞬MATATAKI](https://meta.io)是一个保护创作者权益的高质量内容平台。
 
 所有在 瞬Matataki 上的内容创作，都会上传到 IPFS（星际文件系统）的多个节点上，实现作品的永久可访问，无需担心被和谐删档，你的数据只属于你自己。
 

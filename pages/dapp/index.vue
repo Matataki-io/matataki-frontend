@@ -52,7 +52,7 @@ export default {
               img: matataki,
               width: '128px',
               height: '128px',
-              url: 'https://www.matataki.io/',
+              url: 'https://meta.io/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: this.$t('visit-website'),
               disabled: false
@@ -96,7 +96,7 @@ export default {
               img: nft,
               width: '120px',
               height: '120px',
-              url: 'https://nft-market.matataki.io',
+              url: 'https://nft-market.meta.io',
               repo: 'https://github.com/Matataki-io/Matataki-NFT-Market',
               btn: this.$t('visit-website'),
               disabled: false
@@ -129,7 +129,7 @@ export default {
               img: quest,
               width: '130px',
               height: '147px',
-              url: 'https://quest.matataki.io/',
+              url: 'https://quest.meta.io/',
               repo: 'https://github.com/Matataki-io/Fan-TaskBoard',
               btn: this.$t('visit-website'),
               disabled: false
@@ -140,7 +140,7 @@ export default {
               img: governance,
               width: '156px',
               height: 'auto',
-              url: 'https://governance.matataki.io',
+              url: 'https://governance.meta.io',
               btn: this.$t('visit-website'),
               disabled: false
             },
@@ -155,7 +155,7 @@ export default {
               img: exchange,
               width: '168px',
               height: '99px',
-              url: 'https://www.matataki.io/exchange/',
+              url: 'https://meta.io/exchange/',
               repo: 'https://github.com/Matataki-io/Matataki-FE',
               btn: this.$t('visit-website'),
               disabled: false
@@ -222,7 +222,7 @@ export default {
               img: doc,
               width: '134px',
               height: '140px',
-              url: 'https://docs.matataki.io/',
+              url: 'https://docs.meta.io/',
               repo: 'https://github.com/Matataki-io/api-doc',
               btn: this.$t('visit-website'),
               disabled: false
@@ -233,7 +233,7 @@ export default {
               img: developer,
               width: '120px',
               height: '120px',
-              url: 'https://developer.matataki.io',
+              url: 'https://developer.meta.io',
               repo: 'https://github.com/Matataki-io/DeveloperPortal-FE',
               btn: this.$t('visit-website'),
               disabled: false

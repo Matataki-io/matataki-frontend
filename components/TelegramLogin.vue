@@ -22,7 +22,7 @@
     <a
       v-show="status === 'completed'"
       class="telegram-toggleaccount"
-      href="https://www.matataki.io/p/2465"
+      href="https://meta.io/p/2465"
       target="_blank"
     >
       {{ $t('switch-account-tutorial') }}<svg-icon

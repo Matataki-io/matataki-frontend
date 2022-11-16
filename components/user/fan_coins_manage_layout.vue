@@ -29,7 +29,7 @@
         <a
           class="help-link"
           target="_blank"
-          href="https://www.matataki.io/p/979"
+          href="https://meta.io/p/979"
         >{{ $t('how-to-manage-your-coin') }}</a>
       </div>
 

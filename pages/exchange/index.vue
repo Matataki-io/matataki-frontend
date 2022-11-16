@@ -21,7 +21,7 @@
                 <a
                   class="help-link"
                   target="_blank"
-                  href="https://www.matataki.io/p/981"
+                  href="https://meta.io/p/981"
                 >{{ $t('how-to-trade-fan-tickets') }}</a>
               </div>
             </Swap>
@@ -40,7 +40,7 @@
                 <a
                   class="help-link"
                   target="_blank"
-                  href="https://www.matataki.io/p/981"
+                  href="https://meta.io/p/981"
                 >{{ $t('how-to-trade-fan-tickets') }}</a>
               </div>
             </Pool>

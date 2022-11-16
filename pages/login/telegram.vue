@@ -21,10 +21,10 @@
 <script>
 import TelegramLogin from '@/components/TelegramLogin'
 export default {
-  layout: 'empty',
   components: {
     TelegramLogin
   },
+  layout: 'empty',
   data() {
     return {
       loading: false,
@@ -35,7 +35,7 @@ export default {
     domainEnv() {
       // if (!process.browser) { return 'desktop' }
       switch(window.location.hostname) {
-        case 'www.matataki.io': return 'desktop'
+        case 'meta.io': return 'desktop'
         case 'matataki.io': return 'mobile'
         case 'www.matataki.cn': return 'desktop-cn'
         case 'matataki.cn': return 'mobile-cn'

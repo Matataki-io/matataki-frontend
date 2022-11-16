@@ -27,7 +27,7 @@
         </h2>
         <a
           style="color: #1989FA;"
-          href="https://matataki.io/p/4881"
+          href="https://meta.io/p/4881"
           target="_blank"
           rel="noreferrer"
         >👉{{ $t('guide-to-add-fan-tickets-to-MetaMask') }}👈</a>
@@ -264,7 +264,7 @@ export default {
         this.tokenOptions = []
       })
     },
-    // logo 
+    // logo
     tokenLogo(cover) {
       return cover ? this.$ossProcess(cover) : ''
     },

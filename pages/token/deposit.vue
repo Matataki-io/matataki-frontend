@@ -18,8 +18,8 @@
           ⚠️{{ $t('you-found-an-experimental-feature-that-is-not-yet-open-to-the-public') }}⚠️
         </h2>{{ $t('coin-deposited-outside-the-station-on-Rinkeby-Testnet') }}
         <br><b>{{ $t('please-do-not-recharge-tokens-other-than-coin-it-may-cause-token-lock') }}</b>
-        <a 
-          href="https://matataki.io/p/5013" 
+        <a
+          href="https://meta.io/p/5013"
           target="_blank"
           rel="noreferrer"
         >
@@ -30,7 +30,7 @@
         <h2 class="title">
           {{ $t('my-custody-wallet') }}
         </h2>
-        {{ $t('address') }}: 
+        {{ $t('address') }}:
         <code @click="copy">
           {{ myHostingAccount }}
         </code>
@@ -38,8 +38,8 @@
           {{ $t('copy') }}
         </button>
         <br>
-        <a 
-          :href="etherscanLink" 
+        <a
+          :href="etherscanLink"
           target="_blank"
           rel="noreferrer"
         >
@@ -196,7 +196,7 @@ export default {
 
       try {
         const res = await this.$API.depositToken(this.form.txHash)
-        
+
         if (res.code === 0) {
           this.$emit('success')
           this.depositResult = res.data

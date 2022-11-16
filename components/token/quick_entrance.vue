@@ -27,7 +27,7 @@ export default {
         },
         {
           label: this.$t('development-document'),
-          url: 'https://docs.matataki.io'
+          url: 'https://docs.meta.io'
         },
         {
           label: this.$t('anyFeedback'),

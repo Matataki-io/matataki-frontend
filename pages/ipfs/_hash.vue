@@ -19,12 +19,12 @@
         <span
           itemprops="provider"
           itemscope=""
-          itemtype="https://www.matataki.io/"
+          itemtype="https://meta.io/"
         >
           from <span itemprops="name">瞬MATATAKI</span>
           <meta
             itemprops="url"
-            content="https://www.matataki.io/"
+            content="https://meta.io/"
           >
         </span>
         <p itemprops="hash">
@@ -59,6 +59,35 @@ markdownIt.use(mkItKatex)
 markdownIt.use(mkItFootnote)
 export default {
   layout: 'ipfs',
+  async asyncData({ $axios, params }) {
+    let articleIpfs = Object.create(null)
+    let articleData = Object.create(null)
+    await ipfsArticleData($axios, params.hash).then(res => {
+      if (res.code === 0) articleData = res.data
+    })
+
+    // 只要是付费或者持票阅读的都不能查看内容
+    if (articleData.require_holdtokens || articleData.require_buy) {
+      articleIpfs.content = `
+      <p>该文章需持Fan票阅读,请返回原文查看
+      <a href="/p/${articleData.id}">立即跳转</a></p>
+      `
+      return {
+        articleIpfs,
+        articleData,
+        showContent: false
+      }
+    } else {
+      await ipfsData($axios, params.hash).then(res => {
+        if (res.code === 0) articleIpfs = res.data
+      })
+      return {
+        articleIpfs,
+        articleData,
+        showContent: true
+      }
+    }
+  },
   data() {
     return {
       articleIpfs: Object.create(null),
@@ -95,35 +124,6 @@ export default {
     },
     compiledMarkdown() {
       return markdownIt.render(xssFilter(this.articleIpfs.content))
-    }
-  },
-  async asyncData({ $axios, params }) {
-    let articleIpfs = Object.create(null)
-    let articleData = Object.create(null)
-    await ipfsArticleData($axios, params.hash).then(res => {
-      if (res.code === 0) articleData = res.data
-    })
-
-    // 只要是付费或者持票阅读的都不能查看内容
-    if (articleData.require_holdtokens || articleData.require_buy) {
-      articleIpfs.content = `
-      <p>该文章需持Fan票阅读,请返回原文查看
-      <a href="/p/${articleData.id}">立即跳转</a></p>
-      `
-      return {
-        articleIpfs,
-        articleData,
-        showContent: false
-      }
-    } else {
-      await ipfsData($axios, params.hash).then(res => {
-        if (res.code === 0) articleIpfs = res.data
-      })
-      return {
-        articleIpfs,
-        articleData,
-        showContent: true
-      }
     }
   },
   created() {

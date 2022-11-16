@@ -23,7 +23,7 @@ window.location = decodeURIComponent(this.url + '/' + redirect + cookie)
 ```
 https://smartsignature.frontenduse.top/login/oauth/app/ec2d75f03c93ff11/callback
 https://smartsignature.frontenduse.top/login/oauth/app%2Fec2d75f03c93ff11%2Fcallback
-https://matataki.io/login/oauth/app%2Fec2d75f03c93ff11%2Fcallback
+https://meta.io/login/oauth/app%2Fec2d75f03c93ff11%2Fcallback
 https://smartsignature.frontenduse.top/login/oauth/app/ec2d75f03c93ff11/callback
 ```
 

@@ -78,7 +78,7 @@
             >
           </li>
           <li>
-            <a class="href" target="_blank" href="https://www.matataki.io">
+            <a class="href" target="_blank" href="https://meta.io">
               <svg-icon class="icon" icon-class="matataki" />Matataki.io
             </a>
           </li>
@@ -86,7 +86,7 @@
             <a
               class="href"
               target="_blank"
-              href="https://github.com/Matataki-io/Matataki-FE"
+              href="https://github.com/Matataki-io/matataki-frontend"
             >
               <svg-icon class="icon" icon-class="github" />@matataki_io
             </a>
@@ -197,9 +197,9 @@
       </div>
       <div class="line" />
       <div class="footer-copyright fl jsb">
-        <span class="copyright">Copyright © 2018-2021 ANDOROMEDA. 
-        <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备19020303号
-        </a>
+        <span class="copyright">Copyright © 2018-2021 ANDOROMEDA.
+          <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备19020303号
+          </a>
         </span>
         <language class="footer-language" />
       </div>

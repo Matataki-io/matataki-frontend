@@ -18,7 +18,7 @@
       <a
         class="link"
         style="color: #1989fa"
-        href="https://matataki.io/p/4881"
+        href="https://meta.io/p/4881"
         target="_blank"
         rel="noreferrer"
       >👉{{ $t('guide-to-add-fan-tickets-to-MetaMask') }}👈</a>

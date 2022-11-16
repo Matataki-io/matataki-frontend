@@ -9,7 +9,7 @@
         <div class="head-text">
           <p class="head-description">{{ $t('a-Matataki-management-background-that-obtains-governance-rights-by-staking-META') }}</p>
           <img class="head-logo" src="@/assets/img/dapp-banner-governance-text.png" alt="logo">
-          <a href="https://governance.matataki.io" target="_blank" class="head-btn">
+          <a href="https://governance.meta.io" target="_blank" class="head-btn">
             {{ $t('visit-website') }}
           </a>
         </div>
@@ -41,7 +41,7 @@
         <div class="head-text">
           <p class="head-description">{{ $t('a-task-reward-platform-based-on-coin') }}</p>
           <img src="@/assets/img/dapp-banner-quest-logo.png" alt="logo">
-          <a href="https://quest.matataki.io" target="_blank" class="head-btn">
+          <a href="https://quest.meta.io" target="_blank" class="head-btn">
             {{ $t('visit-website') }}
           </a>
         </div>

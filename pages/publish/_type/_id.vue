@@ -636,7 +636,7 @@
               placement="top-start"
             >
               <div slot="content">
-                <div v-html="$t('publish.whereToPublishDescription')" /> <a href="https://matataki.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
+                <div v-html="$t('publish.whereToPublishDescription')" /> <a href="https://meta.io/p/8101" class="el-tooltip-link">{{ $t('publish.whereToPublishHelp') }}</a>
               </div>
               <svg-icon
                 class="help-icon"
@@ -800,16 +800,7 @@ function newDatePicker(time) {
 }
 
 export default {
-  layout: 'empty',
   name: 'NewPost',
-  head() {
-    return {
-      title: '瞬MATATAKI - 创作',
-      link: [
-        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
-      ],
-    }
-  },
   components: {
     'mavon-editor': mavonEditor.mavonEditor,
     imgUpload,
@@ -819,6 +810,7 @@ export default {
     statement,
     tagModule
   },
+  layout: 'empty',
   data() {
     return {
       prompt: false,
@@ -940,6 +932,14 @@ export default {
         ]
       },
       isIndieBlogCreated: false
+    }
+  },
+  head() {
+    return {
+      title: '瞬MATATAKI - 创作',
+      link: [
+        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+      ],
     }
   },
   computed: {

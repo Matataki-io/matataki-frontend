@@ -267,7 +267,7 @@
       <section class="screen6-content">
         <section class="screen6-block">
           <h4>1 {{ $t('what-is-the-relationship-between-the-personal-pass-and-Shun-Matataki') }}</h4>
-          <p>{{ $t('home-qa-1') }}<a href="https://www.matataki.io/p/977?invite=9" target="_blank">{{ $t('this-article') }}</a></p>
+          <p>{{ $t('home-qa-1') }}<a href="https://meta.io/p/977?invite=9" target="_blank">{{ $t('this-article') }}</a></p>
         </section>
 
         <section class="screen6-block">

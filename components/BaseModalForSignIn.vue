@@ -48,11 +48,11 @@
         <div class="guide">
           <a
             target="_blank"
-            href="https://www.matataki.io/p/515"
+            href="https://meta.io/p/515"
           >EOS{{ $t('login-guide') }}</a>
           <a
             target="_blank"
-            href="https://www.matataki.io/p/516"
+            href="https://meta.io/p/516"
           >ONT{{ $t('login-guide') }}</a>
         </div>
       </div>
@@ -261,7 +261,7 @@ export default {
           ],
           doc: {
             title: '《如何使用EOS登录》',
-            href: 'https://www.matataki.io/p/515'
+            href: 'https://meta.io/p/515'
           }
         },
         {
@@ -289,7 +289,7 @@ export default {
           ],
           doc: {
             title: '《如何使用ONT登录》',
-            href: 'https://www.matataki.io/p/516'
+            href: 'https://meta.io/p/516'
           }
         }
       ]
