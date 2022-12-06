@@ -85,7 +85,7 @@
     "nuxt": "^2.15.7",
     "oauth": "^0.9.15",
     "ontology-dapi": "^0.4.9",
-    "qs": "^6.7.0",
+    "qs": "^6.10.3",
     "sass-resources-loader": "^2.0.1",
     "scatterjs-core": "^2.7.18",
     "scatterjs-plugin-eosjs": "^1.5.1",
