@@ -144,6 +144,7 @@
         </div>
         <div class="human-verify">
           <vue-hcaptcha
+            v-if="doINeedHCaptcha"
             :sitekey="hCaptchaSiteKey"
             :language="appLang"
             @verify="onCaptchaVerify"
@@ -279,6 +280,7 @@ export default {
           value: ''
         }
       ],
+      doINeedHCaptcha: false,
       hCaptchaData: {
         expired: false,
         token: null,
@@ -293,7 +295,8 @@ export default {
       return process.env.VUE_APP_HCAPTCHA_SITE_KEY
     },
     isCaptchaOK() {
-      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+      // return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+      return true
     },
     appLang() {
       return getCookie('language')

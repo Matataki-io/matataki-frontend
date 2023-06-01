@@ -218,7 +218,7 @@ export default Vue.extend({
       loadingPagesStatus: false,
       siteBuilding: false,
       siteAvailable: false,
-      doINeedHCaptcha: true,
+      doINeedHCaptcha: false,
       siteLink: '',
       repoName: '',
       githubUserName: '',
@@ -239,8 +239,10 @@ export default Vue.extend({
     },
     isCaptchaOK() {
       // 如果是白名单，则为 true
-      if (!this.doINeedHCaptcha) return true
-      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+      // if (!this.doINeedHCaptcha) return true
+      // return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+
+      return true
     },
     appLang() {
       return getCookie('language')
@@ -252,9 +254,9 @@ export default Vue.extend({
     this.getRepoName()
     this.getGithubId()
     this.isSiteLinkAvailable()
-    this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
-      this.doINeedHCaptcha = _doINeedHCaptcha
-    })
+    // this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
+    //   this.doINeedHCaptcha = _doINeedHCaptcha
+    // })
   },
   methods: {
     /** 获取设置项目 */
