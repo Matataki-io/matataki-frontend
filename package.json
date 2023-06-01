@@ -4,6 +4,9 @@
   "description": "matataki",
   "author": "matataki",
   "private": true,
+  "engines": {
+    "node": ">=14 <17"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.vue --ignore-path .eslintignore .",
     "precommit": "yarn lint",
