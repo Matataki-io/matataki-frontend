@@ -2,14 +2,12 @@
   <div>
     <div class="no-create-title">
       {{
-        activeStep === 3 ? $t('indie-blog.you-are-done') : $t('indie-blog.follow-this-steps-to-create-indie-blog')
+        activeStep === 3
+          ? $t("indie-blog.you-are-done")
+          : $t("indie-blog.follow-this-steps-to-create-indie-blog")
       }}
     </div>
-    <el-steps
-      align-center
-      :active="activeStep"
-      finish-status="success"
-    >
+    <el-steps align-center :active="activeStep" finish-status="success">
       <el-step
         v-for="(step, index) in steps"
         :key="index"
@@ -20,12 +18,12 @@
     <div v-if="activeStep === 0" class="list center">
       <a href="/setting/account">
         <el-button>
-          {{ $t('indie-blog.go-to-bind-github') }}
+          {{ $t("indie-blog.go-to-bind-github") }}
         </el-button>
       </a>
     </div>
     <div v-else-if="activeStep === 1" class="list">
-      <span class="list-title">{{ $t('indie-blog.repo-name') }}</span>
+      <span class="list-title">{{ $t("indie-blog.repo-name") }}</span>
       <el-input
         v-model="repoName"
         class="list-content"
@@ -33,8 +31,12 @@
         :prefix-icon="repoInputDisabled ? 'el-icon-loading' : ''"
       />
       <div class="w-10px" />
-      <el-button :disabled="repoInputDisabled || saving" :loading="saving" @click="modifyRepoNameAndContinue">
-        {{ $t('indie-blog.save-and-refresh') }}
+      <el-button
+        :disabled="repoInputDisabled || saving"
+        :loading="saving"
+        @click="modifyRepoNameAndContinue"
+      >
+        {{ $t("indie-blog.save-and-refresh") }}
       </el-button>
     </div>
     <div v-else-if="activeStep === 2">
@@ -53,14 +55,18 @@
         </div>
       </div>
       <div class="list center">
-        <el-button :disabled="!isCaptchaOK" :loading="creating" @click="createRepo">
-          {{ $t('indie-blog.complete') }}
+        <el-button
+          :disabled="!isCaptchaOK"
+          :loading="creating"
+          @click="createRepo"
+        >
+          {{ $t("indie-blog.complete") }}
         </el-button>
       </div>
     </div>
     <div v-else-if="activeStep === 3" class="list center">
       <el-button @click="$emit('refresh')">
-        {{ $t('indie-blog.go-settings') }}
+        {{ $t("indie-blog.go-settings") }}
       </el-button>
     </div>
   </div>
@@ -80,14 +86,14 @@ export default Vue.extend({
         'indie-blog.bind-github-account',
         'indie-blog.create-repo-for-indie-blog',
         'indie-blog.complete',
-        'indie-blog.begin-setting'
+        'indie-blog.begin-setting',
       ],
       activeStep: -1,
       repoInputDisabled: true,
       repoName: '',
       saving: false,
       creating: false,
-      doINeedHCaptcha: true,
+      doINeedHCaptcha: false,
       hCaptchaData: {
         expired: false,
         token: null,
@@ -102,8 +108,10 @@ export default Vue.extend({
     },
     isCaptchaOK() {
       // 如果是白名单，则为 true
-      if (!this.doINeedHCaptcha) return true
-      return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+      // if (!this.doINeedHCaptcha) return true
+      // return (!this.hCaptchaData.expired) && Boolean(this.hCaptchaData.token)
+
+      return true
     },
     appLang() {
       return getCookie('language')
@@ -111,9 +119,9 @@ export default Vue.extend({
   },
   mounted() {
     this.isBindOnGitHub()
-    this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
-      this.doINeedHCaptcha = _doINeedHCaptcha
-    })
+    // this.$API.doINeedHCaptcha().then((_doINeedHCaptcha) => {
+    //   this.doINeedHCaptcha = _doINeedHCaptcha;
+    // });
   },
   methods: {
     /**
@@ -135,29 +143,41 @@ export default Vue.extend({
     modifyRepoNameAndContinue() {
       const repo = /^([a-zA-Z0-9]+-?\.?)+$/
       if (!this.repoName.match(repo)) {
-        this.$alert(this.$t('indie-blog.repo-name-rule'), this.$t('indie-blog.repo-name-format-error'), {
-          confirmButtonText: this.$t('indie-blog.ok')
-        })
+        this.$alert(
+          this.$t('indie-blog.repo-name-rule'),
+          this.$t('indie-blog.repo-name-format-error'),
+          {
+            confirmButtonText: this.$t('indie-blog.ok'),
+          }
+        )
         return
       }
       this.saving = true
-      this.$API.modifyIndieBlogRepoName({repo: this.repoName}).then((res) => {
-        if (res) {
-          if (res.code === 0) {
-            this.activeStep = 2
+      this.$API
+        .modifyIndieBlogRepoName({ repo: this.repoName })
+        .then((res) => {
+          if (res) {
+            if (res.code === 0) {
+              this.activeStep = 2
+            } else {
+              this.$alert(
+                this.$t('indie-blog.repo-exists', { name: this.repoName }),
+                this.$t('indie-blog.save-repo-name-failed'),
+                {
+                  confirmButtonText: this.$t('indie-blog.ok'),
+                }
+              )
+            }
           } else {
-            this.$alert(this.$t('indie-blog.repo-exists', {name: this.repoName}), this.$t('indie-blog.save-repo-name-failed'), {
-              confirmButtonText: this.$t('indie-blog.ok')
-            })
+            this.$message.error(this.$t('indie-blog.save-repo-name-failed'))
           }
-        } else {
-          this.$message.error(this.$t('indie-blog.save-repo-name-failed'))
-        }
-      }).catch((e) => {
-        console.log(e)
-      }).finally(() => {
-        this.saving = false
-      })
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
+          this.saving = false
+        })
     },
     /**
      * 创建仓库，并当完成时进行初始化
@@ -168,7 +188,7 @@ export default Vue.extend({
         let res = await this.$API.createIndieBlogRepo(this.hCaptchaData)
         let repoCreated = false
         if (res) {
-          const {code} = res
+          const { code } = res
           if (code === undefined) {
             this.$message('服务器返回数据有问题')
           } else {
@@ -185,7 +205,7 @@ export default Vue.extend({
         if (repoCreated) {
           res = await this.$API.initialIndieBlogRepo()
           if (res) {
-            const {code} = res
+            const { code } = res
             if (code === undefined) {
               this.$message('服务器返回数据有问题')
             } else {
@@ -267,7 +287,7 @@ export default Vue.extend({
         error: null,
       }
     },
-  }
+  },
 })
 </script>
-<style lang="less" scoped src="../../pages/setting/indieblog.less"/>
+<style lang="less" scoped src="../../pages/setting/indieblog.less" />
