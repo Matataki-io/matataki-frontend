@@ -25,7 +25,7 @@ const options = {
 
 const _axios = axios.create({
   baseURL: process.env.VUE_APP_API,
-  timeout: 60 * 1000,
+  // timeout: 60 * 1000,
   headers: { 'Cache-Control': 'no-cache' },
   adapter: throttleAdapterEnhancer(
     cacheAdapterEnhancer(axios.defaults.adapter, options)

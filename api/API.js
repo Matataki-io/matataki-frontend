@@ -234,7 +234,7 @@ export default {
         indie_post,
         indie_sync_tags,
       },
-      timeout: 30000
+      // timeout: 30000
     })
   },
   /**
