@@ -41,7 +41,6 @@ import BackToTop from '@/components/BackToTop'
 import articleImport from '@/components/article_import/index.vue'
 import feedback from '@/components/feedback'
 import footer from '~/components/footer/index.vue'
-import { getCookie } from '@/utils/cookie'
 import TransferDialog from '@/components/TransferDialog'
 
 export default {

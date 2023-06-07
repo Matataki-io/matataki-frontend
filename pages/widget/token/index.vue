@@ -43,16 +43,6 @@
 <script>
 export default {
   layout: 'empty',
-  data() {
-    return {
-    }
-  },
-  computed: {
-    logo() {
-      return this.tokenData.token.logo ?  this.$ossProcess(this.tokenData.token.logo, { h: 120 }) : ''
-    }
-  
-  },
   async asyncData({ $axios, route }) {
     let id = route.query.id
     try {
@@ -65,6 +55,16 @@ export default {
     } catch(e) {
       return { tokenData: {} }
     }
+  },
+  data() {
+    return {
+    }
+  },
+  computed: {
+    logo() {
+      return this.tokenData.token.logo ?  this.$ossProcess(this.tokenData.token.logo, { h: 120 }) : ''
+    }
+  
   },
   created() {
     if (process.browser) {

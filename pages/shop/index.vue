@@ -104,7 +104,6 @@ import bannerMatataki from '@/components/banner/banner_matataki.vue'
 import recommendSlide from '~/components/recommendSlide/index.vue'
 
 export default {
-  transition: 'page',
   components: {
     recommendSlide,
     articleCard,
@@ -112,6 +111,35 @@ export default {
     buttonLoadMore,
     // banner,
     bannerMatataki
+  },
+  transition: 'page',
+  async asyncData({ $axios }) {
+    const initData = Object.create(null)
+    try {
+      // 推荐
+      const res = await recommend($axios, 2)
+      if (res.code === 0) initData.recommend = res.data
+      else initData.recommend = [{}, {}, {}, {}, {}]
+
+      // 内容列表
+      const params = {
+        channel: 2,
+        extra: 'short_content'
+      }
+      const resPagination = await paginationData($axios, 'homeTimeRanking', params)
+      if (resPagination.code === 0) initData.paginationData = resPagination.data.list
+      else initData.paginationData = []
+
+      // tags
+      const resTag = await getTags($axios, 'product')
+      if (resTag.code === 0) initData.tags = resTag.data
+      else initData.tags = []
+
+      return { initData }
+    } catch (error) {
+      console.log(error)
+      return { initData }
+    }
   },
   data() {
     return {
@@ -141,34 +169,7 @@ export default {
       tagCards: []
     }
   },
-  async asyncData({ $axios }) {
-    const initData = Object.create(null)
-    try {
-      // 推荐
-      const res = await recommend($axios, 2)
-      if (res.code === 0) initData.recommend = res.data
-      else initData.recommend = [{}, {}, {}, {}, {}]
 
-      // 内容列表
-      const params = {
-        channel: 2,
-        extra: 'short_content'
-      }
-      const resPagination = await paginationData($axios, 'homeTimeRanking', params)
-      if (resPagination.code === 0) initData.paginationData = resPagination.data.list
-      else initData.paginationData = []
-
-      // tags
-      const resTag = await getTags($axios, 'product')
-      if (resTag.code === 0) initData.tags = resTag.data
-      else initData.tags = []
-
-      return { initData }
-    } catch (error) {
-      console.log(error)
-      return { initData }
-    }
-  },
   created() {
     this.recommendList = this.initData.recommend
     this.articleCardData[0].articles = this.initData.paginationData

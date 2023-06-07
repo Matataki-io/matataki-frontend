@@ -84,9 +84,6 @@ import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   name: 'QRCodeDialog',
-  head: {
-    script: []
-  },
   components: {
     avatar,
     qrcode: VueQrcode
@@ -104,6 +101,9 @@ export default {
         backgroundImage: `url(${this.shareInfo.cover})`
       }
     }
+  },
+  head: {
+    script: []
   },
   computed: {
     downloadLink() {

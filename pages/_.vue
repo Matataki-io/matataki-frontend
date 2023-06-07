@@ -7,10 +7,10 @@
 <script>
 import noPage from '@/components/error/404.vue'
 export default {
-  layout: 'empty',
   components: {
     noPage
-  }
+  },
+  layout: 'empty'
 }
 </script>
 

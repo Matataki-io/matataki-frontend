@@ -28,13 +28,13 @@ import articleCardListNew from '@/components/article_card_list_new/index.vue'
 import buttonLoadMore from '@/components/button_load_more/index.vue'
 
 export default {
-  transition: 'page',
   components: {
     // articleCard,
     articleCardListNew,
     buttonLoadMore,
     tab
   },
+  transition: 'page',
   props: {
     idx: {
       type: Number,

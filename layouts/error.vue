@@ -10,12 +10,12 @@
 import unknownPage from '@/components/error/unknown.vue'
 import errorPage from '@/components/error/500.vue'
 export default {
-  layout: 'empty',
   name: 'Error',
   components: {
     unknownPage,
     errorPage
   },
+  layout: 'empty',
   // nuxt 默认提供模版
   // eslint-disable-next-line vue/require-prop-types
   props: ['error']

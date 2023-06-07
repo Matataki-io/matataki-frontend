@@ -107,8 +107,8 @@
 import { getCookie } from '@/utils/cookie'
 
 export default {
-  layout: 'empty',
   name: 'Email',
+  layout: 'empty',
   data() {
     const validateEmail = async (rule, value, callback) => {
       if (this.emailAddress.email === '') {

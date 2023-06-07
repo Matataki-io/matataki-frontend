@@ -21,9 +21,9 @@
 <script>
 
 export default {
-  transition: 'page',
   components: {
   },
+  transition: 'page',
   props: {
     // 卡片数据
     card: {

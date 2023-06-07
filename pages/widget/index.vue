@@ -25,18 +25,6 @@ import { filterOutHtmlTags } from '@/utils/xss'
 
 export default {
   layout: 'empty',
-  data() {
-    return {
-    }
-  },
-  computed: {
-    cover() {
-      return this.articleData.cover ?  this.$ossProcess(this.articleData.cover, { h: 120 }) : ''
-    },
-    content() {
-      return this.articleData.short_content ? filterOutHtmlTags(this.articleData.short_content) : '没有简介信息'
-    }
-  },
   async asyncData({ $axios, route }) {
     let id = route.query.id
     try {
@@ -48,6 +36,18 @@ export default {
       }
     } catch(e) {
       return { articleData: {} }
+    }
+  },
+  data() {
+    return {
+    }
+  },
+  computed: {
+    cover() {
+      return this.articleData.cover ?  this.$ossProcess(this.articleData.cover, { h: 120 }) : ''
+    },
+    content() {
+      return this.articleData.short_content ? filterOutHtmlTags(this.articleData.short_content) : '没有简介信息'
     }
   },
   created() {

@@ -60,25 +60,6 @@ export default {
     stepFive,
     stepSix
   },
-  data() {
-    return {
-      active: 0,
-      stepOneStatus: false,
-      stepTwoStatus: false,
-      stepThreeStatus: false,
-      stepTwoData: null, // 表单数据
-      stepThreeData: null, // 表单数据
-      loading: false
-    }
-  },
-  computed: {
-    ...mapGetters(['currentUserInfo', 'isLogined']),
-  },
-  watch: {
-    isLogined() {
-      this.getTokenUserData()
-    }
-  },
   async asyncData({ $axios, req }) {
     try {
 
@@ -111,6 +92,26 @@ export default {
       return { userMinetokenApplication: {} }
     }
   },
+  data() {
+    return {
+      active: 0,
+      stepOneStatus: false,
+      stepTwoStatus: false,
+      stepThreeStatus: false,
+      stepTwoData: null, // 表单数据
+      stepThreeData: null, // 表单数据
+      loading: false
+    }
+  },
+  computed: {
+    ...mapGetters(['currentUserInfo', 'isLogined']),
+  },
+  watch: {
+    isLogined() {
+      this.getTokenUserData()
+    }
+  },
+
   created() {
     if (process.browser) {
 

@@ -79,9 +79,6 @@ import { mapGetters } from 'vuex'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
-  head: {
-    script: []
-  },
   components: {
     qrcode: VueQrcode
   },
@@ -89,6 +86,9 @@ export default {
   },
   data() {
     return {}
+  },
+  head: {
+    script: []
   },
   computed: {
     ...mapGetters(['currentUserInfo']),

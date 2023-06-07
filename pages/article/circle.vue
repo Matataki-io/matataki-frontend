@@ -38,12 +38,12 @@ import fanCard from '@/components/fan_card/index.vue'
 import { getCookie } from '@/utils/cookie'
 
 export default {
-  transition: 'page',
   components: {
     fanCard,
     buttonLoadMore,
     tab
   },
+  transition: 'page',
   props: {
     idx: {
       type: Number,

@@ -66,14 +66,6 @@ if (process.client) {
 import markdownView from '@/components/markdown_view'
 
 export default {
-  head() {
-    return {
-      title: '瞬MATATAKI - 预览',
-      script: [
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
-      ]
-    }
-  },
   components: {
     markdownView
   },
@@ -81,6 +73,14 @@ export default {
     return {
       article: Object.create(null),
       draftTime: 0
+    }
+  },
+  head() {
+    return {
+      title: '瞬MATATAKI - 预览',
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
+      ]
     }
   },
   computed: {

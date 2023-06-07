@@ -172,6 +172,76 @@ import bereference from '@/components/share_page/bereference'
 import inputDialog from '@/components/dynamic/input_dialog'
 
 export default {
+  components: {
+    shareHeader,
+    shareMain,
+    shareFooter,
+    // reference,
+    socialShare,
+    wechat,
+    // quoteReference,
+    // quoteBereference,
+    shareImage,
+    photoAlbum,
+    references,
+    bereference,
+    inputDialog,
+  },
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToken = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToken = token ? token[0] : ''
+    }
+    if (process.browser) {
+      accessToken = getCookie('ACCESS_TOKEN')
+    }
+
+    const res = await $axios({
+      url: `/p/${route.params.id}`,
+      methods: 'get',
+      headers: { 'x-access-token': accessToken }
+    })
+
+    if (res.code === 0) {
+      return { content: res.data }
+    } else {
+      console.error(res.message)
+    }
+  },
+  data() {
+    return {
+      offSlidebar: 0, // time components watch off slidebar
+      loading: false,
+      footerLoading: false, // footer loading
+      shareContent: '', // 分享内容
+      content: Object.create(null), // 文章信息
+      userInfo: Object.create(null), // 用户信息
+      currentProfile: Object.create(null), // 当前相关信息
+      shareDialogVisible: false, // 分享 dialog
+      // showQuote: false, // refernces
+      nowTime: 0, // refernces
+      refernceTotal: 0, // refernces slidebar
+      berefernceTotal: 0, // refernces slidebar
+      shareDoneCard: false, // share card
+      shareCard: { // share card data
+        content: '',
+        avatarSrc: '',
+        username: '',
+        reference: [],
+        berefernce: [],
+        url: process.env.VUE_APP_URL
+      },
+      saveImg: '', // share img src
+      createShareLoading: false,
+      saveLoading: false, // 保存图片loading
+      showInputDialog: false,
+      inputDialogPreset: null,
+    }
+  },
   head() {
     const getCover = () => {
       if (this.content.media && this.content.media.length) {
@@ -223,51 +293,6 @@ export default {
       ]
     }
   },
-  components: {
-    shareHeader,
-    shareMain,
-    shareFooter,
-    // reference,
-    socialShare,
-    wechat,
-    // quoteReference,
-    // quoteBereference,
-    shareImage,
-    photoAlbum,
-    references,
-    bereference,
-    inputDialog,
-  },
-  data() {
-    return {
-      offSlidebar: 0, // time components watch off slidebar
-      loading: false,
-      footerLoading: false, // footer loading
-      shareContent: '', // 分享内容
-      content: Object.create(null), // 文章信息
-      userInfo: Object.create(null), // 用户信息
-      currentProfile: Object.create(null), // 当前相关信息
-      shareDialogVisible: false, // 分享 dialog
-      // showQuote: false, // refernces
-      nowTime: 0, // refernces
-      refernceTotal: 0, // refernces slidebar
-      berefernceTotal: 0, // refernces slidebar
-      shareDoneCard: false, // share card
-      shareCard: { // share card data
-        content: '',
-        avatarSrc: '',
-        username: '',
-        reference: [],
-        berefernce: [],
-        url: process.env.VUE_APP_URL
-      },
-      saveImg: '', // share img src
-      createShareLoading: false,
-      saveLoading: false, // 保存图片loading
-      showInputDialog: false,
-      inputDialogPreset: null,
-    }
-  },
   computed: {
     ...mapGetters(['isLogined']),
     dynamicTimeISO() {
@@ -308,31 +333,7 @@ export default {
       }
     }
   },
-  async asyncData({ $axios, route, req }) {
-    // 获取cookie token
-    let accessToken = ''
-    // 请检查您是否在服务器端
-    if (process.server) {
-      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
-      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToken = token ? token[0] : ''
-    }
-    if (process.browser) {
-      accessToken = getCookie('ACCESS_TOKEN')
-    }
 
-    const res = await $axios({
-      url: `/p/${route.params.id}`,
-      methods: 'get',
-      headers: { 'x-access-token': accessToken }
-    })
-
-    if (res.code === 0) {
-      return { content: res.data }
-    } else {
-      console.error(res.message)
-    }
-  },
   created() {
     // 无id
     const { id = '' } = this.$route.params

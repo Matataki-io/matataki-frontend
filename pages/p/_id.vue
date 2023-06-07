@@ -310,49 +310,6 @@ markdownItRender.use(mkItKatex)
 markdownItRender.use(mkItFootnote)
 
 export default {
-  head() {
-    const metaArr = []
-    if (this.article.tags.length) {
-      const tags = this.article.tags.map(tag => tag.name).join()
-      metaArr.push({ hid: 'keywords', name: 'keywords', content: `${tags},${this.article.title}` })
-    } else {
-      // If article no tags use title only
-      metaArr.push({ hid: 'keywords', name: 'keywords', content: this.article.title })
-    }
-    return {
-      title: this.article.title,
-      meta: [
-        ...metaArr,
-        { hid: 'description', name: 'description', content: this.article.short_content },
-        /* <!--  Meta for Twitter Card --> */
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
-        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
-        /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
-        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.articleTimeISO },
-        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
-        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
-        /* end */
-      ],
-      link: [
-        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
-      ],
-      script: [
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
-        // {
-        //   // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
-        //   src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
-        // }
-      ]
-    }
-  },
   components: {
     CommentList,
     InvestModal,
@@ -377,6 +334,90 @@ export default {
     tokenCd,
     markdownView,
     addFav
+  },
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    let data = {}
+
+    // 文章ID
+    const id = route.params.id
+    if (!id) return data
+
+    // 获取数据
+    let post = {}
+    try {
+      post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
+      console.log('post', post)
+      if (post.code !== 0) throw new Error(post.message)
+    } catch (e) {
+      console.log('get article data error', e.toString())
+      return data
+    }
+    // 解藕文章数据 ipfs
+    let { p: info, ipfs } = post.data
+
+    // 判断是否为付费阅读文章
+    const isProduct = info.channel_id === 2
+    if (((info.tokens && info.tokens.length !== 0) || (info.prices && info.prices.length > 0)) && !isProduct) {
+      data = {
+        article: info,
+        post: {
+          content: info.short_content
+        }
+      }
+    } else {
+      if (ipfs.code === 0) {
+        data = {
+          article: info,
+          post: ipfs.data
+        }
+      } else {
+        data = {
+          article: info,
+          post: {
+            content: info.short_content
+          }
+        }
+      }
+    }
+
+    // wx share
+    let userAgent = req && req.headers['user-agent'].toLowerCase()
+    const isWeixin = () => /micromessenger/.test(userAgent)
+    // 在微信内才请求分享 避免造成不必要的请求
+    if (isWeixin()) {
+      console.log('is wechat env', req.headers['user-agent'].toLowerCase())
+
+      let defaultLink = ''
+      if (process.server) {
+        defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
+      } else if (process.browser) {
+        defaultLink = window.location.href
+      } else {
+        defaultLink = ''
+      }
+
+      if (defaultLink) {
+        try {
+          const res = await wxShare($axios, defaultLink)
+          if (res.code === 0) {
+            data.wxShareData = res.data
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    }
+    // wx share end
+
+    return data
   },
   data() {
     return {
@@ -475,6 +516,49 @@ export default {
       payTokenBalance: 0,
       addFavModal: false, // 添加到收藏夹
       favRelatedList: [], // 收藏夹列表关系
+    }
+  },
+  head() {
+    const metaArr = []
+    if (this.article.tags.length) {
+      const tags = this.article.tags.map(tag => tag.name).join()
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: `${tags},${this.article.title}` })
+    } else {
+      // If article no tags use title only
+      metaArr.push({ hid: 'keywords', name: 'keywords', content: this.article.title })
+    }
+    return {
+      title: this.article.title,
+      meta: [
+        ...metaArr,
+        { hid: 'description', name: 'description', content: this.article.short_content },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: this.article.title },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: this.article.short_content },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.article.cover) },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: this.article.title },
+        { hid: 'article:published_time', name: 'article:published_time', property: 'article:published_time', content: this.articleTimeISO },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/p/${this.article.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.article.cover) },
+        { hid: 'og:description', name: 'description', property: 'og:description', content: this.article.short_content }
+        /* end */
+      ],
+      link: [
+        // { rel: 'stylesheet', type: 'text/css', href: '/@matataki/editor/index.css' }, // editor css
+      ],
+      script: [
+        { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' }
+        // {
+        //   // 因为 editor 组件的 cdn 加入比较晚, 导致下方的数学公式加载不出来 手动引入 cdn
+        //   src: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js'
+        // }
+      ]
     }
   },
 
@@ -672,90 +756,7 @@ export default {
     }
   },
 
-  async asyncData({ $axios, route, req }) {
-    // 获取cookie token
-    let accessToekn = ''
-    // 请检查您是否在服务器端
-    if (process.server) {
-      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
-      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
-    }
-    let data = {}
 
-    // 文章ID
-    const id = route.params.id
-    if (!id) return data
-
-    // 获取数据
-    let post = {}
-    try {
-      post = await $axios({ url: `/pInfo/${id}`, methods: 'get', headers: { 'x-access-token': accessToekn }})
-      console.log('post', post)
-      if (post.code !== 0) throw new Error(post.message)
-    } catch (e) {
-      console.log('get article data error', e.toString())
-      return data
-    }
-    // 解藕文章数据 ipfs
-    let { p: info, ipfs } = post.data
-
-    // 判断是否为付费阅读文章
-    const isProduct = info.channel_id === 2
-    if (((info.tokens && info.tokens.length !== 0) || (info.prices && info.prices.length > 0)) && !isProduct) {
-      data = {
-        article: info,
-        post: {
-          content: info.short_content
-        }
-      }
-    } else {
-      if (ipfs.code === 0) {
-        data = {
-          article: info,
-          post: ipfs.data
-        }
-      } else {
-        data = {
-          article: info,
-          post: {
-            content: info.short_content
-          }
-        }
-      }
-    }
-
-    // wx share
-    let userAgent = req && req.headers['user-agent'].toLowerCase()
-    const isWeixin = () => /micromessenger/.test(userAgent)
-    // 在微信内才请求分享 避免造成不必要的请求
-    if (isWeixin()) {
-      console.log('is wechat env', req.headers['user-agent'].toLowerCase())
-
-      let defaultLink = ''
-      if (process.server) {
-        defaultLink = `${process.env.VUE_APP_WX_URL}${route.fullPath}`
-      } else if (process.browser) {
-        defaultLink = window.location.href
-      } else {
-        defaultLink = ''
-      }
-
-      if (defaultLink) {
-        try {
-          const res = await wxShare($axios, defaultLink)
-          if (res.code === 0) {
-            data.wxShareData = res.data
-          }
-        } catch (e) {
-          console.log(e)
-        }
-      }
-    }
-    // wx share end
-
-    return data
-  },
   created() {
     if (process.browser) {
       this.setWxShare()

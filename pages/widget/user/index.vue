@@ -37,16 +37,6 @@
 <script>
 export default {
   layout: 'empty',
-  data() {
-    return {
-    }
-  },
-  computed: {
-    avatar() {
-      return this.userData.avatar ?  this.$ossProcess(this.userData.avatar, { h: 120 }) : ''
-    }
-  
-  },
   async asyncData({ $axios, route }) {
     let id = route.query.id
     try {
@@ -59,6 +49,16 @@ export default {
     } catch(e) {
       return { userData: {} }
     }
+  },
+  data() {
+    return {
+    }
+  },
+  computed: {
+    avatar() {
+      return this.userData.avatar ?  this.$ossProcess(this.userData.avatar, { h: 120 }) : ''
+    }
+  
   },
   created() {
     if (process.browser) {

@@ -22,6 +22,33 @@ export default {
     userBilibiliTimeline,
     userMastodonTimeline
   },
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    const res = await $axios({
+      url: `/user/${route.params.id}`,
+      methods: 'get',
+      headers: { 'x-access-token': accessToekn }
+    })
+    if (res.code === 0) {
+      return {
+        userData: res.data || Object.create(null)
+      }
+    } else {
+      console.error(res.message)
+    }
+  },
+  data() {
+    return {
+      userData: Object.create(null)
+    }
+  },
   head() {
     return {
       title: `${this.userData.nickname || this.userData.username}的动态时间线`,
@@ -45,36 +72,9 @@ export default {
       ],
     }
   },
-  data() {
-    return {
-      userData: Object.create(null)
-    }
-  },
   computed: {
     tab () {
       return this.$route.query.tab || 'twitter'
-    }
-  },
-  async asyncData({ $axios, route, req }) {
-    // 获取cookie token
-    let accessToekn = ''
-    // 请检查您是否在服务器端
-    if (process.server) {
-      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
-      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
-    }
-    const res = await $axios({
-      url: `/user/${route.params.id}`,
-      methods: 'get',
-      headers: { 'x-access-token': accessToekn }
-    })
-    if (res.code === 0) {
-      return {
-        userData: res.data || Object.create(null)
-      }
-    } else {
-      console.error(res.message)
     }
   },
   created() {

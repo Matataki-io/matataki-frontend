@@ -148,6 +148,47 @@ export default {
     createFav,
     editFav,
   },
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    const res = await $axios({
+      url: `/user/${route.params.id}`,
+      methods: 'get',
+      headers: { 'x-access-token': accessToekn },
+    })
+    if (res.code === 0) {
+      return {
+        userData: res.data || Object.create(null),
+      }
+    } else {
+      console.error(res.message)
+    }
+  },
+  data() {
+    return {
+      createFavModal: false, // 创建收藏夹
+      editFavModal: false, // 编辑收藏夹
+      editFavPropsFrom: Object.create(null), // 编辑收藏夹数据
+      favListData: [],
+      favPostData: Object.create(null),
+      pull: {
+        params: {},
+        apiUrl: 'favPost',
+        list: [],
+        loading: false,
+        currentPage: 1,
+        total: 0,
+        reload: 0,
+      },
+      favToggle: false,
+    }
+  },
   head() {
     return {
       title: `${this.userData.nickname || this.userData.username}的个人主页`,
@@ -239,49 +280,8 @@ export default {
       ],
     }
   },
-  data() {
-    return {
-      createFavModal: false, // 创建收藏夹
-      editFavModal: false, // 编辑收藏夹
-      editFavPropsFrom: Object.create(null), // 编辑收藏夹数据
-      favListData: [],
-      favPostData: Object.create(null),
-      pull: {
-        params: {},
-        apiUrl: 'favPost',
-        list: [],
-        loading: false,
-        currentPage: 1,
-        total: 0,
-        reload: 0,
-      },
-      favToggle: false,
-    }
-  },
   computed: {
     ...mapGetters(['isMe']),
-  },
-  async asyncData({ $axios, route, req }) {
-    // 获取cookie token
-    let accessToekn = ''
-    // 请检查您是否在服务器端
-    if (process.server) {
-      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
-      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
-    }
-    const res = await $axios({
-      url: `/user/${route.params.id}`,
-      methods: 'get',
-      headers: { 'x-access-token': accessToekn },
-    })
-    if (res.code === 0) {
-      return {
-        userData: res.data || Object.create(null),
-      }
-    } else {
-      console.error(res.message)
-    }
   },
   created() {
     if (process.browser) {

@@ -33,37 +33,6 @@ export default {
     tokenLiquidity,
     tokenLiquidityDetail
   },
-  head() {
-    return {
-      title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
-      meta: [
-        { hid: 'description', name: 'description', content: `${this.minetokenToken.brief}` || `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-        /* <!--  Meta for Twitter Card --> */
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: `${this.minetokenToken.brief}` || `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/token/${this.$route.params.id}` },
-        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.minetokenToken.logo) },
-        /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
-        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/token/${this.$route.params.id}` },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.minetokenToken.logo) },
-        { hid: 'og:description', name: 'description', property: 'og:description', content: `${this.minetokenToken.brief}` || `${this.minetokenToken.symbol}-${this.minetokenToken.name}` }
-        /* end */
-      ],
-    }
-  },
-  data() {
-    return {
-      tabPage: Number(this.$route.query.tab) || 0,
-      minetokenToken: Object.create(null),
-      minetokenUser: Object.create(null),
-      minetokenExchange: Object.create(null)
-    }
-  },
   async asyncData({ $axios, route, req }) {
     // 获取cookie token
     let accessToekn = ''
@@ -87,6 +56,37 @@ export default {
       }
     } else {
       console.error(res.message)
+    }
+  },
+  data() {
+    return {
+      tabPage: Number(this.$route.query.tab) || 0,
+      minetokenToken: Object.create(null),
+      minetokenUser: Object.create(null),
+      minetokenExchange: Object.create(null)
+    }
+  },
+  head() {
+    return {
+      title: `${this.minetokenToken.symbol}-${this.minetokenToken.name}`,
+      meta: [
+        { hid: 'description', name: 'description', content: `${this.minetokenToken.brief}` || `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: `${this.minetokenToken.brief}` || `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/token/${this.$route.params.id}` },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.minetokenToken.logo) },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.minetokenToken.symbol}-${this.minetokenToken.name}` },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/token/${this.$route.params.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.minetokenToken.logo) },
+        { hid: 'og:description', name: 'description', property: 'og:description', content: `${this.minetokenToken.brief}` || `${this.minetokenToken.symbol}-${this.minetokenToken.name}` }
+        /* end */
+      ],
     }
   },
   created() {

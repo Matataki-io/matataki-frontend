@@ -795,6 +795,19 @@ export default {
     statement,
     tagModule,
   },
+  beforeRouteLeave(to, from, next) {
+    // 只有编辑页面使用
+    if (this.$route.params.type === 'edit') {
+      if (this.changed()) return next()
+      if (window.confirm(this.$t('publish.modalTextText'))) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  },
   layout: 'empty',
   data() {
     return {
@@ -1195,19 +1208,6 @@ export default {
     this.getAllTokens()
     // this.setToolBar()
     this.getIndieBlogStatus()
-  },
-  beforeRouteLeave(to, from, next) {
-    // 只有编辑页面使用
-    if (this.$route.params.type === 'edit') {
-      if (this.changed()) return next()
-      if (window.confirm(this.$t('publish.modalTextText'))) {
-        next()
-      } else {
-        next(false)
-      }
-    } else {
-      next()
-    }
   },
   beforeMount() {
     window.addEventListener('beforeunload', this.unload)

@@ -10,8 +10,8 @@
 import { mapActions } from 'vuex'
 
 export default {
-  layout: 'empty',
   name: 'LoginPage',
+  layout: 'empty',
   data() {
     return {
       loading: true

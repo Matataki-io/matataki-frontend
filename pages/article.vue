@@ -34,13 +34,13 @@ import popularArticles from '@/components/popularArticles/index.vue'
 import tagsHot from '@/components/tags/tags_hot.vue'
 
 export default {
-  transition: 'page',
   components: {
     // bannerMatataki,
     swipe,
     popularArticles,
     tagsHot
   },
+  transition: 'page',
   data() {
     return {
       idx: 0,

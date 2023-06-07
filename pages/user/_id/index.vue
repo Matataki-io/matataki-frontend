@@ -6,7 +6,7 @@
       v-loading="loading"
       class="wrapper"
     >
-      <div v-if="isMe(this.$route.params.id)" class="view-all">
+      <div v-if="isMe($route.params.id)" class="view-all">
         <el-checkbox v-model="showAll" @change="handleShowAllChange">
           {{ $t('show-all-articles') }}
         </el-checkbox>
@@ -48,27 +48,26 @@ export default {
     userPagination,
     articleCardListNew
   },
-  head() {
-    return {
-      title: `${this.userData.nickname || this.userData.username}的个人主页`,
-      meta: [
-        { hid: 'description', name: 'description', content: `${this.userData.introduction}` },
-        /* <!--  Meta for Twitter Card --> */
-        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
-        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
-        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: `${this.userData.nickname || this.userData.username}的个人主页` },
-        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: `${this.userData.introduction}` },
-        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/user/${this.$route.params.id}` },
-        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.userData.avatar) },
-        /* <!--  Meta for OpenGraph --> */
-        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
-        { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.userData.nickname || this.userData.username}的个人主页` },
-        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/user/${this.$route.params.id}` },
-        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.userData.avatar) },
-        { hid: 'og:description', name: 'description', property: 'og:description', content: `${this.userData.introduction}` }
-        /* end */
-      ],
+  async asyncData({ $axios, route, req }) {
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    const res = await $axios({
+      url: `/user/${route.params.id}`,
+      methods: 'get',
+      headers: { 'x-access-token': accessToekn }
+    })
+    if (res.code === 0) {
+      return {
+        userData: res.data || Object.create(null)
+      }
+    } else {
+      console.error(res.message)
     }
   },
   data() {
@@ -92,31 +91,33 @@ export default {
       showAll: false
     }
   },
+  head() {
+    return {
+      title: `${this.userData.nickname || this.userData.username}的个人主页`,
+      meta: [
+        { hid: 'description', name: 'description', content: `${this.userData.introduction}` },
+        /* <!--  Meta for Twitter Card --> */
+        { hid: 'twitter:card', name: 'twitter:card', property: 'twitter:card', content: 'summary' },
+        { hid: 'twitter:site', name: 'twitter:site', property: 'twitter:site', content: '@Andoromeda' },
+        { hid: 'twitter:title', name: 'twitter:title', property: 'twitter:title', content: `${this.userData.nickname || this.userData.username}的个人主页` },
+        { hid: 'twitter:description', name: 'description', property: 'twitter:description', content: `${this.userData.introduction}` },
+        { hid: 'twitter:url', name: 'twitter:url', property: 'twitter:url', content: `${process.env.VUE_APP_PC_URL}/user/${this.$route.params.id}` },
+        { hid: 'twitter:image', name: 'twitter:image', property: 'twitter:image', content: this.$API.getImg(this.userData.avatar) },
+        /* <!--  Meta for OpenGraph --> */
+        { hid: 'og:site_name', name: 'og:site_name', property: 'og:site_name', content: '瞬MATATAKI' },
+        { hid: 'og:title', name: 'og:title', property: 'og:title', content: `${this.userData.nickname || this.userData.username}的个人主页` },
+        { hid: 'og:type', name: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:url', name: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_PC_URL}/user/${this.$route.params.id}` },
+        { hid: 'og:image', name: 'og:image', property: 'og:image', content: this.$API.getImg(this.userData.avatar) },
+        { hid: 'og:description', name: 'description', property: 'og:description', content: `${this.userData.introduction}` }
+        /* end */
+      ],
+    }
+  },
   computed: {
     ...mapGetters(['isMe']),
   },
-  async asyncData({ $axios, route, req }) {
-    // 获取cookie token
-    let accessToekn = ''
-    // 请检查您是否在服务器端
-    if (process.server) {
-      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
-      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
-    }
-    const res = await $axios({
-      url: `/user/${route.params.id}`,
-      methods: 'get',
-      headers: { 'x-access-token': accessToekn }
-    })
-    if (res.code === 0) {
-      return {
-        userData: res.data || Object.create(null)
-      }
-    } else {
-      console.error(res.message)
-    }
-  },
+
   created() {
     if (process.browser) {
       this.setWeChatShare()

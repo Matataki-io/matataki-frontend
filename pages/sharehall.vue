@@ -206,6 +206,32 @@ export default {
     // shareCardList
     inputContent
   },
+  async beforeRouteLeave(to, from, next) {
+    if (this.shareLinkList.length === 0) {
+      next()
+    } else {
+      try {
+        await this.$confirm('您有分享未发布，是否发布了再离开？', '提示', {
+          confirmButtonText: '去发布',
+          cancelButtonText: '不要了',
+          type: 'warning',
+          showClose: false,
+          closeOnClickModal: false,
+          customClass: 'message-box__mobile'
+        })
+        this.$refs.shareContent.focus()
+        next(false)
+      } catch (error) {
+        if (process.browser) {
+          window.sessionStorage.removeItem('shareLink')
+          window.sessionStorage.removeItem('shareRef')
+          window.sessionStorage.removeItem('articleRef')
+        }
+        await this.$utils.sleep(100)
+        next()
+      }
+    }
+  },
   data() {
     const httpTest = (rule, value, callback) => {
       if (new RegExp('[a-zA-z]+://[^\\s]*').test(this.urlForm.url)) {
@@ -319,32 +345,7 @@ export default {
       }
     }
   },
-  async beforeRouteLeave(to, from, next) {
-    if (this.shareLinkList.length === 0) {
-      next()
-    } else {
-      try {
-        await this.$confirm('您有分享未发布，是否发布了再离开？', '提示', {
-          confirmButtonText: '去发布',
-          cancelButtonText: '不要了',
-          type: 'warning',
-          showClose: false,
-          closeOnClickModal: false,
-          customClass: 'message-box__mobile'
-        })
-        this.$refs.shareContent.focus()
-        next(false)
-      } catch (error) {
-        if (process.browser) {
-          window.sessionStorage.removeItem('shareLink')
-          window.sessionStorage.removeItem('shareRef')
-          window.sessionStorage.removeItem('articleRef')
-        }
-        await this.$utils.sleep(100)
-        next()
-      }
-    }
-  },
+
   created() {
     this.$nextTick(() => {
       this.initShareLink()
