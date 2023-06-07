@@ -45,18 +45,53 @@ import { extractChar } from '@/utils/reg'
 import { getCookie } from '@/utils/cookie'
 
 export default {
-  transition: 'page',
   components: {
     // articleCard,
     articleCardListNew,
     buttonLoadMore,
     tab
   },
+  transition: 'page',
   props: {
     idx: {
       type: Number,
       default: 0
     }
+  },
+  async asyncData({ $axios, req }) {
+    let articleList = []
+    // 获取cookie token
+    let accessToekn = ''
+    // 请检查您是否在服务器端
+    if (process.server) {
+      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
+      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
+      accessToekn = token ? token[0] : ''
+    }
+    if (process.browser) {
+      accessToekn = getCookie('ACCESS_TOKEN')
+    }
+
+    try {
+      // 内容列表
+      const params = {
+        channel: 1,
+        extra: 'short_content'
+      }
+
+      const resPagination = await $axios({
+        url: paginationUrl['homeScoreRanking'],
+        methods: 'get',
+        params,
+        headers: { 'x-access-token': accessToekn }
+      })
+      if (resPagination.code === 0) articleList = resPagination.data.list
+      else throw new Error(resPagination.message)
+    } catch (error) {
+      console.log('error', error)
+    }
+
+    return { articleList }
   },
   data() {
     return {
@@ -109,41 +144,6 @@ export default {
       this.articleCardData[value].articles = []
       this.articleCardData[value].autoRequestTime = Date.now()
     }
-  },
-  async asyncData({ $axios, req }) {
-    let articleList = []
-    // 获取cookie token
-    let accessToekn = ''
-    // 请检查您是否在服务器端
-    if (process.server) {
-      const cookie = req && req.headers.cookie ? req.headers.cookie : ''
-      const token = extractChar(cookie, 'ACCESS_TOKEN=', ';')
-      accessToekn = token ? token[0] : ''
-    }
-    if (process.browser) {
-      accessToekn = getCookie('ACCESS_TOKEN')
-    }
-
-    try {
-      // 内容列表
-      const params = {
-        channel: 1,
-        extra: 'short_content'
-      }
-
-      const resPagination = await $axios({
-        url: paginationUrl['homeScoreRanking'],
-        methods: 'get',
-        params,
-        headers: { 'x-access-token': accessToekn }
-      })
-      if (resPagination.code === 0) articleList = resPagination.data.list
-      else throw new Error(resPagination.message)
-    } catch (error) {
-      console.log('error', error)
-    }
-
-    return { articleList }
   },
   created() {
     if (this.articleList && this.articleList.length !== 0) {

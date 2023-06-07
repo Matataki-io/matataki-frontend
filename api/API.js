@@ -1,4 +1,3 @@
-/* eslint-disable */
 import qs from 'qs'
 import request from '@/utils/request'
 import utils from '@/utils/utils'
@@ -6,7 +5,6 @@ import { getCookie } from '@/utils/cookie'
 
 import endpoint from './endpoint'
 import { paginationUrl } from './pagination_url'
-import { replaceStr } from '@/utils/reg'
 
 export default {
   /**
@@ -19,7 +17,7 @@ export default {
     if (referral) Object.assign(params, { referral: referral })
 
     return request.post(
-      `/login/auth`,
+      '/login/auth',
       params
     )
   },
@@ -106,16 +104,16 @@ export default {
         noLoading: true,
         params,
       })
-      }
+    }
   },
   async getCaptcha(email, { geetest_challenge, geetest_validate, geetest_seccode }) {
-    return request.post(`/login/captcha`, {
+    return request.post('/login/captcha', {
       geetest_challenge,
       geetest_validate,
       geetest_seccode
     }, { noLoading: true, params: { email } })
 
-    return request.get('/login/captcha', { params: {email}, noLoading: true })
+    // return request.get('/login/captcha', { params: {email}, noLoading: true })
   },
   async verifyEmail(email) {
     return request({
@@ -140,13 +138,13 @@ export default {
     })
     return request({
       method: 'post',
-      url: `/post/ipfs`,
+      url: '/post/ipfs',
       data: stringifyData,
       config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     })
   },
   async myPoints(params) {
-    return request.get(`/user/points`, { params })
+    return request.get('/user/points', { params })
   },
   // 增加阅读量
   addReadAmount({ articlehash }) {
@@ -410,7 +408,7 @@ export default {
     return request({
       url:`/gt/register-slide?t=${(new Date()).getTime()}`,
       method: 'get',
-      dataType: "json",
+      dataType: 'json',
     })
   },
   getWeixinOpenId(code) {
@@ -481,17 +479,17 @@ export default {
   * @param {Object} data token资源
   * @param {Number} tokenId token id
   */
-minetokenResources(data, tokenId) {
+  minetokenResources(data, tokenId) {
     return request({
       method: 'PUT',
       url: `/minetoken/${tokenId}/resources`,
       data: data
     })
   },
-/**
+  /**
  * 自己 Token resources 信息
  */
-minetokenGetResources(tokenId) {
+  minetokenGetResources(tokenId) {
     return request({
       method: 'GET',
       url: `/minetoken/${tokenId}/resources`,
@@ -815,7 +813,7 @@ minetokenGetResources(tokenId) {
 
   // 根据id获取个人资料中的社交账号和相关网站
   getUserLinks({id}) {
-    return request.get(`/user/${id}/links`, { cache: true });
+    return request.get(`/user/${id}/links`, { cache: true })
   },
   // 设置用户links
   setUserLinks({websites, socialAccounts}) {
@@ -879,7 +877,7 @@ minetokenGetResources(tokenId) {
   },
   // 获取收藏文章
   getBookmarks(orderType = 1) {
-    return request.get(`/user/bookmarks`, {
+    return request.get('/user/bookmarks', {
       params: {
         order: orderType
       }
@@ -917,7 +915,7 @@ minetokenGetResources(tokenId) {
   async resetPassword({ email, password, captcha }) {
     return request({
       method: 'POST',
-      url: `/login/resetPassword`,
+      url: '/login/resetPassword',
       data: {
         email,
         password,
@@ -1025,10 +1023,10 @@ minetokenGetResources(tokenId) {
     return request.get(`/search/db/${type}`, { params })
   },
   // 搜索 db tag
-  searchDbTag(params) { return request.get(`/search/db/tag`, { params }) },
+  searchDbTag(params) { return request.get('/search/db/tag', { params }) },
   // 常用候选列表
   historyUser(params) {
-    return request.get(`/history/user`, { params })
+    return request.get('/history/user', { params })
   },
   // 文章转让
   transferOwner(from, articleId, uid) {
@@ -1066,9 +1064,9 @@ minetokenGetResources(tokenId) {
     })
   },
   // 获取某篇文章的标签
-  tagsById(params) { return request.get(`/tags/get_by_post`,  { params, cache: true }) },
+  tagsById(params) { return request.get('/tags/get_by_post',  { params, cache: true }) },
   // 获取热门标签
-  tagsHotest(params) { return request.get(`/tags/hotest`,  { params, cache: true }) },
+  tagsHotest(params) { return request.get('/tags/hotest',  { params, cache: true }) },
   // 热门标签 筛选对象为最近14天内应用次数最多的标签
   hotestTags(params) { return request.get('/tags/hotestTags',  { params, cache: true }) },
   // 删除文章
@@ -1104,7 +1102,7 @@ minetokenGetResources(tokenId) {
   previewDraftTime(id) { return request.get(`/previewTime/${id}`)},
 
   getNumArticles(id) {
-    return request.get(`posts/timeRanking`, {
+    return request.get('posts/timeRanking', {
       params:{
         author: id,
         page: 1,
@@ -1116,7 +1114,7 @@ minetokenGetResources(tokenId) {
   notifyMarkRead(notifyIds) {
     return request({
       method: 'put',
-      url: `/notify/event`,
+      url: '/notify/event',
       data: { ids: notifyIds }
     })
   },
@@ -1124,12 +1122,12 @@ minetokenGetResources(tokenId) {
   notifyMarkReadAll() {
     return request({
       method: 'put',
-      url: `/notify/event/all`
+      url: '/notify/event/all'
     })
   },
 
   getNotifyUnreadQuantity() {
-    return request.get(`/notify/event/quantity`)
+    return request.get('/notify/event/quantity')
   },
   reply(signId, replyId, comment) {
     return request({
@@ -1172,36 +1170,36 @@ minetokenGetResources(tokenId) {
   },
   // Token提现
   withdrawToken(tid, data) {
-      return request({
-        method: 'POST',
-        url: `/minetoken/${tid}/withdraw`,
-        data,
-        timeout: 40 * 1000
-      })
+    return request({
+      method: 'POST',
+      url: `/minetoken/${tid}/withdraw`,
+      data,
+      timeout: 40 * 1000
+    })
   },
-    // Token提现去BSC
+  // Token提现去BSC
   withdrawTokenToBsc(tid, data) {
-      return request({
-        method: 'POST',
-        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
-        data: { ...data, chain: 'bsc' },
-        timeout: 60 * 1000
-      })
+    return request({
+      method: 'POST',
+      url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+      data: { ...data, chain: 'bsc' },
+      timeout: 60 * 1000
+    })
   },
   // Token提现去Matic
   withdrawTokenToMatic(tid, data) {
-      return request({
-        method: 'POST',
-        url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
-        data: { ...data, chain: 'matic' },
-        timeout: 60 * 1000
-      })
+    return request({
+      method: 'POST',
+      url: `/minetoken/crosschain/${tid}/withdrawToOtherChain/`,
+      data: { ...data, chain: 'matic' },
+      timeout: 60 * 1000
+    })
   },
-    // Token 充值从 BSC
+  // Token 充值从 BSC
   depositFromExternalChain(data, chain) {
     return request({
       method: 'POST',
-      url: `/minetoken/crosschain/1/depositFromOtherChain`,
+      url: '/minetoken/crosschain/1/depositFromOtherChain',
       data: { ...data, chain },
       timeout: 60 * 1000
     })
@@ -1215,7 +1213,7 @@ minetokenGetResources(tokenId) {
       timeout: 60 * 1000
     })
   },
-    // Token 充值从 Matic
+  // Token 充值从 Matic
   depositFromMatic(tid, data) {
     return request({
       method: 'POST',
@@ -1258,24 +1256,24 @@ minetokenGetResources(tokenId) {
   },
   // 获取我的 BSC 许可
   listMyCrosschainPermit(chain = 'bsc') {
-      return request({
-        method: 'GET',
-        url: `/minetoken/crosschain/permit`,
-        params: { chain }
-      })
+    return request({
+      method: 'GET',
+      url: '/minetoken/crosschain/permit',
+      params: { chain }
+    })
   },
   // Token转入同步到DB
   depositToken(txHash) {
     return request({
       method: 'POST',
-      url: `/minetoken/deposit`,
+      url: '/minetoken/deposit',
       data: { txHash },
     })
   },
   getMyHostingAddress() {
     return request({
       method: 'GET',
-      url: `/token/myAddress`,
+      url: '/token/myAddress',
     })
   },
   getRewardList(pid, page = 1, pagesize = 1000) {
@@ -1294,7 +1292,7 @@ minetokenGetResources(tokenId) {
   },
   // 获取评论列表
   commentGetComments(params) {
-    return request.get(`/comment/getComments`, { params } )
+    return request.get('/comment/getComments', { params } )
   },
   payTokenToArticle(data) {
     return request({
@@ -1312,7 +1310,7 @@ minetokenGetResources(tokenId) {
   },
   // -------------------- token历史记录 --------------------
   // token历史价格
-  getPriceHistory(tokenId) { return request.get(`/token/history/price`, { params: { tokenId }, cache: true }) },
+  getPriceHistory(tokenId) { return request.get('/token/history/price', { params: { tokenId }, cache: true }) },
   // token流动金历史
   getLiquidityHistory(tokenId) { return request.get(`/token/${tokenId}/history/liquidity`, { cache: true }) },
   // token历史增发
@@ -1338,7 +1336,7 @@ minetokenGetResources(tokenId) {
   // 删除协作者
   deleteCollaborator(userId) { return request.delete(`/token/collaborator/${userId}`) },
   // 获取自己创建和协作的Fan票列表
-  getBindableTokenList() { return request.get(`/token/bindable`) },
+  getBindableTokenList() { return request.get('/token/bindable') },
   // -------------------- End -----------------------
 
   // -------------------- 直通车 --------------------
@@ -1346,11 +1344,11 @@ minetokenGetResources(tokenId) {
     // 查item
     getItem(id, type = 'tokenId') { return request.get(`/trade/direct/${id}`, { params: { type }}) },
     // 增
-    create(price) { return request.post(`/trade/direct`, { price }) },
+    create(price) { return request.post('/trade/direct', { price }) },
     // 改
-    set(data) { return request.put(`/trade/direct`, data) },
+    set(data) { return request.put('/trade/direct', data) },
     // 查list
-    getList(params) { return request.get(`/trade/direct`, { params }) },
+    getList(params) { return request.get('/trade/direct', { params }) },
     getItemByUser() { return request.get('/api/user/market')}
   },
   // -------------------- End -----------------------
@@ -1379,31 +1377,31 @@ minetokenGetResources(tokenId) {
   dbIncomeSum(params) { return request.get('/db/income/sum', { params, cache: true }) },
 
   // ---------------- 获取推特授权 ----------------------------------------
-  twitterRequestToken(callbackUrl) { return request.get(`/authorize/twitter/prepare`, { params: { callbackUrl } }) },
-  twitterAccessToken(oauthToken, oauthVerifier) { return request.post(`/authorize/twitter`, { oauthToken, oauthVerifier }) },
-  deleteTwitterAccessToken() { return request.delete(`/authorize/twitter`) },
+  twitterRequestToken(callbackUrl) { return request.get('/authorize/twitter/prepare', { params: { callbackUrl } }) },
+  twitterAccessToken(oauthToken, oauthVerifier) { return request.post('/authorize/twitter', { oauthToken, oauthVerifier }) },
+  deleteTwitterAccessToken() { return request.delete('/authorize/twitter') },
 
   // ---------------- 获取推特时间线 ----------------------------------------
-  getTwitterTimeline(page = 1, pagesize = 20) { return request.get(`/timeline/twitter`, { params: { page, pagesize } }) },
+  getTwitterTimeline(page = 1, pagesize = 20) { return request.get('/timeline/twitter', { params: { page, pagesize } }) },
   setTwitterUserTimeLineSwitch(timelineSwitch) { return request.post('/timeline/twitter/user', { timelineSwitch }) },
 
 
   // -------------------------------- 收藏夹 --------------------------------
   // 创建收藏夹
-  favCreate(data) { return request.post(`/favorites/create`, data ) },
+  favCreate(data) { return request.post('/favorites/create', data ) },
   // 编辑收藏夹
-  favEdit(data) { return request.put(`/favorites/edit`, data ) },
+  favEdit(data) { return request.put('/favorites/edit', data ) },
   // 删除收藏夹
-  favDelete(data) { return request.delete(`/favorites/delete`, { data } ) },
+  favDelete(data) { return request.delete('/favorites/delete', { data } ) },
   // 保存收藏夹
-  favSave(data) { return request.post(`/favorites/save`, data ) },
-  favCancelSave(data) { return request.post(`/favorites/cancel_save`, data ) },
+  favSave(data) { return request.post('/favorites/save', data ) },
+  favCancelSave(data) { return request.post('/favorites/cancel_save', data ) },
   // 获取自己的收藏夹列表
-  favList(params) { return request.get(`/favorites/list`, { params }) },
+  favList(params) { return request.get('/favorites/list', { params }) },
   // 获取自己的收藏夹列表文章
-  favPost(params) { return request.get(`/favorites/post`, { params }) },
+  favPost(params) { return request.get('/favorites/post', { params }) },
   // 获取文章和自己的收藏夹关系
-  favRelated(params) { return request.get(`/favorites/related`, { params }) },
+  favRelated(params) { return request.get('/favorites/related', { params }) },
 
   // ------------------------------ 独立子站 ----------------------------------
   /**
@@ -1418,7 +1416,7 @@ minetokenGetResources(tokenId) {
    * 应当在 /user/prepareRepo 调用成功之后调用
    */
   initialIndieBlogRepo () {
-    return request.post(`/indie/prepareConfig`)
+    return request.post('/indie/prepareConfig')
   },
   /**
    * 获取仓库状态，将可能返回以下 4 种状态码
@@ -1427,14 +1425,14 @@ minetokenGetResources(tokenId) {
    * 10019: 没有绑定 GitHub 账号，或 GitHub Token 不存在
    */
   getIndieBlogRepoStatus () {
-    return request.get(`/indie/repoStatus`)
+    return request.get('/indie/repoStatus')
   },
   /**
    * 获取独立子站状态
    * 10021: 独立子站没有创建
    */
   getIndieBlogSiteStatus () {
-    return request.get(`/indie/siteStatus`)
+    return request.get('/indie/siteStatus')
   },
   /**
    * 修改子站仓库名，将可能返回以下 4 种状态码
@@ -1442,7 +1440,7 @@ minetokenGetResources(tokenId) {
    * 10019: 没有绑定 GitHub 账号，或 GitHub Token 不存在
    */
   modifyIndieBlogRepoName (params) {
-    return request.post(`/indie/repo`, params)
+    return request.post('/indie/repo', params)
   },
   /**
    * 获取子站设置项，成功后将返回以下 JSON
@@ -1455,7 +1453,7 @@ minetokenGetResources(tokenId) {
    * }
    */
   getIndieBlogSiteConfig () {
-    return request.get(`/indie/siteConfig`)
+    return request.get('/indie/siteConfig')
   },
   /**
    * 修改子站设置项
@@ -1468,7 +1466,7 @@ minetokenGetResources(tokenId) {
    * }
    */
   changeIndieBlogSiteConfig (hCaptchaData, params) {
-    return request.post(`/indie/siteConfig`, { hCaptchaData, ...params })
+    return request.post('/indie/siteConfig', { hCaptchaData, ...params })
   },
   /**
    * 获取子站部署状态
@@ -1477,11 +1475,11 @@ minetokenGetResources(tokenId) {
    * built: 构建完成可以访问
    */
   getIndieBlogPagesStatus () {
-    return request.get(`/indie/pagesStatus`)
+    return request.get('/indie/pagesStatus')
   },
   /** 获取目前所有可用主题 */
   getIndieBlogThemes () {
-    return request.get(`/indie/themeList`)
+    return request.get('/indie/themeList')
   },
   // ----------------------- MTK NFT ------------------
   // 通过 token address 获取 nft
